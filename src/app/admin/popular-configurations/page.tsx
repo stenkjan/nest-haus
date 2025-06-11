@@ -6,7 +6,28 @@
  */
 
 import Link from 'next/link';
-import { Suspense } from 'react';
+
+// Types for the component props
+interface ConfigurationData {
+  id: number;
+  nestType: string;
+  gebaeudehuelle: string;
+  innenverkleidung: string;
+  fussboden: string;
+  pvanlage: string;
+  fenster: string;
+  planungspaket: string;
+  totalPrice: number;
+  selectionCount: number;
+  conversionRate: number;
+  lastSelected: string;
+}
+
+interface SelectionStatItem {
+  name: string;
+  count: number;
+  percentage: number;
+}
 
 // Mock data - replace with real database queries
 const mockConfigurationData = {
@@ -124,7 +145,7 @@ const mockConfigurationData = {
   },
 };
 
-function ConfigurationCard({ config }: { config: any }) {
+function ConfigurationCard({ config }: { config: ConfigurationData }) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex justify-between items-start mb-4">
@@ -228,7 +249,7 @@ function SelectionStats() {
               {category.replace(/([A-Z])/g, ' $1').trim()}
             </h4>
             <div className="space-y-2">
-              {(items as any[]).map((item, index) => (
+              {(items as SelectionStatItem[]).map((item, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">{item.name}</span>
                   <div className="flex items-center">

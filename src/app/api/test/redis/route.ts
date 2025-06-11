@@ -4,7 +4,7 @@
  * Simple endpoint to verify Redis connectivity during setup
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { SessionManager } from '@/lib/redis';
 
 export async function GET() {

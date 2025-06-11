@@ -6,7 +6,6 @@
  */
 
 import Link from 'next/link';
-import { Suspense } from 'react';
 
 // Mock data - replace with real database queries
 const mockJourneyData = {
