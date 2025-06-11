@@ -13,3 +13,175 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// ===== USER TRACKING & ANALYTICS =====
+
+model UserSession {
+  id                    String   @id @default(cuid())
+  sessionId             String   @unique
+  ipAddress             String?
+  userAgent             String?
+  referrer              String?
+  utmSource             String?
+  startTime             DateTime @default(now())
+  endTime               DateTime?
+  lastActivity          DateTime @default(now())
+  configurationData     Json?    // Final configuration when user leaves
+  totalPrice            Int?     // Final price calculated
+  status                SessionStatus @default(ACTIVE)
+  
+  // Relations
+  selectionEvents       SelectionEvent[]
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("user_sessions")
+}
+
+model SelectionEvent {
+  id                    String   @id @default(cuid())
+  sessionId             String
+  timestamp             DateTime @default(now())
+  category              String   // 'nest', 'gebaeudehuelle', etc.
+  selection             String   // 'nest80', 'holzlattung', etc.
+  previousSelection     String?
+  timeSpentMs           Int?     // Time spent on this selection
+  priceChange           Int?     // Price change caused by this selection
+  totalPrice            Int?     // Total price after this selection
+  
+  // Relations
+  session               UserSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
+  
+  @@map("selection_events")
+}
+
+model DailyAnalytics {
+  id                    String   @id @default(cuid())
+  date                  DateTime @unique @db.Date
+  totalSessions         Int      @default(0)
+  uniqueVisitors        Int      @default(0)
+  completedConfigurations Int    @default(0)
+  abandonedSessions     Int      @default(0)
+  averageSessionDuration Float   @default(0)
+  bounceRate            Float    @default(0)
+  conversionRate        Float    @default(0)
+  topSelections         Json?    // Popular selections for the day
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("daily_analytics")
+}
+
+model PopularConfiguration {
+  id                    String   @id @default(cuid())
+  configurationHash     String   @unique // Hash of the configuration for uniqueness
+  nestType              String
+  gebaeudehuelle        String
+  innenverkleidung      String
+  fussboden             String
+  pvanlage              String?
+  fenster               String?
+  planungspaket         String?
+  totalPrice            Int
+  selectionCount        Int      @default(1)
+  conversionRate        Float    @default(0)
+  lastSelected          DateTime @default(now())
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("popular_configurations")
+}
+
+// ===== CONFIGURATOR MASTER DATA =====
+
+model HouseOption {
+  id                    String   @id @default(cuid())
+  category              String   // 'nest', 'gebaeudehuelle', etc.
+  value                 String   // 'nest80', 'holzlattung', etc.
+  name                  String
+  description           String?
+  basePrice             Int
+  isActive              Boolean  @default(true)
+  sortOrder             Int      @default(0)
+  imageUrl              String?
+  
+  // Metadata
+  properties            Json?    // Additional properties like m², kWh, etc.
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([category, value])
+  @@map("house_options")
+}
+
+model PricingRule {
+  id                    String   @id @default(cuid())
+  nestType              String
+  gebaeudehuelle        String
+  innenverkleidung      String
+  fussboden             String
+  totalPrice            Int
+  isActive              Boolean  @default(true)
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([nestType, gebaeudehuelle, innenverkleidung, fussboden])
+  @@map("pricing_rules")
+}
+
+// ===== ORDERS & CUSTOMER DATA =====
+
+model CustomerInquiry {
+  id                    String   @id @default(cuid())
+  sessionId             String?  // Link to user session if available
+  email                 String
+  name                  String?
+  phone                 String?
+  message               String?
+  configurationData     Json?    // Their house configuration
+  totalPrice            Int?
+  status                InquiryStatus @default(NEW)
+  
+  // Contact preferences
+  preferredContact      ContactMethod @default(EMAIL)
+  bestTimeToCall        String?
+  
+  // Admin notes
+  adminNotes            String?
+  followUpDate          DateTime?
+  assignedTo            String?
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("customer_inquiries")
+}
+
+// ===== ENUMS =====
+
+enum SessionStatus {
+  ACTIVE
+  ABANDONED
+  COMPLETED
+  EXPIRED
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  QUOTED
+  CONVERTED
+  CLOSED
+}
+
+enum ContactMethod {
+  EMAIL
+  PHONE
+  WHATSAPP
+}

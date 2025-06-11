@@ -14,9 +14,9 @@
 
 import type { 
   SelectionEvent, 
-  UserSession, 
-  Configuration 
+  UserSession
 } from '../types/tracking.types';
+import type { Configuration } from '../types/configurator.types';
 
 export class InteractionTracker {
   /**
