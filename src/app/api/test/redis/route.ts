@@ -43,7 +43,7 @@ export async function GET() {
 export async function POST() {
   try {
     // Test analytics functionality
-    const analytics = await SessionManager.getSessionAnalytics('day');
+    const analytics = await SessionManager.getSessionAnalytics();
     
     return NextResponse.json({
       status: 'success',
