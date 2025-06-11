@@ -109,7 +109,7 @@ export interface SessionRecord {
   user_agent: string;
   created_at: Date;
   last_activity: Date;
-  configuration_data: any; // JSONB
+  configuration_data: Configuration; // JSONB
   status: SessionStatus;
   total_price?: number;
   referrer?: string;

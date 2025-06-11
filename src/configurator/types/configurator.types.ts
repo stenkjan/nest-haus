@@ -120,7 +120,7 @@ export interface SummaryPanelProps {
 
 // ===== API TYPES =====
 
-export interface ConfiguratorApiResponse<T = any> {
+export interface ConfiguratorApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;

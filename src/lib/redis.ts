@@ -13,6 +13,17 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
+// Type definitions for configuration
+export interface Configuration {
+  nest?: string;
+  accessories?: string[];
+  pricing?: {
+    basePrice: number;
+    totalPrice: number;
+  };
+  [key: string]: unknown;
+}
+
 // Type definitions for session tracking
 export interface UserSession {
   sessionId: string;
@@ -21,7 +32,7 @@ export interface UserSession {
   startTime: number;
   lastActivity: number;
   clickHistory: ClickEvent[];
-  currentConfiguration?: any;
+  currentConfiguration?: Configuration;
   referrer?: string;
 }
 
@@ -33,6 +44,13 @@ export interface ClickEvent {
   timeSpent: number;
   priceChange?: number;
   totalPrice?: number;
+}
+
+// Analytics response type
+export interface SessionAnalytics {
+  totalSessions: number;
+  activeSessions: number;
+  averageSessionDuration: number;
 }
 
 // Session Management Functions
@@ -107,7 +125,7 @@ export class SessionManager {
   /**
    * Finalize session (page exit)
    */
-  static async finalizeSession(sessionId: string, finalConfiguration: any): Promise<void> {
+  static async finalizeSession(sessionId: string, finalConfiguration: Configuration): Promise<void> {
     const session = await this.getSession(sessionId);
     if (session) {
       // Update session with final state
@@ -125,7 +143,7 @@ export class SessionManager {
   /**
    * Get analytics data for admin panel
    */
-  static async getSessionAnalytics(timeframe: 'day' | 'week' | 'month' = 'day'): Promise<any> {
+  static async getSessionAnalytics(): Promise<SessionAnalytics> {
     // This will query Redis for session patterns
     // Implementation depends on your specific analytics needs
     const keys = await redis.keys('session:*');
@@ -136,10 +154,14 @@ export class SessionManager {
       })
     );
 
+    const validSessions = sessions.filter(Boolean) as UserSession[];
+    
     return {
-      totalSessions: sessions.filter(Boolean).length,
-      activeSessions: sessions.filter(s => s && Date.now() - s.lastActivity < 300000).length, // Active in last 5 min
-      averageSessionDuration: sessions.reduce((acc, s) => s ? acc + (s.lastActivity - s.startTime) : acc, 0) / sessions.length,
+      totalSessions: validSessions.length,
+      activeSessions: validSessions.filter(s => Date.now() - s.lastActivity < 300000).length, // Active in last 5 min
+      averageSessionDuration: validSessions.length > 0 
+        ? validSessions.reduce((acc, s) => acc + (s.lastActivity - s.startTime), 0) / validSessions.length
+        : 0,
     };
   }
 }

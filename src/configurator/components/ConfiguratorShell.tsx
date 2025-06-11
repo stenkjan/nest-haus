@@ -30,6 +30,15 @@ export default function ConfiguratorShell({
   // TODO: Replace legacy state management with clean hooks
   // const { selections, activeView, totalPrice, updateSelection } = useConfiguratorState(initialModel);
   // const { trackSelection } = useInteractionTracking();
+  
+  // Temporary logging to acknowledge props usage (remove when implementing)
+  React.useEffect(() => {
+    console.log('ConfiguratorShell initialized with:', { 
+      initialModel, 
+      hasSelectionCallback: !!onSelectionChange,
+      hasPriceCallback: !!onPriceChange 
+    });
+  }, [initialModel, onSelectionChange, onPriceChange]);
 
   return (
     <div className="configurator-shell w-screen relative">

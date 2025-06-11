@@ -14,7 +14,8 @@
 
 import type { 
   SelectionEvent, 
-  UserSession
+  UserSession,
+  SessionAnalytics
 } from '../types/tracking.types';
 import type { Configuration } from '../types/configurator.types';
 
@@ -22,7 +23,7 @@ export class InteractionTracker {
   /**
    * Track individual selection events
    */
-  static async trackSelection(event: SelectionEvent): Promise<void> {
+  static async trackSelection(_event: SelectionEvent): Promise<void> {
     // TODO: Implement Redis tracking
     // TODO: Batch events for performance
     throw new Error('Not implemented - new feature');
@@ -31,7 +32,7 @@ export class InteractionTracker {
   /**
    * Track when user exits the configurator page
    */
-  static async trackPageExit(configuration: Configuration): Promise<void> {
+  static async trackPageExit(_configuration: Configuration): Promise<void> {
     // TODO: Save final configuration state
     // TODO: Move session data from Redis to PostgreSQL
     throw new Error('Not implemented - new feature');
@@ -40,7 +41,7 @@ export class InteractionTracker {
   /**
    * Save complete session data
    */
-  static async saveSession(sessionData: UserSession): Promise<void> {
+  static async saveSession(_sessionData: UserSession): Promise<void> {
     // TODO: Persist session to PostgreSQL
     // TODO: Cleanup Redis session data
     throw new Error('Not implemented - new feature');
@@ -49,7 +50,7 @@ export class InteractionTracker {
   /**
    * Create new user session
    */
-  static async createSession(ipAddress: string, userAgent: string): Promise<string> {
+  static async createSession(_ipAddress: string, _userAgent: string): Promise<string> {
     // TODO: Generate session ID
     // TODO: Initialize Redis session
     throw new Error('Not implemented - new feature');
@@ -58,7 +59,7 @@ export class InteractionTracker {
   /**
    * Update session with new activity
    */
-  static async updateSession(sessionId: string, activity: any): Promise<void> {
+  static async updateSession(_sessionId: string, _activity: Record<string, unknown>): Promise<void> {
     // TODO: Update Redis session
     // TODO: Track time spent on selections
     throw new Error('Not implemented - new feature');
@@ -67,7 +68,7 @@ export class InteractionTracker {
   /**
    * Get session analytics for admin dashboard
    */
-  static async getSessionAnalytics(timeframe: string): Promise<any> {
+  static async getSessionAnalytics(_timeframe: string): Promise<SessionAnalytics> {
     // TODO: Query PostgreSQL for analytics
     // TODO: Aggregate click frequency data
     throw new Error('Not implemented - new feature');
