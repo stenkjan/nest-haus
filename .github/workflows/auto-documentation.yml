@@ -1,0 +1,185 @@
+name: Auto Documentation Updater
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for analysis
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Analyze commit changes
+      id: analyze
+      run: |
+        # Get the latest commit info
+        COMMIT_SHA=$(git rev-parse HEAD)
+        COMMIT_MESSAGE=$(git log --format=%B -n 1 $COMMIT_SHA)
+        COMMIT_AUTHOR=$(git log --format=%an -n 1 $COMMIT_SHA)
+        COMMIT_DATE=$(git log --format=%ad -n 1 $COMMIT_SHA)
+        
+        # Analyze changed files
+        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+        
+        # Categorize changes
+        FRONTEND_CHANGES=""
+        BACKEND_CHANGES=""
+        CONFIG_CHANGES=""
+        DOCS_CHANGES=""
+        
+        for file in $CHANGED_FILES; do
+          case $file in
+            src/app/*|src/components/*|src/hooks/*|src/contexts/*)
+              FRONTEND_CHANGES="$FRONTEND_CHANGES\n- $file"
+              ;;
+            src/app/api/*|prisma/*|scripts/*)
+              BACKEND_CHANGES="$BACKEND_CHANGES\n- $file"
+              ;;
+            *.config.*|package.json|*.env*|.github/*)
+              CONFIG_CHANGES="$CONFIG_CHANGES\n- $file"
+              ;;
+            docs/*|README.md|*.md)
+              DOCS_CHANGES="$DOCS_CHANGES\n- $file"
+              ;;
+          esac
+        done
+        
+        # Save to outputs
+        echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+        echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+        echo "commit_author=$COMMIT_AUTHOR" >> $GITHUB_OUTPUT
+        echo "commit_date=$COMMIT_DATE" >> $GITHUB_OUTPUT
+        echo "frontend_changes=$FRONTEND_CHANGES" >> $GITHUB_OUTPUT
+        echo "backend_changes=$BACKEND_CHANGES" >> $GITHUB_OUTPUT
+        echo "config_changes=$CONFIG_CHANGES" >> $GITHUB_OUTPUT
+        echo "docs_changes=$DOCS_CHANGES" >> $GITHUB_OUTPUT
+        
+    - name: Update commit history documentation
+      run: |
+        # Create or update COMMIT_HISTORY.md
+        HISTORY_FILE="docs/COMMIT_HISTORY.md"
+        
+        # Create header if file doesn't exist
+        if [ ! -f "$HISTORY_FILE" ]; then
+          cat > "$HISTORY_FILE" << 'EOF'
+        # Nest-Haus Commit History
+        
+        *Auto-generated documentation of project changes*
+        
+        ---
+        
+        EOF
+        fi
+        
+        # Prepare the new entry
+        cat > temp_entry.md << 'EOF'
+        ## [${{ steps.analyze.outputs.commit_sha }}] - ${{ steps.analyze.outputs.commit_date }}
+        
+        **Author**: ${{ steps.analyze.outputs.commit_author }}  
+        **Message**: `${{ steps.analyze.outputs.commit_message }}`
+        
+        ### Changes Analysis
+        
+        EOF
+        
+        # Add categorized changes
+        if [ -n "${{ steps.analyze.outputs.frontend_changes }}" ]; then
+          echo "#### 🎨 Frontend Changes" >> temp_entry.md
+          echo -e "${{ steps.analyze.outputs.frontend_changes }}" >> temp_entry.md
+          echo "" >> temp_entry.md
+        fi
+        
+        if [ -n "${{ steps.analyze.outputs.backend_changes }}" ]; then
+          echo "#### ⚙️ Backend Changes" >> temp_entry.md
+          echo -e "${{ steps.analyze.outputs.backend_changes }}" >> temp_entry.md
+          echo "" >> temp_entry.md
+        fi
+        
+        if [ -n "${{ steps.analyze.outputs.config_changes }}" ]; then
+          echo "#### 🔧 Configuration Changes" >> temp_entry.md
+          echo -e "${{ steps.analyze.outputs.config_changes }}" >> temp_entry.md
+          echo "" >> temp_entry.md
+        fi
+        
+        if [ -n "${{ steps.analyze.outputs.docs_changes }}" ]; then
+          echo "#### 📚 Documentation Changes" >> temp_entry.md
+          echo -e "${{ steps.analyze.outputs.docs_changes }}" >> temp_entry.md
+          echo "" >> temp_entry.md
+        fi
+        
+        echo "---" >> temp_entry.md
+        echo "" >> temp_entry.md
+        
+        # Insert new entry at the top (after header)
+        head -6 "$HISTORY_FILE" > temp_file
+        cat temp_entry.md >> temp_file
+        tail -n +7 "$HISTORY_FILE" >> temp_file
+        mv temp_file "$HISTORY_FILE"
+        rm temp_entry.md
+        
+    - name: Update project overview timestamps
+      run: |
+        # Update timestamps in PROJECT_OVERVIEW.md
+        sed -i "s/{timestamp}/$(date '+%Y-%m-%d %H:%M:%S UTC')/g" docs/PROJECT_OVERVIEW.md
+        sed -i "s/{next_review_date}/$(date -d '+30 days' '+%Y-%m-%d')/g" docs/PROJECT_OVERVIEW.md
+        
+    - name: Commit documentation updates
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Check if there are changes to commit
+        if [ -n "$(git status --porcelain docs/)" ]; then
+          git add docs/
+          git commit -m "📚 Auto-update documentation [skip ci]"
+          git push
+        else
+          echo "No documentation changes to commit"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Create documentation summary
+      run: |
+        echo "## 📋 Documentation Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Commit**: ${{ steps.analyze.outputs.commit_sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Author**: ${{ steps.analyze.outputs.commit_author }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Date**: ${{ steps.analyze.outputs.commit_date }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Changes Categorized:" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -n "${{ steps.analyze.outputs.frontend_changes }}" ]; then
+          echo "- 🎨 Frontend changes detected" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -n "${{ steps.analyze.outputs.backend_changes }}" ]; then
+          echo "- ⚙️ Backend changes detected" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -n "${{ steps.analyze.outputs.config_changes }}" ]; then
+          echo "- 🔧 Configuration changes detected" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -n "${{ steps.analyze.outputs.docs_changes }}" ]; then
+          echo "- 📚 Documentation changes detected" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Documentation automatically updated in \`docs/COMMIT_HISTORY.md\`" >> $GITHUB_STEP_SUMMARY 
