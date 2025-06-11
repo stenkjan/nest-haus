@@ -19,7 +19,7 @@ export class ImageManager {
   /**
    * Get preview image path based on selections and view type
    */
-  static getPreviewImage(selections: Selections, view: ViewType): string {
+  static getPreviewImage(_selections: Selections, _view: ViewType): string {
     // TODO: Extract complex getPreviewImagePath logic
     // TODO: Handle exterior, interior, PV, and fenster views
     throw new Error('Not implemented - migrate from legacy code');
@@ -28,7 +28,7 @@ export class ImageManager {
   /**
    * Preload images for better user experience
    */
-  static async preloadImages(configuration: Configuration): Promise<void> {
+  static async preloadImages(_configuration: Configuration): Promise<void> {
     // TODO: Preload next likely images based on selections
     // TODO: Implement intelligent caching strategy
     throw new Error('Not implemented - new feature');
@@ -37,7 +37,7 @@ export class ImageManager {
   /**
    * Get available views based on current selections
    */
-  static getAvailableViews(selections: Selections): ViewType[] {
+  static getAvailableViews(_selections: Selections): ViewType[] {
     // TODO: Extract view availability logic
     // TODO: Handle hasPart2BeenActive, hasPart3BeenActive logic
     throw new Error('Not implemented - migrate from legacy code');
@@ -46,7 +46,7 @@ export class ImageManager {
   /**
    * Optimize images for current viewport
    */
-  static optimizeForViewport(imagePath: string, viewport: 'mobile' | 'desktop'): string {
+  static optimizeForViewport(_imagePath: string, _viewport: 'mobile' | 'desktop'): string {
     // TODO: Return optimized image sizes
     // TODO: Integrate with Next.js Image optimization
     throw new Error('Not implemented - new feature');
@@ -55,7 +55,7 @@ export class ImageManager {
   /**
    * Cache frequently accessed images
    */
-  static async cacheImage(imagePath: string): Promise<void> {
+  static async cacheImage(_imagePath: string): Promise<void> {
     // TODO: Implement client-side image caching
     // TODO: Manage cache size and cleanup
     throw new Error('Not implemented - new feature');
@@ -64,7 +64,7 @@ export class ImageManager {
   /**
    * Get image dimensions for layout calculations
    */
-  static async getImageDimensions(imagePath: string): Promise<{ width: number; height: number }> {
+  static async getImageDimensions(_imagePath: string): Promise<{ width: number; height: number }> {
     // TODO: Calculate or fetch image dimensions
     // TODO: Cache dimensions for performance
     throw new Error('Not implemented - new feature');
