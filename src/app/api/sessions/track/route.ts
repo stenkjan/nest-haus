@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../../lib/prisma'
-import { redis } from '../../../../lib/redis'
+import redis from '../../../../lib/redis'
 
 // Track user selection
 export async function POST(request: Request) {

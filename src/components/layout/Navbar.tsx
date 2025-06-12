@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 
 export default function Navbar() {
@@ -108,12 +109,13 @@ export default function Navbar() {
         
         {/* Logo */}
         <Link href="/" className="flex items-center pl-4">
-          <img
+          <Image
             src="/0-homebutton-nest-haus.svg"
             alt="NEST Home"
             className="h-[clamp(18px,1.875vh,24px)] w-[clamp(18px,1.875vh,24px)] pb-0.5 -mt-1"
             width={20}
             height={20}
+            priority
           />
         </Link>
 

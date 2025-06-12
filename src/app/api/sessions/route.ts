@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { prisma } from '../../../lib/prisma'
-import { redis } from '../../../lib/redis'
+import redis from '../../../lib/redis'
 
 // Create new session
 export async function POST(request: Request) {
