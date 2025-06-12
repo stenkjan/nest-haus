@@ -21,7 +21,11 @@ export async function POST(request: Request) {
     
     let finalConfig = config
     if (sessionData) {
-      const session = JSON.parse(sessionData)
+      // Handle both string and object responses from Redis
+      const session = typeof sessionData === 'string' 
+        ? JSON.parse(sessionData) 
+        : sessionData
+      
       finalConfig = {
         ...config,
         ...session.selections,
