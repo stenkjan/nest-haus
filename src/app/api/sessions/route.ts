@@ -6,7 +6,7 @@ import redis from '../../../lib/redis'
 // Create new session
 export async function POST(_request: Request) {
   try {
-    const headersList = headers()
+    const headersList = await headers()
     const ipAddress = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown'
     const userAgent = headersList.get('user-agent') || 'unknown'
     const referrer = headersList.get('referer') || null
