@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../../lib/prisma'
 import redis from '../../../../lib/redis'
-import type { Prisma } from '@prisma/client'
 
 // Finalize session when user leaves
 export async function POST(request: Request) {

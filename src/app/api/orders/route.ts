@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
-import type { Prisma } from '@prisma/client'
 
 // Create new order from cart
 export async function POST(request: Request) {
