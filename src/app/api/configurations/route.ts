@@ -23,7 +23,7 @@ export async function POST(request: Request) {
           name: config.name || null,
           phone: config.phone || null,
           message: config.message || null,
-          configurationData: config as Prisma.InputJsonValue,
+          configurationData: config,
           totalPrice: config.totalPrice || null,
           status: 'NEW'
         }
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     await prisma.userSession.update({
       where: { sessionId: config.sessionId },
       data: {
-        configurationData: config as Prisma.InputJsonValue,
+        configurationData: config,
         totalPrice: config.totalPrice || null,
         status: 'COMPLETED'
       }

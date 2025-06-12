@@ -36,7 +36,7 @@ export async function POST(request: Request) {
             totalPrice,
             timestamp: Date.now()
           }
-        } as Prisma.InputJsonValue,
+        },
         totalPrice,
         status: 'NEW',
         preferredContact: 'EMAIL'

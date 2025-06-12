@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       where: { sessionId },
       data: {
         endTime: new Date(),
-        configurationData: finalConfig as Prisma.InputJsonValue,
+        configurationData: finalConfig,
         totalPrice: config?.totalPrice || null,
         status: config?.totalPrice ? 'COMPLETED' : 'ABANDONED'
       }
