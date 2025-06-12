@@ -24,3 +24,31 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Navbar and Mobile Optimizations */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* WebKit-specific optimizations for smooth scrolling */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent zoom on iOS */
+@media screen and (max-width: 650px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Ensure proper spacing with fixed navbar */
+body {
+  padding-top: 0;
+}
+
+/* Content width utility class for consistent max-width */
+.content-width {
+  max-width: 1144px;
+}

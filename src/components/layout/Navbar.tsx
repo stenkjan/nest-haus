@@ -1,0 +1,233 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { useCartStore } from '@/store/cartStore';
+
+export default function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const lastScrollTop = useRef(0);
+  const pathname = usePathname();
+  
+  // Cart integration using Zustand store
+  const { getCartCount, getCartSummary } = useCartStore();
+  const [cartCount, setCartCount] = useState(0);
+
+  // Mobile detection following project rules (600-700px breakpoint)
+  useEffect(() => {
+    const checkMobile = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 650); // Mobile switch at 650px as per rules
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Update cart count safely
+  useEffect(() => {
+    try {
+      const count = getCartCount();
+      setCartCount(count);
+    } catch (error) {
+      console.error('Error getting cart count:', error);
+      setCartCount(0);
+    }
+  }, [getCartCount]);
+
+  // Enhanced scroll behavior with WebKit support
+  useEffect(() => {
+    // Skip scroll behavior on konfigurator page
+    if (pathname === '/konfigurator') return;
+
+    const header = headerRef.current;
+    if (!header) return;
+    
+    // Cross-browser scroll position with WebKit optimizations
+    const getScrollPosition = () => {
+      return window.pageYOffset || 
+             document.documentElement.scrollTop || 
+             document.body.scrollTop || 0;
+    };
+    
+    lastScrollTop.current = getScrollPosition();
+    
+    // Optimized polling for better performance on mobile
+    const intervalId = setInterval(() => {
+      const currentScrollY = getScrollPosition();
+      
+      // Reduced threshold for mobile WebKit
+      const threshold = isMobile ? 3 : 5;
+      if (Math.abs(currentScrollY - lastScrollTop.current) < threshold) return;
+      
+      if (currentScrollY > lastScrollTop.current && currentScrollY > 50) {
+        // Scrolling down - hide (WebKit-friendly transform)
+        header.style.transform = 'translateY(-100%)';
+        header.style.transition = 'transform 0.3s ease-out';
+      } else if (currentScrollY < lastScrollTop.current) {
+        // Scrolling up - show
+        header.style.transform = 'translateY(0)';
+        header.style.transition = 'transform 0.3s ease-out';
+      }
+      
+      lastScrollTop.current = currentScrollY;
+    }, isMobile ? 150 : 200); // Faster polling on mobile
+    
+    return () => clearInterval(intervalId);
+  }, [pathname, isMobile]);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  // Navigation items
+  const navItems = [
+    { name: 'Entdecken', path: '/entdecken' },
+    { name: 'Wie Funktioniert\'s?', path: '/ablauf' },
+    { name: 'Warum wir?', path: '/warum-wir' },
+    { name: 'Kontakt', path: '/kontakt' },
+  ];
+
+  return (
+    <header 
+      ref={headerRef}
+      className="fixed pointer-events-auto top-0 left-0 right-0 z-[100] bg-[#F4F4F4]/85 backdrop-blur-[30px] border-b border-gray-200/50 shadow-sm"
+      style={{ 
+        willChange: 'transform',
+        // WebKit-specific optimizations
+        WebkitBackdropFilter: 'blur(30px)',
+        WebkitTransform: 'translateZ(0)', // Force hardware acceleration
+      }}
+    >
+      <nav className="mx-auto px-4 w-full flex justify-between items-center py-2" 
+           style={{ maxWidth: isMobile ? '100%' : '1144px' }}>
+        
+        {/* Logo */}
+        <Link href="/" className="flex items-center pl-4">
+          <img
+            src="/0-homebutton-nest-haus.svg"
+            alt="NEST Home"
+            className="h-[clamp(18px,1.875vh,24px)] w-[clamp(18px,1.875vh,24px)] pb-0.5 -mt-1"
+            width={20}
+            height={20}
+          />
+        </Link>
+
+        {/* Desktop Navigation */}
+        <div className={`${isMobile ? 'hidden' : 'flex'} space-x-[clamp(12px,4vw,64px)] mx-auto px-6`}>
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className="text-[clamp(12px,1.3vw,13px)] hover:opacity-80 transition-opacity leading-none"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Mobile Menu Button */}
+        {isMobile && (
+          <button
+            onClick={toggleMobileMenu}
+            className="md:hidden p-2 mr-2"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+        )}
+
+        {/* Right Side Icons */}
+        <div className="flex items-center space-x-5 pr-4 pb-1">
+          <Link
+            href="/konfigurator"
+            className="focus:outline-none text-black flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center"
+            aria-label="Konfigurator"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-[clamp(18px,1.875vh,24px)] w-[clamp(18px,1.875vh,24px)]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </Link>
+
+          {/* Shopping Cart Icon with Zustand integration */}
+          <Link
+            href="/warenkorb"
+            className="focus:outline-none relative text-black flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center"
+            aria-label={`Warenkorb - ${getCartSummary()}`}
+            title={cartCount > 0 ? getCartSummary() : 'Warenkorb leer'}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-[clamp(18px,1.875vh,24px)] w-[clamp(18px,1.875vh,24px)]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 bg-red-500 text-white text-[clamp(6px,0.7vw,8px)] leading-none font-bold rounded-full w-3 h-3 flex items-center justify-center min-w-[12px] min-h-[12px]">
+                {cartCount > 9 ? '9+' : cartCount}
+              </span>
+            )}
+          </Link>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && isMobile && (
+        <div className="absolute top-full left-0 right-0 bg-[#F4F4F4]/95 backdrop-blur-[20px] border-b border-gray-200/50 shadow-lg">
+          <div className="px-4 py-4 space-y-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                href={item.path}
+                className="block text-sm hover:opacity-80 transition-opacity py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </header>
+  );
+} 

@@ -20,4 +20,21 @@
 - New configurator components must integrate with useConfiguratorStore and useCartStore
 - All user selections must be tracked via the session APIs
 - Cart functionality should remain compatible across the app
-- Maintain backward compatibility during migrations 
+- Maintain backward compatibility during migrations
+
+## Responsive Design Guidelines
+- Use Tailwind and Medium's responsive design system in combination
+- Prefer relative units (em, vh, vw) over fixed pixel sizes
+- Set max-width of 11144px for descriptive content (e.g. navbar)
+- No width restrictions for main site content
+- Implement mobile view switch at 600-700px using window.innerWidth
+- Detect mobile access and differentiate between WebKit (iOS) and Android
+- Handle WebKit-specific requirements:
+  - Hide address bar appropriately
+  - Manage nested scrolling containers carefully due to WebKit limitations
+- Use Tailwind's responsive classes for consistent breakpoint handling
+- Implement fluid typography using clamp() for dynamic text sizing
+- Ensure all interactive elements have minimum touch target size of 44x44px
+- Test layouts across standard breakpoints (sm: 640px, md: 768px, lg: 1024px, xl: 1280px)
+- Maintain aspect ratios for media content using aspect-ratio utility
+- Use CSS Grid and Flexbox for responsive layouts instead of fixed dimensions
