@@ -8,7 +8,6 @@ import { useConfiguratorStore } from '../../store/configuratorStore'
 export default function WarenkorbPage() {
   const {
     items,
-    orderDetails,
     isProcessingOrder,
     addConfigurationToCart,
     removeFromCart,
@@ -22,7 +21,6 @@ export default function WarenkorbPage() {
 
   const {
     configuration,
-    isConfigurationComplete,
     getConfigurationForCart
   } = useConfiguratorStore()
 
@@ -83,7 +81,7 @@ export default function WarenkorbPage() {
   }
 
   // Render configuration item details
-  const renderConfigurationDetails = (item: any) => {
+  const renderConfigurationDetails = (item: Record<string, unknown>) => {
     const details = []
     
     if (item.nest) details.push({ label: 'Nest', value: item.nest.name })

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../../lib/prisma'
 import redis from '../../../../lib/redis'
+import type { Prisma } from '@prisma/client'
 
 // Finalize session when user leaves
 export async function POST(request: Request) {
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
       where: { sessionId },
       data: {
         endTime: new Date(),
-        configurationData: finalConfig as any,
+        configurationData: finalConfig as Prisma.InputJsonValue,
         totalPrice: config?.totalPrice || null,
         status: config?.totalPrice ? 'COMPLETED' : 'ABANDONED'
       }
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
 }
 
 // Helper function to generate configuration hash
-function generateConfigHash(config: any): string {
+function generateConfigHash(config: Record<string, unknown>): string {
   const hashData = {
     nest: config.nest || '',
     gebaeudehuelle: config.gebaeudehuelle || '',

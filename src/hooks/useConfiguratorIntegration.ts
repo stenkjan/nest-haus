@@ -110,7 +110,7 @@ export const useConfiguratorIntegration = () => {
   }, [])
 
   // Save configuration
-  const saveConfiguration = useCallback(async (config: Configuration, userDetails?: any) => {
+  const saveConfiguration = useCallback(async (config: Configuration, userDetails?: Record<string, unknown>) => {
     try {
       const configToSave = {
         ...config,

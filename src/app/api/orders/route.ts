@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
+import type { Prisma } from '@prisma/client'
 
 // Create new order from cart
 export async function POST(request: Request) {
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
             totalPrice,
             timestamp: Date.now()
           }
-        } as any,
+        } as Prisma.InputJsonValue,
         totalPrice,
         status: 'NEW',
         preferredContact: 'EMAIL'

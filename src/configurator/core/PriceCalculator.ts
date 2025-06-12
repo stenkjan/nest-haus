@@ -16,6 +16,11 @@ import type {
 } from '../types/configurator.types';
 import { prisma } from '../../lib/prisma';
 
+interface HouseOption {
+  basePrice: number;
+  [key: string]: unknown;
+}
+
 export class PriceCalculator {
   /**
    * Calculate base price for a specific nest type
@@ -64,7 +69,7 @@ export class PriceCalculator {
       }
     });
 
-         return options.reduce((total: number, option: any) => total + option.basePrice, 0);
+         return options.reduce((total: number, option: HouseOption) => total + option.basePrice, 0);
   }
 
   /**

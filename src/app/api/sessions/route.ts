@@ -4,7 +4,7 @@ import { prisma } from '../../../lib/prisma'
 import redis from '../../../lib/redis'
 
 // Create new session
-export async function POST(request: Request) {
+export async function POST(_request: Request) {
   try {
     const headersList = headers()
     const ipAddress = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown'
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const sessionId = `config_${Date.now()}_${Math.random().toString(36).substring(2)}`
 
     // Create session in PostgreSQL
-    const session = await prisma.userSession.create({
+    const _session = await prisma.userSession.create({
       data: {
         sessionId,
         ipAddress,

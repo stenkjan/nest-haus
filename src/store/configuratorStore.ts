@@ -48,7 +48,7 @@ interface ConfiguratorState {
   updateSelection: (item: ConfigurationItem) => Promise<void>
   removeSelection: (category: string) => Promise<void>
   calculatePrice: () => Promise<void>
-  saveConfiguration: (userDetails?: any) => Promise<boolean>
+  saveConfiguration: (userDetails?: Record<string, unknown>) => Promise<boolean>
   resetConfiguration: () => void
   finalizeSession: () => Promise<void>
   
@@ -179,7 +179,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       },
 
       // Save configuration
-      saveConfiguration: async (userDetails?: any) => {
+      saveConfiguration: async (userDetails?: Record<string, unknown>) => {
         const state = get()
         if (!state.configuration) return false
 

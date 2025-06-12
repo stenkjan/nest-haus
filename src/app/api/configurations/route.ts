@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
+import type { Prisma } from '@prisma/client'
 
 // Save user configuration
 export async function POST(request: Request) {
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
           name: config.name || null,
           phone: config.phone || null,
           message: config.message || null,
-          configurationData: config as any,
+          configurationData: config as Prisma.InputJsonValue,
           totalPrice: config.totalPrice || null,
           status: 'NEW'
         }
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
     await prisma.userSession.update({
       where: { sessionId: config.sessionId },
       data: {
-        configurationData: config as any,
+        configurationData: config as Prisma.InputJsonValue,
         totalPrice: config.totalPrice || null,
         status: 'COMPLETED'
       }
