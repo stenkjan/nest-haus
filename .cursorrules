@@ -1,0 +1,23 @@
+# Project Rules for Nest-Haus Configurator
+
+## Code Quality & Documentation
+- Make sure to include the indexed documentations of the languages and tools we use when needed: React, Next.js, Prisma, Redis, PostgreSQL
+- Always try to keep the codebase slim and the code you generate concise
+- Don't change any content or design properties that are not directly related to a prompt, if unsure, always ask
+
+## Development Workflow
+- Check for existing running servers (localhost:3000) before running a new server, we have hot reload in place
+- Fill out the documentation in /docs after every commit, use the predefined .md files and continue them
+- Use GitHub actions to continuously document
+
+## Architecture Constraints
+- Backend tracking system (Redis + PostgreSQL) must remain intact
+- Session management and analytics should not be disrupted
+- Price calculations must use existing PriceCalculator logic
+- State management should use the established store pattern (Zustand)
+
+## Integration Guidelines
+- New configurator components must integrate with useConfiguratorStore and useCartStore
+- All user selections must be tracked via the session APIs
+- Cart functionality should remain compatible across the app
+- Maintain backward compatibility during migrations 
