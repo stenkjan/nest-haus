@@ -46,12 +46,24 @@ export interface Selections {
   grundstueckscheck?: SelectionOption;
 }
 
-export type ConfigurationSelections = Required<Pick<Selections, 'nest' | 'gebaeudehuelle' | 'innenverkleidung' | 'fussboden'>>;
+export interface ConfigurationSelections {
+  nest: string;
+  gebaeudehuelle: string;
+  innenverkleidung: string;
+  fussboden: string;
+}
 
 // ===== CONFIGURATION TYPES =====
 
 export interface Configuration {
   id: string;
+  nest: string;
+  gebaeudehuelle: string;
+  innenverkleidung: string;
+  fussboden: string;
+  pvanlage?: string;
+  fenster?: string;
+  planungspaket?: string;
   selections: Selections;
   totalPrice: number;
   timestamp: number;
@@ -60,14 +72,13 @@ export interface Configuration {
 
 export interface PriceBreakdown {
   basePrice: number;
-  gebaeudehuelleUpgrade: number;
-  innenverkleidungUpgrade: number;
-  fussbodenUpgrade: number;
-  pvAnlage: number;
-  fenster: number;
-  planungspaket: number;
-  grundstueckscheck: number;
-  total: number;
+  options: {
+    [key: string]: {
+      name: string;
+      price: number;
+    };
+  };
+  totalPrice: number;
 }
 
 // ===== UI STATE TYPES =====

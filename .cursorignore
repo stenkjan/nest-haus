@@ -1,0 +1,5 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+
+# Explicitly include .env files (Cursor ignores them by default for security)
+!.env
+!.env.*

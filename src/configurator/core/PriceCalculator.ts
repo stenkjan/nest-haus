@@ -14,47 +14,165 @@ import type {
   Configuration, 
   PriceBreakdown 
 } from '../types/configurator.types';
+import { prisma } from '../../lib/prisma';
 
 export class PriceCalculator {
   /**
    * Calculate base price for a specific nest type
    */
-  static calculateBasePrice(_nestType: string): number {
-    // TODO: Extract from legacy calculateCombinationPrice logic
-    throw new Error('Not implemented - migrate from legacy code');
+  static async calculateBasePrice(nestType: string): Promise<number> {
+    const option = await prisma.houseOption.findFirst({
+      where: {
+        category: 'nest',
+        value: nestType,
+        isActive: true
+      }
+    });
+    
+    return option?.basePrice || 0;
   }
 
   /**
-   * Calculate price for combination of selections
+   * Calculate price for combination of selections using database pricing rules
    */
-  static calculateCombinationPrice(_selections: ConfigurationSelections): number {
-    // TODO: Extract complex price calculation logic
-    throw new Error('Not implemented - migrate from legacy code');
+  static async calculateCombinationPrice(selections: ConfigurationSelections): Promise<number> {
+    // Try to find exact pricing rule match
+    const pricingRule = await prisma.pricingRule.findFirst({
+      where: {
+        nestType: selections.nest,
+        gebaeudehuelle: selections.gebaeudehuelle,
+        innenverkleidung: selections.innenverkleidung,
+        fussboden: selections.fussboden,
+        isActive: true
+      }
+    });
+
+    if (pricingRule) {
+      return pricingRule.totalPrice;
+    }
+
+    // Fallback: calculate by individual options
+    const options = await prisma.houseOption.findMany({
+      where: {
+        OR: [
+          { category: 'nest', value: selections.nest },
+          { category: 'gebaeudehuelle', value: selections.gebaeudehuelle },
+          { category: 'innenverkleidung', value: selections.innenverkleidung },
+          { category: 'fussboden', value: selections.fussboden }
+        ],
+        isActive: true
+      }
+    });
+
+         return options.reduce((total: number, option: any) => total + option.basePrice, 0);
   }
 
   /**
    * Calculate total price including all options
    */
-  static calculateTotalPrice(_configuration: Configuration): number {
-    // TODO: Implement total price calculation
-    throw new Error('Not implemented - migrate from legacy code');
+  static async calculateTotalPrice(configuration: Configuration): Promise<number> {
+    let totalPrice = 0;
+
+    // Base configuration price
+    const basePrice = await this.calculateCombinationPrice({
+      nest: configuration.nest,
+      gebaeudehuelle: configuration.gebaeudehuelle,
+      innenverkleidung: configuration.innenverkleidung,
+      fussboden: configuration.fussboden
+    });
+    
+    totalPrice += basePrice;
+
+    // Add optional components
+    const optionalOptions = await prisma.houseOption.findMany({
+      where: {
+        OR: [
+          { category: 'pvanlage', value: configuration.pvanlage || 'none' },
+          { category: 'fenster', value: configuration.fenster || 'standard' },
+          { category: 'planungspaket', value: configuration.planungspaket || 'basic' }
+        ],
+        isActive: true
+      }
+    });
+
+    for (const option of optionalOptions) {
+      totalPrice += option.basePrice;
+    }
+
+    return totalPrice;
   }
 
   /**
    * Get detailed price breakdown for transparency
    */
-  static getPriceBreakdown(_configuration: Configuration): PriceBreakdown {
-    // TODO: Provide itemized price breakdown
-    throw new Error('Not implemented - new feature');
+  static async getPriceBreakdown(configuration: Configuration): Promise<PriceBreakdown> {
+    const breakdown: PriceBreakdown = {
+      basePrice: 0,
+      options: {},
+      totalPrice: 0
+    };
+
+    // Get all relevant options
+    const allOptions = await prisma.houseOption.findMany({
+      where: {
+        OR: [
+          { category: 'nest', value: configuration.nest },
+          { category: 'gebaeudehuelle', value: configuration.gebaeudehuelle },
+          { category: 'innenverkleidung', value: configuration.innenverkleidung },
+          { category: 'fussboden', value: configuration.fussboden },
+          { category: 'pvanlage', value: configuration.pvanlage || 'none' },
+          { category: 'fenster', value: configuration.fenster || 'standard' },
+          { category: 'planungspaket', value: configuration.planungspaket || 'basic' }
+        ],
+        isActive: true
+      }
+    });
+
+    // Categorize prices
+    for (const option of allOptions) {
+      if (option.category === 'nest') {
+        breakdown.basePrice = option.basePrice;
+      } else {
+        breakdown.options[option.category] = {
+          name: option.name,
+          price: option.basePrice
+        };
+      }
+    }
+
+    // Calculate total
+    breakdown.totalPrice = breakdown.basePrice + 
+      Object.values(breakdown.options).reduce((sum, opt) => sum + opt.price, 0);
+
+    return breakdown;
   }
 
   /**
    * Calculate monthly payment for financing
    */
-  static calculateMonthlyPayment(totalPrice: number, _months: number = 240): string {
-    // TODO: Extract from legacy calculateMonthlyPayment function
-    // Note: totalPrice is intentionally used in the TODO comment context
-    console.log(`Monthly payment calculation for ${totalPrice} pending implementation`);
-    throw new Error('Not implemented - migrate from legacy code');
+  static calculateMonthlyPayment(totalPrice: number, months: number = 240): string {
+    // Simple calculation with 3.5% interest rate
+    const interestRate = 0.035 / 12; // Monthly interest rate
+    const monthlyPayment = totalPrice * (interestRate * Math.pow(1 + interestRate, months)) / 
+                          (Math.pow(1 + interestRate, months) - 1);
+    
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(monthlyPayment);
+  }
+
+  /**
+   * Format price for display
+   */
+  static formatPrice(price: number): string {
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price);
   }
 } 
