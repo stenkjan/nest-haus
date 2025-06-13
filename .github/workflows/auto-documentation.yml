@@ -182,4 +182,15 @@ jobs:
         fi
         
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Documentation automatically updated in \`docs/COMMIT_HISTORY.md\`" >> $GITHUB_STEP_SUMMARY 
+        echo "Documentation automatically updated in \`docs/COMMIT_HISTORY.md\`" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Debug GH_PAT
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+      run: |
+        if [ -z "${GH_PAT}" ]; then
+          echo "GH_PAT is not set"
+          exit 1
+        else
+          echo "GH_PAT is set"
+        fi 
