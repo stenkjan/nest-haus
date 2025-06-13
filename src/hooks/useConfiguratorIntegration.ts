@@ -30,7 +30,7 @@ export const useConfiguratorIntegration = () => {
   const [sessionId, setSessionId] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const [currentConfig, setCurrentConfig] = useState<Partial<Configuration>>({})
-  const finalizeTimeoutRef = useRef<NodeJS.Timeout>()
+  const finalizeTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
   // Initialize session on component mount
   useEffect(() => {
