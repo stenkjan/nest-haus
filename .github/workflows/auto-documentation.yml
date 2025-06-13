@@ -139,6 +139,11 @@ jobs:
         sed -i "s/{timestamp}/$(date '+%Y-%m-%d %H:%M:%S UTC')/g" docs/PROJECT_OVERVIEW.md
         sed -i "s/{next_review_date}/$(date -d '+30 days' '+%Y-%m-%d')/g" docs/PROJECT_OVERVIEW.md
         
+    - name: Set up Git user
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+
     - name: Debug GH_PAT
       env:
         GH_PAT: ${{ secrets.GH_PAT }}
@@ -150,21 +155,21 @@ jobs:
           echo "GH_PAT is set"
         fi
 
-    - name: Show git remote
-      run: git remote -v
-
-    - name: Commit documentation updates
+    - name: Set remote with PAT
       env:
         GH_PAT: ${{ secrets.GH_PAT }}
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
         git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
         git remote -v
+
+    - name: Commit and push docs if changed
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+      run: |
         if [ -n "$(git status --porcelain docs/)" ]; then
           git add docs/
           git commit -m "📚 Auto-update documentation [skip ci]"
-          git push
+          git push origin HEAD:main
         else
           echo "No documentation changes to commit"
         fi
