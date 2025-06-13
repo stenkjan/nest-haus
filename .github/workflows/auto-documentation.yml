@@ -139,6 +139,20 @@ jobs:
         sed -i "s/{timestamp}/$(date '+%Y-%m-%d %H:%M:%S UTC')/g" docs/PROJECT_OVERVIEW.md
         sed -i "s/{next_review_date}/$(date -d '+30 days' '+%Y-%m-%d')/g" docs/PROJECT_OVERVIEW.md
         
+    - name: Debug GH_PAT
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+      run: |
+        if [ -z "${GH_PAT}" ]; then
+          echo "GH_PAT is not set"
+          exit 1
+        else
+          echo "GH_PAT is set"
+        fi
+
+    - name: Show git remote
+      run: git remote -v
+
     - name: Commit documentation updates
       env:
         GH_PAT: ${{ secrets.GH_PAT }}
@@ -146,7 +160,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
-        # Check if there are changes to commit
+        git remote -v
         if [ -n "$(git status --porcelain docs/)" ]; then
           git add docs/
           git commit -m "📚 Auto-update documentation [skip ci]"
@@ -182,15 +196,4 @@ jobs:
         fi
         
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Documentation automatically updated in \`docs/COMMIT_HISTORY.md\`" >> $GITHUB_STEP_SUMMARY
-        
-    - name: Debug GH_PAT
-      env:
-        GH_PAT: ${{ secrets.GH_PAT }}
-      run: |
-        if [ -z "${GH_PAT}" ]; then
-          echo "GH_PAT is not set"
-          exit 1
-        else
-          echo "GH_PAT is set"
-        fi 
+        echo "Documentation automatically updated in \`docs/COMMIT_HISTORY.md\`" >> $GITHUB_STEP_SUMMARY 
