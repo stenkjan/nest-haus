@@ -4,11 +4,20 @@
 - Make sure to include the indexed documentations of the languages and tools we use when needed: React, Next.js, Prisma, Redis, PostgreSQL
 - Always try to keep the codebase slim and the code you generate concise
 - Don't change any content or design properties that are not directly related to a prompt, if unsure, always ask
+- Documentation in /docs must be updated after every commit, using the predefined .md files and continuing them as needed
+- Use GitHub Actions or equivalent CI to continuously generate and update documentation
 
 ## Development Workflow
 - Check for existing running servers (localhost:3000) before running a new server, we have hot reload in place
 - Fill out the documentation in /docs after every commit, use the predefined .md files and continue them
 - Use GitHub actions to continuously document
+
+## Testing & CI
+- All integration tests must be automated and run as part of the CI pipeline
+- Integration tests should be cleaned up after execution to avoid redundant or stale test artifacts
+- Test files, data, and temporary resources created during tests must be removed or reset after each test run
+- Periodically review and remove obsolete or redundant tests to keep the test suite lean
+- Ensure that test coverage is maintained without accumulating unnecessary or duplicate tests
 
 ## Architecture Constraints
 - Backend tracking system (Redis + PostgreSQL) must remain intact
