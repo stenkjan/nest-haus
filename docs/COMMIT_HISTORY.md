@@ -4,6 +4,19 @@
 
 ---
 
+## [baf9cf1afe2a7283c56e72c4d096f5c1b367eae3] - Fri Jun 13 13:14:06 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Update GitHub Actions workflow to use GITHUB_TOKEN instead of GH_PAT for committing documentation changes. This change enhances security and aligns with GitHub's recommended practices for authentication in CI environments.`
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+
+- .github/workflows/auto-documentation.yml
+
+---
+
 ## Initial Setup - 2025-01-11
 
 **Manual Entry**: Project documentation and configurator architecture setup

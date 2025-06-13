@@ -313,5 +313,5 @@ graph TD
 
 ---
 
-*Last updated: {timestamp}*
-*Next review: {next_review_date}* 
+*Last updated: 2025-06-13 11:14:32 UTC*
+*Next review: 2025-07-13* 
