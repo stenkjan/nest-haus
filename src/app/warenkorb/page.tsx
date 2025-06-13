@@ -81,23 +81,23 @@ export default function WarenkorbPage() {
   }
 
   // Render configuration item details
-  const renderConfigurationDetails = (item: Record<string, unknown>) => {
+  const renderConfigurationDetails = (item: Record<string, any>) => {
     const details = []
     
-    if (item.nest) details.push({ label: 'Nest', value: item.nest.name })
-    if (item.gebaeudehuelle) details.push({ label: 'Gebäudehülle', value: item.gebaeudehuelle.name })
-    if (item.innenverkleidung) details.push({ label: 'Innenverkleidung', value: item.innenverkleidung.name })
-    if (item.fussboden) details.push({ label: 'Fußboden', value: item.fussboden.name })
+    if (item.nest) details.push({ label: 'Nest', value: item.nest?.name ?? '—' })
+    if (item.gebaeudehuelle) details.push({ label: 'Gebäudehülle', value: item.gebaeudehuelle?.name ?? '—' })
+    if (item.innenverkleidung) details.push({ label: 'Innenverkleidung', value: item.innenverkleidung?.name ?? '—' })
+    if (item.fussboden) details.push({ label: 'Fußboden', value: item.fussboden?.name ?? '—' })
     if (item.pvanlage) details.push({ 
       label: 'PV-Anlage', 
-      value: `${item.pvanlage.name}${item.pvanlage.quantity ? ` (${item.pvanlage.quantity}x)` : ''}` 
+      value: `${item.pvanlage?.name ?? '—'}${item.pvanlage?.quantity ? ` (${item.pvanlage.quantity}x)` : ''}` 
     })
     if (item.fenster) details.push({ 
       label: 'Fenster', 
-      value: `${item.fenster.name}${item.fenster.squareMeters ? ` (${item.fenster.squareMeters}m²)` : ''}` 
+      value: `${item.fenster?.name ?? '—'}${item.fenster?.squareMeters ? ` (${item.fenster.squareMeters}m²)` : ''}` 
     })
-    if (item.planungspaket) details.push({ label: 'Planungspaket', value: item.planungspaket.name })
-    if (item.grundstueckscheck) details.push({ label: 'Grundstückscheck', value: item.grundstueckscheck.name })
+    if (item.planungspaket) details.push({ label: 'Planungspaket', value: item.planungspaket?.name ?? '—' })
+    if (item.grundstueckscheck) details.push({ label: 'Grundstückscheck', value: item.grundstueckscheck?.name ?? '—' })
 
     return details
   }

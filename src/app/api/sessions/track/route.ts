@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     const redisKey = `session:${sessionId}`
     const sessionData = await redis.get(redisKey)
     
-    if (sessionData) {
+    if (typeof sessionData === 'string') {
       const session = JSON.parse(sessionData)
       session.selections[category] = selection
       session.lastActivity = Date.now()
