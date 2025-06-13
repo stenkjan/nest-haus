@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useCartStore } from '../../store/cartStore'
 import { useConfiguratorStore } from '../../store/configuratorStore'
+import type { CartItem } from '../../store/cartStore'
 
 export default function WarenkorbPage() {
   const {
@@ -81,7 +82,7 @@ export default function WarenkorbPage() {
   }
 
   // Render configuration item details
-  const renderConfigurationDetails = (item: Record<string, any>) => {
+  const renderConfigurationDetails = (item: CartItem) => {
     const details = []
     
     if (item.nest) details.push({ label: 'Nest', value: item.nest?.name ?? '—' })
