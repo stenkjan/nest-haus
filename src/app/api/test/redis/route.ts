@@ -9,6 +9,11 @@ import { SessionManager } from '@/lib/redis';
 
 export async function GET() {
   try {
+    // Check environment variables first
+    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      throw new Error('Redis environment variables not set. Check UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN');
+    }
+
     // Test basic Redis connection
     const testSessionId = await SessionManager.createSession({
       ipAddress: 'test',
@@ -23,6 +28,10 @@ export async function GET() {
         status: 'success',
         message: 'Redis connection successful',
         sessionId: testSessionId,
+        environmentCheck: {
+          urlSet: !!process.env.UPSTASH_REDIS_REST_URL,
+          tokenSet: !!process.env.UPSTASH_REDIS_REST_TOKEN
+        },
         timestamp: new Date().toISOString(),
       });
     } else {
@@ -35,6 +44,10 @@ export async function GET() {
       status: 'error',
       message: 'Redis connection failed',
       error: error instanceof Error ? error.message : 'Unknown error',
+      environmentCheck: {
+        urlSet: !!process.env.UPSTASH_REDIS_REST_URL,
+        tokenSet: !!process.env.UPSTASH_REDIS_REST_TOKEN
+      },
       timestamp: new Date().toISOString(),
     }, { status: 500 });
   }
