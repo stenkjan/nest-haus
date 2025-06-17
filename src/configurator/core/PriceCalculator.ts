@@ -22,19 +22,36 @@ interface HouseOption {
 }
 
 export class PriceCalculator {
+  // Cache for house options to reduce database calls
+  private static optionsCache = new Map<string, { data: any[], timestamp: number }>()
+  private static readonly CACHE_TTL = 300000 // 5 minutes
+
   /**
-   * Calculate base price for a specific nest type
+   * Get cached house options or fetch from database
+   */
+  private static async getCachedOptions(category?: string): Promise<any[]> {
+    const cacheKey = category || 'all'
+    const cached = this.optionsCache.get(cacheKey)
+    
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.data
+    }
+
+    const options = await prisma.houseOption.findMany({
+      where: category ? { category, isActive: true } : { isActive: true }
+    })
+
+    this.optionsCache.set(cacheKey, { data: options, timestamp: Date.now() })
+    return options
+  }
+
+  /**
+   * Calculate base price for a specific nest type (optimized with caching)
    */
   static async calculateBasePrice(nestType: string): Promise<number> {
-    const option = await prisma.houseOption.findFirst({
-      where: {
-        category: 'nest',
-        value: nestType,
-        isActive: true
-      }
-    });
-    
-    return option?.basePrice || 0;
+    const options = await this.getCachedOptions('nest')
+    const option = options.find(opt => opt.value === nestType)
+    return option?.basePrice || 0
   }
 
   /**

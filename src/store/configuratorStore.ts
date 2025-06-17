@@ -99,28 +99,34 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         }
       },
 
-      // Update selection and track with backend
+      // Update selection and track with backend (optimized)
       updateSelection: async (item: ConfigurationItem) => {
         const state = get()
         if (!state.sessionId || !state.configuration) return
 
         const previousSelection = state.configuration[item.category as keyof Configuration] as ConfigurationItem
         
-        // Update local state
+        // Optimistic UI update - update local state immediately
         const updatedConfig = {
           ...state.configuration,
           [item.category]: item,
           timestamp: Date.now()
         }
         
-        set({ configuration: updatedConfig })
+        set({ 
+          configuration: updatedConfig,
+          isLoading: true // Show loading state during async operations
+        })
 
-        // Calculate new price
-        await get().calculatePrice()
+        // Batch async operations for better performance
+        const promises = []
+        
+        // Calculate new price (async)
+        promises.push(get().calculatePrice())
 
-        // Track selection with backend
-        try {
-          await fetch('/api/sessions/track', {
+        // Track selection with backend (async, non-blocking)
+        promises.push(
+          fetch('/api/sessions/track', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -129,12 +135,17 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
               selection: item.value,
               previousSelection: previousSelection?.value || null,
               priceChange: item.price - (previousSelection?.price || 0),
-              totalPrice: get().currentPrice
+              totalPrice: item.price + (state.currentPrice - (previousSelection?.price || 0)) // Optimistic price calculation
             })
+          }).catch(error => {
+            console.error('Failed to track selection:', error)
+            // Don't throw - tracking failures shouldn't break user experience
           })
-        } catch (error) {
-          console.error('Failed to track selection:', error)
-        }
+        )
+
+        // Wait for async operations to complete
+        await Promise.allSettled(promises)
+        set({ isLoading: false })
       },
 
       // Remove selection
@@ -150,32 +161,44 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         await get().calculatePrice()
       },
 
-      // Calculate price using backend
+      // Calculate price using backend (debounced for performance)
       calculatePrice: async () => {
         const state = get()
         if (!state.configuration) return
 
-        try {
-          const response = await fetch('/api/pricing/calculate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(state.configuration)
-          })
-          const data = await response.json()
-          
-          if (data.success) {
-            set({
-              currentPrice: data.totalPrice,
-              priceBreakdown: data.priceBreakdown,
-              configuration: {
-                ...state.configuration!,
-                totalPrice: data.totalPrice
-              }
-            })
-          }
-        } catch (error) {
-          console.error('Failed to calculate price:', error)
+        // Clear existing timeout to debounce rapid calls
+        const timeoutId = (state as any).priceCalculationTimeoutId
+        if (timeoutId) {
+          clearTimeout(timeoutId)
         }
+
+        // Set new timeout for debounced calculation
+        const newTimeoutId = setTimeout(async () => {
+          try {
+            const response = await fetch('/api/pricing/calculate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(state.configuration)
+            })
+            const data = await response.json()
+            
+            if (data.success) {
+              set({
+                currentPrice: data.totalPrice,
+                priceBreakdown: data.priceBreakdown,
+                configuration: {
+                  ...state.configuration!,
+                  totalPrice: data.totalPrice
+                }
+              })
+            }
+          } catch (error) {
+            console.error('Failed to calculate price:', error)
+          }
+        }, 300) // 300ms debounce
+
+        // Store timeout ID in state for cleanup
+        set({ priceCalculationTimeoutId: newTimeoutId } as any)
       },
 
       // Save configuration

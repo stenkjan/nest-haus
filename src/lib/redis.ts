@@ -13,6 +13,11 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
+// Test Redis connection at startup
+redis.ping().catch(error => {
+  console.error('Redis connection failed at startup:', error);
+});
+
 // Type definitions for configuration
 export interface Configuration {
   nest?: string;
@@ -73,7 +78,7 @@ export class SessionManager {
     };
 
     // Store session with 24-hour expiration
-    await redis.setex(sessionId, 86400, JSON.stringify(session));
+    await redis.setex(sessionId, 86400, session);
     return sessionId;
   }
 
@@ -88,7 +93,7 @@ export class SessionManager {
         ...update,
         lastActivity: Date.now(),
       };
-      await redis.setex(sessionId, 86400, JSON.stringify(updatedSession));
+      await redis.setex(sessionId, 86400, updatedSession);
     }
   }
 
@@ -97,7 +102,15 @@ export class SessionManager {
    */
   static async getSession(sessionId: string): Promise<UserSession | null> {
     const sessionData = await redis.get(sessionId);
-    return sessionData ? JSON.parse(sessionData as string) : null;
+    if (!sessionData) return null;
+    
+    // Upstash Redis may return data already parsed, check if it's a string or object
+    if (typeof sessionData === 'string') {
+      return JSON.parse(sessionData);
+    } else {
+      // Data is already an object
+      return sessionData as UserSession;
+    }
   }
 
   /**
@@ -114,11 +127,11 @@ export class SessionManager {
         session.clickHistory = session.clickHistory.slice(-100);
       }
       
-      await redis.setex(sessionId, 86400, JSON.stringify(session));
+      await redis.setex(sessionId, 86400, session);
       
       // Also store click as separate entry for analytics
       const clickKey = `click:${sessionId}:${Date.now()}`;
-      await redis.setex(clickKey, 86400, JSON.stringify(clickEvent));
+      await redis.setex(clickKey, 86400, clickEvent);
     }
   }
 
@@ -133,7 +146,7 @@ export class SessionManager {
       
       // Store final session data in a separate key for PostgreSQL sync
       const finalSessionKey = `final:${sessionId}`;
-      await redis.setex(finalSessionKey, 604800, JSON.stringify(session)); // 7 days
+      await redis.setex(finalSessionKey, 604800, session); // 7 days
 
       // Clean up active session
       await redis.del(sessionId);
@@ -150,7 +163,14 @@ export class SessionManager {
     const sessions = await Promise.all(
       keys.map(async (key) => {
         const data = await redis.get(key);
-        return data ? JSON.parse(data as string) : null;
+        if (!data) return null;
+        
+        // Handle both string and object responses from Upstash
+        if (typeof data === 'string') {
+          return JSON.parse(data);
+        } else {
+          return data as UserSession;
+        }
       })
     );
 
