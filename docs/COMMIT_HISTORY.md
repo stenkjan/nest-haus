@@ -4,6 +4,15 @@
 
 ---
 
+## [d3783bfc248f3ceec62bbad0878d0f47178dfa3d] - Tue Jun 17 13:00:41 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Refactor PriceCalculator to improve caching mechanism and enhance configurator store's state management. Added type definitions for house options and optimized price calculation handling with a debounce mechanism.`
+
+### Changes Analysis
+
+---
+
 ## [643a5e44a8d9c7e00a01e047f2fad915e0427d22] - Tue Jun 17 12:56:15 2025 +0200
 
 **Author**: stenkjan  
