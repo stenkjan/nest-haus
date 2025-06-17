@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "@/components/ui";
 
 // Sample content for the 8 sections
 const sections = [
@@ -76,19 +77,6 @@ export default function Home() {
     transformOrigin: 'center center',
   };
 
-  // Landing page specific spacing
-  const landingSpacing = {
-    topMargin: '10vh',
-    h1ToH3Gap: '-1rem',
-    h3ToButtonsGap: '1vh',
-  };
-
-  // Landing page specific typography - responsive sizing
-  const landingTypography = {
-    h1Size: 'clamp(4rem, 2.5vw, 1.5rem)', // 18pt at full screen, scales down
-    h3Size: 'clamp(1.5rem, 1.8vw, 1.125rem)',  // Proportional to h1
-  };
-
   return (
     <div className="w-full">
       {sections.map((section) => (
@@ -107,34 +95,25 @@ export default function Home() {
           </div>
           
           {/* Content Overlay */}
-          <div className="relative z-20 flex flex-col items-center justify-start px-8" 
-               style={{ paddingTop: landingSpacing.topMargin }}>
+          <div className="relative z-20 flex flex-col items-center justify-start px-8 pt-[5vh]">
             
             <div className="text-center">
-              <h1 className="font-bold text-white"
-                  style={{ 
-                    marginBottom: landingSpacing.h1ToH3Gap,
-                    fontSize: landingTypography.h1Size
-                  }}>
+              <h1 className="font-bold text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-1 sm:mb-2 md:mb-3 lg:mb-4">
                 {section.h1}
               </h1>
-              <h3 className="text-white"
-                  style={{ 
-                    marginBottom: landingSpacing.h3ToButtonsGap,
-                    fontSize: landingTypography.h3Size
-                  }}>
+              <h3 className="text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-4 sm:mb-6 md:mb-8 lg:mb-10">
                 {section.h3}
               </h3>
             </div>
             
             {/* Buttons */}
             <div className="flex gap-4">
-              <button className="px-6 py-3 bg-white text-black rounded">
+              <Button variant="primary" size="lg">
                 {section.button1}
-              </button>
-              <button className="px-6 py-3 bg-transparent border border-white text-white rounded">
+              </Button>
+              <Button variant="secondary" size="lg">
                 {section.button2}
-              </button>
+              </Button>
             </div>
           </div>
         </section>
