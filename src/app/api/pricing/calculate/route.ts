@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { PriceCalculator } from '../../../../configurator/core/PriceCalculator'
+import { PriceCalculator } from '../../../../konfigurator/core/PriceCalculator'
 
 // Calculate total price for configuration
 export async function POST(request: Request) {

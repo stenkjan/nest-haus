@@ -1,0 +1,1 @@
+export { configuratorData, type CategoryData } from './configuratorData' 

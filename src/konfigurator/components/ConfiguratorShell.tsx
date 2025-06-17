@@ -10,8 +10,11 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { ConfiguratorProps } from '../types/configurator.types';
+import { useConfiguratorStore } from '@/store/configuratorStore';
+import { configuratorData } from '../data/configuratorData';
+import { CategorySection, SelectionOption, InfoBox, FactsBox } from './';
 
 // Import child components (to be created)
 // import { PreviewPanel } from './PreviewPanel';
@@ -27,11 +30,12 @@ export default function ConfiguratorShell({
   onSelectionChange,
   onPriceChange 
 }: ConfiguratorProps) {
-  // TODO: Replace legacy state management with clean hooks
-  // const { selections, activeView, totalPrice, updateSelection } = useConfiguratorState(initialModel);
-  // const { trackSelection } = useInteractionTracking();
-  
-  // Temporary logging to acknowledge props usage (remove when implementing)
+  const { updateSelection, configuration } = useConfiguratorStore();
+  const [selections, setSelections] = useState<Record<string, string>>({
+    nest: initialModel
+  });
+
+  // Initialize session on mount
   React.useEffect(() => {
     console.log('ConfiguratorShell initialized with:', { 
       initialModel, 
@@ -39,6 +43,70 @@ export default function ConfiguratorShell({
       hasPriceCallback: !!onPriceChange 
     });
   }, [initialModel, onSelectionChange, onPriceChange]);
+
+  const handleSelection = (categoryId: string, optionId: string) => {
+    const category = configuratorData.find(cat => cat.id === categoryId);
+    const option = category?.options.find(opt => opt.id === optionId);
+    
+    if (option && category) {
+      setSelections(prev => ({ ...prev, [categoryId]: optionId }));
+      
+      updateSelection({
+        category: categoryId,
+        value: optionId,
+        name: option.name,
+        price: option.price.amount || 0,
+        description: option.description
+      });
+    }
+  };
+
+  const handleInfoClick = (categoryId: string) => {
+    console.log('Info clicked for category:', categoryId);
+    // TODO: Open modal/lightbox
+  };
+
+  const SelectionContent = () => (
+    <div className="p-8 space-y-6">
+      {configuratorData.map((category) => (
+        <CategorySection
+          key={category.id}
+          title={category.title}
+          subtitle={category.subtitle}
+        >
+          <div className="space-y-2">
+            {category.options.map((option) => (
+              <SelectionOption
+                key={option.id}
+                id={option.id}
+                name={option.name}
+                description={option.description}
+                price={option.price}
+                isSelected={selections[category.id] === option.id}
+                onClick={(optionId) => handleSelection(category.id, optionId)}
+              />
+            ))}
+          </div>
+          
+          {category.infoBox && (
+            <InfoBox
+              title={category.infoBox.title}
+              description={category.infoBox.description}
+              onClick={() => handleInfoClick(category.id)}
+            />
+          )}
+          
+          {category.facts && (
+            <FactsBox
+              title={category.facts.title}
+              facts={category.facts.content}
+              links={category.facts.links}
+            />
+          )}
+        </CategorySection>
+      ))}
+    </div>
+  );
 
   return (
     <div className="configurator-shell w-screen relative">
@@ -53,17 +121,7 @@ export default function ConfiguratorShell({
         </div>
 
         {/* Mobile Selections (Scrollable) */}
-        <div className="p-4 space-y-6">
-          {/* TODO: Replace with SelectionPanel component */}
-          <div className="bg-gray-50 p-4 rounded">
-            <p>Mobile Selection Panel (TODO: Implement)</p>
-          </div>
-          
-          {/* TODO: Replace with SummaryPanel component */}
-          <div className="bg-gray-50 p-4 rounded">
-            <p>Mobile Summary Panel (TODO: Implement)</p>
-          </div>
-        </div>
+        <SelectionContent />
       </div>
 
       {/* Desktop Layout */}
@@ -78,17 +136,7 @@ export default function ConfiguratorShell({
 
         {/* Right: Selection + Summary Panel */}
         <div className="w-[572px] bg-white overflow-y-auto">
-          {/* TODO: Replace with SelectionPanel component */}
-          <div className="p-8 space-y-6">
-            <div className="bg-gray-50 p-4 rounded">
-              <p>Desktop Selection Panel (TODO: Implement)</p>
-            </div>
-            
-            {/* TODO: Replace with SummaryPanel component */}
-            <div className="bg-gray-50 p-4 rounded">
-              <p>Desktop Summary Panel (TODO: Implement)</p>
-            </div>
-          </div>
+          <SelectionContent />
         </div>
       </div>
     </div>

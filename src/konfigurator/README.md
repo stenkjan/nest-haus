@@ -164,7 +164,7 @@ CREATE TABLE selection_events (
 
 ### **Basic Usage**
 ```tsx
-import ConfiguratorShell from './configurator/components/ConfiguratorShell';
+import ConfiguratorShell from './konfigurator/components/ConfiguratorShell';
 
 function ConfiguratorPage() {
   return (
@@ -179,7 +179,7 @@ function ConfiguratorPage() {
 
 ### **With Custom Tracking**
 ```tsx
-import { useInteractionTracking } from './configurator/hooks/useInteractionTracking';
+import { useInteractionTracking } from './konfigurator/hooks/useInteractionTracking';
 
 function TrackedConfigurator() {
   const { trackSelection } = useInteractionTracking();
