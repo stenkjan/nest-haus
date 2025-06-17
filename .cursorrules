@@ -47,3 +47,46 @@
 - Test layouts across standard breakpoints (sm: 640px, md: 768px, lg: 1024px, xl: 1280px)
 - Maintain aspect ratios for media content using aspect-ratio utility
 - Use CSS Grid and Flexbox for responsive layouts instead of fixed dimensions
+
+## Landing Page Image Handling Rules
+
+**CRITICAL: Landing Page Images (src/app/page.tsx) ONLY**
+
+When working with background images on the landing page, ALWAYS use this exact pattern:
+
+### Required Structure:
+```tsx
+// Landing page specific image styling - applies to all 8 images
+const landingImageStyle = {
+  objectPosition: 'center center',
+  transform: 'scale(1.05)',
+  transformOrigin: 'center center',
+};
+
+// Section with 16:9 aspect ratio constraint
+<section key={section.id} className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
+  <div className="absolute inset-0 w-full h-full">
+    <Image
+      src={section.image}
+      alt={section.h1}
+      fill
+      className="object-cover"
+      style={landingImageStyle}
+      unoptimized
+      priority={section.id === 1}
+    />
+  </div>
+</section>
+```
+
+### Rules:
+- ✅ ALWAYS maintain 16:9 aspect ratio using `style={{ aspectRatio: '16/9' }}` on section
+- ✅ ALWAYS use `unoptimized` prop (for future Vercel blob compatibility)
+- ✅ ALWAYS use component-level `landingImageStyle` object (not global CSS)
+- ✅ ALWAYS apply same styling to ALL 8 landing page images
+- ✅ NEVER add overlays unless specifically requested
+- ❌ NEVER use `h-screen` on landing page sections (conflicts with 16:9)
+- ❌ NEVER apply this pattern to other pages (konfigurator, etc.)
+
+### Future-Proof:
+This pattern works with any image source (current files or future Vercel blob URLs).
