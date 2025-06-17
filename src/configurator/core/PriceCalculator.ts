@@ -17,19 +17,29 @@ import type {
 import { prisma } from '../../lib/prisma';
 
 interface HouseOption {
+  id: string;
+  category: string;
+  value: string;
+  name: string;
   basePrice: number;
+  isActive: boolean;
   [key: string]: unknown;
+}
+
+interface CachedOptions {
+  data: HouseOption[];
+  timestamp: number;
 }
 
 export class PriceCalculator {
   // Cache for house options to reduce database calls
-  private static optionsCache = new Map<string, { data: any[], timestamp: number }>()
+  private static optionsCache = new Map<string, CachedOptions>()
   private static readonly CACHE_TTL = 300000 // 5 minutes
 
   /**
    * Get cached house options or fetch from database
    */
-  private static async getCachedOptions(category?: string): Promise<any[]> {
+  private static async getCachedOptions(category?: string): Promise<HouseOption[]> {
     const cacheKey = category || 'all'
     const cached = this.optionsCache.get(cacheKey)
     

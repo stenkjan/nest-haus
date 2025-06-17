@@ -43,6 +43,9 @@ interface ConfiguratorState {
   currentPrice: number
   priceBreakdown: PriceBreakdown | null
   
+  // Internal state for optimization
+  priceCalculationTimeoutId?: NodeJS.Timeout
+  
   // Actions
   initializeSession: () => Promise<void>
   updateSelection: (item: ConfigurationItem) => Promise<void>
@@ -167,7 +170,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         if (!state.configuration) return
 
         // Clear existing timeout to debounce rapid calls
-        const timeoutId = (state as any).priceCalculationTimeoutId
+        const timeoutId = state.priceCalculationTimeoutId
         if (timeoutId) {
           clearTimeout(timeoutId)
         }
@@ -198,7 +201,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         }, 300) // 300ms debounce
 
         // Store timeout ID in state for cleanup
-        set({ priceCalculationTimeoutId: newTimeoutId } as any)
+        set({ priceCalculationTimeoutId: newTimeoutId })
       },
 
       // Save configuration
