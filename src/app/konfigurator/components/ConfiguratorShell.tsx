@@ -222,7 +222,7 @@ export default function ConfiguratorShell({
   };
 
   // Handle info box clicks (could open dialogs)
-  const handleInfoClick = (infoKey: string) => {
+  const handleInfoClick = (_infoKey: string) => {
     // TODO: Implement dialog opening logic
   };
 
