@@ -12,6 +12,24 @@
 - Fill out the documentation in /docs after every commit, use the predefined .md files and continue them
 - Use GitHub actions to continuously document
 
+## Terminal & PowerShell Guidelines
+- **Python Access**: Python is installed via winget at standard Windows location
+- **PowerShell Syntax**: Never use `&&` for command chaining (not supported in PowerShell)
+- **Use PowerShell operators**: Use `;` for command separation or separate commands
+- **Call external executables**: Use `&` operator: `& "path\to\executable.exe" args`
+- **Path format**: Use Windows paths with backslashes or forward slashes
+- **Package management**: Use `python -m pip install package` for Python packages
+- **Example commands**:
+  ```powershell
+  # ✅ Correct PowerShell syntax
+  cd preiskalkulation; python read_prices.py
+  python -m pip install pandas openpyxl
+  & "C:\Program Files\Python\python.exe" --version
+  
+  # ❌ Incorrect (Unix-style, doesn't work in PowerShell)
+  cd preiskalkulation && python read_prices.py
+  ```
+
 ## Testing & CI
 - All integration tests must be automated and run as part of the CI pipeline
 - Integration tests should be cleaned up after execution to avoid redundant or stale test artifacts

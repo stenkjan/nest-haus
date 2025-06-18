@@ -223,7 +223,6 @@ export default function ConfiguratorShell({
 
   // Handle info box clicks (could open dialogs)
   const handleInfoClick = (infoKey: string) => {
-    console.log('Info clicked for:', infoKey);
     // TODO: Implement dialog opening logic
   };
 
