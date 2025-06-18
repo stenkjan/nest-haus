@@ -12,25 +12,13 @@ export default function KonfiguratorClient() {
 
   // Ensure store is initialized immediately
   useEffect(() => {
-    console.log('🚀 KonfiguratorClient: Component mounted');
-    console.log('🚀 Current sessionId:', sessionId);
-    console.log('🚀 Current price:', currentPrice);
-    
     if (!sessionId) {
-      console.log('🚀 No session found, initializing...');
       initializeSession();
     }
   }, [initializeSession, sessionId]);
 
-  // Log price changes
-  useEffect(() => {
-    console.log('🚀 Price updated in client:', currentPrice);
-  }, [currentPrice]);
-
-  // Test function to verify price calculation
+  // Test function to verify price calculation (development only)
   const testPriceCalculation = () => {
-    console.log('🧪 Testing price calculation...');
-    
     // Test with basic configuration
     updateSelection({
       category: 'nest',
@@ -73,16 +61,16 @@ export default function KonfiguratorClient() {
   
   return (
     <ConfiguratorPanelProvider value={rightPanelRef}>
-      {/* Debug Panel - Remove in production */}
+      {/* Debug Panel - Development only */}
       {process.env.NODE_ENV === 'development' && (
-        <div className="fixed top-20 right-4 z-50 bg-red-100 p-4 rounded-lg shadow-lg">
-          <h3 className="font-bold">Debug Panel</h3>
+        <div className="fixed top-20 right-4 z-50 bg-red-100 p-4 rounded-lg shadow-lg text-sm">
+          <h3 className="font-bold mb-2">Debug Panel</h3>
           <p>Session: {sessionId ? '✅' : '❌'}</p>
-          <p>Price: {currentPrice}€</p>
+          <p>Price: {currentPrice.toLocaleString('de-DE')}€</p>
           <p>Config: {configuration ? '✅' : '❌'}</p>
           <button 
             onClick={testPriceCalculation}
-            className="mt-2 bg-blue-500 text-white px-3 py-1 rounded text-sm"
+            className="mt-2 bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600"
           >
             Test Price Calc
           </button>

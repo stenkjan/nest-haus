@@ -37,71 +37,86 @@ export class PriceCalculator {
     innenverkleidung: string,
     fussboden: string
   ): number {
-    console.log('🔢 PriceCalculator: calculateCombinationPrice called with:', { nestType, gebaeudehuelle, innenverkleidung, fussboden });
-    
     const price = calculateCombinationPrice(nestType, gebaeudehuelle, innenverkleidung, fussboden);
-    console.log('🔢 PriceCalculator: Combination price result:', price);
     
     return price;
   }
 
   /**
-   * Calculate total price - EXACT logic from old configurator
+   * Calculate total price - PROGRESSIVE pricing with immediate feedback
    * CLIENT-SIDE calculation to avoid unnecessary API calls
    */
   static calculateTotalPrice(selections: Selections): number {
-    console.log('💰 PriceCalculator: calculateTotalPrice called with:', selections);
-    
-    if (!selections.nest || !selections.gebaeudehuelle || !selections.innenverkleidung || !selections.fussboden) {
-      console.log('💰 PriceCalculator: Missing required selections');
-      return 0
+    // If no nest selection, return 0
+    if (!selections.nest) {
+      return 0;
     }
 
     try {
-      // Calculate the combination-based total price
-      const combinationPrice = this.calculateCombinationPrice(
-        selections.nest.value,
-        selections.gebaeudehuelle.value,
-        selections.innenverkleidung.value,
-        selections.fussboden.value
-      )
-      
-      console.log('💰 PriceCalculator: Combination price:', combinationPrice);
+      let totalPrice = 0;
 
-      // Add other prices
-      let additionalPrice = 0
+      // PROGRESSIVE PRICING: Show price as soon as nest is selected
+      if (selections.nest && !selections.gebaeudehuelle && !selections.innenverkleidung && !selections.fussboden) {
+        // Only nest selected - show base price from nest
+        totalPrice = selections.nest.price;
+      } 
+      else if (selections.nest && selections.gebaeudehuelle && selections.innenverkleidung && selections.fussboden) {
+        // All core selections made - use combination pricing
+        const combinationPrice = this.calculateCombinationPrice(
+          selections.nest.value,
+          selections.gebaeudehuelle.value,
+          selections.innenverkleidung.value,
+          selections.fussboden.value
+        );
+        
+        totalPrice = combinationPrice;
+      }
+      else {
+        // Partial selections - use nest base price + any completed selections
+        totalPrice = selections.nest.price;
+        
+        // Add upgrade costs for individual selections
+        if (selections.gebaeudehuelle && selections.gebaeudehuelle.value !== 'trapezblech') {
+          totalPrice += selections.gebaeudehuelle.price;
+        }
+        
+        if (selections.innenverkleidung && selections.innenverkleidung.value !== 'kiefer') {
+          totalPrice += selections.innenverkleidung.price;
+        }
+        
+        if (selections.fussboden && selections.fussboden.value !== 'parkett') {
+          totalPrice += selections.fussboden.price;
+        }
+      }
+
+      // Add additional components (these work regardless of core completion)
+      let additionalPrice = 0;
 
       // Add PV price
       if (selections.pvanlage && selections.pvanlage.quantity) {
         const pvPrice = selections.pvanlage.quantity * (selections.pvanlage.price || 0);
         additionalPrice += pvPrice;
-        console.log('💰 PriceCalculator: PV price added:', pvPrice);
       }
 
       // Add window price
       if (selections.fenster && selections.fenster.squareMeters) {
         const fensterPrice = selections.fenster.squareMeters * (selections.fenster.price || 0);
         additionalPrice += fensterPrice;
-        console.log('💰 PriceCalculator: Fenster price added:', fensterPrice);
       }
 
       // Add planning package price
       if (selections.paket) {
         const paketPrice = selections.paket.price || 0;
         additionalPrice += paketPrice;
-        console.log('💰 PriceCalculator: Paket price added:', paketPrice);
       }
 
       // Add Grundstückscheck price if selected
       if (selections.grundstueckscheck) {
         additionalPrice += GRUNDSTUECKSCHECK_PRICE;
-        console.log('💰 PriceCalculator: Grundstückscheck price added:', GRUNDSTUECKSCHECK_PRICE);
       }
 
-      const totalPrice = combinationPrice + additionalPrice;
-      console.log('💰 PriceCalculator: Final total price:', totalPrice);
-      
-      return totalPrice;
+      const finalPrice = totalPrice + additionalPrice;
+      return finalPrice;
     } catch (error) {
       console.error('💰 PriceCalculator: Error calculating price:', error);
       return 0;
@@ -152,6 +167,7 @@ export class PriceCalculator {
   /**
    * Get detailed price breakdown for transparency
    * CLIENT-SIDE calculation for better performance
+   * SUPPORTS PROGRESSIVE PRICING
    */
   static getPriceBreakdown(selections: Selections): { basePrice: number; options: Record<string, { name: string; price: number }>; totalPrice: number } {
     const breakdown = {
@@ -160,19 +176,47 @@ export class PriceCalculator {
       totalPrice: 0
     }
 
-    if (!selections.nest || !selections.gebaeudehuelle || !selections.innenverkleidung || !selections.fussboden) {
+    if (!selections.nest) {
       return breakdown
     }
 
-    // Calculate base price from combination matrix
-    breakdown.basePrice = this.calculateCombinationPrice(
-      selections.nest.value,
-      selections.gebaeudehuelle.value,
-      selections.innenverkleidung.value,
-      selections.fussboden.value
-    )
+    // PROGRESSIVE BREAKDOWN: Handle partial selections
+    if (selections.nest && selections.gebaeudehuelle && selections.innenverkleidung && selections.fussboden) {
+      // All core selections - use combination matrix
+      breakdown.basePrice = this.calculateCombinationPrice(
+        selections.nest.value,
+        selections.gebaeudehuelle.value,
+        selections.innenverkleidung.value,
+        selections.fussboden.value
+      )
+    } else {
+      // Partial selections - use nest base price
+      breakdown.basePrice = selections.nest.price;
+      
+      // Add individual upgrades as options
+      if (selections.gebaeudehuelle && selections.gebaeudehuelle.value !== 'trapezblech') {
+        breakdown.options.gebaeudehuelle = {
+          name: selections.gebaeudehuelle.name,
+          price: selections.gebaeudehuelle.price
+        };
+      }
+      
+      if (selections.innenverkleidung && selections.innenverkleidung.value !== 'kiefer') {
+        breakdown.options.innenverkleidung = {
+          name: selections.innenverkleidung.name,
+          price: selections.innenverkleidung.price
+        };
+      }
+      
+      if (selections.fussboden && selections.fussboden.value !== 'parkett') {
+        breakdown.options.fussboden = {
+          name: selections.fussboden.name,
+          price: selections.fussboden.price
+        };
+      }
+    }
 
-    // Add optional components
+    // Add optional components (same as before)
     if (selections.pvanlage && selections.pvanlage.quantity) {
       breakdown.options.pvanlage = {
         name: selections.pvanlage.name,

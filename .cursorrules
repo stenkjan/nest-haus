@@ -20,16 +20,18 @@
 - Ensure that test coverage is maintained without accumulating unnecessary or duplicate tests
 
 ## Architecture Constraints
-- Backend tracking system (Redis + PostgreSQL) must remain intact
-- Session management and analytics should not be disrupted
-- Price calculations must use existing PriceCalculator logic
+- Backend tracking system (Redis + PostgreSQL) must remain intact for analytics
+- Session management and analytics should not be disrupted but should be non-blocking
+- Price calculations must be CLIENT-SIDE for instant response times
 - State management should use the established store pattern (Zustand)
+- API calls should be optimistic and fail-safe (don't block user experience)
 
 ## Integration Guidelines
 - New configurator components must integrate with useConfiguratorStore and useCartStore
-- All user selections must be tracked via the session APIs
+- User selections should be tracked via session APIs as background tasks (non-blocking)
 - Cart functionality should remain compatible across the app
 - Maintain backward compatibility during migrations
+- Prioritize instant user feedback over server synchronization
 
 ## Folder Structure Rules (React/Next.js Best Practice)
 - **Route-specific code** (components, types, hooks, data, core logic) must be co-located inside the relevant route folder under `src/app/ROUTE/`
@@ -43,10 +45,50 @@
 - **Do NOT place non-route files directly in `src/app/`**. Only route folders and route-specific files (e.g., `page.tsx`, `layout.tsx`) are allowed there
 - **If a component is only used by a single route, keep it in that route's folder.** If it is used in multiple routes, move it to `src/components/`
 
+## Performance & Rendering Strategy
+
+### **Balanced SSR/Client Architecture**
+**PRIORITY: Optimize for both SEO and User Experience**
+
+#### SSR-First for Content Pages
+- **Marketing pages, blogs, documentation**: Full SSR for SEO and Core Web Vitals
+- **Landing pages and product pages**: Server-rendered with minimal client hydration
+- **Static content**: Use static generation when possible
+
+#### Client-First for Interactive Applications
+- **Configurator and dynamic tools**: Client-side for instant feedback and complex state
+- **User dashboards and forms**: Client-side for real-time validation and updates
+- **Shopping cart and checkout**: Client-side for seamless user experience
+
+#### Hybrid Pattern Implementation
+```tsx
+// ✅ Page Router (SSR for SEO)
+export default function ConfiguratorPage() {
+  return <ConfiguratorClient />;
+}
+
+// ✅ Client Component (Instant interactions)
+'use client';
+export default function ConfiguratorClient() {
+  // Handle: real-time price updates, selections, state management
+}
+```
+
+### **Client-Side Performance Rules**
+- **Price calculations**: Always client-side for sub-100ms response times
+- **Form validation**: Client-side with server confirmation
+- **State updates**: Optimistic updates with background sync
+- **API calls**: Non-blocking, fail-safe, with graceful degradation
+
+### **Server-Side Integration**
+- **Session tracking**: Background tasks that don't block UI
+- **Data persistence**: Opportunistic saves without blocking user flow
+- **Analytics**: Fire-and-forget tracking events
+
 ## Responsive Design Guidelines
 - Use Tailwind and Medium's responsive design system in combination
 - Prefer relative units (em, vh, vw) over fixed pixel sizes
-- Set max-width of 11144px for descriptive content (e.g. navbar)
+- Set max-width of 1144px for descriptive content (e.g. navbar)
 - No width restrictions for main site content
 - Implement mobile view switch at 600-700px using window.innerWidth
 - Detect mobile access and differentiate between WebKit (iOS) and Android
@@ -61,38 +103,20 @@
 - Use CSS Grid and Flexbox for responsive layouts instead of fixed dimensions
 
 ## Server-Side Rendering (SSR) & Client-Side Guidelines
-**PRIORITY: Always prioritize SSR for performance, SEO, and Core Web Vitals**
+**BALANCED APPROACH: SSR for content, Client-side for interactions**
 
-### SSR-First Approach
-- **Default to Server Components**: All new pages and components should be server components unless client-side functionality is absolutely required
-- **Content-heavy pages**: All marketing pages, blogs, documentation, and static content MUST use SSR
-- **SEO-critical pages**: Landing pages, product pages, and any publicly indexed content MUST be server-rendered
-- **Image handling**: Vercel blob images should be served via server components when possible for better performance and SEO
+### When to Use SSR (Server Components)
+- **Static content pages**: About, services, blog posts
+- **SEO-critical pages**: Landing pages, product showcases
+- **Initial page loads**: For better Core Web Vitals
+- **Content that doesn't change frequently**
 
-### When to Use "use client" (Only When Absolutely Necessary)
-Use client components ONLY when you need:
-- **Interactive state**: `useState`, `useReducer`, or local component state
-- **DOM manipulation**: `useRef`, `useCallback` for DOM access
-- **Browser APIs**: `window`, `document`, `localStorage`, `sessionStorage`
-- **Event handlers**: `onClick`, `onSubmit`, `onChange` with state updates
-- **Third-party libraries**: That require browser environment (analytics, maps, etc.)
-- **Real-time features**: WebSockets, polling, live updates
-
-### Hybrid Architecture Pattern (Recommended)
-When you need both SSR benefits and client-side functionality:
-```tsx
-// ✅ Server Component (page.tsx)
-export default function ProductPage() {
-  // Handle: SEO, metadata, initial data fetching
-  return <ProductClient initialData={data} />;
-}
-
-// ✅ Client Component (ProductClient.tsx)
-'use client';
-export default function ProductClient({ initialData }) {
-  // Handle: interactions, state, user events
-}
-```
+### When to Use Client-Side ("use client")
+- **Interactive applications**: Configurators, calculators, dynamic forms
+- **Real-time features**: Live updates, instant feedback
+- **Complex state management**: Multi-step processes, shopping carts
+- **User-specific content**: Dashboards, personalized experiences
+- **Third-party integrations**: Maps, analytics, chat widgets
 
 ### Image Optimization Guidelines
 - **Vercel Blob Images**: Use server components with Next.js Image component for optimal performance
@@ -102,16 +126,8 @@ export default function ProductClient({ initialData }) {
 ### Performance Requirements
 - **Static Generation**: Prefer static generation (`generateStaticParams`) for predictable content
 - **Streaming**: Use React Suspense for progressive loading of server components
-- **Minimal Hydration**: Keep client-side JavaScript bundles as small as possible
-- **Core Web Vitals**: Optimize for LCP, FID, and CLS through strategic SSR usage
-
-### Code Review Checklist
-Before adding "use client":
-1. ✅ Can this be achieved with server components?
-2. ✅ Is the interactivity essential for the user experience?
-3. ✅ Can I use the hybrid pattern instead?
-4. ✅ Am I minimizing the client-side bundle size?
-5. ✅ Will this impact SEO or performance negatively?
+- **Client Bundle Size**: Keep under 250KB for interactive components
+- **Response Times**: <100ms for price calculations, <300ms for form submissions
 
 # DOM Features & Sizing (React/Next.js projects)
 - For any DOM feature or sizing communication between layout and page (e.g., scroll handling, dynamic sizing), always use a React context to provide refs or state.
@@ -160,3 +176,10 @@ const landingImageStyle = {
 
 ### Future-Proof:
 This pattern works with any image source (current files or future Vercel blob URLs).
+
+## Error Handling & Debugging Guidelines
+- **Client-side errors**: Log to console in development, use error boundaries in production
+- **API failures**: Always have fallback states, don't block user experience  
+- **State synchronization**: Use optimistic updates with conflict resolution
+- **Performance monitoring**: Track response times and bundle sizes
+- **Debugging**: Use structured logging with emojis for easy identification (🚀 🏪 💰 🔧)
