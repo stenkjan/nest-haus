@@ -1,4 +1,159 @@
-# Configurator Architecture
+# Konfigurator - Next.js 15 Migration
+
+## Architecture Overview
+
+This directory contains the **configurator** feature implementation following **Next.js 15 App Router** and **hybrid SSR/client architecture** best practices.
+
+### **Folder Structure**
+```
+src/app/konfigurator/
+├── components/           # Client-side interactive components
+├── core/                # Client-safe utilities (no database dependencies)
+├── data/                # Static configuration data
+├── hooks/               # Client-side state hooks
+├── types/               # TypeScript type definitions
+└── page.tsx             # Server component entry point
+```
+
+### **Components Architecture**
+
+#### **Server Components**
+- `page.tsx` - Main server component handling:
+  - SEO metadata
+  - Initial data fetching (if needed)
+  - Server-side optimizations
+
+#### **Client Components** (marked with `'use client'`)
+- `KonfiguratorClient.tsx` - Main client wrapper
+- `ConfiguratorShell.tsx` - Container with state management
+- `CategorySection.tsx` - Configuration categories
+- `SelectionOption.tsx` - Individual option selections
+- `SummaryPanel.tsx` - Price display and cart integration
+- All other interactive components
+
+### **Core Business Logic**
+
+#### **Server-Side Price Calculations**
+- **Location**: `src/app/api/pricing/calculate/route.ts`
+- **Purpose**: Database-driven price calculations using Prisma
+- **Features**:
+  - Caching for performance
+  - Complex pricing rules
+  - Price breakdown generation
+  - Server-side validation
+
+#### **Client-Side Utilities**
+- **Location**: `src/app/konfigurator/core/PriceUtils.ts`
+- **Purpose**: Price formatting and display utilities
+- **Features**:
+  - Currency formatting
+  - Monthly payment calculations
+  - No database dependencies
+
+### **State Management**
+
+#### **Zustand Store** (`src/store/configuratorStore.ts`)
+- Manages configurator state
+- Handles API communication
+- Optimistic UI updates
+- Session management integration
+
+#### **Data Flow**
+1. User makes selection → Client component
+2. Optimistic UI update → Zustand store
+3. Background API calls → Server-side calculation
+4. UI updates with accurate data
+
+### **API Integration**
+
+#### **Price Calculation**: `POST /api/pricing/calculate`
+- Server-side Prisma-based calculations
+- Returns total price and breakdown
+- Handles complex pricing rules
+
+#### **Session Tracking**: `POST /api/sessions/track`
+- Tracks user selections
+- Updates Redis for performance
+- Logs to PostgreSQL for analytics
+
+#### **Session Management**: `POST /api/sessions`
+- Creates new user sessions
+- Integrates with Redis and PostgreSQL
+
+### **Performance Optimizations**
+
+#### **SSR-First Approach**
+- Server components by default
+- Client components only when needed
+- Optimal bundle splitting
+
+#### **Database Optimizations**
+- Caching layer for house options
+- Debounced price calculations
+- Batch API operations
+
+#### **User Experience**
+- Optimistic UI updates
+- No loading states for selections
+- Background API processing
+
+### **Responsive Design**
+- Mobile-first approach
+- Fluid typography using clamp()
+- iOS WebKit optimizations
+- Height synchronization for desktop
+
+### **Integration Points**
+
+#### **Cart System**
+- Integrates with `src/store/cartStore.ts`
+- Configuration to cart conversion
+- Price consistency
+
+#### **Session Analytics**
+- Redis for real-time tracking
+- PostgreSQL for persistent storage
+- User journey analysis
+
+### **Migration Notes**
+
+#### **From Legacy Configurator**
+1. ✅ **Monolithic component** → Modular architecture
+2. ✅ **Client-side database access** → Server-side API
+3. ✅ **Mixed concerns** → Clear separation
+4. ✅ **Performance issues** → Optimized data flow
+
+#### **Architecture Violations Fixed**
+- ❌ Prisma in client components
+- ❌ Database queries in browser
+- ❌ Mixed server/client code
+- ✅ **Proper SSR/client separation**
+
+### **Development Guidelines**
+
+#### **Adding New Features**
+1. **Server data** → API routes only
+2. **Client interactions** → Client components
+3. **Price calculations** → Server-side API
+4. **State management** → Zustand store
+
+#### **Performance Rules**
+1. **Default to server components**
+2. **Client components only for interactivity**
+3. **Database operations server-side only**
+4. **Optimize bundle size**
+
+### **Testing Considerations**
+- Server component testing
+- Client component isolation
+- API endpoint testing
+- State management testing
+
+### **Future Improvements**
+- Server-side caching enhancements
+- Progressive Web App features
+- Advanced analytics integration
+- A/B testing framework
 
 ## 🎯 Overview
 
@@ -164,7 +319,7 @@ CREATE TABLE selection_events (
 
 ### **Basic Usage**
 ```tsx
-import ConfiguratorShell from './konfigurator/components/ConfiguratorShell';
+import ConfiguratorShell from './components/ConfiguratorShell';
 
 function ConfiguratorPage() {
   return (
@@ -179,7 +334,7 @@ function ConfiguratorPage() {
 
 ### **With Custom Tracking**
 ```tsx
-import { useInteractionTracking } from './konfigurator/hooks/useInteractionTracking';
+import { useInteractionTracking } from './hooks/useInteractionTracking';
 
 function TrackedConfigurator() {
   const { trackSelection } = useInteractionTracking();

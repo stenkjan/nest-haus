@@ -31,6 +31,18 @@
 - Cart functionality should remain compatible across the app
 - Maintain backward compatibility during migrations
 
+## Folder Structure Rules (React/Next.js Best Practice)
+- **Route-specific code** (components, types, hooks, data, core logic) must be co-located inside the relevant route folder under `src/app/ROUTE/`
+- **Shared/global components** must be placed in `src/components/`
+- **Shared hooks** must be placed in `src/hooks/`
+- **Global state management** (e.g., Zustand stores) must be placed in `src/store/`
+- **Service logic** (e.g., Prisma, Redis clients) must be placed in `src/lib/`
+- **Shared types/interfaces** must be placed in `src/types/`
+- **Shared constants** must be placed in `src/constants/`
+- **Context providers** must be placed in `src/contexts/`
+- **Do NOT place non-route files directly in `src/app/`**. Only route folders and route-specific files (e.g., `page.tsx`, `layout.tsx`) are allowed there
+- **If a component is only used by a single route, keep it in that route's folder.** If it is used in multiple routes, move it to `src/components/`
+
 ## Responsive Design Guidelines
 - Use Tailwind and Medium's responsive design system in combination
 - Prefer relative units (em, vh, vw) over fixed pixel sizes
@@ -47,3 +59,61 @@
 - Test layouts across standard breakpoints (sm: 640px, md: 768px, lg: 1024px, xl: 1280px)
 - Maintain aspect ratios for media content using aspect-ratio utility
 - Use CSS Grid and Flexbox for responsive layouts instead of fixed dimensions
+
+## Server-Side Rendering (SSR) & Client-Side Guidelines
+**PRIORITY: Always prioritize SSR for performance, SEO, and Core Web Vitals**
+
+### SSR-First Approach
+- **Default to Server Components**: All new pages and components should be server components unless client-side functionality is absolutely required
+- **Content-heavy pages**: All marketing pages, blogs, documentation, and static content MUST use SSR
+- **SEO-critical pages**: Landing pages, product pages, and any publicly indexed content MUST be server-rendered
+- **Image handling**: Vercel blob images should be served via server components when possible for better performance and SEO
+
+### When to Use "use client" (Only When Absolutely Necessary)
+Use client components ONLY when you need:
+- **Interactive state**: `useState`, `useReducer`, or local component state
+- **DOM manipulation**: `useRef`, `useCallback` for DOM access
+- **Browser APIs**: `window`, `document`, `localStorage`, `sessionStorage`
+- **Event handlers**: `onClick`, `onSubmit`, `onChange` with state updates
+- **Third-party libraries**: That require browser environment (analytics, maps, etc.)
+- **Real-time features**: WebSockets, polling, live updates
+
+### Hybrid Architecture Pattern (Recommended)
+When you need both SSR benefits and client-side functionality:
+```tsx
+// ✅ Server Component (page.tsx)
+export default function ProductPage() {
+  // Handle: SEO, metadata, initial data fetching
+  return <ProductClient initialData={data} />;
+}
+
+// ✅ Client Component (ProductClient.tsx)
+'use client';
+export default function ProductClient({ initialData }) {
+  // Handle: interactions, state, user events
+}
+```
+
+### Image Optimization Guidelines
+- **Vercel Blob Images**: Use server components with Next.js Image component for optimal performance
+- **Static images**: Always use Next.js `Image` component with proper sizing
+- **Dynamic images**: Server-render when possible, client-render only for user-uploaded content
+
+### Performance Requirements
+- **Static Generation**: Prefer static generation (`generateStaticParams`) for predictable content
+- **Streaming**: Use React Suspense for progressive loading of server components
+- **Minimal Hydration**: Keep client-side JavaScript bundles as small as possible
+- **Core Web Vitals**: Optimize for LCP, FID, and CLS through strategic SSR usage
+
+### Code Review Checklist
+Before adding "use client":
+1. ✅ Can this be achieved with server components?
+2. ✅ Is the interactivity essential for the user experience?
+3. ✅ Can I use the hybrid pattern instead?
+4. ✅ Am I minimizing the client-side bundle size?
+5. ✅ Will this impact SEO or performance negatively?
+
+# DOM Features & Sizing (React/Next.js projects)
+- For any DOM feature or sizing communication between layout and page (e.g., scroll handling, dynamic sizing), always use a React context to provide refs or state.
+- Never use querySelector, getElementById, or direct DOM traversal for such communication.
+- This context-based approach is the default and required for all such requirements in this project.

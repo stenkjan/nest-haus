@@ -314,4 +314,17 @@ graph TD
 ---
 
 *Last updated: 2025-06-13 11:14:32 UTC*
-*Next review: 2025-07-13* 
+*Next review: 2025-07-13*
+
+## Folder Structure Rules (React/Next.js Best Practice)
+
+- Route-specific code (components, types, hooks, data, core logic) must be co-located inside the relevant route folder under `src/app/ROUTE/`.
+- Shared/global components must be placed in `src/components/`.
+- Shared hooks must be placed in `src/hooks/`.
+- Global state management (e.g., Zustand stores) must be placed in `src/store/`.
+- Service logic (e.g., Prisma, Redis clients) must be placed in `src/lib/`.
+- Shared types/interfaces must be placed in `src/types/`.
+- Shared constants must be placed in `src/constants/`.
+- Context providers must be placed in `src/contexts/`.
+- Do NOT place non-route files directly in `src/app/`. Only route folders and route-specific files (e.g., `page.tsx`, `layout.tsx`) are allowed there.
+- If a component is only used by a single route, keep it in that route's folder. If it is used in multiple routes, move it to `src/components/`. 

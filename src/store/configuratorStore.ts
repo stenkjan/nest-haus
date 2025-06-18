@@ -117,8 +117,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         }
         
         set({ 
-          configuration: updatedConfig,
-          isLoading: true // Show loading state during async operations
+          configuration: updatedConfig
+          // Remove isLoading - selections should be immediate for better UX
         })
 
         // Batch async operations for better performance
@@ -148,7 +148,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // Wait for async operations to complete
         await Promise.allSettled(promises)
-        set({ isLoading: false })
+        // Remove isLoading state change - UI stays responsive
       },
 
       // Remove selection

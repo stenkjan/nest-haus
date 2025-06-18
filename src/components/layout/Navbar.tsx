@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
+import { useConfiguratorPanelRef } from '@/contexts/ConfiguratorPanelContext';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,6 +17,8 @@ export default function Navbar() {
   // Cart integration using Zustand store
   const { getCartCount, getCartSummary } = useCartStore();
   const [cartCount, setCartCount] = useState(0);
+
+  const rightPanelRef = useConfiguratorPanelRef();
 
   // Mobile detection following project rules (600-700px breakpoint)
   useEffect(() => {
@@ -42,29 +45,43 @@ export default function Navbar() {
 
   // Enhanced scroll behavior with WebKit support
   useEffect(() => {
-    // Skip scroll behavior on konfigurator page
-    if (pathname === '/konfigurator') return;
-
+    if (pathname === '/konfigurator' && rightPanelRef && rightPanelRef.current) {
+      const header = headerRef.current;
+      if (!header) return;
+      const rightPanel = rightPanelRef.current;
+      let lastScrollTop = 0;
+      const getScrollPosition = () => rightPanel.scrollTop;
+      const onScroll = () => {
+        const currentScrollY = getScrollPosition();
+        const threshold = isMobile ? 3 : 5;
+        if (Math.abs(currentScrollY - lastScrollTop) < threshold) return;
+        if (currentScrollY > lastScrollTop && currentScrollY > 50) {
+          header.style.transform = 'translateY(-100%)';
+          header.style.transition = 'transform 0.3s ease-out';
+        } else if (currentScrollY < lastScrollTop) {
+          header.style.transform = 'translateY(0)';
+          header.style.transition = 'transform 0.3s ease-out';
+        }
+        lastScrollTop = currentScrollY;
+      };
+      rightPanel.addEventListener('scroll', onScroll);
+      return () => rightPanel.removeEventListener('scroll', onScroll);
+    }
     const header = headerRef.current;
     if (!header) return;
-    
     // Cross-browser scroll position with WebKit optimizations
     const getScrollPosition = () => {
       return window.pageYOffset || 
              document.documentElement.scrollTop || 
              document.body.scrollTop || 0;
     };
-    
     lastScrollTop.current = getScrollPosition();
-    
     // Optimized polling for better performance on mobile
     const intervalId = setInterval(() => {
       const currentScrollY = getScrollPosition();
-      
       // Reduced threshold for mobile WebKit
       const threshold = isMobile ? 3 : 5;
       if (Math.abs(currentScrollY - lastScrollTop.current) < threshold) return;
-      
       if (currentScrollY > lastScrollTop.current && currentScrollY > 50) {
         // Scrolling down - hide (WebKit-friendly transform)
         header.style.transform = 'translateY(-100%)';
@@ -74,12 +91,22 @@ export default function Navbar() {
         header.style.transform = 'translateY(0)';
         header.style.transition = 'transform 0.3s ease-out';
       }
-      
       lastScrollTop.current = currentScrollY;
     }, isMobile ? 150 : 200); // Faster polling on mobile
-    
     return () => clearInterval(intervalId);
-  }, [pathname, isMobile]);
+  }, [pathname, isMobile, rightPanelRef]);
+
+  useEffect(() => {
+    const setNavbarHeightVar = () => {
+      if (headerRef.current) {
+        const height = headerRef.current.offsetHeight;
+        document.documentElement.style.setProperty('--navbar-height', height + 'px');
+      }
+    };
+    setNavbarHeightVar();
+    window.addEventListener('resize', setNavbarHeightVar);
+    return () => window.removeEventListener('resize', setNavbarHeightVar);
+  }, []);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);

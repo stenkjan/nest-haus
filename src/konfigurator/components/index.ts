@@ -1,5 +1,0 @@
-export { default as ConfiguratorShell } from './ConfiguratorShell'
-export { default as CategorySection } from './CategorySection'
-export { default as SelectionOption } from './SelectionOption'
-export { default as InfoBox } from './InfoBox'
-export { default as FactsBox } from './FactsBox' 

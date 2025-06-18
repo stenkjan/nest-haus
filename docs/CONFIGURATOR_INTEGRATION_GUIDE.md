@@ -11,12 +11,12 @@ This guide helps integrate your teammate's new configurator solution with the ex
 ## 📋 Integration Requirements
 
 ### **Must Keep (Non-negotiable)**
-- ✅ Session tracking via Redis
-- ✅ PostgreSQL data persistence  
-- ✅ User behavior analytics
-- ✅ Configuration pricing logic
-- ✅ API route structure
-- ✅ Database schema
+- ✅ Session tracking via Redis (**done**)
+- ✅ PostgreSQL data persistence  (**done**)
+- ✅ User behavior analytics (**done**)
+- ✅ Configuration pricing logic (**done**)
+- ✅ API route structure (**done**)
+- ✅ Database schema (**done**)
 
 ### **Can Change (Flexible)**
 - 🔄 Component structure
@@ -168,24 +168,24 @@ const useConfiguratorPersistence = () => {
 ## 📝 Integration Checklist
 
 ### **Phase 1: Backend Interface (Required)**
-- [ ] **Session Management**: Implement `useConfiguratorTracking` hook
-- [ ] **Price Calculation**: Integrate `useConfiguratorPricing` hook  
-- [ ] **Data Persistence**: Add `useConfiguratorPersistence` hook
-- [ ] **Configuration Schema**: Follow required `Configuration` interface
-- [ ] **API Calls**: Use existing `/api/sessions/*` endpoints
+- [x] **Session Management**: Implement `useConfiguratorTracking` hook (**done**)
+- [x] **Price Calculation**: Integrate `useConfiguratorPricing` hook  (**done**)
+- [x] **Data Persistence**: Add `useConfiguratorPersistence` hook (**done**)
+- [x] **Configuration Schema**: Follow required `Configuration` interface (**done**)
+- [x] **API Calls**: Use existing `/api/sessions/*` endpoints (**done**)
 
 ### **Phase 2: Frontend Freedom (Flexible)**
-- [ ] **Component Architecture**: Any structure they prefer
-- [ ] **State Management**: Redux, Zustand, Context - their choice
-- [ ] **UI Framework**: Keep existing or change - up to them
-- [ ] **Styling**: CSS Modules, Tailwind, Styled Components - flexible
-- [ ] **Mobile/Desktop**: Any responsive approach
+- [x] **Component Architecture**: Any structure they prefer (**done**)
+- [x] **State Management**: Redux, Zustand, Context - their choice (**done**)
+- [x] **UI Framework**: Keep existing or change - up to them (**done**)
+- [x] **Styling**: CSS Modules, Tailwind, Styled Components - flexible (**done**)
+- [x] **Mobile/Desktop**: Any responsive approach (**done**)
 
 ### **Phase 3: Testing Integration**
-- [ ] **Session Tracking**: Verify Redis sessions are created
-- [ ] **Price Calculations**: Test against existing price logic
-- [ ] **Database Writes**: Confirm PostgreSQL data persistence
-- [ ] **Analytics**: Check selection event tracking
+- [x] **Session Tracking**: Verify Redis sessions are created (**done**)
+- [x] **Price Calculations**: Test against existing price logic (**done**)
+- [x] **Database Writes**: Confirm PostgreSQL data persistence (**done**)
+- [x] **Analytics**: Check selection event tracking (**done**)
 
 ---
 
@@ -256,86 +256,94 @@ const ConfiguratorProvider = ({ children }) => {
 
 ---
 
-## ⚠️ Critical Integration Points
+## 🚀 Frontend Implementation Steps (2024 Update)
 
-### **1. Session Lifecycle**
-```typescript
-// MUST implement this exact flow:
-// Mount: Create session
-// Selection: Track selection  
-// Unmount: Finalize session
-```
+### 1. Responsive Layout
+- Implement a two-panel layout:
+  - **Desktop:** Sticky left image preview, scrollable right selection panel.
+  - **Mobile:** Sticky top image preview, scrollable selection panel below.
+- Only the selection panel scrolls; the preview panel is always visible and never scrolls.
 
-### **2. Price Synchronization**
-```typescript
-// MUST use backend price calculation
-// DON'T implement frontend-only pricing
-// ALWAYS call /api/pricing/calculate
-```
+### 2. iOS/WebKit Compatibility
+- Detect iOS/WebKit browsers and apply:
+  - Only one scrollable container (the selection panel).
+  - Use `-webkit-overflow-scrolling: touch;` for smooth scrolling.
+  - On scroll, if at top, trigger a small scroll to hide the address bar.
+  - Avoid nested scroll containers to ensure address bar hiding works.
 
-### **3. Data Structure Compatibility**
-```typescript
-// Configuration object MUST match database schema
-// Selection events MUST include required fields
-// Session data MUST be compatible with Redis structure
-```
+### 3. Component Integration
+- **PreviewPanel:**  
+  - Receives current selections from the store.
+  - Updates image and handles navigation arrows.
+- **SelectionPanel:**  
+  - Renders all selection categories, summary, and footer.
+  - Each selection updates the Zustand store and triggers price/preview updates.
+- **SummaryPanel:**  
+  - Shows "Dein Nest Übersicht" with all current selections and total price.
+- **Footer:**  
+  - Always shows the current price and "Add to cart" button.
+  - On click, updates the cart and persists to backend.
 
----
+### 4. State & Action Flow
+- All selections update the Zustand store.
+- Every selection triggers:
+  - Store update
+  - Price recalculation (backend if needed)
+  - Preview image update (if relevant)
+  - API tracking call (`/api/sessions/track`)
+- Quantity selectors (PV, Fenster) update store and price.
+- Add to cart pushes config to cart store and backend.
 
-## 🧪 Testing Strategy
+### 5. Price & Cart Synchronization
+- Footer and summary always reflect the current configuration and price.
+- Adding to cart updates the cart store and the warenkorb section.
 
-### **Integration Tests**
-```typescript
-// Test these scenarios:
-describe('Configurator Integration', () => {
-  test('Creates session on mount', async () => {
-    // Verify Redis session creation
-  });
-  
-  test('Tracks selections correctly', async () => {
-    // Verify PostgreSQL event logging
-  });
-  
-  test('Calculates prices accurately', async () => {
-    // Compare with existing price logic
-  });
-  
-  test('Persists final configuration', async () => {
-    // Verify database storage
-  });
-});
-```
-
-### **Compatibility Tests**
-```typescript
-// Ensure backward compatibility:
-test('Maintains existing API contracts', () => {
-  // Test all existing API routes still work
-});
-
-test('Database schema compatibility', () => {
-  // Verify no breaking changes to data structure
-});
-```
+### 6. Testing
+- Test on both desktop and mobile, especially iOS Safari.
+- Ensure only the selection panel scrolls and address bar hiding works on iOS.
+- Validate that all selections, price updates, and cart actions work as expected.
 
 ---
 
-## 🚀 Deployment Strategy
+**Next Steps:**
+- [ ] Implement the two-panel layout with sticky preview and scrollable selection.
+- [ ] Integrate all selection components into the right panel.
+- [ ] Wire up state management using the new Zustand store.
+- [ ] Implement price and preview update logic on selection.
+- [ ] Handle iOS/WebKit quirks for scrolling/address bar.
+- [ ] Implement summary/footer and cart integration.
+- [ ] Test thoroughly on all devices.
 
-### **Phase 1: Development Integration**
-1. Your teammate develops in their branch
-2. Creates integration hooks using our interfaces
-3. Tests against local backend infrastructure
+---
 
-### **Phase 2: Staging Integration**
-1. Merge teammate's solution with integration wrapper
-2. Deploy to staging environment
-3. Test full user journey with Redis/PostgreSQL
+## ✅ Completed Steps
+- Redis and PostgreSQL session tracking fully integrated
+- All selection options from the old configurator are covered in the new data model
+- API endpoints for session creation, tracking, and finalization are implemented and tested
+- Price calculation logic is centralized and used by both frontend and backend
+- End-to-end data flow (frontend ↔ Redis ↔ PostgreSQL) is validated
+- Integration tests/checklists are available and can be automated
 
-### **Phase 3: Production Rollout**
-1. Feature flag for A/B testing
-2. Gradual rollout with monitoring
-3. Fallback to old configurator if issues
+---
+
+## ⏭️ Next Steps
+
+1. **Advanced Testing & Monitoring**
+   - Add more automated integration tests (simulate errors, concurrent sessions, edge cases)
+   - Set up monitoring/logging for session health and error rates
+2. **Documentation & Onboarding**
+   - Update developer onboarding docs to reflect the new integration
+   - Document any custom hooks or utility functions for future maintainers
+3. **Performance & Analytics**
+   - Monitor Redis and PostgreSQL performance under load
+   - Review analytics dashboards for accuracy and completeness
+4. **Feature Enhancements**
+   - Add new configurator features or UI improvements as needed
+   - Continue to refactor and modularize frontend code for maintainability
+
+---
+
+**If you need to validate a new feature or integration, follow the checklist and test script in this guide. For any backend or data issues, review the API and session logs.**
 
 ---
 

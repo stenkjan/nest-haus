@@ -14,7 +14,7 @@ export default function CategorySection({ title, subtitle, children, className =
     <div className={`box_catagory rounded-lg ${className}`}>
       <h3 className="text-xl font-medium tracking-[-0.015em] leading-[1.2] mb-4">
         <span className="text-black">{title}</span>{' '}
-        <span className="text-[#999999]">{subtitle}</span>
+        <span className="text-gray-600">{subtitle}</span>
       </h3>
       {children}
     </div>
