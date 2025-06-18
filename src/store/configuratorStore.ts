@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { PriceCalculator } from '../app/konfigurator/core/PriceCalculator'
 
 // Configuration types matching our backend
 export interface ConfigurationItem {
@@ -39,18 +40,15 @@ interface ConfiguratorState {
   isLoading: boolean
   lastSaved: number | null
   
-  // Price calculations
+  // Price calculations (CLIENT-SIDE for efficiency)
   currentPrice: number
   priceBreakdown: PriceBreakdown | null
   
-  // Internal state for optimization
-  priceCalculationTimeoutId?: NodeJS.Timeout
-  
   // Actions
   initializeSession: () => Promise<void>
-  updateSelection: (item: ConfigurationItem) => Promise<void>
-  removeSelection: (category: string) => Promise<void>
-  calculatePrice: () => Promise<void>
+  updateSelection: (item: ConfigurationItem) => void
+  removeSelection: (category: string) => void
+  calculatePrice: () => void
   saveConfiguration: (userDetails?: Record<string, unknown>) => Promise<boolean>
   resetConfiguration: () => void
   finalizeSession: () => Promise<void>
@@ -102,8 +100,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         }
       },
 
-      // Update selection and track with backend (optimized)
-      updateSelection: async (item: ConfigurationItem) => {
+      // Update selection - OPTIMIZED: No API calls for price calculation
+      updateSelection: (item: ConfigurationItem) => {
         const state = get()
         if (!state.sessionId || !state.configuration) return
 
@@ -116,43 +114,31 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           timestamp: Date.now()
         }
         
-        set({ 
-          configuration: updatedConfig
-          // Remove isLoading - selections should be immediate for better UX
-        })
+        set({ configuration: updatedConfig })
 
-        // Batch async operations for better performance
-        const promises = []
-        
-        // Calculate new price (async)
-        promises.push(get().calculatePrice())
+        // Calculate price immediately using client-side logic (no API call)
+        get().calculatePrice()
 
         // Track selection with backend (async, non-blocking)
-        promises.push(
-          fetch('/api/sessions/track', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              sessionId: state.sessionId,
-              category: item.category,
-              selection: item.value,
-              previousSelection: previousSelection?.value || null,
-              priceChange: item.price - (previousSelection?.price || 0),
-              totalPrice: item.price + (state.currentPrice - (previousSelection?.price || 0)) // Optimistic price calculation
-            })
-          }).catch(error => {
-            console.error('Failed to track selection:', error)
-            // Don't throw - tracking failures shouldn't break user experience
+        fetch('/api/sessions/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: state.sessionId,
+            category: item.category,
+            selection: item.value,
+            previousSelection: previousSelection?.value || null,
+            priceChange: item.price - (previousSelection?.price || 0),
+            totalPrice: get().currentPrice // Use calculated price
           })
-        )
-
-        // Wait for async operations to complete
-        await Promise.allSettled(promises)
-        // Remove isLoading state change - UI stays responsive
+        }).catch(error => {
+          console.error('Failed to track selection:', error)
+          // Don't throw - tracking failures shouldn't break user experience
+        })
       },
 
       // Remove selection
-      removeSelection: async (category: string) => {
+      removeSelection: (category: string) => {
         const state = get()
         if (!state.configuration) return
 
@@ -161,47 +147,38 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         updatedConfig.timestamp = Date.now()
         
         set({ configuration: updatedConfig })
-        await get().calculatePrice()
+        get().calculatePrice()
       },
 
-      // Calculate price using backend (debounced for performance)
-      calculatePrice: async () => {
+      // Calculate price using CLIENT-SIDE logic (OPTIMIZED: No API calls)
+      calculatePrice: () => {
         const state = get()
         if (!state.configuration) return
 
-        // Clear existing timeout to debounce rapid calls
-        const timeoutId = state.priceCalculationTimeoutId
-        if (timeoutId) {
-          clearTimeout(timeoutId)
+        // Convert configuration to selections format
+        const selections = {
+          nest: state.configuration.nest,
+          gebaeudehuelle: state.configuration.gebaeudehuelle,
+          innenverkleidung: state.configuration.innenverkleidung,
+          fussboden: state.configuration.fussboden,
+          pvanlage: state.configuration.pvanlage,
+          fenster: state.configuration.fenster,
+          paket: state.configuration.planungspaket,
+          grundstueckscheck: !!state.configuration.grundstueckscheck
         }
 
-        // Set new timeout for debounced calculation
-        const newTimeoutId = setTimeout(async () => {
-          try {
-            const response = await fetch('/api/pricing/calculate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(state.configuration)
-            })
-            const data = await response.json()
-            
-            if (data.success) {
-              set({
-                currentPrice: data.totalPrice,
-                priceBreakdown: data.priceBreakdown,
-                configuration: {
-                  ...state.configuration!,
-                  totalPrice: data.totalPrice
-                }
-              })
-            }
-          } catch (error) {
-            console.error('Failed to calculate price:', error)
-          }
-        }, 300) // 300ms debounce
+        // Use client-side PriceCalculator for instant results
+        const totalPrice = PriceCalculator.calculateTotalPrice(selections)
+        const priceBreakdown = PriceCalculator.getPriceBreakdown(selections)
 
-        // Store timeout ID in state for cleanup
-        set({ priceCalculationTimeoutId: newTimeoutId })
+        set({
+          currentPrice: totalPrice,
+          priceBreakdown,
+          configuration: {
+            ...state.configuration!,
+            totalPrice
+          }
+        })
       },
 
       // Save configuration

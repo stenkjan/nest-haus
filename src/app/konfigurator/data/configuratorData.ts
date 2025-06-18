@@ -150,21 +150,21 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'parkett',
-        name: 'Parkett',
-        description: 'Hochwertiger Parkettboden',
+        name: 'Parkett Eiche',
+        description: 'Schwimmend verlegt',
         price: { type: 'included' }
       },
       {
-        id: 'vinyl',
-        name: 'Vinyl',
-        description: 'Moderner Vinylboden',
-        price: { type: 'upgrade', amount: 2500, monthly: 13 }
+        id: 'kalkstein_kanafar',
+        name: 'Kalkstein Kanafar',
+        description: 'Schieferplatten Kalkstein\n800 x 800 x 10 cm',
+        price: { type: 'upgrade', amount: 4500, monthly: 24 }
       },
       {
-        id: 'fliesen',
-        name: 'Fliesen',
-        description: 'Keramische Fliesen',
-        price: { type: 'upgrade', amount: 4200, monthly: 22 }
+        id: 'schiefer_massiv',
+        name: 'Schiefer Massiv',
+        description: 'Feinsteinzeug Schieferoptik\n800 x 800 x 5,5cm',
+        price: { type: 'upgrade', amount: 5500, monthly: 29 }
       }
     ],
     facts: {
@@ -182,104 +182,79 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
-    id: 'pvanlage',
-    title: 'PV-Anlage',
-    subtitle: 'Saubere Energie',
-    options: [
-      {
-        id: 'pv_standard',
-        name: 'PV-Module Standard',
-        description: 'Hocheffiziente Solarmodule',
-        price: { type: 'upgrade', amount: 1200, monthly: 6 }
-      },
-      {
-        id: 'pv_premium',
-        name: 'PV-Module Premium',
-        description: 'Premium Solarmodule mit höherem Wirkungsgrad',
-        price: { type: 'upgrade', amount: 1500, monthly: 8 }
-      }
-    ],
-    infoBox: {
-      title: 'Mehr Informationen zu Photovoltaik'
-    }
-  },
-  {
     id: 'fenster',
     title: 'Fenster & Türen',
     subtitle: 'Deine Öffnungen',
     options: [
       {
-        id: 'fenster_standard',
-        name: 'Fenster Standard',
-        description: 'Dreh-Kipp-Fenster',
-        price: { type: 'upgrade', amount: 450, monthly: 2 }
+        id: 'pvc_fenster',
+        name: 'PVC Fenster',
+        description: 'RAL 9016 - Kunststoff',
+        price: { type: 'upgrade', amount: 290, monthly: 2 }
       },
       {
-        id: 'fenster_premium',
-        name: 'Fenster Premium',
-        description: 'Hochwertige Fenster mit besserer Isolierung',
-        price: { type: 'upgrade', amount: 650, monthly: 3 }
+        id: 'fichte',
+        name: 'Fichte',
+        description: 'Holzfenster Lärche',
+        price: { type: 'upgrade', amount: 600, monthly: 3 }
+      },
+      {
+        id: 'steirische_eiche',
+        name: 'Steirische Eiche',
+        description: 'RAL 9005 - Tiefschwarz',
+        price: { type: 'upgrade', amount: 560, monthly: 3 }
+      },
+      {
+        id: 'aluminium',
+        name: 'Aluminium',
+        description: 'RAL 9005 - Tiefschwarz\nbis 6000 x 3200 mm',
+        price: { type: 'upgrade', amount: 700, monthly: 4 }
       }
     ],
     infoBox: {
-      title: 'Mehr Informationen zu Fenstern'
-    },
-    facts: {
       title: 'Fenster & Türen',
-      content: [
-        'Du bestimmst Individuell wo du deine Öffnungen für Fenster & Türen benötigst.',
-        'Nach Reservierung setzen wir uns mit dir in Verbindung und definieren die Positionen deiner Fenster & Türen.',
-        'Die Fensteroptionen im Konfigurator beziehen sich auf klassische Dreh-Kipp-Flügel und Türen. Sonderlösungen wie Hebeschiebetüren sind nicht im Preis enthalten und können bei Bedarf individuell kalkuliert werden.',
-        'Die angegebenen Quadratmeterpreise beziehen sich auf das lichte Einbaumaß der Fensteröffnungen.'
-      ],
-      links: [
-        {
-          text: 'Mehr Informationen',
-          href: '/fenster-info'
-        }
-      ]
+      description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
     }
   },
   {
     id: 'planungspaket',
-    title: 'Die Pakete',
-    subtitle: 'Dein Service',
+    title: 'Die Planungspakete',
+    subtitle: 'Unser Service',
     options: [
       {
         id: 'basis',
-        name: 'Basis Paket',
-        description: 'Grundlegende Planungsleistungen\nBauantrag\nStatik\nEnergieausweis',
-        price: { type: 'included' }
+        name: 'Planung Basis',
+        description: 'Einreichplanung (Baumgenehmigung)\nFachplanung und Baustützung',
+        price: { type: 'upgrade', amount: 700, monthly: 26 }
       },
       {
-        id: 'komfort',
-        name: 'Komfort Paket',
-        description: 'Erweiterte Planungsleistungen\nAlles aus Basis\nBauleitung\nKoordination',
-        price: { type: 'upgrade', amount: 8500, monthly: 45 }
+        id: 'plus',
+        name: 'Planung Plus',
+        description: 'Einreichplanung Basis\nPlus HVLS-Planung (Gebäudetechnik)',
+        price: { type: 'upgrade', amount: 700, monthly: 36 }
       },
       {
-        id: 'premium',
-        name: 'Premium Paket',
-        description: 'Vollumfängliche Planungsleistungen\nAlles aus Komfort\nInnenarchitektur\nLandschaftsplanung',
-        price: { type: 'upgrade', amount: 15000, monthly: 79 }
+        id: 'pro',
+        name: 'Planung Pro',
+        description: 'Inkl. Planungspaket Plus\nPlus Baustüberwachung (Modalbestandschef)',
+        price: { type: 'upgrade', amount: 700, monthly: 52 }
+      }
+    ]
+  },
+  {
+    id: 'pvanlage',
+    title: 'PV-Anlage',
+    subtitle: 'Kleide dich ein',
+    options: [
+      {
+        id: 'pv_panels',
+        name: 'Photovoltaik-Panels',
+        description: '0,4 kWpeak pro Panel',
+        price: { type: 'upgrade', amount: 390, monthly: 2 }
       }
     ],
     infoBox: {
-      title: 'Welches Planungspaket passt zu dir?',
-      description: 'Sehe dir die Pakete im Detail an und entdecke, welches am besten zu dir passt.'
-    },
-    facts: {
-      title: 'Gemeinsam großes Schaffen',
-      content: [
-        'Wir konzentrieren uns darauf, alle standardisierten Arbeitsprozesse zu optimieren und höchste Qualität zu fairen Preisen sicherzustellen.',
-        'Darauf aufbauend machst du dein Nest individuell.'
-      ],
-      links: [
-        {
-          text: 'Mehr Informationen',
-          href: '/gemeinsam'
-        }
-      ]
+      title: 'Mehr Informationen zu Photovoltaik'
     }
   }
 ] 
