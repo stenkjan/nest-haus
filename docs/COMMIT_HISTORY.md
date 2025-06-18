@@ -4,6 +4,33 @@
 
 ---
 
+## [246814c9b6d96adf0aa5b8a1193077fef70dc215] - Wed Jun 18 15:29:45 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/globals.css
+- src/app/layout.tsx
+- src/app/page.tsx
+- src/app/showcase/page.tsx
+- src/components/ui/Button.tsx
+- src/components/ui/ButtonShowcase.tsx
+- src/components/ui/index.ts
+
+#### 🔧 Configuration Changes
+
+- tailwind.config.ts
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
 ## [55c63d2265207f3fe0003853fb77fe6e417e2290] - Tue Jun 17 18:08:10 2025 +0200
 
 **Author**: stenkjan  
