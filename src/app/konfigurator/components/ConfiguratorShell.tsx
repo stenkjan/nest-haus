@@ -23,9 +23,9 @@ import {
   QuantitySelector,
   SummaryPanel,
   GrundstuecksCheckBox,
-  GRUNDSTUECKSCHECK_PRICE,
   CartFooter
 } from './';
+import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator';
 
 export default function ConfiguratorShell({ 
   onPriceChange,

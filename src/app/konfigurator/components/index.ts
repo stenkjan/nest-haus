@@ -9,7 +9,4 @@ export { default as QuantitySelector } from './QuantitySelector'
 export { default as SummaryPanel } from './SummaryPanel'
 export { default as GrundstuecksCheckBox } from './GrundstuecksCheckBox'
 export { default as CartFooter } from './CartFooter'
-export { default as KonfiguratorClient } from './KonfiguratorClient'
-
-// Constants
-export const GRUNDSTUECKSCHECK_PRICE = 990 
+export { default as KonfiguratorClient } from './KonfiguratorClient' 
