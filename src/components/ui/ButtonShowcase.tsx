@@ -28,7 +28,7 @@ const ButtonShowcase: React.FC = () => {
       
       {/* All Variants */}
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">All Button Variants</h2>
+        <h2 className="text-2xl font-semibold mb-6">All Button Variants (Fixed Width)</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {variants.map((variant) => (
             <div key={variant} className="flex flex-col items-center space-y-2">
@@ -56,17 +56,6 @@ const ButtonShowcase: React.FC = () => {
         </div>
       </section>
 
-      {/* Interactive States */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Interactive States</h2>
-        <div className="flex flex-wrap gap-4">
-          <Button variant="primary">Normal</Button>
-          <Button variant="primary" loading>Loading</Button>
-          <Button variant="primary" disabled>Disabled</Button>
-          <Button variant="primary" fullWidth className="max-w-xs">Full Width</Button>
-        </div>
-      </section>
-
       {/* Landing Page Preview */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Landing Page Buttons (on dark background)</h2>
@@ -82,6 +71,25 @@ const ButtonShowcase: React.FC = () => {
         </div>
       </section>
 
+      {/* Common Button Pairs */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-6">Common Button Combinations</h2>
+        <div className="space-y-4">
+          <div className="flex gap-4">
+            <Button variant="primary">Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+          </div>
+          <div className="flex gap-4">
+            <Button variant="success">Save</Button>
+            <Button variant="danger">Delete</Button>
+          </div>
+          <div className="flex gap-4">
+            <Button variant="outline">Cancel</Button>
+            <Button variant="ghost">Skip</Button>
+          </div>
+        </div>
+      </section>
+
       {/* Usage Instructions */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Usage Instructions</h2>
@@ -90,22 +98,22 @@ const ButtonShowcase: React.FC = () => {
           <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
 {`import { Button } from '@/components/ui';
 
-// Basic usage
+// Basic usage (all buttons have fixed width)
 <Button variant="primary">Click me</Button>
 
-// With size and props
-<Button variant="configurator" size="lg" onClick={handleClick}>
+// With size
+<Button variant="configurator" size="lg">
   Configure Now
 </Button>
 
-// Loading state
-<Button variant="success" loading>
-  Saving...
+// With click handler
+<Button variant="success" onClick={handleClick}>
+  Save Changes
 </Button>
 
-// Full width
-<Button variant="outline" fullWidth>
-  Full Width Button
+// Custom styling
+<Button variant="outline" className="custom-class">
+  Custom Button
 </Button>`}
           </pre>
         </div>

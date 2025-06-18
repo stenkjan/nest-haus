@@ -4,6 +4,37 @@
 
 ---
 
+## [51c1c19a11f31ba33185be17c34457b5e3517fac] - Wed Jun 18 17:58:11 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/api/pricing/calculate/route.ts
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GrundstuecksCheckBox.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/components/QuantitySelector.tsx
+- src/app/konfigurator/components/index.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/contexts/ConfiguratorPanelContext.tsx
+
+#### ⚙️ Backend Changes
+
+- prisma/seed.ts
+
+#### 📚 Documentation Changes
+
+- docs/PRICE_CONFIGURATION_OPTIMIZATION.md
+
+---
+
 ## [246814c9b6d96adf0aa5b8a1193077fef70dc215] - Wed Jun 18 15:29:45 2025 +0200
 
 **Author**: stenkjan  
