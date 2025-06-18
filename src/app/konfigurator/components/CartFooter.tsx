@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import { useConfiguratorStore } from '@/store/configuratorStore'
-import { useCartStore } from '@/store/cartStore'
+
 import { PriceUtils } from '../core/PriceUtils'
 
 interface CartFooterProps {
@@ -12,7 +12,6 @@ interface CartFooterProps {
 
 export default function CartFooter({ onReset }: CartFooterProps) {
   const { currentPrice, resetConfiguration } = useConfiguratorStore()
-  const { items } = useCartStore()
   const footerRef = useRef<HTMLDivElement>(null)
 
   // Set CSS variable for footer height (similar to navbar)

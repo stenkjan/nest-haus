@@ -7,9 +7,6 @@
 
 'use client'
 
-import React from 'react'
-import { PriceUtils } from '../core/PriceUtils'
-
 interface QuantitySelectorProps {
   label: string
   value: number

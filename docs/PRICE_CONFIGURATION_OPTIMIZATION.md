@@ -25,6 +25,10 @@ This document outlines the optimization changes made to the price configuration 
 **Issue**: ServerPriceCalculator class with database caching and multiple pricing paths
 **Fix**: Simplified to use unified PriceCalculator with constants
 
+### 6. ❌ **Import Path Resolution Issues**
+**Issue**: Build failing with `Module not found: Can't resolve '../../konfigurator/core/PriceCalculator'`
+**Fix**: Updated all import paths to use absolute imports with `@/` alias for better resolution
+
 ## Optimization Results
 
 ### ✅ **Performance Improvements**
@@ -38,6 +42,7 @@ This document outlines the optimization changes made to the price configuration 
 - **Reduced complexity**: Eliminated dual systems
 - **Better maintainability**: Single PriceCalculator class
 - **Proper folder structure**: Constants in `/src/constants/`
+- **Reliable imports**: Using absolute paths with `@/` alias
 
 ### ✅ **Rule Compliance**
 - ✅ Keep code slim and efficient
@@ -51,12 +56,17 @@ This document outlines the optimization changes made to the price configuration 
 
 ### Constants & Core Logic
 - `src/constants/configurator.ts` - Moved from root, contains exact original prices
-- `src/app/konfigurator/core/PriceCalculator.ts` - Enhanced with client-side breakdown method
-- `src/app/api/pricing/calculate/route.ts` - Simplified to use unified PriceCalculator
+- `src/app/konfigurator/core/PriceCalculator.ts` - Enhanced with client-side breakdown method, updated imports
+- `src/app/api/pricing/calculate/route.ts` - Simplified to use unified PriceCalculator, fixed import paths
 
 ### State Management
-- `src/store/configuratorStore.ts` - Optimized to use client-side calculations
+- `src/store/configuratorStore.ts` - Optimized to use client-side calculations, updated imports
 - `src/app/konfigurator/components/GrundstuecksCheckBox.tsx` - Updated import path
+
+### Import Path Fixes
+- All components now use `@/` alias for absolute imports
+- Removed relative path dependencies that caused build failures
+- Fixed ESLint unused variable warnings
 
 ### Files Removed
 - `constants/configurator.ts` - Moved to proper location
@@ -80,17 +90,30 @@ updateSelection() -> set state -> trigger API call -> debounced calculation -> u
 updateSelection() -> set state -> immediate client calculation -> instant price update
 ```
 
+### Import Path Structure
+```typescript
+// Before (problematic relative paths)
+import { PriceCalculator } from '../../konfigurator/core/PriceCalculator'
+import { GRUNDSTUECKSCHECK_PRICE } from '../../../constants/configurator'
+
+// After (reliable absolute paths)
+import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator'
+import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator'
+```
+
 ### API Usage Minimized
 - Price calculations: Client-side only
 - Session tracking: Background, non-blocking
 - Configuration saving: Only when explicitly requested
 
-## Testing
-- All prices match original configurator exactly
-- Instant price updates in UI
-- No unnecessary API calls during configuration
-- Session tracking still works for analytics
-- Backward compatibility maintained
+## Testing Results
+- ✅ Build successful (`npm run build`)
+- ✅ All prices match original configurator exactly
+- ✅ Instant price updates in UI
+- ✅ No unnecessary API calls during configuration
+- ✅ Session tracking still works for analytics
+- ✅ Backward compatibility maintained
+- ✅ ESLint compliance achieved
 
 ## Compliance Status
 ✅ **FULLY COMPLIANT** with all project rules:
@@ -99,4 +122,5 @@ updateSelection() -> set state -> immediate client calculation -> instant price 
 - Proper state management
 - No unnecessary API calls
 - Correct folder structure
-- Unified pricing logic 
+- Unified pricing logic
+- Reliable build process

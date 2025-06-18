@@ -36,7 +36,6 @@ export default function ConfiguratorShell({
     updateSelection, 
     configuration, 
     currentPrice,
-    isLoading,
     finalizeSession 
   } = useConfiguratorStore();
 

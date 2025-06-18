@@ -1,4 +1,4 @@
-import React, { createContext, useContext, RefObject } from 'react';
+import { createContext, useContext, RefObject } from 'react';
 
 export const ConfiguratorPanelContext = createContext<RefObject<HTMLDivElement | null> | null>(null);
 

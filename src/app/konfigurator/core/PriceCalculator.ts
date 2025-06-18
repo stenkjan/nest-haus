@@ -4,7 +4,7 @@
  * CLIENT-SIDE ONLY - for efficient state management without API calls
  */
 
-import { calculateCombinationPrice, GRUNDSTUECKSCHECK_PRICE } from '../../../constants/configurator'
+import { calculateCombinationPrice, GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator'
 
 interface SelectionOption {
   category: string

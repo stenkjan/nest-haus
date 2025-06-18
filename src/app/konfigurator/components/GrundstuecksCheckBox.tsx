@@ -8,7 +8,7 @@
 'use client'
 
 import React from 'react'
-import { GRUNDSTUECKSCHECK_PRICE } from '../../../constants/configurator'
+import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator'
 import { PriceUtils } from '../core/PriceUtils'
 
 interface GrundstuecksCheckBoxProps {

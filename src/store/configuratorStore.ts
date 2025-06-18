@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { PriceCalculator } from '../app/konfigurator/core/PriceCalculator'
+import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator'
 
 // Configuration types matching our backend
 export interface ConfigurationItem {

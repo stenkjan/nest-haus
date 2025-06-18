@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import { PriceCalculator } from '../../konfigurator/core/PriceCalculator'
+import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator'
 
 // Define types for price calculation
-interface Configuration {
+interface _Configuration {
   sessionId: string
   nest?: { category: string; value: string; name: string; price: number; quantity?: number; squareMeters?: number }
   gebaeudehuelle?: { category: string; value: string; name: string; price: number }
