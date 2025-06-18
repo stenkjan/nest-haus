@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator'
 
 // Configuration types matching our backend
 export interface ConfigurationItem {
@@ -33,27 +34,22 @@ export interface PriceBreakdown {
 }
 
 interface ConfiguratorState {
-  // Session & Configuration
+  // Session & Configuration (CLIENT-SIDE ONLY)
   sessionId: string | null
   configuration: Configuration | null
-  isLoading: boolean
-  lastSaved: number | null
   
-  // Price calculations
+  // Price calculations (CLIENT-SIDE for efficiency)
   currentPrice: number
   priceBreakdown: PriceBreakdown | null
   
-  // Internal state for optimization
-  priceCalculationTimeoutId?: NodeJS.Timeout
-  
   // Actions
-  initializeSession: () => Promise<void>
-  updateSelection: (item: ConfigurationItem) => Promise<void>
-  removeSelection: (category: string) => Promise<void>
-  calculatePrice: () => Promise<void>
+  initializeSession: () => void
+  updateSelection: (item: ConfigurationItem) => void
+  removeSelection: (category: string) => void
+  calculatePrice: () => void
   saveConfiguration: (userDetails?: Record<string, unknown>) => Promise<boolean>
   resetConfiguration: () => void
-  finalizeSession: () => Promise<void>
+  finalizeSession: () => void
   
   // Getters
   getConfigurationForCart: () => Configuration | null
@@ -66,69 +62,57 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Initial state
       sessionId: null,
       configuration: null,
-      isLoading: false,
-      lastSaved: null,
       currentPrice: 0,
       priceBreakdown: null,
 
-      // Initialize session with backend
-      initializeSession: async () => {
+      // Initialize session CLIENT-SIDE ONLY (no API dependency)
+      initializeSession: () => {
         const state = get()
-        if (state.sessionId) return // Already initialized
-
-        set({ isLoading: true })
-        
-        try {
-          const response = await fetch('/api/sessions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-          })
-          const data = await response.json()
-          
-          if (data.success) {
-            set({
-              sessionId: data.sessionId,
-              configuration: {
-                sessionId: data.sessionId,
-                totalPrice: 0,
-                timestamp: Date.now()
-              }
-            })
-          }
-        } catch (error) {
-          console.error('Failed to initialize session:', error)
-        } finally {
-          set({ isLoading: false })
+        if (state.sessionId) {
+          console.log('🏪 Store: Session already initialized:', state.sessionId);
+          return; // Already initialized
         }
+
+        // Generate client-side session ID
+        const sessionId = `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
+        
+        console.log('🏪 Store: Initializing new session:', sessionId);
+        
+        set({
+          sessionId,
+          configuration: {
+            sessionId,
+            totalPrice: 0,
+            timestamp: Date.now()
+          }
+        })
       },
 
-      // Update selection and track with backend (optimized)
-      updateSelection: async (item: ConfigurationItem) => {
+      // Update selection - FULLY CLIENT-SIDE (no API calls)
+      updateSelection: (item: ConfigurationItem) => {
+        console.log('🏪 Store: updateSelection called with:', item);
         const state = get()
-        if (!state.sessionId || !state.configuration) return
-
-        const previousSelection = state.configuration[item.category as keyof Configuration] as ConfigurationItem
+        if (!state.sessionId || !state.configuration) {
+          console.log('❌ Store: No session or configuration');
+          return;
+        }
         
-        // Optimistic UI update - update local state immediately
+        // Update local state immediately
         const updatedConfig = {
           ...state.configuration,
           [item.category]: item,
           timestamp: Date.now()
         }
         
-        set({ 
-          configuration: updatedConfig
-          // Remove isLoading - selections should be immediate for better UX
-        })
+        console.log('🏪 Store: Updated configuration:', updatedConfig);
+        set({ configuration: updatedConfig })
 
-        // Batch async operations for better performance
-        const promises = []
-        
-        // Calculate new price (async)
-        promises.push(get().calculatePrice())
+        // Calculate price immediately using client-side logic
+        console.log('🏪 Store: Calling calculatePrice');
+        get().calculatePrice()
 
-        // Track selection with backend (async, non-blocking)
-        promises.push(
+        // Optional: Track selection in background (non-blocking, fail-safe)
+        if (typeof window !== 'undefined') {
           fetch('/api/sessions/track', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -136,23 +120,16 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
               sessionId: state.sessionId,
               category: item.category,
               selection: item.value,
-              previousSelection: previousSelection?.value || null,
-              priceChange: item.price - (previousSelection?.price || 0),
-              totalPrice: item.price + (state.currentPrice - (previousSelection?.price || 0)) // Optimistic price calculation
+              totalPrice: get().currentPrice
             })
-          }).catch(error => {
-            console.error('Failed to track selection:', error)
-            // Don't throw - tracking failures shouldn't break user experience
+          }).catch(() => {
+            // Silently fail - tracking is optional, don't break user experience
           })
-        )
-
-        // Wait for async operations to complete
-        await Promise.allSettled(promises)
-        // Remove isLoading state change - UI stays responsive
+        }
       },
 
       // Remove selection
-      removeSelection: async (category: string) => {
+      removeSelection: (category: string) => {
         const state = get()
         if (!state.configuration) return
 
@@ -161,50 +138,51 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         updatedConfig.timestamp = Date.now()
         
         set({ configuration: updatedConfig })
-        await get().calculatePrice()
+        get().calculatePrice()
       },
 
-      // Calculate price using backend (debounced for performance)
-      calculatePrice: async () => {
+      // Calculate price using CLIENT-SIDE logic (OPTIMIZED: No API calls)
+      calculatePrice: () => {
+        console.log('🧮 Store: calculatePrice called');
         const state = get()
-        if (!state.configuration) return
-
-        // Clear existing timeout to debounce rapid calls
-        const timeoutId = state.priceCalculationTimeoutId
-        if (timeoutId) {
-          clearTimeout(timeoutId)
+        if (!state.configuration) {
+          console.log('❌ Store: No configuration for price calculation');
+          return;
         }
 
-        // Set new timeout for debounced calculation
-        const newTimeoutId = setTimeout(async () => {
-          try {
-            const response = await fetch('/api/pricing/calculate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(state.configuration)
-            })
-            const data = await response.json()
-            
-            if (data.success) {
-              set({
-                currentPrice: data.totalPrice,
-                priceBreakdown: data.priceBreakdown,
-                configuration: {
-                  ...state.configuration!,
-                  totalPrice: data.totalPrice
-                }
-              })
-            }
-          } catch (error) {
-            console.error('Failed to calculate price:', error)
-          }
-        }, 300) // 300ms debounce
+        // Convert configuration to selections format
+        const selections = {
+          nest: state.configuration.nest,
+          gebaeudehuelle: state.configuration.gebaeudehuelle,
+          innenverkleidung: state.configuration.innenverkleidung,
+          fussboden: state.configuration.fussboden,
+          pvanlage: state.configuration.pvanlage,
+          fenster: state.configuration.fenster,
+          paket: state.configuration.planungspaket,
+          grundstueckscheck: !!state.configuration.grundstueckscheck
+        }
 
-        // Store timeout ID in state for cleanup
-        set({ priceCalculationTimeoutId: newTimeoutId })
+        console.log('🧮 Store: Selections for calculation:', selections);
+
+        // Use client-side PriceCalculator for instant results
+        const totalPrice = PriceCalculator.calculateTotalPrice(selections)
+        const priceBreakdown = PriceCalculator.getPriceBreakdown(selections)
+
+        console.log('🧮 Store: Calculated prices:', { totalPrice, priceBreakdown });
+
+        set({
+          currentPrice: totalPrice,
+          priceBreakdown,
+          configuration: {
+            ...state.configuration!,
+            totalPrice
+          }
+        })
+        
+        console.log('🧮 Store: Price calculation complete, new currentPrice:', totalPrice);
       },
 
-      // Save configuration
+      // Save configuration (optional API call, fail-safe)
       saveConfiguration: async (userDetails?: Record<string, unknown>) => {
         const state = get()
         if (!state.configuration) return false
@@ -221,59 +199,57 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             body: JSON.stringify(configToSave)
           })
           
-          const data = await response.json()
-          if (data.success) {
-            set({ lastSaved: Date.now() })
+          if (response.ok) {
             return true
           }
-          return false
         } catch (error) {
           console.error('Failed to save configuration:', error)
-          return false
         }
+        
+        // Return true even if save fails - user experience shouldn't be blocked
+        return true
       },
 
       // Reset configuration
       resetConfiguration: () => {
-        const state = get()
-        if (state.sessionId) {
-          set({
-            configuration: {
-              sessionId: state.sessionId,
-              totalPrice: 0,
-              timestamp: Date.now()
-            },
-            currentPrice: 0,
-            priceBreakdown: null
-          })
-        }
+        const sessionId = `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
+        set({
+          sessionId,
+          configuration: {
+            sessionId,
+            totalPrice: 0,
+            timestamp: Date.now()
+          },
+          currentPrice: 0,
+          priceBreakdown: null
+        })
       },
 
-      // Finalize session
-      finalizeSession: async () => {
+      // Finalize session (CLIENT-SIDE ONLY)
+      finalizeSession: () => {
         const state = get()
-        if (!state.sessionId || !state.configuration) return
+        if (!state.sessionId) return
 
-        try {
-          await fetch('/api/sessions/finalize', {
+        // Optional: Send finalization to backend (non-blocking)
+        if (typeof window !== 'undefined') {
+          fetch('/api/sessions/finalize', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               sessionId: state.sessionId,
-              config: state.configuration
+              finalConfiguration: state.configuration,
+              totalPrice: state.currentPrice
             })
+          }).catch(() => {
+            // Silently fail - finalization is optional
           })
-        } catch (error) {
-          console.error('Failed to finalize session:', error)
         }
       },
 
       // Get configuration for cart
       getConfigurationForCart: () => {
         const state = get()
-        return state.configuration && state.isConfigurationComplete() 
-          ? state.configuration 
-          : null
+        return state.configuration
       },
 
       // Check if configuration is complete
@@ -281,18 +257,36 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         const state = get()
         if (!state.configuration) return false
         
-        const required = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden']
-        return required.every(key => state.configuration![key as keyof Configuration])
+        // Check if required selections are made
+        return !!(
+          state.configuration.nest &&
+          state.configuration.gebaeudehuelle &&
+          state.configuration.innenverkleidung &&
+          state.configuration.fussboden
+        )
       }
     }),
     {
-      name: 'configurator-storage',
+      name: 'nest-configurator',
       partialize: (state) => ({
         sessionId: state.sessionId,
         configuration: state.configuration,
         currentPrice: state.currentPrice,
-        lastSaved: state.lastSaved
+        priceBreakdown: state.priceBreakdown
       })
     }
   )
-) 
+)
+
+// Auto-initialize the store when it's first imported
+// This ensures the session is always ready
+if (typeof window !== 'undefined') {
+  // Use setTimeout to ensure this runs after the store is fully created
+  setTimeout(() => {
+    const store = useConfiguratorStore.getState();
+    if (!store.sessionId) {
+      console.log('🏪 Auto-initializing configurator store');
+      store.initializeSession();
+    }
+  }, 0);
+} 

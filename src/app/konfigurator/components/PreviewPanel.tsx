@@ -48,7 +48,6 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     if (!isMobile) return
 
     const calculatePreviewHeight = () => {
-      const screenWidth = window.innerWidth
       const screenHeight = window.innerHeight
       
       // For iOS, account for address bar and use viewport height with clamp

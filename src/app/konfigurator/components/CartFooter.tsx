@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import { useConfiguratorStore } from '@/store/configuratorStore'
-import { useCartStore } from '@/store/cartStore'
+
 import { PriceUtils } from '../core/PriceUtils'
 
 interface CartFooterProps {
@@ -12,7 +12,6 @@ interface CartFooterProps {
 
 export default function CartFooter({ onReset }: CartFooterProps) {
   const { currentPrice, resetConfiguration } = useConfiguratorStore()
-  const { items } = useCartStore()
   const footerRef = useRef<HTMLDivElement>(null)
 
   // Set CSS variable for footer height (similar to navbar)
@@ -59,7 +58,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
         <div className="flex items-center gap-[clamp(0.75rem,2vw,1.5rem)]">
           {/* Price and monthly rate */}
           <div className="text-right">
-            <p className="font-semibold leading-tight text-[clamp(0.875rem,1.8vw,1.25rem)]">
+            <p className="font-semibold leading-tight text-[clamp(0.875rem,1.8vw,1.25rem)] text-black">
               {PriceUtils.formatPrice(currentPrice)}
             </p>
             <p className="text-[clamp(0.625rem,1vw,0.75rem)] text-gray-500 leading-tight">
