@@ -37,7 +37,12 @@ export class PriceCalculator {
     innenverkleidung: string,
     fussboden: string
   ): number {
-    return calculateCombinationPrice(nestType, gebaeudehuelle, innenverkleidung, fussboden)
+    console.log('🔢 PriceCalculator: calculateCombinationPrice called with:', { nestType, gebaeudehuelle, innenverkleidung, fussboden });
+    
+    const price = calculateCombinationPrice(nestType, gebaeudehuelle, innenverkleidung, fussboden);
+    console.log('🔢 PriceCalculator: Combination price result:', price);
+    
+    return price;
   }
 
   /**
@@ -45,42 +50,62 @@ export class PriceCalculator {
    * CLIENT-SIDE calculation to avoid unnecessary API calls
    */
   static calculateTotalPrice(selections: Selections): number {
+    console.log('💰 PriceCalculator: calculateTotalPrice called with:', selections);
+    
     if (!selections.nest || !selections.gebaeudehuelle || !selections.innenverkleidung || !selections.fussboden) {
+      console.log('💰 PriceCalculator: Missing required selections');
       return 0
     }
 
-    // Calculate the combination-based total price
-    const combinationPrice = this.calculateCombinationPrice(
-      selections.nest.value,
-      selections.gebaeudehuelle.value,
-      selections.innenverkleidung.value,
-      selections.fussboden.value
-    )
+    try {
+      // Calculate the combination-based total price
+      const combinationPrice = this.calculateCombinationPrice(
+        selections.nest.value,
+        selections.gebaeudehuelle.value,
+        selections.innenverkleidung.value,
+        selections.fussboden.value
+      )
+      
+      console.log('💰 PriceCalculator: Combination price:', combinationPrice);
 
-    // Add other prices
-    let additionalPrice = 0
+      // Add other prices
+      let additionalPrice = 0
 
-    // Add PV price
-    if (selections.pvanlage && selections.pvanlage.quantity) {
-      additionalPrice += selections.pvanlage.quantity * (selections.pvanlage.price || 0)
+      // Add PV price
+      if (selections.pvanlage && selections.pvanlage.quantity) {
+        const pvPrice = selections.pvanlage.quantity * (selections.pvanlage.price || 0);
+        additionalPrice += pvPrice;
+        console.log('💰 PriceCalculator: PV price added:', pvPrice);
+      }
+
+      // Add window price
+      if (selections.fenster && selections.fenster.squareMeters) {
+        const fensterPrice = selections.fenster.squareMeters * (selections.fenster.price || 0);
+        additionalPrice += fensterPrice;
+        console.log('💰 PriceCalculator: Fenster price added:', fensterPrice);
+      }
+
+      // Add planning package price
+      if (selections.paket) {
+        const paketPrice = selections.paket.price || 0;
+        additionalPrice += paketPrice;
+        console.log('💰 PriceCalculator: Paket price added:', paketPrice);
+      }
+
+      // Add Grundstückscheck price if selected
+      if (selections.grundstueckscheck) {
+        additionalPrice += GRUNDSTUECKSCHECK_PRICE;
+        console.log('💰 PriceCalculator: Grundstückscheck price added:', GRUNDSTUECKSCHECK_PRICE);
+      }
+
+      const totalPrice = combinationPrice + additionalPrice;
+      console.log('💰 PriceCalculator: Final total price:', totalPrice);
+      
+      return totalPrice;
+    } catch (error) {
+      console.error('💰 PriceCalculator: Error calculating price:', error);
+      return 0;
     }
-
-    // Add window price
-    if (selections.fenster && selections.fenster.squareMeters) {
-      additionalPrice += selections.fenster.squareMeters * (selections.fenster.price || 0)
-    }
-
-    // Add planning package price
-    if (selections.paket) {
-      additionalPrice += selections.paket.price || 0
-    }
-
-    // Add Grundstückscheck price if selected
-    if (selections.grundstueckscheck) {
-      additionalPrice += GRUNDSTUECKSCHECK_PRICE
-    }
-
-    return combinationPrice + additionalPrice
   }
 
   /**
