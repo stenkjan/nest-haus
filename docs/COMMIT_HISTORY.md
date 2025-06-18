@@ -4,6 +4,41 @@
 
 ---
 
+## [55c63d2265207f3fe0003853fb77fe6e417e2290] - Tue Jun 17 18:08:10 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [2798167d48f922e1da853a3862a465e118a12744] - Tue Jun 17 17:11:13 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [1a747995957639805176567dcfc614469a0b1899] - Tue Jun 17 13:52:26 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Update .gitignore to include /public/images/ directory to prevent tracking of image files. This change helps maintain a cleaner repository by excluding unnecessary assets.`
+
+### Changes Analysis
+
+---
+
 ## [7fe1ac3a5b07a3b14656962ba5ac28fb2422e404] - Tue Jun 17 13:37:44 2025 +0200
 
 **Author**: stenkjan  
