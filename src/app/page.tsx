@@ -1,12 +1,12 @@
-import Image from "next/image";
 import { Button } from "@/components/ui";
+import { ServerBlobImage } from "@/components/images";
+import { IMAGES } from "@/constants/images";
 
-// Sample content for the 8 sections
+// Sample content for the 8 sections - using IMAGES constants
 const sections = [
   {
     id: 1,
-    image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    mobileImage: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche-mobile.png",
+    imagePath: IMAGES.hero.nestHaus1,
     h1: "Dein Nest Haus",
     h3: "Die Welt ist dein Zuhause",
     button1: "Entdecken",
@@ -14,8 +14,7 @@ const sections = [
   },
   {
     id: 2,
-    image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    mobileImage: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten-mobile.png",
+    imagePath: IMAGES.hero.nestHaus2,
     h1: "Wohnen ohne Grenzen",
     h3: "Ein Haus das mit dir geht",
     button1: "Entdecken",
@@ -23,8 +22,7 @@ const sections = [
   },
   {
     id: 3,
-    image: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    mobileImage: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche-mobile.png",
+    imagePath: IMAGES.hero.nestHaus3,
     h1: "Vogelperspektive",
     h3: "3 Gebäude Holzlattung Lärche",
     button1: "Entdecken",
@@ -32,8 +30,7 @@ const sections = [
   },
   {
     id: 4,
-    image: "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
-    mobileImage: "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade-mobile.png",
+    imagePath: IMAGES.hero.nestHaus4,
     h1: "Winter Design",
     h3: "2 Gebäude schwarze Trapezblech Fassade",
     button1: "Entdecken",
@@ -41,8 +38,7 @@ const sections = [
   },
   {
     id: 5,
-    image: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
-    mobileImage: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten-mobile.png",
+    imagePath: IMAGES.hero.nestHaus5,
     h1: "Wald Ansicht",
     h3: "6 Module schwarze Fassadenplatten",
     button1: "Entdecken",
@@ -50,8 +46,7 @@ const sections = [
   },
   {
     id: 6,
-    image: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
-    mobileImage: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche-mobile.png",
+    imagePath: IMAGES.hero.nestHaus6,
     h1: "Mediterrane Aussicht",
     h3: "4 Module am Meer mit Holzlattung",
     button1: "Entdecken",
@@ -59,8 +54,7 @@ const sections = [
   },
   {
     id: 7,
-    image: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
-    mobileImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-mobile.png",
+    imagePath: IMAGES.hero.nestHaus7,
     h1: "Innenperspektive",
     h3: "Kalkstein Holz Verglasung",
     button1: "Entdecken",
@@ -68,8 +62,7 @@ const sections = [
   },
   {
     id: 8,
-    image: "/images/8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten.jpg",
-    mobileImage: "/images/8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten-mobile.png",
+    imagePath: IMAGES.hero.nestHaus8,
     h1: "Elegante Innenräume",
     h3: "Schwarze Steinplatten Design",
     button1: "Entdecken",
@@ -89,30 +82,33 @@ export default function Home() {
     <div className="w-full bg-white">
       {sections.map((section) => (
         <section key={section.id} className="relative w-full overflow-hidden mb-2.5">
-          {/* Background Image - Desktop (16:9 aspect ratio) */}
-          <div className="hidden md:block relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
-            <Image
-              src={section.image}
+          
+          {/* Background Image - Desktop (sm breakpoint: ≥640px) - 16:9 aspect ratio */}
+          <div className="hidden sm:block relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
+            <ServerBlobImage
+              path={section.imagePath}
               alt={section.h1}
               fill
               className="object-cover"
               style={landingImageStyle}
+              critical={section.id === 1}
               unoptimized
-              priority={section.id === 1}
             />
           </div>
           
-          {/* Background Image - Mobile (natural aspect ratio) */}
-          <div className="block md:hidden relative w-full overflow-hidden">
-            <Image
-              src={section.mobileImage}
+          {/* Background Image - Mobile (<640px) - Taller aspect ratio for mobile screens */}
+          <div className="block sm:hidden relative w-full overflow-hidden" style={{ 
+            aspectRatio: '4/5' // Mobile gets 4:5 aspect ratio (taller than 16:9)
+          }}>
+            <ServerBlobImage
+              path={`${section.imagePath}-mobile`}
+              fallbackSrc={section.imagePath} // Fallback to desktop image if mobile doesn't exist
               alt={section.h1}
-              width={800}
-              height={1200}
-              className="w-full h-auto object-cover"
+              fill
+              className="object-cover"
               style={landingImageStyle}
+              critical={section.id === 1}
               unoptimized
-              priority={section.id === 1}
             />
           </div>
           

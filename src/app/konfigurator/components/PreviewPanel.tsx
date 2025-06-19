@@ -8,7 +8,8 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
+import { ClientBlobImage } from '@/components/images'
+import { IMAGES } from '@/constants/images'
 import { useConfiguratorStore } from '@/store/configuratorStore'
 import type { ViewType } from '../types/configurator.types'
 
@@ -71,23 +72,33 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     }
   }, [isMobile, isIOSMobile])
 
-  // Get current image path based on selections
+  // Get current image path based on selections using IMAGES constants
   const getImagePath = () => {
-    if (!configuration) return '/images/configurator/default.jpg'
+    if (!configuration) return IMAGES.configurations.nest75
     
     // Build image path based on current selections and view
-    const nest = configuration.nest?.value || 'nest80'
-    const gebaeude = configuration.gebaeudehuelle?.value || 'trapezblech'
+    const nest = configuration.nest?.value || 'nest75'
+    const gebaeude = configuration.gebaeudehuelle?.value || 'holzlattung'
+    const innenverkleidung = configuration.innenverkleidung?.value || 'holznatur'
+    const boden = configuration.boden?.value || 'granit'
     
-    // Map view types to image suffixes
-    const viewSuffix = {
-      exterior: 'exterior',
-      interior: 'interior', 
-      pv: 'pv',
-      fenster: 'fenster'
-    }[activeView] || 'exterior'
+    // Map view types to appropriate image keys
+    if (activeView === 'interior') {
+      // For interior view, use material combinations
+      const materialKey = `${gebaeude}_${innenverkleidung}_${boden}` as keyof typeof IMAGES.configurations
+      return IMAGES.configurations[materialKey] || IMAGES.configurations.interiorDefault
+    } else if (activeView === 'exterior') {
+      // For exterior view, use nest size + gebaeude combination
+      const exteriorKey = `${nest}_${gebaeude}` as keyof typeof IMAGES.configurations
+      return IMAGES.configurations[exteriorKey] || IMAGES.configurations[nest as keyof typeof IMAGES.configurations]
+    } else if (activeView === 'fenster') {
+      // Use stirnseite view for fenster
+      const stirnseiteKey = `${gebaeude.toUpperCase()}` as keyof typeof IMAGES.configurations
+      return IMAGES.configurations[stirnseiteKey] || IMAGES.configurations.HOLZFASSADE
+    }
     
-    return `/images/configurator/${nest}_${gebaeude}_${viewSuffix}.jpg`
+    // Default fallback
+    return IMAGES.configurations.nest75
   }
 
   // Get available views based on current selections
@@ -154,12 +165,14 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     >
       {/* Image Container */}
       <div className="flex-1 relative overflow-hidden">
-        <Image
-          src={getImagePath()}
+        <ClientBlobImage
+          path={getImagePath()}
           alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || 'Nest'}`}
           fill
           className="object-cover"
-          priority
+          enableCache={true}
+          enableMobileDetection={false}
+          showLoadingSpinner={false}
           sizes={isMobile ? "100vw" : "70vw"}
           quality={85}
         />
