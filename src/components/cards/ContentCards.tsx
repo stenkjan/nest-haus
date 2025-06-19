@@ -274,12 +274,12 @@ export default function ContentCards({
                     </div>
 
                     {/* Image Content - Right Two-Thirds */}
-                    <div className="w-2/3 relative overflow-hidden">
+                    <div className="w-2/3 relative overflow-hidden p-[15px]">
                       <motion.div
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
-                        className="relative w-full h-full"
+                        className="relative w-full h-full rounded-3xl overflow-hidden"
                       >
                         <Image
                           src={card.image}
@@ -314,12 +314,12 @@ export default function ContentCards({
                     </div>
 
                     {/* Image Content - Right Half */}
-                    <div className="w-1/2 relative overflow-hidden">
+                    <div className="w-1/2 relative overflow-hidden p-[15px]">
                       <motion.div
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
-                        className="relative w-full h-full"
+                        className="relative w-full h-full rounded-3xl overflow-hidden"
                       >
                         <Image
                           src={card.image}
@@ -354,12 +354,12 @@ export default function ContentCards({
                     </div>
 
                     {/* Image Content - Bottom Half */}
-                    <div className="h-1/2 relative overflow-hidden">
+                    <div className="h-1/2 relative overflow-hidden p-[15px]">
                       <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
-                        className="relative w-full h-full"
+                        className="relative w-full h-full rounded-3xl overflow-hidden"
                       >
                         <Image
                           src={card.image}
