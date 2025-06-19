@@ -5,7 +5,7 @@ import { Dialog } from '@/components/ui/Dialog';
 import ContentCards from './ContentCards';
 
 interface ContentCardsLightboxProps {
-  variant?: 'normal' | 'wide';
+  variant?: 'normal' | 'wide' | 'extra-wide';
   title?: string;
   subtitle?: string;
   triggerClassName?: string;
@@ -47,8 +47,9 @@ export default function ContentCardsLightbox({
             <ContentCards 
               variant={variant}
               title={title}
-              subtitle={subtitle}
+              subtitle=""
               maxWidth={false}
+              showInstructions={false}
             />
           </div>
         </div>
