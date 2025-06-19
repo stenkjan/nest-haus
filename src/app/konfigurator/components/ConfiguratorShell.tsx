@@ -105,34 +105,21 @@ export default function ConfiguratorShell({
 
   // Handle regular selection
   const handleSelection = async (categoryId: string, optionId: string) => {
-    console.log('🔧 Selection made:', { categoryId, optionId });
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
     
     if (option && category) {
-      console.log('🔧 Found option:', { name: option.name, price: option.price.amount });
-      
       // Prevent page jumping by using requestAnimationFrame
       requestAnimationFrame(() => {
         // Update selection without showing loading UI
-        const selectionItem = {
+        updateSelection({
           category: categoryId,
           value: optionId,
           name: option.name,
           price: option.price.amount || 0,
           description: option.description
-        };
-        
-        console.log('🔧 Updating selection with:', selectionItem);
-        updateSelection(selectionItem);
-        
-        // Log current price after update
-        setTimeout(() => {
-          console.log('🔧 Current price after update:', currentPrice);
-        }, 100);
+        });
       });
-    } else {
-      console.log('❌ Option or category not found:', { categoryId, optionId, category: !!category, option: !!option });
     }
   };
 
@@ -235,8 +222,7 @@ export default function ConfiguratorShell({
   };
 
   // Handle info box clicks (could open dialogs)
-  const handleInfoClick = (infoKey: string) => {
-    console.log('Info clicked for:', infoKey);
+  const handleInfoClick = (_infoKey: string) => {
     // TODO: Implement dialog opening logic
   };
 

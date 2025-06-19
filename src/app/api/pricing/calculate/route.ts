@@ -18,7 +18,7 @@ interface _Configuration {
 }
 
 // Simple price calculation without PriceCalculator dependency
-function calculateSimplePrice(config: any): number {
+function calculateSimplePrice(config: _Configuration): number {
   if (!config.nest) return 0;
   
   // Use combination logic inline to avoid import conflicts
@@ -49,7 +49,7 @@ function calculateSimplePrice(config: any): number {
   }
   
   if (config.grundstueckscheck) {
-    totalPrice += 990; // GRUNDSTUECKSCHECK_PRICE
+    totalPrice += 490; // GRUNDSTUECKSCHECK_PRICE (corrected from 990)
   }
   
   return totalPrice;

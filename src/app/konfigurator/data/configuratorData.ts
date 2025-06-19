@@ -190,19 +190,19 @@ export const configuratorData: CategoryData[] = [
         id: 'pvc_fenster',
         name: 'PVC Fenster',
         description: 'RAL 9016 - Kunststoff',
-        price: { type: 'upgrade', amount: 290, monthly: 2 }
+        price: { type: 'upgrade', amount: 280, monthly: 2 }
       },
       {
         id: 'fichte',
         name: 'Fichte',
         description: 'Holzfenster Lärche',
-        price: { type: 'upgrade', amount: 600, monthly: 3 }
+        price: { type: 'upgrade', amount: 400, monthly: 3 }
       },
       {
         id: 'steirische_eiche',
         name: 'Steirische Eiche',
         description: 'RAL 9005 - Tiefschwarz',
-        price: { type: 'upgrade', amount: 560, monthly: 3 }
+        price: { type: 'upgrade', amount: 550, monthly: 3 }
       },
       {
         id: 'aluminium',
@@ -225,19 +225,19 @@ export const configuratorData: CategoryData[] = [
         id: 'basis',
         name: 'Planung Basis',
         description: 'Einreichplanung (Baumgenehmigung)\nFachplanung und Baustützung',
-        price: { type: 'upgrade', amount: 700, monthly: 26 }
+        price: { type: 'upgrade', amount: 8900, monthly: 47 }
       },
       {
         id: 'plus',
         name: 'Planung Plus',
         description: 'Einreichplanung Basis\nPlus HVLS-Planung (Gebäudetechnik)',
-        price: { type: 'upgrade', amount: 700, monthly: 36 }
+        price: { type: 'upgrade', amount: 13900, monthly: 73 }
       },
       {
         id: 'pro',
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Baustüberwachung (Modalbestandschef)',
-        price: { type: 'upgrade', amount: 700, monthly: 52 }
+        price: { type: 'upgrade', amount: 18900, monthly: 99 }
       }
     ]
   },

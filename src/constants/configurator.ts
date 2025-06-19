@@ -133,21 +133,21 @@ export const FENSTER_OPTIONS = [
     value: 'pvc_fenster',
     name: 'PVC Fenster',
     description: 'RAL 9016 - Kunststoff',
-    price: 290,
+    price: 280,
     monthly: 2
   },
   {
     value: 'fichte',
     name: 'Fichte',
     description: 'Holzfenster Lärche',
-    price: 600,
+    price: 400,
     monthly: 3
   },
   {
     value: 'steirische_eiche',
     name: 'Steirische Eiche',
     description: 'RAL 9005 - Tiefschwarz',
-    price: 560,
+    price: 550,
     monthly: 3
   },
   {
@@ -164,22 +164,22 @@ export const PLANNING_PACKAGES = [
     value: 'basis',
     name: 'Planung Basis',
     description: 'Einreichplanung (Baumgenehmigung)\nFachplanung und Baustützung',
-    price: 700,
-    monthly: 26
+    price: 8900,
+    monthly: 47
   },
   {
     value: 'plus',
     name: 'Planung Plus',
     description: 'Einreichplanung Basis\nPlus HVLS-Planung (Gebäudetechnik)',
-    price: 700,
-    monthly: 36
+    price: 13900,
+    monthly: 73
   },
   {
     value: 'pro',
     name: 'Planung Pro',
     description: 'Inkl. Planungspaket Plus\nPlus Baustüberwachung (Modalbestandschef)',
-    price: 700,
-    monthly: 52
+    price: 18900,
+    monthly: 99
   }
 ]
 
@@ -538,7 +538,7 @@ export const COMBINATION_PRICES: Record<string, Record<string, Record<string, Re
 }
 
 // Grundstückscheck price
-export const GRUNDSTUECKSCHECK_PRICE = 990
+export const GRUNDSTUECKSCHECK_PRICE = 490
 
 // Utility function to calculate combination price - EXACT logic from old configurator
 export function calculateCombinationPrice(
@@ -550,9 +550,11 @@ export function calculateCombinationPrice(
   return COMBINATION_PRICES[nestType]?.[gebaeudehuelle]?.[innenverkleidung]?.[fussboden] || 0
 }
 
-// Monthly payment calculation - EXACT logic from old configurator
+// Monthly payment calculation - Updated based on Excel data (3-month Euribor + rate add-on)
 export function calculateMonthlyPayment(totalPrice: number, months: number = 240): string {
-  const interestRate = 0.035 / 12 // 3.5% annual rate
+  // Excel shows: 3-month Euribor (1.2%) + rate add-on
+  // Using conservative 3.5% total rate (1.2% + 2.3% markup) for accuracy
+  const interestRate = 0.035 / 12 // 3.5% annual rate (Euribor + markup)
   const monthlyPayment = totalPrice * (interestRate * Math.pow(1 + interestRate, months)) / 
                         (Math.pow(1 + interestRate, months) - 1)
   

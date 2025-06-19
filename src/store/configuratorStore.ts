@@ -69,14 +69,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       initializeSession: () => {
         const state = get()
         if (state.sessionId) {
-          console.log('🏪 Store: Session already initialized:', state.sessionId);
           return; // Already initialized
         }
 
         // Generate client-side session ID
         const sessionId = `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
-        
-        console.log('🏪 Store: Initializing new session:', sessionId);
         
         set({
           sessionId,
@@ -90,10 +87,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Update selection - FULLY CLIENT-SIDE (no API calls)
       updateSelection: (item: ConfigurationItem) => {
-        console.log('🏪 Store: updateSelection called with:', item);
         const state = get()
         if (!state.sessionId || !state.configuration) {
-          console.log('❌ Store: No session or configuration');
           return;
         }
         
@@ -104,11 +99,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           timestamp: Date.now()
         }
         
-        console.log('🏪 Store: Updated configuration:', updatedConfig);
         set({ configuration: updatedConfig })
 
         // Calculate price immediately using client-side logic
-        console.log('🏪 Store: Calling calculatePrice');
         get().calculatePrice()
 
         // Optional: Track selection in background (non-blocking, fail-safe)
@@ -143,10 +136,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Calculate price using CLIENT-SIDE logic (OPTIMIZED: No API calls)
       calculatePrice: () => {
-        console.log('🧮 Store: calculatePrice called');
         const state = get()
         if (!state.configuration) {
-          console.log('❌ Store: No configuration for price calculation');
           return;
         }
 
@@ -162,13 +153,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           grundstueckscheck: !!state.configuration.grundstueckscheck
         }
 
-        console.log('🧮 Store: Selections for calculation:', selections);
-
         // Use client-side PriceCalculator for instant results
         const totalPrice = PriceCalculator.calculateTotalPrice(selections)
         const priceBreakdown = PriceCalculator.getPriceBreakdown(selections)
-
-        console.log('🧮 Store: Calculated prices:', { totalPrice, priceBreakdown });
 
         set({
           currentPrice: totalPrice,
@@ -178,8 +165,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             totalPrice
           }
         })
-        
-        console.log('🧮 Store: Price calculation complete, new currentPrice:', totalPrice);
       },
 
       // Save configuration (optional API call, fail-safe)
@@ -276,17 +261,4 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       })
     }
   )
-)
-
-// Auto-initialize the store when it's first imported
-// This ensures the session is always ready
-if (typeof window !== 'undefined') {
-  // Use setTimeout to ensure this runs after the store is fully created
-  setTimeout(() => {
-    const store = useConfiguratorStore.getState();
-    if (!store.sessionId) {
-      console.log('🏪 Auto-initializing configurator store');
-      store.initializeSession();
-    }
-  }, 0);
-} 
+) 
