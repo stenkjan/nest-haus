@@ -28,7 +28,7 @@ const cardData: CardData[] = [
     subtitle: "Supercharged by M2",
     description: "The ultimate iPad experience with the most advanced technology.",
     image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-blue-50 to-indigo-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 2,
@@ -36,7 +36,7 @@ const cardData: CardData[] = [
     subtitle: "15-inch",
     description: "Impressively big. Impossibly thin. M2 chip brings speed and efficiency.",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    backgroundColor: "bg-gradient-to-br from-gray-50 to-slate-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 3,
@@ -44,7 +44,7 @@ const cardData: CardData[] = [
     subtitle: "Titanium",
     description: "Forged in titanium with the powerful A17 Pro chip.",
     image: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-purple-50 to-pink-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 4,
@@ -52,7 +52,7 @@ const cardData: CardData[] = [
     subtitle: "Series 9",
     description: "Your essential companion for a healthy life.",
     image: "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
-    backgroundColor: "bg-gradient-to-br from-green-50 to-emerald-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 5,
@@ -60,7 +60,7 @@ const cardData: CardData[] = [
     subtitle: "2nd Generation",
     description: "Adaptive Audio automatically tunes the noise control.",
     image: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
-    backgroundColor: "bg-gradient-to-br from-orange-50 to-red-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 6,
@@ -68,7 +68,7 @@ const cardData: CardData[] = [
     subtitle: "M2 Ultra",
     description: "Desktop-class performance that fits under most displays.",
     image: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-teal-50 to-cyan-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 7,
@@ -76,7 +76,7 @@ const cardData: CardData[] = [
     subtitle: "M2 Ultra",
     description: "The most powerful Mac ever built for extreme workloads.",
     image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-amber-50 to-yellow-100"
+    backgroundColor: "#F4F4F4"
   }
 ];
 
@@ -246,8 +246,8 @@ export default function ContentCards({
             {displayCards.map((card, index) => (
               <motion.div
                 key={card.id}
-                className={`flex-shrink-0 ${card.backgroundColor} rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${isWide || isExtraWide ? 'flex' : ''}`}
-                style={{ width: cardWidth, height: 480 }}
+                className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${isWide || isExtraWide ? 'flex' : ''}`}
+                style={{ width: cardWidth, height: 480, backgroundColor: card.backgroundColor }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
