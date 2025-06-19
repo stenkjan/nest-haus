@@ -116,10 +116,10 @@ export default function Home() {
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-start px-8 pt-[5vh]">
             
             <div className="text-center">
-              <h1 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-0 sm:mb-0.5 md:mb-1 lg:mb-1.5">
+              <h1 className="font-bold text-white text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">
                 {section.h1}
               </h1>
-              <h3 className="text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-2 sm:mb-3 md:mb-4 lg:mb-5">
+              <h3 className="text-white text-xl lg:text-2xl xl:text-3xl mb-4 lg:mb-5">
                 {section.h3}
               </h3>
             </div>

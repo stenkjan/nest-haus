@@ -27,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
   children, 
   ...props 
 }) => {
-  const baseStyles = 'rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40';
+  const baseStyles = 'rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-32 lg:w-36 xl:w-40';
   
   const variants = {
     // Standard Buttons - all with fixed width
@@ -48,7 +48,7 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const sizes = {
-    xs: 'px-2 py-1 sm:py-1.5 text-xs sm:text-xs md:text-sm lg:text-sm xl:text-base',
+    xs: 'px-2 py-1.5 text-sm xl:text-base',
     sm: 'px-3 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg', 
     md: 'px-4 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl',
     lg: 'px-6 py-1.5 sm:py-2 md:py-2.5 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl',
