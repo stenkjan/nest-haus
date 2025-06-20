@@ -1,5 +1,5 @@
 import { ButtonShowcase } from '@/components/ui';
-import { ContentCards, ContentCardsLightbox, ImageGrid } from '@/components/cards';
+import { ContentCards, ContentCardsLightbox, ImageGrid, PricingCardsLightbox } from '@/components/cards';
 
 export default function ShowcasePage() {
   return (
@@ -25,6 +25,14 @@ export default function ShowcasePage() {
               triggerClassName="mx-2"
             />
           </div>
+        </section>
+
+        {/* Content Cards Pricing Section - Clickable Cards with Lightbox */}
+        <section className="overflow-visible">
+          <PricingCardsLightbox 
+            title="Content Cards Pricing"
+            subtitle="Click on any card to see detailed information in lightbox"
+          />
         </section>
 
         {/* Content Cards Wide Section - Full Width */}

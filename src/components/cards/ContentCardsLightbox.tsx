@@ -5,11 +5,72 @@ import { Dialog } from '@/components/ui/Dialog';
 import ContentCards from './ContentCards';
 
 interface ContentCardsLightboxProps {
-  variant?: 'normal' | 'wide' | 'extra-wide';
+  variant?: 'normal' | 'wide' | 'extra-wide' | 'pricing';
   title?: string;
   subtitle?: string;
   triggerClassName?: string;
   triggerText?: string;
+}
+
+// Custom pricing lightbox that handles card clicks
+interface PricingCardsLightboxProps {
+  title?: string;
+  subtitle?: string;
+}
+
+export function PricingCardsLightbox({ 
+  title = 'Pricing Details',
+  subtitle = 'Click on any card to see detailed information'
+}: PricingCardsLightboxProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+
+  const handleCardClick = (cardId: number) => {
+    setSelectedCardId(cardId);
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setSelectedCardId(null);
+  };
+
+  return (
+    <>
+      {/* Main Pricing Cards - Clickable */}
+      <ContentCards 
+        variant="pricing"
+        title={title}
+        subtitle={subtitle}
+        maxWidth={false}
+        showInstructions={true}
+        isLightboxMode={false}
+        onCardClick={handleCardClick}
+      />
+
+      {/* Lightbox Dialog */}
+      <Dialog 
+        isOpen={isOpen} 
+        onClose={handleClose}
+        transparent={true}
+        className="p-0"
+      >
+        <div className="w-full h-full flex items-center justify-center p-8">
+          {/* ContentCards in lightbox mode */}
+          <div className="w-full max-w-none">
+            <ContentCards 
+              variant="pricing"
+              title=""
+              subtitle=""
+              maxWidth={false}
+              showInstructions={false}
+              isLightboxMode={true}
+            />
+          </div>
+        </div>
+      </Dialog>
+    </>
+  );
 }
 
 export default function ContentCardsLightbox({ 
