@@ -220,12 +220,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
           </>
         )}
 
-        {/* View Indicator - Show current view only */}
-        {availableViews.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-            <span className="font-medium">{viewLabels[activeView]}</span>
-          </div>
-        )}
+
       </div>
 
       {/* REMOVED: Flex-1 spacer and excessive performance monitoring */}
