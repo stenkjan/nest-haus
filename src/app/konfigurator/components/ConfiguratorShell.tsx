@@ -356,7 +356,7 @@ export default function ConfiguratorShell({
         {/* Right: Selection Panel (30%) - Height matches left panel */}
         <div
           ref={rightPanelRef}
-          className="configurator-right-panel flex-[3] bg-white overflow-y-auto border-l border-gray-200"
+          className="configurator-right-panel flex-[3] bg-white overflow-y-auto"
           style={leftPanelHeight ? { maxHeight: leftPanelHeight } : { maxHeight: 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))' }}
         >
           <SelectionContent />

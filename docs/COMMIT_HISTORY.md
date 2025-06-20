@@ -4,6 +4,38 @@
 
 ---
 
+## [8f22f5b745e5e29b3cbfb720b1d9be8d31a4ec11] - Fri Jun 20 15:25:30 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [2aa08160df69617b7eba704dcf73c78dbce239d2] - Fri Jun 20 15:18:44 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/showcase/page.tsx
+- src/components/cards/ImageGrid.tsx
+- src/components/cards/index.ts
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
 ## [6641e1bc117852e533ee88761738302310ab05a1] - Fri Jun 20 13:05:17 2025 +0200
 
 **Author**: stenkjan  

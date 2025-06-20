@@ -7,6 +7,19 @@
 - Documentation in /docs must be updated after every commit, using the predefined .md files and continuing them as needed
 - Use GitHub Actions or equivalent CI to continuously generate and update documentation
 
+## TypeScript & Type Safety Rules
+- **NEVER use `any` type**: Always specify proper TypeScript types to prevent type errors and maintain code quality
+- **Use strict typing**: Prefer union types, interfaces, and proper generics over loose typing
+- **Type assertions**: Use proper type assertions like `as Type` or type guards instead of `any`
+- **Global window extensions**: Use proper type extensions like `typeof window & { property: Type }` instead of `any`
+- **Unknown over any**: When type is truly unknown, prefer `unknown` over `any` and use type guards
+
+## Verification & Testing Rules
+- **TypeScript Check**: Always run `npx tsc --noEmit` at the end of code changes to verify TypeScript compilation
+- **ESLint Check**: Run `npm run lint` to ensure code follows project standards
+- **Build Verification**: For significant changes, run `npm run build` to ensure production compatibility
+- **Hot Reload Check**: Verify that localhost:3000 is running and changes are reflected without breaking the development server
+
 ## Development Workflow
 - Check for existing running servers (localhost:3000) before running a new server, we have hot reload in place
 - Fill out the documentation in /docs after every commit, use the predefined .md files and continue them

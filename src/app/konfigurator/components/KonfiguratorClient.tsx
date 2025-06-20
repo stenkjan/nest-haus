@@ -8,23 +8,27 @@ import { ConfiguratorPanelProvider } from '@/contexts/ConfiguratorPanelContext';
 // Client Component - Handles all interactive functionality
 export default function KonfiguratorClient() {
   const rightPanelRef = useRef<HTMLDivElement>(null);
-  const { initializeSession, sessionId, configuration } = useConfiguratorStore();
+  const { initializeSession, sessionId, configuration, resetConfiguration } = useConfiguratorStore();
 
   // Ensure store is initialized immediately with debug logging
   useEffect(() => {
-    console.debug('🚀 KonfiguratorClient: Initializing...', { 
-      sessionId: !!sessionId, 
-      hasConfiguration: !!configuration,
-      isDev: process.env.NODE_ENV === 'development'
-    });
-    
-    if (!sessionId) {
-      console.debug('🔄 KonfiguratorClient: No session found, initializing...');
-      initializeSession();
-    } else {
-      console.debug('✅ KonfiguratorClient: Session already exists', { sessionId });
+    if (!sessionId || !configuration) {
+      // Force initialization if missing
+      if (process.env.NODE_ENV === 'development') {
+        resetConfiguration();
+      } else {
+        initializeSession();
+      }
+      return;
     }
-  }, [initializeSession, sessionId, configuration]);
+  }, [sessionId, configuration, initializeSession, resetConfiguration]);
+
+  // Verify configuration is available after initialization
+  useEffect(() => {
+    if (sessionId && configuration) {
+      // Configuration is ready
+    }
+  }, [sessionId, configuration]);
 
   // Intelligent image preloading based on current configuration (disabled temporarily to fix warnings)
   // useEffect(() => {

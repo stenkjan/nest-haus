@@ -122,12 +122,24 @@ export const IMAGES = {
         // Interior configurations for holzlattung
         holzlattung_interior: '166-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Kalkstein',
         
+        // PV (Photovoltaik) configurations - determined by gebäudehülle selection
+        pv_holzfassade: '134-NEST-Haus-Konfigurator-Modul-Fassade-Holzfassade-Photovoltaik-PV-Panel',
+        pv_trapezblech: '135-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Photovoltaik-PV-Panel',
+        pv_plattenschwarz: '151-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Photovoltaik-PV-Panel',
+        pv_plattenweiss: '161-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Photovoltaik-PV-Panel',
+        
         // Default configurations
         nest75: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
         nest95: '110-NEST-Haus-Konfigurator-95-Holzfassade-Ansicht',
         nest115: '114-NEST-Haus-Konfigurator-115-Holzfassade-Ansicht',
         nest135: '118-NEST-Haus-Konfigurator-135-Holzfassade-Ansicht',
         nest155: '122-NEST-Haus-Konfigurator-155-Holzfassade-Ansicht',
+        
+        // Fenster/Window configurations
+        fenster_pvc: '177-NEST-Haus-Fenster-Kunststoff-PVC-Fenster-Weiß-Kunststofffenster-PVCFenster',
+        fenster_holz_fichte: '175-NEST-Haus-Fenster-Holz-Fichte-Holzfenster-Fichtenfenster',
+        fenster_aluminium: '176-NEST-Haus-Fenster-Aluminium-Fenster-Aluminiumfenster-Metallfenster',
+        fenster_holz_eiche: '174-NEST-Haus-Fenster-Holz-Eiche-Holzfenster-Eichenfenster',
         
         // Interior defaults
         interiorDefault: '137-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-Kalkstein',

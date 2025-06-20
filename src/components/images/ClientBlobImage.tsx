@@ -12,14 +12,22 @@ interface ClientBlobImageProps extends Omit<ImageProps, 'src'> {
   showLoadingSpinner?: boolean;
 }
 
-// Enhanced session-based image URL cache with loading state management
+// Enhanced session-based image URL cache with loading state management and performance monitoring
 class ImageCache {
   private static cache = new Map<string, string>();
   private static pending = new Map<string, Promise<string>>();
   private static loadingStates = new Map<string, boolean>();
+  private static requestCounts = new Map<string, number>();
   
   static get(path: string): string | null {
-    return this.cache.get(path) || null;
+    const cached = this.cache.get(path);
+    if (cached) {
+      // Track cache hit for performance monitoring
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`🎯 Cache HIT: ${path}`);
+      }
+    }
+    return cached || null;
   }
   
   static isLoading(path: string): boolean {
@@ -44,13 +52,27 @@ class ImageCache {
   }
   
   static async getOrFetch(path: string): Promise<string> {
-    // Return cached URL if available
+    // Track request count for performance monitoring
+    const currentCount = this.requestCounts.get(path) || 0;
+    this.requestCounts.set(path, currentCount + 1);
+    
+    // Warn about excessive requests in development
+    if (process.env.NODE_ENV === 'development' && currentCount > 2) {
+      console.warn(`🚨 PERFORMANCE WARNING: Image "${path}" requested ${currentCount + 1} times! Possible render loop or missing memoization.`);
+    }
+    
+    // Return cached URL if available - PREVENT REDUNDANT REQUESTS
     const cached = this.get(path);
     if (cached) return cached;
     
-    // Return pending promise if already fetching to prevent duplicate calls
+    // Return pending promise if already fetching to prevent duplicate calls - CRITICAL FIX
     const pending = this.pending.get(path);
-    if (pending) return pending;
+    if (pending) {
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`⏳ Request already pending for: ${path}`);
+      }
+      return pending;
+    }
     
     // Set loading state
     this.loadingStates.set(path, true);
@@ -62,9 +84,15 @@ class ImageCache {
     try {
       const url = await fetchPromise;
       this.set(path, url);
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`🖼️ Successfully loaded: ${path} -> ${url.substring(0, 50)}...`);
+      }
       return url;
     } catch (error) {
       this.loadingStates.set(path, false);
+      if (process.env.NODE_ENV === 'development') {
+        console.error(`❌ Failed to load image: ${path}`, error);
+      }
       throw error;
     } finally {
       this.pending.delete(path);
@@ -105,6 +133,9 @@ class ImageCache {
               // Only use cached URLs that are less than 1 hour old
               if (now - timestamp < oneHour) {
                 this.cache.set(path, url);
+                if (process.env.NODE_ENV === 'development') {
+                  console.debug(`💾 Restored from session: ${path}`);
+                }
               } else {
                 sessionStorage.removeItem(key);
               }
@@ -112,7 +143,7 @@ class ImageCache {
               sessionStorage.removeItem(key);
             }
           }
-                }
+        }
       }
     } catch {
       // Handle gracefully
@@ -138,6 +169,40 @@ class ImageCache {
       // Handle gracefully
     }
   }
+
+  // Performance monitoring methods
+  static getPerformanceStats(): { 
+    cacheSize: number; 
+    requestCounts: Record<string, number>;
+    totalRequests: number;
+    duplicateRequests: number;
+  } {
+    const requestCounts: Record<string, number> = {};
+    let totalRequests = 0;
+    let duplicateRequests = 0;
+    
+    this.requestCounts.forEach((count, path) => {
+      requestCounts[path] = count;
+      totalRequests += count;
+      if (count > 1) {
+        duplicateRequests += count - 1;
+      }
+    });
+    
+    return {
+      cacheSize: this.cache.size,
+      requestCounts,
+      totalRequests,
+      duplicateRequests
+    };
+  }
+
+  static reset(): void {
+    this.cache.clear();
+    this.pending.clear();
+    this.loadingStates.clear();
+    this.requestCounts.clear();
+  }
 }
 
 export default function ClientBlobImage({
@@ -152,14 +217,24 @@ export default function ClientBlobImage({
   height,
   fill,
   sizes = "(min-width: 1024px) 70vw, 100vw", // Default responsive sizes for configurator
+  className,
+  style,
+  quality,
+  priority,
+  loading,
+  placeholder,
+  blurDataURL,
+  unoptimized,
+  onLoad,
+  onError,
   ...props
 }: ClientBlobImageProps) {
   const [imageSrc, setImageSrc] = useState<string>(fallbackSrc);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [_error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const mountedRef = useRef<boolean>(true);
-  const loadingRef = useRef<boolean>(false);
+  const lastLoadedPathRef = useRef<string>('');
 
   // Mobile detection - only if explicitly enabled (landing page)
   useEffect(() => {
@@ -187,135 +262,165 @@ export default function ClientBlobImage({
     };
   }, [enableCache]);
 
-  // Determine which path to use - only consider mobile if detection is enabled
-  const targetPath = useMemo(() => {
-    if (enableMobileDetection && isMobile && mobilePath) {
-      return mobilePath;
-    }
-    return path;
-  }, [enableMobileDetection, isMobile, mobilePath, path]);
-
-  // Optimized image loading with duplicate prevention
-  const loadImage = useCallback(async (pathToLoad: string) => {
-    console.debug('🔍 ClientBlobImage: loadImage called', { 
-      pathToLoad, 
-      loading: loadingRef.current,
-      mounted: mountedRef.current
-    });
+  // Add path sanitization method for security
+  const sanitizePath = useCallback((inputPath: string): string => {
+    if (!inputPath) return '';
     
-    // Prevent duplicate loading
-    if (loadingRef.current || !pathToLoad || pathToLoad === 'undefined' || pathToLoad === '') {
-      console.debug('❌ ClientBlobImage: Skipping load - invalid conditions', {
-        loading: loadingRef.current,
-        pathValid: !!pathToLoad && pathToLoad !== 'undefined' && pathToLoad !== ''
-      });
+    // Remove any potentially dangerous characters, keep only alphanumeric, hyphens, underscores, and forward slashes
+    const sanitized = inputPath.replace(/[^a-zA-Z0-9\-_/]/g, '');
+    
+    // Ensure path doesn't start with / or contain ../ to prevent directory traversal
+    return sanitized.replace(/^\/+|\.\.\/+/g, '');
+  }, []);
+
+  // Determine which path to use - only consider mobile if detection is enabled
+  const effectivePath = useMemo(() => {
+    // Validate and sanitize path input
+    const sanitizedPath = sanitizePath(path);
+    const sanitizedMobilePath = mobilePath ? sanitizePath(mobilePath) : null;
+    
+    if (enableMobileDetection && isMobile && sanitizedMobilePath) {
+      return sanitizedMobilePath;
+    }
+    return sanitizedPath;
+  }, [path, mobilePath, isMobile, enableMobileDetection, sanitizePath]);
+
+  // CRITICAL FIX: Prevent re-fetching the same image
+  const shouldFetchImage = useMemo(() => {
+    return effectivePath !== lastLoadedPathRef.current;
+  }, [effectivePath]);
+
+  // Load image with proper error handling and caching
+  useEffect(() => {
+    if (!effectivePath || !mountedRef.current || !shouldFetchImage) {
       return;
     }
 
-    // Check if already cached and set immediately
-    if (enableCache) {
-      const cached = ImageCache.get(pathToLoad);
-      if (cached && mountedRef.current) {
-        setImageSrc(cached);
-        setIsLoading(false);
-        setError(false);
-        return;
-      }
-      
-      // Check if currently loading to prevent duplicates
-      if (ImageCache.isLoading(pathToLoad)) {
-        return;
-      }
+    // Performance monitoring
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`🔄 ClientBlobImage loading: ${effectivePath}`);
     }
 
-    loadingRef.current = true;
+    let cancelled = false;
     
-    try {
-      if (mountedRef.current) {
-        setIsLoading(true);
-        setError(false);
-      }
-      
-      let imageUrl: string;
-      
-      if (enableCache) {
-        imageUrl = await ImageCache.getOrFetch(pathToLoad);
-      } else {
-        const response = await fetch(`/api/images?path=${encodeURIComponent(pathToLoad)}`);
-        if (!response.ok) throw new Error('Failed to fetch');
-        
-        const data = await response.json();
-        imageUrl = data.url;
-      }
-      
-      if (mountedRef.current) {
-        setImageSrc(imageUrl);
-        setError(false);
-      }
-    } catch (err) {
-      console.error('Error loading image:', err);
-      if (mountedRef.current) {
-        setError(true);
-        setImageSrc(fallbackSrc);
-      }
-    } finally {
-      loadingRef.current = false;
-      if (mountedRef.current) {
-        setIsLoading(false);
-      }
-    }
-  }, [enableCache, fallbackSrc]);
+    const loadImage = async () => {
+      try {
+        if (enableCache) {
+          // Check cache first
+          const cached = ImageCache.get(effectivePath);
+          if (cached && mountedRef.current && !cancelled) {
+            setImageSrc(cached);
+            setError(null);
+            lastLoadedPathRef.current = effectivePath;
+            return;
+          }
+        }
 
-  // Load image when target path changes
-  useEffect(() => {
-    console.debug('🖼️ ClientBlobImage: Effect triggered', { 
-      targetPath, 
-      fallbackSrc,
-      enableCache,
-      imageSrc: imageSrc !== fallbackSrc ? 'custom' : 'fallback'
-    });
+        // Set loading state
+        if (mountedRef.current && !cancelled) {
+          setIsLoading(true);
+          setError(null);
+        }
+
+        // Fetch image URL
+        const imageUrl = enableCache 
+          ? await ImageCache.getOrFetch(effectivePath)
+          : await fetchImageDirect(effectivePath);
+
+        // Update state if component is still mounted and request wasn't cancelled
+        if (mountedRef.current && !cancelled) {
+          setImageSrc(imageUrl);
+          setIsLoading(false);
+          setError(null);
+          lastLoadedPathRef.current = effectivePath;
+        }
+      } catch (err) {
+        if (mountedRef.current && !cancelled) {
+          const errorMessage = err instanceof Error ? err.message : 'Failed to load image';
+          setError(errorMessage);
+          setImageSrc(fallbackSrc);
+          setIsLoading(false);
+          
+          if (process.env.NODE_ENV === 'development') {
+            console.error(`ClientBlobImage error loading ${effectivePath}:`, errorMessage);
+          }
+        }
+      }
+    };
+
+    loadImage();
     
-    if (targetPath) {
-      console.debug('🔄 ClientBlobImage: Starting image load for:', targetPath);
-      loadImage(targetPath);
-    } else {
-      console.debug('⚠️ ClientBlobImage: No target path, using fallback');
-      setImageSrc(fallbackSrc);
+    return () => {
+      cancelled = true;
+    };
+  }, [effectivePath, enableCache, fallbackSrc, shouldFetchImage]);
+
+  // Direct fetch function (bypass cache)
+  const fetchImageDirect = async (imagePath: string): Promise<string> => {
+    const response = await fetch(`/api/images?path=${encodeURIComponent(imagePath)}`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    const data = await response.json();
+    if (!data.url) {
+      throw new Error('No URL in response');
+    }
+    return data.url;
+  };
+
+  // Handle Next.js Image onLoad
+  const handleLoad = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
+    if (mountedRef.current) {
       setIsLoading(false);
+      onLoad?.(event);
     }
-  }, [targetPath, loadImage, fallbackSrc, enableCache, imageSrc]);
+  }, [onLoad]);
 
-  // Debug logging to track sizes prop
-  if (process.env.NODE_ENV === 'development') {
-    console.debug('🖼️ ClientBlobImage sizes:', { sizes, path });
-  }
+  // Handle Next.js Image onError  
+  const handleError = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
+    if (mountedRef.current) {
+      setIsLoading(false);
+      setError('Image failed to load');
+      onError?.(event);
+    }
+  }, [onError]);
 
   return (
-    <div className="relative w-full h-full">
-      <Image
-        src={imageSrc}
-        alt={alt || 'NEST-Haus Image'}
-        {...(fill ? { fill: true } : { width: width || 400, height: height || 300 })}
-        {...props}
-        sizes={sizes} // Explicit sizes after props to ensure it takes precedence
-        style={{
-          ...props.style,
-          opacity: isLoading ? 0.8 : 1,
-          transition: 'opacity 0.2s ease-in-out'
-        }}
-        onError={() => {
-          if (mountedRef.current) {
-            setError(true);
-            setImageSrc(fallbackSrc);
-          }
-        }}
-      />
-      
-      {isLoading && showLoadingSpinner && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-30">
-          <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+    <>
+      {/* Loading spinner */}
+      {showLoadingSpinner && isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
       )}
-    </div>
+      
+      {/* Main image */}
+      <Image
+        src={imageSrc}
+        alt={alt}
+        width={width}
+        height={height}
+        fill={fill}
+        sizes={sizes}
+        className={className}
+        style={style}
+        quality={quality}
+        priority={priority}
+        loading={loading}
+        placeholder={placeholder}
+        blurDataURL={blurDataURL}
+        unoptimized={unoptimized}
+        onLoad={handleLoad}
+        onError={handleError}
+        {...props}
+      />
+      
+      {/* Error display in development */}
+      {process.env.NODE_ENV === 'development' && error && (
+        <div className="absolute inset-0 bg-red-100 border border-red-300 flex items-center justify-center text-red-700 text-xs p-2 z-20">
+          Error: {error}
+        </div>
+      )}
+    </>
   );
 } 
