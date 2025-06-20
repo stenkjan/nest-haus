@@ -85,7 +85,7 @@ export default function ImageGrid({
       </div>
 
       {/* 2x2 Grid Container */}
-      <div className="grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto" style={{ gap: '15px' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 max-w-6xl mx-auto" style={{ gap: '15px' }}>
         {gridData.map((item, index) => (
           <motion.div
             key={item.id}
@@ -119,10 +119,10 @@ export default function ImageGrid({
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
                 <div className="p-4 text-center">
-                  <h3 className="text-xl font-bold text-white mb-1">
+                  <h2 className="text-2xl lg:text-3xl font-bold text-white mb-1">
                     {item.title}
-                  </h3>
-                  <h4 className="text-sm font-medium text-white">
+                  </h2>
+                  <h4 className="text-base lg:text-lg font-medium text-white">
                     {item.subtitle}
                   </h4>
                 </div>
