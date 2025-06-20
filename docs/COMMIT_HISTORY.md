@@ -4,6 +4,29 @@
 
 ---
 
+## [64e3d8bc8ac5239018078ad7634611844f3fed95] - Fri Jun 20 17:20:44 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PerformanceMonitor.ts
+- src/components/images/ClientBlobImage.tsx
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+- docs/PERFORMANCE_OPTIMIZATION_FIXES.md
+
+---
+
 ## [8f22f5b745e5e29b3cbfb720b1d9be8d31a4ec11] - Fri Jun 20 15:25:30 2025 +0200
 
 **Author**: stenkjan  
