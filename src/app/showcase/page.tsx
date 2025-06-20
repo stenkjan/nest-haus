@@ -1,5 +1,5 @@
 import { ButtonShowcase } from '@/components/ui';
-import { ContentCards, ContentCardsLightbox } from '@/components/cards';
+import { ContentCards, ContentCardsLightbox, ImageGrid } from '@/components/cards';
 
 export default function ShowcasePage() {
   return (
@@ -67,6 +67,15 @@ export default function ShowcasePage() {
               triggerClassName="mx-2"
             />
           </div>
+                  </section>
+
+        {/* Image Grid Section - 2x2 Interactive Grid */}
+        <section className="overflow-visible">
+          <ImageGrid 
+            title="Interactive Image Grid"
+            subtitle="2x2 grid with individual card lightboxes • Click any card to open detailed view"
+            maxWidth={false}
+          />
         </section>
 
         {/* Button Showcase Section - Constrained Width */}
