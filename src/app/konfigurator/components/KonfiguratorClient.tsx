@@ -4,7 +4,6 @@ import React, { useRef, useEffect } from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import ConfiguratorShell from './ConfiguratorShell';
 import { ConfiguratorPanelProvider } from '@/contexts/ConfiguratorPanelContext';
-import { ImageManager } from '../core/ImageManager';
 
 // Client Component - Handles all interactive functionality
 export default function KonfiguratorClient() {
@@ -25,7 +24,7 @@ export default function KonfiguratorClient() {
     } else {
       console.debug('✅ KonfiguratorClient: Session already exists', { sessionId });
     }
-  }, [initializeSession, sessionId]);
+  }, [initializeSession, sessionId, configuration]);
 
   // Intelligent image preloading based on current configuration (disabled temporarily to fix warnings)
   // useEffect(() => {

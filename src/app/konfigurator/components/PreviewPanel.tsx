@@ -34,7 +34,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   const [isIOSMobile, setIsIOSMobile] = useState(false)
   const [isImageLoading, setIsImageLoading] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
-  const lastConfigRef = useRef<string>('')
+  const _lastConfigRef = useRef<string>('')
 
   // Platform detection with proper SSR handling
   useEffect(() => {
@@ -161,7 +161,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   }, [availableViews, activeView])
 
   // Image loading handlers
-  const handleImageLoadStart = useCallback(() => {
+  const _handleImageLoadStart = useCallback(() => {
     setIsImageLoading(true)
   }, [])
 

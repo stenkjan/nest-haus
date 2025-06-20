@@ -33,7 +33,7 @@ export default function ImagePreloader({ paths, priority = false }: ImagePreload
             img.src = data.url;
           }
         }
-      } catch (error) {
+      } catch {
         // Silently fail preloading
       }
     });

@@ -15,7 +15,7 @@ interface ContentCardsLightboxProps {
 export default function ContentCardsLightbox({ 
   variant = 'normal',
   title = 'Content Cards',
-  subtitle = 'Navigate with arrow keys or swipe on mobile',
+  subtitle: _subtitle = 'Navigate with arrow keys or swipe on mobile',
   triggerClassName = '',
   triggerText = 'Open in Lightbox'
 }: ContentCardsLightboxProps) {

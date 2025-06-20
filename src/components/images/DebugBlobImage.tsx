@@ -44,6 +44,7 @@ export default async function DebugBlobImage() {
         {foundUrl && (
           <div className="mt-2">
             <p className="text-sm">URL: {foundUrl.substring(0, 80)}...</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={foundUrl} alt="Test" className="w-32 h-32 object-cover mt-2" />
           </div>
         )}

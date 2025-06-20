@@ -17,7 +17,7 @@ import type { Configuration } from '@/store/configuratorStore';
 
 // In-memory cache for resolved image paths to prevent redundant lookups
 const imagePathCache = new Map<string, string>();
-const preloadingInProgress = new Set<string>();
+const _preloadingInProgress = new Set<string>();
 
 export class ImageManager {
   /**
