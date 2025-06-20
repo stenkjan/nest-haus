@@ -131,7 +131,7 @@ export default function Navbar() {
         WebkitTransform: 'translateZ(0)', // Force hardware acceleration
       }}
     >
-      <nav className="mx-auto px-4 w-full flex justify-between items-center py-1" 
+      <nav className="mx-auto px-4 w-full flex justify-between items-center" 
            style={{ maxWidth: isMobile ? '100%' : '1144px' }}>
         
         {/* Logo */}
