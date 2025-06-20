@@ -190,7 +190,7 @@ export class ImageManager {
     const imageKey = `${prefix}_${innenPart}_${fussbodenPart}` as keyof typeof IMAGES.configurations;
     
     // Try to get the specific combination
-    let imagePath = IMAGES.configurations[imageKey];
+    const imagePath = IMAGES.configurations[imageKey];
     
     if (imagePath) {
       return imagePath;
