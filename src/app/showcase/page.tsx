@@ -48,6 +48,27 @@ export default function ShowcasePage() {
           </div>
         </section>
 
+        {/* Content Cards Extra-Wide Section - Single Card */}
+        <section className="overflow-visible">
+          <ContentCards 
+            variant="extra-wide"
+            title="Content Cards Extra-Wide"
+            subtitle="Single card with 1/3 text and 2/3 image layout"
+            maxWidth={false}
+          />
+          
+          {/* Lightbox Button for Extra-Wide Cards */}
+          <div className="flex justify-center mt-8">
+            <ContentCardsLightbox 
+              variant="extra-wide"
+              title="Content Cards Extra-Wide - Lightbox View"
+              subtitle="1/3 text, 2/3 image layout • Click outside or press ESC to close"
+              triggerText="Open Extra-Wide Card in Lightbox"
+              triggerClassName="mx-2"
+            />
+          </div>
+        </section>
+
         {/* Button Showcase Section - Constrained Width */}
         <section>
           <div className="max-w-7xl mx-auto px-4">

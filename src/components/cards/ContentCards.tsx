@@ -14,10 +14,11 @@ interface CardData {
 }
 
 interface ContentCardsProps {
-  variant?: 'normal' | 'wide';
+  variant?: 'normal' | 'wide' | 'extra-wide';
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
+  showInstructions?: boolean;
 }
 
 const cardData: CardData[] = [
@@ -27,7 +28,7 @@ const cardData: CardData[] = [
     subtitle: "Supercharged by M2",
     description: "The ultimate iPad experience with the most advanced technology.",
     image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-blue-50 to-indigo-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 2,
@@ -35,7 +36,7 @@ const cardData: CardData[] = [
     subtitle: "15-inch",
     description: "Impressively big. Impossibly thin. M2 chip brings speed and efficiency.",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    backgroundColor: "bg-gradient-to-br from-gray-50 to-slate-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 3,
@@ -43,7 +44,7 @@ const cardData: CardData[] = [
     subtitle: "Titanium",
     description: "Forged in titanium with the powerful A17 Pro chip.",
     image: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-purple-50 to-pink-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 4,
@@ -51,7 +52,7 @@ const cardData: CardData[] = [
     subtitle: "Series 9",
     description: "Your essential companion for a healthy life.",
     image: "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
-    backgroundColor: "bg-gradient-to-br from-green-50 to-emerald-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 5,
@@ -59,7 +60,7 @@ const cardData: CardData[] = [
     subtitle: "2nd Generation",
     description: "Adaptive Audio automatically tunes the noise control.",
     image: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
-    backgroundColor: "bg-gradient-to-br from-orange-50 to-red-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 6,
@@ -67,7 +68,7 @@ const cardData: CardData[] = [
     subtitle: "M2 Ultra",
     description: "Desktop-class performance that fits under most displays.",
     image: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-teal-50 to-cyan-100"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 7,
@@ -75,7 +76,7 @@ const cardData: CardData[] = [
     subtitle: "M2 Ultra",
     description: "The most powerful Mac ever built for extreme workloads.",
     image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    backgroundColor: "bg-gradient-to-br from-amber-50 to-yellow-100"
+    backgroundColor: "#F4F4F4"
   }
 ];
 
@@ -83,7 +84,8 @@ export default function ContentCards({
   variant = 'normal',
   title = 'Content Cards',
   subtitle = 'Navigate with arrow keys or swipe on mobile',
-  maxWidth = true 
+  maxWidth = true,
+  showInstructions = true
 }: ContentCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
@@ -92,13 +94,29 @@ export default function ContentCards({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isWide = variant === 'wide';
+  const isExtraWide = variant === 'extra-wide';
 
   // Calculate responsive card dimensions based on variant
   useEffect(() => {
     const updateDimensions = () => {
       const width = window.innerWidth;
       
-      if (isWide) {
+      if (isExtraWide) {
+        // Extra-wide variant: 3:1 ratio cards (1/3 text, 2/3 image)
+        if (width >= 1280) {
+          setCardsPerView(1);
+          setCardWidth(1200);
+        } else if (width >= 1024) {
+          setCardsPerView(1);
+          setCardWidth(1000);
+        } else if (width >= 768) {
+          setCardsPerView(1);
+          setCardWidth(720);
+        } else {
+          setCardsPerView(1);
+          setCardWidth(600);
+        }
+      } else if (isWide) {
         // Wide variant: 2:1 ratio cards
         if (width >= 1280) {
           setCardsPerView(1.3);
@@ -134,11 +152,16 @@ export default function ContentCards({
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
-  }, [isWide]);
+  }, [isWide, isExtraWide]);
 
   const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
   const maxScroll = -(maxIndex * (cardWidth + gap));
+
+  // For extra-wide variant, show only the first card
+  const displayCards = isExtraWide ? cardData.slice(0, 1) : cardData;
+  const adjustedMaxIndex = Math.max(0, displayCards.length - Math.floor(cardsPerView));
+  const adjustedMaxScroll = -(adjustedMaxIndex * (cardWidth + gap));
 
   // Keyboard navigation
   useEffect(() => {
@@ -152,10 +175,11 @@ export default function ContentCards({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, maxIndex]);
+  }, [currentIndex, isExtraWide ? adjustedMaxIndex : maxIndex]);
 
   const navigateCard = (direction: number) => {
-    const newIndex = Math.max(0, Math.min(maxIndex, currentIndex + direction));
+    const targetMaxIndex = isExtraWide ? adjustedMaxIndex : maxIndex;
+    const newIndex = Math.max(0, Math.min(targetMaxIndex, currentIndex + direction));
     setCurrentIndex(newIndex);
     const newX = -(newIndex * (cardWidth + gap));
     x.set(newX);
@@ -169,12 +193,14 @@ export default function ContentCards({
     const currentX = x.get();
     let targetIndex = Math.round(-currentX / (cardWidth + gap));
     
+    const targetMaxIndex = isExtraWide ? adjustedMaxIndex : maxIndex;
+    
     // Adjust based on drag direction and velocity
     if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
       if (offset > 0 || velocity > 500) {
         targetIndex = Math.max(0, targetIndex - 1);
       } else if (offset < 0 || velocity < -500) {
-        targetIndex = Math.min(maxIndex, targetIndex + 1);
+        targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
       }
     }
     
@@ -191,41 +217,81 @@ export default function ContentCards({
     <div className={containerClasses}>
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-        <p className="text-gray-600">{subtitle}</p>
+        {subtitle && <p className="text-gray-600">{subtitle}</p>}
       </div>
 
       {/* Cards Container */}
       <div className="relative py-8">
         <div 
           ref={containerRef}
-          className="overflow-x-hidden cursor-grab active:cursor-grabbing px-8"
+          className={`overflow-x-hidden px-8 ${isExtraWide ? '' : 'cursor-grab active:cursor-grabbing'}`}
           style={{ overflow: 'visible' }}
         >
           <motion.div
-            className="flex gap-6"
-            style={{ x }}
-            drag="x"
-            dragConstraints={{
+            className={`flex gap-6 ${isExtraWide ? 'justify-center' : ''}`}
+            style={isExtraWide ? {} : { x }}
+            drag={isExtraWide ? false : "x"}
+            dragConstraints={isExtraWide ? undefined : {
               left: maxScroll,
               right: 0,
             }}
-            dragElastic={0.1}
-            onDragEnd={handleDragEnd}
+            dragElastic={isExtraWide ? undefined : 0.1}
+            onDragEnd={isExtraWide ? undefined : handleDragEnd}
             transition={{
               type: "spring",
               stiffness: 300,
               damping: 30
             }}
           >
-            {cardData.map((card, index) => (
+            {displayCards.map((card, index) => (
               <motion.div
                 key={card.id}
-                className={`flex-shrink-0 ${card.backgroundColor} rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${isWide ? 'flex' : ''}`}
-                style={{ width: cardWidth, height: 480 }}
+                className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${isWide || isExtraWide ? 'flex' : ''}`}
+                style={{ width: cardWidth, height: 480, backgroundColor: card.backgroundColor }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                {isWide ? (
+                {isExtraWide ? (
+                  // Extra-wide layout: Text left (1/3), Image right (2/3)
+                  <>
+                    {/* Text Content - Left Third */}
+                    <div className="w-1/3 flex flex-col justify-center items-start text-left p-6">
+                      <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1, duration: 0.6 }}
+                      >
+                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                          {card.title}
+                        </h3>
+                        <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-3">
+                          {card.subtitle}
+                        </h4>
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {card.description}
+                        </p>
+                      </motion.div>
+                    </div>
+
+                    {/* Image Content - Right Two-Thirds */}
+                    <div className="w-2/3 relative overflow-hidden p-[15px]">
+                      <motion.div
+                        initial={{ x: 20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
+                        className="relative w-full h-full rounded-3xl overflow-hidden"
+                      >
+                        <Image
+                          src={card.image}
+                          alt={card.title}
+                          fill
+                          className="object-cover object-center"
+                          unoptimized
+                        />
+                      </motion.div>
+                    </div>
+                  </>
+                ) : isWide ? (
                   // Wide layout: Text left, Image right
                   <>
                     {/* Text Content - Left Half */}
@@ -248,12 +314,12 @@ export default function ContentCards({
                     </div>
 
                     {/* Image Content - Right Half */}
-                    <div className="w-1/2 relative overflow-hidden">
+                    <div className="w-1/2 relative overflow-hidden p-[15px]">
                       <motion.div
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
-                        className="relative w-full h-full"
+                        className="relative w-full h-full rounded-3xl overflow-hidden"
                       >
                         <Image
                           src={card.image}
@@ -288,12 +354,12 @@ export default function ContentCards({
                     </div>
 
                     {/* Image Content - Bottom Half */}
-                    <div className="h-1/2 relative overflow-hidden">
+                    <div className="h-1/2 relative overflow-hidden p-[15px]">
                       <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
-                        className="relative w-full h-full"
+                        className="relative w-full h-full rounded-3xl overflow-hidden"
                       >
                         <Image
                           src={card.image}
@@ -311,8 +377,8 @@ export default function ContentCards({
           </motion.div>
         </div>
 
-        {/* Navigation Arrows */}
-        {currentIndex > 0 && (
+        {/* Navigation Arrows - Hidden for extra-wide variant */}
+        {!isExtraWide && currentIndex > 0 && (
           <button
             onClick={() => navigateCard(-1)}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10"
@@ -323,7 +389,7 @@ export default function ContentCards({
           </button>
         )}
 
-        {currentIndex + cardsPerView < cardData.length && (
+        {!isExtraWide && currentIndex + cardsPerView < displayCards.length && (
           <button
             onClick={() => navigateCard(1)}
             className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10"
@@ -335,27 +401,37 @@ export default function ContentCards({
         )}
       </div>
 
-      {/* Progress Indicator */}
-      <div className="flex justify-center mt-8">
-        <div className="bg-gray-200 rounded-full h-1 w-32">
-          <motion.div
-            className="bg-gray-900 rounded-full h-1"
-            style={{
-              width: `${((currentIndex + cardsPerView) / cardData.length) * 100}%`
-            }}
-            transition={{ duration: 0.3 }}
-          />
+      {/* Progress Indicator - Hidden for extra-wide variant */}
+      {!isExtraWide && (
+        <div className="flex justify-center mt-8">
+          <div className="bg-gray-200 rounded-full h-1 w-32">
+            <motion.div
+              className="bg-gray-900 rounded-full h-1"
+              style={{
+                width: `${((currentIndex + cardsPerView) / displayCards.length) * 100}%`
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Instructions */}
-      <div className="text-center mt-6 text-sm text-gray-500">
-        <p className="hidden md:block">Use ← → arrow keys to navigate • Drag to scroll</p>
-        <p className="md:hidden">Swipe left or right to navigate</p>
-        <p className="mt-1">
-          Showing {Math.min(Math.ceil(cardsPerView), cardData.length - currentIndex)} of {cardData.length} cards
-        </p>
-      </div>
+      {showInstructions && (
+        <div className="text-center mt-6 text-sm text-gray-500">
+          {isExtraWide ? (
+            <p>Single extra-wide card with 1/3 text and 2/3 image layout</p>
+          ) : (
+            <>
+              <p className="hidden md:block">Use ← → arrow keys to navigate • Drag to scroll</p>
+              <p className="md:hidden">Swipe left or right to navigate</p>
+              <p className="mt-1">
+                Showing {Math.min(Math.ceil(cardsPerView), displayCards.length - currentIndex)} of {displayCards.length} cards
+              </p>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 } 
