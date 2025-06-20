@@ -112,10 +112,11 @@ export default function Navbar() {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Navigation items
+  // Navigation items - updated based on image
   const navItems = [
     { name: 'Entdecken', path: '/entdecken' },
-    { name: 'Wie Funktioniert\'s?', path: '/ablauf' },
+    { name: 'Unser Part', path: '/unser-part' },
+    { name: 'Dein Part', path: '/dein-part' },
     { name: 'Warum wir?', path: '/warum-wir' },
     { name: 'Kontakt', path: '/kontakt' },
   ];
@@ -123,15 +124,14 @@ export default function Navbar() {
   return (
     <header 
       ref={headerRef}
-      className="fixed pointer-events-auto top-0 left-0 right-0 z-[100] bg-[#F4F4F4]/85 backdrop-blur-[30px] border-b border-gray-200/50 shadow-sm"
+      className="fixed pointer-events-auto top-0 left-0 right-0 z-[100] bg-[#F4F4F4] border-b border-gray-200/50 shadow-sm"
       style={{ 
         willChange: 'transform',
         // WebKit-specific optimizations
-        WebkitBackdropFilter: 'blur(30px)',
         WebkitTransform: 'translateZ(0)', // Force hardware acceleration
       }}
     >
-      <nav className="mx-auto px-4 w-full flex justify-between items-center py-2" 
+      <nav className="mx-auto px-4 w-full flex justify-between items-center py-1" 
            style={{ maxWidth: isMobile ? '100%' : '1144px' }}>
         
         {/* Logo */}
@@ -139,51 +139,28 @@ export default function Navbar() {
           <Image
             src="/0-homebutton-nest-haus.svg"
             alt="NEST Home"
-            className="h-[clamp(18px,1.875vh,24px)] w-[clamp(18px,1.875vh,24px)] pb-0.5 -mt-1"
-            width={20}
-            height={20}
+            className="h-4 w-4"
+            width={16}
+            height={16}
             priority
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className={`${isMobile ? 'hidden' : 'flex'} space-x-[clamp(12px,4vw,64px)] mx-auto px-6`}>
+        <div className={`${isMobile ? 'hidden' : 'flex'} space-x-8 mx-auto px-6`}>
           {navItems.map((item) => (
             <Link
               key={item.path}
               href={item.path}
-              className="text-[clamp(12px,1.3vw,13px)] hover:opacity-80 transition-opacity leading-none"
+              className="text-black text-sm font-medium hover:opacity-80 transition-opacity leading-none"
             >
               {item.name}
             </Link>
           ))}
         </div>
 
-        {/* Mobile Menu Button */}
-        {isMobile && (
-          <button
-            onClick={toggleMobileMenu}
-            className="md:hidden p-2 mr-2"
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
-              />
-            </svg>
-          </button>
-        )}
-
-        {/* Right Side Icons */}
-        <div className="flex items-center space-x-5 pr-4 pb-1">
+        {/* Desktop Right Side Icons */}
+        <div className={`${isMobile ? 'hidden' : 'flex'} items-center space-x-4 pr-4`}>
           <Link
             href="/konfigurator"
             className="focus:outline-none text-black flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center"
@@ -191,11 +168,11 @@ export default function Navbar() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-[clamp(18px,1.875vh,24px)] w-[clamp(18px,1.875vh,24px)]"
+              className="h-4 w-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1}
+              strokeWidth={1.5}
             >
               <path
                 strokeLinecap="round"
@@ -219,11 +196,11 @@ export default function Navbar() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-[clamp(18px,1.875vh,24px)] w-[clamp(18px,1.875vh,24px)]"
+              className="h-4 w-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1}
+              strokeWidth={1.5}
             >
               <path
                 strokeLinecap="round"
@@ -232,28 +209,102 @@ export default function Navbar() {
               />
             </svg>
             {cartCount > 0 && (
-              <span className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 bg-red-500 text-white text-[clamp(6px,0.7vw,8px)] leading-none font-bold rounded-full w-3 h-3 flex items-center justify-center min-w-[12px] min-h-[12px]">
+              <span className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 bg-red-500 text-white text-xs leading-none font-bold rounded-full w-3 h-3 flex items-center justify-center min-w-[12px] min-h-[12px]">
                 {cartCount > 9 ? '9+' : cartCount}
               </span>
             )}
           </Link>
         </div>
+
+        {/* Mobile Menu Button */}
+        {isMobile && (
+          <button
+            onClick={toggleMobileMenu}
+            className="p-2 mr-2 text-black"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+        )}
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Aligned to the right */}
       {mobileMenuOpen && isMobile && (
-        <div className="absolute top-full left-0 right-0 bg-[#F4F4F4]/95 backdrop-blur-[20px] border-b border-gray-200/50 shadow-lg">
-          <div className="px-4 py-4 space-y-4">
+        <div className="absolute top-full left-0 right-0 bg-[#F4F4F4] border-b border-gray-200/50 shadow-lg">
+          <div className="px-4 py-4 flex flex-col items-end space-y-4">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 href={item.path}
-                className="block text-sm hover:opacity-80 transition-opacity py-2"
+                className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
+            
+            {/* Mobile Menu - Konfigurator Link */}
+            <Link
+              href="/konfigurator"
+              className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2 flex items-center gap-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              Konfigurator
+            </Link>
+            
+            {/* Mobile Menu - Shopping Cart Link */}
+            <Link
+              href="/warenkorb"
+              className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2 flex items-center gap-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+              Warenkorb {cartCount > 0 && `(${cartCount})`}
+            </Link>
           </div>
         </div>
       )}

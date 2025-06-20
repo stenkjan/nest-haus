@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui";
-import { ServerBlobImage } from "@/components/images";
+import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 // Sample content for the 8 sections - using IMAGES constants
@@ -71,7 +71,7 @@ const sections = [
 ];
 
 export default function Home() {
-  // Landing page specific image styling
+  // Landing page specific image styling - applies to all 8 images
   const landingImageStyle = {
     objectPosition: 'center center',
     transform: 'scale(1.05)',
@@ -81,34 +81,24 @@ export default function Home() {
   return (
     <div className="w-full bg-white">
       {sections.map((section) => (
-        <section key={section.id} className="relative w-full overflow-hidden mb-2.5">
-          
-          {/* Background Image - Desktop (sm breakpoint: ≥640px) - 16:9 aspect ratio */}
-          <div className="hidden sm:block relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
-            <ServerBlobImage
+        <section key={section.id} className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
+          <div className="absolute inset-0 w-full h-full">
+            <HybridBlobImage
               path={section.imagePath}
               alt={section.h1}
               fill
               className="object-cover"
               style={landingImageStyle}
-              critical={section.id === 1}
-              unoptimized
-            />
-          </div>
-          
-          {/* Background Image - Mobile (<640px) - Taller aspect ratio for mobile screens */}
-          <div className="block sm:hidden relative w-full overflow-hidden" style={{ 
-            aspectRatio: '4/5' // Mobile gets 4:5 aspect ratio (taller than 16:9)
-          }}>
-            <ServerBlobImage
-              path={`${section.imagePath}-mobile`}
-              fallbackSrc={section.imagePath} // Fallback to desktop image if mobile doesn't exist
-              alt={section.h1}
-              fill
-              className="object-cover"
-              style={landingImageStyle}
-              critical={section.id === 1}
-              unoptimized
+              
+              // SSR strategy for landing page - critical for SEO and Core Web Vitals
+              strategy="ssr"
+              isAboveFold={section.id === 1}
+              isCritical={section.id === 1}
+              priority={section.id === 1}
+              
+              // Landing page optimization
+              sizes="100vw"
+              quality={90}
             />
           </div>
           

@@ -138,10 +138,10 @@ export const IMAGES = {
 
     // Fallback images
     fallbacks: {
-        exterior: '/api/placeholder/800/600',
-        interior: '/api/placeholder/800/600',
-        stirnseite: '/api/placeholder/800/600',
-        default: '/api/placeholder/400/300'
+        exterior: '/api/placeholder/1200/800?style=nest&text=Loading...',
+        interior: '/api/placeholder/1200/800?style=nest&text=Loading...',
+        stirnseite: '/api/placeholder/1200/800?style=nest&text=Loading...',
+        default: '/api/placeholder/1200/800?style=nest&text=Loading...'
     }
 } as const;
 

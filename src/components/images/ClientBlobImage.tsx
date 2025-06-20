@@ -143,7 +143,7 @@ class ImageCache {
 export default function ClientBlobImage({
   path,
   mobilePath,
-  fallbackSrc = '/api/placeholder/400/300',
+  fallbackSrc = '/api/placeholder/1200/800?style=nest&text=Loading...',
   enableCache = true,
   enableMobileDetection = false, // Only enable for landing page
   showLoadingSpinner = false,
@@ -151,6 +151,7 @@ export default function ClientBlobImage({
   width,
   height,
   fill,
+  sizes = "(min-width: 1024px) 70vw, 100vw", // Default responsive sizes for configurator
   ...props
 }: ClientBlobImageProps) {
   const [imageSrc, setImageSrc] = useState<string>(fallbackSrc);
@@ -196,8 +197,18 @@ export default function ClientBlobImage({
 
   // Optimized image loading with duplicate prevention
   const loadImage = useCallback(async (pathToLoad: string) => {
+    console.debug('🔍 ClientBlobImage: loadImage called', { 
+      pathToLoad, 
+      loading: loadingRef.current,
+      mounted: mountedRef.current
+    });
+    
     // Prevent duplicate loading
     if (loadingRef.current || !pathToLoad || pathToLoad === 'undefined' || pathToLoad === '') {
+      console.debug('❌ ClientBlobImage: Skipping load - invalid conditions', {
+        loading: loadingRef.current,
+        pathValid: !!pathToLoad && pathToLoad !== 'undefined' && pathToLoad !== ''
+      });
       return;
     }
 
@@ -257,13 +268,27 @@ export default function ClientBlobImage({
 
   // Load image when target path changes
   useEffect(() => {
+    console.debug('🖼️ ClientBlobImage: Effect triggered', { 
+      targetPath, 
+      fallbackSrc,
+      enableCache,
+      imageSrc: imageSrc !== fallbackSrc ? 'custom' : 'fallback'
+    });
+    
     if (targetPath) {
+      console.debug('🔄 ClientBlobImage: Starting image load for:', targetPath);
       loadImage(targetPath);
     } else {
+      console.debug('⚠️ ClientBlobImage: No target path, using fallback');
       setImageSrc(fallbackSrc);
       setIsLoading(false);
     }
   }, [targetPath, loadImage, fallbackSrc]);
+
+  // Debug logging to track sizes prop
+  if (process.env.NODE_ENV === 'development') {
+    console.debug('🖼️ ClientBlobImage sizes:', { sizes, path });
+  }
 
   return (
     <div className="relative w-full h-full">
@@ -272,6 +297,7 @@ export default function ClientBlobImage({
         alt={alt || 'NEST-Haus Image'}
         {...(fill ? { fill: true } : { width: width || 400, height: height || 300 })}
         {...props}
+        sizes={sizes} // Explicit sizes after props to ensure it takes precedence
         style={{
           ...props.style,
           opacity: isLoading ? 0.8 : 1,

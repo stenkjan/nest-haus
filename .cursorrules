@@ -195,6 +195,257 @@ const landingImageStyle = {
 ### Future-Proof:
 This pattern works with any image source (current files or future Vercel blob URLs).
 
+## Comprehensive Image Handling System Rules
+
+**CRITICAL: Unified Image Architecture for Optimal Performance**
+
+### **1. Default Component Choice**
+- ✅ **ALWAYS use `HybridBlobImage`** for any new image implementation
+- ✅ This component automatically selects the best strategy (SSR/Client)
+- ✅ Provides optimal balance of SEO, performance, and user experience
+- ❌ DO NOT create new image components without architectural approval
+
+### **2. Image Component Selection Guide**
+
+#### Use HybridBlobImage (Default - 95% of cases):
+```tsx
+import { HybridBlobImage } from '@/components/images';
+
+// Auto-strategy selection based on context
+<HybridBlobImage 
+  path="image-name"
+  strategy="auto"
+  isAboveFold={boolean}
+  isCritical={boolean}
+  isInteractive={boolean}
+  alt="Descriptive text"
+/>
+```
+
+#### Use ServerBlobImage (SSR-Critical cases):
+```tsx
+// Only for server components with confirmed SSR needs
+<ServerBlobImage
+  path="static-content"
+  enableSSRFetch={true}
+  priority={true}
+  alt="Static Content"
+/>
+```
+
+#### Use ClientBlobImage (Legacy/Specific cases):
+```tsx
+// Only for specific client-side requirements
+<ClientBlobImage
+  path="dynamic-content"
+  enableCache={true}
+  enableMobileDetection={true}
+  alt="Dynamic Content"
+/>
+```
+
+### **3. Performance Optimization Rules**
+
+#### Caching Strategy (Multi-Level):
+- **Memory Cache**: Image path resolution (ImageManager)
+- **Session Cache**: Blob URLs (1 hour TTL)
+- **Server Cache**: API responses (1 hour TTL)
+- **Browser Cache**: Next.js optimization (24 hours TTL)
+
+#### Loading Strategy:
+- **Above-fold/Critical**: `strategy="ssr"` + `priority={true}`
+- **Interactive/Dynamic**: `strategy="client"` + caching enabled
+- **Below-fold**: `strategy="auto"` + lazy loading
+- **Gallery/Grid**: Progressive loading with intersection observer
+
+#### Required Image Props:
+- ✅ **ALWAYS set `alt` attribute** for accessibility
+- ✅ **ALWAYS set appropriate `sizes`** for responsive images
+- ✅ **ALWAYS set `priority={true}`** for above-fold critical images
+- ✅ **ALWAYS use aspect ratios** to prevent layout shift
+
+### **4. API Route Optimization**
+
+#### Image API (`/api/images`):
+- **Caching**: Server-side with 1-hour TTL
+- **Fallbacks**: Semantic placeholders for missing images
+- **Extensions**: Auto-detection (.jpg, .jpeg, .png, .webp, .avif)
+- **Error Handling**: Graceful degradation, never fail
+
+#### Placeholder API (`/api/placeholder/[width]/[height]`):
+- **SVG Generation**: Branded, semantic placeholders
+- **Caching**: Immutable with long TTL
+- **Customization**: Query params for context-aware messages
+
+### **5. ImageManager Integration**
+
+#### Required Usage:
+```tsx
+import { ImageManager } from '@/app/konfigurator/core/ImageManager';
+
+// Path resolution with caching
+const imagePath = ImageManager.getPreviewImage(configuration, view);
+
+// Intelligent preloading
+await ImageManager.preloadImages(configuration);
+
+// Available views calculation
+const views = ImageManager.getAvailableViews(configuration);
+```
+
+#### Caching Rules:
+- **Memoization**: All path calculations are cached
+- **Deduplication**: Prevent redundant API calls
+- **Smart Updates**: Only refresh when configuration changes
+- **Preloading**: Predictive loading based on user behavior
+
+### **6. Configuration Examples**
+
+#### Landing Page Hero (Critical):
+```tsx
+<HybridBlobImage
+  path="hero-image"
+  strategy="ssr"
+  isAboveFold={true}
+  isCritical={true}
+  priority={true}
+  alt="NEST Haus Hero"
+  sizes="100vw"
+  style={{ aspectRatio: '16/9' }}
+/>
+```
+
+#### Configurator Preview (Interactive):
+```tsx
+<HybridBlobImage
+  path={dynamicImagePath}
+  strategy="client"
+  isInteractive={true}
+  enableCache={true}
+  alt="Configuration Preview"
+  sizes="(max-width: 768px) 100vw, 70vw"
+  quality={85}
+/>
+```
+
+#### Gallery Image (Auto-Optimized):
+```tsx
+<HybridBlobImage
+  path="gallery-image"
+  strategy="auto"
+  isAboveFold={index < 2}
+  isCritical={index === 0}
+  alt="Gallery Image"
+  loading={index < 2 ? 'eager' : 'lazy'}
+/>
+```
+
+### **7. Error Handling & Fallbacks**
+
+#### Graceful Degradation Hierarchy:
+1. **Exact image match** from blob storage
+2. **Fallback with default material/size**
+3. **Final default image** from constants
+4. **Semantic placeholder** with context
+5. **Basic placeholder** as last resort
+
+#### Error Boundaries:
+- **Never block user interactions** waiting for images
+- **Always provide visual feedback** during loading
+- **Log errors** in development, fail silently in production
+- **Use semantic placeholders** that provide context
+
+### **8. Next.js Configuration**
+
+#### Required Image Settings:
+```tsx
+// next.config.ts
+images: {
+  dangerouslyAllowSVG: true,
+  contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  formats: ['image/webp', 'image/avif'],
+  minimumCacheTTL: 60 * 60 * 24, // 24 hours
+  deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+  imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+}
+```
+
+### **9. Performance Monitoring**
+
+#### Required Metrics:
+- **Loading Times**: Track image load performance
+- **Cache Hit Rates**: Monitor caching effectiveness  
+- **Error Rates**: Track failed image loads
+- **Core Web Vitals**: Monitor LCP, CLS impact
+
+#### Development Tools:
+```tsx
+// Debug image resolution
+ImageManager.clearPreloadedImages();
+ImageManager.getPreviewImage(config, 'exterior');
+
+// Performance profiling
+console.log('🖼️ Image loading metrics');
+```
+
+### **10. DO/DON'T Rules**
+
+#### ✅ DO:
+- Use `HybridBlobImage` for all new implementations
+- Set proper `alt` text for accessibility
+- Use `priority={true}` for above-fold critical images
+- Implement responsive `sizes` attributes
+- Cache frequently accessed images
+- Preload predictable next images
+- Use aspect ratios to prevent layout shift
+- Monitor performance metrics
+
+#### ❌ DON'T:
+- Use client-side loading for critical above-fold content
+- Skip accessibility attributes
+- Load full-resolution images unnecessarily on mobile
+- Block user interactions waiting for images
+- Create redundant API calls
+- Use fixed pixel sizes for responsive layouts
+- Create new image components without approval
+- Ignore error handling and fallbacks
+
+### **11. Migration Requirements**
+
+#### From Legacy Components:
+```tsx
+// OLD: Direct blob image usage
+<ClientBlobImage path="image" />
+
+// NEW: Optimized hybrid approach
+<HybridBlobImage 
+  path="image"
+  strategy="auto"
+  alt="Descriptive text"
+/>
+```
+
+#### From Static Images:
+```tsx
+// OLD: Static Next.js Image
+<Image src="/static/image.jpg" alt="..." />
+
+// NEW: Blob-optimized with fallback
+<HybridBlobImage 
+  path="image-name"
+  strategy="ssr"
+  fallbackSrc="/static/image.jpg"
+  alt="..."
+/>
+```
+
+### **12. Documentation Requirements**
+
+- **Update `/docs/IMAGE_OPTIMIZATION_GUIDE.md`** after any image system changes
+- **Document performance impact** of new implementations
+- **Provide usage examples** for common scenarios
+- **Track breaking changes** and migration paths
+
 ## Error Handling & Debugging Guidelines
 - **Client-side errors**: Log to console in development, use error boundaries in production
 - **API failures**: Always have fallback states, don't block user experience  

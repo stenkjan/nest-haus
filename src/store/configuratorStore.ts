@@ -42,6 +42,10 @@ interface ConfiguratorState {
   currentPrice: number
   priceBreakdown: PriceBreakdown | null
   
+  // Preview panel progression state (matches old configurator logic)
+  hasPart2BeenActive: boolean
+  hasPart3BeenActive: boolean
+  
   // Actions
   initializeSession: () => void
   updateSelection: (item: ConfigurationItem) => void
@@ -50,6 +54,10 @@ interface ConfiguratorState {
   saveConfiguration: (userDetails?: Record<string, unknown>) => Promise<boolean>
   resetConfiguration: () => void
   finalizeSession: () => void
+  
+  // Part activation
+  activatePart2: () => void
+  activatePart3: () => void
   
   // Getters
   getConfigurationForCart: () => Configuration | null
@@ -64,33 +72,42 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       configuration: null,
       currentPrice: 0,
       priceBreakdown: null,
+      hasPart2BeenActive: false,
+      hasPart3BeenActive: false,
 
       // Initialize session CLIENT-SIDE ONLY (no API dependency)
       initializeSession: () => {
         const state = get()
+        
+        // DEV MODE: Always reset to prevent state persistence across reloads
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('🔄 DEV: Forcing fresh configurator state');
+          get().resetConfiguration()
+          return;
+        }
+        
         if (state.sessionId) {
-          return; // Already initialized
+          return; // Already initialized in production
         }
 
-        // Generate client-side session ID
-        const sessionId = `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
-        
-        set({
-          sessionId,
-          configuration: {
-            sessionId,
-            totalPrice: 0,
-            timestamp: Date.now()
-          }
-        })
+        // Initialize with complete default configuration matching old configurator
+        get().resetConfiguration()
       },
 
       // Update selection - FULLY CLIENT-SIDE (no API calls)
       updateSelection: (item: ConfigurationItem) => {
         const state = get()
         if (!state.sessionId || !state.configuration) {
+          console.warn('⚠️ ConfiguratorStore: Cannot update selection - no session or configuration')
           return;
         }
+        
+        console.debug('🔧 ConfiguratorStore: Updating selection', {
+          category: item.category,
+          value: item.value,
+          name: item.name,
+          previousValue: state.configuration[item.category as keyof Configuration]?.value
+        })
         
         // Update local state immediately
         const updatedConfig = {
@@ -99,10 +116,45 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           timestamp: Date.now()
         }
         
-        set({ configuration: updatedConfig })
+        // Part activation logic (matches old configurator behavior)
+        let newState: Partial<ConfiguratorState> = { configuration: updatedConfig }
+        
+        // Activate Part 2 when innenverkleidung is selected (matches old logic)
+        if (item.category === 'innenverkleidung' && !state.hasPart2BeenActive) {
+          console.debug('🎨 ConfiguratorStore: Activating Part 2 (interior view enabled)')
+          newState.hasPart2BeenActive = true
+        }
+        
+        // Activate Part 3 when PV or Fenster is selected (matches old logic)
+        if ((item.category === 'pvanlage' || item.category === 'fenster') && !state.hasPart3BeenActive) {
+          console.debug('⚡ ConfiguratorStore: Activating Part 3 (PV/Fenster views enabled)')
+          newState.hasPart3BeenActive = true
+        }
+        
+        set(newState)
+
+        // Clear ImageManager cache when key visual properties change (temporarily disabled for debugging)
+        // if (['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden'].includes(item.category)) {
+        //   if (typeof window !== 'undefined') {
+        //     // Use dynamic import to avoid SSR issues
+        //     import('@/app/konfigurator/core/ImageManager').then(({ ImageManager }) => {
+        //       ImageManager.clearImageCache()
+        //       console.debug('🗑️ ConfiguratorStore: Cleared image cache for visual change')
+        //     }).catch(() => {
+        //       // Silently fail - cache clearing is optional
+        //     })
+        //   }
+        // }
 
         // Calculate price immediately using client-side logic
         get().calculatePrice()
+
+        console.debug('✅ ConfiguratorStore: Selection updated', {
+          category: item.category,
+          totalPrice: get().currentPrice,
+          hasPart2Active: get().hasPart2BeenActive,
+          hasPart3Active: get().hasPart3BeenActive
+        })
 
         // Optional: Track selection in background (non-blocking, fail-safe)
         if (typeof window !== 'undefined') {
@@ -195,19 +247,77 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         return true
       },
 
-      // Reset configuration
+      // Part activation functions
+      activatePart2: () => {
+        set({ hasPart2BeenActive: true })
+      },
+
+      activatePart3: () => {
+        set({ hasPart3BeenActive: true })
+      },
+
+      // Reset configuration - Complete defaults matching old configurator
       resetConfiguration: () => {
         const sessionId = `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
+        
+        console.debug('🔄 ConfiguratorStore: Resetting to default configuration');
+        
         set({
           sessionId,
           configuration: {
             sessionId,
-            totalPrice: 0,
+            // Complete default selections matching old configurator exactly
+            nest: {
+              category: 'nest',
+              value: 'nest80',
+              name: 'Nest 80',
+              price: 155500,
+              description: '80m² Nutzfläche'
+            },
+            gebaeudehuelle: {
+              category: 'gebaeudehuelle', 
+              value: 'trapezblech',
+              name: 'Trapezblech',
+              price: 0,
+              description: 'RAL 9005 - 3000 x 1142 mm'
+            },
+            innenverkleidung: {
+              category: 'innenverkleidung',
+              value: 'kiefer', 
+              name: 'Kiefer',
+              price: 0,
+              description: 'PEFC - Zertifiziert - Sicht 1,5 cm'
+            },
+            fussboden: {
+              category: 'fussboden',
+              value: 'parkett',
+              name: 'Parkett Eiche', 
+              price: 0,
+              description: 'Schwimmend verlegt'
+            },
+            totalPrice: 155500,
             timestamp: Date.now()
           },
-          currentPrice: 0,
+          hasPart2BeenActive: false,
+          hasPart3BeenActive: false,
+          currentPrice: 155500,
           priceBreakdown: null
         })
+        
+        // Clear ImageManager cache to ensure fresh image loading (temporarily disabled for debugging)
+        // if (typeof window !== 'undefined') {
+        //   // Use dynamic import to avoid SSR issues
+        //   import('@/app/konfigurator/core/ImageManager').then(({ ImageManager }) => {
+        //     ImageManager.clearImageCache()
+        //   }).catch(() => {
+        //     // Silently fail - cache clearing is optional
+        //   })
+        // }
+        
+        // Calculate price
+        get().calculatePrice()
+        
+        console.debug('✅ ConfiguratorStore: Reset complete', get().configuration)
       },
 
       // Finalize session (CLIENT-SIDE ONLY)
@@ -257,7 +367,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         sessionId: state.sessionId,
         configuration: state.configuration,
         currentPrice: state.currentPrice,
-        priceBreakdown: state.priceBreakdown
+        priceBreakdown: state.priceBreakdown,
+        hasPart2BeenActive: state.hasPart2BeenActive,
+        hasPart3BeenActive: state.hasPart3BeenActive
       })
     }
   )
