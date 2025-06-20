@@ -220,18 +220,10 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
           </>
         )}
 
-        {/* View Indicator - Show current view and available views */}
+        {/* View Indicator - Show current view only */}
         {availableViews.length > 1 && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
             <span className="font-medium">{viewLabels[activeView]}</span>
-            <span className="ml-2 opacity-70">({availableViews.indexOf(activeView) + 1}/{availableViews.length})</span>
-          </div>
-        )}
-
-        {/* Mobile-specific touch hint for first-time users */}
-        {isMobile && availableViews.length > 1 && (
-          <div className="absolute top-4 right-4 bg-blue-600 text-white px-2 py-1 rounded text-xs opacity-80">
-            Wischen für mehr Ansichten
           </div>
         )}
       </div>
