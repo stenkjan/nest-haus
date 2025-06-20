@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 // import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator'
 
 // ✅ PERFORMANCE: Simple in-memory cache for price calculations
-const priceCache = new Map<string, { result: any; timestamp: number }>();
+const priceCache = new Map<string, { result: Record<string, unknown>; timestamp: number }>();
 const PRICE_CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache for price calculations
 const MAX_PRICE_CACHE_SIZE = 500;
 

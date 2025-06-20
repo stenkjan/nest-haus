@@ -93,42 +93,18 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     }
   }, [isMobile, isIOSMobile])
 
-  // OPTIMIZED: Create a stable configuration snapshot to prevent unnecessary memoization invalidation
-  const configSnapshot = useMemo(() => {
-    if (!configuration) return null;
-    return {
-      nest: configuration.nest?.value,
-      gebaeudehuelle: configuration.gebaeudehuelle?.value,
-      innenverkleidung: configuration.innenverkleidung?.value,
-      fussboden: configuration.fussboden?.value,
-      fenster: configuration.fenster?.value,
-      pvanlage: configuration.pvanlage?.value
-    };
-  }, [configuration]);
+  // Configuration is used directly in memoization for better dependency tracking
 
   // FIXED: Get current image path using ImageManager - properly memoized to prevent unnecessary calls
   const currentImagePath = useMemo(() => {
     if (!configuration) return ImageManager.getPreviewImage(null, activeView);
     return ImageManager.getPreviewImage(configuration, activeView);
-  }, [
-    configSnapshot?.nest,
-    configSnapshot?.gebaeudehuelle, 
-    configSnapshot?.innenverkleidung,
-    configSnapshot?.fussboden,
-    configSnapshot?.fenster,
-    configSnapshot?.pvanlage,
-    activeView
-  ])
+  }, [configuration, activeView])
 
   // FIXED: Get available views - properly memoized
   const availableViews = useMemo(() => {
     return ImageManager.getAvailableViews(configuration, hasPart2BeenActive, hasPart3BeenActive)
-  }, [
-    configSnapshot?.nest,
-    configSnapshot?.gebaeudehuelle,
-    hasPart2BeenActive, 
-    hasPart3BeenActive
-  ])
+  }, [configuration, hasPart2BeenActive, hasPart3BeenActive])
 
   // Listen for view switching signals from the store
   useEffect(() => {
@@ -163,8 +139,8 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     setImageLoading(false)
   }, [])
 
-  const handleImageError = useCallback((error: any) => {
-    console.warn('PreviewPanel: Image load error', { currentImagePath, error })
+  const handleImageError = useCallback(() => {
+    console.warn('PreviewPanel: Image load error', { currentImagePath })
     handleImageLoadComplete()
   }, [currentImagePath, handleImageLoadComplete])
 

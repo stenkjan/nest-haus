@@ -322,7 +322,7 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   PerformanceMonitor.startAutoLogging();
   
   // Make available globally for debugging
-  (window as any).performanceMonitor = PerformanceMonitor;
+  (window as typeof window & { performanceMonitor: typeof PerformanceMonitor }).performanceMonitor = PerformanceMonitor;
 }
 
 export default PerformanceMonitor; 

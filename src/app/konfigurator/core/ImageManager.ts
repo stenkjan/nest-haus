@@ -79,13 +79,13 @@ export class ImageManager {
     const fenster = configuration.fenster?.value;
 
     try {
-      // PV view logic
-      if (view === 'pv' && pvanlage && gebaeudehuelle) {
-        const pvKey = this.getPVImageKey(gebaeudehuelle);
-        if (pvKey && IMAGES.configurations[pvKey]) {
-          return IMAGES.configurations[pvKey];
-        }
-      }
+             // PV view logic
+       if (view === 'pv' && pvanlage && gebaeudehuelle) {
+         const pvKey = this.getPVImageKey(gebaeudehuelle);
+         if (pvKey && (IMAGES.configurations as Record<string, string>)[pvKey]) {
+           return (IMAGES.configurations as Record<string, string>)[pvKey];
+         }
+       }
 
       // Fenster view logic  
       if (view === 'fenster' && fenster) {
@@ -99,33 +99,33 @@ export class ImageManager {
           return IMAGES.configurations.holzlattung_interior || this.getDefaultImage('interior');
         }
         
-        if (innenverkleidung && fussboden) {
-          const interiorKey = `interior_${innenverkleidung}_${fussboden}`;
-          const imagePath = (IMAGES.configurations as any)[interiorKey];
-          if (imagePath) {
-            return imagePath;
-          }
-        }
+                 if (innenverkleidung && fussboden) {
+           const interiorKey = `interior_${innenverkleidung}_${fussboden}`;
+           const imagePath = (IMAGES.configurations as Record<string, string>)[interiorKey];
+           if (imagePath) {
+             return imagePath;
+           }
+         }
         
         return this.getDefaultImage('interior');
       }
 
-      // Exterior view logic (default)
-      if (nest && gebaeudehuelle && innenverkleidung && fussboden) {
-        const key = this.buildImageKey(nest, gebaeudehuelle, innenverkleidung, fussboden);
-        const imagePath = (IMAGES.configurations as any)[key];
-        if (imagePath) {
-          return imagePath;
-        }
-      }
+             // Exterior view logic (default)
+       if (nest && gebaeudehuelle && innenverkleidung && fussboden) {
+         const key = this.buildImageKey(nest, gebaeudehuelle, innenverkleidung, fussboden);
+         const imagePath = (IMAGES.configurations as Record<string, string>)[key];
+         if (imagePath) {
+           return imagePath;
+         }
+       }
 
-      // Fallback to nest-specific default
-      if (nest) {
-        const nestDefault = (IMAGES.configurations as any)[nest];
-        if (nestDefault) {
-          return nestDefault;
-        }
-      }
+       // Fallback to nest-specific default
+       if (nest) {
+         const nestDefault = (IMAGES.configurations as Record<string, string>)[nest];
+         if (nestDefault) {
+           return nestDefault;
+         }
+       }
 
       return this.getDefaultImage(view);
 
@@ -199,10 +199,10 @@ export class ImageManager {
 
       await Promise.allSettled(preloadPromiseArray);
       
-    } catch (error) {
-      // Silent fail - preloading is optimization only
-      console.debug('🖼️ ImageManager: Preloading completed with some errors');
-    }
+         } catch {
+       // Silent fail - preloading is optimization only
+       console.debug('🖼️ ImageManager: Preloading completed with some errors');
+     }
   }
 
   /**
@@ -214,13 +214,18 @@ export class ImageManager {
     // Preload alternative gebäudehülle options
     const commonHullen = ['holzlattung', 'trapezblech', 'fassadenplatten_schwarz'];
     
-    commonHullen.forEach(hulle => {
-      if (hulle !== configuration.gebaeudehuelle?.value) {
-        const altConfig = { 
-          ...configuration, 
-          gebaeudehuelle: { value: hulle } 
-        };
-        const imagePath = this.getPreviewImage(altConfig, 'exterior');
+         commonHullen.forEach(hulle => {
+       if (hulle !== configuration.gebaeudehuelle?.value) {
+         const altConfig: Configuration = { 
+           ...configuration, 
+           gebaeudehuelle: { 
+             category: 'gebaeudehuelle', 
+             value: hulle, 
+             name: hulle, 
+             price: 0 
+           } 
+         };
+         const imagePath = this.getPreviewImage(altConfig, 'exterior');
         
         // ✅ PERFORMANCE: Low priority background preload
         setTimeout(() => {
