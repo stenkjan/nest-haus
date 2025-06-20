@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useTransform, PanInfo } from 'motion/react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useMotionValue, PanInfo } from 'motion/react';
 import Image from 'next/image';
 
 interface CardData {
@@ -161,7 +161,14 @@ export default function ContentCards({
   // For extra-wide variant, show only the first card
   const displayCards = isExtraWide ? cardData.slice(0, 1) : cardData;
   const adjustedMaxIndex = Math.max(0, displayCards.length - Math.floor(cardsPerView));
-  const adjustedMaxScroll = -(adjustedMaxIndex * (cardWidth + gap));
+
+  const navigateCard = useCallback((direction: number) => {
+    const targetMaxIndex = isExtraWide ? adjustedMaxIndex : maxIndex;
+    const newIndex = Math.max(0, Math.min(targetMaxIndex, currentIndex + direction));
+    setCurrentIndex(newIndex);
+    const newX = -(newIndex * (cardWidth + gap));
+    x.set(newX);
+  }, [isExtraWide, adjustedMaxIndex, maxIndex, currentIndex, cardWidth, gap, x]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -175,15 +182,7 @@ export default function ContentCards({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, isExtraWide ? adjustedMaxIndex : maxIndex]);
-
-  const navigateCard = (direction: number) => {
-    const targetMaxIndex = isExtraWide ? adjustedMaxIndex : maxIndex;
-    const newIndex = Math.max(0, Math.min(targetMaxIndex, currentIndex + direction));
-    setCurrentIndex(newIndex);
-    const newX = -(newIndex * (cardWidth + gap));
-    x.set(newX);
-  };
+  }, [navigateCard]);
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const offset = info.offset.x;

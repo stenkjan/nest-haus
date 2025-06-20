@@ -36,7 +36,7 @@ class ImageCache {
         url,
         timestamp: Date.now()
       }));
-    } catch (e) {
+    } catch {
       // Handle quota exceeded gracefully
       console.warn('SessionStorage quota exceeded, clearing old entries');
       this.clearOldEntries();
@@ -108,17 +108,17 @@ class ImageCache {
               } else {
                 sessionStorage.removeItem(key);
               }
-            } catch (e) {
+            } catch {
               sessionStorage.removeItem(key);
             }
           }
-        }
+                }
       }
-    } catch (e) {
+    } catch {
       // Handle gracefully
     }
   }
-  
+
   private static clearOldEntries(): void {
     try {
       const keys = [];
@@ -134,7 +134,7 @@ class ImageCache {
         const toRemove = keys.slice(0, keys.length - 50);
         toRemove.forEach(key => sessionStorage.removeItem(key));
       }
-    } catch (e) {
+    } catch {
       // Handle gracefully
     }
   }
@@ -156,7 +156,7 @@ export default function ClientBlobImage({
 }: ClientBlobImageProps) {
   const [imageSrc, setImageSrc] = useState<string>(fallbackSrc);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [_error, setError] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const mountedRef = useRef<boolean>(true);
   const loadingRef = useRef<boolean>(false);
@@ -283,7 +283,7 @@ export default function ClientBlobImage({
       setImageSrc(fallbackSrc);
       setIsLoading(false);
     }
-  }, [targetPath, loadImage, fallbackSrc]);
+  }, [targetPath, loadImage, fallbackSrc, enableCache, imageSrc]);
 
   // Debug logging to track sizes prop
   if (process.env.NODE_ENV === 'development') {

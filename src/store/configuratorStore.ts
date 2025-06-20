@@ -106,7 +106,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           category: item.category,
           value: item.value,
           name: item.name,
-          previousValue: state.configuration[item.category as keyof Configuration]?.value
+          previousValue: (state.configuration[item.category as keyof Configuration] as ConfigurationItem)?.value
         })
         
         // Update local state immediately
@@ -117,7 +117,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         }
         
         // Part activation logic (matches old configurator behavior)
-        let newState: Partial<ConfiguratorState> = { configuration: updatedConfig }
+        const newState: Partial<ConfiguratorState> = { configuration: updatedConfig }
         
         // Activate Part 2 when innenverkleidung is selected (matches old logic)
         if (item.category === 'innenverkleidung' && !state.hasPart2BeenActive) {
