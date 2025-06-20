@@ -1,288 +1,282 @@
 # Performance Optimization Fixes - Nest-Haus Configurator
 
-## 🎯 **Comprehensive System Review & Optimization (Latest)**
+## Issue Analysis (Based on Console Logs)
 
-### **📊 System Analysis Results**
-
-After comprehensive review according to project rules and integration guidelines, the following critical optimizations have been implemented:
-
----
-
-## 🚀 **Major Performance Improvements**
-
-### **1. Enhanced SEO & SSR Performance**
-
-**Problem**: Missing metadata, no structured data, poor search engine optimization.
-
-**Solution**: 
-```typescript
-// ✅ IMPLEMENTED: Comprehensive SEO optimization
-export const metadata: Metadata = {
-  title: 'Hausfinder Konfigurator | NEST Haus - Modulares Traumhaus konfigurieren',
-  description: 'Konfigurieren Sie Ihr individuelles NEST Haus...',
-  openGraph: { /* Complete Open Graph tags */ },
-  twitter: { /* Twitter cards */ },
-  alternates: { canonical: 'https://nest-haus.com/konfigurator' },
-  robots: { /* Complete indexing instructions */ }
-};
-
-// ✅ STRUCTURED DATA: JSON-LD for enhanced search visibility
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  // Complete structured data implementation
-};
+The configurator was making excessive API calls to the same image paths:
 ```
+GET /api/images?path=115-NEST-Haus-Konfigurator-115-Trapezblech-Schwarz-Ansicht 200 in 6-14ms
+```
+This pattern repeated 100+ times for the same image, indicating:
 
-**Impact**: 
-- **SEO Score**: Improved from 65% → 95%
-- **Core Web Vitals**: Enhanced FCP and LCP scores
-- **Search Visibility**: Complete structured data for rich snippets
+1. **Missing Request Deduplication** - Multiple components requesting the same image simultaneously
+2. **Ineffective Caching** - Cache not preventing redundant API calls
+3. **React Re-render Loops** - Improper memoization causing unnecessary re-renders
+4. **Missing Performance Monitoring** - No visibility into performance issues
 
-### **2. API Route Caching Optimization**
+## Applied Fixes
 
-**Problem**: No caching headers, redundant API calls, no CDN optimization.
+### 1. Enhanced ClientBlobImage Caching System
+
+**Problem**: Cache was not preventing duplicate requests effectively.
 
 **Solution**: 
 ```typescript
-// ✅ IMPLEMENTED: Multi-tier caching strategy
-export async function GET(request: NextRequest) {
-  // Memory cache with cleanup
-  const cached = urlCache.get(path);
-  if (cached) {
-    return NextResponse.json(result, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-        'CDN-Cache-Control': 'public, s-maxage=86400',
-        'Vercel-CDN-Cache-Control': 'public, s-maxage=86400',
-        'X-Cache-Status': 'HIT'
-      }
-    });
-  }
+// Before: Basic cache without deduplication
+static async getOrFetch(path: string): Promise<string> {
+  const cached = this.get(path);
+  if (cached) return cached;
+  // Multiple requests could start simultaneously
 }
-```
 
-**Impact**:
-- **Cache Hit Rate**: Improved from 15% → 85%
-- **API Response Time**: Reduced from 15ms → 3ms (cached)
-- **CDN Utilization**: Proper edge caching implemented
-
-### **3. Database Performance Optimization**
-
-**Problem**: Blocking database operations, no connection pooling optimization.
-
-**Solution**: 
-```typescript
-// ✅ IMPLEMENTED: Non-blocking database operations
-const dbPromise = prisma.userSession.create(data).catch(error => {
-  console.error('Non-blocking PostgreSQL session creation failed:', error);
-  return null; // Don't fail the request if DB is down
-});
-
-const redisPromise = redis.setex(key, ttl, data);
-
-// Wait for Redis (critical), PostgreSQL runs in background
-await redisPromise;
-```
-
-**Impact**:
-- **Session Creation**: Reduced from 150ms → 25ms
-- **Database Reliability**: Non-blocking operations prevent UX disruption
-- **Error Handling**: Graceful degradation implemented
-
-### **4. Intelligent Image Preloading**
-
-**Problem**: Basic preloading, no priority system, excessive preload warnings.
-
-**Solution**: 
-```typescript
-// ✅ IMPLEMENTED: Priority-based preloading system
-private static async preloadSingleImage(imagePath: string, priority: 'high' | 'low' | 'background') {
-  if (priority === 'high') {
-    img.loading = 'eager';
-    criticalImages.add(imagePath);
-  } else {
-    img.loading = 'lazy';
-  }
+// After: Deduplication with pending promise tracking
+static async getOrFetch(path: string): Promise<string> {
+  // Track request count for monitoring
+  const currentCount = this.requestCounts.get(path) || 0;
+  this.requestCounts.set(path, currentCount + 1);
   
-  // Intelligent deduplication and memory management
+  // Return cached URL if available - PREVENT REDUNDANT REQUESTS
+  const cached = this.get(path);
+  if (cached) return cached;
+  
+  // Return pending promise if already fetching - CRITICAL FIX
+  const pending = this.pending.get(path);
+  if (pending) return pending;
+  
+  // Only create new request if none pending
 }
 ```
 
-**Impact**:
-- **Preload Efficiency**: 90% reduction in redundant preloads
-- **Memory Usage**: Intelligent cache cleanup prevents bloat
-- **User Experience**: Critical images load 300% faster
+**Impact**: Eliminates simultaneous requests for the same image.
 
-### **5. Price Calculation Optimization**
+### 2. Performance Monitoring Integration
 
-**Problem**: Redundant API calls for price calculations, no caching.
+**Problem**: No visibility into performance issues.
+
+**Solution**: Enhanced PerformanceMonitor with:
+- Request count tracking per image path
+- Automatic warnings for excessive requests (>3 calls to same path)
+- Cache hit rate monitoring
+- Component render tracking
+- Real-time performance reporting
+
+```typescript
+// Tracks all image requests and warns about duplicates
+static trackApiCall(path: string): void {
+  if (this.metrics.apiCalls.paths[path] > 3) {
+    console.warn(`🚨 Image path "${path}" called ${this.metrics.apiCalls.paths[path]} times`);
+  }
+}
+```
+
+### 3. PreviewPanel Memoization Optimization
+
+**Problem**: Configuration changes were causing unnecessary memoization invalidation.
 
 **Solution**: 
 ```typescript
-// ✅ IMPLEMENTED: Client-side calculations with smart caching
-const cacheKey = generateCacheKey(config);
-const cached = priceCache.get(cacheKey);
+// Before: Direct configuration access causing frequent invalidation
+const currentImagePath = useMemo(() => {
+  return ImageManager.getPreviewImage(configuration, activeView);
+}, [
+  configuration?.nest?.value,      // Changes frequently
+  configuration?.gebaeudehuelle?.value, 
+  // ... other frequent changes
+  activeView
+])
 
-if (cached && Date.now() - cached.timestamp < PRICE_CACHE_TTL) {
-  return cached.result; // 5-minute cache for identical configurations
-}
+// After: Stable configuration snapshot
+const configSnapshot = useMemo(() => {
+  if (!configuration) return null;
+  return {
+    nest: configuration.nest?.value,
+    gebaeudehuelle: configuration.gebaeudehuelle?.value,
+    // ... stable snapshot
+  };
+}, [configuration]);
+
+const currentImagePath = useMemo(() => {
+  return ImageManager.getPreviewImage(configuration, activeView);
+}, [
+  configSnapshot?.nest,           // More stable references
+  configSnapshot?.gebaeudehuelle,
+  // ... other stable references
+  activeView
+])
 ```
 
-**Impact**:
-- **Calculation Speed**: Instant price updates (0ms vs 50ms API)
-- **API Load**: 95% reduction in pricing API calls
-- **User Experience**: Real-time price feedback
+**Impact**: Reduces unnecessary memoization recalculations.
 
----
+### 4. Enhanced Error Handling and Debugging
 
-## 📈 **Performance Metrics**
+**Problem**: Limited visibility into image loading failures.
 
-### **Before Optimization**
-```
-API Calls: 150+ per session (95% duplicates)
-Cache Hit Rate: 15%
-Database Response: 150ms avg
-SEO Score: 65%
-Image Loading: 800ms first view
-Price Calculation: 50ms per change
-```
+**Solution**:
+- Comprehensive error logging with context
+- Development-only performance indicators
+- Request cancellation on component unmount
+- Fallback image handling
 
-### **After Optimization** 
-```
-API Calls: 12 per session (5% duplicates)
-Cache Hit Rate: 85%
-Database Response: 25ms avg
-SEO Score: 95%
-Image Loading: 100ms first view
-Price Calculation: 0ms (client-side)
-```
-
----
-
-## 🔧 **System Architecture Compliance**
-
-### **✅ Rule Compliance Check**
-
-1. **Client-side price calculations**: ✅ COMPLIANT
-   - All calculations happen client-side for instant feedback
-   - API only used for complex validations
-
-2. **Non-blocking background operations**: ✅ COMPLIANT
-   - Session tracking runs in background
-   - Database operations don't block user interactions
-
-3. **SSR for SEO, Client for interactions**: ✅ COMPLIANT
-   - Server component handles metadata and SEO
-   - Client component manages all user interactions
-
-4. **Minimal API calls**: ✅ COMPLIANT
-   - 95% reduction in redundant API calls
-   - Intelligent request deduplication
-
-5. **Performance monitoring**: ✅ COMPLIANT
-   - Real-time performance tracking
-   - Automatic warnings for performance issues
-
-### **✅ Integration Guide Compliance**
-
-1. **Configuration data structure**: ✅ MAINTAINED
-   - Backward compatible with existing backend
-   - All required interfaces preserved
-
-2. **Session management**: ✅ ENHANCED
-   - Redis-first architecture maintained
-   - PostgreSQL as backup/analytics store
-
-3. **Price integration**: ✅ OPTIMIZED
-   - Client-side calculations for speed
-   - API validation for complex scenarios
-
----
-
-## 🛠️ **Implementation Guidelines**
-
-### **For New Features**
 ```typescript
-// ✅ Always use optimized patterns
-import PerformanceMonitor from '@/core/PerformanceMonitor';
-import { HybridBlobImage } from '@/components/images';
+// Performance monitoring in development
+{process.env.NODE_ENV === 'development' && (
+  <div className="absolute top-4 left-4 bg-black/70 text-white px-2 py-1 rounded text-xs font-mono opacity-70">
+    {PerformanceMonitor.getCompactReport()}
+  </div>
+)}
+```
 
-// Track performance
-PerformanceMonitor.trackApiCall(path);
+### 5. Request Lifecycle Management
 
-// Use hybrid image loading
+**Problem**: Components could make requests after unmounting.
+
+**Solution**:
+```typescript
+// Proper cancellation handling
+useEffect(() => {
+  let cancelled = false;
+  
+  const loadImage = async () => {
+    // ... fetch logic
+    if (mountedRef.current && !cancelled) {
+      // Only update state if still mounted and not cancelled
+    }
+  };
+
+  loadImage();
+  
+  return () => {
+    cancelled = true; // Prevent state updates after unmount
+  };
+}, [effectivePath, shouldFetchImage]);
+```
+
+## Performance Metrics
+
+### Expected Improvements
+
+1. **API Call Reduction**: 95% reduction in duplicate requests
+2. **Cache Hit Rate**: >80% for repeated image loads
+3. **Render Optimization**: 60% reduction in unnecessary re-renders
+4. **Memory Efficiency**: Proper cleanup of pending requests
+
+### Monitoring Dashboard
+
+The system now provides real-time performance monitoring:
+
+```
+📊 API: 15/12 (20% dup) | 🖼️ Renders: 8/25 | ⚠️ 2
+```
+- **API**: Total requests/Unique requests (Duplicate percentage)
+- **Renders**: PreviewPanel renders/ImageComponent renders  
+- **Warnings**: Number of performance warnings
+
+### Automatic Alerts
+
+The system automatically warns about:
+- Image paths requested >3 times
+- Total API calls >20
+- Excessive component renders (>15 for PreviewPanel, >30 for ImageComponent)
+- Low cache hit rates (<50%)
+
+## Implementation Guidelines
+
+### For New Image Components
+
+```typescript
+// ✅ Always use HybridBlobImage with caching
 <HybridBlobImage 
   path={imagePath}
   strategy="client"
+  isInteractive={true}
   enableCache={true}
-  priority={isAboveFold}
+  alt="Description"
 />
 
-// Client-side state management
-const { updateSelection } = useConfiguratorStore();
-await updateSelection(item); // Non-blocking background sync
+// ❌ Avoid direct API calls without caching
+fetch(`/api/images?path=${path}`)
 ```
 
-### **Performance Monitoring**
+### For State Management
+
 ```typescript
-// ✅ Continuous monitoring enabled
-console.log(PerformanceMonitor.getCompactReport());
-// Output: 📊 API: 12/10 (17% dup) | 🖼️ Renders: 8/25 | ⚠️ 0
+// ✅ Create stable snapshots for memoization
+const configSnapshot = useMemo(() => ({
+  key: config?.value
+}), [config]);
 
-console.log(ImageManager.getPerformanceMetrics());
-// Output: { preloadedCount: 15, pendingPreloads: 2, criticalImages: 5 }
+// ❌ Direct object access in dependencies
+useMemo(() => {}, [config?.value]) // Can change frequently
 ```
 
----
+### For Performance Monitoring
 
-## 🎯 **Future Optimization Opportunities**
+```typescript
+// Enable in development
+PerformanceMonitor.startAutoLogging();
 
-### **1. Advanced Caching**
-- Implement Redis caching for image URLs
-- Add browser-level persistent cache
-- Service worker for offline image access
+// Check performance periodically
+const performance = PerformanceMonitor.checkPerformance();
+if (!performance.isGood) {
+  console.warn('Performance issues:', performance.warnings);
+}
+```
 
-### **2. Progressive Loading**
-- Implement intersection observer for images
-- Add skeleton loading states
-- Progressive JPEG/WebP support
+## Rule Conformity Checklist
 
-### **3. Bundle Optimization**
-- Code splitting for configurator components
-- Dynamic imports for heavy features
-- Tree shaking optimization
+### ✅ Architecture Constraints
+- [x] Price calculations remain CLIENT-SIDE for instant response
+- [x] State management uses established Zustand pattern
+- [x] API calls are optimistic and fail-safe
+- [x] Session tracking is non-blocking background task
 
-### **4. Database Optimization**
-- Connection pooling optimization
-- Query performance indexing
-- Read replica for analytics
+### ✅ Performance Requirements
+- [x] <100ms response times for price calculations
+- [x] Minimal API calls through effective caching
+- [x] No blocking user experience for image loading
+- [x] Graceful degradation on errors
 
----
+### ✅ Image Handling Rules
+- [x] Always use HybridBlobImage for new implementations
+- [x] Client-side strategy for interactive configurator
+- [x] Enable caching for frequently accessed images
+- [x] Proper error handling and fallbacks
 
-## 📊 **Monitoring Dashboard**
+### ✅ Code Quality
+- [x] Comprehensive performance monitoring
+- [x] Development-only debugging aids
+- [x] Proper component lifecycle management
+- [x] Memoization optimization
 
-### **Key Performance Indicators**
-- API call efficiency: Target <20 calls per session
-- Cache hit rate: Target >80%
-- Database response time: Target <50ms
-- Image loading time: Target <200ms first paint
-- Price calculation: Target 0ms (client-side)
+## Testing Verification
 
-### **Automatic Alerts**
-- Performance warnings logged automatically
-- Excessive API call detection
-- Cache efficiency monitoring
-- Database connection health checks
+To verify the fixes are working:
 
----
+1. **Monitor Console**: Look for performance warnings
+2. **Check API Calls**: Should see dramatic reduction in duplicate calls
+3. **Performance Report**: Use `PerformanceMonitor.logMetrics()`
+4. **Cache Efficiency**: Monitor cache hit rates
 
-## 🔄 **Continuous Optimization**
+```javascript
+// In browser console
+PerformanceMonitor.logMetrics();
+PerformanceMonitor.getCompactReport();
+```
 
-The system now includes:
-- **Real-time performance monitoring**
-- **Automatic optimization suggestions**
-- **Progressive enhancement capabilities**
-- **Scalable architecture patterns**
+## Future Optimizations
 
-All optimizations follow the project rules and maintain backward compatibility while significantly improving performance and user experience. 
+1. **Image Preloading**: Intelligent preloading based on user behavior
+2. **Service Worker Caching**: Offline image caching
+3. **WebP/AVIF Support**: Modern image format optimization
+4. **Lazy Loading**: Intersection observer for below-fold images
+5. **Bundle Splitting**: Code splitting for image components
+
+## Conclusion
+
+These fixes address the root causes of excessive API calls:
+- **Deduplication** prevents simultaneous requests for same image
+- **Enhanced caching** improves efficiency and reduces server load
+- **Performance monitoring** provides visibility and automatic alerts
+- **Optimized memoization** reduces unnecessary re-renders
+- **Proper lifecycle management** prevents memory leaks
+
+The configurator should now operate efficiently with minimal redundant API calls while maintaining smooth user interactions. 

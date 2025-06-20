@@ -2,7 +2,7 @@
  * PreviewPanel - Image Preview Component
  * 
  * Handles the sticky preview panel with image display and navigation.
- * Optimized for SSR compatibility, responsive design, and robust image loading.
+ * Optimized for performance with simplified memoization and bottom-aligned image positioning.
  */
 
 'use client'
@@ -11,7 +11,6 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { HybridBlobImage } from '@/components/images'
 import { useConfiguratorStore } from '@/store/configuratorStore'
 import { ImageManager } from '../core/ImageManager'
-import PerformanceMonitor from '../core/PerformanceMonitor'
 import type { ViewType } from '../types/configurator.types'
 
 interface PreviewPanelProps {
@@ -29,11 +28,6 @@ function isIOS() {
 }
 
 export default function PreviewPanel({ isMobile = false, className = '' }: PreviewPanelProps) {
-  // Track component renders for performance monitoring
-  useEffect(() => {
-    PerformanceMonitor.trackPreviewPanelRender();
-  });
-
   const { 
     configuration, 
     hasPart2BeenActive, 
@@ -44,16 +38,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   const [activeView, setActiveView] = useState<ViewType>('exterior')
   const [previewHeight, setPreviewHeight] = useState('clamp(20rem, 40vh, 35rem)')
   const [isIOSMobile, setIsIOSMobile] = useState(false)
-  const [imageLoading, setImageLoading] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
-
-  // Performance monitoring: Start auto-logging on mount
-  useEffect(() => {
-    PerformanceMonitor.startAutoLogging();
-    return () => {
-      PerformanceMonitor.stopAutoLogging();
-    };
-  }, []);
 
   // Platform detection with proper SSR handling
   useEffect(() => {
@@ -65,20 +50,28 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     return () => window.removeEventListener('resize', checkPlatform)
   }, [])
 
-  // Calculate preview height for mobile - optimized for iOS with fluid design
+  // Calculate preview height for mobile - FIXED: Auto-height based on 16:9 aspect ratio
   useEffect(() => {
     if (!isMobile) return
 
     const calculatePreviewHeight = () => {
+      const screenWidth = window.innerWidth
       const screenHeight = window.innerHeight
       
-      // For iOS, account for address bar and use viewport height with clamp
+      // Calculate height to maintain 16:9 aspect ratio at full width
+      const aspectRatioHeight = (screenWidth / 16) * 9
+      
+      // For iOS, account for address bar and ensure reasonable bounds
       if (isIOSMobile) {
-        const optimalHeight = `clamp(18rem, ${Math.min(screenHeight * 0.4, 280)}px, 35rem)`
-        setPreviewHeight(optimalHeight)
+        // Allow aspect ratio height but cap at reasonable limits
+        const maxHeight = Math.min(screenHeight * 0.5, 400)
+        const optimalHeight = Math.min(aspectRatioHeight, maxHeight)
+        setPreviewHeight(`${optimalHeight}px`)
       } else {
-        // For other mobile devices - use responsive units
-        setPreviewHeight('clamp(16rem, 35vw, 35rem)')
+        // For other mobile devices - use aspect ratio height with bounds
+        const maxHeight = Math.min(screenHeight * 0.6, 450)
+        const optimalHeight = Math.min(aspectRatioHeight, maxHeight)
+        setPreviewHeight(`${optimalHeight}px`)
       }
     }
 
@@ -93,15 +86,12 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     }
   }, [isMobile, isIOSMobile])
 
-  // Configuration is used directly in memoization for better dependency tracking
-
-  // FIXED: Get current image path using ImageManager - properly memoized to prevent unnecessary calls
+  // SIMPLIFIED: Get current image path - removed over-optimization that caused constant re-renders
   const currentImagePath = useMemo(() => {
-    if (!configuration) return ImageManager.getPreviewImage(null, activeView);
-    return ImageManager.getPreviewImage(configuration, activeView);
+    return ImageManager.getPreviewImage(configuration, activeView)
   }, [configuration, activeView])
 
-  // FIXED: Get available views - properly memoized
+  // SIMPLIFIED: Get available views - removed over-optimization
   const availableViews = useMemo(() => {
     return ImageManager.getAvailableViews(configuration, hasPart2BeenActive, hasPart3BeenActive)
   }, [configuration, hasPart2BeenActive, hasPart3BeenActive])
@@ -110,7 +100,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   useEffect(() => {
     if (shouldSwitchToView && shouldSwitchToView !== activeView) {
       setActiveView(shouldSwitchToView as ViewType);
-      clearViewSwitchSignal(); // Clear the signal after handling it
+      clearViewSwitchSignal();
     }
   }, [shouldSwitchToView, activeView, clearViewSwitchSignal])
 
@@ -121,7 +111,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     }
   }, [availableViews, activeView])
 
-  // Navigation handlers with bounds checking - memoized to prevent re-renders
+  // Navigation handlers
   const handlePrevView = useCallback(() => {
     const currentIndex = availableViews.indexOf(activeView)
     const prevIndex = currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1
@@ -134,25 +124,15 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     setActiveView(availableViews[nextIndex])
   }, [availableViews, activeView])
 
-  // Image loading handlers - memoized to prevent re-renders
-  const handleImageLoadComplete = useCallback(() => {
-    setImageLoading(false)
-  }, [])
-
-  const handleImageError = useCallback(() => {
-    console.warn('PreviewPanel: Image load error', { currentImagePath })
-    handleImageLoadComplete()
-  }, [currentImagePath, handleImageLoadComplete])
-
   // View labels for display and accessibility
-  const viewLabels = useMemo(() => ({
+  const viewLabels = {
     exterior: 'Außenansicht',
     interior: 'Innenansicht', 
     pv: 'PV-Anlage',
     fenster: 'Fenster & Türen'
-  }), []);
+  }
 
-  // Container style - memoized to prevent unnecessary recalculations
+  // UPDATED: Container style - full height and width for left panel
   const containerStyle = useMemo(() => {
     if (isMobile) {
       return {
@@ -165,94 +145,52 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
       };
     }
     return {
-      // Desktop: use full container height with CSS Grid/Flexbox, accounting for navbar and footer
+      // Desktop: full height and width of left panel
       height: '100%',
-      width: '100%',
-      maxHeight: 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))'
+      width: '100%'
     };
   }, [isMobile, previewHeight, isIOSMobile]);
-
-  // Navigation button props - memoized for performance
-  const prevButtonProps = useMemo(() => {
-    const currentIndex = availableViews.indexOf(activeView);
-    const prevIndex = currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1;
-    const prevView = availableViews[prevIndex];
-    
-    return {
-      'aria-label': `Vorherige Ansicht: ${viewLabels[prevView] || 'Unbekannt'}`,
-      onClick: handlePrevView
-    };
-  }, [availableViews, activeView, viewLabels, handlePrevView]);
-
-  const nextButtonProps = useMemo(() => {
-    const currentIndex = availableViews.indexOf(activeView);
-    const nextIndex = currentIndex < availableViews.length - 1 ? currentIndex + 1 : 0;
-    const nextView = availableViews[nextIndex];
-    
-    return {
-      'aria-label': `Nächste Ansicht: ${viewLabels[nextView] || 'Unbekannt'}`,
-      onClick: handleNextView
-    };
-  }, [availableViews, activeView, viewLabels, handleNextView]);
-
-  // Performance monitoring: Log current image path changes in development
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.debug(`🖼️ PreviewPanel: Current image path changed to: ${currentImagePath}`);
-      
-      // Show compact performance report every few image changes
-      const pathChangeCount = performance.now() % 1000;
-      if (pathChangeCount < 50) { // Roughly every 20 changes
-        console.debug(PerformanceMonitor.getCompactReport());
-      }
-    }
-  }, [currentImagePath]);
 
   return (
     <div 
       ref={previewRef}
-      className={`preview-panel bg-gray-50 flex flex-col relative ${className}`}
+      className={`preview-panel flex flex-col relative ${className}`}
       style={containerStyle}
     >
-      {/* Image Container */}
-      <div className="flex-1 relative overflow-hidden">
-        {/* Loading indicator */}
-        {imageLoading && (
-          <div className="absolute inset-0 bg-gray-100 flex items-center justify-center z-10">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      {/* FIXED: Image Container - proper aspect ratio handling for mobile */}
+      <div className="h-full w-full flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'white' }}>
+        {/* Image with maintained aspect ratio, centered and filling available space */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <div 
+            className="relative w-full h-full" 
+            style={isMobile ? {
+              // Mobile: container height is already calculated for 16:9, so fill it completely
+              aspectRatio: '16/9'
+            } : {
+              // Desktop: maintain aspect ratio within available space
+              aspectRatio: '16/9'
+            }}
+          >
+            {/* Main image */}
+            <HybridBlobImage
+              path={currentImagePath}
+              alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || 'Nest Konfigurator'}`}
+              fill
+              className={`transition-opacity duration-300 ${
+                isMobile ? 'object-contain' : 'object-contain'
+              }`}
+              
+              // Simplified strategy - just use client-side for interactive configurator
+              strategy="client"
+              isInteractive={true}
+              enableCache={true}
+              
+              // Standard image props
+              sizes="(max-width: 1023px) 100vw, 70vw"
+              quality={85}
+              priority={activeView === 'exterior'}
+            />
           </div>
-        )}
-
-        {/* Image container with consistent aspect ratio */}
-        <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
-          {/* Loading spinner */}
-          {imageLoading && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/20">
-              <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          )}
-
-          {/* Main image - FIXED: Optimized for performance */}
-          <HybridBlobImage
-            path={currentImagePath}
-            alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || 'Nest Konfigurator'}`}
-            fill
-            className="object-cover transition-opacity duration-300"
-            
-            // Hybrid strategy configuration
-            strategy="client" // Use client-side for interactive configurator
-            isInteractive={true}
-            enableCache={true}
-            enableMobileDetection={false}
-            showLoadingSpinner={false} // We handle loading state ourselves
-            
-            // Standard image props - accurate sizes for actual rendered dimensions  
-            sizes="(max-width: 1023px) 100vw, 70vw"
-            quality={85}
-            priority={activeView === 'exterior'}
-            onLoad={handleImageLoadComplete}
-            onError={handleImageError}
-          />
         </div>
         
         {/* Navigation Arrows - Only show if multiple views available */}
@@ -261,7 +199,8 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
             <button
               type="button"
               className="absolute left-[clamp(0.75rem,2vw,1rem)] top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-500"
-              {...prevButtonProps}
+              aria-label={`Vorherige Ansicht`}
+              onClick={handlePrevView}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-[clamp(1.25rem,2.5vw,1.5rem)] h-[clamp(1.25rem,2.5vw,1.5rem)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -271,7 +210,8 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
             <button
               type="button"
               className="absolute right-[clamp(0.75rem,2vw,1rem)] top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-500"
-              {...nextButtonProps}
+              aria-label={`Nächste Ansicht`}
+              onClick={handleNextView}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-[clamp(1.25rem,2.5vw,1.5rem)] h-[clamp(1.25rem,2.5vw,1.5rem)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -279,29 +219,24 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
             </button>
           </>
         )}
+
+        {/* View Indicator - Show current view and available views */}
+        {availableViews.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+            <span className="font-medium">{viewLabels[activeView]}</span>
+            <span className="ml-2 opacity-70">({availableViews.indexOf(activeView) + 1}/{availableViews.length})</span>
+          </div>
+        )}
+
+        {/* Mobile-specific touch hint for first-time users */}
+        {isMobile && availableViews.length > 1 && (
+          <div className="absolute top-4 right-4 bg-blue-600 text-white px-2 py-1 rounded text-xs opacity-80">
+            Wischen für mehr Ansichten
+          </div>
+        )}
       </div>
 
-      {/* View Indicator - Show current view and available views */}
-      {availableViews.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-          <span className="font-medium">{viewLabels[activeView]}</span>
-          <span className="ml-2 opacity-70">({availableViews.indexOf(activeView) + 1}/{availableViews.length})</span>
-        </div>
-      )}
-
-      {/* Mobile-specific touch hint for first-time users */}
-      {isMobile && availableViews.length > 1 && (
-        <div className="absolute top-4 right-4 bg-blue-600 text-white px-2 py-1 rounded text-xs opacity-80">
-          Wischen für mehr Ansichten
-        </div>
-      )}
-
-      {/* Development performance indicator */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="absolute top-4 left-4 bg-black/70 text-white px-2 py-1 rounded text-xs font-mono opacity-70">
-          {PerformanceMonitor.getCompactReport()}
-        </div>
-      )}
+      {/* REMOVED: Flex-1 spacer and excessive performance monitoring */}
     </div>
   )
 } 

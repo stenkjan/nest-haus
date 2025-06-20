@@ -262,13 +262,28 @@ export default function ClientBlobImage({
     };
   }, [enableCache]);
 
+  // Add path sanitization method for security
+  const sanitizePath = useCallback((inputPath: string): string => {
+    if (!inputPath) return '';
+    
+    // Remove any potentially dangerous characters, keep only alphanumeric, hyphens, underscores, and forward slashes
+    const sanitized = inputPath.replace(/[^a-zA-Z0-9\-_/]/g, '');
+    
+    // Ensure path doesn't start with / or contain ../ to prevent directory traversal
+    return sanitized.replace(/^\/+|\.\.\/+/g, '');
+  }, []);
+
   // Determine which path to use - only consider mobile if detection is enabled
   const effectivePath = useMemo(() => {
-    if (enableMobileDetection && isMobile && mobilePath) {
-      return mobilePath;
+    // Validate and sanitize path input
+    const sanitizedPath = sanitizePath(path);
+    const sanitizedMobilePath = mobilePath ? sanitizePath(mobilePath) : null;
+    
+    if (enableMobileDetection && isMobile && sanitizedMobilePath) {
+      return sanitizedMobilePath;
     }
-    return path;
-  }, [path, mobilePath, isMobile, enableMobileDetection]);
+    return sanitizedPath;
+  }, [path, mobilePath, isMobile, enableMobileDetection, sanitizePath]);
 
   // CRITICAL FIX: Prevent re-fetching the same image
   const shouldFetchImage = useMemo(() => {

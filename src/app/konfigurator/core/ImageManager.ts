@@ -2,7 +2,7 @@
  * ImageManager - Preview Image Handling
  * 
  * Manages image preview logic, caching, and view switching.
- * Optimized for efficiency, non-redundancy, and performance.
+ * Updated to match the old configurator logic exactly.
  * 
  * @example
  * const imagePath = ImageManager.getPreviewImage(configuration, 'exterior');
@@ -15,332 +15,373 @@ import type {
 } from '../types/configurator.types';
 import type { Configuration } from '@/store/configuratorStore';
 
-// ✅ PERFORMANCE: Enhanced cache with preloading capabilities
-const preloadedImages = new Set<string>();
-const preloadPromises = new Map<string, Promise<void>>();
-const criticalImages = new Set<string>(); // Mark critical images for priority
-
-// ✅ PERFORMANCE: Memory management for image path cache
+// In-memory cache for resolved image paths to prevent redundant lookups
 const imagePathCache = new Map<string, string>();
-const MAX_PATH_CACHE_SIZE = 200;
-
-// ✅ OPTIMIZATION: Cleanup cache when it gets too large
-function cleanupPathCache() {
-  if (imagePathCache.size > MAX_PATH_CACHE_SIZE) {
-    const entries = Array.from(imagePathCache.entries());
-    const toRemove = entries.slice(0, entries.length - MAX_PATH_CACHE_SIZE);
-    toRemove.forEach(([key]) => imagePathCache.delete(key));
-  }
-}
 
 export class ImageManager {
   /**
-   * ✅ PERFORMANCE: Get preview image with intelligent fallbacks and caching
+   * Get preview image path based on configuration and view type
+   * UPDATED: Matches old configurator logic exactly with security validation
    */
   static getPreviewImage(configuration: Configuration | null, view: ViewType): string {
-    // Generate cache key
-    const cacheKey = `${JSON.stringify(configuration)}_${view}`;
+    // Validate inputs for security
+    if (!this.isValidViewType(view)) {
+      console.warn(`⚠️ Invalid view type: ${view}, defaulting to exterior`);
+      view = 'exterior';
+    }
+
+    // Use fallback for null configuration
+    if (!configuration) {
+      return IMAGES.configurations.nest75_holzlattung;
+    }
+
+    // Create cache key for memoization
+    const cacheKey = this.createCacheKey(configuration, view);
     
-    // Check cache first
-    const cached = imagePathCache.get(cacheKey);
-    if (cached) {
-      return cached;
+    // Return cached result if available
+    if (imagePathCache.has(cacheKey)) {
+      return imagePathCache.get(cacheKey)!;
     }
 
     let imagePath: string;
 
-    if (!configuration || !configuration.nest) {
-      imagePath = this.getDefaultImage(view);
-    } else {
-      imagePath = this.calculateImagePath(configuration, view);
+    switch (view) {
+      case 'exterior':
+        imagePath = this.getExteriorImage(configuration);
+        break;
+        
+      case 'interior':
+        imagePath = this.getInteriorImage(configuration);
+        break;
+        
+      case 'pv':
+        imagePath = this.getPvImage(configuration);
+        break;
+          
+      case 'fenster':
+        imagePath = this.getFensterImage(configuration);
+        break;
+        
+      default:
+        imagePath = this.getExteriorImage(configuration);
     }
 
-    // ✅ PERFORMANCE: Cache the result with cleanup
-    if (Math.random() < 0.01) { // 1% chance to cleanup
-      cleanupPathCache();
-    }
+    // Cache the result
+    imagePathCache.set(cacheKey, imagePath);
     
-    if (imagePathCache.size < MAX_PATH_CACHE_SIZE) {
-      imagePathCache.set(cacheKey, imagePath);
-    }
-
     return imagePath;
   }
 
   /**
-   * ✅ OPTIMIZATION: Calculate image path with enhanced logic
+   * Validate view type for security
    */
-  private static calculateImagePath(configuration: Configuration, view: ViewType): string {
-    const nest = configuration.nest?.value;
-    const gebaeudehuelle = configuration.gebaeudehuelle?.value;
-    const innenverkleidung = configuration.innenverkleidung?.value;
-    const fussboden = configuration.fussboden?.value;
-    const pvanlage = configuration.pvanlage?.value;
-    const fenster = configuration.fenster?.value;
-
-    try {
-             // PV view logic
-       if (view === 'pv' && pvanlage && gebaeudehuelle) {
-         const pvKey = this.getPVImageKey(gebaeudehuelle);
-         if (pvKey && (IMAGES.configurations as Record<string, string>)[pvKey]) {
-           return (IMAGES.configurations as Record<string, string>)[pvKey];
-         }
-       }
-
-      // Fenster view logic  
-      if (view === 'fenster' && fenster) {
-        // Could be expanded with specific fenster images
-        return this.getDefaultImage('exterior');
-      }
-
-      // Interior view logic
-      if (view === 'interior') {
-        if (gebaeudehuelle === 'holzlattung') {
-          return IMAGES.configurations.holzlattung_interior || this.getDefaultImage('interior');
-        }
-        
-                 if (innenverkleidung && fussboden) {
-           const interiorKey = `interior_${innenverkleidung}_${fussboden}`;
-           const imagePath = (IMAGES.configurations as Record<string, string>)[interiorKey];
-           if (imagePath) {
-             return imagePath;
-           }
-         }
-        
-        return this.getDefaultImage('interior');
-      }
-
-             // Exterior view logic (default)
-       if (nest && gebaeudehuelle && innenverkleidung && fussboden) {
-         const key = this.buildImageKey(nest, gebaeudehuelle, innenverkleidung, fussboden);
-         const imagePath = (IMAGES.configurations as Record<string, string>)[key];
-         if (imagePath) {
-           return imagePath;
-         }
-       }
-
-       // Fallback to nest-specific default
-       if (nest) {
-         const nestDefault = (IMAGES.configurations as Record<string, string>)[nest];
-         if (nestDefault) {
-           return nestDefault;
-         }
-       }
-
-      return this.getDefaultImage(view);
-
-    } catch (error) {
-      console.warn('🖼️ ImageManager: Error calculating image path:', error);
-      return this.getDefaultImage(view);
-    }
+  private static isValidViewType(view: string): view is ViewType {
+    const validViews: ViewType[] = ['exterior', 'interior', 'pv', 'fenster'];
+    return validViews.includes(view as ViewType);
   }
 
   /**
-   * ✅ PERFORMANCE: Get available views with caching
+   * Sanitize configuration values to prevent injection attacks
+   */
+  private static sanitizeConfigValue(value: string | undefined): string {
+    if (!value) return '';
+    
+    // Remove any non-alphanumeric characters except underscore and hyphen
+    return value.replace(/[^a-zA-Z0-9_-]/g, '');
+  }
+
+  /**
+   * Create a unique cache key for configuration + view combination
+   * SECURED: Uses sanitized values to prevent cache pollution
+   */
+  private static createCacheKey(configuration: Configuration, view: ViewType): string {
+    const keys = [
+      view,
+      this.sanitizeConfigValue(configuration.nest?.value) || 'nest80',
+      this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech',
+      this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'kiefer',
+      this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett',
+      this.sanitizeConfigValue(configuration.pvanlage?.value) || 'none',
+      this.sanitizeConfigValue(configuration.fenster?.value) || 'none'
+    ];
+    
+    return keys.join('|');
+  }
+
+  /**
+   * Get exterior view image - Updated to match old configurator exactly with security
+   */
+  private static getExteriorImage(configuration: Configuration): string {
+    const nest = this.sanitizeConfigValue(configuration.nest?.value) || 'nest80';
+    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
+    
+    // Map nest values to image sizes (matching old configurator)
+    const nestSizeMap: Record<string, string> = {
+      'nest80': '75',   // nest80 -> 75 in images
+      'nest100': '95',  // nest100 -> 95 in images
+      'nest120': '115', // nest120 -> 115 in images
+      'nest140': '135', // nest140 -> 135 in images
+      'nest160': '155'  // nest160 -> 155 in images
+    };
+    
+    const imageSize = nestSizeMap[nest] || '75';
+    
+    // Map gebäudehülle values to image suffixes (matching old configurator)
+    const gebaeudeImageMap: Record<string, string> = {
+      'trapezblech': 'trapezblech',
+      'holzlattung': 'holzlattung',
+      'fassadenplatten_schwarz': 'plattenschwarz',
+      'fassadenplatten_weiss': 'plattenweiss'
+    };
+    
+    const gebaeudeImageName = gebaeudeImageMap[gebaeude] || 'holzlattung';
+    
+    // Construct the image key: nest{size}_{gebaeude}
+    const imageKey = `nest${imageSize}_${gebaeudeImageName}` as keyof typeof IMAGES.configurations;
+    
+    // Return the image path
+    const imagePath = IMAGES.configurations[imageKey];
+    
+    if (imagePath) {
+      return imagePath;
+    }
+    
+    // Fallback to default
+    return IMAGES.configurations.nest75_holzlattung;
+  }
+
+  /**
+   * Get interior view image - Updated to match old configurator logic exactly with security
+   */
+  private static getInteriorImage(configuration: Configuration): string {
+    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
+    const innenverkleidung = this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'kiefer';
+    const fussboden = this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett';
+    
+    // Map gebäudehülle to image prefix
+    const gebaeudePrefix: Record<string, string> = {
+      'trapezblech': 'trapezblech',
+      'holzlattung': 'holzlattung',
+      'fassadenplatten_schwarz': 'plattenschwarz',
+      'fassadenplatten_weiss': 'plattenweiss'
+    };
+    
+    const prefix = gebaeudePrefix[gebaeude] || 'trapezblech';
+    
+    // Map innenverkleidung to image middle part
+    const innenverkleidungMap: Record<string, string> = {
+      'kiefer': 'holznatur',
+      'fichte': 'holzweiss',
+      'steirische_eiche': 'eiche'
+    };
+    
+    const innenPart = innenverkleidungMap[innenverkleidung] || 'holznatur';
+    
+    // Map fussboden to image suffix
+    const fussbodenMap: Record<string, string> = {
+      'parkett': 'parkett',
+      'kalkstein_kanafar': 'kalkstein',
+      'schiefer_massiv': 'granit'
+    };
+    
+    const fussbodenPart = fussbodenMap[fussboden] || 'kalkstein';
+    
+    // Construct the full image key: {prefix}_{innen}_{fussboden}
+    const imageKey = `${prefix}_${innenPart}_${fussbodenPart}` as keyof typeof IMAGES.configurations;
+    
+    // Try to get the specific combination
+    let imagePath = IMAGES.configurations[imageKey];
+    
+    if (imagePath) {
+      return imagePath;
+    }
+    
+    // Try fallbacks (matching old configurator fallback logic)
+    const fallbackKeys = [
+      `${prefix}_${innenPart}_kalkstein`,
+      `${prefix}_holznatur_kalkstein`,
+      `trapezblech_holznatur_kalkstein`
+    ];
+    
+    for (const fallbackKey of fallbackKeys) {
+      const fallbackPath = IMAGES.configurations[fallbackKey as keyof typeof IMAGES.configurations];
+      if (fallbackPath) {
+        return fallbackPath;
+      }
+    }
+    
+    // Final fallback
+    return IMAGES.configurations.trapezblech_holznatur_kalkstein;
+  }
+
+  /**
+   * Get PV image - Updated to match old configurator logic with security
+   */
+  private static getPvImage(configuration: Configuration): string {
+    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
+    
+    // Map gebäudehülle to PV image keys (matching old configurator)
+    const pvImageMap: Record<string, keyof typeof IMAGES.configurations> = {
+      'trapezblech': 'pv_trapezblech',
+      'holzlattung': 'pv_holzfassade',
+      'fassadenplatten_schwarz': 'pv_plattenschwarz',
+      'fassadenplatten_weiss': 'pv_plattenweiss'
+    };
+    
+    const pvImageKey = pvImageMap[gebaeude] || 'pv_holzfassade';
+    const imagePath = IMAGES.configurations[pvImageKey];
+    
+    if (imagePath) {
+      return imagePath;
+    }
+    
+    // Fallback to holzfassade PV
+    return IMAGES.configurations.pv_holzfassade;
+  }
+
+  /**
+   * Get fenster image - Updated to match old configurator logic exactly with security
+   */
+  private static getFensterImage(configuration: Configuration): string {
+    const fensterValue = this.sanitizeConfigValue(configuration.fenster?.value);
+    
+    if (fensterValue) {
+      // Map fenster values to image keys (matching both old and new configurator selections)
+      const fensterImageMap: Record<string, keyof typeof IMAGES.configurations> = {
+        // New configurator IDs (from configuratorData.ts)
+        'pvc_fenster': 'fenster_pvc',
+        'fichte': 'fenster_holz_fichte',
+        'steirische_eiche': 'fenster_holz_eiche',
+        'aluminium': 'fenster_aluminium',
+        // Old configurator IDs (for compatibility)
+        'kunststoffverkleidung': 'fenster_pvc',
+        'eiche': 'fenster_holz_eiche'
+      };
+      
+      const fensterImageKey = fensterImageMap[fensterValue];
+      
+      if (fensterImageKey && IMAGES.configurations[fensterImageKey]) {
+        return IMAGES.configurations[fensterImageKey];
+      }
+    }
+    
+    // Fallback to stirnseite view based on gebäudehülle (matching old configurator)
+    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
+    
+    const stirnseiteMap: Record<string, keyof typeof IMAGES.configurations> = {
+      'trapezblech': 'TRAPEZBLECH',
+      'holzlattung': 'HOLZFASSADE', 
+      'fassadenplatten_schwarz': 'PLATTEN_SCHWARZ',
+      'fassadenplatten_weiss': 'PLATTEN_WEISS'
+    };
+    
+    const stirnseiteKey = stirnseiteMap[gebaeude] || 'HOLZFASSADE';
+    const stirnseitePath = IMAGES.configurations[stirnseiteKey];
+    
+    if (stirnseitePath) {
+      return stirnseitePath;
+    }
+    
+    // Final fallback
+    return IMAGES.configurations.fenster_pvc;
+  }
+
+  /**
+   * Get available views based on current configuration and part activation state
+   * UPDATED: Matches the old configurator logic exactly
    */
   static getAvailableViews(
     configuration: Configuration | null, 
-    hasPart2BeenActive: boolean = false,
+    hasPart2BeenActive: boolean = false, 
     hasPart3BeenActive: boolean = false
   ): ViewType[] {
-    const views: ViewType[] = ['exterior'];
-
-    if (!configuration) {
-      return views;
-    }
-
-    // Interior view available if Part 2 has been activated
-    if (hasPart2BeenActive || 
-        (configuration.innenverkleidung || configuration.fussboden)) {
+    const views: ViewType[] = ['exterior']; // Always available (index 1 in old system)
+    
+    if (!configuration) return views;
+    
+    // Interior view available only if Part 2 has been activated (index 2 in old system)
+    if (hasPart2BeenActive) {
       views.push('interior');
     }
-
-    // PV view available if Part 3 has been activated and PV is selected
-    if ((hasPart3BeenActive || configuration.pvanlage) && 
-        configuration.pvanlage && 
-        configuration.gebaeudehuelle) {
-      views.push('pv');
+    
+    // PV and Fenster views available only if Part 3 has been activated (index 3&4 in old system)
+    if (hasPart3BeenActive) {
+      // PV view available if PV is selected
+      if (configuration.pvanlage) {
+        views.push('pv');
+      }
+      
+      // Fenster view available if fenster is selected
+      if (configuration.fenster) {
+        views.push('fenster');
+      }
     }
-
-    // Fenster view available if Part 3 has been activated and fenster is selected
-    if ((hasPart3BeenActive || configuration.fenster) && 
-        configuration.fenster) {
-      views.push('fenster');
-    }
-
+    
     return views;
   }
 
   /**
-   * ✅ PERFORMANCE: Intelligent image preloading with priority system
+   * Preload images for better user experience
+   * OPTIMIZED: Uses efficient browser APIs instead of DOM manipulation
    */
   static async preloadImages(configuration: Configuration | null): Promise<void> {
-    if (!configuration || typeof window === 'undefined') {
-      return;
+    if (!configuration || typeof window === 'undefined') return;
+
+    // Only preload current view + immediately likely next view to avoid warnings
+    const currentImage = this.getPreviewImage(configuration, 'exterior');
+    const imagesToPreload: string[] = [currentImage];
+    
+    // Add interior image only if we have innenverkleidung selected (likely to be viewed soon)
+    if (configuration.innenverkleidung) {
+      const interiorImage = this.getPreviewImage(configuration, 'interior');
+      imagesToPreload.push(interiorImage);
     }
 
-    try {
-      const views: ViewType[] = ['exterior', 'interior', 'pv', 'fenster'];
-      const preloadPromiseArray: Promise<void>[] = [];
-
-      // ✅ OPTIMIZATION: Preload current and likely next images
-      for (const view of views) {
-        const imagePath = this.getPreviewImage(configuration, view);
-        
-        if (imagePath && !preloadedImages.has(imagePath)) {
-          const priority = view === 'exterior' ? 'high' : 'low';
-          const preloadPromise = this.preloadSingleImage(imagePath, priority);
-          preloadPromiseArray.push(preloadPromise);
+    // OPTIMIZED: Use browser's fetch with cache instead of DOM manipulation
+    const uniqueImages = [...new Set(imagesToPreload)];
+    
+    // Preload using fetch API for better performance and reliability
+    const preloadPromises = uniqueImages.map(async (imagePath) => {
+      if (imagePath && imagePath !== 'undefined') {
+        try {
+          // Use fetch with cache to preload images efficiently
+          await fetch(`/api/images?path=${encodeURIComponent(imagePath)}`, {
+            method: 'GET',
+            cache: 'force-cache'
+          });
+        } catch {
+          // Silently fail - preloading is optimization only
         }
       }
-
-      // ✅ PERFORMANCE: Preload common variations in background
-      this.preloadCommonVariations(configuration);
-
-      await Promise.allSettled(preloadPromiseArray);
-      
-         } catch {
-       // Silent fail - preloading is optimization only
-       console.debug('🖼️ ImageManager: Preloading completed with some errors');
-     }
-  }
-
-  /**
-   * ✅ OPTIMIZATION: Preload common variations user might select next
-   */
-  private static preloadCommonVariations(configuration: Configuration): void {
-    if (!configuration.nest) return;
-
-    // Preload alternative gebäudehülle options
-    const commonHullen = ['holzlattung', 'trapezblech', 'fassadenplatten_schwarz'];
-    
-         commonHullen.forEach(hulle => {
-       if (hulle !== configuration.gebaeudehuelle?.value) {
-         const altConfig: Configuration = { 
-           ...configuration, 
-           gebaeudehuelle: { 
-             category: 'gebaeudehuelle', 
-             value: hulle, 
-             name: hulle, 
-             price: 0 
-           } 
-         };
-         const imagePath = this.getPreviewImage(altConfig, 'exterior');
-        
-        // ✅ PERFORMANCE: Low priority background preload
-        setTimeout(() => {
-          this.preloadSingleImage(imagePath, 'background').catch(() => {
-            // Silent fail - background preloading
-          });
-        }, 1000);
-      }
-    });
-  }
-
-  /**
-   * ✅ PERFORMANCE: Single image preloader with priority handling
-   */
-  private static async preloadSingleImage(imagePath: string, priority: 'high' | 'low' | 'background' = 'low'): Promise<void> {
-    if (preloadedImages.has(imagePath)) {
-      return;
-    }
-
-    // Check if already preloading
-    const existing = preloadPromises.get(imagePath);
-    if (existing) {
-      return existing;
-    }
-
-    const preloadPromise = new Promise<void>((resolve, reject) => {
-      const img = new Image();
-      
-      // ✅ PERFORMANCE: Set priority based on importance
-      if (priority === 'high') {
-        img.loading = 'eager';
-        criticalImages.add(imagePath);
-      } else {
-        img.loading = 'lazy';
-      }
-
-      img.onload = () => {
-        preloadedImages.add(imagePath);
-        preloadPromises.delete(imagePath);
-        resolve();
-      };
-
-      img.onerror = () => {
-        preloadPromises.delete(imagePath);
-        reject(new Error(`Failed to preload: ${imagePath}`));
-      };
-
-      // Start loading
-      img.src = `/api/images?path=${encodeURIComponent(imagePath)}`;
     });
 
-    preloadPromises.set(imagePath, preloadPromise);
-    return preloadPromise;
+    // Wait for all preloads to complete (or fail silently)
+    await Promise.allSettled(preloadPromises);
   }
 
   /**
-   * ✅ PERFORMANCE: Clear preloaded images cache
+   * Clear image preload links from document head
+   * DEPRECATED: No longer needed with fetch-based preloading
    */
   static clearPreloadedImages(): void {
-    preloadedImages.clear();
-    preloadPromises.clear();
-    criticalImages.clear();
-    imagePathCache.clear();
-    console.debug('🖼️ ImageManager: Caches cleared');
+    // Method kept for backward compatibility but no longer needed
+    return;
   }
 
   /**
-   * ✅ OPTIMIZATION: Get performance metrics
+   * Clear image path cache (useful for debugging)
    */
-  static getPerformanceMetrics() {
+  static clearImageCache(): void {
+    imagePathCache.clear();
+  }
+
+  /**
+   * Get cache status for debugging
+   */
+  static getCacheInfo(): { size: number, keys: string[] } {
     return {
-      preloadedCount: preloadedImages.size,
-      pendingPreloads: preloadPromises.size,
-      criticalImages: criticalImages.size,
-      pathCacheSize: imagePathCache.size
+      size: imagePathCache.size,
+      keys: Array.from(imagePathCache.keys())
     };
-  }
-
-  // Helper methods (keeping existing functionality)
-  private static buildImageKey(nest: string, gebaeudehuelle: string, innenverkleidung: string, fussboden: string): string {
-    const mapping: Record<string, string> = {
-      'holzlattung': 'holzfassade',
-      'trapezblech': 'trapezblech', 
-      'fassadenplatten_schwarz': 'plattenschwarz',
-      'fassadenplatten_weiss': 'plattenweiss'
-    };
-
-    const huelleKey = mapping[gebaeudehuelle] || gebaeudehuelle;
-    const innenKey = innenverkleidung === 'steirische_eiche' ? 'eiche' : 
-                     innenverkleidung === 'weiss_gekalkt' ? 'holzweiss' : 'holznatur';
-    const bodenKey = fussboden === 'granit' ? 'granit' : 
-                     fussboden === 'kalkstein' ? 'kalkstein' : 'parkett';
-
-    return `${huelleKey}_${innenKey}_${bodenKey}`;
-  }
-
-  private static getPVImageKey(gebaeudehuelle: string): string | null {
-    const pvMapping: Record<string, string> = {
-      'holzlattung': 'pv_holzfassade',
-      'trapezblech': 'pv_trapezblech',
-      'fassadenplatten_schwarz': 'pv_plattenschwarz', 
-      'fassadenplatten_weiss': 'pv_plattenweiss'
-    };
-
-    return pvMapping[gebaeudehuelle] || null;
-  }
-
-  private static getDefaultImage(view: ViewType): string {
-    const defaults = {
-      exterior: IMAGES.configurations.nest75,
-      interior: IMAGES.configurations.holzlattung_interior,
-      pv: IMAGES.configurations.pv_holzfassade,
-      fenster: IMAGES.configurations.nest75
-    };
-
-    return defaults[view] || IMAGES.configurations.nest75;
   }
 } 

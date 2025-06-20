@@ -84,7 +84,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       shouldSwitchToView: null,
       lastSelectionCategory: null,
 
-      // ✅ RULE COMPLIANCE: Initialize session CLIENT-SIDE ONLY (no blocking API calls)
+      // Initialize session CLIENT-SIDE ONLY (no API dependency)
       initializeSession: () => {
         const state = get()
         
@@ -96,7 +96,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           setTimeout(() => {
             const newState = get()
             if (newState.configuration) {
-              console.debug('🏪 Configurator initialized in development mode');
+              // Only log in development for debugging
             }
           }, 0)
           return;
@@ -108,22 +108,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         
         // For production, initialize with default configuration
         get().resetConfiguration()
-        
-        // ✅ PERFORMANCE: Create session in background (non-blocking)
-        if (typeof window !== 'undefined') {
-          fetch('/api/sessions', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => {
-              if (data.success && data.sessionId) {
-                set({ sessionId: data.sessionId });
-                console.debug('🏪 Session created:', data.sessionId);
-              }
-            })
-            .catch(() => {
-              // ✅ RULE COMPLIANCE: Silent fail - don't break user experience
-              console.debug('🏪 Session creation failed - continuing with local state');
-            });
-        }
       },
 
       // Update selection with intelligent view switching and price calculation
