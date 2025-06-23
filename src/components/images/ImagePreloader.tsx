@@ -18,10 +18,11 @@ export default function ImagePreloader({ paths, priority = false }: ImagePreload
       return () => clearTimeout(timer);
     } else {
       preloadImages(paths);
+      return undefined;
     }
   }, [paths, priority]);
 
-  const preloadImages = async (imagePaths: string[]) => {
+  const preloadImages = async (imagePaths: string[]): Promise<void> => {
     const preloadPromises = imagePaths.map(async (path) => {
       try {
         const response = await fetch(`/api/images?path=${encodeURIComponent(path)}`);

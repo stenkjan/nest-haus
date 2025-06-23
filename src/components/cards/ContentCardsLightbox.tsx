@@ -23,7 +23,7 @@ export function PricingCardsLightbox({
   subtitle = 'Click on any card to see detailed information'
 }: PricingCardsLightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+  const [_selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
   const handleCardClick = (cardId: number) => {
     setSelectedCardId(cardId);

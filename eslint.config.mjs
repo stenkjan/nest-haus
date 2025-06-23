@@ -17,7 +17,12 @@ const eslintConfig = [
       ".next/**/*",
       "node_modules/**/*",
       "dist/**/*",
-      "build/**/*"
+      "build/**/*",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/__tests__/**/*",
+      "src/test/**/*",
+      "vitest.config.ts"
     ]
   },
   {

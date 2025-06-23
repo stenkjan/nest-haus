@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useCartStore } from '../../store/cartStore'
 import { useConfiguratorStore } from '../../store/configuratorStore'
-import type { CartItem } from '../../store/cartStore'
+import type { CartItem, ConfigurationCartItem } from '../../store/cartStore'
 
 export default function WarenkorbPage() {
   const {
@@ -35,7 +35,7 @@ export default function WarenkorbPage() {
   // Auto-add current configuration to cart if complete
   useEffect(() => {
     const cartConfig = getConfigurationForCart()
-    if (cartConfig && !items.find(item => item.sessionId === cartConfig.sessionId)) {
+    if (cartConfig && !items.find(item => 'sessionId' in item && item.sessionId === cartConfig.sessionId)) {
       addConfigurationToCart(cartConfig)
     }
   }, [configuration, getConfigurationForCart, addConfigurationToCart, items])
@@ -82,23 +82,32 @@ export default function WarenkorbPage() {
   }
 
   // Render configuration item details
-  const renderConfigurationDetails = (item: CartItem) => {
+  const renderConfigurationDetails = (item: CartItem | ConfigurationCartItem) => {
     const details = []
     
-    if (item.nest) details.push({ label: 'Nest', value: item.nest?.name ?? '—' })
-    if (item.gebaeudehuelle) details.push({ label: 'Gebäudehülle', value: item.gebaeudehuelle?.name ?? '—' })
-    if (item.innenverkleidung) details.push({ label: 'Innenverkleidung', value: item.innenverkleidung?.name ?? '—' })
-    if (item.fussboden) details.push({ label: 'Fußboden', value: item.fussboden?.name ?? '—' })
-    if (item.pvanlage) details.push({ 
-      label: 'PV-Anlage', 
-      value: `${item.pvanlage?.name ?? '—'}${item.pvanlage?.quantity ? ` (${item.pvanlage.quantity}x)` : ''}` 
-    })
-    if (item.fenster) details.push({ 
-      label: 'Fenster', 
-      value: `${item.fenster?.name ?? '—'}${item.fenster?.squareMeters ? ` (${item.fenster.squareMeters}m²)` : ''}` 
-    })
-    if (item.planungspaket) details.push({ label: 'Planungspaket', value: item.planungspaket?.name ?? '—' })
-    if (item.grundstueckscheck) details.push({ label: 'Grundstückscheck', value: item.grundstueckscheck?.name ?? '—' })
+    // Only render configuration details for ConfigurationCartItem
+    if ('nest' in item) {
+      if (item.nest) details.push({ label: 'Nest', value: item.nest?.name ?? '—' })
+      if (item.gebaeudehuelle) details.push({ label: 'Gebäudehülle', value: item.gebaeudehuelle?.name ?? '—' })
+      if (item.innenverkleidung) details.push({ label: 'Innenverkleidung', value: item.innenverkleidung?.name ?? '—' })
+      if (item.fussboden) details.push({ label: 'Fußboden', value: item.fussboden?.name ?? '—' })
+      if (item.pvanlage) details.push({ 
+        label: 'PV-Anlage', 
+        value: `${item.pvanlage?.name ?? '—'}${item.pvanlage?.quantity ? ` (${item.pvanlage.quantity}x)` : ''}` 
+      })
+      if (item.fenster) details.push({ 
+        label: 'Fenster', 
+        value: `${item.fenster?.name ?? '—'}${item.fenster?.squareMeters ? ` (${item.fenster.squareMeters}m²)` : ''}` 
+      })
+      if (item.planungspaket) details.push({ label: 'Planungspaket', value: item.planungspaket?.name ?? '—' })
+      if (item.grundstueckscheck) details.push({ label: 'Grundstückscheck', value: item.grundstueckscheck?.name ?? '—' })
+    } else {
+      // For regular cart items, show basic info
+      if ('name' in item) {
+        details.push({ label: 'Artikel', value: item.name })
+        details.push({ label: 'Beschreibung', value: item.description })
+      }
+    }
 
     return details
   }
@@ -147,18 +156,18 @@ export default function WarenkorbPage() {
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-lg font-semibold">
-                          {item.nest?.name || 'Nest Konfiguration'}
+                          {'nest' in item ? (item.nest?.name || 'Nest Konfiguration') : ('name' in item ? item.name : 'Artikel')}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          Hinzugefügt am {new Date(item.addedAt).toLocaleDateString('de-DE')}
+                          Hinzugefügt am {new Date(item.addedAt || Date.now()).toLocaleDateString('de-DE')}
                         </p>
                       </div>
                       <div className="text-right">
                         <div className="text-xl font-bold">
-                          {formatPrice(item.totalPrice)}
+                          {formatPrice('totalPrice' in item ? item.totalPrice : item.price)}
                         </div>
                         <div className="text-sm text-gray-500">
-                          oder {calculateMonthlyPayment(item.totalPrice)} monatlich
+                          oder {calculateMonthlyPayment('totalPrice' in item ? item.totalPrice : item.price)} monatlich
                         </div>
                       </div>
                     </div>
