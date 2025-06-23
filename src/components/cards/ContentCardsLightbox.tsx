@@ -5,7 +5,7 @@ import { Dialog } from '@/components/ui/Dialog';
 import ContentCards from './ContentCards';
 
 interface ContentCardsLightboxProps {
-  variant?: 'normal' | 'wide' | 'extra-wide' | 'pricing';
+  variant?: 'normal' | 'mobile' | 'wide' | 'static' | 'pricing' | 'responsive';
   title?: string;
   subtitle?: string;
   triggerClassName?: string;
@@ -55,9 +55,9 @@ export function PricingCardsLightbox({
         transparent={true}
         className="p-0"
       >
-        <div className="w-full h-full flex items-center justify-center p-8">
+        <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
           {/* ContentCards in lightbox mode */}
-          <div className="w-full max-w-none">
+          <div className="w-full max-w-none my-4">
             <ContentCards 
               variant="pricing"
               title=""
@@ -85,6 +85,9 @@ export default function ContentCardsLightbox({
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
+  // Use mobile variant for 20% larger cards in lightbox, except for responsive which handles its own sizing
+  const lightboxVariant = variant === 'normal' ? 'mobile' : variant;
+
   return (
     <>
       {/* Trigger Button */}
@@ -102,11 +105,11 @@ export default function ContentCardsLightbox({
         transparent={true}
         className="p-0"
       >
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
           {/* ContentCards with transparent background */}
-          <div className="w-full max-w-none">
+          <div className="w-full max-w-none my-4">
             <ContentCards 
-              variant={variant}
+              variant={lightboxVariant}
               title={title}
               subtitle=""
               maxWidth={false}

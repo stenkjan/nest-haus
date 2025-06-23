@@ -9,16 +9,44 @@ interface CardData {
   title: string;
   subtitle: string;
   description: string;
+  mobileTitle?: string;
+  mobileSubtitle?: string;
+  mobileDescription?: string;
   image: string;
   backgroundColor: string;
-  price?: string;
+}
+
+interface StaticCardData {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  mobileTitle?: string;
+  mobileSubtitle?: string;
+  mobileDescription?: string;
+  image: string;
+  backgroundColor: string;
+}
+
+interface PricingCardData {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  mobileTitle?: string;
+  mobileSubtitle?: string;
+  mobileDescription?: string;
+  image: string;
+  price: string;
   originalPrice?: string;
   savings?: string;
   extendedDescription?: string;
+  mobileExtendedDescription?: string;
+  backgroundColor: string;
 }
 
 interface ContentCardsProps {
-  variant?: 'normal' | 'wide' | 'extra-wide' | 'pricing';
+  variant?: 'normal' | 'mobile' | 'wide' | 'static' | 'pricing' | 'responsive';
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
@@ -27,86 +55,137 @@ interface ContentCardsProps {
   onCardClick?: (cardId: number) => void;
 }
 
-const cardData: CardData[] = [
+const contentCardData: CardData[] = [
   {
     id: 1,
-    title: "iPad Pro",
-    subtitle: "Supercharged by M2",
-    description: "The ultimate iPad experience with the most advanced technology.",
+    title: "Naturstein - Kanfanar",
+    subtitle: "",
+    description: "Der massive Kalkstein überzeugt durch seine natürliche Eleganz, zeitlose Ästhetik und hohe Widerstandsfähigkeit. Mit seiner charakteristischen Farbgebung, die von warmen Beigetönen bis hin zu sanften Graunuancen reicht, verleiht er Innen- und Außenbereichen eine edle, harmonische Ausstrahlung. Seine fein strukturierte Oberfläche und die einzigartigen Adern und Fossileinschlüsse machen jedes Element zu einem Unikat.",
+    mobileTitle: "Kanfanar Naturstein",
+    mobileSubtitle: "",
+    mobileDescription: "Massive Kalkstein-Eleganz mit warmen Beigetönen bis sanften Graunuancen. Einzigartige Struktur und Fossileinschlüsse. zeitlose Ästhetik und hohe Widerstandsfähigkeit. Mit seiner charakteristischen Farbgebung, die von warmen",
     image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    backgroundColor: "#F4F4F4",
-    price: "€1,299",
-    originalPrice: "€1,499",
-    savings: "€200",
-    extendedDescription: "Experience the next level of performance with the iPad Pro powered by the groundbreaking M2 chip. This revolutionary device combines the versatility of a tablet with the power of a laptop, featuring a stunning Liquid Retina display with ProMotion technology."
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 2,
-    title: "MacBook Air",
-    subtitle: "15-inch",
-    description: "Impressively big. Impossibly thin. M2 chip brings speed and efficiency.",
+    title: "Modulare Architektur",
+    subtitle: "7 Module mit weißen Fassadenplatten",
+    description: "Maximale Flexibilität durch unser modulares Bausystem. Die weißen Fassadenplatten sorgen für eine klare, zeitgemäße Optik und optimale Energieeffizienz.",
+    mobileTitle: "Modulbau System",
+    mobileSubtitle: "7 Module, weiße Fassade",
+    mobileDescription: "Flexibles Bausystem mit weißen Fassadenplatten für moderne Optik und Energieeffizienz.",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    backgroundColor: "#F4F4F4",
-    price: "€1,599",
-    originalPrice: "€1,799",
-    savings: "€200",
-    extendedDescription: "The 15-inch MacBook Air redefines portable computing with its incredibly thin design and powerful M2 chip. Featuring a spacious Liquid Retina display, this laptop delivers exceptional performance for everything from everyday tasks to demanding creative projects."
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 3,
-    title: "iPhone 15 Pro",
-    subtitle: "Titanium",
-    description: "Forged in titanium with the powerful A17 Pro chip.",
+    title: "Ensemble Wohnen",
+    subtitle: "3 Gebäude mit Holzlattung",
+    description: "Harmonisches Zusammenspiel mehrerer NEST Haus Einheiten. Die Lärchen-Holzlattung schafft eine einheitliche und natürliche Ästhetik für Wohnensembles.",
+    mobileTitle: "Wohn-Ensemble",
+    mobileSubtitle: "3 Gebäude, Holzlattung", 
+    mobileDescription: "Harmonisches Zusammenspiel mit natürlicher Lärchen-Holzlattung für einheitliche Ästhetik.",
     image: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    backgroundColor: "#F4F4F4",
-    price: "€1,199",
-    originalPrice: "€1,399",
-    savings: "€200",
-    extendedDescription: "The iPhone 15 Pro introduces a revolutionary titanium design that's both incredibly strong and remarkably light. Powered by the A17 Pro chip with a 6-core GPU, it delivers console-quality gaming and professional-level photography capabilities."
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 4,
-    title: "Apple Watch",
-    subtitle: "Series 9",
-    description: "Your essential companion for a healthy life.",
+    title: "Winterlandschaft",
+    subtitle: "Schwarze Trapezblech-Fassade",
+    description: "Kraftvolle Optik mit schwarzer Trapezblech-Fassade. Perfekt für alpine Standorte und moderne Architektur, die sich markant von der Umgebung abhebt.",
+    mobileTitle: "Winter Design",
+    mobileSubtitle: "Schwarze Trapezblech-Fassade",
+    mobileDescription: "Kraftvolle schwarze Trapezblech-Optik für alpine Standorte und moderne Architektur.",
     image: "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
-    backgroundColor: "#F4F4F4",
-    price: "€429",
-    originalPrice: "€499",
-    savings: "€70"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 5,
-    title: "AirPods Pro",
-    subtitle: "2nd Generation",
-    description: "Adaptive Audio automatically tunes the noise control.",
+    title: "Wald Integration",
+    subtitle: "6 Module mit schwarzen Fassadenplatten",
+    description: "Perfekte Integration in die natürliche Umgebung. Die schwarzen Fassadenplatten schaffen einen eleganten Kontrast zur grünen Waldlandschaft.",
+    mobileTitle: "Wald Design",
+    mobileSubtitle: "6 Module, schwarze Fassade",
+    mobileDescription: "Elegante Integration mit schwarzen Fassadenplatten im Kontrast zur Waldlandschaft.",
     image: "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
-    backgroundColor: "#F4F4F4",
-    price: "€279",
-    originalPrice: "€329",
-    savings: "€50"
+    backgroundColor: "#F4F4F4"
   },
   {
     id: 6,
-    title: "Mac Studio",
-    subtitle: "M2 Ultra",
-    description: "Desktop-class performance that fits under most displays.",
+    title: "Mediterrane Variante",
+    subtitle: "4 Module am Meer",
+    description: "Stilvolles Wohnen am Wasser. Die Holzlattung aus Lärche harmoniert perfekt mit mediterranen Landschaften und schafft eine entspannte Urlaubsatmosphäre.",
+    mobileTitle: "Meer Design",
+    mobileSubtitle: "4 Module am Wasser",
+    mobileDescription: "Stilvolles Wohnen mit Lärchen-Holzlattung für mediterrane Urlaubsatmosphäre.",
     image: "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
+    backgroundColor: "#F4F4F4"
+  }
+];
+
+const staticCardData: StaticCardData[] = [
+  {
+    id: 1,
+    title: "NEST Haus Konfigurator",
+    subtitle: "Gestalten Sie Ihr Traumhaus",
+    description: "Entdecken Sie die Möglichkeiten des modularen Bauens mit unserem interaktiven Konfigurator. Wählen Sie aus verschiedenen Modulgrößen, Fassadenmaterialien und Ausstattungsoptionen, um Ihr individuelles NEST Haus zu gestalten. Von der ersten Idee bis zur finalen Konfiguration – erleben Sie, wie Ihr Traumhaus Gestalt annimmt.",
+    mobileTitle: "NEST Konfigurator",
+    mobileSubtitle: "Ihr Traumhaus gestalten",
+    mobileDescription: "Interaktiver Konfigurator für modulares Bauen. Wählen Sie Module, Fassaden und Ausstattung für Ihr individuelles NEST Haus.",
+    image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+    backgroundColor: "#F4F4F4"
+  }
+];
+
+const pricingCardData: PricingCardData[] = [
+  {
+    id: 1,
+    title: "Planungspaket 01",
+    subtitle: "Basis",
+    description: "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
+    mobileTitle: "Starter",
+    mobileSubtitle: "Einstieg",
+    mobileDescription: "Erster Schritt ins modulare Wohnen mit wesentlicher Ausstattung.",
+    image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+    price: "€189,000",
+    originalPrice: "€210,000",
+    savings: "€21,000",
     backgroundColor: "#F4F4F4",
-    price: "€2,199",
-    originalPrice: "€2,499",
-    savings: "€300"
+    extendedDescription: "Das NEST Starter Paket bietet Ihnen den idealen Einstieg in die Welt des modularen Wohnens. Mit durchdachter Grundausstattung und flexiblen Erweiterungsmöglichkeiten schaffen Sie sich Ihr individuelles Zuhause.",
+    mobileExtendedDescription: "Idealer Einstieg ins modulare Wohnen mit Grundausstattung und flexiblen Erweiterungen."
   },
   {
-    id: 7,
-    title: "Mac Pro",
-    subtitle: "M2 Ultra",
-    description: "The most powerful Mac ever built for extreme workloads.",
-    image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+    id: 2,
+    title: "NEST Comfort",
+    subtitle: "Komfortpaket",
+    description: "Erweiterte Ausstattung für höchsten Wohnkomfort. Inklusive Premium-Materialien und Smart-Home-Integration.",
+    mobileTitle: "Comfort",
+    mobileSubtitle: "Komfort",
+    mobileDescription: "Erweiterte Ausstattung mit Premium-Materialien und Smart-Home.",
+    image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
+    price: "€259,000",
+    originalPrice: "€290,000",
+    savings: "€31,000",
     backgroundColor: "#F4F4F4",
-    price: "€6,999",
-    originalPrice: "€7,999",
-    savings: "€1,000"
+    extendedDescription: "Das NEST Comfort Paket vereint hochwertige Materialien mit intelligenter Haustechnik. Genießen Sie erstklassigen Wohnkomfort mit energieeffizienten Lösungen und modernster Ausstattung.",
+    mobileExtendedDescription: "Hochwertige Materialien mit intelligenter Haustechnik für erstklassigen Wohnkomfort."
+  },
+  {
+    id: 3,
+    title: "NEST Premium",
+    subtitle: "Luxuspaket",
+    description: "Luxuriöse Vollausstattung mit exklusiven Materialien und maßgeschneiderten Lösungen für anspruchsvolle Wohnträume.",
+    mobileTitle: "Premium",
+    mobileSubtitle: "Luxus",
+    mobileDescription: "Luxuriöse Vollausstattung mit exklusiven Materialien und maßgeschneiderten Lösungen.",
+    image: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
+    price: "€349,000",
+    originalPrice: "€390,000",
+    savings: "€41,000",
+    backgroundColor: "#F4F4F4",
+    extendedDescription: "Das NEST Premium Paket erfüllt höchste Ansprüche an Luxus und Individualität. Exklusive Materialien, maßgeschneiderte Lösungen und außergewöhnliche Ausstattungsdetails machen Ihr Zuhause zu etwas Besonderem.",
+    mobileExtendedDescription: "Höchste Ansprüche an Luxus mit exklusiven Materialien und maßgeschneiderten Lösungen."
   }
 ];
 
@@ -122,40 +201,62 @@ export default function ContentCards({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
   const [cardsPerView, setCardsPerView] = useState(3);
+  const [isClient, setIsClient] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isWide = variant === 'wide';
-  const isExtraWide = variant === 'extra-wide';
+  const isStatic = variant === 'static';
   const isPricing = variant === 'pricing';
+  const isMobile = variant === 'mobile';
+  const isResponsive = variant === 'responsive';
+
+  // Use appropriate data source based on variant
+  const cardData = isPricing 
+    ? pricingCardData 
+    : isStatic 
+      ? staticCardData 
+      : contentCardData;
+
+  // Initialize client-side state
+  useEffect(() => {
+    setIsClient(true);
+    setScreenWidth(window.innerWidth);
+  }, []);
 
   // Calculate responsive card dimensions based on variant
   useEffect(() => {
     const updateDimensions = () => {
       const width = window.innerWidth;
+      setScreenWidth(width);
       
-      if (isExtraWide) {
-        // Extra-wide variant: 3:1 ratio cards (1/3 text, 2/3 image)
+      if (isStatic) {
+        // Static variant: single responsive card - wide layout on desktop, mobile layout on tablet/mobile
         if (width >= 1280) {
+          // Desktop XL: Wide layout
           setCardsPerView(1);
-          setCardWidth(1200);
+          setCardWidth(1152); // Wide card size
         } else if (width >= 1024) {
+          // Desktop: Wide layout
           setCardsPerView(1);
-          setCardWidth(1000);
+          setCardWidth(960); // Wide card size
         } else if (width >= 768) {
+          // Tablet: Mobile layout with larger cards
           setCardsPerView(1);
-          setCardWidth(720);
+          setCardWidth(336); // Mobile card size (20% larger)
         } else {
+          // Mobile: Mobile layout
           setCardsPerView(1);
-          setCardWidth(600);
+          setCardWidth(312); // Mobile card size (20% larger)
         }
       } else if (isPricing) {
         // Pricing variant: medium-sized cards, 3 total, no images
         if (isLightboxMode) {
-          // Lightbox mode: larger cards (2x wider, 4x longer)
+          // Lightbox mode: Use mobile-friendly dimensions instead of large fixed ones
           if (width >= 1280) {
             setCardsPerView(1.5);
-            setCardWidth(760); // 2x wider than normal pricing
+            setCardWidth(760); // Desktop: larger cards
           } else if (width >= 1024) {
             setCardsPerView(1.2);
             setCardWidth(720);
@@ -163,29 +264,65 @@ export default function ContentCards({
             setCardsPerView(1);
             setCardWidth(680);
           } else {
+            // Mobile: Use mobile variant dimensions for perfect fit
             setCardsPerView(1);
-            setCardWidth(600);
+            setCardWidth(320); // Much smaller, similar to mobile variant
           }
         } else {
-          // Normal pricing mode - responsive grid layout
-          // Use consistent width since flex-wrap handles the layout
-          setCardsPerView(3);
-          setCardWidth(450);
-        }
+        // Normal pricing mode - responsive grid layout
+        // Use consistent width since flex-wrap handles the layout
+        setCardsPerView(3);
+        // Match ImageGrid mobile breakpoint (1024px) - use 350px below lg breakpoint
+        setCardWidth(width >= 1024 ? 450 : 350);
+      }
       } else if (isWide) {
-        // Wide variant: 2:1 ratio cards
+        // Wide variant: 2:1 ratio cards, 20% wider
         if (width >= 1280) {
           setCardsPerView(1.3);
-          setCardWidth(960);
+          setCardWidth(1152); // 960 * 1.2
         } else if (width >= 1024) {
           setCardsPerView(1.1);
-          setCardWidth(800);
+          setCardWidth(960); // 800 * 1.2
         } else if (width >= 768) {
           setCardsPerView(1);
-          setCardWidth(720);
+          setCardWidth(864); // 720 * 1.2
         } else {
           setCardsPerView(1);
-          setCardWidth(600);
+          setCardWidth(720); // 600 * 1.2
+        }
+      } else if (isMobile) {
+        // Mobile variant: standard cards but 20% larger
+        if (width >= 1280) {
+          setCardsPerView(3.5);
+          setCardWidth(384); // 320 * 1.2
+        } else if (width >= 1024) {
+          setCardsPerView(2.5);
+          setCardWidth(360); // 300 * 1.2
+        } else if (width >= 768) {
+          setCardsPerView(2);
+          setCardWidth(336); // 280 * 1.2
+        } else {
+          setCardsPerView(1.2);
+          setCardWidth(312); // 260 * 1.2
+        }
+      } else if (isResponsive) {
+        // Responsive variant: Wide layout on desktop (>=1024px), Mobile layout on tablet/mobile (<1024px)
+        if (width >= 1280) {
+          // Desktop XL: Wide layout
+          setCardsPerView(1.3);
+          setCardWidth(1152); // Wide card size
+        } else if (width >= 1024) {
+          // Desktop: Wide layout
+          setCardsPerView(1.1);
+          setCardWidth(960); // Wide card size
+        } else if (width >= 768) {
+          // Tablet: Mobile layout with larger cards
+          setCardsPerView(2);
+          setCardWidth(336); // Mobile card size (20% larger)
+        } else {
+          // Mobile: Mobile layout
+          setCardsPerView(1.2);
+          setCardWidth(312); // Mobile card size (20% larger)
         }
       } else {
         // Normal variant: standard cards
@@ -208,15 +345,15 @@ export default function ContentCards({
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
-  }, [isWide, isExtraWide, isPricing, isLightboxMode]);
+  }, [isWide, isStatic, isPricing, isMobile, isResponsive, isLightboxMode]);
 
   const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
   const maxScroll = -(maxIndex * (cardWidth + gap));
 
-  // For extra-wide variant, show only the first card
+  // For static variant, show only the first card
   // For pricing variant, show only the first 3 cards
-  const displayCards = isExtraWide 
+  const displayCards = isStatic 
     ? cardData.slice(0, 1) 
     : isPricing 
       ? cardData.slice(0, 3)
@@ -224,12 +361,12 @@ export default function ContentCards({
   const adjustedMaxIndex = Math.max(0, displayCards.length - Math.floor(cardsPerView));
 
   const navigateCard = useCallback((direction: number) => {
-    const targetMaxIndex = isExtraWide ? adjustedMaxIndex : maxIndex;
+    const targetMaxIndex = isStatic ? adjustedMaxIndex : maxIndex;
     const newIndex = Math.max(0, Math.min(targetMaxIndex, currentIndex + direction));
     setCurrentIndex(newIndex);
     const newX = -(newIndex * (cardWidth + gap));
     x.set(newX);
-  }, [isExtraWide, adjustedMaxIndex, maxIndex, currentIndex, cardWidth, gap, x]);
+  }, [isStatic, adjustedMaxIndex, maxIndex, currentIndex, cardWidth, gap, x]);
 
   // Keyboard navigation - disabled for pricing cards
   useEffect(() => {
@@ -255,7 +392,7 @@ export default function ContentCards({
     const currentX = x.get();
     let targetIndex = Math.round(-currentX / (cardWidth + gap));
     
-    const targetMaxIndex = isExtraWide ? adjustedMaxIndex : maxIndex;
+    const targetMaxIndex = isStatic ? adjustedMaxIndex : maxIndex;
     
     // Adjust based on drag direction and velocity
     if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
@@ -272,8 +409,44 @@ export default function ContentCards({
   };
 
   const containerClasses = maxWidth 
-    ? "w-full max-w-screen-2xl mx-auto p-6"
-    : "w-full p-6";
+    ? "w-full max-w-screen-2xl mx-auto"
+    : "w-full";
+
+  // Prevent hydration mismatch by showing loading state until client is ready
+  if (!isClient) {
+    return (
+      <div className={containerClasses}>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+          {subtitle && <p className="text-gray-600">{subtitle}</p>}
+        </div>
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-pulse bg-gray-200 rounded-3xl" style={{ width: 320, height: 480 }} />
+        </div>
+      </div>
+    );
+  }
+
+  // Helper function to get appropriate text based on screen size
+  const getCardText = (card: CardData | StaticCardData | PricingCardData, field: 'title' | 'subtitle' | 'description' | 'extendedDescription') => {
+    const isMobileScreen = isClient && screenWidth < 1024;
+    
+    switch (field) {
+      case 'title':
+        return isMobileScreen && card.mobileTitle ? card.mobileTitle : card.title;
+      case 'subtitle':
+        return isMobileScreen && card.mobileSubtitle ? card.mobileSubtitle : card.subtitle;
+      case 'description':
+        return isMobileScreen && card.mobileDescription ? card.mobileDescription : card.description;
+      case 'extendedDescription':
+        if ('extendedDescription' in card) {
+          return isMobileScreen && card.mobileExtendedDescription ? card.mobileExtendedDescription : card.extendedDescription || '';
+        }
+        return '';
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className={containerClasses}>
@@ -286,8 +459,8 @@ export default function ContentCards({
       <div className="relative py-8">
         {isPricing && !isLightboxMode ? (
           /* Pricing Cards - Responsive Grid Layout */
-          <div className="flex flex-wrap justify-center items-center gap-6 px-8">
-            {displayCards.map((card, index) => (
+          <div className={`flex flex-wrap justify-center items-center gap-6 ${maxWidth ? 'px-8' : 'px-4'}`}>
+            {(displayCards as PricingCardData[]).map((card, index) => (
               <motion.div
                 key={card.id}
                 className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
@@ -310,13 +483,13 @@ export default function ContentCards({
                       transition={{ delay: index * 0.1, duration: 0.6 }}
                     >
                       <h3 className="text-xl font-bold text-gray-900 mb-1">
-                        {card.title}
+                        {getCardText(card, 'title')}
                       </h3>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">
-                        {card.subtitle}
+                      <h4 className="text-sm font-medium text-gray-700 mb-5">
+                        {getCardText(card, 'subtitle')}
                       </h4>
-                      <p className="text-xs text-gray-600 leading-relaxed">
-                        {card.description}
+                      <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
+                        {getCardText(card, 'description')}
                       </p>
                     </motion.div>
                   </div>
@@ -354,8 +527,8 @@ export default function ContentCards({
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
                     >
-                      <p className="text-xs text-gray-700 leading-relaxed">
-                        {card.extendedDescription}
+                      <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">
+                        {getCardText(card, 'extendedDescription')}
                       </p>
                     </motion.div>
                   </div>
@@ -368,22 +541,22 @@ export default function ContentCards({
         <div className="overflow-x-clip">
           <div 
             ref={containerRef}
-              className={`overflow-x-hidden px-8 ${isExtraWide || (isPricing && isLightboxMode) ? '' : 'cursor-grab active:cursor-grabbing'}`}
+              className={`overflow-x-hidden ${maxWidth ? 'px-8' : 'px-4'} ${isStatic || (isPricing && isLightboxMode) ? '' : 'cursor-grab active:cursor-grabbing'}`}
             style={{ overflow: 'visible' }}
           >
             <motion.div
-                className={`flex gap-6 ${isExtraWide ? 'justify-center' : ''}`}
-                style={isExtraWide ? {} : { 
+                className={`flex gap-6 ${isStatic ? 'justify-center' : ''}`}
+                style={isStatic ? {} : { 
                   x,
                   width: `${(cardWidth + gap) * displayCards.length - gap}px`
                 }}
-                drag={isExtraWide ? false : "x"}
-                dragConstraints={isExtraWide ? undefined : {
+                drag={isStatic ? false : "x"}
+                dragConstraints={isStatic ? undefined : {
                   left: maxScroll,
                   right: 0,
                 }}
-                dragElastic={isExtraWide ? undefined : 0.1}
-                onDragEnd={isExtraWide ? undefined : handleDragEnd}
+                dragElastic={isStatic ? undefined : 0.1}
+                onDragEnd={isStatic ? undefined : handleDragEnd}
                 transition={{
                   type: "spring",
                   stiffness: 300,
@@ -393,58 +566,64 @@ export default function ContentCards({
               {displayCards.map((card, index) => (
                 <motion.div
                   key={card.id}
-                    className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${isWide || isExtraWide || isPricing ? 'flex' : ''} ${isPricing && isLightboxMode ? 'flex-col' : ''}`}
-                    style={{ 
-                      width: cardWidth, 
-                      height: isPricing && isLightboxMode ? 800 : 480,
-                      backgroundColor: card.backgroundColor 
-                    }}
+                    className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${isWide || (isStatic && isClient && screenWidth >= 1024) || isPricing || (isResponsive && isClient && screenWidth >= 1024) ? 'flex' : ''} ${isPricing && isLightboxMode ? 'flex-col' : ''}`}
+                                      style={{ 
+                    width: cardWidth, 
+                    height: isPricing && isLightboxMode 
+                      ? (typeof window !== 'undefined' && window.innerWidth < 768 ? 480 : 800) // Mobile: 480px, Desktop: 800px
+                      : isMobile ? 576 
+                      : isWide ? 692 
+                      : isStatic ? (isClient && screenWidth >= 1024 ? 692 : 576) // Wide layout on desktop, mobile layout on tablet/mobile
+                      : isResponsive ? (isClient && screenWidth >= 1024 ? 692 : 576) // Wide layout on desktop, mobile layout on tablet/mobile
+                      : 480,
+                    backgroundColor: card.backgroundColor 
+                  }}
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.2 }}
                 >
                     {isPricing && isLightboxMode ? (
-                      // Lightbox Pricing layout: Top section with text/price, bottom section with extended description
+                      // Lightbox Pricing layout: Responsive with mobile-friendly sizing
                       <>
                         {/* Top Section - Text left, Price right */}
                         <div className="flex">
                           {/* Text Content - Left Side */}
-                          <div className="flex-1 flex flex-col justify-start items-start text-left px-12 pt-12 pb-2">
+                          <div className="flex-1 flex flex-col justify-start items-start text-left px-4 md:px-12 pt-4 md:pt-12 pb-2">
                             <motion.div
                               initial={{ x: -20, opacity: 0 }}
                               animate={{ x: 0, opacity: 1 }}
                               transition={{ delay: index * 0.1, duration: 0.6 }}
                             >
-                              <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                                {card.title}
+                              <h3 className="text-lg md:text-3xl font-bold text-gray-900 mb-2 md:mb-3">
+                                {getCardText(card, 'title')}
                               </h3>
-                              <h4 className="text-xl font-medium text-gray-700 mb-4">
-                                {card.subtitle}
+                              <h4 className="text-sm md:text-xl font-medium text-gray-700 mb-5">
+                                {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-base text-gray-600 leading-relaxed">
-                                {card.description}
+                              <p className="text-xs md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                                {getCardText(card, 'description')}
                               </p>
                             </motion.div>
                           </div>
 
                           {/* Price Content - Right Side */}
-                          <div className="w-32 flex flex-col justify-start items-end text-right px-12 pt-12 pb-2">
+                          <div className="w-20 md:w-32 flex flex-col justify-start items-end text-right px-4 md:px-12 pt-4 md:pt-12 pb-2">
                             <motion.div
                               initial={{ x: 20, opacity: 0 }}
                               animate={{ x: 0, opacity: 1 }}
                               transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
                               className="text-right"
                             >
-                              <div className="text-3xl font-bold text-gray-900 mb-2">
-                                {card.price}
+                              <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
+                                {(card as PricingCardData).price}
                               </div>
-                              {card.originalPrice && (
-                                <div className="text-lg text-gray-500 line-through mb-2">
-                                  {card.originalPrice}
+                              {(card as PricingCardData).originalPrice && (
+                                <div className="text-sm md:text-lg text-gray-500 line-through mb-1 md:mb-2">
+                                  {(card as PricingCardData).originalPrice}
                                 </div>
                               )}
-                              {card.savings && (
-                                <div className="text-sm text-green-600 font-medium">
-                                  Save {card.savings}
+                              {(card as PricingCardData).savings && (
+                                <div className="text-xs md:text-sm text-green-600 font-medium">
+                                  Save {(card as PricingCardData).savings}
                                 </div>
                               )}
                             </motion.div>
@@ -452,22 +631,196 @@ export default function ContentCards({
                         </div>
 
                         {/* Bottom Section - Extended Description (Full Width) */}
-                        {card.extendedDescription && (
-                          <div className="px-12 pt-8 pb-12">
+                        {(card as PricingCardData).extendedDescription && (
+                          <div className="px-4 md:px-12 pt-4 md:pt-8 pb-4 md:pb-12">
                             <motion.div
                               initial={{ y: 20, opacity: 0 }}
                               animate={{ y: 0, opacity: 1 }}
                               transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
                             >
-                              <p className="text-sm text-gray-700 leading-relaxed">
-                                {card.extendedDescription}
+                              <p className="text-xs md:text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                                {getCardText(card, 'extendedDescription')}
                               </p>
                             </motion.div>
                           </div>
                         )}
                       </>
-                    ) : isExtraWide ? (
-                    // Extra-wide layout: Text left (1/3), Image right (2/3)
+                    ) : isResponsive ? (
+                      // Responsive layout: Wide on desktop (>=1024px), mobile on tablet/mobile (<1024px)
+                      isClient && screenWidth >= 1024 ? (
+                        // Desktop: Wide layout (Text left 1/3, Image right 2/3)
+                        <>
+                          {/* Text Content - Left Third */}
+                          <div className="w-1/3 flex flex-col justify-center items-start text-left p-6">
+                            <motion.div
+                              initial={{ x: -20, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1, duration: 0.6 }}
+                            >
+                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                                {getCardText(card, 'title')}
+                              </h3>
+                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                                {getCardText(card, 'subtitle')}
+                              </h4>
+                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                                {getCardText(card, 'description')}
+                              </p>
+                            </motion.div>
+                          </div>
+
+                          {/* Image Content - Right Two-Thirds with 1:1 aspect ratio */}
+                          <div className="w-2/3 relative overflow-hidden p-[15px] flex items-center justify-end">
+                            <motion.div
+                              initial={{ x: 20, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
+                              className="relative rounded-3xl overflow-hidden"
+                              style={{ 
+                                width: '662px', // Fixed width for 1:1 ratio, fills available space after padding
+                                height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
+                              }}
+                            >
+                              <Image
+                                src={card.image}
+                                alt={getCardText(card, 'title')}
+                                fill
+                                className="object-cover object-center"
+                                unoptimized
+                              />
+                            </motion.div>
+                          </div>
+                        </>
+                      ) : (
+                        // Tablet/Mobile: Mobile layout (Text top, Image bottom)
+                        <>
+                          {/* Text Content - Top Half */}
+                          <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
+                            <motion.div
+                              initial={{ y: 20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1, duration: 0.6 }}
+                            >
+                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                                {getCardText(card, 'title')}
+                              </h3>
+                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                                {getCardText(card, 'subtitle')}
+                              </h4>
+                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                                {getCardText(card, 'description')}
+                              </p>
+                            </motion.div>
+                          </div>
+
+                          {/* Image Content - Bottom Half */}
+                          <div className="h-1/2 relative overflow-hidden p-[15px]">
+                            <motion.div
+                              initial={{ y: 30, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
+                              className="relative w-full h-full rounded-3xl overflow-hidden"
+                            >
+                              <Image
+                                src={card.image}
+                                alt={getCardText(card, 'title')}
+                                fill
+                                className="object-cover object-center"
+                                unoptimized
+                              />
+                            </motion.div>
+                          </div>
+                        </>
+                      )
+                    ) : isStatic ? (
+                      // Static layout: Responsive single card - wide on desktop, mobile on tablet/mobile
+                      isClient && screenWidth >= 1024 ? (
+                        // Desktop: Wide layout (Text left 1/3, Image right 2/3)
+                        <>
+                          {/* Text Content - Left Third */}
+                          <div className="w-1/3 flex flex-col justify-center items-start text-left p-6">
+                            <motion.div
+                              initial={{ x: -20, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1, duration: 0.6 }}
+                            >
+                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                                {getCardText(card, 'title')}
+                              </h3>
+                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                                {getCardText(card, 'subtitle')}
+                              </h4>
+                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                                {getCardText(card, 'description')}
+                              </p>
+                            </motion.div>
+                          </div>
+
+                          {/* Image Content - Right Two-Thirds with 1:1 aspect ratio */}
+                          <div className="w-2/3 relative overflow-hidden p-[15px] flex items-center justify-end">
+                            <motion.div
+                              initial={{ x: 20, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
+                              className="relative rounded-3xl overflow-hidden"
+                              style={{ 
+                                width: '662px', // Fixed width for 1:1 ratio, fills available space after padding
+                                height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
+                              }}
+                            >
+                              <Image
+                                src={card.image}
+                                alt={getCardText(card, 'title')}
+                                fill
+                                className="object-cover object-center"
+                                unoptimized
+                              />
+                            </motion.div>
+                          </div>
+                        </>
+                      ) : (
+                        // Tablet/Mobile: Mobile layout (Text top, Image bottom)
+                        <>
+                          {/* Text Content - Top Half */}
+                          <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
+                            <motion.div
+                              initial={{ y: 20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1, duration: 0.6 }}
+                            >
+                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                                {getCardText(card, 'title')}
+                              </h3>
+                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                                {getCardText(card, 'subtitle')}
+                              </h4>
+                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                                {getCardText(card, 'description')}
+                              </p>
+                            </motion.div>
+                          </div>
+
+                          {/* Image Content - Bottom Half */}
+                          <div className="h-1/2 relative overflow-hidden p-[15px]">
+                            <motion.div
+                              initial={{ y: 30, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
+                              className="relative w-full h-full rounded-3xl overflow-hidden"
+                            >
+                              <Image
+                                src={card.image}
+                                alt={getCardText(card, 'title')}
+                                fill
+                                className="object-cover object-center"
+                                unoptimized
+                              />
+                            </motion.div>
+                          </div>
+                        </>
+                      )
+                  ) : isWide ? (
+                    // Wide layout: Text left (1/3), Image right (2/3) with 1:1 aspect ratio
                     <>
                       {/* Text Content - Left Third */}
                       <div className="w-1/3 flex flex-col justify-center items-start text-left p-6">
@@ -477,68 +830,32 @@ export default function ContentCards({
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
                           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                            {card.title}
+                            {getCardText(card, 'title')}
                           </h3>
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-3">
-                            {card.subtitle}
+                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                            {getCardText(card, 'subtitle')}
                           </h4>
-                          <p className="text-sm text-gray-600 leading-relaxed">
-                            {card.description}
+                          <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                            {getCardText(card, 'description')}
                           </p>
                         </motion.div>
                       </div>
 
-                      {/* Image Content - Right Two-Thirds */}
-                      <div className="w-2/3 relative overflow-hidden p-[15px]">
+                      {/* Image Content - Right Two-Thirds with 1:1 aspect ratio */}
+                      <div className="w-2/3 relative overflow-hidden p-[15px] flex items-center justify-end">
                         <motion.div
                           initial={{ x: 20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
-                          className="relative w-full h-full rounded-3xl overflow-hidden"
+                          className="relative rounded-3xl overflow-hidden"
+                          style={{ 
+                            width: '662px', // Fixed width for 1:1 ratio, fills available space after padding
+                            height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
+                          }}
                         >
                           <Image
                             src={card.image}
-                            alt={card.title}
-                            fill
-                            className="object-cover object-center"
-                            unoptimized
-                          />
-                        </motion.div>
-                      </div>
-                    </>
-                  ) : isWide ? (
-                    // Wide layout: Text left, Image right
-                    <>
-                      {/* Text Content - Left Half */}
-                      <div className="w-1/2 flex flex-col justify-center items-start text-left p-6">
-                        <motion.div
-                          initial={{ x: -20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: index * 0.1, duration: 0.6 }}
-                        >
-                          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                            {card.title}
-                          </h3>
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-3">
-                            {card.subtitle}
-                          </h4>
-                          <p className="text-sm text-gray-600 leading-relaxed">
-                            {card.description}
-                          </p>
-                        </motion.div>
-                      </div>
-
-                      {/* Image Content - Right Half */}
-                      <div className="w-1/2 relative overflow-hidden p-[15px]">
-                        <motion.div
-                          initial={{ x: 20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
-                          className="relative w-full h-full rounded-3xl overflow-hidden"
-                        >
-                          <Image
-                            src={card.image}
-                            alt={card.title}
+                            alt={getCardText(card, 'title')}
                             fill
                             className="object-cover object-center"
                             unoptimized
@@ -557,13 +874,13 @@ export default function ContentCards({
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
                           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                            {card.title}
+                            {getCardText(card, 'title')}
                           </h3>
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-3">
-                            {card.subtitle}
+                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                            {getCardText(card, 'subtitle')}
                           </h4>
-                          <p className="text-sm text-gray-600 leading-relaxed">
-                            {card.description}
+                          <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                            {getCardText(card, 'description')}
                           </p>
                         </motion.div>
                       </div>
@@ -578,7 +895,7 @@ export default function ContentCards({
                         >
                           <Image
                             src={card.image}
-                            alt={card.title}
+                            alt={getCardText(card, 'title')}
                             fill
                             className="object-cover object-center"
                             unoptimized
@@ -594,11 +911,11 @@ export default function ContentCards({
         </div>
         )}
 
-        {/* Navigation Arrows - Hidden for extra-wide and pricing variants */}
-        {!isExtraWide && !(isPricing && !isLightboxMode) && currentIndex > 0 && (
+        {/* Navigation Arrows - Hidden for static and pricing variants */}
+        {!isStatic && !(isPricing && !isLightboxMode) && currentIndex > 0 && (
           <button
             onClick={() => navigateCard(-1)}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10"
+            className={`absolute left-0 top-1/2 transform -translate-y-1/2 ${maxWidth ? '-translate-x-4' : 'translate-x-2'} bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
           >
             <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -606,10 +923,10 @@ export default function ContentCards({
           </button>
         )}
 
-        {!isExtraWide && !(isPricing && !isLightboxMode) && currentIndex + cardsPerView < displayCards.length && (
+        {!isStatic && !(isPricing && !isLightboxMode) && currentIndex + cardsPerView < displayCards.length && (
           <button
             onClick={() => navigateCard(1)}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10"
+            className={`absolute right-0 top-1/2 transform -translate-y-1/2 ${maxWidth ? 'translate-x-4' : '-translate-x-2'} bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
           >
             <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -618,8 +935,8 @@ export default function ContentCards({
         )}
       </div>
 
-      {/* Progress Indicator - Hidden for extra-wide and pricing variants */}
-      {!isExtraWide && !(isPricing && !isLightboxMode) && (
+      {/* Progress Indicator - Hidden for static and pricing variants */}
+      {!isStatic && !(isPricing && !isLightboxMode) && (
         <div className="flex justify-center mt-8">
           <div className="bg-gray-200 rounded-full h-1 w-32">
             <motion.div
@@ -636,8 +953,8 @@ export default function ContentCards({
       {/* Instructions */}
       {showInstructions && (
         <div className="text-center mt-6 text-sm text-gray-500">
-          {isExtraWide ? (
-            <p>Single extra-wide card with 1/3 text and 2/3 image layout</p>
+          {isStatic ? (
+            <p>Single responsive card • Wide layout on desktop, mobile layout on tablets/phones</p>
           ) : isPricing ? (
             <p>Click on any card to see detailed information</p>
           ) : (
