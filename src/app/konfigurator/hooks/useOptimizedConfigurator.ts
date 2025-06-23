@@ -15,7 +15,6 @@ import { ConfiguratorEngine } from '../core/ConfiguratorEngine';
 import type { 
   ConfigurationItem, 
   ProcessedSelection,
-  OptimisticState,
   SelectionContext
 } from '../types/configurator.types';
 
@@ -32,6 +31,7 @@ interface UseOptimizedConfiguratorReturn {
   clearOptimisticState: () => void;
   
   // Store integration
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   configuration: any;
   currentPrice: number;
   sessionId: string | null;
@@ -104,6 +104,7 @@ export function useOptimizedConfigurator(): UseOptimizedConfiguratorReturn {
     try {
       // Prepare selection context
       const context: SelectionContext = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         currentConfiguration: store.configuration as any,
         sessionId: store.sessionId,
         userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : '',

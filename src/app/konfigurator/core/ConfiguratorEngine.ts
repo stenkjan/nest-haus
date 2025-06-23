@@ -79,7 +79,7 @@ export class ConfiguratorEngine {
             setTimeout(() => reject(new Error('Image preload timeout')), 2000)
           )
         ]);
-      } catch (_error) {
+      } catch {
         // Silent fail - preloading is optimization only
         console.debug('⚡ Image preloading failed/timeout - continuing normally');
       }
@@ -115,6 +115,7 @@ export class ConfiguratorEngine {
       const config = await this.priceCalculator.generateFullConfiguration(selections);
       
       // Trigger background optimizations
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.imageManager.preloadConfigurationImages(config as any);
       this.interactionTracker.trackConfigurationComplete(config, userDetails);
       

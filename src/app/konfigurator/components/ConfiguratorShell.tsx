@@ -6,6 +6,8 @@
  * for React integration with optimistic updates.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import React, { useRef, useEffect } from 'react';
