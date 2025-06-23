@@ -4,6 +4,53 @@
 
 ---
 
+## [692a3d9cbc44d4b7ffa35a649b14666835ca553b] - Mon Jun 23 17:04:22 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/konfigurator/__tests__/ConfiguratorShell.test.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/__tests__/SelectionOption.test.tsx
+- src/app/konfigurator/components/examples/OptimizedSelectionOption.tsx
+- src/app/konfigurator/core/ConfiguratorEngine.ts
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/InteractionTracker.ts
+- src/app/konfigurator/core/PerformanceMonitor.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/hooks/useOptimizedConfigurator.ts
+- src/app/konfigurator/types/configurator.types.ts
+- src/app/warenkorb/page.tsx
+- src/components/images/ImagePreloader.tsx
+- src/components/layout/__tests__/Navbar.test.tsx
+- src/components/ui/__tests__/Button.test.tsx
+
+#### 🔧 Configuration Changes
+
+- eslint.config.mjs
+- package.json
+- vitest.config.ts
+
+#### 📚 Documentation Changes
+
+- docs/COMPREHENSIVE_APPLICATION_ANALYSIS.md
+- docs/COMPREHENSIVE_TESTING_GUIDE.md
+- docs/CRITICAL_ISSUES_SEVERITY_RANKING.md
+- docs/CRITICAL_PRIORITY_FIXES.md
+- docs/FINAL_TEST_ANALYSIS_AND_PRIORITIES.md
+- docs/MODULAR_ARCHITECTURE_SUMMARY.md
+- docs/MODULAR_CONFIGURATOR_ARCHITECTURE.md
+- docs/TESTING_AND_QUALITY_SUMMARY.md
+- docs/VITEST_INTEGRATION_RESULTS.md
+- konfigurator_old/dialogs/README.md
+
+---
+
 ## [d7cadcc53f21517f91b3b3a7d092ac3086fe2ce4] - Fri Jun 20 17:35:56 2025 +0200
 
 **Author**: stenkjan  
