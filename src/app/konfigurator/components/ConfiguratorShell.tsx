@@ -1,20 +1,19 @@
 /**
- * ConfiguratorShell - New Modular Architecture
+ * ConfiguratorShell - Main Container Component
  * 
- * Clean, optimized configurator using the new modular architecture
- * with ConfiguratorEngine for business logic and useOptimizedConfigurator
- * for React integration with optimistic updates.
+ * Replaces the monolithic legacy Configurator.tsx with a clean,
+ * modular architecture that separates concerns and integrates with Zustand store.
+ * 
+ * @example
+ * <ConfiguratorShell initialModel="nest80" />
  */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client';
 
-import React, { useRef, useEffect } from 'react';
-import { useOptimizedConfigurator } from '../hooks/useOptimizedConfigurator';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { configuratorData } from '../data/configuratorData';
-import type { ConfiguratorProps, ConfigurationItem } from '../types/configurator.types';
+import type { ConfiguratorProps } from '../types/configurator.types';
 import {
   CategorySection,
   SelectionOption,
@@ -32,26 +31,45 @@ export default function ConfiguratorShell({
   onPriceChange,
   rightPanelRef
 }: ConfiguratorProps & { rightPanelRef?: React.Ref<HTMLDivElement> }) {
-  
-  // Use the new optimized configurator hook
-  const {
-    configuration,
+  const { 
+    initializeSession, 
+    updateSelection, 
+    configuration, 
     currentPrice,
-    optimisticState,
-    isProcessing,
-    error,
-    handleSelection: processSelection,
-    clearError
-  } = useOptimizedConfigurator();
+    finalizeSession 
+  } = useConfiguratorStore();
 
-  // Also get resetConfiguration from the store
-  const { resetConfiguration } = useConfiguratorStore();
+  // Local state for quantities and special selections
+  const [pvQuantity, setPvQuantity] = useState<number>(0);
+  const [fensterSquareMeters, setFensterSquareMeters] = useState<number>(0);
+  const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] = useState(false);
 
   // Height sync logic for desktop
   const previewPanelRef = useRef<HTMLDivElement>(null);
-  
+  const [leftPanelHeight, setLeftPanelHeight] = useState<number | null>(null);
+
+  // Function to measure and set left panel height
+  const measureLeftPanelHeight = useCallback(() => {
+    if (window.innerWidth >= 1024 && previewPanelRef.current) {
+      setLeftPanelHeight(previewPanelRef.current.offsetHeight);
+    } else {
+      setLeftPanelHeight(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    measureLeftPanelHeight();
+    window.addEventListener('resize', measureLeftPanelHeight);
+    return () => {
+      window.removeEventListener('resize', measureLeftPanelHeight);
+    };
+  }, [measureLeftPanelHeight]);
+
   // Initialize session and platform detection
   useEffect(() => {
+    // Initialize session on mount
+    initializeSession();
+    
     // iOS WebKit optimization for address bar hiding
     if (typeof window !== 'undefined') {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
@@ -71,7 +89,12 @@ export default function ConfiguratorShell({
         }, 100);
       }
     }
-  }, []);
+    
+    // Cleanup session on unmount
+    return () => {
+      finalizeSession();
+    };
+  }, [initializeSession, finalizeSession]);
 
   // Notify parent components of price changes
   useEffect(() => {
@@ -80,22 +103,23 @@ export default function ConfiguratorShell({
     }
   }, [currentPrice, onPriceChange]);
 
-  // Handle regular selection with optimistic updates
+  // Handle regular selection
   const handleSelection = async (categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
     
     if (option && category) {
-      const selection = {
-        category: categoryId,
-        value: optionId,
-        name: option.name,
-        price: option.price.amount || 0,
-        description: option.description
-      };
-
-      // Process selection with optimistic updates
-      await processSelection(selection);
+      // Prevent page jumping by using requestAnimationFrame
+      requestAnimationFrame(() => {
+        // Update selection without showing loading UI
+        updateSelection({
+          category: categoryId,
+          value: optionId,
+          name: option.name,
+          price: option.price.amount || 0,
+          description: option.description
+        });
+      });
     }
   };
 
@@ -105,34 +129,36 @@ export default function ConfiguratorShell({
     const option = category?.options.find(opt => opt.id === optionId);
     
     if (option && category) {
-      const selection = {
-        category: categoryId,
-        value: optionId,
-        name: option.name,
-        price: option.price.amount || 0,
-        description: option.description,
-        quantity: 1
-      };
-
-      await processSelection(selection);
+      setPvQuantity(1); // Default to 1 module
+      
+      requestAnimationFrame(() => {
+        updateSelection({
+          category: categoryId,
+          value: optionId,
+          name: option.name,
+          price: option.price.amount || 0,
+          description: option.description,
+          quantity: 1
+        });
+      });
     }
   };
 
   // Handle PV quantity change
   const handlePvQuantityChange = async (newQuantity: number) => {
-    if (configuration && typeof configuration === 'object' && configuration !== null && 'pvanlage' in configuration) {
-      const pvConfig = (configuration as any).pvanlage;
-      if (pvConfig) {
-        const updatedSelection: ConfigurationItem = {
-          category: 'pvanlage',
-          value: pvConfig.value || 'standard',
-          name: pvConfig.name || 'PV-Anlage',
-          price: pvConfig.price || 0,
+    setPvQuantity(newQuantity);
+    
+    if (configuration?.pvanlage) {
+      requestAnimationFrame(() => {
+        updateSelection({
+          category: configuration.pvanlage!.category,
+          value: configuration.pvanlage!.value,
+          name: configuration.pvanlage!.name,
+          price: configuration.pvanlage!.price,
+          description: configuration.pvanlage!.description,
           quantity: newQuantity
-        };
-
-        await processSelection(updatedSelection);
-      }
+        });
+      });
     }
   };
 
@@ -142,252 +168,211 @@ export default function ConfiguratorShell({
     const option = category?.options.find(opt => opt.id === optionId);
     
     if (option && category) {
-      const selection = {
-        category: categoryId,
-        value: optionId,
-        name: option.name,
-        price: option.price.amount || 0,
-        description: option.description,
-        squareMeters: 1
-      };
-
-      await processSelection(selection);
+      setFensterSquareMeters(1); // Default to 1 m²
+      
+      requestAnimationFrame(() => {
+        updateSelection({
+          category: categoryId,
+          value: optionId,
+          name: option.name,
+          price: option.price.amount || 0,
+          description: option.description,
+          squareMeters: 1
+        });
+      });
     }
   };
 
   // Handle Fenster square meters change
   const handleFensterSquareMetersChange = async (newSquareMeters: number) => {
-    if (configuration && typeof configuration === 'object' && configuration !== null && 'fenster' in configuration) {
-      const fensterConfig = (configuration as any).fenster;
-      if (fensterConfig) {
-        const updatedSelection: ConfigurationItem = {
-          category: 'fenster',
-          value: fensterConfig.value || 'standard',
-          name: fensterConfig.name || 'Fenster',
-          price: fensterConfig.price || 0,
+    setFensterSquareMeters(newSquareMeters);
+    
+    if (configuration?.fenster) {
+      requestAnimationFrame(() => {
+        updateSelection({
+          category: configuration.fenster!.category,
+          value: configuration.fenster!.value,
+          name: configuration.fenster!.name,
+          price: configuration.fenster!.price,
+          description: configuration.fenster!.description,
           squareMeters: newSquareMeters
-        };
-
-        await processSelection(updatedSelection);
-      }
+        });
+      });
     }
   };
 
   // Handle Grundstückscheck toggle
   const handleGrundstuecksCheckToggle = async () => {
-    const isCurrentlySelected = configuration && typeof configuration === 'object' && configuration !== null && 'grundstueckscheck' in configuration && !!(configuration as any).grundstueckscheck;
+    const newSelected = !isGrundstuecksCheckSelected;
+    setIsGrundstuecksCheckSelected(newSelected);
     
-    if (isCurrentlySelected) {
-      // Remove grundstueckscheck by resetting configuration
-      resetConfiguration();
+    if (newSelected) {
+      requestAnimationFrame(() => {
+        updateSelection({
+          category: 'grundstueckscheck',
+          value: 'grundstueckscheck',
+          name: 'Grundstücks-Check',
+          price: GRUNDSTUECKSCHECK_PRICE,
+          description: 'Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks'
+        });
+      });
     } else {
-      // Add grundstueckscheck
-      const selection: ConfigurationItem = {
-        category: 'grundstueckscheck',
-        value: 'grundstueckscheck',
-        name: 'Grundstücks-Check',
-        price: GRUNDSTUECKSCHECK_PRICE,
-        description: 'Professionelle Grundstücksanalyse'
-      };
-
-      await processSelection(selection);
+      // Remove selection logic would go here if needed
     }
   };
 
-  // Handle info click
+  // Handle info box clicks (could open dialogs)
   const handleInfoClick = (_infoKey: string) => {
-    // Info dialog logic would go here
-    console.log('Info clicked:', _infoKey);
+    // TODO: Implement dialog opening logic
   };
 
-  // Check if option is selected
+  // Helper function to check if option is selected
   const isOptionSelected = (categoryId: string, optionId: string): boolean => {
-    if (!configuration) return false;
-    const categoryConfig = (configuration as any)[categoryId];
+    const categoryConfig = configuration?.[categoryId as keyof typeof configuration];
     if (typeof categoryConfig === 'object' && categoryConfig !== null && 'value' in categoryConfig) {
       return categoryConfig.value === optionId;
     }
     return false;
   };
 
-  // Get current price (with optimistic updates)
-  const displayPrice = optimisticState?.estimatedPrice ?? currentPrice;
-
-  // Get current selections (with optimistic updates)
-  const currentSelections = optimisticState ? {
-    ...(configuration as any),
-    [optimisticState.selection.category]: optimisticState.selection
-  } : configuration;
-
+  // Render selection content
   const SelectionContent = () => (
-    <div className="w-full">
-      {/* Error display */}
-      {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700">
-          ⚠️ {error.message}
-          <button 
-            onClick={clearError}
-            className="ml-2 text-sm underline"
-          >
-            Dismiss
-          </button>
-        </div>
-      )}
-
-      {/* Configurator sections */}
+    <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(1rem,2vh,1.5rem)]">
       {configuratorData.map((category) => (
-        <CategorySection key={category.id} {...{ category } as any}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <CategorySection
+          key={category.id}
+          title={category.title}
+          subtitle={category.subtitle}
+        >
+          <div className="space-y-2">
             {category.options.map((option) => (
               <SelectionOption
                 key={option.id}
-                {...{
-                  option,
-                  category,
-                  isSelected: isOptionSelected(category.id, option.id),
-                  onSelect: () => {
-                    if (category.id === 'pvanlage') {
-                      handlePvSelection(category.id, option.id);
-                    } else if (category.id === 'fenster') {
-                      handleFensterSelection(category.id, option.id);
-                    } else {
-                      handleSelection(category.id, option.id);
-                    }
-                  },
-                  isProcessing: isProcessing && optimisticState?.selection.value === option.id,
-                  optimisticFeedback: optimisticState?.selection.value === option.id
-                } as any}
+                id={option.id}
+                name={option.name}
+                description={option.description}
+                price={option.price}
+                isSelected={isOptionSelected(category.id, option.id)}
+                onClick={(optionId) => {
+                  if (category.id === 'pvanlage') {
+                    handlePvSelection(category.id, optionId);
+                  } else if (category.id === 'fenster') {
+                    handleFensterSelection(category.id, optionId);
+                  } else {
+                    handleSelection(category.id, optionId);
+                  }
+                }}
               />
             ))}
           </div>
-
-          {/* Quantity selectors */}
-          {category.id === 'pvanlage' && currentSelections && typeof currentSelections === 'object' && currentSelections !== null && 'pvanlage' in currentSelections && (currentSelections as any).pvanlage && (
-            <div className="mt-4">
-              <QuantitySelector
-                {...{
-                  value: (currentSelections as any).pvanlage.quantity || 1,
-                  onChange: handlePvQuantityChange,
-                  min: 1,
-                  max: 10,
-                  label: "Anzahl Module",
-                  disabled: isProcessing
-                } as any}
-              />
-            </div>
+          
+          {/* PV Quantity Selector */}
+          {category.id === 'pvanlage' && configuration?.pvanlage && (
+            <QuantitySelector
+              label="Anzahl der PV-Module"
+              value={pvQuantity}
+              max={4}
+              unitPrice={configuration.pvanlage.price || 0}
+              onChange={handlePvQuantityChange}
+            />
           )}
-
-          {category.id === 'fenster' && currentSelections && typeof currentSelections === 'object' && currentSelections !== null && 'fenster' in currentSelections && (currentSelections as any).fenster && (
-            <div className="mt-4">
-              <QuantitySelector
-                {...{
-                  value: (currentSelections as any).fenster.squareMeters || 1,
-                  onChange: handleFensterSquareMetersChange,
-                  min: 1,
-                  max: 50,
-                  step: 0.5,
-                  label: "Quadratmeter",
-                  unit: "m²",
-                  disabled: isProcessing
-                } as any}
-              />
-            </div>
+          
+          {/* Fenster Square Meters Selector */}
+          {category.id === 'fenster' && configuration?.fenster && (
+            <QuantitySelector
+              label="Anzahl der Fenster / Türen"
+              value={fensterSquareMeters}
+              max={75}
+              unitPrice={configuration.fenster.price || 0}
+              unit="m²"
+              onChange={handleFensterSquareMetersChange}
+            />
+          )}
+          
+          {/* Info Box */}
+          {category.infoBox && (
+            <InfoBox
+              title={category.infoBox.title}
+              description={category.infoBox.description}
+              onClick={() => handleInfoClick(category.id)}
+            />
+          )}
+          
+          {/* Facts Box */}
+          {category.facts && (
+            <FactsBox
+              title={category.facts.title}
+              facts={category.facts.content}
+              links={category.facts.links}
+            />
           )}
         </CategorySection>
       ))}
-
-      {/* Grundstückscheck */}
-      <div className="mt-8">
+      
+      {/* Grundstücks-Check Section */}
+      <CategorySection title="Grundstücks-Check" subtitle="Optional">
         <GrundstuecksCheckBox
-          {...{
-            isSelected: !!(currentSelections && typeof currentSelections === 'object' && currentSelections !== null && 'grundstueckscheck' in currentSelections && (currentSelections as any).grundstueckscheck),
-            onToggle: handleGrundstuecksCheckToggle,
-            disabled: isProcessing
-          } as any}
+          isSelected={isGrundstuecksCheckSelected}
+          onClick={handleGrundstuecksCheckToggle}
         />
-      </div>
-
-      {/* Info boxes */}
-      <div className="mt-8 space-y-4">
-        <InfoBox {...{ onInfoClick: handleInfoClick } as any} />
-        <FactsBox {...{ title: "Fakten" } as any} />
-      </div>
+        <InfoBox
+          title="Mehr Informationen zum Grundstücks-Check"
+          onClick={() => handleInfoClick('grundcheck')}
+        />
+      </CategorySection>
+      
+      {/* Summary Panel */}
+      <SummaryPanel onInfoClick={handleInfoClick} />
     </div>
   );
 
-  const PreviewContent = () => (
-    <div ref={previewPanelRef} className="h-full">
-      <PreviewPanel
-        {...{
-          selections: currentSelections || {},
-          activeView: "exterior",
-          onViewChange: (view: any) => {
-            // View change logic would go here
-            console.log('View changed to:', view);
-          },
-          availableViews: ['exterior', 'interior'],
-          isLoading: isProcessing,
-          optimisticPreview: !!optimisticState
-        } as any}
-      />
-    </div>
-  );
+  // Remove visible loading overlay - selections should be immediate
+  // Background loading happens without blocking the UI
 
-  const SummaryContent = () => (
-    <SummaryPanel
-      {...{
-        selections: currentSelections || {},
-        totalPrice: displayPrice,
-        onCheckout: () => {
-          // Checkout logic would go here
-          console.log('Checkout initiated');
-        },
-        isProcessing: isProcessing,
-        optimisticPrice: optimisticState?.estimatedPrice
-      } as any}
-    />
-  );
-
-  // Mobile layout
-  if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-    return (
-      <div className="configurator-shell-mobile w-full">
-        <div className="preview-section mb-6">
-          <PreviewContent />
+  return (
+    <div className="configurator-shell w-full">
+      {/* Mobile Layout (< 1024px) */}
+      <div className="lg:hidden">
+        {/* Mobile Preview (Sticky) - WebKit optimized */}
+        <div className="sticky top-0 z-30 bg-white">
+          <PreviewPanel isMobile={true} />
         </div>
         
-        <div className="selection-section mb-6">
+        {/* Mobile Selections (Scrollable) - Single scroll container for WebKit */}
+        <div ref={rightPanelRef} className="overflow-y-auto bg-white" style={{ WebkitOverflowScrolling: 'touch' }}>
           <SelectionContent />
         </div>
-        
-        <div className="summary-section">
-          <SummaryContent />
+      </div>
+
+      {/* Desktop Layout (≥ 1024px) - 70/30 ratio with proper height calculation */}
+      <div className="hidden lg:flex" style={{ height: 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))' }}>
+        {/* Left: Preview Panel (70%) */}
+        <div className="flex-[7] relative overflow-hidden">
+          <div ref={previewPanelRef} className="h-full w-full">
+            <PreviewPanel isMobile={false} className="h-full w-full" />
+          </div>
         </div>
-        
-        <CartFooter
-          {...{
-            totalPrice: displayPrice,
-            isProcessing: isProcessing,
-            optimisticPrice: optimisticState?.estimatedPrice
-          } as any}
-        />
-      </div>
-    );
-  }
 
-  // Desktop layout
-  return (
-    <div className="configurator-shell-desktop flex gap-8 w-full max-w-7xl mx-auto">
-      {/* Left Panel - Selection */}
-      <div className="flex-1 min-w-0">
-        <SelectionContent />
+        {/* Right: Selection Panel (30%) - Height matches left panel */}
+        <div
+          ref={rightPanelRef}
+          className="configurator-right-panel flex-[3] bg-white overflow-y-auto"
+          style={leftPanelHeight ? { maxHeight: leftPanelHeight } : { maxHeight: 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))' }}
+        >
+          <SelectionContent />
+        </div>
       </div>
 
-      {/* Right Panel - Preview & Summary */}
-      <div ref={rightPanelRef} className="w-96 flex-shrink-0 space-y-6">
-        <PreviewContent />
-        <SummaryContent />
-      </div>
+      {/* Cart Footer */}
+      <CartFooter onReset={() => {
+        // Reset local state
+        setPvQuantity(0);
+        setFensterSquareMeters(0);
+        setIsGrundstuecksCheckSelected(false);
+      }} />
+
+      {/* Add padding to account for fixed footer */}
+      <div className="h-[clamp(4rem,8vh,5rem)]"></div>
     </div>
   );
 }
@@ -395,7 +380,8 @@ export default function ConfiguratorShell({
 /**
  * Migration Notes:
  * 
- * 1. Extract Components:F
+ * 1. Extract Components:
+ *    - PreviewPanel: Image display + navigation arrows
  *    - SelectionPanel: All house option categories
  *    - SummaryPanel: Price breakdown + checkout
  * 

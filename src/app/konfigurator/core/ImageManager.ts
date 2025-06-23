@@ -11,8 +11,7 @@
 
 import { IMAGES } from '@/constants/images';
 import type { 
-  ViewType,
-  ConfigurationItem
+  ViewType
 } from '../types/configurator.types';
 import type { Configuration } from '@/store/configuratorStore';
 
@@ -384,27 +383,5 @@ export class ImageManager {
       size: imagePathCache.size,
       keys: Array.from(imagePathCache.keys())
     };
-  }
-
-  /**
-   * NEW: Preload images for selection (for modular architecture)
-   */
-  async preloadForSelection(selection: ConfigurationItem): Promise<void> {
-    // Simple implementation for now
-    console.log('🖼️ Preloading images for selection:', selection.name);
-  }
-
-  /**
-   * NEW: Preload configuration images (for modular architecture) 
-   */
-  preloadConfigurationImages(_config: Record<string, unknown>): void {
-    console.log('🖼️ Preloading configuration images');
-  }
-
-  /**
-   * NEW: Clear cache (for modular architecture)
-   */
-  clearCache(): void {
-    imagePathCache.clear();
   }
 } 

@@ -1,223 +1,328 @@
 /**
- * PerformanceMonitor - Performance tracking and optimization
+ * Performance Monitor - Track configurator performance metrics
  * 
- * Monitors configurator performance metrics including selection times,
- * image loading, error rates, and user interaction patterns.
+ * Helps monitor API call frequency, cache hit rates, and component re-renders
+ * to ensure we maintain optimal performance and follow project rules.
  */
 
-import type { ConfigurationItem } from '../types/configurator.types';
-
 interface PerformanceMetrics {
-  selectionTimes: number[];
-  imageLoadTimes: number[];
-  errorCount: number;
-  totalSelections: number;
-  sessionStartTime: number;
-  lastSelectionTime: number;
+  apiCalls: {
+    total: number;
+    unique: number;
+    duplicates: number;
+    paths: Record<string, number>;
+  };
+  cacheStats: {
+    hits: number;
+    misses: number;
+    hitRate: number;
+  };
+  renderStats: {
+    previewPanelRenders: number;
+    imageComponentRenders: number;
+  };
+  sessionStart: number;
+  warnings: string[];
 }
 
-interface PerformanceReport {
-  averageSelectionTime: number;
-  averageImageLoadTime: number;
-  errorRate: number;
-  totalInteractions: number;
-  sessionDuration: number;
-  performanceScore: number;
-}
+class PerformanceMonitor {
+  private static metrics: PerformanceMetrics = {
+    apiCalls: {
+      total: 0,
+      unique: 0,
+      duplicates: 0,
+      paths: {}
+    },
+    cacheStats: {
+      hits: 0,
+      misses: 0,
+      hitRate: 0
+    },
+    renderStats: {
+      previewPanelRenders: 0,
+      imageComponentRenders: 0
+    },
+    sessionStart: Date.now(),
+    warnings: []
+  };
 
-export class PerformanceMonitor {
-  private metrics: PerformanceMetrics;
-  private isEnabled: boolean;
-
-  constructor() {
-    this.isEnabled = process.env.NODE_ENV !== 'test';
-    this.metrics = {
-      selectionTimes: [],
-      imageLoadTimes: [],
-      errorCount: 0,
-      totalSelections: 0,
-      sessionStartTime: performance.now(),
-      lastSelectionTime: 0
-    };
-  }
+  private static isEnabled = process.env.NODE_ENV === 'development';
+  private static autoLoggingInterval: NodeJS.Timeout | null = null;
 
   /**
-   * Record the time taken for a selection to be processed
+   * Track an API call to the images endpoint
    */
-  recordSelectionTime(processingTime: number): void {
+  static trackApiCall(path: string): void {
     if (!this.isEnabled) return;
 
-    this.metrics.selectionTimes.push(processingTime);
-    this.metrics.totalSelections++;
-    this.metrics.lastSelectionTime = performance.now();
-
-    // Keep only last 50 measurements for memory efficiency
-    if (this.metrics.selectionTimes.length > 50) {
-      this.metrics.selectionTimes.shift();
+    this.metrics.apiCalls.total++;
+    
+    if (this.metrics.apiCalls.paths[path]) {
+      this.metrics.apiCalls.paths[path]++;
+      this.metrics.apiCalls.duplicates++;
+      
+      // Track warning for excessive calls to same path
+      if (this.metrics.apiCalls.paths[path] > 3) {
+        const warning = `🚨 Image path "${path}" called ${this.metrics.apiCalls.paths[path]} times`;
+        this.addWarning(warning);
+        console.warn(warning);
+      }
+    } else {
+      this.metrics.apiCalls.paths[path] = 1;
+      this.metrics.apiCalls.unique++;
     }
 
-    // Log slow selections in development
-    if (process.env.NODE_ENV === 'development' && processingTime > 100) {
-      console.warn(`⚠️ Slow selection processing: ${processingTime.toFixed(2)}ms`);
+    // Warn if total calls exceed reasonable limit
+    if (this.metrics.apiCalls.total > 20) {
+      const warning = `🚨 ${this.metrics.apiCalls.total} total API calls made - possible performance issue`;
+      this.addWarning(warning);
+      console.warn(warning);
     }
   }
 
   /**
-   * Record image loading time
+   * Track cache hit/miss
    */
-  recordImageLoadTime(loadTime: number): void {
+  static trackCacheHit(): void {
     if (!this.isEnabled) return;
-
-    this.metrics.imageLoadTimes.push(loadTime);
-
-    // Keep only last 30 measurements
-    if (this.metrics.imageLoadTimes.length > 30) {
-      this.metrics.imageLoadTimes.shift();
-    }
-
-    // Log slow image loads in development
-    if (process.env.NODE_ENV === 'development' && loadTime > 1000) {
-      console.warn(`⚠️ Slow image loading: ${loadTime.toFixed(2)}ms`);
-    }
+    this.metrics.cacheStats.hits++;
+    this.updateCacheHitRate();
   }
 
-  /**
-   * Record an error occurrence
-   */
-  recordError(error: Error, selection?: ConfigurationItem): void {
+  static trackCacheMiss(): void {
     if (!this.isEnabled) return;
+    this.metrics.cacheStats.misses++;
+    this.updateCacheHitRate();
+  }
 
-    this.metrics.errorCount++;
+  private static updateCacheHitRate(): void {
+    const total = this.metrics.cacheStats.hits + this.metrics.cacheStats.misses;
+    this.metrics.cacheStats.hitRate = total > 0 ? (this.metrics.cacheStats.hits / total) * 100 : 0;
+  }
 
-    // Log error details in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('❌ ConfiguratorEngine error:', {
-        error: error.message,
-        selection: selection?.name,
-        timestamp: new Date().toISOString()
-      });
+  /**
+   * Track component renders
+   */
+  static trackPreviewPanelRender(): void {
+    if (!this.isEnabled) return;
+    this.metrics.renderStats.previewPanelRenders++;
+    
+    // Warn about excessive renders
+    if (this.metrics.renderStats.previewPanelRenders > 15) {
+      const warning = `🔄 PreviewPanel rendered ${this.metrics.renderStats.previewPanelRenders} times - check for render loops`;
+      this.addWarning(warning);
+      
+      if (this.metrics.renderStats.previewPanelRenders % 5 === 0) {
+        console.warn(warning);
+      }
+    }
+  }
+
+  static trackImageComponentRender(): void {
+    if (!this.isEnabled) return;
+    this.metrics.renderStats.imageComponentRenders++;
+    
+    // Warn about excessive renders
+    if (this.metrics.renderStats.imageComponentRenders > 30) {
+      const warning = `🖼️ ImageComponent rendered ${this.metrics.renderStats.imageComponentRenders} times - check dependencies`;
+      this.addWarning(warning);
+      
+      if (this.metrics.renderStats.imageComponentRenders % 10 === 0) {
+        console.warn(warning);
+      }
     }
   }
 
   /**
-   * Get current performance report
+   * Add a warning to the metrics
    */
-  getPerformanceReport(): PerformanceReport {
-    const averageSelectionTime = this.metrics.selectionTimes.length > 0
-      ? this.metrics.selectionTimes.reduce((a, b) => a + b, 0) / this.metrics.selectionTimes.length
-      : 0;
-
-    const averageImageLoadTime = this.metrics.imageLoadTimes.length > 0
-      ? this.metrics.imageLoadTimes.reduce((a, b) => a + b, 0) / this.metrics.imageLoadTimes.length
-      : 0;
-
-    const errorRate = this.metrics.totalSelections > 0
-      ? this.metrics.errorCount / this.metrics.totalSelections
-      : 0;
-
-    const sessionDuration = performance.now() - this.metrics.sessionStartTime;
-
-    // Calculate performance score (0-100)
-    const performanceScore = this.calculatePerformanceScore(
-      averageSelectionTime,
-      averageImageLoadTime,
-      errorRate
-    );
-
-    return {
-      averageSelectionTime,
-      averageImageLoadTime,
-      errorRate,
-      totalInteractions: this.metrics.totalSelections,
-      sessionDuration,
-      performanceScore
-    };
+  private static addWarning(warning: string): void {
+    if (!this.metrics.warnings.includes(warning)) {
+      this.metrics.warnings.push(warning);
+    }
   }
 
   /**
-   * Calculate overall performance score
+   * Get current performance metrics
    */
-  private calculatePerformanceScore(
-    avgSelectionTime: number,
-    avgImageLoadTime: number,
-    errorRate: number
-  ): number {
-    let score = 100;
-
-    // Deduct points for slow selection times
-    if (avgSelectionTime > 50) score -= 20;
-    else if (avgSelectionTime > 25) score -= 10;
-
-    // Deduct points for slow image loading
-    if (avgImageLoadTime > 1000) score -= 20;
-    else if (avgImageLoadTime > 500) score -= 10;
-
-    // Deduct points for errors
-    score -= errorRate * 50;
-
-    return Math.max(0, Math.min(100, score));
-  }
-
-  /**
-   * Get real-time metrics for debugging
-   */
-  getCurrentMetrics(): PerformanceMetrics {
+  static getMetrics(): PerformanceMetrics {
     return { ...this.metrics };
   }
 
   /**
-   * Reset all metrics (useful for testing)
+   * Sync with external cache statistics (e.g., from ClientBlobImage)
    */
-  reset(): void {
-    this.metrics = {
-      selectionTimes: [],
-      imageLoadTimes: [],
-      errorCount: 0,
-      totalSelections: 0,
-      sessionStartTime: performance.now(),
-      lastSelectionTime: 0
+  static syncCacheStats(cacheStats: {
+    cacheSize: number;
+    requestCounts: Record<string, number>;
+    totalRequests: number;
+    duplicateRequests: number;
+  }): void {
+    if (!this.isEnabled) return;
+
+    // Update API call metrics based on cache statistics
+    this.metrics.apiCalls.total = cacheStats.totalRequests;
+    this.metrics.apiCalls.duplicates = cacheStats.duplicateRequests;
+    this.metrics.apiCalls.unique = cacheStats.totalRequests - cacheStats.duplicateRequests;
+    this.metrics.apiCalls.paths = { ...cacheStats.requestCounts };
+
+    // Track excessive requests
+    Object.entries(cacheStats.requestCounts).forEach(([path, count]) => {
+      if (count > 3) {
+        const warning = `📸 Image "${path}" requested ${count} times via cache`;
+        this.addWarning(warning);
+      }
+    });
+  }
+
+  /**
+   * Get performance summary
+   */
+  static getSummary(): string {
+    const sessionDuration = (Date.now() - this.metrics.sessionStart) / 1000;
+    const duplicateRate = this.metrics.apiCalls.total > 0 
+      ? (this.metrics.apiCalls.duplicates / this.metrics.apiCalls.total) * 100 
+      : 0;
+
+    return `
+🔍 Performance Summary (${sessionDuration.toFixed(1)}s session):
+📡 API Calls: ${this.metrics.apiCalls.total} total, ${this.metrics.apiCalls.unique} unique (${duplicateRate.toFixed(1)}% duplicates)
+💾 Cache: ${this.metrics.cacheStats.hitRate.toFixed(1)}% hit rate (${this.metrics.cacheStats.hits} hits, ${this.metrics.cacheStats.misses} misses)
+🔄 Renders: ${this.metrics.renderStats.previewPanelRenders} PreviewPanel, ${this.metrics.renderStats.imageComponentRenders} ImageComponent
+⚠️  Warnings: ${this.metrics.warnings.length} total
+    `.trim();
+  }
+
+  /**
+   * Check if performance is within acceptable limits
+   */
+  static checkPerformance(): { isGood: boolean; warnings: string[] } {
+    const warnings: string[] = [...this.metrics.warnings];
+    
+    // Check for excessive API calls
+    if (this.metrics.apiCalls.duplicates > 5) {
+      warnings.push(`Too many duplicate API calls: ${this.metrics.apiCalls.duplicates}`);
+    }
+
+    // Check cache efficiency
+    if (this.metrics.cacheStats.hitRate < 50 && this.metrics.cacheStats.hits + this.metrics.cacheStats.misses > 10) {
+      warnings.push(`Low cache hit rate: ${this.metrics.cacheStats.hitRate.toFixed(1)}%`);
+    }
+
+    // Check for excessive renders
+    if (this.metrics.renderStats.previewPanelRenders > 20) {
+      warnings.push(`Excessive PreviewPanel renders: ${this.metrics.renderStats.previewPanelRenders}`);
+    }
+
+    if (this.metrics.renderStats.imageComponentRenders > 40) {
+      warnings.push(`Excessive ImageComponent renders: ${this.metrics.renderStats.imageComponentRenders}`);
+    }
+
+    return {
+      isGood: warnings.length === 0,
+      warnings
     };
   }
 
   /**
-   * Flush metrics to analytics service (if configured)
+   * Reset metrics (useful for testing)
    */
-  flush(): void {
-    if (!this.isEnabled || this.metrics.totalSelections === 0) return;
+  static reset(): void {
+    this.metrics = {
+      apiCalls: {
+        total: 0,
+        unique: 0,
+        duplicates: 0,
+        paths: {}
+      },
+      cacheStats: {
+        hits: 0,
+        misses: 0,
+        hitRate: 0
+      },
+      renderStats: {
+        previewPanelRenders: 0,
+        imageComponentRenders: 0
+      },
+      sessionStart: Date.now(),
+      warnings: []
+    };
+  }
 
-    const report = this.getPerformanceReport();
-
-    // In a real application, you would send this to an analytics service
-    if (process.env.NODE_ENV === 'development') {
-      console.log('📊 Performance Report:', report);
+  /**
+   * Log performance metrics to console
+   */
+  static logMetrics(): void {
+    if (!this.isEnabled) return;
+    
+    console.group('🔍 Configurator Performance Metrics');
+    console.log(this.getSummary());
+    
+    const performance = this.checkPerformance();
+    if (performance.isGood) {
+      console.log('✅ Performance is within acceptable limits');
+    } else {
+      console.warn('⚠️ Performance issues detected:');
+      performance.warnings.forEach(warning => console.warn(`  - ${warning}`));
     }
 
-    // Optional: Send to analytics service
-    this.sendToAnalytics(report);
+    // Show top requested images
+    const sortedPaths = Object.entries(this.metrics.apiCalls.paths)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 5);
+    
+    if (sortedPaths.length > 0) {
+      console.log('📊 Most requested images:');
+      sortedPaths.forEach(([path, count]) => {
+        console.log(`  ${count}x - ${path}`);
+      });
+    }
+
+    console.groupEnd();
   }
 
   /**
-   * Send performance data to analytics service
+   * Start automatic performance logging every 30 seconds
    */
-  private sendToAnalytics(report: PerformanceReport): void {
-    // This would be implemented to send data to your analytics service
-    // For now, we'll just log it in development
-    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-      console.debug('📈 Performance metrics would be sent to analytics:', report);
+  static startAutoLogging(): void {
+    if (!this.isEnabled || this.autoLoggingInterval) return;
+    
+    this.autoLoggingInterval = setInterval(() => {
+      this.logMetrics();
+    }, 30000); // Log every 30 seconds
+    
+    console.log('🔍 Performance monitoring started - logging every 30s');
+  }
+
+  /**
+   * Stop automatic performance logging
+   */
+  static stopAutoLogging(): void {
+    if (this.autoLoggingInterval) {
+      clearInterval(this.autoLoggingInterval);
+      this.autoLoggingInterval = null;
+      console.log('🔍 Performance monitoring stopped');
     }
   }
 
   /**
-   * Enable or disable performance monitoring
+   * Report current statistics in a compact format
    */
-  setEnabled(enabled: boolean): void {
-    this.isEnabled = enabled;
+  static getCompactReport(): string {
+    const duplicateRate = this.metrics.apiCalls.total > 0 
+      ? (this.metrics.apiCalls.duplicates / this.metrics.apiCalls.total) * 100 
+      : 0;
+    
+    return `📊 API: ${this.metrics.apiCalls.total}/${this.metrics.apiCalls.unique} (${duplicateRate.toFixed(0)}% dup) | 🖼️ Renders: ${this.metrics.renderStats.previewPanelRenders}/${this.metrics.renderStats.imageComponentRenders} | ⚠️ ${this.metrics.warnings.length}`;
   }
+}
 
-  /**
-   * Check if performance monitoring is enabled
-   */
-  isMonitoringEnabled(): boolean {
-    return this.isEnabled;
-  }
-} 
+// Auto-start logging in development
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  PerformanceMonitor.startAutoLogging();
+  
+  // Make available globally for debugging
+  (window as typeof window & { performanceMonitor: typeof PerformanceMonitor }).performanceMonitor = PerformanceMonitor;
+}
+
+export default PerformanceMonitor; 

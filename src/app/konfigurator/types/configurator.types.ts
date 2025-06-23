@@ -19,73 +19,7 @@ export type SelectionCategory =
   | 'paket' 
   | 'grundstueckscheck';
 
-// ===== NEW MODULAR ARCHITECTURE TYPES =====
-
-export interface ConfigurationItem {
-  category: string;
-  value: string;
-  name: string;
-  price: number;
-  description?: string;
-  quantity?: number;
-  squareMeters?: number;
-}
-
-export interface ProcessedSelection {
-  selection: ConfigurationItem;
-  priceImpact: PriceImpact;
-  recommendedView: string;
-  nextSuggestions: ConfigurationItem[];
-  performance: {
-    processingTime: number;
-    imagePreloadStatus?: string;
-  };
-}
-
-export interface PriceImpact {
-  totalChange: number;
-  breakdown: {
-    baseChange: number;
-    optionChanges: Record<string, number>;
-  };
-}
-
-export interface PriceImpactResult {
-  totalChange: number;
-  breakdown: {
-    baseChange: number;
-    optionChanges: Record<string, number>;
-  };
-}
-
-export interface ValidationResult {
-  isValid: boolean;
-  errors: string[];
-}
-
-export interface FullConfiguration {
-  sessionId: string;
-  selections: ConfigurationItem[];
-  totalPrice: number;
-  timestamp: number;
-  metadata?: Record<string, unknown>;
-}
-
-export interface SelectionContext {
-  currentConfiguration?: Record<string, unknown>;
-  sessionId?: string | null;
-  userAgent?: string;
-  timestamp: number;
-}
-
-export interface OptimisticState {
-  selection: ConfigurationItem;
-  estimatedPrice: number;
-  timestamp: number;
-  processingStartTime: number;
-}
-
-// ===== EXISTING TYPES (PRESERVED) =====
+// ===== SELECTION TYPES =====
 
 export interface SelectionOption {
   value: string;
