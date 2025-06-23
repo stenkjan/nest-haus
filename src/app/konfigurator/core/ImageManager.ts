@@ -384,4 +384,20 @@ export class ImageManager {
       keys: Array.from(imagePathCache.keys())
     };
   }
+
+  /**
+   * Missing methods for engine compatibility
+   */
+  static async preloadForSelection(_selection: unknown, _context?: unknown): Promise<void> {
+    // Simple implementation for compatibility
+    return Promise.resolve();
+  }
+
+  static preloadConfigurationImages(_config: unknown): void {
+    // Already handled by preloadImages
+  }
+
+  static clearCache(): void {
+    this.clearImageCache();
+  }
 } 

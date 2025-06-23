@@ -35,6 +35,11 @@ export interface SelectionOption {
   squareMeters?: number;
 }
 
+// Alias for store compatibility  
+export type ConfigurationItem = SelectionOption & {
+  category: string;
+}
+
 export interface Selections {
   nest?: SelectionOption;
   gebaeudehuelle?: SelectionOption;
@@ -127,6 +132,35 @@ export interface SummaryPanelProps {
   totalPrice: number;
   priceBreakdown?: PriceBreakdown;
   onCheckout: () => void;
+}
+
+// ===== ENGINE TYPES =====
+
+export interface ProcessedSelection {
+  selection: SelectionOption;
+  priceImpact: number;
+  isValid: boolean;
+  dependencies?: string[];
+}
+
+export interface ValidationResult {
+  isValid: boolean;
+  errors: string[];
+  warnings: string[];
+}
+
+export interface SelectionContext {
+  currentSelections: Selections;
+  userPreferences?: Record<string, unknown>;
+  sessionData?: Record<string, unknown>;
+}
+
+export interface FullConfiguration extends Configuration {
+  metadata: {
+    version: string;
+    generatedAt: number;
+    userAgent?: string;
+  };
 }
 
 // ===== API TYPES =====

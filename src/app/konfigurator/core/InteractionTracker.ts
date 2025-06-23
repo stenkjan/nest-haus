@@ -73,4 +73,22 @@ export class InteractionTracker {
     // TODO: Aggregate click frequency data
     throw new Error('Not implemented - new feature');
   }
+
+  /**
+   * Compatibility methods for engine
+   */
+  trackSelection(_selection: unknown, _context?: unknown): void {
+    // Simple implementation for compatibility - don't throw error
+    console.log('🔧 InteractionTracker: trackSelection called (compatibility mode)');
+  }
+
+  trackConfigurationComplete(_config: unknown, _userDetails?: unknown): void {
+    // Simple implementation for compatibility
+    console.log('🔧 InteractionTracker: trackConfigurationComplete called (compatibility mode)');
+  }
+
+  trackError(_error: unknown, _selection?: unknown): void {
+    // Simple implementation for compatibility
+    console.log('🔧 InteractionTracker: trackError called (compatibility mode)', _error);
+  }
 } 

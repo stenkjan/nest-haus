@@ -63,6 +63,9 @@ export default function SelectionOption({
         </p>
       )
     }
+    
+    // Default fallback
+    return null
   }
 
   const handleClick = () => {

@@ -165,6 +165,29 @@ export class PriceCalculator {
   }
 
   /**
+   * Calculate price impact for engine compatibility
+   */
+  static calculatePriceImpact(selection: SelectionOption, currentSelections: Selections): number {
+    const currentPrice = this.calculateTotalPrice(currentSelections)
+    const newSelections = { ...currentSelections, [selection.category]: selection }
+    const newPrice = this.calculateTotalPrice(newSelections)
+    return newPrice - currentPrice
+  }
+
+  /**
+   * Generate full configuration for engine compatibility
+   */
+  static generateFullConfiguration(selections: Selections): Record<string, unknown> {
+    return {
+      id: `config_${Date.now()}`,
+      selections,
+      totalPrice: this.calculateTotalPrice(selections),
+      timestamp: Date.now(),
+      status: 'active'
+    }
+  }
+
+  /**
    * Get detailed price breakdown for transparency
    * CLIENT-SIDE calculation for better performance
    * SUPPORTS PROGRESSIVE PRICING

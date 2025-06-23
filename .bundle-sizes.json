@@ -1,16 +1,7 @@
 {
-  "175-e52fe7e2abc3028c.js": 20,
-  "246-efe084959a45114e.js": 113,
-  "341.df3329d77a5faa19.js": 6,
-  "472.a3826d29d6854395.js": 1,
-  "4bd1b696-9bbb9cdd2ea39705.js": 164,
-  "532-7ba8eedd0f42f78a.js": 15,
-  "684-4ffdcdba987cd3e2.js": 171,
-  "766-b76ab493558ca3bf.js": 14,
-  "874-ff6093746790cb26.js": 8,
-  "framework-f593a28cde54158e.js": 178,
-  "main-1c1efe71db236b75.js": 110,
-  "main-app-761ba5ef1087fa4e.js": 1,
-  "polyfills-42372ed130431b0a.js": 110,
-  "webpack-6a792b0afb566f88.js": 3
+  "app-pages-internals.js": 223,
+  "main-app.js": 6490,
+  "polyfills.js": 110,
+  "webpack.js": 55,
+  "_app-pages-browser_node_modules_next_dist_client_dev_noop-turbopack-hmr_js.js": 6
 }
