@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "build:windows": "taskkill /f /im node.exe 2>nul & timeout /t 2 & npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",

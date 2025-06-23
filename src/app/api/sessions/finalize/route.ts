@@ -33,14 +33,24 @@ export async function POST(request: Request) {
       }
     }
 
-    // Update session in PostgreSQL
-    await prisma.userSession.update({
+    // Update or create session in PostgreSQL (handles cases where session wasn't initially created)
+    await prisma.userSession.upsert({
       where: { sessionId },
-      data: {
+      update: {
         endTime: new Date(),
         configurationData: finalConfig,
         totalPrice: config?.totalPrice || null,
         status: config?.totalPrice ? 'COMPLETED' : 'ABANDONED'
+      },
+      create: {
+        sessionId,
+        startTime: new Date(Date.now() - (finalConfig?.sessionDuration || 0)),
+        endTime: new Date(),
+        configurationData: finalConfig,
+        totalPrice: config?.totalPrice || null,
+        status: config?.totalPrice ? 'COMPLETED' : 'ABANDONED',
+        userAgent: '',
+        ipAddress: ''
       }
     })
 
