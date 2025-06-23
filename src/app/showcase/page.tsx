@@ -3,25 +3,25 @@ import { ContentCards, ContentCardsLightbox, ImageGrid, PricingCardsLightbox } f
 
 export default function ShowcasePage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-12 overflow-x-hidden">
       <div className="space-y-16">
         
-        {/* Content Cards Section - Normal */}
+        {/* Content Cards Section - Responsive */}
         <section className="overflow-visible">
           <ContentCards 
-            variant="normal"
-            title="Content Cards"
-            subtitle="Navigate with arrow keys or swipe on mobile"
+            variant="responsive"
+            title="Content Cards Responsive"
+            subtitle="Automatically adapts: Wide layout on desktop, mobile layout on tablets/phones • Navigate with arrow keys or swipe"
             maxWidth={false}
           />
           
-          {/* Lightbox Button for Normal Cards */}
+          {/* Lightbox Button for Responsive Cards */}
           <div className="flex justify-center mt-8">
             <ContentCardsLightbox 
-              variant="normal"
-              title="Content Cards - Lightbox View"
-              subtitle="Navigate with arrow keys or swipe • Click outside or press ESC to close"
-              triggerText="Open Normal Cards in Lightbox"
+              variant="responsive"
+              title="Content Cards Responsive - Lightbox View"
+              subtitle="Automatically adapts to screen size • Navigate with arrow keys or swipe • Click outside or press ESC to close"
+              triggerText="Open Responsive Cards in Lightbox"
               triggerClassName="mx-2"
             />
           </div>
@@ -35,47 +35,26 @@ export default function ShowcasePage() {
           />
         </section>
 
-        {/* Content Cards Wide Section - Full Width */}
+        {/* Content Cards Static Section - Single Responsive Card */}
         <section className="overflow-visible">
           <ContentCards 
-            variant="wide"
-            title="Content Cards Wide"
-            subtitle="Navigate with arrow keys or swipe on mobile"
+            variant="static"
+            title="Content Cards Static"
+            subtitle="Single responsive card: Wide layout on desktop, mobile layout on tablets/phones"
             maxWidth={false}
           />
           
-          {/* Lightbox Button for Wide Cards */}
+          {/* Lightbox Button for Static Cards */}
           <div className="flex justify-center mt-8">
             <ContentCardsLightbox 
-              variant="wide"
-              title="Content Cards Wide - Lightbox View"
-              subtitle="Navigate with arrow keys or swipe • Click outside or press ESC to close"
-              triggerText="Open Wide Cards in Lightbox"
+              variant="static"
+              title="Content Cards Static - Lightbox View"
+              subtitle="Responsive single card • Adapts layout based on screen size • Click outside or press ESC to close"
+              triggerText="Open Static Card in Lightbox"
               triggerClassName="mx-2"
             />
           </div>
         </section>
-
-        {/* Content Cards Extra-Wide Section - Single Card */}
-        <section className="overflow-visible">
-          <ContentCards 
-            variant="extra-wide"
-            title="Content Cards Extra-Wide"
-            subtitle="Single card with 1/3 text and 2/3 image layout"
-            maxWidth={false}
-          />
-          
-          {/* Lightbox Button for Extra-Wide Cards */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsLightbox 
-              variant="extra-wide"
-              title="Content Cards Extra-Wide - Lightbox View"
-              subtitle="1/3 text, 2/3 image layout • Click outside or press ESC to close"
-              triggerText="Open Extra-Wide Card in Lightbox"
-              triggerClassName="mx-2"
-            />
-          </div>
-                  </section>
 
         {/* Image Grid Section - 2x2 Interactive Grid */}
         <section className="overflow-visible">
