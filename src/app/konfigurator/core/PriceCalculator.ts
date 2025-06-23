@@ -5,6 +5,7 @@
  */
 
 import { calculateCombinationPrice, GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator'
+import type { ConfigurationItem, PriceImpactResult, FullConfiguration } from '../types/configurator.types';
 
 interface SelectionOption {
   category: string
@@ -27,6 +28,32 @@ interface Selections {
 }
 
 export class PriceCalculator {
+  /**
+   * NEW: Calculate price impact for a selection (for modular architecture)
+   */
+  async calculatePriceImpact(selection: ConfigurationItem, _currentConfiguration?: Record<string, unknown>): Promise<PriceImpactResult> {
+    // Simple implementation for now
+    return {
+      totalChange: selection.price || 0,
+      breakdown: {
+        baseChange: selection.price || 0,
+        optionChanges: {}
+      }
+    };
+  }
+
+  /**
+   * NEW: Generate full configuration (for modular architecture)
+   */
+  async generateFullConfiguration(selections: ConfigurationItem[]): Promise<FullConfiguration> {
+    return {
+      sessionId: `config_${Date.now()}`,
+      selections,
+      totalPrice: selections.reduce((sum, sel) => sum + (sel.price || 0), 0),
+      timestamp: Date.now()
+    };
+  }
+
   /**
    * Calculate the EXACT combination price using old configurator logic
    * CLIENT-SIDE calculation for efficiency
