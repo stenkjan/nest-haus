@@ -103,7 +103,7 @@ export default function Home() {
           </div>
           
           {/* Content Overlay */}
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-start px-8 pt-[5vh]">
+          <div className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? 'px-0' : 'px-8'}`}>
             
             <div className="text-center">
               <h1 className="font-bold text-white text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">

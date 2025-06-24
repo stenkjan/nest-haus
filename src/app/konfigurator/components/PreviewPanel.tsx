@@ -157,27 +157,18 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
       className={`preview-panel flex flex-col relative ${className}`}
       style={containerStyle}
     >
-      {/* FIXED: Image Container - proper aspect ratio handling for mobile */}
-      <div className="h-full w-full flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: 'white' }}>
-        {/* Image with maintained aspect ratio, centered and filling available space */}
-        <div className="relative w-full h-full flex items-center justify-center">
-          <div 
-            className="relative w-full h-full" 
-            style={isMobile ? {
-              // Mobile: container height is already calculated for 16:9, so fill it completely
-              aspectRatio: '16/9'
-            } : {
-              // Desktop: maintain aspect ratio within available space
-              aspectRatio: '16/9'
-            }}
-          >
+      {/* Image Container - full width and height usage */}
+      <div className="h-full w-full relative" style={{ backgroundColor: 'white' }}>
+        {/* Image filling the entire container */}
+        <div className="relative w-full h-full">
+          <div className="relative w-full h-full">
             {/* Main image */}
             <HybridBlobImage
               path={currentImagePath}
               alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || 'Nest Konfigurator'}`}
               fill
               className={`transition-opacity duration-300 ${
-                isMobile ? 'object-contain' : 'object-contain'
+                isMobile ? 'object-cover' : 'object-cover'
               }`}
               
               // Simplified strategy - just use client-side for interactive configurator

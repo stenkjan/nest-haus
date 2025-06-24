@@ -347,7 +347,7 @@ export default function ConfiguratorShell({
       {/* Desktop Layout (≥ 1024px) - 70/30 ratio with proper height calculation */}
       <div className="hidden lg:flex" style={{ height: 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))' }}>
         {/* Left: Preview Panel (70%) */}
-        <div className="flex-[7] relative overflow-hidden">
+        <div className="flex-[7] relative">
           <div ref={previewPanelRef} className="h-full w-full">
             <PreviewPanel isMobile={false} className="h-full w-full" />
           </div>
@@ -372,7 +372,6 @@ export default function ConfiguratorShell({
       }} />
 
       {/* Add padding to account for fixed footer */}
-      <div className="h-[clamp(4rem,8vh,5rem)]"></div>
     </div>
   );
 }

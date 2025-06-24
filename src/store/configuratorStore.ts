@@ -59,6 +59,7 @@ interface ConfiguratorState {
   resetConfiguration: () => void
   reset: () => void
   finalizeSession: () => void
+  setDefaultSelections: () => void
   
   // Part activation
   activatePart2: () => void
@@ -102,25 +103,16 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       initializeSession: () => {
         const state = get()
         
-        // Skip initialization if already configured (for tests)
-        if (state.sessionId && state.configuration.sessionId) {
-          return;
-        }
-        
         // Skip auto-reset in test environment to allow explicit testing
         if (process.env.NODE_ENV === 'test') {
           return;
         }
         
-        // Only auto-reset in development if not already initialized
-        if (process.env.NODE_ENV === 'development' && !state.sessionId) {
+        // Only initialize if we don't have a session or don't have any selections at all
+        if (!state.sessionId || (!state.configuration.nest && !state.configuration.gebaeudehuelle)) {
           get().resetConfiguration()
-          return;
-        }
-        
-        // For production, initialize with clean configuration
-        if (!state.sessionId) {
-          get().resetConfiguration()
+          // Set default preselections immediately after reset
+          get().setDefaultSelections()
         }
       },
 
@@ -148,7 +140,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         let newHasPart2BeenActive = state.hasPart2BeenActive;
         let newHasPart3BeenActive = state.hasPart3BeenActive;
 
-        if (item.category === 'innenverkleidung' || item.category === 'fussboden') {
+        if (item.category === 'nest' || item.category === 'gebaeudehuelle') {
+          // When selecting nest modules or building envelope, switch to exterior view to show modules
+          shouldSwitchToView = 'exterior';
+        } else if (item.category === 'innenverkleidung' || item.category === 'fussboden') {
           if (!state.hasPart2BeenActive) {
             newHasPart2BeenActive = true;
           }
@@ -165,9 +160,16 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           shouldSwitchToView = 'fenster';
         }
 
-        // Clear image cache if this is a visual change (gebäudehülle, innenverkleidung, fussboden)
-        if (['gebaeudehuelle', 'innenverkleidung', 'fussboden'].includes(item.category)) {
-          // Image cache will be cleared automatically via ImageManager
+        // Clear image cache if this is a visual change (nest, gebäudehülle, innenverkleidung, fussboden)
+        if (['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden'].includes(item.category)) {
+          // Import ImageManager dynamically to clear cache when visual configuration changes
+          if (typeof window !== 'undefined') {
+            import('@/app/konfigurator/core/ImageManager').then(({ ImageManager }) => {
+              ImageManager.clearImageCache();
+            }).catch(() => {
+              // Silently fail - cache clearing is optimization only
+            });
+          }
         }
 
         set({
@@ -319,6 +321,32 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         })
       },
 
+      // Set default preselections on startup (nest80 + holzlattung)
+      setDefaultSelections: () => {
+        const state = get()
+        
+        // Only set defaults if they're not already set to prevent loops
+        if (!state.configuration.nest) {
+          get().updateSelection({
+            category: 'nest',
+            value: 'nest80',
+            name: 'Nest. 80',
+            price: 155500,
+            description: '80m² Nutzfläche'
+          })
+        }
+
+        if (!state.configuration.gebaeudehuelle) {
+          get().updateSelection({
+            category: 'gebaeudehuelle',
+            value: 'holzlattung',
+            name: 'Holzlattung Lärche Natur',
+            price: 9600,
+            description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
+          })
+        }
+      },
+
       // Finalize session (CLIENT-SIDE ONLY)
       finalizeSession: () => {
         const state = get()
@@ -370,8 +398,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
     }),
     {
       name: 'nest-configurator',
-      // Skip persistence in development and test to prevent state conflicts
-      skipHydration: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test',
+      // Skip persistence in test only to prevent state conflicts
+      skipHydration: process.env.NODE_ENV === 'test',
       partialize: (state) => ({
         sessionId: state.sessionId,
         configuration: state.configuration,
@@ -381,7 +409,19 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         hasPart3BeenActive: state.hasPart3BeenActive,
         shouldSwitchToView: state.shouldSwitchToView,
         lastSelectionCategory: state.lastSelectionCategory
-      })
+      }),
+      // Add onRehydrateStorage to ensure defaults are applied after rehydration
+      onRehydrateStorage: () => (state) => {
+        if (state && process.env.NODE_ENV !== 'test') {
+          // Only apply defaults if we have no selections at all (fresh start)
+          if (!state.configuration.nest && !state.configuration.gebaeudehuelle) {
+            // Apply defaults if they're missing
+            setTimeout(() => {
+              state.setDefaultSelections()
+            }, 50)
+          }
+        }
+      }
     }
   )
 ) 

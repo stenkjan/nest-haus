@@ -161,7 +161,7 @@ export const configuratorData: CategoryData[] = [
         price: { type: 'upgrade', amount: 4500, monthly: 24 }
       },
       {
-        id: 'schiefer_massiv',
+        id: 'schiefer_massiv', // granit paths but display as schiefer
         name: 'Schiefer Massiv',
         description: 'Feinsteinzeug Schieferoptik\n800 x 800 x 5,5cm',
         price: { type: 'upgrade', amount: 5500, monthly: 29 }

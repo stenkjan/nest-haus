@@ -7,7 +7,7 @@
 
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useConfiguratorStore } from '@/store/configuratorStore'
 import { useCartStore } from '@/store/cartStore'
 import { PriceUtils } from '../core/PriceUtils'
@@ -28,6 +28,8 @@ export default function SummaryPanel({ onInfoClick, className = '' }: SummaryPan
   } = useConfiguratorStore()
   
   const { addConfigurationToCart } = useCartStore()
+  const [isClient, setIsClient] = useState(false)
+  useEffect(() => { setIsClient(true) }, [])
 
   const handleAddToCart = () => {
     if (isConfigurationComplete()) {
@@ -177,16 +179,18 @@ export default function SummaryPanel({ onInfoClick, className = '' }: SummaryPan
 
         {/* Add to Cart Button */}
         <div className="mt-6">
-          <button
-            onClick={handleAddToCart}
-            disabled={!isConfigurationComplete()}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-4 px-6 rounded-[19px] transition-colors"
-          >
-            {isConfigurationComplete() 
-              ? `In den Warenkorb - ${PriceUtils.formatPrice(currentPrice)}`
-              : 'Konfiguration vervollständigen'
-            }
-          </button>
+          {isClient && (
+            <button
+              onClick={handleAddToCart}
+              disabled={!isConfigurationComplete()}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-4 px-6 rounded-[19px] transition-colors"
+            >
+              {isConfigurationComplete() 
+                ? `In den Warenkorb - ${PriceUtils.formatPrice(currentPrice)}`
+                : 'Konfiguration vervollständigen'
+              }
+            </button>
+          )}
         </div>
       </div>
     </div>

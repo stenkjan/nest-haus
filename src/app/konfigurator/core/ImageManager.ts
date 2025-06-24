@@ -157,59 +157,83 @@ export class ImageManager {
     const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
     const innenverkleidung = this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'kiefer';
     const fussboden = this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett';
-    
-    // Map gebäudehülle to image prefix
+
+    // --- BEGIN: User-defined exact mappings ---
+    const exactMappings: Array<[
+      string, // gebaeudehuelle
+      string, // innenverkleidung
+      string, // fussboden
+      keyof typeof IMAGES.configurations
+    ]> = [
+      ['fassadenplatten_weiss', 'steirische_eiche', 'kalkstein_kanafar', 'plattenweiss_eiche_kalkstein'],
+      ['fassadenplatten_weiss', 'steirische_eiche', 'parkett', 'plattenweiss_eiche_parkett'],
+      ['fassadenplatten_schwarz', 'steirische_eiche', 'parkett', 'plattenschwarz_eiche_parkett'],
+      ['fassadenplatten_schwarz', 'kiefer', 'parkett', 'plattenschwarz_holznatur_parkett'],
+      ['trapezblech', 'kiefer', 'parkett', 'trapezblech_holznatur_parkett'],
+      ['trapezblech', 'kiefer', 'kalkstein_kanafar', 'trapezblech_holznatur_kalkstein'],
+      ['trapezblech', 'fichte', 'parkett', 'trapezblech_holzweiss_parkett'],
+      ['trapezblech', 'fichte', 'kalkstein_kanafar', 'trapezblech_holzweiss_kalkstein'],
+      ['trapezblech', 'fichte', 'schiefer_massiv', 'trapezblech_holzweiss_granit'],
+      ['trapezblech', 'steirische_eiche', 'parkett', 'trapezblech_eiche_parkett'],
+    ];
+    for (const [g, i, f, key] of exactMappings) {
+      if (gebaeude === g && innenverkleidung === i && fussboden === f) {
+        const imagePath = IMAGES.configurations[key];
+        if (imagePath) {
+          return imagePath;
+        }
+      }
+    }
+    // --- END: User-defined exact mappings ---
+
+    // Standard handling for ALL gebäudehülle types (including holzlattung)
     const gebaeudePrefix: Record<string, string> = {
       'trapezblech': 'trapezblech',
-      'holzlattung': 'holzlattung',
+      'holzlattung': 'holzlattung', // holzlattung uses same pattern as others
       'fassadenplatten_schwarz': 'plattenschwarz',
       'fassadenplatten_weiss': 'plattenweiss'
     };
-    
-    const prefix = gebaeudePrefix[gebaeude] || 'trapezblech';
-    
-    // Map innenverkleidung to image middle part
-    const innenverkleidungMap: Record<string, string> = {
-      'kiefer': 'holznatur',
-      'fichte': 'holzweiss',
-      'steirische_eiche': 'eiche'
-    };
-    
-    const innenPart = innenverkleidungMap[innenverkleidung] || 'holznatur';
-    
-    // Map fussboden to image suffix
-    const fussbodenMap: Record<string, string> = {
-      'parkett': 'parkett',
-      'kalkstein_kanafar': 'kalkstein',
-      'schiefer_massiv': 'granit'
-    };
-    
-    const fussbodenPart = fussbodenMap[fussboden] || 'kalkstein';
-    
-    // Construct the full image key: {prefix}_{innen}_{fussboden}
-    const imageKey = `${prefix}_${innenPart}_${fussbodenPart}` as keyof typeof IMAGES.configurations;
-    
-    // Try to get the specific combination
-    const imagePath = IMAGES.configurations[imageKey];
-    
-    if (imagePath) {
-      return imagePath;
-    }
-    
-    // Try fallbacks (matching old configurator fallback logic)
-    const fallbackKeys = [
-      `${prefix}_${innenPart}_kalkstein`,
-      `${prefix}_holznatur_kalkstein`,
-      `trapezblech_holznatur_kalkstein`
-    ];
-    
-    for (const fallbackKey of fallbackKeys) {
-      const fallbackPath = IMAGES.configurations[fallbackKey as keyof typeof IMAGES.configurations];
-      if (fallbackPath) {
-        return fallbackPath;
+    const prefix = gebaeudePrefix[gebaeude];
+    if (prefix) {
+      // Map innenverkleidung to image middle part (holznatur for kiefer, holzweiss for fichte)
+      const innenverkleidungMap: Record<string, string> = {
+        'kiefer': 'holznatur', // kiefer = holznatur
+        'fichte': 'holzweiss', // fichte = holzweiss
+        'steirische_eiche': 'eiche'
+      };
+      const innenPart = innenverkleidungMap[innenverkleidung] || 'holznatur';
+      // Map fussboden to image suffix (granit paths for schiefer display, but schiefer for holzlattung)
+      const fussbodenMap: Record<string, string> = {
+        'parkett': prefix === 'holzlattung' ? 'parkett' : 'parkett',
+        'kalkstein_kanafar': 'kalkstein',
+        'schiefer_massiv': prefix === 'holzlattung' ? 'schiefer' : 'granit' // schiefer for holzlattung, granit for others
+      };
+      const fussbodenPart = fussbodenMap[fussboden] || 'kalkstein';
+      // Special case: holzlattung + kiefer + parkett uses 'eiche' suffix
+      let finalFussbodenPart = fussbodenPart;
+      if (prefix === 'holzlattung' && innenverkleidung === 'kiefer' && fussboden === 'parkett') {
+        finalFussbodenPart = 'eiche';
+      }
+      // Construct the full image key: {prefix}_{innen}_{fussboden}
+      const imageKey = `${prefix}_${innenPart}_${finalFussbodenPart}` as keyof typeof IMAGES.configurations;
+      // Try to get the specific combination
+      const imagePath = IMAGES.configurations[imageKey];
+      if (imagePath) {
+        return imagePath;
+      }
+      // Try fallbacks (matching old configurator fallback logic)
+      const fallbackKeys = [
+        `${prefix}_${innenPart}_kalkstein`,
+        `${prefix}_holznatur_kalkstein`,
+        `trapezblech_holznatur_kalkstein`
+      ];
+      for (const fallbackKey of fallbackKeys) {
+        const fallbackPath = IMAGES.configurations[fallbackKey as keyof typeof IMAGES.configurations];
+        if (fallbackPath) {
+          return fallbackPath;
+        }
       }
     }
-    
     // Final fallback
     return IMAGES.configurations.trapezblech_holznatur_kalkstein;
   }
