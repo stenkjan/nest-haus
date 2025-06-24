@@ -27,16 +27,16 @@ import {
 } from './';
 import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator';
 
-export default function ConfiguratorShell({ 
+export default function ConfiguratorShell({
   onPriceChange,
   rightPanelRef
 }: ConfiguratorProps & { rightPanelRef?: React.Ref<HTMLDivElement> }) {
-  const { 
-    initializeSession, 
-    updateSelection, 
-    configuration, 
+  const {
+    initializeSession,
+    updateSelection,
+    configuration,
     currentPrice,
-    finalizeSession 
+    finalizeSession
   } = useConfiguratorStore();
 
   // Local state for quantities and special selections
@@ -69,18 +69,18 @@ export default function ConfiguratorShell({
   useEffect(() => {
     // Initialize session on mount
     initializeSession();
-    
+
     // iOS WebKit optimization for address bar hiding
     if (typeof window !== 'undefined') {
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                   (navigator.userAgent.includes('Macintosh') && 'ontouchend' in document);
-      
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.userAgent.includes('Macintosh') && 'ontouchend' in document);
+
       if (isIOS && window.innerWidth < 1024) {
         // Enable smooth scrolling and address bar hiding
         document.body.style.overflow = 'auto';
         document.documentElement.style.overflow = 'auto';
         document.body.style.setProperty('-webkit-overflow-scrolling', 'touch');
-        
+
         // Initial scroll to trigger address bar hide
         setTimeout(() => {
           if (window.pageYOffset === 0) {
@@ -89,7 +89,7 @@ export default function ConfiguratorShell({
         }, 100);
       }
     }
-    
+
     // Cleanup session on unmount
     return () => {
       finalizeSession();
@@ -107,7 +107,7 @@ export default function ConfiguratorShell({
   const handleSelection = async (categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
-    
+
     if (option && category) {
       // Prevent page jumping by using requestAnimationFrame
       requestAnimationFrame(() => {
@@ -127,10 +127,10 @@ export default function ConfiguratorShell({
   const handlePvSelection = async (categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
-    
+
     if (option && category) {
       setPvQuantity(1); // Default to 1 module
-      
+
       requestAnimationFrame(() => {
         updateSelection({
           category: categoryId,
@@ -147,7 +147,7 @@ export default function ConfiguratorShell({
   // Handle PV quantity change
   const handlePvQuantityChange = async (newQuantity: number) => {
     setPvQuantity(newQuantity);
-    
+
     if (configuration?.pvanlage) {
       requestAnimationFrame(() => {
         updateSelection({
@@ -166,10 +166,10 @@ export default function ConfiguratorShell({
   const handleFensterSelection = async (categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
-    
+
     if (option && category) {
       setFensterSquareMeters(1); // Default to 1 m²
-      
+
       requestAnimationFrame(() => {
         updateSelection({
           category: categoryId,
@@ -186,7 +186,7 @@ export default function ConfiguratorShell({
   // Handle Fenster square meters change
   const handleFensterSquareMetersChange = async (newSquareMeters: number) => {
     setFensterSquareMeters(newSquareMeters);
-    
+
     if (configuration?.fenster) {
       requestAnimationFrame(() => {
         updateSelection({
@@ -205,7 +205,7 @@ export default function ConfiguratorShell({
   const handleGrundstuecksCheckToggle = async () => {
     const newSelected = !isGrundstuecksCheckSelected;
     setIsGrundstuecksCheckSelected(newSelected);
-    
+
     if (newSelected) {
       requestAnimationFrame(() => {
         updateSelection({
@@ -265,7 +265,7 @@ export default function ConfiguratorShell({
               />
             ))}
           </div>
-          
+
           {/* PV Quantity Selector */}
           {category.id === 'pvanlage' && configuration?.pvanlage && (
             <QuantitySelector
@@ -276,7 +276,7 @@ export default function ConfiguratorShell({
               onChange={handlePvQuantityChange}
             />
           )}
-          
+
           {/* Fenster Square Meters Selector */}
           {category.id === 'fenster' && configuration?.fenster && (
             <QuantitySelector
@@ -288,7 +288,7 @@ export default function ConfiguratorShell({
               onChange={handleFensterSquareMetersChange}
             />
           )}
-          
+
           {/* Info Box */}
           {category.infoBox && (
             <InfoBox
@@ -297,7 +297,7 @@ export default function ConfiguratorShell({
               onClick={() => handleInfoClick(category.id)}
             />
           )}
-          
+
           {/* Facts Box */}
           {category.facts && (
             <FactsBox
@@ -308,7 +308,7 @@ export default function ConfiguratorShell({
           )}
         </CategorySection>
       ))}
-      
+
       {/* Grundstücks-Check Section */}
       <CategorySection title="Grundstücks-Check" subtitle="Optional">
         <GrundstuecksCheckBox
@@ -320,7 +320,7 @@ export default function ConfiguratorShell({
           onClick={() => handleInfoClick('grundcheck')}
         />
       </CategorySection>
-      
+
       {/* Summary Panel */}
       <SummaryPanel onInfoClick={handleInfoClick} />
     </div>
@@ -330,14 +330,20 @@ export default function ConfiguratorShell({
   // Background loading happens without blocking the UI
 
   return (
-    <div className="configurator-shell w-full">
+    <div
+      className="configurator-shell w-full"
+      style={{
+        marginTop: 'var(--navbar-height, 2.5rem)',
+        marginBottom: 'var(--footer-height 2.5rem)'
+      }}
+    >
       {/* Mobile Layout (< 1024px) */}
       <div className="lg:hidden">
         {/* Mobile Preview (Sticky) - WebKit optimized */}
         <div className="sticky top-0 z-30 bg-white">
           <PreviewPanel isMobile={true} />
         </div>
-        
+
         {/* Mobile Selections (Scrollable) - Single scroll container for WebKit */}
         <div ref={rightPanelRef} className="overflow-y-auto bg-white" style={{ WebkitOverflowScrolling: 'touch' }}>
           <SelectionContent />

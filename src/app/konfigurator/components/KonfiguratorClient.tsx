@@ -92,8 +92,12 @@ export default function KonfiguratorClient() {
   // }, []); // Only run once on mount
   
   return (
-    <ConfiguratorPanelProvider value={rightPanelRef}>
-      <ConfiguratorShell rightPanelRef={rightPanelRef} />
-    </ConfiguratorPanelProvider>
+    <div className="flex flex-col min-h-screen">
+      <ConfiguratorPanelProvider value={rightPanelRef}>
+        <div className="flex-1 flex flex-col">
+          <ConfiguratorShell rightPanelRef={rightPanelRef} />
+        </div>
+      </ConfiguratorPanelProvider>
+    </div>
   );
 } 
