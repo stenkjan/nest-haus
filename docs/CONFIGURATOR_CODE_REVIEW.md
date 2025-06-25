@@ -362,3 +362,41 @@ Route (app)                                 Size  First Load JS
 - ✅ **Mobile-First**: Touch-friendly and WebKit optimized
 
 All configurator components now fully comply with the project's coding standards and responsive design guidelines! 🎉 
+
+## Window Formula Update - 2025-01-31
+
+### Changed Window Area Calculation Formula
+
+**Previous Formula:** `52 + (x * 12)` where x = number of modules
+**New Formula:** `30 + (x * 4)` where x = number of modules
+
+### Maximum Window Areas by Nest Size:
+- **Nest 80** (0 modules): 30m² (was 52m²)
+- **Nest 100** (1 module): 34m² (was 64m²)
+- **Nest 120** (2 modules): 38m² (was 76m²)
+- **Nest 140** (3 modules): 42m² (was 88m²)
+- **Nest 160** (4 modules): 46m² (was 100m²)
+
+### Rationale for Change:
+1. **More Conservative Approach**: Reduces maximum window area to maintain better energy efficiency
+2. **Proportional Scaling**: 4m² per additional module provides reasonable expansion
+3. **Architectural Constraints**: Ensures realistic window-to-wall ratios for structural integrity
+4. **Cost Management**: Lower maximum areas help control project costs
+
+### Implementation Details:
+- **Location**: `src/app/konfigurator/components/ConfiguratorShell.tsx`
+- **Function**: `getMaxFensterSquareMeters()`
+- **Type Safety**: Maintains all existing TypeScript typing
+- **Backward Compatibility**: Automatically adjusts existing configurations that exceed new limits
+
+### Testing Recommendations:
+1. Test each nest size to verify correct maximum values
+2. Verify that existing high window configurations are properly capped
+3. Ensure UI updates correctly when nest size changes
+4. Confirm pricing calculations remain accurate with new limits
+
+---
+
+## Previous Documentation
+
+// ... existing code ... 

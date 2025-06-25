@@ -238,12 +238,28 @@ export default function ConfiguratorShell({
     return moduleCount * 2;
   }, [configuration?.nest?.value, getModuleCount]);
 
-  // Helper function to calculate maximum Fenster square meters based on nest size
+  /**
+   * Calculate maximum Fenster square meters based on nest size
+   * 
+   * Formula: 30 + (x * 4) where x = number of additional modules beyond base Nest 80
+   * 
+   * Examples:
+   * - Nest 80 (0 modules): 30 + (0 * 4) = 30m²
+   * - Nest 100 (1 module): 30 + (1 * 4) = 34m²
+   * - Nest 120 (2 modules): 30 + (2 * 4) = 38m²
+   * - Nest 140 (3 modules): 30 + (3 * 4) = 42m²
+   * - Nest 160 (4 modules): 30 + (4 * 4) = 46m²
+   * 
+   * This formula ensures that larger nest sizes allow proportionally more window area
+   * while maintaining reasonable architectural constraints.
+   * 
+   * Updated: 2025-01-31 - Changed from 52 + (x * 12) to 30 + (x * 4) formula
+   */
   const getMaxFensterSquareMeters = useCallback((): number => {
-    if (!configuration?.nest?.value) return 100; // Default for nest80
+    if (!configuration?.nest?.value) return 30; // Default for nest80 (base formula: 30 + 0*4)
     const moduleCount = getModuleCount(configuration.nest.value);
-    // Formula: 52 + (number_of_modules * 12)
-    return 52 + (moduleCount * 12);
+    // Formula: 30 + (number_of_modules * 4)
+    return 30 + (moduleCount * 4);
   }, [configuration?.nest?.value, getModuleCount]);
 
   // Adjust PV quantity when nest size changes and exceeds new maximum
