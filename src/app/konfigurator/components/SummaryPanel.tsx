@@ -22,7 +22,6 @@ export default function SummaryPanel({ onInfoClick, className = '' }: SummaryPan
   const { 
     configuration, 
     currentPrice, 
-    priceBreakdown, 
     isConfigurationComplete,
     getConfigurationForCart 
   } = useConfiguratorStore()
@@ -79,29 +78,38 @@ export default function SummaryPanel({ onInfoClick, className = '' }: SummaryPan
         
         <div className="border border-gray-300 rounded-[19px] px-6 py-4">
           <div className="space-y-4">
-            {/* Base Configuration */}
-            {configuration.nest && configuration.gebaeudehuelle && configuration.innenverkleidung && configuration.fussboden && (
-              <div className="flex justify-between items-start border-b border-gray-100 pb-3 gap-8">
-                <div>
-                  <div className="font-medium text-[16px] tracking-[0.02em] leading-[20px] whitespace-pre-line text-black">
-                    {configuration.nest.name} Basiskonfiguration
-                  </div>
-                  <div className="font-normal text-[12px] tracking-[0.03em] leading-[14px] text-gray-700 mt-1 max-w-[66%]">
-                    {configuration.gebaeudehuelle.name}, {configuration.innenverkleidung.name}, {configuration.fussboden.name}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="mb-1 text-black">Startpreis</div>
-                  <div className="text-black">{PriceUtils.formatPrice(priceBreakdown?.basePrice || 0)}</div>
-                </div>
-              </div>
-            )}
-            
-            {/* Additional Options */}
+            {/* Show all configuration items individually, including preselected ones */}
             {Object.entries(configuration).map(([key, selection]) => {
-              if (!selection || key === 'sessionId' || key === 'totalPrice' || key === 'timestamp' || 
-                  key === 'nest' || key === 'gebaeudehuelle' || key === 'innenverkleidung' || key === 'fussboden') {
+              if (!selection || key === 'sessionId' || key === 'totalPrice' || key === 'timestamp') {
                 return null
+              }
+              
+              // Handle base configuration items (including preselected)
+              if (key === 'nest' || key === 'gebaeudehuelle' || key === 'innenverkleidung' || key === 'fussboden') {
+                return (
+                  <div key={key} className="flex justify-between items-start border-b border-gray-100 pb-3 gap-8">
+                    <div>
+                      <div className="font-medium text-[16px] tracking-[0.02em] leading-[20px] whitespace-pre-line text-black">
+                        {selection.name}
+                      </div>
+                      {selection.description && (
+                        <div className="font-normal text-[12px] tracking-[0.03em] leading-[14px] text-gray-600 mt-1 max-w-[66%]">
+                          {selection.description}
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <div className="mb-1 text-black">
+                        {key === 'nest' ? 'Startpreis' : 
+                         (selection.price && selection.price > 0) ? 'Aufpreis' : 'Inkludiert'}
+                      </div>
+                      <div className="text-black">
+                        {key === 'nest' ? PriceUtils.formatPrice(selection.price || 0) :
+                         (selection.price && selection.price > 0) ? PriceUtils.formatPrice(selection.price) : '—'}
+                      </div>
+                    </div>
+                  </div>
+                )
               }
               
               // Special handling for paket

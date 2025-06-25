@@ -157,7 +157,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
-          shouldSwitchToView = 'fenster';
+          // Keep fenster in the same view instead of switching to separate 'fenster' view
+          // Windows should appear in the current preview image index
+          shouldSwitchToView = null;
         }
 
         // Clear image cache if this is a visual change (nest, gebäudehülle, innenverkleidung, fussboden)

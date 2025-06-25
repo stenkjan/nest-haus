@@ -56,10 +56,24 @@ export default function ConfiguratorShell({
     onPriceChange?.(currentPrice);
   }, [currentPrice, onPriceChange]);
 
+  // Synchronize local Grundstückscheck state with store configuration
+  useEffect(() => {
+    const hasGrundstuecksCheck = !!configuration?.grundstueckscheck;
+    if (hasGrundstuecksCheck !== isGrundstuecksCheckSelected) {
+      setIsGrundstuecksCheckSelected(hasGrundstuecksCheck);
+    }
+  }, [configuration?.grundstueckscheck, isGrundstuecksCheckSelected]);
+
   // Optimized selection handlers using useCallback to prevent re-renders
   const handleSelection = useCallback((categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
+
+    // For planungspaket, allow unselection by clicking the same option
+    if (categoryId === 'planungspaket' && configuration?.planungspaket?.value === optionId) {
+      removeSelection('planungspaket');
+      return;
+    }
 
     if (option && category) {
       updateSelection({
@@ -70,7 +84,7 @@ export default function ConfiguratorShell({
         description: option.description
       });
     }
-  }, [updateSelection]);
+  }, [updateSelection, removeSelection, configuration?.planungspaket?.value]);
 
   const handlePvSelection = useCallback((categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
@@ -91,7 +105,12 @@ export default function ConfiguratorShell({
 
   const handlePvQuantityChange = useCallback((newQuantity: number) => {
     setPvQuantity(newQuantity);
-    if (configuration?.pvanlage) {
+    
+    if (newQuantity === 0) {
+      // Remove PV selection entirely when set to 0
+      removeSelection('pvanlage');
+    } else if (configuration?.pvanlage) {
+      // Update the selection with new quantity
       updateSelection({
         category: configuration.pvanlage.category,
         value: configuration.pvanlage.value,
@@ -101,7 +120,7 @@ export default function ConfiguratorShell({
         quantity: newQuantity
       });
     }
-  }, [configuration?.pvanlage, updateSelection]);
+  }, [configuration?.pvanlage, updateSelection, removeSelection]);
 
   const handleFensterSelection = useCallback((categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
@@ -122,7 +141,12 @@ export default function ConfiguratorShell({
 
   const handleFensterSquareMetersChange = useCallback((newSquareMeters: number) => {
     setFensterSquareMeters(newSquareMeters);
-    if (configuration?.fenster) {
+    
+    if (newSquareMeters === 0) {
+      // Remove fenster selection entirely when set to 0
+      removeSelection('fenster');
+    } else if (configuration?.fenster) {
+      // Update the selection with new square meters
       updateSelection({
         category: configuration.fenster.category,
         value: configuration.fenster.value,
@@ -132,7 +156,31 @@ export default function ConfiguratorShell({
         squareMeters: newSquareMeters
       });
     }
-  }, [configuration?.fenster, updateSelection]);
+  }, [configuration?.fenster, updateSelection, removeSelection]);
+
+  // Define which categories can be unselected once selected
+  const canUnselect = useCallback((categoryId: string): boolean => {
+    // Only these categories can be unselected once selected
+    // Both grundstueckscheck and planungspaket can be unselected but without visual X button
+    const unselectableCategories = ['grundstueckscheck'];
+    return unselectableCategories.includes(categoryId);
+  }, []);
+
+  // Handle unselection for categories that support it
+  const handleUnselect = useCallback((categoryId: string, _optionId: string) => {
+    if (canUnselect(categoryId)) {
+      removeSelection(categoryId);
+      
+      // Reset local state for special categories
+      if (categoryId === 'pvanlage') {
+        setPvQuantity(0);
+      } else if (categoryId === 'fenster') {
+        setFensterSquareMeters(0);
+      }
+    }
+  }, [canUnselect, removeSelection]);
+
+  // Handle Grundstückscheck unselection (removed separate handler since visual button removed)
 
   const handleGrundstuecksCheckToggle = useCallback(() => {
     const newSelected = !isGrundstuecksCheckSelected;
@@ -170,6 +218,85 @@ export default function ConfiguratorShell({
     setIsGrundstuecksCheckSelected(false);
   }, []);
 
+  // Helper function to get number of modules based on nest size
+  const getModuleCount = useCallback((nestValue: string): number => {
+    const moduleMapping: Record<string, number> = {
+      'nest80': 4,   // 80m² = 4 modules
+      'nest100': 5,  // 100m² = 5 modules
+      'nest120': 6,  // 120m² = 6 modules
+      'nest140': 7,  // 140m² = 7 modules
+      'nest160': 8   // 160m² = 8 modules
+    };
+    return moduleMapping[nestValue] || 4; // Default to 4 if unknown
+  }, []);
+
+  // Helper function to calculate maximum PV modules based on nest size
+  const getMaxPvModules = useCallback((): number => {
+    if (!configuration?.nest?.value) return 8; // Default for nest80
+    const moduleCount = getModuleCount(configuration.nest.value);
+    // Each module can have 2 PV panels (one on each side of the roof)
+    return moduleCount * 2;
+  }, [configuration?.nest?.value, getModuleCount]);
+
+  // Helper function to calculate maximum Fenster square meters based on nest size
+  const getMaxFensterSquareMeters = useCallback((): number => {
+    if (!configuration?.nest?.value) return 100; // Default for nest80
+    const moduleCount = getModuleCount(configuration.nest.value);
+    // Formula: 52 + (number_of_modules * 12)
+    return 52 + (moduleCount * 12);
+  }, [configuration?.nest?.value, getModuleCount]);
+
+  // Adjust PV quantity when nest size changes and exceeds new maximum
+  useEffect(() => {
+    const maxPv = getMaxPvModules();
+    if (pvQuantity > maxPv) {
+      setPvQuantity(maxPv);
+      // Update the configuration with the new capped quantity
+      if (configuration?.pvanlage) {
+        updateSelection({
+          category: configuration.pvanlage.category,
+          value: configuration.pvanlage.value,
+          name: configuration.pvanlage.name,
+          price: configuration.pvanlage.price,
+          description: configuration.pvanlage.description,
+          quantity: maxPv
+        });
+      }
+    }
+  }, [getMaxPvModules, pvQuantity, configuration?.pvanlage, updateSelection]);
+
+  // Adjust Fenster quantity when nest size changes and exceeds new maximum
+  useEffect(() => {
+    const maxFenster = getMaxFensterSquareMeters();
+    if (fensterSquareMeters > maxFenster) {
+      setFensterSquareMeters(maxFenster);
+      // Update the configuration with the new capped quantity
+      if (configuration?.fenster) {
+        updateSelection({
+          category: configuration.fenster.category,
+          value: configuration.fenster.value,
+          name: configuration.fenster.name,
+          price: configuration.fenster.price,
+          description: configuration.fenster.description,
+          squareMeters: maxFenster
+        });
+      }
+    }
+  }, [getMaxFensterSquareMeters, fensterSquareMeters, configuration?.fenster, updateSelection]);
+
+  // Reset local quantities when selections are removed
+  useEffect(() => {
+    if (!configuration?.pvanlage && pvQuantity > 0) {
+      setPvQuantity(0);
+    }
+  }, [configuration?.pvanlage, pvQuantity]);
+
+  useEffect(() => {
+    if (!configuration?.fenster && fensterSquareMeters > 0) {
+      setFensterSquareMeters(0);
+    }
+  }, [configuration?.fenster, fensterSquareMeters]);
+
   // Render selection content
   const SelectionContent = () => (
     <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(1rem,2vh,1.5rem)]">
@@ -188,6 +315,8 @@ export default function ConfiguratorShell({
                 description={option.description}
                 price={option.price}
                 isSelected={isOptionSelected(category.id, option.id)}
+                canUnselect={canUnselect(category.id)}
+                onUnselect={canUnselect(category.id) ? (optionId) => handleUnselect(category.id, optionId) : undefined}
                 onClick={(optionId) => {
                   if (category.id === 'pvanlage') {
                     handlePvSelection(category.id, optionId);
@@ -206,7 +335,7 @@ export default function ConfiguratorShell({
             <QuantitySelector
               label="Anzahl der PV-Module"
               value={pvQuantity}
-              max={4}
+              max={getMaxPvModules()}
               unitPrice={configuration.pvanlage.price || 0}
               onChange={handlePvQuantityChange}
             />
@@ -217,7 +346,7 @@ export default function ConfiguratorShell({
             <QuantitySelector
               label="Anzahl der Fenster / Türen"
               value={fensterSquareMeters}
-              max={75}
+              max={getMaxFensterSquareMeters()}
               unitPrice={configuration.fenster.price || 0}
               unit="m²"
               onChange={handleFensterSquareMetersChange}

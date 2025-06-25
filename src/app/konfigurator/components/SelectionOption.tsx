@@ -13,6 +13,8 @@ interface SelectionOptionProps {
   }
   isSelected?: boolean
   onClick: (id: string) => void
+  onUnselect?: (id: string) => void
+  canUnselect?: boolean
   disabled?: boolean
   className?: string
 }
@@ -24,6 +26,8 @@ export default function SelectionOption({
   price, 
   isSelected = false, 
   onClick,
+  onUnselect,
+  canUnselect = false,
   disabled = false,
   className = ''
 }: SelectionOptionProps) {
@@ -74,9 +78,16 @@ export default function SelectionOption({
     }
   }
 
+  const handleUnselect = (e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent triggering the main click
+    if (onUnselect && canUnselect) {
+      onUnselect(id)
+    }
+  }
+
   return (
     <div
-      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(1rem,2vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] ${
+      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(1rem,2vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
         isSelected
           ? 'selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50'
           : disabled 
@@ -85,6 +96,18 @@ export default function SelectionOption({
       } ${className}`}
       onClick={handleClick}
     >
+      {/* Unselect button for selected items that can be unselected */}
+      {isSelected && canUnselect && onUnselect && (
+        <button
+          onClick={handleUnselect}
+          className="absolute top-2 right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors duration-200 z-10 min-w-[24px] min-h-[24px]"
+          aria-label={`${name} entfernen`}
+          title={`${name} entfernen`}
+        >
+          ×
+        </button>
+      )}
+      
       <div className="box_selection_name flex-1 min-w-0 pr-4">
         <p className="font-medium text-[clamp(1rem,1.8vw,1.125rem)] tracking-wide leading-tight mb-[0.5em] text-black">
           {name}
