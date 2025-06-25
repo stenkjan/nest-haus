@@ -124,11 +124,13 @@ export default function Navbar() {
   return (
     <header 
       ref={headerRef}
-      className="fixed pointer-events-auto top-0 left-0 right-0 z-[100] bg-[#F4F4F4] border-b border-gray-200/50 shadow-sm"
+      className="fixed pointer-events-auto top-0 left-0 right-0 z-[100] bg-[#F4F4F4]/80 backdrop-blur-md border-b border-gray-200/30 shadow-sm"
       style={{ 
         willChange: 'transform',
         // WebKit-specific optimizations
         WebkitTransform: 'translateZ(0)', // Force hardware acceleration
+        // Apple-style backdrop blur support
+        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
       <nav className="mx-auto px-4 w-full flex justify-between items-center" 

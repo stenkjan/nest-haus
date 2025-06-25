@@ -10,7 +10,7 @@ export default function KonfiguratorClient() {
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const { initializeSession, sessionId, configuration, resetConfiguration } = useConfiguratorStore();
 
-  // Ensure store is initialized immediately with debug logging
+  // Ensure store is initialized immediately
   useEffect(() => {
     if (!sessionId || !configuration) {
       // Force initialization if missing
@@ -19,7 +19,6 @@ export default function KonfiguratorClient() {
       } else {
         initializeSession();
       }
-      return;
     }
   }, [sessionId, configuration, initializeSession, resetConfiguration]);
 
@@ -92,11 +91,9 @@ export default function KonfiguratorClient() {
   // }, []); // Only run once on mount
   
   return (
-    <div className="flex flex-col h-calc(min-h-screen - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))">
+    <div className="bg-white">
       <ConfiguratorPanelProvider value={rightPanelRef}>
-        <div className="flex-1 flex flex-col">
-          <ConfiguratorShell rightPanelRef={rightPanelRef} />
-        </div>
+        <ConfiguratorShell rightPanelRef={rightPanelRef} />
       </ConfiguratorPanelProvider>
     </div>
   );

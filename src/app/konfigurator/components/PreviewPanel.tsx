@@ -2,7 +2,7 @@
  * PreviewPanel - Image Preview Component
  * 
  * Handles the sticky preview panel with image display and navigation.
- * Optimized for performance with simplified memoization and bottom-aligned image positioning.
+ * Optimized for performance with simplified memoization and consistent layout.
  */
 
 'use client'
@@ -39,7 +39,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   const [previewHeight, setPreviewHeight] = useState('clamp(20rem, 40vh, 35rem)')
   const [isIOSMobile, setIsIOSMobile] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
 
   // Platform detection with proper SSR handling
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     return () => window.removeEventListener('resize', checkPlatform)
   }, [])
 
-  // Calculate preview height for mobile - FIXED: Auto-height based on 16:9 aspect ratio
+  // Calculate preview height for mobile only
   useEffect(() => {
     if (!isMobile) return
 
@@ -64,12 +64,10 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
       
       // For iOS, account for address bar and ensure reasonable bounds
       if (isIOSMobile) {
-        // Allow aspect ratio height but cap at reasonable limits
         const maxHeight = Math.min(screenHeight * 0.5, 400)
         const optimalHeight = Math.min(aspectRatioHeight, maxHeight)
         setPreviewHeight(`${optimalHeight}px`)
       } else {
-        // For other mobile devices - use aspect ratio height with bounds
         const maxHeight = Math.min(screenHeight * 0.6, 450)
         const optimalHeight = Math.min(aspectRatioHeight, maxHeight)
         setPreviewHeight(`${optimalHeight}px`)
@@ -87,12 +85,12 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     }
   }, [isMobile, isIOSMobile])
 
-  // SIMPLIFIED: Get current image path - removed over-optimization that caused constant re-renders
+  // Get current image path
   const currentImagePath = useMemo(() => {
     return ImageManager.getPreviewImage(configuration, activeView)
   }, [configuration, activeView])
 
-  // SIMPLIFIED: Get available views - removed over-optimization
+  // Get available views
   const availableViews = useMemo(() => {
     return ImageManager.getAvailableViews(configuration, hasPart2BeenActive, hasPart3BeenActive)
   }, [configuration, hasPart2BeenActive, hasPart3BeenActive])
@@ -133,7 +131,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     })
   }, [availableViews, activeView])
 
-  // Preload images for the current configuration and view, non-blocking
+  // Preload images for the current configuration, non-blocking
   useEffect(() => {
     if (configuration) {
       startTransition(() => {
@@ -150,7 +148,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
     fenster: 'Fenster & Türen'
   }
 
-  // UPDATED: Container style - full height and width for left panel
+  // Simplified container style - consistent with right panel
   const containerStyle = useMemo(() => {
     if (isMobile) {
       return {
@@ -162,8 +160,8 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
         })
       };
     }
+    // Desktop: use full available height (no extra padding since it's handled by parent)
     return {
-      // Desktop: full height and width of left panel
       height: '100%',
       width: '100%'
     };
@@ -185,11 +183,9 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
               path={currentImagePath}
               alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || 'Nest Konfigurator'}`}
               fill
-              className={`transition-opacity duration-300 ${
-                isMobile ? 'object-cover' : 'object-cover'
-              }`}
+              className="transition-opacity duration-300 object-cover"
               
-              // Simplified strategy - just use client-side for interactive configurator
+              // Strategy optimized for interactive configurator
               strategy="client"
               isInteractive={true}
               enableCache={true}

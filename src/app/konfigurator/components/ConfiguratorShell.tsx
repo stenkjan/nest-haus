@@ -10,7 +10,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { configuratorData } from '../data/configuratorData';
 import type { ConfiguratorProps } from '../types/configurator.types';
@@ -44,196 +44,127 @@ export default function ConfiguratorShell({
   const [fensterSquareMeters, setFensterSquareMeters] = useState<number>(0);
   const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] = useState(false);
 
-  // Height sync logic for desktop
-  const previewPanelRef = useRef<HTMLDivElement>(null);
-  const [leftPanelHeight, setLeftPanelHeight] = useState<number | null>(null);
-
-  // Function to measure and set left panel height
-  const measureLeftPanelHeight = useCallback(() => {
-    if (window.innerWidth >= 1024 && previewPanelRef.current) {
-      setLeftPanelHeight(previewPanelRef.current.offsetHeight);
-    } else {
-      setLeftPanelHeight(null);
-    }
-  }, []);
-
+  // Initialize session once on mount
   useEffect(() => {
-    measureLeftPanelHeight();
-    window.addEventListener('resize', measureLeftPanelHeight);
-    return () => {
-      window.removeEventListener('resize', measureLeftPanelHeight);
-    };
-  }, [measureLeftPanelHeight]);
-
-  // Initialize session and platform detection
-  useEffect(() => {
-    // Initialize session on mount
     initializeSession();
-
-    // iOS WebKit optimization for address bar hiding
-    if (typeof window !== 'undefined') {
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-        (navigator.userAgent.includes('Macintosh') && 'ontouchend' in document);
-
-      if (isIOS && window.innerWidth < 1024) {
-        // Enable smooth scrolling and address bar hiding
-        document.body.style.overflow = 'auto';
-        document.documentElement.style.overflow = 'auto';
-        document.body.style.setProperty('-webkit-overflow-scrolling', 'touch');
-
-        // Initial scroll to trigger address bar hide
-        setTimeout(() => {
-          if (window.pageYOffset === 0) {
-            window.scrollTo(0, 1);
-          }
-        }, 100);
-      }
-    }
-
-    // Cleanup session on unmount
-    return () => {
-      finalizeSession();
-    };
+    return () => finalizeSession();
   }, [initializeSession, finalizeSession]);
 
   // Notify parent components of price changes
   useEffect(() => {
-    if (onPriceChange) {
-      onPriceChange(currentPrice);
-    }
+    onPriceChange?.(currentPrice);
   }, [currentPrice, onPriceChange]);
 
-  // Handle regular selection
-  const handleSelection = async (categoryId: string, optionId: string) => {
+  // Optimized selection handlers using useCallback to prevent re-renders
+  const handleSelection = useCallback((categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
 
     if (option && category) {
-      // Prevent page jumping by using requestAnimationFrame
-      requestAnimationFrame(() => {
-        // Update selection without showing loading UI
-        updateSelection({
-          category: categoryId,
-          value: optionId,
-          name: option.name,
-          price: option.price.amount || 0,
-          description: option.description
-        });
+      updateSelection({
+        category: categoryId,
+        value: optionId,
+        name: option.name,
+        price: option.price.amount || 0,
+        description: option.description
       });
     }
-  };
+  }, [updateSelection]);
 
-  // Handle PV selection with quantity
-  const handlePvSelection = async (categoryId: string, optionId: string) => {
+  const handlePvSelection = useCallback((categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
 
     if (option && category) {
-      setPvQuantity(1); // Default to 1 module
-
-      requestAnimationFrame(() => {
-        updateSelection({
-          category: categoryId,
-          value: optionId,
-          name: option.name,
-          price: option.price.amount || 0,
-          description: option.description,
-          quantity: 1
-        });
+      setPvQuantity(1);
+      updateSelection({
+        category: categoryId,
+        value: optionId,
+        name: option.name,
+        price: option.price.amount || 0,
+        description: option.description,
+        quantity: 1
       });
     }
-  };
+  }, [updateSelection]);
 
-  // Handle PV quantity change
-  const handlePvQuantityChange = async (newQuantity: number) => {
+  const handlePvQuantityChange = useCallback((newQuantity: number) => {
     setPvQuantity(newQuantity);
-
     if (configuration?.pvanlage) {
-      requestAnimationFrame(() => {
-        updateSelection({
-          category: configuration.pvanlage!.category,
-          value: configuration.pvanlage!.value,
-          name: configuration.pvanlage!.name,
-          price: configuration.pvanlage!.price,
-          description: configuration.pvanlage!.description,
-          quantity: newQuantity
-        });
+      updateSelection({
+        category: configuration.pvanlage.category,
+        value: configuration.pvanlage.value,
+        name: configuration.pvanlage.name,
+        price: configuration.pvanlage.price,
+        description: configuration.pvanlage.description,
+        quantity: newQuantity
       });
     }
-  };
+  }, [configuration?.pvanlage, updateSelection]);
 
-  // Handle Fenster selection with square meters
-  const handleFensterSelection = async (categoryId: string, optionId: string) => {
+  const handleFensterSelection = useCallback((categoryId: string, optionId: string) => {
     const category = configuratorData.find(cat => cat.id === categoryId);
     const option = category?.options.find(opt => opt.id === optionId);
 
     if (option && category) {
-      setFensterSquareMeters(1); // Default to 1 m²
-
-      requestAnimationFrame(() => {
-        updateSelection({
-          category: categoryId,
-          value: optionId,
-          name: option.name,
-          price: option.price.amount || 0,
-          description: option.description,
-          squareMeters: 1
-        });
+      setFensterSquareMeters(1);
+      updateSelection({
+        category: categoryId,
+        value: optionId,
+        name: option.name,
+        price: option.price.amount || 0,
+        description: option.description,
+        squareMeters: 1
       });
     }
-  };
+  }, [updateSelection]);
 
-  // Handle Fenster square meters change
-  const handleFensterSquareMetersChange = async (newSquareMeters: number) => {
+  const handleFensterSquareMetersChange = useCallback((newSquareMeters: number) => {
     setFensterSquareMeters(newSquareMeters);
-
     if (configuration?.fenster) {
-      requestAnimationFrame(() => {
-        updateSelection({
-          category: configuration.fenster!.category,
-          value: configuration.fenster!.value,
-          name: configuration.fenster!.name,
-          price: configuration.fenster!.price,
-          description: configuration.fenster!.description,
-          squareMeters: newSquareMeters
-        });
+      updateSelection({
+        category: configuration.fenster.category,
+        value: configuration.fenster.value,
+        name: configuration.fenster.name,
+        price: configuration.fenster.price,
+        description: configuration.fenster.description,
+        squareMeters: newSquareMeters
       });
     }
-  };
+  }, [configuration?.fenster, updateSelection]);
 
-  // Handle Grundstückscheck toggle
-  const handleGrundstuecksCheckToggle = async () => {
+  const handleGrundstuecksCheckToggle = useCallback(() => {
     const newSelected = !isGrundstuecksCheckSelected;
     setIsGrundstuecksCheckSelected(newSelected);
 
     if (newSelected) {
-      requestAnimationFrame(() => {
-        updateSelection({
-          category: 'grundstueckscheck',
-          value: 'grundstueckscheck',
-          name: 'Grundstücks-Check',
-          price: GRUNDSTUECKSCHECK_PRICE,
-          description: 'Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks'
-        });
+      updateSelection({
+        category: 'grundstueckscheck',
+        value: 'grundstueckscheck',
+        name: 'Grundstücks-Check',
+        price: GRUNDSTUECKSCHECK_PRICE,
+        description: 'Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks'
       });
-    } else {
-      // Remove selection logic would go here if needed
     }
-  };
+  }, [isGrundstuecksCheckSelected, updateSelection]);
 
-  // Handle info box clicks (could open dialogs)
-  const handleInfoClick = (_infoKey: string) => {
+  const handleInfoClick = useCallback((_infoKey: string) => {
     // TODO: Implement dialog opening logic
-  };
+  }, []);
 
-  // Helper function to check if option is selected
-  const isOptionSelected = (categoryId: string, optionId: string): boolean => {
+  const isOptionSelected = useCallback((categoryId: string, optionId: string): boolean => {
     const categoryConfig = configuration?.[categoryId as keyof typeof configuration];
     if (typeof categoryConfig === 'object' && categoryConfig !== null && 'value' in categoryConfig) {
       return categoryConfig.value === optionId;
     }
     return false;
-  };
+  }, [configuration]);
+
+  const resetLocalState = useCallback(() => {
+    setPvQuantity(0);
+    setFensterSquareMeters(0);
+    setIsGrundstuecksCheckSelected(false);
+  }, []);
 
   // Render selection content
   const SelectionContent = () => (
@@ -326,53 +257,54 @@ export default function ConfiguratorShell({
     </div>
   );
 
-  // Remove visible loading overlay - selections should be immediate
-  // Background loading happens without blocking the UI
+  // Consistent viewport height calculation for both panels - 5vh higher as requested
+  const panelHeight = 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 2.5rem) + 5vh)';
+  const panelPaddingTop = 'var(--navbar-height, 3.5rem)';
 
   return (
-    <div
-      className="configurator-shell w-full">
+    <div className="configurator-shell w-full h-full bg-white">
       {/* Mobile Layout (< 1024px) */}
-      <div className="lg:hidden">
-        {/* Mobile Preview (Sticky) - WebKit optimized */}
-        <div className="sticky top-0 z-30 bg-white">
+      <div className="lg:hidden h-full flex flex-col">
+        <div className="flex-shrink-0 bg-white">
           <PreviewPanel isMobile={true} />
         </div>
-
-        {/* Mobile Selections (Scrollable) - Single scroll container for WebKit */}
-        <div ref={rightPanelRef} className="overflow-y-auto bg-white" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div 
+          ref={rightPanelRef} 
+          className="flex-1 overflow-y-auto bg-white" 
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           <SelectionContent />
         </div>
       </div>
 
-      {/* Desktop Layout (≥ 1024px) - 70/30 ratio with proper height calculation */}
-      <div className="hidden lg:flex" style={{ height: 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))' }}>
-        {/* Left: Preview Panel (70%) */}
-        <div className="flex-[7] relative">
-          <div ref={previewPanelRef} className="h-full w-full">
-            <PreviewPanel isMobile={false} className="h-full w-full" />
-          </div>
+      {/* Desktop Layout (≥ 1024px) - Synchronized panels */}
+      <div className="hidden lg:flex">
+        {/* Left: Preview Panel (70%) - Matches right panel positioning */}
+        <div 
+          className="flex-[7] relative"
+          style={{ 
+            height: panelHeight,
+            paddingTop: panelPaddingTop
+          }}
+        >
+          <PreviewPanel isMobile={false} />
         </div>
 
-        {/* Right: Selection Panel (30%) - Height matches left panel */}
+        {/* Right: Selection Panel (30%) - Matches left panel positioning */}
         <div
           ref={rightPanelRef}
           className="configurator-right-panel flex-[3] bg-white overflow-y-auto"
-          style={leftPanelHeight ? { maxHeight: leftPanelHeight } : { maxHeight: 'calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))' }}
+          style={{ 
+            height: panelHeight,
+            paddingTop: panelPaddingTop
+          }}
         >
           <SelectionContent />
         </div>
       </div>
 
       {/* Cart Footer */}
-      <CartFooter onReset={() => {
-        // Reset local state
-        setPvQuantity(0);
-        setFensterSquareMeters(0);
-        setIsGrundstuecksCheckSelected(false);
-      }} />
-
-      {/* Add padding to account for fixed footer */}
+      <CartFooter onReset={resetLocalState} />
     </div>
   );
 }
