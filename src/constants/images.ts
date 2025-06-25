@@ -120,9 +120,9 @@ export const IMAGES = {
         plattenweiss_eiche_parkett: '164-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Steirische-Eiche-Parkett-Eiche',
 
         // Interior configurations for holzlattung
-        holzlattung_holznatur_kalkstein: '166-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Kalkstein',
         holzlattung_holznatur_schiefer: '165-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Schiefer',
-        holzlattung_holznatur_eiche: '167-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Parkett-Eiche',
+        holzlattung_holznatur_kalkstein: '166-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Kalkstein',
+        holzlattung_holznatur_parkett: '167-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Parkett-Eiche',
         holzlattung_holzweiss_schiefer: '168-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Granit', //Schiefer
         holzlattung_holzweiss_kalkstein: '169-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Kalkstein',           
         holzlattung_holzweiss_parkett: '170-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Parkett-Eiche', 
