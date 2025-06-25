@@ -34,6 +34,7 @@ export default function ConfiguratorShell({
   const {
     initializeSession,
     updateSelection,
+    removeSelection,
     configuration,
     currentPrice,
     finalizeSession
@@ -145,8 +146,11 @@ export default function ConfiguratorShell({
         price: GRUNDSTUECKSCHECK_PRICE,
         description: 'Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks'
       });
+    } else {
+      // Remove selection when unchecked
+      removeSelection('grundstueckscheck');
     }
-  }, [isGrundstuecksCheckSelected, updateSelection]);
+  }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
 
   const handleInfoClick = useCallback((_infoKey: string) => {
     // TODO: Implement dialog opening logic

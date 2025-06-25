@@ -79,7 +79,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white" style={{ paddingTop: 'var(--navbar-height, 3.5rem)' }}>
       {sections.map((section) => (
         <section key={section.id} className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
           <div className="absolute inset-0 w-full h-full">
