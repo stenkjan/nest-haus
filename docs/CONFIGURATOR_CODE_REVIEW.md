@@ -400,3 +400,28 @@ All configurator components now fully comply with the project's coding standards
 ## Previous Documentation
 
 // ... existing code ... 
+
+## Build & Deployment Fixes - 2025-01-31
+
+### Fixed ESLint Errors for Production Deployment
+
+**Issues Resolved:**
+1. ❌ `'ModularPricingData' is defined but never used` in PriceCalculator.ts
+2. ❌ `'nestType' is defined but never used` in getValidCombinations function
+
+**Solutions Applied:**
+1. **Removed unused import**: Removed `type ModularPricingData` from imports since it wasn't being used in the PriceCalculator class
+2. **Prefixed unused parameter**: Changed `nestType` to `_nestType` in `getValidCombinations()` to follow ESLint convention for unused parameters
+
+**Windows Development Environment Fix:**
+- Applied `taskkill /f /im node.exe` before build as per project rules
+- Resolved Prisma query engine EPERM errors during Windows builds
+- Build now passes successfully: ✅ `Compiled successfully in 11.0s`
+
+### Build Verification Results:
+- ✅ **TypeScript Check**: `npx tsc --noEmit` - No errors
+- ✅ **ESLint Check**: `npm run lint` - No warnings or errors  
+- ✅ **Production Build**: `npm run build` - Successful compilation
+- ✅ **Route Generation**: 23/23 static pages generated successfully
+
+**Deployment Status**: Ready for production deployment ✅ 

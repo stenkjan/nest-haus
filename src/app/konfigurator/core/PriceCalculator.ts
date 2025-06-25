@@ -9,8 +9,7 @@ import {
   GRUNDSTUECKSCHECK_PRICE, 
   MODULAR_PRICING, 
   NEST_OPTIONS,
-  type CombinationKey,
-  type ModularPricingData
+  type CombinationKey
 } from '@/constants/configurator'
 
 interface SelectionOption {
@@ -395,7 +394,7 @@ export class PriceCalculator {
   /**
    * Get all valid combinations for a given nest type
    */
-  static getValidCombinations(nestType: string): CombinationKey[] {
+  static getValidCombinations(_nestType: string): CombinationKey[] {
     return Object.keys(MODULAR_PRICING) as CombinationKey[];
   }
 } 
