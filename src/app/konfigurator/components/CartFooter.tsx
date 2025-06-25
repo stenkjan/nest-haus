@@ -42,9 +42,9 @@ export default function CartFooter({ onReset }: CartFooterProps) {
   return (
     <div 
       ref={footerRef}
-      className="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-[clamp(0.75rem,2vw,1rem)] z-50"
+      className="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-[clamp(1.3rem,1vw,0.6rem)] z-50 min-h-[var(--footer-height,5rem)]" //1.3rem determines the footer height and also hides the black bar behind it
     >
-      <div className="max-w-[1600px] mx-auto px-[clamp(0.75rem,2vw,1rem)] flex justify-between items-center">
+      <div className="max-w-[1600px] mx-auto px-[clamp(1.4rem,1.2vw,0.6rem)] flex justify-between items-center h-full">
         {/* Reset button */}
         <button
           className="bg-transparent border-none p-0 m-0 text-[#222] font-normal focus:outline-none cursor-pointer text-[clamp(0.75rem,1.2vw,1rem)] hover:text-[#3D6DE1] transition-colors touch-manipulation"
@@ -55,7 +55,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
           Neu konfigurieren
         </button>
         
-        <div className="flex items-center gap-[clamp(0.75rem,2vw,1.5rem)]">
+        <div className="flex items-center gap-[clamp(0.3rem,1vw,0.6rem)]">
           {/* Price and monthly rate */}
           <div className="text-right">
             <p className="font-semibold leading-tight text-[clamp(0.875rem,1.8vw,1.25rem)] text-black">
@@ -69,7 +69,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
           {/* Cart button */}
           <Link
             href="/warenkorb"
-            className={`bg-[#3D6DE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.5rem,1vw,0.75rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation ${
+            className={`bg-[#3D6DE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation ${
               currentPrice === 0 ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             onClick={e => currentPrice === 0 && e.preventDefault()}

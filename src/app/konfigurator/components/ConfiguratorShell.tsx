@@ -331,12 +331,7 @@ export default function ConfiguratorShell({
 
   return (
     <div
-      className="configurator-shell w-full"
-      style={{
-        marginTop: 'var(--navbar-height, 2.5rem)',
-        marginBottom: 'var(--footer-height 2.5rem)'
-      }}
-    >
+      className="configurator-shell w-full">
       {/* Mobile Layout (< 1024px) */}
       <div className="lg:hidden">
         {/* Mobile Preview (Sticky) - WebKit optimized */}

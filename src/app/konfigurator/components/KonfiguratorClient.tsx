@@ -92,7 +92,7 @@ export default function KonfiguratorClient() {
   // }, []); // Only run once on mount
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-calc(min-h-screen - var(--navbar-height, 3.5rem) - var(--footer-height, 5rem))">
       <ConfiguratorPanelProvider value={rightPanelRef}>
         <div className="flex-1 flex flex-col">
           <ConfiguratorShell rightPanelRef={rightPanelRef} />

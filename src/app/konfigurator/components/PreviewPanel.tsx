@@ -7,7 +7,7 @@
 
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo, useTransition } from 'react'
 import { HybridBlobImage } from '@/components/images'
 import { useConfiguratorStore } from '@/store/configuratorStore'
 import { ImageManager } from '../core/ImageManager'
@@ -39,6 +39,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   const [previewHeight, setPreviewHeight] = useState('clamp(20rem, 40vh, 35rem)')
   const [isIOSMobile, setIsIOSMobile] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
+  const [isPending, startTransition] = useTransition()
 
   // Platform detection with proper SSR handling
   useEffect(() => {
@@ -99,30 +100,47 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   // Listen for view switching signals from the store
   useEffect(() => {
     if (shouldSwitchToView && shouldSwitchToView !== activeView) {
-      setActiveView(shouldSwitchToView as ViewType);
-      clearViewSwitchSignal();
+      startTransition(() => {
+        setActiveView(shouldSwitchToView as ViewType);
+        clearViewSwitchSignal();
+      });
     }
   }, [shouldSwitchToView, activeView, clearViewSwitchSignal])
 
   // Reset to exterior view if current view becomes unavailable
   useEffect(() => {
     if (!availableViews.includes(activeView)) {
-      setActiveView('exterior');
+      startTransition(() => {
+        setActiveView('exterior');
+      });
     }
   }, [availableViews, activeView])
 
   // Navigation handlers
   const handlePrevView = useCallback(() => {
-    const currentIndex = availableViews.indexOf(activeView)
-    const prevIndex = currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1
-    setActiveView(availableViews[prevIndex])
+    startTransition(() => {
+      const currentIndex = availableViews.indexOf(activeView)
+      const prevIndex = currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1
+      setActiveView(availableViews[prevIndex])
+    })
   }, [availableViews, activeView])
 
   const handleNextView = useCallback(() => {
-    const currentIndex = availableViews.indexOf(activeView)
-    const nextIndex = currentIndex < availableViews.length - 1 ? currentIndex + 1 : 0
-    setActiveView(availableViews[nextIndex])
+    startTransition(() => {
+      const currentIndex = availableViews.indexOf(activeView)
+      const nextIndex = currentIndex < availableViews.length - 1 ? currentIndex + 1 : 0
+      setActiveView(availableViews[nextIndex])
+    })
   }, [availableViews, activeView])
+
+  // Preload images for the current configuration and view, non-blocking
+  useEffect(() => {
+    if (configuration) {
+      startTransition(() => {
+        ImageManager.preloadImages(configuration)
+      })
+    }
+  }, [configuration, activeView])
 
   // View labels for display and accessibility
   const viewLabels = {
