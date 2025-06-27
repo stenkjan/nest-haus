@@ -1,0 +1,18 @@
+{
+  "crons": [
+    {
+      "path": "/api/sync/google-drive",
+      "schedule": "0 2 * * *"
+    }
+  ],
+  "functions": {
+    "src/app/api/sync/google-drive/route.ts": {
+      "maxDuration": 300
+    }
+  },
+  "env": {
+    "GOOGLE_DRIVE_MAIN_FOLDER_ID": "@google_drive_main_folder_id",
+    "GOOGLE_DRIVE_MOBILE_FOLDER_ID": "@google_drive_mobile_folder_id",
+    "BLOB_READ_WRITE_TOKEN": "@blob_read_write_token"
+  }
+} 
