@@ -14,89 +14,39 @@ import {
   type CombinationKey
 } from '@/constants/configurator'
 
-// In-memory cache for price calculations to prevent redundant computations
-class PriceCalculationCache {
-  private static cache = new Map<string, { amount: number; monthly: number; timestamp: number }>();
-  private static readonly CACHE_TTL = 300000; // 5 minutes cache TTL (increased from 30 seconds)
-  private static requestCounts = new Map<string, number>();
-  private static lastClearTime = Date.now();
+// Simplified cache without performance overhead
+class SimplePriceCache {
+  private static cache = new Map<string, { amount: number; monthly: number }>();
+  private static readonly MAX_SIZE = 50;
 
   static get(key: string): { amount: number; monthly: number } | null {
-    const cached = this.cache.get(key);
-    if (!cached) return null;
-
-    // Check if cache is still valid
-    if (Date.now() - cached.timestamp > this.CACHE_TTL) {
-      this.cache.delete(key);
-      return null;
-    }
-
-    return { amount: cached.amount, monthly: cached.monthly };
+    return this.cache.get(key) || null;
   }
 
   static set(key: string, amount: number, monthly: number): void {
-    this.cache.set(key, {
-      amount,
-      monthly,
-      timestamp: Date.now()
-    });
+    // Simple LRU: remove oldest if at capacity
+    if (this.cache.size >= this.MAX_SIZE) {
+      const firstKey = this.cache.keys().next().value;
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
+    }
+    this.cache.set(key, { amount, monthly });
   }
 
   static createCacheKey(nestType: string, categoryId: string, optionValue: string): string {
-    // Create deterministic cache key
     return `${nestType}|${categoryId}|${optionValue}`;
-  }
-
-  static trackRequest(key: string): void {
-    const count = this.requestCounts.get(key) || 0;
-    this.requestCounts.set(key, count + 1);
-
-    // REFINED: Only warn about truly excessive calculations (50+ calls)
-    // Most calculations under 50 are normal during user interactions
-    if (process.env.NODE_ENV === 'development' && count > 50 && count % 25 === 0) {
-      console.warn(`💰 PERFORMANCE WARNING: Price calculation for "${key}" requested ${count + 1} times. Consider if this calculation is genuinely expensive (1ms+) per React docs.`);
-      
-      // Show cache statistics for debugging at higher thresholds
-      if (count === 75) {
-        console.log(`🔍 Analysis for "${key}":
-          - This calculation has been called ${count + 1} times
-          - Per React docs: Only memoize calculations that take 1ms+ 
-          - Consider if this is truly an expensive calculation
-          - Most price lookups should be fast and don't need memoization`);
-        this.logCacheStats();
-      }
-    }
   }
 
   static clear(): void {
     this.cache.clear();
-    this.requestCounts.clear();
-    this.lastClearTime = Date.now();
   }
 
-  static getCacheInfo(): { size: number; keys: string[]; hitRate: number } {
-    const totalRequests = Array.from(this.requestCounts.values()).reduce((sum, count) => sum + count, 0);
-    const cacheHits = totalRequests - this.requestCounts.size; // Approximation
-    const hitRate = totalRequests > 0 ? (cacheHits / totalRequests) * 100 : 0;
-    
+  static getCacheInfo(): { size: number; keys: string[] } {
     return {
       size: this.cache.size,
-      keys: Array.from(this.cache.keys()),
-      hitRate: Math.max(0, hitRate) // Ensure non-negative
+      keys: Array.from(this.cache.keys())
     };
-  }
-
-  static logCacheStats(): void {
-    const info = this.getCacheInfo();
-    console.log(`💰 PriceCalculator Cache Stats:
-      - Cache Size: ${info.size} entries
-      - Cache Hit Rate: ${info.hitRate.toFixed(1)}%
-      - Total Unique Calculations: ${this.requestCounts.size}
-      - Most Requested: ${Array.from(this.requestCounts.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3)
-        .map(([key, count]) => `${key} (${count}x)`)
-        .join(', ')}`);
   }
 }
 
@@ -218,13 +168,10 @@ export class PriceCalculator {
       }
 
       // Create cache key for this specific calculation
-      const cacheKey = PriceCalculationCache.createCacheKey(nestType, categoryId, optionValue);
+      const cacheKey = SimplePriceCache.createCacheKey(nestType, categoryId, optionValue);
       
-      // Track request for performance monitoring
-      PriceCalculationCache.trackRequest(cacheKey);
-
       // Check cache first for performance optimization
-      const cached = PriceCalculationCache.get(cacheKey);
+      const cached = SimplePriceCache.get(cacheKey);
       if (cached) {
         return {
           type: 'upgrade',
@@ -271,7 +218,7 @@ export class PriceCalculator {
         const monthlyAmount = this.calculateMonthlyPaymentAmount(upgradeAmount);
 
         // Cache successful calculation
-        PriceCalculationCache.set(cacheKey, upgradeAmount, monthlyAmount);
+        SimplePriceCache.set(cacheKey, upgradeAmount, monthlyAmount);
 
         return {
           type: 'upgrade',
@@ -359,17 +306,7 @@ export class PriceCalculator {
         additionalPrice += GRUNDSTUECKSCHECK_PRICE;
       }
 
-      const finalPrice = totalPrice + additionalPrice;
-      
-      // Debug logging in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`💰 Price Calculation Breakdown:
-          Base/Combination Price: €${totalPrice.toLocaleString()}
-          Additional Components: €${additionalPrice.toLocaleString()}
-          Final Total: €${finalPrice.toLocaleString()}`);
-      }
-      
-      return finalPrice;
+      return totalPrice + additionalPrice;
     } catch (error) {
       console.error('💰 PriceCalculator: Error calculating price:', error);
       return 0;
@@ -557,32 +494,13 @@ export class PriceCalculator {
   }
 
   /**
-   * Cache management methods for performance optimization and debugging
+   * Cache management methods for performance optimization
    */
   static clearPriceCache(): void {
-    PriceCalculationCache.clear();
+    SimplePriceCache.clear();
   }
 
   static getPriceCacheInfo(): { size: number; keys: string[] } {
-    return PriceCalculationCache.getCacheInfo();
-  }
-
-  /**
-   * Performance monitoring method for development
-   */
-  static logPerformanceStats(): void {
-    if (process.env.NODE_ENV === 'development') {
-      PriceCalculationCache.logCacheStats();
-    }
-  }
-
-  /**
-   * Reset performance counters - useful for testing
-   */
-  static resetPerformanceCounters(): void {
-    PriceCalculationCache.clear();
-    if (process.env.NODE_ENV === 'development') {
-      console.log('💰 PriceCalculator: Performance counters reset');
-    }
+    return SimplePriceCache.getCacheInfo();
   }
 } 

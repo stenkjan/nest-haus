@@ -577,27 +577,3 @@ export default function ConfiguratorShell({
     </div>
   );
 }
-
-/**
- * Migration Notes:
- * 
- * 1. Extract Components:
- *    - PreviewPanel: Image display + navigation arrows
- *    - SelectionPanel: All house option categories
- *    - SummaryPanel: Price breakdown + checkout
- * 
- * 2. Extract State Management:
- *    - useConfiguratorState: Main selection state
- *    - useInteractionTracking: User behavior tracking
- *    - usePriceCalculation: Price updates with debouncing
- * 
- * 3. Performance Improvements:
- *    - Optimistic UI updates
- *    - Image preloading
- *    - Batched tracking events
- * 
- * 4. Mobile Optimizations:
- *    - Separate mobile/desktop layouts
- *    - Touch-friendly interactions
- *    - Efficient scroll handling
- */ 
