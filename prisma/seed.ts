@@ -235,7 +235,7 @@ async function main() {
         category: 'planungspaket',
         value: 'basis',
         name: 'Planung Basis',
-        description: 'Einreichplanung (Baumgenehmigung)\nFachplanung und Baustützung',
+        description: 'Einreichplanung (Baugenehmigung)\nFachplanung und Baustützung',
         basePrice: 700,
         sortOrder: 1,
         properties: { level: 'basic', includes: ['building_permit', 'technical_planning'] }

@@ -29,27 +29,36 @@ const GRUNDSTUECKSCHECK_OPTION = {
 export default function GrundstuecksCheckBox({ isSelected, onClick, onUnselect: _onUnselect }: GrundstuecksCheckBoxProps) {
   return (
     <div
-      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(1rem,2vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] ${
+      className={`box_selection flex justify-between items-start min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] ${
         isSelected
           ? 'selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50'
           : 'border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm'
       }`}
       onClick={onClick}
     >
-      <div className="box_selection_name flex-1 min-w-0 pr-4">
-        <p className="font-medium text-[clamp(1rem,1.8vw,1.125rem)] tracking-wide leading-tight mb-[0.5em] text-black">
+      <div className="box_selection_name flex-1 min-w-0 pr-[clamp(0.75rem,2vw,1.25rem)]">
+        <p className="font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight mb-[0.5em] text-black">
           {GRUNDSTUECKSCHECK_OPTION.name}
         </p>
-        <p className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed text-gray-700">
+        <p className="text-[clamp(0.5rem,1vw,0.875rem)] tracking-wide leading-relaxed text-gray-700">
           {GRUNDSTUECKSCHECK_OPTION.description}
         </p>
       </div>
-      <div className="box_selection_price text-right whitespace-nowrap text-black flex-shrink-0">
-        <p className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed">
-          Aufpreis von<br />
-          {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)} oder {PriceUtils.calculateMonthlyPayment(GRUNDSTUECKSCHECK_PRICE, 240)}<br />
-          für 240 Mo.
-        </p>
+      <div className="box_selection_price text-right whitespace-nowrap text-black flex-shrink-0 min-w-[clamp(5rem,12vw,7rem)]">
+        <div className="text-right">
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            Aufpreis von
+          </p>
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
+          </p>
+          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+            oder {PriceUtils.calculateMonthlyPayment(GRUNDSTUECKSCHECK_PRICE, 240)}
+          </p>
+          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+            für 240 Mo.
+          </p>
+        </div>
       </div>
     </div>
   )

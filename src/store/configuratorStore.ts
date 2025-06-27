@@ -67,6 +67,7 @@ interface ConfiguratorState {
   
   // View switching
   clearViewSwitchSignal: () => void
+  determineOptimalView: () => string
   
   // Getters
   getConfiguration: () => Configuration | null
@@ -108,12 +109,18 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           return;
         }
         
-        // Only initialize if we don't have a session or don't have any selections at all
-        if (!state.sessionId || (!state.configuration.nest && !state.configuration.gebaeudehuelle)) {
-          get().resetConfiguration()
-          // Set default preselections immediately after reset
-          get().setDefaultSelections()
+        // Generate sessionId if missing
+        if (!state.sessionId) {
+          set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
+        
+        // ALWAYS set defaults first, then calculate price
+        get().setDefaultSelections()
+        
+        // Calculate price after defaults are set
+        setTimeout(() => {
+          get().calculatePrice()
+        }, 100)
       },
 
       // Update selection with intelligent view switching and price calculation
@@ -136,6 +143,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         }
 
         // Determine view switching based on category and activation states
+        // PRIORITY SYSTEM: Always switch to the most relevant view for the selection
         let shouldSwitchToView: string | null = null;
         let newHasPart2BeenActive = state.hasPart2BeenActive;
         let newHasPart3BeenActive = state.hasPart3BeenActive;
@@ -144,21 +152,26 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           // When selecting nest modules or building envelope, switch to exterior view to show modules
           shouldSwitchToView = 'exterior';
         } else if (item.category === 'innenverkleidung' || item.category === 'fussboden') {
+          // Activate Part 2 and switch to interior view to show the selection
           if (!state.hasPart2BeenActive) {
             newHasPart2BeenActive = true;
           }
           shouldSwitchToView = 'interior';
         } else if (item.category === 'pvanlage') {
+          // Activate Part 3 and switch to PV view to show the selection
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
           shouldSwitchToView = 'pv';
         } else if (item.category === 'fenster') {
+          // Activate Part 3 and switch to fenster view to show the selection
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
-          // Keep fenster in the same view instead of switching to separate 'fenster' view
-          // Windows should appear in the current preview image index
+          // FIXED: Switch to fenster view to show the selected windows/doors
+          shouldSwitchToView = 'fenster';
+        } else if (item.category === 'planungspaket' || item.category === 'grundstueckscheck') {
+          // For non-visual selections, don't switch views - keep current view
           shouldSwitchToView = null;
         }
 
@@ -174,17 +187,46 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
         }
 
+        // Update state first
         set({
           configuration: updatedConfiguration,
-          currentPrice: state.currentPrice, // Keep existing price for now
           hasPart2BeenActive: newHasPart2BeenActive,
           hasPart3BeenActive: newHasPart3BeenActive,
           shouldSwitchToView,
           lastSelectionCategory: item.category
         })
 
-        // Calculate price immediately using client-side logic
-        get().calculatePrice()
+        // SIMPLIFIED: Calculate price immediately and synchronously (avoid unnecessary Effects)
+        // Following React docs: "Avoid unnecessary Effects that update state"
+        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'pvanlage', 'fenster', 'planungspaket', 'grundstueckscheck'];
+        if (priceAffectingCategories.includes(item.category)) {
+          // Calculate immediately in the same update cycle
+          const newState = get();
+          const selections = {
+            nest: newState.configuration.nest || undefined,
+            gebaeudehuelle: newState.configuration.gebaeudehuelle || undefined,
+            innenverkleidung: newState.configuration.innenverkleidung || undefined,
+            fussboden: newState.configuration.fussboden || undefined,
+            pvanlage: newState.configuration.pvanlage || undefined,
+            fenster: newState.configuration.fenster || undefined,
+            paket: newState.configuration.planungspaket || undefined,
+            grundstueckscheck: !!newState.configuration.grundstueckscheck
+          };
+
+          const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>);
+          const priceBreakdown = PriceCalculator.getPriceBreakdown(selections as unknown as Record<string, unknown>);
+
+          // Update price in the same cycle to avoid multiple re-renders
+          set({
+            currentPrice: totalPrice,
+            priceBreakdown,
+            configuration: {
+              ...newState.configuration,
+              totalPrice,
+              timestamp: Date.now()
+            }
+          });
+        }
 
         // Optional: Track selection in background (non-blocking, fail-safe)
         if (typeof window !== 'undefined') {
@@ -217,7 +259,41 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           delete (updatedConfig as unknown as Record<string, unknown>)[category]
         }
         
-        set({ configuration: updatedConfig })
+        // Determine intelligent view switching after removal
+        let shouldSwitchToView: string | null = null;
+        
+        if (category === 'fenster') {
+          // If fenster is removed and we're on fenster view, switch to a sensible view
+          // Priority: PV view if PV exists, otherwise interior if part2 active, otherwise exterior
+          if (updatedConfig.pvanlage && state.hasPart3BeenActive) {
+            shouldSwitchToView = 'pv';
+          } else if (state.hasPart2BeenActive) {
+            shouldSwitchToView = 'interior';
+          } else {
+            shouldSwitchToView = 'exterior';
+          }
+        } else if (category === 'pvanlage') {
+          // If PV is removed and we're on PV view, switch to a sensible view
+          // Priority: fenster view if fenster exists, otherwise interior if part2 active, otherwise exterior
+          if (updatedConfig.fenster && state.hasPart3BeenActive) {
+            shouldSwitchToView = 'fenster';
+          } else if (state.hasPart2BeenActive) {
+            shouldSwitchToView = 'interior';
+          } else {
+            shouldSwitchToView = 'exterior';
+          }
+        } else if (category === 'innenverkleidung' || category === 'fussboden') {
+          // If interior elements are removed, stay on interior if we still have some, otherwise switch to exterior
+          if (!updatedConfig.innenverkleidung && !updatedConfig.fussboden) {
+            shouldSwitchToView = 'exterior';
+          }
+        }
+        // For nest/gebaeudehuelle removal, stay on current view (user might be changing selection)
+        
+        set({ 
+          configuration: updatedConfig,
+          shouldSwitchToView
+        })
         get().calculatePrice()
       },
 
@@ -292,6 +368,31 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         set({ shouldSwitchToView: null })
       },
 
+      // Determine optimal view based on current configuration and user context
+      determineOptimalView: () => {
+        const state = get()
+        const config = state.configuration
+        
+        // Priority system for view selection based on most recent/relevant selections:
+        // 1. If fenster is selected and part3 is active, prioritize fenster view
+        if (config.fenster && state.hasPart3BeenActive) {
+          return 'fenster'
+        }
+        
+        // 2. If PV is selected and part3 is active, prioritize PV view
+        if (config.pvanlage && state.hasPart3BeenActive) {
+          return 'pv'
+        }
+        
+        // 3. If interior selections exist and part2 is active, show interior
+        if ((config.innenverkleidung || config.fussboden) && state.hasPart2BeenActive) {
+          return 'interior'
+        }
+        
+        // 4. Default to exterior view (always available and shows nest + gebäudehülle)
+        return 'exterior'
+      },
+
       // Reset configuration - Complete defaults matching old configurator
       resetConfiguration: () => {
         // Only generate sessionId if not in test environment
@@ -323,30 +424,59 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         })
       },
 
-      // Set default preselections on startup (nest80 + holzlattung)
+      // Set default preselections on startup (nest80 + holzlattung/lärche)
       setDefaultSelections: () => {
         const state = get()
         
-        // Only set defaults if they're not already set to prevent loops
+        // Generate sessionId if not set
+        const sessionId = state.sessionId || `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
+        
+        // Set defaults using updateSelection to ensure proper processing
         if (!state.configuration.nest) {
-          get().updateSelection({
-            category: 'nest',
-            value: 'nest80',
-            name: 'Nest. 80',
-            price: 155500,
-            description: '80m² Nutzfläche'
-          })
+          set(state => ({
+            ...state,
+            sessionId,
+            configuration: {
+              ...state.configuration,
+              sessionId,
+              nest: {
+                category: 'nest',
+                value: 'nest80',
+                name: 'Nest. 80',
+                price: 155500,
+                description: '80m² Nutzfläche'
+              },
+              timestamp: Date.now()
+            }
+          }))
         }
 
         if (!state.configuration.gebaeudehuelle) {
-          get().updateSelection({
-            category: 'gebaeudehuelle',
-            value: 'holzlattung',
-            name: 'Holzlattung Lärche Natur',
-            price: 9600,
-            description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
-          })
+          set(state => ({
+            ...state,
+            sessionId,
+            configuration: {
+              ...state.configuration,
+              sessionId,
+              gebaeudehuelle: {
+                category: 'gebaeudehuelle',
+                value: 'holzlattung',
+                name: 'Holzlattung Lärche Natur',
+                price: 9600,
+                description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
+              },
+              timestamp: Date.now()
+            }
+          }))
         }
+        
+        // Recalculate price and set optimal view after setting defaults
+        setTimeout(() => {
+          get().calculatePrice()
+          // Switch to optimal view for the default configuration
+          const optimalView = get().determineOptimalView()
+          set({ shouldSwitchToView: optimalView })
+        }, 50)
       },
 
       // Finalize session (CLIENT-SIDE ONLY)
@@ -415,13 +545,15 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Add onRehydrateStorage to ensure defaults are applied after rehydration
       onRehydrateStorage: () => (state) => {
         if (state && process.env.NODE_ENV !== 'test') {
-          // Only apply defaults if we have no selections at all (fresh start)
-          if (!state.configuration.nest && !state.configuration.gebaeudehuelle) {
-            // Apply defaults if they're missing
-            setTimeout(() => {
+          // ALWAYS set defaults after rehydration to ensure consistent state
+          setTimeout(() => {
+            // Set defaults if no selections exist
+            if (!state.configuration.nest && !state.configuration.gebaeudehuelle) {
               state.setDefaultSelections()
-            }, 50)
-          }
+            }
+            // Always recalculate price after rehydration to ensure consistency
+            state.calculatePrice()
+          }, 150) // Longer delay to ensure proper hydration
         }
       }
     }

@@ -12,20 +12,30 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
+import { PriceCalculator } from '../core/PriceCalculator';
 import { configuratorData } from '../data/configuratorData';
+import CategorySection from './CategorySection';
+import SelectionOption from './SelectionOption';
+import QuantitySelector from './QuantitySelector';
+import SummaryPanel from './SummaryPanel';
+import PreviewPanel from './PreviewPanel';
+import FactsBox from './FactsBox';
 import type { ConfiguratorProps } from '../types/configurator.types';
 import {
-  CategorySection,
-  SelectionOption,
   InfoBox,
-  FactsBox,
-  PreviewPanel,
-  QuantitySelector,
-  SummaryPanel,
   GrundstuecksCheckBox,
   CartFooter
-} from './';
+} from './index';
 import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator';
+
+// Simple debounce implementation to avoid lodash dependency
+function debounce(func: (nestValue: string, configurationSelections: Record<string, unknown>) => void, wait: number) {
+  let timeout: NodeJS.Timeout;
+  return (nestValue: string, configurationSelections: Record<string, unknown>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(nestValue, configurationSelections), wait);
+  };
+}
 
 export default function ConfiguratorShell({
   onPriceChange,
@@ -44,6 +54,88 @@ export default function ConfiguratorShell({
   const [pvQuantity, setPvQuantity] = useState<number>(0);
   const [fensterSquareMeters, setFensterSquareMeters] = useState<number>(0);
   const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] = useState(false);
+
+  // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
+  // This prevents individual calculations during render for every option
+  const [optionPricesCache, setOptionPricesCache] = useState<Map<string, { type: 'base' | 'upgrade' | 'included'; amount?: number; monthly?: number }>>(new Map());
+
+  // Debounced bulk price calculation to prevent calculation storms
+  const bulkCalculateOptionPrices = useCallback(
+    debounce((nestValue: string, configurationSelections: Record<string, unknown>) => {
+      if (!nestValue) return;
+
+      const newCache = new Map();
+      const coreCategories = ['gebaeudehuelle', 'innenverkleidung', 'fussboden'];
+
+      // Pre-calculate prices for all core options that depend on nest size
+      configuratorData.forEach(category => {
+        if (coreCategories.includes(category.id)) {
+          category.options.forEach(option => {
+            try {
+              const price = PriceCalculator.getOptionDisplayPrice(
+                nestValue,
+                configurationSelections,
+                category.id,
+                option.id
+              );
+              newCache.set(`${category.id}:${option.id}`, price);
+                         } catch {
+               // Fallback for any calculation errors
+               newCache.set(`${category.id}:${option.id}`, { type: 'included' as const });
+             }
+          });
+        } else {
+          // For non-core categories, use static prices from configuratorData
+          category.options.forEach(option => {
+            newCache.set(`${category.id}:${option.id}`, option.price || { type: 'included' as const });
+          });
+        }
+      });
+
+      setOptionPricesCache(newCache);
+    }, 150), // 150ms debounce to prevent rapid recalculations
+    []
+  );
+
+  // Trigger bulk calculation when nest or core selections change
+  useEffect(() => {
+    if (!configuration?.nest) return;
+
+    const configurationSelections = {
+      nest: configuration.nest ? {
+        category: configuration.nest.category,
+        value: configuration.nest.value,
+        name: configuration.nest.name,
+        price: configuration.nest.price || 0
+      } : undefined,
+      gebaeudehuelle: configuration.gebaeudehuelle ? {
+        category: configuration.gebaeudehuelle.category,
+        value: configuration.gebaeudehuelle.value,
+        name: configuration.gebaeudehuelle.name,
+        price: configuration.gebaeudehuelle.price || 0
+      } : undefined,
+      innenverkleidung: configuration.innenverkleidung ? {
+        category: configuration.innenverkleidung.category,
+        value: configuration.innenverkleidung.value,
+        name: configuration.innenverkleidung.name,
+        price: configuration.innenverkleidung.price || 0
+      } : undefined,
+      fussboden: configuration.fussboden ? {
+        category: configuration.fussboden.category,
+        value: configuration.fussboden.value,
+        name: configuration.fussboden.name,
+        price: configuration.fussboden.price || 0
+      } : undefined
+    };
+
+    bulkCalculateOptionPrices(configuration.nest.value, configurationSelections);
+  }, [
+    configuration?.nest,
+    configuration?.gebaeudehuelle,
+    configuration?.innenverkleidung,
+    configuration?.fussboden,
+    bulkCalculateOptionPrices
+  ]);
 
   // Initialize session once on mount
   useEffect(() => {
@@ -204,11 +296,19 @@ export default function ConfiguratorShell({
     // TODO: Implement dialog opening logic
   }, []);
 
+  // Fixed selection detection logic - more robust checking
   const isOptionSelected = useCallback((categoryId: string, optionId: string): boolean => {
-    const categoryConfig = configuration?.[categoryId as keyof typeof configuration];
-    if (typeof categoryConfig === 'object' && categoryConfig !== null && 'value' in categoryConfig) {
-      return categoryConfig.value === optionId;
+    if (!configuration) return false;
+    
+    const categoryConfig = configuration[categoryId as keyof typeof configuration];
+    
+    // Handle different types of category configurations
+    if (typeof categoryConfig === 'object' && categoryConfig !== null) {
+      if ('value' in categoryConfig) {
+        return categoryConfig.value === optionId;
+      }
     }
+    
     return false;
   }, [configuration]);
 
@@ -261,6 +361,21 @@ export default function ConfiguratorShell({
     // Formula: 30 + (number_of_modules * 4)
     return 30 + (moduleCount * 4);
   }, [configuration?.nest?.value, getModuleCount]);
+
+  // PERFORMANCE FIX: Simple cache lookup instead of calculation during render
+  const getDisplayPrice = useCallback((categoryId: string, optionId: string) => {
+    const cacheKey = `${categoryId}:${optionId}`;
+    const cachedPrice = optionPricesCache.get(cacheKey);
+    
+    if (cachedPrice) {
+      return cachedPrice;
+    }
+
+    // Fallback to static price from configuratorData (no expensive calculation)
+    const category = configuratorData.find(cat => cat.id === categoryId);
+    const option = category?.options.find(opt => opt.id === optionId);
+    return option?.price || { type: 'included' as const };
+  }, [optionPricesCache]);
 
   // Adjust PV quantity when nest size changes and exceeds new maximum
   useEffect(() => {
@@ -323,27 +438,32 @@ export default function ConfiguratorShell({
           subtitle={category.subtitle}
         >
           <div className="space-y-2">
-            {category.options.map((option) => (
-              <SelectionOption
-                key={option.id}
-                id={option.id}
-                name={option.name}
-                description={option.description}
-                price={option.price}
-                isSelected={isOptionSelected(category.id, option.id)}
-                canUnselect={canUnselect(category.id)}
-                onUnselect={canUnselect(category.id) ? (optionId) => handleUnselect(category.id, optionId) : undefined}
-                onClick={(optionId) => {
-                  if (category.id === 'pvanlage') {
-                    handlePvSelection(category.id, optionId);
-                  } else if (category.id === 'fenster') {
-                    handleFensterSelection(category.id, optionId);
-                  } else {
-                    handleSelection(category.id, optionId);
-                  }
-                }}
-              />
-            ))}
+            {category.options.map((option) => {
+              // Use static price from configuratorData for consistent display
+              const displayPrice = getDisplayPrice(category.id, option.id);
+              
+              return (
+                <SelectionOption
+                  key={option.id}
+                  id={option.id}
+                  name={option.name}
+                  description={option.description}
+                  price={displayPrice}
+                  isSelected={isOptionSelected(category.id, option.id)}
+                  canUnselect={canUnselect(category.id)}
+                  onUnselect={canUnselect(category.id) ? (optionId) => handleUnselect(category.id, optionId) : undefined}
+                  onClick={(optionId) => {
+                    if (category.id === 'pvanlage') {
+                      handlePvSelection(category.id, optionId);
+                    } else if (category.id === 'fenster') {
+                      handleFensterSelection(category.id, optionId);
+                    } else {
+                      handleSelection(category.id, optionId);
+                    }
+                  }}
+                />
+              );
+            })}
           </div>
 
           {/* PV Quantity Selector */}

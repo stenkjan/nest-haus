@@ -78,9 +78,9 @@ export function Dialog({
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 bg-white hover:bg-gray-100 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 z-[10000]"
+            className="absolute top-[clamp(0.75rem,1.5vw,1rem)] right-[clamp(0.75rem,1.5vw,1rem)] bg-white hover:bg-gray-100 rounded-full p-[clamp(0.375rem,0.8vw,0.5rem)] shadow-lg transition-all duration-200 hover:scale-110 z-[10000]"
           >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-[clamp(1rem,2vw,1.5rem)] h-[clamp(1rem,2vw,1.5rem)] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>

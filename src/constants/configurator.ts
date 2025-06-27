@@ -168,7 +168,7 @@ export const PLANNING_PACKAGES = [
   {
     value: 'basis',
     name: 'Planung Basis',
-    description: 'Einreichplanung (Baumgenehmigung)\nFachplanung und Baustützung',
+    description: 'Einreichplanung (Baugenehmigung)\nFachplanung und Baustützung',
     price: 8900,
     monthly: 47
   },

@@ -3,6 +3,7 @@ import React from 'react';
 export type ButtonVariant = 
   | 'primary'
   | 'secondary'
+  | 'tertiary'          // Blue outline button
   | 'outline'           // Outlined button
   | 'ghost'             // Minimal button
   | 'danger'            // Warning/delete actions
@@ -33,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
     // Standard Buttons - all with fixed width
     primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm',
     secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm',
+    tertiary: 'bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500',
     outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
     ghost: 'text-gray-600 hover:bg-gray-100 focus:ring-gray-500',
     

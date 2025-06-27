@@ -36,22 +36,45 @@ export default function SelectionOption({
     
     if (price.type === 'included') {
       return (
-        <p className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed">
-          <span>inklusive.</span>
+        <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+          <span>inklusive</span>
         </p>
       )
     }
     
     if (price.type === 'base') {
+      // Special case for planning packages - show per m² pricing
+      if (id.includes('basis') || id.includes('plus') || id.includes('pro')) {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              €700 / m²
+            </p>
+            <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+              oder €2,50 / m²
+            </p>
+            <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+              für 240 Mo.
+            </p>
+          </div>
+        )
+      }
+      
       const formattedPrice = price.amount ? PriceUtils.formatPrice(price.amount) : '0 €'
       const monthlyPayment = price.amount ? PriceUtils.calculateMonthlyPayment(price.amount) : '0 €'
       
       return (
-        <p className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed">
-          Ab {formattedPrice}<br />
-          oder {monthlyPayment}<br />
-          für 240 Mo.
-        </p>
+        <div className="text-right">
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            Ab {formattedPrice}
+          </p>
+          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+            oder {monthlyPayment}
+          </p>
+          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+            für 240 Mo.
+          </p>
+        </div>
       )
     }
     
@@ -60,11 +83,20 @@ export default function SelectionOption({
       const monthlyPayment = price.amount ? PriceUtils.calculateMonthlyPayment(price.amount) : '0 €'
       
       return (
-        <p className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed">
-          Aufpreis von<br />
-          {formattedPrice} oder {monthlyPayment}<br />
-          für 240 Mo.
-        </p>
+        <div className="text-right">
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            Aufpreis von
+          </p>
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            {formattedPrice}
+          </p>
+          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+            oder {monthlyPayment}
+          </p>
+          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
+            für 240 Mo.
+          </p>
+        </div>
       )
     }
     
@@ -87,7 +119,7 @@ export default function SelectionOption({
 
   return (
     <div
-      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(1rem,2vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
+      className={`box_selection flex justify-between items-start min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
         isSelected
           ? 'selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50'
           : disabled 
@@ -108,15 +140,15 @@ export default function SelectionOption({
         </button>
       )}
       
-      <div className="box_selection_name flex-1 min-w-0 pr-4">
-        <p className="font-medium text-[clamp(1rem,1.8vw,1.125rem)] tracking-wide leading-tight mb-[0.5em] text-black">
+      <div className="box_selection_name flex-1 min-w-0 pr-[clamp(0.75rem,2vw,1.25rem)]">
+        <p className="font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight mb-[0.5em] text-black">
           {name}
         </p>
-        <p className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed text-gray-700">
+        <p className="text-[clamp(0.5rem,1vw,0.875rem)] tracking-wide leading-relaxed text-gray-700">
           {description}
         </p>
       </div>
-      <div className="box_selection_price text-right whitespace-nowrap text-black flex-shrink-0">
+      <div className="box_selection_price text-right whitespace-nowrap text-black flex-shrink-0 min-w-[clamp(5rem,12vw,7rem)]">
         {renderPrice()}
       </div>
     </div>

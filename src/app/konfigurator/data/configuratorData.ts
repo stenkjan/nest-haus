@@ -224,22 +224,40 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'basis',
         name: 'Planung Basis',
-        description: 'Einreichplanung (Baumgenehmigung)\nFachplanung und Baustützung',
-        price: { type: 'upgrade', amount: 8900, monthly: 47 }
+        description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
+        price: { type: 'base', amount: 133000, monthly: 700 }
       },
       {
         id: 'plus',
         name: 'Planung Plus',
-        description: 'Einreichplanung Basis\nPlus HVLS-Planung (Gebäudetechnik)',
-        price: { type: 'upgrade', amount: 13900, monthly: 73 }
+        description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
+        price: { type: 'base', amount: 133000, monthly: 700 }
       },
       {
         id: 'pro',
         name: 'Planung Pro',
-        description: 'Inkl. Planungspaket Plus\nPlus Baustüberwachung (Modalbestandschef)',
-        price: { type: 'upgrade', amount: 18900, monthly: 99 }
+        description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
+        price: { type: 'base', amount: 133000, monthly: 700 }
       }
-    ]
+    ],
+    infoBox: {
+      title: 'Welches Planungspaket passt zu dir?',
+      description: 'Siehe dir die Pakete im Detail an und entdecke welches am besten zu dir passt',
+      action: 'Weitere Informationen'
+    },
+    facts: {
+      title: 'Gemeinsam großes schaffen.',
+      content: [
+        'Wir konzentrieren uns darauf alle standardisierten Arbeitsprozesse zu optimieren und höchste Qualität zu fairen Preisen sicher zu stellen.',
+        'Darauf aufbauend machst du dein Nest. Individuell.'
+      ],
+      links: [
+        {
+          text: 'Weitere Informationen',
+          href: '/planungspakete'
+        }
+      ]
+    }
   },
   {
     id: 'pvanlage',

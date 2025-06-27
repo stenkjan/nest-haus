@@ -2,6 +2,8 @@
  * PriceCalculator - Updated with MODULAR pricing system from Excel data
  * Uses base price (Nest 80) + (modules × per-module cost) logic
  * CLIENT-SIDE ONLY - for efficient state management without API calls
+ * 
+ * ENHANCED: Added caching and race condition prevention for optimal performance
  */
 
 import { 
@@ -11,6 +13,92 @@ import {
   NEST_OPTIONS,
   type CombinationKey
 } from '@/constants/configurator'
+
+// In-memory cache for price calculations to prevent redundant computations
+class PriceCalculationCache {
+  private static cache = new Map<string, { amount: number; monthly: number; timestamp: number }>();
+  private static readonly CACHE_TTL = 300000; // 5 minutes cache TTL (increased from 30 seconds)
+  private static requestCounts = new Map<string, number>();
+  private static lastClearTime = Date.now();
+
+  static get(key: string): { amount: number; monthly: number } | null {
+    const cached = this.cache.get(key);
+    if (!cached) return null;
+
+    // Check if cache is still valid
+    if (Date.now() - cached.timestamp > this.CACHE_TTL) {
+      this.cache.delete(key);
+      return null;
+    }
+
+    return { amount: cached.amount, monthly: cached.monthly };
+  }
+
+  static set(key: string, amount: number, monthly: number): void {
+    this.cache.set(key, {
+      amount,
+      monthly,
+      timestamp: Date.now()
+    });
+  }
+
+  static createCacheKey(nestType: string, categoryId: string, optionValue: string): string {
+    // Create deterministic cache key
+    return `${nestType}|${categoryId}|${optionValue}`;
+  }
+
+  static trackRequest(key: string): void {
+    const count = this.requestCounts.get(key) || 0;
+    this.requestCounts.set(key, count + 1);
+
+    // REFINED: Only warn about truly excessive calculations (50+ calls)
+    // Most calculations under 50 are normal during user interactions
+    if (process.env.NODE_ENV === 'development' && count > 50 && count % 25 === 0) {
+      console.warn(`💰 PERFORMANCE WARNING: Price calculation for "${key}" requested ${count + 1} times. Consider if this calculation is genuinely expensive (1ms+) per React docs.`);
+      
+      // Show cache statistics for debugging at higher thresholds
+      if (count === 75) {
+        console.log(`🔍 Analysis for "${key}":
+          - This calculation has been called ${count + 1} times
+          - Per React docs: Only memoize calculations that take 1ms+ 
+          - Consider if this is truly an expensive calculation
+          - Most price lookups should be fast and don't need memoization`);
+        this.logCacheStats();
+      }
+    }
+  }
+
+  static clear(): void {
+    this.cache.clear();
+    this.requestCounts.clear();
+    this.lastClearTime = Date.now();
+  }
+
+  static getCacheInfo(): { size: number; keys: string[]; hitRate: number } {
+    const totalRequests = Array.from(this.requestCounts.values()).reduce((sum, count) => sum + count, 0);
+    const cacheHits = totalRequests - this.requestCounts.size; // Approximation
+    const hitRate = totalRequests > 0 ? (cacheHits / totalRequests) * 100 : 0;
+    
+    return {
+      size: this.cache.size,
+      keys: Array.from(this.cache.keys()),
+      hitRate: Math.max(0, hitRate) // Ensure non-negative
+    };
+  }
+
+  static logCacheStats(): void {
+    const info = this.getCacheInfo();
+    console.log(`💰 PriceCalculator Cache Stats:
+      - Cache Size: ${info.size} entries
+      - Cache Hit Rate: ${info.hitRate.toFixed(1)}%
+      - Total Unique Calculations: ${this.requestCounts.size}
+      - Most Requested: ${Array.from(this.requestCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([key, count]) => `${key} (${count}x)`)
+        .join(', ')}`);
+  }
+}
 
 interface SelectionOption {
   category: string
@@ -98,6 +186,126 @@ export class PriceCalculator {
   }
 
   /**
+   * NEW: Calculate dynamic price for individual option display in UI
+   * Returns the upgrade price compared to the BASE configuration (Trapezblech + Kiefer + Parkett)
+   * This ensures consistent pricing regardless of current selections
+   * 
+   * ENHANCED: Added caching and error handling for optimal performance
+   */
+  static getOptionDisplayPrice(
+    nestType: string,
+    currentSelections: Selections,
+    categoryId: string,
+    optionValue: string
+  ): { type: 'base' | 'upgrade' | 'included'; amount?: number; monthly?: number } {
+    // Input validation
+    if (!nestType || typeof nestType !== 'string') {
+      return { type: 'included' };
+    }
+
+    // For core material options that affect combination pricing
+    if (['gebaeudehuelle', 'innenverkleidung', 'fussboden'].includes(categoryId)) {
+      // Default/base selections (what shows as "included")
+      const baseSelections = {
+        gebaeudehuelle: 'trapezblech',
+        innenverkleidung: 'kiefer',
+        fussboden: 'parkett'
+      };
+
+      // If this is a base selection, show as included
+      if (optionValue === baseSelections[categoryId as keyof typeof baseSelections]) {
+        return { type: 'included' };
+      }
+
+      // Create cache key for this specific calculation
+      const cacheKey = PriceCalculationCache.createCacheKey(nestType, categoryId, optionValue);
+      
+      // Track request for performance monitoring
+      PriceCalculationCache.trackRequest(cacheKey);
+
+      // Check cache first for performance optimization
+      const cached = PriceCalculationCache.get(cacheKey);
+      if (cached) {
+        return {
+          type: 'upgrade',
+          amount: cached.amount,
+          monthly: cached.monthly
+        };
+      }
+
+      try {
+        // FIXED: Always calculate upgrade price relative to BASE configuration
+        // This prevents negative prices and ensures consistent pricing display
+        const baseCombination = {
+          gebaeudehuelle: baseSelections.gebaeudehuelle,
+          innenverkleidung: baseSelections.innenverkleidung,
+          fussboden: baseSelections.fussboden
+        };
+
+        // Calculate price with this option selected (rest remain base)
+        const upgradeCombination = {
+          ...baseCombination,
+          [categoryId]: optionValue
+        };
+
+        const basePrice = this.calculateCombinationPrice(
+          nestType,
+          baseCombination.gebaeudehuelle,
+          baseCombination.innenverkleidung,
+          baseCombination.fussboden
+        );
+
+        const upgradePrice = this.calculateCombinationPrice(
+          nestType,
+          upgradeCombination.gebaeudehuelle,
+          upgradeCombination.innenverkleidung,
+          upgradeCombination.fussboden
+        );
+
+        const upgradeAmount = upgradePrice - basePrice;
+
+        if (upgradeAmount <= 0) {
+          return { type: 'included' };
+        }
+
+        const monthlyAmount = this.calculateMonthlyPaymentAmount(upgradeAmount);
+
+        // Cache successful calculation
+        PriceCalculationCache.set(cacheKey, upgradeAmount, monthlyAmount);
+
+        return {
+          type: 'upgrade',
+          amount: upgradeAmount,
+          monthly: monthlyAmount
+        };
+      } catch (error) {
+        // Graceful error handling - log in development, fail silently in production
+        if (process.env.NODE_ENV === 'development') {
+          console.error(`💰 Price calculation error for ${categoryId}:${optionValue}:`, error);
+        }
+        
+        // Return safe fallback
+        return { type: 'included' };
+      }
+    }
+
+    // For non-combination options (PV, Fenster, Planung), return static pricing
+    // These don't scale with nest size in the current pricing model
+    return { type: 'included' }; // Will be handled by existing static logic
+  }
+
+  /**
+   * Helper method to calculate monthly payment amount as number (not formatted string)
+   */
+  static calculateMonthlyPaymentAmount(totalPrice: number, months: number = 240): number {
+    const interestRate = 0.035 / 12; // 3.5% annual rate
+    const monthlyPayment = totalPrice * (interestRate * Math.pow(1 + interestRate, months)) / 
+                          (Math.pow(1 + interestRate, months) - 1);
+    
+    return Math.round(monthlyPayment);
+  }
+
+  /**
    * Calculate total price - PROGRESSIVE pricing with immediate feedback
    * Uses MODULAR PRICING for accurate scaling with nest size
    * CLIENT-SIDE calculation to avoid unnecessary API calls
@@ -111,69 +319,19 @@ export class PriceCalculator {
     try {
       let totalPrice = 0;
 
-      // PROGRESSIVE PRICING: Show price as soon as nest is selected
-      if (selections.nest && !selections.gebaeudehuelle && !selections.innenverkleidung && !selections.fussboden) {
-        // Only nest selected - show base price (Trapezblech + Kiefer + Parkett combination)
-        totalPrice = this.calculateCombinationPrice(
-          selections.nest.value,
-          'trapezblech',
-          'kiefer',
-          'parkett'
-        );
-      } 
-      else if (selections.nest && selections.gebaeudehuelle && selections.innenverkleidung && selections.fussboden) {
-        // All core selections made - use modular combination pricing
-        const combinationPrice = this.calculateCombinationPrice(
-          selections.nest.value,
-          selections.gebaeudehuelle.value,
-          selections.innenverkleidung.value,
-          selections.fussboden.value
-        );
-        
-        totalPrice = combinationPrice;
-      }
-      else {
-        // Partial selections - calculate progressive pricing
-        // Start with base combination
-        const basePrice = this.calculateCombinationPrice(
-          selections.nest.value,
-          'trapezblech',
-          'kiefer',
-          'parkett'
-        );
-        
-        // Calculate upgrade costs for each selection
-        let upgradePrice = 0;
-        
-        if (selections.gebaeudehuelle && selections.gebaeudehuelle.value !== 'trapezblech') {
-          upgradePrice += this.getUpgradePrice(selections.nest.value, selections, {
-            category: 'gebaeudehuelle',
-            value: selections.gebaeudehuelle.value,
-            name: selections.gebaeudehuelle.name,
-            price: 0
-          });
-        }
-        
-        if (selections.innenverkleidung && selections.innenverkleidung.value !== 'kiefer') {
-          upgradePrice += this.getUpgradePrice(selections.nest.value, selections, {
-            category: 'innenverkleidung', 
-            value: selections.innenverkleidung.value,
-            name: selections.innenverkleidung.name,
-            price: 0
-          });
-        }
-        
-        if (selections.fussboden && selections.fussboden.value !== 'parkett') {
-          upgradePrice += this.getUpgradePrice(selections.nest.value, selections, {
-            category: 'fussboden',
-            value: selections.fussboden.value, 
-            name: selections.fussboden.name,
-            price: 0
-          });
-        }
-        
-        totalPrice = basePrice + upgradePrice;
-      }
+      // ALWAYS use combination pricing with defaults for missing core selections
+      // This ensures consistent pricing regardless of selection order
+      const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
+      const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+      const fussboden = selections.fussboden?.value || 'parkett';
+
+      // Calculate combination price using modular pricing system
+      totalPrice = this.calculateCombinationPrice(
+        selections.nest.value,
+        gebaeudehuelle,
+        innenverkleidung,
+        fussboden
+      );
 
       // Add additional components (these work regardless of core completion)
       let additionalPrice = 0;
@@ -396,5 +554,35 @@ export class PriceCalculator {
    */
   static getValidCombinations(_nestType: string): CombinationKey[] {
     return Object.keys(MODULAR_PRICING) as CombinationKey[];
+  }
+
+  /**
+   * Cache management methods for performance optimization and debugging
+   */
+  static clearPriceCache(): void {
+    PriceCalculationCache.clear();
+  }
+
+  static getPriceCacheInfo(): { size: number; keys: string[] } {
+    return PriceCalculationCache.getCacheInfo();
+  }
+
+  /**
+   * Performance monitoring method for development
+   */
+  static logPerformanceStats(): void {
+    if (process.env.NODE_ENV === 'development') {
+      PriceCalculationCache.logCacheStats();
+    }
+  }
+
+  /**
+   * Reset performance counters - useful for testing
+   */
+  static resetPerformanceCounters(): void {
+    PriceCalculationCache.clear();
+    if (process.env.NODE_ENV === 'development') {
+      console.log('💰 PriceCalculator: Performance counters reset');
+    }
   }
 } 

@@ -86,7 +86,7 @@ export default function QuantitySelector({
         
         <div className="ml-[clamp(1rem,2vw,1.5rem)] text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed text-gray-700">
           {formatPrice(totalPrice)}
-          {unit !== 'Stück' && ` / ${unit}`}
+          {unit !== 'Stück' && ` / ${value} ${unit}`}
         </div>
       </div>
     </div>
