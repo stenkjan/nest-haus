@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useMotionValue, PanInfo } from 'motion/react';
-import Image from 'next/image';
+import { HybridBlobImage } from '@/components/images';
 
 interface CardData {
   id: number;
@@ -53,6 +53,7 @@ interface ContentCardsProps {
   showInstructions?: boolean;
   isLightboxMode?: boolean;
   onCardClick?: (cardId: number) => void;
+  customData?: CardData[] | StaticCardData[] | PricingCardData[];
 }
 
 const contentCardData: CardData[] = [
@@ -189,6 +190,15 @@ const pricingCardData: PricingCardData[] = [
   }
 ];
 
+// Helper function to extract path from API URL
+const getImagePath = (imageUrl: string): string => {
+  if (imageUrl.startsWith('/api/images?path=')) {
+    const url = new URL(imageUrl, 'http://localhost');
+    return decodeURIComponent(url.searchParams.get('path') || '');
+  }
+  return imageUrl;
+};
+
 export default function ContentCards({ 
   variant = 'normal',
   title = 'Content Cards',
@@ -196,7 +206,8 @@ export default function ContentCards({
   maxWidth = true,
   showInstructions = true,
   isLightboxMode = false,
-  onCardClick
+  onCardClick,
+  customData
 }: ContentCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
@@ -212,12 +223,12 @@ export default function ContentCards({
   const isMobile = variant === 'mobile';
   const isResponsive = variant === 'responsive';
 
-  // Use appropriate data source based on variant
-  const cardData = isPricing 
+  // Use appropriate data source based on variant or custom data
+  const cardData = customData || (isPricing 
     ? pricingCardData 
     : isStatic 
       ? staticCardData 
-      : contentCardData;
+      : contentCardData);
 
   // Initialize client-side state
   useEffect(() => {
@@ -229,6 +240,7 @@ export default function ContentCards({
   useEffect(() => {
     const updateDimensions = () => {
       const width = window.innerWidth;
+      const _height = window.innerHeight; // Available for future use
       setScreenWidth(width);
       
       if (isStatic) {
@@ -360,13 +372,14 @@ export default function ContentCards({
       : cardData;
   const adjustedMaxIndex = Math.max(0, displayCards.length - Math.floor(cardsPerView));
 
+  // FIXED: Navigation logic to always work properly
   const navigateCard = useCallback((direction: number) => {
-    const targetMaxIndex = isStatic ? adjustedMaxIndex : maxIndex;
+    const targetMaxIndex = displayCards.length - Math.floor(cardsPerView);
     const newIndex = Math.max(0, Math.min(targetMaxIndex, currentIndex + direction));
     setCurrentIndex(newIndex);
     const newX = -(newIndex * (cardWidth + gap));
     x.set(newX);
-  }, [isStatic, adjustedMaxIndex, maxIndex, currentIndex, cardWidth, gap, x]);
+  }, [displayCards.length, cardsPerView, currentIndex, cardWidth, gap, x]);
 
   // Keyboard navigation - disabled for pricing cards
   useEffect(() => {
@@ -450,13 +463,13 @@ export default function ContentCards({
 
   return (
     <div className={containerClasses}>
-      <div className="text-center mb-8">
+      <div className={`text-center ${isLightboxMode ? 'mb-4' : 'mb-8'}`}>
         <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
         {subtitle && <p className="text-gray-600">{subtitle}</p>}
       </div>
 
       {/* Cards Container */}
-      <div className="relative py-8">
+      <div className={`relative ${isLightboxMode ? 'py-2' : 'py-8'}`}>
         {isPricing && !isLightboxMode ? (
           /* Pricing Cards - Responsive Grid Layout */
           <div className={`flex flex-wrap justify-center items-center gap-6 ${maxWidth ? 'px-8' : 'px-4'}`}>
@@ -570,12 +583,18 @@ export default function ContentCards({
                                       style={{ 
                     width: cardWidth, 
                     height: isPricing && isLightboxMode 
-                      ? (typeof window !== 'undefined' && window.innerWidth < 768 ? 480 : 800) // Mobile: 480px, Desktop: 800px
-                      : isMobile ? 576 
-                      : isWide ? 692 
-                      : isStatic ? (isClient && screenWidth >= 1024 ? 692 : 576) // Wide layout on desktop, mobile layout on tablet/mobile
-                      : isResponsive ? (isClient && screenWidth >= 1024 ? 692 : 576) // Wide layout on desktop, mobile layout on tablet/mobile
-                      : 480,
+                      ? (typeof window !== 'undefined' && window.innerWidth < 768 ? 
+                          Math.min(480, window.innerHeight * 0.6) : 
+                          Math.min(800, window.innerHeight * 0.7)) // Dynamic height based on viewport
+                      : isMobile ? Math.min(576, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 576)
+                      : isWide ? Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692)
+                      : isStatic ? (isClient && screenWidth >= 1024 ? 
+                          Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
+                          Math.min(576, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 576))
+                      : isResponsive ? (isClient && screenWidth >= 1024 ? 
+                          Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
+                          Math.min(576, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 576))
+                      : Math.min(480, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 480),
                     backgroundColor: card.backgroundColor 
                   }}
                   whileHover={{ scale: 1.02 }}
@@ -681,12 +700,14 @@ export default function ContentCards({
                                 height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
                               }}
                             >
-                              <Image
-                                src={card.image}
+                              <HybridBlobImage
+                                path={getImagePath(card.image)}
                                 alt={getCardText(card, 'title')}
                                 fill
                                 className="object-cover object-center"
-                                unoptimized
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
                               />
                             </motion.div>
                           </div>
@@ -721,12 +742,14 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
                               className="relative w-full h-full rounded-3xl overflow-hidden"
                             >
-                              <Image
-                                src={card.image}
+                              <HybridBlobImage
+                                path={getImagePath(card.image)}
                                 alt={getCardText(card, 'title')}
                                 fill
                                 className="object-cover object-center"
-                                unoptimized
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
                               />
                             </motion.div>
                           </div>
@@ -768,12 +791,14 @@ export default function ContentCards({
                                 height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
                               }}
                             >
-                              <Image
-                                src={card.image}
+                              <HybridBlobImage
+                                path={getImagePath(card.image)}
                                 alt={getCardText(card, 'title')}
                                 fill
                                 className="object-cover object-center"
-                                unoptimized
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
                               />
                             </motion.div>
                           </div>
@@ -808,12 +833,14 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
                               className="relative w-full h-full rounded-3xl overflow-hidden"
                             >
-                              <Image
-                                src={card.image}
+                              <HybridBlobImage
+                                path={getImagePath(card.image)}
                                 alt={getCardText(card, 'title')}
                                 fill
                                 className="object-cover object-center"
-                                unoptimized
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
                               />
                             </motion.div>
                           </div>
@@ -853,12 +880,14 @@ export default function ContentCards({
                             height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
                           }}
                         >
-                          <Image
-                            src={card.image}
+                          <HybridBlobImage
+                            path={getImagePath(card.image)}
                             alt={getCardText(card, 'title')}
                             fill
                             className="object-cover object-center"
-                            unoptimized
+                            strategy="client"
+                            isInteractive={true}
+                            enableCache={true}
                           />
                         </motion.div>
                       </div>
@@ -893,12 +922,14 @@ export default function ContentCards({
                           transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
                           className="relative w-full h-full rounded-3xl overflow-hidden"
                         >
-                          <Image
-                            src={card.image}
+                          <HybridBlobImage
+                            path={getImagePath(card.image)}
                             alt={getCardText(card, 'title')}
                             fill
                             className="object-cover object-center"
-                            unoptimized
+                            strategy="client"
+                            isInteractive={true}
+                            enableCache={true}
                           />
                         </motion.div>
                       </div>
@@ -911,38 +942,42 @@ export default function ContentCards({
         </div>
         )}
 
-        {/* Navigation Arrows - Hidden for static and pricing variants */}
-        {!isStatic && !(isPricing && !isLightboxMode) && currentIndex > 0 && (
-          <button
-            onClick={() => navigateCard(-1)}
-            className={`absolute left-0 top-1/2 transform -translate-y-1/2 ${maxWidth ? '-translate-x-4' : 'translate-x-2'} bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
-          >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-        )}
+        {/* Navigation Arrows - FIXED: Better visibility conditions */}
+        {!isStatic && !(isPricing && !isLightboxMode) && (
+          <>
+            {currentIndex > 0 && (
+              <button
+                onClick={() => navigateCard(-1)}
+                className={`absolute left-0 top-1/2 transform -translate-y-1/2 ${maxWidth ? '-translate-x-4' : 'translate-x-2'} bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+              >
+                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
 
-        {!isStatic && !(isPricing && !isLightboxMode) && currentIndex + cardsPerView < displayCards.length && (
-          <button
-            onClick={() => navigateCard(1)}
-            className={`absolute right-0 top-1/2 transform -translate-y-1/2 ${maxWidth ? 'translate-x-4' : '-translate-x-2'} bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
-          >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+            {currentIndex < displayCards.length - Math.floor(cardsPerView) && (
+              <button
+                onClick={() => navigateCard(1)}
+                className={`absolute right-0 top-1/2 transform -translate-y-1/2 ${maxWidth ? 'translate-x-4' : '-translate-x-2'} bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+              >
+                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+          </>
         )}
       </div>
 
-      {/* Progress Indicator - Hidden for static and pricing variants */}
-      {!isStatic && !(isPricing && !isLightboxMode) && (
+      {/* FIXED: Progress Indicator - Only one and only when needed */}
+      {!isStatic && !(isPricing && !isLightboxMode) && displayCards.length > Math.floor(cardsPerView) && (
         <div className="flex justify-center mt-8">
           <div className="bg-gray-200 rounded-full h-1 w-32">
             <motion.div
               className="bg-gray-900 rounded-full h-1"
               style={{
-                width: `${((currentIndex + cardsPerView) / displayCards.length) * 100}%`
+                width: `${Math.min(100, ((currentIndex + Math.floor(cardsPerView)) / displayCards.length) * 100)}%`
               }}
               transition={{ duration: 0.3 }}
             />

@@ -26,6 +26,7 @@ import {
   GrundstuecksCheckBox,
   CartFooter
 } from './index';
+import ConfiguratorContentCardsLightbox from './ConfiguratorContentCardsLightbox';
 import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator';
 
 // Simple debounce implementation to avoid lodash dependency
@@ -293,7 +294,8 @@ export default function ConfiguratorShell({
   }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
 
   const handleInfoClick = useCallback((_infoKey: string) => {
-    // TODO: Implement dialog opening logic
+    // Info clicks are now handled by individual ConfiguratorContentCardsLightbox components
+    // This function is kept for backward compatibility but is no longer needed
   }, []);
 
   // Fixed selection detection logic - more robust checking
@@ -489,13 +491,28 @@ export default function ConfiguratorShell({
             />
           )}
 
-          {/* Info Box */}
+          {/* Info Box - Use new responsive cards for specific categories */}
           {category.infoBox && (
-            <InfoBox
-              title={category.infoBox.title}
-              description={category.infoBox.description}
-              onClick={() => handleInfoClick(category.id)}
-            />
+            <>
+              {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
+              {(category.id === 'gebaeudehuelle' || category.id === 'innenverkleidung' || category.id === 'fenster' || category.id === 'pvanlage') ? (
+                <ConfiguratorContentCardsLightbox
+                  categoryKey={
+                    category.id === 'gebaeudehuelle' ? 'materials' :
+                    category.id === 'pvanlage' ? 'photovoltaik' :
+                    category.id as 'innenverkleidung' | 'fenster'
+                  }
+                  triggerText={category.infoBox.title}
+                />
+              ) : (
+                /* Use regular InfoBox for other categories */
+                <InfoBox
+                  title={category.infoBox.title}
+                  description={category.infoBox.description}
+                  onClick={() => handleInfoClick(category.id)}
+                />
+              )}
+            </>
           )}
 
           {/* Facts Box */}

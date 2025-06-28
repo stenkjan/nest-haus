@@ -157,6 +157,31 @@ export const IMAGES = {
         plattenweiss_interior: '155-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Holz-Natur-Granit' // schiefer
     },
 
+    // Material detail images for dialogs
+    materials: {
+        schiefer: '57-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Schiefer-Feinsteinzeug',
+        laercheFassade: '52-NEST-Haus-Materialien-Oberflaechen-Fassade-Laerche-Bauholz-Lattung',
+        kalkstein: '56-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Kalkstein-Kanafar',
+        fundermax: '53-NEST-Haus-Materialien-Oberflaechen-Fassadenplatte-Schwarz',
+        eicheParkett: '49-NEST-Haus-Materialien-Oberflaechen-Fussboden-Eichenholz-Parkett-Fischgraetparkett-Eiche',
+        trapezblech: '55-NEST-Haus-Materialien-Oberflaechen-Fassade-Trapezblech-Blech-Schwarz'
+    },
+
+    // Interior material images for innenverkleidung dialog
+    interiorMaterials: {
+        eiche: '50-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Eichenholz-Interior-Eiche',
+        fichte: '58-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Fichte-natur-hell',
+        kiefer: '59-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Kiefer-natur'
+    },
+
+    // Window/Fenster detail images
+    windows: {
+        pvc: '177-NEST-Haus-Fenster-Kunststoff-PVC-Fenster-Weiß-Kunststofffenster-PVCFenster',
+        fichte: '175-NEST-Haus-Fenster-Holz-Fichte-Holzfenster-Fichtenfenster',
+        aluminium: '176-NEST-Haus-Fenster-Aluminium-Fenster-Aluminiumfenster-Metallfenster',
+        eiche: '174-NEST-Haus-Fenster-Holz-Eiche-Holzfenster-Eichenfenster'
+    },
+
     // Fallback images
     fallbacks: {
         exterior: '/api/placeholder/1200/800?style=nest&text=Loading...',
