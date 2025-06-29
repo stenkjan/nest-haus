@@ -182,6 +182,13 @@ export const IMAGES = {
         eiche: '174-NEST-Haus-Fenster-Holz-Eiche-Holzfenster-Eichenfenster'
     },
 
+    // Flooring/Fußboden detail images
+    flooring: {
+        schiefer: '57-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Schiefer-Feinsteinzeug',
+        kalkstein: '56-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Kalkstein-Kanafar',
+        eicheParkett: '49-NEST-Haus-Materialien-Oberflaechen-Fussboden-Eichenholz-Parkett-Fischgraetparkett-Eiche'
+    },
+
     // Fallback images
     fallbacks: {
         exterior: '/api/placeholder/1200/800?style=nest&text=Loading...',

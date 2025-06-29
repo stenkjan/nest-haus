@@ -143,7 +143,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
 
   fenster: {
     title: {
-      main: "Die Fenster",
+      main: "Fenster & Türen",
       subtitle: "Unsere Materialien"
     },
     sliderKey: "fenster-slider",
@@ -154,83 +154,87 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
     cards: [
       {
         id: 1,
-        title: "Die Fenster & Türen",
-        subtitle: "Unsere Materialien",
+        title: "Fenster & Türen - Unsere Materialien",
+        subtitle: "Kunststoff PVC",
         description: {
-          mobile: "Du hast die Freiheit, die Fenster und Türen nach deinen Vorstellungen zu gestalten. Wähle aus verschiedenen Materialien und Oberflächen für optimale Ästhetik und Funktionalität. Falls du Unterstützung benötigst, kannst du auf unsere Planungspakete zählen, die dir bei der Auswahl der passenden Materialien helfen.",
-          desktop: "Du hast die Freiheit, die Fenster und Türen nach deinen Vorstellungen zu gestalten. Wähle aus verschiedenen Materialien und Oberflächen für optimale Ästhetik und Funktionalität. Falls du Unterstützung benötigst, kannst du auf unsere Planungspakete zählen, die dir bei der Auswahl der passenden Materialien helfen."
+          mobile: "PVC-Fenster bieten hervorragende Wärmedämmung und Langlebigkeit. Sie sind pflegeleicht, witterungsbeständig und in verschiedenen Farben und Designs erhältlich.",
+          desktop: "PVC-Fenster bieten hervorragende Wärmedämmung und Langlebigkeit bei optimaler Kosteneffizienz. Das hochwertige Kunststoffmaterial ist pflegeleicht, witterungsbeständig und UV-stabil. Moderne PVC-Fenster sind in verschiedenen Farben und Designs erhältlich und überzeugen durch ihre ausgezeichneten Isoliereigenschaften, die zu niedrigeren Heizkosten beitragen."
         },
-        imagePath: IMAGES.aboutus.materialEiche
+        imagePath: IMAGES.windows.pvc
       },
       {
         id: 2,
-        title: "Fichte",
-        subtitle: "Natürlich & Warm",
+        title: "Fenster & Türen - Unsere Materialien",
+        subtitle: "Holz Fichte",
         description: {
-          mobile: "Fichte-Fenster stehen für natürliche Schönheit und Nachhaltigkeit. Das helle Holz mit seiner charakteristischen Maserung verleiht jedem Zuhause eine warme, einladende Ausstrahlung.",
-          desktop: "Fichte-Fenster stehen für natürliche Schönheit und Nachhaltigkeit. Das helle Holz mit seiner charakteristischen Maserung verleiht jedem Zuhause eine warme, einladende Ausstrahlung."
+          mobile: "Fichte-Holzfenster stehen für natürliche Schönheit und nachhaltiges Bauen. Das helle, warme Holz schafft eine gemütliche Atmosphäre und reguliert das Raumklima.",
+          desktop: "Fichte-Holzfenster stehen für natürliche Schönheit, nachhaltiges Bauen und zeitlose Eleganz. Das helle, warme Holz mit seiner charakteristischen Maserung schafft eine gemütliche Atmosphäre und reguliert auf natürliche Weise das Raumklima. Holzfenster aus Fichte sind umweltfreundlich, renewable und verleihen jedem Zuhause eine authentische, warme Ausstrahlung."
         },
-        imagePath: IMAGES.configurations.fenster_holz_fichte
+        imagePath: IMAGES.windows.fichte
       },
       {
         id: 3,
-        title: "OSB-Platte",
-        subtitle: "Modern & Nachhaltig",
+        title: "Fenster & Türen - Unsere Materialien",
+        subtitle: "Aluminium",
         description: {
-          mobile: "OSB-Platten verbinden moderne Optik mit nachhaltiger Bauweise. Die charakteristische Struktur der verleimten Holzspäne schafft eine einzigartige, zeitgemäße Ästhetik.",
-          desktop: "OSB-Platten verbinden moderne Optik mit nachhaltiger Bauweise. Die charakteristische Struktur der verleimten Holzspäne schafft eine einzigartige, zeitgemäße Ästhetik."
+          mobile: "Aluminium-Fenster überzeugen durch ihre moderne Optik und hohe Stabilität. Sie sind korrosionsbeständig, wartungsarm und ermöglichen große Glasflächen.",
+          desktop: "Aluminium-Fenster überzeugen durch ihre moderne, puristische Optik und außergewöhnliche Stabilität. Das robuste Material ist korrosionsbeständig, wartungsarm und ermöglicht die Realisierung großer Glasflächen bei schlanken Profilen. Aluminium-Fenster sind langlebig, recyclebar und fügen sich perfekt in zeitgenössische Architekturkonzepte ein."
         },
-        imagePath: IMAGES.function.nestHausModulSchema
+        imagePath: IMAGES.windows.aluminium
       },
       {
         id: 4,
-        title: "Eichen-Parkett",
-        subtitle: "Elegant & Langlebig",
+        title: "Fenster & Türen - Unsere Materialien",
+        subtitle: "Holz Eiche",
         description: {
-          mobile: "Eichen-Parkett steht für zeitlose Eleganz und außergewöhnliche Langlebigkeit. Die natürliche Maserung und warme Farbgebung schaffen eine edle, behagliche Atmosphäre.",
-          desktop: "Eichen-Parkett steht für zeitlose Eleganz und außergewöhnliche Langlebigkeit. Die natürliche Maserung und warme Farbgebung schaffen eine edle, behagliche Atmosphäre."
+          mobile: "Eichen-Holzfenster stehen für höchste Qualität und zeitlose Eleganz. Das robuste Hartholz überzeugt durch seine charaktervolle Maserung und außergewöhnliche Langlebigkeit.",
+          desktop: "Eichen-Holzfenster stehen für höchste Qualität, zeitlose Eleganz und außergewöhnliche Langlebigkeit. Das robuste Hartholz überzeugt durch seine charaktervolle Maserung und warme Farbgebung, die jedem Raum eine edle, behagliche Atmosphäre verleiht. Eiche ist extrem widerstandsfähig und entwickelt über die Jahre eine wunderschöne Patina, die den natürlichen Charakter des Holzes unterstreicht."
         },
-        imagePath: IMAGES.configurations.trapezblech_eiche_parkett
+        imagePath: IMAGES.windows.eiche
+      }
+    ]
+  },
+
+  fussboden: {
+    title: {
+      main: "Der Fußboden",
+      subtitle: "Unsere Materialien"
+    },
+    sliderKey: "fussboden-slider",
+    actionButton: {
+      text: "Mehr erfahren",
+      href: "/fussboden"
+    },
+    cards: [
+      {
+        id: 1,
+        title: "Der Fußboden - Unsere Materialien",
+        subtitle: "Feinsteinzeug - Schiefer",
+        description: {
+          mobile: "Schiefer steht für natürliche Eleganz und hohe Strapazierfähigkeit. Robuste, trittfeste Oberfläche, beständig gegen Temperaturschwankungen. Charakteristische Farbpalette von Anthrazit bis Grau.",
+          desktop: "Schiefer steht für natürliche Eleganz, hohe Strapazierfähigkeit und zeitlose Ästhetik. Als Bodenbelag im Innenraum überzeugt er durch seine robuste, trittfeste Oberfläche und seine Beständigkeit gegenüber Temperaturschwankungen und Feuchtigkeit. Die feine, geschichtete Struktur und die charakteristische Farbpalette von Anthrazit bis Tiefgrau verleihen jedem Raum eine edle, zugleich warme Ausstrahlung. Schiefer bringt Ursprünglichkeit und Stil in Einklang – und wird so zum langlebigen Gestaltungselement für moderne wie klassische Wohnkonzepte."
+        },
+        imagePath: IMAGES.flooring.schiefer
       },
       {
-        id: 5,
-        title: "Lärche",
-        subtitle: "Natürlich & Beständig",
+        id: 2,
+        title: "Der Fußboden - Unsere Materialien",
+        subtitle: "Naturstein - Kanafar",
         description: {
-          mobile: "Lärche vereint natürliche Ästhetik mit außergewöhnlicher Langlebigkeit. Die warme Farbgebung und charakteristische Maserung verleihen zeitlose Eleganz.",
-          desktop: "Lärche vereint natürliche Ästhetik mit außergewöhnlicher Langlebigkeit. Die warme Farbgebung und charakteristische Maserung verleihen zeitlose Eleganz."
+          mobile: "Massiver Kalkstein überzeugt durch natürliche Eleganz und hohe Widerstandsfähigkeit. Charakteristische Farbgebung von warmen Beigetönen bis sanften Graunuancen. Edle Ausstrahlung.",
+          desktop: "Der massive Kalkstein überzeugt durch seine natürliche Eleganz, zeitlose Ästhetik und hohe Widerstandsfähigkeit. Mit seiner charakteristischen Farbgebung, die von warmen Beigetönen bis hin zu sanften Graunuancen reicht, verleiht er Innen- und Außenbereichen eine edle, harmonische Ausstrahlung. Seine fein strukturierte Oberfläche und die einzigartigen Adern und Fossileinschlüsse machen jedes Element zu einem Unikat."
         },
-        imagePath: IMAGES.configurations.holzlattung_eiche_kalkstein
+        imagePath: IMAGES.flooring.kalkstein
       },
       {
-        id: 6,
-        title: "Fassadenplatten Schwarz",
-        subtitle: "Modern & Widerstandsfähig",
+        id: 3,
+        title: "Der Fußboden - Unsere Materialien",
+        subtitle: "Eichenholz - Parkett",
         description: {
-          mobile: "Schwarze Fassadenplatten stehen für moderne Eleganz und hohe Widerstandsfähigkeit. Sie bieten optimalen Schutz bei zeitgemäßer Optik.",
-          desktop: "Schwarze Fassadenplatten stehen für moderne Eleganz und hohe Widerstandsfähigkeit. Sie bieten optimalen Schutz bei zeitgemäßer Optik."
+          mobile: "Eichen-Parkett steht für zeitlose Eleganz und natürliche Wärme. Die charakteristische Maserung verleiht jedem Raum eine edle Atmosphäre. Dank hoher Härte besonders langlebig.",
+          desktop: "Der Parkettboden aus Eiche steht für zeitlose Eleganz, natürliche Wärme und außergewöhnliche Langlebigkeit. Die charakteristische Maserung und die warme Farbgebung der Eiche verleihen jedem Raum eine edle und zugleich gemütliche Atmosphäre. Dank der hohen Härte und Widerstandsfähigkeit des Holzes ist Eichenparkett besonders strapazierfähig und eignet sich sowohl für Wohnräume als auch für stark frequentierte Bereiche."
         },
-        imagePath: IMAGES.configurations.nest115_plattenschwarz
-      },
-      {
-        id: 7,
-        title: "Fassadenplatten Weiß",
-        subtitle: "Zeitlos & Elegant",
-        description: {
-          mobile: "Weiße Fassadenplatten verkörpern zeitlose Eleganz und moderne Ästhetik. Sie schaffen helle, freundliche Akzente und harmonieren mit jeder Umgebung.",
-          desktop: "Weiße Fassadenplatten verkörpern zeitlose Eleganz und moderne Ästhetik. Sie schaffen helle, freundliche Akzente und harmonieren mit jeder Umgebung."
-        },
-        imagePath: IMAGES.configurations.nest115_plattenweiss
-      },
-      {
-        id: 8,
-        title: "Trapezblech",
-        subtitle: "Robust & Vielseitig",
-        description: {
-          mobile: "Trapezblech bietet robuste Langlebigkeit und vielseitige Einsatzmöglichkeiten. Die charakteristische Profilierung sorgt für hohe Stabilität bei geringem Gewicht.",
-          desktop: "Trapezblech bietet robuste Langlebigkeit und vielseitige Einsatzmöglichkeiten. Die charakteristische Profilierung sorgt für hohe Stabilität bei geringem Gewicht."
-        },
-        imagePath: IMAGES.configurations.nest115_trapezblech
+        imagePath: IMAGES.flooring.eicheParkett
       }
     ]
   },
@@ -248,53 +252,43 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
     cards: [
       {
         id: 1,
-        title: "Photovoltaik Varianten",
-        subtitle: "Gemeinsam in die Zukunft",
+        title: "Photovoltaik - Varianten",
+        subtitle: "Holzfassade",
         description: {
-          mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicherer. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Eine Investition in die Zukunft, die sich langfristig auszahlt und die Umwelt schont.",
-          desktop: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicherer. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr."
+          mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
+          desktop: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie."
         },
         imagePath: IMAGES.configurations.pv_holzfassade
       },
       {
         id: 2,
-        title: "Nachhaltige Integration",
-        subtitle: "Harmonisches Design",
+        title: "Photovoltaik - Varianten",
+        subtitle: "Trapezblech",
         description: {
-          mobile: "Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie. Eine nachhaltige Lösung für moderne Wohnkonzepte.",
-          desktop: "Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie."
+          mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
+          desktop: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie."
         },
         imagePath: IMAGES.configurations.pv_trapezblech
       },
       {
         id: 3,
-        title: "Intelligente Integration",
-        subtitle: "Nahtloses Design",
+        title: "Photovoltaik - Varianten",
+        subtitle: "Fassadenplatten Schwarz",
         description: {
-          mobile: "Die PV-Module werden perfekt in die Fassade integriert und schaffen ein harmonisches Gesamtbild. So bleibt die Ästhetik deines Hauses erhalten, während du von der Sonnenenergie profitierst. Eine elegante Lösung, die Funktionalität und Design perfekt vereint und dabei höchste Effizienz bietet.",
-          desktop: "Die PV-Module werden perfekt in die Fassade integriert und schaffen ein harmonisches Gesamtbild. So bleibt die Ästhetik deines Hauses erhalten, während du von der Sonnenenergie profitierst."
+          mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
+          desktop: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie."
         },
         imagePath: IMAGES.configurations.pv_plattenschwarz
       },
       {
         id: 4,
-        title: "Photovoltaik (Kopie)",
-        subtitle: "Nachhaltige Energie",
+        title: "Photovoltaik - Varianten",
+        subtitle: "Fassadenplatten Weiß",
         description: {
-          mobile: "Mit unserer Photovoltaik-Lösung machst du dein NEST Haus energieautark. Die hochwertigen PV-Module werden nahtlos in die Fassade integriert und erzeugen sauberen Strom für deinen täglichen Bedarf. Eine zukunftsweisende Technologie, die Nachhaltigkeit und Effizienz perfekt kombiniert und dabei langfristig Kosten spart.",
-          desktop: "Mit unserer Photovoltaik-Lösung machst du dein NEST Haus energieautark. Die hochwertigen PV-Module werden nahtlos in die Fassade integriert und erzeugen sauberen Strom für deinen täglichen Bedarf."
+          mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
+          desktop: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie."
         },
         imagePath: IMAGES.configurations.pv_plattenweiss
-      },
-      {
-        id: 5,
-        title: "Effiziente Module (Kopie)",
-        subtitle: "Maximale Leistung",
-        description: {
-          mobile: "Unsere PV-Module sind speziell für die Integration in die NEST Haus Fassade entwickelt. Sie bieten eine optimale Balance zwischen Ästhetik und Energieeffizienz. Hochwertige Technologie, die maximale Leistung bei minimaler Wartung garantiert und dabei die architektonische Schönheit Ihres Hauses unterstreicht.",
-          desktop: "Unsere PV-Module sind speziell für die Integration in die NEST Haus Fassade entwickelt. Sie bieten eine optimale Balance zwischen Ästhetik und Energieeffizienz."
-        },
-        imagePath: IMAGES.configurations.pv_holzfassade
       }
     ]
   }

@@ -54,6 +54,7 @@ const CATEGORY_COLORS = {
   materials: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
   innenverkleidung: ['#fefcfb', '#fef7ed', '#fed7aa', '#fdba74', '#fb923c'],
   fenster: ['#f0fdf4', '#dcfce7', '#bbf7d0', '#86efac', '#4ade80'],
+  fussboden: ['#fefdf2', '#fef3c7', '#fde68a', '#f59e0b', '#d97706'],
   photovoltaik: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
 } as const;
 

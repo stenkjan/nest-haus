@@ -27,6 +27,8 @@ import {
   CartFooter
 } from './index';
 import ConfiguratorContentCardsLightbox from './ConfiguratorContentCardsLightbox';
+import CalendarDialog from './CalendarDialog';
+import GrundstueckCheckDialog from './GrundstueckCheckDialog';
 import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator';
 
 // Simple debounce implementation to avoid lodash dependency
@@ -55,6 +57,10 @@ export default function ConfiguratorShell({
   const [pvQuantity, setPvQuantity] = useState<number>(0);
   const [fensterSquareMeters, setFensterSquareMeters] = useState<number>(0);
   const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] = useState(false);
+  
+  // Dialog state
+  const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
+  const [isGrundstueckCheckDialogOpen, setIsGrundstueckCheckDialogOpen] = useState(false);
 
   // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
   // This prevents individual calculations during render for every option
@@ -293,9 +299,21 @@ export default function ConfiguratorShell({
     }
   }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
 
-  const handleInfoClick = useCallback((_infoKey: string) => {
-    // Info clicks are now handled by individual ConfiguratorContentCardsLightbox components
-    // This function is kept for backward compatibility but is no longer needed
+  const handleInfoClick = useCallback((infoKey: string) => {
+    console.log('🚀 Info click:', infoKey);
+    
+    switch (infoKey) {
+      case 'beratung':
+      case 'nest': // "Noch Fragen offen?" box after module selection
+        setIsCalendarDialogOpen(true);
+        break;
+      case 'grundcheck':
+        setIsGrundstueckCheckDialogOpen(true);
+        break;
+      default:
+        // Other info clicks are handled by individual ConfiguratorContentCardsLightbox components
+        break;
+    }
   }, []);
 
   // Fixed selection detection logic - more robust checking
@@ -591,6 +609,17 @@ export default function ConfiguratorShell({
 
       {/* Cart Footer */}
       <CartFooter onReset={resetLocalState} />
+
+      {/* Dialog Components */}
+      <CalendarDialog
+        isOpen={isCalendarDialogOpen}
+        onClose={() => setIsCalendarDialogOpen(false)}
+      />
+      
+      <GrundstueckCheckDialog
+        isOpen={isGrundstueckCheckDialogOpen}
+        onClose={() => setIsGrundstueckCheckDialogOpen(false)}
+      />
     </div>
   );
 }
