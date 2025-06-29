@@ -4,6 +4,19 @@
 
 ---
 
+## [1071dba7033a3274eca6b1ba4ada56a977898d38] - Sun Jun 29 13:40:31 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `fix: resolve Windows Prisma file locking issue in build script`
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+
+- package.json
+
+---
+
 ## [ad93476a1bef35f6e01e0d56c65261890a015055] - Wed Jun 25 12:34:56 2025 +0200
 
 **Author**: stenkjan  
