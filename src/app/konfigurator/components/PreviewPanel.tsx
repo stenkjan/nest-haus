@@ -18,14 +18,7 @@ interface PreviewPanelProps {
   className?: string
 }
 
-// Utility function to detect iOS (robust for iPadOS 13+)
-function isIOS() {
-  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false
-  return (
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.userAgent.includes('Macintosh') && typeof document !== 'undefined' && 'ontouchend' in document)
-  )
-}
+
 
 export default function PreviewPanel({ isMobile = false, className = '' }: PreviewPanelProps) {
   const { 
@@ -37,21 +30,10 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   } = useConfiguratorStore()
   const [activeView, setActiveView] = useState<ViewType>('exterior')
   const [previewHeight, setPreviewHeight] = useState('clamp(20rem, 40vh, 35rem)')
-  const [isIOSMobile, setIsIOSMobile] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
   const [, startTransition] = useTransition()
 
-  // Platform detection with proper SSR handling
-  useEffect(() => {
-    const checkPlatform = () => {
-      setIsIOSMobile(isIOS() && window.innerWidth < 1024)
-    }
-    checkPlatform()
-    window.addEventListener('resize', checkPlatform)
-    return () => window.removeEventListener('resize', checkPlatform)
-  }, [])
-
-  // Calculate preview height for mobile only
+  // Calculate preview height for mobile only - WebKit optimized
   useEffect(() => {
     if (!isMobile) return
 
@@ -62,16 +44,11 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
       // Calculate height to maintain 16:9 aspect ratio at full width
       const aspectRatioHeight = (screenWidth / 16) * 9
       
-      // For iOS, account for address bar and ensure reasonable bounds
-      if (isIOSMobile) {
-        const maxHeight = Math.min(screenHeight * 0.5, 400)
-        const optimalHeight = Math.min(aspectRatioHeight, maxHeight)
-        setPreviewHeight(`${optimalHeight}px`)
-      } else {
-        const maxHeight = Math.min(screenHeight * 0.6, 450)
-        const optimalHeight = Math.min(aspectRatioHeight, maxHeight)
-        setPreviewHeight(`${optimalHeight}px`)
-      }
+      // Use responsive sizing that works well with sticky positioning
+      // Account for potential address bar changes on mobile browsers
+      const maxHeight = Math.min(screenHeight * 0.5, 400)
+      const optimalHeight = Math.min(aspectRatioHeight, maxHeight)
+      setPreviewHeight(`${optimalHeight}px`)
     }
 
     calculatePreviewHeight()
@@ -83,7 +60,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
       window.removeEventListener('resize', resizeHandler)
       window.removeEventListener('orientationchange', resizeHandler)
     }
-  }, [isMobile, isIOSMobile])
+  }, [isMobile])
 
   // Get current image path
   const currentImagePath = useMemo(() => {
@@ -151,13 +128,10 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
   // Simplified container style - consistent with right panel
   const containerStyle = useMemo(() => {
     if (isMobile) {
+      // Mobile: use calculated height, sticky positioning handled by parent
       return {
         height: previewHeight,
-        ...(isIOSMobile && {
-          position: 'sticky' as const,
-          top: '0px',
-          zIndex: 30,
-        })
+        width: '100%'
       };
     }
     // Desktop: use full available height (no extra padding since it's handled by parent)
@@ -165,7 +139,7 @@ export default function PreviewPanel({ isMobile = false, className = '' }: Previ
       height: '100%',
       width: '100%'
     };
-  }, [isMobile, previewHeight, isIOSMobile]);
+  }, [isMobile, previewHeight]);
 
   return (
     <div 

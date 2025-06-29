@@ -29,6 +29,7 @@ import {
 import ConfiguratorContentCardsLightbox from './ConfiguratorContentCardsLightbox';
 import CalendarDialog from './CalendarDialog';
 import GrundstueckCheckDialog from './GrundstueckCheckDialog';
+import PlanungspaketeDialog from './PlanungspaketeDialog';
 import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator';
 
 // Simple debounce implementation to avoid lodash dependency
@@ -61,6 +62,7 @@ export default function ConfiguratorShell({
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
   const [isGrundstueckCheckDialogOpen, setIsGrundstueckCheckDialogOpen] = useState(false);
+  const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] = useState(false);
 
   // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
   // This prevents individual calculations during render for every option
@@ -309,6 +311,9 @@ export default function ConfiguratorShell({
         break;
       case 'grundcheck':
         setIsGrundstueckCheckDialogOpen(true);
+        break;
+      case 'planungspaket':
+        setIsPlanungspaketeDialogOpen(true);
         break;
       default:
         // Other info clicks are handled by individual ConfiguratorContentCardsLightbox components
@@ -567,15 +572,23 @@ export default function ConfiguratorShell({
 
   return (
     <div className="configurator-shell w-full h-full bg-white">
-      {/* Mobile Layout (< 1024px) */}
-      <div className="lg:hidden h-full flex flex-col">
-        <div className="flex-shrink-0 bg-white">
+      {/* Mobile Layout (< 1024px) - Document-level scrolling for proper WebKit behavior */}
+      <div className="lg:hidden min-h-screen bg-white">
+        {/* Sticky Image Header - sticks to top during scroll */}
+        <div className="sticky top-0 z-40 bg-white shadow-sm">
           <PreviewPanel isMobile={true} />
         </div>
+        
+        {/* Scrollable Content - flows underneath sticky image */}
         <div 
           ref={rightPanelRef} 
-          className="flex-1 overflow-y-auto bg-white" 
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          className="relative bg-white"
+          style={{ 
+            // Ensure proper touch scrolling on WebKit
+            WebkitOverflowScrolling: 'touch',
+            // Add padding to account for potential floating elements
+            paddingBottom: 'calc(var(--footer-height, 2.5rem) + 1rem)'
+          }}
         >
           <SelectionContent />
         </div>
@@ -607,8 +620,10 @@ export default function ConfiguratorShell({
         </div>
       </div>
 
-      {/* Cart Footer */}
-      <CartFooter onReset={resetLocalState} />
+      {/* Cart Footer - Fixed position on mobile for better UX */}
+      <div className="lg:relative lg:static">
+        <CartFooter onReset={resetLocalState} />
+      </div>
 
       {/* Dialog Components */}
       <CalendarDialog
@@ -619,6 +634,11 @@ export default function ConfiguratorShell({
       <GrundstueckCheckDialog
         isOpen={isGrundstueckCheckDialogOpen}
         onClose={() => setIsGrundstueckCheckDialogOpen(false)}
+      />
+      
+      <PlanungspaketeDialog
+        isOpen={isPlanungspaketeDialogOpen}
+        onClose={() => setIsPlanungspaketeDialogOpen(false)}
       />
     </div>
   );

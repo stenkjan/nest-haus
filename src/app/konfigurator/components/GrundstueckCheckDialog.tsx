@@ -57,9 +57,9 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
           style={{ minHeight: '300px' }}
         >
             <div className="max-w-[1700px] mx-auto bg-[#F4F4F4] rounded-[32px] md:rounded-[32px] px-1 md:px-5 pb-3 flex flex-col items-center shadow-md">
-              <div className="relative w-full flex flex-col md:flex-row justify-start items-start gap-4 md:gap-8 pt-0 px-2 sm:px-4 lg:px-8 overflow-y-auto h-full pointer-events-auto z-10">
+              <div className="relative w-full flex flex-col md:flex-row justify-start items-start gap-4 md:gap-8 pt-6 md:pt-0 px-2 sm:px-4 lg:px-8 overflow-y-auto h-full pointer-events-auto z-10">
                 {/* Left Info Section (responsive) */}
-                <div className="w-full md:flex-1 md:min-w-[180px] md:max-w-[340px] xl:min-w-[320px] xl:max-w-[420px] flex flex-col justify-start px-2 sm:px-4 md:pl-4 md:pr-0 lg:pl-10 md:mt-7 z-10">
+                <div className="w-full md:flex-1 md:min-w-[180px] md:max-w-[340px] xl:min-w-[320px] xl:max-w-[420px] flex flex-col justify-start px-2 sm:px-4 md:pl-4 md:pr-0 lg:pl-10 mt-4 md:mt-7 z-10">
                   <div className="flex flex-col gap-4">
                     <div>
                       <p className="text-xs sm:text-sm text-gray-500 mb-2 leading-snug">
@@ -86,7 +86,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                   </div>
                 </div>
                 {/* Right Column - Form (responsive, compact) */}
-                <div className="w-full md:flex-1 md:min-w-[260px] md:max-w-[540px] flex flex-col px-2 sm:px-4 md:pl-8 md:pr-4 lg:pl-12 lg:pr-0 pb-4 md:mt-[2vh]">
+                <div className="w-full md:flex-1 md:min-w-[260px] md:max-w-[540px] flex flex-col px-2 sm:px-4 md:pl-8 md:pr-4 lg:pl-12 lg:pr-0 pb-4 mt-4 md:mt-[2vh]">
                   <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-3">
                     <h3 className="font-normal mb-1 sm:mb-2 text-xs sm:text-sm text-gray-700">Daten Bewerber</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2">
