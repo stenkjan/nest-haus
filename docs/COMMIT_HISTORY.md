@@ -4,6 +4,15 @@
 
 ---
 
+## [67c12ebc4a35588eedf17cd60bad0763c8519406] - Sun Jun 29 18:41:53 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `feat: restore Google Drive sync environment variables after adding secrets to Vercel`
+
+### Changes Analysis
+
+---
+
 ## [e202ac487093333d624f2aad6014872cc13d85b2] - Sun Jun 29 14:30:28 2025 +0200
 
 **Author**: stenkjan  
