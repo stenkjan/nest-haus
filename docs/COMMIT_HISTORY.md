@@ -4,6 +4,15 @@
 
 ---
 
+## [e202ac487093333d624f2aad6014872cc13d85b2] - Sun Jun 29 14:30:28 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `fix: temporarily disable Google Drive sync env vars to resolve Vercel deployment`
+
+### Changes Analysis
+
+---
+
 ## [c5b078bb2af350e07e7f762d338f791997d2f58b] - Sun Jun 29 13:53:56 2025 +0200
 
 **Author**: stenkjan  
