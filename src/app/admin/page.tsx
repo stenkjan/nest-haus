@@ -7,6 +7,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { SessionManager } from '@/lib/redis';
+import { AdminAnalyticsService } from '@/lib/AdminAnalyticsService';
 
 // Placeholder components for metrics cards
 function MetricCard({ title, value, change, icon }: {
@@ -34,37 +35,74 @@ function MetricCard({ title, value, change, icon }: {
 }
 
 async function DashboardMetrics() {
-  // This would fetch real analytics data
-  const analytics = await SessionManager.getSessionAnalytics();
-  
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <MetricCard
-        title="Active Sessions"
-        value={analytics.activeSessions || 0}
-        change="+12%"
-        icon="👥"
-      />
-      <MetricCard
-        title="Total Sessions Today"
-        value={analytics.totalSessions || 0}
-        change="+8%"
-        icon="📊"
-      />
-      <MetricCard
-        title="Avg Session Duration"
-        value={`${Math.round((analytics.averageSessionDuration || 0) / 1000 / 60)}m`}
-        change="+5%"
-        icon="⏱️"
-      />
-      <MetricCard
-        title="Conversion Rate"
-        value="3.2%"
-        change="+0.8%"
-        icon="💰"
-      />
-    </div>
-  );
+  // SAFE INTEGRATION: Use new analytics service with fallback to old method
+  try {
+    console.log('🔄 Loading real analytics data...');
+    const analytics = await AdminAnalyticsService.getAnalytics();
+    
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <MetricCard
+          title="Active Sessions"
+          value={analytics.activeSessions}
+          change="+12%"
+          icon="👥"
+        />
+        <MetricCard
+          title="Total Sessions Today"
+          value={analytics.totalSessionsToday}
+          change="+8%"
+          icon="📊"
+        />
+        <MetricCard
+          title="Avg Session Duration"
+          value={AdminAnalyticsService.formatDuration(analytics.averageSessionDuration)}
+          change="+5%"
+          icon="⏱️"
+        />
+        <MetricCard
+          title="Conversion Rate"
+          value={AdminAnalyticsService.formatPercentage(analytics.conversionRate)}
+          change="+0.8%"
+          icon="💰"
+        />
+      </div>
+    );
+  } catch (error) {
+    console.error('❌ Failed to load real analytics, using fallback:', error);
+    
+    // FALLBACK: Use original method if new service fails
+    const analytics = await SessionManager.getSessionAnalytics();
+    
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <MetricCard
+          title="Active Sessions"
+          value={analytics.activeSessions || 0}
+          change="+12%"
+          icon="👥"
+        />
+        <MetricCard
+          title="Total Sessions Today"
+          value={analytics.totalSessions || 0}
+          change="+8%"
+          icon="📊"
+        />
+        <MetricCard
+          title="Avg Session Duration"
+          value={`${Math.round((analytics.averageSessionDuration || 0) / 1000 / 60)}m`}
+          change="+5%"
+          icon="⏱️"
+        />
+        <MetricCard
+          title="Conversion Rate"
+          value="3.2%"
+          change="+0.8%"
+          icon="💰"
+        />
+      </div>
+    );
+  }
 }
 
 export default function AdminDashboard() {
