@@ -13,12 +13,39 @@ import { prisma } from '@/lib/prisma';
 import { SessionManager } from '@/lib/redis';
 
 interface SessionTestResults {
-  trackedInteractions: unknown[];
-  totalTrackingTime: number;
-  savedSnapshots: unknown[];
-  performanceAnalysis: unknown;
-  sessionAnalytics: unknown;
-  realTimeData: unknown;
+  sessionSummary: {
+    sessionId: string;
+    totalInteractions: number;
+    totalSnapshots: number;
+    sessionDuration: number;
+    averageInteractionTime: number;
+  };
+  performanceMetrics: {
+    totalTrackingTime: number;
+    averageTrackingTime: number;
+    trackingOverhead: number;
+    efficiency: string;
+  };
+  userJourney: {
+    steps: Array<{
+      step: string;
+      category: string;
+      eventType: string;
+      timeSpent: number;
+      trackingTime: number;
+    }>;
+    configurationEvolution: Array<{
+      trigger: string;
+      completionPercentage: number;
+      totalPrice: number;
+    }>;
+  };
+  databaseCounts: {
+    sessions: number;
+    interactions: number;
+    snapshots: number;
+    performanceRecords: number;
+  };
 }
 
 export async function POST() {

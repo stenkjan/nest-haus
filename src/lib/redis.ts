@@ -49,6 +49,8 @@ export interface ClickEvent {
   timeSpent: number;
   priceChange?: number;
   totalPrice?: number;
+  eventType?: string;
+  elementId?: string;
 }
 
 // Analytics response type

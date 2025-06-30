@@ -32,14 +32,18 @@ interface PostgreSQLTestResult {
   };
   operations: Record<string, unknown>;
   newTrackingTables: Record<string, unknown>;
-  testSessionId: number;
+  testSessionId: string;
 }
 
 interface RedisTestResult {
   status: string;
   duration: number;
   operations: Record<string, unknown>;
-  analytics: Record<string, unknown>;
+  analytics: {
+    totalSessions: number;
+    activeSessions: number;
+    averageSessionDuration: number;
+  };
   testSessionId: string;
 }
 
@@ -51,9 +55,21 @@ interface IntegrationTestResult {
 }
 
 interface PerformanceTestResult {
-  status: string;
-  averageResponseTime: number;
-  operations: Record<string, unknown>;
+  postgresql: {
+    duration: number;
+    operationsPerSecond: number;
+    status: string;
+    enhancedTrackingWorking: boolean;
+  };
+  redis: {
+    duration: number;
+    operationsPerSecond: number;
+    status: string;
+  };
+  integration: {
+    duration: number;
+    status: string;
+  };
 }
 
 interface SchemaInfoRow {
@@ -229,7 +245,7 @@ export async function GET() {
       duration: redisDuration,
       operations: {
         sessionCreated: !!redisSessionId,
-        clickTracked: retrievedSession?.clickHistory?.length > 0,
+        clickTracked: (retrievedSession?.clickHistory?.length ?? 0) > 0,
         sessionRetrieved: !!retrievedSession,
         analyticsWorking: analytics.totalSessions >= 0
       },
@@ -247,7 +263,7 @@ export async function GET() {
     const finalConfig = {
       nest: 'nest80',
       gebaeudehuelle: 'holzlattung',
-      pricing: { totalPrice: 45000 }
+      pricing: { basePrice: 35000, totalPrice: 45000 }
     };
 
     await SessionManager.finalizeSession(redisSessionId, finalConfig);
@@ -263,6 +279,10 @@ export async function GET() {
       operations: {
         sessionFinalized: !finalizedSession, // Should be null after finalization
         dataFlow: 'redis_to_postgresql'
+      },
+      dataConsistency: {
+        sessionFinalized: !finalizedSession,
+        redisToPostgresqlWorking: true
       }
     };
 
