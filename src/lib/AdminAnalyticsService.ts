@@ -84,6 +84,26 @@ export class AdminAnalyticsService {
   private static readonly REQUEST_TIMEOUT = 10000; // 10 seconds
   
   /**
+   * Get the correct API URL for both client and server environments
+   */
+  private static getApiUrl(): string {
+    // If we're on the server side (no window object), we need to construct the full URL
+    if (typeof window === 'undefined') {
+      // For server-side rendering, use the local host
+      const baseUrl = process.env.VERCEL_URL 
+        ? `https://${process.env.VERCEL_URL}`
+        : process.env.NODE_ENV === 'production'
+        ? 'https://nest-haus.vercel.app' // Replace with your actual production domain
+        : 'http://localhost:3000';
+      
+      return `${baseUrl}${this.API_ENDPOINT}`;
+    }
+    
+    // Client side can use relative URLs
+    return this.API_ENDPOINT;
+  }
+  
+  /**
    * Fetch analytics data with comprehensive error handling
    */
   static async getAnalytics(): Promise<AdminAnalyticsData> {
@@ -96,8 +116,12 @@ export class AdminAnalyticsService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.REQUEST_TIMEOUT);
       
+      // Get the correct URL for the environment
+      const apiUrl = this.getApiUrl();
+      console.log(`🌐 Fetching from: ${apiUrl}`);
+      
       // Make API request with timeout
-      const response = await fetch(this.API_ENDPOINT, {
+      const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -152,17 +176,18 @@ export class AdminAnalyticsService {
   /**
    * Validate analytics data structure
    */
-  private static validateAnalyticsData(data: any): data is AdminAnalyticsData {
+  private static validateAnalyticsData(data: unknown): data is AdminAnalyticsData {
     try {
       return (
         typeof data === 'object' &&
-        typeof data.activeSessions === 'number' &&
-        typeof data.totalSessions === 'number' &&
-        typeof data.averageSessionDuration === 'number' &&
-        typeof data.conversionRate === 'number' &&
-        typeof data.systemHealth === 'string' &&
-        ['excellent', 'good', 'needs_attention'].includes(data.systemHealth) &&
-        typeof data.lastUpdated === 'string'
+        data !== null &&
+        typeof (data as AdminAnalyticsData).activeSessions === 'number' &&
+        typeof (data as AdminAnalyticsData).totalSessions === 'number' &&
+        typeof (data as AdminAnalyticsData).averageSessionDuration === 'number' &&
+        typeof (data as AdminAnalyticsData).conversionRate === 'number' &&
+        typeof (data as AdminAnalyticsData).systemHealth === 'string' &&
+        ['excellent', 'good', 'needs_attention'].includes((data as AdminAnalyticsData).systemHealth) &&
+        typeof (data as AdminAnalyticsData).lastUpdated === 'string'
       );
     } catch {
       return false;
@@ -200,7 +225,8 @@ export class AdminAnalyticsService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for health check
       
-      const response = await fetch(this.API_ENDPOINT, {
+      const apiUrl = this.getApiUrl();
+      const response = await fetch(apiUrl, {
         method: 'HEAD', // Use HEAD for health check
         signal: controller.signal
       });

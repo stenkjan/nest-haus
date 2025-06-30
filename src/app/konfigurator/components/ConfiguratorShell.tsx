@@ -10,7 +10,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { PriceCalculator } from '../core/PriceCalculator';
 import { configuratorData } from '../data/configuratorData';
@@ -68,42 +68,45 @@ export default function ConfiguratorShell({
   // This prevents individual calculations during render for every option
   const [optionPricesCache, setOptionPricesCache] = useState<Map<string, { type: 'base' | 'upgrade' | 'included'; amount?: number; monthly?: number }>>(new Map());
 
-  // Debounced bulk price calculation to prevent calculation storms
-  const bulkCalculateOptionPrices = useCallback(
-    debounce((nestValue: string, configurationSelections: Record<string, unknown>) => {
-      if (!nestValue) return;
+  // Bulk price calculation function
+  const calculateOptionPrices = useCallback((nestValue: string, configurationSelections: Record<string, unknown>) => {
+    if (!nestValue) return;
 
-      const newCache = new Map();
-      const coreCategories = ['gebaeudehuelle', 'innenverkleidung', 'fussboden'];
+    const newCache = new Map();
+    const coreCategories = ['gebaeudehuelle', 'innenverkleidung', 'fussboden'];
 
-      // Pre-calculate prices for all core options that depend on nest size
-      configuratorData.forEach(category => {
-        if (coreCategories.includes(category.id)) {
-          category.options.forEach(option => {
-            try {
-              const price = PriceCalculator.getOptionDisplayPrice(
-                nestValue,
-                configurationSelections,
-                category.id,
-                option.id
-              );
-              newCache.set(`${category.id}:${option.id}`, price);
-                         } catch {
-               // Fallback for any calculation errors
-               newCache.set(`${category.id}:${option.id}`, { type: 'included' as const });
-             }
-          });
-        } else {
-          // For non-core categories, use static prices from configuratorData
-          category.options.forEach(option => {
-            newCache.set(`${category.id}:${option.id}`, option.price || { type: 'included' as const });
-          });
-        }
-      });
+    // Pre-calculate prices for all core options that depend on nest size
+    configuratorData.forEach(category => {
+      if (coreCategories.includes(category.id)) {
+        category.options.forEach(option => {
+          try {
+            const price = PriceCalculator.getOptionDisplayPrice(
+              nestValue,
+              configurationSelections,
+              category.id,
+              option.id
+            );
+            newCache.set(`${category.id}:${option.id}`, price);
+                       } catch {
+             // Fallback for any calculation errors
+             newCache.set(`${category.id}:${option.id}`, { type: 'included' as const });
+           }
+        });
+      } else {
+        // For non-core categories, use static prices from configuratorData
+        category.options.forEach(option => {
+          newCache.set(`${category.id}:${option.id}`, option.price || { type: 'included' as const });
+        });
+      }
+    });
 
-      setOptionPricesCache(newCache);
-    }, 150), // 150ms debounce to prevent rapid recalculations
-    []
+    setOptionPricesCache(newCache);
+  }, [setOptionPricesCache]);
+
+  // Debounced version for performance - using useMemo to avoid dependency issues
+  const bulkCalculateOptionPrices = useMemo(
+    () => debounce(calculateOptionPrices, 150), // 150ms debounce to prevent rapid recalculations
+    [calculateOptionPrices]
   );
 
   // Trigger bulk calculation when nest or core selections change

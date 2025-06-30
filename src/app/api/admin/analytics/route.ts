@@ -7,7 +7,7 @@
  * Week 1 Implementation: Real analytics data for admin dashboard
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 /**
@@ -352,7 +352,7 @@ class IsolatedAnalyticsService {
  * Returns comprehensive analytics data for the admin dashboard.
  * This endpoint is completely isolated and safe to call without affecting configurator functionality.
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   const startTime = Date.now();
   
   try {
@@ -408,7 +408,7 @@ export async function GET(request: NextRequest) {
 export async function HEAD() {
   try {
     // Quick database connectivity test
-    const sessionCount = await prisma.userSession.count({ take: 1 });
+    await prisma.userSession.count({ take: 1 });
     
     return new Response(null, {
       status: 200,
@@ -418,7 +418,7 @@ export async function HEAD() {
         'X-Last-Check': new Date().toISOString()
       }
     });
-  } catch (error) {
+  } catch {
     return new Response(null, {
       status: 503,
       headers: {

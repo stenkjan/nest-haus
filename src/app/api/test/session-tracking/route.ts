@@ -12,6 +12,15 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { SessionManager } from '@/lib/redis';
 
+interface SessionTestResults {
+  trackedInteractions: unknown[];
+  totalTrackingTime: number;
+  savedSnapshots: unknown[];
+  performanceAnalysis: unknown;
+  sessionAnalytics: unknown;
+  realTimeData: unknown;
+}
+
 export async function POST() {
   try {
     const testResults = {
@@ -19,7 +28,7 @@ export async function POST() {
       week1Implementation: {
         status: 'testing',
         features: ['InteractionEvents', 'ConfigurationSnapshots', 'PerformanceMetrics'],
-        testResults: {} as any
+        testResults: {} as SessionTestResults
       }
     };
 

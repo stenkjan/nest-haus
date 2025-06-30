@@ -9,17 +9,70 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { SessionManager } from '@/lib/redis';
 
+interface TestResults {
+  timestamp: string;
+  postgresql: PostgreSQLTestResult | null;
+  redis: RedisTestResult | null;
+  integration: IntegrationTestResult | null;
+  performance: PerformanceTestResult | null;
+  summary: {
+    status: string;
+    errors: string[];
+    warnings: string[];
+  };
+}
+
+interface PostgreSQLTestResult {
+  status: string;
+  duration: number;
+  schemaInfo: {
+    table_count: string;
+    database_name: string;
+    user_name: string;
+  };
+  operations: Record<string, unknown>;
+  newTrackingTables: Record<string, unknown>;
+  testSessionId: number;
+}
+
+interface RedisTestResult {
+  status: string;
+  duration: number;
+  operations: Record<string, unknown>;
+  analytics: Record<string, unknown>;
+  testSessionId: string;
+}
+
+interface IntegrationTestResult {
+  status: string;
+  duration: number;
+  operations: Record<string, unknown>;
+  dataConsistency: Record<string, unknown>;
+}
+
+interface PerformanceTestResult {
+  status: string;
+  averageResponseTime: number;
+  operations: Record<string, unknown>;
+}
+
+interface SchemaInfoRow {
+  table_count: string;
+  database_name: string;
+  user_name: string;
+}
+
 export async function GET() {
-  const testResults = {
+  const testResults: TestResults = {
     timestamp: new Date().toISOString(),
-    postgresql: null as any,
-    redis: null as any,
-    integration: null as any,
-    performance: null as any,
+    postgresql: null,
+    redis: null,
+    integration: null,
+    performance: null,
     summary: {
       status: 'unknown',
-      errors: [] as string[],
-      warnings: [] as string[]
+      errors: [],
+      warnings: []
     }
   };
 
@@ -38,7 +91,7 @@ export async function GET() {
         current_user as user_name
       FROM information_schema.tables 
       WHERE table_schema = 'public'
-    ` as any[];
+    ` as SchemaInfoRow[];
 
     // Test 2: Test UserSession operations (create, read, update)
     const testSession = await prisma.userSession.create({

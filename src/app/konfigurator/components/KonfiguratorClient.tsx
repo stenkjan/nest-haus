@@ -13,7 +13,7 @@ export default function KonfiguratorClient() {
   // Initialize session once on mount - no dependencies to prevent infinite loop
   useEffect(() => {
     initializeSession();
-  }, []); // Only run once on mount
+  }, [initializeSession]); // Include initializeSession dependency
 
   // Development performance monitoring - runs once on mount
   useEffect(() => {
