@@ -10,7 +10,18 @@ export const IMAGES = {
         nestHaus5: '5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten',
         nestHaus6: '6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche',
         nestHaus7: '7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite',
-        nestHaus8: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten'
+        nestHaus8: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
+        // Mobile versions for landing page
+        mobile: {
+            nestHaus1: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche-mobile',
+            nestHaus2: '2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten-mobile',
+            nestHaus3: '3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche-mobile',
+            nestHaus4: '4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade-mobile',
+            nestHaus5: '5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten-mobile',
+            nestHaus6: '6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche-mobile',
+            nestHaus7: '7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-mobile',
+            nestHaus8: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten-mobile'
+        }
     },
 
     // Gallery images

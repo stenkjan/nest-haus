@@ -64,8 +64,10 @@ export default function HybridBlobImage({
       }>
         <ServerBlobImage
           path={path}
+          mobilePath={mobilePath}
           fallbackSrc={fallbackSrc}
           enableSSRFetch={true}
+          enableMobileDetection={enableMobileDetection}
           priority={isAboveFold || isCritical}
           {...props}
         />

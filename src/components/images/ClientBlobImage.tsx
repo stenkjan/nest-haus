@@ -100,17 +100,32 @@ class ImageCache {
   }
   
   private static async fetchImageUrl(path: string): Promise<string> {
-    const response = await fetch(`/api/images?path=${encodeURIComponent(path)}`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch image: ${response.status}`);
-    }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
     
-    const data = await response.json();
-    if (!data.url) {
-      throw new Error('No URL returned');
+    try {
+      const response = await fetch(`/api/images?path=${encodeURIComponent(path)}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      if (!data.url) {
+        throw new Error('Image URL not found in response');
+      }
+      
+      return data.url;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error('Request timeout');
+      }
+      throw error;
     }
-    
-    return data.url;
   }
   
   static loadFromSession(): void {
@@ -323,9 +338,23 @@ export default function ClientBlobImage({
         }
 
         // Fetch image URL
-        const imageUrl = enableCache 
-          ? await ImageCache.getOrFetch(effectivePath)
-          : await fetchImageDirect(effectivePath);
+        let imageUrl: string;
+        try {
+          imageUrl = enableCache 
+            ? await ImageCache.getOrFetch(effectivePath)
+            : await fetchImageDirect(effectivePath);
+        } catch (mobileError) {
+          // If mobile image fails and we're using mobile path, try desktop fallback
+          if (enableMobileDetection && isMobile && mobilePath && effectivePath === sanitizePath(mobilePath)) {
+            console.warn(`Mobile image failed, falling back to desktop: ${effectivePath} -> ${sanitizePath(path)}`);
+            const desktopPath = sanitizePath(path);
+            imageUrl = enableCache 
+              ? await ImageCache.getOrFetch(desktopPath)
+              : await fetchImageDirect(desktopPath);
+          } else {
+            throw mobileError;
+          }
+        }
 
         // Update state if component is still mounted and request wasn't cancelled
         if (mountedRef.current && !cancelled) {
@@ -353,19 +382,34 @@ export default function ClientBlobImage({
     return () => {
       cancelled = true;
     };
-  }, [effectivePath, enableCache, fallbackSrc, shouldFetchImage]);
+  }, [effectivePath, enableCache, fallbackSrc, shouldFetchImage, enableMobileDetection, isMobile, mobilePath, path, sanitizePath]);
 
   // Direct fetch function (bypass cache)
   const fetchImageDirect = async (imagePath: string): Promise<string> => {
-    const response = await fetch(`/api/images?path=${encodeURIComponent(imagePath)}`);
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+    
+    try {
+      const response = await fetch(`/api/images?path=${encodeURIComponent(imagePath)}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      if (!data.url) {
+        throw new Error('No URL in response');
+      }
+      return data.url;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error('Request timeout');
+      }
+      throw error;
     }
-    const data = await response.json();
-    if (!data.url) {
-      throw new Error('No URL in response');
-    }
-    return data.url;
   };
 
   // Handle Next.js Image onLoad
@@ -380,10 +424,40 @@ export default function ClientBlobImage({
   const handleError = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
     if (mountedRef.current) {
       setIsLoading(false);
-      setError('Image failed to load');
+      
+      // If this was a mobile image that failed, try desktop fallback
+      if (enableMobileDetection && isMobile && mobilePath && effectivePath === sanitizePath(mobilePath)) {
+        console.warn('Mobile image failed at Next.js level, falling back to desktop image');
+        const desktopPath = sanitizePath(path);
+        
+        // Try to load desktop image directly
+        const loadDesktopFallback = async () => {
+          try {
+            const desktopUrl = enableCache 
+              ? await ImageCache.getOrFetch(desktopPath)
+              : await fetchImageDirect(desktopPath);
+            
+            if (mountedRef.current) {
+              setImageSrc(desktopUrl);
+              setError(null);
+              lastLoadedPathRef.current = desktopPath;
+            }
+          } catch (desktopError) {
+            if (mountedRef.current) {
+              setError('Both mobile and desktop images failed');
+              setImageSrc(fallbackSrc);
+            }
+          }
+        };
+        
+        loadDesktopFallback();
+      } else {
+        setError('Image failed to load');
+      }
+      
       onError?.(event);
     }
-  }, [onError]);
+  }, [onError, enableMobileDetection, isMobile, mobilePath, effectivePath, sanitizePath, path, enableCache, fallbackSrc]);
 
   return (
     <>
