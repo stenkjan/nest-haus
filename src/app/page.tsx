@@ -99,7 +99,7 @@ export default function Home() {
         <section 
           key={section.id} 
           className="relative w-full overflow-hidden"
-          style={{ marginBottom: section.id !== sections.length ? '2vh' : '0' }}
+          style={{ marginBottom: section.id !== sections.length ? '1vh' : '0' }}
         >
           {/* Desktop image container - 16:9 aspect ratio */}
           <div 
