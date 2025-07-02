@@ -3,6 +3,13 @@
  * Tracks SEO-related metrics and provides insights
  */
 
+interface ConfigurationForSEO {
+  totalPrice?: number;
+  nest?: {
+    value: string;
+  };
+}
+
 interface SEOMetrics {
   pageViews: Record<string, number>;
   searchKeywords: Record<string, number>;
@@ -61,7 +68,7 @@ export class SEOMonitoringService {
   /**
    * Track configurator interactions for conversion analysis
    */
-  static trackConfiguratorStep(step: string, configuration: any) {
+  static trackConfiguratorStep(step: string, configuration: ConfigurationForSEO) {
     this.metrics.configuratorSteps[step] = (this.metrics.configuratorSteps[step] || 0) + 1;
 
     // Update conversion funnel

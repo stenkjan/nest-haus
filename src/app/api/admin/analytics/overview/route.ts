@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { redis } from '@/lib/redis';
+import redis from '@/lib/redis';
 
 /**
  * Admin Analytics Overview API
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
       configurationStats, 
       popularConfigs,
       performanceMetrics,
-      revenueData
+      _revenueData
     ] = await Promise.all([
       // Session statistics
       prisma.userSession.aggregate({

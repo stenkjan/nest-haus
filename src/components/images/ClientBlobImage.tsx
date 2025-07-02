@@ -442,7 +442,7 @@ export default function ClientBlobImage({
               setError(null);
               lastLoadedPathRef.current = desktopPath;
             }
-          } catch (desktopError) {
+          } catch {
             if (mountedRef.current) {
               setError('Both mobile and desktop images failed');
               setImageSrc(fallbackSrc);

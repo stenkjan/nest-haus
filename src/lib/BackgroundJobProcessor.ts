@@ -3,9 +3,42 @@
  * Handles Redis → PostgreSQL sync and analytics calculations
  */
 
+import { Prisma } from '@prisma/client';
 import { prisma } from './prisma';
-import { redis } from './redis';
+import redis from './redis';
 import cron from 'node-cron';
+
+// Configuration data types for proper typing
+interface ConfigurationValue {
+  value: string;
+  price?: number;
+}
+
+interface ConfigurationData {
+  nest?: ConfigurationValue;
+  gebaeudehuelle?: ConfigurationValue;
+  innenverkleidung?: ConfigurationValue;
+  fussboden?: ConfigurationValue;
+  pvanlage?: ConfigurationValue;
+  fenster?: ConfigurationValue;
+  planungspaket?: ConfigurationValue;
+  [key: string]: ConfigurationValue | undefined; // Index signature for dynamic access
+}
+
+interface PerformanceMetricData {
+  sessionId: string;
+  metricName: string;
+  value: number;
+  timestamp: number;
+  additionalData?: Record<string, string | number | boolean> | null;
+  endpoint?: string;
+  userAgent?: string;
+}
+
+interface SessionWithConfigData {
+  configurationData: Prisma.JsonValue;
+  totalPrice: number | null;
+}
 
 interface QueuedInteraction {
   sessionId: string;
@@ -23,7 +56,7 @@ interface QueuedInteraction {
 
 interface QueuedConfiguration {
   sessionId: string;
-  configurationData: any;
+  configurationData: ConfigurationData;
   totalPrice?: number;
   triggerEvent: string;
   timestamp: number;
@@ -137,7 +170,7 @@ export class BackgroundJobProcessor {
         return 0;
       }
 
-      const parsedInteractions: QueuedInteraction[] = interactions.map(item => JSON.parse(item));
+      const parsedInteractions: QueuedInteraction[] = interactions.map((item: string) => JSON.parse(item));
 
       // Batch insert to PostgreSQL
       await prisma.interactionEvent.createMany({
@@ -182,13 +215,13 @@ export class BackgroundJobProcessor {
         return 0;
       }
 
-      const parsedConfigurations: QueuedConfiguration[] = configurations.map(item => JSON.parse(item));
+      const parsedConfigurations: QueuedConfiguration[] = configurations.map((item: string) => JSON.parse(item));
 
       // Batch insert to PostgreSQL
       await prisma.configurationSnapshot.createMany({
         data: parsedConfigurations.map(config => ({
           sessionId: config.sessionId,
-          configurationData: config.configurationData,
+          configurationData: config.configurationData as Prisma.InputJsonValue,
           totalPrice: config.totalPrice,
           triggerEvent: config.triggerEvent,
           timestamp: new Date(config.timestamp),
@@ -220,16 +253,16 @@ export class BackgroundJobProcessor {
         return 0;
       }
 
-      const parsedMetrics = metrics.map(item => JSON.parse(item));
+      const parsedMetrics = metrics.map((item: string) => JSON.parse(item));
 
       // Batch insert to PostgreSQL
       await prisma.performanceMetric.createMany({
-        data: parsedMetrics.map((metric: any) => ({
+        data: parsedMetrics.map((metric: PerformanceMetricData) => ({
           sessionId: metric.sessionId,
           metricName: metric.metricName,
           value: metric.value,
           timestamp: new Date(metric.timestamp),
-          additionalData: metric.additionalData,
+          additionalData: metric.additionalData as Prisma.InputJsonValue,
           endpoint: metric.endpoint,
           userAgent: metric.userAgent
         }))
@@ -360,7 +393,9 @@ export class BackgroundJobProcessor {
         where: {
           status: 'COMPLETED',
           createdAt: { gte: thirtyDaysAgo },
-          configurationData: { not: null }
+          configurationData: {
+            not: Prisma.DbNull
+          }
         },
         select: {
           configurationData: true,
@@ -369,23 +404,23 @@ export class BackgroundJobProcessor {
       });
 
       // Group configurations by hash
-      const configGroups: Record<string, any[]> = {};
+      const configGroups: Record<string, SessionWithConfigData[]> = {};
       recentSessions.forEach(session => {
-        const config = session.configurationData as any;
+        const config = session.configurationData as ConfigurationData | null;
         if (!config) return;
 
         const hash = this.generateConfigurationHash(config);
         if (!configGroups[hash]) {
           configGroups[hash] = [];
         }
-        configGroups[hash].push(session);
+        configGroups[hash].push(session as SessionWithConfigData);
       });
 
       // Update popular configurations
       for (const [hash, sessions] of Object.entries(configGroups)) {
         if (sessions.length === 0) continue;
 
-        const config = sessions[0].configurationData as any;
+        const config = sessions[0].configurationData as ConfigurationData;
         const averagePrice = sessions.reduce((sum, s) => sum + (s.totalPrice || 0), 0) / sessions.length;
 
         await prisma.popularConfiguration.upsert({
@@ -469,7 +504,7 @@ export class BackgroundJobProcessor {
    */
   static async cleanupExpiredSessions(): Promise<void> {
     try {
-      const expiredThreshold = Date.now() - (24 * 60 * 60 * 1000); // 24 hours ago
+      const _expiredThreshold = Date.now() - (24 * 60 * 60 * 1000); // 24 hours ago
       
       // This would typically involve checking Redis session timestamps
       // and removing expired ones. Implementation depends on your Redis structure.
@@ -483,25 +518,29 @@ export class BackgroundJobProcessor {
   /**
    * Calculate configuration completion percentage
    */
-  private static calculateCompletionPercentage(configData: any): number {
-    const requiredFields = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden'];
-    const optionalFields = ['pvanlage', 'fenster', 'planungspaket'];
-    
+  private static calculateCompletionPercentage(configData: ConfigurationData): number {
     let completed = 0;
-    let total = requiredFields.length;
+    let total = 4; // Required fields count
 
     // Check required fields
-    requiredFields.forEach(field => {
-      if (configData[field]?.value) completed++;
-    });
+    if (configData.nest?.value) completed++;
+    if (configData.gebaeudehuelle?.value) completed++;
+    if (configData.innenverkleidung?.value) completed++;
+    if (configData.fussboden?.value) completed++;
 
-    // Check optional fields
-    optionalFields.forEach(field => {
-      if (configData[field]?.value) {
-        completed++;
-        total++;
-      }
-    });
+    // Check optional fields and add to total if present
+    if (configData.pvanlage?.value) {
+      completed++;
+      total++;
+    }
+    if (configData.fenster?.value) {
+      completed++;
+      total++;
+    }
+    if (configData.planungspaket?.value) {
+      completed++;
+      total++;
+    }
 
     return total > 0 ? (completed / total) * 100 : 0;
   }
@@ -509,7 +548,7 @@ export class BackgroundJobProcessor {
   /**
    * Generate configuration hash for grouping
    */
-  private static generateConfigurationHash(config: any): string {
+  private static generateConfigurationHash(config: ConfigurationData): string {
     const key = [
       config.nest?.value || '',
       config.gebaeudehuelle?.value || '', 
