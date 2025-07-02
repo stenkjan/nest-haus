@@ -96,7 +96,11 @@ export default function Home() {
   return (
     <div className="w-full bg-white" style={{ paddingTop: 'var(--navbar-height, 3.5rem)' }}>
       {sections.map((section) => (
-        <section key={section.id} className="relative w-full overflow-hidden">
+        <section 
+          key={section.id} 
+          className="relative w-full overflow-hidden"
+          style={{ marginBottom: section.id !== sections.length ? '2vh' : '0' }}
+        >
           {/* Desktop image container - 16:9 aspect ratio */}
           <div 
             className="hidden md:block relative w-full h-full"
