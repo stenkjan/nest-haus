@@ -696,8 +696,11 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
                               className="relative rounded-3xl overflow-hidden"
                               style={{ 
-                                width: '662px', // Fixed width for 1:1 ratio, fills available space after padding
-                                height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
+                                width: '100%', // Fill available width within padding
+                                height: '100%', // Fill available height within padding
+                                maxWidth: '662px', // Don't exceed original design width
+                                maxHeight: '662px', // Don't exceed original design height
+                                aspectRatio: '1/1', // Maintain 1:1 square aspect ratio
                               }}
                             >
                               <HybridBlobImage
@@ -787,8 +790,11 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
                               className="relative rounded-3xl overflow-hidden"
                               style={{ 
-                                width: '662px', // Fixed width for 1:1 ratio, fills available space after padding
-                                height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
+                                width: '100%', // Fill available width within padding
+                                height: '100%', // Fill available height within padding
+                                maxWidth: '662px', // Don't exceed original design width
+                                maxHeight: '662px', // Don't exceed original design height
+                                aspectRatio: '1/1', // Maintain 1:1 square aspect ratio
                               }}
                             >
                               <HybridBlobImage
@@ -876,8 +882,11 @@ export default function ContentCards({
                           transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
                           className="relative rounded-3xl overflow-hidden"
                           style={{ 
-                            width: '662px', // Fixed width for 1:1 ratio, fills available space after padding
-                            height: '662px', // Fixed height for perfect 1:1 ratio, equal gaps on all sides
+                            width: '100%', // Fill available width within padding
+                            height: '100%', // Fill available height within padding
+                            maxWidth: '662px', // Don't exceed original design width
+                            maxHeight: '662px', // Don't exceed original design height
+                            aspectRatio: '1/1', // Maintain 1:1 square aspect ratio
                           }}
                         >
                           <HybridBlobImage
