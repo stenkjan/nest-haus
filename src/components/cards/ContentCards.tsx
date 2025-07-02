@@ -430,7 +430,9 @@ export default function ContentCards({
     return (
       <div className={containerClasses}>
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+          {!(isLightboxMode && typeof window !== 'undefined' && window.innerWidth < 768) && (
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+          )}
           {subtitle && <p className="text-gray-600">{subtitle}</p>}
         </div>
         <div className="flex justify-center items-center py-8">
@@ -464,7 +466,9 @@ export default function ContentCards({
   return (
     <div className={containerClasses}>
       <div className={`text-center ${isLightboxMode ? 'mb-4' : 'mb-8'}`}>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+        {!(isLightboxMode && typeof window !== 'undefined' && window.innerWidth < 768) && (
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+        )}
         {subtitle && <p className="text-gray-600">{subtitle}</p>}
       </div>
 
@@ -584,17 +588,17 @@ export default function ContentCards({
                     width: cardWidth, 
                     height: isPricing && isLightboxMode 
                       ? (typeof window !== 'undefined' && window.innerWidth < 768 ? 
-                          Math.min(480, window.innerHeight * 0.6) : 
+                          Math.min(600, window.innerHeight * 0.75) : 
                           Math.min(800, window.innerHeight * 0.7)) // Dynamic height based on viewport
-                      : isMobile ? Math.min(576, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 576)
+                      : isMobile ? Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720)
                       : isWide ? Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692)
                       : isStatic ? (isClient && screenWidth >= 1024 ? 
                           Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
-                          Math.min(576, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 576))
+                          Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720))
                       : isResponsive ? (isClient && screenWidth >= 1024 ? 
                           Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
-                          Math.min(576, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 576))
-                      : Math.min(480, typeof window !== 'undefined' ? window.innerHeight * 0.6 : 480),
+                          Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720))
+                      : Math.min(600, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 600),
                     backgroundColor: card.backgroundColor 
                   }}
                   whileHover={{ scale: 1.02 }}
