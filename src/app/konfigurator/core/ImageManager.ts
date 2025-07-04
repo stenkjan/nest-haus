@@ -209,13 +209,8 @@ export class ImageManager {
         'schiefer_massiv': prefix === 'holzlattung' ? 'schiefer' : 'granit' // schiefer for holzlattung, granit for others
       };
       const fussbodenPart = fussbodenMap[fussboden] || 'kalkstein';
-      // Special case: holzlattung + kiefer + parkett uses 'eiche' suffix
-      let finalFussbodenPart = fussbodenPart;
-      if (prefix === 'holzlattung' && innenverkleidung === 'kiefer' && fussboden === 'parkett') {
-        finalFussbodenPart = 'eiche';
-      }
       // Construct the full image key: {prefix}_{innen}_{fussboden}
-      const imageKey = `${prefix}_${innenPart}_${finalFussbodenPart}` as keyof typeof IMAGES.configurations;
+      const imageKey = `${prefix}_${innenPart}_${fussbodenPart}` as keyof typeof IMAGES.configurations;
       // Try to get the specific combination
       const imagePath = IMAGES.configurations[imageKey];
       if (imagePath) {
