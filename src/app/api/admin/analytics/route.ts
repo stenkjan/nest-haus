@@ -129,7 +129,7 @@ class IsolatedAnalyticsService {
       
       if (sessions.length === 0) return 0;
       
-      const totalDuration = sessions.reduce((sum, session) => {
+      const totalDuration = sessions.reduce((sum: number, session: any) => {
         if (session.endTime) {
           const duration = session.endTime.getTime() - session.startTime.getTime();
           return sum + duration;
@@ -245,7 +245,7 @@ class IsolatedAnalyticsService {
       
       if (recentMetrics.length === 0) return 0;
       
-      const avgTime = recentMetrics.reduce((sum, metric) => sum + metric.value, 0) / recentMetrics.length;
+      const avgTime = recentMetrics.reduce((sum: number, metric: any) => sum + metric.value, 0) / recentMetrics.length;
       return avgTime;
     } catch (error) {
       console.error('❌ Failed to calculate avg API response time:', error);

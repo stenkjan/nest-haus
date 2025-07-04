@@ -149,15 +149,30 @@ export class GoogleDriveSync {
    */
   private async fetchDriveImages(folderId: string): Promise<DriveImage[]> {
     try {
+      console.log(`📁 Fetching images from folder ID: ${folderId}`);
+      
       const response = await this.drive.files.list({
         q: `'${folderId}' in parents and (mimeType contains 'image/')`,
         fields: 'files(id,name,modifiedTime,webContentLink)',
         pageSize: 1000 // Get all images in one request
       });
 
+      console.log(`📊 Raw files found in folder ${folderId}:`, response.data.files?.length || 0);
+      
+      // Log all files found (for debugging)
+      if (response.data.files && response.data.files.length > 0) {
+        console.log(`📄 Files in folder ${folderId}:`);
+        response.data.files.forEach((file, index) => {
+          console.log(`  ${index + 1}. "${file.name}" (ID: ${file.id})`);
+        });
+      } else {
+        console.log(`⚠️ No files found in folder ${folderId}`);
+      }
+
       const images: DriveImage[] = [];
       
       for (const file of response.data.files || []) {
+        console.log(`🔍 Parsing filename: "${file.name}"`);
         const parsed = this.parseImageName(file.name);
         if (parsed) {
           images.push({
@@ -169,9 +184,13 @@ export class GoogleDriveSync {
             modifiedTime: file.modifiedTime,
             webContentLink: file.webContentLink
           });
+          console.log(`✅ Successfully parsed: Number ${parsed.number}, Title: "${parsed.title}"`);
+        } else {
+          console.log(`❌ Could not parse filename: "${file.name}" (doesn't match pattern: NUMBER - TITLE.EXT)`);
         }
       }
 
+      console.log(`📊 Successfully parsed ${images.length} images from folder ${folderId}`);
       return images.sort((a, b) => a.number - b.number);
     } catch (error) {
       console.error(`❌ Failed to fetch images from folder ${folderId}:`, error);

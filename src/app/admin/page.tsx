@@ -139,7 +139,28 @@ export default function AdminDashboard() {
         </Suspense>
 
         {/* Navigation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <Link href="/admin/customer-inquiries" 
+                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  Customer Inquiries
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  Manage customer contact form submissions, track inquiry status, 
+                  and handle customer communications.
+                </p>
+                <div className="mt-4 text-sm text-gray-500">
+                  • Real customer data<br/>
+                  • Status tracking<br/>
+                  • Response management
+                </div>
+              </div>
+              <div className="text-4xl">📬</div>
+            </div>
+          </Link>
+
           <Link href="/admin/user-journey" 
                 className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group">
             <div className="flex items-center justify-between">
@@ -173,7 +194,7 @@ export default function AdminDashboard() {
                   and customer preferences.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • Top configurations<br/>
+                  • Real database data<br/>
                   • Price distribution<br/>
                   • Selection patterns
                 </div>

@@ -126,34 +126,34 @@ export async function GET(request: NextRequest) {
     
     // Calculate metrics
     const totalSessions = sessionStats._count.id;
-    const completedSessions = configurationStats.filter(s => s.status === 'COMPLETED').length;
+    const completedSessions = configurationStats.filter((s: any) => s.status === 'COMPLETED').length;
     const conversionRate = totalSessions > 0 ? (completedSessions / totalSessions) * 100 : 0;
     
     // Calculate average order value and revenue
-    const completedOrders = configurationStats.filter(s => s.status === 'COMPLETED' && s.totalPrice);
-    const totalRevenue = completedOrders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+    const completedOrders = configurationStats.filter((s: any) => s.status === 'COMPLETED' && s.totalPrice);
+    const totalRevenue = completedOrders.reduce((sum: number, order: any) => sum + (order.totalPrice || 0), 0);
     const averageOrderValue = completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
     
     // Calculate session duration
-    const sessionsWithDuration = configurationStats.filter(s => s.startTime && s.endTime);
+    const sessionsWithDuration = configurationStats.filter((s: any) => s.startTime && s.endTime);
     const averageSessionDuration = sessionsWithDuration.length > 0 
-      ? sessionsWithDuration.reduce((sum, session) => {
+      ? sessionsWithDuration.reduce((sum: number, session: any) => {
           const duration = session.endTime!.getTime() - session.startTime.getTime();
           return sum + duration;
         }, 0) / sessionsWithDuration.length / 1000 / 60 // Convert to minutes
       : 0;
     
     // Calculate bounce rate (sessions under 30 seconds)
-    const shortSessions = sessionsWithDuration.filter(session => {
+    const shortSessions = sessionsWithDuration.filter((session: any) => {
       const duration = session.endTime!.getTime() - session.startTime.getTime();
       return duration < 30000; // 30 seconds
     }).length;
     const bounceRate = sessionsWithDuration.length > 0 ? (shortSessions / sessionsWithDuration.length) * 100 : 0;
     
     // Performance calculations
-    const apiMetrics = performanceMetrics.filter(m => m.metricName === 'api_response_time');
+    const apiMetrics = performanceMetrics.filter((m: any) => m.metricName === 'api_response_time');
     const averageApiResponseTime = apiMetrics.length > 0 
-      ? apiMetrics.reduce((sum, m) => sum + m.value, 0) / apiMetrics.length 
+      ? apiMetrics.reduce((sum: number, m: any) => sum + m.value, 0) / apiMetrics.length 
       : 0;
     
     // Calculate trends (compare with previous period)
@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
         conversionGrowth: 0, // Calculate based on historical data
         revenueGrowth: 0 // Calculate based on historical data
       },
-      topConfigurations: popularConfigs.map(config => ({
+      topConfigurations: popularConfigs.map((config: any) => ({
         name: `${config.nestType} + ${config.gebaeudehuelle}`,
         selectionCount: config.selectionCount,
         conversionRate: Math.round(config.conversionRate * 100) / 100,
