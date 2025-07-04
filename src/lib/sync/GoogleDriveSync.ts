@@ -25,6 +25,7 @@ export interface DriveImage {
   extension: string;
   modifiedTime: string;
   webContentLink: string;
+  isMobile: boolean;
 }
 
 export interface BlobImage {
@@ -34,6 +35,7 @@ export interface BlobImage {
   uploadedAt: Date;
   number?: number;
   title?: string;
+  isMobile?: boolean;
 }
 
 export interface SyncResult {
@@ -178,12 +180,12 @@ export class GoogleDriveSync {
       // Step 1: Fetch images from both Google Drive folders
       console.log('📁 Fetching images from Google Drive folders...');
       const [mainImages, mobileImages] = await Promise.all([
-        this.fetchDriveImages(process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID!),
-        this.fetchDriveImages(process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID!)
+        this.fetchDriveImages(process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID!, false),
+        this.fetchDriveImages(process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID!, true)
       ]);
 
       const allDriveImages = [...mainImages, ...mobileImages];
-      console.log(`📊 Total Google Drive images found: ${allDriveImages.length}`);
+      console.log(`📊 Total Google Drive images found: ${allDriveImages.length} (${mainImages.length} main, ${mobileImages.length} mobile)`);
 
       // CRITICAL SAFETY CHECK: Prevent sync if Google Drive returns no images
       if (allDriveImages.length === 0) {
@@ -274,7 +276,7 @@ export class GoogleDriveSync {
   /**
    * Fetch images from a Google Drive folder
    */
-  private async fetchDriveImages(folderId: string): Promise<DriveImage[]> {
+  private async fetchDriveImages(folderId: string, isMobile: boolean): Promise<DriveImage[]> {
     try {
       console.log(`📁 Fetching images from folder ID: ${folderId}`);
       
@@ -309,7 +311,8 @@ export class GoogleDriveSync {
             title: parsed.title,
             extension: parsed.extension,
             modifiedTime: file.modifiedTime,
-            webContentLink: file.webContentLink
+            webContentLink: file.webContentLink,
+            isMobile: isMobile
           });
           console.log(`✅ Successfully parsed: Number ${parsed.number}, Title: "${parsed.title}"`);
         } else {
@@ -335,11 +338,11 @@ export class GoogleDriveSync {
   }
 
   /**
-   * Parse image name to extract number, title, and extension
-   * Handles both Drive format: "123-Some-Title-Name.jpg" 
+   * Parse image name to extract number, title, extension, and mobile flag
+   * Handles both Drive format: "123-Some-Title-Name.jpg" or "123-Some-Title-Name-mobile.jpg"
    * And Vercel Blob format: "images/123-Some-Title-Name-HASH.jpg"
    */
-  private parseImageName(fileName: string): { number: number; title: string; extension: string } | null {
+  private parseImageName(fileName: string): { number: number; title: string; extension: string; isMobile: boolean } | null {
     console.log(`🔍 Parsing filename: "${fileName}"`);
     
     // Remove path prefix if present (e.g., "images/")
@@ -362,10 +365,16 @@ export class GoogleDriveSync {
       return null;
     }
 
+    // Check if this is a mobile version
+    const isMobile = title.toLowerCase().includes('mobile');
+    // Remove 'mobile' suffix from title for consistency
+    const cleanTitle = title.replace(/-mobile$/i, '').trim();
+
     const result = {
       number,
-      title: title.trim(),
-      extension: extension.toLowerCase()
+      title: cleanTitle,
+      extension: extension.toLowerCase(),
+      isMobile
     };
     
     console.log(`✅ Successfully parsed: ${JSON.stringify(result)}`);
@@ -395,7 +404,8 @@ export class GoogleDriveSync {
           size: blob.size,
           uploadedAt: blob.uploadedAt,
           number: parsed?.number,
-          title: parsed?.title
+          title: parsed?.title,
+          isMobile: parsed?.isMobile
         };
       }).filter(blob => blob.number !== undefined); // Only include parsed images
     } catch (error) {
@@ -407,6 +417,7 @@ export class GoogleDriveSync {
   /**
    * Calculate what sync operations need to be performed
    * CONSERVATIVE APPROACH: Only delete images that are clearly outdated
+   * Uses composite key (number + mobile flag) to properly handle mobile vs desktop versions
    */
   private calculateSyncOperations(driveImages: DriveImage[], blobImages: BlobImage[]): SyncOperations {
     const operations: SyncOperations = {
@@ -415,25 +426,39 @@ export class GoogleDriveSync {
       delete: []
     };
 
-    // Create maps for efficient lookups
-    const blobByNumber = new Map<number, BlobImage>();
+    // Create composite key: "number:mobile" or "number:desktop"
+    const getCompositeKey = (number: number, isMobile: boolean): string => {
+      return `${number}:${isMobile ? 'mobile' : 'desktop'}`;
+    };
+
+    // Create maps for efficient lookups using composite keys
+    const blobByCompositeKey = new Map<string, BlobImage>();
     blobImages.forEach(blob => {
-      if (blob.number) blobByNumber.set(blob.number, blob);
+      if (blob.number !== undefined) {
+        const key = getCompositeKey(blob.number, blob.isMobile || false);
+        blobByCompositeKey.set(key, blob);
+      }
     });
 
-    const driveByNumber = new Map<number, DriveImage>();
-    driveImages.forEach(img => driveByNumber.set(img.number, img));
+    const driveByCompositeKey = new Map<string, DriveImage>();
+    driveImages.forEach(img => {
+      const key = getCompositeKey(img.number, img.isMobile);
+      driveByCompositeKey.set(key, img);
+    });
 
     // Process drive images
     for (const driveImg of driveImages) {
-      const existingBlob = blobByNumber.get(driveImg.number);
+      const compositeKey = getCompositeKey(driveImg.number, driveImg.isMobile);
+      const existingBlob = blobByCompositeKey.get(compositeKey);
       
       if (!existingBlob) {
         // New image - upload
         operations.upload.push(driveImg);
+        console.log(`📤 New image to upload: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
       } else if (existingBlob.title !== driveImg.title) {
         // Title changed - update (Drive title wins)
         operations.update.push({ drive: driveImg, blob: existingBlob });
+        console.log(`🔄 Image to update: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
       }
     }
 
@@ -451,17 +476,21 @@ export class GoogleDriveSync {
     ];
 
     for (const blobImg of blobImages) {
-      if (blobImg.number && !driveByNumber.has(blobImg.number)) {
-        const isProtected = protectedPatterns.some(pattern => 
-          pattern.test(blobImg.title || '') || 
-          pattern.test(blobImg.pathname || '')
-        );
+      if (blobImg.number !== undefined) {
+        const compositeKey = getCompositeKey(blobImg.number, blobImg.isMobile || false);
         
-        if (!isProtected) {
-          console.log(`🤔 Considering deletion of: ${blobImg.pathname}`);
-          operations.delete.push(blobImg);
-        } else {
-          console.log(`🛡️ Protecting: ${blobImg.pathname} (matches protection pattern)`);
+        if (!driveByCompositeKey.has(compositeKey)) {
+          const isProtected = protectedPatterns.some(pattern => 
+            pattern.test(blobImg.title || '') || 
+            pattern.test(blobImg.pathname || '')
+          );
+          
+          if (!isProtected) {
+            console.log(`🤔 Considering deletion of: ${blobImg.pathname}`);
+            operations.delete.push(blobImg);
+          } else {
+            console.log(`🛡️ Protecting: ${blobImg.pathname} (matches protection pattern)`);
+          }
         }
       }
     }
@@ -533,6 +562,7 @@ export class GoogleDriveSync {
 
   /**
    * Upload a single image from Google Drive to Vercel Blob
+   * Preserves mobile suffix and allows Vercel to add hash automatically
    */
   private async uploadImageToBlob(driveImg: DriveImage): Promise<void> {
     try {
@@ -551,8 +581,10 @@ export class GoogleDriveSync {
 
       // Upload to Vercel Blob with consistent naming (matches constants format)
       // Use "images/" prefix for consistency with existing blob structure
-      const fileName = `images/${driveImg.number}-${driveImg.title}.${driveImg.extension}`;
-      console.log(`⬆️ Uploading to blob: ${fileName}`);
+      // For mobile images, preserve the mobile suffix
+      const titleWithMobile = driveImg.isMobile ? `${driveImg.title}-mobile` : driveImg.title;
+      const fileName = `images/${driveImg.number}-${titleWithMobile}.${driveImg.extension}`;
+      console.log(`⬆️ Uploading to blob: ${fileName} (mobile: ${driveImg.isMobile})`);
 
       await put(fileName, buffer, {
         access: 'public',
@@ -590,4 +622,4 @@ export class GoogleDriveSync {
       return false;
     }
   }
-} 
+}
