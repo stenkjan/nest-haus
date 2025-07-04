@@ -63,18 +63,56 @@ interface SyncOperations {
 export class GoogleDriveSync {
   private drive: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   private initialized = false;
+  private initializationPromise: Promise<void> | null = null;
 
   constructor() {
-    this.initializeGoogleAuth();
+    // Don't call async methods from constructor - this was causing race conditions
   }
 
   /**
    * Initialize Google Drive API with service account
    */
-  private async initializeGoogleAuth() {
+  private async initializeGoogleAuth(): Promise<void> {
+    // Return existing promise if already initializing
+    if (this.initializationPromise) {
+      return this.initializationPromise;
+    }
+
+    // If already initialized, return immediately
+    if (this.initialized) {
+      return Promise.resolve();
+    }
+
+    // Create and store initialization promise
+    this.initializationPromise = this._performInitialization();
+    
     try {
+      await this.initializationPromise;
+    } finally {
+      // Reset promise after completion (success or failure)
+      this.initializationPromise = null;
+    }
+  }
+
+  private async _performInitialization(): Promise<void> {
+    try {
+      console.log('🔐 Initializing Google Drive authentication...');
+      
       const serviceAccountPath = path.join(process.cwd(), 'service-account-key.json');
+      
+      // Check if service account file exists
+      try {
+        await fs.access(serviceAccountPath);
+      } catch (error) {
+        throw new Error('Service account key file not found. Please ensure service-account-key.json exists in the project root.');
+      }
+
       const serviceAccount = JSON.parse(await fs.readFile(serviceAccountPath, 'utf8'));
+
+      // Validate service account structure
+      if (!serviceAccount.type || !serviceAccount.project_id || !serviceAccount.private_key || !serviceAccount.client_email) {
+        throw new Error('Invalid service account key format. Please check the service-account-key.json file.');
+      }
 
       const auth = new google.auth.GoogleAuth({
         credentials: serviceAccount,
@@ -85,18 +123,29 @@ export class GoogleDriveSync {
       
       // Test the authentication by making a simple API call
       console.log('🔐 Testing Google Drive authentication...');
-      await this.drive.about.get({ fields: 'user' });
+      const testResponse = await this.drive.about.get({ fields: 'user' });
+      
+      if (!testResponse.data.user) {
+        throw new Error('Authentication test failed: No user data returned');
+      }
       
       this.initialized = true;
       console.log('🔐 Google Drive authentication initialized and tested successfully');
+      console.log(`🔐 Authenticated as: ${testResponse.data.user.emailAddress || 'Unknown'}`);
+      
     } catch (error) {
       console.error('❌ Google Drive authentication failed:', error);
+      this.initialized = false;
       
       if (error instanceof Error) {
         if (error.message.includes('invalid_grant') || error.message.includes('Invalid JWT signature')) {
-          throw new Error('Google Drive authentication failed: Invalid JWT signature. Please check service account key and system clock.');
+          throw new Error('Google Drive authentication failed: Invalid JWT signature. Please check service account key and system clock. This can happen if your system time is incorrect or the service account key has expired.');
         } else if (error.message.includes('ENOENT') && error.message.includes('service-account-key.json')) {
           throw new Error('Service account key file not found. Please ensure service-account-key.json exists in the project root.');
+        } else if (error.message.includes('403') || error.message.includes('forbidden')) {
+          throw new Error('Access denied. Please check that the service account has the necessary permissions and that the Google Drive API is enabled.');
+        } else if (error.message.includes('400') || error.message.includes('invalid_client')) {
+          throw new Error('Invalid service account credentials. Please check the service-account-key.json file format and content.');
         } else {
           throw new Error(`Google Drive authentication failed: ${error.message}`);
         }
@@ -124,9 +173,7 @@ export class GoogleDriveSync {
     };
 
     try {
-      if (!this.initialized) {
-        await this.initializeGoogleAuth();
-      }
+      await this.initializeGoogleAuth();
 
       // Step 1: Fetch images from both Google Drive folders
       console.log('📁 Fetching images from Google Drive folders...');
