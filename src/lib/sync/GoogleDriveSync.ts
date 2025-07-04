@@ -103,7 +103,7 @@ export class GoogleDriveSync {
       // Check if service account file exists
       try {
         await fs.access(serviceAccountPath);
-      } catch (error) {
+      } catch {
         throw new Error('Service account key file not found. Please ensure service-account-key.json exists in the project root.');
       }
 
