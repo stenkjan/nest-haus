@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { SessionManager } from '@/lib/redis';
 import { AdminAnalyticsService } from '@/lib/AdminAnalyticsService';
+import ImageCacheManager from '@/components/images/ImageCacheManager';
 
 // Placeholder components for metrics cards
 function MetricCard({ title, value, change, icon }: {
@@ -246,19 +247,25 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-              Export Analytics Report
-            </button>
-            <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
-              Sync Redis to PostgreSQL
-            </button>
-            <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">
-              Clear Cache
-            </button>
+        {/* System Management */}
+        <div className="space-y-6">
+          {/* Image Cache Manager */}
+          <ImageCacheManager />
+
+          {/* Quick Actions */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                Export Analytics Report
+              </button>
+              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
+                Sync Redis to PostgreSQL
+              </button>
+              <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">
+                Clear Cache
+              </button>
+            </div>
           </div>
         </div>
       </div>
