@@ -4,6 +4,19 @@
 
 ---
 
+## [9d5949620a4700c81a9b88c78d560f26648f0f57] - Fri Jul 4 18:28:24 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `refactor: simplify image key construction in ImageManager by removing special case handling for 'eiche' suffix`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/konfigurator/core/ImageManager.ts
+
+---
+
 ## [c7173f21d40da05f648c5a858100aa66ec839d4c] - Fri Jul 4 17:55:20 2025 +0200
 
 **Author**: stenkjan  
