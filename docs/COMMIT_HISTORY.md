@@ -4,6 +4,20 @@
 
 ---
 
+## [d0edd6c3d6eac73d07d7198ca22d846ae64499b2] - Fri Jul 4 22:51:31 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `fix: improve type safety for window cache clearing function in ClientBlobImage and ImageCacheManager`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ImageCacheManager.tsx
+
+---
+
 ## [ec3c026855c4abb15247d9f49d8f8e78f3c04ea5] - Fri Jul 4 22:04:35 2025 +0200
 
 **Author**: stenkjan  
