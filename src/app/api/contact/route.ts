@@ -4,11 +4,11 @@ import { z } from 'zod';
 
 // Validation schema for contact form data
 const contactFormSchema = z.object({
-  name: z.string().min(1, 'Name ist erforderlich'),
   email: z.string().email('Ungültige E-Mail-Adresse'),
+  name: z.string().min(1, 'Name ist erforderlich'),
   phone: z.string().optional(),
   message: z.string().optional(),
-  preferredContact: z.enum(['EMAIL', 'PHONE', 'WHATSAPP']).default('EMAIL'),
+  preferredContact: z.enum(['email', 'phone', 'whatsapp']).default('email'),
   bestTimeToCall: z.string().optional(),
   configurationData: z.any().optional(),
   requestType: z.enum(['contact', 'appointment']).default('contact'),
@@ -16,6 +16,16 @@ const contactFormSchema = z.object({
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
+
+// Type for Prisma where clause
+interface InquiryWhereClause {
+  status?: 'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED';
+  OR?: Array<{
+    name?: { contains: string; mode: 'insensitive' };
+    email?: { contains: string; mode: 'insensitive' };
+    phone?: { contains: string; mode: 'insensitive' };
+  }>;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,12 +49,12 @@ export async function POST(request: NextRequest) {
 
     const data: ContactFormData = validationResult.data;
 
-    // Extract client information
-    const clientIP = request.headers.get('x-forwarded-for')?.split(',')[0] || 
-                    request.headers.get('x-real-ip') || 
-                    'unknown';
+    // Extract client information (for future use in analytics/security)
+    const _clientIP = request.headers.get('x-forwarded-for')?.split(',')[0] || 
+                     request.headers.get('x-real-ip') || 
+                     'unknown';
     
-    const userAgent = request.headers.get('user-agent') || 'unknown';
+    const _userAgent = request.headers.get('user-agent') || 'unknown';
     const sessionId = request.headers.get('x-session-id') || null;
 
     // Calculate total price if configuration data exists
@@ -63,7 +73,7 @@ export async function POST(request: NextRequest) {
       configurationData: data.configurationData || null,
       totalPrice,
       status: 'NEW' as const,
-      preferredContact: data.preferredContact,
+      preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
       bestTimeToCall: data.bestTimeToCall || null,
       adminNotes: data.requestType === 'appointment' 
         ? `Terminwunsch: ${data.appointmentDateTime ? new Date(data.appointmentDateTime).toLocaleString('de-DE') : 'Nicht angegeben'}`
@@ -149,10 +159,16 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
 
     // Build where clause
-    const where: any = {};
+    const where: InquiryWhereClause = {};
     
     if (status && status !== 'ALL') {
-      where.status = status;
+      // Validate that status is a valid enum value
+      const validStatuses: Array<'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED'> = 
+        ['NEW', 'CONTACTED', 'IN_PROGRESS', 'QUOTED', 'CONVERTED', 'CLOSED'];
+      
+      if (validStatuses.includes(status as 'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED')) {
+        where.status = status as 'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED';
+      }
     }
     
     if (search) {

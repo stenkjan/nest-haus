@@ -4,14 +4,21 @@ import { useState } from 'react';
 import { Button } from '@/components/ui';
 import { HybridBlobImage } from '@/components/images';
 
+// Type definitions
+interface ConfigurationData {
+  totalPrice?: number;
+  selections?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
 interface ContactFormData {
   name: string;
   email: string;
   phone?: string;
   message?: string;
-  preferredContact: 'EMAIL' | 'PHONE' | 'WHATSAPP';
+  preferredContact: 'email' | 'phone' | 'whatsapp';
   bestTimeToCall?: string;
-  configurationData?: any;
+  configurationData?: ConfigurationData;
   appointmentDate?: string;
   appointmentTime?: string;
 }
@@ -20,13 +27,20 @@ interface FormErrors {
   [key: string]: string;
 }
 
+// Google Analytics gtag function type
+interface GtagWindow extends Window {
+  gtag?: (command: string, event: string, params?: Record<string, unknown>) => void;
+}
+
+declare const window: GtagWindow;
+
 export default function ContactPage() {
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     phone: '',
     message: '',
-    preferredContact: 'EMAIL',
+    preferredContact: 'email',
     bestTimeToCall: '',
     appointmentDate: '',
     appointmentTime: '',
@@ -50,7 +64,7 @@ export default function ContactPage() {
       newErrors.email = 'Ungültige E-Mail-Adresse';
     }
 
-    if (formData.preferredContact === 'PHONE' && !formData.phone?.trim()) {
+    if (formData.preferredContact === 'phone' && !formData.phone?.trim()) {
       newErrors.phone = 'Telefonnummer ist erforderlich für Telefon-Kontakt';
     }
 
@@ -101,8 +115,8 @@ export default function ContactPage() {
         setIsSubmitted(true);
         
         // Track successful contact submission
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          (window as any).gtag('event', 'contact_form_submission', {
+        if (typeof window !== 'undefined' && window.gtag) {
+          window.gtag('event', 'contact_form_submission', {
             event_category: 'engagement',
             event_label: formType,
           });
@@ -259,7 +273,7 @@ export default function ContactPage() {
               {/* Phone */}
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                  Telefon {formData.preferredContact === 'PHONE' ? '*' : '(optional)'}
+                  Telefon {formData.preferredContact === 'phone' ? '*' : '(optional)'}
                 </label>
                 <input
                   type="tel"
@@ -287,14 +301,14 @@ export default function ContactPage() {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="EMAIL">E-Mail</option>
-                  <option value="PHONE">Telefon</option>
-                  <option value="WHATSAPP">WhatsApp</option>
+                  <option value="email">E-Mail</option>
+                  <option value="phone">Telefon</option>
+                  <option value="whatsapp">WhatsApp</option>
                 </select>
               </div>
 
               {/* Best Time to Call (if phone contact) */}
-              {formData.preferredContact !== 'EMAIL' && (
+              {formData.preferredContact !== 'email' && (
                 <div>
                   <label htmlFor="bestTimeToCall" className="block text-sm font-medium text-gray-700 mb-1">
                     Beste Anrufzeit
@@ -306,12 +320,12 @@ export default function ContactPage() {
                     value={formData.bestTimeToCall}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="z.B. Wochentags 9-17 Uhr"
+                    placeholder="z.B. Montag-Freitag 9-17 Uhr"
                   />
                 </div>
               )}
 
-              {/* Appointment Date & Time (if appointment type) */}
+              {/* Appointment Date and Time (if appointment type) */}
               {formType === 'appointment' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -333,9 +347,10 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label htmlFor="appointmentTime" className="block text-sm font-medium text-gray-700 mb-1">
-                      Uhrzeit *
+                      Wunschzeit *
                     </label>
-                    <select
+                    <input
+                      type="time"
                       name="appointmentTime"
                       id="appointmentTime"
                       value={formData.appointmentTime}
@@ -343,16 +358,7 @@ export default function ContactPage() {
                       className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         errors.appointmentTime ? 'border-red-500' : 'border-gray-300'
                       }`}
-                    >
-                      <option value="">Uhrzeit wählen</option>
-                      <option value="09:00">09:00</option>
-                      <option value="10:00">10:00</option>
-                      <option value="11:00">11:00</option>
-                      <option value="14:00">14:00</option>
-                      <option value="15:00">15:00</option>
-                      <option value="16:00">16:00</option>
-                      <option value="17:00">17:00</option>
-                    </select>
+                    />
                     {errors.appointmentTime && <p className="mt-1 text-sm text-red-600">{errors.appointmentTime}</p>}
                   </div>
                 </div>
@@ -361,7 +367,7 @@ export default function ContactPage() {
               {/* Message */}
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  {formType === 'appointment' ? 'Zusätzliche Informationen (optional)' : 'Nachricht (optional)'}
+                  Nachricht {formType === 'appointment' ? '(optional)' : ''}
                 </label>
                 <textarea
                   name="message"
@@ -372,107 +378,71 @@ export default function ContactPage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder={
                     formType === 'appointment' 
-                      ? "Spezielle Wünsche oder Fragen für den Beratungstermin..."
-                      : "Ihre Nachricht an uns..."
+                      ? "Zusätzliche Informationen für den Beratungstermin..."
+                      : "Beschreiben Sie Ihr Anliegen..."
                   }
                 />
               </div>
 
-              {/* Submit Error */}
-              {errors.submit && (
-                <div className="text-red-600 text-sm">{errors.submit}</div>
-              )}
-
               {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full"
-                variant="primary"
-              >
-                {isSubmitting 
-                  ? 'Wird gesendet...' 
-                  : formType === 'appointment' 
-                    ? 'Terminanfrage senden' 
-                    : 'Nachricht senden'
-                }
-              </Button>
+              <div>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {isSubmitting 
+                    ? 'Wird gesendet...' 
+                    : formType === 'appointment' 
+                      ? 'Terminanfrage senden' 
+                      : 'Nachricht senden'
+                  }
+                </Button>
+                {errors.submit && <p className="mt-2 text-sm text-red-600">{errors.submit}</p>}
+              </div>
             </form>
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Kontaktinformationen</h2>
-              
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 text-blue-600 mt-1">📍</div>
-                  <div>
-                    <h3 className="font-medium text-gray-900">Adresse</h3>
-                    <p className="text-gray-600">
-                      NEST-Haus GmbH<br />
-                      Musterstraße 123<br />
-                      12345 Musterstadt
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 text-blue-600 mt-1">📞</div>
-                  <div>
-                    <h3 className="font-medium text-gray-900">Telefon</h3>
-                    <p className="text-gray-600">+49 123 456789</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 text-blue-600 mt-1">✉️</div>
-                  <div>
-                    <h3 className="font-medium text-gray-900">E-Mail</h3>
-                    <p className="text-gray-600">info@nest-haus.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 text-blue-600 mt-1">🕒</div>
-                  <div>
-                    <h3 className="font-medium text-gray-900">Öffnungszeiten</h3>
-                    <p className="text-gray-600">
-                      Mo-Fr: 8:00 - 18:00<br />
-                      Sa: 9:00 - 16:00<br />
-                      So: Geschlossen
-                    </p>
-                  </div>
-                </div>
+          <div className="lg:pl-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Kontaktinformationen</h3>
+            
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Adresse</h4>
+                <p className="text-gray-600">
+                  NEST-Haus GmbH<br />
+                  Musterstraße 123<br />
+                  12345 Musterstadt
+                </p>
               </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Schnellzugriff</h3>
-              <div className="space-y-3">
-                <Button
-                  onClick={() => window.location.href = '/konfigurator'}
-                  variant="outline"
-                  className="w-full justify-start"
-                >
-                  🏠 Ihr Haus konfigurieren
-                </Button>
-                <Button
-                  onClick={() => window.location.href = '/showcase'}
-                  variant="outline"
-                  className="w-full justify-start"
-                >
-                  🖼️ Referenzobjekte ansehen
-                </Button>
-                <Button
-                  onClick={() => window.location.href = '/warum-wir'}
-                  variant="outline"
-                  className="w-full justify-start"
-                >
-                  💡 Über NEST-Haus
-                </Button>
+              
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Telefon</h4>
+                <p className="text-gray-600">
+                  <a href="tel:+49123456789" className="hover:text-blue-600">
+                    +49 123 456 789
+                  </a>
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">E-Mail</h4>
+                <p className="text-gray-600">
+                  <a href="mailto:info@nest-haus.de" className="hover:text-blue-600">
+                    info@nest-haus.de
+                  </a>
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Öffnungszeiten</h4>
+                <div className="text-gray-600 space-y-1">
+                  <p>Montag - Freitag: 9:00 - 17:00 Uhr</p>
+                  <p>Samstag: 10:00 - 14:00 Uhr</p>
+                  <p>Sonntag: Nach Vereinbarung</p>
+                </div>
               </div>
             </div>
           </div>

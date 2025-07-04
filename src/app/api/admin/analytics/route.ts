@@ -11,6 +11,29 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 /**
+ * Admin Analytics API
+ * 
+ * Isolated analytics service for admin dashboard.
+ * Provides comprehensive analytics without affecting configurator functionality.
+ * 
+ * Features:
+ * - Real-time user session tracking
+ * - Conversion rate analysis  
+ * - Performance monitoring
+ * - System health indicators
+ */
+
+// Type definitions for database query results
+interface SessionWithDuration {
+  startTime: Date;
+  endTime: Date | null;
+}
+
+interface PerformanceMetricResult {
+  value: number;
+}
+
+/**
  * Analytics data types - isolated from configurator types
  */
 interface AdminAnalytics {
@@ -51,22 +74,28 @@ interface AdminAnalytics {
 class IsolatedAnalyticsService {
   
   /**
-   * Get active sessions count (sessions with activity in last 10 minutes)
+   * Get current active sessions from Redis
    */
   static async getActiveSessions(): Promise<number> {
     try {
-      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+      // Try Redis first, fallback to database estimate
+      const redis = (await import('@/lib/redis')).default;
+      const activeCount = await redis.scard('active_sessions');
       
-      const activeCount = await prisma.userSession.count({
+      if (activeCount > 0) {
+        return activeCount;
+      }
+      
+      // Fallback: estimate from recent sessions (last 30 minutes)
+      const recentSessionsCount = await prisma.userSession.count({
         where: {
-          status: 'ACTIVE',
-          lastActivity: {
-            gte: tenMinutesAgo
+          startTime: {
+            gte: new Date(Date.now() - 30 * 60 * 1000)
           }
         }
       });
       
-      return activeCount;
+      return recentSessionsCount;
     } catch (error) {
       console.error('❌ Failed to get active sessions:', error);
       return 0;
@@ -74,12 +103,12 @@ class IsolatedAnalyticsService {
   }
   
   /**
-   * Get total sessions count
+   * Get total sessions (all time)
    */
   static async getTotalSessions(): Promise<number> {
     try {
-      const totalCount = await prisma.userSession.count();
-      return totalCount;
+      const count = await prisma.userSession.count();
+      return count;
     } catch (error) {
       console.error('❌ Failed to get total sessions:', error);
       return 0;
@@ -87,14 +116,14 @@ class IsolatedAnalyticsService {
   }
   
   /**
-   * Get sessions created today
+   * Get sessions from today
    */
   static async getTotalSessionsToday(): Promise<number> {
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      const todayCount = await prisma.userSession.count({
+      const count = await prisma.userSession.count({
         where: {
           startTime: {
             gte: today
@@ -102,7 +131,7 @@ class IsolatedAnalyticsService {
         }
       });
       
-      return todayCount;
+      return count;
     } catch (error) {
       console.error('❌ Failed to get today sessions:', error);
       return 0;
@@ -110,7 +139,7 @@ class IsolatedAnalyticsService {
   }
   
   /**
-   * Calculate average session duration
+   * Calculate average session duration in milliseconds
    */
   static async getAverageSessionDuration(): Promise<number> {
     try {
@@ -125,11 +154,11 @@ class IsolatedAnalyticsService {
           endTime: true
         },
         take: 1000 // Limit to recent 1000 sessions for performance
-      });
+      }) as SessionWithDuration[];
       
       if (sessions.length === 0) return 0;
       
-      const totalDuration = sessions.reduce((sum: number, session: any) => {
+      const totalDuration = sessions.reduce((sum: number, session: SessionWithDuration) => {
         if (session.endTime) {
           const duration = session.endTime.getTime() - session.startTime.getTime();
           return sum + duration;
@@ -240,12 +269,15 @@ class IsolatedAnalyticsService {
             gte: new Date(Date.now() - 24 * 60 * 60 * 1000) // Last 24 hours
           }
         },
+        select: {
+          value: true
+        },
         take: 100
-      });
+      }) as PerformanceMetricResult[];
       
       if (recentMetrics.length === 0) return 0;
       
-      const avgTime = recentMetrics.reduce((sum: number, metric: any) => sum + metric.value, 0) / recentMetrics.length;
+      const avgTime = recentMetrics.reduce((sum: number, metric: PerformanceMetricResult) => sum + metric.value, 0) / recentMetrics.length;
       return avgTime;
     } catch (error) {
       console.error('❌ Failed to calculate avg API response time:', error);

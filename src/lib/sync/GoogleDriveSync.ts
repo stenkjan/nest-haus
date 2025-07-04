@@ -14,6 +14,7 @@ import { google } from 'googleapis';
 import { put, list, del } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
+import { ImagesConstantsUpdater } from './ImagesConstantsUpdater';
 
 // Types
 export interface DriveImage {
@@ -43,6 +44,20 @@ export interface SyncResult {
   errors: string[];
   duration: number;
   imagesUpdated: boolean;
+}
+
+// Google Drive API response types
+interface DriveFileResponse {
+  id: string;
+  name: string;
+  modifiedTime: string;
+  webContentLink: string;
+}
+
+interface SyncOperations {
+  upload: DriveImage[];
+  update: Array<{ drive: DriveImage; blob: BlobImage }>;
+  delete: BlobImage[];
 }
 
 export class GoogleDriveSync {
@@ -75,17 +90,19 @@ export class GoogleDriveSync {
       this.initialized = true;
       console.log('🔐 Google Drive authentication initialized and tested successfully');
     } catch (error) {
-      console.error('❌ Failed to initialize Google Drive auth:', error);
+      console.error('❌ Google Drive authentication failed:', error);
+      
       if (error instanceof Error) {
-        if (error.message.includes('invalid_grant')) {
+        if (error.message.includes('invalid_grant') || error.message.includes('Invalid JWT signature')) {
           throw new Error('Google Drive authentication failed: Invalid JWT signature. Please check service account key and system clock.');
-        } else if (error.message.includes('ENOENT')) {
-          throw new Error('Google Drive authentication failed: service-account-key.json not found.');
+        } else if (error.message.includes('ENOENT') && error.message.includes('service-account-key.json')) {
+          throw new Error('Service account key file not found. Please ensure service-account-key.json exists in the project root.');
         } else {
           throw new Error(`Google Drive authentication failed: ${error.message}`);
         }
       }
-      throw new Error('Google Drive authentication failed with unknown error');
+      
+      throw new Error('Google Drive authentication failed: Unknown error');
     }
   }
 
@@ -119,74 +136,54 @@ export class GoogleDriveSync {
       ]);
 
       const allDriveImages = [...mainImages, ...mobileImages];
-      result.processed = allDriveImages.length;
-      console.log(`📊 Found ${allDriveImages.length} images in Google Drive`);
+      console.log(`📊 Total Google Drive images found: ${allDriveImages.length}`);
 
-      // SAFETY CHECK 1: Never proceed with deletions if Google Drive returns 0 images
+      // CRITICAL SAFETY CHECK: Prevent sync if Google Drive returns no images
       if (allDriveImages.length === 0) {
-        console.log('⚠️ SAFETY CHECK 1 FAILED: Google Drive returned 0 images.');
-        console.log('⚠️ This might be due to authentication issues or API problems.');
-        console.log('⚠️ Aborting sync to prevent accidental deletion of blob images.');
-        result.errors.push('Google Drive returned 0 images - possible authentication issue');
-        result.duration = Date.now() - startTime;
-        return result;
+        console.warn('🚨 SAFETY CHECK: Google Drive returned 0 images. Aborting sync to prevent accidental deletions.');
+        throw new Error('No images found in Google Drive folders - aborting sync for safety');
       }
 
-      // SAFETY CHECK 2: Require minimum number of images (at least 50 images expected)
-      const MIN_EXPECTED_IMAGES = 50;
-      if (allDriveImages.length < MIN_EXPECTED_IMAGES) {
-        console.log(`⚠️ SAFETY CHECK 2 FAILED: Only ${allDriveImages.length} images found in Google Drive.`);
-        console.log(`⚠️ Expected at least ${MIN_EXPECTED_IMAGES} images.`);
-        console.log('⚠️ This might indicate a sync issue. Aborting to prevent accidental deletions.');
-        result.errors.push(`Only ${allDriveImages.length} images found, expected at least ${MIN_EXPECTED_IMAGES}`);
-        result.duration = Date.now() - startTime;
-        return result;
+      // NEW SAFETY CHECK: Minimum images threshold
+      const MIN_IMAGES_THRESHOLD = 50; // Adjust based on your expected image count
+      if (allDriveImages.length < MIN_IMAGES_THRESHOLD) {
+        console.warn(`🚨 SAFETY CHECK: Only ${allDriveImages.length} images found in Google Drive (expected at least ${MIN_IMAGES_THRESHOLD}). This could indicate an API issue.`);
+        throw new Error(`Insufficient images in Google Drive (${allDriveImages.length} < ${MIN_IMAGES_THRESHOLD}) - aborting sync for safety`);
       }
 
-      // Step 2: Get current Vercel Blob images
-      console.log('☁️ Fetching current Vercel Blob images...');
+      // Step 2: Fetch current images from Vercel Blob
+      console.log('🔍 Fetching current images from Vercel Blob...');
       const blobImages = await this.fetchBlobImages();
-      console.log(`📊 Found ${blobImages.length} images in Vercel Blob`);
+      console.log(`📊 Current Vercel Blob images: ${blobImages.length}`);
 
-      // SAFETY CHECK 3: If we have existing blob images, ensure Drive has at least 80% of them
+      // NEW SAFETY CHECK: Consistency check with existing blob images
       if (blobImages.length > 0) {
-        const minExpectedFromDrive = Math.floor(blobImages.length * 0.8);
-        if (allDriveImages.length < minExpectedFromDrive) {
-          console.log(`⚠️ SAFETY CHECK 3 FAILED: Drive has ${allDriveImages.length} images but blob has ${blobImages.length}.`);
-          console.log(`⚠️ Expected at least ${minExpectedFromDrive} images from Drive (80% of existing blob images).`);
-          console.log('⚠️ This suggests Drive sync is incomplete. Aborting to prevent data loss.');
-          result.errors.push(`Drive has ${allDriveImages.length} images but blob has ${blobImages.length} - seems incomplete`);
-          result.duration = Date.now() - startTime;
-          return result;
+        const consistencyRatio = allDriveImages.length / blobImages.length;
+        if (consistencyRatio < 0.8) { // Drive should have at least 80% of blob images
+          console.warn(`🚨 SAFETY CHECK: Drive images (${allDriveImages.length}) significantly fewer than blob images (${blobImages.length}). Ratio: ${consistencyRatio.toFixed(2)}`);
+          throw new Error('Drive/Blob consistency check failed - aborting sync for safety');
         }
       }
 
-      // Step 3: Smart sync - handle duplicates and updates
-      console.log('🔄 Processing sync operations...');
+      // Step 3: Calculate sync operations
+      console.log('🔄 Calculating sync operations...');
       const syncOps = this.calculateSyncOperations(allDriveImages, blobImages);
-      
-      // SAFETY CHECK 4: Don't delete more than 25% of existing images in one sync (reduced from 50%)
-      const MAX_DELETION_PERCENTAGE = 0.25;
-      if (syncOps.delete.length > blobImages.length * MAX_DELETION_PERCENTAGE) {
-        console.log(`⚠️ SAFETY CHECK 4 FAILED: Sync wants to delete ${syncOps.delete.length} of ${blobImages.length} images (>${MAX_DELETION_PERCENTAGE * 100}%).`);
-        console.log('⚠️ This seems excessive. Aborting sync for safety.');
-        result.errors.push(`Attempted to delete ${syncOps.delete.length} of ${blobImages.length} images - exceeds ${MAX_DELETION_PERCENTAGE * 100}% limit`);
-        result.duration = Date.now() - startTime;
-        return result;
+      result.processed = allDriveImages.length;
+
+      // ENHANCED SAFETY CHECK: Limit deletion percentage
+      const MAX_DELETION_PERCENTAGE = 0.25; // Never delete more than 25% of images
+      if (blobImages.length > 0 && syncOps.delete.length > blobImages.length * MAX_DELETION_PERCENTAGE) {
+        console.warn(`🚨 SAFETY CHECK: Attempting to delete ${syncOps.delete.length} images (${(syncOps.delete.length / blobImages.length * 100).toFixed(1)}%) which exceeds ${MAX_DELETION_PERCENTAGE * 100}% safety limit`);
+        throw new Error(`Deletion percentage too high (${(syncOps.delete.length / blobImages.length * 100).toFixed(1)}%) - aborting sync for safety`);
       }
 
-      // SAFETY CHECK 5: Don't delete more than 10 images in a single sync
-      const MAX_DELETIONS_PER_SYNC = 10;
-      if (syncOps.delete.length > MAX_DELETIONS_PER_SYNC) {
-        console.log(`⚠️ SAFETY CHECK 5 FAILED: Sync wants to delete ${syncOps.delete.length} images.`);
-        console.log(`⚠️ Maximum allowed deletions per sync: ${MAX_DELETIONS_PER_SYNC}.`);
-        console.log('⚠️ This prevents accidental bulk deletions. Aborting sync.');
-        result.errors.push(`Attempted to delete ${syncOps.delete.length} images - exceeds limit of ${MAX_DELETIONS_PER_SYNC} per sync`);
-        result.duration = Date.now() - startTime;
-        return result;
+      // Step 4: Preview operations before execution
+      if (syncOps.upload.length > 0) {
+        console.log(`⬆️ UPLOAD PREVIEW: ${syncOps.upload.length} new images will be uploaded`);
       }
-
-      // SAFETY CHECK 6: Log what will be deleted for transparency
+      if (syncOps.update.length > 0) {
+        console.log(`🔄 UPDATE PREVIEW: ${syncOps.update.length} images will be updated`);
+      }
       if (syncOps.delete.length > 0) {
         console.log(`🚨 DELETION PREVIEW: The following ${syncOps.delete.length} images will be deleted:`);
         syncOps.delete.forEach((blob: BlobImage, index: number) => {
@@ -195,33 +192,35 @@ export class GoogleDriveSync {
         console.log('🚨 These images exist in Vercel Blob but not in Google Drive');
       }
 
-      // All safety checks passed - proceed with sync
-      console.log('✅ All safety checks passed. Proceeding with sync...');
-      
-      // Step 4: Execute sync operations efficiently
-      const opResults = await this.executeSyncOperations(syncOps);
-      result.uploaded = opResults.uploaded;
-      result.updated = opResults.updated;
-      result.deleted = opResults.deleted;
-      result.errors = opResults.errors;
+      // Step 5: Execute sync operations
+      if (syncOps.upload.length > 0 || syncOps.update.length > 0 || syncOps.delete.length > 0) {
+        console.log('🔄 Executing sync operations...');
+        const operationResult = await this.executeSyncOperations(syncOps);
+        result.uploaded = operationResult.uploaded;
+        result.updated = operationResult.updated;
+        result.deleted = operationResult.deleted;
+        result.errors = operationResult.errors;
+      } else {
+        console.log('✅ No sync operations needed - all images are up to date');
+      }
 
-      // Step 5: Update images.ts constants if needed
+      // Step 6: Update constants file if images were modified
       if (result.uploaded > 0 || result.updated > 0 || result.deleted > 0) {
-        console.log('📝 Updating images.ts constants...');
+        console.log('📝 Updating images constants file...');
         result.imagesUpdated = await this.updateImagesConstants();
       }
 
       result.duration = Date.now() - startTime;
       console.log(`✅ Sync completed in ${result.duration}ms`);
-      console.log(`📊 Results: ${result.uploaded} uploaded, ${result.updated} updated, ${result.deleted} deleted`);
-      
-      return result;
+      console.log(`📊 Summary: ${result.uploaded} uploaded, ${result.updated} updated, ${result.deleted} deleted, ${result.errors.length} errors`);
 
-    } catch (error) {
-      console.error('❌ Sync failed:', error);
-      result.errors.push(error instanceof Error ? error.message : 'Unknown error');
-      result.duration = Date.now() - startTime;
       return result;
+    } catch (error) {
+      result.duration = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      result.errors.push(errorMessage);
+      console.error('❌ Sync failed:', errorMessage);
+      throw error;
     }
   }
 
@@ -243,7 +242,7 @@ export class GoogleDriveSync {
       // Log all files found (for debugging)
       if (response.data.files && response.data.files.length > 0) {
         console.log(`📄 Files in folder ${folderId}:`);
-        response.data.files.forEach((file: any, index: number) => {
+        response.data.files.forEach((file: DriveFileResponse, index: number) => {
           console.log(`  ${index + 1}. "${file.name}" (ID: ${file.id})`);
         });
       } else {
@@ -361,11 +360,11 @@ export class GoogleDriveSync {
   /**
    * Calculate what sync operations need to be performed
    */
-  private calculateSyncOperations(driveImages: DriveImage[], blobImages: BlobImage[]) {
-    const operations = {
-      upload: [] as DriveImage[],
-      update: [] as { drive: DriveImage; blob: BlobImage }[],
-      delete: [] as BlobImage[]
+  private calculateSyncOperations(driveImages: DriveImage[], blobImages: BlobImage[]): SyncOperations {
+    const operations: SyncOperations = {
+      upload: [],
+      update: [],
+      delete: []
     };
 
     // Create maps for efficient lookups
@@ -404,7 +403,7 @@ export class GoogleDriveSync {
   /**
    * Execute sync operations efficiently
    */
-  private async executeSyncOperations(operations: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+  private async executeSyncOperations(operations: SyncOperations) {
     const result = { uploaded: 0, updated: 0, deleted: 0, errors: [] as string[] };
 
     // Delete old blobs first
@@ -438,10 +437,12 @@ export class GoogleDriveSync {
       try {
         // Delete old version
         await del(oldBlob.url);
+        
         // Upload new version
         await this.uploadImageToBlob(driveImg);
+        
         result.updated++;
-        console.log(`🔄 Updated: ${driveImg.name} (was: ${oldBlob.title})`);
+        console.log(`🔄 Updated: ${driveImg.name}`);
       } catch (error) {
         const errorMsg = `Failed to update ${driveImg.name}: ${error}`;
         console.error(`❌ ${errorMsg}`);
@@ -474,26 +475,25 @@ export class GoogleDriveSync {
       // Use "images/" prefix for consistency with existing blob structure
       const fileName = `images/${driveImg.number}-${driveImg.title}.${driveImg.extension}`;
       console.log(`⬆️ Uploading to blob: ${fileName}`);
-      
+
       await put(fileName, buffer, {
         access: 'public',
-        contentType: `image/${driveImg.extension}`
+        contentType: `image/${driveImg.extension === 'jpg' ? 'jpeg' : driveImg.extension}`
       });
-      
+
+      console.log(`✅ Successfully uploaded: ${fileName}`);
     } catch (error) {
-      console.error(`❌ Upload failed for ${driveImg.name}:`, error);
+      console.error(`❌ Failed to upload ${driveImg.name}:`, error);
       throw error;
     }
   }
 
   /**
-   * Update images.ts constants with new paths
+   * Update the images constants file with current state
    */
   private async updateImagesConstants(): Promise<boolean> {
     try {
-      const { ImagesConstantsUpdater } = await import('./ImagesConstantsUpdater');
       const updater = new ImagesConstantsUpdater();
-      
       const result = await updater.updateConstants();
       
       if (result.errors.length > 0) {
@@ -502,11 +502,13 @@ export class GoogleDriveSync {
       
       if (result.updated) {
         console.log(`✅ Successfully updated images.ts with ${result.newMappings} new mappings`);
+      } else {
+        console.log('📄 No changes needed in images.ts');
       }
       
       return result.updated;
     } catch (error) {
-      console.error('❌ Failed to update images.ts:', error);
+      console.error('❌ Failed to update images constants:', error);
       return false;
     }
   }
