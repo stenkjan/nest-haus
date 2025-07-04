@@ -301,7 +301,7 @@ export default function ClientBlobImage({
     
     // Expose cache clearing function globally for debugging
     if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-      (window as any).clearImageCache = ImageCache.clearAllCaches;
+      (window as typeof window & { clearImageCache?: () => void }).clearImageCache = ImageCache.clearAllCaches;
     }
     
     return () => {

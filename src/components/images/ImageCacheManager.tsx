@@ -17,20 +17,23 @@ export default function ImageCacheManager() {
     
     try {
       // Clear memory cache
-      if (typeof window !== 'undefined' && (window as any).clearImageCache) {
-        (window as any).clearImageCache();
-      } else {
-        // Fallback: clear session storage manually
-        const keys = [];
-        for (let i = 0; i < sessionStorage.length; i++) {
-          const key = sessionStorage.key(i);
-          if (key?.startsWith('nest_img_')) {
-            keys.push(key);
+      if (typeof window !== 'undefined') {
+        const windowWithCache = window as typeof window & { clearImageCache?: () => void };
+        if (windowWithCache.clearImageCache) {
+          windowWithCache.clearImageCache();
+        } else {
+          // Fallback: clear session storage manually
+          const keys = [];
+          for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
+            if (key?.startsWith('nest_img_')) {
+              keys.push(key);
+            }
           }
+          
+          keys.forEach(key => sessionStorage.removeItem(key));
+          console.log(`🗑️ Cleared ${keys.length} cached image URLs from session storage`);
         }
-        
-        keys.forEach(key => sessionStorage.removeItem(key));
-        console.log(`🗑️ Cleared ${keys.length} cached image URLs from session storage`);
       }
       
       setLastCleared(new Date().toLocaleTimeString());
@@ -54,7 +57,7 @@ export default function ImageCacheManager() {
       </div>
       
       <p className="text-sm text-yellow-700">
-        Use this when images have been re-uploaded to blob storage and aren't showing the latest versions.
+        Use this when images have been re-uploaded to blob storage and aren&apos;t showing the latest versions.
       </p>
       
       <div className="flex items-center space-x-3">
