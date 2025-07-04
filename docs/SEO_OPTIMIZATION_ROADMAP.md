@@ -67,11 +67,11 @@ export default function sitemap() {
 export async function generateMetadata({ params }): Promise<Metadata> {
   return {
     title: 'Konfigurator | NEST-Haus - Modulare Häuser konfigurieren',
-    description: 'Gestalten Sie Ihr Traumhaus mit unserem 3D-Konfigurator. Wählen Sie aus verschiedenen Modulen, Materialien und Ausstattungen.',
+    description: 'Gestalten Sie Ihr Traumhaus mit unserem Konfigurator. Wählen Sie aus verschiedenen Modulen, Materialien und Ausstattungen.',
     keywords: 'modulares bauen, hausbau konfigurator, fertighaus, nachhaltig bauen',
     openGraph: {
       title: 'NEST-Haus Konfigurator',
-      description: 'Ihr Traumhaus in 3D konfigurieren',
+      description: 'Ihr Traumhaus in  konfigurieren',
       images: ['/images/konfigurator-preview.jpg'],
     },
     twitter: {
@@ -149,8 +149,8 @@ keywords: 'modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Deutschl
 #### B. Configurator SEO Enhancement
 ```typescript
 // Enhanced configurator metadata
-title: 'Haus Konfigurator | 3D Planung für Ihr Modulhaus | NEST-Haus'
-description: 'Planen Sie Ihr Traumhaus mit unserem 3D-Konfigurator. Verschiedene Module, Materialien und Ausstattungen. Sofort Preis kalkulieren!'
+title: 'Haus Konfigurator |  Planung für Ihr Modulhaus | NEST-Haus'
+description: 'Planen Sie Ihr Traumhaus mit unserem Konfigurator. Verschiedene Module, Materialien und Ausstattungen. Sofort Preis kalkulieren!'
 ```
 
 #### C. Service Pages Creation
