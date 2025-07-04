@@ -115,10 +115,10 @@ export default function Home() {
               className="object-cover"
               style={landingImageStyle}
               
-              strategy="client"
-              isAboveFold={section.id === 1}
-              isCritical={section.id === 1}
-              priority={section.id === 1}
+              strategy={section.id <= 2 ? "ssr" : "client"}
+              isAboveFold={section.id <= 3}
+              isCritical={section.id <= 2}
+              priority={section.id <= 3}
               enableMobileDetection={false}
               sizes="100vw"
               quality={90}
@@ -162,10 +162,10 @@ export default function Home() {
                 height: 'auto',
               }}
               
-              strategy="client"
-              isAboveFold={section.id === 1}
-              isCritical={section.id === 1}
-              priority={section.id === 1}
+              strategy={section.id <= 2 ? "ssr" : "client"}
+              isAboveFold={section.id <= 3}
+              isCritical={section.id <= 2}
+              priority={section.id <= 3}
               enableMobileDetection={false}
               sizes="100vw"
               quality={90}
