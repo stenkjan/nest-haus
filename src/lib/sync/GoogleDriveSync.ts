@@ -67,12 +67,25 @@ export class GoogleDriveSync {
       });
 
       this.drive = google.drive({ version: 'v3', auth });
-      this.initialized = true;
       
-      console.log('🔐 Google Drive authentication initialized');
+      // Test the authentication by making a simple API call
+      console.log('🔐 Testing Google Drive authentication...');
+      await this.drive.about.get({ fields: 'user' });
+      
+      this.initialized = true;
+      console.log('🔐 Google Drive authentication initialized and tested successfully');
     } catch (error) {
       console.error('❌ Failed to initialize Google Drive auth:', error);
-      throw new Error('Google Drive authentication failed');
+      if (error instanceof Error) {
+        if (error.message.includes('invalid_grant')) {
+          throw new Error('Google Drive authentication failed: Invalid JWT signature. Please check service account key and system clock.');
+        } else if (error.message.includes('ENOENT')) {
+          throw new Error('Google Drive authentication failed: service-account-key.json not found.');
+        } else {
+          throw new Error(`Google Drive authentication failed: ${error.message}`);
+        }
+      }
+      throw new Error('Google Drive authentication failed with unknown error');
     }
   }
 
@@ -109,14 +122,81 @@ export class GoogleDriveSync {
       result.processed = allDriveImages.length;
       console.log(`📊 Found ${allDriveImages.length} images in Google Drive`);
 
+      // SAFETY CHECK 1: Never proceed with deletions if Google Drive returns 0 images
+      if (allDriveImages.length === 0) {
+        console.log('⚠️ SAFETY CHECK 1 FAILED: Google Drive returned 0 images.');
+        console.log('⚠️ This might be due to authentication issues or API problems.');
+        console.log('⚠️ Aborting sync to prevent accidental deletion of blob images.');
+        result.errors.push('Google Drive returned 0 images - possible authentication issue');
+        result.duration = Date.now() - startTime;
+        return result;
+      }
+
+      // SAFETY CHECK 2: Require minimum number of images (at least 50 images expected)
+      const MIN_EXPECTED_IMAGES = 50;
+      if (allDriveImages.length < MIN_EXPECTED_IMAGES) {
+        console.log(`⚠️ SAFETY CHECK 2 FAILED: Only ${allDriveImages.length} images found in Google Drive.`);
+        console.log(`⚠️ Expected at least ${MIN_EXPECTED_IMAGES} images.`);
+        console.log('⚠️ This might indicate a sync issue. Aborting to prevent accidental deletions.');
+        result.errors.push(`Only ${allDriveImages.length} images found, expected at least ${MIN_EXPECTED_IMAGES}`);
+        result.duration = Date.now() - startTime;
+        return result;
+      }
+
       // Step 2: Get current Vercel Blob images
       console.log('☁️ Fetching current Vercel Blob images...');
       const blobImages = await this.fetchBlobImages();
       console.log(`📊 Found ${blobImages.length} images in Vercel Blob`);
 
+      // SAFETY CHECK 3: If we have existing blob images, ensure Drive has at least 80% of them
+      if (blobImages.length > 0) {
+        const minExpectedFromDrive = Math.floor(blobImages.length * 0.8);
+        if (allDriveImages.length < minExpectedFromDrive) {
+          console.log(`⚠️ SAFETY CHECK 3 FAILED: Drive has ${allDriveImages.length} images but blob has ${blobImages.length}.`);
+          console.log(`⚠️ Expected at least ${minExpectedFromDrive} images from Drive (80% of existing blob images).`);
+          console.log('⚠️ This suggests Drive sync is incomplete. Aborting to prevent data loss.');
+          result.errors.push(`Drive has ${allDriveImages.length} images but blob has ${blobImages.length} - seems incomplete`);
+          result.duration = Date.now() - startTime;
+          return result;
+        }
+      }
+
       // Step 3: Smart sync - handle duplicates and updates
       console.log('🔄 Processing sync operations...');
       const syncOps = this.calculateSyncOperations(allDriveImages, blobImages);
+      
+      // SAFETY CHECK 4: Don't delete more than 25% of existing images in one sync (reduced from 50%)
+      const MAX_DELETION_PERCENTAGE = 0.25;
+      if (syncOps.delete.length > blobImages.length * MAX_DELETION_PERCENTAGE) {
+        console.log(`⚠️ SAFETY CHECK 4 FAILED: Sync wants to delete ${syncOps.delete.length} of ${blobImages.length} images (>${MAX_DELETION_PERCENTAGE * 100}%).`);
+        console.log('⚠️ This seems excessive. Aborting sync for safety.');
+        result.errors.push(`Attempted to delete ${syncOps.delete.length} of ${blobImages.length} images - exceeds ${MAX_DELETION_PERCENTAGE * 100}% limit`);
+        result.duration = Date.now() - startTime;
+        return result;
+      }
+
+      // SAFETY CHECK 5: Don't delete more than 10 images in a single sync
+      const MAX_DELETIONS_PER_SYNC = 10;
+      if (syncOps.delete.length > MAX_DELETIONS_PER_SYNC) {
+        console.log(`⚠️ SAFETY CHECK 5 FAILED: Sync wants to delete ${syncOps.delete.length} images.`);
+        console.log(`⚠️ Maximum allowed deletions per sync: ${MAX_DELETIONS_PER_SYNC}.`);
+        console.log('⚠️ This prevents accidental bulk deletions. Aborting sync.');
+        result.errors.push(`Attempted to delete ${syncOps.delete.length} images - exceeds limit of ${MAX_DELETIONS_PER_SYNC} per sync`);
+        result.duration = Date.now() - startTime;
+        return result;
+      }
+
+      // SAFETY CHECK 6: Log what will be deleted for transparency
+      if (syncOps.delete.length > 0) {
+        console.log(`🚨 DELETION PREVIEW: The following ${syncOps.delete.length} images will be deleted:`);
+        syncOps.delete.forEach((blob: BlobImage, index: number) => {
+          console.log(`  ${index + 1}. ${blob.pathname} (Number: ${blob.number})`);
+        });
+        console.log('🚨 These images exist in Vercel Blob but not in Google Drive');
+      }
+
+      // All safety checks passed - proceed with sync
+      console.log('✅ All safety checks passed. Proceeding with sync...');
       
       // Step 4: Execute sync operations efficiently
       const opResults = await this.executeSyncOperations(syncOps);
@@ -133,6 +213,7 @@ export class GoogleDriveSync {
 
       result.duration = Date.now() - startTime;
       console.log(`✅ Sync completed in ${result.duration}ms`);
+      console.log(`📊 Results: ${result.uploaded} uploaded, ${result.updated} updated, ${result.deleted} deleted`);
       
       return result;
 
@@ -162,7 +243,7 @@ export class GoogleDriveSync {
       // Log all files found (for debugging)
       if (response.data.files && response.data.files.length > 0) {
         console.log(`📄 Files in folder ${folderId}:`);
-        response.data.files.forEach((file, index) => {
+        response.data.files.forEach((file: any, index: number) => {
           console.log(`  ${index + 1}. "${file.name}" (ID: ${file.id})`);
         });
       } else {
@@ -186,7 +267,7 @@ export class GoogleDriveSync {
           });
           console.log(`✅ Successfully parsed: Number ${parsed.number}, Title: "${parsed.title}"`);
         } else {
-          console.log(`❌ Could not parse filename: "${file.name}" (doesn't match pattern: NUMBER - TITLE.EXT)`);
+          console.log(`❌ Could not parse filename: "${file.name}" (doesn't match pattern: NUMBER-TITLE.EXT or NUMBER-TITLE-HASH.EXT)`);
         }
       }
 
@@ -194,28 +275,55 @@ export class GoogleDriveSync {
       return images.sort((a, b) => a.number - b.number);
     } catch (error) {
       console.error(`❌ Failed to fetch images from folder ${folderId}:`, error);
-      return [];
+      if (error instanceof Error) {
+        if (error.message.includes('invalid_grant')) {
+          throw new Error(`Google Drive authentication failed for folder ${folderId}: Invalid JWT signature. Please check service account key and system clock.`);
+        } else if (error.message.includes('forbidden') || error.message.includes('access')) {
+          throw new Error(`Access denied to Google Drive folder ${folderId}. Please check folder permissions for the service account.`);
+        } else {
+          throw new Error(`Failed to fetch images from folder ${folderId}: ${error.message}`);
+        }
+      }
+      throw new Error(`Failed to fetch images from folder ${folderId}: Unknown error`);
     }
   }
 
   /**
    * Parse image name to extract number, title, and extension
-   * Format: "123 - Some Title Name.jpg"
+   * Handles both Drive format: "123-Some-Title-Name.jpg" 
+   * And Vercel Blob format: "images/123-Some-Title-Name-HASH.jpg"
    */
   private parseImageName(fileName: string): { number: number; title: string; extension: string } | null {
-    const match = fileName.match(/^(\d+)\s*-\s*(.+)\.([a-zA-Z0-9]+)$/);
-    if (!match) return null;
+    console.log(`🔍 Parsing filename: "${fileName}"`);
+    
+    // Remove path prefix if present (e.g., "images/")
+    const cleanFileName = fileName.replace(/^.*\//, '');
+    
+    // Pattern to match: {number}-{title}[-optional-hash].{extension}
+    // This handles both Drive files and Vercel blob files with hashes
+    const match = cleanFileName.match(/^(\d+)-(.+?)(?:-[a-zA-Z0-9]{26,})?\.([a-zA-Z0-9]+)$/);
+    
+    if (!match) {
+      console.log(`❌ No match for pattern ^(\\d+)-(.+?)(?:-[a-zA-Z0-9]{26,})?\\.([a-zA-Z0-9]+)$ in: "${fileName}"`);
+      return null;
+    }
 
     const [, numberStr, title, extension] = match;
     const number = parseInt(numberStr, 10);
     
-    if (isNaN(number)) return null;
+    if (isNaN(number)) {
+      console.log(`❌ Invalid number parsed from "${numberStr}" in filename: "${fileName}"`);
+      return null;
+    }
 
-    return {
+    const result = {
       number,
       title: title.trim(),
       extension: extension.toLowerCase()
     };
+    
+    console.log(`✅ Successfully parsed: ${JSON.stringify(result)}`);
+    return result;
   }
 
   /**
@@ -226,7 +334,15 @@ export class GoogleDriveSync {
       const { blobs } = await list();
       
       return blobs.map(blob => {
-        const parsed = this.parseImageName(blob.pathname);
+        // Handle the "images/" prefix that exists in blob but not in Google Drive
+        let fileNameToParse = blob.pathname;
+        if (fileNameToParse.startsWith('images/')) {
+          fileNameToParse = fileNameToParse.substring('images/'.length);
+        }
+        
+        console.log(`🔍 Parsing filename: "${blob.pathname}"`);
+        const parsed = this.parseImageName(fileNameToParse);
+        
         return {
           url: blob.url,
           pathname: blob.pathname,
@@ -354,8 +470,10 @@ export class GoogleDriveSync {
       }
       const buffer = Buffer.concat(chunks);
 
-      // Upload to Vercel Blob with consistent naming
-      const fileName = `${driveImg.number}-${driveImg.title}.${driveImg.extension}`;
+      // Upload to Vercel Blob with consistent naming (matches constants format)
+      // Use "images/" prefix for consistency with existing blob structure
+      const fileName = `images/${driveImg.number}-${driveImg.title}.${driveImg.extension}`;
+      console.log(`⬆️ Uploading to blob: ${fileName}`);
       
       await put(fileName, buffer, {
         access: 'public',
