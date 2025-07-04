@@ -27,9 +27,7 @@ import {
   CartFooter
 } from './index';
 import ConfiguratorContentCardsLightbox from './ConfiguratorContentCardsLightbox';
-import CalendarDialog from './CalendarDialog';
-import GrundstueckCheckDialog from './GrundstueckCheckDialog';
-import PlanungspaketeDialog from './PlanungspaketeDialog';
+import { CalendarDialog, GrundstueckCheckDialog, PlanungspaketeDialog } from '@/components/dialogs';
 import { GRUNDSTUECKSCHECK_PRICE } from '@/constants/configurator';
 
 // Simple debounce implementation to avoid lodash dependency
