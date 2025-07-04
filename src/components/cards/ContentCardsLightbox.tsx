@@ -114,6 +114,7 @@ export default function ContentCardsLightbox({
               subtitle=""
               maxWidth={false}
               showInstructions={false}
+              isLightboxMode={true}
             />
           </div>
         </div>
