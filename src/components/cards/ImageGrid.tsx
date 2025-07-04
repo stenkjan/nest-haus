@@ -82,7 +82,7 @@ export default function ImageGrid({
       </div>
 
       {/* 2x2 Grid Container */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 max-w-6xl mx-auto" style={{ gap: '15px' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 max-w-screen-2xl mx-auto" style={{ gap: '15px' }}>
         {gridData.map((item, index) => (
           <motion.div
             key={item.id}

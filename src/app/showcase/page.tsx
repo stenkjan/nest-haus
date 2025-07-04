@@ -1,5 +1,5 @@
 import { ButtonShowcase } from '@/components/ui';
-import { ContentCards, ContentCardsLightbox, ImageGrid, PricingCardsLightbox } from '@/components/cards';
+import { ContentCards, ContentCardsLightbox, ImageGrid, TextImageGrid, PricingCardsLightbox } from '@/components/cards';
 
 export default function ShowcasePage() {
   return (
@@ -61,6 +61,15 @@ export default function ShowcasePage() {
           <ImageGrid 
             title="Interactive Image Grid"
             subtitle="2x2 grid with individual card lightboxes • Click any card to open detailed view"
+            maxWidth={false}
+          />
+        </section>
+
+        {/* Text Image Grid Section - 3 Column Layout */}
+        <section className="overflow-visible">
+          <TextImageGrid 
+            title="Text & Image Grid"
+            subtitle="3-column layout: text left, images center and right • Responsive mobile stacking"
             maxWidth={false}
           />
         </section>
