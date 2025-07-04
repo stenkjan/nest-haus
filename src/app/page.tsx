@@ -3,18 +3,9 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 // Helper function to get mobile image path
+// Since all hero images are now mobile versions, we can use them directly
 const getMobileImagePath = (section: { imagePath: string }): string => {
-  const mobileImageMap = {
-    [IMAGES.hero.nestHaus1]: IMAGES.hero.mobile.nestHaus1,
-    [IMAGES.hero.nestHaus2]: IMAGES.hero.mobile.nestHaus2,
-    [IMAGES.hero.nestHaus3]: IMAGES.hero.mobile.nestHaus3,
-    [IMAGES.hero.nestHaus4]: IMAGES.hero.mobile.nestHaus4,
-    [IMAGES.hero.nestHaus5]: IMAGES.hero.mobile.nestHaus5,
-    [IMAGES.hero.nestHaus6]: IMAGES.hero.mobile.nestHaus6,
-    [IMAGES.hero.nestHaus7]: IMAGES.hero.mobile.nestHaus7,
-    [IMAGES.hero.nestHaus8]: IMAGES.hero.mobile.nestHaus8,
-  };
-  return mobileImageMap[section.imagePath as keyof typeof mobileImageMap] || section.imagePath;
+  return section.imagePath; // All hero images are now mobile versions
 };
 
 // Sample content for the 8 sections - using IMAGES constants

@@ -406,6 +406,7 @@ export class GoogleDriveSync {
 
   /**
    * Calculate what sync operations need to be performed
+   * CONSERVATIVE APPROACH: Only delete images that are clearly outdated
    */
   private calculateSyncOperations(driveImages: DriveImage[], blobImages: BlobImage[]): SyncOperations {
     const operations: SyncOperations = {
@@ -436,14 +437,44 @@ export class GoogleDriveSync {
       }
     }
 
-    // Process blob images that no longer exist in drive
+    // CONSERVATIVE DELETION: Only delete blobs that are clearly outdated
+    // Preserve mobile images, animations, and special cases
+    const protectedPatterns = [
+      /mobile/i,           // Mobile versions
+      /animation/i,        // Animation videos
+      /intro/i,           // Intro animations
+      /abschluss/i,       // End animations
+      /transport/i,       // Transport animations
+      /mobil/i,           // Mobile versions (German)
+      /pv/i,              // Photovoltaic images
+      /homebutton/i       // Home button
+    ];
+
     for (const blobImg of blobImages) {
       if (blobImg.number && !driveByNumber.has(blobImg.number)) {
-        operations.delete.push(blobImg);
+        const isProtected = protectedPatterns.some(pattern => 
+          pattern.test(blobImg.title || '') || 
+          pattern.test(blobImg.pathname || '')
+        );
+        
+        if (!isProtected) {
+          console.log(`🤔 Considering deletion of: ${blobImg.pathname}`);
+          operations.delete.push(blobImg);
+        } else {
+          console.log(`🛡️ Protecting: ${blobImg.pathname} (matches protection pattern)`);
+        }
       }
     }
 
     console.log(`📋 Sync operations: ${operations.upload.length} upload, ${operations.update.length} update, ${operations.delete.length} delete`);
+    
+    // Additional safety check: prevent deletion of critical images
+    if (operations.delete.length > 10) {
+      console.warn(`🚨 SAFETY CHECK: ${operations.delete.length} images scheduled for deletion - this seems excessive`);
+      console.warn('🚨 Clearing deletion queue to prevent accidental data loss');
+      operations.delete = [];
+    }
+
     return operations;
   }
 

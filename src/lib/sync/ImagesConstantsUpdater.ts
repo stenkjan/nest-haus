@@ -283,21 +283,30 @@ export class ImagesConstantsUpdater {
 
   /**
    * Generate updated constants by merging current with blob mappings
+   * NEVER removes existing constants - only adds new ones
    */
   private generateUpdatedConstants(
     currentConstants: Record<string, string>, 
     blobMappings: ImageMapping[]
   ): Record<string, string> {
+    // Start with ALL current constants - never remove any
     const updatedConstants = { ...currentConstants };
 
+    // Only ADD new constants from blob mappings
     for (const mapping of blobMappings) {
       if (mapping.constantKey && mapping.category) {
         const fullKey = mapping.category === 'configurations' 
           ? mapping.constantKey 
           : `${mapping.category}.${mapping.constantKey}`;
         
-        // Only update if the value is different or if it's a new key
-        if (!updatedConstants[fullKey] || updatedConstants[fullKey] !== mapping.blobPath) {
+        // Only add if it's a new key (doesn't exist in current constants)
+        // This preserves all existing constants even if the blob is deleted
+        if (!updatedConstants[fullKey]) {
+          updatedConstants[fullKey] = mapping.blobPath;
+        }
+        // If key exists but value is different, update it (for renamed files)
+        else if (updatedConstants[fullKey] !== mapping.blobPath) {
+          console.log(`🔄 Updating constant ${fullKey}: ${updatedConstants[fullKey]} -> ${mapping.blobPath}`);
           updatedConstants[fullKey] = mapping.blobPath;
         }
       }
