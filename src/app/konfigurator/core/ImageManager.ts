@@ -10,7 +10,7 @@
  */
 
 import { IMAGES } from '@/constants/images';
-import type { 
+import type {
   ViewType
 } from '../types/configurator.types';
 import type { Configuration } from '@/store/configuratorStore';
@@ -21,7 +21,7 @@ const imagePathCache = new Map<string, string>();
 export class ImageManager {
   /**
    * Get preview image path based on configuration and view type
-   * UPDATED: Matches old configurator logic exactly with security validation
+   * UPDATED: Matches old configurator logic exactly with security validation + new stirnseite view
    */
   static getPreviewImage(configuration: Configuration | null, view: ViewType): string {
     // Validate inputs for security
@@ -37,7 +37,7 @@ export class ImageManager {
 
     // Create cache key for memoization
     const cacheKey = this.createCacheKey(configuration, view);
-    
+
     // Return cached result if available
     if (imagePathCache.has(cacheKey)) {
       return imagePathCache.get(cacheKey)!;
@@ -49,26 +49,30 @@ export class ImageManager {
       case 'exterior':
         imagePath = this.getExteriorImage(configuration);
         break;
-        
+
+      case 'stirnseite':
+        imagePath = this.getStirnseiteImage(configuration);
+        break;
+
       case 'interior':
         imagePath = this.getInteriorImage(configuration);
         break;
-        
+
       case 'pv':
         imagePath = this.getPvImage(configuration);
         break;
-          
+
       case 'fenster':
         imagePath = this.getFensterImage(configuration);
         break;
-        
+
       default:
         imagePath = this.getExteriorImage(configuration);
     }
 
     // Cache the result
     imagePathCache.set(cacheKey, imagePath);
-    
+
     return imagePath;
   }
 
@@ -76,7 +80,7 @@ export class ImageManager {
    * Validate view type for security
    */
   private static isValidViewType(view: string): view is ViewType {
-    const validViews: ViewType[] = ['exterior', 'interior', 'pv', 'fenster'];
+    const validViews: ViewType[] = ['exterior', 'stirnseite', 'interior', 'pv', 'fenster'];
     return validViews.includes(view as ViewType);
   }
 
@@ -85,7 +89,7 @@ export class ImageManager {
    */
   private static sanitizeConfigValue(value: string | undefined): string {
     if (!value) return '';
-    
+
     // Remove any non-alphanumeric characters except underscore and hyphen
     return value.replace(/[^a-zA-Z0-9_-]/g, '');
   }
@@ -104,7 +108,7 @@ export class ImageManager {
       this.sanitizeConfigValue(configuration.pvanlage?.value) || 'none',
       this.sanitizeConfigValue(configuration.fenster?.value) || 'none'
     ];
-    
+
     return keys.join('|');
   }
 
@@ -114,7 +118,7 @@ export class ImageManager {
   private static getExteriorImage(configuration: Configuration): string {
     const nest = this.sanitizeConfigValue(configuration.nest?.value) || 'nest80';
     const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-    
+
     // Map nest values to image sizes (matching old configurator)
     const nestSizeMap: Record<string, string> = {
       'nest80': '75',   // nest80 -> 75 in images
@@ -123,9 +127,9 @@ export class ImageManager {
       'nest140': '135', // nest140 -> 135 in images
       'nest160': '155'  // nest160 -> 155 in images
     };
-    
+
     const imageSize = nestSizeMap[nest] || '75';
-    
+
     // Map gebäudehülle values to image suffixes (matching old configurator)
     const gebaeudeImageMap: Record<string, string> = {
       'trapezblech': 'trapezblech',
@@ -133,21 +137,48 @@ export class ImageManager {
       'fassadenplatten_schwarz': 'plattenschwarz',
       'fassadenplatten_weiss': 'plattenweiss'
     };
-    
+
     const gebaeudeImageName = gebaeudeImageMap[gebaeude] || 'holzlattung';
-    
+
     // Construct the image key: nest{size}_{gebaeude}
     const imageKey = `nest${imageSize}_${gebaeudeImageName}` as keyof typeof IMAGES.configurations;
-    
+
     // Return the image path
     const imagePath = IMAGES.configurations[imageKey];
-    
+
     if (imagePath) {
       return imagePath;
     }
-    
+
     // Fallback to default
     return IMAGES.configurations.nest75_holzlattung;
+  }
+
+  /**
+   * Get stirnseite view image - Shows at index 2 based on gebäudehülle selection
+   * Only shown when either nest module or gebäudehülle is selected
+   * Default to trapezblech when only module is selected without gebäudehülle
+   */
+  private static getStirnseiteImage(configuration: Configuration): string {
+    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
+
+    // Map gebäudehülle values to stirnseite image keys
+    const stirnseiteImageMap: Record<string, keyof typeof IMAGES.configurations> = {
+      'trapezblech': 'stirnseiteTrapezblech',
+      'holzlattung': 'stirnseiteHolzfassade',
+      'fassadenplatten_schwarz': 'stirnseitePlattenSchwarz',
+      'fassadenplatten_weiss': 'stirnseitePlattenWeiss'
+    };
+
+    const stirnseiteImageKey = stirnseiteImageMap[gebaeude] || 'stirnseiteTrapezblech';
+    const imagePath = IMAGES.configurations[stirnseiteImageKey];
+
+    if (imagePath) {
+      return imagePath;
+    }
+
+    // Fallback to trapezblech stirnseite
+    return IMAGES.configurations.stirnseiteTrapezblech;
   }
 
   /**
@@ -165,17 +196,17 @@ export class ImageManager {
       string, // fussboden
       keyof typeof IMAGES.configurations
     ]> = [
-      ['fassadenplatten_weiss', 'steirische_eiche', 'kalkstein_kanafar', 'plattenweiss_eiche_kalkstein'],
-      ['fassadenplatten_weiss', 'steirische_eiche', 'parkett', 'plattenweiss_eiche_parkett'],
-      ['fassadenplatten_schwarz', 'steirische_eiche', 'parkett', 'plattenschwarz_eiche_parkett'],
-      ['fassadenplatten_schwarz', 'kiefer', 'parkett', 'plattenschwarz_holznatur_parkett'],
-      ['trapezblech', 'kiefer', 'parkett', 'trapezblech_holznatur_parkett'],
-      ['trapezblech', 'kiefer', 'kalkstein_kanafar', 'trapezblech_holznatur_kalkstein'],
-      ['trapezblech', 'fichte', 'parkett', 'trapezblech_holzweiss_parkett'],
-      ['trapezblech', 'fichte', 'kalkstein_kanafar', 'trapezblech_holzweiss_kalkstein'],
-      ['trapezblech', 'fichte', 'schiefer_massiv', 'trapezblech_holzweiss_granit'],
-      ['trapezblech', 'steirische_eiche', 'parkett', 'trapezblech_eiche_parkett'],
-    ];
+        ['fassadenplatten_weiss', 'steirische_eiche', 'kalkstein_kanafar', 'plattenweiss_eiche_kalkstein'],
+        ['fassadenplatten_weiss', 'steirische_eiche', 'parkett', 'plattenweiss_eiche_parkett'],
+        ['fassadenplatten_schwarz', 'steirische_eiche', 'parkett', 'plattenschwarz_eiche_parkett'],
+        ['fassadenplatten_schwarz', 'kiefer', 'parkett', 'plattenschwarz_holznatur_parkett'],
+        ['trapezblech', 'kiefer', 'parkett', 'trapezblech_holznatur_parkett'],
+        ['trapezblech', 'kiefer', 'kalkstein_kanafar', 'trapezblech_holznatur_kalkstein'],
+        ['trapezblech', 'fichte', 'parkett', 'trapezblech_holzweiss_parkett'],
+        ['trapezblech', 'fichte', 'kalkstein_kanafar', 'trapezblech_holzweiss_kalkstein'],
+        ['trapezblech', 'fichte', 'schiefer_massiv', 'trapezblech_holzweiss_granit'],
+        ['trapezblech', 'steirische_eiche', 'parkett', 'trapezblech_eiche_parkett'],
+      ];
     for (const [g, i, f, key] of exactMappings) {
       if (gebaeude === g && innenverkleidung === i && fussboden === f) {
         const imagePath = IMAGES.configurations[key];
@@ -209,13 +240,8 @@ export class ImageManager {
         'schiefer_massiv': prefix === 'holzlattung' ? 'schiefer' : 'granit' // schiefer for holzlattung, granit for others
       };
       const fussbodenPart = fussbodenMap[fussboden] || 'kalkstein';
-      // Special case: holzlattung + kiefer + parkett uses 'eiche' suffix
-      let finalFussbodenPart = fussbodenPart;
-      if (prefix === 'holzlattung' && innenverkleidung === 'kiefer' && fussboden === 'parkett') {
-        finalFussbodenPart = 'eiche';
-      }
       // Construct the full image key: {prefix}_{innen}_{fussboden}
-      const imageKey = `${prefix}_${innenPart}_${finalFussbodenPart}` as keyof typeof IMAGES.configurations;
+      const imageKey = `${prefix}_${innenPart}_${fussbodenPart}` as keyof typeof IMAGES.configurations;
       // Try to get the specific combination
       const imagePath = IMAGES.configurations[imageKey];
       if (imagePath) {
@@ -243,7 +269,7 @@ export class ImageManager {
    */
   private static getPvImage(configuration: Configuration): string {
     const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-    
+
     // Map gebäudehülle to PV image keys (matching old configurator)
     const pvImageMap: Record<string, keyof typeof IMAGES.configurations> = {
       'trapezblech': 'pv_trapezblech',
@@ -251,14 +277,14 @@ export class ImageManager {
       'fassadenplatten_schwarz': 'pv_plattenschwarz',
       'fassadenplatten_weiss': 'pv_plattenweiss'
     };
-    
+
     const pvImageKey = pvImageMap[gebaeude] || 'pv_holzfassade';
     const imagePath = IMAGES.configurations[pvImageKey];
-    
+
     if (imagePath) {
       return imagePath;
     }
-    
+
     // Fallback to holzfassade PV
     return IMAGES.configurations.pv_holzfassade;
   }
@@ -268,7 +294,7 @@ export class ImageManager {
    */
   private static getFensterImage(configuration: Configuration): string {
     const fensterValue = this.sanitizeConfigValue(configuration.fenster?.value);
-    
+
     if (fensterValue) {
       // Map fenster values to image keys (matching both old and new configurator selections)
       const fensterImageMap: Record<string, keyof typeof IMAGES.configurations> = {
@@ -281,66 +307,61 @@ export class ImageManager {
         'kunststoffverkleidung': 'fenster_pvc',
         'eiche': 'fenster_holz_eiche'
       };
-      
+
       const fensterImageKey = fensterImageMap[fensterValue];
-      
+
       if (fensterImageKey && IMAGES.configurations[fensterImageKey]) {
         return IMAGES.configurations[fensterImageKey];
       }
     }
-    
+
     // Fallback to stirnseite view based on gebäudehülle (matching old configurator)
     const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-    
+
     const stirnseiteMap: Record<string, keyof typeof IMAGES.configurations> = {
-      'trapezblech': 'TRAPEZBLECH',
-      'holzlattung': 'HOLZFASSADE', 
-      'fassadenplatten_schwarz': 'PLATTEN_SCHWARZ',
-      'fassadenplatten_weiss': 'PLATTEN_WEISS'
+      'trapezblech': 'stirnseiteTrapezblech',
+      'holzlattung': 'stirnseiteHolzfassade',
+      'fassadenplatten_schwarz': 'stirnseitePlattenSchwarz',
+      'fassadenplatten_weiss': 'stirnseitePlattenWeiss'
     };
-    
-    const stirnseiteKey = stirnseiteMap[gebaeude] || 'HOLZFASSADE';
+
+    const stirnseiteKey = stirnseiteMap[gebaeude] || 'stirnseiteHolzfassade';
     const stirnseitePath = IMAGES.configurations[stirnseiteKey];
-    
+
     if (stirnseitePath) {
       return stirnseitePath;
     }
-    
+
     // Final fallback
     return IMAGES.configurations.fenster_pvc;
   }
 
   /**
    * Get available views based on current configuration and part activation state
-   * UPDATED: Matches the old configurator logic exactly
+   * UPDATED: Includes stirnseite at index 2, removes pv and fenster from preview panel
    */
   static getAvailableViews(
-    configuration: Configuration | null, 
-    hasPart2BeenActive: boolean = false, 
-    hasPart3BeenActive: boolean = false
+    configuration: Configuration | null,
+    hasPart2BeenActive: boolean = false,
+    _hasPart3BeenActive: boolean = false
   ): ViewType[] {
-    const views: ViewType[] = ['exterior']; // Always available (index 1 in old system)
-    
+    const views: ViewType[] = ['exterior']; // Always available (index 1)
+
     if (!configuration) return views;
-    
-    // Interior view available only if Part 2 has been activated (index 2 in old system)
+
+    // Stirnseite view available when either nest module or gebäudehülle is selected (index 2)
+    if (configuration.nest || configuration.gebaeudehuelle) {
+      views.push('stirnseite');
+    }
+
+    // Interior view available only if Part 2 has been activated (index 3)
     if (hasPart2BeenActive) {
       views.push('interior');
     }
-    
-    // PV and Fenster views available only if Part 3 has been activated (index 3&4 in old system)
-    if (hasPart3BeenActive) {
-      // PV view available if PV is selected
-      if (configuration.pvanlage) {
-        views.push('pv');
-      }
-      
-      // Fenster view available if fenster is selected
-      if (configuration.fenster) {
-        views.push('fenster');
-      }
-    }
-    
+
+    // NOTE: pv and fenster views removed from preview panel as they have their own info dialog boxes
+    // They are no longer shown in the main preview navigation
+
     return views;
   }
 
@@ -354,7 +375,7 @@ export class ImageManager {
     // Only preload current view + immediately likely next view to avoid warnings
     const currentImage = this.getPreviewImage(configuration, 'exterior');
     const imagesToPreload: string[] = [currentImage];
-    
+
     // Add interior image only if we have innenverkleidung selected (likely to be viewed soon)
     if (configuration.innenverkleidung) {
       const interiorImage = this.getPreviewImage(configuration, 'interior');
@@ -363,7 +384,7 @@ export class ImageManager {
 
     // OPTIMIZED: Use browser's fetch with cache instead of DOM manipulation
     const uniqueImages = [...new Set(imagesToPreload)];
-    
+
     // Preload using fetch API for better performance and reliability
     const preloadPromises = uniqueImages.map(async (imagePath) => {
       if (imagePath && imagePath !== 'undefined') {

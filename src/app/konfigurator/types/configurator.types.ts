@@ -7,16 +7,16 @@
 
 // ===== CORE TYPES =====
 
-export type ViewType = 'exterior' | 'interior' | 'pv' | 'fenster';
+export type ViewType = 'exterior' | 'stirnseite' | 'interior' | 'pv' | 'fenster';
 
-export type SelectionCategory = 
-  | 'nest' 
-  | 'gebaeudehuelle' 
-  | 'innenverkleidung' 
-  | 'fussboden' 
-  | 'pvanlage' 
-  | 'fenster' 
-  | 'paket' 
+export type SelectionCategory =
+  | 'nest'
+  | 'gebaeudehuelle'
+  | 'innenverkleidung'
+  | 'fussboden'
+  | 'pvanlage'
+  | 'fenster'
+  | 'paket'
   | 'grundstueckscheck';
 
 // ===== SELECTION TYPES =====
@@ -29,7 +29,7 @@ export interface SelectionOption {
   price: number;
   included?: boolean;
   imageKey?: string;
-  
+
   // Optional quantity-based properties
   quantity?: number;
   squareMeters?: number;

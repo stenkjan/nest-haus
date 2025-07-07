@@ -4,6 +4,194 @@
 
 ---
 
+## [d0edd6c3d6eac73d07d7198ca22d846ae64499b2] - Fri Jul 4 22:51:31 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `fix: improve type safety for window cache clearing function in ClientBlobImage and ImageCacheManager`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ImageCacheManager.tsx
+
+---
+
+## [ec3c026855c4abb15247d9f49d8f8e78f3c04ea5] - Fri Jul 4 22:04:35 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `chore: remove TypeScript check from verification rules in .cursorrules`
+
+### Changes Analysis
+
+---
+
+## [cdaba33d19b81abd350f0caf5f8966ea6f39b8c0] - Fri Jul 4 21:56:07 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [6e59a9897b77062c28e120ba7bf9bc712306730b] - Fri Jul 4 21:50:28 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `refactor: enhance mobile image handling in configurator and update GoogleDriveSync to support mobile flag for images`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/page.tsx
+
+---
+
+## [add953ae29b2556ca64a0175ce758bf37efc4560] - Fri Jul 4 21:16:23 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `fix: enhance error handling in GoogleDriveSync by simplifying catch block for service account file access`
+
+### Changes Analysis
+
+---
+
+## [c3c4baaa5ee909da2ed2767f1aab225c0fc8b3bb] - Fri Jul 4 20:15:57 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [c7963462794296946057fef6097b392a62bb1090] - Fri Jul 4 19:40:16 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [6737d4113e81de15179735fb6f88003a52c7581f] - Fri Jul 4 19:33:06 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `fix: improve GoogleDriveSync async initialization and error handling`
+
+### Changes Analysis
+
+---
+
+## [9d5949620a4700c81a9b88c78d560f26648f0f57] - Fri Jul 4 18:28:24 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `refactor: simplify image key construction in ImageManager by removing special case handling for 'eiche' suffix`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/konfigurator/core/ImageManager.ts
+
+---
+
+## [c7173f21d40da05f648c5a858100aa66ec839d4c] - Fri Jul 4 17:55:20 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [06deebab7ea0c44b516c092687de8d38e83c8f6b] - Fri Jul 4 17:13:10 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [c74986240d47f94489767de8fe79a7b70d1a1b05] - Fri Jul 4 16:11:55 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [bd478abb4982992443568b88a7ac6fb8fff29a10] - Fri Jul 4 15:53:25 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `fix: enhance Google Drive authentication and sync process with safety checks and improved error handling`
+
+### Changes Analysis
+
+---
+
+## [4d3cd97970517d29099b64e71898aa1b716bc233] - Fri Jul 4 14:23:44 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/admin/customer-inquiries/page.tsx
+- src/app/admin/page.tsx
+- src/app/admin/popular-configurations/page.tsx
+- src/app/api/admin/analytics/overview/route.ts
+- src/app/api/admin/analytics/route.ts
+- src/app/api/admin/popular-configurations/route.ts
+- src/app/api/contact/route.ts
+- src/app/konfigurator/page.tsx
+- src/app/kontakt/EmailService.ts
+- src/app/kontakt/page.tsx
+
+#### 🔧 Configuration Changes
+
+- .env
+- .env.local
+- package.json
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+- docs/CONTACT_SYSTEM_AND_ADMIN_IMPLEMENTATION_GUIDE.md
+- docs/SEO_OPTIMIZATION_ROADMAP.md
+
+---
+
 ## [be5ff33a45b5719f4debb8c698e5120a3ac54fdb] - Fri Jul 4 14:22:47 2025 +0200
 
 **Author**: stenkjan  

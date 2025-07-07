@@ -4,7 +4,8 @@ import { IMAGES } from "@/constants/images";
 
 // Helper function to get mobile image path
 const getMobileImagePath = (section: { imagePath: string }): string => {
-  const mobileImageMap = {
+  // Map desktop image paths to mobile versions
+  const mobileMapping: { [key: string]: string } = {
     [IMAGES.hero.nestHaus1]: IMAGES.hero.mobile.nestHaus1,
     [IMAGES.hero.nestHaus2]: IMAGES.hero.mobile.nestHaus2,
     [IMAGES.hero.nestHaus3]: IMAGES.hero.mobile.nestHaus3,
@@ -14,7 +15,8 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
     [IMAGES.hero.nestHaus7]: IMAGES.hero.mobile.nestHaus7,
     [IMAGES.hero.nestHaus8]: IMAGES.hero.mobile.nestHaus8,
   };
-  return mobileImageMap[section.imagePath as keyof typeof mobileImageMap] || section.imagePath;
+  
+  return mobileMapping[section.imagePath] || section.imagePath;
 };
 
 // Sample content for the 8 sections - using IMAGES constants
@@ -113,10 +115,10 @@ export default function Home() {
               className="object-cover"
               style={landingImageStyle}
               
-              strategy="client"
-              isAboveFold={section.id === 1}
-              isCritical={section.id === 1}
-              priority={section.id === 1}
+              strategy={section.id <= 2 ? "ssr" : "client"}
+              isAboveFold={section.id <= 3}
+              isCritical={section.id <= 2}
+              priority={section.id <= 3}
               enableMobileDetection={false}
               sizes="100vw"
               quality={90}
@@ -160,10 +162,10 @@ export default function Home() {
                 height: 'auto',
               }}
               
-              strategy="client"
-              isAboveFold={section.id === 1}
-              isCritical={section.id === 1}
-              priority={section.id === 1}
+              strategy={section.id <= 2 ? "ssr" : "client"}
+              isAboveFold={section.id <= 3}
+              isCritical={section.id <= 2}
+              priority={section.id <= 3}
               enableMobileDetection={false}
               sizes="100vw"
               quality={90}

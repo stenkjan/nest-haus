@@ -218,6 +218,33 @@ class ImageCache {
     this.loadingStates.clear();
     this.requestCounts.clear();
   }
+  
+  // Clear session storage cache as well
+  static clearSessionStorage(): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      const keys = [];
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key?.startsWith('nest_img_')) {
+          keys.push(key);
+        }
+      }
+      
+      keys.forEach(key => sessionStorage.removeItem(key));
+      console.log(`🗑️ Cleared ${keys.length} cached image URLs from session storage`);
+    } catch {
+      // Handle gracefully
+    }
+  }
+  
+  // Clear all caches (memory + session storage)
+  static clearAllCaches(): void {
+    this.reset();
+    this.clearSessionStorage();
+    console.log('🗑️ Cleared all image caches (memory + session storage)');
+  }
 }
 
 export default function ClientBlobImage({
@@ -270,6 +297,11 @@ export default function ClientBlobImage({
   useEffect(() => {
     if (enableCache) {
       ImageCache.loadFromSession();
+    }
+    
+    // Expose cache clearing function globally for debugging
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+      (window as typeof window & { clearImageCache?: () => void }).clearImageCache = ImageCache.clearAllCaches;
     }
     
     return () => {

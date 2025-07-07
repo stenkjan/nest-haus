@@ -97,8 +97,10 @@ export class ImagesConstantsUpdater {
       for (const blob of blobs) {
         const parsed = this.parseImageName(blob.pathname);
         if (parsed) {
+          // Check if this is a mobile version
+          const isMobile = blob.pathname.toLowerCase().includes('mobile');
           const category = this.inferCategory(parsed.number, parsed.title);
-          const constantKey = this.generateConstantKey(parsed.number, parsed.title, category);
+          const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
           
           mappings.push({
             number: parsed.number,
@@ -168,19 +170,26 @@ export class ImagesConstantsUpdater {
   }
 
   /**
-   * Generate constant key based on number, title, and category
+   * Generate constant key based on number, title, category, and mobile flag
    */
-  private generateConstantKey(number: number, title: string, category: string): string {
+  private generateConstantKey(number: number, title: string, category: string, isMobile: boolean = false): string {
     const titleParts = title.toLowerCase()
       .replace(/[^a-z0-9-]/g, '_')
       .replace(/_+/g, '_')
       .replace(/^_|_$/g, '')
       .split('_');
 
-    // For hero images, use simple naming
+    // For hero images, use simple naming with mobile handling
     if (category === 'hero') {
       if (number === 0) return 'homeButton';
-      return `nestHaus${number}`;
+      
+      if (isMobile) {
+        // Mobile hero images go into hero.mobile subcategory
+        return `mobile.nestHaus${number}`;
+      } else {
+        // Desktop hero images go directly into hero category
+        return `nestHaus${number}`;
+      }
     }
 
     // For configurations, create descriptive keys
@@ -283,21 +292,40 @@ export class ImagesConstantsUpdater {
 
   /**
    * Generate updated constants by merging current with blob mappings
+    * NEVER removes existing constants - only adds new ones
    */
   private generateUpdatedConstants(
     currentConstants: Record<string, string>, 
     blobMappings: ImageMapping[]
   ): Record<string, string> {
+    // Start with ALL current constants - never remove any
     const updatedConstants = { ...currentConstants };
 
+    // Only ADD new constants from blob mappings
     for (const mapping of blobMappings) {
       if (mapping.constantKey && mapping.category) {
-        const fullKey = mapping.category === 'configurations' 
-          ? mapping.constantKey 
-          : `${mapping.category}.${mapping.constantKey}`;
+        // Handle hero category specially - mobile images go into hero.mobile
+        let fullKey: string;
         
-        // Only update if the value is different or if it's a new key
-        if (!updatedConstants[fullKey] || updatedConstants[fullKey] !== mapping.blobPath) {
+        if (mapping.category === 'hero' && mapping.constantKey.startsWith('mobile.')) {
+          // Mobile hero images: hero.mobile.nestHaus1
+          fullKey = `hero.${mapping.constantKey}`;
+        } else if (mapping.category === 'configurations') {
+          // Configuration images: direct key
+          fullKey = mapping.constantKey;
+        } else {
+          // Other categories: category.key
+          fullKey = `${mapping.category}.${mapping.constantKey}`;
+        }
+        
+        // Only add if it's a new key (doesn't exist in current constants)
+        // This preserves all existing constants even if the blob is deleted
+        if (!updatedConstants[fullKey]) {
+          updatedConstants[fullKey] = mapping.blobPath;
+        }
+        // If key exists but value is different, update it (for renamed files)
+        else if (updatedConstants[fullKey] !== mapping.blobPath) {
+          console.log(`🔄 Updating constant ${fullKey}: ${updatedConstants[fullKey]} -> ${mapping.blobPath}`);
           updatedConstants[fullKey] = mapping.blobPath;
         }
       }

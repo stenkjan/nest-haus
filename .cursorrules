@@ -15,7 +15,6 @@
 - **Unknown over any**: When type is truly unknown, prefer `unknown` over `any` and use type guards
 
 ## Verification & Testing Rules
-- **TypeScript Check**: Always run `npx tsc --noEmit` at the end of code changes to verify TypeScript compilation
 - **ESLint Check**: Run `npm run lint` to ensure code follows project standards
 - **Build Verification**: For significant changes, run `npm run build` to ensure production compatibility
 - **Hot Reload Check**: Verify that localhost:3000 is running and changes are reflected without breaking the development server

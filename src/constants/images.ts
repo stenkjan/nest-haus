@@ -32,7 +32,7 @@ export const IMAGES = {
         house4: 'house-4',
         house5: 'house-5'
     },
-    
+
     // Function/Process images
     function: {
         nestHausModulSchema: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung',
@@ -57,14 +57,14 @@ export const IMAGES = {
         nestHausFundamentPunktfundament: '38-NEST-Haus-Fundament-Punktfundament',
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung'
     },
-    
+
     aboutus: {
         team3: '998_TEAM',
         team2: '998_TEAM',
         team: '999_TEAM',
         materialEiche: '132-NEST-Haus-Konfigurator-Materialien-Innenverkleidung-Holz-Steirische-Eiche'
     },
-    
+
     // Configurator images
     configurations: {
         // Base configurations
@@ -72,32 +72,32 @@ export const IMAGES = {
         nest75_plattenweiss: '102-NEST-Haus-Konfigurator-75-Fassadenplatten-Weiss-Ansicht',
         nest75_holzlattung: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
         nest75_trapezblech: '106-NEST-Haus-Konfigurator-75-Trapezblech-Schwarz-Ansicht',
-        
+
         nest95_plattenschwarz: '108-NEST-Haus-Konfigurator-95-Fassadenplatten-Schwarz-Ansicht',
         nest95_plattenweiss: '109-NEST-Haus-Konfigurator-95-Fassadenplatten-Weiss-Ansicht',
         nest95_holzlattung: '110-NEST-Haus-Konfigurator-95-Holzfassade-Ansicht',
         nest95_trapezblech: '111-NEST-Haus-Konfigurator-95-Trapezblech-Schwarz-Ansicht',
-        
+
         nest115_plattenschwarz: '112-NEST-Haus-Konfigurator-115-Fassadenplatten-Schwarz-Ansicht',
         nest115_plattenweiss: '113-NEST-Haus-Konfigurator-115-Fassadenplatten-Weiss-Ansicht',
         nest115_holzlattung: '114-NEST-Haus-Konfigurator-115-Holzfassade-Ansicht',
         nest115_trapezblech: '115-NEST-Haus-Konfigurator-115-Trapezblech-Schwarz-Ansicht',
-        
+
         nest135_plattenschwarz: '116-NEST-Haus-Konfigurator-135-Fassadenplatten-Schwarz-Ansicht',
         nest135_plattenweiss: '117-NEST-Haus-Konfigurator-135-Fassadenplatten-Weiss-Ansicht',
         nest135_holzlattung: '118-NEST-Haus-Konfigurator-135-Holzfassade-Ansicht',
         nest135_trapezblech: '119-NEST-Haus-Konfigurator-135-Trapezblech-Schwarz-Ansicht',
-        
+
         nest155_plattenschwarz: '120-NEST-Haus-Konfigurator-155-Fassadenplatten-Schwarz-Ansicht',
         nest155_plattenweiss: '121-NEST-Haus-Konfigurator-155-Fassadenplatten-Weiss-Ansicht',
         nest155_holzlattung: '122-NEST-Haus-Konfigurator-155-Holzfassade-Ansicht',
         nest155_trapezblech: '123-NEST-Haus-Konfigurator-155-Trapezblech-Schwarz-Ansicht',
 
         // Stirnseite views for all nest models
-        PLATTEN_SCHWARZ: '101-NEST-Haus-Konfigurator-75-Fassadenplatten-Schwarz-Stirnseite',
-        PLATTEN_WEISS: '103-NEST-Haus-Konfigurator-75-Fassadenplatten-Weiss-Stirnseite',
-        HOLZFASSADE: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite',
-        TRAPEZBLECH: '107-NEST-Haus-Konfigurator-75-Trapezblech-Schwarz-Stirnseite',
+        stirnseitePlattenSchwarz: '101-NEST-Haus-Konfigurator-75-Fassadenplatten-Schwarz-Stirnseite',
+        stirnseitePlattenWeiss: '103-NEST-Haus-Konfigurator-75-Fassadenplatten-Weiss-Stirnseite',
+        stirnseiteHolzfassade: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite',
+        stirnseiteTrapezblech: '107-NEST-Haus-Konfigurator-75-Trapezblech-Schwarz-Stirnseite',
 
         // Material combinations for configurator
         trapezblech_holznatur_granit: '136-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-Granit', // schiefer
@@ -109,7 +109,7 @@ export const IMAGES = {
         trapezblech_eiche_granit: '142-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Steirische-Eiche-Granit', // schiefer
         trapezblech_eiche_kalkstein: '143-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Steirische-Eiche-Kalkstein',
         trapezblech_eiche_parkett: '144-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Steirische-Eiche-Parkett-Eiche',
-        
+
         plattenschwarz_holznatur_granit: '145-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Holz-Natur-Granit', // schiefer
         plattenschwarz_holznatur_kalkstein: '146-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Holz-Natur-Kalkstein',
         plattenschwarz_holznatur_parkett: '147-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Holz-Natur-Parkett-Eiche',
@@ -119,7 +119,7 @@ export const IMAGES = {
         plattenschwarz_eiche_granit: '152-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Steirische-Eiche-Granit', // schiefer
         plattenschwarz_eiche_kalkstein: '153-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Steirische-Eiche-Kalkstein',
         plattenschwarz_eiche_parkett: '154-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Steirische-Eiche-Parkett-Eiche',
-        
+
         plattenweiss_holznatur_granit: '155-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Holz-Natur-Granit', // schiefer
         plattenweiss_holznatur_kalkstein: '156-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Holz-Natur-Kalkstein',
         plattenweiss_holznatur_parkett: '157-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Holz-Natur-Parkett-Eiche',
@@ -135,31 +135,31 @@ export const IMAGES = {
         holzlattung_holznatur_kalkstein: '166-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Kalkstein',
         holzlattung_holznatur_parkett: '167-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Parkett-Eiche',
         holzlattung_holzweiss_schiefer: '168-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Granit', //Schiefer
-        holzlattung_holzweiss_kalkstein: '169-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Kalkstein',           
-        holzlattung_holzweiss_parkett: '170-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Parkett-Eiche', 
+        holzlattung_holzweiss_kalkstein: '169-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Kalkstein',
+        holzlattung_holzweiss_parkett: '170-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-weiss-gekalkt-Parkett-Eiche',
         holzlattung_eiche_schiefer: '171-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Granit', //Schiefer
         holzlattung_eiche_kalkstein: '172-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Kalkstein',
         holzlattung_eiche_parkett: '173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche',
-        
+
         // PV (Photovoltaik) configurations - determined by gebäudehülle selection
         pv_holzfassade: '134-NEST-Haus-Konfigurator-Modul-Fassade-Holzfassade-Photovoltaik-PV-Panel',
         pv_trapezblech: '135-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Photovoltaik-PV-Panel',
         pv_plattenschwarz: '151-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Photovoltaik-PV-Panel',
         pv_plattenweiss: '161-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Photovoltaik-PV-Panel',
-        
+
         // Default configurations
         nest75: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
         nest95: '110-NEST-Haus-Konfigurator-95-Holzfassade-Ansicht',
         nest115: '114-NEST-Haus-Konfigurator-115-Holzfassade-Ansicht',
         nest135: '118-NEST-Haus-Konfigurator-135-Holzfassade-Ansicht',
         nest155: '122-NEST-Haus-Konfigurator-155-Holzfassade-Ansicht',
-        
+
         // Fenster/Window configurations
         fenster_pvc: '177-NEST-Haus-Fenster-Kunststoff-PVC-Fenster-Weiß-Kunststofffenster-PVCFenster',
         fenster_holz_fichte: '175-NEST-Haus-Fenster-Holz-Fichte-Holzfenster-Fichtenfenster',
         fenster_aluminium: '176-NEST-Haus-Fenster-Aluminium-Fenster-Aluminiumfenster-Metallfenster',
         fenster_holz_eiche: '174-NEST-Haus-Fenster-Holz-Eiche-Holzfenster-Eichenfenster',
-        
+
         // Interior defaults
         interiorDefault: '137-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-Kalkstein',
         trapezblech_interior: '133-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-Kalkstein',
