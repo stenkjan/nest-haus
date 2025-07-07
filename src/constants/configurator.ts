@@ -5,7 +5,7 @@ export const NEST_OPTIONS = [
   {
     value: 'nest80',
     name: 'Nest. 80',
-    description: '80m² Nutzfläche',
+    description: '75m² Nutzfläche',
     price: 155500, // Base reference price (Trapezblech + Kiefer + Parkett)
     monthly: 816,
     modules: 0 // Base size
@@ -13,7 +13,7 @@ export const NEST_OPTIONS = [
   {
     value: 'nest100',
     name: 'Nest. 100', 
-    description: '100m² Nutzfläche',
+    description: '95m² Nutzfläche',
     price: 189100, // Reference price
     monthly: 993,
     modules: 1 // +1 module from base
@@ -21,7 +21,7 @@ export const NEST_OPTIONS = [
   {
     value: 'nest120',
     name: 'Nest. 120',
-    description: '120m² Nutzfläche', 
+    description: '115m² Nutzfläche', 
     price: 222700, // Reference price
     monthly: 1169,
     modules: 2 // +2 modules from base
@@ -29,7 +29,7 @@ export const NEST_OPTIONS = [
   {
     value: 'nest140',
     name: 'Nest. 140',
-    description: '140m² Nutzfläche',
+    description: '135m² Nutzfläche',
     price: 256300, // Reference price
     monthly: 1346,
     modules: 3 // +3 modules from base
@@ -37,7 +37,7 @@ export const NEST_OPTIONS = [
   {
     value: 'nest160',
     name: 'Nest. 160',
-    description: '160m² Nutzfläche',
+    description: '155m² Nutzfläche',
     price: 289900, // Reference price
     monthly: 1522,
     modules: 4 // +4 modules from base

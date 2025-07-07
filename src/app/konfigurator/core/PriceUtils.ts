@@ -52,15 +52,15 @@ export class PriceUtils {
   }
 
   /**
-   * Get adjusted nutzfläche for Nest models (original - 5m²)
+   * Get adjusted nutzfläche for Nest models (matches configuratorData.ts descriptions)
    */
   static getAdjustedNutzflaeche(nestModel: string): number {
     const nutzflaecheMap: Record<string, number> = {
-      'nest80': 75,   // 80 - 5
-      'nest100': 95,  // 100 - 5
-      'nest120': 115, // 120 - 5
-      'nest140': 135, // 140 - 5
-      'nest160': 155  // 160 - 5
+      'nest80': 75,   // 75m² Nutzfläche (adjusted)
+      'nest100': 95,  // 95m² Nutzfläche (adjusted)
+      'nest120': 115, // 115m² Nutzfläche (adjusted)
+      'nest140': 135, // 135m² Nutzfläche (adjusted)
+      'nest160': 155  // 155m² Nutzfläche (adjusted)
     };
 
     return nutzflaecheMap[nestModel] || 0;
