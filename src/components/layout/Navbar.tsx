@@ -211,7 +211,7 @@ export default function Navbar() {
               />
             </svg>
             {cartCount > 0 && (
-              <span className="absolute top-0 right-0 translate-x-1/8 -translate-y-1/8 bg-red-500 text-white text-xs leading-none font-bold rounded-full w-3 h-3 flex items-center justify-center min-w-[12px] min-h-[12px]">
+              <span className="absolute top-2 right-0 translate-x-1/8 -translate-y-1/8 bg-red-500 text-white text-xs leading-none font-bold rounded-full w-3 h-3 flex items-center justify-center min-w-[12px] min-h-[12px]">
                 {cartCount > 9 ? '9+' : cartCount}
               </span>
             )}
