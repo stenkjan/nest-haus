@@ -1,130 +1,131 @@
-'use client'
+"use client";
 
-import { PriceUtils } from '../core/PriceUtils'
+import { PriceUtils } from "../core/PriceUtils";
 
 interface SelectionOptionProps {
-  id: string
-  name: string
-  description: string
+  id: string;
+  name: string;
+  description: string;
   price?: {
-    type: 'base' | 'upgrade' | 'included'
-    amount?: number
-    monthly?: number
-  }
-  isSelected?: boolean
-  onClick: (id: string) => void
-  onUnselect?: (id: string) => void
-  canUnselect?: boolean
-  disabled?: boolean
-  className?: string
+    type: "base" | "upgrade" | "included";
+    amount?: number;
+    monthly?: number;
+  };
+  isSelected?: boolean;
+  onClick: (id: string) => void;
+  onUnselect?: (id: string) => void;
+  canUnselect?: boolean;
+  disabled?: boolean;
+  className?: string;
+  categoryId?: string;
+  nestModel?: string;
 }
 
-export default function SelectionOption({ 
-  id, 
-  name, 
-  description, 
-  price, 
-  isSelected = false, 
+export default function SelectionOption({
+  id,
+  name,
+  description,
+  price,
+  isSelected = false,
   onClick,
   onUnselect,
   canUnselect = false,
   disabled = false,
-  className = ''
+  className = "",
+  categoryId,
+  nestModel,
 }: SelectionOptionProps) {
   const renderPrice = () => {
-    if (!price) return null
-    
-    if (price.type === 'included') {
+    if (!price) return null;
+
+    if (price.type === "included") {
       return (
         <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
           <span>inklusive</span>
         </p>
-      )
+      );
     }
-    
-    if (price.type === 'base') {
-      // Special case for planning packages - show per m² pricing
-      if (id.includes('basis') || id.includes('plus') || id.includes('pro')) {
-        return (
-          <div className="text-right">
-            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-              €700 / m²
-            </p>
-            <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
-              oder €2,50 / m²
-            </p>
-            <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
-              für 240 Mo.
-            </p>
-          </div>
-        )
-      }
-      
-      const formattedPrice = price.amount ? PriceUtils.formatPrice(price.amount) : '0 €'
-      const monthlyPayment = price.amount ? PriceUtils.calculateMonthlyPayment(price.amount) : '0 €'
-      
+
+    if (price.type === "base") {
+      const formattedPrice = price.amount
+        ? PriceUtils.formatPrice(price.amount)
+        : "0 €";
+
+      const shouldShowPricePerSqm =
+        categoryId && PriceUtils.shouldShowPricePerSquareMeter(categoryId);
+
       return (
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             Ab {formattedPrice}
           </p>
-          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
-            oder {monthlyPayment}
-          </p>
-          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
-            für 240 Mo.
-          </p>
+          {shouldShowPricePerSqm && nestModel && price.amount && (
+            <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+              {PriceUtils.calculateOptionPricePerSquareMeter(
+                price.amount,
+                nestModel
+              )}
+            </p>
+          )}
         </div>
-      )
+      );
     }
-    
-    if (price.type === 'upgrade') {
-      const formattedPrice = price.amount ? PriceUtils.formatPrice(price.amount) : '0 €'
-      const monthlyPayment = price.amount ? PriceUtils.calculateMonthlyPayment(price.amount) : '0 €'
-      
+
+    if (price.type === "upgrade") {
+      const formattedPrice = price.amount
+        ? PriceUtils.formatPrice(price.amount)
+        : "0 €";
+
+      const shouldShowPricePerSqm =
+        categoryId &&
+        PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
+        categoryId !== "fenster";
+
       return (
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-            Aufpreis von
+            zzgl.
           </p>
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {formattedPrice}
           </p>
-          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
-            oder {monthlyPayment}
-          </p>
-          <p className="text-[clamp(0.5rem,0.8vw,0.75rem)] tracking-wide leading-[1.2]">
-            für 240 Mo.
-          </p>
+          {shouldShowPricePerSqm && nestModel && price.amount && (
+            <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+              {PriceUtils.calculateOptionPricePerSquareMeter(
+                price.amount,
+                nestModel
+              )}
+            </p>
+          )}
         </div>
-      )
+      );
     }
-    
+
     // Default fallback
-    return null
-  }
+    return null;
+  };
 
   const handleClick = () => {
     if (!disabled) {
-      onClick(id)
+      onClick(id);
     }
-  }
+  };
 
   const handleUnselect = (e: React.MouseEvent) => {
-    e.stopPropagation() // Prevent triggering the main click
+    e.stopPropagation(); // Prevent triggering the main click
     if (onUnselect && canUnselect) {
-      onUnselect(id)
+      onUnselect(id);
     }
-  }
+  };
 
   return (
     <div
-      className={`box_selection flex justify-between items-start min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
+      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
         isSelected
-          ? 'selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50'
-          : disabled 
-            ? 'border-gray-200 opacity-50 cursor-not-allowed'
-            : 'border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm'
+          ? "selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50"
+          : disabled
+            ? "border-gray-200 opacity-50 cursor-not-allowed"
+            : "border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm"
       } ${className}`}
       onClick={handleClick}
     >
@@ -139,7 +140,7 @@ export default function SelectionOption({
           ×
         </button>
       )}
-      
+
       <div className="box_selection_name flex-1 min-w-0 pr-[clamp(0.75rem,2vw,1.25rem)]">
         <p className="font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight mb-[0.5em] text-black">
           {name}
@@ -152,5 +153,5 @@ export default function SelectionOption({
         {renderPrice()}
       </div>
     </div>
-  )
-} 
+  );
+}

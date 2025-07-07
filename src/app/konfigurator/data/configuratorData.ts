@@ -36,31 +36,31 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'nest80',
         name: 'Nest. 80',
-        description: '80m² Nutzfläche',
+        description: '75m² Nutzfläche',
         price: { type: 'base', amount: 155500, monthly: 816 }
       },
       {
         id: 'nest100',
         name: 'Nest. 100',
-        description: '100m² Nutzfläche',
+        description: '95m² Nutzfläche',
         price: { type: 'base', amount: 189100, monthly: 993 }
       },
       {
         id: 'nest120',
         name: 'Nest. 120',
-        description: '120m² Nutzfläche',
+        description: '115m² Nutzfläche',
         price: { type: 'base', amount: 222700, monthly: 1169 }
       },
       {
         id: 'nest140',
         name: 'Nest. 140',
-        description: '140m² Nutzfläche',
+        description: '135m² Nutzfläche',
         price: { type: 'base', amount: 256300, monthly: 1346 }
       },
       {
         id: 'nest160',
         name: 'Nest. 160',
-        description: '160m² Nutzfläche',
+        description: '155m² Nutzfläche',
         price: { type: 'base', amount: 289900, monthly: 1522 }
       }
     ],
@@ -225,19 +225,19 @@ export const configuratorData: CategoryData[] = [
         id: 'basis',
         name: 'Planung Basis',
         description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
-        price: { type: 'base', amount: 133000, monthly: 700 }
+        price: { type: 'base', amount: 8900, monthly: 47 }
       },
       {
         id: 'plus',
         name: 'Planung Plus',
         description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-        price: { type: 'base', amount: 133000, monthly: 700 }
+        price: { type: 'base', amount: 13900, monthly: 73 }
       },
       {
         id: 'pro',
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-        price: { type: 'base', amount: 133000, monthly: 700 }
+        price: { type: 'base', amount: 18900, monthly: 99 }
       }
     ],
     infoBox: {
