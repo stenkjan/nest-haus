@@ -4,6 +4,56 @@
 
 ---
 
+## [df4c72480d5390d7305277b9c9bda284643ff409] - Mon Jul 7 16:39:25 2025 +0200
+
+**Author**: stenkjan  
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus`
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/admin/page.tsx
+- src/app/api/admin/analytics/overview/route.ts
+- src/app/api/admin/analytics/route.ts
+- src/app/api/contact/route.ts
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GrundstuecksCheckBox.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/components/QuantitySelector.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/components/index.ts
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/types/configurator.types.ts
+- src/app/kontakt/page.tsx
+- src/app/page.tsx
+- src/components/dialogs/CalendarDialog.tsx
+- src/components/dialogs/GrundstueckCheckDialog.tsx
+- src/components/dialogs/PlanungspaketeDialog.tsx
+- src/components/dialogs/index.ts
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ImageCacheManager.tsx
+- src/components/images/index.ts
+- src/components/layout/Navbar.tsx
+
+#### ⚙️ Backend Changes
+
+- scripts/blob-image-check.js
+
+#### 🔧 Configuration Changes
+
+- package.json
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
 ## [d0edd6c3d6eac73d07d7198ca22d846ae64499b2] - Fri Jul 4 22:51:31 2025 +0200
 
 **Author**: stenkjan  
