@@ -1,5 +1,6 @@
 import { ButtonShowcase } from '@/components/ui';
-import { ContentCards, ContentCardsLightbox, ImageGrid, TextImageGrid, PricingCardsLightbox } from '@/components/cards';
+import { ContentCards, ContentCardsLightbox, ImageGrid, TextImageGrid, ImageTextBoxes, PricingCardsLightbox } from '@/components/cards';
+import { IMAGES } from '@/constants/images';
 
 export default function ShowcasePage() {
   return (
@@ -65,12 +66,47 @@ export default function ShowcasePage() {
           />
         </section>
 
-        {/* Text Image Grid Section - 3 Column Layout */}
+        {/* Image Text Boxes Section - New Component */}
+        <section className="overflow-visible">
+          <ImageTextBoxes 
+            title="Image & Text Boxes Layout"
+            subtitle="Large image at top with two text boxes below • Responsive design adapts layout for mobile and desktop"
+            maxWidth={true}
+            image={IMAGES.function.nestHausModulAnsicht}
+            textBox1="Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch intelligente Optimierung – und volle gestalterische Freiheit dort, wo sie wirklich zählt."
+            textBox2="Alles, was sinnvoll standardisierbar ist, wird perfektioniert: Präzisionsgefertigte Module, effiziente Fertigung und bewährte Konstruktion sichern höchste Qualität bei optimalen Kosten."
+            backgroundColor="black"
+          />
+        </section>
+
+        {/* Text Image Grid Section - Left Position with Black Background */}
         <section className="overflow-visible">
           <TextImageGrid 
-            title="Text & Image Grid"
-            subtitle="3-column layout: text left, images center and right • Responsive mobile stacking"
-            maxWidth={false}
+            title="Text & Image Grid - Left Position"
+            subtitle="3-column layout: text left, images center and right • Black background variant"
+            maxWidth={true}
+            textPosition="left"
+            backgroundColor="black"
+            image1="21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept"
+            image2="22-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept-Liniengrafik"
+            image1Description="Modulkonzept zeigt die durchdachte Konstruktion und optimierte Fertigung"
+            image2Description="Seitenansicht verdeutlicht die präzise Statik und Passgenauigkeit"
+          />
+        </section>
+
+        {/* Text Image Grid Section - Right Text Position with Black Background */}
+        <section className="overflow-visible">
+          <TextImageGrid 
+            title="Text & Image Grid - Right Position"
+            subtitle="3-column layout: text right, images left and center • Black background variant"
+            maxWidth={true}
+            textPosition="right"
+            backgroundColor="black"
+            image1="23-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept"
+            image2="24-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept-Liniengrafik"
+            text="Seitliche Ansicht des Moduls zeigt die durchdachte Konstruktion und die optimierte Statik. Jedes Modul ist selbsttragend und kann flexibel mit anderen Modulen kombiniert werden. Die präzise Fertigung garantiert perfekte Passgenauigkeit und höchste Qualität."
+            image1Description="Seitliche Ansicht zeigt die durchdachte Konstruktion"
+            image2Description="Liniengrafik verdeutlicht die optimierte Statik"
           />
         </section>
 
