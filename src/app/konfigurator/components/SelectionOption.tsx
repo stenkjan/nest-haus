@@ -63,7 +63,9 @@ export default function SelectionOption({
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
               {PriceUtils.calculateOptionPricePerSquareMeter(
                 price.amount,
-                nestModel
+                nestModel,
+                categoryId,
+                id
               )}
             </p>
           )}
@@ -93,7 +95,9 @@ export default function SelectionOption({
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
               {PriceUtils.calculateOptionPricePerSquareMeter(
                 price.amount,
-                nestModel
+                nestModel,
+                categoryId,
+                id
               )}
             </p>
           )}

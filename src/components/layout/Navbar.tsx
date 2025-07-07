@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useCartStore } from '@/store/cartStore';
-import { useConfiguratorPanelRef } from '@/contexts/ConfiguratorPanelContext';
+import React, { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { useCartStore } from "@/store/cartStore";
+import { useConfiguratorPanelRef } from "@/contexts/ConfiguratorPanelContext";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,10 +13,11 @@ export default function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
   const lastScrollTop = useRef(0);
   const pathname = usePathname();
-  
+
   // Cart integration using Zustand store
   const { getCartCount, getCartSummary } = useCartStore();
   const [cartCount, setCartCount] = useState(0);
+  const [cartSummary, setCartSummary] = useState("Warenkorb leer");
 
   const rightPanelRef = useConfiguratorPanelRef();
 
@@ -28,24 +29,31 @@ export default function Navbar() {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Update cart count safely
+  // Update cart count and summary safely to prevent hydration mismatches
   useEffect(() => {
     try {
       const count = getCartCount();
+      const summary = getCartSummary();
       setCartCount(count);
+      setCartSummary(summary);
     } catch (error) {
-      console.error('Error getting cart count:', error);
+      console.error("Error getting cart count:", error);
       setCartCount(0);
+      setCartSummary("Warenkorb leer");
     }
-  }, [getCartCount]);
+  }, [getCartCount, getCartSummary]);
 
   // Enhanced scroll behavior with WebKit support
   useEffect(() => {
-    if (pathname === '/konfigurator' && rightPanelRef && rightPanelRef.current) {
+    if (
+      pathname === "/konfigurator" &&
+      rightPanelRef &&
+      rightPanelRef.current
+    ) {
       const header = headerRef.current;
       if (!header) return;
       const rightPanel = rightPanelRef.current;
@@ -56,43 +64,50 @@ export default function Navbar() {
         const threshold = isMobile ? 3 : 5;
         if (Math.abs(currentScrollY - lastScrollTop) < threshold) return;
         if (currentScrollY > lastScrollTop && currentScrollY > 50) {
-          header.style.transform = 'translateY(-100%)';
-          header.style.transition = 'transform 0.3s ease-out';
+          header.style.transform = "translateY(-100%)";
+          header.style.transition = "transform 0.3s ease-out";
         } else if (currentScrollY < lastScrollTop) {
-          header.style.transform = 'translateY(0)';
-          header.style.transition = 'transform 0.3s ease-out';
+          header.style.transform = "translateY(0)";
+          header.style.transition = "transform 0.3s ease-out";
         }
         lastScrollTop = currentScrollY;
       };
-      rightPanel.addEventListener('scroll', onScroll);
-      return () => rightPanel.removeEventListener('scroll', onScroll);
+      rightPanel.addEventListener("scroll", onScroll);
+      return () => rightPanel.removeEventListener("scroll", onScroll);
     }
     const header = headerRef.current;
     if (!header) return;
     // Cross-browser scroll position with WebKit optimizations
     const getScrollPosition = () => {
-      return window.pageYOffset || 
-             document.documentElement.scrollTop || 
-             document.body.scrollTop || 0;
+      return (
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0
+      );
     };
     lastScrollTop.current = getScrollPosition();
     // Optimized polling for better performance on mobile
-    const intervalId = setInterval(() => {
-      const currentScrollY = getScrollPosition();
-      // Reduced threshold for mobile WebKit
-      const threshold = isMobile ? 3 : 5;
-      if (Math.abs(currentScrollY - lastScrollTop.current) < threshold) return;
-      if (currentScrollY > lastScrollTop.current && currentScrollY > 50) {
-        // Scrolling down - hide (WebKit-friendly transform)
-        header.style.transform = 'translateY(-100%)';
-        header.style.transition = 'transform 0.3s ease-out';
-      } else if (currentScrollY < lastScrollTop.current) {
-        // Scrolling up - show
-        header.style.transform = 'translateY(0)';
-        header.style.transition = 'transform 0.3s ease-out';
-      }
-      lastScrollTop.current = currentScrollY;
-    }, isMobile ? 150 : 200); // Faster polling on mobile
+    const intervalId = setInterval(
+      () => {
+        const currentScrollY = getScrollPosition();
+        // Reduced threshold for mobile WebKit
+        const threshold = isMobile ? 3 : 5;
+        if (Math.abs(currentScrollY - lastScrollTop.current) < threshold)
+          return;
+        if (currentScrollY > lastScrollTop.current && currentScrollY > 50) {
+          // Scrolling down - hide (WebKit-friendly transform)
+          header.style.transform = "translateY(-100%)";
+          header.style.transition = "transform 0.3s ease-out";
+        } else if (currentScrollY < lastScrollTop.current) {
+          // Scrolling up - show
+          header.style.transform = "translateY(0)";
+          header.style.transition = "transform 0.3s ease-out";
+        }
+        lastScrollTop.current = currentScrollY;
+      },
+      isMobile ? 150 : 200
+    ); // Faster polling on mobile
     return () => clearInterval(intervalId);
   }, [pathname, isMobile, rightPanelRef]);
 
@@ -100,12 +115,15 @@ export default function Navbar() {
     const setNavbarHeightVar = () => {
       if (headerRef.current) {
         const height = headerRef.current.offsetHeight;
-        document.documentElement.style.setProperty('--navbar-height', height + 'px');
+        document.documentElement.style.setProperty(
+          "--navbar-height",
+          height + "px"
+        );
       }
     };
     setNavbarHeightVar();
-    window.addEventListener('resize', setNavbarHeightVar);
-    return () => window.removeEventListener('resize', setNavbarHeightVar);
+    window.addEventListener("resize", setNavbarHeightVar);
+    return () => window.removeEventListener("resize", setNavbarHeightVar);
   }, []);
 
   const toggleMobileMenu = () => {
@@ -114,28 +132,29 @@ export default function Navbar() {
 
   // Navigation items - updated based on image
   const navItems = [
-    { name: 'Entdecken', path: '/entdecken' },
-    { name: 'Unser Part', path: '/unser-part' },
-    { name: 'Dein Part', path: '/dein-part' },
-    { name: 'Warum wir?', path: '/warum-wir' },
-    { name: 'Kontakt', path: '/kontakt' },
+    { name: "Entdecken", path: "/entdecken" },
+    { name: "Unser Part", path: "/unser-part" },
+    { name: "Dein Part", path: "/dein-part" },
+    { name: "Warum wir?", path: "/warum-wir" },
+    { name: "Kontakt", path: "/kontakt" },
   ];
 
   return (
-    <header 
+    <header
       ref={headerRef}
       className="fixed pointer-events-auto top-0 left-0 right-0 z-[100] bg-[#F4F4F4]/80 backdrop-blur-md border-b border-gray-200/30 shadow-sm"
-      style={{ 
-        willChange: 'transform',
+      style={{
+        willChange: "transform",
         // WebKit-specific optimizations
-        WebkitTransform: 'translateZ(0)', // Force hardware acceleration
+        WebkitTransform: "translateZ(0)", // Force hardware acceleration
         // Apple-style backdrop blur support
-        WebkitBackdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: "blur(20px)",
       }}
     >
-      <nav className="mx-auto px-4 w-full flex justify-between items-center" 
-           style={{ maxWidth: isMobile ? '100%' : '1144px' }}>
-        
+      <nav
+        className="mx-auto px-4 w-full flex justify-between items-center"
+        style={{ maxWidth: isMobile ? "100%" : "1144px" }}
+      >
         {/* Logo */}
         <Link href="/" className="flex items-center pl-4">
           <Image
@@ -149,7 +168,9 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className={`${isMobile ? 'hidden' : 'flex'} space-x-8 mx-auto px-6`}>
+        <div
+          className={`${isMobile ? "hidden" : "flex"} space-x-8 mx-auto px-6`}
+        >
           {navItems.map((item) => (
             <Link
               key={item.path}
@@ -162,7 +183,9 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Right Side Icons */}
-        <div className={`${isMobile ? 'hidden' : 'flex'} items-center space-x-4 pr-4`}>
+        <div
+          className={`${isMobile ? "hidden" : "flex"} items-center space-x-4 pr-4`}
+        >
           <Link
             href="/konfigurator"
             className="focus:outline-none text-black flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center"
@@ -193,8 +216,8 @@ export default function Navbar() {
           <Link
             href="/warenkorb"
             className="focus:outline-none relative text-black flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center"
-            aria-label={`Warenkorb - ${getCartSummary()}`}
-            title={cartCount > 0 ? getCartSummary() : 'Warenkorb leer'}
+            aria-label={`Warenkorb - ${cartSummary}`}
+            title={cartCount > 0 ? cartSummary : "Warenkorb leer"}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +235,7 @@ export default function Navbar() {
             </svg>
             {cartCount > 0 && (
               <span className="absolute top-2 right-0 translate-x-1/8 -translate-y-1/8 bg-red-500 text-white text-xs leading-none font-bold rounded-full w-3 h-3 flex items-center justify-center min-w-[12px] min-h-[12px]">
-                {cartCount > 9 ? '9+' : cartCount}
+                {cartCount > 9 ? "9+" : cartCount}
               </span>
             )}
           </Link>
@@ -235,7 +258,11 @@ export default function Navbar() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+                d={
+                  mobileMenuOpen
+                    ? "M6 18L18 6M6 6l12 12"
+                    : "M4 6h16M4 12h16M4 18h16"
+                }
               />
             </svg>
           </button>
@@ -256,7 +283,7 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            
+
             {/* Mobile Menu - Konfigurator Link */}
             <Link
               href="/konfigurator"
@@ -284,7 +311,7 @@ export default function Navbar() {
               </svg>
               Konfigurator
             </Link>
-            
+
             {/* Mobile Menu - Shopping Cart Link */}
             <Link
               href="/warenkorb"
@@ -312,4 +339,4 @@ export default function Navbar() {
       )}
     </header>
   );
-} 
+}

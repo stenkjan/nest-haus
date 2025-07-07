@@ -86,9 +86,22 @@ export class PriceUtils {
   }
 
   /**
-   * Calculate and format price per m² for individual options
-   */
-  static calculateOptionPricePerSquareMeter(price: number, nestModel: string): string {
+ * Calculate and format price per m² for individual options
+ * For NEST modules: uses the option's own price and area (stable per module)
+ * For other options: calculates dynamically based on current module size
+ */
+  static calculateOptionPricePerSquareMeter(price: number, nestModel: string, categoryId?: string, optionId?: string): string {
+    // For NEST modules themselves, calculate based on their own price and area
+    if (categoryId === 'nest' && optionId) {
+      // Use the specific option's own area, not the currently selected module's area
+      const adjustedNutzflaeche = this.getAdjustedNutzflaeche(optionId);
+      if (adjustedNutzflaeche === 0 || price === 0) return '';
+
+      const pricePerSqm = Math.round(price / adjustedNutzflaeche);
+      return `${this.formatPrice(pricePerSqm)} /m²`;
+    }
+
+    // For all other options, calculate dynamically based on current module size
     const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel);
     if (adjustedNutzflaeche === 0 || price === 0) return '';
 
@@ -113,7 +126,7 @@ export class PriceUtils {
 
     let pricePerSqm: string | undefined;
     if (showPricePerSqm && nestModel && optionPrice > 0) {
-      pricePerSqm = this.calculateOptionPricePerSquareMeter(optionPrice, nestModel);
+      pricePerSqm = this.calculateOptionPricePerSquareMeter(optionPrice, nestModel, categoryId);
     }
 
     return {
