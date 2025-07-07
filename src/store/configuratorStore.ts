@@ -37,19 +37,19 @@ interface ConfiguratorState {
   // Session & Configuration (CLIENT-SIDE ONLY)
   sessionId: string | null
   configuration: Configuration
-  
+
   // Price calculations (CLIENT-SIDE for efficiency)
   currentPrice: number
   priceBreakdown: PriceBreakdown | null
-  
+
   // Preview panel progression state (matches old configurator logic)
   hasPart2BeenActive: boolean
   hasPart3BeenActive: boolean
-  
+
   // View switching state (matches old configurator behavior)
   shouldSwitchToView: string | null
   lastSelectionCategory: string | null
-  
+
   // Actions
   initializeSession: () => void
   updateSelection: (item: ConfigurationItem) => void
@@ -60,15 +60,15 @@ interface ConfiguratorState {
   reset: () => void
   finalizeSession: () => void
   setDefaultSelections: () => void
-  
+
   // Part activation
   activatePart2: () => void
   activatePart3: () => void
-  
+
   // View switching
   clearViewSwitchSignal: () => void
   determineOptimalView: () => string
-  
+
   // Getters
   getConfiguration: () => Configuration | null
   getConfigurationForCart: () => Configuration | null
@@ -103,20 +103,20 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Initialize session CLIENT-SIDE ONLY (no API dependency)
       initializeSession: () => {
         const state = get()
-        
+
         // Skip auto-reset in test environment to allow explicit testing
         if (process.env.NODE_ENV === 'test') {
           return;
         }
-        
+
         // Generate sessionId if missing
         if (!state.sessionId) {
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
-        
+
         // ALWAYS set defaults first, then calculate price
         get().setDefaultSelections()
-        
+
         // Calculate price after defaults are set
         setTimeout(() => {
           get().calculatePrice()
@@ -126,14 +126,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Update selection with intelligent view switching and price calculation
       updateSelection: (item: ConfigurationItem) => {
         const state = get()
-        
+
         // Generate sessionId only if not already set
         let sessionId = state.sessionId
         if (!sessionId) {
           sessionId = `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
           set({ sessionId })
         }
-        
+
         // Configuration is always available now
         const updatedConfiguration: Configuration = {
           ...state.configuration,
@@ -158,18 +158,19 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
           shouldSwitchToView = 'interior';
         } else if (item.category === 'pvanlage') {
-          // Activate Part 3 and switch to PV view to show the selection
+          // Activate Part 3 but don't switch views - PV has its own info dialog
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
-          shouldSwitchToView = 'pv';
+          // No view switching for PV - stays on current view
+          shouldSwitchToView = null;
         } else if (item.category === 'fenster') {
-          // Activate Part 3 and switch to fenster view to show the selection
+          // Activate Part 3 but don't switch views - Fenster has its own info dialog
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
-          // FIXED: Switch to fenster view to show the selected windows/doors
-          shouldSwitchToView = 'fenster';
+          // No view switching for fenster - stays on current view
+          shouldSwitchToView = null;
         } else if (item.category === 'planungspaket' || item.category === 'grundstueckscheck') {
           // For non-visual selections, don't switch views - keep current view
           shouldSwitchToView = null;
@@ -248,40 +249,26 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Remove selection
       removeSelection: (category: string) => {
         const state = get()
-        
-        const updatedConfig: Configuration = { 
+
+        const updatedConfig: Configuration = {
           ...state.configuration,
           timestamp: Date.now()
         }
-        
+
         // Properly type the deletion using keyof
         if (category in updatedConfig) {
           delete (updatedConfig as unknown as Record<string, unknown>)[category]
         }
-        
+
         // Determine intelligent view switching after removal
         let shouldSwitchToView: string | null = null;
-        
+
         if (category === 'fenster') {
-          // If fenster is removed and we're on fenster view, switch to a sensible view
-          // Priority: PV view if PV exists, otherwise interior if part2 active, otherwise exterior
-          if (updatedConfig.pvanlage && state.hasPart3BeenActive) {
-            shouldSwitchToView = 'pv';
-          } else if (state.hasPart2BeenActive) {
-            shouldSwitchToView = 'interior';
-          } else {
-            shouldSwitchToView = 'exterior';
-          }
+          // If fenster is removed, don't switch views - fenster doesn't affect preview panel anymore
+          shouldSwitchToView = null;
         } else if (category === 'pvanlage') {
-          // If PV is removed and we're on PV view, switch to a sensible view
-          // Priority: fenster view if fenster exists, otherwise interior if part2 active, otherwise exterior
-          if (updatedConfig.fenster && state.hasPart3BeenActive) {
-            shouldSwitchToView = 'fenster';
-          } else if (state.hasPart2BeenActive) {
-            shouldSwitchToView = 'interior';
-          } else {
-            shouldSwitchToView = 'exterior';
-          }
+          // If PV is removed, don't switch views - PV doesn't affect preview panel anymore  
+          shouldSwitchToView = null;
         } else if (category === 'innenverkleidung' || category === 'fussboden') {
           // If interior elements are removed, stay on interior if we still have some, otherwise switch to exterior
           if (!updatedConfig.innenverkleidung && !updatedConfig.fussboden) {
@@ -289,8 +276,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
         }
         // For nest/gebaeudehuelle removal, stay on current view (user might be changing selection)
-        
-        set({ 
+
+        set({
           configuration: updatedConfig,
           shouldSwitchToView
         })
@@ -300,7 +287,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Calculate price using client-side PriceCalculator
       calculatePrice: () => {
         const state = get()
-        
+
         // Build selections object for price calculation
         const selections = {
           nest: state.configuration.nest || undefined,
@@ -330,7 +317,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Save configuration (optional API call, fail-safe)
       saveConfiguration: async (userDetails?: Record<string, unknown>) => {
         const state = get()
-        
+
         try {
           const configToSave = {
             ...state.configuration,
@@ -342,14 +329,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(configToSave)
           })
-          
+
           if (response.ok) {
             return true
           }
         } catch (error) {
           console.error('Failed to save configuration:', error)
         }
-        
+
         // Return true even if save fails - user experience shouldn't be blocked
         return true
       },
@@ -372,24 +359,19 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       determineOptimalView: () => {
         const state = get()
         const config = state.configuration
-        
-        // Priority system for view selection based on most recent/relevant selections:
-        // 1. If fenster is selected and part3 is active, prioritize fenster view
-        if (config.fenster && state.hasPart3BeenActive) {
-          return 'fenster'
-        }
-        
-        // 2. If PV is selected and part3 is active, prioritize PV view
-        if (config.pvanlage && state.hasPart3BeenActive) {
-          return 'pv'
-        }
-        
-        // 3. If interior selections exist and part2 is active, show interior
+
+        // Priority system for view selection based on available views:
+        // 1. If interior selections exist and part2 is active, show interior
         if ((config.innenverkleidung || config.fussboden) && state.hasPart2BeenActive) {
           return 'interior'
         }
-        
-        // 4. Default to exterior view (always available and shows nest + gebäudehülle)
+
+        // 2. If nest module or gebäudehülle is selected, show stirnseite as secondary view
+        if (config.nest || config.gebaeudehuelle) {
+          return 'stirnseite'
+        }
+
+        // 3. Default to exterior view (always available and shows nest + gebäudehülle)
         return 'exterior'
       },
 
@@ -397,7 +379,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       resetConfiguration: () => {
         // Only generate sessionId if not in test environment
         const sessionId = process.env.NODE_ENV === 'test' ? null : `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
-        
+
         const defaultConfiguration = {
           sessionId: sessionId || '',
           nest: null,
@@ -427,10 +409,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Set default preselections on startup (nest80 + holzlattung/lärche)
       setDefaultSelections: () => {
         const state = get()
-        
+
         // Generate sessionId if not set
         const sessionId = state.sessionId || `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
-        
+
         // Set defaults using updateSelection to ensure proper processing
         if (!state.configuration.nest) {
           set(state => ({
@@ -469,7 +451,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             }
           }))
         }
-        
+
         // Recalculate price and set optimal view after setting defaults
         setTimeout(() => {
           get().calculatePrice()
@@ -558,4 +540,4 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       }
     }
   )
-) 
+)

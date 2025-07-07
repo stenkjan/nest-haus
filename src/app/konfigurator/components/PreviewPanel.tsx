@@ -177,7 +177,7 @@ export default function PreviewPanel({
               path={currentImagePath}
               alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
               fill
-              className="transition-opacity duration-300 object-cover"
+              className="transition-opacity duration-300 object-contain"
               // Strategy optimized for interactive configurator
               strategy="client"
               isInteractive={true}
