@@ -343,7 +343,7 @@ export class ImageManager {
   static getAvailableViews(
     configuration: Configuration | null,
     hasPart2BeenActive: boolean = false,
-    hasPart3BeenActive: boolean = false
+    _hasPart3BeenActive: boolean = false
   ): ViewType[] {
     const views: ViewType[] = ['exterior']; // Always available (index 1)
 
