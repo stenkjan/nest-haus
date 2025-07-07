@@ -245,7 +245,11 @@ export default function ContentCards({
       
       if (isStatic) {
         // Static variant: single responsive card - wide layout on desktop, mobile layout on tablet/mobile
-        if (width >= 1280) {
+        if (width >= 1600) {
+          // Ultra-wide screens: Extra large layout
+          setCardsPerView(1);
+          setCardWidth(1380); // 20% larger than XL
+        } else if (width >= 1280) {
           // Desktop XL: Wide layout
           setCardsPerView(1);
           setCardWidth(1152); // Wide card size
@@ -289,7 +293,11 @@ export default function ContentCards({
       }
       } else if (isWide) {
         // Wide variant: 2:1 ratio cards, 20% wider
-        if (width >= 1280) {
+        if (width >= 1600) {
+          // Ultra-wide screens: Extra large layout
+          setCardsPerView(1.4);
+          setCardWidth(1380); // 20% larger than XL
+        } else if (width >= 1280) {
           setCardsPerView(1.3);
           setCardWidth(1152); // 960 * 1.2
         } else if (width >= 1024) {
@@ -304,7 +312,11 @@ export default function ContentCards({
         }
       } else if (isMobile) {
         // Mobile variant: standard cards but 20% larger
-        if (width >= 1280) {
+        if (width >= 1600) {
+          // Ultra-wide screens: Extra large layout
+          setCardsPerView(4.2);
+          setCardWidth(460); // 20% larger than XL
+        } else if (width >= 1280) {
           setCardsPerView(3.5);
           setCardWidth(384); // 320 * 1.2
         } else if (width >= 1024) {
@@ -319,7 +331,11 @@ export default function ContentCards({
         }
       } else if (isResponsive) {
         // Responsive variant: Wide layout on desktop (>=1024px), Mobile layout on tablet/mobile (<1024px)
-        if (width >= 1280) {
+        if (width >= 1600) {
+          // Ultra-wide screens: Extra large layout
+          setCardsPerView(1.4);
+          setCardWidth(1380); // 20% larger than XL
+        } else if (width >= 1280) {
           // Desktop XL: Wide layout
           setCardsPerView(1.3);
           setCardWidth(1152); // Wide card size
@@ -338,7 +354,11 @@ export default function ContentCards({
         }
       } else {
         // Normal variant: standard cards
-        if (width >= 1280) {
+        if (width >= 1600) {
+          // Ultra-wide screens: Extra large layout
+          setCardsPerView(4.2);
+          setCardWidth(384); // 20% larger than XL
+        } else if (width >= 1280) {
           setCardsPerView(3.5);
           setCardWidth(320);
         } else if (width >= 1024) {
@@ -505,7 +525,7 @@ export default function ContentCards({
                       <h4 className="text-sm font-medium text-gray-700 mb-5">
                         {getCardText(card, 'subtitle')}
                       </h4>
-                      <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
+                      <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                         {getCardText(card, 'description')}
                       </p>
                     </motion.div>
@@ -544,7 +564,7 @@ export default function ContentCards({
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
                     >
-                      <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">
+                      <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line">
                         {getCardText(card, 'extendedDescription')}
                       </p>
                     </motion.div>
@@ -590,15 +610,25 @@ export default function ContentCards({
                       ? (typeof window !== 'undefined' && window.innerWidth < 768 ? 
                           Math.min(600, window.innerHeight * 0.75) : 
                           Math.min(800, window.innerHeight * 0.7)) // Dynamic height based on viewport
-                      : isMobile ? Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720)
-                      : isWide ? Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692)
-                      : isStatic ? (isClient && screenWidth >= 1024 ? 
-                          Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
+                      : isMobile ? (isClient && screenWidth >= 1600 ? 
+                          Math.min(900, typeof window !== 'undefined' ? window.innerHeight * 0.8 : 900) : 
                           Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720))
-                      : isResponsive ? (isClient && screenWidth >= 1024 ? 
-                          Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
-                          Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720))
-                      : Math.min(600, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 600),
+                      : isWide ? (isClient && screenWidth >= 1600 ? 
+                          Math.min(830, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 830) :
+                          Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692))
+                      : isStatic ? (isClient && screenWidth >= 1600 ? 
+                          Math.min(830, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 830) :
+                          (isClient && screenWidth >= 1024 ? 
+                            Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
+                            Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720)))
+                      : isResponsive ? (isClient && screenWidth >= 1600 ? 
+                          Math.min(830, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 830) :
+                          (isClient && screenWidth >= 1024 ? 
+                            Math.min(692, typeof window !== 'undefined' ? window.innerHeight * 0.7 : 692) : 
+                            Math.min(720, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 720)))
+                      : (isClient && screenWidth >= 1600 ? 
+                          Math.min(750, typeof window !== 'undefined' ? window.innerHeight * 0.8 : 750) :
+                          Math.min(600, typeof window !== 'undefined' ? window.innerHeight * 0.75 : 600)),
                     backgroundColor: card.backgroundColor 
                   }}
                   whileHover={{ scale: 1.02 }}
@@ -622,7 +652,7 @@ export default function ContentCards({
                               <h4 className="text-sm md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-xs md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -661,7 +691,7 @@ export default function ContentCards({
                               animate={{ y: 0, opacity: 1 }}
                               transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
                             >
-                              <p className="text-xs md:text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'extendedDescription')}
                               </p>
                             </motion.div>
@@ -686,7 +716,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -702,8 +732,8 @@ export default function ContentCards({
                               style={{ 
                                 width: '100%', // Fill available width within padding
                                 height: '100%', // Fill available height within padding
-                                maxWidth: '662px', // Don't exceed original design width
-                                maxHeight: '662px', // Don't exceed original design height
+                                maxWidth: isClient && screenWidth >= 1600 ? '800px' : '662px', // Larger for ultra-wide screens
+                                maxHeight: isClient && screenWidth >= 1600 ? '800px' : '662px', // Larger for ultra-wide screens
                                 aspectRatio: '1/1', // Maintain 1:1 square aspect ratio
                               }}
                             >
@@ -735,7 +765,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -780,7 +810,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -796,8 +826,8 @@ export default function ContentCards({
                               style={{ 
                                 width: '100%', // Fill available width within padding
                                 height: '100%', // Fill available height within padding
-                                maxWidth: '662px', // Don't exceed original design width
-                                maxHeight: '662px', // Don't exceed original design height
+                                maxWidth: isClient && screenWidth >= 1600 ? '800px' : '662px', // Larger for ultra-wide screens
+                                maxHeight: isClient && screenWidth >= 1600 ? '800px' : '662px', // Larger for ultra-wide screens
                                 aspectRatio: '1/1', // Maintain 1:1 square aspect ratio
                               }}
                             >
@@ -829,7 +859,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -872,7 +902,7 @@ export default function ContentCards({
                           <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                             {getCardText(card, 'subtitle')}
                           </h4>
-                          <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                          <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                             {getCardText(card, 'description')}
                           </p>
                         </motion.div>
@@ -888,8 +918,8 @@ export default function ContentCards({
                           style={{ 
                             width: '100%', // Fill available width within padding
                             height: '100%', // Fill available height within padding
-                            maxWidth: '662px', // Don't exceed original design width
-                            maxHeight: '662px', // Don't exceed original design height
+                            maxWidth: isClient && screenWidth >= 1600 ? '800px' : '662px', // Larger for ultra-wide screens
+                            maxHeight: isClient && screenWidth >= 1600 ? '800px' : '662px', // Larger for ultra-wide screens
                             aspectRatio: '1/1', // Maintain 1:1 square aspect ratio
                           }}
                         >
@@ -921,7 +951,7 @@ export default function ContentCards({
                           <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                             {getCardText(card, 'subtitle')}
                           </h4>
-                          <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                          <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                             {getCardText(card, 'description')}
                           </p>
                         </motion.div>

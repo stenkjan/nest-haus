@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import { Button } from '@/components/ui';
@@ -70,9 +70,50 @@ export default function ImageGrid({
   subtitle = 'Interactive 2x2 layout with hover effects',
   maxWidth = true
 }: ImageGridProps) {
+  const [isClient, setIsClient] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  // Initialize client-side state
+  useEffect(() => {
+    setIsClient(true);
+    setScreenWidth(window.innerWidth);
+  }, []);
+
+  // Track screen width for responsive behavior
+  useEffect(() => {
+    const updateScreenWidth = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    updateScreenWidth();
+    window.addEventListener('resize', updateScreenWidth);
+    return () => window.removeEventListener('resize', updateScreenWidth);
+  }, []);
+
   const containerClasses = maxWidth 
     ? "w-full max-w-screen-2xl mx-auto"
     : "w-full";
+
+  // Calculate responsive sizing for ultra-wide screens
+  const isUltraWide = isClient && screenWidth >= 1600;
+  const gridMinHeight = isUltraWide ? '500px' : '400px';
+
+  // Prevent hydration mismatch by showing loading state until client is ready
+  if (!isClient) {
+    return (
+      <div className={containerClasses}>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+          {subtitle && <p className="text-gray-600">{subtitle}</p>}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 max-w-screen-2xl mx-auto gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="animate-pulse bg-gray-200 rounded-lg" style={{ aspectRatio: '1/1', minHeight: '400px' }} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={containerClasses}>
@@ -89,7 +130,7 @@ export default function ImageGrid({
             className="relative flex-shrink-0 shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             style={{ 
               aspectRatio: '1/1', // Perfect square
-              minHeight: '400px'
+              minHeight: gridMinHeight
             }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
@@ -114,11 +155,11 @@ export default function ImageGrid({
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
-                <div className="p-4 text-center">
-                  <h2 className="text-2xl lg:text-3xl font-bold text-white mb-1">
+                <div className={`${isUltraWide ? 'p-6' : 'p-4'} text-center`}>
+                  <h2 className={`${isUltraWide ? 'text-4xl' : 'text-2xl lg:text-3xl'} font-bold text-white mb-1`}>
                     {item.title}
                   </h2>
-                  <h4 className="text-base lg:text-lg font-medium text-white">
+                  <h4 className={`${isUltraWide ? 'text-xl' : 'text-base lg:text-lg'} font-medium text-white`}>
                     {item.subtitle}
                   </h4>
                 </div>
@@ -131,9 +172,9 @@ export default function ImageGrid({
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
               >
-                <div className="p-4">
+                <div className={`${isUltraWide ? 'p-6' : 'p-4'}`}>
                   {/* Description Text */}
-                  <p className="text-sm text-white mb-4 text-center">
+                  <p className={`${isUltraWide ? 'text-lg' : 'text-sm md:text-base'} text-white mb-4 text-center`}>
                     {item.description}
                   </p>
                   
@@ -141,7 +182,7 @@ export default function ImageGrid({
                   <div className="flex gap-2 justify-center">
                     <Button
                       variant="landing-primary"
-                      size="xs"
+                      size={isUltraWide ? "sm" : "xs"}
                       onClick={() => {
                         console.log(`Primary action for ${item.title}`);
                       }}
@@ -150,7 +191,7 @@ export default function ImageGrid({
                     </Button>
                     <Button
                       variant="landing-secondary"
-                      size="xs"
+                      size={isUltraWide ? "sm" : "xs"}
                       onClick={() => {
                         console.log(`Secondary action for ${item.title}`);
                       }}
@@ -167,7 +208,7 @@ export default function ImageGrid({
 
       {/* Instructions */}
       <div className="text-center mt-8 text-sm text-gray-500">
-        <p>Interactive 2x2 responsive grid layout with hover effects</p>
+        <p>Interactive 2x2 responsive grid layout with hover effects{isUltraWide ? ' • Enhanced sizing for ultra-wide screens' : ''}</p>
         <p className="mt-1">Action buttons available on each card</p>
       </div>
     </div>

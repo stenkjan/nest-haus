@@ -22,8 +22,8 @@ export default function ImageTextBoxes({
   maxWidth = true,
   showInstructions = true,
   image = IMAGES.function.nestHausModulAnsicht,
-  textBox1 = "Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch intelligente Optimierung – und volle gestalterische Freiheit dort, wo sie wirklich zählt.",
-  textBox2 = "Alles, was sinnvoll standardisierbar ist, wird perfektioniert: Präzisionsgefertigte Module, effiziente Fertigung und bewährte Konstruktion sichern höchste Qualität bei optimalen Kosten.",
+  textBox1 = "Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du mit dem Nest System alles haben kannst?  Unsere Architekten und Ingenieure haben ein Haus entwickelt, das maximale Freiheit ohne Kompromisse bietet. Durch intelligente Standardisierung garantieren wir höchste",
+  textBox2 = "Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl. Dein Zuhause, dein Stil, deine Freiheit. Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.",
   backgroundColor = 'white'
 }: ImageTextBoxesProps) {
   const [isClient, setIsClient] = useState(false);
