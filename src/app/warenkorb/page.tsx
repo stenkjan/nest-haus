@@ -29,6 +29,11 @@ export default function WarenkorbPage() {
     notes: "",
   });
 
+  // Watch for cart changes for debugging
+  useEffect(() => {
+    console.log("🛒 Warenkorb: Cart items changed, count:", items.length);
+  }, [items]);
+
   // Auto-add current configuration to cart if complete
   useEffect(() => {
     const cartConfig = getConfigurationForCart();
@@ -94,6 +99,11 @@ export default function WarenkorbPage() {
     console.log("🛒 Items before clear:", items.length);
     clearCart();
     console.log("🛒 Clear cart function called");
+
+    // Force re-render by checking items after a short delay
+    setTimeout(() => {
+      console.log("🛒 Items after clear:", items.length);
+    }, 100);
   };
 
   // Render configuration item details with right panel styling

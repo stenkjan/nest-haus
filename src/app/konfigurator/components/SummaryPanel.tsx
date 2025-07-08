@@ -388,7 +388,8 @@ export default function SummaryPanel({
           {isClient && (
             <div className="flex gap-4">
               {/* Check if price fits inline, if not adjust button widths */}
-              {isConfigurationComplete() && PriceUtils.formatPrice(currentPrice).length > 10 ? (
+              {isConfigurationComplete() &&
+              PriceUtils.formatPrice(currentPrice).length > 10 ? (
                 // Long price: Make "Neu konfigurieren" smaller to accommodate price
                 <>
                   {/* Neu konfigurieren Button - smaller when price is long */}
@@ -396,14 +397,18 @@ export default function SummaryPanel({
                     variant="tertiary"
                     size="xs"
                     onClick={() => resetConfiguration()}
-                    className="flex-[0_0_auto] min-w-[120px]"
+                    className="flex-[0_0_auto] min-w-[120px] h-[44px] min-h-[44px] flex items-center justify-center !w-auto"
                   >
                     Neu konfigurieren
                   </Button>
 
                   {/* Navigate to Warenkorb Button - takes remaining space */}
                   <Link href="/warenkorb" className="flex-1">
-                    <Button variant="landing-primary" size="xs" className="w-full">
+                    <Button
+                      variant="landing-primary"
+                      size="xs"
+                      className="w-full h-[44px] min-h-[44px] flex items-center justify-center !w-full"
+                    >
                       <div className="flex items-center justify-center gap-1 leading-tight">
                         <span className="whitespace-nowrap">
                           In den Warenkorb
@@ -423,14 +428,18 @@ export default function SummaryPanel({
                     variant="tertiary"
                     size="xs"
                     onClick={() => resetConfiguration()}
-                    className="flex-1"
+                    className="flex-1 h-[44px] min-h-[44px] flex items-center justify-center !w-auto"
                   >
                     Neu konfigurieren
                   </Button>
 
                   {/* Navigate to Warenkorb Button */}
                   <Link href="/warenkorb" className="flex-1">
-                    <Button variant="landing-primary" size="xs" className="w-full">
+                    <Button
+                      variant="landing-primary"
+                      size="xs"
+                      className="w-full h-[44px] min-h-[44px] flex items-center justify-center !w-full"
+                    >
                       {isConfigurationComplete() ? (
                         <div className="flex items-center justify-center gap-1 leading-tight">
                           <span className="whitespace-nowrap">

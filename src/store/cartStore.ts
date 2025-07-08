@@ -34,15 +34,15 @@ export interface OrderDetails {
 interface CartState {
   // Cart items
   items: (CartItem | ConfigurationCartItem)[]
-  
+
   // Order state
   orderDetails: OrderDetails | null
   isProcessingOrder: boolean
-  
+
   // Computed properties (updated automatically)
   total: number
   itemCount: number
-  
+
   // Actions
   addConfigurationToCart: (config: Configuration) => void
   addItem: (item: CartItem) => void
@@ -52,16 +52,16 @@ interface CartState {
   updateQuantity: (itemId: string, quantity: number) => void
   clearCart: () => void
   getItemById: (itemId: string) => CartItem | ConfigurationCartItem | undefined
-  
+
   // Order actions
   setOrderDetails: (details: OrderDetails) => void
   processOrder: () => Promise<boolean>
-  
+
   // Private computation helpers
   _computeTotal: () => number
   _computeCount: () => number
   _updateComputedValues: () => void
-  
+
   // Getters
   getCartTotal: () => number
   getCartCount: () => number
@@ -90,7 +90,7 @@ export const useCartStore = create<CartState>()(
 
         set(state => {
           const newItems = [...state.items.filter(item => !('sessionId' in item) || !item.isFromConfigurator), cartItem]
-          return { 
+          return {
             items: newItems
           }
         })
@@ -101,22 +101,22 @@ export const useCartStore = create<CartState>()(
       // Add item to cart (for test compatibility)
       addItem: (item: CartItem) => {
         // Validate item before adding
-        if (!item || !item.id || item.id.trim() === '' || 
-            typeof item.price !== 'number' || item.price < 0 ||
-            !item.name || item.name.trim() === '' ||
-            !item.category || item.category.trim() === '') {
+        if (!item || !item.id || item.id.trim() === '' ||
+          typeof item.price !== 'number' || item.price < 0 ||
+          !item.name || item.name.trim() === '' ||
+          !item.category || item.category.trim() === '') {
           return // Don't add invalid items
         }
-        
+
         set(state => {
           const existingItemIndex = state.items.findIndex(existing => existing.id === item.id)
           let newItems: (CartItem | ConfigurationCartItem)[]
-          
+
           if (existingItemIndex >= 0) {
             // Update existing item quantity if it exists and is a regular CartItem
             const updatedItems = [...state.items]
             const existingItem = updatedItems[existingItemIndex]
-            
+
             if ('quantity' in existingItem && 'quantity' in item) {
               updatedItems[existingItemIndex] = {
                 ...existingItem,
@@ -128,8 +128,8 @@ export const useCartStore = create<CartState>()(
             // Add new item
             newItems = [...state.items, item]
           }
-          
-          return { 
+
+          return {
             items: newItems
           }
         })
@@ -166,7 +166,7 @@ export const useCartStore = create<CartState>()(
           get().removeItem(itemId)
           return
         }
-        
+
         set(state => ({
           items: state.items.map(item =>
             item.id === itemId ? { ...item, quantity } : item
@@ -183,8 +183,11 @@ export const useCartStore = create<CartState>()(
 
       // Clear entire cart
       clearCart: () => {
+        console.log("🛒 CartStore: clearCart called")
+        console.log("🛒 CartStore: items before clear:", get().items.length)
         set({ items: [], orderDetails: null })
         get()._updateComputedValues()
+        console.log("🛒 CartStore: items after clear:", get().items.length)
       },
 
       // Set order details
@@ -252,17 +255,17 @@ export const useCartStore = create<CartState>()(
           if ('totalPrice' in item) {
             return total + item.totalPrice
           }
-          
+
           // Regular cart items have price with quantity/squareMeters
           const itemPrice = item.price || 0
           const quantity = item.quantity || 1
           const squareMeters = item.squareMeters || 1
-          
+
           // For items with square meters (like windows), multiply by square meters
           if (item.squareMeters) {
             return total + (itemPrice * squareMeters)
           }
-          
+
           // For items with quantity, multiply by quantity
           return total + (itemPrice * quantity)
         }, 0)
@@ -276,16 +279,16 @@ export const useCartStore = create<CartState>()(
           if ('totalPrice' in item) {
             return total + 1
           }
-          
+
           // Regular cart items count by quantity/squareMeters
           const quantity = item.quantity || 1
           const squareMeters = item.squareMeters || 1
-          
+
           // For items with square meters, count square meters
           if (item.squareMeters) {
             return total + squareMeters
           }
-          
+
           // For items with quantity, count quantity
           return total + quantity
         }, 0)
@@ -296,7 +299,7 @@ export const useCartStore = create<CartState>()(
         const state = get()
         const total = state.getCartTotal()
         const count = state.getCartCount()
-        
+
         return `${count} ${count === 1 ? 'Konfiguration' : 'Konfigurationen'} - ${new Intl.NumberFormat('de-DE', {
           style: 'currency',
           currency: 'EUR'
