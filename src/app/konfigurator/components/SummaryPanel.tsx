@@ -337,7 +337,12 @@ export default function SummaryPanel({
                       {itemPrice > 0 ? (
                         <>
                           {/* Remove "zzgl." from fenster, pvanlage, and grundstueckscheck */}
-                          {!["fenster", "pvanlage", "grundstueckscheck"].includes(key) && (
+                          {/* zzgl. is not shown for fenster, pvanlage, or grundstueckscheck as required */}
+                          {![
+                            "fenster",
+                            "pvanlage",
+                            "grundstueckscheck",
+                          ].includes(key) && (
                             <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
                               zzgl.
                             </div>

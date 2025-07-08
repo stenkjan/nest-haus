@@ -640,7 +640,14 @@ export default function ConfiguratorShell({
       ))}
 
       {/* Grundstücks-Check Section */}
-      <CategorySection title="Grundstücks-Check" subtitle="Optional">
+      <CategorySection
+        title="Grundstückscheck"
+        subtitle={
+          <span className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-400">
+            Optional
+          </span>
+        }
+      >
         <GrundstuecksCheckBox
           isSelected={isGrundstuecksCheckSelected}
           onClick={handleGrundstuecksCheckToggle}

@@ -20,7 +20,7 @@ interface GrundstuecksCheckBoxProps {
 // Constants for Grundstückscheck
 const GRUNDSTUECKSCHECK_OPTION = {
   value: "grundstueckscheck",
-  name: "Grundstücks-Check",
+  name: "Grundstückscheck", // updated label
   category: "grundstueckscheck",
   description:
     "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
@@ -51,9 +51,7 @@ export default function GrundstuecksCheckBox({
       </div>
       <div className="box_selection_price text-right whitespace-nowrap text-black flex-shrink-0 min-w-[clamp(5rem,12vw,7rem)]">
         <div className="text-right">
-          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-            zzgl.
-          </p>
+          {/* zzgl. removed as per request */}
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
           </p>
