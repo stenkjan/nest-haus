@@ -4,6 +4,19 @@
 
 ---
 
+## [8e590ac43419d4883021122a20f5d7c3e091757e] - Tue Jul 8 16:46:55 2025 +0200
+
+**Author**: stenkjan
+**Message**: `udpated entfernen/leeren of cart  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/page.tsx
+
+
+---
+
 ## [222ce5fb890ed6e13acaf29ec6e59dcd84afb182] - Tue Jul 8 16:41:42 2025 +0200
 
 **Author**: stenkjan
