@@ -28,6 +28,7 @@ const sections = [
     h3: "Die Welt ist dein Zuhause",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ const sections = [
     h3: "Ein Haus das mit dir geht",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
   {
     id: 3,
@@ -44,6 +46,7 @@ const sections = [
     h3: "Visionen brauchen Räume",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 4,
@@ -52,6 +55,7 @@ const sections = [
     h3: "Individualität. Design. Flexibilität.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 5,
@@ -60,6 +64,7 @@ const sections = [
     h3: "Mit Nest bleibt kein Ort unerreichbar",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
   {
     id: 6,
@@ -68,6 +73,7 @@ const sections = [
     h3: "neue Wege. Neue Räume.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 7,
@@ -76,6 +82,7 @@ const sections = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
   {
     id: 8,
@@ -84,6 +91,7 @@ const sections = [
     h3: "So individuell wie du",
     button1: "Entdecken",
     button2: "Jetzt bauen",
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
 ];
 
@@ -144,7 +152,7 @@ export default function Home() {
                 <Button variant="landing-primary" size="xs">
                   {section.button1}
                 </Button>
-                <Button variant="landing-secondary" size="xs">
+                <Button variant={section.secondaryButtonVariant} size="xs">
                   {section.button2}
                 </Button>
               </div>
@@ -192,7 +200,7 @@ export default function Home() {
                 <Button variant="landing-primary" size="xs">
                   {section.button1}
                 </Button>
-                <Button variant="landing-secondary" size="xs">
+                <Button variant={section.secondaryButtonVariant} size="xs">
                   {section.button2}
                 </Button>
               </div>

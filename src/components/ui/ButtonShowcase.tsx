@@ -1,5 +1,5 @@
-import React from 'react';
-import Button, { ButtonVariant, ButtonSize } from './Button';
+import React from "react";
+import Button, { ButtonVariant, ButtonSize } from "./Button";
 
 /**
  * ButtonShowcase - Development tool to visualize all button variants
@@ -8,27 +8,30 @@ import Button, { ButtonVariant, ButtonSize } from './Button';
  */
 const ButtonShowcase: React.FC = () => {
   const variants: ButtonVariant[] = [
-    'primary',
-    'secondary', 
-    'outline',
-    'ghost',
-    'danger',
-    'success',
-    'info',
-    'landing-primary',
-    'landing-secondary',
-    'configurator'
+    "primary",
+    "secondary",
+    "outline",
+    "ghost",
+    "danger",
+    "success",
+    "info",
+    "landing-primary",
+    "landing-secondary",
+    "landing-secondary-blue",
+    "configurator",
   ];
 
-  const sizes: ButtonSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
+  const sizes: ButtonSize[] = ["xs", "sm", "md", "lg", "xl"];
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Button System Showcase</h1>
-      
+
       {/* All Variants */}
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">All Button Variants (Fixed Width)</h2>
+        <h2 className="text-2xl font-semibold mb-6">
+          All Button Variants (Fixed Width)
+        </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {variants.map((variant) => (
             <div key={variant} className="flex flex-col items-center space-y-2">
@@ -43,7 +46,9 @@ const ButtonShowcase: React.FC = () => {
 
       {/* Size Variations */}
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Size Variations (Primary)</h2>
+        <h2 className="text-2xl font-semibold mb-6">
+          Size Variations (Primary)
+        </h2>
         <div className="flex flex-wrap items-end gap-4">
           {sizes.map((size) => (
             <div key={size} className="flex flex-col items-center space-y-2">
@@ -58,7 +63,9 @@ const ButtonShowcase: React.FC = () => {
 
       {/* Landing Page Preview */}
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Landing Page Buttons (on dark background)</h2>
+        <h2 className="text-2xl font-semibold mb-6">
+          Landing Page Buttons (on dark background)
+        </h2>
         <div className="bg-gray-800 p-8 rounded-lg">
           <div className="flex gap-4 justify-center">
             <Button variant="landing-primary" size="lg">
@@ -73,7 +80,9 @@ const ButtonShowcase: React.FC = () => {
 
       {/* Common Button Pairs */}
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Common Button Combinations</h2>
+        <h2 className="text-2xl font-semibold mb-6">
+          Common Button Combinations
+        </h2>
         <div className="space-y-4">
           <div className="flex gap-4">
             <Button variant="primary">Primary</Button>
@@ -96,7 +105,7 @@ const ButtonShowcase: React.FC = () => {
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="font-bold mb-4">How to use buttons in your code:</h3>
           <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
-{`import { Button } from '@/components/ui';
+            {`import { Button } from '@/components/ui';
 
 // Basic usage (all buttons have fixed width)
 <Button variant="primary">Click me</Button>
@@ -122,4 +131,4 @@ const ButtonShowcase: React.FC = () => {
   );
 };
 
-export default ButtonShowcase; 
+export default ButtonShowcase;
