@@ -8,6 +8,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import { useCartStore } from "@/store/cartStore";
 import { PriceCalculator } from "../core/PriceCalculator";
@@ -392,6 +393,15 @@ export default function SummaryPanel({
             description="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch."
             onClick={() => onInfoClick?.("beratung")}
           />
+        </div>
+
+        {/* Jetzt bauen Button - Link to Warenkorb */}
+        <div className="mt-4">
+          <Link href="/warenkorb" className="block">
+            <Button variant="landing-primary" size="xxs" className="w-full">
+              Jetzt bauen
+            </Button>
+          </Link>
         </div>
 
         {/* Action Buttons */}

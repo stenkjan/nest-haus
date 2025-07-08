@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { useCartStore } from '../../store/cartStore'
-import { useConfiguratorStore } from '../../store/configuratorStore'
-import type { CartItem, ConfigurationCartItem } from '../../store/cartStore'
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useCartStore } from "../../store/cartStore";
+import { useConfiguratorStore } from "../../store/configuratorStore";
+import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 
 export default function WarenkorbPage() {
   const {
@@ -17,103 +17,128 @@ export default function WarenkorbPage() {
     processOrder,
     getCartTotal,
     getCartCount,
-    canProceedToCheckout
-  } = useCartStore()
+    canProceedToCheckout,
+  } = useCartStore();
 
-  const {
-    configuration,
-    getConfigurationForCart
-  } = useConfiguratorStore()
+  const { configuration, getConfigurationForCart } = useConfiguratorStore();
 
   const [customerForm, setCustomerForm] = useState({
-    email: '',
-    name: '',
-    phone: '',
-    notes: ''
-  })
+    email: "",
+    name: "",
+    phone: "",
+    notes: "",
+  });
 
   // Auto-add current configuration to cart if complete
   useEffect(() => {
-    const cartConfig = getConfigurationForCart()
-    if (cartConfig && !items.find(item => 'sessionId' in item && item.sessionId === cartConfig.sessionId)) {
-      addConfigurationToCart(cartConfig)
+    const cartConfig = getConfigurationForCart();
+    if (
+      cartConfig &&
+      !items.find(
+        (item) => "sessionId" in item && item.sessionId === cartConfig.sessionId
+      )
+    ) {
+      addConfigurationToCart(cartConfig);
     }
-  }, [configuration, getConfigurationForCart, addConfigurationToCart, items])
+  }, [configuration, getConfigurationForCart, addConfigurationToCart, items]);
 
   // Format price helper
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'EUR',
+    return new Intl.NumberFormat("de-DE", {
+      style: "currency",
+      currency: "EUR",
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(price)
-  }
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
 
   // Calculate monthly payment
   const calculateMonthlyPayment = (price: number) => {
-    const months = 240
-    const interestRate = 0.035 / 12
-    const monthlyPayment = price * (interestRate * Math.pow(1 + interestRate, months)) / 
-                          (Math.pow(1 + interestRate, months) - 1)
-    return formatPrice(monthlyPayment)
-  }
+    const months = 240;
+    const interestRate = 0.035 / 12;
+    const monthlyPayment =
+      (price * (interestRate * Math.pow(1 + interestRate, months))) /
+      (Math.pow(1 + interestRate, months) - 1);
+    return formatPrice(monthlyPayment);
+  };
 
   // Handle form submission
   const handleOrderSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!customerForm.email) return
+    e.preventDefault();
+
+    if (!customerForm.email) return;
 
     setOrderDetails({
       customerInfo: {
         email: customerForm.email,
         name: customerForm.name || undefined,
-        phone: customerForm.phone || undefined
+        phone: customerForm.phone || undefined,
       },
-      notes: customerForm.notes || undefined
-    })
+      notes: customerForm.notes || undefined,
+    });
 
-    const success = await processOrder()
+    const success = await processOrder();
     if (success) {
       // Redirect to success page or show success message
-      console.log('Order processed successfully')
+      console.log("Order processed successfully");
     }
-  }
+  };
 
   // Render configuration item details
-  const renderConfigurationDetails = (item: CartItem | ConfigurationCartItem) => {
-    const details = []
-    
+  const renderConfigurationDetails = (
+    item: CartItem | ConfigurationCartItem
+  ) => {
+    const details = [];
+
     // Only render configuration details for ConfigurationCartItem
-    if ('nest' in item) {
-      if (item.nest) details.push({ label: 'Nest', value: item.nest?.name ?? '—' })
-      if (item.gebaeudehuelle) details.push({ label: 'Gebäudehülle', value: item.gebaeudehuelle?.name ?? '—' })
-      if (item.innenverkleidung) details.push({ label: 'Innenverkleidung', value: item.innenverkleidung?.name ?? '—' })
-      if (item.fussboden) details.push({ label: 'Fußboden', value: item.fussboden?.name ?? '—' })
-      if (item.pvanlage) details.push({ 
-        label: 'PV-Anlage', 
-        value: `${item.pvanlage?.name ?? '—'}${item.pvanlage?.quantity ? ` (${item.pvanlage.quantity}x)` : ''}` 
-      })
-      if (item.fenster) details.push({ 
-        label: 'Fenster', 
-        value: `${item.fenster?.name ?? '—'}${item.fenster?.squareMeters ? ` (${item.fenster.squareMeters}m²)` : ''}` 
-      })
-      if (item.planungspaket) details.push({ label: 'Planungspaket', value: item.planungspaket?.name ?? '—' })
-      if (item.grundstueckscheck) details.push({ label: 'Grundstückscheck', value: item.grundstueckscheck?.name ?? '—' })
+    if ("nest" in item) {
+      if (item.nest)
+        details.push({ label: "Nest", value: item.nest?.name ?? "—" });
+      if (item.gebaeudehuelle)
+        details.push({
+          label: "Gebäudehülle",
+          value: item.gebaeudehuelle?.name ?? "—",
+        });
+      if (item.innenverkleidung)
+        details.push({
+          label: "Innenverkleidung",
+          value: item.innenverkleidung?.name ?? "—",
+        });
+      if (item.fussboden)
+        details.push({ label: "Fußboden", value: item.fussboden?.name ?? "—" });
+      if (item.pvanlage)
+        details.push({
+          label: "PV-Anlage",
+          value: `${item.pvanlage?.name ?? "—"}${item.pvanlage?.quantity ? ` (${item.pvanlage.quantity}x)` : ""}`,
+        });
+      if (item.fenster)
+        details.push({
+          label: "Fenster",
+          value: `${item.fenster?.name ?? "—"}${item.fenster?.squareMeters ? ` (${item.fenster.squareMeters}m²)` : ""}`,
+        });
+      if (item.planungspaket)
+        details.push({
+          label: "Planungspaket",
+          value: item.planungspaket?.name ?? "—",
+        });
+      if (item.grundstueckscheck)
+        details.push({
+          label: "Grundstückscheck",
+          value: item.grundstueckscheck?.name ?? "—",
+        });
     } else {
       // For regular cart items, show basic info
-      if ('name' in item) {
-        details.push({ label: 'Artikel', value: item.name })
-        details.push({ label: 'Beschreibung', value: item.description })
+      if ("name" in item) {
+        details.push({ label: "Artikel", value: item.name });
+        details.push({ label: "Beschreibung", value: item.description });
       }
     }
 
-    return details
-  }
+    return details;
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" style={{ paddingTop: "5vh" }}>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -130,9 +155,12 @@ export default function WarenkorbPage() {
           {items.length === 0 ? (
             /* Empty Cart */
             <div className="text-center py-16 bg-white rounded-lg shadow-sm">
-              <h2 className="text-xl font-semibold mb-4">Ihr Warenkorb ist leer</h2>
+              <h2 className="text-xl font-semibold mb-4">
+                Ihr Warenkorb ist leer
+              </h2>
               <p className="text-gray-600 mb-8">
-                Konfigurieren Sie Ihr Nest-Haus, um es zum Warenkorb hinzuzufügen.
+                Konfigurieren Sie Ihr Nest-Haus, um es zum Warenkorb
+                hinzuzufügen.
               </p>
               <Link
                 href="/konfigurator"
@@ -146,7 +174,7 @@ export default function WarenkorbPage() {
               {/* Cart Items */}
               <div className="lg:col-span-2 space-y-6">
                 <h2 className="text-xl font-semibold">Ihre Konfigurationen</h2>
-                
+
                 {items.map((item) => (
                   <div
                     key={item.id}
@@ -156,18 +184,31 @@ export default function WarenkorbPage() {
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-lg font-semibold">
-                          {'nest' in item ? (item.nest?.name || 'Nest Konfiguration') : ('name' in item ? item.name : 'Artikel')}
+                          {"nest" in item
+                            ? item.nest?.name || "Nest Konfiguration"
+                            : "name" in item
+                              ? item.name
+                              : "Artikel"}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          Hinzugefügt am {new Date(item.addedAt || Date.now()).toLocaleDateString('de-DE')}
+                          Hinzugefügt am{" "}
+                          {new Date(
+                            item.addedAt || Date.now()
+                          ).toLocaleDateString("de-DE")}
                         </p>
                       </div>
                       <div className="text-right">
                         <div className="text-xl font-bold">
-                          {formatPrice('totalPrice' in item ? item.totalPrice : item.price)}
+                          {formatPrice(
+                            "totalPrice" in item ? item.totalPrice : item.price
+                          )}
                         </div>
                         <div className="text-sm text-gray-500">
-                          oder {calculateMonthlyPayment('totalPrice' in item ? item.totalPrice : item.price)} monatlich
+                          oder{" "}
+                          {calculateMonthlyPayment(
+                            "totalPrice" in item ? item.totalPrice : item.price
+                          )}{" "}
+                          monatlich
                         </div>
                       </div>
                     </div>
@@ -213,8 +254,10 @@ export default function WarenkorbPage() {
               <div className="space-y-6">
                 {/* Price Summary */}
                 <div className="bg-white rounded-lg shadow-sm p-6 border">
-                  <h3 className="text-lg font-semibold mb-4">Zusammenfassung</h3>
-                  
+                  <h3 className="text-lg font-semibold mb-4">
+                    Zusammenfassung
+                  </h3>
+
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between">
                       <span>Anzahl Konfigurationen:</span>
@@ -233,7 +276,7 @@ export default function WarenkorbPage() {
                 {/* Customer Form */}
                 <div className="bg-white rounded-lg shadow-sm p-6 border">
                   <h3 className="text-lg font-semibold mb-4">Kontaktdaten</h3>
-                  
+
                   <form onSubmit={handleOrderSubmit} className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium mb-1">
@@ -244,7 +287,10 @@ export default function WarenkorbPage() {
                         required
                         value={customerForm.email}
                         onChange={(e) =>
-                          setCustomerForm(prev => ({ ...prev, email: e.target.value }))
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
                         }
                         className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="ihre@email.de"
@@ -259,7 +305,10 @@ export default function WarenkorbPage() {
                         type="text"
                         value={customerForm.name}
                         onChange={(e) =>
-                          setCustomerForm(prev => ({ ...prev, name: e.target.value }))
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
                         }
                         className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Ihr Name"
@@ -274,7 +323,10 @@ export default function WarenkorbPage() {
                         type="tel"
                         value={customerForm.phone}
                         onChange={(e) =>
-                          setCustomerForm(prev => ({ ...prev, phone: e.target.value }))
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            phone: e.target.value,
+                          }))
                         }
                         className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="+49 123 456789"
@@ -288,7 +340,10 @@ export default function WarenkorbPage() {
                       <textarea
                         value={customerForm.notes}
                         onChange={(e) =>
-                          setCustomerForm(prev => ({ ...prev, notes: e.target.value }))
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            notes: e.target.value,
+                          }))
                         }
                         rows={3}
                         className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -301,7 +356,9 @@ export default function WarenkorbPage() {
                       disabled={!canProceedToCheckout() || isProcessingOrder}
                       className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isProcessingOrder ? 'Wird verarbeitet...' : 'Anfrage senden'}
+                      {isProcessingOrder
+                        ? "Wird verarbeitet..."
+                        : "Anfrage senden"}
                     </button>
                   </form>
                 </div>
@@ -311,5 +368,5 @@ export default function WarenkorbPage() {
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}
