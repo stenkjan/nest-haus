@@ -357,7 +357,7 @@ export default function ConfiguratorShell({
       updateSelection({
         category: "grundstueckscheck",
         value: "grundstueckscheck",
-        name: "Grundstücks-Check",
+        name: "Grundstückscheck",
         price: GRUNDSTUECKSCHECK_PRICE,
         description:
           "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
@@ -653,7 +653,7 @@ export default function ConfiguratorShell({
           onClick={handleGrundstuecksCheckToggle}
         />
         <InfoBox
-          title="Mehr Informationen zum Grundstücks-Check"
+          title="Mehr Informationen zum Grundstückscheck"
           onClick={() => handleInfoClick("grundcheck")}
         />
       </CategorySection>

@@ -37,7 +37,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
-    console.log('🔧 Grundstücks-Check submission:', formData);
+    console.log('🔧 Grundstückscheck submission:', formData);
     // Here you would typically send the data to your API
     onClose();
   };
@@ -66,7 +66,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                         Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig, dass dein Grundstück alle <span className="font-semibold text-gray-700">rechtlichen und baulichen Anforderungen</span> erfüllt. Genau hier setzen wir an!
                       </p>
                       <p className="text-[13px] sm:text-base text-gray-700 mb-3 leading-snug">
-                        <span className="font-bold">Für nur € 400,-</span> übernehmen wir für dich die Prüfung der relevanten Rahmenbedingungen und Baugesetze, um dir <span className="font-bold">Sicherheit und Klarheit</span> zu verschaffen. Jetzt den <span className="font-bold">Grundstücks-Check</span> machen und uns die rechtlichen und baulichen Voraussetzungen deines Grundstücks prüfen lassen, damit du <span className="font-bold">entspannt und sicher in die Planung deines Nest-Hauses starten</span> kannst.
+                        <span className="font-bold">Für nur € 400,-</span> übernehmen wir für dich die Prüfung der relevanten Rahmenbedingungen und Baugesetze, um dir <span className="font-bold">Sicherheit und Klarheit</span> zu verschaffen. Jetzt den <span className="font-bold">Grundstückscheck</span> machen und uns die rechtlichen und baulichen Voraussetzungen deines Grundstücks prüfen lassen, damit du <span className="font-bold">entspannt und sicher in die Planung deines Nest-Hauses starten</span> kannst.
                       </p>
                     </div>
                     <div className="space-y-2">

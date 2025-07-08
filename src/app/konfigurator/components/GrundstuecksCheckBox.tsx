@@ -1,7 +1,7 @@
 /**
  * GrundstuecksCheckBox - Property Check Selection Component
  *
- * Special checkbox component for Grundstücks-Check selection
+ * Special checkbox component for Grundstückscheck selection
  * with integrated pricing and monthly payment calculation.
  */
 
