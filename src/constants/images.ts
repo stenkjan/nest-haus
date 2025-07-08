@@ -187,7 +187,7 @@ export const IMAGES = {
 
     // Window/Fenster detail images
     windows: {
-        pvc: '177-NEST-Haus-Fenster-Kunststoff-PVC-Fenster-Weiß-Kunststofffenster-PVCFenster',
+        pvc: '177-NEST-Haus-Fenster-Kunststoff-PVC-Fenster-Weiss-Kunststofffenster-PVCFenster',
         fichte: '175-NEST-Haus-Fenster-Holz-Fichte-Holzfenster-Fichtenfenster',
         aluminium: '176-NEST-Haus-Fenster-Aluminium-Fenster-Aluminiumfenster-Metallfenster',
         eiche: '174-NEST-Haus-Fenster-Holz-Eiche-Holzfenster-Eichenfenster'

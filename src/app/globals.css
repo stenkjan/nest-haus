@@ -25,7 +25,10 @@ html {
 
 /* Prevent zoom on iOS */
 @media screen and (max-width: 650px) {
-  input, textarea, select {
+
+  input,
+  textarea,
+  select {
     font-size: 16px !important;
   }
 }
@@ -43,4 +46,50 @@ body {
 /* Global letter spacing */
 * {
   letter-spacing: 0.015em;
+}
+
+/* iOS Safari Stable Viewport Utilities - Prevents Address Bar Issues */
+@layer utilities {
+
+  /* Use stable viewport height on iOS Safari, regular vh elsewhere */
+  .h-ios-90 {
+    height: 90vh;
+    height: var(--ios-90vh, 90vh);
+  }
+
+  .h-ios-85 {
+    height: 85vh;
+    height: var(--ios-85vh, 85vh);
+  }
+
+  .top-ios-5 {
+    top: 5vh;
+    top: var(--ios-5vh, 5vh);
+  }
+
+  .mt-ios-10 {
+    margin-top: 10vh;
+    margin-top: var(--ios-10vh, 10vh);
+  }
+
+  .mt-ios-5 {
+    margin-top: 5vh;
+    margin-top: var(--ios-5vh, 5vh);
+  }
+
+  /* iOS Safari specific: Prevent overscroll bounce in dialogs */
+  .ios-dialog-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+  }
+}
+
+/* Hide scrollbars for dialog content */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
