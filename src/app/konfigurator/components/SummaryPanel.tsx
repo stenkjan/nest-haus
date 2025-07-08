@@ -249,9 +249,16 @@ export default function SummaryPanel({
                         </>
                       ) : !isIncluded && itemPrice > 0 ? (
                         <>
-                          <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                            zzgl.
-                          </div>
+                          {/* Remove "zzgl." from specified sections */}
+                          {![
+                            "gebaeudehuelle",
+                            "innenverkleidung",
+                            "fussboden",
+                          ].includes(key) && (
+                            <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
+                              zzgl.
+                            </div>
+                          )}
                           <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                             {PriceUtils.formatPrice(itemPrice)}
                           </div>
@@ -286,9 +293,7 @@ export default function SummaryPanel({
                     <div className="flex-1 text-right max-w-[50%] min-w-0">
                       {itemPrice > 0 ? (
                         <>
-                          <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                            zzgl.
-                          </div>
+                          {/* Remove "zzgl." from planungspaket */}
                           <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                             {PriceUtils.formatPrice(itemPrice)}
                           </div>
@@ -331,9 +336,12 @@ export default function SummaryPanel({
                     <div className="flex-1 text-right max-w-[50%] min-w-0">
                       {itemPrice > 0 ? (
                         <>
-                          <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                            zzgl.
-                          </div>
+                          {/* Remove "zzgl." from fenster, pvanlage, and grundstueckscheck */}
+                          {!["fenster", "pvanlage", "grundstueckscheck"].includes(key) && (
+                            <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
+                              zzgl.
+                            </div>
+                          )}
                           <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                             {PriceUtils.formatPrice(itemPrice)}
                           </div>

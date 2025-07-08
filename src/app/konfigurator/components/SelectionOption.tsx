@@ -54,10 +54,13 @@ export default function SelectionOption({
       const shouldShowPricePerSqm =
         categoryId && PriceUtils.shouldShowPricePerSquareMeter(categoryId);
 
+      // Remove "Ab" from planungspakete, keep it for nest modules
+      const showAbPrefix = categoryId === "nest";
+
       return (
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-            Ab {formattedPrice}
+            {showAbPrefix ? `Ab ${formattedPrice}` : formattedPrice}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
@@ -83,11 +86,23 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
+      // Remove "zzgl." from specified sections: innenverkleidung, fussboden, gebaeudehuelle, fenster, pvanlage
+      const sectionsWithoutZzgl = [
+        "innenverkleidung",
+        "fussboden",
+        "gebaeudehuelle",
+        "fenster",
+        "pvanlage",
+      ];
+      const showZzglPrefix = !sectionsWithoutZzgl.includes(categoryId || "");
+
       return (
         <div className="text-right">
-          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-            zzgl.
-          </p>
+          {showZzglPrefix && (
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              zzgl.
+            </p>
+          )}
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {formattedPrice}
           </p>
