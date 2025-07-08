@@ -321,7 +321,7 @@ export class ImageManager {
 
   /**
    * Get available views based on current configuration and part activation state
-   * UNCHANGED: This logic is correct
+   * FIXED: Corrected order - interior at index 1, stirnseite at index 2
    */
   static getAvailableViews(
     configuration: Configuration | null,
@@ -332,12 +332,14 @@ export class ImageManager {
 
     if (!configuration) return views;
 
-    if (configuration.nest || configuration.gebaeudehuelle) {
-      views.push('stirnseite');
-    }
-
+    // Add interior view first (index 1) when part 2 has been active
     if (hasPart2BeenActive) {
       views.push('interior');
+    }
+
+    // Add stirnseite view last (index 2) when nest or gebäudehülle is configured
+    if (configuration.nest || configuration.gebaeudehuelle) {
+      views.push('stirnseite');
     }
 
     return views;
