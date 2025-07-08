@@ -11,7 +11,8 @@ interface CartFooterProps {
 }
 
 export default function CartFooter({ onReset }: CartFooterProps) {
-  const { currentPrice, resetConfiguration, configuration } = useConfiguratorStore();
+  const { currentPrice, resetConfiguration, configuration } =
+    useConfiguratorStore();
   const footerRef = useRef<HTMLDivElement>(null);
 
   // Set CSS variable for footer height (similar to navbar)
@@ -56,9 +57,9 @@ export default function CartFooter({ onReset }: CartFooterProps) {
           Neu konfigurieren
         </button>
 
-        <div className="flex items-center gap-[clamp(0.3rem,1vw,0.6rem)]">
+        <div className="flex items-center gap-[clamp(0.5rem,1.5vw,1rem)]">
           {/* Price and price per sqm */}
-          <div className="text-right">
+          <div className="text-right pr-[clamp(0.5rem,1vw,0.75rem)]">
             <p className="font-semibold leading-tight text-[clamp(0.875rem,1.8vw,1.25rem)] text-black">
               {PriceUtils.formatPrice(currentPrice)}
             </p>

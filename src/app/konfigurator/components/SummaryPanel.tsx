@@ -395,15 +395,6 @@ export default function SummaryPanel({
           />
         </div>
 
-        {/* Jetzt bauen Button - Link to Warenkorb */}
-        <div className="mt-4">
-          <Link href="/warenkorb" className="block">
-            <Button variant="landing-primary" size="xxs" className="w-full">
-              Jetzt bauen
-            </Button>
-          </Link>
-        </div>
-
         {/* Action Buttons */}
         <div className="mt-6">
           {isClient && (
@@ -418,18 +409,14 @@ export default function SummaryPanel({
                 Neu konfigurieren
               </Button>
 
-              {/* Add to Cart / Jetzt bauen Button */}
-              <Button
-                variant="landing-primary"
-                size="xs"
-                onClick={handleAddToCart}
-                disabled={!isConfigurationComplete()}
-                className="flex-1"
-              >
-                {isConfigurationComplete()
-                  ? `In den Warenkorb - ${PriceUtils.formatPrice(currentPrice)}`
-                  : "Jetzt bauen"}
-              </Button>
+              {/* Navigate to Warenkorb Button */}
+              <Link href="/warenkorb" className="flex-1">
+                <Button variant="landing-primary" size="xs" className="w-full">
+                  {isConfigurationComplete()
+                    ? `In den Warenkorb - ${PriceUtils.formatPrice(currentPrice)}`
+                    : "Jetzt bauen"}
+                </Button>
+              </Link>
             </div>
           )}
         </div>
