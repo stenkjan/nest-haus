@@ -147,17 +147,8 @@ export default function SummaryPanel({
     }
 
     // For other items, check if price is 0
+    if (!selection?.price) return true;
     return !(selection.price as number) || (selection.price as number) === 0;
-  };
-
-  const handleAddToCart = () => {
-    if (isConfigurationComplete()) {
-      const config = getConfigurationForCart();
-      if (config) {
-        addConfigurationToCart(config);
-        // Could add router.push('/warenkorb') here if needed
-      }
-    }
   };
 
   if (!configuration) {
