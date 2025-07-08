@@ -387,33 +387,66 @@ export default function SummaryPanel({
         <div className="mt-6">
           {isClient && (
             <div className="flex gap-4">
-              {/* Neu konfigurieren Button */}
-              <Button
-                variant="tertiary"
-                size="xs"
-                onClick={() => resetConfiguration()}
-                className="flex-1"
-              >
-                Neu konfigurieren
-              </Button>
+              {/* Check if price fits inline, if not adjust button widths */}
+              {isConfigurationComplete() && PriceUtils.formatPrice(currentPrice).length > 10 ? (
+                // Long price: Make "Neu konfigurieren" smaller to accommodate price
+                <>
+                  {/* Neu konfigurieren Button - smaller when price is long */}
+                  <Button
+                    variant="tertiary"
+                    size="xs"
+                    onClick={() => resetConfiguration()}
+                    className="flex-[0_0_auto] min-w-[120px]"
+                  >
+                    Neu konfigurieren
+                  </Button>
 
-              {/* Navigate to Warenkorb Button */}
-              <Link href="/warenkorb" className="flex-1">
-                <Button variant="landing-primary" size="xs" className="w-full">
-                  {isConfigurationComplete() ? (
-                    <div className="flex flex-wrap items-center justify-center gap-1 leading-tight">
-                      <span className="whitespace-nowrap">
-                        In den Warenkorb
-                      </span>
-                      <span className="whitespace-nowrap">
-                        - {PriceUtils.formatPrice(currentPrice)}
-                      </span>
-                    </div>
-                  ) : (
-                    "Jetzt bauen"
-                  )}
-                </Button>
-              </Link>
+                  {/* Navigate to Warenkorb Button - takes remaining space */}
+                  <Link href="/warenkorb" className="flex-1">
+                    <Button variant="landing-primary" size="xs" className="w-full">
+                      <div className="flex items-center justify-center gap-1 leading-tight">
+                        <span className="whitespace-nowrap">
+                          In den Warenkorb
+                        </span>
+                        <span className="whitespace-nowrap">
+                          - {PriceUtils.formatPrice(currentPrice)}
+                        </span>
+                      </div>
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                // Normal price or not complete: Equal width buttons
+                <>
+                  {/* Neu konfigurieren Button */}
+                  <Button
+                    variant="tertiary"
+                    size="xs"
+                    onClick={() => resetConfiguration()}
+                    className="flex-1"
+                  >
+                    Neu konfigurieren
+                  </Button>
+
+                  {/* Navigate to Warenkorb Button */}
+                  <Link href="/warenkorb" className="flex-1">
+                    <Button variant="landing-primary" size="xs" className="w-full">
+                      {isConfigurationComplete() ? (
+                        <div className="flex items-center justify-center gap-1 leading-tight">
+                          <span className="whitespace-nowrap">
+                            In den Warenkorb
+                          </span>
+                          <span className="whitespace-nowrap">
+                            - {PriceUtils.formatPrice(currentPrice)}
+                          </span>
+                        </div>
+                      ) : (
+                        "Jetzt bauen"
+                      )}
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           )}
         </div>

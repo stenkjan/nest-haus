@@ -32,13 +32,27 @@ export default function WarenkorbPage() {
   // Auto-add current configuration to cart if complete
   useEffect(() => {
     const cartConfig = getConfigurationForCart();
-    if (
-      cartConfig &&
-      !items.find(
-        (item) => "sessionId" in item && item.sessionId === cartConfig.sessionId
-      )
-    ) {
+    if (!cartConfig) return;
+
+    // Check if this exact configuration is already in the cart
+    // Look for items from configurator with matching sessionId OR if no sessionId, check if any configurator item exists
+    const hasExistingConfig = items.some((item) => {
+      if ("sessionId" in item && item.isFromConfigurator) {
+        // If both have sessionId, compare them
+        if (cartConfig.sessionId && item.sessionId) {
+          return item.sessionId === cartConfig.sessionId;
+        }
+        // If there's any configurator item without sessionId matching, consider it a duplicate
+        return true;
+      }
+      return false;
+    });
+
+    if (!hasExistingConfig) {
+      console.log("🛒 Adding configuration to cart:", cartConfig.nest?.name);
       addConfigurationToCart(cartConfig);
+    } else {
+      console.log("🛒 Configuration already in cart, skipping duplicate");
     }
   }, [configuration, getConfigurationForCart, addConfigurationToCart, items]);
 
@@ -72,6 +86,14 @@ export default function WarenkorbPage() {
       // Redirect to success page or show success message
       console.log("Order processed successfully");
     }
+  };
+
+  // Handle clear cart with debugging
+  const handleClearCart = () => {
+    console.log("🛒 Clear cart button clicked");
+    console.log("🛒 Items before clear:", items.length);
+    clearCart();
+    console.log("🛒 Clear cart function called");
   };
 
   // Render configuration item details with right panel styling
@@ -153,9 +175,23 @@ export default function WarenkorbPage() {
           <div className="flex items-center gap-4 mb-8">
             <Link
               href="/konfigurator"
-              className="text-blue-600 hover:text-blue-800 transition-colors"
+              className="bg-white/90 hover:bg-white rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Zurück zum Konfigurator"
             >
-              ← Zurück zum Konfigurator
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-gray-700"
+              >
+                <path d="M19 12H5" />
+                <path d="M12 19L5 12L12 5" />
+              </svg>
             </Link>
             <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.015em] leading-[1.2]">
               <span className="text-black">Dein Nest.</span>{" "}
@@ -265,7 +301,7 @@ export default function WarenkorbPage() {
                 {/* Clear Cart Button */}
                 <div className="flex justify-center">
                   <button
-                    onClick={clearCart}
+                    onClick={handleClearCart}
                     className="text-gray-600 hover:text-gray-800 underline text-[clamp(12px,2.5vw,14px)] transition-colors"
                   >
                     Warenkorb leeren
