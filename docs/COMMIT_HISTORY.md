@@ -4,6 +4,20 @@
 
 ---
 
+## [77b5117dde46bee3dc80137d784fc50a4e869bb1] - Tue Jul 8 16:15:20 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: add navigation link to Warenkorb in SummaryPanel and improve formatting in WarenkorbPage  - Introduced a new button in SummaryPanel linking to the Warenkorb page for enhanced user navigation. - Standardized string quotes to double quotes for consistency across the files. - Improved formatting and readability in WarenkorbPage, including adjustments to customer form handling and configuration details rendering.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/page.tsx
+
+
+---
+
 ## [feed70a691f313f49096270ba064d7ba719a8690] - Tue Jul 8 16:11:52 2025 +0200
 
 **Author**: stenkjan
