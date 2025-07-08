@@ -10,7 +10,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useConfiguratorStore } from "@/store/configuratorStore";
-import { useCartStore } from "@/store/cartStore";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { PriceUtils } from "../core/PriceUtils";
 import InfoBox from "./InfoBox";
@@ -29,11 +28,9 @@ export default function SummaryPanel({
     configuration,
     currentPrice,
     isConfigurationComplete,
-    getConfigurationForCart,
     resetConfiguration,
   } = useConfiguratorStore();
 
-  const { addConfigurationToCart } = useCartStore();
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
