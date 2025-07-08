@@ -400,9 +400,18 @@ export default function SummaryPanel({
               {/* Navigate to Warenkorb Button */}
               <Link href="/warenkorb" className="flex-1">
                 <Button variant="landing-primary" size="xs" className="w-full">
-                  {isConfigurationComplete()
-                    ? `In den Warenkorb - ${PriceUtils.formatPrice(currentPrice)}`
-                    : "Jetzt bauen"}
+                  {isConfigurationComplete() ? (
+                    <div className="flex flex-wrap items-center justify-center gap-1 leading-tight">
+                      <span className="whitespace-nowrap">
+                        In den Warenkorb
+                      </span>
+                      <span className="whitespace-nowrap">
+                        - {PriceUtils.formatPrice(currentPrice)}
+                      </span>
+                    </div>
+                  ) : (
+                    "Jetzt bauen"
+                  )}
                 </Button>
               </Link>
             </div>
