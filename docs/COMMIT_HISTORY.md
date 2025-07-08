@@ -4,6 +4,19 @@
 
 ---
 
+## [222ce5fb890ed6e13acaf29ec6e59dcd84afb182] - Tue Jul 8 16:41:42 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance button layout in SummaryPanel for improved user experience  - Updated the button rendering in SummaryPanel to display the "In den Warenkorb" text and price on separate lines for better readability. - Maintained existing functionality while improving the visual presentation of the price information.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
 ## [ce970cef36ec798f2d887f3ab7ae33f94bc9812b] - Tue Jul 8 16:33:34 2025 +0200
 
 **Author**: stenkjan
