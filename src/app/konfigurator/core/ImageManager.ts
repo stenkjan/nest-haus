@@ -45,7 +45,7 @@ export class ImageManager {
 
     // Use fallback for null configuration
     if (!configuration) {
-      return IMAGES.configurations[IMAGE_FALLBACKS.DEFAULT_NEST];
+      return IMAGE_FALLBACKS.exterior;
     }
 
     // Create cache key for memoization
@@ -70,7 +70,7 @@ export class ImageManager {
           imagePath = this.getInteriorImage(configuration);
           break;
         case 'pv':
-          imagePath = this.getPvImage(configuration);
+          imagePath = this.getPVImage(configuration);
           break;
         case 'fenster':
           imagePath = this.getFensterImage(configuration);
@@ -80,7 +80,7 @@ export class ImageManager {
       }
     } catch (error) {
       console.error(`🖼️ Error getting ${view} image:`, error);
-      imagePath = IMAGES.configurations[IMAGE_FALLBACKS.DEFAULT_NEST];
+      imagePath = IMAGE_FALLBACKS.exterior;
     }
 
     // Cache the result
@@ -102,7 +102,7 @@ export class ImageManager {
    */
   private static sanitizeConfigValue(value: string | undefined): string {
     if (!value || typeof value !== 'string') return '';
-    
+
     // Remove any non-alphanumeric characters except underscore and hyphen
     // Also preserve umlauts for German image names
     return value.replace(/[^a-zA-Z0-9_\-äöüÄÖÜß]/g, '');
@@ -127,124 +127,150 @@ export class ImageManager {
   }
 
   /**
-   * Get exterior view image - CLEANED UP: Uses constants
+   * Get fallback preview image if specific image not found
+   * @private
    */
-  private static getExteriorImage(configuration: Configuration): string {
-    const nest = this.sanitizeConfigValue(configuration.nest?.value) || 'nest80';
-    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-
-    const imageSize = NEST_SIZE_MAPPING[nest] || '75';
-    const gebaeudeImageName = GEBAEUDE_EXTERIOR_MAPPING[gebaeude] || 'holzlattung';
-
-    // Construct the image key: nest{size}_{gebaeude}
-    const imageKey = `nest${imageSize}_${gebaeudeImageName}` as keyof typeof IMAGES.configurations;
-    const imagePath = IMAGES.configurations[imageKey];
-
-    return imagePath || IMAGES.configurations[IMAGE_FALLBACKS.DEFAULT_NEST];
+  private static getFallbackPreviewImage(): string {
+    // Use the exterior fallback directly since it's an image path
+    return IMAGE_FALLBACKS.exterior;
   }
 
   /**
-   * Get stirnseite view image - CLEANED UP: Uses constants
+   * Get exterior image path for a given configuration
+   * CLIENT-SIDE calculation for efficiency
    */
-  private static getStirnseiteImage(configuration: Configuration): string {
-    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-    const stirnseiteImageKey = STIRNSEITE_MAPPING[gebaeude] || 'stirnseiteTrapezblech';
-    const imagePath = IMAGES.configurations[stirnseiteImageKey as keyof typeof IMAGES.configurations];
-
-    return imagePath || IMAGES.configurations[IMAGE_FALLBACKS.DEFAULT_STIRNSEITE];
-  }
-
-  /**
-   * Get interior view image - CLEANED UP: Uses constants and exact mappings
-   */
-  private static getInteriorImage(configuration: Configuration): string {
-    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-    const innenverkleidung = this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'kiefer';
-    const fussboden = this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett';
-
-    // Check exact mappings first
-    for (const [g, i, f, key] of INTERIOR_EXACT_MAPPINGS) {
-      if (gebaeude === g && innenverkleidung === i && fussboden === f) {
-        const imagePath = IMAGES.configurations[key as keyof typeof IMAGES.configurations];
-        if (imagePath) {
-          return imagePath;
-        }
-      }
+  static getExteriorImage(configuration: Configuration): string {
+    if (!configuration?.nest?.value || !configuration?.gebaeudehuelle?.value) {
+      return IMAGE_FALLBACKS.exterior;
     }
 
-    // Standard handling using constants
-    const prefix = GEBAEUDE_PREFIX_MAPPING[gebaeude];
-    if (prefix) {
-      const innenPart = INNENVERKLEIDUNG_MAPPING[innenverkleidung] || 'holznatur';
-      
-      // Use different fussboden mapping for holzlattung
-      const fussbodenMap = prefix === 'holzlattung' ? FUSSBODEN_HOLZLATTUNG_MAPPING : FUSSBODEN_MAPPING;
-      const fussbodenPart = fussbodenMap[fussboden] || 'kalkstein';
-      
-      // Construct the full image key
-      const imageKey = `${prefix}_${innenPart}_${fussbodenPart}` as keyof typeof IMAGES.configurations;
-      const imagePath = IMAGES.configurations[imageKey];
-      
+    // Map nest value to image size
+    const nestType = configuration.nest.value;
+    const gebaeudehuelle = configuration.gebaeudehuelle.value;
+
+    const nestSize = NEST_SIZE_MAPPING[nestType];
+    const exteriorType = GEBAEUDE_EXTERIOR_MAPPING[gebaeudehuelle];
+
+    if (!nestSize || !exteriorType) {
+      return IMAGE_FALLBACKS.exterior;
+    }
+
+    // Construct image key: nest{size}_{exteriorType}
+    const imageKey = `nest${nestSize}_${exteriorType}`;
+
+    // Return the image path directly from configurations
+    let imagePath = IMAGES.configurations[imageKey as keyof typeof IMAGES.configurations];
+
+    if (!imagePath) {
+      imagePath = IMAGE_FALLBACKS.exterior;
+    }
+
+    return imagePath;
+  }
+
+  /**
+   * Get stirnseite (front view) image path
+   * CLIENT-SIDE calculation for efficiency
+   */
+  static getStirnseiteImage(configuration: Configuration): string {
+    if (!configuration?.gebaeudehuelle?.value) {
+      return IMAGE_FALLBACKS.stirnseite;
+    }
+
+    const gebaeudehuelle = configuration.gebaeudehuelle.value;
+    const stirnseiteKey = STIRNSEITE_MAPPING[gebaeudehuelle];
+
+    if (!stirnseiteKey) {
+      return IMAGE_FALLBACKS.stirnseite;
+    }
+
+    const imagePath = IMAGES.configurations[stirnseiteKey as keyof typeof IMAGES.configurations];
+    return imagePath || IMAGE_FALLBACKS.stirnseite;
+  }
+
+  /**
+   * Get interior image path with enhanced security and fallback logic
+   * Uses exact mappings for specific combinations, then fallback logic
+   * CLIENT-SIDE calculation for efficiency and security
+   */
+  static getInteriorImage(configuration: Configuration): string {
+    if (!configuration?.gebaeudehuelle?.value ||
+      !configuration?.innenverkleidung?.value ||
+      !configuration?.fussboden?.value) {
+      return IMAGE_FALLBACKS.interior;
+    }
+
+    const { gebaeudehuelle, innenverkleidung, fussboden } = configuration;
+
+    // Create combination key for exact matching
+    const combinationKey = `${gebaeudehuelle.value}_${innenverkleidung.value}_${fussboden.value}`;
+
+    // Check exact mappings first
+    const exactMapping = INTERIOR_EXACT_MAPPINGS[combinationKey];
+    if (exactMapping) {
+      const imagePath = IMAGES.configurations[exactMapping as keyof typeof IMAGES.configurations];
       if (imagePath) {
         return imagePath;
       }
-
-      // Try fallbacks
-      const fallbackKeys = [
-        `${prefix}_${innenPart}_kalkstein`,
-        `${prefix}_holznatur_kalkstein`,
-        IMAGE_FALLBACKS.DEFAULT_INTERIOR
-      ];
-      
-      for (const fallbackKey of fallbackKeys) {
-        const fallbackPath = IMAGES.configurations[fallbackKey as keyof typeof IMAGES.configurations];
-        if (fallbackPath) {
-          return fallbackPath;
-        }
-      }
     }
 
-    return IMAGES.configurations[IMAGE_FALLBACKS.DEFAULT_INTERIOR];
+    // ENHANCED: Additional security check for valid combinations
+    const validExactMappings = Object.keys(INTERIOR_EXACT_MAPPINGS);
+    if (!validExactMappings.includes(combinationKey)) {
+      console.warn(`🔒 [ImageManager] Invalid combination attempted: ${combinationKey}`);
+      return IMAGE_FALLBACKS.interior;
+    }
+
+    return IMAGE_FALLBACKS.interior;
   }
 
   /**
-   * Get PV image - CLEANED UP: Uses constants
+   * Get PV (Photovoltaik) image path
+   * CLIENT-SIDE calculation for efficiency
    */
-  private static getPvImage(configuration: Configuration): string {
-    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-    const pvImageKey = PV_IMAGE_MAPPING[gebaeude] || 'pv_holzfassade';
-    const imagePath = IMAGES.configurations[pvImageKey as keyof typeof IMAGES.configurations];
+  static getPVImage(configuration: Configuration): string {
+    if (!configuration?.gebaeudehuelle?.value) {
+      return IMAGES.configurations.pv_holzfassade || IMAGE_FALLBACKS.exterior;
+    }
 
-    return imagePath || IMAGES.configurations[IMAGE_FALLBACKS.DEFAULT_PV];
+    const gebaeudehuelle = configuration.gebaeudehuelle.value;
+    const pvKey = PV_IMAGE_MAPPING[gebaeudehuelle];
+
+    if (!pvKey) {
+      return IMAGES.configurations.pv_holzfassade || IMAGE_FALLBACKS.exterior;
+    }
+
+    const imagePath = IMAGES.configurations[pvKey as keyof typeof IMAGES.configurations];
+    return imagePath || IMAGES.configurations.pv_holzfassade || IMAGE_FALLBACKS.exterior;
   }
 
   /**
-   * Get fenster image - IMPROVED: Better encoding handling for image 177
+   * Get Fenster (Window) image path  
+   * CLIENT-SIDE calculation for efficiency
    */
-  private static getFensterImage(configuration: Configuration): string {
-    const fensterValue = this.sanitizeConfigValue(configuration.fenster?.value);
-
-    if (fensterValue) {
-      const fensterImageKey = FENSTER_IMAGE_MAPPING[fensterValue];
-
-      if (fensterImageKey && IMAGES.configurations[fensterImageKey as keyof typeof IMAGES.configurations]) {
-        const imagePath = IMAGES.configurations[fensterImageKey as keyof typeof IMAGES.configurations];
-        
-        // FIXED: Ensure proper encoding for German characters in image paths
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`🖼️ Fenster image: ${fensterValue} -> ${fensterImageKey} -> ${imagePath}`);
-        }
-        
-        return imagePath;
-      }
+  static getFensterImage(configuration: Configuration): string {
+    if (!configuration?.fenster?.value) {
+      return IMAGES.windows.pvc || IMAGES.configurations.fenster_pvc || IMAGE_FALLBACKS.exterior;
     }
 
-    // Fallback to stirnseite view based on gebäudehülle
-    const gebaeude = this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech';
-    const stirnseiteKey = STIRNSEITE_MAPPING[gebaeude] || 'stirnseiteHolzfassade';
-    const stirnseitePath = IMAGES.configurations[stirnseiteKey as keyof typeof IMAGES.configurations];
+    const fensterType = configuration.fenster.value;
 
-    return stirnseitePath || IMAGES.configurations[IMAGE_FALLBACKS.DEFAULT_FENSTER];
+    // Map to windows image keys
+    const fensterKey = FENSTER_IMAGE_MAPPING[fensterType];
+    if (!fensterKey) {
+      return IMAGES.windows.pvc || IMAGES.configurations.fenster_pvc || IMAGE_FALLBACKS.exterior;
+    }
+
+    // Try windows collection first, then configurations
+    const windowImage = IMAGES.windows[fensterKey as keyof typeof IMAGES.windows];
+    if (windowImage) {
+      return windowImage;
+    }
+
+    const configImage = IMAGES.configurations[`fenster_${fensterKey}` as keyof typeof IMAGES.configurations];
+    const stirnseitePath = configImage || IMAGES.windows.pvc;
+
+    return stirnseitePath || IMAGES.windows.pvc || IMAGE_FALLBACKS.exterior;
   }
 
   /**

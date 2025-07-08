@@ -6,10 +6,10 @@
  * ENHANCED: Added caching and race condition prevention for optimal performance
  */
 
-import { 
-  calculateModularPrice, 
-  GRUNDSTUECKSCHECK_PRICE, 
-  MODULAR_PRICING, 
+import {
+  calculateModularPrice,
+  GRUNDSTUECKSCHECK_PRICE,
+  MODULAR_PRICING,
   NEST_OPTIONS,
   type CombinationKey
 } from '@/constants/configurator'
@@ -83,7 +83,7 @@ export class PriceCalculator {
     fussboden: string
   ): number {
     const price = calculateModularPrice(nestType, gebaeudehuelle, innenverkleidung, fussboden);
-    
+
     return price;
   }
 
@@ -101,7 +101,7 @@ export class PriceCalculator {
     // Default selections for base comparison
     const defaultSelections = {
       gebaeudehuelle: 'trapezblech',
-      innenverkleidung: 'kiefer', 
+      innenverkleidung: 'kiefer',
       fussboden: 'parkett'
     };
 
@@ -169,7 +169,7 @@ export class PriceCalculator {
 
       // Create cache key for this specific calculation
       const cacheKey = SimplePriceCache.createCacheKey(nestType, categoryId, optionValue);
-      
+
       // Check cache first for performance optimization
       const cached = SimplePriceCache.get(cacheKey);
       if (cached) {
@@ -230,7 +230,7 @@ export class PriceCalculator {
         if (process.env.NODE_ENV === 'development') {
           console.error(`💰 Price calculation error for ${categoryId}:${optionValue}:`, error);
         }
-        
+
         // Return safe fallback
         return { type: 'included' };
       }
@@ -246,9 +246,9 @@ export class PriceCalculator {
    */
   static calculateMonthlyPaymentAmount(totalPrice: number, months: number = 240): number {
     const interestRate = 0.035 / 12; // 3.5% annual rate
-    const monthlyPayment = totalPrice * (interestRate * Math.pow(1 + interestRate, months)) / 
-                          (Math.pow(1 + interestRate, months) - 1);
-    
+    const monthlyPayment = totalPrice * (interestRate * Math.pow(1 + interestRate, months)) /
+      (Math.pow(1 + interestRate, months) - 1);
+
     return Math.round(monthlyPayment);
   }
 
@@ -331,9 +331,9 @@ export class PriceCalculator {
    */
   static calculateMonthlyPayment(totalPrice: number, months: number = 240): string {
     const interestRate = 0.035 / 12 // 3.5% annual rate
-    const monthlyPayment = totalPrice * (interestRate * Math.pow(1 + interestRate, months)) / 
-                          (Math.pow(1 + interestRate, months) - 1)
-    
+    const monthlyPayment = totalPrice * (interestRate * Math.pow(1 + interestRate, months)) /
+      (Math.pow(1 + interestRate, months) - 1)
+
     return new Intl.NumberFormat('de-DE', {
       style: 'currency',
       currency: 'EUR',
@@ -383,9 +383,9 @@ export class PriceCalculator {
    * CLIENT-SIDE calculation for better performance
    * SUPPORTS PROGRESSIVE PRICING with MODULAR SCALING
    */
-  static getPriceBreakdown(selections: Selections): { 
-    basePrice: number; 
-    options: Record<string, { name: string; price: number }>; 
+  static getPriceBreakdown(selections: Selections): {
+    basePrice: number;
+    options: Record<string, { name: string; price: number }>;
     totalPrice: number;
     modules?: number;
     pricePerModule?: number;
@@ -406,21 +406,21 @@ export class PriceCalculator {
 
     try {
       // Get nest module information
-      const nestOption = NEST_OPTIONS.find(option => option.value === selections.nest!.value);
+      const nestOption = NEST_OPTIONS.find(option => option.id === selections.nest!.value);
       breakdown.modules = nestOption?.modules || 0;
 
       // Determine combination for breakdown
       const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
       const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
       const fussboden = selections.fussboden?.value || 'parkett';
-      
+
       breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
-      
+
       // Get modular pricing data with type safety
-      const pricingData = MODULAR_PRICING[breakdown.combinationKey as CombinationKey];
-      if (pricingData) {
-        breakdown.basePrice = pricingData.basePrice;
-        breakdown.pricePerModule = pricingData.pricePerModule;
+      const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
+      const combinationUpgrade = MODULAR_PRICING.combinations[combinationKey as keyof typeof MODULAR_PRICING.combinations];
+      if (combinationUpgrade !== undefined) {
+        breakdown.basePrice = MODULAR_PRICING.basePrices[selections.nest.value as keyof typeof MODULAR_PRICING.basePrices] || 0;
       }
 
       // Calculate core combination price
@@ -482,15 +482,15 @@ export class PriceCalculator {
     innenverkleidung: string,
     fussboden: string
   ): boolean {
-    const combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}` as CombinationKey;
-    return !!MODULAR_PRICING[combinationKey];
+    const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
+    return combinationKey in MODULAR_PRICING.combinations;
   }
 
   /**
    * Get all valid combinations for a given nest type
    */
   static getValidCombinations(_nestType: string): CombinationKey[] {
-    return Object.keys(MODULAR_PRICING) as CombinationKey[];
+    return Object.keys(MODULAR_PRICING.combinations) as CombinationKey[];
   }
 
   /**
