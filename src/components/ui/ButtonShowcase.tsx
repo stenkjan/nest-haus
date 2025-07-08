@@ -21,7 +21,7 @@ const ButtonShowcase: React.FC = () => {
     "configurator",
   ];
 
-  const sizes: ButtonSize[] = ["xs", "sm", "md", "lg", "xl"];
+  const sizes: ButtonSize[] = ["xxs", "xs", "sm", "md", "lg", "xl"];
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">

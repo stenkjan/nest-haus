@@ -14,7 +14,14 @@ export type ButtonVariant =
   | "landing-secondary-blue" // Landing page secondary button (blue)
   | "configurator"; // Konfigurator specific button
 
-export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl" | "responsive";
+export type ButtonSize =
+  | "xxs"
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "responsive";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -30,8 +37,15 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const baseStyles =
-    "rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-32 lg:w-36 xl:w-40";
+  // Adjust width based on size - xxs gets smaller, more responsive width
+  const getWidthClasses = (buttonSize: ButtonSize) => {
+    if (buttonSize === "xxs") {
+      return "w-24 sm:w-28 lg:w-32 xl:w-36";
+    }
+    return "w-32 lg:w-36 xl:w-40";
+  };
+
+  const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal ${getWidthClasses(size)}`;
 
   const variants = {
     // Standard Buttons - all with fixed width
@@ -64,6 +78,7 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const sizes = {
+    xxs: "px-1.5 py-1 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
     xs: "px-2 py-1.5 text-sm xl:text-base",
     sm: "px-3 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
     md: "px-4 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl",
