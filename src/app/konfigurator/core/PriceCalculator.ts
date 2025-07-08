@@ -418,13 +418,6 @@ export class PriceCalculator {
 
       breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
 
-      // Get modular pricing data with type safety
-      const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
-      const combinationUpgrade = MODULAR_PRICING.combinations[combinationKey as keyof typeof MODULAR_PRICING.combinations];
-      if (combinationUpgrade !== undefined) {
-        breakdown.basePrice = MODULAR_PRICING.basePrices[selections.nest.value as keyof typeof MODULAR_PRICING.basePrices] || 0;
-      }
-
       // Calculate core combination price
       const combinationPrice = this.calculateCombinationPrice(
         selections.nest.value,

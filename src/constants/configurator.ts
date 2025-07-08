@@ -97,8 +97,9 @@ export const IMAGE_FALLBACKS = {
   stirnseite: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite'
 } as const;
 
-// Type for combination keys used in exact mappings
-export type CombinationKey = keyof typeof INTERIOR_EXACT_MAPPINGS;
+// Type for combination keys used in pricing and image mappings
+export type CombinationKey = keyof typeof MODULAR_PRICING.combinations;
+export type ImageCombinationKey = keyof typeof INTERIOR_EXACT_MAPPINGS;
 
 /**
  * PRICING CONSTANTS
@@ -152,53 +153,47 @@ export const NEST_OPTIONS = [
   }
 ] as const;
 
-// Modular pricing structure for combinations
+// CORRECTED: Modular pricing structure matching Excel data
+// Formula: Base Price (Nest 80) + (Additional Modules × Per-Module Price)
 export const MODULAR_PRICING = {
-  basePrices: {
-    nest80: 155500,
-    nest100: 189100,
-    nest120: 222700,
-    nest140: 256300,
-    nest160: 289900
-  },
-  // Price differences between material combinations
+  // Each combination has base price + per-module price
   combinations: {
-    'trapezblech_kiefer_parkett': 0, // Base combination
-    'trapezblech_kiefer_kalkstein_kanafar': 4500,
-    'trapezblech_kiefer_schiefer_massiv': 5500,
-    'trapezblech_fichte_parkett': 1400,
-    'trapezblech_fichte_kalkstein_kanafar': 5900,
-    'trapezblech_fichte_schiefer_massiv': 6900,
-    'trapezblech_steirische_eiche_parkett': 10200,
-    'trapezblech_steirische_eiche_kalkstein_kanafar': 14700,
-    'trapezblech_steirische_eiche_schiefer_massiv': 15700,
-    'holzlattung_kiefer_parkett': 9600,
-    'holzlattung_kiefer_kalkstein_kanafar': 14100,
-    'holzlattung_kiefer_schiefer_massiv': 15100,
-    'holzlattung_fichte_parkett': 11000,
-    'holzlattung_fichte_kalkstein_kanafar': 15500,
-    'holzlattung_fichte_schiefer_massiv': 16500,
-    'holzlattung_steirische_eiche_parkett': 19800,
-    'holzlattung_steirische_eiche_kalkstein_kanafar': 24300,
-    'holzlattung_steirische_eiche_schiefer_massiv': 25300,
-    'fassadenplatten_schwarz_kiefer_parkett': 36400,
-    'fassadenplatten_schwarz_kiefer_kalkstein_kanafar': 40900,
-    'fassadenplatten_schwarz_kiefer_schiefer_massiv': 41900,
-    'fassadenplatten_schwarz_fichte_parkett': 37800,
-    'fassadenplatten_schwarz_fichte_kalkstein_kanafar': 42300,
-    'fassadenplatten_schwarz_fichte_schiefer_massiv': 43300,
-    'fassadenplatten_schwarz_steirische_eiche_parkett': 46600,
-    'fassadenplatten_schwarz_steirische_eiche_kalkstein_kanafar': 51100,
-    'fassadenplatten_schwarz_steirische_eiche_schiefer_massiv': 52100,
-    'fassadenplatten_weiss_kiefer_parkett': 36400,
-    'fassadenplatten_weiss_kiefer_kalkstein_kanafar': 40900,
-    'fassadenplatten_weiss_kiefer_schiefer_massiv': 41900,
-    'fassadenplatten_weiss_fichte_parkett': 37800,
-    'fassadenplatten_weiss_fichte_kalkstein_kanafar': 42300,
-    'fassadenplatten_weiss_fichte_schiefer_massiv': 43300,
-    'fassadenplatten_weiss_steirische_eiche_parkett': 46600,
-    'fassadenplatten_weiss_steirische_eiche_kalkstein_kanafar': 51100,
-    'fassadenplatten_weiss_steirische_eiche_schiefer_massiv': 52100
+    'trapezblech_kiefer_parkett': { base: 155500, perModule: 33600 },
+    'trapezblech_kiefer_kalkstein_kanafar': { base: 161200, perModule: 35000 },
+    'trapezblech_kiefer_schiefer_massiv': { base: 161200, perModule: 35000 },
+    'trapezblech_fichte_parkett': { base: 156900, perModule: 33800 },
+    'trapezblech_fichte_kalkstein_kanafar': { base: 162600, perModule: 35300 },
+    'trapezblech_fichte_schiefer_massiv': { base: 162600, perModule: 35300 },
+    'trapezblech_steirische_eiche_parkett': { base: 165700, perModule: 35400 },
+    'trapezblech_steirische_eiche_kalkstein_kanafar': { base: 171400, perModule: 36900 },
+    'trapezblech_steirische_eiche_schiefer_massiv': { base: 171400, perModule: 36900 },
+    'holzlattung_kiefer_parkett': { base: 165100, perModule: 35600 },
+    'holzlattung_kiefer_kalkstein_kanafar': { base: 170800, perModule: 37000 },
+    'holzlattung_kiefer_schiefer_massiv': { base: 170800, perModule: 37000 },
+    'holzlattung_fichte_parkett': { base: 166400, perModule: 35800 },
+    'holzlattung_fichte_kalkstein_kanafar': { base: 172100, perModule: 37300 },
+    'holzlattung_fichte_schiefer_massiv': { base: 172100, perModule: 37300 },
+    'holzlattung_steirische_eiche_parkett': { base: 175300, perModule: 37400 },
+    'holzlattung_steirische_eiche_kalkstein_kanafar': { base: 181000, perModule: 38900 },
+    'holzlattung_steirische_eiche_schiefer_massiv': { base: 181000, perModule: 38900 },
+    'fassadenplatten_schwarz_kiefer_parkett': { base: 191900, perModule: 40300 },
+    'fassadenplatten_schwarz_kiefer_kalkstein_kanafar': { base: 197600, perModule: 41700 },
+    'fassadenplatten_schwarz_kiefer_schiefer_massiv': { base: 197600, perModule: 41700 },
+    'fassadenplatten_schwarz_fichte_parkett': { base: 193200, perModule: 40600 },
+    'fassadenplatten_schwarz_fichte_kalkstein_kanafar': { base: 198900, perModule: 42000 },
+    'fassadenplatten_schwarz_fichte_schiefer_massiv': { base: 198900, perModule: 42000 },
+    'fassadenplatten_schwarz_steirische_eiche_parkett': { base: 202100, perModule: 42200 },
+    'fassadenplatten_schwarz_steirische_eiche_kalkstein_kanafar': { base: 207800, perModule: 43600 },
+    'fassadenplatten_schwarz_steirische_eiche_schiefer_massiv': { base: 207800, perModule: 43600 },
+    'fassadenplatten_weiss_kiefer_parkett': { base: 191900, perModule: 40300 },
+    'fassadenplatten_weiss_kiefer_kalkstein_kanafar': { base: 197600, perModule: 41700 },
+    'fassadenplatten_weiss_kiefer_schiefer_massiv': { base: 197600, perModule: 41700 },
+    'fassadenplatten_weiss_fichte_parkett': { base: 193200, perModule: 40600 },
+    'fassadenplatten_weiss_fichte_kalkstein_kanafar': { base: 198900, perModule: 42000 },
+    'fassadenplatten_weiss_fichte_schiefer_massiv': { base: 198900, perModule: 42000 },
+    'fassadenplatten_weiss_steirische_eiche_parkett': { base: 202100, perModule: 42200 },
+    'fassadenplatten_weiss_steirische_eiche_kalkstein_kanafar': { base: 207800, perModule: 43600 },
+    'fassadenplatten_weiss_steirische_eiche_schiefer_massiv': { base: 207800, perModule: 43600 }
   }
 } as const;
 
@@ -228,7 +223,8 @@ export const PLANNING_PACKAGES = [
 ] as const;
 
 /**
- * Calculate modular price based on nest type and material combinations
+ * Calculate modular price using CORRECT Excel formula
+ * Formula: Base Price (Nest 80) + (Additional Modules × Per-Module Price)
  * @param nestType - The nest type (nest80, nest100, etc.)
  * @param gebaeudehuelle - Building exterior type
  * @param innenverkleidung - Interior cladding type
@@ -241,14 +237,31 @@ export function calculateModularPrice(
   innenverkleidung: string,
   fussboden: string
 ): number {
-  // Get base price for nest type
-  const basePrice = MODULAR_PRICING.basePrices[nestType as keyof typeof MODULAR_PRICING.basePrices] || MODULAR_PRICING.basePrices.nest80;
-
   // Create combination key
   const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
 
-  // Get combination price (defaults to 0 if not found)
-  const combinationPrice = MODULAR_PRICING.combinations[combinationKey as keyof typeof MODULAR_PRICING.combinations] || 0;
+  // Get combination pricing data
+  const combinationData = MODULAR_PRICING.combinations[combinationKey as keyof typeof MODULAR_PRICING.combinations];
+  
+  if (!combinationData) {
+    console.warn(`💰 No pricing data found for combination: ${combinationKey}`);
+    // Fallback to base combination
+    const fallbackData = MODULAR_PRICING.combinations['trapezblech_kiefer_parkett'];
+    return fallbackData.base;
+  }
 
-  return basePrice + combinationPrice;
+  // Get nest module count
+  const nestOption = NEST_OPTIONS.find(option => option.id === nestType);
+  if (!nestOption) {
+    console.warn(`💰 Unknown nest type: ${nestType}, defaulting to nest80`);
+    return combinationData.base; // Just base price for nest80 (1 module, 0 additional)
+  }
+
+  // Calculate additional modules (nest80 = 1 module = 0 additional modules)
+  const additionalModules = nestOption.modules - 1;
+
+  // Apply correct Excel formula: Base + (Additional Modules × Per-Module Price)
+  const totalPrice = combinationData.base + (additionalModules * combinationData.perModule);
+
+  return totalPrice;
 } 
