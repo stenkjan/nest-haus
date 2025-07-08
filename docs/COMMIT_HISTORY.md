@@ -4,6 +4,19 @@
 
 ---
 
+## [728b184cc3da51a9f7fa7d5a37484f193633b8b7] - Tue Jul 8 15:18:47 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: restore material upgrade pricing logic in PriceCalculator  - Restored functionality to ensure material upgrade prices scale with the current nest size. - Enhanced caching and error handling for optimal performance in price calculations. - Updated comments for clarity on the pricing logic and cache key creation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [bb83055d6cca33031ddfcd1186576712aa4bb30a] - Tue Jul 8 15:05:23 2025 +0200
 
 **Author**: stenkjan
