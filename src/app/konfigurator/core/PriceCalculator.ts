@@ -141,6 +141,7 @@ export class PriceCalculator {
    * This ensures consistent pricing regardless of current selections
    * 
    * ENHANCED: Added caching and error handling for optimal performance
+   * RESTORED: Material upgrade prices scale with nest size as intended
    */
   static getOptionDisplayPrice(
     nestType: string,
@@ -167,7 +168,7 @@ export class PriceCalculator {
         return { type: 'included' };
       }
 
-      // Create cache key for this specific calculation
+      // Create cache key for this specific calculation (includes nest size for scaling)
       const cacheKey = SimplePriceCache.createCacheKey(nestType, categoryId, optionValue);
 
       // Check cache first for performance optimization
@@ -181,8 +182,8 @@ export class PriceCalculator {
       }
 
       try {
-        // FIXED: Always calculate upgrade price relative to BASE configuration
-        // This prevents negative prices and ensures consistent pricing display
+        // RESTORED: Calculate upgrade price relative to BASE configuration for the CURRENT nest size
+        // This allows material upgrade prices to scale properly with nest size
         const baseCombination = {
           gebaeudehuelle: baseSelections.gebaeudehuelle,
           innenverkleidung: baseSelections.innenverkleidung,
@@ -195,6 +196,7 @@ export class PriceCalculator {
           [categoryId]: optionValue
         };
 
+        // Use the CURRENT nest size for both calculations so material costs scale properly
         const basePrice = this.calculateCombinationPrice(
           nestType,
           baseCombination.gebaeudehuelle,
