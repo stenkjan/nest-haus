@@ -201,7 +201,7 @@ export class ImageManager {
     // Create combination key for exact matching
     const combinationKey = `${gebaeudehuelle.value}_${innenverkleidung.value}_${fussboden.value}`;
 
-    // Check exact mappings first
+    // Check exact mappings first (for trapezblech combinations)
     const exactMapping = INTERIOR_EXACT_MAPPINGS[combinationKey];
     if (exactMapping) {
       const imagePath = IMAGES.configurations[exactMapping as keyof typeof IMAGES.configurations];
@@ -210,11 +210,61 @@ export class ImageManager {
       }
     }
 
+    // RESTORED: Interdependent logic for other gebäudehülle types
+    // Build combination dynamically using individual mappings
+    try {
+      const gebaeudePrefixMapping = {
+        'trapezblech': 'trapezblech',
+        'holzlattung': 'holzlattung',
+        'fassadenplatten_schwarz': 'plattenschwarz',
+        'fassadenplatten_weiss': 'plattenweiss'
+      };
+
+      const innenverkleidungMapping = {
+        'kiefer': 'holznatur',
+        'fichte': 'holzweiss',
+        'steirische_eiche': 'eiche'
+      };
+
+      const fussbodenMapping = {
+        'parkett': 'parkett',
+        'kalkstein_kanafar': 'kalkstein',
+        'schiefer_massiv': 'granit' // Default: granit paths
+      };
+
+      // Special case: holzlattung uses 'schiefer' instead of 'granit' for schiefer_massiv
+      const fussbodenHolzlattungMapping = {
+        'parkett': 'parkett',
+        'kalkstein_kanafar': 'kalkstein',
+        'schiefer_massiv': 'schiefer' // For holzlattung: use schiefer paths
+      };
+
+      const gebaeude = gebaeudePrefixMapping[gebaeudehuelle.value as keyof typeof gebaeudePrefixMapping];
+      const innen = innenverkleidungMapping[innenverkleidung.value as keyof typeof innenverkleidungMapping];
+
+      // Choose the appropriate fussboden mapping based on gebäudehülle
+      const fussbodenMap = gebaeudehuelle.value === 'holzlattung'
+        ? fussbodenHolzlattungMapping
+        : fussbodenMapping;
+      const fussBoden = fussbodenMap[fussboden.value as keyof typeof fussbodenMap];
+
+      if (gebaeude && innen && fussBoden) {
+        // Build the image key: gebaeude_innen_fussboden
+        const dynamicImageKey = `${gebaeude}_${innen}_${fussBoden}`;
+
+        const imagePath = IMAGES.configurations[dynamicImageKey as keyof typeof IMAGES.configurations];
+        if (imagePath) {
+          return imagePath;
+        }
+      }
+    } catch (error) {
+      console.warn(`🖼️ Error building dynamic interior combination for ${combinationKey}:`, error);
+    }
+
     // ENHANCED: Additional security check for valid combinations
     const validExactMappings = Object.keys(INTERIOR_EXACT_MAPPINGS);
     if (!validExactMappings.includes(combinationKey)) {
-      console.warn(`🔒 [ImageManager] Invalid combination attempted: ${combinationKey}`);
-      return IMAGE_FALLBACKS.interior;
+      console.warn(`🔒 [ImageManager] Using fallback for combination: ${combinationKey}`);
     }
 
     return IMAGE_FALLBACKS.interior;
