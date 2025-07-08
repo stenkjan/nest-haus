@@ -12,7 +12,6 @@ export default function WarenkorbPage() {
     items,
     isProcessingOrder,
     addConfigurationToCart,
-    removeFromCart,
     clearCart,
     setOrderDetails,
     processOrder,
@@ -260,16 +259,6 @@ export default function WarenkorbPage() {
                         );
                       })}
                     </div>
-
-                    {/* Item Actions */}
-                    <div className="flex justify-end pt-4 mt-4 border-t border-gray-100">
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-red-600 hover:text-red-800 text-[clamp(12px,2.5vw,14px)] transition-colors"
-                      >
-                        Entfernen
-                      </button>
-                    </div>
                   </div>
                 ))}
 
@@ -277,7 +266,7 @@ export default function WarenkorbPage() {
                 <div className="flex justify-center">
                   <button
                     onClick={clearCart}
-                    className="text-gray-600 hover:text-gray-800 underline"
+                    className="text-gray-600 hover:text-gray-800 underline text-[clamp(12px,2.5vw,14px)] transition-colors"
                   >
                     Warenkorb leeren
                   </button>
