@@ -15,7 +15,7 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
     [IMAGES.hero.nestHaus7]: IMAGES.hero.mobile.nestHaus7,
     [IMAGES.hero.nestHaus8]: IMAGES.hero.mobile.nestHaus8,
   };
-  
+
   return mobileMapping[section.imagePath] || section.imagePath;
 };
 
@@ -27,7 +27,7 @@ const sections = [
     h1: "Dein Nest Haus",
     h3: "Die Welt ist dein Zuhause",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
+    button2: "Jetzt bauen",
   },
   {
     id: 2,
@@ -35,78 +35,81 @@ const sections = [
     h1: "Wohnen ohne Grenzen",
     h3: "Ein Haus das mit dir geht",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
+    button2: "Jetzt bauen",
   },
   {
     id: 3,
     imagePath: IMAGES.hero.nestHaus3,
-    h1: "Vogelperspektive",
-    h3: "3 Gebäude Holzlattung Lärche",
+    h1: "Ein Zuhause für Ideen",
+    h3: "Visionen brauchen Räume",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
+    button2: "Jetzt bauen",
   },
   {
     id: 4,
     imagePath: IMAGES.hero.nestHaus4,
-    h1: "Winter Design",
-    h3: "2 Gebäude schwarze Trapezblech Fassade",
+    h1: "Wohnen neu gedacht",
+    h3: "Individualität. Design. Flexibilität.",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
+    button2: "Jetzt bauen",
   },
   {
     id: 5,
     imagePath: IMAGES.hero.nestHaus5,
-    h1: "Wald Ansicht",
-    h3: "6 Module schwarze Fassadenplatten",
+    h1: "Mehr als nur vier Wände",
+    h3: "Mit Nest bleibt kein Ort unerreichbar",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
+    button2: "Jetzt bauen",
   },
   {
     id: 6,
     imagePath: IMAGES.hero.nestHaus6,
-    h1: "Mediterrane Aussicht",
-    h3: "4 Module am Meer mit Holzlattung",
+    h1: "Gestaltung für Visionen",
+    h3: "neue Wege. Neue Räume.",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
+    button2: "Jetzt bauen",
   },
   {
     id: 7,
     imagePath: IMAGES.hero.nestHaus7,
-    h1: "Innenperspektive",
-    h3: "Kalkstein Holz Verglasung",
+    h1: "Raum für deine Ideen",
+    h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
+    button2: "Jetzt bauen",
   },
   {
     id: 8,
     imagePath: IMAGES.hero.nestHaus8,
-    h1: "Elegante Innenräume",
-    h3: "Schwarze Steinplatten Design",
+    h1: "Dein Design im Freistil",
+    h3: "So individuell wie du",
     button1: "Entdecken",
-    button2: "Jetzt bauen"
-  }
+    button2: "Jetzt bauen",
+  },
 ];
 
 export default function Home() {
   // Landing page specific image styling - applies to all 8 images
   const landingImageStyle = {
-    objectPosition: 'center center',
-    transform: 'scale(1.05)',
-    transformOrigin: 'center center',
+    objectPosition: "center center",
+    transform: "scale(1.05)",
+    transformOrigin: "center center",
   };
 
   return (
-    <div className="w-full bg-white" style={{ paddingTop: 'var(--navbar-height, 3.5rem)' }}>
+    <div
+      className="w-full bg-white"
+      style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
+    >
       {sections.map((section) => (
-        <section 
-          key={section.id} 
+        <section
+          key={section.id}
           className="relative w-full overflow-hidden"
-          style={{ marginBottom: section.id !== sections.length ? '1vh' : '0' }}
+          style={{ marginBottom: section.id !== sections.length ? "1vh" : "0" }}
         >
           {/* Desktop image container - 16:9 aspect ratio */}
-          <div 
+          <div
             className="hidden md:block relative w-full h-full"
-            style={{ aspectRatio: '16/9' }}
+            style={{ aspectRatio: "16/9" }}
           >
             <HybridBlobImage
               path={section.imagePath}
@@ -114,7 +117,6 @@ export default function Home() {
               fill
               className="object-cover"
               style={landingImageStyle}
-              
               strategy={section.id <= 2 ? "ssr" : "client"}
               isAboveFold={section.id <= 3}
               isCritical={section.id <= 2}
@@ -124,9 +126,11 @@ export default function Home() {
               quality={90}
               unoptimized={true}
             />
-            
+
             {/* Desktop Content Overlay */}
-            <div className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? 'px-0' : 'px-8'}`}>
+            <div
+              className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? "px-0" : "px-8"}`}
+            >
               <div className="text-center">
                 <h1 className="font-bold text-white text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">
                   {section.h1}
@@ -135,7 +139,7 @@ export default function Home() {
                   {section.h3}
                 </h3>
               </div>
-              
+
               <div className="flex gap-4">
                 <Button variant="landing-primary" size="xs">
                   {section.button1}
@@ -157,11 +161,10 @@ export default function Home() {
               className="w-full h-auto object-cover"
               style={{
                 ...landingImageStyle,
-                position: 'relative',
-                width: '100%',
-                height: 'auto',
+                position: "relative",
+                width: "100%",
+                height: "auto",
               }}
-              
               strategy={section.id <= 2 ? "ssr" : "client"}
               isAboveFold={section.id <= 3}
               isCritical={section.id <= 2}
@@ -171,9 +174,11 @@ export default function Home() {
               quality={90}
               unoptimized={true}
             />
-            
+
             {/* Mobile Content Overlay */}
-            <div className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? 'px-0' : 'px-8'}`}>
+            <div
+              className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? "px-0" : "px-8"}`}
+            >
               <div className="text-center">
                 <h1 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl mb-1">
                   {section.h1}
@@ -182,7 +187,7 @@ export default function Home() {
                   {section.h3}
                 </h3>
               </div>
-              
+
               <div className="flex gap-4">
                 <Button variant="landing-primary" size="xs">
                   {section.button1}
