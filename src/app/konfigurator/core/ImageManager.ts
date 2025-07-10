@@ -188,18 +188,17 @@ export class ImageManager {
    * Get interior image path with enhanced security and fallback logic
    * Uses exact mappings for specific combinations, then fallback logic
    * CLIENT-SIDE calculation for efficiency and security
+   * 
+   * FIXED: Now respects selected gebäudehülle instead of always defaulting to trapezblech
    */
   static getInteriorImage(configuration: Configuration): string {
-    if (!configuration?.gebaeudehuelle?.value ||
-      !configuration?.innenverkleidung?.value ||
-      !configuration?.fussboden?.value) {
-      return IMAGE_FALLBACKS.interior;
-    }
-
-    const { gebaeudehuelle, innenverkleidung, fussboden } = configuration;
+    // Use selected gebäudehülle or default to trapezblech only if not selected
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
+    const innenverkleidung = configuration?.innenverkleidung?.value || 'kiefer';
+    const fussboden = configuration?.fussboden?.value || 'parkett';
 
     // Create combination key for exact matching
-    const combinationKey = `${gebaeudehuelle.value}_${innenverkleidung.value}_${fussboden.value}`;
+    const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
 
     // Check exact mappings first (for trapezblech combinations)
     const exactMapping = INTERIOR_EXACT_MAPPINGS[combinationKey];
@@ -239,14 +238,14 @@ export class ImageManager {
         'schiefer_massiv': 'schiefer' // For holzlattung: use schiefer paths
       };
 
-      const gebaeude = gebaeudePrefixMapping[gebaeudehuelle.value as keyof typeof gebaeudePrefixMapping];
-      const innen = innenverkleidungMapping[innenverkleidung.value as keyof typeof innenverkleidungMapping];
+      const gebaeude = gebaeudePrefixMapping[gebaeudehuelle as keyof typeof gebaeudePrefixMapping];
+      const innen = innenverkleidungMapping[innenverkleidung as keyof typeof innenverkleidungMapping];
 
       // Choose the appropriate fussboden mapping based on gebäudehülle
-      const fussbodenMap = gebaeudehuelle.value === 'holzlattung'
+      const fussbodenMap = gebaeudehuelle === 'holzlattung'
         ? fussbodenHolzlattungMapping
         : fussbodenMapping;
-      const fussBoden = fussbodenMap[fussboden.value as keyof typeof fussbodenMap];
+      const fussBoden = fussbodenMap[fussboden as keyof typeof fussbodenMap];
 
       if (gebaeude && innen && fussBoden) {
         // Build the image key: gebaeude_innen_fussboden

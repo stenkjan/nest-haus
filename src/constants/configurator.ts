@@ -242,7 +242,7 @@ export function calculateModularPrice(
 
   // Get combination pricing data
   const combinationData = MODULAR_PRICING.combinations[combinationKey as keyof typeof MODULAR_PRICING.combinations];
-  
+
   if (!combinationData) {
     console.warn(`💰 No pricing data found for combination: ${combinationKey}`);
     // Fallback to base combination
