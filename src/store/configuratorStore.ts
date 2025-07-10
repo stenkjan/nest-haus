@@ -404,6 +404,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           shouldSwitchToView: null,
           lastSelectionCategory: null
         })
+
+        // IMPORTANT: Set default selections (nest80 + holzlattung) after reset
+        // Use setTimeout to ensure state is properly reset first
+        setTimeout(() => {
+          get().setDefaultSelections()
+        }, 50)
       },
 
       // Set default preselections on startup (nest80 + holzlattung/lärche)
