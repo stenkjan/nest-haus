@@ -278,7 +278,7 @@ class ImageCache {
 export default function ClientBlobImage({
   path,
   mobilePath,
-  fallbackSrc = "/api/placeholder/1200/800?style=nest&text=Loading...",
+  fallbackSrc,
   enableCache = true,
   enableMobileDetection = false, // Only enable for landing page
   showLoadingSpinner = false,
@@ -299,7 +299,19 @@ export default function ClientBlobImage({
   onError,
   ...props
 }: ClientBlobImageProps) {
-  const [imageSrc, setImageSrc] = useState<string>(fallbackSrc);
+  // Generate appropriate fallback based on image dimensions
+  const defaultFallback = React.useMemo(() => {
+    if (fill) {
+      return "/api/placeholder/1200/800?style=nest&text=Loading...";
+    } else if (width && height) {
+      return `/api/placeholder/${width}/${height}?style=nest&text=Loading...`;
+    } else {
+      return "/api/placeholder/1200/800?style=nest&text=Loading...";
+    }
+  }, [fill, width, height]);
+
+  const effectiveFallbackSrc = fallbackSrc || defaultFallback;
+  const [imageSrc, setImageSrc] = useState<string>(effectiveFallbackSrc);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -440,7 +452,7 @@ export default function ClientBlobImage({
           const errorMessage =
             err instanceof Error ? err.message : "Failed to load image";
           setError(errorMessage);
-          setImageSrc(fallbackSrc);
+          setImageSrc(effectiveFallbackSrc);
           setIsLoading(false);
 
           if (process.env.NODE_ENV === "development") {
@@ -461,7 +473,7 @@ export default function ClientBlobImage({
   }, [
     effectivePath,
     enableCache,
-    fallbackSrc,
+    effectiveFallbackSrc,
     shouldFetchImage,
     enableMobileDetection,
     isMobile,
@@ -545,7 +557,7 @@ export default function ClientBlobImage({
             } catch {
               if (mountedRef.current) {
                 setError("Both mobile and desktop images failed");
-                setImageSrc(fallbackSrc);
+                setImageSrc(effectiveFallbackSrc);
               }
             }
           };
@@ -567,7 +579,7 @@ export default function ClientBlobImage({
       sanitizePath,
       path,
       enableCache,
-      fallbackSrc,
+      effectiveFallbackSrc,
     ]
   );
 

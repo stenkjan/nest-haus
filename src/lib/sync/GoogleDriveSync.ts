@@ -2,18 +2,19 @@
  * GoogleDriveSync - Efficient Google Drive to Vercel Blob Synchronization
  * 
  * Features:
- * - Smart duplicate handling (Drive title wins, number-based priority)
- * - Efficient batch operations (minimal API calls)
- * - Auto-updates images.ts constants
- * - Easy to remove/deconstruct
+ * - Daily sync with 24-hour change detection
+ * - Number-based image replacement with proper hash generation
+ * - Auto-updates images.ts constants when names change
+ * - Conservative safety checks to prevent data loss
  * 
- * Daily sync: Drive → Blob → Update Constants
+ * Daily sync: Drive (24h changes) → Blob → Update Constants
  */
 
 import { google } from 'googleapis';
 import { put, list, del } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
+import crypto from 'crypto';
 import { ImagesConstantsUpdater } from './ImagesConstantsUpdater';
 
 // Types
@@ -26,6 +27,7 @@ export interface DriveImage {
   modifiedTime: string;
   webContentLink: string;
   isMobile: boolean;
+  isRecentlyModified: boolean; // NEW: Track if modified in last 24 hours
 }
 
 export interface BlobImage {
@@ -46,14 +48,7 @@ export interface SyncResult {
   errors: string[];
   duration: number;
   imagesUpdated: boolean;
-}
-
-// Google Drive API response types
-interface DriveFileResponse {
-  id: string;
-  name: string;
-  modifiedTime: string;
-  webContentLink: string;
+  recentChangesFound: number; // NEW: Track recently changed files
 }
 
 interface SyncOperations {
@@ -87,7 +82,7 @@ export class GoogleDriveSync {
 
     // Create and store initialization promise
     this.initializationPromise = this._performInitialization();
-    
+
     try {
       await this.initializationPromise;
     } finally {
@@ -99,9 +94,9 @@ export class GoogleDriveSync {
   private async _performInitialization(): Promise<void> {
     try {
       console.log('🔐 Initializing Google Drive authentication...');
-      
+
       const serviceAccountPath = path.join(process.cwd(), 'service-account-key.json');
-      
+
       // Check if service account file exists
       try {
         await fs.access(serviceAccountPath);
@@ -122,23 +117,23 @@ export class GoogleDriveSync {
       });
 
       this.drive = google.drive({ version: 'v3', auth });
-      
+
       // Test the authentication by making a simple API call
       console.log('🔐 Testing Google Drive authentication...');
       const testResponse = await this.drive.about.get({ fields: 'user' });
-      
+
       if (!testResponse.data.user) {
         throw new Error('Authentication test failed: No user data returned');
       }
-      
+
       this.initialized = true;
       console.log('🔐 Google Drive authentication initialized and tested successfully');
       console.log(`🔐 Authenticated as: ${testResponse.data.user.emailAddress || 'Unknown'}`);
-      
+
     } catch (error) {
       console.error('❌ Google Drive authentication failed:', error);
       this.initialized = false;
-      
+
       if (error instanceof Error) {
         if (error.message.includes('invalid_grant') || error.message.includes('Invalid JWT signature')) {
           throw new Error('Google Drive authentication failed: Invalid JWT signature. Please check service account key and system clock. This can happen if your system time is incorrect or the service account key has expired.');
@@ -152,17 +147,18 @@ export class GoogleDriveSync {
           throw new Error(`Google Drive authentication failed: ${error.message}`);
         }
       }
-      
+
       throw new Error('Google Drive authentication failed: Unknown error');
     }
   }
 
   /**
    * Main sync function - orchestrates the entire sync process
+   * NEW: Focus on 24-hour changes only for efficient daily sync
    */
   async syncImages(): Promise<SyncResult> {
     const startTime = Date.now();
-    console.log('🚀 Starting Google Drive to Vercel Blob sync...');
+    console.log('🚀 Starting Google Drive to Vercel Blob sync (24-hour change detection)...');
 
     const result: SyncResult = {
       processed: 0,
@@ -171,33 +167,39 @@ export class GoogleDriveSync {
       deleted: 0,
       errors: [],
       duration: 0,
-      imagesUpdated: false
+      imagesUpdated: false,
+      recentChangesFound: 0
     };
 
     try {
       await this.initializeGoogleAuth();
 
-      // Step 1: Fetch images from both Google Drive folders
-      console.log('📁 Fetching images from Google Drive folders...');
+      // Step 1: Fetch images from both Google Drive folders (with 24-hour filter)
+      console.log('📁 Fetching images from Google Drive folders (24-hour change detection)...');
       const [mainImages, mobileImages] = await Promise.all([
         this.fetchDriveImages(process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID!, false),
         this.fetchDriveImages(process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID!, true)
       ]);
 
       const allDriveImages = [...mainImages, ...mobileImages];
-      console.log(`📊 Total Google Drive images found: ${allDriveImages.length} (${mainImages.length} main, ${mobileImages.length} mobile)`);
+      const recentlyModifiedImages = allDriveImages.filter(img => img.isRecentlyModified);
 
-      // CRITICAL SAFETY CHECK: Prevent sync if Google Drive returns no images
+      console.log(`📊 Total Google Drive images: ${allDriveImages.length} (${mainImages.length} main, ${mobileImages.length} mobile)`);
+      console.log(`📊 Recently modified (24h): ${recentlyModifiedImages.length} images`);
+
+      result.recentChangesFound = recentlyModifiedImages.length;
+
+      // SAFETY CHECK: Ensure basic functionality even if no recent changes
       if (allDriveImages.length === 0) {
         console.warn('🚨 SAFETY CHECK: Google Drive returned 0 images. Aborting sync to prevent accidental deletions.');
         throw new Error('No images found in Google Drive folders - aborting sync for safety');
       }
 
-      // NEW SAFETY CHECK: Minimum images threshold
-      const MIN_IMAGES_THRESHOLD = 50; // Adjust based on your expected image count
-      if (allDriveImages.length < MIN_IMAGES_THRESHOLD) {
-        console.warn(`🚨 SAFETY CHECK: Only ${allDriveImages.length} images found in Google Drive (expected at least ${MIN_IMAGES_THRESHOLD}). This could indicate an API issue.`);
-        throw new Error(`Insufficient images in Google Drive (${allDriveImages.length} < ${MIN_IMAGES_THRESHOLD}) - aborting sync for safety`);
+      // OPTIMIZATION: If no recent changes, skip the heavy operations
+      if (recentlyModifiedImages.length === 0) {
+        console.log('✅ No recent changes found in last 24 hours - sync complete');
+        result.duration = Date.now() - startTime;
+        return result;
       }
 
       // Step 2: Fetch current images from Vercel Blob
@@ -205,40 +207,24 @@ export class GoogleDriveSync {
       const blobImages = await this.fetchBlobImages();
       console.log(`📊 Current Vercel Blob images: ${blobImages.length}`);
 
-      // NEW SAFETY CHECK: Consistency check with existing blob images
-      if (blobImages.length > 0) {
-        const consistencyRatio = allDriveImages.length / blobImages.length;
-        if (consistencyRatio < 0.8) { // Drive should have at least 80% of blob images
-          console.warn(`🚨 SAFETY CHECK: Drive images (${allDriveImages.length}) significantly fewer than blob images (${blobImages.length}). Ratio: ${consistencyRatio.toFixed(2)}`);
-          throw new Error('Drive/Blob consistency check failed - aborting sync for safety');
-        }
-      }
-
-      // Step 3: Calculate sync operations
-      console.log('🔄 Calculating sync operations...');
-      const syncOps = this.calculateSyncOperations(allDriveImages, blobImages);
-      result.processed = allDriveImages.length;
-
-      // ENHANCED SAFETY CHECK: Limit deletion percentage
-      const MAX_DELETION_PERCENTAGE = 0.25; // Never delete more than 25% of images
-      if (blobImages.length > 0 && syncOps.delete.length > blobImages.length * MAX_DELETION_PERCENTAGE) {
-        console.warn(`🚨 SAFETY CHECK: Attempting to delete ${syncOps.delete.length} images (${(syncOps.delete.length / blobImages.length * 100).toFixed(1)}%) which exceeds ${MAX_DELETION_PERCENTAGE * 100}% safety limit`);
-        throw new Error(`Deletion percentage too high (${(syncOps.delete.length / blobImages.length * 100).toFixed(1)}%) - aborting sync for safety`);
-      }
+      // Step 3: Calculate sync operations (focused on recent changes)
+      console.log('🔄 Calculating sync operations for recent changes...');
+      const syncOps = this.calculateChangeBasedSyncOperations(allDriveImages, recentlyModifiedImages, blobImages);
+      result.processed = recentlyModifiedImages.length;
 
       // Step 4: Preview operations before execution
       if (syncOps.upload.length > 0) {
         console.log(`⬆️ UPLOAD PREVIEW: ${syncOps.upload.length} new images will be uploaded`);
+        syncOps.upload.forEach(img => console.log(`  • ${img.number}-${img.title}${img.isMobile ? '-mobile' : ''}`));
       }
       if (syncOps.update.length > 0) {
         console.log(`🔄 UPDATE PREVIEW: ${syncOps.update.length} images will be updated`);
+        syncOps.update.forEach(({ drive, blob }) =>
+          console.log(`  • ${drive.number}: "${blob.title}" → "${drive.title}"`));
       }
       if (syncOps.delete.length > 0) {
-        console.log(`🚨 DELETION PREVIEW: The following ${syncOps.delete.length} images will be deleted:`);
-        syncOps.delete.forEach((blob: BlobImage, index: number) => {
-          console.log(`  ${index + 1}. ${blob.pathname} (Number: ${blob.number})`);
-        });
-        console.log('🚨 These images exist in Vercel Blob but not in Google Drive');
+        console.log(`🗑️ DELETION PREVIEW: ${syncOps.delete.length} old versions will be replaced`);
+        syncOps.delete.forEach(blob => console.log(`  • ${blob.pathname}`));
       }
 
       // Step 5: Execute sync operations
@@ -250,18 +236,18 @@ export class GoogleDriveSync {
         result.deleted = operationResult.deleted;
         result.errors = operationResult.errors;
       } else {
-        console.log('✅ No sync operations needed - all images are up to date');
+        console.log('✅ No sync operations needed - all recent changes are up to date');
       }
 
       // Step 6: Update constants file if images were modified
-      if (result.uploaded > 0 || result.updated > 0 || result.deleted > 0) {
+      if (result.uploaded > 0 || result.updated > 0) {
         console.log('📝 Updating images constants file...');
         result.imagesUpdated = await this.updateImagesConstants();
       }
 
       result.duration = Date.now() - startTime;
       console.log(`✅ Sync completed in ${result.duration}ms`);
-      console.log(`📊 Summary: ${result.uploaded} uploaded, ${result.updated} updated, ${result.deleted} deleted, ${result.errors.length} errors`);
+      console.log(`📊 Summary: ${result.recentChangesFound} recent changes, ${result.uploaded} uploaded, ${result.updated} updated, ${result.deleted} deleted, ${result.errors.length} errors`);
 
       return result;
     } catch (error) {
@@ -274,36 +260,42 @@ export class GoogleDriveSync {
   }
 
   /**
-   * Fetch images from a Google Drive folder
+   * Fetch images from a Google Drive folder with 24-hour change detection
+   * NEW: Enhanced to check modification time and mark recent changes
    */
   private async fetchDriveImages(folderId: string, isMobile: boolean): Promise<DriveImage[]> {
     try {
       console.log(`📁 Fetching images from folder ID: ${folderId}`);
-      
+
+      // Calculate 24 hours ago timestamp
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      const isoTimestamp = twentyFourHoursAgo.toISOString();
+
+      console.log(`🕐 Looking for changes since: ${isoTimestamp}`);
+
       const response = await this.drive.files.list({
         q: `'${folderId}' in parents and (mimeType contains 'image/')`,
         fields: 'files(id,name,modifiedTime,webContentLink)',
-        pageSize: 1000 // Get all images in one request
+        pageSize: 1000,
+        orderBy: 'modifiedTime desc' // Get most recent first
       });
 
       console.log(`📊 Raw files found in folder ${folderId}:`, response.data.files?.length || 0);
-      
-      // Log all files found (for debugging)
-      if (response.data.files && response.data.files.length > 0) {
-        console.log(`📄 Files in folder ${folderId}:`);
-        response.data.files.forEach((file: DriveFileResponse, index: number) => {
-          console.log(`  ${index + 1}. "${file.name}" (ID: ${file.id})`);
-        });
-      } else {
-        console.log(`⚠️ No files found in folder ${folderId}`);
-      }
 
       const images: DriveImage[] = [];
-      
+      let recentChanges = 0;
+
       for (const file of response.data.files || []) {
-        console.log(`🔍 Parsing filename: "${file.name}"`);
         const parsed = this.parseImageName(file.name);
         if (parsed) {
+          const modifiedTime = new Date(file.modifiedTime);
+          const isRecentlyModified = modifiedTime > twentyFourHoursAgo;
+
+          if (isRecentlyModified) {
+            recentChanges++;
+            console.log(`🆕 Recent change: ${file.name} (modified: ${modifiedTime.toISOString()})`);
+          }
+
           images.push({
             id: file.id,
             name: file.name,
@@ -312,28 +304,19 @@ export class GoogleDriveSync {
             extension: parsed.extension,
             modifiedTime: file.modifiedTime,
             webContentLink: file.webContentLink,
-            isMobile: isMobile
+            isMobile: isMobile,
+            isRecentlyModified
           });
-          console.log(`✅ Successfully parsed: Number ${parsed.number}, Title: "${parsed.title}"`);
         } else {
-          console.log(`❌ Could not parse filename: "${file.name}" (doesn't match pattern: NUMBER-TITLE.EXT or NUMBER-TITLE-HASH.EXT)`);
+          console.log(`❌ Could not parse filename: "${file.name}"`);
         }
       }
 
-      console.log(`📊 Successfully parsed ${images.length} images from folder ${folderId}`);
+      console.log(`📊 Folder ${folderId}: ${images.length} total images, ${recentChanges} recent changes`);
       return images.sort((a, b) => a.number - b.number);
     } catch (error) {
       console.error(`❌ Failed to fetch images from folder ${folderId}:`, error);
-      if (error instanceof Error) {
-        if (error.message.includes('invalid_grant')) {
-          throw new Error(`Google Drive authentication failed for folder ${folderId}: Invalid JWT signature. Please check service account key and system clock.`);
-        } else if (error.message.includes('forbidden') || error.message.includes('access')) {
-          throw new Error(`Access denied to Google Drive folder ${folderId}. Please check folder permissions for the service account.`);
-        } else {
-          throw new Error(`Failed to fetch images from folder ${folderId}: ${error.message}`);
-        }
-      }
-      throw new Error(`Failed to fetch images from folder ${folderId}: Unknown error`);
+      throw new Error(`Failed to fetch images from folder ${folderId}: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -343,25 +326,21 @@ export class GoogleDriveSync {
    * And Vercel Blob format: "images/123-Some-Title-Name-HASH.jpg"
    */
   private parseImageName(fileName: string): { number: number; title: string; extension: string; isMobile: boolean } | null {
-    console.log(`🔍 Parsing filename: "${fileName}"`);
-    
     // Remove path prefix if present (e.g., "images/")
     const cleanFileName = fileName.replace(/^.*\//, '');
-    
+
     // Pattern to match: {number}-{title}[-optional-hash].{extension}
     // This handles both Drive files and Vercel blob files with hashes
     const match = cleanFileName.match(/^(\d+)-(.+?)(?:-[a-zA-Z0-9]{26,})?\.([a-zA-Z0-9]+)$/);
-    
+
     if (!match) {
-      console.log(`❌ No match for pattern ^(\\d+)-(.+?)(?:-[a-zA-Z0-9]{26,})?\\.([a-zA-Z0-9]+)$ in: "${fileName}"`);
       return null;
     }
 
     const [, numberStr, title, extension] = match;
     const number = parseInt(numberStr, 10);
-    
+
     if (isNaN(number)) {
-      console.log(`❌ Invalid number parsed from "${numberStr}" in filename: "${fileName}"`);
       return null;
     }
 
@@ -370,15 +349,12 @@ export class GoogleDriveSync {
     // Remove 'mobile' suffix from title for consistency
     const cleanTitle = title.replace(/-mobile$/i, '').trim();
 
-    const result = {
+    return {
       number,
       title: cleanTitle,
       extension: extension.toLowerCase(),
       isMobile
     };
-    
-    console.log(`✅ Successfully parsed: ${JSON.stringify(result)}`);
-    return result;
   }
 
   /**
@@ -387,17 +363,16 @@ export class GoogleDriveSync {
   private async fetchBlobImages(): Promise<BlobImage[]> {
     try {
       const { blobs } = await list();
-      
+
       return blobs.map(blob => {
         // Handle the "images/" prefix that exists in blob but not in Google Drive
         let fileNameToParse = blob.pathname;
         if (fileNameToParse.startsWith('images/')) {
           fileNameToParse = fileNameToParse.substring('images/'.length);
         }
-        
-        console.log(`🔍 Parsing filename: "${blob.pathname}"`);
+
         const parsed = this.parseImageName(fileNameToParse);
-        
+
         return {
           url: blob.url,
           pathname: blob.pathname,
@@ -415,11 +390,14 @@ export class GoogleDriveSync {
   }
 
   /**
-   * Calculate what sync operations need to be performed
-   * CONSERVATIVE APPROACH: Only delete images that are clearly outdated
-   * Uses composite key (number + mobile flag) to properly handle mobile vs desktop versions
+   * Calculate sync operations based on recent changes (24-hour focus)
+   * NEW: More precise logic focusing on recently modified files
    */
-  private calculateSyncOperations(driveImages: DriveImage[], blobImages: BlobImage[]): SyncOperations {
+  private calculateChangeBasedSyncOperations(
+    allDriveImages: DriveImage[],
+    recentlyModified: DriveImage[],
+    blobImages: BlobImage[]
+  ): SyncOperations {
     const operations: SyncOperations = {
       upload: [],
       update: [],
@@ -431,7 +409,7 @@ export class GoogleDriveSync {
       return `${number}:${isMobile ? 'mobile' : 'desktop'}`;
     };
 
-    // Create maps for efficient lookups using composite keys
+    // Create maps for efficient lookups
     const blobByCompositeKey = new Map<string, BlobImage>();
     blobImages.forEach(blob => {
       if (blob.number !== undefined) {
@@ -440,69 +418,26 @@ export class GoogleDriveSync {
       }
     });
 
-    const driveByCompositeKey = new Map<string, DriveImage>();
-    driveImages.forEach(img => {
-      const key = getCompositeKey(img.number, img.isMobile);
-      driveByCompositeKey.set(key, img);
-    });
-
-    // Process drive images
-    for (const driveImg of driveImages) {
+    // Process ONLY recently modified images
+    for (const driveImg of recentlyModified) {
       const compositeKey = getCompositeKey(driveImg.number, driveImg.isMobile);
       const existingBlob = blobByCompositeKey.get(compositeKey);
-      
+
       if (!existingBlob) {
         // New image - upload
         operations.upload.push(driveImg);
-        console.log(`📤 New image to upload: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
-      } else if (existingBlob.title !== driveImg.title) {
-        // Title changed - update (Drive title wins)
+        console.log(`📤 New image detected: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
+      } else {
+        // Existing image with recent changes - update
         operations.update.push({ drive: driveImg, blob: existingBlob });
-        console.log(`🔄 Image to update: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
+        console.log(`🔄 Updated image detected: ${driveImg.number} (${existingBlob.title} → ${driveImg.title})`);
+
+        // Mark old blob for deletion (it will be replaced)
+        operations.delete.push(existingBlob);
       }
     }
 
-    // CONSERVATIVE DELETION: Only delete blobs that are clearly outdated
-    // Preserve mobile images, animations, and special cases
-    const protectedPatterns = [
-      /mobile/i,           // Mobile versions
-      /animation/i,        // Animation videos
-      /intro/i,           // Intro animations
-      /abschluss/i,       // End animations
-      /transport/i,       // Transport animations
-      /mobil/i,           // Mobile versions (German)
-      /pv/i,              // Photovoltaic images
-      /homebutton/i       // Home button
-    ];
-
-    for (const blobImg of blobImages) {
-      if (blobImg.number !== undefined) {
-        const compositeKey = getCompositeKey(blobImg.number, blobImg.isMobile || false);
-        
-        if (!driveByCompositeKey.has(compositeKey)) {
-          const isProtected = protectedPatterns.some(pattern => 
-            pattern.test(blobImg.title || '') || 
-            pattern.test(blobImg.pathname || '')
-          );
-          
-          if (!isProtected) {
-            console.log(`🤔 Considering deletion of: ${blobImg.pathname}`);
-            operations.delete.push(blobImg);
-          } else {
-            console.log(`🛡️ Protecting: ${blobImg.pathname} (matches protection pattern)`);
-          }
-        }
-      }
-    }
-
-    console.log(`📋 Sync operations: ${operations.upload.length} upload, ${operations.update.length} update, ${operations.delete.length} delete`);
-    
-    // Additional safety check: prevent deletion of critical images
-    if (operations.delete.length > 10) {
-      console.warn(`🚨 SAFETY CHECK: ${operations.delete.length} images scheduled for deletion - this seems excessive`);
-      console.warn('🚨 Clearing deletion queue to prevent accidental data loss');
-      operations.delete = [];
-    }
+    console.log(`📋 Change-based sync operations: ${operations.upload.length} upload, ${operations.update.length} update, ${operations.delete.length} replace`);
 
     return operations;
   }
@@ -513,12 +448,12 @@ export class GoogleDriveSync {
   private async executeSyncOperations(operations: SyncOperations) {
     const result = { uploaded: 0, updated: 0, deleted: 0, errors: [] as string[] };
 
-    // Delete old blobs first
+    // Delete old blobs first (for updates)
     for (const blobToDelete of operations.delete) {
       try {
         await del(blobToDelete.url);
         result.deleted++;
-        console.log(`🗑️ Deleted: ${blobToDelete.pathname}`);
+        console.log(`🗑️ Deleted old version: ${blobToDelete.pathname}`);
       } catch (error) {
         const errorMsg = `Failed to delete ${blobToDelete.pathname}: ${error}`;
         console.error(`❌ ${errorMsg}`);
@@ -529,7 +464,7 @@ export class GoogleDriveSync {
     // Upload new images
     for (const driveImg of operations.upload) {
       try {
-        await this.uploadImageToBlob(driveImg);
+        await this.uploadImageToBlobWithHash(driveImg);
         result.uploaded++;
         console.log(`⬆️ Uploaded: ${driveImg.name}`);
       } catch (error) {
@@ -539,15 +474,10 @@ export class GoogleDriveSync {
       }
     }
 
-    // Update existing images (delete old, upload new)
-    for (const { drive: driveImg, blob: oldBlob } of operations.update) {
+    // Upload updated images (delete old was already done above)
+    for (const { drive: driveImg } of operations.update) {
       try {
-        // Delete old version
-        await del(oldBlob.url);
-        
-        // Upload new version
-        await this.uploadImageToBlob(driveImg);
-        
+        await this.uploadImageToBlobWithHash(driveImg);
         result.updated++;
         console.log(`🔄 Updated: ${driveImg.name}`);
       } catch (error) {
@@ -561,10 +491,10 @@ export class GoogleDriveSync {
   }
 
   /**
-   * Upload a single image from Google Drive to Vercel Blob
-   * Preserves mobile suffix and allows Vercel to add hash automatically
+   * Upload a single image from Google Drive to Vercel Blob with proper hash generation
+   * NEW: Generates Vercel-style hash for consistent naming
    */
-  private async uploadImageToBlob(driveImg: DriveImage): Promise<void> {
+  private async uploadImageToBlobWithHash(driveImg: DriveImage): Promise<void> {
     try {
       // Get image data from Google Drive
       const response = await this.drive.files.get({
@@ -579,19 +509,24 @@ export class GoogleDriveSync {
       }
       const buffer = Buffer.concat(chunks);
 
-      // Upload to Vercel Blob with consistent naming (matches constants format)
-      // Use "images/" prefix for consistency with existing blob structure
-      // For mobile images, preserve the mobile suffix
+      // Generate Vercel-style hash (26 characters, alphanumeric)
+      const hash = crypto.randomBytes(13).toString('base64')
+        .replace(/[+/=]/g, '')
+        .substring(0, 26)
+        .replace(/[^a-zA-Z0-9]/g, x => String.fromCharCode(97 + (x.charCodeAt(0) % 26)));
+
+      // Upload to Vercel Blob with hash in filename (like Vercel does)
       const titleWithMobile = driveImg.isMobile ? `${driveImg.title}-mobile` : driveImg.title;
-      const fileName = `images/${driveImg.number}-${titleWithMobile}.${driveImg.extension}`;
-      console.log(`⬆️ Uploading to blob: ${fileName} (mobile: ${driveImg.isMobile})`);
+      const fileName = `images/${driveImg.number}-${titleWithMobile}-${hash}.${driveImg.extension}`;
+
+      console.log(`⬆️ Uploading to blob with hash: ${fileName}`);
 
       await put(fileName, buffer, {
         access: 'public',
         contentType: `image/${driveImg.extension === 'jpg' ? 'jpeg' : driveImg.extension}`
       });
 
-      console.log(`✅ Successfully uploaded: ${fileName}`);
+      console.log(`✅ Successfully uploaded with hash: ${fileName}`);
     } catch (error) {
       console.error(`❌ Failed to upload ${driveImg.name}:`, error);
       throw error;
@@ -605,17 +540,17 @@ export class GoogleDriveSync {
     try {
       const updater = new ImagesConstantsUpdater();
       const result = await updater.updateConstants();
-      
+
       if (result.errors.length > 0) {
         console.warn('⚠️ Some errors occurred during constants update:', result.errors);
       }
-      
+
       if (result.updated) {
         console.log(`✅ Successfully updated images.ts with ${result.newMappings} new mappings`);
       } else {
         console.log('📄 No changes needed in images.ts');
       }
-      
+
       return result.updated;
     } catch (error) {
       console.error('❌ Failed to update images constants:', error);

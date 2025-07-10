@@ -196,7 +196,7 @@ const PlanungspaketeDialog: React.FC<PlanungspaketeDialogProps> = ({
                   <div className="flex justify-center mt-4">
                     <Button
                       onClick={handleConfirmSelection}
-                      className="w-2/3 bg-blue-600 text-white hover:bg-blue-700 rounded-full py-2 text-sm"
+                      className="bg-blue-600 text-white hover:bg-blue-700 rounded-full py-2 text-sm px-6 whitespace-nowrap min-w-[140px] flex-shrink-0 !w-auto"
                     >
                       {selectedPackage
                         ? "Paket auswählen"
