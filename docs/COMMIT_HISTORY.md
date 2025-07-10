@@ -4,6 +4,23 @@
 
 ---
 
+## [47065e161d9d3274361a509027f2c8c47e9969fb] - Thu Jul 10 14:35:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `docs: update CONFIGURATOR_IMAGE_LOGIC_ANALYSIS.md and ImageManager.ts for improved image logic and coverage  - Enhanced the documentation to reflect the new image logic and mappings for the configurator. - Fixed the getInteriorImage method in ImageManager to respect the selected gebäudehülle instead of defaulting to trapezblech. - Updated image mapping tables to ensure all combinations are accounted for, including newly added holzlattung interior images. - Resolved issues with selection ID mappings and ensured compatibility with both old and new systems.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/ImageManager.ts
+
+
+#### 📚 Documentation Changes
+- docs/CONFIGURATOR_IMAGE_LOGIC_ANALYSIS.md
+
+
+---
+
 ## [c33e13301eb939e7f7d8370fee2bd399a5ea826c] - Thu Jul 10 14:02:48 2025 +0200
 
 **Author**: stenkjan
