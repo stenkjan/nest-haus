@@ -33,6 +33,9 @@ export interface PriceBreakdown {
   totalPrice: number
 }
 
+// Configuration mode types
+
+
 interface ConfiguratorState {
   // Session & Configuration (CLIENT-SIDE ONLY)
   sessionId: string | null
@@ -93,6 +96,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         totalPrice: 0,
         timestamp: 0
       },
+
       currentPrice: 0,
       priceBreakdown: null,
       hasPart2BeenActive: false,
@@ -377,6 +381,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Reset configuration - Complete defaults matching old configurator
       resetConfiguration: () => {
+
         // Only generate sessionId if not in test environment
         const sessionId = process.env.NODE_ENV === 'test' ? null : `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
 
@@ -397,6 +402,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         set({
           sessionId,
           configuration: defaultConfiguration,
+
           currentPrice: 0,
           priceBreakdown: null,
           hasPart2BeenActive: false,
@@ -416,10 +422,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       setDefaultSelections: () => {
         const state = get()
 
+
+
         // Generate sessionId if not set
         const sessionId = state.sessionId || `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
 
-        // Set defaults using updateSelection to ensure proper processing
+        // Set defaults for full configuration mode only
         if (!state.configuration.nest) {
           set(state => ({
             ...state,
@@ -467,6 +475,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         }, 50)
       },
 
+
+
       // Finalize session (CLIENT-SIDE ONLY)
       finalizeSession: () => {
         const state = get()
@@ -505,15 +515,29 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         return state.configuration
       },
 
-      // Check if required configuration is complete
+            // Check if required configuration is complete
       isConfigurationComplete: () => {
         const state = get()
-        return (
+        
+        // Configuration is complete if EITHER:
+        // 1. Full configuration: nest + gebäudehülle + innenverkleidung + fussboden
+        // 2. Grundstückscheck-only: just grundstueckscheck selected
+        const hasFullConfiguration = (
           !!state.configuration.nest &&
           !!state.configuration.gebaeudehuelle &&
           !!state.configuration.innenverkleidung &&
           !!state.configuration.fussboden
         )
+        
+        const hasGrundstueckscheckOnly = (
+          !!state.configuration.grundstueckscheck &&
+          !state.configuration.nest &&
+          !state.configuration.gebaeudehuelle &&
+          !state.configuration.innenverkleidung &&
+          !state.configuration.fussboden
+        )
+        
+        return hasFullConfiguration || hasGrundstueckscheckOnly
       }
     }),
     {
@@ -533,10 +557,20 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Add onRehydrateStorage to ensure defaults are applied after rehydration
       onRehydrateStorage: () => (state) => {
         if (state && process.env.NODE_ENV !== 'test') {
-          // ALWAYS set defaults after rehydration to ensure consistent state
+          // Set defaults after rehydration ONLY if NO selections exist at all
           setTimeout(() => {
-            // Set defaults if no selections exist
-            if (!state.configuration.nest && !state.configuration.gebaeudehuelle) {
+            const hasAnySelection = !!(
+              state.configuration.nest ||
+              state.configuration.gebaeudehuelle ||
+              state.configuration.innenverkleidung ||
+              state.configuration.fussboden ||
+              state.configuration.pvanlage ||
+              state.configuration.fenster ||
+              state.configuration.planungspaket ||
+              state.configuration.grundstueckscheck
+            );
+            
+            if (!hasAnySelection) {
               state.setDefaultSelections()
             }
             // Always recalculate price after rehydration to ensure consistency

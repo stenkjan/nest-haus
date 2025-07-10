@@ -216,13 +216,44 @@ export default function ConfiguratorShell({
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
 
-      // For planungspaket, allow unselection by clicking the same option
-      if (
-        categoryId === "planungspaket" &&
-        configuration?.planungspaket?.value === optionId
-      ) {
-        removeSelection("planungspaket");
-        return;
+      // Allow unselection by clicking the same option for these categories
+      const toggleableCategories = [
+        "planungspaket",
+        "nest",
+        "gebaeudehuelle",
+        "innenverkleidung",
+        "fussboden",
+      ];
+
+      if (toggleableCategories.includes(categoryId)) {
+        const currentSelection =
+          configuration?.[categoryId as keyof typeof configuration];
+        if (
+          currentSelection &&
+          typeof currentSelection === "object" &&
+          "value" in currentSelection &&
+          currentSelection.value === optionId
+        ) {
+          removeSelection(categoryId);
+
+          // Cascading unselection: If nest module is being unselected,
+          // also unselect dependent options that rely on nest module
+          if (categoryId === "nest") {
+            // Remove dependent selections since they depend on nest module for context/pricing
+            const dependentCategories = [
+              "gebaeudehuelle",
+              "innenverkleidung",
+              "fussboden",
+            ];
+            dependentCategories.forEach((depCategory) => {
+              if (configuration?.[depCategory as keyof typeof configuration]) {
+                removeSelection(depCategory);
+              }
+            });
+          }
+
+          return;
+        }
       }
 
       if (option && category) {
@@ -235,7 +266,7 @@ export default function ConfiguratorShell({
         });
       }
     },
-    [updateSelection, removeSelection, configuration?.planungspaket?.value]
+    [updateSelection, removeSelection, configuration]
   );
 
   const handlePvSelection = useCallback(
@@ -320,31 +351,6 @@ export default function ConfiguratorShell({
       }
     },
     [configuration?.fenster, updateSelection, removeSelection]
-  );
-
-  // Define which categories can be unselected once selected
-  const canUnselect = useCallback((categoryId: string): boolean => {
-    // Only these categories can be unselected once selected
-    // Both grundstueckscheck and planungspaket can be unselected but without visual X button
-    const unselectableCategories = ["grundstueckscheck"];
-    return unselectableCategories.includes(categoryId);
-  }, []);
-
-  // Handle unselection for categories that support it
-  const handleUnselect = useCallback(
-    (categoryId: string, _optionId: string) => {
-      if (canUnselect(categoryId)) {
-        removeSelection(categoryId);
-
-        // Reset local state for special categories
-        if (categoryId === "pvanlage") {
-          setPvQuantity(0);
-        } else if (categoryId === "fenster") {
-          setFensterSquareMeters(0);
-        }
-      }
-    },
-    [canUnselect, removeSelection]
   );
 
   // Handle Grundstückscheck unselection (removed separate handler since visual button removed)
@@ -554,12 +560,6 @@ export default function ConfiguratorShell({
                   description={option.description}
                   price={displayPrice}
                   isSelected={isOptionSelected(category.id, option.id)}
-                  canUnselect={canUnselect(category.id)}
-                  onUnselect={
-                    canUnselect(category.id)
-                      ? (optionId) => handleUnselect(category.id, optionId)
-                      : undefined
-                  }
                   categoryId={category.id}
                   nestModel={configuration?.nest?.value}
                   onClick={(optionId) => {

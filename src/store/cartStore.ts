@@ -88,8 +88,15 @@ export const useCartStore = create<CartState>()(
           isFromConfigurator: true
         }
 
+        console.log("🛒 CartStore: Adding configuration to cart:", cartItem.nest?.name || "Grundstückscheck")
+
         set(state => {
-          const newItems = [...state.items.filter(item => !('sessionId' in item) || !item.isFromConfigurator), cartItem]
+          // Remove any existing configurator items to prevent duplicates
+          const nonConfiguratorItems = state.items.filter(item => !('isFromConfigurator' in item) || !item.isFromConfigurator)
+          const newItems = [...nonConfiguratorItems, cartItem]
+
+          console.log("🛒 CartStore: Items after add:", newItems.length)
+
           return {
             items: newItems
           }
@@ -185,9 +192,29 @@ export const useCartStore = create<CartState>()(
       clearCart: () => {
         console.log("🛒 CartStore: clearCart called")
         console.log("🛒 CartStore: items before clear:", get().items.length)
-        set({ items: [], orderDetails: null })
-        get()._updateComputedValues()
+
+        // Force complete state reset with explicit empty array
+        set(() => ({
+          items: [],
+          orderDetails: null,
+          isProcessingOrder: false,
+          total: 0,
+          itemCount: 0
+        }))
+
         console.log("🛒 CartStore: items after clear:", get().items.length)
+
+        // Force state persistence by triggering a new state update
+        setTimeout(() => {
+          const currentState = get()
+          set(() => ({
+            ...currentState,
+            items: [], // Ensure items are definitely empty
+            total: 0,
+            itemCount: 0
+          }))
+          console.log("🛒 CartStore: items after forced update:", get().items.length)
+        }, 50)
       },
 
       // Set order details

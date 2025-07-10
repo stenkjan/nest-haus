@@ -29,37 +29,84 @@ export default function WarenkorbPage() {
     notes: "",
   });
 
+  // Flag to prevent auto-add after manual cart clearing
+  const [hasManuallyCleared, setHasManuallyCleared] = useState(false);
+
   // Watch for cart changes for debugging
   useEffect(() => {
     console.log("🛒 Warenkorb: Cart items changed, count:", items.length);
   }, [items]);
+
+  // Reset manual clear flag when configuration changes (user makes new selections)
+  useEffect(() => {
+    if (hasManuallyCleared) {
+      console.log("🛒 Resetting manual clear flag due to configuration change");
+      setHasManuallyCleared(false);
+    }
+  }, [configuration, hasManuallyCleared]);
 
   // Auto-add current configuration to cart if complete
   useEffect(() => {
     const cartConfig = getConfigurationForCart();
     if (!cartConfig) return;
 
+    // Don't auto-add if user has manually cleared the cart
+    if (hasManuallyCleared) {
+      console.log("🛒 Skipping auto-add because cart was manually cleared");
+      return;
+    }
+
     // Check if this exact configuration is already in the cart
-    // Look for items from configurator with matching sessionId OR if no sessionId, check if any configurator item exists
+    // Compare by sessionId if available, otherwise compare configuration content
     const hasExistingConfig = items.some((item) => {
       if ("sessionId" in item && item.isFromConfigurator) {
         // If both have sessionId, compare them
         if (cartConfig.sessionId && item.sessionId) {
           return item.sessionId === cartConfig.sessionId;
         }
-        // If there's any configurator item without sessionId matching, consider it a duplicate
-        return true;
+
+        // If no sessionId available, compare configuration content to avoid duplicates
+        if ("nest" in item) {
+          // Compare key configuration values to detect duplicates
+          const sameNest = item.nest?.value === cartConfig.nest?.value;
+          const sameGebaeudehuelle =
+            item.gebaeudehuelle?.value === cartConfig.gebaeudehuelle?.value;
+          const sameInnenverkleidung =
+            item.innenverkleidung?.value === cartConfig.innenverkleidung?.value;
+          const sameFussboden =
+            item.fussboden?.value === cartConfig.fussboden?.value;
+          const sameGrundstueckscheck =
+            !!item.grundstueckscheck === !!cartConfig.grundstueckscheck;
+
+          // Consider it a duplicate if all main configuration values match
+          return (
+            sameNest &&
+            sameGebaeudehuelle &&
+            sameInnenverkleidung &&
+            sameFussboden &&
+            sameGrundstueckscheck
+          );
+        }
       }
       return false;
     });
 
     if (!hasExistingConfig) {
-      console.log("🛒 Adding configuration to cart:", cartConfig.nest?.name);
+      console.log(
+        "🛒 Adding configuration to cart:",
+        cartConfig.nest?.name || "Grundstückscheck"
+      );
       addConfigurationToCart(cartConfig);
     } else {
       console.log("🛒 Configuration already in cart, skipping duplicate");
     }
-  }, [configuration, getConfigurationForCart, addConfigurationToCart, items]);
+  }, [
+    configuration,
+    getConfigurationForCart,
+    addConfigurationToCart,
+    items,
+    hasManuallyCleared,
+  ]);
 
   // Calculate monthly payment
   const calculateMonthlyPayment = (price: number) => {
@@ -97,13 +144,23 @@ export default function WarenkorbPage() {
   const handleClearCart = () => {
     console.log("🛒 Clear cart button clicked");
     console.log("🛒 Items before clear:", items.length);
+    console.log("🛒 Items content before clear:", items);
+
+    // Set flag to prevent auto-add after clearing
+    setHasManuallyCleared(true);
+
     clearCart();
     console.log("🛒 Clear cart function called");
 
-    // Force re-render by checking items after a short delay
+    // Force re-render verification
     setTimeout(() => {
-      console.log("🛒 Items after clear:", items.length);
-    }, 100);
+      console.log("🛒 Items after clear (50ms):", items.length);
+    }, 50);
+
+    setTimeout(() => {
+      console.log("🛒 Items after clear (200ms):", items.length);
+      console.log("🛒 Items content after clear:", items);
+    }, 200);
   };
 
   // Render configuration item details with right panel styling
@@ -243,11 +300,25 @@ export default function WarenkorbPage() {
                     <div className="flex justify-between items-start mb-4 border-b border-gray-100 pb-3">
                       <div className="flex-1 min-w-0 max-w-[70%]">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {"nest" in item
-                            ? item.nest?.name || "Nest Konfiguration"
-                            : "name" in item
-                              ? item.name
-                              : "Artikel"}
+                          {(() => {
+                            if ("nest" in item) {
+                              // Configuration cart item
+                              if (item.nest?.name) {
+                                return item.nest.name;
+                              } else if (item.grundstueckscheck && !item.nest) {
+                                return "Grundstückscheck";
+                              } else {
+                                return "Nest Konfiguration";
+                              }
+                            } else {
+                              // Regular cart item
+                              if ("name" in item) {
+                                return item.name;
+                              } else {
+                                return "Artikel";
+                              }
+                            }
+                          })()}
                         </div>
                         <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
                           Hinzugefügt am{" "}
@@ -262,13 +333,27 @@ export default function WarenkorbPage() {
                             "totalPrice" in item ? item.totalPrice : item.price
                           )}
                         </div>
-                        <div className="text-[clamp(10px,2.5vw,12px)] text-gray-600 mt-1">
-                          oder{" "}
-                          {calculateMonthlyPayment(
-                            "totalPrice" in item ? item.totalPrice : item.price
-                          )}{" "}
-                          monatlich
-                        </div>
+                        {/* Show monthly payment only for house configurations (with nest module), not for grundstückscheck-only */}
+                        {(() => {
+                          const isConfigItem = "nest" in item;
+                          if (isConfigItem) {
+                            // Configuration items: show monthly only if has nest module
+                            return !!item.nest;
+                          } else {
+                            // Regular cart items: always show monthly
+                            return true;
+                          }
+                        })() && (
+                          <div className="text-[clamp(10px,2.5vw,12px)] text-gray-600 mt-1">
+                            oder{" "}
+                            {calculateMonthlyPayment(
+                              "totalPrice" in item
+                                ? item.totalPrice
+                                : item.price
+                            )}{" "}
+                            monatlich
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -346,9 +431,17 @@ export default function WarenkorbPage() {
                           {PriceUtils.formatPrice(getCartTotal())}
                         </span>
                       </h3>
-                      <p className="text-[clamp(12px,2.5vw,12px)] text-gray-600 mt-2 leading-[1.3]">
-                        oder {calculateMonthlyPayment(getCartTotal())} monatlich
-                      </p>
+                      {/* Show monthly payment only if cart contains house configurations (with nest module) */}
+                      {items.some((item) => {
+                        // Check if any item qualifies for monthly payment
+                        if (!("nest" in item)) return true; // Regular cart items
+                        return !!item.nest; // Configuration items with nest module
+                      }) && (
+                        <p className="text-[clamp(12px,2.5vw,12px)] text-gray-600 mt-2 leading-[1.3]">
+                          oder {calculateMonthlyPayment(getCartTotal())}{" "}
+                          monatlich
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

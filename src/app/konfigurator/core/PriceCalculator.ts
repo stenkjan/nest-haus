@@ -260,29 +260,27 @@ export class PriceCalculator {
    * CLIENT-SIDE calculation to avoid unnecessary API calls
    */
   static calculateTotalPrice(selections: Selections): number {
-    // If no nest selection, return 0
-    if (!selections.nest) {
-      return 0;
-    }
-
     try {
       let totalPrice = 0;
 
-      // ALWAYS use combination pricing with defaults for missing core selections
-      // This ensures consistent pricing regardless of selection order
-      const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-      const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
-      const fussboden = selections.fussboden?.value || 'parkett';
+      // Calculate nest module combination price if selected
+      if (selections.nest) {
+        // ALWAYS use combination pricing with defaults for missing core selections
+        // This ensures consistent pricing regardless of selection order
+        const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
+        const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+        const fussboden = selections.fussboden?.value || 'parkett';
 
-      // Calculate combination price using modular pricing system
-      totalPrice = this.calculateCombinationPrice(
-        selections.nest.value,
-        gebaeudehuelle,
-        innenverkleidung,
-        fussboden
-      );
+        // Calculate combination price using modular pricing system
+        totalPrice = this.calculateCombinationPrice(
+          selections.nest.value,
+          gebaeudehuelle,
+          innenverkleidung,
+          fussboden
+        );
+      }
 
-      // Add additional components (these work regardless of core completion)
+      // Add additional components (these work regardless of nest selection)
       let additionalPrice = 0;
 
       // Add PV price
@@ -303,7 +301,7 @@ export class PriceCalculator {
         additionalPrice += paketPrice;
       }
 
-      // Add Grundstückscheck price if selected
+      // Add Grundstückscheck price if selected (works standalone)
       if (selections.grundstueckscheck) {
         additionalPrice += GRUNDSTUECKSCHECK_PRICE;
       }
@@ -402,33 +400,32 @@ export class PriceCalculator {
       combinationKey: ''
     }
 
-    if (!selections.nest) {
-      return breakdown
-    }
-
     try {
-      // Get nest module information
-      const nestOption = NEST_OPTIONS.find(option => option.id === selections.nest!.value);
-      breakdown.modules = nestOption?.modules || 0;
+      // Handle nest module breakdown if selected
+      if (selections.nest) {
+        // Get nest module information
+        const nestOption = NEST_OPTIONS.find(option => option.id === selections.nest!.value);
+        breakdown.modules = nestOption?.modules || 0;
 
-      // Determine combination for breakdown
-      const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-      const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
-      const fussboden = selections.fussboden?.value || 'parkett';
+        // Determine combination for breakdown
+        const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
+        const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+        const fussboden = selections.fussboden?.value || 'parkett';
 
-      breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
+        breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
 
-      // Calculate core combination price
-      const combinationPrice = this.calculateCombinationPrice(
-        selections.nest.value,
-        gebaeudehuelle,
-        innenverkleidung,
-        fussboden
-      );
+        // Calculate core combination price
+        const combinationPrice = this.calculateCombinationPrice(
+          selections.nest.value,
+          gebaeudehuelle,
+          innenverkleidung,
+          fussboden
+        );
 
-      breakdown.basePrice = combinationPrice;
+        breakdown.basePrice = combinationPrice;
+      }
 
-      // Add additional options
+      // Add additional options (works for both nest and grundstückscheck-only)
       if (selections.pvanlage && selections.pvanlage.quantity) {
         breakdown.options.pvanlage = {
           name: `${selections.pvanlage.name} (${selections.pvanlage.quantity}x)`,
