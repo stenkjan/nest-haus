@@ -278,7 +278,10 @@ export default function ContactPage() {
                   <div className="animate-pulse bg-gray-200 h-96 rounded"></div>
                 }
               >
-                <GrundstueckCheckDialog />
+                <GrundstueckCheckDialog 
+                  isOpen={true} 
+                  onClose={() => {}} 
+                />
               </Suspense>
             </div>
           </div>
