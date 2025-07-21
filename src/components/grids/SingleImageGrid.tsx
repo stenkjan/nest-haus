@@ -101,7 +101,6 @@ export default function SingleImageGrid({
             className={`relative w-full overflow-hidden rounded-lg shadow-lg ${enableLightbox ? 'cursor-pointer hover:shadow-xl' : ''} transition-shadow duration-300`}
             style={{ aspectRatio }}
             whileHover={enableLightbox ? { scale: 1.02 } : {}}
-            transition={{ duration: 0.2 }}
             onClick={handleImageClick}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
