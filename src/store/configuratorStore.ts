@@ -118,13 +118,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
 
-        // ALWAYS set defaults first, then calculate price
+        // ALWAYS set defaults first, then calculate price immediately
         get().setDefaultSelections()
 
-        // Calculate price after defaults are set
-        setTimeout(() => {
-          get().calculatePrice()
-        }, 100)
+        // Calculate price immediately instead of using setTimeout
+        get().calculatePrice()
       },
 
       // Update selection with intelligent view switching and price calculation
@@ -412,67 +410,112 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         })
 
         // IMPORTANT: Set default selections (nest80 + holzlattung) after reset
-        // Use setTimeout to ensure state is properly reset first
-        setTimeout(() => {
-          get().setDefaultSelections()
-        }, 50)
+        // Set defaults immediately after state reset
+        get().setDefaultSelections()
       },
 
       // Set default preselections on startup (nest80 + holzlattung/lärche)
       setDefaultSelections: () => {
         const state = get()
 
-
-
         // Generate sessionId if not set
         const sessionId = state.sessionId || `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
 
-        // Set defaults for full configuration mode only
-        if (!state.configuration.nest) {
+        // Check if we need to set any defaults
+        const needsNest = !state.configuration.nest
+        const needsGebaeudehuelle = !state.configuration.gebaeudehuelle
+        const needsInnenverkleidung = !state.configuration.innenverkleidung
+        const needsFussboden = !state.configuration.fussboden
+
+        if (needsNest || needsGebaeudehuelle || needsInnenverkleidung || needsFussboden) {
+          // Set both defaults in a single state update to prevent race conditions
+          const updatedConfiguration = {
+            ...state.configuration,
+            sessionId,
+            timestamp: Date.now()
+          }
+
+          if (needsNest) {
+            updatedConfiguration.nest = {
+              category: 'nest',
+              value: 'nest80',
+              name: 'Nest. 80',
+              price: 155500,
+              description: '80m² Nutzfläche'
+            }
+          }
+
+          if (needsGebaeudehuelle) {
+            updatedConfiguration.gebaeudehuelle = {
+              category: 'gebaeudehuelle',
+              value: 'holzlattung',
+              name: 'Holzlattung Lärche Natur',
+              price: 9600,
+              description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
+            }
+          }
+
+          if (needsInnenverkleidung) {
+            updatedConfiguration.innenverkleidung = {
+              category: 'innenverkleidung',
+              value: 'kiefer',
+              name: 'Kiefer Natur',
+              price: 0,
+              description: 'Natürlich und warm'
+            }
+          }
+
+          if (needsFussboden) {
+            updatedConfiguration.fussboden = {
+              category: 'fussboden',
+              value: 'parkett',
+              name: 'Parkett Eiche',
+              price: 0,
+              description: 'Klassisch und elegant'
+            }
+          }
+
+          // Update state with both defaults at once
           set(state => ({
             ...state,
             sessionId,
-            configuration: {
-              ...state.configuration,
-              sessionId,
-              nest: {
-                category: 'nest',
-                value: 'nest80',
-                name: 'Nest. 80',
-                price: 155500,
-                description: '80m² Nutzfläche'
-              },
-              timestamp: Date.now()
-            }
+            configuration: updatedConfiguration
           }))
-        }
 
-        if (!state.configuration.gebaeudehuelle) {
+          // Calculate price immediately after setting defaults
+          const selections = {
+            nest: updatedConfiguration.nest || undefined,
+            gebaeudehuelle: updatedConfiguration.gebaeudehuelle || undefined,
+            innenverkleidung: updatedConfiguration.innenverkleidung || undefined,
+            fussboden: updatedConfiguration.fussboden || undefined,
+            pvanlage: updatedConfiguration.pvanlage || undefined,
+            fenster: updatedConfiguration.fenster || undefined,
+            paket: updatedConfiguration.planungspaket || undefined,
+            grundstueckscheck: !!updatedConfiguration.grundstueckscheck
+          }
+
+          const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>)
+          const priceBreakdown = PriceCalculator.getPriceBreakdown(selections as unknown as Record<string, unknown>)
+
+          // Update price and configuration in final state update
           set(state => ({
             ...state,
-            sessionId,
+            currentPrice: totalPrice,
+            priceBreakdown,
             configuration: {
               ...state.configuration,
-              sessionId,
-              gebaeudehuelle: {
-                category: 'gebaeudehuelle',
-                value: 'holzlattung',
-                name: 'Holzlattung Lärche Natur',
-                price: 9600,
-                description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
-              },
+              totalPrice,
               timestamp: Date.now()
             }
           }))
-        }
 
-        // Recalculate price and set optimal view after setting defaults
-        setTimeout(() => {
-          get().calculatePrice()
           // Switch to optimal view for the default configuration
           const optimalView = get().determineOptimalView()
           set({ shouldSwitchToView: optimalView })
-        }, 50)
+        } else {
+          // If defaults are already set, just recalculate price to ensure consistency
+          get().calculatePrice()
+        }
       },
 
 
@@ -515,10 +558,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         return state.configuration
       },
 
-            // Check if required configuration is complete
+      // Check if required configuration is complete
       isConfigurationComplete: () => {
         const state = get()
-        
+
         // Configuration is complete if EITHER:
         // 1. Full configuration: nest + gebäudehülle + innenverkleidung + fussboden
         // 2. Grundstückscheck-only: just grundstueckscheck selected
@@ -528,7 +571,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           !!state.configuration.innenverkleidung &&
           !!state.configuration.fussboden
         )
-        
+
         const hasGrundstueckscheckOnly = (
           !!state.configuration.grundstueckscheck &&
           !state.configuration.nest &&
@@ -536,7 +579,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           !state.configuration.innenverkleidung &&
           !state.configuration.fussboden
         )
-        
+
         return hasFullConfiguration || hasGrundstueckscheckOnly
       }
     }),
@@ -569,7 +612,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
               state.configuration.planungspaket ||
               state.configuration.grundstueckscheck
             );
-            
+
             if (!hasAnySelection) {
               state.setDefaultSelections()
             }

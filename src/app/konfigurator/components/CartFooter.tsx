@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 
 import { PriceUtils } from "../core/PriceUtils";
@@ -11,12 +11,14 @@ interface CartFooterProps {
 }
 
 export default function CartFooter({ onReset }: CartFooterProps) {
+  // Use same subscription pattern as SummaryPanel (which works correctly)
   const {
     currentPrice,
     resetConfiguration,
     configuration,
     isConfigurationComplete,
   } = useConfiguratorStore();
+
   const footerRef = useRef<HTMLDivElement>(null);
 
   // Set CSS variable for footer height (similar to navbar)
@@ -44,6 +46,13 @@ export default function CartFooter({ onReset }: CartFooterProps) {
       onReset();
     }
   };
+
+  // Fix hydration error by using client-side only state for completion check
+  const [isComplete, setIsComplete] = useState(false);
+  
+  useEffect(() => {
+    setIsComplete(isConfigurationComplete());
+  }, [isConfigurationComplete]);
 
   return (
     <div
@@ -81,9 +90,9 @@ export default function CartFooter({ onReset }: CartFooterProps) {
           <Link
             href="/warenkorb"
             className={`bg-[#3D6DE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation ${
-              !isConfigurationComplete() ? "opacity-50 cursor-not-allowed" : ""
+              !isComplete ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            onClick={(e) => !isConfigurationComplete() && e.preventDefault()}
+            onClick={(e) => !isComplete && e.preventDefault()}
           >
             Jetzt bauen
           </Link>

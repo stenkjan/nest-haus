@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
@@ -31,6 +31,7 @@ export default function WarenkorbPage() {
 
   // Flag to prevent auto-add after manual cart clearing
   const [hasManuallyCleared, setHasManuallyCleared] = useState(false);
+  const clearingCartRef = useRef(false);
 
   // Watch for cart changes for debugging
   useEffect(() => {
@@ -47,14 +48,16 @@ export default function WarenkorbPage() {
 
   // Auto-add current configuration to cart if complete
   useEffect(() => {
-    const cartConfig = getConfigurationForCart();
-    if (!cartConfig) return;
-
-    // Don't auto-add if user has manually cleared the cart
-    if (hasManuallyCleared) {
-      console.log("🛒 Skipping auto-add because cart was manually cleared");
+    // Don't auto-add if user has manually cleared the cart or we're currently clearing
+    if (hasManuallyCleared || clearingCartRef.current) {
+      console.log(
+        "🛒 Skipping auto-add because cart was manually cleared or being cleared"
+      );
       return;
     }
+
+    const cartConfig = getConfigurationForCart();
+    if (!cartConfig) return;
 
     // Check if this exact configuration is already in the cart
     // Compare by sessionId if available, otherwise compare configuration content
@@ -146,16 +149,20 @@ export default function WarenkorbPage() {
     console.log("🛒 Items before clear:", items.length);
     console.log("🛒 Items content before clear:", items);
 
+    // Set immediate flag to prevent auto-add during clear operation
+    clearingCartRef.current = true;
+
     // Set flag to prevent auto-add after clearing
     setHasManuallyCleared(true);
 
     clearCart();
     console.log("🛒 Clear cart function called");
 
-    // Force re-render verification
+    // Reset the clearing flag after clearing is complete
     setTimeout(() => {
+      clearingCartRef.current = false;
       console.log("🛒 Items after clear (50ms):", items.length);
-    }, 50);
+    }, 100);
 
     setTimeout(() => {
       console.log("🛒 Items after clear (200ms):", items.length);
@@ -171,67 +178,123 @@ export default function WarenkorbPage() {
 
     // Only render configuration details for ConfigurationCartItem
     if ("nest" in item) {
-      if (item.nest)
-        details.push({
-          label: "Nest",
-          value: item.nest?.name ?? "—",
-          price: item.nest?.price,
-        });
-      if (item.gebaeudehuelle)
-        details.push({
-          label: "Gebäudehülle",
-          value: item.gebaeudehuelle?.name ?? "—",
-          price: item.gebaeudehuelle?.price,
-        });
-      if (item.innenverkleidung)
-        details.push({
-          label: "Innenverkleidung",
-          value: item.innenverkleidung?.name ?? "—",
-          price: item.innenverkleidung?.price,
-        });
-      if (item.fussboden)
-        details.push({
-          label: "Fußboden",
-          value: item.fussboden?.name ?? "—",
-          price: item.fussboden?.price,
-        });
-      if (item.pvanlage)
-        details.push({
-          label: "PV-Anlage",
-          value: `${item.pvanlage?.name ?? "—"}${item.pvanlage?.quantity ? ` (${item.pvanlage.quantity}x)` : ""}`,
-          price: item.pvanlage?.price,
-        });
-      if (item.fenster)
-        details.push({
-          label: "Fenster",
-          value: `${item.fenster?.name ?? "—"}${item.fenster?.squareMeters ? ` (${item.fenster.squareMeters}m²)` : ""}`,
-          price: item.fenster?.price,
-        });
-      if (item.planungspaket)
-        details.push({
-          label: "Planungspaket",
-          value: item.planungspaket?.name ?? "—",
-          price: item.planungspaket?.price,
-        });
-      if (item.grundstueckscheck)
-        details.push({
-          label: "Grundstückscheck",
-          value: item.grundstueckscheck?.name ?? "—",
-          price: item.grundstueckscheck?.price,
-        });
+      // Mirror SummaryPanel logic exactly - show all configuration items individually
+      Object.entries(item).forEach(([key, selection]) => {
+        if (
+          !selection ||
+          key === "sessionId" ||
+          key === "totalPrice" ||
+          key === "timestamp" ||
+          key === "id" ||
+          key === "addedAt" ||
+          key === "isFromConfigurator"
+        ) {
+          return;
+        }
+
+        // Handle all configuration categories (except nest which is shown as the main title)
+        if (
+          key === "gebaeudehuelle" ||
+          key === "innenverkleidung" ||
+          key === "fussboden" ||
+          key === "pvanlage" ||
+          key === "fenster" ||
+          key === "planungspaket" ||
+          key === "grundstueckscheck"
+        ) {
+          let displayName = selection.name;
+          let displayPrice = selection.price || 0;
+
+          // Special formatting for specific categories
+          if (key === "fenster" && selection.squareMeters) {
+            displayName = `${selection.name} (${selection.squareMeters}m²)`;
+            displayPrice =
+              (selection.squareMeters || 1) * (selection.price || 0);
+          } else if (
+            key === "pvanlage" &&
+            selection.quantity &&
+            selection.quantity > 1
+          ) {
+            displayName = `${selection.name} (${selection.quantity}x)`;
+            displayPrice = (selection.quantity || 1) * (selection.price || 0);
+          }
+
+          // Determine if the item price should be shown or marked as included
+          const isIncluded = displayPrice === 0;
+
+          details.push({
+            label: getCategoryDisplayName(key),
+            value: displayName,
+            price: isIncluded ? 0 : displayPrice,
+            isIncluded: isIncluded,
+            category: key,
+          });
+        }
+      });
     } else {
       // For regular cart items, show basic info
       if ("name" in item) {
-        details.push({ label: "Artikel", value: item.name, price: item.price });
         details.push({
-          label: "Beschreibung",
-          value: item.description,
-          price: undefined,
+          label: "Artikel",
+          value: item.name,
+          price: item.price,
+          isIncluded: false,
+          category: "item",
         });
+        if (item.description) {
+          details.push({
+            label: "Beschreibung",
+            value: item.description,
+            price: 0,
+            isIncluded: true,
+            category: "description",
+          });
+        }
       }
     }
 
     return details;
+  };
+
+  // Helper function to get display names for categories
+  const getCategoryDisplayName = (category: string): string => {
+    const categoryNames: Record<string, string> = {
+      nest: "Nest",
+      gebaeudehuelle: "Gebäudehülle",
+      innenverkleidung: "Innenverkleidung",
+      fussboden: "Fußboden",
+      pvanlage: "PV-Anlage",
+      fenster: "Fenster",
+      planungspaket: "Planungspaket",
+      grundstueckscheck: "Grundstückscheck",
+    };
+    return categoryNames[category] || category;
+  };
+
+  // Helper function to get the main configuration title
+  const getConfigurationTitle = (
+    item: CartItem | ConfigurationCartItem
+  ): string => {
+    if ("nest" in item) {
+      // Configuration cart item
+      if (item.nest?.name) {
+        // Full configuration with nest module
+        return item.nest.name;
+      } else if (item.grundstueckscheck && !item.nest) {
+        // Standalone grundstückscheck
+        return "Grundstückscheck";
+      } else {
+        // Fallback for other configurations
+        return "Nest Konfiguration";
+      }
+    } else {
+      // Regular cart item
+      if ("name" in item) {
+        return item.name;
+      } else {
+        return "Artikel";
+      }
+    }
   };
 
   return (
@@ -300,25 +363,7 @@ export default function WarenkorbPage() {
                     <div className="flex justify-between items-start mb-4 border-b border-gray-100 pb-3">
                       <div className="flex-1 min-w-0 max-w-[70%]">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {(() => {
-                            if ("nest" in item) {
-                              // Configuration cart item
-                              if (item.nest?.name) {
-                                return item.nest.name;
-                              } else if (item.grundstueckscheck && !item.nest) {
-                                return "Grundstückscheck";
-                              } else {
-                                return "Nest Konfiguration";
-                              }
-                            } else {
-                              // Regular cart item
-                              if ("name" in item) {
-                                return item.name;
-                              } else {
-                                return "Artikel";
-                              }
-                            }
-                          })()}
+                          {getConfigurationTitle(item)}
                         </div>
                         <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
                           Hinzugefügt am{" "}
@@ -376,13 +421,14 @@ export default function WarenkorbPage() {
                               </div>
                             </div>
                             <div className="flex-1 text-right max-w-[50%] min-w-0">
-                              {detail.price && detail.price > 0 ? (
-                                <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                                  {PriceUtils.formatPrice(detail.price)}
-                                </div>
-                              ) : (
+                              {detail.isIncluded ||
+                              (detail.price && detail.price === 0) ? (
                                 <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
                                   inkludiert
+                                </div>
+                              ) : (
+                                <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                                  {PriceUtils.formatPrice(detail.price || 0)}
                                 </div>
                               )}
                             </div>

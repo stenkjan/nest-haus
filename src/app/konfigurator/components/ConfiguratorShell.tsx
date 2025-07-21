@@ -53,7 +53,6 @@ export default function ConfiguratorShell({
   rightPanelRef,
 }: ConfiguratorProps & { rightPanelRef?: React.Ref<HTMLDivElement> }) {
   const {
-    initializeSession,
     updateSelection,
     removeSelection,
     configuration,
@@ -193,9 +192,11 @@ export default function ConfiguratorShell({
 
   // Initialize session once on mount
   useEffect(() => {
-    initializeSession();
+    // REMOVED: Don't initialize here since KonfiguratorClient already does it
+    // This was causing double initialization conflicts
+    // initializeSession();
     return () => finalizeSession();
-  }, [initializeSession, finalizeSession]);
+  }, [finalizeSession]);
 
   // Notify parent components of price changes
   useEffect(() => {
@@ -209,6 +210,14 @@ export default function ConfiguratorShell({
       setIsGrundstuecksCheckSelected(hasGrundstuecksCheck);
     }
   }, [configuration?.grundstueckscheck, isGrundstuecksCheckSelected]);
+
+  // Reset local state function for CartFooter
+  const resetLocalState = useCallback(() => {
+    console.log("🔄 ConfiguratorShell: Resetting local state");
+    setPvQuantity(0);
+    setFensterSquareMeters(0);
+    setIsGrundstuecksCheckSelected(false);
+  }, []);
 
   // Optimized selection handlers using useCallback to prevent re-renders
   const handleSelection = useCallback(
@@ -413,12 +422,6 @@ export default function ConfiguratorShell({
     },
     [configuration]
   );
-
-  const resetLocalState = useCallback(() => {
-    setPvQuantity(0);
-    setFensterSquareMeters(0);
-    setIsGrundstuecksCheckSelected(false);
-  }, []);
 
   // Helper function to get number of modules based on nest size
   const getModuleCount = useCallback((nestValue: string): number => {
