@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [27df72ebb21156fbb79073526ac83cda9a2666ac] - Mon Jul 21 14:31:13 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance WarenkorbPage with SEO improvements and structured data  - Added enhanced SEO metadata for the shopping cart page, including title, description, keywords, and Open Graph data. - Implemented structured data for the shopping cart and product schema to improve search engine visibility. - Refactored WarenkorbPage to utilize the new WarenkorbClient component for better separation of concerns and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/page.tsx
+
+
+---
+
 ## [e53974cb16f3b489fdc85406c4d69b211a1e8730] - Mon Jul 21 14:12:00 2025 +0200
 
 **Author**: stenkjan
