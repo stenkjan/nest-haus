@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e53974cb16f3b489fdc85406c4d69b211a1e8730] - Mon Jul 21 14:12:00 2025 +0200
+
+**Author**: stenkjan
+**Message**: `� fix: resolve ESLint errors for Vercel deployment  - Fix unused variable 'onCardClick' in ContentCardsGlass.tsx - Fix duplicate transition props in SingleImageGrid.tsx - Verify build and lint passes successfully  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/grids/SingleImageGrid.tsx
+
+
+---
+
 ## [cce29dff454e671660b7cb91adfc66949f4d712d] - Mon Jul 21 14:03:48 2025 +0200
 
 **Author**: stenkjan
