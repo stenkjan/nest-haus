@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
-interface TextImageGridProps {
+interface ThreeByOneGridProps {
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
@@ -20,8 +20,8 @@ interface TextImageGridProps {
   backgroundColor?: "white" | "black";
 }
 
-export default function TextImageGrid({
-  title = "Text & Image Grid",
+export default function ThreeByOneGrid({
+  title = "3x1 Grid",
   subtitle = "Responsive 3-column layout with text and images",
   maxWidth = true,
   showInstructions = true,
@@ -33,7 +33,7 @@ export default function TextImageGrid({
   image2Description = "Seitenansicht verdeutlicht die optimierte Statik",
   textPosition = "left",
   backgroundColor = "white",
-}: TextImageGridProps) {
+}: ThreeByOneGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
   const [showMoreInfo, setShowMoreInfo] = useState(false);

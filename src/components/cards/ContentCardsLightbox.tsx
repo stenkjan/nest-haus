@@ -5,7 +5,7 @@ import { Dialog } from '@/components/ui/Dialog';
 import ContentCards from './ContentCards';
 
 interface ContentCardsLightboxProps {
-  variant?: 'normal' | 'mobile' | 'wide' | 'static' | 'pricing' | 'responsive';
+  variant?: 'responsive' | 'static' | 'pricing';
   title?: string;
   subtitle?: string;
   triggerClassName?: string;
@@ -74,7 +74,7 @@ export function PricingCardsLightbox({
 }
 
 export default function ContentCardsLightbox({ 
-  variant = 'normal',
+  variant = 'responsive',
   title = 'Content Cards',
   subtitle: _subtitle = 'Navigate with arrow keys or swipe on mobile',
   triggerClassName = '',
@@ -84,9 +84,6 @@ export default function ContentCardsLightbox({
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
-
-  // Use mobile variant for 20% larger cards in lightbox, except for responsive which handles its own sizing
-  const lightboxVariant = variant === 'normal' ? 'mobile' : variant;
 
   return (
     <>
@@ -109,7 +106,7 @@ export default function ContentCardsLightbox({
           {/* ContentCards with transparent background */}
           <div className="w-full max-w-none my-4">
             <ContentCards 
-              variant={lightboxVariant}
+              variant={variant}
               title={title}
               subtitle=""
               maxWidth={false}

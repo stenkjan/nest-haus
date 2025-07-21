@@ -16,7 +16,7 @@ interface GridItem {
   secondaryAction: string;
 }
 
-interface ImageGridProps {
+interface TwoByTwoImageGridProps {
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
@@ -65,11 +65,11 @@ const gridData: GridItem[] = [
   }
 ];
 
-export default function ImageGrid({ 
-  title = 'Image Grid Gallery',
+export default function TwoByTwoImageGrid({ 
+  title = '2x2 Image Grid Gallery',
   subtitle = 'Interactive 2x2 layout with hover effects',
   maxWidth = true
-}: ImageGridProps) {
+}: TwoByTwoImageGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
 

@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { HybridBlobImage } from '@/components/images';
 import { IMAGES } from '@/constants/images';
 
-interface ImageTextBoxesProps {
+interface FullWidthImageGridProps {
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
@@ -16,8 +16,8 @@ interface ImageTextBoxesProps {
   backgroundColor?: 'white' | 'black';
 }
 
-export default function ImageTextBoxes({ 
-  title = 'Image & Text Boxes',
+export default function FullWidthImageGrid({ 
+  title = 'Full Width Image Grid',
   subtitle = 'Large image with two text boxes below',
   maxWidth = true,
   showInstructions = true,
@@ -25,7 +25,7 @@ export default function ImageTextBoxes({
   textBox1 = "Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du mit dem Nest System alles haben kannst?  Unsere Architekten und Ingenieure haben ein Haus entwickelt, das maximale Freiheit ohne Kompromisse bietet. Durch intelligente Standardisierung garantieren wir höchste",
   textBox2 = "Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl. Dein Zuhause, dein Stil, deine Freiheit. Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.",
   backgroundColor = 'white'
-}: ImageTextBoxesProps) {
+}: FullWidthImageGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
 
