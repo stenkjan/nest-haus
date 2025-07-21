@@ -4,6 +4,25 @@
 
 ---
 
+## [8840faa224e349c3002024448146412398f6cc26] - Mon Jul 21 13:50:15 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/warenkorb/page.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [5ae2dd690f842953967b84d231f7b5946bfdb747] - Mon Jul 21 13:48:47 2025 +0200
 
 **Author**: stenkjan
