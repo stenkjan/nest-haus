@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d2b0fd456d348782d09d345849492ac19278d46b] - Tue Jul 22 15:43:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance landing and contact pages with SEO improvements and structured data  - Added enhanced SEO metadata for the landing page, including title, description, keywords, and Open Graph data. - Implemented structured data for the website and product schema to improve search engine visibility. - Enhanced the contact page with SEO metadata and structured data for better search engine optimization. - Integrated JSON-LD scripts for structured data on both pages to improve search engine understanding and visibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/components/GrundstueckCheckWrapper.tsx
+- src/app/kontakt/page.tsx
+- src/app/page.tsx
+
+
+---
+
 ## [27df72ebb21156fbb79073526ac83cda9a2666ac] - Mon Jul 21 14:31:13 2025 +0200
 
 **Author**: stenkjan
