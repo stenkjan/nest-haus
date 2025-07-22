@@ -1,4 +1,4 @@
-import { TwoByTwoImageGrid, ThreeByOneGrid, ThreeByOneAdaptiveHeight, FullWidthImageGrid, SingleImageGrid } from '@/components/grids';
+import { TwoByTwoImageGrid, ThreeByOneGrid, ThreeByOneAdaptiveHeight, FullWidthImageGrid } from '@/components/grids';
 import { IMAGES } from '@/constants/images';
 
 export default function GridsShowcasePage() {
@@ -17,19 +17,7 @@ export default function GridsShowcasePage() {
           </div>
         </section>
 
-        {/* Single Image Grid Section */}
-        <section className="overflow-visible">
-          <SingleImageGrid 
-            title="Single Image Grid"
-            subtitle="Centered single image with responsive layout • NEST Haus Grundriss Schema • Same max-width as 2x2 grid"
-            maxWidth={true}
-            imagePath={IMAGES.function.nestHausGrundrissSchema}
-            imageDescription="NEST Haus Grundriss Schema - Fenster und Türen Perspektive"
-            aspectRatio="16/9"
-            enableLightbox={true}
-            backgroundColor="white"
-          />
-        </section>
+        {/* Single Image Grid Section - Removed due to component issues */}
 
         {/* Image Grid Section - 2x2 Interactive Grid */}
         <section className="overflow-visible">

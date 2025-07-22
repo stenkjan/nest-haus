@@ -1,6 +1,7 @@
-import React, { Suspense } from 'react';
+'use client';
+
+import React from 'react';
 import { ImageProps } from 'next/image';
-import { ServerBlobImage } from './ServerBlobImage';
 import ClientBlobImage from './ClientBlobImage';
 
 interface HybridBlobImageProps extends Omit<ImageProps, 'src'> {
@@ -23,17 +24,21 @@ interface HybridBlobImageProps extends Omit<ImageProps, 'src'> {
 }
 
 /**
- * HybridBlobImage - Intelligent SSR/Client Image Component
+ * HybridBlobImage - Client-Side Image Component
  * 
- * Automatically chooses the best rendering strategy based on:
- * - Content criticality (above fold, critical content)
- * - User interaction requirements (dynamic, configurator)
- * - Performance optimization needs
+ * NOTE: This component has been simplified to use only client-side rendering
+ * due to Next.js constraints where async server components cannot be used
+ * in client component contexts.
+ * 
+ * For true hybrid SSR/Client approach, use:
+ * - ServerBlobImage directly in server components
+ * - ClientBlobImage directly in client components
+ * - This component as a client-optimized solution
  * 
  * Following project rules:
- * - SSR for static content pages, landing pages, SEO-critical content
  * - Client-side for interactive apps, configurators, dynamic forms
- * - Balanced approach for optimal performance
+ * - Optimized caching and performance for client contexts
+ * - Graceful fallbacks and error handling
  */
 export default function HybridBlobImage({
   path,
@@ -49,41 +54,23 @@ export default function HybridBlobImage({
   ...props
 }: HybridBlobImageProps) {
   
-  // Intelligent strategy selection when 'auto' is chosen
-  const renderingStrategy = strategy === 'auto' 
-    ? determineStrategy(isAboveFold, isCritical, isInteractive)
-    : strategy;
+  // Since we're in client context, always use ClientBlobImage
+  // Optimize settings based on strategy hints
+  const optimizedSettings = getClientOptimizedSettings(
+    strategy,
+    isAboveFold,
+    isCritical,
+    isInteractive
+  );
 
-  // SSR Strategy: Best for static content, above-fold, critical images
-  if (renderingStrategy === 'ssr') {
-    return (
-      <Suspense fallback={
-        <div className="animate-pulse bg-gray-200 w-full h-full flex items-center justify-center">
-          <span className="text-gray-400 text-sm">Loading...</span>
-        </div>
-      }>
-        <ServerBlobImage
-          path={path}
-          mobilePath={mobilePath}
-          fallbackSrc={fallbackSrc}
-          enableSSRFetch={true}
-          enableMobileDetection={enableMobileDetection}
-          priority={isAboveFold || isCritical}
-          {...props}
-        />
-      </Suspense>
-    );
-  }
-
-  // Client Strategy: Best for interactive content, dynamic loading
   return (
     <ClientBlobImage
       path={path}
       mobilePath={mobilePath}
       fallbackSrc={fallbackSrc}
-      enableCache={enableCache}
+      enableCache={enableCache && optimizedSettings.enableCache}
       enableMobileDetection={enableMobileDetection}
-      showLoadingSpinner={showLoadingSpinner}
+      showLoadingSpinner={showLoadingSpinner || optimizedSettings.showLoadingSpinner}
       priority={isAboveFold || isCritical}
       {...props}
     />
@@ -91,25 +78,35 @@ export default function HybridBlobImage({
 }
 
 /**
- * Intelligent strategy determination based on content characteristics
+ * Optimize client-side settings based on strategy hints
  */
-function determineStrategy(
+function getClientOptimizedSettings(
+  strategy: 'ssr' | 'client' | 'auto',
   isAboveFold: boolean,
   isCritical: boolean, 
   isInteractive: boolean
-): 'ssr' | 'client' {
-  // Prefer SSR for critical, above-fold content (SEO + Core Web Vitals)
+) {
+  // For critical/above-fold content, optimize for speed
   if (isAboveFold || isCritical) {
-    return 'ssr';
+    return {
+      enableCache: true,
+      showLoadingSpinner: false, // Don't show spinner for critical content
+    };
   }
   
-  // Prefer Client for interactive content (instant feedback)
+  // For interactive content, optimize for responsiveness
   if (isInteractive) {
-    return 'client';
+    return {
+      enableCache: true,
+      showLoadingSpinner: true, // Show feedback for dynamic content
+    };
   }
   
-  // Default to SSR for better initial performance
-  return 'ssr';
+  // Default optimizations
+  return {
+    enableCache: true,
+    showLoadingSpinner: false,
+  };
 }
 
 // Usage examples for documentation:
@@ -134,11 +131,11 @@ function determineStrategy(
 // Gallery image (below fold, static)
 <HybridBlobImage 
   path="gallery-image-1"
-  strategy="ssr"
+  strategy="client"
   alt="Gallery Image"
 />
 
-// Product showcase (auto-determined strategy)
+// Product showcase (auto-optimized)
 <HybridBlobImage 
   path="product-showcase"
   isAboveFold={false}
