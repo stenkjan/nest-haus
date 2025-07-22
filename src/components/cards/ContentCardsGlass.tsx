@@ -138,7 +138,7 @@ export default function ContentCardsGlass({
   maxWidth = true,
   showInstructions = true,
   isLightboxMode = false,
-  onCardClick,
+  onCardClick: _onCardClick,
   customData
 }: ContentCardsGlassProps) {
   const [currentIndex, setCurrentIndex] = useState(0);

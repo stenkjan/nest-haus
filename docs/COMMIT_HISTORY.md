@@ -1,6 +1,81 @@
 # Nest-Haus Commit History
 
-*Auto-generated documentation of project changes*
+_Auto-generated documentation of project changes_
+
+---
+
+## [d2b0fd456d348782d09d345849492ac19278d46b] - Tue Jul 22 15:43:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance landing and contact pages with SEO improvements and structured data  - Added enhanced SEO metadata for the landing page, including title, description, keywords, and Open Graph data. - Implemented structured data for the website and product schema to improve search engine visibility. - Enhanced the contact page with SEO metadata and structured data for better search engine optimization. - Integrated JSON-LD scripts for structured data on both pages to improve search engine understanding and visibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/components/GrundstueckCheckWrapper.tsx
+- src/app/kontakt/page.tsx
+- src/app/page.tsx
+
+
+---
+
+## [27df72ebb21156fbb79073526ac83cda9a2666ac] - Mon Jul 21 14:31:13 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance WarenkorbPage with SEO improvements and structured data  - Added enhanced SEO metadata for the shopping cart page, including title, description, keywords, and Open Graph data. - Implemented structured data for the shopping cart and product schema to improve search engine visibility. - Refactored WarenkorbPage to utilize the new WarenkorbClient component for better separation of concerns and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/page.tsx
+
+
+---
+
+## [e53974cb16f3b489fdc85406c4d69b211a1e8730] - Mon Jul 21 14:12:00 2025 +0200
+
+**Author**: stenkjan
+**Message**: `� fix: resolve ESLint errors for Vercel deployment  - Fix unused variable 'onCardClick' in ContentCardsGlass.tsx - Fix duplicate transition props in SingleImageGrid.tsx - Verify build and lint passes successfully  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/grids/SingleImageGrid.tsx
+
+
+---
+
+## [cce29dff454e671660b7cb91adfc66949f4d712d] - Mon Jul 21 14:03:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `� fix: resolve Windows Prisma build issues and verify deployment readiness  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [8840faa224e349c3002024448146412398f6cc26] - Mon Jul 21 13:50:15 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/warenkorb/page.tsx
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -12,8 +87,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -25,8 +100,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -38,8 +113,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -51,8 +126,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -64,12 +139,12 @@
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/core/ImageManager.ts
 
-
 #### 📚 Documentation Changes
-- docs/CONFIGURATOR_IMAGE_LOGIC_ANALYSIS.md
 
+- docs/CONFIGURATOR_IMAGE_LOGIC_ANALYSIS.md
 
 ---
 
@@ -81,8 +156,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -94,8 +169,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -107,8 +182,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -120,8 +195,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -133,8 +208,8 @@
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/page.tsx
 
+- src/app/warenkorb/page.tsx
 
 ---
 
@@ -146,8 +221,8 @@
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/SummaryPanel.tsx
 
+- src/app/konfigurator/components/SummaryPanel.tsx
 
 ---
 
@@ -159,8 +234,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -172,8 +247,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -185,8 +260,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -198,8 +273,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -211,9 +286,9 @@
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/warenkorb/page.tsx
-
 
 ---
 
@@ -225,8 +300,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -238,8 +313,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -251,8 +326,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -264,8 +339,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -277,8 +352,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -290,8 +365,8 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -303,8 +378,8 @@
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/core/PriceCalculator.ts
 
+- src/app/konfigurator/core/PriceCalculator.ts
 
 ---
 
@@ -316,8 +391,8 @@
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
-- .github/workflows/auto-documentation.yml
 
+- .github/workflows/auto-documentation.yml
 
 ---
 
@@ -899,10 +974,10 @@
 
 #### 🎨 Frontend Changes
 
-- src/app/konfigurator/__tests__/ConfiguratorShell.test.tsx
+- src/app/konfigurator/**tests**/ConfiguratorShell.test.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/SelectionOption.tsx
-- src/app/konfigurator/components/__tests__/SelectionOption.test.tsx
+- src/app/konfigurator/components/**tests**/SelectionOption.test.tsx
 - src/app/konfigurator/components/examples/OptimizedSelectionOption.tsx
 - src/app/konfigurator/core/ConfiguratorEngine.ts
 - src/app/konfigurator/core/ImageManager.ts
@@ -913,8 +988,8 @@
 - src/app/konfigurator/types/configurator.types.ts
 - src/app/warenkorb/page.tsx
 - src/components/images/ImagePreloader.tsx
-- src/components/layout/__tests__/Navbar.test.tsx
-- src/components/ui/__tests__/Button.test.tsx
+- src/components/layout/**tests**/Navbar.test.tsx
+- src/components/ui/**tests**/Button.test.tsx
 
 #### 🔧 Configuration Changes
 
@@ -1343,23 +1418,27 @@
 ### Changes Analysis
 
 #### 📚 Documentation Changes
+
 - Created comprehensive project documentation structure
-- Added migration plan for configurator refactoring  
+- Added migration plan for configurator refactoring
 - Set up GitHub Action for automated documentation
 - Established technical architecture overview
 
 #### 🎨 Frontend Changes
+
 - Created new configurator folder structure
 - Added TypeScript type definitions
 - Set up component and hook placeholders
 - Planned separation of concerns architecture
 
 #### ⚙️ Backend Changes
+
 - Planned Redis integration for session tracking
 - Designed PostgreSQL schema for permanent storage
 - Outlined API routes for configurator functionality
 
 #### 🔧 Configuration Changes
+
 - Added GitHub Actions workflow for auto-documentation
 - Created folder structure for modular configurator
 - Set up migration plan and development guidelines
@@ -1367,6 +1446,7 @@
 ## Latest Changes
 
 ### 2024-12-19 - Prisma Build Issue Permanently Fixed
+
 - ✅ **Fixed Prisma Schema Configuration**
   - Removed custom output path from `prisma/schema.prisma`
   - Changed to standard `@prisma/client` import pattern
@@ -1385,6 +1465,7 @@
   - Production build working properly
 
 ### 2024-12-19 - Build Issues Fixed
+
 - ✅ **Fixed Prisma Client Generation**
   - Generated Prisma client using `npx prisma generate`
   - Resolved "Can't resolve '../generated/prisma'" error
@@ -1401,6 +1482,7 @@
   - Improved performance and SEO
 
 ### 2024-12-19 - Navbar Integration
+
 - ✅ **Integrated old navbar into new project structure**
   - Moved navbar from root to `src/components/layout/Navbar.tsx`
   - Updated with proper Zustand store integration (useCartStore)
@@ -1424,6 +1506,7 @@
 ## Previous Changes
 
 ### Initial Setup
+
 - Project structure created
 - Configurator store implementation
 - Cart store implementation
@@ -1434,6 +1517,7 @@
 ### **🚀 Successfully Implemented Image Loading for Configurator**
 
 **What was accomplished:**
+
 - ✅ **Complete ImageManager Implementation**: Created a comprehensive `ImageManager` class that replaced the missing `getPreviewImagePath` utility from the old configurator
 - ✅ **Intelligent Image Path Resolution**: Implemented smart mapping between configuration selections and image paths from the `IMAGES` constants
 - ✅ **Robust Preview Panel**: Updated `PreviewPanel` to use the new `ImageManager` with proper error handling and loading states
@@ -1443,15 +1527,17 @@
 ### **🔧 Technical Implementation Details:**
 
 #### **ImageManager Core Features:**
+
 - **Multi-view Support**: Handles exterior, interior, PV, and fenster views with appropriate image selection
 - **Smart Fallbacks**: Robust fallback system that gracefully handles missing image combinations
 - **Mapping Logic**: Intelligent mapping between selection values (e.g., 'nest80' → 'nest75', 'fassadenplatten_schwarz' → 'plattenschwarz')
-- **Preloading Strategy**: 
+- **Preloading Strategy**:
   - Current configuration view preloading
   - Predictive preloading for likely next selections
   - Common configuration preloading on initial load
 
 #### **PreviewPanel Enhancements:**
+
 - **Automatic View Switching**: Intelligently switches to interior view when innenverkleidung is selected
 - **View Management**: Proper bounds checking and available view calculation
 - **Loading States**: Visual loading indicators with smooth transitions
@@ -1459,6 +1545,7 @@
 - **Mobile Optimization**: Touch-friendly controls with proper sizing
 
 #### **Client Integration:**
+
 - **Non-blocking Preloading**: Image preloading happens in background without affecting user experience
 - **Error Resilience**: All image operations fail gracefully without breaking the configurator
 - **Performance Monitoring**: Debug logging for image operations (development only)
@@ -1466,6 +1553,7 @@
 ### **🧪 Tested Functionality:**
 
 #### **✅ Verified Working Features:**
+
 1. **Image Display**: Images load correctly for different configurations
 2. **View Switching**: Navigation between exterior (1/4), interior (2/4), PV (3/4), and fenster (4/4) views
 3. **Configuration Changes**: Images update properly when selections are made
@@ -1474,12 +1562,14 @@
 6. **Navigation Controls**: Previous/Next buttons work with proper accessibility labels
 
 #### **✅ Performance Characteristics:**
+
 - **Fast Response**: Image switching is instantaneous due to intelligent preloading
 - **No Loops**: No infinite loading or reloading cycles
 - **Graceful Degradation**: System works even if image API fails
 - **Memory Efficient**: Proper cache management prevents memory leaks
 
 #### **✅ Project Rules Compliance:**
+
 - **Client-Side Performance**: Price calculations and image loading optimized for < 100ms response
 - **Fail-Safe Operations**: All API calls are non-blocking and don't interrupt user experience
 - **Server-Side Compatible**: Images can be served from server while maintaining client optimization
@@ -1488,6 +1578,7 @@
 ### **🎯 Configuration Test Results:**
 
 Successfully tested with complex configuration:
+
 - **Nest. 160** (160m² Nutzfläche)
 - **Holzlattung Lärche Natur** (PEFC-certified wood cladding)
 - **Kiefer** → **Kalkstein Kanafar** (Interior: Pine wood → Limestone flooring)
@@ -1506,22 +1597,26 @@ Successfully tested with complex configuration:
 5. **Reliability**: Robust error handling and fallback mechanisms
 
 ### **📁 Files Modified/Created:**
+
 - ✅ `src/app/konfigurator/core/ImageManager.ts` - **NEW**: Complete image management system
 - ✅ `src/app/konfigurator/components/PreviewPanel.tsx` - **ENHANCED**: Updated to use ImageManager
 - ✅ `src/app/konfigurator/components/KonfiguratorClient.tsx` - **ENHANCED**: Intelligent preloading integration
 
 ### **🔄 Migration Status:**
+
 - ✅ **Legacy `getPreviewImagePath` logic**: Fully migrated to `ImageManager.getPreviewImage()`
 - ✅ **View availability logic**: Implemented in `ImageManager.getAvailableViews()`
 - ✅ **Image preloading**: Enhanced with predictive algorithms
 - ✅ **Error handling**: Comprehensive fail-safe mechanisms
 
 ### **🚀 Ready for Production:**
+
 The configurator image loading system is now robust, efficient, and ready for production use. All images load correctly, view switching works seamlessly, and the system follows all project performance and reliability guidelines.
 
 ## 🔧 Fix: Image Preview Panel Logic - Alignment with Old Configurator (2024-01-XX)
 
 ### Problem Analysis
+
 The new configurator had significant discrepancies compared to the old configurator in how images were displayed in the preview panel:
 
 1. **Missing Progressive Activation Logic**: The old configurator used `hasPart2BeenActive` and `hasPart3BeenActive` states to control which views were available
@@ -1532,6 +1627,7 @@ The new configurator had significant discrepancies compared to the old configura
 ### Solutions Implemented
 
 #### 1. **ConfiguratorStore Enhancement**
+
 - ✅ Added `hasPart2BeenActive` and `hasPart3BeenActive` state tracking
 - ✅ Implemented part activation logic in `updateSelection`:
   - Part 2 activates when `innenverkleidung` is selected
@@ -1541,6 +1637,7 @@ The new configurator had significant discrepancies compared to the old configura
 - ✅ Fixed default initialization with nest80 (155,500€ starting price)
 
 #### 2. **ImageManager Optimization**
+
 - ✅ Fixed type imports - now uses correct `Configuration` from store
 - ✅ Updated `getAvailableViews()` to accept part activation parameters
 - ✅ Implemented exact old configurator logic:
@@ -1551,6 +1648,7 @@ The new configurator had significant discrepancies compared to the old configura
 - ✅ Removed duplicate ConfigurationItem type definition
 
 #### 3. **PreviewPanel Logic Fix**
+
 - ✅ Added part activation states from store: `hasPart2BeenActive`, `hasPart3BeenActive`
 - ✅ Updated `availableViews` calculation to use part activation logic
 - ✅ Fixed auto-switching behavior:
@@ -1559,6 +1657,7 @@ The new configurator had significant discrepancies compared to the old configura
 - ✅ Proper view reset when views become unavailable
 
 #### 4. **Type System Alignment**
+
 - ✅ Fixed `Configuration` import in ImageManager to use store type
 - ✅ Fixed `ClientBlobImage` import as default export in HybridBlobImage
 - ✅ Resolved all major TypeScript compilation errors
@@ -1566,48 +1665,55 @@ The new configurator had significant discrepancies compared to the old configura
 ### Technical Details
 
 #### Part Activation Triggers (matches old configurator):
+
 ```typescript
 // Part 2 activation - enables interior view
-if (item.category === 'innenverkleidung' && !state.hasPart2BeenActive) {
-  newState.hasPart2BeenActive = true
+if (item.category === "innenverkleidung" && !state.hasPart2BeenActive) {
+  newState.hasPart2BeenActive = true;
 }
 
-// Part 3 activation - enables PV and Fenster views  
-if ((item.category === 'pvanlage' || item.category === 'fenster') && !state.hasPart3BeenActive) {
-  newState.hasPart3BeenActive = true
+// Part 3 activation - enables PV and Fenster views
+if (
+  (item.category === "pvanlage" || item.category === "fenster") &&
+  !state.hasPart3BeenActive
+) {
+  newState.hasPart3BeenActive = true;
 }
 ```
 
 #### View Availability Logic (restored from old configurator):
+
 ```typescript
 static getAvailableViews(
-  configuration: Configuration | null, 
-  hasPart2BeenActive: boolean = false, 
+  configuration: Configuration | null,
+  hasPart2BeenActive: boolean = false,
   hasPart3BeenActive: boolean = false
 ): ViewType[] {
   const views: ViewType[] = ['exterior']; // Always available (index 1)
-  
+
   // Interior view available only if Part 2 has been activated (index 2)
   if (hasPart2BeenActive) {
     views.push('interior');
   }
-  
+
   // PV and Fenster views available only if Part 3 has been activated (index 3&4)
   if (hasPart3BeenActive) {
     if (configuration.pvanlage) views.push('pv');
     if (configuration.fenster) views.push('fenster');
   }
-  
+
   return views;
 }
 ```
 
 #### Default Configuration (restored):
+
 - ✅ Nest 80 (nest80) as default starting configuration
 - ✅ 155,500€ base price initialization
 - ✅ Proper store initialization with price calculation
 
 ### Results
+
 - ✅ **Zero Image Redundancy**: Eliminated duplicate API calls through intelligent caching
 - ✅ **Correct Progressive Disclosure**: Views only appear when user has progressed through configurator
 - ✅ **Exact Old Behavior**: Pixel-perfect recreation of old configurator preview logic
@@ -1615,20 +1721,23 @@ static getAvailableViews(
 - ✅ **Type Safe**: All TypeScript errors resolved, proper type alignment
 
 ### Testing Verification
+
 - ✅ Start with nest80 exterior view only
 - ✅ Select innenverkleidung → Part 2 activates → interior view available
-- ✅ Select PV/Fenster → Part 3 activates → respective views available  
+- ✅ Select PV/Fenster → Part 3 activates → respective views available
 - ✅ Remove selections → views disappear appropriately
 - ✅ Auto-switching works correctly on first activation
 - ✅ Navigation arrows only show with multiple available views
 
 ### Files Modified
+
 - `src/store/configuratorStore.ts` - Part activation logic + default initialization
 - `src/app/konfigurator/core/ImageManager.ts` - View availability logic + type fixes
 - `src/app/konfigurator/components/PreviewPanel.tsx` - Part activation integration
 - `src/components/images/HybridBlobImage.tsx` - Import fix
 
 ### Performance Impact
+
 - **✅ Improved**: Eliminated redundant image API calls
 - **✅ Faster**: Client-side state management with instant updates
 - **✅ Optimized**: Intelligent image preloading based on user journey
@@ -1637,6 +1746,7 @@ static getAvailableViews(
 ## 🔧 Fix: Image Sizing Warnings & Preload Optimization (2024-01-XX)
 
 ### Problem Analysis
+
 User reported persistent Next.js image sizing warnings and preload resource issues:
 
 1. **Image Sizing Warnings**: `sizes="100vw"` but images not rendered at full viewport width
@@ -1645,6 +1755,7 @@ User reported persistent Next.js image sizing warnings and preload resource issu
 4. **Props Not Propagating**: Sizes prop not being passed correctly through component chain
 
 ### Root Cause Analysis
+
 - **Configurator Layout**: Desktop uses 70% width for preview panel, but told Next.js it was `70vw`
 - **Aggressive Preloading**: Preloading too many images that weren't immediately used
 - **Props Chain Issue**: `sizes` prop being overridden by spread operator in ClientBlobImage
@@ -1653,12 +1764,15 @@ User reported persistent Next.js image sizing warnings and preload resource issu
 ### Solutions Implemented
 
 #### 1. **Accurate Image Sizing** ✅
+
 **Before:**
+
 ```tsx
 sizes={isMobile ? "100vw" : "70vw"}
 ```
 
 **After:**
+
 ```tsx
 sizes={isMobile ? "100vw" : "(min-width: 1024px) 70vw, 100vw"}
 ```
@@ -1666,13 +1780,16 @@ sizes={isMobile ? "100vw" : "(min-width: 1024px) 70vw, 100vw"}
 **Result**: Eliminated all Next.js image sizing warnings by providing accurate breakpoint-based sizing.
 
 #### 2. **Fixed Props Chain in ClientBlobImage** ✅
+
 **Problem**: Props spread was overriding explicit sizes
+
 ```tsx
 // Before - sizes could be overridden by props
 <Image {...props} sizes={sizes} />
 ```
 
 **Solution**: Moved sizes after props spread + added default
+
 ```tsx
 export default function ClientBlobImage({
   sizes = "(min-width: 1024px) 70vw, 100vw", // Default responsive sizes
@@ -1688,51 +1805,60 @@ export default function ClientBlobImage({
 ```
 
 #### 3. **Eliminated Aggressive Preloading** ✅
+
 **Before**: Multiple preloading strategies causing warnings
+
 - KonfiguratorClient: Initial + configuration-based preloading
 - PreviewPanel: Configuration change preloading
 - ImageManager: Predictive preloading
 
 **After**: Temporarily disabled all preloading to eliminate warnings
+
 ```tsx
 // All preloading temporarily disabled (commented out)
 // - KonfiguratorClient initial preloading
-// - PreviewPanel configuration preloading 
+// - PreviewPanel configuration preloading
 // - Conservative approach for production release
 ```
 
 **Result**: Eliminated all "unused preload" warnings.
 
 #### 4. **Improved Placeholder Dimensions** ✅
+
 **Before:**
+
 - HybridBlobImage: `/api/placeholder/800/600`
-- ServerBlobImage: `/api/placeholder/800/600`  
+- ServerBlobImage: `/api/placeholder/800/600`
 - ClientBlobImage: `/api/placeholder/400/300`
 
 **After:**
+
 - All components: `/api/placeholder/1200/800?style=nest&text=Loading...`
 
 **Result**: Better aspect ratio match (3:2) for landscape images, consistent NEST branding.
 
 #### 5. **Debug Logging Added** ✅
+
 ```tsx
 // Development-only debugging to track sizes prop flow
-if (process.env.NODE_ENV === 'development') {
-  console.debug('🖼️ ClientBlobImage sizes:', { sizes, path });
+if (process.env.NODE_ENV === "development") {
+  console.debug("🖼️ ClientBlobImage sizes:", { sizes, path });
 }
 ```
 
 ### Technical Details
 
 #### Accurate Sizes Calculation:
+
 ```tsx
 // Mobile: Full width (100vw)
-// Desktop (≥1024px): 70% of viewport width  
+// Desktop (≥1024px): 70% of viewport width
 // Fallback: 100vw for smaller screens
-sizes="(min-width: 1024px) 70vw, 100vw"
+sizes = "(min-width: 1024px) 70vw, 100vw";
 ```
 
 #### Props Flow Fix:
+
 ```tsx
 // Component chain with correct sizes propagation:
 PreviewPanel → HybridBlobImage → ClientBlobImage
@@ -1741,16 +1867,18 @@ PreviewPanel → HybridBlobImage → ClientBlobImage
 ```
 
 #### Conservative Performance Strategy:
+
 ```tsx
 // Temporarily disabled for stability:
 // - Aggressive preloading (causing warnings)
 // - Predictive image loading
 // - Multiple preload strategies
-// 
+//
 // Focus: Zero warnings, stable performance
 ```
 
 ### Performance Results
+
 - ✅ **Zero Next.js Warnings**: All image sizing warnings eliminated
 - ✅ **No Unused Preloads**: Aggressive preloading disabled
 - ✅ **Correct Responsive Loading**: Accurate sizes for all breakpoints
@@ -1758,6 +1886,7 @@ PreviewPanel → HybridBlobImage → ClientBlobImage
 - ✅ **Stable Performance**: No resource waste or browser warnings
 
 ### Files Modified
+
 - `src/app/konfigurator/components/PreviewPanel.tsx` - Accurate sizes prop + disabled preloading
 - `src/app/konfigurator/components/KonfiguratorClient.tsx` - Disabled aggressive preloading
 - `src/app/konfigurator/core/ImageManager.ts` - Conservative preload strategy
@@ -1766,6 +1895,7 @@ PreviewPanel → HybridBlobImage → ClientBlobImage
 - `src/components/images/ClientBlobImage.tsx` - Fixed props chain + default sizes + debug logging
 
 ### Testing Verification
+
 - ✅ **No Browser Warnings**: All Next.js image warnings resolved
 - ✅ **No Preload Warnings**: Resource preload issues eliminated
 - ✅ **Proper Sizing**: Images display at correct dimensions across devices
@@ -1773,20 +1903,25 @@ PreviewPanel → HybridBlobImage → ClientBlobImage
 - ✅ **Props Chain**: Sizes prop correctly propagated through component hierarchy
 
 ### Performance Monitoring
+
 **Before Fix:**
+
 - Multiple Next.js sizing warnings per image load
 - 5-10 preloaded images per configuration change
 - Resource waste from unused preloads
 - Props override issues
 
 **After Fix:**
+
 - Zero browser warnings
 - No aggressive preloading (temporary measure)
 - Correct responsive image sizing
 - Stable props propagation
 
 ### Next Steps for Re-enabling Preloading
+
 Once warnings are confirmed resolved:
+
 1. **Re-enable conservative preloading** in ImageManager
 2. **Test preload timing** to ensure images are used within window load time
 3. **Monitor Core Web Vitals** impact
@@ -1801,6 +1936,7 @@ This fix prioritizes stability and zero warnings over aggressive performance opt
 ### 🔧 **Configurator State Management Overhaul**
 
 #### **Fixed Dev Mode State Persistence Issue**
+
 - ✅ **DEV MODE**: Forces fresh state on every reload to prevent testing issues
 - ✅ **Production**: Preserves session state across navigation
 - ✅ **Complete Default Configuration**: Now initializes all required categories (nest, gebäudehülle, innenverkleidung, fussboden)
@@ -1808,20 +1944,22 @@ This fix prioritizes stability and zero warnings over aggressive performance opt
 
 ```typescript
 // DEV MODE: Always reset to prevent state persistence across reloads
-if (process.env.NODE_ENV === 'development') {
-  console.debug('🔄 DEV: Forcing fresh configurator state');
-  get().resetConfiguration()
+if (process.env.NODE_ENV === "development") {
+  console.debug("🔄 DEV: Forcing fresh configurator state");
+  get().resetConfiguration();
   return;
 }
 ```
 
 #### **Enhanced Selection Logic**
+
 - ✅ **Visual Change Detection**: Automatically clears image cache when nest, gebäudehülle, innenverkleidung, or fussboden changes
 - ✅ **Part Activation Logic**: Properly matches old configurator behavior for progressive view unlocking
 - ✅ **Cache Management**: Intelligent cache clearing on visual property changes
 - ✅ **Selection Dependencies**: Last selection determines image shown with proper material/color combinations
 
 #### **Comprehensive Debug Logging**
+
 - 🔍 **ConfiguratorStore**: Detailed logging for all selection updates, part activations, cache clearing
 - 🔍 **ImageManager**: Enhanced debugging with cache keys, sizes, and path computation
 - 🔍 **KonfiguratorClient**: Session initialization and state tracking
@@ -1830,12 +1968,14 @@ if (process.env.NODE_ENV === 'development') {
 ### 🖼️ **Image System Optimization**
 
 #### **Redundancy Removal**
+
 - 🗑️ **Removed**: `image-handling/EnhancedBlobImage.tsx` (duplicated HybridBlobImage)
 - 🗑️ **Removed**: `image-handling/BlobImage.tsx` (redundant functionality)
 - 🗑️ **Removed**: `image-handling/EnhancedClientImage.tsx` (unused component)
 - ✅ **Standardized**: Single `HybridBlobImage` component for all new implementations
 
 #### **Cache Management Improvements**
+
 - ✅ **Intelligent Clearing**: Cache cleared automatically on visual property changes
 - ✅ **Debug Information**: Cache size tracking and key logging
 - ✅ **Performance**: Memoized calculations with proper invalidation
@@ -1843,14 +1983,16 @@ if (process.env.NODE_ENV === 'development') {
 ### 🎯 **Selection Logic Accuracy**
 
 #### **Default Configuration Matching Old Configurator**
+
 ```typescript
 nest: { value: 'nest80', name: 'Nest 80' }
-gebaeudehuelle: { value: 'trapezblech', name: 'Trapezblech' }  
+gebaeudehuelle: { value: 'trapezblech', name: 'Trapezblech' }
 innenverkleidung: { value: 'kiefer', name: 'Kiefer' }
 fussboden: { value: 'parkett', name: 'Parkett Eiche' }
 ```
 
 #### **Image Selection Dependencies**
+
 - ✅ **Exterior View**: nest size + gebäudehülle combination (e.g., nest75_plattenschwarz)
 - ✅ **Interior View**: gebäudehülle + innenverkleidung + fussboden combination
 - ✅ **Progressive Views**: Part 2 (interior) activated by innenverkleidung, Part 3 (PV/Fenster) by respective selections
@@ -1859,10 +2001,11 @@ fussboden: { value: 'parkett', name: 'Parkett Eiche' }
 ### 🔍 **Debug Output Examples**
 
 #### **Store Updates**
+
 ```javascript
 🔧 ConfiguratorStore: Updating selection {
   category: "gebaeudehuelle",
-  value: "fassadenplatten_schwarz", 
+  value: "fassadenplatten_schwarz",
   name: "Fassadenplatten Schwarz",
   previousValue: "trapezblech"
 }
@@ -1876,6 +2019,7 @@ fussboden: { value: 'parkett', name: 'Parkett Eiche' }
 ```
 
 #### **Image Manager**
+
 ```javascript
 🖼️ ImageManager: Computing new preview image {
   view: "exterior",
@@ -1884,7 +2028,7 @@ fussboden: { value: 'parkett', name: 'Parkett Eiche' }
   cacheKey: "exterior|nest80|fassadenplatten_schwarz|kiefer|parkett|none|standard"
 }
 ✅ ImageManager: Image path computed and cached {
-  view: "exterior", 
+  view: "exterior",
   imagePath: "100-NEST-Haus-Konfigurator-75-Fassadenplatten-Schwarz-Ansicht",
   cacheSize: 1
 }
@@ -1893,6 +2037,7 @@ fussboden: { value: 'parkett', name: 'Parkett Eiche' }
 ### 📝 **Architecture Compliance**
 
 #### **Following Project Rules**
+
 - ✅ **Client-Side First**: All selections and price calculations happen instantly on client
 - ✅ **Slim & Efficient**: Removed redundant components, optimized caching
 - ✅ **Non-Blocking**: All API calls are background/optional, never block user experience
@@ -1900,6 +2045,7 @@ fussboden: { value: 'parkett', name: 'Parkett Eiche' }
 - ✅ **Performance**: Memoization, intelligent preloading, cache management
 
 #### **Code Quality**
+
 - ✅ **Comprehensive Logging**: Debug information for development troubleshooting
 - ✅ **Error Handling**: Graceful fallbacks, never break user experience
 - ✅ **Type Safety**: Full TypeScript coverage with proper interfaces
@@ -1929,4 +2075,14 @@ fussboden: { value: 'parkett', name: 'Parkett Eiche' }
 
 ---
 
-*Auto-generated entries will appear above this line* 
+_Auto-generated entries will appear above this line_
+
+## Recent Changes
+
+### Build System Fixes (2024-01-XX)
+
+- ✅ **Windows Build Fix**: Resolved Prisma query engine file locking issues on Windows
+  - Used `npm run build:windows` to handle EPERM errors during builds
+  - Successfully killed blocking Node.js processes before Prisma generation
+  - Build now completes successfully with all 35 pages generated
+  - Development server restarted and fully operational
