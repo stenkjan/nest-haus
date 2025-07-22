@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cd8772101e494e11df3a59b3c3afffe5c564b4c7] - Tue Jul 22 17:19:03 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Add .gitkeep files to preserve empty route folders  - Adds .gitkeep to dein-part, entdecken, and unser-part directories - Ensures consistent folder structure across team members - Git doesn't track empty directories, so these placeholder files solve the issue  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/.gitkeep
+- src/app/entdecken/.gitkeep
+- src/app/unser-part/.gitkeep
+
+
+---
+
 ## [e132e182e3139ba4dd9b4feb01946ff69625653e] - Tue Jul 22 17:06:37 2025 +0200
 
 **Author**: stenkjan
