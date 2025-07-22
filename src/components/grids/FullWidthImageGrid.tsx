@@ -9,7 +9,6 @@ interface FullWidthImageGridProps {
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
-  showInstructions?: boolean;
   image?: string;
   textBox1?: string;
   textBox2?: string;
@@ -20,7 +19,6 @@ export default function FullWidthImageGrid({
   title = 'Full Width Image Grid',
   subtitle = 'Large image with two text boxes below',
   maxWidth = true,
-  showInstructions = true,
   image = IMAGES.function.nestHausModulAnsicht,
   textBox1 = "Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du mit dem Nest System alles haben kannst?  Unsere Architekten und Ingenieure haben ein Haus entwickelt, das maximale Freiheit ohne Kompromisse bietet. Durch intelligente Standardisierung garantieren wir höchste",
   textBox2 = "Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl. Dein Zuhause, dein Stil, deine Freiheit. Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.",
@@ -66,9 +64,9 @@ export default function FullWidthImageGrid({
   if (!isClient) {
     return (
       <div className={`${containerClasses} ${backgroundClasses} py-8`}>
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
-          {subtitle && <p className={backgroundColor === 'black' ? 'text-gray-300' : 'text-gray-600'}>{subtitle}</p>}
+        <div className="text-center mb-24">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
+          {subtitle && <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">{subtitle}</p>}
         </div>
         <div className="flex justify-center items-center py-8">
           <div className={`animate-pulse ${backgroundColor === 'black' ? 'bg-gray-700' : 'bg-gray-200'} rounded-3xl`} style={{ width: '100%', height: 400 }} />
@@ -81,9 +79,9 @@ export default function FullWidthImageGrid({
     <div className={`${backgroundClasses} py-8`}>
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
-        <div className="text-center mb-8 px-4 md:px-8">
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
-          {subtitle && <p className={backgroundColor === 'black' ? 'text-gray-300' : 'text-gray-600'}>{subtitle}</p>}
+        <div className="text-center mb-24 px-4 md:px-8">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
+          {subtitle && <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">{subtitle}</p>}
         </div>
       </div>
 
@@ -123,7 +121,7 @@ export default function FullWidthImageGrid({
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <p className={`text-sm md:text-base ${textColorClasses} leading-relaxed ${isMobile ? 'text-center' : 'text-left'}`}>
+              <p className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${isMobile ? 'text-center' : 'text-left'}`}>
                 {textBox1}
               </p>
             </motion.div>
@@ -136,22 +134,13 @@ export default function FullWidthImageGrid({
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
-              <p className={`text-sm md:text-base ${textColorClasses} leading-relaxed ${isMobile ? 'text-center' : 'text-left'}`}>
+              <p className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${isMobile ? 'text-center' : 'text-left'}`}>
                 {textBox2}
               </p>
             </motion.div>
           </div>
         </div>
       </div>
-
-      {/* Instructions */}
-      {showInstructions && (
-        <div className={`${containerClasses}`}>
-          <div className={`text-center mt-8 text-sm px-4 md:px-8 ${backgroundColor === 'black' ? 'text-gray-400' : 'text-gray-500'}`}>
-            <p>Layout: Large image at top, two text boxes below ({isMobile ? 'stacked vertically on mobile' : 'side by side on desktop'})</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 } 

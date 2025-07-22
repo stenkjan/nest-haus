@@ -9,7 +9,6 @@ interface ThreeByOneGridProps {
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
-  showInstructions?: boolean;
   text?: string;
   mobileText?: string;
   image1?: string;
@@ -24,7 +23,6 @@ export default function ThreeByOneGrid({
   title = "3x1 Grid",
   subtitle = "Responsive 3-column layout with text and images",
   maxWidth = true,
-  showInstructions = true,
   text = "Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch intelligente Optimierung – und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert: Präzisionsgefertigte Module, effiziente Fertigung und bewährte Konstruktion sichern höchste Qualität.",
   mobileText,
   image1 = IMAGES.function.nestHausModulKonzept,
@@ -77,19 +75,15 @@ export default function ThreeByOneGrid({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-      <div className={`${containerClasses} ${backgroundClasses} py-8`}>
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
-          {subtitle && (
-            <p
-              className={
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }
-            >
-              {subtitle}
-            </p>
-          )}
-        </div>
+          <div className={`${containerClasses} ${backgroundClasses} py-8`}>
+            <div className="text-center mb-24">
+         <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
+        {subtitle && (
+          <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+            {subtitle}
+          </p>
+        )}
+      </div>
         <div className="flex justify-center items-center py-8">
           <div
             className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"} rounded-3xl`}
@@ -104,14 +98,10 @@ export default function ThreeByOneGrid({
     <div className={`${backgroundClasses} py-8`}>
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
-        <div className="text-center mb-8 px-4 md:px-8">
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
+        <div className="text-center mb-24 px-4 md:px-8">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
           {subtitle && (
-            <p
-              className={
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }
-            >
+            <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
               {subtitle}
             </p>
           )}
@@ -133,7 +123,7 @@ export default function ThreeByOneGrid({
                 transition={{ duration: 0.6 }}
               >
                 <p
-                  className={`text-sm md:text-base ${textColorClasses} leading-relaxed text-center`}
+                  className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
                 >
                   {displayText}
                 </p>
@@ -335,7 +325,7 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <p
-                      className={`text-sm lg:text-base ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
                     >
                       {displayText}
                     </p>
@@ -523,7 +513,7 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <p
-                      className={`text-sm lg:text-base ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
                     >
                       {displayText}
                     </p>
@@ -618,26 +608,6 @@ export default function ThreeByOneGrid({
           </div>
         )}
       </div>
-
-      {/* Instructions */}
-      {showInstructions && (
-        <div className={`${containerClasses}`}>
-          <div
-            className={`text-center mt-8 text-sm px-4 md:px-8 ${backgroundColor === "black" ? "text-gray-400" : "text-gray-500"}`}
-          >
-            {isMobile ? (
-              <p>Mobile layout: Text above, images below in responsive grid</p>
-            ) : (
-              <p>
-                Desktop layout: 3 columns with text {textPosition}, images{" "}
-                {textPosition === "left"
-                  ? "center and right"
-                  : "left and center"}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
