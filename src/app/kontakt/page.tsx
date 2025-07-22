@@ -1,9 +1,117 @@
-"use client";
-
+import type { Metadata } from "next";
 import { Suspense } from "react";
-import { GrundstueckCheckDialog } from "@/components/dialogs";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
+import GrundstueckCheckWrapper from "./components/GrundstueckCheckWrapper";
+
+// Enhanced SEO metadata for the contact page
+export const metadata: Metadata = {
+  title: "Kontakt | NEST-Haus | Beratung & Terminvereinbarung",
+  description:
+    "Vereinbaren Sie einen kostenlosen Beratungstermin mit NEST-Haus. Professionelle Beratung für Ihr modulares Traumhaus. Jetzt Termin buchen!",
+  keywords:
+    "nest haus kontakt, beratungstermin, modulhaus beratung, hausbau beratung, kostenlose beratung, termin vereinbaren",
+  alternates: {
+    canonical: "https://nest-haus.com/kontakt",
+  },
+  openGraph: {
+    title: "NEST-Haus Kontakt | Kostenlose Beratung",
+    description:
+      "Vereinbaren Sie einen kostenlosen Beratungstermin mit NEST-Haus. Professionelle Beratung für Ihr modulares Traumhaus.",
+    url: "https://nest-haus.com/kontakt",
+    images: [
+      {
+        url: "/images/kontakt-beratung.jpg",
+        width: 1200,
+        height: 630,
+        alt: "NEST-Haus Beratungstermin",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NEST-Haus Kontakt | Kostenlose Beratung",
+    description:
+      "Vereinbaren Sie einen kostenlosen Beratungstermin mit NEST-Haus.",
+    images: ["/images/kontakt-twitter.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+// Structured Data for Contact Page
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "NEST-Haus Kontakt",
+  description:
+    "Kontaktieren Sie NEST-Haus für eine kostenlose Beratung zu modularen Häusern",
+  url: "https://nest-haus.com/kontakt",
+};
+
+// Local Business Schema for Contact Information
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "NEST-Haus",
+  image: "https://nest-haus.com/images/nest-haus-buero.jpg",
+  email: "office@nest-haus.at",
+  telephone: "+43 1 234 5678",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Musterstraße 123",
+    addressLocality: "Wien",
+    postalCode: "1010",
+    addressCountry: "AT",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 48.2082,
+    longitude: 16.3738,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "08:00",
+      closes: "18:00",
+    },
+  ],
+  priceRange: "€€€",
+  paymentAccepted: "Cash, Credit Card, Bank Transfer",
+};
+
+// Service Schema for Consultation
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Kostenlose Hausbau Beratung",
+  description:
+    "Professionelle Beratung für modulare Häuser und nachhaltiges Bauen",
+  provider: {
+    "@type": "Organization",
+    name: "NEST-Haus",
+  },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "EUR",
+    description: "Kostenlose Erstberatung",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "Austria",
+  },
+};
 
 // Embedded Calendar Component for Contact Page
 const ContactCalendar = () => {
@@ -95,198 +203,220 @@ const ContactCalendar = () => {
   );
 };
 
+// Server Component - Can handle SEO, metadata, and structured data
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Vereinbare jetzt deinen Termin - Section 1 */}
-      <section className="relative bg-gray-50 py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Vereinbare jetzt deinen Termin
-            </h1>
-            <p className="text-lg text-gray-600 mb-2">Wir beraten gerne.</p>
-            <p className="text-sm text-gray-500">Jänner 2025</p>
-          </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contactSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceSchema),
+        }}
+      />
+      <div className="min-h-screen bg-white">
+        {/* Vereinbare jetzt deinen Termin - Section 1 */}
+        <section className="relative bg-gray-50 py-16 px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Vereinbare jetzt deinen Termin
+              </h1>
+              <p className="text-lg text-gray-600 mb-2">Wir beraten gerne.</p>
+              <p className="text-sm text-gray-500">Jänner 2025</p>
+            </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Left side - Calendar and contact info */}
-            <div className="space-y-8">
-              {/* Calendar component */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <ContactCalendar />
+            <div className="grid md:grid-cols-2 gap-12 items-start">
+              {/* Left side - Calendar and contact info */}
+              <div className="space-y-8">
+                {/* Calendar component */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <ContactCalendar />
+                </div>
+
+                {/* Contact information */}
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      Kontakt
+                    </h3>
+                    <div className="space-y-1 text-gray-600">
+                      <p>📧 office@nest-haus.at</p>
+                      <p>📱 +43 1 234 5678</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      Adresse
+                    </h3>
+                    <div className="space-y-1 text-gray-600">
+                      <p>NEST Haus GmbH</p>
+                      <p>Musterstraße 123</p>
+                      <p>1010 Wien, Österreich</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Contact information */}
+              {/* Right side - Additional info */}
               <div className="space-y-6">
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Kontakt</h3>
-                  <div className="space-y-1 text-gray-600">
-                    <p>📧 office@nest-haus.at</p>
-                    <p>📱 +43 1 234 5678</p>
-                  </div>
+                <div className="bg-blue-50 rounded-lg p-6">
+                  <h3 className="font-semibold text-blue-900 mb-3">
+                    Beratungstermin vereinbaren
+                  </h3>
+                  <p className="text-blue-800 mb-4">
+                    Lass uns dein Traumhaus gemeinsam planen. In einem
+                    persönlichen Gespräch besprechen wir deine Wünsche und
+                    Vorstellungen.
+                  </p>
+                  <ul className="space-y-2 text-blue-800">
+                    <li>✓ Kostenlose Erstberatung</li>
+                    <li>✓ Individuelle Planung</li>
+                    <li>✓ Transparente Preise</li>
+                  </ul>
                 </div>
 
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Adresse</h3>
-                  <div className="space-y-1 text-gray-600">
-                    <p>NEST Haus GmbH</p>
-                    <p>Musterstraße 123</p>
-                    <p>1010 Wien, Österreich</p>
-                  </div>
+                <div className="text-center">
+                  <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Termin Anfragen
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Right side - Additional info */}
-            <div className="space-y-6">
-              <div className="bg-blue-50 rounded-lg p-6">
-                <h3 className="font-semibold text-blue-900 mb-3">
-                  Beratungstermin vereinbaren
-                </h3>
-                <p className="text-blue-800 mb-4">
-                  Lass uns dein Traumhaus gemeinsam planen. In einem
-                  persönlichen Gespräch besprechen wir deine Wünsche und
-                  Vorstellungen.
-                </p>
-                <ul className="space-y-2 text-blue-800">
-                  <li>✓ Kostenlose Erstberatung</li>
-                  <li>✓ Individuelle Planung</li>
-                  <li>✓ Transparente Preise</li>
-                </ul>
-              </div>
+        {/* Wo du uns findest - Section 2 */}
+        <section className="py-16 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Wo du uns findest
+              </h2>
+              <p className="text-lg text-gray-600">
+                Komm vorbei und lass dich von unserem Team beraten.
+              </p>
+            </div>
 
-              <div className="text-center">
-                <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                  Termin Anfragen
-                </button>
-              </div>
+            {/* Map image - Optimized for client-side loading */}
+            <div className="relative w-full overflow-hidden rounded-lg shadow-lg">
+              <HybridBlobImage
+                path={IMAGES.function.nestHausGrundstueckCheck}
+                strategy="client"
+                isAboveFold={false}
+                isCritical={false}
+                isInteractive={false}
+                enableCache={true}
+                enableMobileDetection={false}
+                showLoadingSpinner={false}
+                alt="NEST Haus Standort Wien, Musterstraße 123 - Anfahrt und Kontakt"
+                width={1200}
+                height={675}
+                sizes="(max-width: 768px) 100vw, 90vw"
+                className="w-full h-auto object-cover"
+                priority={false}
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Wo du uns findest - Section 2 */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Wo du uns findest
-            </h2>
-            <p className="text-lg text-gray-600">
-              Komm vorbei und lass dich von unserem Team beraten.
-            </p>
-          </div>
+        {/* Dein Grundstück - Unser Check - Section 3 */}
+        <section className="bg-gray-50 py-16 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Dein Grundstück - Unser Check
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                Wir überprüfen für dich wie dein neues Haus auf ein Grundstück
+                deiner Wahl passt
+              </p>
+            </div>
 
-          {/* Map image - Optimized for client-side loading */}
-          <div className="relative w-full overflow-hidden rounded-lg shadow-lg">
-            <HybridBlobImage
-              path={IMAGES.function.nestHausGrundstueckCheck}
-              strategy="client"
-              isAboveFold={false}
-              isCritical={false}
-              isInteractive={false}
-              enableCache={true}
-              enableMobileDetection={false}
-              showLoadingSpinner={false}
-              alt="NEST Haus Standort und Grundstück Check"
-              width={1200}
-              height={675}
-              sizes="(max-width: 768px) 100vw, 90vw"
-              className="w-full h-auto object-cover"
-              priority={false}
-            />
-          </div>
-        </div>
-      </section>
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              {/* Left side - Information */}
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <p className="text-gray-700 leading-relaxed">
+                    Bevor dein Traum vom Nest-Haus Realität wird, ist es
+                    wichtig, dass dein Grundstück alle{" "}
+                    <span className="font-semibold">
+                      rechtlichen und baulichen Anforderungen
+                    </span>{" "}
+                    erfüllt. Genau hier setzen wir an!
+                  </p>
 
-      {/* Dein Grundstück - Unser Check - Section 3 */}
-      <section className="bg-gray-50 py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Dein Grundstück - Unser Check
-            </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Wir überprüfen für dich wie dein neues Haus auf ein Grundstück
-              deiner Wahl passt
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Left side - Information */}
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig,
-                  dass dein Grundstück alle{" "}
-                  <span className="font-semibold">
-                    rechtlichen und baulichen Anforderungen
-                  </span>{" "}
-                  erfüllt. Genau hier setzen wir an!
-                </p>
-
-                <p className="text-gray-700 leading-relaxed">
-                  <span className="font-bold">Für nur € 200,-</span> übernehmen
-                  wir für dich die Prüfung der relevanten Rahmenbedingungen und
-                  Baugesetze, um dir{" "}
-                  <span className="font-bold">Sicherheit und Klarheit</span> zu
-                  verschaffen. Jetzt den{" "}
-                  <span className="font-bold">Quick-Check</span> machen und uns
-                  die rechtlichen und baulichen Voraussetzungen deines
-                  Grundstücks prüfen lassen, damit du{" "}
-                  <span className="font-bold">
-                    entspannt und sicher in die Planung deines Nest-Hauses
-                    starten
-                  </span>{" "}
-                  kannst.
-                </p>
-              </div>
-
-              <div className="space-y-4 pt-4">
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">
-                    Was wir prüfen
-                  </h4>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    Rechtliche Rahmenbedingungen: Wir prüfen, ob dein Grundstück
-                    den Vorgaben des jeweiligen Landes-Baugesetzes, des
-                    Raumordnungsgesetzes und ortsgebundener Vorschriften
-                    entspricht.
+                  <p className="text-gray-700 leading-relaxed">
+                    <span className="font-bold">Für nur € 200,-</span>{" "}
+                    übernehmen wir für dich die Prüfung der relevanten
+                    Rahmenbedingungen und Baugesetze, um dir{" "}
+                    <span className="font-bold">Sicherheit und Klarheit</span>{" "}
+                    zu verschaffen. Jetzt den{" "}
+                    <span className="font-bold">Quick-Check</span> machen und
+                    uns die rechtlichen und baulichen Voraussetzungen deines
+                    Grundstücks prüfen lassen, damit du{" "}
+                    <span className="font-bold">
+                      entspannt und sicher in die Planung deines Nest-Hauses
+                      starten
+                    </span>{" "}
+                    kannst.
                   </p>
                 </div>
 
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">
-                    Baugesetze
-                  </h4>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    Alle relevanten Bauvorschriften werden detailliert
-                    überprüft, um sicherzustellen, dass dein Bauvorhaben
-                    genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
-                    stellen fest, ob dein Grundstück alle notwendigen
-                    Voraussetzungen für den Aufbau deines Nest-Hauses erfüllt.
-                  </p>
+                <div className="space-y-4 pt-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-2">
+                      Was wir prüfen
+                    </h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Rechtliche Rahmenbedingungen: Wir prüfen, ob dein
+                      Grundstück den Vorgaben des jeweiligen Landes-Baugesetzes,
+                      des Raumordnungsgesetzes und ortsgebundener Vorschriften
+                      entspricht.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-2">
+                      Baugesetze
+                    </h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Alle relevanten Bauvorschriften werden detailliert
+                      überprüft, um sicherzustellen, dass dein Bauvorhaben
+                      genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
+                      stellen fest, ob dein Grundstück alle notwendigen
+                      Voraussetzungen für den Aufbau deines Nest-Hauses erfüllt.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Right side - Form */}
-            <div className="bg-white rounded-lg shadow-sm p-6 lg:p-8">
-              <Suspense
-                fallback={
-                  <div className="animate-pulse bg-gray-200 h-96 rounded"></div>
-                }
-              >
-                <GrundstueckCheckDialog 
-                  isOpen={true} 
-                  onClose={() => {}} 
-                />
-              </Suspense>
+              {/* Right side - Form */}
+              <div className="bg-white rounded-lg shadow-sm p-6 lg:p-8">
+                <Suspense
+                  fallback={
+                    <div className="animate-pulse bg-gray-200 h-96 rounded"></div>
+                  }
+                >
+                  <GrundstueckCheckWrapper />
+                </Suspense>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 }
