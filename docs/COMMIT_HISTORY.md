@@ -4,6 +4,51 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2f8f7a76fd5326b4bb96be284d3c8c442bc80be9] - Wed Jul 23 13:55:53 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update text styles in ContentCards and ContentCardsGlass components for improved readability  - Enhanced text sizes in ContentCards and ContentCardsGlass components to improve visual hierarchy and readability. - Removed unnecessary navigation instructions in ContentCardsGlass for a cleaner user experience. - Added new image constants for better asset management.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/page.tsx
+- src/app/unser-part/page.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/ui/Button.tsx
+
+
+---
+
+## [fa1ee8783ce999b8f7f5e2a0db21d24cb0ab969a] - Tue Jul 22 18:38:25 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [cd8772101e494e11df3a59b3c3afffe5c564b4c7] - Tue Jul 22 17:19:03 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Add .gitkeep files to preserve empty route folders  - Adds .gitkeep to dein-part, entdecken, and unser-part directories - Ensures consistent folder structure across team members - Git doesn't track empty directories, so these placeholder files solve the issue  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/.gitkeep
+- src/app/entdecken/.gitkeep
+- src/app/unser-part/.gitkeep
+
+
+---
+
 ## [e132e182e3139ba4dd9b4feb01946ff69625653e] - Tue Jul 22 17:06:37 2025 +0200
 
 **Author**: stenkjan

@@ -35,6 +35,7 @@ export const IMAGES = {
 
     // Function/Process images
     function: {
+        nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
         nestHausModulSchema: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung',
         nestHausModulAnsicht: '20-NEST-Haus-Modul-Ansicht-Stirnseite-Holz-Schema-Konzept',
         nestHausModulKonzept: '21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept',
@@ -170,6 +171,7 @@ export const IMAGES = {
 
     // Material detail images for dialogs
     materials: {
+        holzFichte: '58-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Fichte-natur-hell',
         schiefer: '57-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Schiefer-Feinsteinzeug',
         laercheFassade: '52-NEST-Haus-Materialien-Oberflaechen-Fassade-Laerche-Bauholz-Lattung',
         kalkstein: '56-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Kalkstein-Kanafar',

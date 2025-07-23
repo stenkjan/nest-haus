@@ -9,7 +9,6 @@ interface ThreeByOneAdaptiveHeightProps {
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
-  showInstructions?: boolean;
   text?: string;
   image?: string;
   imageDescription?: string;
@@ -20,7 +19,6 @@ export default function ThreeByOneAdaptiveHeight({
   title = "3x1 Grid with Adaptive Height",
   subtitle = "Standard grid layout with flexible middle cell height",
   maxWidth = false, // Default to false to avoid width constraints
-  showInstructions = true,
   text = "Mit deinem Nest-Haus bestimmst du selbst, wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit passgenauen Öffnungen an. Dort platzieren wir im Anschluss deine Fenster & Türen.",
   image = IMAGES.function.nestHausFensterTuerenPosition,
   imageDescription = "NEST Haus Fenster und Türen Positionierung Konzept",
@@ -65,19 +63,15 @@ export default function ThreeByOneAdaptiveHeight({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-      <div className={`${containerClasses} ${backgroundClasses} py-8`}>
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
-          {subtitle && (
-            <p
-              className={
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }
-            >
-              {subtitle}
-            </p>
-          )}
-        </div>
+          <div className={`${containerClasses} ${backgroundClasses} py-8`}>
+            <div className="text-center mb-24">
+         <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
+        {subtitle && (
+          <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+            {subtitle}
+          </p>
+        )}
+      </div>
         <div className="flex justify-center items-center py-8">
           <div
             className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"} rounded-3xl`}
@@ -92,14 +86,10 @@ export default function ThreeByOneAdaptiveHeight({
     <div className={`${backgroundClasses} py-8`}>
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
-        <div className="text-center mb-8 px-4 md:px-8">
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
+        <div className="text-center mb-24 px-4 md:px-8">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
           {subtitle && (
-            <p
-              className={
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }
-            >
+            <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
               {subtitle}
             </p>
           )}
@@ -143,7 +133,7 @@ export default function ThreeByOneAdaptiveHeight({
               transition={{ delay: 0.2, duration: 0.6 }}
             >
               <p
-                className={`text-sm md:text-base ${textColorClasses} leading-relaxed text-center`}
+                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
               >
                 {text}
               </p>
@@ -197,7 +187,7 @@ export default function ThreeByOneAdaptiveHeight({
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <p
-                className={`text-sm lg:text-base ${textColorClasses} leading-relaxed text-left`}
+                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
               >
                 {text}
               </p>
@@ -205,23 +195,6 @@ export default function ThreeByOneAdaptiveHeight({
           </div>
         )}
       </div>
-
-      {/* Instructions */}
-      {showInstructions && (
-        <div className={`${containerClasses}`}>
-          <div
-            className={`text-center mt-8 text-sm px-4 md:px-8 ${backgroundColor === "black" ? "text-gray-400" : "text-gray-500"}`}
-          >
-            {isMobile ? (
-              <p>Mobile layout: Image above, text below</p>
-            ) : (
-              <p>
-                Desktop layout: Side cells 4/3 ratio, middle cell height adapts to image (no width constraints)
-              </p>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 } 
