@@ -4,6 +4,73 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [89d09138894a97db0edb4bf2a0e7a46a12bb0402] - Wed Jul 23 14:22:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [64473ed6539baf9aca829c266d994f89e3ac4734] - Wed Jul 23 14:07:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [cc102ddc0180ee0d5741a36509d315a4daaef708] - Wed Jul 23 14:06:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/page.tsx
+- src/app/unser-part/page.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/ui/Button.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [2f8f7a76fd5326b4bb96be284d3c8c442bc80be9] - Wed Jul 23 13:55:53 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update text styles in ContentCards and ContentCardsGlass components for improved readability  - Enhanced text sizes in ContentCards and ContentCardsGlass components to improve visual hierarchy and readability. - Removed unnecessary navigation instructions in ContentCardsGlass for a cleaner user experience. - Added new image constants for better asset management.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/page.tsx
+- src/app/unser-part/page.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/ui/Button.tsx
+
+
+---
+
 ## [fa1ee8783ce999b8f7f5e2a0db21d24cb0ab969a] - Tue Jul 22 18:38:25 2025 +0200
 
 **Author**: stenkjan
