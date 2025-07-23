@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ClientBlobVideo } from "@/components/images";
+import Link from "next/link";
 
 export default function VideoShowcase() {
   return (
@@ -10,9 +11,22 @@ export default function VideoShowcase() {
         <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
           ClientBlobVideo Showcase
         </h1>
-        <h2 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-16 max-w-3xl mx-auto text-center text-gray-600">
+        <h2 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-gray-600">
           Demonstrating video loading capabilities with blob storage integration
         </h2>
+
+        {/* Debug Test Link */}
+        <div className="text-center mb-16">
+          <Link 
+            href="/showcase/videos/reverse-test"
+            className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            🔧 Debug Reverse Playback Test
+          </Link>
+          <p className="text-sm text-gray-500 mt-2">
+            Interactive debugging tool for reverse playback functionality
+          </p>
+        </div>
 
         <div className="grid gap-12">
           {/* Basic Video Example */}
