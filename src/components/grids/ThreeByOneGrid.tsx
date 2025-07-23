@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { HybridBlobImage } from "@/components/images";
+import { Button } from "@/components/ui";
 import { IMAGES } from "@/constants/images";
 
 interface ThreeByOneGridProps {
@@ -17,6 +18,9 @@ interface ThreeByOneGridProps {
   image2Description?: string;
   textPosition?: "left" | "right";
   backgroundColor?: "white" | "black";
+  showButtons?: boolean;
+  primaryButtonText?: string;
+  secondaryButtonText?: string;
 }
 
 export default function ThreeByOneGrid({
@@ -31,6 +35,9 @@ export default function ThreeByOneGrid({
   image2Description = "Seitenansicht verdeutlicht die optimierte Statik",
   textPosition = "left",
   backgroundColor = "white",
+  showButtons = false,
+  primaryButtonText = "Primary Action",
+  secondaryButtonText = "Secondary Action",
 }: ThreeByOneGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -116,7 +123,7 @@ export default function ThreeByOneGrid({
             {/* Text Section */}
             <div className="px-4 md:px-8">
               <motion.div
-                className="flex items-center justify-center"
+                className="flex flex-col items-center justify-center space-y-6"
                 style={{ minHeight: "200px" }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -127,6 +134,16 @@ export default function ThreeByOneGrid({
                 >
                   {displayText}
                 </p>
+                {showButtons && (
+                  <div className="flex gap-4 justify-center">
+                    <Button variant="primary" size="xs">
+                      {primaryButtonText}
+                    </Button>
+                    <Button variant="secondary" size="xs">
+                      {secondaryButtonText}
+                    </Button>
+                  </div>
+                )}
               </motion.div>
             </div>
 
@@ -319,7 +336,7 @@ export default function ThreeByOneGrid({
                 <>
                   {/* Main text - first column, first row */}
                   <motion.div
-                    className="flex items-center justify-center"
+                    className="flex flex-col items-start justify-center space-y-6"
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}
@@ -329,6 +346,16 @@ export default function ThreeByOneGrid({
                     >
                       {displayText}
                     </p>
+                    {showButtons && (
+                      <div className="flex gap-4 justify-center w-full">
+                        <Button variant="primary" size="xs">
+                          {primaryButtonText}
+                        </Button>
+                        <Button variant="secondary" size="xs">
+                          {secondaryButtonText}
+                        </Button>
+                      </div>
+                    )}
                   </motion.div>
                   {/* Image 1 - second column, first row */}
                   <motion.div
@@ -507,7 +534,7 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Main text - third column, first row */}
                   <motion.div
-                    className="flex items-center justify-center"
+                    className="flex flex-col items-start justify-center space-y-6"
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}
@@ -517,6 +544,16 @@ export default function ThreeByOneGrid({
                     >
                       {displayText}
                     </p>
+                    {showButtons && (
+                      <div className="flex gap-4 justify-center w-full">
+                        <Button variant="primary" size="xs">
+                          {primaryButtonText}
+                        </Button>
+                        <Button variant="secondary" size="xs">
+                          {secondaryButtonText}
+                        </Button>
+                      </div>
+                    )}
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div

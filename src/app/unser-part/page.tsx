@@ -136,10 +136,10 @@ export default function UnserPartPage() {
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-24">
               <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
-                NEST-Haus Modul Schema
+                Dein Nest System
               </h2>
               <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
-                Modulare Bauweise im Detail
+              Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft. 
               </p>
             </div>
             
@@ -163,11 +163,11 @@ export default function UnserPartPage() {
           </div>
         </section>
 
-        {/* ThreeByOneGrid */}
+        {/* Combined ThreeByOneGrid Section */}
         <section className="pt-20 pb-8">
           <ThreeByOneGrid
-            title="Qualitätssicherung & Montage"
-            subtitle="Präzision in jedem Detail"
+            title="Manchmal kommt es auf die Größe an."
+            subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
             backgroundColor="black"
             text="Unsere Qualitätssicherung beginnt bereits in der Planungsphase und setzt sich durch den gesamten Fertigungsprozess fort. Jedes Modul wird nach strengsten Standards gefertigt und vor der Auslieferung umfassend geprüft."
             mobileText="Qualitätssicherung und Präzision in jedem Arbeitsschritt - das ist unser Versprechen für dein NEST-Haus."
@@ -176,11 +176,11 @@ export default function UnserPartPage() {
           />
         </section>
 
-        {/* ThreeByOneGrid - Right Position */}
-        <section className="pt-20 pb-8">
+        {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
+        <section className="pt-4 pb-8">
           <ThreeByOneGrid
-            title="3x1 Grid - Right Position"
-            subtitle="3-column layout: text right, images left and center • Black background variant"
+            title=""
+            subtitle=""
             backgroundColor="black"
             text="Seitliche Ansicht des Moduls zeigt die durchdachte Konstruktion und die optimierte Statik. Jedes Modul ist selbsttragend und kann flexibel mit anderen Modulen kombiniert werden. Die präzise Fertigung garantiert perfekte Passgenauigkeit und höchste Qualität."
             textPosition="right"
@@ -195,8 +195,8 @@ export default function UnserPartPage() {
         {/* FullWidthImageGrid */}
         <section className="pt-20 pb-8">
           <FullWidthImageGrid
-            title="Unser Beitrag zum Erfolg"
-            subtitle="Qualität durch systematische Herangehensweise"
+            title="Raum zum Träumen"
+            subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
             backgroundColor="black"
             textBox1="Durch unsere systematische Herangehensweise und bewährte Prozesse stellen wir sicher, dass jedes NEST-Haus den höchsten Qualitätsstandards entspricht. Von der Planung über die Fertigung bis zur Montage - wir überwachen jeden Schritt."
             textBox2="Unser Part ist es, komplexe Bauprojekte zu vereinfachen und für dich transparent zu gestalten. Mit modernen Planungstools und durchdachten Abläufen machen wir den Hausbau zu einem entspannten Erlebnis."
@@ -210,10 +210,10 @@ export default function UnserPartPage() {
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-24">
               <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
-                Gut für Dich, besser für die Zukunft
+              Gut für Dich, besser für die Zukunft
               </h2>
               <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
-                Entdecke unsere sorgfältig ausgewählten Materialien
+              Entdecke unsere sorgfältig ausgewählten Materialien
               </p>
             </div>
           </div>
@@ -231,8 +231,8 @@ export default function UnserPartPage() {
         {/* ThreeByOneAdaptiveHeight Grid */}
         <section className="pt-20 pb-8">
           <ThreeByOneAdaptiveHeight
-            title="Expertise & Beratung"
-            subtitle="Professionelle Begleitung in jeder Phase"
+            title="Fenster & Türen"
+            subtitle="Deine Fenster- und Türöffnungen werden dort platziert, wo du es möchtest."
             backgroundColor="black"
             text="Unser erfahrenes Team begleitet dich von der ersten Idee bis zum Einzug in dein neues Zuhause. Mit jahrelanger Expertise im modularen Hausbau sorgen wir dafür, dass dein Projekt reibungslos und termingerecht realisiert wird."
             imageDescription="NEST-Haus Expertise und professionelle Beratung"
@@ -241,10 +241,10 @@ export default function UnserPartPage() {
         </section>
 
         {/* ThreeByOneGrid - Left Position (Bottom Section) */}
-        <section className="pt-20 pb-8">
+        <section className="pt-4 pb-8">
           <ThreeByOneGrid
-            title="Dein Part der Gestaltung"
-            subtitle="Fenster, Türen und Raum – alles nach deinem Plan"
+            title=""
+            subtitle=""
             backgroundColor="black"
             text="Sobald die Module geliefert sind, beginnt dein Teil der Gestaltung. Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt deinem Plan, jeder Schritt bringt dich deinem Zuhause näher. Du bestimmst, wo Licht einfällt, wo Wege beginnen und wie dein Raum sich öffnet. So entsteht nicht nur ein Haus, sondern ein Ort, der ganz dir gehört."
             textPosition="left"
@@ -256,10 +256,10 @@ export default function UnserPartPage() {
           />
         </section>
         {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-        <section className="pt-20 pb-8">
+        <section className="pt-4 pb-20">
           <ThreeByOneGrid
-            title="Planungspakete & Unterstützung"
-            subtitle="Individuelle Hilfe für deine Vision"
+            title=""
+            subtitle=""
             backgroundColor="black"
             text="Solltest du Unterstützung bei der Planung benötigen, kannst du eines unserer Planungspakete wählen. So erhältst du genau die Hilfe, die du brauchst, um deine Vision Wirklichkeit werden zu lassen."
             textPosition="right"
@@ -268,6 +268,9 @@ export default function UnserPartPage() {
             image2="31-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Mittelmodul-Liniengrafik"
             image1Description="Modul Seitenansicht Holz Schema Konzept"
             image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
+            showButtons={true}
+            primaryButtonText="Die Pakete"
+            secondaryButtonText="Mehr erfahren"
           />
         </section>
       </div>
