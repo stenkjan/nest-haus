@@ -129,8 +129,8 @@ const sectionsContent = [
 ];
 
 export default function LandingPageClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("section1");
-  const { isMobile } = useDeviceDetect();
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("section1");
+  const { isMobile: _isMobile } = useDeviceDetect();
 
   // Landing page specific image styling - applies to all 8 images
   const landingImageStyle = {

@@ -15,8 +15,8 @@ const sections = [
 ];
 
 export default function KontaktClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("calendar");
-  const { isMobile } = useDeviceDetect();
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("calendar");
+  const { isMobile: _isMobile } = useDeviceDetect();
 
   return (
     <div className="min-h-screen pt-16">

@@ -21,10 +21,12 @@ export const SectionRouter = ({
   children,
   onSectionChange,
 }: SectionRouterProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const _router = useRouter();
+  const _pathname = usePathname();
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const [currentSection, setCurrentSection] = useState<string>(sections[0]?.id || '');
+  const [_currentSection, setCurrentSection] = useState<string>(
+    sections[0]?.id || ""
+  );
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Handle hash changes and scroll to section
@@ -112,7 +114,7 @@ export const SectionRouter = ({
               ref: (el: HTMLDivElement) => setSectionRef(sectionId, el),
               id: section.slug,
               "data-section-id": sectionId,
-            } as any);
+            } as React.HTMLAttributes<HTMLDivElement>);
           }
         }
         return child;
@@ -121,4 +123,4 @@ export const SectionRouter = ({
   );
 };
 
-export default SectionRouter; 
+export default SectionRouter;

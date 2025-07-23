@@ -19,6 +19,8 @@ export type ButtonSize =
   | "xs"
   | "sm"
   | "md"
+  | "lg"
+  | "xl"
   | "responsive";
 
 export interface ButtonProps
@@ -46,6 +48,10 @@ const Button: React.FC<ButtonProps> = ({
         return "w-32 sm:w-36 lg:w-40 xl:w-44";
       case "md":
         return "w-36 sm:w-40 lg:w-44 xl:w-48";
+      case "lg":
+        return "w-40 sm:w-44 lg:w-48 xl:w-52 2xl:w-56";
+      case "xl":
+        return "w-44 sm:w-48 lg:w-52 xl:w-56 2xl:w-60";
       case "responsive":
         return "w-40 sm:w-44 lg:w-48 xl:w-52";
       default:
@@ -90,6 +96,8 @@ const Button: React.FC<ButtonProps> = ({
     xs: "px-2 py-1.5 text-sm xl:text-base 2xl:text-xl",
     sm: "px-3 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
     md: "px-4 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl",
+    lg: "px-6 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl",
+    xl: "px-8 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl",
     responsive:
       "px-4 py-1.5 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl", // Responsive for landing
   };
