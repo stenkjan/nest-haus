@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2f8f7a76fd5326b4bb96be284d3c8c442bc80be9] - Wed Jul 23 13:55:53 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update text styles in ContentCards and ContentCardsGlass components for improved readability  - Enhanced text sizes in ContentCards and ContentCardsGlass components to improve visual hierarchy and readability. - Removed unnecessary navigation instructions in ContentCardsGlass for a cleaner user experience. - Added new image constants for better asset management.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/page.tsx
+- src/app/unser-part/page.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/ui/Button.tsx
+
+
+---
+
 ## [fa1ee8783ce999b8f7f5e2a0db21d24cb0ab969a] - Tue Jul 22 18:38:25 2025 +0200
 
 **Author**: stenkjan
