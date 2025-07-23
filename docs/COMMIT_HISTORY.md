@@ -4,6 +4,57 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [85b73ce6c2d7f808632c9c7337aed6e0d7ea96d7] - Wed Jul 23 15:32:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance layout and text structure in KontaktClient and GrundstueckCheckWrapper  - Updated padding and margins in KontaktClient for improved spacing and readability. - Adjusted section titles and subtitles for better clarity and engagement. - Refactored GrundstueckCheckWrapper to streamline the form layout and enhance user experience. - Removed unnecessary div wrappers to simplify the component structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+- src/app/kontakt/components/GrundstueckCheckWrapper.tsx
+
+
+---
+
+## [cbdaeddfa0f59d2694e97d1433b6d7863aab4ac3] - Wed Jul 23 14:37:01 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/api/images/route.ts
+- src/app/dein-part/page.tsx
+- src/app/globals.css
+- src/app/kontakt/KontaktClient.tsx
+- src/app/kontakt/components/AppointmentBooking.tsx
+- src/app/kontakt/components/GrundstueckCheckWrapper.tsx
+- src/app/kontakt/page.tsx
+- src/app/page.tsx
+- src/app/showcase/videos/VideoIntegrationExample.tsx
+- src/app/showcase/videos/page.tsx
+- src/app/unser-part/page.tsx
+- src/components/SectionRouter.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/images/index.ts
+- src/components/ui/Button.tsx
+- src/hooks/index.ts
+- src/hooks/useDeviceDetect.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/ClientBlobVideo_Implementation_Guide.md
+- docs/IMAGE_OPTIMIZATION_GUIDE.md
+- docs/SectionRouter_Documentation.md
+
+
+---
+
 ## [89d09138894a97db0edb4bf2a0e7a46a12bb0402] - Wed Jul 23 14:22:41 2025 +0200
 
 **Author**: stenkjan

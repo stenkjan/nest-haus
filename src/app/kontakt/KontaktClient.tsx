@@ -23,11 +23,11 @@ export default function KontaktClient() {
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
         <section id="calendar" className="w-full py-16 bg-white">
-          <div className="w-full">
+          <div className="w-full px-[7.5%]">
             <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
               Vereinbare jetzt deinen Termin
             </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-12 max-w-3xl mx-auto text-center">
               Wir helfen gerne.
             </h3>
             <Suspense
@@ -42,7 +42,7 @@ export default function KontaktClient() {
 
         {/* Wo du uns findest - Section 2 */}
         <section id="address" className="w-full py-16 bg-gray-50">
-          <div className="w-full px-[5%]">
+          <div className="w-full px-[8%]">
             <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
               Wo du uns findest
             </h2>
@@ -51,7 +51,7 @@ export default function KontaktClient() {
             </h3>
             <div
               className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
-              style={{ border: "5px solid #F4F4F4" }}
+              style={{ border: "15px solid #F4F4F4" }}
             >
               <iframe
                 title="Google Maps Location"
@@ -69,11 +69,11 @@ export default function KontaktClient() {
 
         {/* Dein Grundstück - Unser Check - Section 3 */}
         <section id="contact" className="w-full py-16">
-          <div className="w-full">
+          <div className="w-full px-[7.5%]">
             <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
               Dein Grundstück - Unser Check
             </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-12 max-w-3xl mx-auto text-center">
               Wir überprüfen für dich wie dein neues Haus auf ein Grundstück
               deiner Wahl passt
             </h3>
