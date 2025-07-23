@@ -24,10 +24,10 @@ export default function KontaktClient() {
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
         <section id="calendar" className="w-full py-16 bg-white">
           <div className="w-full px-[7.5%]">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center">
               Vereinbare jetzt deinen Termin
             </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-12 max-w-3xl mx-auto text-center">
+            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-12 max-w-3xl mx-auto text-center">
               Wir helfen gerne.
             </h3>
             <Suspense
@@ -43,10 +43,10 @@ export default function KontaktClient() {
         {/* Wo du uns findest - Section 2 */}
         <section id="address" className="w-full py-16 bg-gray-50">
           <div className="w-full px-[8%]">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center">
               Wo du uns findest
             </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-8 max-w-3xl mx-auto text-center">
               Komm vorbei um deinen Traum mit uns zu besprechen.
             </h3>
             <div
@@ -70,10 +70,10 @@ export default function KontaktClient() {
         {/* Dein Grundstück - Unser Check - Section 3 */}
         <section id="contact" className="w-full py-16">
           <div className="w-full px-[7.5%]">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center">
               Dein Grundstück - Unser Check
             </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-12 max-w-3xl mx-auto text-center">
+            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-12 max-w-3xl mx-auto text-center">
               Wir überprüfen für dich wie dein neues Haus auf ein Grundstück
               deiner Wahl passt
             </h3>
@@ -92,10 +92,10 @@ export default function KontaktClient() {
         <section id="impressum" className="w-full py-16 bg-gray-50">
           <div className="w-full px-[5%]">
             <div className="text-center mb-6">
-              <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+              <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center">
                 Impressum
               </h2>
-              <h3 className="text-lg md:text-xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-2xl mx-auto text-center">
+              <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-8 max-w-3xl mx-auto text-center">
                 Alle wichtigen Infos und Vorgaben, damit dein Projekt sicher auf
                 festen Regeln steht.
               </h3>
