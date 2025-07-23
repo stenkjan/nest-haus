@@ -68,7 +68,9 @@ class ImageCache {
     // Warn about excessive requests in development
     if (process.env.NODE_ENV === "development" && currentCount > 2) {
       console.warn(
-        `🚨 PERFORMANCE WARNING: Image "${path}" requested ${currentCount + 1} times! Possible render loop or missing memoization.`
+        `🚨 PERFORMANCE WARNING: Image "${path}" requested ${
+          currentCount + 1
+        } times! Possible render loop or missing memoization.`
       );
     }
 
@@ -113,45 +115,98 @@ class ImageCache {
   }
 
   private static async fetchImageUrl(path: string): Promise<string> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+    const maxRetries = 3;
+    const baseTimeout = 10000; // Start with 10 seconds
 
-    try {
-      // IMPROVED: Better URL encoding for German characters (fixes image 177 issue)
-      const encodedPath = encodeURIComponent(path);
-      const response = await fetch(`/api/images?path=${encodedPath}`, {
-        signal: controller.signal,
-      });
-      clearTimeout(timeoutId);
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      const controller = new AbortController();
+      const timeoutMs = baseTimeout * attempt; // Progressive timeout: 10s, 20s, 30s
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      try {
+        if (process.env.NODE_ENV === "development" && attempt > 1) {
+          console.log(
+            `🔄 Retry attempt ${attempt}/${maxRetries} for image: ${path} (timeout: ${timeoutMs}ms)`
+          );
+        }
+
+        // IMPROVED: Better URL encoding for German characters (fixes image 177 issue)
+        const encodedPath = encodeURIComponent(path);
+        const response = await fetch(`/api/images?path=${encodedPath}`, {
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        if (!data.url) {
+          throw new Error("Image URL not found in response");
+        }
+
+        // DEBUG: Log successful image loading for German characters
+        if (
+          process.env.NODE_ENV === "development" &&
+          (path.includes("177") || attempt > 1)
+        ) {
+          console.log(
+            `✅ Successfully loaded image: ${path} -> ${data.url.substring(
+              0,
+              50
+            )}... (attempt ${attempt})`
+          );
+        }
+
+        return data.url;
+      } catch (error) {
+        clearTimeout(timeoutId);
+
+        const isTimeoutError =
+          error instanceof Error && error.name === "AbortError";
+        const isNetworkError =
+          error instanceof TypeError && error.message.includes("fetch");
+
+        // If this is the last attempt or a non-retryable error, throw
+        if (attempt === maxRetries || (!isTimeoutError && !isNetworkError)) {
+          if (isTimeoutError) {
+            if (process.env.NODE_ENV === "development") {
+              console.error(
+                `⏰ Request timeout after ${timeoutMs}ms for image: ${path}`
+              );
+            }
+            throw new Error(
+              `Request timeout after ${maxRetries} attempts (max ${timeoutMs}ms)`
+            );
+          }
+
+          // DEBUG: Log image loading failures for troubleshooting
+          if (process.env.NODE_ENV === "development") {
+            console.error(
+              `❌ Failed to load image after ${attempt} attempts: ${path}`,
+              error
+            );
+          }
+          throw error;
+        }
+
+        // Wait before retry with exponential backoff
+        const backoffMs = 1000 * attempt; // 1s, 2s, 3s
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            `⚠️ Attempt ${attempt} failed for ${path}, retrying in ${backoffMs}ms...`,
+            error instanceof Error ? error.message : error
+          );
+        }
+        await new Promise((resolve) => setTimeout(resolve, backoffMs));
       }
-
-      const data = await response.json();
-      if (!data.url) {
-        throw new Error("Image URL not found in response");
-      }
-
-      // DEBUG: Log successful image loading for German characters
-      if (process.env.NODE_ENV === "development" && path.includes("177")) {
-        console.log(`🖼️ Successfully loaded image 177: ${path} -> ${data.url}`);
-      }
-
-      return data.url;
-    } catch (error) {
-      clearTimeout(timeoutId);
-      if (error instanceof Error && error.name === "AbortError") {
-        throw new Error("Request timeout");
-      }
-
-      // DEBUG: Log image loading failures for troubleshooting
-      if (process.env.NODE_ENV === "development") {
-        console.error(`🖼️ Failed to load image: ${path}`, error);
-      }
-
-      throw error;
     }
+
+    // This should never be reached due to the throw in the loop
+    throw new Error(
+      `Failed to load image after ${maxRetries} attempts: ${path}`
+    );
   }
 
   static loadFromSession(): void {
@@ -429,7 +484,9 @@ export default function ClientBlobImage({
             effectivePath === sanitizePath(mobilePath)
           ) {
             console.warn(
-              `Mobile image failed, falling back to desktop: ${effectivePath} -> ${sanitizePath(path)}`
+              `Mobile image failed, falling back to desktop: ${effectivePath} -> ${sanitizePath(
+                path
+              )}`
             );
             const desktopPath = sanitizePath(path);
             imageUrl = enableCache

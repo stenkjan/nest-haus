@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 // import Link from "next/link";
 import { Button } from "@/components/ui";
 import { ThreeByOneAdaptiveHeight, FullWidthImageGrid, ThreeByOneGrid } from "@/components/grids";
-import { HybridBlobImage } from "@/components/images";
+import { ClientBlobVideo } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import { ContentCardsGlass } from "@/components/cards";
 
@@ -144,20 +144,23 @@ export default function UnserPartPage() {
             </div>
             
             <div className="flex justify-center">
-              <div className="w-full max-w-6xl">
-                <HybridBlobImage
+              <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
+                <ClientBlobVideo
                   path={IMAGES.function.nestHausModulSchema}
-                  alt="NEST-Haus Modul Schema Explosionszeichnung - Modulare Bauweise Konzept"
-                  width={0}
-                  height={0}
-                  className="w-full h-auto"
-                  strategy="auto"
-                  isAboveFold={false}
-                  isCritical={false}
-                  enableMobileDetection={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                  quality={90}
+                  className="w-full h-full object-cover"
+                  autoPlay={true}
+                  loop={false}
+                  muted={true}
+                  playsInline={true}
+                  controls={false}
+                  enableCache={true}
+                  reversePlayback={true}
+                  fallbackSrc={IMAGES.function.nestHausModulSchema}
                 />
+                {/* Accessibility description for screen readers */}
+                <span className="sr-only">
+                  Video demonstration of NEST-Haus modular construction system showing architectural components and assembly process in a continuous forward and reverse loop animation
+                </span>
               </div>
             </div>
           </div>

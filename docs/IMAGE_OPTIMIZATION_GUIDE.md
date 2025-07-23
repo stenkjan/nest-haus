@@ -276,6 +276,7 @@ if (process.env.NODE_ENV === "development") {
 - ✅ Implement proper `sizes` attribute for responsive images
 - ✅ Cache frequently accessed images
 - ✅ Preload predictable next images
+- ✅ Use `ClientBlobVideo` event handlers only in Client Components ("use client")
 
 ### DON'T:
 
@@ -285,6 +286,7 @@ if (process.env.NODE_ENV === "development") {
 - ❌ Block user interactions waiting for images
 - ❌ Create redundant API calls
 - ❌ Use fixed pixel sizes for responsive layouts
+- ❌ Pass event handlers to `ClientBlobVideo` from Server Components
 
 ## Migration Guide
 
@@ -380,7 +382,9 @@ ImageManager.getPreviewImage(config, "exterior"); // Test resolution
 
 ### **ClientBlobVideo Component**
 
-The `ClientBlobVideo` component extends our blob storage architecture to support video content with advanced features like reverse playback and seamless looping.
+The `ClientBlobVideo` component extends our blob storage architecture to support video content with advanced features like reverse playback and seamless looping. 
+
+**Production Implementation**: Currently integrated in the `/unser-part` page's "Dein Nest System" section, demonstrating modular architecture concepts through video content.
 
 #### **Basic Usage**
 
@@ -404,15 +408,36 @@ import { ClientBlobVideo } from "@/components/images";
 #### **Advanced Reverse Playback**
 
 ```tsx
-// Ping-pong effect for seamless animation loops
+// Ping-pong effect for seamless animation loops without controls
 <ClientBlobVideo
   path="animation-loop"
   className="w-full h-auto"
   reversePlayback={true}
   autoPlay={true}
+  loop={false}
   muted={true}
   playsInline={true}
+  controls={false}
 />
+```
+
+#### **Seamless Background Animation**
+
+```tsx
+// Clean looping animation without any UI elements
+<div className="relative w-full aspect-video">
+  <ClientBlobVideo
+    path="background-animation"
+    className="w-full h-full object-cover"
+    autoPlay={true}
+    loop={false}
+    muted={true}
+    playsInline={true}
+    controls={false}
+    reversePlayback={true}
+  />
+  <span className="sr-only">Continuous looping background animation</span>
+</div>
 ```
 
 #### **Hero Background Video**
@@ -433,6 +458,52 @@ import { ClientBlobVideo } from "@/components/images";
   </div>
 </div>
 ```
+
+#### **Unser-Part Page Implementation**
+
+```tsx
+// Production example from /unser-part - Seamless reverse playback loop without controls
+<div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
+  <ClientBlobVideo
+    path={IMAGES.function.nestHausModulSchema}
+    className="w-full h-full object-cover"
+    autoPlay={true}
+    loop={false}
+    muted={true}
+    playsInline={true}
+    controls={false}
+    enableCache={true}
+    reversePlayback={true}
+    fallbackSrc={IMAGES.function.nestHausModulSchema}
+  />
+  {/* Accessibility description for screen readers */}
+  <span className="sr-only">
+    Video demonstration of NEST-Haus modular construction system showing architectural components and assembly process in a continuous forward and reverse loop animation
+  </span>
+</div>
+```
+
+```tsx
+// If using in a Client Component, event handlers are available
+"use client";
+
+<ClientBlobVideo
+  path="video-path"
+  onLoad={() => console.log('🎥 Video loaded successfully')}
+  onError={(error) => console.error('🎥 Video error:', error)}
+  // ... other props
+/>
+```
+
+**Implementation Features:**
+- ✅ **Graceful Fallback**: Uses existing image as fallback if video fails to load
+- ✅ **Seamless Loop**: Ping-pong reverse playback creates endless smooth animation
+- ✅ **Clean UI**: No controls (progress bar, buttons) for distraction-free viewing
+- ✅ **Mobile Optimized**: `playsInline` and `muted` for mobile compatibility
+- ✅ **Performance**: Caching enabled with error handling
+- ✅ **Responsive Design**: `aspect-video` maintains 16:9 ratio across devices
+- ✅ **Accessibility**: Screen reader description for video content
+- ✅ **SEO Friendly**: Replaces static image while maintaining content purpose
 
 #### **Video Component Features**
 

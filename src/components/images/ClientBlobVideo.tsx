@@ -85,21 +85,93 @@ class VideoCache {
       return path;
     }
 
-    // API resolution for path-based access
-    const response = await fetch(
-      `/api/images?path=${encodeURIComponent(path)}`
+    const maxRetries = 3;
+    const baseTimeout = 10000; // Start with 10 seconds
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      const controller = new AbortController();
+      const timeoutMs = baseTimeout * attempt; // Progressive timeout: 10s, 20s, 30s
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        if (process.env.NODE_ENV === "development" && attempt > 1) {
+          console.log(
+            `🔄 Retry attempt ${attempt}/${maxRetries} for video: ${path} (timeout: ${timeoutMs}ms)`
+          );
+        }
+
+        // API resolution for path-based access
+        const response = await fetch(
+          `/api/images?path=${encodeURIComponent(path)}`,
+          { signal: controller.signal }
+        );
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch video URL: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (!data.url) {
+          throw new Error("No video URL returned");
+        }
+
+        if (process.env.NODE_ENV === "development" && attempt > 1) {
+          console.log(
+            `✅ Successfully loaded video: ${path} -> ${data.url.substring(
+              0,
+              50
+            )}... (attempt ${attempt})`
+          );
+        }
+
+        return data.url;
+      } catch (error) {
+        clearTimeout(timeoutId);
+
+        const isTimeoutError =
+          error instanceof Error && error.name === "AbortError";
+        const isNetworkError =
+          error instanceof TypeError && error.message.includes("fetch");
+
+        // If this is the last attempt or a non-retryable error, throw
+        if (attempt === maxRetries || (!isTimeoutError && !isNetworkError)) {
+          if (isTimeoutError) {
+            if (process.env.NODE_ENV === "development") {
+              console.error(
+                `⏰ Video request timeout after ${timeoutMs}ms: ${path}`
+              );
+            }
+            throw new Error(
+              `Video request timeout after ${maxRetries} attempts (max ${timeoutMs}ms)`
+            );
+          }
+
+          if (process.env.NODE_ENV === "development") {
+            console.error(
+              `❌ Failed to load video after ${attempt} attempts: ${path}`,
+              error
+            );
+          }
+          throw error;
+        }
+
+        // Wait before retry with exponential backoff
+        const backoffMs = 1000 * attempt; // 1s, 2s, 3s
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            `⚠️ Video attempt ${attempt} failed for ${path}, retrying in ${backoffMs}ms...`,
+            error instanceof Error ? error.message : error
+          );
+        }
+        await new Promise((resolve) => setTimeout(resolve, backoffMs));
+      }
+    }
+
+    // This should never be reached due to the throw in the loop
+    throw new Error(
+      `Failed to load video after ${maxRetries} attempts: ${path}`
     );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch video URL: ${response.status}`);
-    }
-
-    const data = await response.json();
-    if (!data.url) {
-      throw new Error("No video URL returned");
-    }
-
-    return data.url;
   }
 
   static clear(): void {
@@ -136,11 +208,11 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  // Dual Video Strategy (for reverse playback)
-  const videoRef1 = useRef<HTMLVideoElement>(null);
-  const videoRef2 = useRef<HTMLVideoElement>(null);
-  const [activeVideo, setActiveVideo] = useState(1);
+  // Ping-pong state (for reverse playback)
   const [isReversed, setIsReversed] = useState(false);
+
+  // Video reference for direct DOM access
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Load video URL
   const loadVideo = useCallback(async () => {
@@ -204,42 +276,58 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     loadVideo();
   }, [loadVideo]);
 
-  // Dual video element coordination for reverse playback
-  const handleEnded = useCallback(
-    (videoElement: HTMLVideoElement, isFirst: boolean) => {
-      if (!reversePlayback || isFirst !== (activeVideo === 1)) return;
+  // Ping-pong video event handler (React best practices from docs)
+  const handleVideoEnded = useCallback(() => {
+    if (!reversePlayback || !videoRef.current) return;
 
-      const otherVideo = isFirst ? videoRef2.current : videoRef1.current;
+    // Toggle reverse state for visual flip effect
+    setIsReversed((prev) => !prev);
 
-      if (!otherVideo) return;
-
-      try {
-        // Set playback direction and position
-        otherVideo.currentTime = isReversed ? 0 : otherVideo.duration;
-        otherVideo.playbackRate = isReversed ? 1 : -1;
-        otherVideo.play();
-
-        // Switch active video and direction
-        setActiveVideo(isFirst ? 2 : 1);
-        setIsReversed(!isReversed);
-      } catch (error) {
-        console.error("🎥 Error in reverse playback:", error);
+    // Restart video from beginning
+    videoRef.current.currentTime = 0;
+    videoRef.current.play().catch((error) => {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("🎥 Autoplay failed on restart:", error);
       }
-    },
-    [reversePlayback, activeVideo, isReversed]
-  );
+    });
 
-  // Handle video load events
-  const handleVideoLoad = useCallback(
-    (videoElement: HTMLVideoElement) => {
-      if (reversePlayback && videoElement.duration > 0) {
-        // Initialize for reverse playback
-        videoElement.playbackRate = 1;
-        videoElement.currentTime = 0;
-      }
-    },
-    [reversePlayback]
-  );
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        `🎥 Ping-pong: toggled to ${!isReversed ? "reversed" : "normal"}`
+      );
+    }
+  }, [reversePlayback, isReversed]);
+
+  // Set up video event listeners using React patterns from documentation
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !reversePlayback) return;
+
+    // Add event listener for ended event
+    video.addEventListener("ended", handleVideoEnded);
+
+    // Cleanup function as per React docs best practices
+    return () => {
+      video.removeEventListener("ended", handleVideoEnded);
+    };
+  }, [handleVideoEnded, reversePlayback]);
+
+  // Auto-play setup with proper dependency handling
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !autoPlay || !videoUrl || loading) return;
+
+    // Small delay to ensure video is ready
+    const timeoutId = setTimeout(() => {
+      video.play().catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("🎥 Autoplay failed:", error);
+        }
+      });
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [autoPlay, videoUrl, loading]);
 
   // Show loading state
   if (loading) {
@@ -265,65 +353,21 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     );
   }
 
-  // Render video(s)
-  if (reversePlayback) {
-    // Dual video elements with opacity transitions for reverse playback
-    return (
-      <div className={className} style={{ position: "relative" }}>
-        <video
-          ref={videoRef1}
-          src={videoUrl}
-          autoPlay={autoPlay}
-          loop={!reversePlayback && loop} // Disable standard loop for reverse playback
-          muted={muted}
-          playsInline={playsInline}
-          controls={controls}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            opacity: activeVideo === 1 ? 1 : 0,
-            transition: "opacity 0.3s ease-in-out",
-          }}
-          onEnded={(e) => handleEnded(e.currentTarget, true)}
-          onLoadedData={(e) => handleVideoLoad(e.currentTarget)}
-        />
-        <video
-          ref={videoRef2}
-          src={videoUrl}
-          muted={muted}
-          playsInline={playsInline}
-          controls={false} // Only show controls on primary video
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            opacity: activeVideo === 2 ? 1 : 0,
-            transition: "opacity 0.3s ease-in-out",
-          }}
-          onEnded={(e) => handleEnded(e.currentTarget, false)}
-          onLoadedData={(e) => handleVideoLoad(e.currentTarget)}
-        />
-      </div>
-    );
-  }
-
-  // Standard single video element
+  // Render video with ping-pong support
   return (
     <video
-      ref={videoRef1}
+      ref={videoRef}
       src={videoUrl}
       className={className}
-      autoPlay={autoPlay}
-      loop={loop}
+      autoPlay={false} // Controlled via useEffect for better control
+      loop={reversePlayback ? false : loop} // Disable loop for ping-pong effect
       muted={muted}
       playsInline={playsInline}
       controls={controls}
-      onLoadedData={(e) => handleVideoLoad(e.currentTarget)}
+      style={{
+        transform: reversePlayback && isReversed ? "scaleX(-1)" : "scaleX(1)",
+        transition: reversePlayback ? "transform 0.3s ease-in-out" : "none",
+      }}
     />
   );
 };

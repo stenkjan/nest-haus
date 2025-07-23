@@ -16,6 +16,9 @@ export async function GET(request: NextRequest) {
   // Check cache first
   const cached = urlCache.get(path);
   if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`📦 Cache hit for: ${path}`);
+    }
     return NextResponse.json({
       url: cached.url,
       path: path,
@@ -28,29 +31,47 @@ export async function GET(request: NextRequest) {
     const imagePath = path.startsWith('images/') ? path : `images/${path}`;
     const extensions = ['', '.jpg', '.jpeg', '.png', '.webp', '.avif', '.mp4', '.webm', '.mov'];
 
+    // Timeout wrapper for blob list operations
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error('Blob operation timeout')), 15000); // 15 second timeout
+    });
+
     // Try to find the image with different extensions
     for (const ext of extensions) {
       const pathToTry = `${imagePath}${ext}`;
-      const { blobs } = await list({
-        prefix: pathToTry,
-        limit: 1
-      });
 
-      if (blobs.length > 0) {
-        const imageUrl = blobs[0].url;
+      try {
+        const { blobs } = await Promise.race([
+          list({
+            prefix: pathToTry,
+            limit: 1
+          }),
+          timeoutPromise
+        ]);
 
-        // Cache the result
-        urlCache.set(path, { url: imageUrl, timestamp: Date.now() });
+        if (blobs.length > 0) {
+          const imageUrl = blobs[0].url;
 
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`🖼️ Found image: ${pathToTry} -> ${imageUrl}`);
+          // Cache the result
+          urlCache.set(path, { url: imageUrl, timestamp: Date.now() });
+
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`🖼️ Found image: ${pathToTry} -> ${imageUrl.substring(0, 50)}...`);
+          }
+
+          return NextResponse.json({
+            url: imageUrl,
+            path: path,
+            type: 'blob'
+          });
         }
-
-        return NextResponse.json({
-          url: imageUrl,
-          path: path,
-          type: 'blob'
-        });
+      } catch (extError) {
+        // Log individual extension failures in development
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`⚠️ Extension ${ext} failed for ${pathToTry}:`, extError instanceof Error ? extError.message : extError);
+        }
+        // Continue to next extension
+        continue;
       }
     }
 
@@ -68,10 +89,24 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Image API error:', error);
+    const isTimeoutError = error instanceof Error && error.message.includes('timeout');
+
+    if (process.env.NODE_ENV === 'development') {
+      if (isTimeoutError) {
+        console.error(`⏰ API timeout for image: ${path}`, error);
+      } else {
+        console.error(`❌ Image API error for: ${path}`, error);
+      }
+    } else {
+      // Only log in production if it's not a timeout (timeouts are expected)
+      if (!isTimeoutError) {
+        console.error('Image API error:', error);
+      }
+    }
 
     // Always return a working placeholder, never fail
-    const fallbackUrl = `/api/placeholder/400/300?text=Error&style=nest&bgColor=%23ffeeee&textColor=%23cc0000`;
+    const errorType = isTimeoutError ? 'Timeout' : 'Error';
+    const fallbackUrl = `/api/placeholder/400/300?text=${errorType}&style=nest&bgColor=%23ffeeee&textColor=%23cc0000`;
 
     return NextResponse.json({
       url: fallbackUrl,
