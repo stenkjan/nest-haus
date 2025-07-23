@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [85b73ce6c2d7f808632c9c7337aed6e0d7ea96d7] - Wed Jul 23 15:32:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance layout and text structure in KontaktClient and GrundstueckCheckWrapper  - Updated padding and margins in KontaktClient for improved spacing and readability. - Adjusted section titles and subtitles for better clarity and engagement. - Refactored GrundstueckCheckWrapper to streamline the form layout and enhance user experience. - Removed unnecessary div wrappers to simplify the component structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+- src/app/kontakt/components/GrundstueckCheckWrapper.tsx
+
+
+---
+
 ## [cbdaeddfa0f59d2694e97d1433b6d7863aab4ac3] - Wed Jul 23 14:37:01 2025 +0200
 
 **Author**: stenkjan
