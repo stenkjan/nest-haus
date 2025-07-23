@@ -1,6 +1,7 @@
 # Project Rules for Nest-Haus Configurator
 
 ## Code Quality & Documentation
+
 - Make sure to include the indexed documentations of the languages and tools we use when needed: React, Next.js, Prisma, Redis, PostgreSQL
 - Always try to keep the codebase slim and the code you generate concise
 - Don't change any content or design properties that are not directly related to a prompt, if unsure, always ask
@@ -8,6 +9,7 @@
 - Use GitHub Actions or equivalent CI to continuously generate and update documentation
 
 ## TypeScript & Type Safety Rules
+
 - **NEVER use `any` type**: Always specify proper TypeScript types to prevent type errors and maintain code quality
 - **Use strict typing**: Prefer union types, interfaces, and proper generics over loose typing
 - **Type assertions**: Use proper type assertions like `as Type` or type guards instead of `any`
@@ -15,16 +17,19 @@
 - **Unknown over any**: When type is truly unknown, prefer `unknown` over `any` and use type guards
 
 ## Verification & Testing Rules
+
 - **ESLint Check**: Run `npm run lint` to ensure code follows project standards
 - **Build Verification**: For significant changes, run `npm run build` to ensure production compatibility
 - **Hot Reload Check**: Verify that localhost:3000 is running and changes are reflected without breaking the development server
 
 ## Development Workflow
+
 - Check for existing running servers (localhost:3000) before running a new server, we have hot reload in place
 - Fill out the documentation in /docs after every commit, use the predefined .md files and continue them
 - Use GitHub actions to continuously document
 
 ## Terminal & PowerShell Guidelines
+
 - **Python Access**: Python is installed via winget at standard Windows location
 - **PowerShell Syntax**: Never use `&&` for command chaining (not supported in PowerShell)
 - **Use PowerShell operators**: Use `;` for command separation or separate commands
@@ -32,17 +37,19 @@
 - **Path format**: Use Windows paths with backslashes or forward slashes
 - **Package management**: Use `python -m pip install package` for Python packages
 - **Example commands**:
+
   ```powershell
   # ✅ Correct PowerShell syntax
   cd preiskalkulation; python read_prices.py
   python -m pip install pandas openpyxl
   & "C:\Program Files\Python\python.exe" --version
-  
+
   # ❌ Incorrect (Unix-style, doesn't work in PowerShell)
   cd preiskalkulation && python read_prices.py
   ```
 
 ## Testing & CI
+
 - All integration tests must be automated and run as part of the CI pipeline
 - Integration tests should be cleaned up after execution to avoid redundant or stale test artifacts
 - Test files, data, and temporary resources created during tests must be removed or reset after each test run
@@ -50,6 +57,7 @@
 - Ensure that test coverage is maintained without accumulating unnecessary or duplicate tests
 
 ## Architecture Constraints
+
 - Backend tracking system (Redis + PostgreSQL) must remain intact for analytics
 - Session management and analytics should not be disrupted but should be non-blocking
 - Price calculations must be CLIENT-SIDE for instant response times
@@ -57,6 +65,7 @@
 - API calls should be optimistic and fail-safe (don't block user experience)
 
 ## Integration Guidelines
+
 - New configurator components must integrate with useConfiguratorStore and useCartStore
 - User selections should be tracked via session APIs as background tasks (non-blocking)
 - Cart functionality should remain compatible across the app
@@ -64,6 +73,7 @@
 - Prioritize instant user feedback over server synchronization
 
 ## Folder Structure Rules (React/Next.js Best Practice)
+
 - **Route-specific code** (components, types, hooks, data, core logic) must be co-located inside the relevant route folder under `src/app/ROUTE/`
 - **Shared/global components** must be placed in `src/components/`
 - **Shared hooks** must be placed in `src/hooks/`
@@ -75,22 +85,201 @@
 - **Do NOT place non-route files directly in `src/app/`**. Only route folders and route-specific files (e.g., `page.tsx`, `layout.tsx`) are allowed there
 - **If a component is only used by a single route, keep it in that route's folder.** If it is used in multiple routes, move it to `src/components/`
 
+## SectionRouter Navigation Architecture
+
+### **Mandatory SectionRouter Usage**
+
+**CRITICAL: All content pages MUST use SectionRouter for consistent navigation and SEO**
+
+#### Required Pages for SectionRouter:
+
+- ✅ **kontakt** (already implemented)
+- ✅ **entdecken**
+- ✅ **unser-part**
+- ✅ **dein-part**
+- ✅ **warum-wir**
+- ✅ **Any future content pages with multiple sections**
+- ❌ **konfigurator** (uses its own state management)
+- ❌ **Single-section pages** (unless they may expand in the future)
+
+#### Required Implementation Pattern:
+
+```tsx
+// ✅ ALWAYS use this exact pattern for content pages
+"use client";
+
+import React, { useState } from "react";
+import { SectionRouter } from "@/components/SectionRouter";
+
+// Define sections with proper structure
+const sections = [
+  { id: "section1", title: "Section Title", slug: "section-slug" },
+  { id: "section2", title: "Section Title 2", slug: "section-slug-2" },
+  // ... more sections
+];
+
+export default function PageClient() {
+  const [currentSectionId, setCurrentSectionId] = useState<string>("section1");
+
+  return (
+    <div className="min-h-screen pt-16">
+      <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
+        {/* Section 1 - ALWAYS match section ID */}
+        <section id="section1" className="w-full py-16">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Section content */}
+          </div>
+        </section>
+
+        {/* Section 2 */}
+        <section id="section2" className="w-full py-16 bg-gray-50">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Section content */}
+          </div>
+        </section>
+      </SectionRouter>
+    </div>
+  );
+}
+```
+
+#### Wrapper Page Pattern:
+
+```tsx
+// page.tsx (Server Component for SEO)
+import type { Metadata } from "next";
+import PageClient from "./PageClient";
+
+export const metadata: Metadata = {
+  title: "Page Title | NEST-Haus",
+  description: "Page description...",
+  // ... other SEO metadata
+};
+
+export default function Page() {
+  return <PageClient />;
+}
+```
+
+### **SectionRouter Configuration Rules**
+
+#### Section Definition Requirements:
+
+- ✅ **Unique IDs**: Each section must have a unique `id` that matches the HTML section element
+- ✅ **SEO-friendly slugs**: Use kebab-case slugs that describe the content
+- ✅ **Descriptive titles**: Clear, user-friendly titles for navigation
+- ✅ **Logical ordering**: Sections should flow logically from top to bottom
+
+#### Section Layout Standards:
+
+- ✅ **Consistent spacing**: Use `py-16` for vertical section padding
+- ✅ **Background alternation**: Alternate between `bg-white` and `bg-gray-50`
+- ✅ **1536px max width**: Use `max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8`
+- ✅ **Responsive padding**: Use responsive padding classes for mobile/desktop
+
+#### Navigation Behavior:
+
+- ✅ **Automatic scroll**: SectionRouter handles smooth scrolling to sections
+- ✅ **URL updates**: Browser URL updates with section slugs for bookmarkability
+- ✅ **Mobile-friendly**: Touch and swipe navigation support
+- ✅ **Keyboard accessible**: Arrow key navigation support
+
+### **Content Structure Guidelines**
+
+#### Section Header Pattern:
+
+```tsx
+<section id="section-id" className="w-full py-16 [bg-class]">
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+      Section Title
+    </h2>
+    <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+      Section subtitle or description
+    </h3>
+
+    {/* Section content */}
+  </div>
+</section>
+```
+
+#### Typography Consistency:
+
+- ✅ **Main headers**: `text-4xl md:text-[60px]` with tracking adjustments
+- ✅ **Subheaders**: `text-xl md:text-2xl` with proper line height
+- ✅ **Body text**: Follow responsive text scaling patterns
+- ✅ **Font weights**: Use `font-medium` for headers, `font-normal` for body
+
+### **Implementation Checklist**
+
+#### Before Creating New Content Pages:
+
+1. ✅ **Plan sections**: Define logical content sections and flow
+2. ✅ **Create sections array**: Define IDs, titles, and slugs
+3. ✅ **Implement PageClient**: Use SectionRouter wrapper pattern
+4. ✅ **Add SEO metadata**: Include proper metadata in page.tsx
+5. ✅ **Test navigation**: Verify smooth scrolling and URL updates
+6. ✅ **Mobile testing**: Ensure touch navigation works properly
+
+#### Quality Assurance:
+
+- ✅ **Section IDs match**: HTML section IDs must match sections array IDs
+- ✅ **Consistent styling**: All sections follow layout and typography rules
+- ✅ **Responsive design**: Test on mobile, tablet, and desktop breakpoints
+- ✅ **Accessibility**: Ensure keyboard navigation and screen reader compatibility
+- ✅ **Performance**: Monitor loading times and smooth scrolling performance
+
+### **DO/DON'T Rules**
+
+#### ✅ DO:
+
+- Use SectionRouter for all multi-section content pages
+- Follow the exact implementation pattern shown above
+- Maintain consistent section spacing and typography
+- Test navigation thoroughly on all devices
+- Use descriptive, SEO-friendly section slugs
+- Implement proper metadata for each page
+- Follow the 1536px max-width standard
+
+#### ❌ DON'T:
+
+- Skip SectionRouter for pages that could benefit from section navigation
+- Use different layout patterns without architectural approval
+- Hardcode navigation - always use SectionRouter component
+- Ignore mobile touch navigation requirements
+- Create sections without proper IDs or accessibility
+- Mix different width constraints within the same page
+- Forget to test URL bookmarking and sharing functionality
+
+### **Future Page Planning**
+
+When creating new content pages, always consider:
+
+- **Will this page have multiple sections?** → Use SectionRouter
+- **Could this page expand with more sections?** → Use SectionRouter proactively
+- **Does this need section-based navigation?** → Use SectionRouter
+- **Is this a utility/tool page?** → May not need SectionRouter (like konfigurator)
+
 ## Performance & Rendering Strategy
 
 ### **Balanced SSR/Client Architecture**
+
 **PRIORITY: Optimize for both SEO and User Experience**
 
 #### SSR-First for Content Pages
+
 - **Marketing pages, blogs, documentation**: Full SSR for SEO and Core Web Vitals
 - **Landing pages and product pages**: Server-rendered with minimal client hydration
 - **Static content**: Use static generation when possible
 
 #### Client-First for Interactive Applications
+
 - **Configurator and dynamic tools**: Client-side for instant feedback and complex state
 - **User dashboards and forms**: Client-side for real-time validation and updates
 - **Shopping cart and checkout**: Client-side for seamless user experience
 
 #### Hybrid Pattern Implementation
+
 ```tsx
 // ✅ Page Router (SSR for SEO)
 export default function ConfiguratorPage() {
@@ -98,24 +287,27 @@ export default function ConfiguratorPage() {
 }
 
 // ✅ Client Component (Instant interactions)
-'use client';
+("use client");
 export default function ConfiguratorClient() {
   // Handle: real-time price updates, selections, state management
 }
 ```
 
 ### **Client-Side Performance Rules**
+
 - **Price calculations**: Always client-side for sub-100ms response times
 - **Form validation**: Client-side with server confirmation
 - **State updates**: Optimistic updates with background sync
 - **API calls**: Non-blocking, fail-safe, with graceful degradation
 
 ### **Server-Side Integration**
+
 - **Session tracking**: Background tasks that don't block UI
 - **Data persistence**: Opportunistic saves without blocking user flow
 - **Analytics**: Fire-and-forget tracking events
 
 ## Responsive Design Guidelines
+
 - Use Tailwind and Medium's responsive design system in combination
 - Prefer relative units (em, vh, vw) over fixed pixel sizes
 - Set max-width of 1144px for descriptive content (e.g. navbar)
@@ -133,15 +325,18 @@ export default function ConfiguratorClient() {
 - Use CSS Grid and Flexbox for responsive layouts instead of fixed dimensions
 
 ## Server-Side Rendering (SSR) & Client-Side Guidelines
+
 **BALANCED APPROACH: SSR for content, Client-side for interactions**
 
 ### When to Use SSR (Server Components)
+
 - **Static content pages**: About, services, blog posts
 - **SEO-critical pages**: Landing pages, product showcases
 - **Initial page loads**: For better Core Web Vitals
 - **Content that doesn't change frequently**
 
 ### When to Use Client-Side ("use client")
+
 - **Interactive applications**: Configurators, calculators, dynamic forms
 - **Real-time features**: Live updates, instant feedback
 - **Complex state management**: Multi-step processes, shopping carts
@@ -149,17 +344,20 @@ export default function ConfiguratorClient() {
 - **Third-party integrations**: Maps, analytics, chat widgets
 
 ### Image Optimization Guidelines
+
 - **Vercel Blob Images**: Use server components with Next.js Image component for optimal performance
 - **Static images**: Always use Next.js `Image` component with proper sizing
 - **Dynamic images**: Server-render when possible, client-render only for user-uploaded content
 
 ### Performance Requirements
+
 - **Static Generation**: Prefer static generation (`generateStaticParams`) for predictable content
 - **Streaming**: Use React Suspense for progressive loading of server components
 - **Client Bundle Size**: Keep under 250KB for interactive components
 - **Response Times**: <100ms for price calculations, <300ms for form submissions
 
 # DOM Features & Sizing (React/Next.js projects)
+
 - For any DOM feature or sizing communication between layout and page (e.g., scroll handling, dynamic sizing), always use a React context to provide refs or state.
 - Never use querySelector, getElementById, or direct DOM traversal for such communication.
 - This context-based approach is the default and required for all such requirements in this project.
@@ -171,16 +369,21 @@ export default function ConfiguratorClient() {
 When working with background images on the landing page, ALWAYS use this exact pattern:
 
 ### Required Structure:
+
 ```tsx
 // Landing page specific image styling - applies to all 8 images
 const landingImageStyle = {
-  objectPosition: 'center center',
-  transform: 'scale(1.05)',
-  transformOrigin: 'center center',
+  objectPosition: "center center",
+  transform: "scale(1.05)",
+  transformOrigin: "center center",
 };
 
 // Section with 16:9 aspect ratio constraint
-<section key={section.id} className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
+<section
+  key={section.id}
+  className="relative w-full overflow-hidden"
+  style={{ aspectRatio: "16/9" }}
+>
   <div className="absolute inset-0 w-full h-full">
     <Image
       src={section.image}
@@ -192,10 +395,11 @@ const landingImageStyle = {
       priority={section.id === 1}
     />
   </div>
-</section>
+</section>;
 ```
 
 ### Rules:
+
 - ✅ ALWAYS maintain 16:9 aspect ratio using `style={{ aspectRatio: '16/9' }}` on section
 - ✅ ALWAYS use `unoptimized` prop (for future Vercel blob compatibility)
 - ✅ ALWAYS use component-level `landingImageStyle` object (not global CSS)
@@ -205,6 +409,7 @@ const landingImageStyle = {
 - ❌ NEVER apply this pattern to other pages (konfigurator, etc.)
 
 ### Future-Proof:
+
 This pattern works with any image source (current files or future Vercel blob URLs).
 
 ## Comprehensive Image Handling System Rules
@@ -212,6 +417,7 @@ This pattern works with any image source (current files or future Vercel blob UR
 **CRITICAL: Unified Image Architecture for Optimal Performance**
 
 ### **1. Default Component Choice**
+
 - ✅ **ALWAYS use `HybridBlobImage`** for any new image implementation
 - ✅ This component automatically selects the best strategy (SSR/Client)
 - ✅ Provides optimal balance of SEO, performance, and user experience
@@ -220,21 +426,23 @@ This pattern works with any image source (current files or future Vercel blob UR
 ### **2. Image Component Selection Guide**
 
 #### Use HybridBlobImage (Default - 95% of cases):
+
 ```tsx
-import { HybridBlobImage } from '@/components/images';
+import { HybridBlobImage } from "@/components/images";
 
 // Auto-strategy selection based on context
-<HybridBlobImage 
+<HybridBlobImage
   path="image-name"
   strategy="auto"
   isAboveFold={boolean}
   isCritical={boolean}
   isInteractive={boolean}
   alt="Descriptive text"
-/>
+/>;
 ```
 
 #### Use ServerBlobImage (SSR-Critical cases):
+
 ```tsx
 // Only for server components with confirmed SSR needs
 <ServerBlobImage
@@ -246,6 +454,7 @@ import { HybridBlobImage } from '@/components/images';
 ```
 
 #### Use ClientBlobImage (Legacy/Specific cases):
+
 ```tsx
 // Only for specific client-side requirements
 <ClientBlobImage
@@ -259,18 +468,21 @@ import { HybridBlobImage } from '@/components/images';
 ### **3. Performance Optimization Rules**
 
 #### Caching Strategy (Multi-Level):
+
 - **Memory Cache**: Image path resolution (ImageManager)
 - **Session Cache**: Blob URLs (1 hour TTL)
 - **Server Cache**: API responses (1 hour TTL)
 - **Browser Cache**: Next.js optimization (24 hours TTL)
 
 #### Loading Strategy:
+
 - **Above-fold/Critical**: `strategy="ssr"` + `priority={true}`
 - **Interactive/Dynamic**: `strategy="client"` + caching enabled
 - **Below-fold**: `strategy="auto"` + lazy loading
 - **Gallery/Grid**: Progressive loading with intersection observer
 
 #### Required Image Props:
+
 - ✅ **ALWAYS set `alt` attribute** for accessibility
 - ✅ **ALWAYS set appropriate `sizes`** for responsive images
 - ✅ **ALWAYS set `priority={true}`** for above-fold critical images
@@ -279,12 +491,14 @@ import { HybridBlobImage } from '@/components/images';
 ### **4. API Route Optimization**
 
 #### Image API (`/api/images`):
+
 - **Caching**: Server-side with 1-hour TTL
 - **Fallbacks**: Semantic placeholders for missing images
 - **Extensions**: Auto-detection (.jpg, .jpeg, .png, .webp, .avif)
 - **Error Handling**: Graceful degradation, never fail
 
 #### Placeholder API (`/api/placeholder/[width]/[height]`):
+
 - **SVG Generation**: Branded, semantic placeholders
 - **Caching**: Immutable with long TTL
 - **Customization**: Query params for context-aware messages
@@ -292,8 +506,9 @@ import { HybridBlobImage } from '@/components/images';
 ### **5. ImageManager Integration**
 
 #### Required Usage:
+
 ```tsx
-import { ImageManager } from '@/app/konfigurator/core/ImageManager';
+import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 
 // Path resolution with caching
 const imagePath = ImageManager.getPreviewImage(configuration, view);
@@ -306,6 +521,7 @@ const views = ImageManager.getAvailableViews(configuration);
 ```
 
 #### Caching Rules:
+
 - **Memoization**: All path calculations are cached
 - **Deduplication**: Prevent redundant API calls
 - **Smart Updates**: Only refresh when configuration changes
@@ -314,6 +530,7 @@ const views = ImageManager.getAvailableViews(configuration);
 ### **6. Configuration Examples**
 
 #### Landing Page Hero (Critical):
+
 ```tsx
 <HybridBlobImage
   path="hero-image"
@@ -323,11 +540,12 @@ const views = ImageManager.getAvailableViews(configuration);
   priority={true}
   alt="NEST Haus Hero"
   sizes="100vw"
-  style={{ aspectRatio: '16/9' }}
+  style={{ aspectRatio: "16/9" }}
 />
 ```
 
 #### Configurator Preview (Interactive):
+
 ```tsx
 <HybridBlobImage
   path={dynamicImagePath}
@@ -341,6 +559,7 @@ const views = ImageManager.getAvailableViews(configuration);
 ```
 
 #### Gallery Image (Auto-Optimized):
+
 ```tsx
 <HybridBlobImage
   path="gallery-image"
@@ -348,13 +567,14 @@ const views = ImageManager.getAvailableViews(configuration);
   isAboveFold={index < 2}
   isCritical={index === 0}
   alt="Gallery Image"
-  loading={index < 2 ? 'eager' : 'lazy'}
+  loading={index < 2 ? "eager" : "lazy"}
 />
 ```
 
 ### **7. Error Handling & Fallbacks**
 
 #### Graceful Degradation Hierarchy:
+
 1. **Exact image match** from blob storage
 2. **Fallback with default material/size**
 3. **Final default image** from constants
@@ -362,6 +582,7 @@ const views = ImageManager.getAvailableViews(configuration);
 5. **Basic placeholder** as last resort
 
 #### Error Boundaries:
+
 - **Never block user interactions** waiting for images
 - **Always provide visual feedback** during loading
 - **Log errors** in development, fail silently in production
@@ -370,6 +591,7 @@ const views = ImageManager.getAvailableViews(configuration);
 ### **8. Next.js Configuration**
 
 #### Required Image Settings:
+
 ```tsx
 // next.config.ts
 images: {
@@ -385,24 +607,27 @@ images: {
 ### **9. Performance Monitoring**
 
 #### Required Metrics:
+
 - **Loading Times**: Track image load performance
-- **Cache Hit Rates**: Monitor caching effectiveness  
+- **Cache Hit Rates**: Monitor caching effectiveness
 - **Error Rates**: Track failed image loads
 - **Core Web Vitals**: Monitor LCP, CLS impact
 
 #### Development Tools:
+
 ```tsx
 // Debug image resolution
 ImageManager.clearPreloadedImages();
-ImageManager.getPreviewImage(config, 'exterior');
+ImageManager.getPreviewImage(config, "exterior");
 
 // Performance profiling
-console.log('🖼️ Image loading metrics');
+console.log("🖼️ Image loading metrics");
 ```
 
 ### **10. DO/DON'T Rules**
 
 #### ✅ DO:
+
 - Use `HybridBlobImage` for all new implementations
 - Set proper `alt` text for accessibility
 - Use `priority={true}` for above-fold critical images
@@ -413,6 +638,7 @@ console.log('🖼️ Image loading metrics');
 - Monitor performance metrics
 
 #### ❌ DON'T:
+
 - Use client-side loading for critical above-fold content
 - Skip accessibility attributes
 - Load full-resolution images unnecessarily on mobile
@@ -425,12 +651,13 @@ console.log('🖼️ Image loading metrics');
 ### **11. Migration Requirements**
 
 #### From Legacy Components:
+
 ```tsx
 // OLD: Direct blob image usage
 <ClientBlobImage path="image" />
 
 // NEW: Optimized hybrid approach
-<HybridBlobImage 
+<HybridBlobImage
   path="image"
   strategy="auto"
   alt="Descriptive text"
@@ -438,12 +665,13 @@ console.log('🖼️ Image loading metrics');
 ```
 
 #### From Static Images:
+
 ```tsx
 // OLD: Static Next.js Image
 <Image src="/static/image.jpg" alt="..." />
 
 // NEW: Blob-optimized with fallback
-<HybridBlobImage 
+<HybridBlobImage
   path="image-name"
   strategy="ssr"
   fallbackSrc="/static/image.jpg"
@@ -461,12 +689,14 @@ console.log('🖼️ Image loading metrics');
 ## Database & Session Management Rules
 
 ### **Session Lifecycle Management**
+
 - **Session Creation**: Always use `upsert()` instead of `create()` to handle race conditions
 - **Session Updates**: Use `upsert()` instead of `update()` to prevent "record not found" errors (P2025)
 - **Session Finalization**: Never assume session exists - always handle missing records gracefully
 - **Background Tracking**: Session operations must be non-blocking and fail-safe
 
 ### **Prisma Error Handling Patterns**
+
 ```tsx
 // ✅ ALWAYS use upsert for session operations
 await prisma.userSession.upsert({
@@ -480,23 +710,25 @@ await prisma.userSession.upsert({
     endTime: new Date(),
     totalInteractions: data.totalInteractions,
     // ... other required fields
-  }
+  },
 });
 
 // ❌ NEVER use update() alone - causes P2025 errors
 await prisma.userSession.update({
   where: { sessionId },
-  data: { endTime: new Date() }
+  data: { endTime: new Date() },
 });
 ```
 
 ### **Race Condition Prevention**
+
 - **Concurrent Sessions**: Handle multiple browser tabs creating sessions simultaneously
 - **Session Tracking**: Use unique session IDs with timestamp + random suffixes
 - **Database Constraints**: Implement proper unique constraints and indexes
 - **Timeout Handling**: Add timeout handling for long-running database operations
 
 ### **Windows Development Environment**
+
 - **Prisma Build Issues**: Use `taskkill /f /im node.exe` before builds to prevent file locking
 - **Process Management**: Check for running Node.js processes before starting new builds
 - **Build Scripts**: Use dedicated `build:windows` script for Windows-specific build requirements
@@ -505,6 +737,7 @@ await prisma.userSession.update({
 ## Configurator Architecture Patterns
 
 ### **Modular Component Structure**
+
 - **ConfiguratorShell**: Main container with state management integration
 - **PreviewPanel**: Image rendering with ImageManager integration
 - **SummaryPanel**: Price calculations with PriceCalculator core module
@@ -512,12 +745,14 @@ await prisma.userSession.update({
 - **Component Boundaries**: Keep components focused and testable
 
 ### **Core Module Integration**
+
 - **ImageManager**: Centralized image path resolution and caching
 - **PriceCalculator**: Client-side price calculations with compatibility methods
 - **InteractionTracker**: Background session tracking (non-blocking)
 - **PerformanceMonitor**: Development-time performance insights
 
 ### **State Management Patterns**
+
 ```tsx
 // ✅ Use established Zustand stores
 const { configuration, updateConfiguration } = useConfiguratorStore();
@@ -526,8 +761,8 @@ const { addToCart, cartItems } = useCartStore();
 // ✅ Background session tracking
 const trackSelection = async (selection: Selection) => {
   // Non-blocking API call
-  fetch('/api/sessions/track', {
-    method: 'POST',
+  fetch("/api/sessions/track", {
+    method: "POST",
     body: JSON.stringify({ selection }),
   }).catch(() => {
     // Fail silently - don't block user experience
@@ -536,6 +771,7 @@ const trackSelection = async (selection: Selection) => {
 ```
 
 ### **Development Hot Reload Best Practices**
+
 - **Server Status Check**: Always verify localhost:3000 is running before starting new dev server
 - **Hot Module Replacement**: Leverage existing HMR - don't restart entire server
 - **State Preservation**: Use React Fast Refresh to maintain component state during development
@@ -543,8 +779,9 @@ const trackSelection = async (selection: Selection) => {
 - **TypeScript Compilation**: Use `npx tsc --noEmit` for type checking without restarts
 
 ## Error Handling & Debugging Guidelines
+
 - **Client-side errors**: Log to console in development, use error boundaries in production
-- **API failures**: Always have fallback states, don't block user experience  
+- **API failures**: Always have fallback states, don't block user experience
 - **State synchronization**: Use optimistic updates with conflict resolution
 - **Performance monitoring**: Track response times and bundle sizes
 - **Debugging**: Use structured logging with emojis for easy identification (🚀 🏪 💰 🔧)
