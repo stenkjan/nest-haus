@@ -19,8 +19,6 @@ export type ButtonSize =
   | "xs"
   | "sm"
   | "md"
-  | "lg"
-  | "xl"
   | "responsive";
 
 export interface ButtonProps
@@ -37,12 +35,22 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  // Adjust width based on size - xxs gets smaller, more responsive width
+  // Adjust width based on size - progressively wider for larger button sizes
   const getWidthClasses = (buttonSize: ButtonSize) => {
-    if (buttonSize === "xxs") {
-      return "w-24 sm:w-28 lg:w-32 xl:w-36";
+    switch (buttonSize) {
+      case "xxs":
+        return "w-24 sm:w-28 lg:w-32 xl:w-36";
+      case "xs":
+        return "w-28 sm:w-32 lg:w-36 xl:w-40 2xl:w-48";
+      case "sm":
+        return "w-32 sm:w-36 lg:w-40 xl:w-44";
+      case "md":
+        return "w-36 sm:w-40 lg:w-44 xl:w-48";
+      case "responsive":
+        return "w-40 sm:w-44 lg:w-48 xl:w-52";
+      default:
+        return "w-32 lg:w-36 xl:w-40";
     }
-    return "w-32 lg:w-36 xl:w-40";
   };
 
   const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal ${getWidthClasses(size)}`;
@@ -79,11 +87,9 @@ const Button: React.FC<ButtonProps> = ({
 
   const sizes = {
     xxs: "px-1.5 py-1 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
-    xs: "px-2 py-1.5 text-sm xl:text-base",
+    xs: "px-2 py-1.5 text-sm xl:text-base 2xl:text-xl",
     sm: "px-3 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
     md: "px-4 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl",
-    lg: "px-6 py-1.5 sm:py-2 md:py-2.5 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl",
-    xl: "px-8 py-2 sm:py-2.5 md:py-3 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl",
     responsive:
       "px-4 py-1.5 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl", // Responsive for landing
   };

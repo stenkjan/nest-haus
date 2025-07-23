@@ -415,7 +415,7 @@ export default function ContentCardsGlass({
                               <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-400 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -464,7 +464,7 @@ export default function ContentCardsGlass({
                               <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-400 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -509,7 +509,7 @@ export default function ContentCardsGlass({
                               <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-400 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -558,7 +558,7 @@ export default function ContentCardsGlass({
                               <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-400 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -682,15 +682,7 @@ export default function ContentCardsGlass({
         <div className="text-center mt-6 text-sm text-gray-400">
           {isStatic ? (
             <p>Single responsive glass card • Wide layout on desktop, mobile layout on tablets/phones</p>
-          ) : (
-            <>
-              <p className="hidden md:block">Use ← → arrow keys to navigate • Drag to scroll</p>
-              <p className="md:hidden">Swipe left or right to navigate</p>
-              <p className="mt-1">
-                Showing {Math.min(Math.ceil(cardsPerView), displayCards.length - currentIndex)} of {displayCards.length} cards
-              </p>
-            </>
-          )}
+          ) : null}
         </div>
       )}
     </div>

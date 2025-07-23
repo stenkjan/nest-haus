@@ -587,7 +587,7 @@ export default function ContentCards({
                               <h4 className="text-sm md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -626,7 +626,7 @@ export default function ContentCards({
                               animate={{ y: 0, opacity: 1 }}
                               transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
                             >
-                              <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'extendedDescription')}
                               </p>
                             </motion.div>
@@ -651,7 +651,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -700,7 +700,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -745,7 +745,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -794,7 +794,7 @@ export default function ContentCards({
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, 'subtitle')}
                               </h4>
-                              <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, 'description')}
                               </p>
                             </motion.div>
@@ -837,7 +837,7 @@ export default function ContentCards({
                           <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                             {getCardText(card, 'subtitle')}
                           </h4>
-                          <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                          <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
                             {getCardText(card, 'description')}
                           </p>
                         </motion.div>
