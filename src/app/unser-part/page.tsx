@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 // import Link from "next/link";
 import { Button } from "@/components/ui";
-import { ThreeByOneAdaptiveHeight, FullWidthImageGrid, ThreeByOneGrid } from "@/components/grids";
-import { ClientBlobVideo } from "@/components/images";
+import {
+  ThreeByOneAdaptiveHeight,
+  FullWidthImageGrid,
+  ThreeByOneGrid,
+} from "@/components/grids";
+import { ClientBlobVideo, ClientBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import { ContentCardsGlass } from "@/components/cards";
 
@@ -118,7 +122,7 @@ export default function UnserPartPage() {
               <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-black mb-4 lg:mb-5">
                 Schaffen beste Qualität zu fairen Preisen.
               </p>
-              
+
               <div className="flex gap-4 justify-center">
                 <Button variant="primary" size="xs">
                   Unser Part
@@ -139,10 +143,11 @@ export default function UnserPartPage() {
                 Dein Nest System
               </h2>
               <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
-              Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft. 
+                Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
+                Effizienz schafft.
               </p>
             </div>
-            
+
             <div className="flex justify-center">
               <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
                 <ClientBlobVideo
@@ -159,7 +164,9 @@ export default function UnserPartPage() {
                 />
                 {/* Accessibility description for screen readers */}
                 <span className="sr-only">
-                  Video demonstration of NEST-Haus modular construction system showing architectural components and assembly process in a continuous forward and reverse loop animation
+                  Video demonstration of NEST-Haus modular construction system
+                  showing architectural components and assembly process in a
+                  continuous forward and reverse loop animation
                 </span>
               </div>
             </div>
@@ -213,16 +220,16 @@ export default function UnserPartPage() {
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-24">
               <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
-              Gut für Dich, besser für die Zukunft
+                Gut für Dich, besser für die Zukunft
               </h2>
               <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
-              Entdecke unsere sorgfältig ausgewählten Materialien
+                Entdecke unsere sorgfältig ausgewählten Materialien
               </p>
             </div>
           </div>
-          
+
           {/* ContentCardsGlass with full width */}
-          <ContentCardsGlass 
+          <ContentCardsGlass
             variant="responsive"
             title=""
             subtitle=""
@@ -276,7 +283,72 @@ export default function UnserPartPage() {
             secondaryButtonText="Mehr erfahren"
           />
         </section>
+
+        {/* Video Section - Wir liefern Möglichkeiten */}
+        <section className="bg-black pt-20 pb-8">
+          <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
+            <div className="text-center mb-24">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
+                Wir liefern Möglichkeiten
+              </h2>
+              <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+                Wo Effizienz auf Architektur trifft - Nest
+              </p>
+            </div>
+
+            <div className="flex justify-center">
+              <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
+                <ClientBlobVideo
+                  path={IMAGES.function.nestHausModulSchema}
+                  className="w-full h-full object-cover"
+                  autoPlay={true}
+                  loop={false}
+                  muted={true}
+                  playsInline={true}
+                  controls={false}
+                  enableCache={true}
+                  reversePlayback={true}
+                  fallbackSrc={IMAGES.function.nestHausModulSchema}
+                />
+                {/* Accessibility description for screen readers */}
+                <span className="sr-only">
+                  Video demonstration of NEST-Haus modular construction system
+                  showing architectural components and assembly process in a
+                  continuous forward and reverse loop animation
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Single Image Section - Du individualisierst dein NEST Haus */}
+        <section className="bg-black pt-20 pb-20">
+          <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
+                Du individualisierst dein NEST Haus.
+              </h2>
+              <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+                Weil nur du weißt, wie du richtig wohnst.
+              </p>
+            </div>
+
+            <div className="flex justify-center">
+              <div className="w-full relative" style={{ aspectRatio: "1.9/1" }}>
+                <ClientBlobImage
+                  path={IMAGES.function.nestHausGrundrissSchema}
+                  alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
+                  enableCache={true}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 1550px"
+                  quality={85}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );
-} 
+}
