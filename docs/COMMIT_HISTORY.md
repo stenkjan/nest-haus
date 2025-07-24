@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [22984fa45a9610ffaf690966a90b09dc8e7646a8] - Thu Jul 24 14:40:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/layout/Navbar.tsx
+- src/components/videos/PingPongVideo.tsx
+- src/hooks/usePingPongVideo.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [5371adf86f85d7cbb2423ced0bacd16748c826c1] - Thu Jul 24 14:33:56 2025 +0200
 
 **Author**: stenkjan
