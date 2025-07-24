@@ -52,7 +52,7 @@ export const IMAGES = {
         nestHausFensterTuerenAbschlussmodul: '32-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Abschlussmodul-Liniengrafik',
         nestHausGrundrissSchema: '33-NEST-Haus-Planung-Innenausbau-moeblierung-hausbau-flexibel',
         nestHausFensterTuerenStirnseite: '34-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Stirnseite',
-        nestHausModulElektrikSanitaer: '35-NEST-Haus-Planung-Elektrik-Sanitaer-Einbau-Gebauudetechnik-HKLS-Modul',
+        nestHausModulElektrikSanitaer: '35-NEST-Haus-Planung-Elektrik-Sanitaer-Einbau-Gebaeudetechnik-HKLS-Modul',
         nestHausPlattenFundament: '36-NEST-Haus-Fundament-Plattenfundament',
         nestHausFundamentStreifenfundament: '37-NEST-Haus-Fundament-Bestandsgebaeude-Keller-Streifenfundament',
         nestHausFundamentPunktfundament: '38-NEST-Haus-Fundament-Punktfundament',
