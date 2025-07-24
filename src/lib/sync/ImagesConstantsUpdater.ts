@@ -378,7 +378,7 @@ export class ImagesConstantsUpdater {
     for (const [fullKey, newValue] of Object.entries(updatedConstants)) {
       // Handle nested keys (like hero.mobile.nestHaus1) and flat keys
       const keyParts = fullKey.split('.');
-      let searchKey = keyParts[keyParts.length - 1]; // Get the actual variable name
+      const searchKey = keyParts[keyParts.length - 1]; // Get the actual variable name
 
       // Create a regex to find and replace just the value, preserving variable name and structure
       // Matches: variableName: 'oldvalue' and replaces with: variableName: 'newvalue'
