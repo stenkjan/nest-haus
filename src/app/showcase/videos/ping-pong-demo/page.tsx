@@ -211,9 +211,9 @@ export default function PingPongVideoDemo() {
             <h3 className="font-medium text-blue-900 mb-2">🔧 Debugging Tips</h3>
             <ul className="text-sm text-blue-800 space-y-1">
               <li>• Open browser Developer Tools (F12) and check the Console tab</li>
-              <li>• Enable "Debug" checkbox to see detailed ping-pong logs</li>
-              <li>• Look for logs like "🎬 Video ended" → "🔄 Starting reverse playback" → "▶️ switched to forward"</li>
-              <li>• Adjust "Reverse Speed" slider - higher values = slower reverse playback</li>
+              <li>• Enable &quot;Debug&quot; checkbox to see detailed ping-pong logs</li>
+              <li>• Look for logs like &quot;🎬 Video ended&quot; → &quot;🔄 Starting reverse playback&quot; → &quot;▶️ switched to forward&quot;</li>
+              <li>• Adjust &quot;Reverse Speed&quot; slider - higher values = slower reverse playback</li>
               <li>• Try different component types to compare behavior</li>
             </ul>
           </div>
