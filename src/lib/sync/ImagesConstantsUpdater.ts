@@ -21,6 +21,7 @@ export interface ImageMapping {
   blobPath: string;
   category?: string;
   constantKey?: string;
+  isMobile?: boolean;
 }
 
 export class ImagesConstantsUpdater {
@@ -42,7 +43,7 @@ export class ImagesConstantsUpdater {
 
       // Step 1: Backup original file
       this.originalContent = await fs.readFile(this.imagesFilePath, 'utf8');
-      
+
       // Step 2: Get current blob images
       const blobMappings = await this.getBlobImageMappings();
       console.log(`📊 Found ${blobMappings.length} blob images to process`);
@@ -51,18 +52,39 @@ export class ImagesConstantsUpdater {
       const currentConstants = this.parseCurrentConstants(this.originalContent);
       console.log(`📊 Found ${Object.keys(currentConstants).length} existing constants`);
 
-      // Step 4: Generate updated constants
+      // Step 4: Generate updated constants (path updates only)
       const updatedConstants = this.generateUpdatedConstants(currentConstants, blobMappings);
-      result.newMappings = Object.keys(updatedConstants).length - Object.keys(currentConstants).length;
 
-      // Step 5: Write updated file if changes detected
+      // Count actual path changes, not new mappings
+      let pathChanges = 0;
+      for (const [key, newValue] of Object.entries(updatedConstants)) {
+        if (currentConstants[key] !== newValue) {
+          pathChanges++;
+        }
+      }
+      result.newMappings = pathChanges;
+
+      // Step 5: Write updated file if changes detected (SAFE MODE)
       if (this.hasChanges(currentConstants, updatedConstants)) {
+        console.log('🔒 SAFE MODE: Only updating path values, preserving all variable names and structure');
+
         const newContent = this.generateNewFileContent(this.originalContent, updatedConstants);
-        await fs.writeFile(this.imagesFilePath, newContent, 'utf8');
-        result.updated = true;
-        console.log(`✅ Updated images.ts with ${result.newMappings} new mappings`);
+
+        // Additional safety check: ensure the new content has the same number of variables
+        const originalVarCount = (this.originalContent.match(/:\s*['"`][^'"`]*['"`]/g) || []).length;
+        const newVarCount = (newContent.match(/:\s*['"`][^'"`]*['"`]/g) || []).length;
+
+        if (originalVarCount !== newVarCount) {
+          console.warn('🚨 SAFETY CHECK FAILED: Variable count mismatch, aborting update');
+          console.warn(`   Original: ${originalVarCount} variables, New: ${newVarCount} variables`);
+          result.errors.push('Safety check failed: Variable count mismatch');
+        } else {
+          await fs.writeFile(this.imagesFilePath, newContent, 'utf8');
+          result.updated = true;
+          console.log(`✅ SAFELY updated images.ts paths (${pathChanges} path updates, ${originalVarCount} variables preserved)`);
+        }
       } else {
-        console.log('📄 No changes needed in images.ts');
+        console.log('📄 No path changes needed in images.ts');
       }
 
       return result;
@@ -70,7 +92,7 @@ export class ImagesConstantsUpdater {
     } catch (error) {
       console.error('❌ Failed to update images constants:', error);
       result.errors.push(error instanceof Error ? error.message : 'Unknown error');
-      
+
       // Attempt rollback if we have original content
       if (this.originalContent) {
         try {
@@ -97,23 +119,25 @@ export class ImagesConstantsUpdater {
       for (const blob of blobs) {
         const parsed = this.parseImageName(blob.pathname);
         if (parsed) {
-          // Check if this is a mobile version
-          const isMobile = blob.pathname.toLowerCase().includes('mobile');
+          // Check if this is a mobile version by looking at the title/filename
+          const isMobile = parsed.title.toLowerCase().includes('mobile') ||
+            blob.pathname.toLowerCase().includes('mobile');
           const category = this.inferCategory(parsed.number, parsed.title);
           const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
-          
+
           // Clean the blob path for constants: remove images/ prefix, hash, and extension
           const cleanBlobPath = blob.pathname
             .replace(/^images\//, '') // Remove images/ prefix
             .replace(/-[a-zA-Z0-9]{20,}\.([a-zA-Z0-9]+)$/, '') // Remove hash and extension
             .replace(/\.([a-zA-Z0-9]+)$/, ''); // Remove extension if no hash
-          
+
           mappings.push({
             number: parsed.number,
             title: parsed.title,
             blobPath: cleanBlobPath,
             category,
-            constantKey
+            constantKey,
+            isMobile // Add this property to the mapping
           });
         }
       }
@@ -134,7 +158,7 @@ export class ImagesConstantsUpdater {
   private parseImageName(fileName: string): { number: number; title: string } | null {
     // Remove the images/ prefix if present
     const cleanFileName = fileName.replace(/^images\//, '');
-    
+
     // Match either:
     // - Simple format: "123-Title-Name.ext" 
     // - With hash: "123-Title-Name-hash.ext"
@@ -146,7 +170,7 @@ export class ImagesConstantsUpdater {
 
     const [, numberStr, title] = match;
     const number = parseInt(numberStr, 10);
-    
+
     if (isNaN(number)) {
       console.log(`⚠️  Invalid number in filename: ${fileName}`);
       return null;
@@ -192,74 +216,12 @@ export class ImagesConstantsUpdater {
 
   /**
    * Generate constant key based on number, title, category, and mobile flag
+   * DISABLED: To prevent corrupting images.ts file structure
+   * The file should be manually maintained for now
    */
   private generateConstantKey(number: number, title: string, category: string, isMobile: boolean = false): string {
-    const titleParts = title.toLowerCase()
-      .replace(/[^a-z0-9-]/g, '_')
-      .replace(/_+/g, '_')
-      .replace(/^_|_$/g, '')
-      .split('_');
-
-    // For hero images, use simple naming with mobile handling
-    if (category === 'hero') {
-      if (number === 0) return 'homeButton';
-      
-      if (isMobile) {
-        // Mobile hero images go into hero.mobile subcategory
-        return `mobile.nestHaus${number}`;
-      } else {
-        // Desktop hero images go directly into hero category
-        return `nestHaus${number}`;
-      }
-    }
-
-    // For configurations, create descriptive keys
-    if (category === 'configurations') {
-      let key = '';
-      
-      // Extract size info (75, 95, 115, etc.)
-      const sizeMatch = title.match(/(\d{2,3})/);
-      if (sizeMatch) {
-        key += `nest${sizeMatch[1]}_`;
-      }
-
-      // Extract material info
-      if (title.includes('fassadenplatten') && title.includes('schwarz')) {
-        key += 'plattenschwarz';
-      } else if (title.includes('fassadenplatten') && title.includes('weiss')) {
-        key += 'plattenweiss';
-      } else if (title.includes('holzfassade') || title.includes('holzlattung')) {
-        key += 'holzlattung';
-      } else if (title.includes('trapezblech')) {
-        key += 'trapezblech';
-      }
-
-      // Handle special cases
-      if (title.includes('photovoltaik') || title.includes('pv')) {
-        key = key.replace(/^nest\d+_/, 'pv_');
-      }
-      
-      if (title.includes('fenster')) {
-        if (title.includes('pvc') || title.includes('kunststoff')) {
-          key = 'fenster_pvc';
-        } else if (title.includes('aluminium')) {
-          key = 'fenster_aluminium';
-        } else if (title.includes('eiche')) {
-          key = 'fenster_holz_eiche';
-        } else if (title.includes('fichte')) {
-          key = 'fenster_holz_fichte';
-        }
-      }
-
-      return key || `config_${number}`;
-    }
-
-    // For other categories, use simplified naming
-    const mainWords = titleParts
-      .filter(word => word.length > 2 && !['nest', 'haus', 'konfigurator'].includes(word))
-      .slice(0, 3);
-    
-    return mainWords.join('_') || `${category}_${number}`;
+    // Simple fallback to prevent auto-generation that corrupts the file
+    return `config_${number}${isMobile ? '_mobile' : ''}`;
   }
 
   /**
@@ -267,13 +229,13 @@ export class ImagesConstantsUpdater {
    */
   private parseCurrentConstants(content: string): Record<string, string> {
     const constants: Record<string, string> = {};
-    
+
     // Match all string assignments in the configurations object
     const configMatch = content.match(/configurations:\s*{([\s\S]*?)}/);
     if (configMatch) {
       const configContent = configMatch[1];
       const assignments = configContent.match(/(\w+):\s*['"`]([^'"`]+)['"`]/g);
-      
+
       if (assignments) {
         for (const assignment of assignments) {
           const match = assignment.match(/(\w+):\s*['"`]([^'"`]+)['"`]/);
@@ -312,45 +274,70 @@ export class ImagesConstantsUpdater {
   }
 
   /**
-   * Generate updated constants by merging current with blob mappings
-    * NEVER removes existing constants - only adds new ones
-   */
+ * Generate updated constants - SAFE MODE: Only updates path values, never variable names
+ * Preserves all existing variable names and structure, only updates string paths
+ */
   private generateUpdatedConstants(
-    currentConstants: Record<string, string>, 
+    currentConstants: Record<string, string>,
     blobMappings: ImageMapping[]
   ): Record<string, string> {
-    // Start with ALL current constants - never remove any
     const updatedConstants = { ...currentConstants };
+    let pathUpdates = 0;
 
-    // Only ADD new constants from blob mappings
+    // Create a map of image numbers to their blob paths (without hash/extension)
+    const numberToPathMap = new Map<number, string>();
+
     for (const mapping of blobMappings) {
-      if (mapping.constantKey && mapping.category) {
-        // Handle hero category specially - mobile images go into hero.mobile
-        let fullKey: string;
+      // Clean path: remove images/ prefix, hash, and extension
+      const cleanPath = mapping.blobPath;
+      numberToPathMap.set(mapping.number, cleanPath);
+    }
+
+    // Only update existing constants' path values, never change variable names
+    for (const [variableName, currentPath] of Object.entries(currentConstants)) {
+      // Skip fallback/placeholder paths
+      if (currentPath.startsWith('/api/placeholder/')) {
+        continue;
+      }
+
+      // Extract number from current path to match with blob images
+      const numberMatch = currentPath.match(/^(\d+)-/);
+      if (numberMatch) {
+        const imageNumber = parseInt(numberMatch[1], 10);
+
+        // Check if current path and variable name indicate mobile version
+        const isCurrentMobile = currentPath.includes('-mobile') || variableName.includes('mobile');
+
+                // Find matching blob image with EXACT same mobile/desktop type
+        const matchingMapping = blobMappings.find(mapping => 
+          mapping.number === imageNumber && 
+          mapping.isMobile === isCurrentMobile &&
+          // Double-check: path mobile state must match variable mobile state
+          (mapping.blobPath.includes('-mobile') === isCurrentMobile)
+        );
         
-        if (mapping.category === 'hero' && mapping.constantKey.startsWith('mobile.')) {
-          // Mobile hero images: hero.mobile.nestHaus1
-          fullKey = `hero.${mapping.constantKey}`;
-        } else if (mapping.category === 'configurations') {
-          // Configuration images: direct key
-          fullKey = mapping.constantKey;
-        } else {
-          // Other categories: category.key
-          fullKey = `${mapping.category}.${mapping.constantKey}`;
-        }
-        
-        // Only add if it's a new key (doesn't exist in current constants)
-        // This preserves all existing constants even if the blob is deleted
-        if (!updatedConstants[fullKey]) {
-          updatedConstants[fullKey] = mapping.blobPath;
-        }
-        // If key exists but value is different, update it (for renamed files)
-        else if (updatedConstants[fullKey] !== mapping.blobPath) {
-          console.log(`🔄 Updating constant ${fullKey}: ${updatedConstants[fullKey]} -> ${mapping.blobPath}`);
-          updatedConstants[fullKey] = mapping.blobPath;
+        if (matchingMapping && matchingMapping.blobPath !== currentPath) {
+          updatedConstants[variableName] = matchingMapping.blobPath;
+          pathUpdates++;
+          console.log(`🔄 Updated path for ${variableName} (${isCurrentMobile ? 'mobile' : 'desktop'}): ${currentPath} → ${matchingMapping.blobPath}`);
+        } else if (!matchingMapping) {
+          // If no exact match found, log it but don't update
+          const availableTypes = blobMappings
+            .filter(m => m.number === imageNumber)
+            .map(m => m.isMobile ? 'mobile' : 'desktop')
+            .join(', ');
+          
+          if (availableTypes) {
+            console.log(`⚠️ Skipped ${variableName}: No ${isCurrentMobile ? 'mobile' : 'desktop'} version found (available: ${availableTypes})`);
+          }
         }
       }
     }
+
+    console.log(`📄 Safe path update completed:`);
+    console.log(`   • Preserved ${Object.keys(currentConstants).length} variable names`);
+    console.log(`   • Updated ${pathUpdates} path values`);
+    console.log(`   • Found ${blobMappings.length} blob images for reference`);
 
     return updatedConstants;
   }
@@ -378,44 +365,31 @@ export class ImagesConstantsUpdater {
   }
 
   /**
-   * Generate new file content with updated constants
-   */
+ * Generate new file content with updated constants - SAFE MODE
+ * Only updates existing path values while preserving all structure, comments, and formatting
+ */
   private generateNewFileContent(
-    originalContent: string, 
+    originalContent: string,
     updatedConstants: Record<string, string>
   ): string {
     let newContent = originalContent;
 
-    // Group constants by category
-    const constantsByCategory: Record<string, Record<string, string>> = {};
-    
-    for (const [fullKey, value] of Object.entries(updatedConstants)) {
-      const [category, key] = fullKey.includes('.') ? fullKey.split('.') : ['configurations', fullKey];
-      
-      if (!constantsByCategory[category]) {
-        constantsByCategory[category] = {};
-      }
-      constantsByCategory[category][key] = value;
-    }
+    // Update each constant individually using precise regex replacement
+    for (const [fullKey, newValue] of Object.entries(updatedConstants)) {
+      // Handle nested keys (like hero.mobile.nestHaus1) and flat keys
+      const keyParts = fullKey.split('.');
+      let searchKey = keyParts[keyParts.length - 1]; // Get the actual variable name
 
-    // Update each category section
-    for (const [category, constants] of Object.entries(constantsByCategory)) {
-      if (Object.keys(constants).length === 0) continue;
+      // Create a regex to find and replace just the value, preserving variable name and structure
+      // Matches: variableName: 'oldvalue' and replaces with: variableName: 'newvalue'
+      const valueRegex = new RegExp(
+        `(${searchKey}:\\s*['"\`])([^'"\`]+)(['"\`])`,
+        'g'
+      );
 
-      const categoryRegex = new RegExp(`(${category}:\\s*{)([\\s\\S]*?)(})`, '');
-      const match = newContent.match(categoryRegex);
-      
-      if (match) {
-        const indent = '        '; // 8 spaces for proper indentation
-        const constantsText = Object.entries(constants)
-          .sort(([a], [b]) => a.localeCompare(b))
-          .map(([key, value]) => `${indent}${key}: '${value}'`)
-          .join(',\n');
-
-        newContent = newContent.replace(
-          categoryRegex,
-          `$1\n${constantsText}\n        $3`
-        );
+      // Only replace if the pattern is found
+      if (valueRegex.test(newContent)) {
+        newContent = newContent.replace(valueRegex, `$1${newValue}$3`);
       }
     }
 

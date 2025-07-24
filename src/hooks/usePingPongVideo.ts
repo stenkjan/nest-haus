@@ -42,7 +42,7 @@ export const usePingPongVideo = ({
     const lastTimeRef = useRef<number>(0);
 
     // Debug logging helper
-    const debugLog = useCallback((message: string, data?: any) => {
+    const debugLog = useCallback((message: string, data?: unknown) => {
         if (enableDebugLogging) {
             console.log(`🎥 ${message}`, data || "");
         }

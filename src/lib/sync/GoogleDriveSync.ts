@@ -572,27 +572,27 @@ export class GoogleDriveSync {
       }
     });
 
-         // Process ALL drive images
-     for (const driveImg of allDriveImages) {
-       const compositeKey = getCompositeKey(driveImg.number, driveImg.isMobile);
-       const existingBlob = blobByCompositeKey.get(compositeKey);
+    // Process ALL drive images
+    for (const driveImg of allDriveImages) {
+      const compositeKey = getCompositeKey(driveImg.number, driveImg.isMobile);
+      const existingBlob = blobByCompositeKey.get(compositeKey);
 
-       if (!existingBlob) {
-         // New image - upload
-         operations.upload.push(driveImg);
-         console.log(`📤 New image detected: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
-       } else {
-         // Check if title has changed (indicating update needed)
-         if (existingBlob.title !== driveImg.title) {
-           operations.update.push({ drive: driveImg, blob: existingBlob });
-           console.log(`🔄 Title change detected: ${driveImg.number} (${existingBlob.title} → ${driveImg.title})`);
-           // Mark old blob for deletion (it will be replaced)
-           operations.delete.push(existingBlob);
-         } else {
-           console.log(`✓ No change needed: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
-         }
-       }
-     }
+      if (!existingBlob) {
+        // New image - upload
+        operations.upload.push(driveImg);
+        console.log(`📤 New image detected: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
+      } else {
+        // Check if title has changed (indicating update needed)
+        if (existingBlob.title !== driveImg.title) {
+          operations.update.push({ drive: driveImg, blob: existingBlob });
+          console.log(`🔄 Title change detected: ${driveImg.number} (${existingBlob.title} → ${driveImg.title})`);
+          // Mark old blob for deletion (it will be replaced)
+          operations.delete.push(existingBlob);
+        } else {
+          console.log(`✓ No change needed: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
+        }
+      }
+    }
 
     console.log(`📋 Full sync operations: ${operations.upload.length} upload, ${operations.update.length} update, ${operations.delete.length} replace`);
 
@@ -703,9 +703,9 @@ export class GoogleDriveSync {
       }
 
       if (result.updated) {
-        console.log(`✅ Successfully updated images.ts with ${result.newMappings} new mappings`);
+        console.log(`✅ Successfully updated images.ts with ${result.newMappings} path updates (variable names preserved)`);
       } else {
-        console.log('📄 No changes needed in images.ts');
+        console.log('📄 No path changes needed in images.ts');
       }
 
       return result.updated;

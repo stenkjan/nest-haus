@@ -68,7 +68,7 @@ const PingPongVideo: React.FC<PingPongVideoProps> = ({
     // Small delay to ensure video is ready
     const timeoutId = setTimeout(startPlayback, 100);
     return () => clearTimeout(timeoutId);
-  }, [autoPlay, isVideoReady, onLoad, onError]);
+  }, [autoPlay, isVideoReady, onLoad, onError, videoRef]);
 
   // Enhanced metadata handler
   const handleMetadataLoaded = () => {

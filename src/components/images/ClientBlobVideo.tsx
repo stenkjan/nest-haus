@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { usePingPongVideo } from "@/hooks/usePingPongVideo";
 
 interface ClientBlobVideoProps {
@@ -212,8 +212,6 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   // Use the ping-pong video hook for reverse playback functionality
   const {
     isPlayingReverse,
-    videoDuration,
-    isVideoReady: pingPongVideoReady,
     handleVideoEnded: pingPongHandleVideoEnded,
     handleLoadedMetadata: pingPongHandleLoadedMetadata,
     videoRef,
@@ -321,7 +319,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         }
       });
     }
-  }, [reversePlayback, loop, pingPongHandleVideoEnded]);
+  }, [reversePlayback, loop, pingPongHandleVideoEnded, videoRef]);
 
   // Handle video metadata loaded - delegate to ping-pong hook
   const handleLoadedMetadata = useCallback(() => {
@@ -340,7 +338,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         });
       }
     }
-  }, [pingPongHandleLoadedMetadata]);
+  }, [pingPongHandleLoadedMetadata, videoRef]);
 
   // Note: Event listeners are now handled via React props (onEnded, onLoadedMetadata)
   // This is more reliable than addEventListener in React components
@@ -395,7 +393,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     }, 100);
 
     return () => clearTimeout(timeoutId);
-  }, [autoPlay, videoUrl, loading, reversePlayback]);
+  }, [autoPlay, videoUrl, loading, reversePlayback, videoRef]);
 
   // Note: Animation frame cleanup and debug logging are now handled by the usePingPongVideo hook
 
