@@ -4,6 +4,73 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2a09c100f206ba1248d0a7ef802ea16d3f697c10] - Thu Jul 24 14:03:04 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [bd489703a9d1db5a0d5575c415886e72f8e2ead2] - Thu Jul 24 13:57:33 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [48ba3cf24ef0b6d96831fa52b7c86440bc9a519b] - Thu Jul 24 13:35:21 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance Google Drive sync functionality and update test script  - Improved the Google Drive sync test script with extended date range support, full sync capability, and better debugging options. - Updated the GoogleDriveSync class to support configurable date ranges and added safety checks to prevent data loss during sync operations. - Enhanced error handling and logging for better visibility into sync processes and configuration checks. - Added new usage options for the test script to facilitate easier testing and debugging.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/sync/google-drive/route.ts
+- src/app/showcase/videos/page.tsx
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/videos/PingPongVideo.tsx
+- src/components/videos/index.ts
+- src/hooks/index.ts
+- src/hooks/usePingPongVideo.ts
+
+
+#### ⚙️ Backend Changes
+- scripts/test-sync.js
+
+
+#### 📚 Documentation Changes
+- docs/PING_PONG_VIDEO_REFACTORING.md
+
+
+---
+
+## [bc9de23d8e774d8b804ffaf3ddc605640450e588] - Thu Jul 24 11:55:11 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [3cee11b4c96fb8a04f2b3b1431cd77d1fc58966f] - Wed Jul 23 16:22:37 2025 +0200
 
 **Author**: stenkjan

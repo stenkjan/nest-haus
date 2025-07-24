@@ -157,8 +157,19 @@ export class GoogleDriveSync {
    * NEW: Focus on 24-hour changes only for efficient daily sync
    */
   async syncImages(): Promise<SyncResult> {
+    // Use default 24-hour sync
+    return this.syncImagesWithDateRange(1);
+  }
+
+  /**
+   * Enhanced sync function with configurable date range
+   * @param days - Number of days to look back for changes (default: 1 for 24-hour sync)
+   * @param forceFullSync - If true, processes ALL images regardless of modification date
+   */
+  async syncImagesWithDateRange(days: number = 1, forceFullSync: boolean = false): Promise<SyncResult> {
     const startTime = Date.now();
-    console.log('🚀 Starting Google Drive to Vercel Blob sync (24-hour change detection)...');
+    const syncType = forceFullSync ? 'FULL SYNC (all images)' : `${days}-day change detection`;
+    console.log(`🚀 Starting Google Drive to Vercel Blob sync (${syncType})...`);
 
     const result: SyncResult = {
       processed: 0,
@@ -174,18 +185,28 @@ export class GoogleDriveSync {
     try {
       await this.initializeGoogleAuth();
 
-      // Step 1: Fetch images from both Google Drive folders (with 24-hour filter)
-      console.log('📁 Fetching images from Google Drive folders (24-hour change detection)...');
+      // Step 1: Fetch images from both Google Drive folders
+      console.log(`📁 Fetching images from Google Drive folders (${syncType})...`);
       const [mainImages, mobileImages] = await Promise.all([
-        this.fetchDriveImages(process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID!, false),
-        this.fetchDriveImages(process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID!, true)
+        this.fetchDriveImagesWithDateRange(process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID!, false, days, forceFullSync),
+        this.fetchDriveImagesWithDateRange(process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID!, true, days, forceFullSync)
       ]);
 
       const allDriveImages = [...mainImages, ...mobileImages];
-      const recentlyModifiedImages = allDriveImages.filter(img => img.isRecentlyModified);
+      const recentlyModifiedImages = forceFullSync
+        ? allDriveImages
+        : allDriveImages.filter(img => img.isRecentlyModified);
 
       console.log(`📊 Total Google Drive images: ${allDriveImages.length} (${mainImages.length} main, ${mobileImages.length} mobile)`);
-      console.log(`📊 Recently modified (24h): ${recentlyModifiedImages.length} images`);
+      console.log(`📊 ${forceFullSync ? 'All images to process' : `Recently modified (${days}d)`}: ${recentlyModifiedImages.length} images`);
+
+      // Debug: List all recent images found
+      if (recentlyModifiedImages.length > 0) {
+        console.log('🔍 Images to be processed:');
+        recentlyModifiedImages.forEach(img => {
+          console.log(`   • ${img.number}-${img.title}${img.isMobile ? '-mobile' : ''} (modified: ${img.modifiedTime})`);
+        });
+      }
 
       result.recentChangesFound = recentlyModifiedImages.length;
 
@@ -195,9 +216,9 @@ export class GoogleDriveSync {
         throw new Error('No images found in Google Drive folders - aborting sync for safety');
       }
 
-      // OPTIMIZATION: If no recent changes, skip the heavy operations
-      if (recentlyModifiedImages.length === 0) {
-        console.log('✅ No recent changes found in last 24 hours - sync complete');
+      // OPTIMIZATION: If no recent changes, skip the heavy operations (unless forced)
+      if (recentlyModifiedImages.length === 0 && !forceFullSync) {
+        console.log(`✅ No recent changes found in last ${days} day(s) - sync complete`);
         result.duration = Date.now() - startTime;
         return result;
       }
@@ -207,9 +228,12 @@ export class GoogleDriveSync {
       const blobImages = await this.fetchBlobImages();
       console.log(`📊 Current Vercel Blob images: ${blobImages.length}`);
 
-      // Step 3: Calculate sync operations (focused on recent changes)
-      console.log('🔄 Calculating sync operations for recent changes...');
-      const syncOps = this.calculateChangeBasedSyncOperations(allDriveImages, recentlyModifiedImages, blobImages);
+      // Step 3: Calculate sync operations
+      console.log(`🔄 Calculating sync operations for ${recentlyModifiedImages.length} images...`);
+      const syncOps = forceFullSync
+        ? this.calculateFullSyncOperations(allDriveImages, blobImages)
+        : this.calculateChangeBasedSyncOperations(allDriveImages, recentlyModifiedImages, blobImages);
+
       result.processed = recentlyModifiedImages.length;
 
       // Step 4: Preview operations before execution
@@ -227,6 +251,12 @@ export class GoogleDriveSync {
         syncOps.delete.forEach(blob => console.log(`  • ${blob.pathname}`));
       }
 
+      // SAFETY CHECK: Prevent mass deletions
+      if (syncOps.delete.length > Math.max(10, allDriveImages.length * 0.5)) {
+        console.warn('🚨 SAFETY CHECK: Preventing mass deletion operation');
+        throw new Error(`Safety check failed: ${syncOps.delete.length} deletions planned (max allowed: ${Math.max(10, Math.floor(allDriveImages.length * 0.5))})`);
+      }
+
       // Step 5: Execute sync operations
       if (syncOps.upload.length > 0 || syncOps.update.length > 0 || syncOps.delete.length > 0) {
         console.log('🔄 Executing sync operations...');
@@ -236,7 +266,7 @@ export class GoogleDriveSync {
         result.deleted = operationResult.deleted;
         result.errors = operationResult.errors;
       } else {
-        console.log('✅ No sync operations needed - all recent changes are up to date');
+        console.log('✅ No sync operations needed - all images are up to date');
       }
 
       // Step 6: Update constants file if images were modified
@@ -247,7 +277,7 @@ export class GoogleDriveSync {
 
       result.duration = Date.now() - startTime;
       console.log(`✅ Sync completed in ${result.duration}ms`);
-      console.log(`📊 Summary: ${result.recentChangesFound} recent changes, ${result.uploaded} uploaded, ${result.updated} updated, ${result.deleted} deleted, ${result.errors.length} errors`);
+      console.log(`📊 Summary: ${result.recentChangesFound} changes found, ${result.uploaded} uploaded, ${result.updated} updated, ${result.deleted} deleted, ${result.errors.length} errors`);
 
       return result;
     } catch (error) {
@@ -313,6 +343,79 @@ export class GoogleDriveSync {
       }
 
       console.log(`📊 Folder ${folderId}: ${images.length} total images, ${recentChanges} recent changes`);
+      return images.sort((a, b) => a.number - b.number);
+    } catch (error) {
+      console.error(`❌ Failed to fetch images from folder ${folderId}:`, error);
+      throw new Error(`Failed to fetch images from folder ${folderId}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Fetch images from a Google Drive folder with configurable date range
+   * Enhanced with better debugging and flexible date range
+   */
+  private async fetchDriveImagesWithDateRange(
+    folderId: string,
+    isMobile: boolean,
+    days: number = 1,
+    forceFullSync: boolean = false
+  ): Promise<DriveImage[]> {
+    try {
+      console.log(`📁 Fetching images from folder ID: ${folderId} (${isMobile ? 'mobile' : 'main'})`);
+
+      // Calculate lookback timestamp
+      const lookbackTime = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+      const isoTimestamp = lookbackTime.toISOString();
+
+      if (forceFullSync) {
+        console.log(`🕐 FULL SYNC: Processing ALL images (no date filter)`);
+      } else {
+        console.log(`🕐 Looking for changes since: ${isoTimestamp} (${days} day(s) ago)`);
+        console.log(`🕐 Current time: ${new Date().toISOString()}`);
+      }
+
+      const response = await this.drive.files.list({
+        q: `'${folderId}' in parents and (mimeType contains 'image/')`,
+        fields: 'files(id,name,modifiedTime,webContentLink)',
+        pageSize: 1000,
+        orderBy: 'modifiedTime desc' // Get most recent first
+      });
+
+      console.log(`📊 Raw files found in folder ${folderId}:`, response.data.files?.length || 0);
+
+      const images: DriveImage[] = [];
+      let recentChanges = 0;
+
+      for (const file of response.data.files || []) {
+        const parsed = this.parseImageName(file.name);
+        if (parsed) {
+          const modifiedTime = new Date(file.modifiedTime);
+          const isRecentlyModified = forceFullSync || modifiedTime > lookbackTime;
+
+          if (isRecentlyModified) {
+            recentChanges++;
+            console.log(`🆕 ${forceFullSync ? 'Processing' : 'Recent change'}: ${file.name} (modified: ${modifiedTime.toISOString()})`);
+          } else {
+            console.log(`⏭️ Skipping (too old): ${file.name} (modified: ${modifiedTime.toISOString()})`);
+          }
+
+          images.push({
+            id: file.id,
+            name: file.name,
+            number: parsed.number,
+            title: parsed.title,
+            extension: parsed.extension,
+            modifiedTime: file.modifiedTime,
+            webContentLink: file.webContentLink,
+            isMobile: isMobile,
+            isRecentlyModified
+          });
+        } else {
+          console.log(`❌ Could not parse filename: "${file.name}"`);
+        }
+      }
+
+      console.log(`📊 Folder ${folderId}: ${images.length} total images, ${recentChanges} ${forceFullSync ? 'to process' : 'recent changes'}`);
       return images.sort((a, b) => a.number - b.number);
     } catch (error) {
       console.error(`❌ Failed to fetch images from folder ${folderId}:`, error);
@@ -443,6 +546,60 @@ export class GoogleDriveSync {
   }
 
   /**
+   * Calculate sync operations for a full sync (all images)
+   */
+  private calculateFullSyncOperations(
+    allDriveImages: DriveImage[],
+    blobImages: BlobImage[]
+  ): SyncOperations {
+    const operations: SyncOperations = {
+      upload: [],
+      update: [],
+      delete: []
+    };
+
+    // Create composite key: "number:mobile" or "number:desktop"
+    const getCompositeKey = (number: number, isMobile: boolean): string => {
+      return `${number}:${isMobile ? 'mobile' : 'desktop'}`;
+    };
+
+    // Create maps for efficient lookups
+    const blobByCompositeKey = new Map<string, BlobImage>();
+    blobImages.forEach(blob => {
+      if (blob.number !== undefined) {
+        const key = getCompositeKey(blob.number, blob.isMobile || false);
+        blobByCompositeKey.set(key, blob);
+      }
+    });
+
+    // Process ALL drive images
+    for (const driveImg of allDriveImages) {
+      const compositeKey = getCompositeKey(driveImg.number, driveImg.isMobile);
+      const existingBlob = blobByCompositeKey.get(compositeKey);
+
+      if (!existingBlob) {
+        // New image - upload
+        operations.upload.push(driveImg);
+        console.log(`📤 New image detected: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
+      } else {
+        // Check if title has changed (indicating update needed)
+        if (existingBlob.title !== driveImg.title) {
+          operations.update.push({ drive: driveImg, blob: existingBlob });
+          console.log(`🔄 Title change detected: ${driveImg.number} (${existingBlob.title} → ${driveImg.title})`);
+          // Mark old blob for deletion (it will be replaced)
+          operations.delete.push(existingBlob);
+        } else {
+          console.log(`✓ No change needed: ${driveImg.number}-${driveImg.title}${driveImg.isMobile ? '-mobile' : ''}`);
+        }
+      }
+    }
+
+    console.log(`📋 Full sync operations: ${operations.upload.length} upload, ${operations.update.length} update, ${operations.delete.length} replace`);
+
+    return operations;
+  }
+
+  /**
    * Execute sync operations efficiently
    */
   private async executeSyncOperations(operations: SyncOperations) {
@@ -546,9 +703,9 @@ export class GoogleDriveSync {
       }
 
       if (result.updated) {
-        console.log(`✅ Successfully updated images.ts with ${result.newMappings} new mappings`);
+        console.log(`✅ Successfully updated images.ts with ${result.newMappings} path updates (variable names preserved)`);
       } else {
-        console.log('📄 No changes needed in images.ts');
+        console.log('📄 No path changes needed in images.ts');
       }
 
       return result.updated;

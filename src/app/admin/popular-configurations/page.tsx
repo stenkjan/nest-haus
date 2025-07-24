@@ -1,14 +1,17 @@
 /**
  * Popular Konfigurationen - Admin Panel
- * 
+ *
  * Displays the most popular house configurations, pricing trends,
  * and customer preferences to inform business decisions.
- * 
+ *
  * UPDATED: Now using real database data via API integration
  */
 
-import Link from 'next/link';
-import { Suspense } from 'react';
+// Force dynamic rendering for admin pages
+export const dynamic = "force-dynamic";
+
+import Link from "next/link";
+import { Suspense } from "react";
 
 // Types for the component props - updated to match API response
 interface ConfigurationData {
@@ -70,31 +73,35 @@ interface PopularConfigurationData {
  */
 async function fetchConfigurationData(): Promise<PopularConfigurationData> {
   try {
-    console.log('🔍 Fetching real configuration data...');
-    
-    const response = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/admin/popular-configurations`, {
-      cache: 'no-store', // Always get fresh data
-      headers: {
-        'Accept': 'application/json',
+    console.log("🔍 Fetching real configuration data...");
+
+    const response = await fetch(
+      `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/api/admin/popular-configurations`,
+      {
+        cache: "no-store", // Always get fresh data
+        headers: {
+          Accept: "application/json",
+        },
       }
-    });
+    );
 
     if (!response.ok) {
-      throw new Error(`API returned ${response.status}: ${response.statusText}`);
+      throw new Error(
+        `API returned ${response.status}: ${response.statusText}`
+      );
     }
 
     const result = await response.json();
-    
+
     if (!result.success) {
       throw new Error(`API error: ${result.error}`);
     }
 
-    console.log('✅ Configuration data fetched successfully');
+    console.log("✅ Configuration data fetched successfully");
     return result.data;
-    
   } catch (error) {
-    console.error('❌ Failed to fetch configuration data:', error);
-    
+    console.error("❌ Failed to fetch configuration data:", error);
+
     // Fallback to empty data structure if API fails
     return {
       topConfigurations: [],
@@ -104,19 +111,19 @@ async function fetchConfigurationData(): Promise<PopularConfigurationData> {
         gebaeudehuelle: [],
         innenverkleidung: [],
         fussboden: [],
-        pvanlage: []
+        pvanlage: [],
       },
       trends: {
-        weekly: []
+        weekly: [],
       },
       metadata: {
         totalConfigurations: 0,
         dataRange: {
           from: new Date().toISOString(),
-          to: new Date().toISOString()
+          to: new Date().toISOString(),
         },
-        lastUpdated: new Date().toISOString()
-      }
+        lastUpdated: new Date().toISOString(),
+      },
     };
   }
 }
@@ -126,9 +133,12 @@ function ConfigurationCard({ config }: { config: ConfigurationData }) {
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">{config.nestType}</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            {config.nestType}
+          </h3>
           <p className="text-sm text-gray-600">
-            {config.selectionCount} selections • {Math.round(config.conversionRate * 100)}% conversion
+            {config.selectionCount} selections •{" "}
+            {Math.round(config.conversionRate * 100)}% conversion
           </p>
         </div>
         <div className="text-right">
@@ -138,7 +148,7 @@ function ConfigurationCard({ config }: { config: ConfigurationData }) {
           <p className="text-xs text-gray-500">Total Price</p>
         </div>
       </div>
-      
+
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-600">Gebäudehülle:</span>
@@ -161,7 +171,7 @@ function ConfigurationCard({ config }: { config: ConfigurationData }) {
           <span className="font-medium">{config.planungspaket}</span>
         </div>
       </div>
-      
+
       <div className="mt-4 pt-4 border-t border-gray-200">
         <div className="flex justify-between items-center">
           <span className="text-xs text-gray-500">
@@ -169,8 +179,8 @@ function ConfigurationCard({ config }: { config: ConfigurationData }) {
           </span>
           <div className="flex items-center">
             <div className="w-16 bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-blue-600 h-2 rounded-full" 
+              <div
+                className="bg-blue-600 h-2 rounded-full"
                 style={{ width: `${config.conversionRate * 100}%` }}
               ></div>
             </div>
@@ -184,27 +194,39 @@ function ConfigurationCard({ config }: { config: ConfigurationData }) {
   );
 }
 
-function PriceDistribution({ data }: { data: Array<{ range: string; count: number; percentage: number }> }) {
-  const maxCount = data.length > 0 ? Math.max(...data.map(d => d.count)) : 1;
-  
+function PriceDistribution({
+  data,
+}: {
+  data: Array<{ range: string; count: number; percentage: number }>;
+}) {
+  const maxCount = data.length > 0 ? Math.max(...data.map((d) => d.count)) : 1;
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Price Distribution</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        Price Distribution
+      </h3>
       {data.length > 0 ? (
         <div className="space-y-4">
           {data.map((range, index) => (
             <div key={index}>
               <div className="flex justify-between items-center mb-1">
-                <span className="text-sm font-medium text-gray-700">{range.range}</span>
-                <span className="text-sm text-gray-600">{range.count} configurations</span>
+                <span className="text-sm font-medium text-gray-700">
+                  {range.range}
+                </span>
+                <span className="text-sm text-gray-600">
+                  {range.count} configurations
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div 
+                <div
                   className="bg-green-500 h-3 rounded-full flex items-center justify-center"
                   style={{ width: `${(range.count / maxCount) * 100}%` }}
                 >
                   <span className="text-xs text-white font-medium">
-                    {(range.count / maxCount) * 100 > 30 ? `${range.percentage}%` : ''}
+                    {(range.count / maxCount) * 100 > 30
+                      ? `${range.percentage}%`
+                      : ""}
                   </span>
                 </div>
               </div>
@@ -218,24 +240,33 @@ function PriceDistribution({ data }: { data: Array<{ range: string; count: numbe
   );
 }
 
-function SelectionStats({ data }: { data: PopularConfigurationData['selectionStats'] }) {
+function SelectionStats({
+  data,
+}: {
+  data: PopularConfigurationData["selectionStats"];
+}) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Component Popularity</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        Component Popularity
+      </h3>
       <div className="space-y-6">
         {Object.entries(data).map(([category, items]) => (
           <div key={category}>
             <h4 className="text-sm font-medium text-gray-900 mb-2 capitalize">
-              {category.replace(/([A-Z])/g, ' $1').trim()}
+              {category.replace(/([A-Z])/g, " $1").trim()}
             </h4>
             {items.length > 0 ? (
               <div className="space-y-2">
                 {items.slice(0, 5).map((item, index) => (
-                  <div key={index} className="flex items-center justify-between">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
                     <span className="text-sm text-gray-600">{item.name}</span>
                     <div className="flex items-center">
                       <div className="w-20 bg-gray-200 rounded-full h-2 mr-2">
-                        <div 
+                        <div
                           className="bg-blue-500 h-2 rounded-full"
                           style={{ width: `${item.percentage}%` }}
                         ></div>
@@ -257,15 +288,28 @@ function SelectionStats({ data }: { data: PopularConfigurationData['selectionSta
   );
 }
 
-function TrendChart({ data }: { data: Array<{ week: string; nest80: number; nest100: number; nest120: number }> }) {
+function TrendChart({
+  data,
+}: {
+  data: Array<{
+    week: string;
+    nest80: number;
+    nest100: number;
+    nest120: number;
+  }>;
+}) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Weekly Trends</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        Weekly Trends
+      </h3>
       {data.length > 0 ? (
         <div className="space-y-4">
           {data.map((week, index) => (
             <div key={index} className="space-y-2">
-              <div className="text-sm font-medium text-gray-700">{week.week}</div>
+              <div className="text-sm font-medium text-gray-700">
+                {week.week}
+              </div>
               <div className="flex items-center space-x-4">
                 <div className="flex-1">
                   <div className="flex justify-between text-xs text-gray-600 mb-1">
@@ -274,15 +318,15 @@ function TrendChart({ data }: { data: Array<{ week: string; nest80: number; nest
                     <span>Nest120: {week.nest120}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-3 flex">
-                    <div 
+                    <div
                       className="bg-blue-500 h-3 rounded-l-full"
                       style={{ width: `${week.nest80}%` }}
                     ></div>
-                    <div 
+                    <div
                       className="bg-green-500 h-3"
                       style={{ width: `${week.nest100}%` }}
                     ></div>
-                    <div 
+                    <div
                       className="bg-purple-500 h-3 rounded-r-full"
                       style={{ width: `${week.nest120}%` }}
                     ></div>
@@ -291,7 +335,7 @@ function TrendChart({ data }: { data: Array<{ week: string; nest80: number; nest
               </div>
             </div>
           ))}
-          
+
           <div className="mt-4 pt-4 border-t border-gray-200">
             <div className="flex justify-between text-xs">
               <div className="flex items-center">
@@ -321,29 +365,40 @@ function TrendChart({ data }: { data: Array<{ week: string; nest80: number; nest
  */
 async function ConfigurationDataDashboard() {
   const configData = await fetchConfigurationData();
-  
+
   // Calculate quick stats from real data
   const topConfiguration = configData.topConfigurations[0];
-  const avgPrice = configData.topConfigurations.length > 0 
-    ? Math.round(configData.topConfigurations.reduce((sum, config) => sum + config.totalPrice, 0) / configData.topConfigurations.length)
-    : 0;
-  const bestConversion = configData.topConfigurations.length > 0
-    ? Math.max(...configData.topConfigurations.map(c => c.conversionRate))
-    : 0;
-  
+  const avgPrice =
+    configData.topConfigurations.length > 0
+      ? Math.round(
+          configData.topConfigurations.reduce(
+            (sum, config) => sum + config.totalPrice,
+            0
+          ) / configData.topConfigurations.length
+        )
+      : 0;
+  const bestConversion =
+    configData.topConfigurations.length > 0
+      ? Math.max(...configData.topConfigurations.map((c) => c.conversionRate))
+      : 0;
+
   return (
     <>
       {/* Real Data Summary */}
       <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-blue-800">🔴 Live Data Summary</h3>
+            <h3 className="text-sm font-medium text-blue-800">
+              🔴 Live Data Summary
+            </h3>
             <p className="text-xs text-blue-600">
-              {configData.metadata.totalConfigurations} total configurations analyzed from real customer data
+              {configData.metadata.totalConfigurations} total configurations
+              analyzed from real customer data
             </p>
           </div>
           <div className="text-xs text-blue-600">
-            Updated: {new Date(configData.metadata.lastUpdated).toLocaleString()}
+            Updated:{" "}
+            {new Date(configData.metadata.lastUpdated).toLocaleString()}
           </div>
         </div>
       </div>
@@ -356,41 +411,47 @@ async function ConfigurationDataDashboard() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Most Popular</p>
               <p className="text-2xl font-bold text-gray-900">
-                {topConfiguration?.nestType || 'No Data'}
+                {topConfiguration?.nestType || "No Data"}
               </p>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
             <div className="text-3xl">💰</div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Avg Price</p>
               <p className="text-2xl font-bold text-gray-900">
-                {avgPrice > 0 ? `€${Math.round(avgPrice / 1000)}k` : 'No Data'}
+                {avgPrice > 0 ? `€${Math.round(avgPrice / 1000)}k` : "No Data"}
               </p>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
             <div className="text-3xl">🎯</div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Best Conversion</p>
+              <p className="text-sm font-medium text-gray-600">
+                Best Conversion
+              </p>
               <p className="text-2xl font-bold text-green-600">
-                {bestConversion > 0 ? `${Math.round(bestConversion * 100)}%` : 'No Data'}
+                {bestConversion > 0
+                  ? `${Math.round(bestConversion * 100)}%`
+                  : "No Data"}
               </p>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
             <div className="text-3xl">📈</div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Configurations</p>
+              <p className="text-sm font-medium text-gray-600">
+                Total Configurations
+              </p>
               <p className="text-2xl font-bold text-gray-900">
                 {configData.metadata.totalConfigurations.toLocaleString()}
               </p>
@@ -401,7 +462,9 @@ async function ConfigurationDataDashboard() {
 
       {/* Top Configurations Grid */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Top Configured Houses</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          Top Configured Houses
+        </h2>
         {configData.topConfigurations.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {configData.topConfigurations.slice(0, 6).map((config) => (
@@ -410,7 +473,9 @@ async function ConfigurationDataDashboard() {
           </div>
         ) : (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-            <p className="text-yellow-800 font-medium">No configuration data available yet</p>
+            <p className="text-yellow-800 font-medium">
+              No configuration data available yet
+            </p>
             <p className="text-yellow-600 text-sm mt-1">
               Data will appear here as customers use the configurator
             </p>
@@ -428,7 +493,9 @@ async function ConfigurationDataDashboard() {
       {/* Additional Configurations */}
       {configData.topConfigurations.length > 6 && (
         <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Popular Configurations</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Additional Popular Configurations
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {configData.topConfigurations.slice(6).map((config) => (
               <ConfigurationCard key={config.id} config={config} />
@@ -456,10 +523,15 @@ function ConfigurationDataFallback() {
 
       {/* Top Configurations Grid - Loading */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Top Configured Houses</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          Top Configured Houses
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
+            <div
+              key={i}
+              className="bg-white rounded-lg shadow p-6 animate-pulse"
+            >
               <div className="h-6 bg-gray-200 rounded mb-4"></div>
               <div className="space-y-2">
                 <div className="h-4 bg-gray-200 rounded"></div>
@@ -510,19 +582,22 @@ export default function PopularConfigurationsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <Link 
-                href="/admin" 
+              <Link
+                href="/admin"
                 className="text-blue-600 hover:text-blue-800 text-sm font-medium mb-2 inline-block"
               >
                 ← Back to Admin
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900">Popular Konfigurationen</h1>
-              <p className="text-gray-600">Real-time analysis of customer preferences and configuration trends</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Popular Konfigurationen
+              </h1>
+              <p className="text-gray-600">
+                Real-time analysis of customer preferences and configuration
+                trends
+              </p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="text-sm text-gray-500">
-                🔴 Live Data
-              </div>
+              <div className="text-sm text-gray-500">🔴 Live Data</div>
               <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors text-sm">
                 Export Data
               </button>
@@ -538,4 +613,4 @@ export default function PopularConfigurationsPage() {
       </div>
     </div>
   );
-} 
+}

@@ -20,13 +20,13 @@ export async function POST(request: NextRequest) {
 
   try {
     // Check if required environment variables are present
-    if (!process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID || 
-        !process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID || 
-        !process.env.BLOB_READ_WRITE_TOKEN) {
+    if (!process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID ||
+      !process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID ||
+      !process.env.BLOB_READ_WRITE_TOKEN) {
       console.error('❌ Missing required environment variables');
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Missing required environment variables',
           details: 'GOOGLE_DRIVE_MAIN_FOLDER_ID, GOOGLE_DRIVE_MOBILE_FOLDER_ID, or BLOB_READ_WRITE_TOKEN not set'
         },
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     // Authenticate request (for manual calls)
     const authHeader = request.headers.get('authorization');
     const isManualCall = authHeader !== null;
-    
+
     if (isManualCall && !await authenticateRequest(authHeader)) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
@@ -47,13 +47,29 @@ export async function POST(request: NextRequest) {
 
     // Check if this is a cron job (Vercel cron includes special headers)
     const isCronJob = request.headers.get('user-agent')?.includes('vercel-cron') ||
-                      request.headers.get('x-vercel-cron') === '1';
-    
+      request.headers.get('x-vercel-cron') === '1';
+
     console.log(`🤖 Sync triggered by: ${isCronJob ? 'Cron Job' : 'Manual Call'}`);
 
-    // Initialize and run sync
+    // Parse sync parameters from URL or request body
+    const url = new URL(request.url);
+    const days = parseInt(url.searchParams.get('days') || '1');
+    const forceFullSync = url.searchParams.get('fullSync') === 'true';
+
+    // Safety checks for extended sync
+    if (days > 30 && !forceFullSync) {
+      console.warn(`⚠️ Large date range requested: ${days} days. Consider using fullSync=true for complete sync.`);
+    }
+
+    if (forceFullSync) {
+      console.log('🚨 FULL SYNC requested - will process ALL images regardless of modification date');
+    } else {
+      console.log(`📅 Extended sync requested: ${days} day(s) lookback`);
+    }
+
+    // Initialize and run sync with parameters
     const syncService = new GoogleDriveSync();
-    const result = await syncService.syncImages();
+    const result = await syncService.syncImagesWithDateRange(days, forceFullSync);
 
     // Log detailed results
     console.log('📊 Sync completed:', {
@@ -77,14 +93,16 @@ export async function POST(request: NextRequest) {
         duration: result.duration,
         imagesUpdated: result.imagesUpdated,
         errors: result.errors,
-        triggeredBy: isCronJob ? 'cron' : 'manual'
+        triggeredBy: isCronJob ? 'cron' : 'manual',
+        syncType: forceFullSync ? 'full' : `${days}-day`,
+        recentChangesFound: result.recentChangesFound
       },
       timestamp: new Date().toISOString()
     });
 
   } catch (error) {
     console.error('❌ Sync API error:', error);
-    
+
     return NextResponse.json(
       {
         success: false,
@@ -124,7 +142,7 @@ export async function GET(_request: NextRequest) {
 
   } catch (error) {
     console.error('❌ Sync status check error:', error);
-    
+
     return NextResponse.json(
       {
         status: 'error',
@@ -149,9 +167,9 @@ async function authenticateRequest(authHeader: string | null): Promise<boolean> 
     const [username, password] = credentials.split(':');
 
     // Validate against admin credentials
-    return username === process.env.ADMIN_USERNAME && 
-           password === process.env.ADMIN_PASSWORD;
-           
+    return username === process.env.ADMIN_USERNAME &&
+      password === process.env.ADMIN_PASSWORD;
+
   } catch (error) {
     console.error('❌ Authentication error:', error);
     return false;

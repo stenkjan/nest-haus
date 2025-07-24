@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { usePingPongVideo } from "@/hooks/usePingPongVideo";
 
 interface ClientBlobVideoProps {
   path: string; // Blob path or direct URL
@@ -208,15 +209,16 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  // Ping-pong state for reverse playback
-  const [isPlayingReverse, setIsPlayingReverse] = useState(false);
-  const [_videoDuration, setVideoDuration] = useState<number>(0);
-
-  // Video reference and animation frame tracking
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const isReversePlayingRef = useRef<boolean>(false);
-  const lastTimeRef = useRef<number>(0);
+  // Use the ping-pong video hook for reverse playback functionality
+  const {
+    isPlayingReverse,
+    handleVideoEnded: pingPongHandleVideoEnded,
+    handleLoadedMetadata: pingPongHandleLoadedMetadata,
+    videoRef,
+  } = usePingPongVideo({
+    reversePlayback,
+    enableDebugLogging: process.env.NODE_ENV === "development",
+  });
 
   // Load video URL
   const loadVideo = useCallback(async () => {
@@ -278,128 +280,22 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [path, enableCache, fallbackSrc, onLoad, onError]);
+  }, [
+    path,
+    enableCache,
+    fallbackSrc,
+    onLoad,
+    onError,
+    autoPlay,
+    reversePlayback,
+  ]);
 
-  // Reverse playback animation using requestAnimationFrame
-  const playReverse = useCallback(() => {
-    const video = videoRef.current;
-
-    if (process.env.NODE_ENV === "development") {
-      console.log("🎥 DEBUG: playReverse called", {
-        hasVideo: !!video,
-        reversePlayback,
-        currentTime: video?.currentTime,
-        duration: video?.duration,
-        paused: video?.paused,
-        ended: video?.ended,
-      });
-    }
-
-    if (!video || !reversePlayback) {
-      if (process.env.NODE_ENV === "development") {
-        console.warn("🎥 DEBUG: playReverse exiting early", {
-          hasVideo: !!video,
-          reversePlayback,
-        });
-      }
-      return;
-    }
-
-    // Pause the video to prevent forward playback during reverse
-    video.pause();
-
-    isReversePlayingRef.current = true;
-    setIsPlayingReverse(true);
-
-    if (process.env.NODE_ENV === "development") {
-      console.log("🎥 DEBUG: Starting reverse animation", {
-        startTime: video.currentTime,
-        duration: video.duration,
-      });
-    }
-
-    const animate = () => {
-      if (!isReversePlayingRef.current || !video) {
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 DEBUG: animate() stopping", {
-            isReversePlaying: isReversePlayingRef.current,
-            hasVideo: !!video,
-          });
-        }
-        return;
-      }
-
-      const now = performance.now();
-      const deltaTime = now - lastTimeRef.current;
-      lastTimeRef.current = now;
-
-      // Calculate reverse playback speed (approximately 30fps)
-      const reverseSpeed = deltaTime * 0.03; // Back to original speed for visibility
-      const currentTime = video.currentTime;
-      const newTime = Math.max(0, currentTime - reverseSpeed);
-
-      if (
-        process.env.NODE_ENV === "development" &&
-        Math.floor(now) % 1000 < 50
-      ) {
-        console.log("🎥 DEBUG: Reverse frame", {
-          deltaTime: deltaTime.toFixed(2),
-          reverseSpeed: reverseSpeed.toFixed(4),
-          currentTime: currentTime.toFixed(3),
-          newTime: newTime.toFixed(3),
-          timeLeft: newTime.toFixed(3),
-        });
-      }
-
-      video.currentTime = newTime;
-
-      // Check if we've reached the beginning
-      if (newTime <= 0.1) {
-        // Small threshold to avoid precision issues
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 DEBUG: Reached beginning, switching to forward", {
-            finalTime: newTime,
-            duration: video.duration,
-          });
-        }
-
-        // Switch back to forward playback
-        isReversePlayingRef.current = false;
-        setIsPlayingReverse(false);
-        video.currentTime = 0;
-
-        video.play().catch((error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.error(
-              "🎥 DEBUG: Failed to restart forward playback:",
-              error
-            );
-          }
-        });
-
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 Ping-pong: switched to forward playback");
-        }
-      } else {
-        // Continue reverse animation
-        animationFrameRef.current = requestAnimationFrame(animate);
-      }
-    };
-
-    lastTimeRef.current = performance.now();
-    animationFrameRef.current = requestAnimationFrame(animate);
-
-    if (process.env.NODE_ENV === "development") {
-      console.log("🎥 Ping-pong: started reverse playback");
-    }
-  }, [reversePlayback]);
-
-  // Handle video end for ping-pong effect
+  // Handle video end - delegate to ping-pong hook or handle standard loop
   const handleVideoEnded = useCallback(() => {
     const video = videoRef.current;
 
     if (process.env.NODE_ENV === "development") {
-      console.log("🎥 DEBUG: handleVideoEnded called", {
+      console.log("🎥 DEBUG: ClientBlobVideo handleVideoEnded called", {
         reversePlayback,
         hasVideo: !!video,
         currentTime: video?.currentTime,
@@ -408,41 +304,32 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
       });
     }
 
-    if (!reversePlayback || !video) {
+    if (reversePlayback) {
+      // Delegate to ping-pong hook for reverse playback
+      pingPongHandleVideoEnded();
+    } else if (loop && video) {
+      // Standard loop behavior when reversePlayback is disabled
       if (process.env.NODE_ENV === "development") {
-        console.log("🎥 DEBUG: Standard loop behavior", {
-          loop,
-          hasVideo: !!video,
-        });
+        console.log("🎥 DEBUG: Standard loop behavior");
       }
-
-      // Standard loop behavior if reversePlayback is disabled
-      if (loop && video) {
-        video.currentTime = 0;
-        video.play().catch((error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.warn("🎥 Standard loop restart failed:", error);
-          }
-        });
-      }
-      return;
+      video.currentTime = 0;
+      video.play().catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("🎥 Standard loop restart failed:", error);
+        }
+      });
     }
+  }, [reversePlayback, loop, pingPongHandleVideoEnded, videoRef]);
 
-    if (process.env.NODE_ENV === "development") {
-      console.log("🎥 DEBUG: Video ended, starting reverse playback");
-    }
-
-    // Start reverse playback when video ends
-    playReverse();
-  }, [reversePlayback, loop, playReverse]);
-
-  // Handle video metadata loaded (get duration)
+  // Handle video metadata loaded - delegate to ping-pong hook
   const handleLoadedMetadata = useCallback(() => {
-    const video = videoRef.current;
-    if (video) {
-      setVideoDuration(video.duration);
-      if (process.env.NODE_ENV === "development") {
-        console.log("🎥 DEBUG: Video metadata loaded", {
+    pingPongHandleLoadedMetadata();
+
+    // Additional ClientBlobVideo specific logic if needed
+    if (process.env.NODE_ENV === "development") {
+      const video = videoRef.current;
+      if (video) {
+        console.log("🎥 DEBUG: ClientBlobVideo metadata loaded", {
           duration: video.duration,
           videoWidth: video.videoWidth,
           videoHeight: video.videoHeight,
@@ -451,7 +338,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         });
       }
     }
-  }, []);
+  }, [pingPongHandleLoadedMetadata, videoRef]);
 
   // Note: Event listeners are now handled via React props (onEnded, onLoadedMetadata)
   // This is more reliable than addEventListener in React components
@@ -506,39 +393,9 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     }, 100);
 
     return () => clearTimeout(timeoutId);
-  }, [autoPlay, videoUrl, loading]);
+  }, [autoPlay, videoUrl, loading, reversePlayback, videoRef]);
 
-  // Cleanup animation frame on unmount
-  useEffect(() => {
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      isReversePlayingRef.current = false;
-    };
-  }, []);
-
-  // Debugging: Log component state periodically
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development" && videoUrl) {
-      const interval = setInterval(() => {
-        const video = videoRef.current;
-        if (video) {
-          console.log("🎥 DEBUG: Component state", {
-            currentTime: video.currentTime.toFixed(2),
-            duration: video.duration?.toFixed(2) || "unknown",
-            paused: video.paused,
-            ended: video.ended,
-            isPlayingReverse,
-            reversePlayback,
-            readyState: video.readyState,
-          });
-        }
-      }, 2000); // Log every 2 seconds
-
-      return () => clearInterval(interval);
-    }
-  }, [videoUrl, isPlayingReverse, reversePlayback]);
+  // Note: Animation frame cleanup and debug logging are now handled by the usePingPongVideo hook
 
   // Show loading state
   if (loading) {
