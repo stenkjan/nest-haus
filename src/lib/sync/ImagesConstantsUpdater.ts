@@ -102,10 +102,16 @@ export class ImagesConstantsUpdater {
           const category = this.inferCategory(parsed.number, parsed.title);
           const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
           
+          // Clean the blob path for constants: remove images/ prefix, hash, and extension
+          const cleanBlobPath = blob.pathname
+            .replace(/^images\//, '') // Remove images/ prefix
+            .replace(/-[a-zA-Z0-9]{20,}\.([a-zA-Z0-9]+)$/, '') // Remove hash and extension
+            .replace(/\.([a-zA-Z0-9]+)$/, ''); // Remove extension if no hash
+          
           mappings.push({
             number: parsed.number,
             title: parsed.title,
-            blobPath: blob.pathname.replace(/\.(jpg|jpeg|png|webp|avif)$/i, ''), // Remove extension for constants
+            blobPath: cleanBlobPath,
             category,
             constantKey
           });
@@ -121,15 +127,30 @@ export class ImagesConstantsUpdater {
 
   /**
    * Parse image name to extract number and title
+   * Handles both formats:
+   * - Google Drive: "123-Title-Name.ext"
+   * - Vercel Blob: "images/123-Title-Name-HASH.ext"
    */
   private parseImageName(fileName: string): { number: number; title: string } | null {
-    const match = fileName.match(/^(\d+)-(.+)\.([a-zA-Z0-9]+)$/);
-    if (!match) return null;
+    // Remove the images/ prefix if present
+    const cleanFileName = fileName.replace(/^images\//, '');
+    
+    // Match either:
+    // - Simple format: "123-Title-Name.ext" 
+    // - With hash: "123-Title-Name-hash.ext"
+    const match = cleanFileName.match(/^(\d+)-(.+?)(?:-[a-zA-Z0-9]{20,})?\.([a-zA-Z0-9]+)$/);
+    if (!match) {
+      console.log(`⚠️  Failed to parse image name: ${fileName}`);
+      return null;
+    }
 
     const [, numberStr, title] = match;
     const number = parseInt(numberStr, 10);
     
-    if (isNaN(number)) return null;
+    if (isNaN(number)) {
+      console.log(`⚠️  Invalid number in filename: ${fileName}`);
+      return null;
+    }
 
     return { number, title };
   }

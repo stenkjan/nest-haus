@@ -15,16 +15,25 @@ export default function VideoShowcase() {
           Demonstrating video loading capabilities with blob storage integration
         </h2>
 
-        {/* Debug Test Link */}
+        {/* Demo Links */}
         <div className="text-center mb-16">
-          <Link 
-            href="/showcase/videos/reverse-test"
-            className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            🔧 Debug Reverse Playback Test
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/showcase/videos/ping-pong-demo"
+              className="inline-block px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
+            >
+              🎥 New PingPongVideo Component
+            </Link>
+            <Link
+              href="/showcase/videos/reverse-test"
+              className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              🔧 Debug Reverse Playback Test
+            </Link>
+          </div>
           <p className="text-sm text-gray-500 mt-2">
-            Interactive debugging tool for reverse playback functionality
+            Try the new simplified ping-pong video component or debug reverse
+            playback functionality
           </p>
         </div>
 
