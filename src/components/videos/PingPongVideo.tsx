@@ -13,6 +13,7 @@ interface PingPongVideoProps {
   width?: number;
   height?: number;
   reversePlayback?: boolean;
+  reverseSpeedMultiplier?: number;
   enableDebugLogging?: boolean;
   onLoad?: () => void;
   onError?: (error: Error) => void;
@@ -28,6 +29,7 @@ const PingPongVideo: React.FC<PingPongVideoProps> = ({
   width,
   height,
   reversePlayback = true,
+  reverseSpeedMultiplier = 3,
   enableDebugLogging,
   onLoad,
   onError,
@@ -43,6 +45,7 @@ const PingPongVideo: React.FC<PingPongVideoProps> = ({
   } = usePingPongVideo({
     reversePlayback,
     enableDebugLogging,
+    reverseSpeedMultiplier,
   });
 
   // Auto-play setup
