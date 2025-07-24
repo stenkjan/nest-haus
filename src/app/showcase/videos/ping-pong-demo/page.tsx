@@ -2,52 +2,92 @@
 
 import React, { useState } from "react";
 import { PingPongVideo } from "@/components/videos";
+import { ClientBlobVideo } from "@/components/images";
 
 export default function PingPongVideoDemo() {
   const [videoSrc, setVideoSrc] = useState("/api/placeholder/800/450");
+  const [videoPath, setVideoPath] = useState("test-video"); // For ClientBlobVideo
+  const [componentType, setComponentType] = useState<
+    "PingPongVideo" | "ClientBlobVideo"
+  >("ClientBlobVideo");
   const [autoPlay, setAutoPlay] = useState(true);
   const [muted, setMuted] = useState(true);
   const [reversePlayback, setReversePlayback] = useState(true);
   const [enableDebugLogging, setEnableDebugLogging] = useState(true);
   const [controls, setControls] = useState(false);
+  const [reverseSpeedMultiplier, setReverseSpeedMultiplier] = useState(3);
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
       <div className="max-w-6xl mx-auto p-8 space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">PingPongVideo Component</h1>
+          <h1 className="text-4xl font-bold mb-4">
+            Ping-Pong Video Components
+          </h1>
           <p className="text-gray-600 mb-8 max-w-3xl mx-auto">
-            A simplified video component that creates seamless ping-pong effects
-            with true reverse playback. This component uses
-            requestAnimationFrame for smooth reverse animation.
+            Test both PingPongVideo (simple) and ClientBlobVideo (blob storage)
+            components that create seamless ping-pong effects with true reverse
+            playback using requestAnimationFrame for smooth reverse animation.
           </p>
         </div>
 
         {/* Video Player */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="p-6 border-b">
-            <h2 className="text-xl font-semibold mb-2">Live Demo</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className="text-xl font-semibold mb-2">
+              Live Demo - {componentType}
+            </h2>
+            <p className="text-sm text-gray-600 mb-2">
               {reversePlayback
-                ? "Video will play forward → reverse → forward in an endless loop"
+                ? `Video will play forward → reverse (${reverseSpeedMultiplier}x slower) → forward in an endless loop`
                 : "Video will play normally with standard looping"}
+            </p>
+            <p className="text-xs text-blue-600">
+              {componentType === "ClientBlobVideo"
+                ? "Using blob storage path resolution with advanced caching"
+                : "Using direct video URL with simplified interface"}
             </p>
           </div>
 
           <div className="p-6">
-            <PingPongVideo
-              src={videoSrc}
-              className="w-full h-auto rounded-lg"
-              autoPlay={autoPlay}
-              muted={muted}
-              playsInline={true}
-              controls={controls}
-              reversePlayback={reversePlayback}
-              enableDebugLogging={enableDebugLogging}
-              onLoad={() => console.log("🎥 Video loaded successfully")}
-              onError={(error) => console.error("🎥 Video error:", error)}
-            />
+            {componentType === "PingPongVideo" ? (
+              <PingPongVideo
+                src={videoSrc}
+                className="w-full h-auto rounded-lg"
+                autoPlay={autoPlay}
+                muted={muted}
+                playsInline={true}
+                controls={controls}
+                reversePlayback={reversePlayback}
+                reverseSpeedMultiplier={reverseSpeedMultiplier}
+                enableDebugLogging={enableDebugLogging}
+                onLoad={() =>
+                  console.log("🎥 PingPongVideo loaded successfully")
+                }
+                onError={(error) =>
+                  console.error("🎥 PingPongVideo error:", error)
+                }
+              />
+            ) : (
+              <ClientBlobVideo
+                path={videoPath}
+                className="w-full h-auto rounded-lg"
+                autoPlay={autoPlay}
+                muted={muted}
+                playsInline={true}
+                controls={controls}
+                reversePlayback={reversePlayback}
+                reverseSpeedMultiplier={reverseSpeedMultiplier}
+                enableCache={true}
+                onLoad={() =>
+                  console.log("🎥 ClientBlobVideo loaded successfully")
+                }
+                onError={(error) =>
+                  console.error("🎥 ClientBlobVideo error:", error)
+                }
+              />
+            )}
           </div>
         </div>
 
@@ -55,20 +95,91 @@ export default function PingPongVideoDemo() {
         <div className="bg-white rounded-lg shadow-lg p-6 space-y-6">
           <h2 className="text-xl font-semibold">Configuration</h2>
 
+          {/* Component Selection */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Component Type</label>
+            <div className="flex space-x-4">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  value="PingPongVideo"
+                  checked={componentType === "PingPongVideo"}
+                  onChange={(e) =>
+                    setComponentType(e.target.value as "PingPongVideo")
+                  }
+                  className="rounded"
+                />
+                <span className="text-sm">PingPongVideo (Direct URL)</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  value="ClientBlobVideo"
+                  checked={componentType === "ClientBlobVideo"}
+                  onChange={(e) =>
+                    setComponentType(e.target.value as "ClientBlobVideo")
+                  }
+                  className="rounded"
+                />
+                <span className="text-sm">ClientBlobVideo (Blob Storage)</span>
+              </label>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Video Source */}
+            {componentType === "PingPongVideo" ? (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Video URL</label>
+                <input
+                  type="text"
+                  value={videoSrc}
+                  onChange={(e) => setVideoSrc(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter video URL"
+                />
+                <p className="text-xs text-gray-500">
+                  Try: /api/placeholder/800/450 or any MP4 URL
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">
+                  Video Path (Blob)
+                </label>
+                <input
+                  type="text"
+                  value={videoPath}
+                  onChange={(e) => setVideoPath(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter blob path"
+                />
+                <p className="text-xs text-gray-500">
+                  Try: test-video, hero-animation, or any blob path
+                </p>
+              </div>
+            )}
+
+            {/* Reverse Speed */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium">Video Source</label>
+              <label className="block text-sm font-medium">
+                Reverse Speed (Multiplier): {reverseSpeedMultiplier}x slower
+              </label>
               <input
-                type="text"
-                value={videoSrc}
-                onChange={(e) => setVideoSrc(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter video URL or path"
+                type="range"
+                min="1"
+                max="10"
+                step="0.5"
+                value={reverseSpeedMultiplier}
+                onChange={(e) =>
+                  setReverseSpeedMultiplier(parseFloat(e.target.value))
+                }
+                className="w-full"
               />
-              <p className="text-xs text-gray-500">
-                Try: /api/placeholder/800/450 or any MP4 URL
-              </p>
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>1x (Same as forward)</span>
+                <span>10x (Very slow)</span>
+              </div>
             </div>
 
             {/* Quick Presets */}
@@ -93,6 +204,18 @@ export default function PingPongVideoDemo() {
                 </button>
               </div>
             </div>
+          </div>
+
+          {/* Debug Instructions */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 className="font-medium text-blue-900 mb-2">🔧 Debugging Tips</h3>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Open browser Developer Tools (F12) and check the Console tab</li>
+              <li>• Enable &quot;Debug&quot; checkbox to see detailed ping-pong logs</li>
+              <li>• Look for logs like &quot;🎬 Video ended&quot; → &quot;🔄 Starting reverse playback&quot; → &quot;▶️ switched to forward&quot;</li>
+              <li>• Adjust &quot;Reverse Speed&quot; slider - higher values = slower reverse playback</li>
+              <li>• Try different component types to compare behavior</li>
+            </ul>
           </div>
 
           {/* Toggles */}

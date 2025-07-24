@@ -3,6 +3,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 interface UsePingPongVideoOptions {
     reversePlayback?: boolean;
     enableDebugLogging?: boolean;
+    reverseSpeedMultiplier?: number; // How much slower reverse should be (default: 3x slower)
 }
 
 interface UsePingPongVideoReturn {
@@ -28,7 +29,8 @@ interface UsePingPongVideoReturn {
 
 export const usePingPongVideo = ({
     reversePlayback = true,
-    enableDebugLogging = process.env.NODE_ENV === "development"
+    enableDebugLogging = process.env.NODE_ENV === "development",
+    reverseSpeedMultiplier = 3 // Default: 3x slower than forward
 }: UsePingPongVideoOptions = {}): UsePingPongVideoReturn => {
     // State management
     const [isPlayingReverse, setIsPlayingReverse] = useState(false);
@@ -51,17 +53,22 @@ export const usePingPongVideo = ({
     // Start reverse playback animation
     const startReversePlayback = useCallback(() => {
         const video = videoRef.current;
-        if (!video || !reversePlayback) {
-            debugLog("startReversePlayback: conditions not met", {
+        if (!video || !reversePlayback || !video.duration || video.duration <= 0) {
+            debugLog("❌ startReversePlayback: conditions not met", {
                 hasVideo: !!video,
-                reversePlayback
+                reversePlayback,
+                hasDuration: !!(video?.duration),
+                duration: video?.duration || "unknown"
             });
             return;
         }
 
-        debugLog("Starting reverse playback", {
-            currentTime: video.currentTime,
-            duration: video.duration
+        debugLog("🔄 Starting reverse playback", {
+            currentTime: video.currentTime.toFixed(3) + "s",
+            duration: video.duration.toFixed(3) + "s",
+            willTake: (video.duration * reverseSpeedMultiplier).toFixed(1) + `s (${reverseSpeedMultiplier}x slower)`,
+            reverseSpeedMultiplier,
+            reversePlayback
         });
 
         // Pause the video to prevent forward playback during reverse
@@ -83,18 +90,20 @@ export const usePingPongVideo = ({
             const deltaTime = now - lastTimeRef.current;
             lastTimeRef.current = now;
 
-            // Calculate reverse playback speed (approximately 30fps)
-            const reverseSpeed = deltaTime * 0.03;
+            // Calculate reverse playback speed - configurable slower than forward for dramatic effect
+            // Convert deltaTime from milliseconds to seconds, then slow it down by the multiplier
+            const reverseSpeed = (deltaTime / 1000) / reverseSpeedMultiplier;
             const currentTime = video.currentTime;
             const newTime = Math.max(0, currentTime - reverseSpeed);
 
-            // Debug logging for reverse frames (throttled)
-            if (enableDebugLogging && Math.floor(now) % 1000 < 50) {
+            // Enhanced debug logging for reverse frames (every 500ms)
+            if (enableDebugLogging && Math.floor(now) % 500 < 50) {
                 debugLog("Reverse frame", {
-                    deltaTime: deltaTime.toFixed(2),
-                    reverseSpeed: reverseSpeed.toFixed(4),
-                    currentTime: currentTime.toFixed(3),
-                    newTime: newTime.toFixed(3)
+                    deltaTime: deltaTime.toFixed(2) + "ms",
+                    reverseSpeed: reverseSpeed.toFixed(6) + "s",
+                    currentTime: currentTime.toFixed(3) + "s",
+                    newTime: newTime.toFixed(3) + "s",
+                    progress: ((video.duration - newTime) / video.duration * 100).toFixed(1) + "%"
                 });
             }
 
@@ -102,9 +111,11 @@ export const usePingPongVideo = ({
 
             // Check if we've reached the beginning
             if (newTime <= 0.1) { // Small threshold to avoid precision issues
-                debugLog("Reached beginning, switching to forward", {
-                    finalTime: newTime,
-                    duration: video.duration
+                debugLog("🔄 Reached beginning, switching to forward", {
+                    finalTime: newTime.toFixed(3) + "s",
+                    duration: video.duration.toFixed(3) + "s",
+                    totalReverseTime: (video.duration * reverseSpeedMultiplier).toFixed(1) + "s expected",
+                    speedMultiplier: reverseSpeedMultiplier + "x slower"
                 });
 
                 // Switch back to forward playback
@@ -114,10 +125,10 @@ export const usePingPongVideo = ({
 
                 // Start forward playback again
                 video.play().catch((error) => {
-                    debugLog("Failed to restart forward playback", error);
+                    debugLog("❌ Failed to restart forward playback", error);
                 });
 
-                debugLog("Ping-pong: switched to forward playback");
+                debugLog("▶️ Ping-pong: switched to forward playback - cycle complete!");
             } else {
                 // Continue reverse animation
                 animationFrameRef.current = requestAnimationFrame(animate);
@@ -126,8 +137,8 @@ export const usePingPongVideo = ({
 
         lastTimeRef.current = performance.now();
         animationFrameRef.current = requestAnimationFrame(animate);
-        debugLog("Ping-pong: started reverse playback");
-    }, [reversePlayback, debugLog, enableDebugLogging]);
+        debugLog("🔄 Ping-pong: started reverse playback");
+    }, [reversePlayback, debugLog, enableDebugLogging, reverseSpeedMultiplier]);
 
     // Stop reverse playback
     const stopReversePlayback = useCallback(() => {
@@ -144,19 +155,20 @@ export const usePingPongVideo = ({
     const handleVideoEnded = useCallback(() => {
         const video = videoRef.current;
 
-        debugLog("handleVideoEnded called", {
+        debugLog("🎬 Video ended - handleVideoEnded called", {
             reversePlayback,
             hasVideo: !!video,
-            currentTime: video?.currentTime,
-            duration: video?.duration
+            currentTime: video?.currentTime?.toFixed(3) + "s" || "unknown",
+            duration: video?.duration?.toFixed(3) + "s" || "unknown",
+            readyState: video?.readyState || "unknown"
         });
 
         if (!reversePlayback || !video) {
-            debugLog("Standard loop behavior - reversePlayback disabled");
+            debugLog("⏩ Standard loop behavior - reversePlayback disabled");
             return;
         }
 
-        debugLog("Video ended, starting reverse playback");
+        debugLog("🔄 Video ended, starting PING-PONG reverse playback...");
         startReversePlayback();
     }, [reversePlayback, startReversePlayback, debugLog]);
 

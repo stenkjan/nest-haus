@@ -4,6 +4,49 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5371adf86f85d7cbb2423ced0bacd16748c826c1] - Thu Jul 24 14:33:56 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [23963bd40a833900c0944309c848baec9dc3565e] - Thu Jul 24 14:30:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance PingPongVideo demo with ClientBlobVideo support  - Added support for the ClientBlobVideo component alongside the existing PingPongVideo component. - Introduced configuration options for selecting the video component type and adjusting reverse playback speed. - Enhanced debugging instructions for better user experience during testing. - Updated the ClientBlobVideo and PingPongVideo components to accept reverseSpeedMultiplier for customizable playback speed.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/layout/Navbar.tsx
+- src/components/videos/PingPongVideo.tsx
+- src/hooks/usePingPongVideo.ts
+
+
+---
+
+## [3877d8c02e44f21ade3226c0ea7d8738d46f1872] - Thu Jul 24 14:11:20 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [30cc05c228710179005da42bddbf3f24d7d97dff] - Thu Jul 24 14:09:59 2025 +0200
 
 **Author**: stenkjan

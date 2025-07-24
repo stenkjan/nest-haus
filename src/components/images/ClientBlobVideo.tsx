@@ -14,6 +14,7 @@ interface ClientBlobVideoProps {
   onLoad?: () => void; // Success callback
   onError?: (error: Error) => void; // Error callback
   reversePlayback?: boolean; // Enable ping-pong effect
+  reverseSpeedMultiplier?: number; // How much slower reverse should be (default: 3x slower)
   quality?: number; // Video quality (not used but for consistency)
   priority?: boolean; // For consistency with image components
   fallbackSrc?: string; // Fallback video URL
@@ -201,6 +202,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   onLoad,
   onError,
   reversePlayback = false,
+  reverseSpeedMultiplier = 3, // Default: 3x slower than forward
   fallbackSrc,
   enableCache = true,
 }) => {
@@ -218,6 +220,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   } = usePingPongVideo({
     reversePlayback,
     enableDebugLogging: process.env.NODE_ENV === "development",
+    reverseSpeedMultiplier,
   });
 
   // Load video URL
