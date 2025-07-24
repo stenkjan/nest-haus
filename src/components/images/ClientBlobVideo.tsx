@@ -278,7 +278,15 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [path, enableCache, fallbackSrc, onLoad, onError]);
+  }, [
+    path,
+    enableCache,
+    fallbackSrc,
+    onLoad,
+    onError,
+    autoPlay,
+    reversePlayback,
+  ]);
 
   // Reverse playback animation using requestAnimationFrame
   const playReverse = useCallback(() => {
@@ -506,7 +514,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     }, 100);
 
     return () => clearTimeout(timeoutId);
-  }, [autoPlay, videoUrl, loading]);
+  }, [autoPlay, videoUrl, loading, reversePlayback]);
 
   // Cleanup animation frame on unmount
   useEffect(() => {
@@ -538,6 +546,8 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
 
       return () => clearInterval(interval);
     }
+    // Return undefined explicitly when no cleanup is needed
+    return undefined;
   }, [videoUrl, isPlayingReverse, reversePlayback]);
 
   // Show loading state
