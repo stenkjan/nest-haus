@@ -219,7 +219,6 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     videoRef,
   } = usePingPongVideo({
     reversePlayback,
-    enableDebugLogging: process.env.NODE_ENV === "development",
     reverseSpeedMultiplier,
   });
 
@@ -253,15 +252,6 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
       if (onLoad) {
         onLoad();
       }
-
-      if (process.env.NODE_ENV === "development") {
-        console.log("🎥 DEBUG: Video URL loaded successfully", {
-          path,
-          url: url.substring(0, 50) + "...",
-          reversePlayback,
-          autoPlay,
-        });
-      }
     } catch (err) {
       const error =
         err instanceof Error ? err : new Error("Failed to load video");
@@ -270,9 +260,6 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
       // Try fallback if available
       if (fallbackSrc) {
         setVideoUrl(fallbackSrc);
-        if (process.env.NODE_ENV === "development") {
-          console.warn(`🎥 Using fallback for ${path}: ${fallbackSrc}`);
-        }
       }
 
       if (onError) {
@@ -297,29 +284,15 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   const handleVideoEnded = useCallback(() => {
     const video = videoRef.current;
 
-    if (process.env.NODE_ENV === "development") {
-      console.log("🎥 DEBUG: ClientBlobVideo handleVideoEnded called", {
-        reversePlayback,
-        hasVideo: !!video,
-        currentTime: video?.currentTime,
-        duration: video?.duration,
-        loop,
-      });
-    }
-
     if (reversePlayback) {
       // Delegate to ping-pong hook for reverse playback
       pingPongHandleVideoEnded();
     } else if (loop && video) {
       // Standard loop behavior when reversePlayback is disabled
-      if (process.env.NODE_ENV === "development") {
-        console.log("🎥 DEBUG: Standard loop behavior");
-      }
+
       video.currentTime = 0;
-      video.play().catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.warn("🎥 Standard loop restart failed:", error);
-        }
+      video.play().catch(() => {
+        // Silently handle playback errors
       });
     }
   }, [reversePlayback, loop, pingPongHandleVideoEnded, videoRef]);
@@ -327,20 +300,6 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   // Handle video metadata loaded - delegate to ping-pong hook
   const handleLoadedMetadata = useCallback(() => {
     pingPongHandleLoadedMetadata();
-
-    // Additional ClientBlobVideo specific logic if needed
-    if (process.env.NODE_ENV === "development") {
-      const video = videoRef.current;
-      if (video) {
-        console.log("🎥 DEBUG: ClientBlobVideo metadata loaded", {
-          duration: video.duration,
-          videoWidth: video.videoWidth,
-          videoHeight: video.videoHeight,
-          readyState: video.readyState,
-          currentTime: video.currentTime,
-        });
-      }
-    }
   }, [pingPongHandleLoadedMetadata, videoRef]);
 
   // Note: Event listeners are now handled via React props (onEnded, onLoadedMetadata)
@@ -355,43 +314,14 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   useEffect(() => {
     const video = videoRef.current;
 
-    if (process.env.NODE_ENV === "development") {
-      console.log("🎥 DEBUG: Auto-play effect triggered", {
-        hasVideo: !!video,
-        autoPlay,
-        hasVideoUrl: !!videoUrl,
-        loading,
-        reversePlayback,
-      });
-    }
-
     if (!video || !autoPlay || !videoUrl || loading) {
-      if (process.env.NODE_ENV === "development") {
-        console.log("🎥 DEBUG: Auto-play conditions not met", {
-          hasVideo: !!video,
-          autoPlay,
-          hasVideoUrl: !!videoUrl,
-          loading,
-        });
-      }
       return;
     }
 
     // Small delay to ensure video is ready
     const timeoutId = setTimeout(() => {
-      if (process.env.NODE_ENV === "development") {
-        console.log("🎥 DEBUG: Starting autoplay", {
-          currentTime: video.currentTime,
-          duration: video.duration,
-          paused: video.paused,
-          readyState: video.readyState,
-        });
-      }
-
-      video.play().catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.error("🎥 DEBUG: Autoplay failed:", error);
-        }
+      video.play().catch(() => {
+        // Silently handle autoplay errors
       });
     }, 100);
 
@@ -439,61 +369,8 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         // Only disable pointer events during reverse playback to prevent user interruption
         pointerEvents: isPlayingReverse && reversePlayback ? "none" : "auto",
       }}
-      onEnded={() => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(
-            "🎥 DEBUG: onEnded event fired - starting handleVideoEnded"
-          );
-        }
-        handleVideoEnded();
-      }}
-      onTimeUpdate={(e) => {
-        // Debug time updates
-        if (process.env.NODE_ENV === "development" && reversePlayback) {
-          const video = e.currentTarget;
-          console.log("🎥 DEBUG: Time update", {
-            currentTime: video.currentTime.toFixed(3),
-            isPlayingReverse,
-            paused: video.paused,
-          });
-        }
-      }}
-      onPlay={() => {
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 DEBUG: Video play event fired");
-        }
-      }}
-      onPause={() => {
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 DEBUG: Video pause event fired", {
-            isPlayingReverse,
-            currentTime: videoRef.current?.currentTime,
-          });
-        }
-      }}
-      onLoadedMetadata={() => {
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 DEBUG: onLoadedMetadata event fired via prop", {
-            reversePlayback,
-            autoPlay,
-            duration: videoRef.current?.duration,
-          });
-        }
-        handleLoadedMetadata();
-      }}
-      onLoadStart={() => {
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 DEBUG: Video element started loading");
-        }
-      }}
-      onCanPlay={() => {
-        if (process.env.NODE_ENV === "development") {
-          console.log("🎥 DEBUG: Video can start playing", {
-            reversePlayback,
-            autoPlay,
-          });
-        }
-      }}
+      onEnded={handleVideoEnded}
+      onLoadedMetadata={handleLoadedMetadata}
     />
   );
 };
