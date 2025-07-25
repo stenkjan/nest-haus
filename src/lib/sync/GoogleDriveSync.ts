@@ -447,10 +447,10 @@ export class GoogleDriveSync {
       return null;
     }
 
-    // Check if this is a mobile version
-    const isMobile = title.toLowerCase().includes('mobile');
-    // Remove 'mobile' suffix from title for consistency
-    const cleanTitle = title.replace(/-mobile$/i, '').trim();
+    // FIXED: More precise mobile detection - only if ends with "-mobile"
+    const isMobile = title.toLowerCase().endsWith('-mobile');
+    // Remove 'mobile' suffix from title for consistency ONLY if it's actually mobile
+    const cleanTitle = isMobile ? title.replace(/-mobile$/i, '').trim() : title;
 
     return {
       number,

@@ -13,7 +13,6 @@ export default function PingPongVideoDemo() {
   const [autoPlay, setAutoPlay] = useState(true);
   const [muted, setMuted] = useState(true);
   const [reversePlayback, setReversePlayback] = useState(true);
-  const [enableDebugLogging, setEnableDebugLogging] = useState(true);
   const [controls, setControls] = useState(false);
   const [reverseSpeedMultiplier, setReverseSpeedMultiplier] = useState(3);
 
@@ -61,7 +60,6 @@ export default function PingPongVideoDemo() {
                 controls={controls}
                 reversePlayback={reversePlayback}
                 reverseSpeedMultiplier={reverseSpeedMultiplier}
-                enableDebugLogging={enableDebugLogging}
                 onLoad={() =>
                   console.log("🎥 PingPongVideo loaded successfully")
                 }
@@ -208,12 +206,26 @@ export default function PingPongVideoDemo() {
 
           {/* Debug Instructions */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="font-medium text-blue-900 mb-2">🔧 Debugging Tips</h3>
+            <h3 className="font-medium text-blue-900 mb-2">
+              🔧 Debugging Tips
+            </h3>
             <ul className="text-sm text-blue-800 space-y-1">
-              <li>• Open browser Developer Tools (F12) and check the Console tab</li>
-              <li>• Enable &quot;Debug&quot; checkbox to see detailed ping-pong logs</li>
-              <li>• Look for logs like &quot;🎬 Video ended&quot; → &quot;🔄 Starting reverse playback&quot; → &quot;▶️ switched to forward&quot;</li>
-              <li>• Adjust &quot;Reverse Speed&quot; slider - higher values = slower reverse playback</li>
+              <li>
+                • Open browser Developer Tools (F12) and check the Console tab
+              </li>
+              <li>
+                • Enable &quot;Debug&quot; checkbox to see detailed ping-pong
+                logs
+              </li>
+              <li>
+                • Look for logs like &quot;🎬 Video ended&quot; → &quot;🔄
+                Starting reverse playback&quot; → &quot;▶️ switched to
+                forward&quot;
+              </li>
+              <li>
+                • Adjust &quot;Reverse Speed&quot; slider - higher values =
+                slower reverse playback
+              </li>
               <li>• Try different component types to compare behavior</li>
             </ul>
           </div>
@@ -258,16 +270,6 @@ export default function PingPongVideoDemo() {
                 className="rounded"
               />
               <span className="text-sm">Controls</span>
-            </label>
-
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={enableDebugLogging}
-                onChange={(e) => setEnableDebugLogging(e.target.checked)}
-                className="rounded"
-              />
-              <span className="text-sm">Debug</span>
             </label>
           </div>
 
@@ -358,7 +360,6 @@ export default function PingPongVideoDemo() {
     muted={true}
     playsInline={true}
     reversePlayback={true}
-    enableDebugLogging={false}
   />
 </section>`}
               </pre>

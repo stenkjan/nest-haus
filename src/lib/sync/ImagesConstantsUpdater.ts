@@ -119,9 +119,9 @@ export class ImagesConstantsUpdater {
       for (const blob of blobs) {
         const parsed = this.parseImageName(blob.pathname);
         if (parsed) {
-          // Check if this is a mobile version by looking at the title/filename
-          const isMobile = parsed.title.toLowerCase().includes('mobile') ||
-            blob.pathname.toLowerCase().includes('mobile');
+          // FIXED: More precise mobile detection - only if ends with "-mobile"
+          const isMobile = parsed.title.toLowerCase().endsWith('-mobile') ||
+            blob.pathname.toLowerCase().includes('-mobile');
           const category = this.inferCategory(parsed.number, parsed.title);
           const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
 
@@ -227,6 +227,10 @@ export class ImagesConstantsUpdater {
   /**
    * Parse current constants from images.ts file
    */
+  /**
+   * FIXED: Parse current constants from images.ts file
+   * Now properly handles nested mobile structures like hero.mobile.{key}
+   */
   private parseCurrentConstants(content: string): Record<string, string> {
     const constants: Record<string, string> = {};
 
@@ -247,21 +251,38 @@ export class ImagesConstantsUpdater {
       }
     }
 
-    // Also parse other categories (hero, function, etc.)
-    const categoryMatches = content.match(/(\w+):\s*{([\s\S]*?)}/g);
+    // Parse other categories with support for nested mobile structures
+    const categoryMatches = content.match(/(\w+):\s*{([\s\S]*?)(?=\s*},\s*(?:\/\/|$|\w+:))/g);
     if (categoryMatches) {
       for (const categoryMatch of categoryMatches) {
-        const match = categoryMatch.match(/(\w+):\s*{([\s\S]*?)}/);
+        const match = categoryMatch.match(/(\w+):\s*{([\s\S]*?)$/);
         if (match) {
           const [, category, categoryContent] = match;
           if (['hero', 'function', 'gallery', 'aboutus'].includes(category)) {
-            const assignments = categoryContent.match(/(\w+):\s*['"`]([^'"`]+)['"`]/g);
-            if (assignments) {
-              for (const assignment of assignments) {
+            // First, parse direct assignments in this category (desktop versions)
+            const directAssignments = categoryContent.match(/^\s*(\w+):\s*['"`]([^'"`]+)['"`]/gm);
+            if (directAssignments) {
+              for (const assignment of directAssignments) {
                 const assignmentMatch = assignment.match(/(\w+):\s*['"`]([^'"`]+)['"`]/);
                 if (assignmentMatch) {
                   const [, key, value] = assignmentMatch;
                   constants[`${category}.${key}`] = value;
+                }
+              }
+            }
+
+            // FIXED: Parse nested mobile subfolder (like hero.mobile.{key})
+            const mobileMatch = categoryContent.match(/mobile:\s*{([\s\S]*?)}/);
+            if (mobileMatch) {
+              const mobileContent = mobileMatch[1];
+              const mobileAssignments = mobileContent.match(/(\w+):\s*['"`]([^'"`]+)['"`]/g);
+              if (mobileAssignments) {
+                for (const assignment of mobileAssignments) {
+                  const assignmentMatch = assignment.match(/(\w+):\s*['"`]([^'"`]+)['"`]/);
+                  if (assignmentMatch) {
+                    const [, key, value] = assignmentMatch;
+                    constants[`${category}.mobile.${key}`] = value;
+                  }
                 }
               }
             }
@@ -305,17 +326,16 @@ export class ImagesConstantsUpdater {
       if (numberMatch) {
         const imageNumber = parseInt(numberMatch[1], 10);
 
-        // Check if current path and variable name indicate mobile version
-        const isCurrentMobile = currentPath.includes('-mobile') || variableName.includes('mobile');
+        // FIXED: Determine if this is a mobile version based on the full variable key
+        // e.g., "hero.mobile.nestHaus1" is mobile, "hero.nestHaus1" is desktop
+        const isCurrentMobile = variableName.includes('.mobile.');
 
-                // Find matching blob image with EXACT same mobile/desktop type
-        const matchingMapping = blobMappings.find(mapping => 
-          mapping.number === imageNumber && 
-          mapping.isMobile === isCurrentMobile &&
-          // Double-check: path mobile state must match variable mobile state
-          (mapping.blobPath.includes('-mobile') === isCurrentMobile)
+        // Find matching blob image with EXACT same mobile/desktop type
+        const matchingMapping = blobMappings.find(mapping =>
+          mapping.number === imageNumber &&
+          mapping.isMobile === isCurrentMobile
         );
-        
+
         if (matchingMapping && matchingMapping.blobPath !== currentPath) {
           updatedConstants[variableName] = matchingMapping.blobPath;
           pathUpdates++;
@@ -326,7 +346,7 @@ export class ImagesConstantsUpdater {
             .filter(m => m.number === imageNumber)
             .map(m => m.isMobile ? 'mobile' : 'desktop')
             .join(', ');
-          
+
           if (availableTypes) {
             console.log(`⚠️ Skipped ${variableName}: No ${isCurrentMobile ? 'mobile' : 'desktop'} version found (available: ${availableTypes})`);
           }
