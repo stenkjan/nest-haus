@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui";
-import { FullWidthVideoGrid, FullWidthTextGrid } from "@/components/grids";
+import {
+  FullWidthVideoGrid,
+  FullWidthTextGrid,
+  ImageWithFourTextGrid,
+} from "@/components/grids";
 import { ClientBlobImage } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
@@ -194,6 +198,27 @@ export default function DeinPartPage() {
             backgroundColor="black"
             primaryButtonText="Zum Konfigurator"
             secondaryButtonText="Mehr erfahren"
+            maxWidth={false}
+          />
+        </section>
+
+        {/* ImageWithFourTextGrid */}
+        <section className="pt-20 pb-20">
+          <ImageWithFourTextGrid
+            title="Die Installationsebene"
+            subtitle="Die wichtigsten Schritte deiner aktiven Rolle beim NEST-Haus Bau"
+            backgroundColor="black"
+            image={IMAGES.function.nestHausModulElektrikSanitaer}
+            imageDescription="NEST-Haus Modulansicht für deinen Part"
+            textCellTitle1="Die Installationsebene"
+            textCell1="Alle unsere Gebäude werden mit einer Installationsebene ausgeführt und sind so konzipiert, dass ein unkompliziertes Demontieren der Interior-Platten möglich ist. Im Anschluss können sämltiche Elektro-, & Installationsarbeiten durchgeführt werden. 
+Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werden. Dies ermöglicht eine stetigen Zugang zu sämtlichen im Gebäude verlegten Leitungen und ermöglicht auch eine unkomplizierte Erweiterung, Montage & Wartung."
+            textCellTitle2="Wie transportierbar?"
+            textCell2="Für den Transport des Gebäudes müssen die HKLS-Leitungen an den Schnittstellen zwischen den Modulen so ausgeführt werden, dass sie mit Muffen bzw. Verbindungsdosen von einander getrennt werden können. In unserem Planungspaket für HKLS-Technik erhältst du, die von uns vorgeschlagenen individuellen Lösungen der einzelnen Verbindungstechniken."
+            textCellTitle3="Der Technikbereich"
+            textCell3="Der Technikbereich im Gebäude sollte sich möglichst nahe beim Durchbruch zu den Gebäudeanschluss befinden. Hier werden die Schnittstellen vom öffentlichen Anschluss an Strom, Wasser und Kanal weiter in das Gebäude verteilt."
+            textCellTitle4="Der Gebäudeanschluss"
+            textCell4="Im Gebäude müssen sich zumindest zwei voneinander getrennte Durchbrüche zu den Versorgungsleitungen befinden. Der Stromanschluss ist immer separat mit einem eigenen Anschlussschacht auszuführen."
             maxWidth={false}
           />
         </section>
