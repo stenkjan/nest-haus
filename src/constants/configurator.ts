@@ -92,7 +92,7 @@ export type ValidViewType = typeof VALID_VIEW_TYPES[number];
 
 // Image fallbacks for each view type
 export const IMAGE_FALLBACKS = {
-  exterior: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht-vzpOHlhd3YbLRWIrkA',
+  exterior: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
   interior: '137-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-Kalkstein',
   stirnseite: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite'
 } as const;
