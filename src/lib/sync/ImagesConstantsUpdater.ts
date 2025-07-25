@@ -119,13 +119,16 @@ export class ImagesConstantsUpdater {
       for (const blob of blobs) {
         const parsed = this.parseImageName(blob.pathname);
         if (parsed) {
-          // FIXED: More precise mobile detection - only if ends with "-mobile"
-          const isMobile = parsed.title.toLowerCase().endsWith('-mobile') ||
-            blob.pathname.toLowerCase().includes('-mobile');
+          // CRITICAL: Precise mobile detection based on actual blob path
+          // Check for -mobile suffix in the actual blob pathname (before hash removal)
+          const isMobile = blob.pathname.toLowerCase().includes('-mobile-') || 
+                           blob.pathname.toLowerCase().match(/-mobile\.[a-z]+$/);
+          
           const category = this.inferCategory(parsed.number, parsed.title);
           const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
 
           // Clean the blob path for constants: remove images/ prefix, hash, and extension
+          // CRITICAL: Maintain mobile/desktop distinction in the clean path
           const cleanBlobPath = blob.pathname
             .replace(/^images\//, '') // Remove images/ prefix
             .replace(/-[a-zA-Z0-9]{20,}\.([a-zA-Z0-9]+)$/, '') // Remove hash and extension
@@ -137,8 +140,11 @@ export class ImagesConstantsUpdater {
             blobPath: cleanBlobPath,
             category,
             constantKey,
-            isMobile // Add this property to the mapping
+            isMobile
           });
+
+          // Debug logging for mobile/desktop detection
+          console.log(`📱 Detected ${isMobile ? 'mobile' : 'desktop'}: ${blob.pathname} → ${cleanBlobPath}`);
         }
       }
 
@@ -152,16 +158,18 @@ export class ImagesConstantsUpdater {
   /**
    * Parse image name to extract number and title
    * Handles both formats:
-   * - Google Drive: "123-Title-Name.ext"
-   * - Vercel Blob: "images/123-Title-Name-HASH.ext"
+   * - Google Drive: "123-Title-Name.ext" or "123-Title-Name-mobile.ext"
+   * - Vercel Blob: "images/123-Title-Name-HASH.ext" or "images/123-Title-Name-mobile-HASH.ext"
+   * 
+   * CRITICAL: Preserves mobile/desktop distinction in title extraction
    */
   private parseImageName(fileName: string): { number: number; title: string } | null {
     // Remove the images/ prefix if present
     const cleanFileName = fileName.replace(/^images\//, '');
 
     // Match either:
-    // - Simple format: "123-Title-Name.ext" 
-    // - With hash: "123-Title-Name-hash.ext"
+    // - Simple format: "123-Title-Name.ext" or "123-Title-Name-mobile.ext"
+    // - With hash: "123-Title-Name-hash.ext" or "123-Title-Name-mobile-hash.ext"
     const match = cleanFileName.match(/^(\d+)-(.+?)(?:-[a-zA-Z0-9]{20,})?\.([a-zA-Z0-9]+)$/);
     if (!match) {
       console.log(`⚠️  Failed to parse image name: ${fileName}`);
@@ -176,6 +184,8 @@ export class ImagesConstantsUpdater {
       return null;
     }
 
+    // IMPORTANT: Return title AS-IS (with or without -mobile)
+    // The mobile detection is handled separately in getBlobImageMappings()
     return { number, title };
   }
 

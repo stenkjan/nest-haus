@@ -219,42 +219,24 @@ export default function Navbar() {
             aria-label={`Warenkorb - ${cartSummary}`}
             title={cartCount > 0 ? cartSummary : "Warenkorb leer"}
           >
-            {cartCount > 0 ? (
-              // House icon when cart has items (house in cart)
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-                />
-              </svg>
-            ) : (
-              // Shopping bag icon when cart is empty
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                />
-              </svg>
-            )}
+            {/* Always show shopping bag icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
             {cartCount > 0 && (
-              <span className="absolute top-2 right-0 translate-x-1/8 -translate-y-1/8 bg-red-500 text-white text-xs leading-none font-bold rounded-full w-3 h-3 flex items-center justify-center min-w-[12px] min-h-[12px]">
-                {cartCount > 9 ? "9+" : cartCount}
+              <span className="absolute bottom-0 right-0 bg-black rounded-full w-2 h-2 flex items-center justify-center">
+                <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
               </span>
             )}
           </Link>
@@ -334,27 +316,11 @@ export default function Navbar() {
             {/* Mobile Menu - Shopping Cart Link */}
             <Link
               href="/warenkorb"
-              className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2 flex items-center gap-2"
+              className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2 flex items-center gap-2 relative"
               onClick={() => setMobileMenuOpen(false)}
             >
-              {cartCount > 0 ? (
-                // House icon when cart has items (house in cart)
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-                  />
-                </svg>
-              ) : (
-                // Shopping bag icon when cart is empty
+              <div className="relative">
+                {/* Always show shopping bag icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4"
@@ -369,8 +335,13 @@ export default function Navbar() {
                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
-              )}
-              Warenkorb {cartCount > 0 && `(${cartCount})`}
+                {cartCount > 0 && (
+                  <span className="absolute bottom-0 right-0 bg-black rounded-full w-2 h-2 flex items-center justify-center">
+                    <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
+                  </span>
+                )}
+              </div>
+              Warenkorb
             </Link>
           </div>
         </div>

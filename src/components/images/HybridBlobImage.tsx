@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ImageProps } from 'next/image';
-import ClientBlobImage from './ClientBlobImage';
+import React from "react";
+import { ImageProps } from "next/image";
+import ClientBlobImage from "./ClientBlobImage";
 
-interface HybridBlobImageProps extends Omit<ImageProps, 'src'> {
+interface HybridBlobImageProps extends Omit<ImageProps, "src"> {
   path: string;
   mobilePath?: string;
   fallbackSrc?: string;
-  
+
   // Rendering strategy
-  strategy?: 'ssr' | 'client' | 'auto';
-  
+  strategy?: "ssr" | "client" | "auto";
+
   // Context hints for intelligent strategy selection
   isAboveFold?: boolean;
   isCritical?: boolean;
   isInteractive?: boolean;
-  
+
   // Client-specific options
   enableCache?: boolean;
   enableMobileDetection?: boolean;
@@ -25,16 +25,16 @@ interface HybridBlobImageProps extends Omit<ImageProps, 'src'> {
 
 /**
  * HybridBlobImage - Client-Side Image Component
- * 
+ *
  * NOTE: This component has been simplified to use only client-side rendering
  * due to Next.js constraints where async server components cannot be used
  * in client component contexts.
- * 
+ *
  * For true hybrid SSR/Client approach, use:
  * - ServerBlobImage directly in server components
  * - ClientBlobImage directly in client components
  * - This component as a client-optimized solution
- * 
+ *
  * Following project rules:
  * - Client-side for interactive apps, configurators, dynamic forms
  * - Optimized caching and performance for client contexts
@@ -43,8 +43,8 @@ interface HybridBlobImageProps extends Omit<ImageProps, 'src'> {
 export default function HybridBlobImage({
   path,
   mobilePath,
-  fallbackSrc = '/api/placeholder/1200/800?style=nest&text=Loading...',
-  strategy = 'auto',
+  fallbackSrc = "/api/placeholder/1200/800?style=nest&text=Lädt...",
+  strategy = "auto",
   isAboveFold = false,
   isCritical = false,
   isInteractive = false,
@@ -53,7 +53,6 @@ export default function HybridBlobImage({
   showLoadingSpinner = false,
   ...props
 }: HybridBlobImageProps) {
-  
   // Since we're in client context, always use ClientBlobImage
   // Optimize settings based on strategy hints
   const optimizedSettings = getClientOptimizedSettings(
@@ -70,7 +69,9 @@ export default function HybridBlobImage({
       fallbackSrc={fallbackSrc}
       enableCache={enableCache && optimizedSettings.enableCache}
       enableMobileDetection={enableMobileDetection}
-      showLoadingSpinner={showLoadingSpinner || optimizedSettings.showLoadingSpinner}
+      showLoadingSpinner={
+        showLoadingSpinner || optimizedSettings.showLoadingSpinner
+      }
       priority={isAboveFold || isCritical}
       {...props}
     />
@@ -81,9 +82,9 @@ export default function HybridBlobImage({
  * Optimize client-side settings based on strategy hints
  */
 function getClientOptimizedSettings(
-  strategy: 'ssr' | 'client' | 'auto',
+  strategy: "ssr" | "client" | "auto",
   isAboveFold: boolean,
-  isCritical: boolean, 
+  isCritical: boolean,
   isInteractive: boolean
 ) {
   // For critical/above-fold content, optimize for speed
@@ -93,7 +94,7 @@ function getClientOptimizedSettings(
       showLoadingSpinner: false, // Don't show spinner for critical content
     };
   }
-  
+
   // For interactive content, optimize for responsiveness
   if (isInteractive) {
     return {
@@ -101,7 +102,7 @@ function getClientOptimizedSettings(
       showLoadingSpinner: true, // Show feedback for dynamic content
     };
   }
-  
+
   // Default optimizations
   return {
     enableCache: true,
@@ -143,4 +144,4 @@ function getClientOptimizedSettings(
   isInteractive={false}
   alt="Product"
 />
-*/ 
+*/

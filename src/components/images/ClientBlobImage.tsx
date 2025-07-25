@@ -357,11 +357,11 @@ export default function ClientBlobImage({
   // Generate appropriate fallback based on image dimensions
   const defaultFallback = React.useMemo(() => {
     if (fill) {
-      return "/api/placeholder/1200/800?style=nest&text=Loading...";
+      return "/api/placeholder/1200/800?style=nest&text=Lädt...";
     } else if (width && height) {
-      return `/api/placeholder/${width}/${height}?style=nest&text=Loading...`;
+      return `/api/placeholder/${width}/${height}?style=nest&text=Lädt...`;
     } else {
-      return "/api/placeholder/1200/800?style=nest&text=Loading...";
+      return "/api/placeholder/1200/800?style=nest&text=Lädt...";
     }
   }, [fill, width, height]);
 
