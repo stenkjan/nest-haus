@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [59a53134966b81a8142efb0924c080b1f008f70f] - Fri Jul 25 12:13:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance mobile detection and clean up PingPongVideo demo  - Improved mobile detection logic in GoogleDriveSync and ImagesConstantsUpdater to ensure accuracy by checking for the '-mobile' suffix. - Removed debug logging state from PingPongVideoDemo component to streamline functionality and improve performance. - Updated debugging instructions for clarity and consistency in the PingPongVideo demo page.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/unser-part/page.tsx
+
+
+---
+
 ## [750a13f4c4a0c32d2fa8f50428b163154ba2a81b] - Fri Jul 25 11:46:49 2025 +0200
 
 **Author**: stenkjan
