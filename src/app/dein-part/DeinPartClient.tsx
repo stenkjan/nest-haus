@@ -42,7 +42,7 @@ const sections = [
 ];
 
 export default function DeinPartClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("freiraum");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("freiraum");
 
   return (
     <div className="min-h-screen bg-black text-white pt-16">

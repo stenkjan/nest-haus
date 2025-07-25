@@ -47,12 +47,12 @@ const sections = [
 ];
 
 export default function EntdeckenClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("innovation");
+  const [_currentSectionId, setCurrentSectionId] =
+    useState<string>("innovation");
 
   return (
     <div className="min-h-screen pt-16">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        
         {/* Section 1 - Innovation */}
         <section id="innovation" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,9 +65,10 @@ export default function EntdeckenClient() {
 
             <div className="text-center mb-12">
               <p className="text-lg leading-relaxed max-w-4xl mx-auto mb-8">
-                Bei NEST-Haus verschmelzen Innovation und Tradition zu einem einzigartigen Baukonzept. 
-                Unsere modularen Systeme revolutionieren die Art, wie wir über Hausbau denken - 
-                flexibel, nachhaltig und zukunftsorientiert.
+                Bei NEST-Haus verschmelzen Innovation und Tradition zu einem
+                einzigartigen Baukonzept. Unsere modularen Systeme
+                revolutionieren die Art, wie wir über Hausbau denken - flexibel,
+                nachhaltig und zukunftsorientiert.
               </p>
               <div className="flex gap-4 justify-center">
                 <Button variant="primary" size="lg">
@@ -106,7 +107,7 @@ export default function EntdeckenClient() {
             <FullWidthTextGrid
               title="Für eine bessere Zukunft"
               subtitle="Nachhaltigkeit als Grundprinzip"
-              backgroundColor="gray-50"
+              backgroundColor="white"
               textBox1="Nachhaltiges Bauen bedeutet für uns mehr als nur Energieeffizienz. Es geht um eine ganzheitliche Betrachtung des Lebenszyklus - von der Materialauswahl über die Produktion bis hin zur späteren Wiederverwertung."
               textBox2="Unsere Module bestehen aus nachhaltigen, regional verfügbaren Materialien. Der modulare Aufbau ermöglicht es, Gebäude bei Bedarf zu erweitern, zu verkleinern oder sogar komplett zu versetzen - für maximale Flexibilität im Lebensverlauf."
               maxWidth={false}
@@ -148,16 +149,16 @@ export default function EntdeckenClient() {
 
             <div className="text-center mb-12">
               <p className="text-lg leading-relaxed max-w-4xl mx-auto mb-8">
-                Modulares Bauen bedeutet nicht Verzicht auf individuelles Design. 
-                Im Gegenteil: Die standardisierten Module bieten unendliche Kombinationsmöglichkeiten 
-                für einzigartige Architekturen.
+                Modulares Bauen bedeutet nicht Verzicht auf individuelles
+                Design. Im Gegenteil: Die standardisierten Module bieten
+                unendliche Kombinationsmöglichkeiten für einzigartige
+                Architekturen.
               </p>
             </div>
 
             <ContentCardsGlass
               title="Grenzenlose Gestaltungsmöglichkeiten"
               subtitle="Ihr individueller Stil, unsere Expertise"
-              backgroundColor="gray-50"
               maxWidth={false}
             />
           </div>
@@ -175,23 +176,29 @@ export default function EntdeckenClient() {
 
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h4 className="text-2xl font-semibold mb-6">Gesundes Raumklima</h4>
+                <h4 className="text-2xl font-semibold mb-6">
+                  Gesundes Raumklima
+                </h4>
                 <p className="text-lg leading-relaxed mb-6">
-                  Natürliche Materialien und durchdachte Belüftungskonzepte sorgen für ein 
-                  optimales Raumklima. Ihre Gesundheit und Ihr Wohlbefinden stehen im Mittelpunkt.
+                  Natürliche Materialien und durchdachte Belüftungskonzepte
+                  sorgen für ein optimales Raumklima. Ihre Gesundheit und Ihr
+                  Wohlbefinden stehen im Mittelpunkt.
                 </p>
-                
-                <h4 className="text-2xl font-semibold mb-6">Energieeffizienz</h4>
+
+                <h4 className="text-2xl font-semibold mb-6">
+                  Energieeffizienz
+                </h4>
                 <p className="text-lg leading-relaxed mb-8">
-                  Niedrigste Energiekosten durch optimale Dämmung und intelligente Haustechnik. 
-                  Ein NEST-Haus ist eine Investition in die Zukunft.
+                  Niedrigste Energiekosten durch optimale Dämmung und
+                  intelligente Haustechnik. Ein NEST-Haus ist eine Investition
+                  in die Zukunft.
                 </p>
 
                 <Button variant="primary" size="lg">
                   Energiekonzept erkunden
                 </Button>
               </div>
-              
+
               <div className="relative" style={{ aspectRatio: "4/3" }}>
                 <HybridBlobImage
                   path={IMAGES.function.nestHausModulAnsicht}
@@ -222,11 +229,11 @@ export default function EntdeckenClient() {
 
             <div className="text-center mb-12">
               <p className="text-lg leading-relaxed max-w-4xl mx-auto mb-8">
-                NEST-Haus steht für eine neue Ära des Bauens. Schneller, nachhaltiger und 
-                individueller als je zuvor. Entdecken Sie selbst, was modulares Bauen für 
-                Ihr Traumhaus bedeuten kann.
+                NEST-Haus steht für eine neue Ära des Bauens. Schneller,
+                nachhaltiger und individueller als je zuvor. Entdecken Sie
+                selbst, was modulares Bauen für Ihr Traumhaus bedeuten kann.
               </p>
-              
+
               <div className="flex gap-4 justify-center flex-wrap">
                 <Button variant="primary" size="lg">
                   Jetzt konfigurieren
@@ -243,26 +250,39 @@ export default function EntdeckenClient() {
             <div className="bg-white rounded-lg p-8 shadow-sm">
               <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-blue-600 mb-2">< 12 Wochen</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-2">
+                    &lt; 12 Wochen
+                  </div>
                   <h4 className="text-lg font-semibold mb-2">Bauzeit</h4>
-                  <p className="text-gray-600">Von der Planung bis zum Einzug</p>
+                  <p className="text-gray-600">
+                    Von der Planung bis zum Einzug
+                  </p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-green-600 mb-2">A+</div>
-                  <h4 className="text-lg font-semibold mb-2">Energieeffizienz</h4>
-                  <p className="text-gray-600">Höchste Standards für niedrigste Kosten</p>
+                  <div className="text-3xl font-bold text-green-600 mb-2">
+                    A+
+                  </div>
+                  <h4 className="text-lg font-semibold mb-2">
+                    Energieeffizienz
+                  </h4>
+                  <p className="text-gray-600">
+                    Höchste Standards für niedrigste Kosten
+                  </p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-purple-600 mb-2">100%</div>
+                  <div className="text-3xl font-bold text-purple-600 mb-2">
+                    100%
+                  </div>
                   <h4 className="text-lg font-semibold mb-2">Individuell</h4>
-                  <p className="text-gray-600">Maßgeschneidert für Ihre Bedürfnisse</p>
+                  <p className="text-gray-600">
+                    Maßgeschneidert für Ihre Bedürfnisse
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
       </SectionRouter>
     </div>
   );
-} 
+}

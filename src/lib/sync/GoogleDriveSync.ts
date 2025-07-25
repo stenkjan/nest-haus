@@ -58,7 +58,7 @@ interface SyncOperations {
 }
 
 export class GoogleDriveSync {
-  private drive: drive_v3.Drive;
+  private drive!: drive_v3.Drive; // Definite assignment assertion - initialized in initializeGoogleAuth
   private initialized = false;
   private initializationPromise: Promise<void> | null = null;
 
@@ -324,6 +324,7 @@ export class GoogleDriveSync {
       let recentChanges = 0;
 
       for (const file of response.data.files || []) {
+        if (!file.name || !file.modifiedTime || !file.id || !file.webContentLink) continue; // Skip files without required properties
         const parsed = this.parseImageName(file.name);
         if (parsed) {
           const modifiedTime = new Date(file.modifiedTime);
@@ -395,6 +396,7 @@ export class GoogleDriveSync {
       let recentChanges = 0;
 
       for (const file of response.data.files || []) {
+        if (!file.name || !file.modifiedTime || !file.id || !file.webContentLink) continue; // Skip files without required properties
         const parsed = this.parseImageName(file.name);
         if (parsed) {
           const modifiedTime = new Date(file.modifiedTime);

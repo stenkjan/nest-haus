@@ -9,7 +9,6 @@ import {
   FullWidthTextGrid,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
-import { ContentCardsGlass } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
 
 // Define sections with proper structure for warum-wir page
@@ -47,7 +46,7 @@ const sections = [
 ];
 
 export default function WarumWirClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("vision");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("vision");
 
   return (
     <div className="min-h-screen pt-16">
@@ -133,7 +132,7 @@ export default function WarumWirClient() {
             <FullWidthTextGrid
               title="Mehr als nur Häuser bauen"
               subtitle="Unsere Motivation geht weit über das Bauen hinaus"
-              backgroundColor="gray-50"
+              backgroundColor="white"
               textBox1="Jeden Tag sehen wir die Auswirkungen des Klimawandels. Gleichzeitig wird Wohnraum immer teurer und die Bauzeiten immer länger. Diese Probleme motivieren uns, Lösungen zu entwickeln, die sowohl für Menschen als auch für die Umwelt gut sind."
               textBox2="Wir möchten beweisen, dass nachhaltiges Bauen nicht bedeutet, auf Komfort oder Design zu verzichten. Im Gegenteil: Durch innovative Technologien und durchdachte Planung entstehen Häuser, die in jeder Hinsicht überzeugen - ökologisch, ökonomisch und ästhetisch."
               maxWidth={false}
@@ -249,7 +248,7 @@ export default function WarumWirClient() {
             <FullWidthImageGrid
               title="Eine bessere Welt bauen"
               subtitle="Jedes NEST-Haus ist ein Schritt in die richtige Richtung"
-              backgroundColor="gray-50"
+              backgroundColor="white"
               textBox1="Nachhaltigkeit ist keine Option, sondern eine Notwendigkeit. Mit jedem Haus, das wir bauen, reduzieren wir den ökologischen Fußabdruck der Bauindustrie. Unsere Kunden werden zu Partnern im Kampf gegen den Klimawandel."
               textBox2="Die Zukunft gehört intelligenten, nachhaltigen Lösungen. NEST-Haus verbindet modernste Technologie mit ökologischer Verantwortung. Gemeinsam schaffen wir Wohnraum, der nicht nur heute überzeugt, sondern auch kommenden Generationen ein lebenswertes Umfeld bietet."
               image={IMAGES.function.nestHausModulElektrikSanitaer}
