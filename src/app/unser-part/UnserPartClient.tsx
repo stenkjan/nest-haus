@@ -4,9 +4,6 @@ import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import {
-  FullWidthVideoGrid,
-  FullWidthTextGrid,
-  ImageWithFourTextGrid,
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
   ThreeByOneGrid,
@@ -60,7 +57,7 @@ const sections = [
 ];
 
 export default function UnserPartClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
 
   return (
     <div

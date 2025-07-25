@@ -270,15 +270,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [
-    path,
-    enableCache,
-    fallbackSrc,
-    onLoad,
-    onError,
-    autoPlay,
-    reversePlayback,
-  ]);
+  }, [path, enableCache, fallbackSrc, onLoad, onError]);
 
   // Handle video end - delegate to ping-pong hook or handle standard loop
   const handleVideoEnded = useCallback(() => {
@@ -300,7 +292,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   // Handle video metadata loaded - delegate to ping-pong hook
   const handleLoadedMetadata = useCallback(() => {
     pingPongHandleLoadedMetadata();
-  }, [pingPongHandleLoadedMetadata, videoRef]);
+  }, [pingPongHandleLoadedMetadata]);
 
   // Note: Event listeners are now handled via React props (onEnded, onLoadedMetadata)
   // This is more reliable than addEventListener in React components
