@@ -50,7 +50,7 @@ export const IMAGES = {
         nestHausFensterTuerenPosition: '30-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Modul',
         nestHausFensterTuerenMittelmodul: '31-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Mittelmodul',
         nestHausFensterTuerenAbschlussmodul: '32-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Abschlussmodul',
-        nestHausGrundrissSchema: '33-NEST-Haus-Planung-Innenausbau-moeblierung-hausbau-flexibel',
+        nestHausGrundrissSchema: '33-NEST-Haus-Planung-Innenausbau-mooeblierung-hausbau-flexibel',
         nestHausFensterTuerenStirnseite: '34-NEST-Haus-Planung-Innenausbau-Fenster-Tueren',
         nestHausModulElektrikSanitaer: '35-NEST-Haus-Planung-Elektrik-Sanitaer-Einbau-Gebaeudetechnik-HKLS-Modul',
         nestHausPlattenFundament: '36-NEST-Haus-Planung-Innenausbau-Zwischendecke-Leichtbau-Modul',

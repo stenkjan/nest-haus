@@ -121,9 +121,9 @@ export class ImagesConstantsUpdater {
         if (parsed) {
           // CRITICAL: Precise mobile detection based on actual blob path
           // Check for -mobile suffix in the actual blob pathname (before hash removal)
-          const isMobile = blob.pathname.toLowerCase().includes('-mobile-') || 
-                           blob.pathname.toLowerCase().match(/-mobile\.[a-z]+$/);
-          
+          const isMobile = blob.pathname.toLowerCase().includes('-mobile') ||
+            !!blob.pathname.toLowerCase().match(/-mobile\.[a-z]+$/);
+
           const category = this.inferCategory(parsed.number, parsed.title);
           const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
 
