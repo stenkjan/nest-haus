@@ -8,7 +8,7 @@ import {
   FullWidthImageGrid,
   ThreeByOneGrid,
 } from "@/components/grids";
-import { ClientBlobImage, ClientBlobVideo } from "@/components/images";
+import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ContentCardsGlass } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
 
@@ -289,9 +289,11 @@ export default function UnserPartClient() {
 
             <div className="flex justify-center">
               <div className="w-full relative" style={{ aspectRatio: "1.9/1" }}>
-                <ClientBlobImage
+                <HybridBlobImage
                   path={IMAGES.function.nestHausGrundrissSchema}
                   alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
+                  strategy="client"
+                  isInteractive={true}
                   enableCache={true}
                   fill
                   className="object-contain"

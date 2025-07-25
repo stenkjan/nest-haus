@@ -7,10 +7,19 @@ declare global {
   interface Window {
     matchMedia: (query: string) => MediaQueryList;
   }
+
+  namespace NodeJS {
+    interface Global {
+      IS_REACT_ACT_ENVIRONMENT: boolean;
+      IntersectionObserver: typeof IntersectionObserver;
+      ResizeObserver: typeof ResizeObserver;
+      fetch: typeof fetch;
+    }
+  }
 }
 
 // Set up React act environment for proper testing  
-(global as any).IS_REACT_ACT_ENVIRONMENT = true
+(global as NodeJS.Global).IS_REACT_ACT_ENVIRONMENT = true
 
 // Mock Next.js router
 vi.mock('next/navigation', () => ({
@@ -48,7 +57,7 @@ vi.mock('next/image', () => ({
         }
       }
     }, 10)
-    
+
     return null // Return null to avoid rendering issues in tests
   }
 }))
@@ -82,7 +91,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Enhanced IntersectionObserver mock with proper callback handling
-(global as any).IntersectionObserver = vi.fn().mockImplementation((_callback: IntersectionObserverCallback) => ({
+(global as NodeJS.Global).IntersectionObserver = vi.fn().mockImplementation((_callback: IntersectionObserverCallback) => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
@@ -91,12 +100,12 @@ Object.defineProperty(window, 'matchMedia', {
   thresholds: [],
 }))
 
-// Mock ResizeObserver
-(global as any).ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}))
+  // Mock ResizeObserver
+  (global as NodeJS.Global).ResizeObserver = vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  }))
 
 // Mock environment variables
 Object.assign(process.env, {
@@ -105,7 +114,7 @@ Object.assign(process.env, {
 });
 
 // Enhanced fetch mock with better error handling
-(global as any).fetch = vi.fn(() =>
+(global as NodeJS.Global).fetch = vi.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({ success: true }),
@@ -129,7 +138,7 @@ Object.assign(process.env, {
 // Mock localStorage
 const localStorageMock = {
   getItem: vi.fn(),
-  setItem: vi.fn(),  
+  setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
   length: 0,
@@ -173,7 +182,7 @@ afterEach(() => {
   localStorage.clear()
   sessionStorage.clear()
   vi.clearAllTimers()
-  
+
   // Reset window properties using defineProperty to avoid getter-only errors
   Object.defineProperty(window, 'scrollY', {
     writable: true,
@@ -212,7 +221,7 @@ beforeAll(() => {
     }
     originalError.call(console, ...args)
   }
-  
+
   console.warn = (...args: unknown[]) => {
     const message = args[0]
     if (

@@ -10,7 +10,7 @@
  * Daily sync: Drive (24h changes) → Blob → Update Constants
  */
 
-import { google } from 'googleapis';
+import { google, drive_v3 } from 'googleapis';
 import { put, list, del } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
@@ -58,7 +58,7 @@ interface SyncOperations {
 }
 
 export class GoogleDriveSync {
-  private drive: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  private drive: drive_v3.Drive;
   private initialized = false;
   private initializationPromise: Promise<void> | null = null;
 
