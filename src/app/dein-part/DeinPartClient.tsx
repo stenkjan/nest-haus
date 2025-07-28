@@ -7,7 +7,6 @@ import {
   FullWidthVideoGrid,
   FullWidthTextGrid,
   ImageWithFourTextGrid,
-  VideoGallery,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
@@ -189,14 +188,15 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
         {/* Video Gallery Section */}
         <section id="video-gallery" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <VideoGallery
+            <FullWidthVideoGrid
               title="Deine Gestaltungsmöglichkeiten"
               subtitle="Entdecke die vielfältigen Konfigurationsmöglichkeiten für dein NEST Haus"
-              videoPath={IMAGES.variantvideo.ten}
               backgroundColor="white"
+              textBox1="Diese Animation zeigt dir die verschiedenen Modulkombinationen und Gestaltungsvarianten deines NEST Hauses. Jede Konfiguration ist individuell anpassbar."
+              textBox2="Von kompakten 2-Modul-Häusern bis hin zu großzügigen 6-Modul-Komplexen - entdecke die Flexibilität unseres modularen Bausystems."
               maxWidth={false}
+              video={IMAGES.variantvideo.ten}
               autoPlay={true}
-              loop={true}
               muted={true}
               controls={false}
             />

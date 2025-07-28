@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { LoopingVideo } from "@/components/videos";
+import { ClientBlobVideo } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 interface FullWidthVideoGridProps {
@@ -16,6 +17,7 @@ interface FullWidthVideoGridProps {
   autoPlay?: boolean;
   muted?: boolean;
   controls?: boolean;
+  cropPercent?: number; // Percentage to crop from top and bottom (e.g., 20 for 20%)
 }
 
 export default function FullWidthVideoGrid({
@@ -29,6 +31,7 @@ export default function FullWidthVideoGrid({
   autoPlay = true,
   muted = true,
   controls = false,
+  cropPercent = 0,
 }: FullWidthVideoGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -119,16 +122,52 @@ export default function FullWidthVideoGrid({
         >
           <div className="flex justify-center">
             <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
-              <LoopingVideo
-                introPath={video}
-                outroPath={IMAGES.function.nestHausModulSchemaOutro}
-                className="w-full h-full object-cover"
-                autoPlay={autoPlay}
-                muted={muted}
-                playsInline={true}
-                controls={controls}
-                enableCache={true}
-              />
+              {video === IMAGES.function.nestHausModulSchemaIntro ? (
+                <LoopingVideo
+                  introPath={video}
+                  outroPath={IMAGES.function.nestHausModulSchemaOutro}
+                  className="w-full h-full object-cover"
+                  autoPlay={autoPlay}
+                  muted={muted}
+                  playsInline={true}
+                  controls={controls}
+                  enableCache={true}
+                />
+              ) : (
+                <div
+                  className="w-full h-full overflow-hidden relative"
+                  style={
+                    cropPercent > 0
+                      ? {
+                          clipPath: `inset(${cropPercent}% 0)`,
+                        }
+                      : undefined
+                  }
+                >
+                  <div
+                    className="w-full h-full"
+                    style={
+                      cropPercent > 0
+                        ? {
+                            height: `${100 + cropPercent * 2}%`,
+                            marginTop: `-${cropPercent}%`,
+                          }
+                        : undefined
+                    }
+                  >
+                    <ClientBlobVideo
+                      path={video}
+                      className="w-full h-full object-cover"
+                      autoPlay={autoPlay}
+                      loop={true}
+                      muted={muted}
+                      playsInline={true}
+                      controls={controls}
+                      enableCache={true}
+                    />
+                  </div>
+                </div>
+              )}
               {/* Accessibility description for screen readers */}
               <span className="sr-only">
                 Video demonstration of NEST-Haus modular construction system
