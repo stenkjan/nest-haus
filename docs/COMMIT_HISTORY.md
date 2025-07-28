@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [429fea2f7ce1c4580a1edd38f1ab543ec561e716] - Mon Jul 28 11:09:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: add custom material card data for ContentCardsGlass in UnserPartClient  - Introduced a new  array containing detailed information about various materials, including titles, subtitles, descriptions, and images. - Updated  component to utilize the new  prop for rendering material cards. - Enhanced image references in the component to use constants from  for consistency and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/layout/Navbar.tsx
+
+
+---
+
 ## [0a9ae478a8fd49ee59ce1475352ed154a38e76e7] - Fri Jul 25 15:13:55 2025 +0200
 
 **Author**: stenkjan
