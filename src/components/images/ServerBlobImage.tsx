@@ -1,8 +1,8 @@
-import React from 'react';
-import Image, { ImageProps } from 'next/image';
-import { list } from '@vercel/blob';
+import React from "react";
+import Image, { ImageProps } from "next/image";
+import { list } from "@vercel/blob";
 
-interface ServerBlobImageProps extends Omit<ImageProps, 'src'> {
+interface ServerBlobImageProps extends Omit<ImageProps, "src"> {
   path: string;
   mobilePath?: string;
   fallbackSrc?: string;
@@ -12,41 +12,41 @@ interface ServerBlobImageProps extends Omit<ImageProps, 'src'> {
 
 /**
  * ServerBlobImage - SSR-optimized image component with mobile detection
- * 
+ *
  * Attempts to resolve image URLs on the server when possible,
  * with server-side mobile detection using user agent.
- * 
+ *
  * Following project rules:
  * - Prefer SSR for static content and initial loads
  * - Support mobile detection for landing page images
  * - Optimize for SEO and Core Web Vitals
  */
 async function getImageUrl(path: string): Promise<string | null> {
-  if (!path || path === 'undefined' || path === '') {
+  if (!path || path === "undefined" || path === "") {
     return null;
   }
 
   try {
     // Add images/ prefix if not already present
-    const imagePath = path.startsWith('images/') ? path : `images/${path}`;
-    const extensions = ['', '.jpg', '.jpeg', '.png', '.webp', '.avif'];
-    
+    const imagePath = path.startsWith("images/") ? path : `images/${path}`;
+    const extensions = ["", ".jpg", ".jpeg", ".png", ".webp", ".avif"];
+
     // Try to find the image with different extensions
     for (const ext of extensions) {
       const pathToTry = `${imagePath}${ext}`;
       const { blobs } = await list({
         prefix: pathToTry,
-        limit: 1
+        limit: 1,
       });
-      
+
       if (blobs.length > 0) {
         return blobs[0].url;
       }
     }
-    
+
     return null;
   } catch (error) {
-    console.error('SSR Image fetch error:', error);
+    console.error("SSR Image fetch error:", error);
     return null;
   }
 }
@@ -58,10 +58,10 @@ async function getImageUrl(path: string): Promise<string | null> {
 async function isMobileDevice(): Promise<boolean> {
   try {
     // Dynamic import to avoid issues when headers() is not available
-    const { headers } = await import('next/headers');
+    const { headers } = await import("next/headers");
     const headersList = await headers();
-    const userAgent = headersList.get('user-agent') || '';
-    
+    const userAgent = headersList.get("user-agent") || "";
+
     // Mobile device patterns
     const mobilePatterns = [
       /Android/i,
@@ -72,13 +72,16 @@ async function isMobileDevice(): Promise<boolean> {
       /BlackBerry/i,
       /Windows Phone/i,
       /Mobile/i,
-      /Tablet/i
+      /Tablet/i,
     ];
-    
-    return mobilePatterns.some(pattern => pattern.test(userAgent));
+
+    return mobilePatterns.some((pattern) => pattern.test(userAgent));
   } catch (error) {
     // If headers are not available (e.g., client-side usage, static generation), default to desktop
-    console.warn('Could not access headers for mobile detection (expected in client contexts):', error);
+    console.warn(
+      "Could not access headers for mobile detection (expected in client contexts):",
+      error
+    );
     return false;
   }
 }
@@ -86,7 +89,7 @@ async function isMobileDevice(): Promise<boolean> {
 export default async function ServerBlobImage({
   path,
   mobilePath,
-  fallbackSrc = '/api/placeholder/1200/800?style=nest&text=Loading...',
+  fallbackSrc = "/api/placeholder/1200/800?style=nest&text=Lädt...",
   enableSSRFetch = true,
   enableMobileDetection = false,
   alt,
@@ -94,7 +97,7 @@ export default async function ServerBlobImage({
 }: ServerBlobImageProps) {
   // Determine which path to use based on mobile detection
   let targetPath = path;
-  
+
   if (enableMobileDetection && mobilePath) {
     try {
       const isMobile = await isMobileDevice();
@@ -103,27 +106,27 @@ export default async function ServerBlobImage({
       }
     } catch (error) {
       // If mobile detection fails, continue with desktop path
-      console.warn('Mobile detection failed, using desktop image:', error);
+      console.warn("Mobile detection failed, using desktop image:", error);
     }
   }
 
   // Attempt SSR fetch for optimal performance
   let imageSrc = fallbackSrc;
-  
+
   if (enableSSRFetch && targetPath) {
     const serverUrl = await getImageUrl(targetPath);
     if (serverUrl) {
       imageSrc = serverUrl;
     } else {
       // Generate semantic placeholder with context
-      imageSrc = `/api/placeholder/1200/800?style=nest&text=${encodeURIComponent(alt || 'Image not found')}&path=${encodeURIComponent(targetPath)}`;
+      imageSrc = `/api/placeholder/1200/800?style=nest&text=${encodeURIComponent(alt || "Image not found")}&path=${encodeURIComponent(targetPath)}`;
     }
   }
 
   return (
     <Image
       src={imageSrc}
-      alt={alt || ''}
+      alt={alt || ""}
       {...props}
       // Optimize for server-rendered images
       placeholder="blur"
@@ -134,4 +137,4 @@ export default async function ServerBlobImage({
 }
 
 // Export both as default and named for flexibility
-export { ServerBlobImage }; 
+export { ServerBlobImage };

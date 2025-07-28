@@ -119,13 +119,16 @@ export class ImagesConstantsUpdater {
       for (const blob of blobs) {
         const parsed = this.parseImageName(blob.pathname);
         if (parsed) {
-          // Check if this is a mobile version by looking at the title/filename
-          const isMobile = parsed.title.toLowerCase().includes('mobile') ||
-            blob.pathname.toLowerCase().includes('mobile');
+          // CRITICAL: Precise mobile detection based on actual blob path
+          // Check for -mobile suffix in the actual blob pathname (before hash removal)
+          const isMobile = blob.pathname.toLowerCase().includes('-mobile') ||
+            !!blob.pathname.toLowerCase().match(/-mobile\.[a-z]+$/);
+
           const category = this.inferCategory(parsed.number, parsed.title);
           const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
 
           // Clean the blob path for constants: remove images/ prefix, hash, and extension
+          // CRITICAL: Maintain mobile/desktop distinction in the clean path
           const cleanBlobPath = blob.pathname
             .replace(/^images\//, '') // Remove images/ prefix
             .replace(/-[a-zA-Z0-9]{20,}\.([a-zA-Z0-9]+)$/, '') // Remove hash and extension
@@ -137,8 +140,11 @@ export class ImagesConstantsUpdater {
             blobPath: cleanBlobPath,
             category,
             constantKey,
-            isMobile // Add this property to the mapping
+            isMobile
           });
+
+          // Debug logging for mobile/desktop detection
+          console.log(`📱 Detected ${isMobile ? 'mobile' : 'desktop'}: ${blob.pathname} → ${cleanBlobPath}`);
         }
       }
 
@@ -152,16 +158,18 @@ export class ImagesConstantsUpdater {
   /**
    * Parse image name to extract number and title
    * Handles both formats:
-   * - Google Drive: "123-Title-Name.ext"
-   * - Vercel Blob: "images/123-Title-Name-HASH.ext"
+   * - Google Drive: "123-Title-Name.ext" or "123-Title-Name-mobile.ext"
+   * - Vercel Blob: "images/123-Title-Name-HASH.ext" or "images/123-Title-Name-mobile-HASH.ext"
+   * 
+   * CRITICAL: Preserves mobile/desktop distinction in title extraction
    */
   private parseImageName(fileName: string): { number: number; title: string } | null {
     // Remove the images/ prefix if present
     const cleanFileName = fileName.replace(/^images\//, '');
 
     // Match either:
-    // - Simple format: "123-Title-Name.ext" 
-    // - With hash: "123-Title-Name-hash.ext"
+    // - Simple format: "123-Title-Name.ext" or "123-Title-Name-mobile.ext"
+    // - With hash: "123-Title-Name-hash.ext" or "123-Title-Name-mobile-hash.ext"
     const match = cleanFileName.match(/^(\d+)-(.+?)(?:-[a-zA-Z0-9]{20,})?\.([a-zA-Z0-9]+)$/);
     if (!match) {
       console.log(`⚠️  Failed to parse image name: ${fileName}`);
@@ -176,6 +184,8 @@ export class ImagesConstantsUpdater {
       return null;
     }
 
+    // IMPORTANT: Return title AS-IS (with or without -mobile)
+    // The mobile detection is handled separately in getBlobImageMappings()
     return { number, title };
   }
 
@@ -227,6 +237,10 @@ export class ImagesConstantsUpdater {
   /**
    * Parse current constants from images.ts file
    */
+  /**
+   * FIXED: Parse current constants from images.ts file
+   * Now properly handles nested mobile structures like hero.mobile.{key}
+   */
   private parseCurrentConstants(content: string): Record<string, string> {
     const constants: Record<string, string> = {};
 
@@ -247,21 +261,38 @@ export class ImagesConstantsUpdater {
       }
     }
 
-    // Also parse other categories (hero, function, etc.)
-    const categoryMatches = content.match(/(\w+):\s*{([\s\S]*?)}/g);
+    // Parse other categories with support for nested mobile structures
+    const categoryMatches = content.match(/(\w+):\s*{([\s\S]*?)(?=\s*},\s*(?:\/\/|$|\w+:))/g);
     if (categoryMatches) {
       for (const categoryMatch of categoryMatches) {
-        const match = categoryMatch.match(/(\w+):\s*{([\s\S]*?)}/);
+        const match = categoryMatch.match(/(\w+):\s*{([\s\S]*?)$/);
         if (match) {
           const [, category, categoryContent] = match;
           if (['hero', 'function', 'gallery', 'aboutus'].includes(category)) {
-            const assignments = categoryContent.match(/(\w+):\s*['"`]([^'"`]+)['"`]/g);
-            if (assignments) {
-              for (const assignment of assignments) {
+            // First, parse direct assignments in this category (desktop versions)
+            const directAssignments = categoryContent.match(/^\s*(\w+):\s*['"`]([^'"`]+)['"`]/gm);
+            if (directAssignments) {
+              for (const assignment of directAssignments) {
                 const assignmentMatch = assignment.match(/(\w+):\s*['"`]([^'"`]+)['"`]/);
                 if (assignmentMatch) {
                   const [, key, value] = assignmentMatch;
                   constants[`${category}.${key}`] = value;
+                }
+              }
+            }
+
+            // FIXED: Parse nested mobile subfolder (like hero.mobile.{key})
+            const mobileMatch = categoryContent.match(/mobile:\s*{([\s\S]*?)}/);
+            if (mobileMatch) {
+              const mobileContent = mobileMatch[1];
+              const mobileAssignments = mobileContent.match(/(\w+):\s*['"`]([^'"`]+)['"`]/g);
+              if (mobileAssignments) {
+                for (const assignment of mobileAssignments) {
+                  const assignmentMatch = assignment.match(/(\w+):\s*['"`]([^'"`]+)['"`]/);
+                  if (assignmentMatch) {
+                    const [, key, value] = assignmentMatch;
+                    constants[`${category}.mobile.${key}`] = value;
+                  }
                 }
               }
             }
@@ -305,17 +336,16 @@ export class ImagesConstantsUpdater {
       if (numberMatch) {
         const imageNumber = parseInt(numberMatch[1], 10);
 
-        // Check if current path and variable name indicate mobile version
-        const isCurrentMobile = currentPath.includes('-mobile') || variableName.includes('mobile');
+        // FIXED: Determine if this is a mobile version based on the full variable key
+        // e.g., "hero.mobile.nestHaus1" is mobile, "hero.nestHaus1" is desktop
+        const isCurrentMobile = variableName.includes('.mobile.');
 
-                // Find matching blob image with EXACT same mobile/desktop type
-        const matchingMapping = blobMappings.find(mapping => 
-          mapping.number === imageNumber && 
-          mapping.isMobile === isCurrentMobile &&
-          // Double-check: path mobile state must match variable mobile state
-          (mapping.blobPath.includes('-mobile') === isCurrentMobile)
+        // Find matching blob image with EXACT same mobile/desktop type
+        const matchingMapping = blobMappings.find(mapping =>
+          mapping.number === imageNumber &&
+          mapping.isMobile === isCurrentMobile
         );
-        
+
         if (matchingMapping && matchingMapping.blobPath !== currentPath) {
           updatedConstants[variableName] = matchingMapping.blobPath;
           pathUpdates++;
@@ -326,7 +356,7 @@ export class ImagesConstantsUpdater {
             .filter(m => m.number === imageNumber)
             .map(m => m.isMobile ? 'mobile' : 'desktop')
             .join(', ');
-          
+
           if (availableTypes) {
             console.log(`⚠️ Skipped ${variableName}: No ${isCurrentMobile ? 'mobile' : 'desktop'} version found (available: ${availableTypes})`);
           }

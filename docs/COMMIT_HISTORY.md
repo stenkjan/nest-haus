@@ -4,7 +4,7 @@ _Auto-generated documentation of project changes_
 
 ---
 
-## [5371adf86f85d7cbb2423ced0bacd16748c826c1] - Thu Jul 24 14:33:56 2025 +0200
+## [420043ae14efd0323deaacf7f1557919499c6e04] - Mon Jul 28 11:59:07 2025 +0200
 
 **Author**: stenkjan
 **Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
@@ -14,6 +14,178 @@ _Auto-generated documentation of project changes_
 #### 📚 Documentation Changes
 - docs/COMMIT_HISTORY.md
 
+
+---
+
+## [429fea2f7ce1c4580a1edd38f1ab543ec561e716] - Mon Jul 28 11:09:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: add custom material card data for ContentCardsGlass in UnserPartClient  - Introduced a new  array containing detailed information about various materials, including titles, subtitles, descriptions, and images. - Updated  component to utilize the new  prop for rendering material cards. - Enhanced image references in the component to use constants from  for consistency and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/layout/Navbar.tsx
+
+
+---
+
+## [0a9ae478a8fd49ee59ce1475352ed154a38e76e7] - Fri Jul 25 15:13:55 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b3a8e09862c169005d81f2323f86e364bcb4fbe8] - Fri Jul 25 15:11:43 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1931bf2cfe3acac9949f41b641c6d9f9a6faf114] - Fri Jul 25 14:57:32 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [46839c23b67ab183025ce167f58b7166ceb0e4b0] - Fri Jul 25 14:36:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [55468368810d4d5d682be7ba8d6fdd6feed0b90d] - Fri Jul 25 14:31:23 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [744bf6100f81e87db15c23452448f743137ab618] - Fri Jul 25 14:28:24 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [957ac4a110158b0f5e41a780af78b966c6a877d6] - Fri Jul 25 14:24:49 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [59a53134966b81a8142efb0924c080b1f008f70f] - Fri Jul 25 12:13:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance mobile detection and clean up PingPongVideo demo  - Improved mobile detection logic in GoogleDriveSync and ImagesConstantsUpdater to ensure accuracy by checking for the '-mobile' suffix. - Removed debug logging state from PingPongVideoDemo component to streamline functionality and improve performance. - Updated debugging instructions for clarity and consistency in the PingPongVideo demo page.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/unser-part/page.tsx
+
+
+---
+
+## [750a13f4c4a0c32d2fa8f50428b163154ba2a81b] - Fri Jul 25 11:46:49 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/dein-part/page.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [22984fa45a9610ffaf690966a90b09dc8e7646a8] - Thu Jul 24 14:40:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/layout/Navbar.tsx
+- src/components/videos/PingPongVideo.tsx
+- src/hooks/usePingPongVideo.ts
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [5371adf86f85d7cbb2423ced0bacd16748c826c1] - Thu Jul 24 14:33:56 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -25,12 +197,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/showcase/videos/ping-pong-demo/page.tsx
 - src/components/images/ClientBlobVideo.tsx
 - src/components/layout/Navbar.tsx
 - src/components/videos/PingPongVideo.tsx
 - src/hooks/usePingPongVideo.ts
-
 
 ---
 
@@ -42,8 +214,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -55,8 +227,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -68,8 +240,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -81,8 +253,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -94,8 +266,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -107,8 +279,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -120,6 +292,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/sync/google-drive/route.ts
 - src/app/showcase/videos/page.tsx
 - src/app/showcase/videos/ping-pong-demo/page.tsx
@@ -129,14 +302,13 @@ _Auto-generated documentation of project changes_
 - src/hooks/index.ts
 - src/hooks/usePingPongVideo.ts
 
-
 #### ⚙️ Backend Changes
+
 - scripts/test-sync.js
 
-
 #### 📚 Documentation Changes
-- docs/PING_PONG_VIDEO_REFACTORING.md
 
+- docs/PING_PONG_VIDEO_REFACTORING.md
 
 ---
 
@@ -148,8 +320,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -161,8 +333,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -174,12 +346,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/page.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -191,8 +363,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -204,13 +376,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/kontakt/KontaktClient.tsx
 - src/app/kontakt/components/GrundstueckCheckWrapper.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -222,9 +394,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/kontakt/KontaktClient.tsx
 - src/app/kontakt/components/GrundstueckCheckWrapper.tsx
-
 
 ---
 
@@ -236,6 +408,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/api/images/route.ts
 - src/app/dein-part/page.tsx
@@ -255,13 +428,12 @@ _Auto-generated documentation of project changes_
 - src/hooks/index.ts
 - src/hooks/useDeviceDetect.ts
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/ClientBlobVideo_Implementation_Guide.md
 - docs/IMAGE_OPTIMIZATION_GUIDE.md
 - docs/SectionRouter_Documentation.md
-
 
 ---
 
@@ -273,8 +445,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -286,8 +458,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -299,6 +471,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/page.tsx
 - src/app/unser-part/page.tsx
 - src/components/cards/ContentCards.tsx
@@ -308,10 +481,9 @@ _Auto-generated documentation of project changes_
 - src/components/grids/ThreeByOneGrid.tsx
 - src/components/ui/Button.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -323,12 +495,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/page.tsx
 - src/app/unser-part/page.tsx
 - src/components/cards/ContentCards.tsx
 - src/components/cards/ContentCardsGlass.tsx
 - src/components/ui/Button.tsx
-
 
 ---
 
@@ -340,8 +512,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -353,10 +525,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/.gitkeep
 - src/app/entdecken/.gitkeep
 - src/app/unser-part/.gitkeep
-
 
 ---
 
@@ -368,6 +540,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/kontakt/components/GrundstueckCheckWrapper.tsx
 - src/app/kontakt/page.tsx
 - src/app/page.tsx
@@ -375,10 +548,9 @@ _Auto-generated documentation of project changes_
 - src/app/warenkorb/page.tsx
 - src/components/cards/ContentCardsGlass.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -390,10 +562,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/kontakt/components/GrundstueckCheckWrapper.tsx
 - src/app/kontakt/page.tsx
 - src/app/page.tsx
-
 
 ---
 
@@ -405,9 +577,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/page.tsx
-
 
 ---
 
@@ -419,9 +591,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/cards/ContentCardsGlass.tsx
 - src/components/grids/SingleImageGrid.tsx
-
 
 ---
 
@@ -433,8 +605,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2211,7 +2383,7 @@ export default function ClientBlobImage({
 
 **After:**
 
-- All components: `/api/placeholder/1200/800?style=nest&text=Loading...`
+- All components: `/api/placeholder/1200/800?style=nest&text=Lädt...`
 
 **Result**: Better aspect ratio match (3:2) for landscape images, consistent NEST branding.
 

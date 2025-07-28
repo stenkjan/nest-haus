@@ -10,7 +10,7 @@
  * Daily sync: Drive (24h changes) → Blob → Update Constants
  */
 
-import { google } from 'googleapis';
+import { google, drive_v3 } from 'googleapis';
 import { put, list, del } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
@@ -58,7 +58,7 @@ interface SyncOperations {
 }
 
 export class GoogleDriveSync {
-  private drive: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  private drive!: drive_v3.Drive; // Definite assignment assertion - initialized in initializeGoogleAuth
   private initialized = false;
   private initializationPromise: Promise<void> | null = null;
 
@@ -187,9 +187,17 @@ export class GoogleDriveSync {
 
       // Step 1: Fetch images from both Google Drive folders
       console.log(`📁 Fetching images from Google Drive folders (${syncType})...`);
+
+      const mainFolderId = process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID;
+      const mobileFolderId = process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID;
+
+      if (!mainFolderId || !mobileFolderId) {
+        throw new Error(`Missing folder IDs - Main: ${!!mainFolderId}, Mobile: ${!!mobileFolderId}`);
+      }
+
       const [mainImages, mobileImages] = await Promise.all([
-        this.fetchDriveImagesWithDateRange(process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID!, false, days, forceFullSync),
-        this.fetchDriveImagesWithDateRange(process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID!, true, days, forceFullSync)
+        this.fetchDriveImagesWithDateRange(mainFolderId, false, days, forceFullSync),
+        this.fetchDriveImagesWithDateRange(mobileFolderId, true, days, forceFullSync)
       ]);
 
       const allDriveImages = [...mainImages, ...mobileImages];
@@ -316,6 +324,7 @@ export class GoogleDriveSync {
       let recentChanges = 0;
 
       for (const file of response.data.files || []) {
+        if (!file.name || !file.modifiedTime || !file.id || !file.webContentLink) continue; // Skip files without required properties
         const parsed = this.parseImageName(file.name);
         if (parsed) {
           const modifiedTime = new Date(file.modifiedTime);
@@ -387,6 +396,7 @@ export class GoogleDriveSync {
       let recentChanges = 0;
 
       for (const file of response.data.files || []) {
+        if (!file.name || !file.modifiedTime || !file.id || !file.webContentLink) continue; // Skip files without required properties
         const parsed = this.parseImageName(file.name);
         if (parsed) {
           const modifiedTime = new Date(file.modifiedTime);
@@ -427,6 +437,10 @@ export class GoogleDriveSync {
    * Parse image name to extract number, title, extension, and mobile flag
    * Handles both Drive format: "123-Some-Title-Name.jpg" or "123-Some-Title-Name-mobile.jpg"
    * And Vercel Blob format: "images/123-Some-Title-Name-HASH.jpg"
+   * 
+   * CRITICAL: Ensures proper mobile/desktop distinction:
+   * - Desktop images: "123-Title-Name" (no -mobile suffix)
+   * - Mobile images: "123-Title-Name-mobile" (with -mobile suffix)
    */
   private parseImageName(fileName: string): { number: number; title: string; extension: string; isMobile: boolean } | null {
     // Remove path prefix if present (e.g., "images/")
@@ -447,10 +461,14 @@ export class GoogleDriveSync {
       return null;
     }
 
-    // Check if this is a mobile version
-    const isMobile = title.toLowerCase().includes('mobile');
-    // Remove 'mobile' suffix from title for consistency
-    const cleanTitle = title.replace(/-mobile$/i, '').trim();
+    // FIXED: Precise mobile detection - ONLY check for exact "-mobile" suffix
+    const isMobile = title.toLowerCase().endsWith('-mobile');
+
+    // IMPORTANT: Keep the title AS-IS for desktop images, remove -mobile suffix ONLY for mobile images
+    // This ensures we maintain the distinction between:
+    // - Desktop: "Title-Name" → cleanTitle = "Title-Name", isMobile = false
+    // - Mobile: "Title-Name-mobile" → cleanTitle = "Title-Name", isMobile = true
+    const cleanTitle = isMobile ? title.replace(/-mobile$/i, '').trim() : title;
 
     return {
       number,
@@ -649,7 +667,9 @@ export class GoogleDriveSync {
 
   /**
    * Upload a single image from Google Drive to Vercel Blob with proper hash generation
-   * NEW: Generates Vercel-style hash for consistent naming
+   * CRITICAL: Maintains mobile/desktop distinction in blob paths:
+   * - Desktop: "images/123-Title-Name-HASH.ext"  
+   * - Mobile: "images/123-Title-Name-mobile-HASH.ext"
    */
   private async uploadImageToBlobWithHash(driveImg: DriveImage): Promise<void> {
     try {
@@ -672,11 +692,13 @@ export class GoogleDriveSync {
         .substring(0, 26)
         .replace(/[^a-zA-Z0-9]/g, x => String.fromCharCode(97 + (x.charCodeAt(0) % 26)));
 
-      // Upload to Vercel Blob with hash in filename (like Vercel does)
+      // CRITICAL: Proper mobile/desktop path generation
+      // - Desktop: driveImg.title (already clean, no -mobile suffix)
+      // - Mobile: driveImg.title + "-mobile" (since clean title had -mobile removed during parsing)
       const titleWithMobile = driveImg.isMobile ? `${driveImg.title}-mobile` : driveImg.title;
       const fileName = `images/${driveImg.number}-${titleWithMobile}-${hash}.${driveImg.extension}`;
 
-      console.log(`⬆️ Uploading to blob with hash: ${fileName}`);
+      console.log(`⬆️ Uploading ${driveImg.isMobile ? 'mobile' : 'desktop'} version: ${fileName}`);
 
       await put(fileName, buffer, {
         access: 'public',
