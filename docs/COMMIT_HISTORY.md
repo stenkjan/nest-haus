@@ -4,6 +4,62 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3f13c868bba452376a125ffe5fd545ccf27a7517] - Mon Jul 28 13:32:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/content/analytics/route.ts
+- src/app/api/test/security/route.ts
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/dein-part/page.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/entdecken/page.tsx
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/unser-part/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/app/warum-wir/page.tsx
+- src/components/grids/ImageGallery.tsx
+- src/components/grids/VideoGallery.tsx
+- src/components/grids/index.ts
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/images/HybridBlobImage.tsx
+- src/components/images/ServerBlobImage.tsx
+- src/components/layout/Navbar.tsx
+- src/components/ui/CallToAction.tsx
+- src/components/ui/index.ts
+- src/components/videos/PingPongVideo.tsx
+- src/hooks/usePingPongVideo.ts
+
+
+#### ⚙️ Backend Changes
+- scripts/simple-security-test.js
+- scripts/test-security-native.js
+- scripts/test-security.js
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/ClientBlobVideo_EventListener_Fix.md
+- docs/ClientBlobVideo_Implementation_Guide.md
+- docs/ClientBlobVideo_ReversePlayback_Fix.md
+- docs/MODULAR_ARCHITECTURE_SUMMARY.md
+- docs/PING_PONG_VIDEO_REFACTORING.md
+- docs/PING_PONG_VIDEO_SYSTEM.md
+- docs/SECURITY_TESTING_GUIDE.md
+
+
+---
+
 ## [420043ae14efd0323deaacf7f1557919499c6e04] - Mon Jul 28 11:59:07 2025 +0200
 
 **Author**: stenkjan
