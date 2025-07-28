@@ -168,29 +168,32 @@ export const LoopingVideo: React.FC<LoopingVideoProps> = ({
   const currentVideoUrl = currentVideoIndex === 0 ? introUrl : outroUrl;
 
   return (
-    <video
-      ref={videoRef}
-      key={currentVideoIndex} // Force re-render when switching videos
-      src={currentVideoUrl}
-      className={className}
-      autoPlay={false} // Controlled via useEffect
-      loop={false} // We handle looping manually
-      muted={muted}
-      playsInline={playsInline}
-      controls={controls}
-      onEnded={handleVideoEnded}
-      onError={(e) => {
-        const error = new Error(
-          `Video playback failed: ${e.currentTarget.error?.message || "Unknown error"}`
-        );
-        if (onError) onError(error);
-      }}
-      style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-      }}
-    />
+    <div className="relative w-full h-full bg-black">
+      <video
+        ref={videoRef}
+        key={currentVideoIndex} // Force re-render when switching videos
+        src={currentVideoUrl}
+        className={`${className} bg-black`}
+        autoPlay={false} // Controlled via useEffect
+        loop={false} // We handle looping manually
+        muted={muted}
+        playsInline={playsInline}
+        controls={controls}
+        onEnded={handleVideoEnded}
+        onError={(e) => {
+          const error = new Error(
+            `Video playback failed: ${e.currentTarget.error?.message || "Unknown error"}`
+          );
+          if (onError) onError(error);
+        }}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          backgroundColor: "#000000", // Force black background
+        }}
+      />
+    </div>
   );
 };
 

@@ -282,23 +282,25 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
 
   // Render video
   return (
-    <video
-      ref={videoRef}
-      src={videoUrl}
-      className={className}
-      autoPlay={false} // Controlled via useEffect for better control
-      loop={loop}
-      muted={muted}
-      playsInline={playsInline}
-      controls={controls}
-      onLoadedData={handleVideoLoad}
-      onError={handleVideoError}
-      style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-      }}
-    />
+    <div className="relative w-full h-full bg-black">
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        className={`${className} bg-black`}
+        autoPlay={false} // Controlled via useEffect for better control
+        loop={loop}
+        muted={muted}
+        playsInline={playsInline}
+        controls={controls}
+        onLoadedData={handleVideoLoad}
+        onError={handleVideoError}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
+    </div>
   );
 };
 
