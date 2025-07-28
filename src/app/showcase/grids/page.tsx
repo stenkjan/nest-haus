@@ -132,8 +132,6 @@ export default function GridsShowcasePage() {
         <section className="overflow-visible">
           <ImageGlassCard
             backgroundColor="black"
-            primaryButtonText="Primary CTA"
-            secondaryButtonText="Secondary CTA"
             maxWidth={true}
           />
         </section>

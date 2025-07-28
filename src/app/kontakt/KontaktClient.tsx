@@ -3,6 +3,8 @@
 import React, { useState, Suspense } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
+import { CallToAction } from "@/components/ui";
+import { ImageGallery } from "@/components/grids";
 import AppointmentBooking from "./components/AppointmentBooking";
 import GrundstueckCheckWrapper from "./components/GrundstueckCheckWrapper";
 
@@ -12,6 +14,8 @@ const sections = [
   { id: "address", title: "Wo du uns findest", slug: "standort" },
   { id: "contact", title: "Grundstück Check", slug: "grundstueck-check" },
   { id: "impressum", title: "Impressum", slug: "impressum" },
+  { id: "call-to-action", title: "Kein Plan? Kein Problem!", slug: "beratung" },
+  { id: "gallery", title: "Bildergalerie", slug: "galerie" },
 ];
 
 export default function KontaktClient() {
@@ -158,6 +162,27 @@ export default function KontaktClient() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Call to Action Section */}
+        <section id="call-to-action">
+          <CallToAction
+            title="Kein Plan? Kein Problem!"
+            subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
+            buttonText="Jetzt vereinbaren"
+            buttonLink="/kontakt"
+            backgroundColor="gray"
+            maxWidth={false}
+          />
+        </section>
+
+        {/* Image Gallery Section */}
+        <section id="gallery">
+          <ImageGallery
+            useHeroImages={true}
+            backgroundColor="white"
+            maxWidth={false}
+          />
         </section>
       </SectionRouter>
     </div>

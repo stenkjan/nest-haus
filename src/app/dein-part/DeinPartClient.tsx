@@ -155,8 +155,6 @@ export default function DeinPartClient() {
             <div className="mt-16">
               <ImageGlassCard
                 backgroundColor="black"
-                primaryButtonText="Zum Konfigurator"
-                secondaryButtonText="Mehr erfahren"
                 maxWidth={false}
               />
 

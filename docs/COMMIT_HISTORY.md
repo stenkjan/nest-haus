@@ -4,6 +4,33 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [faa74511182ad540d53250b6b7f94bd5464af95c] - Mon Jul 28 15:42:20 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [21a13094c546a6d6c49c50fff31217226e58f1da] - Mon Jul 28 15:22:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: clean up DeinPartClient and enhance FullWidthVideoGrid styling  - Removed unused button texts from  to streamline the component. - Improved responsive styling in  by adjusting width and margin properties based on video type for better layout consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/components/grids/FullWidthVideoGrid.tsx
+
+
+---
+
 ## [3132d7da647efbf7f47491de3d63d9158ad35f3b] - Mon Jul 28 15:10:55 2025 +0200
 
 **Author**: stenkjan

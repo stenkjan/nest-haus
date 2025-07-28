@@ -115,13 +115,31 @@ export default function FullWidthVideoGrid({
       <div>
         {/* Large Video at Top - Full Width */}
         <motion.div
-          className="relative overflow-hidden w-full h-auto"
+          className={`relative overflow-hidden h-auto ${
+            video !== IMAGES.function.nestHausModulSchemaIntro
+              ? "w-screen"
+              : "w-full"
+          }`}
+          style={
+            video !== IMAGES.function.nestHausModulSchemaIntro
+              ? {
+                  marginLeft: "calc(-50vw + 50%)",
+                  marginRight: "calc(-50vw + 50%)",
+                }
+              : undefined
+          }
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
           <div className="flex justify-center">
-            <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
+            <div
+              className={`w-full aspect-video overflow-hidden bg-gray-900 ${
+                video === IMAGES.function.nestHausModulSchemaIntro
+                  ? "max-w-6xl rounded-lg"
+                  : ""
+              }`}
+            >
               {video === IMAGES.function.nestHausModulSchemaIntro ? (
                 <LoopingVideo
                   introPath={video}
