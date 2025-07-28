@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button } from "@/components/ui";
+import { Button, CallToAction } from "@/components/ui";
 import {
   ThreeByOneGrid,
   FullWidthImageGrid,
   FullWidthTextGrid,
+  ImageGallery,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { ContentCardsGlass } from "@/components/cards";
@@ -43,6 +44,16 @@ const sections = [
     id: "zukunft",
     title: "Die Zukunft des Wohnens",
     slug: "zukunft",
+  },
+  {
+    id: "gallery",
+    title: "Unsere Referenzen",
+    slug: "referenzen",
+  },
+  {
+    id: "call-to-action",
+    title: "Entdecke dein NEST Haus",
+    slug: "entdecke",
   },
 ];
 
@@ -281,6 +292,27 @@ export default function EntdeckenClient() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Image Gallery Section */}
+        <section id="gallery" className="w-full py-16">
+          <ImageGallery
+            useHeroImages={true}
+            backgroundColor="white"
+            maxWidth={false}
+          />
+        </section>
+
+        {/* Call to Action Section */}
+        <section id="call-to-action" className="w-full py-16">
+          <CallToAction
+            title="Entdecke dein NEST Haus"
+            subtitle="Beginne jetzt deine Reise zum nachhaltigen und individuellen Traumhaus"
+            buttonText="Konfigurator starten"
+            buttonLink="/konfigurator"
+            backgroundColor="gray"
+            maxWidth={false}
+          />
         </section>
       </SectionRouter>
     </div>

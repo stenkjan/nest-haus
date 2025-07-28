@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button } from "@/components/ui";
+import { Button, CallToAction } from "@/components/ui";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
   ThreeByOneGrid,
+  ImageGallery,
 } from "@/components/grids";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ContentCardsGlass } from "@/components/cards";
@@ -53,6 +54,16 @@ const sections = [
     id: "individualisierung",
     title: "Du individualisierst dein NEST Haus",
     slug: "individualisierung",
+  },
+  {
+    id: "call-to-action",
+    title: "Kein Plan? Kein Problem!",
+    slug: "kein-plan",
+  },
+  {
+    id: "gallery",
+    title: "Entdecke die Vielfalt",
+    slug: "vielfalt",
   },
 ];
 
@@ -390,6 +401,27 @@ export default function UnserPartClient() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Call to Action Section */}
+        <section id="call-to-action">
+          <CallToAction
+            title="Kein Plan? Kein Problem!"
+            subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
+            buttonText="Jetzt vereinbaren"
+            buttonLink="/kontakt"
+            backgroundColor="gray"
+            maxWidth={false}
+          />
+        </section>
+
+        {/* Image Gallery Section */}
+        <section id="gallery">
+          <ImageGallery
+            useHeroImages={true}
+            backgroundColor="white"
+            maxWidth={false}
+          />
         </section>
       </SectionRouter>
     </div>

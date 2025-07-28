@@ -33,6 +33,10 @@ export const IMAGES = {
         house5: 'house-5'
     },
 
+    variantvideo: {
+        ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation',
+    },
+
     // Function/Process images
     function: {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',

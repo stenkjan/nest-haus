@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button } from "@/components/ui";
+import { Button, CallToAction } from "@/components/ui";
 import {
   FullWidthVideoGrid,
   FullWidthTextGrid,
   ImageWithFourTextGrid,
+  VideoGallery,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
@@ -38,6 +39,16 @@ const sections = [
     id: "installationsebene",
     title: "Die Installationsebene",
     slug: "installationsebene",
+  },
+  {
+    id: "video-gallery",
+    title: "Deine Gestaltungsmöglichkeiten",
+    slug: "gestaltungsmoeglichkeiten",
+  },
+  {
+    id: "call-to-action",
+    title: "Bereit für dein NEST Haus?",
+    slug: "bereit",
   },
 ];
 
@@ -165,6 +176,36 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               maxWidth={false}
             />
           </div>
+        </section>
+
+        {/* Video Gallery Section */}
+        <section id="video-gallery" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <VideoGallery
+              title="Deine Gestaltungsmöglichkeiten"
+              subtitle="Entdecke die vielfältigen Konfigurationsmöglichkeiten für dein NEST Haus"
+              videoPath={IMAGES.variantvideo.ten}
+              backgroundColor="white"
+              maxWidth={false}
+              autoPlay={true}
+              loop={true}
+              muted={true}
+              controls={false}
+              reversePlayback={false}
+            />
+          </div>
+        </section>
+
+        {/* Call to Action Section */}
+        <section id="call-to-action" className="w-full py-16">
+          <CallToAction
+            title="Bereit für dein NEST Haus?"
+            subtitle="Starte jetzt die Konfiguration deines individuellen Traumhauses"
+            buttonText="Zum Konfigurator"
+            buttonLink="/konfigurator"
+            backgroundColor="gray"
+            maxWidth={false}
+          />
         </section>
       </SectionRouter>
     </div>

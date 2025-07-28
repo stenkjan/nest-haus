@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button } from "@/components/ui";
+import { Button, CallToAction } from "@/components/ui";
 import {
   ThreeByOneGrid,
   FullWidthImageGrid,
   FullWidthTextGrid,
+  VideoGallery,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
@@ -42,6 +43,16 @@ const sections = [
     id: "mission",
     title: "Unsere Mission",
     slug: "mission",
+  },
+  {
+    id: "video-showcase",
+    title: "Unsere Vision in Bewegung",
+    slug: "vision-bewegung",
+  },
+  {
+    id: "call-to-action",
+    title: "Werde Teil der Bewegung",
+    slug: "teil-bewegung",
   },
 ];
 
@@ -414,6 +425,34 @@ export default function WarumWirClient() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Video Showcase Section */}
+        <section id="video-showcase" className="w-full py-16">
+          <VideoGallery
+            title="Unsere Vision in Bewegung"
+            subtitle="Erlebe die Zukunft des modularen Bauens - wie aus einzelnen Modulen individuelle Traumhäuser entstehen"
+            videoPath={IMAGES.variantvideo.ten}
+            backgroundColor="white"
+            maxWidth={false}
+            autoPlay={true}
+            loop={true}
+            muted={true}
+            controls={false}
+            reversePlayback={false}
+          />
+        </section>
+
+        {/* Call to Action Section */}
+        <section id="call-to-action" className="w-full py-16">
+          <CallToAction
+            title="Werde Teil der Bewegung"
+            subtitle="Gemeinsam gestalten wir die Zukunft des nachhaltigen Bauens - starte jetzt dein NEST Haus Projekt"
+            buttonText="Jetzt loslegen"
+            buttonLink="/konfigurator"
+            backgroundColor="gray"
+            maxWidth={false}
+          />
         </section>
       </SectionRouter>
     </div>
