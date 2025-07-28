@@ -56,6 +56,88 @@ const sections = [
   },
 ];
 
+// Custom material card data for ContentCardsGlass using IMAGES constants
+const materialCardData = [
+  {
+    id: 1,
+    title: "Naturstein - Kalkstein",
+    subtitle: "Kanfanar Kalkstein",
+    description:
+      "Der massive Kalkstein überzeugt durch seine natürliche Eleganz, zeitlose Ästhetik und hohe Widerstandsfähigkeit. Mit seiner charakteristischen Farbgebung, die von warmen Beigetönen bis hin zu sanften Graunuancen reicht, verleiht er Innen- und Außenbereichen eine edle, harmonische Ausstrahlung.",
+    mobileTitle: "Kanfanar Naturstein",
+    mobileSubtitle: "Kalkstein Premium",
+    mobileDescription:
+      "Massive Kalkstein-Eleganz mit warmen Beigetönen bis sanften Graunuancen. Zeitlose Ästhetik und hohe Widerstandsfähigkeit für edle Ausstrahlung.",
+    image: IMAGES.materials.kalkstein,
+    backgroundColor: "#121212",
+  },
+  {
+    id: 2,
+    title: "Naturstein - Schiefer",
+    subtitle: "Dunkler Schiefer",
+    description:
+      "Hochwertiger Schiefer verleiht jedem Raum eine edle und natürliche Atmosphäre. Seine charakteristische dunkelgraue Färbung und die natürliche Schieferung schaffen einzigartige Lichtreflexe und eine lebendige Oberflächenstruktur.",
+    mobileTitle: "Schiefer Naturstein",
+    mobileSubtitle: "Dunkle Eleganz",
+    mobileDescription:
+      "Hochwertiger Schiefer mit charakteristischer dunkelgrauer Färbung. Natürliche Schieferung für einzigartige Lichtreflexe.",
+    image: IMAGES.materials.schiefer,
+    backgroundColor: "#121212",
+  },
+  {
+    id: 3,
+    title: "Eichen-Parkett",
+    subtitle: "Fischgrätparkett Eiche",
+    description:
+      "Edles Eichen-Fischgrätparkett verbindet traditionelle Handwerkskunst mit zeitgemäßer Eleganz. Die charakteristische Maserung der Eiche und das klassische Verlegemuster schaffen eine warme, wohnliche Atmosphäre mit hoher Langlebigkeit.",
+    mobileTitle: "Eichen-Parkett",
+    mobileSubtitle: "Fischgrät-Verlegung",
+    mobileDescription:
+      "Edles Eichen-Fischgrätparkett mit traditioneller Handwerkskunst. Warme, wohnliche Atmosphäre mit hoher Langlebigkeit.",
+    image: IMAGES.materials.eicheParkett,
+    backgroundColor: "#121212",
+  },
+  {
+    id: 4,
+    title: "Lärchen-Holzlattung",
+    subtitle: "Fassade Bauholz",
+    description:
+      "Natürliche Lärchen-Holzlattung für die Fassadengestaltung. Das robuste Bauholz besticht durch seine warme Farbe und natürliche Widerstandsfähigkeit gegen Witterungseinflüsse. Eine nachhaltige und ästhetische Lösung für moderne Architektur.",
+    mobileTitle: "Lärchen-Fassade",
+    mobileSubtitle: "Natürliche Lattung",
+    mobileDescription:
+      "Robuste Lärchen-Holzlattung mit warmer Farbe. Natürliche Widerstandsfähigkeit und nachhaltige Ästhetik.",
+    image: IMAGES.materials.laercheFassade,
+    backgroundColor: "#121212",
+  },
+  {
+    id: 5,
+    title: "Fundermax Platten",
+    subtitle: "Schwarze Fassadenplatten",
+    description:
+      "Hochwertige Fundermax Fassadenplatten in elegantem Schwarz. Die wetterbeständigen Platten bieten eine moderne, puristische Optik und sind langlebig sowie pflegeleicht. Ideal für zeitgemäße Architektur mit hohen Ansprüchen.",
+    mobileTitle: "Fundermax Platten",
+    mobileSubtitle: "Schwarze Fassade",
+    mobileDescription:
+      "Hochwertige schwarze Fundermax Platten. Wetterbeständig, modern und pflegeleicht für zeitgemäße Architektur.",
+    image: IMAGES.materials.fundermax,
+    backgroundColor: "#121212",
+  },
+  {
+    id: 6,
+    title: "Trapezblech",
+    subtitle: "Schwarze Metallfassade",
+    description:
+      "Robustes Trapezblech in mattem Schwarz für eine kraftvolle, industrielle Ästhetik. Das langlebige Material ist wartungsarm, witterungsbeständig und verleiht Gebäuden einen markanten, modernen Charakter.",
+    mobileTitle: "Trapezblech",
+    mobileSubtitle: "Schwarze Metall-Fassade",
+    mobileDescription:
+      "Robustes schwarzes Trapezblech für kraftvolle Ästhetik. Wartungsarm, witterungsbeständig und markant modern.",
+    image: IMAGES.materials.trapezblech,
+    backgroundColor: "#121212",
+  },
+];
+
 export default function UnserPartClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
 
@@ -136,6 +218,10 @@ export default function UnserPartClient() {
             mobileText="Qualitätssicherung und Präzision in jedem Arbeitsschritt - das ist unser Versprechen für dein NEST-Haus."
             textPosition="left"
             maxWidth={false}
+            image1={IMAGES.function.nestHausModulAnsicht}
+            image2={IMAGES.function.nestHausModulKonzept}
+            image1Description="NEST-Haus Modul Stirnseite Ansicht Schema Konzept"
+            image2Description="NEST-Haus Modul Holz Schema Konzept"
           />
 
           {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
@@ -147,8 +233,8 @@ export default function UnserPartClient() {
               text="Seitliche Ansicht des Moduls zeigt die durchdachte Konstruktion und die optimierte Statik. Jedes Modul ist selbsttragend und kann flexibel mit anderen Modulen kombiniert werden. Die präzise Fertigung garantiert perfekte Passgenauigkeit und höchste Qualität."
               textPosition="right"
               maxWidth={false}
-              image1="23-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept"
-              image2="24-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept-Liniengrafik"
+              image1={IMAGES.function.nestHausModulSeiteKonzept}
+              image2={IMAGES.function.nestHausModulSeiteLiniengrafik}
               image1Description="Seitliche Ansicht zeigt die durchdachte Konstruktion"
               image2Description="Liniengrafik verdeutlicht die optimierte Statik"
             />
@@ -181,13 +267,14 @@ export default function UnserPartClient() {
             </div>
           </div>
 
-          {/* ContentCardsGlass with full width */}
+          {/* ContentCardsGlass with full width and custom material data */}
           <ContentCardsGlass
             variant="responsive"
             title=""
             subtitle=""
             maxWidth={false}
             showInstructions={true}
+            customData={materialCardData}
           />
         </section>
 
@@ -211,8 +298,8 @@ export default function UnserPartClient() {
               text="Sobald die Module geliefert sind, beginnt dein Teil der Gestaltung. Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt deinem Plan, jeder Schritt bringt dich deinem Zuhause näher. Du bestimmst, wo Licht einfällt, wo Wege beginnen und wie dein Raum sich öffnet. So entsteht nicht nur ein Haus, sondern ein Ort, der ganz dir gehört."
               textPosition="left"
               maxWidth={false}
-              image1="34-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Stirnseite"
-              image2="32-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Abschlussmodul-Liniengrafik"
+              image1={IMAGES.function.nestHausFensterTuerenStirnseite}
+              image2={IMAGES.function.nestHausFensterTuerenAbschlussmodul}
               image1Description="Fenster und Türen Einbau Positionierung"
               image2Description="Mittelmodul Liniengrafik Fenster und Türen"
             />
@@ -227,8 +314,8 @@ export default function UnserPartClient() {
               text="Solltest du Unterstützung bei der Planung benötigen, kannst du eines unserer Planungspakete wählen. So erhältst du genau die Hilfe, die du brauchst, um deine Vision Wirklichkeit werden zu lassen."
               textPosition="right"
               maxWidth={false}
-              image1="23-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept"
-              image2="31-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Mittelmodul-Liniengrafik"
+              image1={IMAGES.function.nestHausModulSeiteKonzept}
+              image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
               image1Description="Modul Seitenansicht Holz Schema Konzept"
               image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
               showButtons={true}

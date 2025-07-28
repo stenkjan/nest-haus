@@ -235,7 +235,7 @@ export default function Navbar() {
               />
             </svg>
             {cartCount > 0 && (
-              <span className="absolute bottom-0 right-0 bg-black rounded-full w-2 h-2 flex items-center justify-center">
+              <span className="absolute bottom-3 right-3 bg-black rounded-full w-2 h-2 flex items-center justify-center">
                 <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
               </span>
             )}
@@ -336,7 +336,7 @@ export default function Navbar() {
                   />
                 </svg>
                 {cartCount > 0 && (
-                  <span className="absolute bottom-0 right-0 bg-black rounded-full w-2 h-2 flex items-center justify-center">
+                  <span className="absolute bottom-3 right-3 bg-black rounded-full w-2 h-2 flex items-center justify-center">
                     <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
                   </span>
                 )}
