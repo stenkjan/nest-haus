@@ -6,8 +6,8 @@ import { Button, CallToAction } from "@/components/ui";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
+  FullWidthVideoGrid,
   ThreeByOneGrid,
-  ImageGallery,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { ContentCardsGlass } from "@/components/cards";
@@ -62,9 +62,9 @@ const sections = [
     slug: "kein-plan",
   },
   {
-    id: "gallery",
-    title: "Entdecke die Vielfalt",
-    slug: "vielfalt",
+    id: "video-gallery",
+    title: "Die Vielfalt unserer Module",
+    slug: "modul-vielfalt",
   },
 ];
 
@@ -412,13 +412,22 @@ export default function UnserPartClient() {
           />
         </section>
 
-        {/* Image Gallery Section */}
-        <section id="gallery">
-          <ImageGallery
-            useHeroImages={true}
-            backgroundColor="white"
-            maxWidth={false}
-          />
+        {/* Video Gallery Section */}
+        <section id="video-gallery" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <FullWidthVideoGrid
+              title="Die Vielfalt unserer Module"
+              subtitle="Entdecke die verschiedenen Konfigurationsmöglichkeiten und Modulkombinationen"
+              backgroundColor="white"
+              textBox1="Diese Animation zeigt die vielfältigen Möglichkeiten unseres modularen Bausystems. Von kompakten Lösungen bis hin zu großzügigen Wohnkonzepten."
+              textBox2="Jede Modulkombination ist individuell planbar und lässt sich perfekt an deine Bedürfnisse und dein Grundstück anpassen."
+              maxWidth={false}
+              video={IMAGES.variantvideo.ten}
+              autoPlay={true}
+              muted={true}
+              controls={false}
+            />
+          </div>
         </section>
       </SectionRouter>
     </div>

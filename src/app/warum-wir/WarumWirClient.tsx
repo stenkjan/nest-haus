@@ -8,6 +8,7 @@ import {
   FullWidthImageGrid,
   FullWidthTextGrid,
   VideoGallery,
+  ImageGallery,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
@@ -53,6 +54,16 @@ const sections = [
     id: "call-to-action",
     title: "Werde Teil der Bewegung",
     slug: "teil-bewegung",
+  },
+  {
+    id: "kein-plan-kein-problem",
+    title: "Kein Plan? Kein Problem!",
+    slug: "beratung",
+  },
+  {
+    id: "gallery",
+    title: "Bildergalerie",
+    slug: "galerie",
   },
 ];
 
@@ -450,6 +461,27 @@ export default function WarumWirClient() {
             buttonText="Jetzt loslegen"
             buttonLink="/konfigurator"
             backgroundColor="gray"
+            maxWidth={false}
+          />
+        </section>
+
+        {/* Kein Plan? Kein Problem! CTA Section */}
+        <section id="kein-plan-kein-problem">
+          <CallToAction
+            title="Kein Plan? Kein Problem!"
+            subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
+            buttonText="Jetzt vereinbaren"
+            buttonLink="/kontakt"
+            backgroundColor="gray"
+            maxWidth={false}
+          />
+        </section>
+
+        {/* Image Gallery Section */}
+        <section id="gallery">
+          <ImageGallery
+            useHeroImages={true}
+            backgroundColor="white"
             maxWidth={false}
           />
         </section>

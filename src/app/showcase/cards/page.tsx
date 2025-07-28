@@ -133,12 +133,7 @@ export default function CardsShowcasePage() {
               Single image card with glass morphism effect and action buttons
             </p>
           </div>
-          <ImageGlassCard
-            backgroundColor="black"
-            primaryButtonText="Primary Action"
-            secondaryButtonText="Secondary Action"
-            maxWidth={false}
-          />
+          <ImageGlassCard backgroundColor="black" maxWidth={false} />
         </section>
 
         {/* Square Glass Card Section */}
