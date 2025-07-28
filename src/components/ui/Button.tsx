@@ -43,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({
       case "xxs":
         return "w-24 sm:w-28 lg:w-32 xl:w-36";
       case "xs":
-        return "w-28 sm:w-32 lg:w-36 xl:w-40 2xl:w-48";
+        return "w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56";
       case "sm":
         return "w-32 sm:w-36 lg:w-40 xl:w-44";
       case "md":
@@ -59,7 +59,9 @@ const Button: React.FC<ButtonProps> = ({
     }
   };
 
-  const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal ${getWidthClasses(size)}`;
+  const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal ${getWidthClasses(
+    size
+  )}`;
 
   const variants = {
     // Standard Buttons - all with fixed width

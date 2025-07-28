@@ -82,18 +82,22 @@ export default function ThreeByOneGrid({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-          <div className={`${containerClasses} ${backgroundClasses} py-8`}>
-            <div className="text-center mb-24">
-         <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
-        {subtitle && (
-          <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
-            {subtitle}
-          </p>
-        )}
-      </div>
+      <div className={`${containerClasses} ${backgroundClasses} py-8`}>
+        <div className="text-center mb-24">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+              {subtitle}
+            </p>
+          )}
+        </div>
         <div className="flex justify-center items-center py-8">
           <div
-            className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"} rounded-3xl`}
+            className={`animate-pulse ${
+              backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
+            } rounded-3xl`}
             style={{ width: "100%", height: 400 }}
           />
         </div>
@@ -106,7 +110,9 @@ export default function ThreeByOneGrid({
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
         <div className="text-center mb-24 px-4 md:px-8">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">
+            {title}
+          </h2>
           {subtitle && (
             <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
               {subtitle}
@@ -204,7 +210,11 @@ export default function ThreeByOneGrid({
               >
                 <button
                   onClick={() => setShowMoreInfo(!showMoreInfo)}
-                  className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${backgroundColor === "black" ? "focus:ring-white" : "focus:ring-gray-500"} rounded-lg px-4 py-2`}
+                  className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                    backgroundColor === "black"
+                      ? "focus:ring-white"
+                      : "focus:ring-gray-500"
+                  } rounded-lg px-4 py-2`}
                 >
                   Mehr Informationen
                   <motion.span
@@ -238,7 +248,11 @@ export default function ThreeByOneGrid({
                 >
                   {/* Horizontal divider */}
                   <div
-                    className={`h-px w-full ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-300"} mb-6`}
+                    className={`h-px w-full ${
+                      backgroundColor === "black"
+                        ? "bg-gray-700"
+                        : "bg-gray-300"
+                    } mb-6`}
                   ></div>
 
                   {/* Technical specifications for mobile */}
@@ -403,7 +417,11 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div
-                    className={`col-span-3 h-px w-full ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-300"} my-2`}
+                    className={`col-span-3 h-px w-full ${
+                      backgroundColor === "black"
+                        ? "bg-gray-700"
+                        : "bg-gray-300"
+                    } my-2`}
                   ></div>
                   {/* Second row: empty cell under text, description1, description2 */}
                   <div></div>
@@ -416,32 +434,42 @@ export default function ThreeByOneGrid({
                   >
                     <div className="grid grid-cols-2 gap-4 w-full text-left">
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="font-bold text-[10px]">Aufbau a</div>
-                        <div className="text-[10px]">
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Aufbau a
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Holzlattung Lärche Natur 5x4cm
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           ALU Traglattung 2,5cm + 2,0cm Abstandhalter
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           Foliendach UV-beständig RAL9005
                         </div>
-                        <div className="text-[10px]">Rauschalung 2,4cm</div>
-                        <div className="text-[10px]">Konterlattung 5,0cm</div>
+                        <div className="text-xs 2xl:text-sm">
+                          Rauschalung 2,4cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
+                          Konterlattung 5,0cm
+                        </div>
                       </div>
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="text-[10px]">&nbsp;</div>
-                        <div className="text-[10px]">Holzfaserplatte 4,0cm</div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">&nbsp;</div>
+                        <div className="text-xs 2xl:text-sm">
+                          Holzfaserplatte 4,0cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Sparren FJI 9x32cm + Steico Holzfaserdämmung
                         </div>
-                        <div className="text-[10px]">OSB NF 1,8cm</div>
-                        <div className="text-[10px]">Install-Ebene 5,0cm</div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">OSB NF 1,8cm</div>
+                        <div className="text-xs 2xl:text-sm">
+                          Install-Ebene 5,0cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           3-Schichtplatte Fichte sicht 1,9cm
                         </div>
                       </div>
@@ -456,32 +484,40 @@ export default function ThreeByOneGrid({
                   >
                     <div className="grid grid-cols-2 gap-4 w-full text-left">
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="font-bold text-[10px]">Aufbau b</div>
-                        <div className="text-[10px]">
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Aufbau b
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Parkett Eiche - Schwimmend verlegt
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           Flies Unterlegbahn 0,2cm
                         </div>
-                        <div className="text-[10px]">OSB 2,2cm</div>
-                        <div className="text-[10px]">FJI Träger 36,0/8,9cm</div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">OSB 2,2cm</div>
+                        <div className="text-xs 2xl:text-sm">
+                          FJI Träger 36,0/8,9cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Steico Holzfaserdämmung
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           H2O Zementfaserplatte 1,25cm
                         </div>
                       </div>
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="font-bold text-[10px]">Element c</div>
-                        <div className="text-[10px]">Zugstab</div>
-                        <div className="text-[10px]">&nbsp;</div>
-                        <div className="font-bold text-[10px]">Element d</div>
-                        <div className="text-[10px]">Fundament</div>
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Element c
+                        </div>
+                        <div className="text-xs 2xl:text-sm">Zugstab</div>
+                        <div className="text-xs 2xl:text-sm">&nbsp;</div>
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Element d
+                        </div>
+                        <div className="text-xs 2xl:text-sm">Fundament</div>
                       </div>
                     </div>
                   </motion.div>
@@ -518,19 +554,19 @@ export default function ThreeByOneGrid({
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.6 }}
                   >
-                                      <HybridBlobImage
-                    path={image2}
-                    alt={image2Description}
-                    fill
-                    className="object-contain object-center"
-                    sizes="(max-width: 1024px) 50vw, 33vw"
-                    quality={85}
-                    strategy="client"
-                    enableCache={true}
-                    isInteractive={false}
-                    isAboveFold={false}
-                    isCritical={false}
-                  />
+                    <HybridBlobImage
+                      path={image2}
+                      alt={image2Description}
+                      fill
+                      className="object-contain object-center"
+                      sizes="(max-width: 1024px) 50vw, 33vw"
+                      quality={85}
+                      strategy="client"
+                      enableCache={true}
+                      isInteractive={false}
+                      isAboveFold={false}
+                      isCritical={false}
+                    />
                   </motion.div>
                   {/* Main text - third column, first row */}
                   <motion.div
@@ -557,7 +593,11 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div
-                    className={`col-span-3 h-px w-full ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-300"} my-2`}
+                    className={`col-span-3 h-px w-full ${
+                      backgroundColor === "black"
+                        ? "bg-gray-700"
+                        : "bg-gray-300"
+                    } my-2`}
                   ></div>
                   {/* Second row: description1, description2, empty cell under text */}
                   <motion.div
@@ -569,32 +609,42 @@ export default function ThreeByOneGrid({
                   >
                     <div className="grid grid-cols-2 gap-4 w-full text-left">
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="font-bold text-[10px]">Aufbau a</div>
-                        <div className="text-[10px]">
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Aufbau a
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Holzlattung Lärche Natur 5x4cm
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           ALU Traglattung 2,5cm + 2,0cm Abstandhalter
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           Foliendach UV-beständig RAL9005
                         </div>
-                        <div className="text-[10px]">Rauschalung 2,4cm</div>
-                        <div className="text-[10px]">Konterlattung 5,0cm</div>
+                        <div className="text-xs 2xl:text-sm">
+                          Rauschalung 2,4cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
+                          Konterlattung 5,0cm
+                        </div>
                       </div>
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="text-[10px]">&nbsp;</div>
-                        <div className="text-[10px]">Holzfaserplatte 4,0cm</div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">&nbsp;</div>
+                        <div className="text-xs 2xl:text-sm">
+                          Holzfaserplatte 4,0cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Sparren FJI 9x32cm + Steico Holzfaserdämmung
                         </div>
-                        <div className="text-[10px]">OSB NF 1,8cm</div>
-                        <div className="text-[10px]">Install-Ebene 5,0cm</div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">OSB NF 1,8cm</div>
+                        <div className="text-xs 2xl:text-sm">
+                          Install-Ebene 5,0cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           3-Schichtplatte Fichte sicht 1,9cm
                         </div>
                       </div>
@@ -609,32 +659,40 @@ export default function ThreeByOneGrid({
                   >
                     <div className="grid grid-cols-2 gap-4 w-full text-left">
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="font-bold text-[10px]">Aufbau b</div>
-                        <div className="text-[10px]">
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Aufbau b
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Parkett Eiche - Schwimmend verlegt
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           Flies Unterlegbahn 0,2cm
                         </div>
-                        <div className="text-[10px]">OSB 2,2cm</div>
-                        <div className="text-[10px]">FJI Träger 36,0/8,9cm</div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">OSB 2,2cm</div>
+                        <div className="text-xs 2xl:text-sm">
+                          FJI Träger 36,0/8,9cm
+                        </div>
+                        <div className="text-xs 2xl:text-sm">
                           Steico Holzfaserdämmung
                         </div>
-                        <div className="text-[10px]">
+                        <div className="text-xs 2xl:text-sm">
                           H2O Zementfaserplatte 1,25cm
                         </div>
                       </div>
                       <div
-                        className={`text-[10px] ${textColorClasses} opacity-80 leading-tight`}
+                        className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-tight`}
                       >
-                        <div className="font-bold text-[10px]">Element c</div>
-                        <div className="text-[10px]">Zugstab</div>
-                        <div className="text-[10px]">&nbsp;</div>
-                        <div className="font-bold text-[10px]">Element d</div>
-                        <div className="text-[10px]">Fundament</div>
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Element c
+                        </div>
+                        <div className="text-xs 2xl:text-sm">Zugstab</div>
+                        <div className="text-xs 2xl:text-sm">&nbsp;</div>
+                        <div className="font-bold text-xs 2xl:text-sm">
+                          Element d
+                        </div>
+                        <div className="text-xs 2xl:text-sm">Fundament</div>
                       </div>
                     </div>
                   </motion.div>

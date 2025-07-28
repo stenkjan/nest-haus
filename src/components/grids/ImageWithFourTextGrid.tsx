@@ -228,7 +228,7 @@ export default function ImageWithFourTextGrid({
                       {textCellTitle1}
                     </h3>
                     <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                     >
                       {textCell1}
                     </p>
@@ -250,7 +250,7 @@ export default function ImageWithFourTextGrid({
                       {textCellTitle2}
                     </h3>
                     <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                     >
                       {textCell2}
                     </p>
@@ -272,7 +272,7 @@ export default function ImageWithFourTextGrid({
                       {textCellTitle3}
                     </h3>
                     <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                     >
                       {textCell3}
                     </p>
@@ -294,7 +294,7 @@ export default function ImageWithFourTextGrid({
                       {textCellTitle4}
                     </h3>
                     <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                     >
                       {textCell4}
                     </p>
@@ -321,7 +321,7 @@ export default function ImageWithFourTextGrid({
                   {textCellTitle1}
                 </h3>
                 <p
-                  className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                  className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                 >
                   {textCell1}
                 </p>
@@ -341,7 +341,7 @@ export default function ImageWithFourTextGrid({
                   {textCellTitle2}
                 </h3>
                 <p
-                  className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                  className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                 >
                   {textCell2}
                 </p>
@@ -361,7 +361,7 @@ export default function ImageWithFourTextGrid({
                   {textCellTitle3}
                 </h3>
                 <p
-                  className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                  className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                 >
                   {textCell3}
                 </p>
@@ -381,7 +381,7 @@ export default function ImageWithFourTextGrid({
                   {textCellTitle4}
                 </h3>
                 <p
-                  className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                  className={`text-xs 2xl:text-sm ${textColorClasses} opacity-80 leading-relaxed text-left`}
                 >
                   {textCell4}
                 </p>

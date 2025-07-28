@@ -151,6 +151,16 @@ export default function DeinPartClient() {
                 secondaryButtonText="Mehr erfahren"
                 maxWidth={false}
               />
+
+              {/* Additional Button Combination */}
+              <div className="flex gap-4 justify-center w-full mt-8">
+                <Button variant="primary" size="xs">
+                  Die Pakete
+                </Button>
+                <Button variant="secondary" size="xs">
+                  Mehr Information
+                </Button>
+              </div>
             </div>
           </div>
         </section>
