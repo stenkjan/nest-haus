@@ -108,7 +108,7 @@ export class ContentPageTracker {
         sessionId: string,
         interaction: Omit<ContentInteraction, 'id' | 'timestamp'>
     ): Promise<void> {
-        const session = this.sessions.get(sessionId) || await SessionManager.getContentSession(sessionId);
+        const session = this.sessions.get(sessionId) || await SessionManager.getContentSession(sessionId) as ContentPageSession;
         if (!session) {
             console.warn(`⚠️ No session found for interaction tracking: ${sessionId}`);
             return;
@@ -169,7 +169,7 @@ export class ContentPageTracker {
         formId: string,
         action: 'start' | 'submit' | 'abandon',
         fieldName?: string,
-        value?: string
+        _value?: string
     ): Promise<void> {
         const interactionType = action === 'start' ? 'form_start' : 'form_submit';
 
@@ -245,7 +245,7 @@ export class ContentPageTracker {
 
         // Try to get from cache first
         const cached = await SessionManager.get(cacheKey);
-        if (cached) {
+        if (cached && typeof cached === 'string') {
             return JSON.parse(cached);
         }
 
@@ -287,8 +287,8 @@ export class ContentPageTracker {
      */
     private static async trackPageVisit(
         pageType: string,
-        deviceInfo: ContentPageSession['deviceInfo'],
-        source: ContentPageSession['source']
+        _deviceInfo: ContentPageSession['deviceInfo'],
+        _source: ContentPageSession['source']
     ): Promise<void> {
         const today = new Date().toISOString().split('T')[0];
         const visitKey = `page_visits:${pageType}:${today}`;
@@ -381,7 +381,7 @@ export class ContentPageTracker {
     private static async updateConversionAnalytics(
         sessionId: string,
         ctaId: string,
-        targetUrl: string
+        _targetUrl: string
     ): Promise<void> {
         const session = this.sessions.get(sessionId);
         if (!session) return;
@@ -412,7 +412,7 @@ export class ContentPageTracker {
 
     private static async calculatePageAnalytics(
         pageType: string,
-        timeRange: string
+        _timeRange: string
     ): Promise<ContentAnalytics> {
         // This would typically query the database
         // For now, return from Redis analytics

@@ -41,7 +41,6 @@ export default function VideoIntegrationExample({
           loop={true}
           muted={true}
           playsInline={true}
-          reversePlayback={true} // Smooth ping-pong effect
           onLoad={() => handleVideoLoad("hero")}
           onError={(error) => handleVideoError("hero", error)}
         />
@@ -119,7 +118,6 @@ export default function VideoIntegrationExample({
           loop={true}
           muted={true}
           playsInline={true}
-          reversePlayback={true}
           onLoad={() => handleVideoLoad("background")}
           onError={(error) => handleVideoError("background", error)}
         />

@@ -2,7 +2,6 @@
 
 import React from "react";
 import { ClientBlobVideo } from "@/components/images";
-import Link from "next/link";
 
 export default function VideoShowcase() {
   return (
@@ -15,25 +14,11 @@ export default function VideoShowcase() {
           Demonstrating video loading capabilities with blob storage integration
         </h2>
 
-        {/* Demo Links */}
+        {/* Demo Info */}
         <div className="text-center mb-16">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/showcase/videos/ping-pong-demo"
-              className="inline-block px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
-            >
-              🎥 New PingPongVideo Component
-            </Link>
-            <Link
-              href="/showcase/videos/reverse-test"
-              className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              🔧 Debug Reverse Playback Test
-            </Link>
-          </div>
-          <p className="text-sm text-gray-500 mt-2">
-            Try the new simplified ping-pong video component or debug reverse
-            playback functionality
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Demonstrating standard video playback capabilities with blob storage
+            integration and looping functionality
           </p>
         </div>
 
@@ -73,20 +58,17 @@ export default function VideoShowcase() {
             </div>
           </section>
 
-          {/* Reverse Playback Example */}
+          {/* Seamless Video Loop Example */}
           <section className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="p-6 border-b">
-              <h3 className="text-xl font-medium">
-                Reverse Playback (Ping-Pong Effect)
-              </h3>
+              <h3 className="text-xl font-medium">Seamless Video Loop</h3>
               <p className="text-gray-600 mt-2">
-                Advanced dual-video technique for seamless forward/reverse
-                looping
+                Standard video with loop functionality for continuous playback
               </p>
               <code className="block mt-2 text-sm bg-gray-100 p-2 rounded">
                 {`<ClientBlobVideo
   path="animation-loop"
-  reversePlayback={true}
+  loop={true}
   autoPlay={true}
   muted={true}
   playsInline={true}
@@ -97,14 +79,12 @@ export default function VideoShowcase() {
               <ClientBlobVideo
                 path="animation-loop"
                 className="w-full h-full object-cover"
-                reversePlayback={true}
+                loop={true}
                 autoPlay={true}
                 muted={true}
                 playsInline={true}
-                onLoad={() => console.log("🎥 Reverse playback video loaded")}
-                onError={(error) =>
-                  console.error("❌ Reverse playback error:", error)
-                }
+                onLoad={() => console.log("🎥 Video loaded")}
+                onError={(error) => console.error("❌ Video error:", error)}
               />
             </div>
           </section>
@@ -202,8 +182,8 @@ export default function VideoShowcase() {
                 with performance monitoring
               </li>
               <li>
-                ✅ <strong>Reverse Playback:</strong> Unique ping-pong effect
-                using dual video elements
+                ✅ <strong>Loop Playback:</strong> Seamless video looping for
+                continuous content
               </li>
               <li>
                 ✅ <strong>Error Handling:</strong> Graceful degradation with

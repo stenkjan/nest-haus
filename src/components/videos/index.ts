@@ -1,1 +1,1 @@
-export { default as PingPongVideo } from "./PingPongVideo"; 
+export { default as LoopingVideo } from "./LoopingVideo"; 

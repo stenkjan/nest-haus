@@ -67,7 +67,7 @@ export class SessionManager {
    */
   static async createSession(sessionData: Partial<UserSession>): Promise<string> {
     const sessionId = `session:${Date.now()}:${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const session: UserSession = {
       sessionId,
       ipAddress: sessionData.ipAddress || 'unknown',
@@ -105,7 +105,7 @@ export class SessionManager {
   static async getSession(sessionId: string): Promise<UserSession | null> {
     const sessionData = await redis.get(sessionId);
     if (!sessionData) return null;
-    
+
     // Upstash Redis may return data already parsed, check if it's a string or object
     if (typeof sessionData === 'string') {
       return JSON.parse(sessionData);
@@ -123,14 +123,14 @@ export class SessionManager {
     if (session) {
       session.clickHistory.push(clickEvent);
       session.lastActivity = Date.now();
-      
+
       // Keep only last 100 clicks to manage memory
       if (session.clickHistory.length > 100) {
         session.clickHistory = session.clickHistory.slice(-100);
       }
-      
+
       await redis.setex(sessionId, 86400, session);
-      
+
       // Also store click as separate entry for analytics
       const clickKey = `click:${sessionId}:${Date.now()}`;
       await redis.setex(clickKey, 86400, clickEvent);
@@ -145,7 +145,7 @@ export class SessionManager {
     if (session) {
       // Update session with final state
       session.currentConfiguration = finalConfiguration;
-      
+
       // Store final session data in a separate key for PostgreSQL sync
       const finalSessionKey = `final:${sessionId}`;
       await redis.setex(finalSessionKey, 604800, session); // 7 days
@@ -166,7 +166,7 @@ export class SessionManager {
       keys.map(async (key) => {
         const data = await redis.get(key);
         if (!data) return null;
-        
+
         // Handle both string and object responses from Upstash
         if (typeof data === 'string') {
           return JSON.parse(data);
@@ -177,14 +177,55 @@ export class SessionManager {
     );
 
     const validSessions = sessions.filter(Boolean) as UserSession[];
-    
+
     return {
       totalSessions: validSessions.length,
       activeSessions: validSessions.filter(s => Date.now() - s.lastActivity < 300000).length, // Active in last 5 min
-      averageSessionDuration: validSessions.length > 0 
+      averageSessionDuration: validSessions.length > 0
         ? validSessions.reduce((acc, s) => acc + (s.lastActivity - s.startTime), 0) / validSessions.length
         : 0,
     };
+  }
+
+  // Content session management
+  static async setContentSession(sessionId: string, session: unknown): Promise<void> {
+    const contentKey = `content:${sessionId}`;
+    await redis.setex(contentKey, 86400, session); // 24 hour expiration
+  }
+
+  static async getContentSession(sessionId: string): Promise<unknown> {
+    const contentKey = `content:${sessionId}`;
+    return await redis.get(contentKey);
+  }
+
+  static async updateContentSession(sessionId: string, session: unknown): Promise<void> {
+    const contentKey = `content:${sessionId}`;
+    await redis.setex(contentKey, 86400, session); // 24 hour expiration
+  }
+
+  // Redis helper methods for analytics
+  static async get(key: string): Promise<unknown> {
+    return await redis.get(key);
+  }
+
+  static async setex(key: string, expiration: number, value: unknown): Promise<void> {
+    await redis.setex(key, expiration, value);
+  }
+
+  static async incr(key: string): Promise<number> {
+    return await redis.incr(key);
+  }
+
+  static async expire(key: string, seconds: number): Promise<void> {
+    await redis.expire(key, seconds);
+  }
+
+  static async hgetall(key: string): Promise<Record<string, string> | null> {
+    return await redis.hgetall(key);
+  }
+
+  static async hmset(key: string, data: Record<string, string | number>): Promise<void> {
+    await redis.hmset(key, data);
   }
 }
 

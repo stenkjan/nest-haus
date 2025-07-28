@@ -91,12 +91,10 @@ export default function DeinPartClient() {
               textBox1="Nach der Lieferung deines NEST Hauses ist die Grundlage für dein neues Zuhause geschaffen, im wahrsten Sinne des Wortes. Damit du es ganz an deine persönlichen Vorstellungen anpassen kannst, übernimmst du den letzten Feinschliff selbst. Dazu gehören der Aufbau der Innenwände sowie die Verlegung von Elektrik und Sanitärtechnik. Das System ist exakt dafür vorbereitet und macht jeden Schritt klar."
               textBox2="Dank vorkonzipierter Wandpaneele wird das Einziehen von Leitungen besonders einfach. So behältst du maximale Freiheit in der Gestaltung, kannst regionale Fachbetriebe einbinden oder selbst aktiv werden. Alles richtet sich nach deinem Tempo und deinem Budget. Dieses flexible Ausbaukonzept spart Kosten, stärkt die Eigenverantwortung und macht dein NEST Haus zu einem Ort, der wirklich dir gehört."
               maxWidth={false}
-              video={IMAGES.function.nestHausModulSchema}
+              video={IMAGES.function.nestHausModulSchemaIntro}
               autoPlay={true}
-              loop={false}
               muted={true}
               controls={false}
-              reversePlayback={true}
             />
           </div>
         </section>
@@ -191,7 +189,6 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               loop={true}
               muted={true}
               controls={false}
-              reversePlayback={false}
             />
           </div>
         </section>

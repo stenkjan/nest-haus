@@ -14,7 +14,6 @@ interface VideoGalleryProps {
   loop?: boolean;
   muted?: boolean;
   controls?: boolean;
-  reversePlayback?: boolean;
 }
 
 const VideoGallery: React.FC<VideoGalleryProps> = ({
@@ -27,7 +26,6 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({
   loop = true,
   muted = true,
   controls = false,
-  reversePlayback = false,
 }) => {
   const bgColorClass = {
     white: "bg-white",
@@ -77,7 +75,6 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({
               playsInline={true}
               controls={controls}
               enableCache={true}
-              reversePlayback={reversePlayback}
               fallbackSrc={videoPath}
             />
             {/* Accessibility description for screen readers */}
