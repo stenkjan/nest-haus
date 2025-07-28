@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b75656b78d42d93d26c60a1e71b1c0888314c033] - Mon Jul 28 14:36:52 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance video components with background styling  - Wrapped video elements in a div with a black background for improved visual consistency. - Updated class names to ensure a uniform background across video components in  and . - Maintained existing functionality while enhancing the user interface for better aesthetics.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ClientBlobVideo.tsx
+- src/components/videos/LoopingVideo.tsx
+
+
+---
+
 ## [b3b0302394b0da484d60ed64fbdffd1c3d4e6766] - Mon Jul 28 14:27:41 2025 +0200
 
 **Author**: stenkjan
