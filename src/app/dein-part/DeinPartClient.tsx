@@ -7,6 +7,7 @@ import {
   FullWidthVideoGrid,
   FullWidthTextGrid,
   ImageWithFourTextGrid,
+  ThreeByOneGrid,
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
@@ -43,6 +44,16 @@ const sections = [
     id: "video-gallery",
     title: "Deine Gestaltungsmöglichkeiten",
     slug: "gestaltungsmoeglichkeiten",
+  },
+  {
+    id: "wohnflaeche-erweitern",
+    title: "Wohnfläche erweitern?",
+    slug: "wohnflaeche-erweitern",
+  },
+  {
+    id: "flexibilitaet",
+    title: "Ob Decke einziehen, oder Haus erweitern.",
+    slug: "flexibilitaet",
   },
   {
     id: "call-to-action",
@@ -180,6 +191,42 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               textCell3="Der Technikbereich im Gebäude sollte sich möglichst nahe beim Durchbruch zu den Gebäudeanschluss befinden. Hier werden die Schnittstellen vom öffentlichen Anschluss an Strom, Wasser und Kanal weiter in das Gebäude verteilt."
               textCellTitle4="Der Gebäudeanschluss"
               textCell4="Im Gebäude müssen sich zumindest zwei voneinander getrennte Durchbrüche zu den Versorgungsleitungen befinden. Der Stromanschluss ist immer separat mit einem eigenen Anschlussschacht auszuführen."
+              maxWidth={false}
+            />
+          </div>
+        </section>
+
+        {/* Wohnfläche erweitern Section */}
+        <section id="wohnflaeche-erweitern" className="w-full py-16 bg-black">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <ThreeByOneGrid
+              title="Wohnfläche erweitern?"
+              subtitle="Kein Problem."
+              text="Mehr Raum, wenn du ihn brauchst. Dein Nest Haus wächst mit. Dank durch-dachter Konstruktion kannst du jederzeit eine Zwischendecke einziehen und dein Zuhause ganz einfach in ein zwei-geschoßiges Raumwunder verwandeln."
+              image1={IMAGES.function.nestHausPlattenFundament}
+              image2={IMAGES.function.nestHausFundamentStreifenfundament}
+              image1Description="NEST-Haus Planung Innenausbau mit Zwischendecke - Leichtbau Modul"
+              image2Description="NEST-Haus Fundament Streifenfundament für Zwischendecke - Leichtbau Modul"
+              textPosition="left"
+              backgroundColor="black"
+              maxWidth={false}
+            />
+          </div>
+        </section>
+
+        {/* Flexibilität Section */}
+        <section id="flexibilitaet" className="w-full py-16 bg-black">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <ThreeByOneGrid
+              title="Ob Decke einziehen, oder Haus erweitern."
+              subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
+              text="Durch intelligente Standardisierung garantieren wir höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl. Dein Zuhause. Dein Stil. Deine Freiheit. Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles."
+              image1={IMAGES.function.nestHausModulSeiteKonzept}
+              image2={IMAGES.function.nestHausModulSeiteKonzept}
+              image1Description="NEST-Haus Modul Ansicht Seite - Holz Schema Konzept"
+              image2Description="NEST-Haus Modul Ansicht Seite - Holz Schema Konzept"
+              textPosition="right"
+              backgroundColor="black"
               maxWidth={false}
             />
           </div>
