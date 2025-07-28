@@ -223,7 +223,7 @@ export default function ImageWithFourTextGrid({
                     transition={{ delay: 0.0, duration: 0.4 }}
                   >
                     <h3
-                      className={`text-base md:text-lg font-semibold ${textColorClasses} text-left`}
+                      className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                     >
                       {textCellTitle1}
                     </h3>
@@ -245,7 +245,7 @@ export default function ImageWithFourTextGrid({
                     transition={{ delay: 0.1, duration: 0.4 }}
                   >
                     <h3
-                      className={`text-base md:text-lg font-semibold ${textColorClasses} text-left`}
+                      className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                     >
                       {textCellTitle2}
                     </h3>
@@ -267,7 +267,7 @@ export default function ImageWithFourTextGrid({
                     transition={{ delay: 0.2, duration: 0.4 }}
                   >
                     <h3
-                      className={`text-base md:text-lg font-semibold ${textColorClasses} text-left`}
+                      className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                     >
                       {textCellTitle3}
                     </h3>
@@ -289,7 +289,7 @@ export default function ImageWithFourTextGrid({
                     transition={{ delay: 0.3, duration: 0.4 }}
                   >
                     <h3
-                      className={`text-base md:text-lg font-semibold ${textColorClasses} text-left`}
+                      className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                     >
                       {textCellTitle4}
                     </h3>
@@ -316,7 +316,7 @@ export default function ImageWithFourTextGrid({
                 transition={{ duration: 0.6 }}
               >
                 <h3
-                  className={`text-lg md:text-xl font-semibold ${textColorClasses} text-left`}
+                  className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                 >
                   {textCellTitle1}
                 </h3>
@@ -336,7 +336,7 @@ export default function ImageWithFourTextGrid({
                 transition={{ delay: 0.2, duration: 0.6 }}
               >
                 <h3
-                  className={`text-lg md:text-xl font-semibold ${textColorClasses} text-left`}
+                  className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                 >
                   {textCellTitle2}
                 </h3>
@@ -356,7 +356,7 @@ export default function ImageWithFourTextGrid({
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
                 <h3
-                  className={`text-lg md:text-xl font-semibold ${textColorClasses} text-left`}
+                  className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                 >
                   {textCellTitle3}
                 </h3>
@@ -376,7 +376,7 @@ export default function ImageWithFourTextGrid({
                 transition={{ delay: 0.6, duration: 0.6 }}
               >
                 <h3
-                  className={`text-lg md:text-xl font-semibold ${textColorClasses} text-left`}
+                  className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-semibold ${textColorClasses} text-left`}
                 >
                   {textCellTitle4}
                 </h3>
