@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { ClientBlobVideo } from "@/components/images";
+import { LoopingVideo } from "@/components/videos";
 import { IMAGES } from "@/constants/images";
 
 interface FullWidthVideoGridProps {
@@ -14,25 +14,21 @@ interface FullWidthVideoGridProps {
   textBox2?: string;
   backgroundColor?: "white" | "black";
   autoPlay?: boolean;
-  loop?: boolean;
   muted?: boolean;
   controls?: boolean;
-  reversePlayback?: boolean;
 }
 
 export default function FullWidthVideoGrid({
   title = "Full Width Video Grid",
   subtitle = "Large video with two text boxes below",
   maxWidth = true,
-  video = IMAGES.function.nestHausModulSchema,
+  video = IMAGES.function.nestHausModulSchemaIntro,
   textBox1 = "Video content with descriptive text below explaining the key concepts and features of the NEST-Haus system.",
   textBox2 = "Additional information about the video content and how it relates to the overall NEST-Haus experience and philosophy.",
   backgroundColor = "black",
   autoPlay = true,
-  loop = false,
   muted = true,
   controls = false,
-  reversePlayback = true,
 }: FullWidthVideoGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -123,17 +119,15 @@ export default function FullWidthVideoGrid({
         >
           <div className="flex justify-center">
             <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
-              <ClientBlobVideo
-                path={video}
+              <LoopingVideo
+                introPath={video}
+                outroPath={IMAGES.function.nestHausModulSchemaOutro}
                 className="w-full h-full object-cover"
                 autoPlay={autoPlay}
-                loop={loop}
                 muted={muted}
                 playsInline={true}
                 controls={controls}
                 enableCache={true}
-                reversePlayback={reversePlayback}
-                fallbackSrc={video}
               />
               {/* Accessibility description for screen readers */}
               <span className="sr-only">

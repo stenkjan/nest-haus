@@ -4,6 +4,53 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b75656b78d42d93d26c60a1e71b1c0888314c033] - Mon Jul 28 14:36:52 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance video components with background styling  - Wrapped video elements in a div with a black background for improved visual consistency. - Updated class names to ensure a uniform background across video components in  and . - Maintained existing functionality while enhancing the user interface for better aesthetics.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ClientBlobVideo.tsx
+- src/components/videos/LoopingVideo.tsx
+
+
+---
+
+## [b3b0302394b0da484d60ed64fbdffd1c3d4e6766] - Mon Jul 28 14:27:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update video components and remove ping-pong system  - Replaced  with  in multiple components for improved video playback functionality. - Removed the deprecated  component and associated hooks to streamline video handling. - Updated documentation to reflect changes in video playback features, emphasizing standard looping instead of reverse playback. - Adjusted video paths in  constants for consistency across components.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/showcase/videos/VideoIntegrationExample.tsx
+- src/app/showcase/videos/VideoReversePlaybackTest.tsx
+- src/app/showcase/videos/page.tsx
+- src/app/showcase/videos/ping-pong-demo/page.tsx
+- src/app/showcase/videos/reverse-test/page.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/grids/FullWidthVideoGrid.tsx
+- src/components/grids/VideoGallery.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/videos/LoopingVideo.tsx
+- src/components/videos/PingPongVideo.tsx
+- src/components/videos/index.ts
+- src/hooks/index.ts
+- src/hooks/usePingPongVideo.ts
+
+
+#### 📚 Documentation Changes
+- docs/IMAGE_OPTIMIZATION_GUIDE.md
+- docs/PING_PONG_VIDEO_SYSTEM.md
+
+
+---
+
 ## [3f13c868bba452376a125ffe5fd545ccf27a7517] - Mon Jul 28 13:32:02 2025 +0200
 
 **Author**: stenkjan

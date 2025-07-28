@@ -382,7 +382,7 @@ ImageManager.getPreviewImage(config, "exterior"); // Test resolution
 
 ### **ClientBlobVideo Component**
 
-The `ClientBlobVideo` component extends our blob storage architecture to support video content with advanced features like reverse playback and seamless looping. 
+The `ClientBlobVideo` component extends our blob storage architecture to support video content with advanced features like reverse playback and seamless looping.
 
 **Production Implementation**: Currently integrated in the `/unser-part` page's "Dein Nest System" section, demonstrating modular architecture concepts through video content.
 
@@ -405,16 +405,15 @@ import { ClientBlobVideo } from "@/components/images";
 />;
 ```
 
-#### **Advanced Reverse Playback**
+#### **Standard Loop Playback**
 
 ```tsx
-// Ping-pong effect for seamless animation loops without controls
+// Standard video looping for continuous content
 <ClientBlobVideo
   path="animation-loop"
   className="w-full h-auto"
-  reversePlayback={true}
   autoPlay={true}
-  loop={false}
+  loop={true}
   muted={true}
   playsInline={true}
   controls={false}
@@ -430,11 +429,10 @@ import { ClientBlobVideo } from "@/components/images";
     path="background-animation"
     className="w-full h-full object-cover"
     autoPlay={true}
-    loop={false}
+    loop={true}
     muted={true}
     playsInline={true}
     controls={false}
-    reversePlayback={true}
   />
   <span className="sr-only">Continuous looping background animation</span>
 </div>
@@ -468,17 +466,18 @@ import { ClientBlobVideo } from "@/components/images";
     path={IMAGES.function.nestHausModulSchema}
     className="w-full h-full object-cover"
     autoPlay={true}
-    loop={false}
+    loop={true}
     muted={true}
     playsInline={true}
     controls={false}
     enableCache={true}
-    reversePlayback={true}
     fallbackSrc={IMAGES.function.nestHausModulSchema}
   />
   {/* Accessibility description for screen readers */}
   <span className="sr-only">
-    Video demonstration of NEST-Haus modular construction system showing architectural components and assembly process in a continuous forward and reverse loop animation
+    Video demonstration of NEST-Haus modular construction system showing
+    architectural components and assembly process in a continuous forward and
+    reverse loop animation
   </span>
 </div>
 ```
@@ -489,15 +488,16 @@ import { ClientBlobVideo } from "@/components/images";
 
 <ClientBlobVideo
   path="video-path"
-  onLoad={() => console.log('🎥 Video loaded successfully')}
-  onError={(error) => console.error('🎥 Video error:', error)}
+  onLoad={() => console.log("🎥 Video loaded successfully")}
+  onError={(error) => console.error("🎥 Video error:", error)}
   // ... other props
-/>
+/>;
 ```
 
 **Implementation Features:**
+
 - ✅ **Graceful Fallback**: Uses existing image as fallback if video fails to load
-- ✅ **Seamless Loop**: Ping-pong reverse playback creates endless smooth animation
+- ✅ **Seamless Loop**: Standard video looping creates endless smooth animation
 - ✅ **Clean UI**: No controls (progress bar, buttons) for distraction-free viewing
 - ✅ **Mobile Optimized**: `playsInline` and `muted` for mobile compatibility
 - ✅ **Performance**: Caching enabled with error handling
@@ -509,7 +509,7 @@ import { ClientBlobVideo } from "@/components/images";
 
 - ✅ **Blob Storage Integration**: Uses existing `/api/images` endpoint
 - ✅ **Advanced Caching**: Session-based URL caching with performance monitoring
-- ✅ **Reverse Playback**: Dual video strategy for ping-pong effects
+- ✅ **Loop Playback**: Standard video looping for continuous content
 - ✅ **Error Handling**: Graceful degradation with fallback options
 - ✅ **Mobile Optimized**: Support for `playsInline` and autoplay restrictions
 - ✅ **TypeScript**: Fully typed interface

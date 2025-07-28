@@ -40,7 +40,8 @@ export const IMAGES = {
     // Function/Process images
     function: {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
-        nestHausModulSchema: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-intro-animation',
+        nestHausModulSchemaIntro: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-intro-animation',
+        nestHausModulSchemaOutro: '17-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-abschluss-animation',
         nestHausModulAnsicht: '20-NEST-Haus-Modul-Ansicht-Stirnseite-Holz-Schema-Konzept',
         nestHausModulKonzept: '21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept',
         nestHausModulLiniengrafik: '22-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept',

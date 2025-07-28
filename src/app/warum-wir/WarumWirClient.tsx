@@ -336,7 +336,7 @@ export default function WarumWirClient() {
 
               <div className="relative" style={{ aspectRatio: "4/3" }}>
                 <HybridBlobImage
-                  path={IMAGES.function.nestHausModulSchema}
+                  path={IMAGES.function.nestHausModulSchemaIntro}
                   alt="NEST-Haus Unterschiede - Einzigartiger Ansatz im modularen Bauen"
                   strategy="auto"
                   isAboveFold={false}
@@ -439,7 +439,6 @@ export default function WarumWirClient() {
             loop={true}
             muted={true}
             controls={false}
-            reversePlayback={false}
           />
         </section>
 

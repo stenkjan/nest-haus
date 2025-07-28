@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import { usePingPongVideo } from "@/hooks/usePingPongVideo";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 
 interface ClientBlobVideoProps {
   path: string; // Blob path or direct URL
@@ -13,8 +12,6 @@ interface ClientBlobVideoProps {
   controls?: boolean; // Show/hide controls
   onLoad?: () => void; // Success callback
   onError?: (error: Error) => void; // Error callback
-  reversePlayback?: boolean; // Enable ping-pong effect
-  reverseSpeedMultiplier?: number; // How much slower reverse should be (default: 3x slower)
   quality?: number; // Video quality (not used but for consistency)
   priority?: boolean; // For consistency with image components
   fallbackSrc?: string; // Fallback video URL
@@ -49,23 +46,22 @@ class VideoCache {
         `nest_video_${path}`,
         JSON.stringify({ url, timestamp: Date.now() })
       );
-    } catch {
-      // Silently handle storage errors
+    } catch (error) {
+      console.warn("⚠️ Failed to store video URL in sessionStorage:", error);
     }
   }
 
-  static async fetch(path: string): Promise<string> {
+  static async getOrFetch(path: string): Promise<string> {
     // Check cache first
     const cached = this.get(path);
     if (cached) return cached;
 
     // Check if already loading
-    const pending = this.pending.get(path);
-    if (pending) return pending;
+    const existingPromise = this.pending.get(path);
+    if (existingPromise) return existingPromise;
 
     // Start loading
     this.loadingStates.set(path, true);
-
     const promise = this.fetchVideoUrl(path);
     this.pending.set(path, promise);
 
@@ -82,98 +78,50 @@ class VideoCache {
   }
 
   private static async fetchVideoUrl(path: string): Promise<string> {
-    // Direct blob URL - use immediately
-    if (path.includes("blob.vercel-storage.com")) {
-      return path;
-    }
-
-    const maxRetries = 3;
-    const baseTimeout = 10000; // Start with 10 seconds
-
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      const controller = new AbortController();
-      const timeoutMs = baseTimeout * attempt; // Progressive timeout: 10s, 20s, 30s
-      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
-      try {
-        if (process.env.NODE_ENV === "development" && attempt > 1) {
-          console.log(
-            `🔄 Retry attempt ${attempt}/${maxRetries} for video: ${path} (timeout: ${timeoutMs}ms)`
-          );
-        }
-
-        // API resolution for path-based access
-        const response = await fetch(
-          `/api/images?path=${encodeURIComponent(path)}`,
-          { signal: controller.signal }
-        );
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch video URL: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (!data.url) {
-          throw new Error("No video URL returned");
-        }
-
-        if (process.env.NODE_ENV === "development" && attempt > 1) {
-          console.log(
-            `✅ Successfully loaded video: ${path} -> ${data.url.substring(
-              0,
-              50
-            )}... (attempt ${attempt})`
-          );
-        }
-
-        return data.url;
-      } catch (error) {
-        clearTimeout(timeoutId);
-
-        const isTimeoutError =
-          error instanceof Error && error.name === "AbortError";
-        const isNetworkError =
-          error instanceof TypeError && error.message.includes("fetch");
-
-        // If this is the last attempt or a non-retryable error, throw
-        if (attempt === maxRetries || (!isTimeoutError && !isNetworkError)) {
-          if (isTimeoutError) {
-            if (process.env.NODE_ENV === "development") {
-              console.error(
-                `⏰ Video request timeout after ${timeoutMs}ms: ${path}`
-              );
-            }
-            throw new Error(
-              `Video request timeout after ${maxRetries} attempts (max ${timeoutMs}ms)`
-            );
-          }
-
-          if (process.env.NODE_ENV === "development") {
-            console.error(
-              `❌ Failed to load video after ${attempt} attempts: ${path}`,
-              error
-            );
-          }
-          throw error;
-        }
-
-        // Wait before retry with exponential backoff
-        const backoffMs = 1000 * attempt; // 1s, 2s, 3s
-        if (process.env.NODE_ENV === "development") {
-          console.warn(
-            `⚠️ Video attempt ${attempt} failed for ${path}, retrying in ${backoffMs}ms...`,
-            error instanceof Error ? error.message : error
-          );
-        }
-        await new Promise((resolve) => setTimeout(resolve, backoffMs));
+    try {
+      const response = await fetch(
+        `/api/images?path=${encodeURIComponent(path)}`
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to resolve video URL: ${response.statusText}`);
       }
-    }
 
-    // This should never be reached due to the throw in the loop
-    throw new Error(
-      `Failed to load video after ${maxRetries} attempts: ${path}`
-    );
+      const data = await response.json();
+      return data.url || data.fallback;
+    } catch (error) {
+      console.error(`❌ Failed to fetch video URL for ${path}:`, error);
+      throw error;
+    }
+  }
+
+  static loadFromSession(path: string): boolean {
+    try {
+      const stored = sessionStorage.getItem(`nest_video_${path}`);
+      if (stored) {
+        const { url, timestamp } = JSON.parse(stored);
+        const isExpired = Date.now() - timestamp > 3600000; // 1 hour TTL
+
+        if (!isExpired) {
+          this.cache.set(path, url);
+          return true;
+        } else {
+          sessionStorage.removeItem(`nest_video_${path}`);
+        }
+      }
+    } catch (error) {
+      console.warn("⚠️ Failed to load video URL from sessionStorage:", error);
+    }
+    return false;
+  }
+
+  static preload(paths: string[]): void {
+    paths.forEach((path) => {
+      if (!this.get(path) && !this.isLoading(path)) {
+        this.getOrFetch(path).catch(() => {
+          // Silently handle preload errors
+        });
+      }
+    });
   }
 
   static clear(): void {
@@ -182,12 +130,12 @@ class VideoCache {
     this.loadingStates.clear();
   }
 
-  static preload(path: string): void {
-    if (!this.get(path) && !this.pending.get(path)) {
-      this.fetch(path).catch(() => {
-        // Silently handle preload errors
-      });
-    }
+  static getStats(): { cached: number; loading: number; pending: number } {
+    return {
+      cached: this.cache.size,
+      loading: Array.from(this.loadingStates.values()).filter(Boolean).length,
+      pending: this.pending.size,
+    };
   }
 }
 
@@ -201,8 +149,6 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   controls = false,
   onLoad,
   onError,
-  reversePlayback = false,
-  reverseSpeedMultiplier = 3, // Default: 3x slower than forward
   fallbackSrc,
   enableCache = true,
 }) => {
@@ -211,163 +157,151 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  // Use the ping-pong video hook for reverse playback functionality
-  const {
-    isPlayingReverse,
-    handleVideoEnded: pingPongHandleVideoEnded,
-    handleLoadedMetadata: pingPongHandleLoadedMetadata,
-    videoRef,
-  } = usePingPongVideo({
-    reversePlayback,
-    reverseSpeedMultiplier,
-  });
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Load video URL
-  const loadVideo = useCallback(async () => {
+  // Resolve video URL from blob storage or use direct path
+  const resolveVideoUrl = useCallback(async (): Promise<void> => {
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      setError(null);
-
-      let url: string;
-
-      if (enableCache) {
-        url = await VideoCache.fetch(path);
-      } else {
-        // Direct fetch without caching
-        if (path.includes("blob.vercel-storage.com")) {
-          url = path;
-        } else {
-          const response = await fetch(
-            `/api/images?path=${encodeURIComponent(path)}`
-          );
-          if (!response.ok) throw new Error("Failed to fetch video URL");
-          const data = await response.json();
-          if (!data.url) throw new Error("No video URL returned");
-          url = data.url;
+      // Try to load from session cache first
+      if (enableCache && VideoCache.loadFromSession(path)) {
+        const cachedUrl = VideoCache.get(path);
+        if (cachedUrl) {
+          setVideoUrl(cachedUrl);
+          setLoading(false);
+          return;
         }
       }
 
+      // Fetch URL from API
+      const url = await VideoCache.getOrFetch(path);
       setVideoUrl(url);
+      setLoading(false);
 
-      if (onLoad) {
-        onLoad();
+      if (process.env.NODE_ENV === "development") {
+        console.log(`🎥 Video URL resolved for ${path}:`, url);
       }
     } catch (err) {
-      const error =
-        err instanceof Error ? err : new Error("Failed to load video");
-      setError(error);
+      console.error(`❌ Failed to resolve video URL for ${path}:`, err);
 
-      // Try fallback if available
+      // Use fallback if available
       if (fallbackSrc) {
         setVideoUrl(fallbackSrc);
-      }
+        setLoading(false);
+        console.log(`🔄 Using fallback video for ${path}: ${fallbackSrc}`);
+      } else {
+        const error = new Error(`Failed to resolve video URL for ${path}`);
+        setError(error);
+        setLoading(false);
 
+        if (onError) {
+          onError(error);
+        }
+      }
+    }
+  }, [path, fallbackSrc, enableCache, onError]);
+
+  // Load video URL on mount and path change
+  useEffect(() => {
+    resolveVideoUrl();
+  }, [resolveVideoUrl]);
+
+  // Handle successful video load
+  const handleVideoLoad = useCallback(() => {
+    if (onLoad) {
+      onLoad();
+    }
+  }, [onLoad]);
+
+  // Handle video errors
+  const handleVideoError = useCallback(
+    (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+      const videoError = e.currentTarget.error;
+      const error = new Error(
+        `Video playback failed: ${videoError?.message || "Unknown error"}`
+      );
+
+      console.error("🎥 Video error:", error);
+
+      setError(error);
       if (onError) {
         onError(error);
       }
-
-      console.error("🎥 Error loading video:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [path, enableCache, fallbackSrc, onLoad, onError]);
-
-  // Handle video end - delegate to ping-pong hook or handle standard loop
-  const handleVideoEnded = useCallback(() => {
-    const video = videoRef.current;
-
-    if (reversePlayback) {
-      // Delegate to ping-pong hook for reverse playback
-      pingPongHandleVideoEnded();
-    } else if (loop && video) {
-      // Standard loop behavior when reversePlayback is disabled
-
-      video.currentTime = 0;
-      video.play().catch(() => {
-        // Silently handle playback errors
-      });
-    }
-  }, [reversePlayback, loop, pingPongHandleVideoEnded, videoRef]);
-
-  // Handle video metadata loaded - delegate to ping-pong hook
-  const handleLoadedMetadata = useCallback(() => {
-    pingPongHandleLoadedMetadata();
-  }, [pingPongHandleLoadedMetadata]);
-
-  // Note: Event listeners are now handled via React props (onEnded, onLoadedMetadata)
-  // This is more reliable than addEventListener in React components
-
-  // Load video on mount and path change
-  useEffect(() => {
-    loadVideo();
-  }, [loadVideo]);
+    },
+    [onError]
+  );
 
   // Auto-play setup
   useEffect(() => {
     const video = videoRef.current;
+    if (!video || !autoPlay || !videoUrl || loading) return;
 
-    if (!video || !autoPlay || !videoUrl || loading) {
-      return;
-    }
+    const startPlayback = () => {
+      video
+        .play()
+        .then(() => {
+          if (onLoad) onLoad();
+        })
+        .catch((error) => {
+          console.warn("⚠️ Video autoplay failed:", error);
+          if (onError) onError(error);
+        });
+    };
 
     // Small delay to ensure video is ready
-    const timeoutId = setTimeout(() => {
-      video.play().catch(() => {
-        // Silently handle autoplay errors
-      });
-    }, 100);
-
+    const timeoutId = setTimeout(startPlayback, 100);
     return () => clearTimeout(timeoutId);
-  }, [autoPlay, videoUrl, loading, reversePlayback, videoRef]);
+  }, [autoPlay, videoUrl, loading, onLoad, onError]);
 
-  // Note: Animation frame cleanup and debug logging are now handled by the usePingPongVideo hook
-
-  // Show loading state
+  // Loading state
   if (loading) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-100 ${className}`}
-        style={{ minHeight: "200px" }}
+        className={`${className} flex items-center justify-center bg-gray-100`}
       >
-        <div className="text-gray-500 text-sm">Loading video...</div>
+        <div className="text-gray-500">Loading video...</div>
       </div>
     );
   }
 
-  // Show error state
-  if (error && !videoUrl) {
+  // Error state
+  if (error) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-100 ${className}`}
-        style={{ minHeight: "200px" }}
+        className={`${className} flex items-center justify-center bg-red-50`}
       >
-        <div className="text-gray-500 text-sm">Failed to load video</div>
+        <div className="text-red-500 text-center">
+          <div className="font-medium">Video Error</div>
+          <div className="text-sm">{error.message}</div>
+        </div>
       </div>
     );
   }
 
-  // Render video with ping-pong support
+  // Render video
   return (
-    <video
-      ref={videoRef}
-      src={videoUrl}
-      className={className}
-      autoPlay={false} // Controlled via useEffect for better control
-      loop={reversePlayback ? false : loop} // Disable native loop for ping-pong effect
-      muted={muted}
-      playsInline={playsInline}
-      controls={controls}
-      style={{
-        // Only disable pointer events during reverse playback to prevent user interruption
-        pointerEvents: isPlayingReverse && reversePlayback ? "none" : "auto",
-      }}
-      onEnded={handleVideoEnded}
-      onLoadedMetadata={handleLoadedMetadata}
-    />
+    <div className="relative w-full h-full bg-black">
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        className={`${className} bg-black`}
+        autoPlay={false} // Controlled via useEffect for better control
+        loop={loop}
+        muted={muted}
+        playsInline={playsInline}
+        controls={controls}
+        onLoadedData={handleVideoLoad}
+        onError={handleVideoError}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
+    </div>
   );
 };
-
-// Export cache for external management if needed
-export { VideoCache };
 
 export default ClientBlobVideo;

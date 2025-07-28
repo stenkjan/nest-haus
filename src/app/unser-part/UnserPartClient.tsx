@@ -9,8 +9,9 @@ import {
   ThreeByOneGrid,
   ImageGallery,
 } from "@/components/grids";
-import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
+import { HybridBlobImage } from "@/components/images";
 import { ContentCardsGlass } from "@/components/cards";
+import { LoopingVideo } from "@/components/videos";
 import { IMAGES } from "@/constants/images";
 
 // Define sections with proper structure for unser-part
@@ -196,17 +197,15 @@ export default function UnserPartClient() {
 
             <div className="flex justify-center">
               <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
-                <ClientBlobVideo
-                  path={IMAGES.function.nestHausModulSchema}
+                <LoopingVideo
+                  introPath={IMAGES.function.nestHausModulSchemaIntro}
+                  outroPath={IMAGES.function.nestHausModulSchemaOutro}
                   className="w-full h-full object-cover"
                   autoPlay={true}
-                  loop={false}
                   muted={true}
                   playsInline={true}
                   controls={false}
                   enableCache={true}
-                  reversePlayback={true}
-                  fallbackSrc={IMAGES.function.nestHausModulSchema}
                 />
                 {/* Accessibility description for screen readers */}
                 <span className="sr-only">
@@ -350,17 +349,15 @@ export default function UnserPartClient() {
 
             <div className="flex justify-center">
               <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
-                <ClientBlobVideo
-                  path={IMAGES.function.nestHausModulSchema}
+                <LoopingVideo
+                  introPath={IMAGES.function.nestHausModulSchemaIntro}
+                  outroPath={IMAGES.function.nestHausModulSchemaOutro}
                   className="w-full h-full object-cover"
                   autoPlay={true}
-                  loop={false}
                   muted={true}
                   playsInline={true}
                   controls={false}
                   enableCache={true}
-                  reversePlayback={true}
-                  fallbackSrc={IMAGES.function.nestHausModulSchema}
                 />
                 {/* Accessibility description for screen readers */}
                 <span className="sr-only">

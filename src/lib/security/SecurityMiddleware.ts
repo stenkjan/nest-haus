@@ -11,9 +11,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 import DOMPurify from 'isomorphic-dompurify';
-import { z } from 'zod';
 
 // Rate limiting storage (in-memory for demo, use Redis in production)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
@@ -236,7 +234,7 @@ export class SecurityMiddleware {
                 if (!config.allowedOrigins.includes(refererOrigin)) {
                     return { valid: false, reason: 'Invalid referer' };
                 }
-            } catch (error) {
+            } catch {
                 return { valid: false, reason: 'Invalid referer format' };
             }
         } else {
@@ -273,7 +271,7 @@ export class SecurityMiddleware {
             });
 
             return sanitizedRequest;
-        } catch (error) {
+        } catch {
             // If not valid JSON, return original request
             return req;
         }
@@ -282,7 +280,7 @@ export class SecurityMiddleware {
     /**
      * Recursive object sanitization
      */
-    private static sanitizeObject(obj: any): any {
+    private static sanitizeObject(obj: unknown): unknown {
         if (obj === null || obj === undefined) return obj;
 
         if (typeof obj === 'string') {
@@ -295,7 +293,7 @@ export class SecurityMiddleware {
         }
 
         if (typeof obj === 'object') {
-            const sanitized: any = {};
+            const sanitized: Record<string, unknown> = {};
             for (const [key, value] of Object.entries(obj)) {
                 // Sanitize key names too
                 const cleanKey = DOMPurify.sanitize(key, { ALLOWED_TAGS: [] });
@@ -319,7 +317,7 @@ export class SecurityMiddleware {
         const suspiciousPatterns = [
             /(?:script|javascript|vbscript|onload|onerror)/i,
             /(?:union|select|insert|delete|drop|truncate)/i,
-            /(?:\.\./ |\.\.\\|\/etc\/passwd|\/proc\/)/i,
+            /(?:\.\.\/|\.\.\\\\|\/etc\/passwd|\/proc\/)/i,
             /(?:cmd|exec|eval|system|shell)/i,
         ];
 
@@ -415,7 +413,7 @@ export class SecurityMiddleware {
         return response;
     }
 
-    private static logSecurityEvent(type: string, data: any): void {
+    private static logSecurityEvent(type: string, data: Record<string, unknown>): void {
         console.warn(`🚨 Security Event [${type}]:`, {
             timestamp: new Date().toISOString(),
             type,
