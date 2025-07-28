@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button, CallToAction } from "@/components/ui";
 import {
@@ -58,8 +58,38 @@ const sections = [
 ];
 
 export default function EntdeckenClient() {
-  const [_currentSectionId, setCurrentSectionId] =
+  const [currentSectionId, setCurrentSectionId] =
     useState<string>("innovation");
+
+  // Performance: Preload critical images based on current section
+  useEffect(() => {
+    const preloadImages = () => {
+      // Preload next section's images when user is in current section
+      const currentIndex = sections.findIndex((s) => s.id === currentSectionId);
+      const nextSection = sections[currentIndex + 1];
+
+      if (nextSection && typeof window !== "undefined") {
+        // Preload key images for smooth transitions
+        if (nextSection.id === "technologie") {
+          const link = document.createElement("link");
+          link.rel = "prefetch";
+          link.as = "image";
+          link.href = `/api/images?path=${IMAGES.function.nestHausModulElektrikSanitaer}`;
+          document.head.appendChild(link);
+        }
+        if (nextSection.id === "lebensqualitaet") {
+          const link = document.createElement("link");
+          link.rel = "prefetch";
+          link.as = "image";
+          link.href = `/api/images?path=${IMAGES.function.nestHausModulAnsicht}`;
+          document.head.appendChild(link);
+        }
+      }
+    };
+
+    const timeoutId = setTimeout(preloadImages, 1000); // Preload after initial render
+    return () => clearTimeout(timeoutId);
+  }, [currentSectionId]);
 
   return (
     <div className="min-h-screen pt-16">
@@ -216,12 +246,13 @@ export default function EntdeckenClient() {
                   alt="NEST-Haus Innenansicht - Lebensqualität und Komfort"
                   strategy="auto"
                   isAboveFold={false}
-                  isCritical={false}
+                  isCritical={currentSectionId === "lebensqualitaet"}
                   enableCache={true}
                   fill
                   className="object-cover rounded-lg"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   quality={85}
+                  priority={currentSectionId === "lebensqualitaet"}
                 />
               </div>
             </div>
