@@ -135,14 +135,14 @@ export default function FullWidthVideoGrid({
             <div
               className={`w-full overflow-hidden bg-gray-900 ${
                 video === IMAGES.function.nestHausModulSchemaIntro
-                  ? "max-w-6xl rounded-lg aspect-video"
+                  ? "max-w-6xl rounded-lg"
                   : ""
               }`}
             >
               {video === IMAGES.function.nestHausModulSchemaIntro ? (
                 <ClientBlobVideo
                   path={video}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-contain"
                   autoPlay={autoPlay}
                   loop={true}
                   muted={muted}

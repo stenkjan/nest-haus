@@ -195,10 +195,10 @@ export default function UnserPartClient() {
             </div>
 
             <div className="flex justify-center">
-              <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
+              <div className="w-full max-w-6xl rounded-lg overflow-hidden bg-gray-900">
                 <ClientBlobVideo
                   path={IMAGES.function.nestHausModulSchemaIntro}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-contain"
                   autoPlay={true}
                   loop={true}
                   muted={true}
@@ -347,10 +347,10 @@ export default function UnserPartClient() {
             </div>
 
             <div className="flex justify-center">
-              <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
+              <div className="w-full max-w-6xl rounded-lg overflow-hidden bg-gray-900">
                 <ClientBlobVideo
                   path={IMAGES.function.nestHausModulSchemaIntro}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-contain"
                   autoPlay={true}
                   loop={true}
                   muted={true}
