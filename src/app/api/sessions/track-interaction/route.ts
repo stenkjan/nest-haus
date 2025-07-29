@@ -39,7 +39,20 @@ export async function POST(request: NextRequest) {
 
     const startTime = Date.now();
 
-    // 1. Store interaction in PostgreSQL (primary storage)
+    // 1. Ensure session exists using upsert pattern (prevents foreign key constraint violations)
+    await prisma.userSession.upsert({
+      where: { sessionId },
+      update: { lastActivity: new Date() },
+      create: {
+        sessionId,
+        ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+        userAgent: request.headers.get('user-agent') || 'unknown',
+        referrer: request.headers.get('referer'),
+        status: 'ACTIVE'
+      }
+    });
+
+    // 2. Store interaction in PostgreSQL (primary storage)
     const interactionEvent = await prisma.interactionEvent.create({
       data: {
         sessionId,
@@ -48,7 +61,7 @@ export async function POST(request: NextRequest) {
         elementId,
         selectionValue,
         previousValue,
-        timeSpent: timeSpent ? BigInt(timeSpent) : null,
+        timeSpent: timeSpent ? Number(timeSpent) : null,
         deviceType: deviceInfo?.type,
         viewportWidth: deviceInfo?.width,
         viewportHeight: deviceInfo?.height,
@@ -60,12 +73,13 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // 2. Update Redis session cache (real-time data)
+    // 3. Update Redis session cache (real-time data)
+    const timeSpentNumber: number = timeSpent ? Number(timeSpent) : 0;
     await SessionManager.trackClick(sessionId, {
       timestamp: Date.now(),
       category,
       selection: selectionValue || elementId || 'unknown',
-      timeSpent: timeSpent || 0,
+      timeSpent: timeSpentNumber,
       eventType,
       elementId
     });
