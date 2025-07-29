@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8e03ed8d25a768fc40dc514bec07c062611f77f1] - Tue Jul 29 16:04:56 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fixed lf crlf issue  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+
+
+---
+
 ## [0bf2952f7a1a128b43451b026b76e081e015177a] - Tue Jul 29 15:30:11 2025 +0200
 
 **Author**: stenkjan
