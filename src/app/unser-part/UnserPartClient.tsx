@@ -67,6 +67,11 @@ const sections: SectionDefinition[] = [
     slug: "kein-plan",
   },
   {
+    id: "grundstueck-check",
+    title: "Sicherheit",
+    slug: "sicherheit",
+  },
+  {
     id: "video-gallery",
     title: "Die Vielfalt unserer Module",
     slug: "modul-vielfalt",
@@ -335,6 +340,67 @@ export default function UnserPartClient() {
             backgroundColor="gray"
             maxWidth={false}
           />
+        </section>
+
+        {/* Grundstück Check Section */}
+        <section id="grundstueck-check" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* Text content */}
+              <div className="space-y-6">
+                <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4">
+                  Sicherheit
+                </h2>
+                <p className="text-lg md:text-xl leading-relaxed text-gray-700">
+                  Häuser bauen bedeutet, sich an die Spielregeln zu halten und
+                  diese können je nach Region unterschiedlich sein. Wir kennen
+                  die gesetzlichen Vorgaben genau und unterstützen dich dabei,
+                  die Anforderungen deines Baugrunds zu verstehen. Mit unserem
+                  Grundstücks-Check prüfen wir, welche Gegebenheiten du bei
+                  deinem Wunschgrundstück beachten musst. Gib einfach die
+                  relevanten Informationen ein, und wir liefern dir zeitnah ein
+                  umfassendes Feedback. So kannst du dein Projekt sicher und
+                  fundiert planen.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <button
+                    className="px-8 py-3 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors duration-300"
+                    onClick={() => trackButtonClick("dein-part", "Dein Part")}
+                  >
+                    Dein Part
+                  </button>
+                  <button
+                    className="px-8 py-3 border border-blue-600 text-blue-600 rounded-full font-medium hover:bg-blue-50 transition-colors duration-300"
+                    onClick={() =>
+                      trackButtonClick("jetzt-bauen", "Jetzt bauen")
+                    }
+                  >
+                    Jetzt bauen
+                  </button>
+                </div>
+              </div>
+
+              {/* Image container with hover effect */}
+              <div className="flex justify-center lg:justify-end">
+                <div
+                  className="relative w-full max-w-md bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] group"
+                  style={{ border: "15px solid #F4F4F4" }}
+                >
+                  <div className="aspect-[4/3] w-full">
+                    <HybridBlobImage
+                      path={IMAGES.function.nestHausGrundstueckCheck}
+                      strategy="auto"
+                      isAboveFold={false}
+                      alt="NEST Haus Grundstück Check - Sicherheit beim Hausbau"
+                      className="w-full h-full object-cover"
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      quality={85}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Video Gallery Section */}
