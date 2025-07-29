@@ -144,7 +144,7 @@ model InteractionEvent {
   selectionValue  String?
   previousValue   String?
   timestamp       DateTime    @default(now())
-  timeSpent       Int?        // milliseconds
+  timeSpent       BigInt?     // milliseconds - BigInt to handle large duration values
   deviceType      String?
   viewportWidth   Int?
   viewportHeight  Int?

@@ -14,8 +14,8 @@ export default function Navbar() {
   const lastScrollTop = useRef(0);
   const pathname = usePathname();
 
-  // Cart integration using Zustand store
-  const { getCartCount, getCartSummary } = useCartStore();
+  // Cart integration using Zustand store - subscribe to items for real-time updates
+  const { items, getCartCount, getCartSummary } = useCartStore();
   const [cartCount, setCartCount] = useState(0);
   const [cartSummary, setCartSummary] = useState("Warenkorb leer");
 
@@ -33,19 +33,20 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Update cart count and summary safely to prevent hydration mismatches
+  // Update cart count and summary when cart items change
   useEffect(() => {
     try {
       const count = getCartCount();
       const summary = getCartSummary();
       setCartCount(count);
       setCartSummary(summary);
+      console.log("🔄 Navbar: Cart updated, count:", count);
     } catch (error) {
       console.error("Error getting cart count:", error);
       setCartCount(0);
       setCartSummary("Warenkorb leer");
     }
-  }, [getCartCount, getCartSummary]);
+  }, [items, getCartCount, getCartSummary]); // Now depends on 'items' array
 
   // Enhanced scroll behavior with WebKit support
   useEffect(() => {

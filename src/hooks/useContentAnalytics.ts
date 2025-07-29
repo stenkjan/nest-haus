@@ -35,6 +35,12 @@ export function useContentAnalytics({
         if (!enabled) return;
 
         try {
+            // Calculate proper timeSpent duration (not absolute timestamp)
+            let timeSpentValue = 0;
+            if (data.time_spent && typeof data.time_spent === 'number') {
+                timeSpentValue = Math.max(0, Math.round(data.time_spent)); // Ensure positive integer
+            }
+
             // Non-blocking API call for analytics
             fetch("/api/sessions/track-interaction", {
                 method: "POST",
@@ -46,7 +52,7 @@ export function useContentAnalytics({
                         category: "content",
                         elementId: data.section_id,
                         selectionValue: data.button_text || data.depth_percent?.toString(),
-                        timeSpent: data.timestamp,
+                        timeSpent: timeSpentValue,
                         deviceInfo: {
                             type: window.innerWidth > 768 ? "desktop" : "mobile",
                             width: window.innerWidth,
@@ -76,6 +82,13 @@ export function useContentAnalytics({
             if (timeInSection > 2000) {
                 sectionViews.current[lastSectionId.current] =
                     (sectionViews.current[lastSectionId.current] || 0) + 1;
+
+                // Track section exit with actual time spent
+                trackEvent("section_exit", {
+                    section_id: lastSectionId.current,
+                    page_type: pageType,
+                    time_spent: timeInSection,
+                });
             }
         }
 
@@ -83,11 +96,11 @@ export function useContentAnalytics({
         sectionTimes.current[currentSectionId] = now;
         lastSectionId.current = currentSectionId;
 
-        // Track section entry
+        // Track section entry (no time spent for entry)
         trackEvent("section_view", {
             section_id: currentSectionId,
             page_type: pageType,
-            timestamp: now,
+            time_spent: 0,
         });
     }, [currentSectionId, pageType, enabled, trackEvent]);
 
@@ -104,7 +117,7 @@ export function useContentAnalytics({
             button_text: buttonText,
             section_id: section,
             page_type: pageType,
-            timestamp: Date.now(),
+            time_spent: 0,
         });
     }, [currentSectionId, pageType, enabled, trackEvent]);
 
@@ -118,7 +131,7 @@ export function useContentAnalytics({
                 depth_percent: depth,
                 section_id: currentSectionId,
                 page_type: pageType,
-                timestamp: Date.now(),
+                time_spent: 0,
             });
         }
     }, [currentSectionId, pageType, enabled, trackEvent]);
@@ -134,11 +147,11 @@ export function useContentAnalytics({
 
             const totalTime = Date.now() - startTimeValue;
 
-            // Send final analytics
+            // Send final analytics with actual time spent
             trackEvent("page_exit", {
-                total_time: totalTime,
                 sections_viewed: Object.keys(sectionViewsValue).length,
                 interactions: Object.values(buttonClicksValue).reduce((a, b) => a + b, 0),
+                time_spent: totalTime,
             });
         };
     }, [pageType, enabled, trackEvent]);

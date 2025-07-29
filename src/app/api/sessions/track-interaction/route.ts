@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
         elementId,
         selectionValue,
         previousValue,
-        timeSpent,
+        timeSpent: timeSpent ? BigInt(timeSpent) : null,
         deviceType: deviceInfo?.type,
         viewportWidth: deviceInfo?.width,
         viewportHeight: deviceInfo?.height,
@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
 
     // Get session performance metrics
     const performanceMetrics = await prisma.performanceMetric.findMany({
-      where: { 
+      where: {
         sessionId,
         metricName: 'interaction_tracking_time'
       },
@@ -157,7 +157,7 @@ export async function GET(request: NextRequest) {
           elementId: interaction.elementId,
           selectionValue: interaction.selectionValue,
           timestamp: interaction.timestamp,
-          timeSpent: interaction.timeSpent
+          timeSpent: interaction.timeSpent ? Number(interaction.timeSpent) : null
         })),
         performance: {
           averageProcessingTime: Math.round(averageProcessingTime * 100) / 100,

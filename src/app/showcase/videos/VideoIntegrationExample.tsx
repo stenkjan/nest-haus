@@ -63,7 +63,7 @@ export default function VideoIntegrationExample({
         {/* Loading indicator for hero video */}
         {!isVideoLoaded && (
           <div className="absolute inset-0 bg-gray-900 flex items-center justify-center">
-            <div className="text-white text-lg">Loading video...</div>
+            <div className="text-white text-lg">Video wird geladen...</div>
           </div>
         )}
       </section>
@@ -101,7 +101,7 @@ export default function VideoIntegrationExample({
 
               {videoErrors.demo && (
                 <div className="p-4 bg-red-50 text-red-600 text-sm">
-                  Error loading demo video: {videoErrors.demo}
+                  Fehler beim Laden des Demo-Videos: {videoErrors.demo}
                 </div>
               )}
             </div>

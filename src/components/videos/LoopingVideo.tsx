@@ -150,7 +150,7 @@ export const LoopingVideo: React.FC<LoopingVideoProps> = ({
       <div
         className={`${className} flex items-center justify-center bg-gray-100`}
       >
-        <div className="text-gray-500">Loading videos...</div>
+        <div className="text-gray-500">Videos werden geladen...</div>
       </div>
     );
   }

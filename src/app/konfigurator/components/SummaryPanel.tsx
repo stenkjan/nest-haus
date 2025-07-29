@@ -386,76 +386,27 @@ export default function SummaryPanel({
         {/* Action Buttons */}
         <div className="mt-6">
           {isClient && (
-            <div className="flex gap-4">
-              {/* Check if price fits inline, if not adjust button widths */}
-              {isConfigurationComplete() &&
-              PriceUtils.formatPrice(currentPrice).length > 10 ? (
-                // Long price: Make "Neu konfigurieren" smaller to accommodate price
-                <>
-                  {/* Neu konfigurieren Button - smaller when price is long */}
-                  <Button
-                    variant="tertiary"
-                    size="xs"
-                    onClick={() => resetConfiguration()}
-                    className="flex-[0_0_auto] min-w-[120px] h-[44px] min-h-[44px] flex items-center justify-center !w-auto"
-                  >
-                    Neu konfigurieren
-                  </Button>
+            <div className="flex flex-col items-center gap-3">
+              {/* Navigate to Warenkorb Button - Primary button first */}
+              <Link href="/warenkorb">
+                <Button
+                  variant="landing-primary"
+                  size="xs"
+                  className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
+                >
+                  {isConfigurationComplete() ? "In den Warenkorb" : "Jetzt bauen"}
+                </Button>
+              </Link>
 
-                  {/* Navigate to Warenkorb Button - takes remaining space */}
-                  <Link href="/warenkorb" className="flex-1">
-                    <Button
-                      variant="landing-primary"
-                      size="xs"
-                      className="w-full h-[44px] min-h-[44px] flex items-center justify-center !w-full"
-                    >
-                      <div className="flex items-center justify-center gap-1 leading-tight">
-                        <span className="whitespace-nowrap">
-                          In den Warenkorb
-                        </span>
-                        <span className="whitespace-nowrap">
-                          - {PriceUtils.formatPrice(currentPrice)}
-                        </span>
-                      </div>
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                // Normal price or not complete: Equal width buttons
-                <>
-                  {/* Neu konfigurieren Button */}
-                  <Button
-                    variant="tertiary"
-                    size="xs"
-                    onClick={() => resetConfiguration()}
-                    className="flex-1 h-[44px] min-h-[44px] flex items-center justify-center !w-auto"
-                  >
-                    Neu konfigurieren
-                  </Button>
-
-                  {/* Navigate to Warenkorb Button */}
-                  <Link href="/warenkorb" className="flex-1">
-                    <Button
-                      variant="landing-primary"
-                      size="xs"
-                      className="w-full h-[44px] min-h-[44px] flex items-center justify-center !w-full"
-                    >
-                      {isConfigurationComplete() ? (
-                        <div className="flex items-center justify-center gap-1 leading-tight">
-                          <span className="whitespace-nowrap">
-                            In den Warenkorb
-                          </span>
-                          <span className="whitespace-nowrap">
-                            - {PriceUtils.formatPrice(currentPrice)}
-                          </span>
-                        </div>
-                      ) : (
-                        "Jetzt bauen"
-                      )}
-                    </Button>
-                  </Link>
-                </>
-              )}
+              {/* Neu konfigurieren Button - Secondary button below */}
+              <Button
+                variant="tertiary"
+                size="xs"
+                onClick={() => resetConfiguration()}
+                className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
+              >
+                Neu konfigurieren
+              </Button>
             </div>
           )}
         </div>

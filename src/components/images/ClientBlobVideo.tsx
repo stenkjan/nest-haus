@@ -261,7 +261,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
       <div
         className={`${className} flex items-center justify-center bg-gray-100`}
       >
-        <div className="text-gray-500">Loading video...</div>
+        <div className="text-gray-500">Video wird geladen...</div>
       </div>
     );
   }
