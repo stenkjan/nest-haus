@@ -156,12 +156,13 @@ export class ImagesConstantsUpdater {
   }
 
   /**
-   * Parse image name to extract number and title
+   * Parse media file name to extract number and title
    * Handles both formats:
-   * - Google Drive: "123-Title-Name.ext" or "123-Title-Name-mobile.ext"
+   * - Google Drive: "123-Title-Name.ext" or "123-Title-Name-mobile.ext" (images/videos)
    * - Vercel Blob: "images/123-Title-Name-HASH.ext" or "images/123-Title-Name-mobile-HASH.ext"
    * 
    * CRITICAL: Preserves mobile/desktop distinction in title extraction
+   * Supports both images (.jpg, .png, .webp) and videos (.mp4, .mov)
    */
   private parseImageName(fileName: string): { number: number; title: string } | null {
     // Remove the images/ prefix if present

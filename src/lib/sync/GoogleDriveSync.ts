@@ -95,20 +95,33 @@ export class GoogleDriveSync {
     try {
       console.log('🔐 Initializing Google Drive authentication...');
 
-      const serviceAccountPath = path.join(process.cwd(), 'service-account-key.json');
+      let serviceAccount: Record<string, unknown>;
 
-      // Check if service account file exists
-      try {
-        await fs.access(serviceAccountPath);
-      } catch {
-        throw new Error('Service account key file not found. Please ensure service-account-key.json exists in the project root.');
+      // Try environment variable first (production), then file (development)
+      if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+        console.log('🔐 Using service account from environment variable...');
+        try {
+          serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+        } catch {
+          throw new Error('Invalid GOOGLE_SERVICE_ACCOUNT_KEY environment variable. Must be valid JSON.');
+        }
+      } else {
+        console.log('🔐 Using service account from file...');
+        const serviceAccountPath = path.join(process.cwd(), 'service-account-key.json');
+
+        // Check if service account file exists
+        try {
+          await fs.access(serviceAccountPath);
+        } catch {
+          throw new Error('Service account key not found. Set GOOGLE_SERVICE_ACCOUNT_KEY environment variable or ensure service-account-key.json exists in the project root.');
+        }
+
+        serviceAccount = JSON.parse(await fs.readFile(serviceAccountPath, 'utf8'));
       }
-
-      const serviceAccount = JSON.parse(await fs.readFile(serviceAccountPath, 'utf8'));
 
       // Validate service account structure
       if (!serviceAccount.type || !serviceAccount.project_id || !serviceAccount.private_key || !serviceAccount.client_email) {
-        throw new Error('Invalid service account key format. Please check the service-account-key.json file.');
+        throw new Error('Invalid service account key format. Please check the service account JSON structure.');
       }
 
       const auth = new google.auth.GoogleAuth({
@@ -195,54 +208,54 @@ export class GoogleDriveSync {
         throw new Error(`Missing folder IDs - Main: ${!!mainFolderId}, Mobile: ${!!mobileFolderId}`);
       }
 
-      const [mainImages, mobileImages] = await Promise.all([
+      const [mainFiles, mobileFiles] = await Promise.all([
         this.fetchDriveImagesWithDateRange(mainFolderId, false, days, forceFullSync),
         this.fetchDriveImagesWithDateRange(mobileFolderId, true, days, forceFullSync)
       ]);
 
-      const allDriveImages = [...mainImages, ...mobileImages];
-      const recentlyModifiedImages = forceFullSync
-        ? allDriveImages
-        : allDriveImages.filter(img => img.isRecentlyModified);
+      const allDriveFiles = [...mainFiles, ...mobileFiles];
+      const recentlyModifiedFiles = forceFullSync
+        ? allDriveFiles
+        : allDriveFiles.filter(file => file.isRecentlyModified);
 
-      console.log(`📊 Total Google Drive images: ${allDriveImages.length} (${mainImages.length} main, ${mobileImages.length} mobile)`);
-      console.log(`📊 ${forceFullSync ? 'All images to process' : `Recently modified (${days}d)`}: ${recentlyModifiedImages.length} images`);
+      console.log(`📊 Total Google Drive files: ${allDriveFiles.length} (${mainFiles.length} main, ${mobileFiles.length} mobile)`);
+      console.log(`📊 ${forceFullSync ? 'All files to process' : `Recently modified (${days}d)`}: ${recentlyModifiedFiles.length} files`);
 
-      // Debug: List all recent images found
-      if (recentlyModifiedImages.length > 0) {
-        console.log('🔍 Images to be processed:');
-        recentlyModifiedImages.forEach(img => {
-          console.log(`   • ${img.number}-${img.title}${img.isMobile ? '-mobile' : ''} (modified: ${img.modifiedTime})`);
+      // Debug: List all recent files found
+      if (recentlyModifiedFiles.length > 0) {
+        console.log('🔍 Files to be processed:');
+        recentlyModifiedFiles.forEach(file => {
+          console.log(`   • ${file.number}-${file.title}${file.isMobile ? '-mobile' : ''} (modified: ${file.modifiedTime})`);
         });
       }
 
-      result.recentChangesFound = recentlyModifiedImages.length;
+      result.recentChangesFound = recentlyModifiedFiles.length;
 
       // SAFETY CHECK: Ensure basic functionality even if no recent changes
-      if (allDriveImages.length === 0) {
-        console.warn('🚨 SAFETY CHECK: Google Drive returned 0 images. Aborting sync to prevent accidental deletions.');
-        throw new Error('No images found in Google Drive folders - aborting sync for safety');
+      if (allDriveFiles.length === 0) {
+        console.warn('🚨 SAFETY CHECK: Google Drive returned 0 files. Aborting sync to prevent accidental deletions.');
+        throw new Error('No files found in Google Drive folders - aborting sync for safety');
       }
 
       // OPTIMIZATION: If no recent changes, skip the heavy operations (unless forced)
-      if (recentlyModifiedImages.length === 0 && !forceFullSync) {
+      if (recentlyModifiedFiles.length === 0 && !forceFullSync) {
         console.log(`✅ No recent changes found in last ${days} day(s) - sync complete`);
         result.duration = Date.now() - startTime;
         return result;
       }
 
-      // Step 2: Fetch current images from Vercel Blob
-      console.log('🔍 Fetching current images from Vercel Blob...');
+      // Step 2: Fetch current files from Vercel Blob
+      console.log('🔍 Fetching current files from Vercel Blob...');
       const blobImages = await this.fetchBlobImages();
-      console.log(`📊 Current Vercel Blob images: ${blobImages.length}`);
+      console.log(`📊 Current Vercel Blob files: ${blobImages.length}`);
 
       // Step 3: Calculate sync operations
-      console.log(`🔄 Calculating sync operations for ${recentlyModifiedImages.length} images...`);
+      console.log(`🔄 Calculating sync operations for ${recentlyModifiedFiles.length} files...`);
       const syncOps = forceFullSync
-        ? this.calculateFullSyncOperations(allDriveImages, blobImages)
-        : this.calculateChangeBasedSyncOperations(allDriveImages, recentlyModifiedImages, blobImages);
+        ? this.calculateFullSyncOperations(allDriveFiles, blobImages)
+        : this.calculateChangeBasedSyncOperations(allDriveFiles, recentlyModifiedFiles, blobImages);
 
-      result.processed = recentlyModifiedImages.length;
+      result.processed = recentlyModifiedFiles.length;
 
       // Step 4: Preview operations before execution
       if (syncOps.upload.length > 0) {
@@ -260,9 +273,9 @@ export class GoogleDriveSync {
       }
 
       // SAFETY CHECK: Prevent mass deletions
-      if (syncOps.delete.length > Math.max(10, allDriveImages.length * 0.5)) {
+      if (syncOps.delete.length > Math.max(10, allDriveFiles.length * 0.5)) {
         console.warn('🚨 SAFETY CHECK: Preventing mass deletion operation');
-        throw new Error(`Safety check failed: ${syncOps.delete.length} deletions planned (max allowed: ${Math.max(10, Math.floor(allDriveImages.length * 0.5))})`);
+        throw new Error(`Safety check failed: ${syncOps.delete.length} deletions planned (max allowed: ${Math.max(10, Math.floor(allDriveFiles.length * 0.5))})`);
       }
 
       // Step 5: Execute sync operations
@@ -303,7 +316,7 @@ export class GoogleDriveSync {
    */
   private async fetchDriveImages(folderId: string, isMobile: boolean): Promise<DriveImage[]> {
     try {
-      console.log(`📁 Fetching images from folder ID: ${folderId}`);
+      console.log(`📁 Fetching images and videos from folder ID: ${folderId}`);
 
       // Calculate 24 hours ago timestamp
       const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -312,7 +325,7 @@ export class GoogleDriveSync {
       console.log(`🕐 Looking for changes since: ${isoTimestamp}`);
 
       const response = await this.drive.files.list({
-        q: `'${folderId}' in parents and (mimeType contains 'image/')`,
+        q: `'${folderId}' in parents and (mimeType contains 'image/' or mimeType contains 'video/')`,
         fields: 'files(id,name,modifiedTime,webContentLink)',
         pageSize: 1000,
         orderBy: 'modifiedTime desc' // Get most recent first
@@ -370,21 +383,21 @@ export class GoogleDriveSync {
     forceFullSync: boolean = false
   ): Promise<DriveImage[]> {
     try {
-      console.log(`📁 Fetching images from folder ID: ${folderId} (${isMobile ? 'mobile' : 'main'})`);
+      console.log(`📁 Fetching images and videos from folder ID: ${folderId} (${isMobile ? 'mobile' : 'main'})`);
 
       // Calculate lookback timestamp
       const lookbackTime = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
       const isoTimestamp = lookbackTime.toISOString();
 
       if (forceFullSync) {
-        console.log(`🕐 FULL SYNC: Processing ALL images (no date filter)`);
+        console.log(`🕐 FULL SYNC: Processing ALL media files (no date filter)`);
       } else {
         console.log(`🕐 Looking for changes since: ${isoTimestamp} (${days} day(s) ago)`);
         console.log(`🕐 Current time: ${new Date().toISOString()}`);
       }
 
       const response = await this.drive.files.list({
-        q: `'${folderId}' in parents and (mimeType contains 'image/')`,
+        q: `'${folderId}' in parents and (mimeType contains 'image/' or mimeType contains 'video/')`,
         fields: 'files(id,name,modifiedTime,webContentLink)',
         pageSize: 1000,
         orderBy: 'modifiedTime desc' // Get most recent first
@@ -434,13 +447,14 @@ export class GoogleDriveSync {
   }
 
   /**
-   * Parse image name to extract number, title, extension, and mobile flag
-   * Handles both Drive format: "123-Some-Title-Name.jpg" or "123-Some-Title-Name-mobile.jpg"
+   * Parse media file name to extract number, title, extension, and mobile flag
+   * Handles both Drive format: "123-Some-Title-Name.jpg" or "123-Some-Title-Name-mobile.mp4"
    * And Vercel Blob format: "images/123-Some-Title-Name-HASH.jpg"
    * 
    * CRITICAL: Ensures proper mobile/desktop distinction:
-   * - Desktop images: "123-Title-Name" (no -mobile suffix)
-   * - Mobile images: "123-Title-Name-mobile" (with -mobile suffix)
+   * - Desktop files: "123-Title-Name" (no -mobile suffix)
+   * - Mobile files: "123-Title-Name-mobile" (with -mobile suffix)
+   * - Supports both images (.jpg, .png, .webp) and videos (.mp4, .mov)
    */
   private parseImageName(fileName: string): { number: number; title: string; extension: string; isMobile: boolean } | null {
     // Remove path prefix if present (e.g., "images/")
@@ -700,9 +714,17 @@ export class GoogleDriveSync {
 
       console.log(`⬆️ Uploading ${driveImg.isMobile ? 'mobile' : 'desktop'} version: ${fileName}`);
 
+      // Determine content type based on extension
+      let contentType: string;
+      if (['mp4', 'mov', 'avi'].includes(driveImg.extension.toLowerCase())) {
+        contentType = `video/${driveImg.extension === 'mov' ? 'quicktime' : driveImg.extension}`;
+      } else {
+        contentType = `image/${driveImg.extension === 'jpg' ? 'jpeg' : driveImg.extension}`;
+      }
+
       await put(fileName, buffer, {
         access: 'public',
-        contentType: `image/${driveImg.extension === 'jpg' ? 'jpeg' : driveImg.extension}`
+        contentType
       });
 
       console.log(`✅ Successfully uploaded with hash: ${fileName}`);

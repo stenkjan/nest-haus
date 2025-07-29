@@ -1,4 +1,5 @@
 // Export all custom hooks
-export { useConfiguratorIntegration } from './useConfiguratorIntegration';
-export { useIOSViewport, getIOSViewportStyles } from './useIOSViewport';
-export { useDeviceDetect } from './useDeviceDetect';
+export { useDeviceDetect } from "./useDeviceDetect";
+export { useIOSViewport } from "./useIOSViewport";
+export { useConfiguratorIntegration } from "./useConfiguratorIntegration";
+export { useContentAnalytics } from "./useContentAnalytics";

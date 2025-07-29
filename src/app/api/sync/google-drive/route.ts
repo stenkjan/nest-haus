@@ -125,7 +125,7 @@ export async function GET(_request: NextRequest) {
     const config = {
       googleDriveConfigured: !!(process.env.GOOGLE_DRIVE_MAIN_FOLDER_ID && process.env.GOOGLE_DRIVE_MOBILE_FOLDER_ID),
       blobConfigured: !!process.env.BLOB_READ_WRITE_TOKEN,
-      serviceAccountConfigured: !!process.env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE
+      serviceAccountConfigured: !!(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || process.env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE)
     };
 
     const allConfigured = Object.values(config).every(Boolean);

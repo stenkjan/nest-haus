@@ -1,3 +1,3 @@
 // Global type augmentations for project-specific types
 
-export { }; 
+export * from "./content"; 

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button, CallToAction } from "@/components/ui";
+import { CallToAction } from "@/components/ui";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
@@ -10,11 +10,17 @@ import {
   ThreeByOneGrid,
 } from "@/components/grids";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
-import { ContentCardsGlass } from "@/components/cards";
+import {
+  SectionHeader,
+  ButtonGroup,
+  MaterialShowcase,
+} from "@/components/sections";
 import { IMAGES } from "@/constants/images";
+import { useContentAnalytics } from "@/hooks";
+import type { SectionDefinition } from "@/types";
 
 // Define sections with proper structure for unser-part
-const sections = [
+const sections: SectionDefinition[] = [
   {
     id: "hero",
     title: "Hochpräzise Produktionsmethoden",
@@ -67,90 +73,18 @@ const sections = [
   },
 ];
 
-// Custom material card data for ContentCardsGlass using IMAGES constants
-const materialCardData = [
-  {
-    id: 1,
-    title: "Naturstein - Kalkstein",
-    subtitle: "Kanfanar Kalkstein",
-    description:
-      "Der massive Kalkstein überzeugt durch seine natürliche Eleganz, zeitlose Ästhetik und hohe Widerstandsfähigkeit. Mit seiner charakteristischen Farbgebung, die von warmen Beigetönen bis hin zu sanften Graunuancen reicht, verleiht er Innen- und Außenbereichen eine edle, harmonische Ausstrahlung.",
-    mobileTitle: "Kanfanar Naturstein",
-    mobileSubtitle: "Kalkstein Premium",
-    mobileDescription:
-      "Massive Kalkstein-Eleganz mit warmen Beigetönen bis sanften Graunuancen. Zeitlose Ästhetik und hohe Widerstandsfähigkeit für edle Ausstrahlung.",
-    image: IMAGES.materials.kalkstein,
-    backgroundColor: "#121212",
-  },
-  {
-    id: 2,
-    title: "Naturstein - Schiefer",
-    subtitle: "Dunkler Schiefer",
-    description:
-      "Hochwertiger Schiefer verleiht jedem Raum eine edle und natürliche Atmosphäre. Seine charakteristische dunkelgraue Färbung und die natürliche Schieferung schaffen einzigartige Lichtreflexe und eine lebendige Oberflächenstruktur.",
-    mobileTitle: "Schiefer Naturstein",
-    mobileSubtitle: "Dunkle Eleganz",
-    mobileDescription:
-      "Hochwertiger Schiefer mit charakteristischer dunkelgrauer Färbung. Natürliche Schieferung für einzigartige Lichtreflexe.",
-    image: IMAGES.materials.schiefer,
-    backgroundColor: "#121212",
-  },
-  {
-    id: 3,
-    title: "Eichen-Parkett",
-    subtitle: "Fischgrätparkett Eiche",
-    description:
-      "Edles Eichen-Fischgrätparkett verbindet traditionelle Handwerkskunst mit zeitgemäßer Eleganz. Die charakteristische Maserung der Eiche und das klassische Verlegemuster schaffen eine warme, wohnliche Atmosphäre mit hoher Langlebigkeit.",
-    mobileTitle: "Eichen-Parkett",
-    mobileSubtitle: "Fischgrät-Verlegung",
-    mobileDescription:
-      "Edles Eichen-Fischgrätparkett mit traditioneller Handwerkskunst. Warme, wohnliche Atmosphäre mit hoher Langlebigkeit.",
-    image: IMAGES.materials.eicheParkett,
-    backgroundColor: "#121212",
-  },
-  {
-    id: 4,
-    title: "Lärchen-Holzlattung",
-    subtitle: "Fassade Bauholz",
-    description:
-      "Natürliche Lärchen-Holzlattung für die Fassadengestaltung. Das robuste Bauholz besticht durch seine warme Farbe und natürliche Widerstandsfähigkeit gegen Witterungseinflüsse. Eine nachhaltige und ästhetische Lösung für moderne Architektur.",
-    mobileTitle: "Lärchen-Fassade",
-    mobileSubtitle: "Natürliche Lattung",
-    mobileDescription:
-      "Robuste Lärchen-Holzlattung mit warmer Farbe. Natürliche Widerstandsfähigkeit und nachhaltige Ästhetik.",
-    image: IMAGES.materials.laercheFassade,
-    backgroundColor: "#121212",
-  },
-  {
-    id: 5,
-    title: "Fundermax Platten",
-    subtitle: "Schwarze Fassadenplatten",
-    description:
-      "Hochwertige Fundermax Fassadenplatten in elegantem Schwarz. Die wetterbeständigen Platten bieten eine moderne, puristische Optik und sind langlebig sowie pflegeleicht. Ideal für zeitgemäße Architektur mit hohen Ansprüchen.",
-    mobileTitle: "Fundermax Platten",
-    mobileSubtitle: "Schwarze Fassade",
-    mobileDescription:
-      "Hochwertige schwarze Fundermax Platten. Wetterbeständig, modern und pflegeleicht für zeitgemäße Architektur.",
-    image: IMAGES.materials.fundermax,
-    backgroundColor: "#121212",
-  },
-  {
-    id: 6,
-    title: "Trapezblech",
-    subtitle: "Schwarze Metallfassade",
-    description:
-      "Robustes Trapezblech in mattem Schwarz für eine kraftvolle, industrielle Ästhetik. Das langlebige Material ist wartungsarm, witterungsbeständig und verleiht Gebäuden einen markanten, modernen Charakter.",
-    mobileTitle: "Trapezblech",
-    mobileSubtitle: "Schwarze Metall-Fassade",
-    mobileDescription:
-      "Robustes schwarzes Trapezblech für kraftvolle Ästhetik. Wartungsarm, witterungsbeständig und markant modern.",
-    image: IMAGES.materials.trapezblech,
-    backgroundColor: "#121212",
-  },
-];
+// Material data moved to shared constants for reusability
 
 export default function UnserPartClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [currentSectionId, setCurrentSectionId] = useState<string>("hero");
+
+  // Analytics tracking for content engagement
+  const { trackButtonClick } = useContentAnalytics({
+    pageType: "content",
+    sections,
+    currentSectionId,
+    enabled: true,
+  });
 
   return (
     <div
@@ -162,21 +96,31 @@ export default function UnserPartClient() {
         <section id="hero" className="relative bg-white py-20 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-1 lg:mb-1.5">
-                Hochpräzise Produktionsmethoden
-              </h1>
-              <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-black mb-4 lg:mb-5">
-                Schaffen beste Qualität zu fairen Preisen.
-              </p>
+              <SectionHeader
+                title="Hochpräzise Produktionsmethoden"
+                subtitle="Schaffen beste Qualität zu fairen Preisen."
+                titleSize="large"
+                titleClassName="text-gray-900"
+                subtitleClassName="text-black"
+              />
 
-              <div className="flex gap-4 justify-center">
-                <Button variant="primary" size="xs">
-                  Unser Part
-                </Button>
-                <Button variant="secondary" size="xs">
-                  Dein Part
-                </Button>
-              </div>
+              <ButtonGroup
+                buttons={[
+                  {
+                    text: "Unser Part",
+                    variant: "primary",
+                    size: "xs",
+                    onClick: () => trackButtonClick("Unser Part", "hero"),
+                  },
+                  {
+                    text: "Dein Part",
+                    variant: "secondary",
+                    size: "xs",
+                    link: "/dein-part",
+                    onClick: () => trackButtonClick("Dein Part", "hero"),
+                  },
+                ]}
+              />
             </div>
           </div>
         </section>
@@ -262,30 +206,12 @@ export default function UnserPartClient() {
           />
         </section>
 
-        {/* ContentCardsGlass Section - Materialien */}
-        <section id="materialien" className="bg-black pt-20 pb-8">
-          {/* Title and subtitle with max-width constraint */}
-          <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-            <div className="text-center mb-24">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
-                Gut für Dich, besser für die Zukunft
-              </h2>
-              <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
-                Entdecke unsere sorgfältig ausgewählten Materialien
-              </p>
-            </div>
-          </div>
-
-          {/* ContentCardsGlass with full width and custom material data */}
-          <ContentCardsGlass
-            variant="responsive"
-            title=""
-            subtitle=""
-            maxWidth={false}
-            showInstructions={true}
-            customData={materialCardData}
-          />
-        </section>
+        {/* MaterialShowcase Section - Optimized */}
+        <MaterialShowcase
+          backgroundColor="black"
+          maxWidth={false}
+          showInstructions={true}
+        />
 
         {/* ThreeByOneAdaptiveHeight Grid - Fenster & Türen */}
         <section id="fenster-tueren" className="pt-20 pb-8">
