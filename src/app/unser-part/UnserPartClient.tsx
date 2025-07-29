@@ -345,6 +345,13 @@ export default function UnserPartClient() {
         {/* Grundstück Check Section */}
         <section id="grundstueck-check" className="w-full py-16 bg-gray-50">
           <div className="w-full px-[8%]">
+            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center text-black">
+              Dein Grundstück - Unser Check
+            </h2>
+            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-12 max-w-3xl mx-auto text-center text-black">
+              Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
+              deiner Wahl passt
+            </h3>
             <div
               className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] group"
               style={{ border: "15px solid #F4F4F4" }}
