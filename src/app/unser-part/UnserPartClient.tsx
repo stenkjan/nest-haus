@@ -386,13 +386,14 @@ export default function UnserPartClient() {
                   className="relative w-full max-w-md bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] group"
                   style={{ border: "15px solid #F4F4F4" }}
                 >
-                  <div className="aspect-[4/3] w-full">
+                  <div className="aspect-[4/3] w-full relative">
                     <HybridBlobImage
                       path={IMAGES.function.nestHausGrundstueckCheck}
                       strategy="auto"
                       isAboveFold={false}
                       alt="NEST Haus Grundstück Check - Sicherheit beim Hausbau"
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                       sizes="(max-width: 768px) 100vw, 400px"
                       quality={85}
                     />
