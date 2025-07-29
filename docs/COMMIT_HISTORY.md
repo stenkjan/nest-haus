@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [45c536cc70d0388db47b9ec457ef0f24d78f36fa] - Tue Jul 29 13:15:20 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update video references and enhance styling across components  - Replaced instances of  with  in multiple components for consistency. - Updated  page to adjust padding for improved layout. - Switched from  to  in  and  for better video handling. - Enhanced video styling in  for improved responsiveness and visual presentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/sync/page.tsx
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/grids/FullWidthVideoGrid.tsx
+- src/components/grids/VideoGallery.tsx
+
+
+---
+
 ## [29a79fa5729d7ae6212508d9a1deaadab6b5ec61] - Mon Jul 28 15:55:38 2025 +0200
 
 **Author**: stenkjan
