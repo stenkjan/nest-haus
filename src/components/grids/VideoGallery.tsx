@@ -19,7 +19,7 @@ interface VideoGalleryProps {
 const VideoGallery: React.FC<VideoGalleryProps> = ({
   title,
   subtitle,
-  videoPath = IMAGES.variantvideo.ten,
+  videoPath = IMAGES.variantvideo.nine,
   backgroundColor = "white",
   maxWidth = true,
   autoPlay = true,
@@ -64,11 +64,11 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({
           </div>
         )}
 
-        <div className="flex justify-center">
-          <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
+        <div className="w-full">
+          <div className="w-full rounded-lg overflow-hidden bg-gray-900">
             <ClientBlobVideo
               path={videoPath}
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-contain"
               autoPlay={autoPlay}
               loop={loop}
               muted={muted}

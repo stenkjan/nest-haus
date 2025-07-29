@@ -240,7 +240,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               textBox1="Diese Animation zeigt dir die verschiedenen Modulkombinationen und Gestaltungsvarianten deines NEST Hauses. Jede Konfiguration ist individuell anpassbar."
               textBox2="Von kompakten 2-Modul-Häusern bis hin zu großzügigen 6-Modul-Komplexen - entdecke die Flexibilität unseres modularen Bausystems."
               maxWidth={false}
-              video={IMAGES.variantvideo.ten}
+              video={IMAGES.variantvideo.nine}
               autoPlay={true}
               muted={true}
               controls={false}

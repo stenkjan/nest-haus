@@ -142,7 +142,7 @@ export default function GoogleDriveSyncAdmin() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <div className="border-b pb-4">
+      <div className="border-b pb-4 pt-6">
         <h1 className="text-2xl font-bold">Google Drive Sync Management</h1>
         <p className="text-gray-600 mt-2">
           Monitor and control Google Drive to Vercel Blob synchronization

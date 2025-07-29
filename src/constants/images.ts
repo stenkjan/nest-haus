@@ -34,6 +34,7 @@ export const IMAGES = {
     },
 
     variantvideo: {
+        nine: '9-NEST-Haus-Module-Konstellation-Varianten-Versionen-Serienanfertigung-Animation',
         ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation',
     },
 

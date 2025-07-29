@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { LoopingVideo } from "@/components/videos";
 import { ClientBlobVideo } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
@@ -134,18 +133,18 @@ export default function FullWidthVideoGrid({
         >
           <div className="flex justify-center">
             <div
-              className={`w-full aspect-video overflow-hidden bg-gray-900 ${
+              className={`w-full overflow-hidden bg-gray-900 ${
                 video === IMAGES.function.nestHausModulSchemaIntro
-                  ? "max-w-6xl rounded-lg"
+                  ? "max-w-6xl rounded-lg aspect-video"
                   : ""
               }`}
             >
               {video === IMAGES.function.nestHausModulSchemaIntro ? (
-                <LoopingVideo
-                  introPath={video}
-                  outroPath={IMAGES.function.nestHausModulSchemaOutro}
+                <ClientBlobVideo
+                  path={video}
                   className="w-full h-full object-cover"
                   autoPlay={autoPlay}
+                  loop={true}
                   muted={muted}
                   playsInline={true}
                   controls={controls}
@@ -175,7 +174,7 @@ export default function FullWidthVideoGrid({
                   >
                     <ClientBlobVideo
                       path={video}
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto object-contain"
                       autoPlay={autoPlay}
                       loop={true}
                       muted={muted}

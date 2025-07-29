@@ -443,7 +443,7 @@ export default function WarumWirClient() {
           <VideoGallery
             title="Unsere Vision in Bewegung"
             subtitle="Erlebe die Zukunft des modularen Bauens - wie aus einzelnen Modulen individuelle Traumhäuser entstehen"
-            videoPath={IMAGES.variantvideo.ten}
+            videoPath={IMAGES.variantvideo.nine}
             backgroundColor="white"
             maxWidth={false}
             autoPlay={true}

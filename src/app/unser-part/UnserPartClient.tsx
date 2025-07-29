@@ -9,9 +9,8 @@ import {
   FullWidthVideoGrid,
   ThreeByOneGrid,
 } from "@/components/grids";
-import { HybridBlobImage } from "@/components/images";
+import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ContentCardsGlass } from "@/components/cards";
-import { LoopingVideo } from "@/components/videos";
 import { IMAGES } from "@/constants/images";
 
 // Define sections with proper structure for unser-part
@@ -197,11 +196,11 @@ export default function UnserPartClient() {
 
             <div className="flex justify-center">
               <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
-                <LoopingVideo
-                  introPath={IMAGES.function.nestHausModulSchemaIntro}
-                  outroPath={IMAGES.function.nestHausModulSchemaOutro}
+                <ClientBlobVideo
+                  path={IMAGES.function.nestHausModulSchemaIntro}
                   className="w-full h-full object-cover"
                   autoPlay={true}
+                  loop={true}
                   muted={true}
                   playsInline={true}
                   controls={false}
@@ -349,11 +348,11 @@ export default function UnserPartClient() {
 
             <div className="flex justify-center">
               <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden bg-gray-900">
-                <LoopingVideo
-                  introPath={IMAGES.function.nestHausModulSchemaIntro}
-                  outroPath={IMAGES.function.nestHausModulSchemaOutro}
+                <ClientBlobVideo
+                  path={IMAGES.function.nestHausModulSchemaIntro}
                   className="w-full h-full object-cover"
                   autoPlay={true}
+                  loop={true}
                   muted={true}
                   playsInline={true}
                   controls={false}
@@ -422,7 +421,7 @@ export default function UnserPartClient() {
               textBox1="Diese Animation zeigt die vielfältigen Möglichkeiten unseres modularen Bausystems. Von kompakten Lösungen bis hin zu großzügigen Wohnkonzepten."
               textBox2="Jede Modulkombination ist individuell planbar und lässt sich perfekt an deine Bedürfnisse und dein Grundstück anpassen."
               maxWidth={false}
-              video={IMAGES.variantvideo.ten}
+              video={IMAGES.variantvideo.nine}
               autoPlay={true}
               muted={true}
               controls={false}
