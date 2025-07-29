@@ -54,7 +54,7 @@ export default function KontaktClient() {
               Komm vorbei um deinen Traum mit uns zu besprechen.
             </h3>
             <div
-              className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
+              className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] group"
               style={{ border: "15px solid #F4F4F4" }}
             >
               <iframe
