@@ -107,6 +107,12 @@ export class AdminAnalyticsService {
    * Fetch analytics data with comprehensive error handling
    */
   static async getAnalytics(): Promise<AdminAnalyticsData> {
+    // CRITICAL: Prevent API calls during build time
+    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'development') {
+      console.log('📊 Build-time detected: Using fallback analytics data');
+      return SAFE_FALLBACK_DATA;
+    }
+    
     const startTime = Date.now();
     
     try {

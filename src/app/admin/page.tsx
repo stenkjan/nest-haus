@@ -1,110 +1,14 @@
 /**
  * Admin Dashboard - Main Overview
- * 
+ *
  * Provides high-level metrics and navigation to detailed analytics sections
  */
 
-import Link from 'next/link';
-import { Suspense } from 'react';
-import { SessionManager } from '@/lib/redis';
-import { AdminAnalyticsService } from '@/lib/AdminAnalyticsService';
-import ImageCacheManager from '@/components/images/ImageCacheManager';
+import Link from "next/link";
+import ImageCacheManager from "@/components/images/ImageCacheManager";
+import ClientDashboardMetrics from "./components/ClientDashboardMetrics";
 
-// Placeholder components for metrics cards
-function MetricCard({ title, value, change, icon }: {
-  title: string;
-  value: string | number;
-  change?: string;
-  icon?: string;
-}) {
-  return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
-          {change && (
-            <p className={`text-sm ${change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-              {change} vs last period
-            </p>
-          )}
-        </div>
-        {icon && <div className="text-3xl">{icon}</div>}
-      </div>
-    </div>
-  );
-}
-
-async function DashboardMetrics() {
-  // SAFE INTEGRATION: Use new analytics service with fallback to old method
-  try {
-    console.log('🔄 Loading real analytics data...');
-    const analytics = await AdminAnalyticsService.getAnalytics();
-    
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <MetricCard
-          title="Active Sessions"
-          value={analytics.activeSessions}
-          change="+12%"
-          icon="👥"
-        />
-        <MetricCard
-          title="Total Sessions Today"
-          value={analytics.totalSessionsToday}
-          change="+8%"
-          icon="📊"
-        />
-        <MetricCard
-          title="Avg Session Duration"
-          value={AdminAnalyticsService.formatDuration(analytics.averageSessionDuration)}
-          change="+5%"
-          icon="⏱️"
-        />
-        <MetricCard
-          title="Conversion Rate"
-          value={AdminAnalyticsService.formatPercentage(analytics.conversionRate)}
-          change="+0.8%"
-          icon="💰"
-        />
-      </div>
-    );
-  } catch (error) {
-    console.error('❌ Failed to load real analytics, using fallback:', error);
-    
-    // FALLBACK: Use original method if new service fails
-    const analytics = await SessionManager.getSessionAnalytics();
-    
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <MetricCard
-          title="Active Sessions"
-          value={analytics.activeSessions || 0}
-          change="+12%"
-          icon="👥"
-        />
-        <MetricCard
-          title="Total Sessions Today"
-          value={analytics.totalSessions || 0}
-          change="+8%"
-          icon="📊"
-        />
-        <MetricCard
-          title="Avg Session Duration"
-          value={`${Math.round((analytics.averageSessionDuration || 0) / 1000 / 60)}m`}
-          change="+5%"
-          icon="⏱️"
-        />
-        <MetricCard
-          title="Conversion Rate"
-          value="3.2%"
-          change="+0.8%"
-          icon="💰"
-        />
-      </div>
-    );
-  }
-}
+// DashboardMetrics moved to ClientDashboardMetrics to prevent build-time API calls
 
 export default function AdminDashboard() {
   return (
@@ -114,8 +18,12 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Nest-Haus Admin</h1>
-              <p className="text-gray-600">Analytics & Configuration Management</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Nest-Haus Admin
+              </h1>
+              <p className="text-gray-600">
+                Analytics & Configuration Management
+              </p>
             </div>
             <div className="text-sm text-gray-500">
               Last updated: {new Date().toLocaleString()}
@@ -126,120 +34,125 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Overview Metrics */}
-        <Suspense fallback={
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-8 bg-gray-200 rounded"></div>
-              </div>
-            ))}
-          </div>
-        }>
-          <DashboardMetrics />
-        </Suspense>
+        {/* Client-side metrics to prevent build-time API calls */}
+        <ClientDashboardMetrics />
 
         {/* Navigation Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Link href="/admin/customer-inquiries" 
-                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+          <Link
+            href="/admin/customer-inquiries"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
                   Customer Inquiries
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Manage customer contact form submissions, track inquiry status, 
-                  and handle customer communications.
+                  Manage customer contact form submissions, track inquiry
+                  status, and handle customer communications.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • Real customer data<br/>
-                  • Status tracking<br/>
-                  • Response management
+                  • Real customer data
+                  <br />
+                  • Status tracking
+                  <br />• Response management
                 </div>
               </div>
               <div className="text-4xl">📬</div>
             </div>
           </Link>
 
-          <Link href="/admin/user-journey" 
-                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+          <Link
+            href="/admin/user-journey"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
                   User Journey Tracking
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Analyze user paths through the configurator, identify drop-off points, 
-                  and optimize the user experience.
+                  Analyze user paths through the configurator, identify drop-off
+                  points, and optimize the user experience.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • Session flow analysis<br/>
-                  • Click heatmaps<br/>
-                  • Abandonment points
+                  • Session flow analysis
+                  <br />
+                  • Click heatmaps
+                  <br />• Abandonment points
                 </div>
               </div>
               <div className="text-4xl">🛤️</div>
             </div>
           </Link>
 
-          <Link href="/admin/popular-configurations" 
-                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+          <Link
+            href="/admin/popular-configurations"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
                   Popular Konfigurationen
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Discover the most popular house configurations, pricing trends, 
-                  and customer preferences.
+                  Discover the most popular house configurations, pricing
+                  trends, and customer preferences.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • Real database data<br/>
-                  • Price distribution<br/>
-                  • Selection patterns
+                  • Real database data
+                  <br />
+                  • Price distribution
+                  <br />• Selection patterns
                 </div>
               </div>
               <div className="text-4xl">🏠</div>
             </div>
           </Link>
 
-          <Link href="/admin/performance" 
-                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+          <Link
+            href="/admin/performance"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
                   Performance Metrics
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Monitor system performance, API response times, database queries, 
-                  and user experience metrics.
+                  Monitor system performance, API response times, database
+                  queries, and user experience metrics.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • API performance<br/>
-                  • Database metrics<br/>
-                  • Page load times
+                  • API performance
+                  <br />
+                  • Database metrics
+                  <br />• Page load times
                 </div>
               </div>
               <div className="text-4xl">⚡</div>
             </div>
           </Link>
 
-          <Link href="/admin/conversion" 
-                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group">
+          <Link
+            href="/admin/conversion"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
                   Conversion Analysis
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Track conversion rates, funnel performance, and identify 
+                  Track conversion rates, funnel performance, and identify
                   opportunities to increase sales.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • Funnel analysis<br/>
-                  • Conversion rates<br/>
-                  • Revenue tracking
+                  • Funnel analysis
+                  <br />
+                  • Conversion rates
+                  <br />• Revenue tracking
                 </div>
               </div>
               <div className="text-4xl">📈</div>
@@ -254,7 +167,9 @@ export default function AdminDashboard() {
 
           {/* Quick Actions */}
           <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Quick Actions
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
                 Export Analytics Report
@@ -271,4 +186,4 @@ export default function AdminDashboard() {
       </div>
     </div>
   );
-} 
+}
