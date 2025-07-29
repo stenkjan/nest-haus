@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b4d33a25f54b686a24e406d3ce4aa3326f7051f2] - Tue Jul 29 16:47:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update Grundstück Check section in UnserPartClient  - Changed the background color of the Grundstück Check section to gray for improved contrast. - Adjusted the layout to use a more responsive design with a new grid structure. - Enhanced button styles for better usability and visual appeal. - Updated text sizes for better readability across devices.  These modifications enhance the user experience and visual consistency of the Unser Part page.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/unser-part/UnserPartClient.tsx
+
+
+---
+
 ## [694c1defc64a90e3a5011e64900e649a4f394912] - Tue Jul 29 16:09:35 2025 +0200
 
 **Author**: stenkjan
