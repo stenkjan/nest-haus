@@ -219,10 +219,34 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   const handleVideoError = useCallback(
     (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
       const videoError = e.currentTarget.error;
-      const error = new Error(
-        `Video playback failed: ${videoError?.message || "Unknown error"}`
-      );
+      const errorMessage = videoError?.message || "Unknown error";
 
+      // Check if this is an audio decoding error that we can ignore for video-only content
+      if (
+        errorMessage.includes("audio packet") ||
+        errorMessage.includes("PIPELINE_ERROR_DECODE")
+      ) {
+        console.warn(
+          "🔇 Audio decoding issue detected, continuing with video-only playback:",
+          errorMessage
+        );
+
+        // Try to continue playback without audio
+        const video = e.currentTarget;
+        if (video && autoPlay) {
+          setTimeout(() => {
+            video.play().catch(() => {
+              // If still fails, set error
+              const error = new Error(`Video playback failed: ${errorMessage}`);
+              setError(error);
+              if (onError) onError(error);
+            });
+          }, 100);
+        }
+        return;
+      }
+
+      const error = new Error(`Video playback failed: ${errorMessage}`);
       console.error("🎥 Video error:", error);
 
       setError(error);
@@ -230,7 +254,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         onError(error);
       }
     },
-    [onError]
+    [onError, autoPlay]
   );
 
   // Auto-play setup
@@ -239,14 +263,38 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     if (!video || !autoPlay || !videoUrl || loading) return;
 
     const startPlayback = () => {
+      // Ensure video is muted for autoplay to work reliably
+      video.muted = true;
+
       video
         .play()
         .then(() => {
           if (onLoad) onLoad();
         })
         .catch((error) => {
-          console.warn("⚠️ Video autoplay failed:", error);
-          if (onError) onError(error);
+          const errorMessage = error.message || error.toString();
+
+          // Handle audio decoding errors gracefully
+          if (
+            errorMessage.includes("audio packet") ||
+            errorMessage.includes("PIPELINE_ERROR_DECODE")
+          ) {
+            console.warn(
+              "🔇 Audio decoding issue during autoplay, continuing video-only:",
+              errorMessage
+            );
+
+            // Try playing again after a short delay
+            setTimeout(() => {
+              video.play().catch((retryError) => {
+                console.warn("⚠️ Video autoplay retry failed:", retryError);
+                // Don't call onError for audio-related issues in video-only content
+              });
+            }, 200);
+          } else {
+            console.warn("⚠️ Video autoplay failed:", error);
+            if (onError) onError(error);
+          }
         });
     };
 
@@ -292,6 +340,9 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         muted={muted}
         playsInline={playsInline}
         controls={controls}
+        preload="metadata"
+        disableRemotePlayback
+        crossOrigin="anonymous"
         onLoadedData={handleVideoLoad}
         onError={handleVideoError}
         style={{
