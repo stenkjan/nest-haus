@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fadbbe04877373363c8293b473a60f51f799f4fa] - Mon Aug 4 16:35:11 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance DeinPartClient with new Step by Step section and update card components  - Added a new "Step by Step nach Hause" section with detailed steps for planning and construction. - Reintroduced the "Deine Gestaltungsmöglichkeiten" video gallery section with improved structure. - Updated SquareGlassCard and SquareGlassCardsScroll components to include title, subtitle, description, and responsive image handling. - Enhanced styling for better visual consistency and user experience across devices.  These updates improve the content presentation and interactivity on the Dein Part page.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/showcase/cards/page.tsx
+- src/components/cards/ImageGlassCard.tsx
+- src/components/cards/SquareGlassCard.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+
+
+---
+
 ## [883481797d14042210ea2a2223528db8872ee70d] - Tue Jul 29 17:10:57 2025 +0200
 
 **Author**: stenkjan
