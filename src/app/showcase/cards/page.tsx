@@ -24,9 +24,10 @@ export default function CardsShowcasePage() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Explore our collection of responsive card layouts: content cards,
-              glass effects, square cards with 1:1 aspect ratio, lightbox views,
-              and interactive elements. Each component adapts beautifully to
-              different screen sizes and interaction methods.
+              glass effects, square cards with structured layout (text top 50%,
+              image bottom 50%), lightbox views, and interactive elements. Each
+              component adapts beautifully to different screen sizes and
+              interaction methods.
             </p>
           </div>
         </section>
@@ -143,13 +144,23 @@ export default function CardsShowcasePage() {
               Square Glass Card
             </h2>
             <p className="text-gray-300">
-              Single square card with 1:1 aspect ratio and glass morphism effect
+              Square card with title/subtitle/description (top 50%) and image
+              with 2:3 aspect ratio (bottom 50%)
             </p>
           </div>
           <SquareGlassCard
             backgroundColor="black"
             size="medium"
             maxWidth={false}
+            cardData={{
+              id: 1,
+              title: "NEST-Haus Design",
+              subtitle: "Modern Alpine Architecture",
+              description:
+                "Innovative modular design combining traditional alpine aesthetics with contemporary sustainability.",
+              image:
+                "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+            }}
           />
         </section>
 
@@ -158,7 +169,7 @@ export default function CardsShowcasePage() {
           <SquareGlassCardsScroll
             backgroundColor="black"
             title="Square Glass Cards Scroll"
-            subtitle="Navigate with arrow keys or swipe • Click on cards for interactions"
+            subtitle="Each card: title/subtitle/description (top 50%) + image with 2:3 ratio (bottom 50%) • Navigate with arrow keys or swipe"
             maxWidth={false}
             onCardClick={(cardId) => console.log(`Clicked card ${cardId}`)}
           />

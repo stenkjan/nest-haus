@@ -9,6 +9,7 @@ interface SquareCardData {
   id: number;
   title: string;
   subtitle: string;
+  description: string;
   image: string;
   backgroundColor?: string;
 }
@@ -23,12 +24,14 @@ interface SquareGlassCardsScrollProps {
   onCardClick?: (cardId: number) => void;
 }
 
-// Default square card data
+// Default square card data with descriptions
 const defaultSquareCardData: SquareCardData[] = [
   {
     id: 1,
     title: "NEST-Haus Planning",
     subtitle: "Hand-drawn floor plans",
+    description:
+      "Innovative planning with hand-drawn precision and digital accuracy for your perfect home.",
     image: IMAGES.function.nestHausHandDrawing,
     backgroundColor: "#121212",
   },
@@ -36,6 +39,8 @@ const defaultSquareCardData: SquareCardData[] = [
     id: 2,
     title: "Mountain Vision",
     subtitle: "Alpine architecture",
+    description:
+      "Stunning Alpine design with natural wood cladding that harmonizes with mountain landscapes.",
     image:
       "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
     backgroundColor: "#121212",
@@ -44,6 +49,8 @@ const defaultSquareCardData: SquareCardData[] = [
     id: 3,
     title: "Modular System",
     subtitle: "7 modules, white facade",
+    description:
+      "Flexible modular building system with clean white facade panels for modern architectural aesthetics.",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
     backgroundColor: "#121212",
   },
@@ -51,6 +58,8 @@ const defaultSquareCardData: SquareCardData[] = [
     id: 4,
     title: "Ensemble Living",
     subtitle: "3 buildings, wood cladding",
+    description:
+      "Harmonious ensemble of multiple NEST units with natural larch wood cladding for community living.",
     image:
       "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
     backgroundColor: "#121212",
@@ -59,6 +68,8 @@ const defaultSquareCardData: SquareCardData[] = [
     id: 5,
     title: "Winter Design",
     subtitle: "Black trapezoidal facade",
+    description:
+      "Bold winter architecture with black trapezoidal metal facade designed for alpine environments.",
     image:
       "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
     backgroundColor: "#121212",
@@ -67,6 +78,8 @@ const defaultSquareCardData: SquareCardData[] = [
     id: 6,
     title: "Forest Integration",
     subtitle: "6 modules, black facade",
+    description:
+      "Perfect forest integration with black facade panels creating elegant contrast with green landscape.",
     image:
       "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
     backgroundColor: "#121212",
@@ -83,6 +96,7 @@ export default function SquareGlassCardsScroll({
   onCardClick,
 }: SquareGlassCardsScrollProps) {
   const [isClient, setIsClient] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(1);
   const [cardSize, setCardSize] = useState(400);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -95,33 +109,36 @@ export default function SquareGlassCardsScroll({
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
+    setScreenWidth(window.innerWidth);
   }, []);
 
-  // Calculate responsive dimensions for square cards
+  // Calculate responsive dimensions for square cards (same scaling as ContentCardsGlass)
   useEffect(() => {
     const updateDimensions = () => {
       const width = window.innerWidth;
+      setScreenWidth(width);
 
+      // Match ContentCardsGlass sizing but adapted for square cards with multiple per view
       if (width >= 1600) {
-        // Ultra-wide screens: 3 cards per view
-        setCardsPerView(3.2);
-        setCardSize(400);
-      } else if (width >= 1280) {
-        // Desktop XL: 2.5 cards per view
-        setCardsPerView(2.8);
-        setCardSize(380);
-      } else if (width >= 1024) {
-        // Desktop: 2 cards per view
-        setCardsPerView(2.2);
-        setCardSize(360);
-      } else if (width >= 768) {
-        // Tablet: 1.5 cards per view
+        // Ultra-wide screens: Large cards, fewer per view
         setCardsPerView(1.8);
-        setCardSize(320);
+        setCardSize(720);
+      } else if (width >= 1280) {
+        // Desktop XL: Large cards, fewer per view
+        setCardsPerView(1.6);
+        setCardSize(650);
+      } else if (width >= 1024) {
+        // Desktop: Medium-large cards, fewer per view
+        setCardsPerView(1.4);
+        setCardSize(580);
+      } else if (width >= 768) {
+        // Tablet: Medium cards, taller height
+        setCardsPerView(1.8);
+        setCardSize(400);
       } else {
-        // Mobile: 1.2 cards per view
-        setCardsPerView(1.3);
-        setCardSize(280);
+        // Mobile: Smaller cards, 1+ per view
+        setCardsPerView(1.2);
+        setCardSize(350);
       }
     };
 
@@ -207,11 +224,11 @@ export default function SquareGlassCardsScroll({
           <div className="flex gap-6 justify-center">
             <div
               className="animate-pulse bg-gray-800 rounded-3xl"
-              style={{ width: 400, height: 400 }}
+              style={{ width: 650, height: 650 }}
             />
             <div
               className="animate-pulse bg-gray-800 rounded-3xl"
-              style={{ width: 400, height: 400 }}
+              style={{ width: 650, height: 650 }}
             />
           </div>
         </div>
@@ -221,9 +238,9 @@ export default function SquareGlassCardsScroll({
 
   return (
     <div className={`${backgroundClasses} py-12`}>
-      <div className={`${containerClasses} px-4 md:px-8`}>
+      <div className={`${containerClasses}`}>
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 px-4 md:px-8">
           <h2 className={`text-3xl md:text-5xl font-bold ${textColor} mb-4`}>
             {title}
           </h2>
@@ -233,8 +250,12 @@ export default function SquareGlassCardsScroll({
         </div>
 
         {/* Cards Container */}
-        <div className="relative overflow-hidden">
-          <div className="overflow-hidden" ref={containerRef}>
+        <div className="relative overflow-x-clip">
+          <div
+            ref={containerRef}
+            className="overflow-x-hidden px-4 md:px-8"
+            style={{ overflow: "visible" }}
+          >
             <motion.div
               className="flex"
               style={{
@@ -252,10 +273,18 @@ export default function SquareGlassCardsScroll({
               {cardData.map((card, index) => (
                 <motion.div
                   key={card.id}
-                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col"
                   style={{
                     width: cardSize,
-                    height: cardSize,
+                    height:
+                      screenWidth >= 1024
+                        ? cardSize // Desktop: maintain square aspect
+                        : Math.min(
+                            cardSize * 1.3,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : cardSize * 1.3
+                          ), // Tablet/Mobile: taller to fit text + 2:3 image
                     backgroundColor: card.backgroundColor || "#121212",
                     boxShadow:
                       "inset 0 6px 12px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3)",
@@ -263,38 +292,50 @@ export default function SquareGlassCardsScroll({
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                   onClick={() => onCardClick?.(card.id)}
                 >
-                  {/* Square Image with Overlay */}
-                  <div className="relative w-full h-full group">
-                    <HybridBlobImage
-                      path={card.image}
-                      alt={card.title}
-                      fill
-                      className="object-cover"
-                      strategy="client"
-                      isInteractive={true}
-                      enableCache={true}
-                      sizes={`(max-width: 768px) 80vw, (max-width: 1024px) 50vw, (max-width: 1600px) 33vw, 25vw`}
-                    />
+                  {/* Text Content - Top Section */}
+                  <div className="flex-shrink-0 flex flex-col justify-center items-center text-center p-6">
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+                    >
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                        {card.title}
+                      </h3>
+                      <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
+                        {card.subtitle}
+                      </h4>
+                      <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-relaxed whitespace-pre-line">
+                        {card.description}
+                      </p>
+                    </motion.div>
+                  </div>
 
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-
-                    {/* Text Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-                      >
-                        <h3 className="text-xl font-bold text-white mb-2">
-                          {card.title}
-                        </h3>
-                        <p className="text-sm text-gray-300">{card.subtitle}</p>
-                      </motion.div>
-                    </div>
+                  {/* Image Content - Bottom Section with 2:3 aspect ratio */}
+                  <div className="flex-1 relative overflow-hidden p-[15px]">
+                    <motion.div
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: index * 0.1 + 0.2, duration: 0.8 }}
+                      className="relative w-full h-full rounded-3xl overflow-hidden"
+                      style={{
+                        aspectRatio: "2/3",
+                      }}
+                    >
+                      <HybridBlobImage
+                        path={card.image}
+                        alt={card.title}
+                        fill
+                        className="object-cover object-center"
+                        strategy="client"
+                        isInteractive={true}
+                        enableCache={true}
+                        sizes={`(max-width: 768px) 40vw, (max-width: 1024px) 25vw, (max-width: 1600px) 20vw, 15vw`}
+                      />
+                    </motion.div>
                   </div>
                 </motion.div>
               ))}
@@ -325,10 +366,7 @@ export default function SquareGlassCardsScroll({
         {/* Instructions */}
         {showInstructions && (
           <div className={`text-center mt-6 text-sm ${textColor} opacity-60`}>
-            <p>
-              Square glass cards • Navigate with arrow keys or swipe • Click on
-              cards for interactions
-            </p>
+            <p></p>
           </div>
         )}
       </div>

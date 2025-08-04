@@ -11,6 +11,7 @@ import {
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
+import { SquareGlassCardsScroll } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
 
 // Define sections with proper structure for dein-part page
@@ -41,11 +42,6 @@ const sections = [
     slug: "installationsebene",
   },
   {
-    id: "video-gallery",
-    title: "Deine Gestaltungsmöglichkeiten",
-    slug: "gestaltungsmoeglichkeiten",
-  },
-  {
     id: "wohnflaeche-erweitern",
     title: "Wohnfläche erweitern?",
     slug: "wohnflaeche-erweitern",
@@ -54,6 +50,16 @@ const sections = [
     id: "flexibilitaet",
     title: "Ob Decke einziehen, oder Haus erweitern.",
     slug: "flexibilitaet",
+  },
+  {
+    id: "step-by-step",
+    title: "Step by Step nach Hause",
+    slug: "step-by-step",
+  },
+  {
+    id: "video-gallery",
+    title: "Deine Gestaltungsmöglichkeiten",
+    slug: "gestaltungsmoeglichkeiten",
   },
   {
     id: "call-to-action",
@@ -153,10 +159,7 @@ export default function DeinPartClient() {
 
             {/* ImageGlassCard */}
             <div className="mt-16">
-              <ImageGlassCard
-                backgroundColor="black"
-                maxWidth={false}
-              />
+              <ImageGlassCard backgroundColor="black" maxWidth={false} />
 
               {/* Additional Button Combination */}
               <div className="flex gap-4 justify-center w-full mt-8">
@@ -228,6 +231,72 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               maxWidth={false}
             />
           </div>
+        </section>
+
+        {/* Step by Step Section */}
+        <section id="step-by-step" className="w-full py-16 bg-black">
+          <SquareGlassCardsScroll
+            title="Step by Step nach Hause"
+            subtitle="Ablauf von Planung und-Bauphase in einfachen Schritten"
+            backgroundColor="black"
+            maxWidth={false}
+            customData={[
+              {
+                id: 1,
+                title: "Planung & Design",
+                subtitle: "Individuelle Konzeption",
+                description:
+                  "Dein Traumhaus wird individuell geplant. Wir berücksichtigen deine Wünsche, Bedürfnisse und Lebensumstände für die perfekte Lösung.",
+                image: IMAGES.function.nestHausHandDrawing,
+                backgroundColor: "#121212",
+              },
+              {
+                id: 2,
+                title: "Konfiguration",
+                subtitle: "Anpassung nach Wunsch",
+                description:
+                  "Du wählst und konfigurierst dein NEST Haus nach deinen Vorstellungen. Jede Anpassung und Individualisierung ist möglich.",
+                image: IMAGES.function.nestHausGrundrissSchema,
+                backgroundColor: "#121212",
+              },
+              {
+                id: 3,
+                title: "Produktion",
+                subtitle: "Präzise Fertigung",
+                description:
+                  "Dein NEST Haus wird mit höchster Präzision gefertigt. Alle Module werden vorkonzipiert und professionell montiert.",
+                image: IMAGES.function.nestHausModulSchemaIntro,
+                backgroundColor: "#121212",
+              },
+              {
+                id: 4,
+                title: "Lieferung",
+                subtitle: "Transport zum Grundstück",
+                description:
+                  "Die fertigen Module werden sicher und termingerecht zu deinem Grundstück transportiert und vor Ort aufgestellt.",
+                image: IMAGES.function.nestHausModulSeiteKonzept,
+                backgroundColor: "#121212",
+              },
+              {
+                id: 5,
+                title: "Dein Part",
+                subtitle: "Innenausbau nach Wunsch",
+                description:
+                  "Du übernimmst den finalen Innenausbau - Elektrik, Sanitär und Gestaltung nach deinen persönlichen Vorstellungen.",
+                image: IMAGES.function.nestHausModulElektrikSanitaer,
+                backgroundColor: "#121212",
+              },
+              {
+                id: 6,
+                title: "Einzug",
+                subtitle: "Willkommen Zuhause",
+                description:
+                  "Dein individuelles NEST Haus ist fertig. Du ziehst in dein maßgeschneidertes Zuhause ein, das perfekt zu dir passt.",
+                image: IMAGES.function.nestHausPlattenFundament,
+                backgroundColor: "#121212",
+              },
+            ]}
+          />
         </section>
 
         {/* Video Gallery Section */}

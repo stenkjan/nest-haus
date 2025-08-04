@@ -51,7 +51,7 @@ export default function ImageGlassCard({
           <div className="flex justify-center">
             {/* Glass Card with Image - Standard responsive sizing */}
             <motion.div
-              className="w-full max-w-4xl rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="w-full max-w-6xl rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               style={{
                 backgroundColor: "#121212",
                 boxShadow:
@@ -60,7 +60,7 @@ export default function ImageGlassCard({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
             >
               {/* Image with Natural Aspect Ratio */}
               <div className="relative w-full">
