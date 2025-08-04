@@ -63,18 +63,22 @@ export default function ThreeByOneAdaptiveHeight({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-          <div className={`${containerClasses} ${backgroundClasses} py-8`}>
-            <div className="text-center mb-24">
-         <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
-        {subtitle && (
-          <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
-            {subtitle}
-          </p>
-        )}
-      </div>
+      <div className={`${containerClasses} ${backgroundClasses} py-8`}>
+        <div className="text-center mb-24">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+              {subtitle}
+            </p>
+          )}
+        </div>
         <div className="flex justify-center items-center py-8">
           <div
-            className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"} rounded-3xl`}
+            className={`animate-pulse ${
+              backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
+            } rounded-3xl`}
             style={{ width: "100%", height: 400 }}
           />
         </div>
@@ -87,7 +91,9 @@ export default function ThreeByOneAdaptiveHeight({
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
         <div className="text-center mb-24 px-4 md:px-8">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">{title}</h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">
+            {title}
+          </h2>
           {subtitle && (
             <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
               {subtitle}
@@ -178,9 +184,9 @@ export default function ThreeByOneAdaptiveHeight({
             {/* Third Column: Text - full height */}
             <motion.div
               className="rounded-lg p-6 h-full"
-              style={{ 
-                display: 'grid',
-                placeItems: 'center'
+              style={{
+                display: "grid",
+                placeItems: "center",
               }}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -197,4 +203,4 @@ export default function ThreeByOneAdaptiveHeight({
       </div>
     </div>
   );
-} 
+}
