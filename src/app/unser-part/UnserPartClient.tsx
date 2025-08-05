@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
-import { CallToAction } from "@/components/ui";
+import { Button, CallToAction } from "@/components/ui";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
@@ -172,12 +173,12 @@ export default function UnserPartClient() {
             title="Manchmal kommt es auf die Größe an."
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
             backgroundColor="black"
-            text="Unsere Qualitätssicherung beginnt bereits in der Planungsphase und setzt sich durch den gesamten Fertigungsprozess fort. Jedes Modul wird nach strengsten Standards gefertigt und vor der Auslieferung umfassend geprüft."
-            mobileText="Qualitätssicherung und Präzision in jedem Arbeitsschritt - das ist unser Versprechen für dein NEST-Haus."
+            text="<span class='text-gray-400'>Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch</span> intelligente Optimierung <span class='text-gray-400'>– und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert:</span> Präzisionsgefertigte Module, effiziente Fertigung <span class='text-gray-400'>und</span> bewährte Konstruktion <span class='text-gray-400'>sichern</span> höchste Qualität."
+            mobileText="Standardisierung für Effizienz und Kostenoptimierung. Intelligente Optimierung und höchste Qualität durch präzisionsgefertigte Module."
             textPosition="left"
             maxWidth={false}
-            image1={IMAGES.function.nestHausModulAnsicht}
-            image2={IMAGES.function.nestHausModulKonzept}
+            image1={IMAGES.function.nestHausModulKonzept}
+            image2={IMAGES.function.nestHausModulLiniengrafik}
             image1Description="NEST-Haus Modul Stirnseite Ansicht Schema Konzept"
             image2Description="NEST-Haus Modul Holz Schema Konzept"
           />
@@ -188,7 +189,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="Seitliche Ansicht des Moduls zeigt die durchdachte Konstruktion und die optimierte Statik. Jedes Modul ist selbsttragend und kann flexibel mit anderen Modulen kombiniert werden. Die präzise Fertigung garantiert perfekte Passgenauigkeit und höchste Qualität."
+              text="<span class='text-gray-400'>Das bedeutet:</span> schnelle Bauzeiten, zuverlässige Strukturen <span class='text-gray-400'>und ein unschlagbares Preis-Leistungs-Verhältnis. Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> maximale Freiheit: <span class='text-gray-400'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span>"
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}
@@ -205,8 +206,8 @@ export default function UnserPartClient() {
             title="Raum zum Träumen"
             subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
             backgroundColor="black"
-            textBox1="Durch unsere systematische Herangehensweise und bewährte Prozesse stellen wir sicher, dass jedes NEST-Haus den höchsten Qualitätsstandards entspricht. Von der Planung über die Fertigung bis zur Montage - wir überwachen jeden Schritt."
-            textBox2="Unser Part ist es, komplexe Bauprojekte zu vereinfachen und für dich transparent zu gestalten. Mit modernen Planungstools und durchdachten Abläufen machen wir den Hausbau zu einem entspannten Erlebnis."
+            textBox1="<span class='text-gray-400'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> mit dem Nest System alles haben <span class='text-gray-400'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> maximale Freiheit ohne Kompromisse <span class='text-gray-400'>bietet. Durch</span> intelligente Standardisierung <span class='text-gray-400'>garantieren wir</span> höchste"
+            textBox2="Qualität, Langlebigkeit <span class='text-gray-400'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.</span>"
             maxWidth={false}
           />
         </section>
@@ -224,7 +225,6 @@ export default function UnserPartClient() {
             title="Fenster & Türen"
             subtitle="Deine Fenster- und Türöffnungen werden dort platziert, wo du es möchtest."
             backgroundColor="black"
-            text="Unser erfahrenes Team begleitet dich von der ersten Idee bis zum Einzug in dein neues Zuhause. Mit jahrelanger Expertise im modularen Hausbau sorgen wir dafür, dass dein Projekt reibungslos und termingerecht realisiert wird."
             imageDescription="NEST-Haus Expertise und professionelle Beratung"
             maxWidth={false}
           />
@@ -235,7 +235,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="Sobald die Module geliefert sind, beginnt dein Teil der Gestaltung. Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt deinem Plan, jeder Schritt bringt dich deinem Zuhause näher. Du bestimmst, wo Licht einfällt, wo Wege beginnen und wie dein Raum sich öffnet. So entsteht nicht nur ein Haus, sondern ein Ort, der ganz dir gehört."
+              text="<span class='text-gray-400'>Sobald die Module geliefert sind, beginnt</span> dein Teil der Gestaltung. <span class='text-gray-400'>Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt</span> deinem Plan, <span class='text-gray-400'>jeder Schritt bringt dich</span> deinem Zuhause näher. <span class='text-gray-400'>Du bestimmst, wo</span> Licht einfällt, <span class='text-gray-400'>wo</span> Wege beginnen <span class='text-gray-400'>und wie dein</span> Raum sich öffnet. <span class='text-gray-400'>So entsteht nicht nur ein Haus, sondern</span> ein Ort, der ganz dir gehört."
               textPosition="left"
               maxWidth={false}
               image1={IMAGES.function.nestHausFensterTuerenStirnseite}
@@ -251,7 +251,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="Solltest du Unterstützung bei der Planung benötigen, kannst du eines unserer Planungspakete wählen. So erhältst du genau die Hilfe, die du brauchst, um deine Vision Wirklichkeit werden zu lassen."
+              text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> eines unserer Planungspakete wählen. <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> deine Vision Wirklichkeit werden zu lassen."
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}
@@ -326,6 +326,20 @@ export default function UnserPartClient() {
                   quality={85}
                 />
               </div>
+            </div>
+
+            {/* Button Combination - Navigation Links */}
+            <div className="flex gap-4 justify-center w-full mt-8">
+              <Link href="/dein-part">
+                <Button variant="primary" size="xs">
+                  Dein Part
+                </Button>
+              </Link>
+              <Link href="/konfigurator">
+                <Button variant="secondary" size="xs">
+                  Jetzt bauen
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

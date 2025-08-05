@@ -137,9 +137,8 @@ export default function ThreeByOneGrid({
               >
                 <p
                   className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
-                >
-                  {displayText}
-                </p>
+                  dangerouslySetInnerHTML={{ __html: displayText }}
+                />
                 {showButtons && (
                   <div className="flex gap-4 justify-center">
                     <Button variant="primary" size="xs">
@@ -357,9 +356,8 @@ export default function ThreeByOneGrid({
                   >
                     <p
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
-                    >
-                      {displayText}
-                    </p>
+                      dangerouslySetInnerHTML={{ __html: displayText }}
+                    />
                     {showButtons && (
                       <div className="flex gap-4 justify-center w-full">
                         <Button variant="primary" size="xs">
@@ -577,9 +575,8 @@ export default function ThreeByOneGrid({
                   >
                     <p
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
-                    >
-                      {displayText}
-                    </p>
+                      dangerouslySetInnerHTML={{ __html: displayText }}
+                    />
                     {showButtons && (
                       <div className="flex gap-4 justify-center w-full">
                         <Button variant="primary" size="xs">

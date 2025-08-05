@@ -130,14 +130,19 @@ export default function FullWidthImageGrid({
         {/* Two Text Boxes Below - Responsive Layout */}
         <div className="px-4 md:px-8 mt-4">
           <div
-            className={`grid ${
-              isMobile ? "grid-cols-1" : "grid-cols-2"
-            } gap-4 md:gap-6 max-w-4xl mx-auto`}
+            className={`${
+              isMobile
+                ? "flex flex-col space-y-4"
+                : "grid grid-cols-2 gap-4 md:gap-6 grid-rows-1"
+            } max-w-4xl mx-auto`}
           >
             {/* Text Box 1 */}
             <motion.div
-              className="flex items-center justify-center"
-              style={isMobile ? {} : { minHeight: "200px" }}
+              className={`${
+                isMobile
+                  ? "flex items-center justify-center"
+                  : "flex items-start justify-start"
+              }`}
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
@@ -146,15 +151,17 @@ export default function FullWidthImageGrid({
                 className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
                   isMobile ? "text-center" : "text-left"
                 }`}
-              >
-                {textBox1}
-              </p>
+                dangerouslySetInnerHTML={{ __html: textBox1 }}
+              />
             </motion.div>
 
             {/* Text Box 2 */}
             <motion.div
-              className="flex items-center justify-center"
-              style={isMobile ? {} : { minHeight: "200px" }}
+              className={`${
+                isMobile
+                  ? "flex items-center justify-center"
+                  : "flex items-start justify-start"
+              }`}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
@@ -163,9 +170,8 @@ export default function FullWidthImageGrid({
                 className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
                   isMobile ? "text-center" : "text-left"
                 }`}
-              >
-                {textBox2}
-              </p>
+                dangerouslySetInnerHTML={{ __html: textBox2 }}
+              />
             </motion.div>
           </div>
         </div>
