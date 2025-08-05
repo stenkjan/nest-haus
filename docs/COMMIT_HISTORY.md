@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b3859984beec03b0b5b624bf6b1cbcdfcba61c1b] - Tue Aug 5 13:41:19 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance UnserPartClient with new navigation buttons and improved text formatting  - Added navigation buttons for "Dein Part" and "Jetzt bauen" to facilitate user navigation. - Updated text content across various sections to improve clarity and engagement, incorporating HTML spans for better styling. - Adjusted image references to ensure accurate representation of the NEST-Haus modules.  These enhancements improve user interaction and content presentation on the Unser Part page.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+
+
+---
+
 ## [cc2c3f7617f00bba61708195868e1e333ce42efd] - Mon Aug 4 17:42:56 2025 +0200
 
 **Author**: stenkjan
