@@ -174,7 +174,6 @@ export default function UnserPartClient() {
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
             backgroundColor="black"
             text="<span class='text-gray-400'>Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch</span> intelligente Optimierung <span class='text-gray-400'>– und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert:</span> Präzisionsgefertigte Module, effiziente Fertigung <span class='text-gray-400'>und</span> bewährte Konstruktion <span class='text-gray-400'>sichern</span> höchste Qualität."
-            mobileText="Standardisierung für Effizienz und Kostenoptimierung. Intelligente Optimierung und höchste Qualität durch präzisionsgefertigte Module."
             textPosition="left"
             maxWidth={false}
             image1={IMAGES.function.nestHausModulKonzept}
@@ -311,23 +310,31 @@ export default function UnserPartClient() {
                 Weil nur du weißt, wie du richtig wohnst.
               </p>
             </div>
+          </div>
 
+          {/* Image container with same sizing as video above */}
+          <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="flex justify-center">
-              <div className="w-full relative" style={{ aspectRatio: "1.9/1" }}>
+              <div className="w-full max-w-6xl overflow-hidden">
                 <HybridBlobImage
                   path={IMAGES.function.nestHausGrundrissSchema}
                   alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
-                  strategy="client"
-                  isInteractive={true}
-                  enableCache={true}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, 1550px"
+                  width={1920}
+                  height={1011}
+                  className="w-full h-auto object-contain"
+                  sizes="(max-width: 768px) calc(100vw - 32px), (max-width: 1024px) calc(100vw - 64px), 1152px"
                   quality={85}
+                  strategy="client"
+                  enableCache={true}
+                  isInteractive={true}
+                  isAboveFold={false}
+                  isCritical={false}
                 />
               </div>
             </div>
+          </div>
 
+          <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
             {/* Button Combination - Navigation Links */}
             <div className="flex gap-4 justify-center w-full mt-8">
               <Link href="/dein-part">
