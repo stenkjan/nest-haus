@@ -2,7 +2,7 @@
  * ImageManager - Preview Image Handling
  * 
  * Manages image preview logic, caching, and view switching.
- * CLEANED UP: Uses constants from configurator.ts, improved security, better error handling
+ * OPTIMIZED: Intelligent preloading, adjacent view prediction, coordinated caching
  * 
  * @example
  * const imagePath = ImageManager.getPreviewImage(configuration, 'exterior');
@@ -24,8 +24,14 @@ import {
 import type { ViewType } from '../types/configurator.types';
 import type { Configuration } from '@/store/configuratorStore';
 
-// In-memory cache for resolved image paths to prevent redundant lookups
+// Enhanced caching system
 const imagePathCache = new Map<string, string>();
+const preloadProgressCache = new Map<string, Promise<void>>();
+const adjacentViewsCache = new Map<string, ViewType[]>();
+
+// Performance monitoring
+let lastPreloadTimestamp = 0;
+const PRELOAD_DEBOUNCE_MS = 300; // Prevent excessive preloading
 
 export class ImageManager {
   /**
@@ -86,6 +92,190 @@ export class ImageManager {
   }
 
   /**
+   * ENHANCED: Intelligent preloading with adjacent view prediction and debouncing
+   * Preloads current, adjacent, and predicted images for seamless user experience
+   */
+  static async preloadImages(
+    configuration: Configuration | null,
+    currentView: ViewType = 'exterior',
+    priority: 'high' | 'normal' | 'low' = 'normal'
+  ): Promise<void> {
+    if (!configuration || typeof window === 'undefined') return;
+
+    // Debounce preloading to prevent excessive API calls during rapid configuration changes
+    const now = Date.now();
+    if (priority === 'normal' && now - lastPreloadTimestamp < PRELOAD_DEBOUNCE_MS) {
+      return;
+    }
+    lastPreloadTimestamp = now;
+
+    const configKey = this.createCacheKey(configuration, currentView);
+
+    // Return existing preload promise to prevent duplicate operations
+    if (preloadProgressCache.has(configKey)) {
+      return preloadProgressCache.get(configKey);
+    }
+
+    const preloadPromise = this.executeIntelligentPreload(configuration, currentView, priority);
+    preloadProgressCache.set(configKey, preloadPromise);
+
+    try {
+      await preloadPromise;
+    } finally {
+      // Clear after a delay to allow for rapid view switches
+      setTimeout(() => preloadProgressCache.delete(configKey), 2000);
+    }
+  }
+
+  /**
+   * ENHANCED: Execute intelligent preloading strategy
+   */
+  private static async executeIntelligentPreload(
+    configuration: Configuration,
+    currentView: ViewType,
+    priority: 'high' | 'normal' | 'low'
+  ): Promise<void> {
+    try {
+      const availableViews = this.getAvailableViews(configuration, true, true);
+      const imagesToPreload: { path: string; priority: number }[] = [];
+
+      // Priority 1: Current view (highest priority)
+      const currentImagePath = this.getPreviewImage(configuration, currentView);
+      imagesToPreload.push({ path: currentImagePath, priority: 1 });
+
+      // Priority 2: Adjacent views (next/previous) for seamless navigation
+      const currentIndex = availableViews.indexOf(currentView);
+      if (currentIndex !== -1) {
+        // Next view
+        const nextIndex = (currentIndex + 1) % availableViews.length;
+        const nextView = availableViews[nextIndex];
+        const nextImagePath = this.getPreviewImage(configuration, nextView);
+        imagesToPreload.push({ path: nextImagePath, priority: 2 });
+
+        // Previous view
+        const prevIndex = currentIndex === 0 ? availableViews.length - 1 : currentIndex - 1;
+        const prevView = availableViews[prevIndex];
+        const prevImagePath = this.getPreviewImage(configuration, prevView);
+        imagesToPreload.push({ path: prevImagePath, priority: 2 });
+      }
+
+      // Priority 3: All other available views (background preloading)
+      if (priority === 'high') {
+        availableViews.forEach(view => {
+          if (view !== currentView) {
+            const imagePath = this.getPreviewImage(configuration, view);
+            if (!imagesToPreload.some(img => img.path === imagePath)) {
+              imagesToPreload.push({ path: imagePath, priority: 3 });
+            }
+          }
+        });
+      }
+
+      // Remove duplicates and sort by priority
+      const uniqueImages = imagesToPreload
+        .filter((img, index, arr) => arr.findIndex(i => i.path === img.path) === index)
+        .sort((a, b) => a.priority - b.priority);
+
+      // Execute preloading with staggered timing based on priority
+      const preloadPromises = uniqueImages.map(async (img, index) => {
+        try {
+          // Stagger requests to prevent overwhelming the server
+          const delay = img.priority === 1 ? 0 : img.priority === 2 ? 50 : 100 + (index * 25);
+
+          if (delay > 0) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
+
+          const encodedPath = encodeURIComponent(img.path);
+          await fetch(`/api/images?path=${encodedPath}`, {
+            method: 'GET',
+            cache: 'force-cache',
+            priority: img.priority === 1 ? 'high' : img.priority === 2 ? 'auto' : 'low'
+          } as RequestInit);
+
+          if (process.env.NODE_ENV === 'development') {
+            console.debug(`🖼️ Preloaded (P${img.priority}): ${img.path.substring(img.path.lastIndexOf('/') + 1)}`);
+          }
+        } catch (error) {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(`🖼️ Failed to preload image: ${img.path}`, error);
+          }
+        }
+      });
+
+      await Promise.allSettled(preloadPromises);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`🖼️ Intelligent preload completed: ${uniqueImages.length} images (current: ${currentView})`);
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('🖼️ Intelligent preload error:', error);
+      }
+    }
+  }
+
+  /**
+   * ENHANCED: Get predicted next views based on user behavior patterns
+   */
+  static getPredictedNextViews(
+    configuration: Configuration | null,
+    currentView: ViewType,
+    hasPart2BeenActive: boolean = false,
+    hasPart3BeenActive: boolean = false
+  ): ViewType[] {
+    if (!configuration) return [];
+
+    const availableViews = this.getAvailableViews(configuration, hasPart2BeenActive, hasPart3BeenActive);
+    const currentIndex = availableViews.indexOf(currentView);
+
+    if (currentIndex === -1) return [];
+
+    // Predict likely next views based on common user patterns
+    const predictions: ViewType[] = [];
+
+    // Add adjacent views (most likely)
+    const nextIndex = (currentIndex + 1) % availableViews.length;
+    const prevIndex = currentIndex === 0 ? availableViews.length - 1 : currentIndex - 1;
+
+    predictions.push(availableViews[nextIndex]);
+    if (availableViews[prevIndex] !== availableViews[nextIndex]) {
+      predictions.push(availableViews[prevIndex]);
+    }
+
+    return predictions;
+  }
+
+  /**
+   * ENHANCED: Preload specific view with immediate priority
+   */
+  static async preloadSpecificView(
+    configuration: Configuration | null,
+    view: ViewType
+  ): Promise<void> {
+    if (!configuration || typeof window === 'undefined') return;
+
+    try {
+      const imagePath = this.getPreviewImage(configuration, view);
+      const encodedPath = encodeURIComponent(imagePath);
+
+      await fetch(`/api/images?path=${encodedPath}`, {
+        method: 'GET',
+        cache: 'force-cache',
+        priority: 'high'
+      } as RequestInit);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`🖼️ High-priority preload: ${view} -> ${imagePath.substring(imagePath.lastIndexOf('/') + 1)}`);
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`🖼️ Failed to preload ${view}:`, error);
+      }
+    }
+  }
+
+  /**
    * Validate view type for security - IMPROVED: Uses constants
    */
   private static isValidViewType(view: string): view is ViewType {
@@ -105,63 +295,53 @@ export class ImageManager {
   }
 
   /**
-   * Create a unique cache key for configuration + view combination
-   * IMPROVED: Better validation and encoding handling
+   * Create cache key for memoization
+   * IMPROVED: Better key generation for cache efficiency
    */
   private static createCacheKey(configuration: Configuration, view: ViewType): string {
-    const keys = [
-      view,
-      this.sanitizeConfigValue(configuration.nest?.value) || 'nest80',
-      this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech',
-      this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'kiefer',
-      this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett',
-      this.sanitizeConfigValue(configuration.pvanlage?.value) || 'none',
-      this.sanitizeConfigValue(configuration.fenster?.value) || 'none'
-    ];
+    const nest = configuration?.nest?.value || 'none';
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'none';
+    const innenverkleidung = configuration?.innenverkleidung?.value || 'none';
+    const fussboden = configuration?.fussboden?.value || 'none';
+    const pvanlage = configuration?.pvanlage?.value || 'none';
+    const fenster = configuration?.fenster?.value || 'none';
 
-    return keys.join('|');
+    return `${view}_${nest}_${gebaeudehuelle}_${innenverkleidung}_${fussboden}_${pvanlage}_${fenster}`;
   }
 
   /**
-   * Get fallback preview image if specific image not found
-   * @private
-   */
-  private static getFallbackPreviewImage(): string {
-    // Use the exterior fallback directly since it's an image path
-    return IMAGE_FALLBACKS.exterior;
-  }
-
-  /**
-   * Get exterior image path for a given configuration
-   * CLIENT-SIDE calculation for efficiency
+   * Get exterior image path with enhanced security and fallback logic
+   * Uses nest size for primary image selection, gebäudehülle for material overlay
+   * CLIENT-SIDE calculation for efficiency and security
    */
   static getExteriorImage(configuration: Configuration): string {
-    if (!configuration?.nest?.value || !configuration?.gebaeudehuelle?.value) {
+    // Use selected nest size or default to nest80
+    const nestValue = configuration?.nest?.value || 'nest80';
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
+
+    // Primary image based on nest size
+    const nestKey = NEST_SIZE_MAPPING[nestValue];
+    if (!nestKey) {
       return IMAGE_FALLBACKS.exterior;
     }
 
-    // Map nest value to image size
-    const nestType = configuration.nest.value;
-    const gebaeudehuelle = configuration.gebaeudehuelle.value;
-
-    const nestSize = NEST_SIZE_MAPPING[nestType];
-    const exteriorType = GEBAEUDE_EXTERIOR_MAPPING[gebaeudehuelle];
-
-    if (!nestSize || !exteriorType) {
+    // Get gebäudehülle-specific image
+    const gebaeudeMapping = GEBAEUDE_EXTERIOR_MAPPING[gebaeudehuelle];
+    if (!gebaeudeMapping) {
       return IMAGE_FALLBACKS.exterior;
     }
 
-    // Construct image key: nest{size}_{exteriorType}
-    const imageKey = `nest${nestSize}_${exteriorType}`;
+    // Try to get specific image for this combination
+    const imageKey = `${nestKey}_${gebaeudeMapping}`;
+    const specificImage = IMAGES.configurations[imageKey as keyof typeof IMAGES.configurations];
 
-    // Return the image path directly from configurations
-    let imagePath = IMAGES.configurations[imageKey as keyof typeof IMAGES.configurations];
-
-    if (!imagePath) {
-      imagePath = IMAGE_FALLBACKS.exterior;
+    if (specificImage) {
+      return specificImage;
     }
 
-    return imagePath;
+    // Fallback to nest-specific image
+    const nestImage = IMAGES.configurations[nestKey as keyof typeof IMAGES.configurations];
+    return nestImage || IMAGE_FALLBACKS.exterior;
   }
 
   /**
@@ -169,18 +349,16 @@ export class ImageManager {
    * CLIENT-SIDE calculation for efficiency
    */
   static getStirnseiteImage(configuration: Configuration): string {
-    if (!configuration?.gebaeudehuelle?.value) {
-      return IMAGE_FALLBACKS.stirnseite;
-    }
-
-    const gebaeudehuelle = configuration.gebaeudehuelle.value;
-    const stirnseiteKey = STIRNSEITE_MAPPING[gebaeudehuelle];
+    // Get nest size for stirnseite view (side view depends on house size)
+    const nestValue = configuration?.nest?.value || 'nest80';
+    const stirnseiteKey = STIRNSEITE_MAPPING[nestValue];
 
     if (!stirnseiteKey) {
       return IMAGE_FALLBACKS.stirnseite;
     }
 
     const imagePath = IMAGES.configurations[stirnseiteKey as keyof typeof IMAGES.configurations];
+
     return imagePath || IMAGE_FALLBACKS.stirnseite;
   }
 
@@ -210,92 +388,72 @@ export class ImageManager {
     }
 
     // RESTORED: Interdependent logic for other gebäudehülle types
-    // Build combination dynamically using individual mappings
-    try {
-      const gebaeudePrefixMapping = {
-        'trapezblech': 'trapezblech',
-        'holzlattung': 'holzlattung',
-        'fassadenplatten_schwarz': 'plattenschwarz',
-        'fassadenplatten_weiss': 'plattenweiss'
-      };
+    // For non-trapezblech types, use interdependent selection rules
 
-      const innenverkleidungMapping = {
-        'kiefer': 'holznatur',
-        'fichte': 'holzweiss',
-        'steirische_eiche': 'eiche'
-      };
+    if (gebaeudehuelle === 'holzfassade' || gebaeudehuelle === 'putzfassade') {
+      // These gebäudehülle types have specific interior logic
+      let interiorImageKey = '';
 
-      const fussbodenMapping = {
-        'parkett': 'parkett',
-        'kalkstein_kanafar': 'kalkstein',
-        'schiefer_massiv': 'granit' // Default: granit paths
-      };
-
-      // Special case: holzlattung uses 'schiefer' instead of 'granit' for schiefer_massiv
-      const fussbodenHolzlattungMapping = {
-        'parkett': 'parkett',
-        'kalkstein_kanafar': 'kalkstein',
-        'schiefer_massiv': 'schiefer' // For holzlattung: use schiefer paths
-      };
-
-      const gebaeude = gebaeudePrefixMapping[gebaeudehuelle as keyof typeof gebaeudePrefixMapping];
-      const innen = innenverkleidungMapping[innenverkleidung as keyof typeof innenverkleidungMapping];
-
-      // Choose the appropriate fussboden mapping based on gebäudehülle
-      const fussbodenMap = gebaeudehuelle === 'holzlattung'
-        ? fussbodenHolzlattungMapping
-        : fussbodenMapping;
-      const fussBoden = fussbodenMap[fussboden as keyof typeof fussbodenMap];
-
-      if (gebaeude && innen && fussBoden) {
-        // Build the image key: gebaeude_innen_fussboden
-        const dynamicImageKey = `${gebaeude}_${innen}_${fussBoden}`;
-
-        const imagePath = IMAGES.configurations[dynamicImageKey as keyof typeof IMAGES.configurations];
-        if (imagePath) {
-          return imagePath;
-        }
+      if (innenverkleidung === 'kiefer' && fussboden === 'parkett') {
+        interiorImageKey = 'interior_kiefer_parkett';
+      } else if (innenverkleidung === 'kiefer' && fussboden === 'vinyl') {
+        interiorImageKey = 'interior_kiefer_vinyl';
+      } else if (innenverkleidung === 'pappel' && fussboden === 'parkett') {
+        interiorImageKey = 'interior_pappel_parkett';
+      } else if (innenverkleidung === 'pappel' && fussboden === 'vinyl') {
+        interiorImageKey = 'interior_pappel_vinyl';
+      } else {
+        // Fallback for holzfassade/putzfassade
+        interiorImageKey = 'interior_kiefer_parkett';
       }
-    } catch (error) {
-      console.warn(`🖼️ Error building dynamic interior combination for ${combinationKey}:`, error);
+
+      const imagePath = IMAGES.configurations[interiorImageKey as keyof typeof IMAGES.configurations];
+      if (imagePath) {
+        return imagePath;
+      }
     }
 
-    // ENHANCED: Additional security check for valid combinations
-    const validExactMappings = Object.keys(INTERIOR_EXACT_MAPPINGS);
-    if (!validExactMappings.includes(combinationKey)) {
-      console.warn(`🔒 [ImageManager] Using fallback for combination: ${combinationKey}`);
-    }
-
-    return IMAGE_FALLBACKS.interior;
+    // Final fallback
+    return IMAGES.configurations.interior_kiefer_parkett || IMAGE_FALLBACKS.interior;
   }
 
   /**
-   * Get PV (Photovoltaik) image path
-   * CLIENT-SIDE calculation for efficiency
+   * Get PV image path with enhanced security and fallback logic
+   * Uses PV type mapping for appropriate visualization
+   * CLIENT-SIDE calculation for efficiency and security
    */
   static getPVImage(configuration: Configuration): string {
-    if (!configuration?.gebaeudehuelle?.value) {
-      return IMAGES.configurations.pv_holzfassade || IMAGE_FALLBACKS.exterior;
+    if (!configuration?.pvanlage?.value) {
+      return IMAGE_FALLBACKS.exterior;
     }
 
-    const gebaeudehuelle = configuration.gebaeudehuelle.value;
-    const pvKey = PV_IMAGE_MAPPING[gebaeudehuelle];
+    const pvType = configuration.pvanlage.value;
 
+    // Map to PV image keys
+    const pvKey = PV_IMAGE_MAPPING[pvType];
     if (!pvKey) {
-      return IMAGES.configurations.pv_holzfassade || IMAGE_FALLBACKS.exterior;
+      return IMAGES.configurations.nest80_trapezblech_pv || IMAGE_FALLBACKS.exterior;
     }
 
-    const imagePath = IMAGES.configurations[pvKey as keyof typeof IMAGES.configurations];
-    return imagePath || IMAGES.configurations.pv_holzfassade || IMAGE_FALLBACKS.exterior;
+    // Try configurations collection first
+    const pvImage = IMAGES.configurations[pvKey as keyof typeof IMAGES.configurations];
+    if (pvImage) {
+      return pvImage;
+    }
+
+    // Fallback to solar collection
+    const solarImage = IMAGES.solar?.[pvKey as keyof typeof IMAGES.solar];
+    return solarImage || IMAGES.configurations.nest80_trapezblech_pv || IMAGE_FALLBACKS.exterior;
   }
 
   /**
-   * Get Fenster (Window) image path  
-   * CLIENT-SIDE calculation for efficiency
+   * Get fenster image path with enhanced security and fallback logic
+   * Uses window type mapping for appropriate visualization
+   * CLIENT-SIDE calculation for efficiency and security
    */
   static getFensterImage(configuration: Configuration): string {
     if (!configuration?.fenster?.value) {
-      return IMAGES.windows.pvc || IMAGES.configurations.fenster_pvc || IMAGE_FALLBACKS.exterior;
+      return IMAGE_FALLBACKS.exterior;
     }
 
     const fensterType = configuration.fenster.value;
@@ -345,56 +503,19 @@ export class ImageManager {
   }
 
   /**
-   * Preload images for better user experience
-   * IMPROVED: Better error handling and performance
+   * ENHANCED: Clear caches with performance logging
    */
-  static async preloadImages(configuration: Configuration | null): Promise<void> {
-    if (!configuration || typeof window === 'undefined') return;
-
-    try {
-      const currentImage = this.getPreviewImage(configuration, 'exterior');
-      const imagesToPreload: string[] = [currentImage];
-
-      if (configuration.innenverkleidung) {
-        const interiorImage = this.getPreviewImage(configuration, 'interior');
-        imagesToPreload.push(interiorImage);
-      }
-
-      const uniqueImages = [...new Set(imagesToPreload)].filter(Boolean);
-
-      const preloadPromises = uniqueImages.map(async (imagePath) => {
-        try {
-          // IMPROVED: Better URL encoding for German characters
-          const encodedPath = encodeURIComponent(imagePath);
-          await fetch(`/api/images?path=${encodedPath}`, {
-            method: 'GET',
-            cache: 'force-cache'
-          });
-        } catch (error) {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(`🖼️ Failed to preload image: ${imagePath}`, error);
-          }
-        }
-      });
-
-      await Promise.allSettled(preloadPromises);
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('🖼️ Preload images error:', error);
-      }
-    }
-  }
-
-  /**
-   * Utility methods for debugging and compatibility
-   */
-  static clearPreloadedImages(): void {
-    // Method kept for backward compatibility
-    return;
-  }
-
   static clearImageCache(): void {
+    const pathCacheSize = imagePathCache.size;
+    const preloadCacheSize = preloadProgressCache.size;
+
     imagePathCache.clear();
+    preloadProgressCache.clear();
+    adjacentViewsCache.clear();
+
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`🖼️ Cache cleared: ${pathCacheSize} paths, ${preloadCacheSize} preload operations`);
+    }
   }
 
   static getCacheInfo(): { size: number, keys: string[] } {
@@ -402,6 +523,14 @@ export class ImageManager {
       size: imagePathCache.size,
       keys: Array.from(imagePathCache.keys())
     };
+  }
+
+  /**
+   * Legacy compatibility methods
+   */
+  static clearPreloadedImages(): void {
+    // Method kept for backward compatibility
+    return;
   }
 
   static async preloadForSelection(_selection: unknown, _context?: unknown): Promise<void> {

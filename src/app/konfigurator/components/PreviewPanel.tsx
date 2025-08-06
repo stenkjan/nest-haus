@@ -2,7 +2,7 @@
  * PreviewPanel - Image Preview Component
  *
  * Handles the sticky preview panel with image display and navigation.
- * Optimized for performance with simplified memoization and consistent layout.
+ * OPTIMIZED: Intelligent preloading, predictive navigation, smooth transitions
  */
 
 "use client";
@@ -40,8 +40,10 @@ export default function PreviewPanel({
   const [previewHeight, setPreviewHeight] = useState(
     "clamp(20rem, 40vh, 35rem)"
   );
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [nextImagePath, setNextImagePath] = useState<string | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   // Calculate preview height for mobile only - WebKit optimized
   useEffect(() => {
@@ -86,52 +88,128 @@ export default function PreviewPanel({
     );
   }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
 
+  // ENHANCED: Intelligent preloading with current view context
+  useEffect(() => {
+    if (configuration) {
+      startTransition(() => {
+        // Use high priority for initial load, normal for updates
+        const priority = !isPending ? "high" : "normal";
+        ImageManager.preloadImages(configuration, activeView, priority);
+      });
+    }
+  }, [configuration, activeView, isPending]);
+
+  // ENHANCED: Predictive preloading for adjacent views
+  useEffect(() => {
+    if (configuration && availableViews.length > 1) {
+      // Preload predicted next views in background
+      const predictedViews = ImageManager.getPredictedNextViews(
+        configuration,
+        activeView,
+        hasPart2BeenActive,
+        hasPart3BeenActive
+      );
+
+      // Preload next likely images in background
+      predictedViews.forEach((view, index) => {
+        setTimeout(
+          () => {
+            ImageManager.preloadSpecificView(configuration, view);
+          },
+          100 + index * 50
+        ); // Stagger preloading
+      });
+    }
+  }, [
+    configuration,
+    activeView,
+    availableViews,
+    hasPart2BeenActive,
+    hasPart3BeenActive,
+  ]);
+
   // Listen for view switching signals from the store
   useEffect(() => {
     if (shouldSwitchToView && shouldSwitchToView !== activeView) {
-      startTransition(() => {
-        setActiveView(shouldSwitchToView as ViewType);
-        clearViewSwitchSignal();
-      });
+      handleViewTransition(shouldSwitchToView as ViewType);
+      clearViewSwitchSignal();
     }
   }, [shouldSwitchToView, activeView, clearViewSwitchSignal]);
 
   // Reset to exterior view if current view becomes unavailable
   useEffect(() => {
     if (!availableViews.includes(activeView)) {
-      startTransition(() => {
-        setActiveView("exterior");
-      });
+      handleViewTransition("exterior");
     }
   }, [availableViews, activeView]);
 
-  // Navigation handlers
+  // ENHANCED: Smooth view transition with preloading
+  const handleViewTransition = useCallback(
+    async (newView: ViewType) => {
+      if (newView === activeView || isTransitioning) return;
+
+      setIsTransitioning(true);
+
+      try {
+        // Pre-fetch the new image if not already cached
+        if (configuration) {
+          const newImagePath = ImageManager.getPreviewImage(
+            configuration,
+            newView
+          );
+          setNextImagePath(newImagePath);
+
+          // Ensure the target image is loaded before transition
+          await ImageManager.preloadSpecificView(configuration, newView);
+        }
+
+        // Small delay for smooth visual transition
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        startTransition(() => {
+          setActiveView(newView);
+        });
+
+        // Clean up after transition
+        setTimeout(() => {
+          setNextImagePath(null);
+          setIsTransitioning(false);
+        }, 300); // Match CSS transition duration
+      } catch (error) {
+        console.warn("🖼️ View transition error:", error);
+        // Fallback: direct transition without preloading
+        startTransition(() => {
+          setActiveView(newView);
+          setIsTransitioning(false);
+          setNextImagePath(null);
+        });
+      }
+    },
+    [activeView, isTransitioning, configuration]
+  );
+
+  // Navigation handlers with enhanced preloading
   const handlePrevView = useCallback(() => {
-    startTransition(() => {
-      const currentIndex = availableViews.indexOf(activeView);
-      const prevIndex =
-        currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1;
-      setActiveView(availableViews[prevIndex]);
-    });
-  }, [availableViews, activeView]);
+    if (isTransitioning) return;
+
+    const currentIndex = availableViews.indexOf(activeView);
+    const prevIndex =
+      currentIndex > 0 ? currentIndex - 1 : availableViews.length - 1;
+    const prevView = availableViews[prevIndex];
+
+    handleViewTransition(prevView);
+  }, [availableViews, activeView, isTransitioning, handleViewTransition]);
 
   const handleNextView = useCallback(() => {
-    startTransition(() => {
-      const currentIndex = availableViews.indexOf(activeView);
-      const nextIndex =
-        currentIndex < availableViews.length - 1 ? currentIndex + 1 : 0;
-      setActiveView(availableViews[nextIndex]);
-    });
-  }, [availableViews, activeView]);
+    if (isTransitioning) return;
 
-  // Preload images for the current configuration, non-blocking
-  useEffect(() => {
-    if (configuration) {
-      startTransition(() => {
-        ImageManager.preloadImages(configuration);
-      });
-    }
-  }, [configuration, activeView]);
+    const currentIndex = availableViews.indexOf(activeView);
+    const nextIndex =
+      currentIndex < availableViews.length - 1 ? currentIndex + 1 : 0;
+    const nextView = availableViews[nextIndex];
+
+    handleViewTransition(nextView);
+  }, [availableViews, activeView, isTransitioning, handleViewTransition]);
 
   // View labels for display and accessibility
   const viewLabels = {
@@ -172,36 +250,77 @@ export default function PreviewPanel({
         {/* Image filling the entire container */}
         <div className="relative w-full h-full">
           <div className="relative w-full h-full">
-            {/* Main image */}
+            {/* Main image with enhanced loading states */}
             <HybridBlobImage
               path={currentImagePath}
               alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
               fill
-              className="transition-opacity duration-300 object-contain"
+              className={`object-contain transition-all duration-300 ease-in-out ${
+                isTransitioning
+                  ? "opacity-75 scale-105"
+                  : "opacity-100 scale-100"
+              }`}
               // Strategy optimized for interactive configurator
               strategy="client"
               isInteractive={true}
               enableCache={true}
+              // Enhanced loading feedback
+              showLoadingSpinner={true}
               // Standard image props
               sizes="(max-width: 1023px) 100vw, 70vw"
               quality={85}
               priority={activeView === "exterior"}
             />
+
+            {/* Loading overlay during transitions */}
+            {isTransitioning && (
+              <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px] flex items-center justify-center transition-opacity duration-300">
+                <div className="bg-white/90 rounded-full p-3 shadow-lg">
+                  <svg
+                    className="w-6 h-6 animate-spin text-gray-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Navigation Arrows - Only show if multiple views available */}
+        {/* Navigation Arrows - Enhanced with loading states */}
         {availableViews.length > 1 && (
           <>
             <button
               type="button"
-              className="absolute left-[clamp(0.75rem,2vw,1rem)] top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isTransitioning}
+              className={`absolute left-[clamp(0.75rem,2vw,1rem)] top-1/2 transform -translate-y-1/2 rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isTransitioning
+                  ? "bg-gray-300/70 cursor-not-allowed"
+                  : "bg-white/90 hover:bg-white hover:shadow-xl"
+              }`}
               aria-label={`Vorherige Ansicht`}
               onClick={handlePrevView}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-[clamp(1.25rem,2.5vw,1.5rem)] h-[clamp(1.25rem,2.5vw,1.5rem)]"
+                className={`w-[clamp(1.25rem,2.5vw,1.5rem)] h-[clamp(1.25rem,2.5vw,1.5rem)] transition-transform ${
+                  isTransitioning ? "opacity-50" : "opacity-100"
+                }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -217,13 +336,20 @@ export default function PreviewPanel({
 
             <button
               type="button"
-              className="absolute right-[clamp(0.75rem,2vw,1rem)] top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isTransitioning}
+              className={`absolute right-[clamp(0.75rem,2vw,1rem)] top-1/2 transform -translate-y-1/2 rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isTransitioning
+                  ? "bg-gray-300/70 cursor-not-allowed"
+                  : "bg-white/90 hover:bg-white hover:shadow-xl"
+              }`}
               aria-label={`Nächste Ansicht`}
               onClick={handleNextView}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-[clamp(1.25rem,2.5vw,1.5rem)] h-[clamp(1.25rem,2.5vw,1.5rem)]"
+                className={`w-[clamp(1.25rem,2.5vw,1.5rem)] h-[clamp(1.25rem,2.5vw,1.5rem)] transition-transform ${
+                  isTransitioning ? "opacity-50" : "opacity-100"
+                }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -238,9 +364,26 @@ export default function PreviewPanel({
             </button>
           </>
         )}
-      </div>
 
-      {/* REMOVED: Flex-1 spacer and excessive performance monitoring */}
+        {/* View indicator dots for better UX */}
+        {availableViews.length > 2 && (
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {availableViews.map((view, index) => (
+              <button
+                key={view}
+                onClick={() => handleViewTransition(view)}
+                disabled={isTransitioning}
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  view === activeView
+                    ? "bg-white shadow-md scale-125"
+                    : "bg-white/50 hover:bg-white/80"
+                } ${isTransitioning ? "cursor-not-allowed" : "cursor-pointer"}`}
+                aria-label={`Zu ${viewLabels[view]} wechseln`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

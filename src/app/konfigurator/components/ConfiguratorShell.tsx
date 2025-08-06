@@ -139,7 +139,8 @@ export default function ConfiguratorShell({
     [calculateOptionPrices]
   );
 
-  // Trigger bulk calculation when nest or core selections change
+  // OPTIMIZED: Trigger bulk calculation when nest or core selections change
+  // REMOVED redundant preloading trigger - now handled by PreviewPanel
   useEffect(() => {
     if (!configuration?.nest) return;
 
