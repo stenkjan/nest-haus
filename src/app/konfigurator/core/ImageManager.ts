@@ -395,16 +395,16 @@ export class ImageManager {
       let interiorImageKey = '';
 
       if (innenverkleidung === 'kiefer' && fussboden === 'parkett') {
-        interiorImageKey = 'interior_kiefer_parkett';
+        interiorImageKey = 'trapezblech_holznatur_parkett';
       } else if (innenverkleidung === 'kiefer' && fussboden === 'vinyl') {
-        interiorImageKey = 'interior_kiefer_vinyl';
+        interiorImageKey = 'trapezblech_holznatur_kalkstein';
       } else if (innenverkleidung === 'pappel' && fussboden === 'parkett') {
-        interiorImageKey = 'interior_pappel_parkett';
+        interiorImageKey = 'trapezblech_holzweiss_parkett';
       } else if (innenverkleidung === 'pappel' && fussboden === 'vinyl') {
-        interiorImageKey = 'interior_pappel_vinyl';
+        interiorImageKey = 'trapezblech_holzweiss_kalkstein';
       } else {
         // Fallback for holzfassade/putzfassade
-        interiorImageKey = 'interior_kiefer_parkett';
+        interiorImageKey = 'trapezblech_holznatur_parkett';
       }
 
       const imagePath = IMAGES.configurations[interiorImageKey as keyof typeof IMAGES.configurations];
@@ -413,8 +413,8 @@ export class ImageManager {
       }
     }
 
-    // Final fallback
-    return IMAGES.configurations.interior_kiefer_parkett || IMAGE_FALLBACKS.interior;
+    // Final fallback - use the default interior configuration
+    return IMAGES.configurations.interiorDefault || IMAGE_FALLBACKS.interior;
   }
 
   /**
@@ -432,7 +432,7 @@ export class ImageManager {
     // Map to PV image keys
     const pvKey = PV_IMAGE_MAPPING[pvType];
     if (!pvKey) {
-      return IMAGES.configurations.nest80_trapezblech_pv || IMAGE_FALLBACKS.exterior;
+      return IMAGES.configurations.pv_trapezblech || IMAGE_FALLBACKS.exterior;
     }
 
     // Try configurations collection first
@@ -441,9 +441,8 @@ export class ImageManager {
       return pvImage;
     }
 
-    // Fallback to solar collection
-    const solarImage = IMAGES.solar?.[pvKey as keyof typeof IMAGES.solar];
-    return solarImage || IMAGES.configurations.nest80_trapezblech_pv || IMAGE_FALLBACKS.exterior;
+    // Fallback to default PV configuration
+    return IMAGES.configurations.pv_trapezblech || IMAGE_FALLBACKS.exterior;
   }
 
   /**

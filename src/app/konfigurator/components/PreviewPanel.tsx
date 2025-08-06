@@ -41,7 +41,6 @@ export default function PreviewPanel({
     "clamp(20rem, 40vh, 35rem)"
   );
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [nextImagePath, setNextImagePath] = useState<string | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -87,6 +86,43 @@ export default function PreviewPanel({
       hasPart3BeenActive
     );
   }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
+
+  // ENHANCED: Smooth view transition with preloading
+  const handleViewTransition = useCallback(
+    async (newView: ViewType) => {
+      if (newView === activeView || isTransitioning) return;
+
+      setIsTransitioning(true);
+
+      try {
+        // Pre-fetch the new image if not already cached
+        if (configuration) {
+          // Ensure the target image is loaded before transition
+          await ImageManager.preloadSpecificView(configuration, newView);
+        }
+
+        // Small delay for smooth visual transition
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        startTransition(() => {
+          setActiveView(newView);
+        });
+
+        // Clean up after transition
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 300); // Match CSS transition duration
+      } catch (error) {
+        console.warn("🖼️ View transition error:", error);
+        // Fallback: direct transition without preloading
+        startTransition(() => {
+          setActiveView(newView);
+          setIsTransitioning(false);
+        });
+      }
+    },
+    [activeView, isTransitioning, configuration]
+  );
 
   // ENHANCED: Intelligent preloading with current view context
   useEffect(() => {
@@ -134,59 +170,19 @@ export default function PreviewPanel({
       handleViewTransition(shouldSwitchToView as ViewType);
       clearViewSwitchSignal();
     }
-  }, [shouldSwitchToView, activeView, clearViewSwitchSignal]);
+  }, [
+    shouldSwitchToView,
+    activeView,
+    clearViewSwitchSignal,
+    handleViewTransition,
+  ]);
 
   // Reset to exterior view if current view becomes unavailable
   useEffect(() => {
     if (!availableViews.includes(activeView)) {
       handleViewTransition("exterior");
     }
-  }, [availableViews, activeView]);
-
-  // ENHANCED: Smooth view transition with preloading
-  const handleViewTransition = useCallback(
-    async (newView: ViewType) => {
-      if (newView === activeView || isTransitioning) return;
-
-      setIsTransitioning(true);
-
-      try {
-        // Pre-fetch the new image if not already cached
-        if (configuration) {
-          const newImagePath = ImageManager.getPreviewImage(
-            configuration,
-            newView
-          );
-          setNextImagePath(newImagePath);
-
-          // Ensure the target image is loaded before transition
-          await ImageManager.preloadSpecificView(configuration, newView);
-        }
-
-        // Small delay for smooth visual transition
-        await new Promise((resolve) => setTimeout(resolve, 50));
-
-        startTransition(() => {
-          setActiveView(newView);
-        });
-
-        // Clean up after transition
-        setTimeout(() => {
-          setNextImagePath(null);
-          setIsTransitioning(false);
-        }, 300); // Match CSS transition duration
-      } catch (error) {
-        console.warn("🖼️ View transition error:", error);
-        // Fallback: direct transition without preloading
-        startTransition(() => {
-          setActiveView(newView);
-          setIsTransitioning(false);
-          setNextImagePath(null);
-        });
-      }
-    },
-    [activeView, isTransitioning, configuration]
-  );
+  }, [availableViews, activeView, handleViewTransition]);
 
   // Navigation handlers with enhanced preloading
   const handlePrevView = useCallback(() => {
@@ -368,7 +364,7 @@ export default function PreviewPanel({
         {/* View indicator dots for better UX */}
         {availableViews.length > 2 && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {availableViews.map((view, index) => (
+            {availableViews.map((view) => (
               <button
                 key={view}
                 onClick={() => handleViewTransition(view)}
