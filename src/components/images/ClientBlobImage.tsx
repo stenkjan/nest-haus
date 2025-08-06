@@ -158,8 +158,6 @@ class ImageCache {
         },
         body: JSON.stringify({ paths: [path] }),
         cache: "force-cache",
-        // @ts-expect-error - Not all browsers support this yet
-        priority: "high", // Single image requests are usually critical
       });
 
       if (!response.ok) {

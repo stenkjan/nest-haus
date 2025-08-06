@@ -72,6 +72,15 @@ export default function PreviewPanel({
     };
   }, [isMobile]);
 
+  // Get available views
+  const availableViews = useMemo(() => {
+    return ImageManager.getAvailableViews(
+      configuration,
+      hasPart2BeenActive,
+      hasPart3BeenActive
+    );
+  }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
+
   // Get current image path with preloading optimization
   const currentImagePath = useMemo(() => {
     const imagePath = ImageManager.getPreviewImage(configuration, activeView);
@@ -95,15 +104,6 @@ export default function PreviewPanel({
     
     return imagePath;
   }, [configuration, activeView, availableViews]);
-
-  // Get available views
-  const availableViews = useMemo(() => {
-    return ImageManager.getAvailableViews(
-      configuration,
-      hasPart2BeenActive,
-      hasPart3BeenActive
-    );
-  }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
 
   // Listen for view switching signals from the store
   useEffect(() => {

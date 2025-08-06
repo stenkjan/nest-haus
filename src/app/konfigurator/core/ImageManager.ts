@@ -419,17 +419,17 @@ export class ImageManager {
     return [...new Set(images)].filter(Boolean);
   }
 
-    /**
-   * Batch preload images using optimized batch API calls
-   * PERFORMANCE: Single API call for multiple images
-   */
+  /**
+ * Batch preload images using optimized batch API calls
+ * PERFORMANCE: Single API call for multiple images
+ */
   private static async batchPreloadImages(imagePaths: string[]): Promise<void> {
     if (imagePaths.length === 0) return;
 
     // Group into batches of 20 for batch API (API limit)
     const batchSize = 20;
     const batches: string[][] = [];
-    
+
     for (let i = 0; i < imagePaths.length; i += batchSize) {
       batches.push(imagePaths.slice(i, i + batchSize));
     }
@@ -442,7 +442,7 @@ export class ImageManager {
         if (process.env.NODE_ENV === 'development') {
           console.warn(`🖼️ Batch API failed, falling back to individual requests`, error);
         }
-        
+
         // Fallback to individual requests if batch API fails
         const fallbackPromises = batch.map(imagePath => this.preloadSingleImage(imagePath));
         await Promise.allSettled(fallbackPromises);
@@ -470,9 +470,7 @@ export class ImageManager {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ paths: imagePaths }),
-        signal: controller.signal,
-        // @ts-expect-error - Not all browsers support this yet
-        priority: 'low'
+        signal: controller.signal
       });
 
       clearTimeout(timeoutId);
@@ -484,8 +482,8 @@ export class ImageManager {
       const data = await response.json();
 
       if (process.env.NODE_ENV === 'development') {
-        const successCount = Object.values(data.results).filter(
-          (result: { type: string }) => result.type === 'blob' || result.type === 'cached'
+        const successCount = (Object.values(data.results) as Array<{ type: string }>).filter(
+          (result) => result.type === 'blob' || result.type === 'cached'
         ).length;
         console.debug(`🚀 Batch preloaded: ${successCount}/${imagePaths.length} images`);
       }
@@ -517,10 +515,7 @@ export class ImageManager {
       const response = await fetch(`/api/images?path=${encodedPath}`, {
         method: 'GET',
         cache: 'force-cache',
-        signal: controller.signal,
-        // Add request priority hint for modern browsers
-        // @ts-expect-error - Not all browsers support this yet
-        priority: 'low'
+        signal: controller.signal
       });
 
       clearTimeout(timeoutId);
