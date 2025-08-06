@@ -68,8 +68,14 @@ export default function Navbar() {
           header.style.transform = "translateY(-100%)";
           header.style.transition = "transform 0.3s ease-out";
         } else if (currentScrollY < lastScrollTop) {
-          header.style.transform = "translateY(0)";
-          header.style.transition = "transform 0.3s ease-out";
+          // Mobile konfigurator: only show navbar when at the very top
+          if (isMobile && currentScrollY > 10) {
+            header.style.transform = "translateY(-100%)";
+            header.style.transition = "transform 0.3s ease-out";
+          } else {
+            header.style.transform = "translateY(0)";
+            header.style.transition = "transform 0.3s ease-out";
+          }
         }
         lastScrollTop = currentScrollY;
       };
