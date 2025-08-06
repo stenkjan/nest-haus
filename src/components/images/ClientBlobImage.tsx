@@ -90,8 +90,11 @@ class ImageCache {
     // Set loading state
     this.loadingStates.set(path, true);
 
-    // Create new fetch promise
-    const fetchPromise = this.fetchImageUrl(path);
+    // OPTIMIZATION: Try batch API first for better performance
+    const fetchPromise = this.shouldUseBatchAPI(path) 
+      ? this.fetchViaBatchAPI(path).catch(() => this.fetchImageUrl(path))
+      : this.fetchImageUrl(path);
+    
     this.pending.set(path, fetchPromise);
 
     try {
@@ -111,6 +114,65 @@ class ImageCache {
       throw error;
     } finally {
       this.pending.delete(path);
+    }
+  }
+
+  /**
+   * Check if we should use batch API for this request
+   * INTELLIGENT: Use batch for configurator images but not for general images
+   */
+  private static shouldUseBatchAPI(path: string): boolean {
+    // Use batch API for configurator images (they benefit from predictive loading)
+    const configuratorPatterns = [
+      'nest80', 'nest100', 'nest120', 'nest140', 'nest160',
+      'trapezblech', 'holzverkleidung', 'putz',
+      'kiefer', 'eiche', 'fichte',
+      'parkett', 'fliesen', 'linoleum',
+      'pv', 'fenster'
+    ];
+    
+    return configuratorPatterns.some(pattern => path.includes(pattern));
+  }
+
+  /**
+   * Fetch image via batch API (more efficient for configurator images)
+   * OPTIMIZED: Single API call can warm up cache for related images
+   */
+  private static async fetchViaBatchAPI(path: string): Promise<string> {
+    try {
+      const response = await fetch('/api/images/batch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ paths: [path] }),
+        cache: 'force-cache',
+        // @ts-ignore - Not all browsers support this yet
+        priority: 'high' // Single image requests are usually critical
+      });
+
+      if (!response.ok) {
+        throw new Error(`Batch API HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      const result = data.results[path];
+
+      if (!result || !result.url) {
+        throw new Error('No URL in batch response');
+      }
+
+      if (process.env.NODE_ENV === "development") {
+        console.debug(`🚀 Batch API loaded: ${path} -> ${result.type}`);
+      }
+
+      return result.url;
+
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.debug(`🔄 Batch API failed for ${path}, falling back to direct`);
+      }
+      throw error; // Will trigger fallback to fetchImageUrl
     }
   }
 

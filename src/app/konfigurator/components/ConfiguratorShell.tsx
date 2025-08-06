@@ -139,8 +139,7 @@ export default function ConfiguratorShell({
     [calculateOptionPrices]
   );
 
-  // OPTIMIZED: Trigger bulk calculation when nest or core selections change
-  // REMOVED redundant preloading trigger - now handled by PreviewPanel
+  // Trigger bulk calculation when nest or core selections change
   useEffect(() => {
     if (!configuration?.nest) return;
 
@@ -189,6 +188,29 @@ export default function ConfiguratorShell({
     configuration?.innenverkleidung,
     configuration?.fussboden,
     bulkCalculateOptionPrices,
+  ]);
+
+  // PERFORMANCE BOOST: Intelligent image preloading when configuration changes
+  useEffect(() => {
+    // Only preload if we have a meaningful configuration
+    if (!configuration?.nest) return;
+
+    // Debounce preloading to avoid excessive API calls during rapid changes
+    const preloadTimer = setTimeout(() => {
+      // Import ImageManager dynamically to avoid circular dependencies
+      import("../core/ImageManager").then(({ ImageManager }) => {
+        ImageManager.preloadImages(configuration);
+      });
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(preloadTimer);
+  }, [
+    configuration?.nest,
+    configuration?.gebaeudehuelle,
+    configuration?.innenverkleidung,
+    configuration?.fussboden,
+    configuration?.pvanlage,
+    configuration?.fenster,
   ]);
 
   // Initialize session once on mount
