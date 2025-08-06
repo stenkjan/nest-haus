@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1d39a77a8996e8b78bb1c280add2ae29a91e68cb] - Wed Aug 6 18:06:42 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: optimize image handling in PreviewPanel and ImageManager  - Moved the available views calculation in PreviewPanel to a more efficient location, improving performance and clarity. - Cleaned up the ImageManager's batch preloading function by removing unnecessary comments and ensuring consistent error handling. - Enhanced type safety in ImageManager by specifying types for success count calculations.  These changes improve the overall efficiency and maintainability of the image handling logic in the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/components/images/ClientBlobImage.tsx
+
+
+---
+
 ## [ebf1dbfaace1bbe31be6ceca5a84e6b7103dc5cf] - Wed Aug 6 17:58:26 2025 +0200
 
 **Author**: stenkjan
