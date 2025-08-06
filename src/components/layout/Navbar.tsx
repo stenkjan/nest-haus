@@ -60,7 +60,6 @@ export default function Navbar() {
       const rightPanel = rightPanelRef.current;
       let lastScrollTop = 0;
       const getScrollPosition = () => rightPanel.scrollTop;
-
       const onScroll = () => {
         const currentScrollY = getScrollPosition();
         const threshold = isMobile ? 3 : 5;
@@ -69,11 +68,10 @@ export default function Navbar() {
           header.style.transform = "translateY(-100%)";
           header.style.transition = "transform 0.3s ease-out";
         } else if (currentScrollY < lastScrollTop) {
-          // Mobile konfigurator: only show navbar when at the very top
-          if (isMobile && currentScrollY > 10) {
-            header.style.transform = "translateY(-100%)";
-            header.style.transition = "transform 0.3s ease-out";
-          } else {
+          // For mobile konfigurator, only show navbar when very close to top
+          const shouldShow = isMobile ? currentScrollY <= 10 : true;
+
+          if (shouldShow) {
             header.style.transform = "translateY(0)";
             header.style.transition = "transform 0.3s ease-out";
           }
@@ -83,12 +81,6 @@ export default function Navbar() {
       rightPanel.addEventListener("scroll", onScroll);
       return () => rightPanel.removeEventListener("scroll", onScroll);
     }
-
-    // Exit early for konfigurator - don't run general scroll handler
-    if (pathname === "/konfigurator") {
-      return;
-    }
-
     const header = headerRef.current;
     if (!header) return;
     // Cross-browser scroll position with WebKit optimizations
