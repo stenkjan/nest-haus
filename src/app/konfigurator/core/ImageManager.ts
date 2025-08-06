@@ -349,9 +349,9 @@ export class ImageManager {
    * CLIENT-SIDE calculation for efficiency
    */
   static getStirnseiteImage(configuration: Configuration): string {
-    // Get nest size for stirnseite view (side view depends on house size)
-    const nestValue = configuration?.nest?.value || 'nest80';
-    const stirnseiteKey = STIRNSEITE_MAPPING[nestValue];
+    // Get gebäudehülle for stirnseite view (front side depends on building envelope material)
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
+    const stirnseiteKey = STIRNSEITE_MAPPING[gebaeudehuelle];
 
     if (!stirnseiteKey) {
       return IMAGE_FALLBACKS.stirnseite;
@@ -388,33 +388,63 @@ export class ImageManager {
     }
 
     // RESTORED: Interdependent logic for other gebäudehülle types
-    // For non-trapezblech types, use interdependent selection rules
+    // Build combination dynamically using individual mappings
+    try {
+      const gebaeudePrefixMapping = {
+        'trapezblech': 'trapezblech',
+        'holzlattung': 'holzlattung',
+        'fassadenplatten_schwarz': 'plattenschwarz',
+        'fassadenplatten_weiss': 'plattenweiss'
+      };
 
-    if (gebaeudehuelle === 'holzfassade' || gebaeudehuelle === 'putzfassade') {
-      // These gebäudehülle types have specific interior logic
-      let interiorImageKey = '';
+      const innenverkleidungMapping = {
+        'kiefer': 'holznatur',
+        'fichte': 'holzweiss',
+        'steirische_eiche': 'eiche'
+      };
 
-      if (innenverkleidung === 'kiefer' && fussboden === 'parkett') {
-        interiorImageKey = 'trapezblech_holznatur_parkett';
-      } else if (innenverkleidung === 'kiefer' && fussboden === 'vinyl') {
-        interiorImageKey = 'trapezblech_holznatur_kalkstein';
-      } else if (innenverkleidung === 'pappel' && fussboden === 'parkett') {
-        interiorImageKey = 'trapezblech_holzweiss_parkett';
-      } else if (innenverkleidung === 'pappel' && fussboden === 'vinyl') {
-        interiorImageKey = 'trapezblech_holzweiss_kalkstein';
-      } else {
-        // Fallback for holzfassade/putzfassade
-        interiorImageKey = 'trapezblech_holznatur_parkett';
+      const fussbodenMapping = {
+        'parkett': 'parkett',
+        'kalkstein_kanafar': 'kalkstein',
+        'schiefer_massiv': 'granit' // Default: granit paths
+      };
+
+      // Special case: holzlattung uses 'schiefer' instead of 'granit' for schiefer_massiv
+      const fussbodenHolzlattungMapping = {
+        'parkett': 'parkett',
+        'kalkstein_kanafar': 'kalkstein',
+        'schiefer_massiv': 'schiefer' // For holzlattung: use schiefer paths
+      };
+
+      const gebaeude = gebaeudePrefixMapping[gebaeudehuelle as keyof typeof gebaeudePrefixMapping];
+      const innen = innenverkleidungMapping[innenverkleidung as keyof typeof innenverkleidungMapping];
+
+      // Choose the appropriate fussboden mapping based on gebäudehülle
+      const fussbodenMap = gebaeudehuelle === 'holzlattung'
+        ? fussbodenHolzlattungMapping
+        : fussbodenMapping;
+      const fussBoden = fussbodenMap[fussboden as keyof typeof fussbodenMap];
+
+      if (gebaeude && innen && fussBoden) {
+        // Build the image key: gebaeude_innen_fussboden
+        const dynamicImageKey = `${gebaeude}_${innen}_${fussBoden}`;
+
+        const imagePath = IMAGES.configurations[dynamicImageKey as keyof typeof IMAGES.configurations];
+        if (imagePath) {
+          return imagePath;
+        }
       }
-
-      const imagePath = IMAGES.configurations[interiorImageKey as keyof typeof IMAGES.configurations];
-      if (imagePath) {
-        return imagePath;
-      }
+    } catch (error) {
+      console.warn(`🖼️ Error building dynamic interior combination for ${combinationKey}:`, error);
     }
 
-    // Final fallback - use the default interior configuration
-    return IMAGES.configurations.interiorDefault || IMAGE_FALLBACKS.interior;
+    // ENHANCED: Additional security check for valid combinations
+    const validExactMappings = Object.keys(INTERIOR_EXACT_MAPPINGS);
+    if (!validExactMappings.includes(combinationKey)) {
+      console.warn(`🔒 [ImageManager] Using fallback for combination: ${combinationKey}`);
+    }
+
+    return IMAGE_FALLBACKS.interior;
   }
 
   /**
@@ -427,10 +457,11 @@ export class ImageManager {
       return IMAGE_FALLBACKS.exterior;
     }
 
-    const pvType = configuration.pvanlage.value;
+    // PV images are based on the gebäudehülle (building envelope), not the PV type
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
 
-    // Map to PV image keys
-    const pvKey = PV_IMAGE_MAPPING[pvType];
+    // Map to PV image keys based on building envelope
+    const pvKey = PV_IMAGE_MAPPING[gebaeudehuelle];
     if (!pvKey) {
       return IMAGES.configurations.pv_trapezblech || IMAGE_FALLBACKS.exterior;
     }
