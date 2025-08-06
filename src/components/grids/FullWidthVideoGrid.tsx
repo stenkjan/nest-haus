@@ -213,9 +213,8 @@ export default function FullWidthVideoGrid({
                 className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
                   isMobile ? "text-center" : "text-left"
                 }`}
-              >
-                {textBox1}
-              </p>
+                dangerouslySetInnerHTML={{ __html: textBox1 }}
+              />
             </motion.div>
 
             {/* Text Box 2 */}
@@ -230,9 +229,8 @@ export default function FullWidthVideoGrid({
                 className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
                   isMobile ? "text-center" : "text-left"
                 }`}
-              >
-                {textBox2}
-              </p>
+                dangerouslySetInnerHTML={{ __html: textBox2 }}
+              />
             </motion.div>
           </div>
         </div>
