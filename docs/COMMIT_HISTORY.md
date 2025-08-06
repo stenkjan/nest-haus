@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [04d68de98e1780a9b72a7e4ecb9169efcb22d091] - Wed Aug 6 13:49:31 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance dynamic image handling in ImageManager  - Updated the logic for generating stirnseite images to use gebäudehülle instead of nest size, improving accuracy based on building envelope material. - Introduced dynamic mappings for interior combinations, allowing for more flexible image key generation based on user selections. - Added error handling for invalid combinations and fallback mechanisms to ensure robust image retrieval.  These changes improve the configurator's responsiveness and accuracy in image rendering.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
 ## [2592dfaeae8e2a393a010184dd5c89712e02e2e0] - Wed Aug 6 13:40:34 2025 +0200
 
 **Author**: stenkjan
