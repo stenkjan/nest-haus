@@ -81,40 +81,14 @@ export default function PreviewPanel({
     );
   }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
 
-  // SMART VIEW DETECTION: Determine optimal view based on current configuration
-  const optimalView = useMemo(() => {
-    if (!configuration) return activeView;
-
-    // If interior materials are selected, prioritize interior view
-    if (configuration.innenverkleidung || configuration.fussboden) {
-      return "interior";
-    }
-
-    // If PV is selected, prioritize PV view
-    if (configuration.pvanlage) {
-      return "pv";
-    }
-
-    // If fenster is selected, prioritize fenster view
-    if (configuration.fenster) {
-      return "fenster";
-    }
-
-    // For gebäudehülle only, stay on exterior (stirnseite will be available but not auto-switched)
-    // For nest only, stay on exterior
-    return activeView;
-  }, [configuration, activeView]);
-
-  // Get current image path with smart view detection and preloading optimization
+    // Get current image path with preloading optimization
   const currentImagePath = useMemo(() => {
-    // PERFORMANCE FIX: Use optimalView instead of activeView to prevent loading wrong images
-    const targetView = optimalView;
-    const imagePath = ImageManager.getPreviewImage(configuration, targetView);
-
+    const imagePath = ImageManager.getPreviewImage(configuration, activeView);
+    
     // PERFORMANCE: Preload next likely image in background
     if (configuration && typeof window !== "undefined") {
       // Preload other views user might switch to
-      const otherViews = availableViews.filter((view) => view !== targetView);
+      const otherViews = availableViews.filter((view) => view !== activeView);
       if (otherViews.length > 0) {
         // Preload the most likely next view in background
         const nextView = otherViews[0];
@@ -122,7 +96,7 @@ export default function PreviewPanel({
           configuration,
           nextView
         );
-
+        
         // Preload with low priority to not interfere with current image
         setTimeout(() => {
           const img = new Image();
@@ -130,9 +104,9 @@ export default function PreviewPanel({
         }, 100); // Small delay to not interfere with current image loading
       }
     }
-
+    
     return imagePath;
-  }, [configuration, optimalView, availableViews]);
+  }, [configuration, activeView, availableViews]);
 
   // PERFORMANCE FIX: Create a stable key for the image to prevent loading stale images
   const imageKey = useMemo(() => {
@@ -147,15 +121,6 @@ export default function PreviewPanel({
       fenster: configuration?.fenster?.value,
     })}`;
   }, [currentImagePath, configuration]);
-
-  // PERFORMANCE FIX: Sync activeView with optimalView to prevent race conditions
-  useEffect(() => {
-    if (optimalView !== activeView && availableViews.includes(optimalView)) {
-      startTransition(() => {
-        setActiveView(optimalView);
-      });
-    }
-  }, [optimalView, activeView, availableViews]);
 
   // Listen for view switching signals from the store (manual navigation)
   useEffect(() => {
@@ -246,7 +211,7 @@ export default function PreviewPanel({
             <HybridBlobImage
               key={imageKey}
               path={currentImagePath}
-              alt={`${viewLabels[optimalView]} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
+              alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
               fill
               className="transition-opacity duration-300 object-contain"
               // Strategy optimized for interactive configurator
@@ -256,7 +221,7 @@ export default function PreviewPanel({
               // Standard image props
               sizes="(max-width: 1023px) 100vw, 70vw"
               quality={85}
-              priority={optimalView === "exterior"}
+              priority={activeView === "exterior"}
             />
           </div>
         </div>
