@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [63685b9c22c1b5f1d3e0616a5317027c9c852750] - Wed Aug 6 13:24:01 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: optimize image preloading and view transitions in ConfiguratorShell and PreviewPanel  - Enhanced bulk calculation trigger in ConfiguratorShell for improved performance. - Implemented intelligent preloading and predictive navigation in PreviewPanel to enhance user experience. - Introduced smooth transitions and loading states for image display, ensuring a seamless interaction during view changes.  These optimizations contribute to a more responsive and user-friendly configurator experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/__tests__/ImageManager.performance.test.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
 ## [21b4b5b598fd13443df67ec56cc85bf64773345f] - Tue Aug 5 14:38:48 2025 +0200
 
 **Author**: stenkjan
