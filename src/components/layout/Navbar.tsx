@@ -64,15 +64,22 @@ export default function Navbar() {
         const currentScrollY = getScrollPosition();
         const threshold = isMobile ? 3 : 5;
         if (Math.abs(currentScrollY - lastScrollTop) < threshold) return;
-        if (currentScrollY > lastScrollTop && currentScrollY > 50) {
-          header.style.transform = "translateY(-100%)";
-          header.style.transition = "transform 0.3s ease-out";
-        } else if (currentScrollY < lastScrollTop) {
-          // Mobile konfigurator: only show navbar when at the very top
-          if (isMobile && currentScrollY > 10) {
-            header.style.transform = "translateY(-100%)";
+        
+        if (isMobile) {
+          // Mobile konfigurator: only show when at very top (<=10px), hide otherwise
+          if (currentScrollY <= 10) {
+            header.style.transform = "translateY(0)";
             header.style.transition = "transform 0.3s ease-out";
           } else {
+            header.style.transform = "translateY(-100%)";
+            header.style.transition = "transform 0.3s ease-out";
+          }
+        } else {
+          // Desktop konfigurator: original behavior
+          if (currentScrollY > lastScrollTop && currentScrollY > 50) {
+            header.style.transform = "translateY(-100%)";
+            header.style.transition = "transform 0.3s ease-out";
+          } else if (currentScrollY < lastScrollTop) {
             header.style.transform = "translateY(0)";
             header.style.transition = "transform 0.3s ease-out";
           }
