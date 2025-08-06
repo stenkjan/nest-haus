@@ -82,6 +82,7 @@ export default function Navbar() {
       rightPanel.addEventListener("scroll", onScroll);
       return () => rightPanel.removeEventListener("scroll", onScroll);
     }
+    
     const header = headerRef.current;
     if (!header) return;
     // Cross-browser scroll position with WebKit optimizations
