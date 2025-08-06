@@ -471,7 +471,7 @@ export class ImageManager {
         },
         body: JSON.stringify({ paths: imagePaths }),
         signal: controller.signal,
-        // @ts-ignore - Not all browsers support this yet
+        // @ts-expect-error - Not all browsers support this yet
         priority: 'low'
       });
 
@@ -485,7 +485,7 @@ export class ImageManager {
 
       if (process.env.NODE_ENV === 'development') {
         const successCount = Object.values(data.results).filter(
-          (result: any) => result.type === 'blob' || result.type === 'cached'
+          (result: { type: string }) => result.type === 'blob' || result.type === 'cached'
         ).length;
         console.debug(`🚀 Batch preloaded: ${successCount}/${imagePaths.length} images`);
       }
@@ -519,7 +519,7 @@ export class ImageManager {
         cache: 'force-cache',
         signal: controller.signal,
         // Add request priority hint for modern browsers
-        // @ts-ignore - Not all browsers support this yet
+        // @ts-expect-error - Not all browsers support this yet
         priority: 'low'
       });
 

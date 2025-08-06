@@ -204,14 +204,7 @@ export default function ConfiguratorShell({
     }, 300); // 300ms debounce
 
     return () => clearTimeout(preloadTimer);
-  }, [
-    configuration?.nest,
-    configuration?.gebaeudehuelle,
-    configuration?.innenverkleidung,
-    configuration?.fussboden,
-    configuration?.pvanlage,
-    configuration?.fenster,
-  ]);
+  }, [configuration]); // Use full configuration object as dependency
 
   // Initialize session once on mount
   useEffect(() => {

@@ -123,11 +123,11 @@ async function processSingleImage(path: string): Promise<{
                         url: imageUrl,
                         type: 'blob'
                     };
-                }
-            } catch (extError) {
-                // Continue to next extension
-                continue;
-            }
+                         }
+       } catch {
+         // Continue to next extension if this one fails
+         continue;
+       }
         }
 
         // Image not found - return placeholder

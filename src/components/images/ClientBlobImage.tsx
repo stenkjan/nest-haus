@@ -91,10 +91,10 @@ class ImageCache {
     this.loadingStates.set(path, true);
 
     // OPTIMIZATION: Try batch API first for better performance
-    const fetchPromise = this.shouldUseBatchAPI(path) 
+    const fetchPromise = this.shouldUseBatchAPI(path)
       ? this.fetchViaBatchAPI(path).catch(() => this.fetchImageUrl(path))
       : this.fetchImageUrl(path);
-    
+
     this.pending.set(path, fetchPromise);
 
     try {
@@ -124,14 +124,25 @@ class ImageCache {
   private static shouldUseBatchAPI(path: string): boolean {
     // Use batch API for configurator images (they benefit from predictive loading)
     const configuratorPatterns = [
-      'nest80', 'nest100', 'nest120', 'nest140', 'nest160',
-      'trapezblech', 'holzverkleidung', 'putz',
-      'kiefer', 'eiche', 'fichte',
-      'parkett', 'fliesen', 'linoleum',
-      'pv', 'fenster'
+      "nest80",
+      "nest100",
+      "nest120",
+      "nest140",
+      "nest160",
+      "trapezblech",
+      "holzverkleidung",
+      "putz",
+      "kiefer",
+      "eiche",
+      "fichte",
+      "parkett",
+      "fliesen",
+      "linoleum",
+      "pv",
+      "fenster",
     ];
-    
-    return configuratorPatterns.some(pattern => path.includes(pattern));
+
+    return configuratorPatterns.some((pattern) => path.includes(pattern));
   }
 
   /**
@@ -140,15 +151,15 @@ class ImageCache {
    */
   private static async fetchViaBatchAPI(path: string): Promise<string> {
     try {
-      const response = await fetch('/api/images/batch', {
-        method: 'POST',
+      const response = await fetch("/api/images/batch", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ paths: [path] }),
-        cache: 'force-cache',
-        // @ts-ignore - Not all browsers support this yet
-        priority: 'high' // Single image requests are usually critical
+        cache: "force-cache",
+        // @ts-expect-error - Not all browsers support this yet
+        priority: "high", // Single image requests are usually critical
       });
 
       if (!response.ok) {
@@ -159,7 +170,7 @@ class ImageCache {
       const result = data.results[path];
 
       if (!result || !result.url) {
-        throw new Error('No URL in batch response');
+        throw new Error("No URL in batch response");
       }
 
       if (process.env.NODE_ENV === "development") {
@@ -167,10 +178,11 @@ class ImageCache {
       }
 
       return result.url;
-
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
-        console.debug(`🔄 Batch API failed for ${path}, falling back to direct`);
+        console.debug(
+          `🔄 Batch API failed for ${path}, falling back to direct`
+        );
       }
       throw error; // Will trigger fallback to fetchImageUrl
     }
