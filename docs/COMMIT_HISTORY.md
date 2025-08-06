@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8b831660a682dd7b16d7713a87726ac56a81108d] - Wed Aug 6 18:55:10 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: improve navbar visibility behavior on mobile devices  - Updated the navbar's visibility logic to ensure it only hides when scrolling down on mobile devices if the user is not at the very top of the page. - This change enhances the user experience by preventing the navbar from disappearing unexpectedly, allowing for easier navigation.  These adjustments improve the usability of the navbar in the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/layout/Navbar.tsx
+
+
+---
+
 ## [cee9c7015fb52ce14d9f1e60ed8959082545fe5e] - Wed Aug 6 18:39:41 2025 +0200
 
 **Author**: stenkjan
