@@ -57,7 +57,7 @@ export default function GridsShowcasePage() {
           <ThreeByOneGrid
             title="3x1 Grid - Left Position"
             subtitle="3-column layout: text left, images center and right • Black background variant"
-            maxWidth={true}
+            maxWidth={false}
             textPosition="left"
             backgroundColor="black"
             image1="21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept"
@@ -72,7 +72,7 @@ export default function GridsShowcasePage() {
           <ThreeByOneGrid
             title="3x1 Grid - Right Position"
             subtitle="3-column layout: text right, images left and center • Black background variant"
-            maxWidth={true}
+            maxWidth={false}
             textPosition="right"
             backgroundColor="black"
             image1="23-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept"
@@ -130,10 +130,7 @@ export default function GridsShowcasePage() {
 
         {/* Image Glass Card Section */}
         <section className="overflow-visible">
-          <ImageGlassCard
-            backgroundColor="black"
-            maxWidth={true}
-          />
+          <ImageGlassCard backgroundColor="black" maxWidth={true} />
         </section>
       </div>
     </div>
