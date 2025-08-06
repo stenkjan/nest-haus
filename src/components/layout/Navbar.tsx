@@ -83,6 +83,11 @@ export default function Navbar() {
       return () => rightPanel.removeEventListener("scroll", onScroll);
     }
     
+    // Exit early for konfigurator - don't run general scroll handler
+    if (pathname === "/konfigurator") {
+      return;
+    }
+    
     const header = headerRef.current;
     if (!header) return;
     // Cross-browser scroll position with WebKit optimizations
