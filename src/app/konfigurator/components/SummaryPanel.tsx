@@ -366,7 +366,14 @@ export default function SummaryPanel({
                   {bottomItems.length > 0 && (
                     <div className="border-t border-gray-200 pt-6 mt-4">
                       {/* Bottom items (planungspaket, grundstueckscheck) */}
-                      {bottomItems.map(renderConfigurationItem)}
+                      {bottomItems.map(([key, selection], _index) => (
+                        <div
+                          key={key}
+                          className={key === "grundstueckscheck" ? "pt-2" : ""}
+                        >
+                          {renderConfigurationItem([key, selection])}
+                        </div>
+                      ))}
                     </div>
                   )}
                 </>

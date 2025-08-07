@@ -496,7 +496,18 @@ export default function WarenkorbClient() {
                             {bottomItems.length > 0 && (
                               <div className="border-t border-gray-200 pt-6 mt-4">
                                 {/* Bottom items (planungspaket, grundstueckscheck) */}
-                                {bottomItems.map(renderDetailItem)}
+                                {bottomItems.map((detail, idx) => (
+                                  <div
+                                    key={`${detail.category}-${idx}`}
+                                    className={
+                                      detail.category === "grundstueckscheck"
+                                        ? "pt-2"
+                                        : ""
+                                    }
+                                  >
+                                    {renderDetailItem(detail, idx)}
+                                  </div>
+                                ))}
                               </div>
                             )}
                           </>
