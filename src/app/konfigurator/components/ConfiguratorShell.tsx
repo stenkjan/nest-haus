@@ -79,8 +79,8 @@ export default function ConfiguratorShell({
   const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] =
     useState(false);
 
-  // Auto-scroll utility function for both mobile and desktop
-  const scrollToSection = useCallback(
+  // Auto-scroll utility function for both mobile and desktop - Currently unused
+  const _scrollToSection = useCallback(
     (sectionId: string) => {
       // Small delay to ensure DOM has updated after selection
       setTimeout(() => {
@@ -300,14 +300,14 @@ export default function ConfiguratorShell({
   const handlePvConfirmation = useCallback(() => {
     setShowPvConfirmation(false);
     // After confirming PV selection, scroll to grundstückscheck
-    scrollToSection("section-grundstueckscheck");
-  }, [scrollToSection]);
+    // scrollToSection("section-grundstueckscheck"); // Commented out auto-scroll
+  }, []);
 
   const handleFensterConfirmation = useCallback(() => {
     setShowFensterConfirmation(false);
     // After confirming Fenster selection, scroll to pvanlage
-    scrollToSection("section-pvanlage");
-  }, [scrollToSection]);
+    // scrollToSection("section-pvanlage"); // Commented out auto-scroll
+  }, []);
 
   // Optimized selection handlers using useCallback to prevent re-renders
   const handleSelection = useCallback(
@@ -364,7 +364,8 @@ export default function ConfiguratorShell({
           description: option.description,
         });
 
-        // Auto-scroll to next section after selection
+        // Auto-scroll to next section after selection - Commented out
+        /*
         if (categoryId === "nest") {
           // After selecting nest module, scroll to gebäudehülle
           scrollToSection("section-gebaeudehuelle");
@@ -381,9 +382,10 @@ export default function ConfiguratorShell({
           // After selecting planungspaket, scroll to grundstückscheck
           scrollToSection("section-grundstueckscheck");
         }
+        */
       }
     },
-    [updateSelection, removeSelection, configuration, scrollToSection]
+    [updateSelection, removeSelection, configuration]
   );
 
   const handlePvSelection = useCallback(
@@ -489,7 +491,8 @@ export default function ConfiguratorShell({
         description:
           "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
       });
-      // After selecting grundstückscheck, scroll to summary panel
+      // After selecting grundstückscheck, scroll to summary panel - Commented out
+      /*
       setTimeout(() => {
         const summaryElement = document.querySelector(
           ".summary-panel"
@@ -523,16 +526,12 @@ export default function ConfiguratorShell({
           }
         }
       }, 150);
+      */
     } else {
       // Remove selection when unchecked
       removeSelection("grundstueckscheck");
     }
-  }, [
-    isGrundstuecksCheckSelected,
-    updateSelection,
-    removeSelection,
-    rightPanelRef,
-  ]);
+  }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
 
   const handleInfoClick = useCallback((infoKey: string) => {
     console.log("🚀 Info click:", infoKey);

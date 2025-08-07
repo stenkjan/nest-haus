@@ -494,7 +494,7 @@ export default function WarenkorbClient() {
 
                             {/* Divider line before bottom items */}
                             {bottomItems.length > 0 && (
-                              <div className="border-t border-gray-200 pt-4 mt-4">
+                              <div className="border-t border-gray-200 pt-6 mt-4">
                                 {/* Bottom items (planungspaket, grundstueckscheck) */}
                                 {bottomItems.map(renderDetailItem)}
                               </div>
