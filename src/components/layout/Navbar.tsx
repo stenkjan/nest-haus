@@ -11,7 +11,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const lastScrollTop = useRef(0);
+  const _lastScrollTop = useRef(0);
   const pathname = usePathname();
 
   // Cart integration using Zustand store - subscribe to items for real-time updates
@@ -108,7 +108,7 @@ export default function Navbar() {
       let lastScrollTop = 0;
 
       // Check if we're on mobile (panel doesn't have overflow-y-auto)
-      const panelIsScrollable =
+      const _panelIsScrollable =
         rightPanel.scrollHeight > rightPanel.clientHeight;
       const panelHasOverflow =
         window.getComputedStyle(rightPanel).overflowY === "auto";
@@ -159,7 +159,7 @@ export default function Navbar() {
 
       // Also test manual scroll detection
       const testInterval = setInterval(() => {
-        const currentScroll = getScrollPosition();
+        const _currentScroll = getScrollPosition();
       }, 2000);
 
       return () => {

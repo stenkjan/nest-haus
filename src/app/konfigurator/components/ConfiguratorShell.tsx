@@ -73,11 +73,50 @@ export default function ConfiguratorShell({
   const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] =
     useState(false);
 
+  // Auto-scroll utility function for both mobile and desktop
+  const scrollToSection = useCallback(
+    (sectionId: string) => {
+      // Small delay to ensure DOM has updated after selection
+      setTimeout(() => {
+        const targetElement = document.getElementById(sectionId);
+        if (!targetElement) return;
+
+        // Check if we're on mobile or desktop
+        const isMobile = window.innerWidth < 1024;
+
+        if (isMobile) {
+          // Mobile: Use document/window scroll with offset for sticky header
+          const headerHeight = 80; // Approximate navbar height
+          const elementTop = targetElement.offsetTop - headerHeight;
+
+          window.scrollTo({
+            top: elementTop,
+            behavior: "smooth",
+          });
+        } else {
+          // Desktop: Use right panel scroll
+          const rightPanel = (rightPanelRef as React.RefObject<HTMLDivElement>)
+            ?.current;
+          if (rightPanel) {
+            const elementTop = targetElement.offsetTop;
+            const targetScrollTop = elementTop - 20; // Small offset for better visual
+
+            rightPanel.scrollTo({
+              top: targetScrollTop,
+              behavior: "smooth",
+            });
+          }
+        }
+      }, 150); // 150ms delay for DOM updates
+    },
+    [rightPanelRef]
+  );
+
   // Add scroll debugging
   useEffect(() => {
     // Track window scroll (for mobile)
     const handleWindowScroll = () => {
-      const scrollY =
+      const _scrollY =
         window.pageYOffset || document.documentElement.scrollTop || 0;
     };
 
@@ -305,9 +344,18 @@ export default function ConfiguratorShell({
           price: option.price.amount || 0,
           description: option.description,
         });
+
+        // Auto-scroll to next section after selection
+        if (categoryId === "nest") {
+          // After selecting nest module, scroll to gebäudehülle
+          scrollToSection("section-gebaeudehuelle");
+        } else if (categoryId === "gebaeudehuelle") {
+          // After selecting gebäudehülle, scroll to innenverkleidung
+          scrollToSection("section-innenverkleidung");
+        }
       }
     },
-    [updateSelection, removeSelection, configuration]
+    [updateSelection, removeSelection, configuration, scrollToSection]
   );
 
   const handlePvSelection = useCallback(
@@ -579,6 +627,7 @@ export default function ConfiguratorShell({
       {configuratorData.map((category) => (
         <CategorySection
           key={category.id}
+          id={`section-${category.id}`} // Add ID for auto-scroll targeting
           title={category.title}
           subtitle={category.subtitle}
         >
