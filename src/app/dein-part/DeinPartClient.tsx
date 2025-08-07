@@ -9,9 +9,11 @@ import {
   ImageWithFourTextGrid,
   ThreeByOneGrid,
 } from "@/components/grids";
-import { HybridBlobImage } from "@/components/images";
+import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
 import { SquareGlassCardsScroll } from "@/components/cards";
+import { PricingCardsLightbox } from "@/components/cards/ContentCardsLightbox";
+
 import { IMAGES } from "@/constants/images";
 
 // Define sections with proper structure for dein-part page
@@ -60,6 +62,21 @@ const sections = [
     id: "video-gallery",
     title: "Deine Gestaltungsmöglichkeiten",
     slug: "gestaltungsmoeglichkeiten",
+  },
+  {
+    id: "planungspakete",
+    title: "Unterstützung gefällig?",
+    slug: "planungspakete",
+  },
+  {
+    id: "beratung",
+    title: "Kein Plan? Kein Problem!",
+    slug: "beratung",
+  },
+  {
+    id: "video-section",
+    title: "Die Vielfalt unserer Module",
+    slug: "modul-vielfalt",
   },
   {
     id: "call-to-action",
@@ -308,33 +325,68 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             />
           </section>
 
-          {/* Video Gallery Section */}
-          <section id="video-gallery" className="w-full py-16 bg-white">
+          {/* Planungspakete Section - Unterstützung gefällig? */}
+          <section id="planungspakete" className="w-full py-16 bg-white">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <FullWidthVideoGrid
-                title="Deine Gestaltungsmöglichkeiten"
-                subtitle="Entdecke die vielfältigen Konfigurationsmöglichkeiten für dein NEST Haus"
-                backgroundColor="white"
-                textBox1="Diese Animation zeigt dir die verschiedenen Modulkombinationen und Gestaltungsvarianten deines NEST Hauses. Jede Konfiguration ist individuell anpassbar."
-                textBox2="Von kompakten 2-Modul-Häusern bis hin zu großzügigen 6-Modul-Komplexen - entdecke die Flexibilität unseres modularen Bausystems."
-                maxWidth={false}
-                video={IMAGES.variantvideo.nine}
-                autoPlay={true}
-                muted={true}
-                controls={false}
-              />
+              <div className="text-center mb-16">
+                <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+                  Unterstützung gefällig?
+                </h2>
+                <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+                  Entdecke unsere Planungs-Pakete, um das Beste für dich und
+                  dein Nest rauszuholen.
+                </h3>
+              </div>
+
+              <PricingCardsLightbox title="" subtitle="" />
+
+              {/* Button Combo After Component */}
+              <div className="flex gap-4 justify-center w-full mt-16">
+                <Button variant="primary" size="xs">
+                  Die Pakete
+                </Button>
+                <Button variant="secondary" size="xs">
+                  Mehr Information
+                </Button>
+              </div>
             </div>
           </section>
 
-          {/* Call to Action Section */}
-          <section id="call-to-action" className="w-full py-16">
-            <CallToAction
-              title="Bereit für dein NEST Haus?"
-              subtitle="Starte jetzt die Konfiguration deines individuellen Traumhauses"
-              buttonText="Zum Konfigurator"
-              buttonLink="/konfigurator"
-              backgroundColor="gray"
-              maxWidth={false}
+          {/* Beratung Section - Kein Plan? Kein Problem! */}
+          <section
+            id="beratung"
+            className="w-full py-16"
+            style={{ backgroundColor: "#F4F4F4" }}
+          >
+            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+                  Kein Plan? Kein Problem!
+                </h2>
+                <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+                  Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz
+                  bequem telefonisch
+                </h3>
+              </div>
+
+              {/* Single Button */}
+              <div className="flex justify-center w-full">
+                <Button variant="primary" size="xs">
+                  Termin vereinbaren
+                </Button>
+              </div>
+            </div>
+          </section>
+
+          {/* Video Section - exactly as unser-part */}
+          <section id="video-section" className="w-full pt-8 bg-white">
+            <ClientBlobVideo
+              path={IMAGES.variantvideo.nine}
+              autoPlay={true}
+              muted={true}
+              controls={false}
+              loop={true}
+              className="w-full h-auto"
             />
           </section>
         </SectionRouter>

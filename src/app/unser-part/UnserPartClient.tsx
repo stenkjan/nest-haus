@@ -16,6 +16,8 @@ import {
   ButtonGroup,
   MaterialShowcase,
 } from "@/components/sections";
+import ContentCards from "@/components/cards/ContentCards";
+import { PricingCardsLightbox } from "@/components/cards/ContentCardsLightbox";
 import { IMAGES } from "@/constants/images";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
@@ -71,6 +73,16 @@ const sections: SectionDefinition[] = [
     id: "grundstueck-check",
     title: "Sicherheit",
     slug: "sicherheit",
+  },
+  {
+    id: "planungspakete",
+    title: "Unterstützung gefällig?",
+    slug: "planungspakete",
+  },
+  {
+    id: "beratung",
+    title: "KEIN PLAN? Kein Problem!",
+    slug: "beratung",
   },
   {
     id: "video-gallery",
@@ -351,98 +363,117 @@ export default function UnserPartClient() {
           </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section id="call-to-action">
-          <CallToAction
-            title="Kein Plan? Kein Problem!"
-            subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
-            buttonText="Jetzt vereinbaren"
-            buttonLink="/kontakt"
-            backgroundColor="gray"
-            maxWidth={false}
-          />
+        {/* Grundstück Check Section */}
+        <section id="grundstueck-check" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+                Dein Grundstück - Unser Check
+              </h2>
+              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+                Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
+                deiner Wahl passt.
+              </h3>
+            </div>
+
+            <ContentCards
+              variant="static"
+              title=""
+              subtitle=""
+              maxWidth={false}
+              showInstructions={false}
+              customData={[
+                {
+                  id: 1,
+                  title: "Sicherheit",
+                  subtitle: "",
+                  description:
+                    "Häuser bauen bedeutet, sich an die Spielregeln zu halten und diese können je nach Region unterschiedlich sein. Wir kennen die gesetzlichen Vorgaben genau und unterstützen dich dabei, die Anforderungen deines Baugrunds zu verstehen. Mit unserem Grundstücks-Check prüfen wir, welche Gegebenheiten du bei deinem Wunschgrundstück beachten musst.",
+                  image: IMAGES.function.nestHausGrundstueckCheck,
+                  backgroundColor: "#F4F4F4",
+                  buttons: [
+                    {
+                      text: "Dein Part",
+                      variant: "primary" as const,
+                      size: "xs" as const,
+                      link: "/dein-part",
+                    },
+                    {
+                      text: "Jetzt bauen",
+                      variant: "secondary" as const,
+                      size: "xs" as const,
+                      link: "/konfigurator",
+                    },
+                  ],
+                },
+              ]}
+            />
+          </div>
         </section>
 
-        {/* Grundstück Check Section */}
-        <section id="grundstueck-check" className="w-full py-16 bg-gray-50">
-          <div className="w-full px-[8%]">
-            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center text-black">
-              Dein Grundstück - Unser Check
-            </h2>
-            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-12 max-w-3xl mx-auto text-center text-black">
-              Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
-              deiner Wahl passt
-            </h3>
-            <div
-              className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] group"
-              style={{ border: "15px solid #F4F4F4" }}
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
-                {/* Left Panel - Text content */}
-                <div className="flex flex-col justify-center p-8 lg:p-12 space-y-6">
-                  <h2 className="font-medium text-3xl lg:text-4xl xl:text-5xl tracking-[-0.02em] text-gray-900">
-                    Sicherheit
-                  </h2>
-                  <p className="text-base lg:text-lg leading-relaxed text-gray-700">
-                    Häuser bauen bedeutet, sich an die Spielregeln zu halten und
-                    diese können je nach Region unterschiedlich sein. Wir kennen
-                    die gesetzlichen Vorgaben genau und unterstützen dich dabei,
-                    die Anforderungen deines Baugrunds zu verstehen. Mit unserem
-                    Grundstücks-Check prüfen wir, welche Gegebenheiten du bei
-                    deinem Wunschgrundstück beachten musst.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-                    <button
-                      className="px-6 py-2.5 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors duration-300 text-sm"
-                      onClick={() => trackButtonClick("dein-part", "Dein Part")}
-                    >
-                      Dein Part
-                    </button>
-                    <button
-                      className="px-6 py-2.5 border border-blue-600 text-blue-600 rounded-full font-medium hover:bg-blue-50 transition-colors duration-300 text-sm"
-                      onClick={() =>
-                        trackButtonClick("jetzt-bauen", "Jetzt bauen")
-                      }
-                    >
-                      Jetzt bauen
-                    </button>
-                  </div>
-                </div>
+        {/* Planungspakete Section */}
+        <section id="planungspakete" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+                Unterstützung gefällig?
+              </h2>
+              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+                Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
+                Nest rauszuholen.
+              </h3>
+            </div>
 
-                {/* Right Panel - Image */}
-                <div className="relative">
-                  <HybridBlobImage
-                    path={IMAGES.function.nestHausGrundstueckCheck}
-                    strategy="auto"
-                    isAboveFold={false}
-                    alt="NEST Haus Grundstück Check - Sicherheit beim Hausbau"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    quality={85}
-                  />
-                </div>
-              </div>
+            <PricingCardsLightbox title="" subtitle="" />
+
+            {/* Button Combo After Component */}
+            <div className="flex gap-4 justify-center w-full mt-16">
+              <Button variant="primary" size="xs">
+                Die Pakete
+              </Button>
+              <Button variant="secondary" size="xs">
+                Mehr Information
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Beratung Section */}
+        <section
+          id="beratung"
+          className="w-full py-16"
+          style={{ backgroundColor: "#F4F4F4" }}
+        >
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+                Kein Plan? Kein Problem!
+              </h2>
+              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+                Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz
+                bequem telefonisch
+              </h3>
+            </div>
+
+            {/* Single Button */}
+            <div className="flex justify-center w-full">
+              <Button variant="primary" size="xs">
+                Termin vereinbaren
+              </Button>
             </div>
           </div>
         </section>
 
         {/* Video Gallery Section */}
-        <section id="video-gallery" className="w-full py-16 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <FullWidthVideoGrid
-              title="Die Vielfalt unserer Module"
-              subtitle="Entdecke die verschiedenen Konfigurationsmöglichkeiten und Modulkombinationen"
-              backgroundColor="white"
-              textBox1="Diese Animation zeigt die vielfältigen Möglichkeiten unseres modularen Bausystems. Von kompakten Lösungen bis hin zu großzügigen Wohnkonzepten."
-              textBox2="Jede Modulkombination ist individuell planbar und lässt sich perfekt an deine Bedürfnisse und dein Grundstück anpassen."
-              maxWidth={false}
-              video={IMAGES.variantvideo.nine}
-              autoPlay={true}
-              muted={true}
-              controls={false}
-            />
-          </div>
+        <section id="video-gallery" className="w-full pt-8 bg-white">
+          <ClientBlobVideo
+            path={IMAGES.variantvideo.nine}
+            autoPlay={true}
+            muted={true}
+            controls={false}
+            loop={true}
+            className="w-full h-auto"
+          />
         </section>
       </SectionRouter>
     </div>

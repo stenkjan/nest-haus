@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo } from "motion/react";
+import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
+import { Button } from "@/components/ui";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 
 interface CardData {
@@ -27,6 +29,13 @@ interface StaticCardData {
   mobileDescription?: string;
   image: string;
   backgroundColor: string;
+  buttons?: Array<{
+    text: string;
+    variant: "primary" | "secondary";
+    size: "xs" | "sm" | "md" | "lg";
+    link?: string;
+    onClick?: () => void;
+  }>;
 }
 
 interface PricingCardData {
@@ -958,6 +967,34 @@ export default function ContentCards({
                               <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, "description")}
                               </p>
+
+                              {/* Buttons for Static Cards - Desktop Layout */}
+                              {isStatic && (card as StaticCardData).buttons && (
+                                <div className="flex gap-4 justify-center w-full mt-8">
+                                  {(card as StaticCardData).buttons!.map(
+                                    (button, btnIndex) =>
+                                      button.link ? (
+                                        <Link key={btnIndex} href={button.link}>
+                                          <Button
+                                            variant={button.variant}
+                                            size={button.size}
+                                          >
+                                            {button.text}
+                                          </Button>
+                                        </Link>
+                                      ) : (
+                                        <Button
+                                          key={btnIndex}
+                                          variant={button.variant}
+                                          size={button.size}
+                                          onClick={button.onClick}
+                                        >
+                                          {button.text}
+                                        </Button>
+                                      )
+                                  )}
+                                </div>
+                              )}
                             </motion.div>
                           </div>
 
