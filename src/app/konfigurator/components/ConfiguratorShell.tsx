@@ -13,6 +13,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import { PriceCalculator } from "../core/PriceCalculator";
+import { ImageManager } from "../core/ImageManager";
 import { configuratorData } from "../data/configuratorData";
 import CategorySection from "./CategorySection";
 import SelectionOption from "./SelectionOption";
@@ -257,10 +258,8 @@ export default function ConfiguratorShell({
 
     // Debounce preloading to avoid excessive API calls during rapid changes
     const preloadTimer = setTimeout(() => {
-      // Import ImageManager dynamically to avoid circular dependencies
-      import("../core/ImageManager").then(({ ImageManager }) => {
-        ImageManager.preloadImages(configuration);
-      });
+      // Use static import from top of file
+      ImageManager.preloadImages(configuration);
     }, 300); // 300ms debounce
 
     return () => clearTimeout(preloadTimer);
