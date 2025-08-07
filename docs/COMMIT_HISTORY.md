@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [619a2dc5c9b8e0d8a0943f595fd6fcb512df28fb] - Thu Aug 7 15:28:43 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update styling and content in WarenkorbClient  - Removed the unused getCartCount function to streamline the cart logic. - Enhanced the price display by changing the label from "Anzahl Konfigurationen" to "Gesamt" for clarity. - Updated the price formatting to display the total cart amount directly, improving user understanding. - Adjusted the font weight of the price header for better emphasis and visual hierarchy.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [78feb260955dfc3361c97ade3710c1740c6671f8] - Thu Aug 7 15:18:38 2025 +0200
 
 **Author**: stenkjan
