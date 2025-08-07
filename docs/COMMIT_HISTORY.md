@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [882e7789bf86efa6d43cac215235cf956dbf6e50] - Thu Aug 7 15:43:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance price display logic in WarenkorbClient  - Simplified the price calculation logic to prioritize the nest price if available, improving clarity in price representation. - Removed the display of the addition date for cart items to streamline the user interface and focus on essential information.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [619a2dc5c9b8e0d8a0943f595fd6fcb512df28fb] - Thu Aug 7 15:28:43 2025 +0200
 
 **Author**: stenkjan
