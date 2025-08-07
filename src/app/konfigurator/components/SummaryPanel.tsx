@@ -9,7 +9,10 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useConfiguratorStore } from "@/store/configuratorStore";
+import {
+  useConfiguratorStore,
+  type ConfigurationItem,
+} from "@/store/configuratorStore";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { PriceUtils } from "../core/PriceUtils";
 import InfoBox from "./InfoBox";
@@ -98,13 +101,10 @@ export default function SummaryPanel({
   ]);
 
   // SIMPLIFIED: Helper functions without unnecessary useCallback (per React docs)
-  const getItemPrice = (
-    key: string,
-    selection: Record<string, unknown>
-  ): number => {
+  const getItemPrice = (key: string, selection: ConfigurationItem): number => {
     // For core categories that change with NEST size, use dynamic pricing
     if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value as string);
+      const dynamicPrice = getDynamicPrice(key, selection.value);
       if (
         dynamicPrice &&
         dynamicPrice.type === "upgrade" &&
@@ -117,35 +117,29 @@ export default function SummaryPanel({
 
     // For other items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
-      return (
-        ((selection.quantity as number) || 1) *
-        ((selection.price as number) || 0)
-      );
+      return (selection.quantity || 1) * (selection.price || 0);
     }
     if (key === "fenster") {
-      return (
-        ((selection.squareMeters as number) || 1) *
-        ((selection.price as number) || 0)
-      );
+      return (selection.squareMeters || 1) * (selection.price || 0);
     }
 
     // Default case
-    return (selection.price as number) || 0;
+    return selection.price || 0;
   };
 
   const isItemIncluded = (
     key: string,
-    selection: Record<string, unknown>
+    selection: ConfigurationItem
   ): boolean => {
     // For core categories that change with NEST size, check dynamic pricing
     if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value as string);
+      const dynamicPrice = getDynamicPrice(key, selection.value);
       return !dynamicPrice || dynamicPrice.type === "included";
     }
 
     // For other items, check if price is 0
     if (!selection?.price) return true;
-    return !(selection.price as number) || (selection.price as number) === 0;
+    return !selection.price || selection.price === 0;
   };
 
   if (!configuration) {
@@ -191,167 +185,200 @@ export default function SummaryPanel({
         <div className="border border-gray-300 rounded-[19px] px-6 py-4">
           <div className="space-y-4">
             {/* Show all configuration items individually, including preselected ones */}
-            {Object.entries(configuration).map(([key, selection]) => {
-              if (
-                !selection ||
-                key === "sessionId" ||
-                key === "totalPrice" ||
-                key === "timestamp"
-              ) {
+            {(() => {
+              // Filter and sort configuration entries
+              const configEntries = Object.entries(configuration).filter(
+                ([key, selection]) =>
+                  selection &&
+                  key !== "sessionId" &&
+                  key !== "totalPrice" &&
+                  key !== "timestamp"
+              );
+
+              const { topItems, middleItems, bottomItems } =
+                PriceUtils.sortConfigurationEntries(configEntries);
+
+              const renderConfigurationItem = ([key, selection]: [
+                string,
+                ConfigurationItem,
+              ]) => {
+                // Handle base configuration items (including preselected)
+                if (
+                  key === "nest" ||
+                  key === "gebaeudehuelle" ||
+                  key === "innenverkleidung" ||
+                  key === "fussboden"
+                ) {
+                  const itemPrice = getItemPrice(key, selection);
+                  const isIncluded = isItemIncluded(key, selection);
+
+                  return (
+                    <div
+                      key={key}
+                      className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
+                    >
+                      <div className="flex-1 min-w-0 max-w-[50%]">
+                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                          {selection.name}
+                        </div>
+                        {selection.description && (
+                          <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
+                            {selection.description}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 text-right max-w-[50%] min-w-0">
+                        {key === "nest" ? (
+                          <>
+                            <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
+                              Startpreis
+                            </div>
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              {PriceUtils.formatPrice(selection.price || 0)}
+                            </div>
+                          </>
+                        ) : !isIncluded && itemPrice > 0 ? (
+                          <>
+                            {/* Remove "zzgl." from specified sections */}
+                            {![
+                              "gebaeudehuelle",
+                              "innenverkleidung",
+                              "fussboden",
+                            ].includes(key) && (
+                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
+                                zzgl.
+                              </div>
+                            )}
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              {PriceUtils.formatPrice(itemPrice)}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
+                            inkludiert
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Special handling for paket
+                if (key === "planungspaket" && selection.value) {
+                  const itemPrice = getItemPrice(key, selection);
+
+                  return (
+                    <div
+                      key={key}
+                      className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
+                    >
+                      <div className="flex-1 min-w-0 max-w-[50%]">
+                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                          {selection.name}
+                        </div>
+                        <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
+                          {getPaketShortText(selection.value)}
+                        </div>
+                      </div>
+                      <div className="flex-1 text-right max-w-[50%] min-w-0">
+                        {itemPrice > 0 ? (
+                          <>
+                            {/* Remove "zzgl." from planungspaket */}
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              {PriceUtils.formatPrice(itemPrice)}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
+                            inkludiert
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Handle other selections
+                if (selection.value) {
+                  const itemPrice = getItemPrice(key, selection);
+
+                  return (
+                    <div
+                      key={key}
+                      className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
+                    >
+                      <div className="flex-1 min-w-0 max-w-[50%]">
+                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                          {key === "fenster"
+                            ? getFensterDisplayName(selection, true)
+                            : selection.name}
+                          {key === "pvanlage" &&
+                            selection.quantity &&
+                            selection.quantity > 1 &&
+                            ` (${selection.quantity}x)`}
+                        </div>
+                        {selection.description && (
+                          <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
+                            {selection.description}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 text-right max-w-[50%] min-w-0">
+                        {itemPrice > 0 ? (
+                          <>
+                            {/* Remove "zzgl." from fenster, pvanlage, and grundstueckscheck */}
+                            {/* zzgl. is not shown for fenster, pvanlage, or grundstueckscheck as required */}
+                            {![
+                              "fenster",
+                              "pvanlage",
+                              "grundstueckscheck",
+                            ].includes(key) && (
+                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
+                                zzgl.
+                              </div>
+                            )}
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              {PriceUtils.formatPrice(itemPrice)}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
+                            inkludiert
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
+
                 return null;
-              }
+              };
 
-              // Handle base configuration items (including preselected)
-              if (
-                key === "nest" ||
-                key === "gebaeudehuelle" ||
-                key === "innenverkleidung" ||
-                key === "fussboden"
-              ) {
-                const itemPrice = getItemPrice(key, selection);
-                const isIncluded = isItemIncluded(key, selection);
+              return (
+                <>
+                  {/* Top items (nest module) */}
+                  {topItems.map(renderConfigurationItem)}
 
-                return (
-                  <div
-                    key={key}
-                    className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
-                  >
-                    <div className="flex-1 min-w-0 max-w-[50%]">
-                      <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                        {selection.name}
-                      </div>
-                      {selection.description && (
-                        <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                          {selection.description}
+                  {/* Middle items (regular selections) */}
+                  {middleItems.map(renderConfigurationItem)}
+
+                  {/* Divider line before bottom items */}
+                  {bottomItems.length > 0 && (
+                    <div className="border-t border-gray-200 pt-6 mt-4">
+                      {/* Bottom items (planungspaket, grundstueckscheck) */}
+                      {bottomItems.map(([key, selection], _index) => (
+                        <div
+                          key={key}
+                          className={key === "grundstueckscheck" ? "pt-2" : ""}
+                        >
+                          {renderConfigurationItem([key, selection])}
                         </div>
-                      )}
+                      ))}
                     </div>
-                    <div className="flex-1 text-right max-w-[50%] min-w-0">
-                      {key === "nest" ? (
-                        <>
-                          <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                            Startpreis
-                          </div>
-                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                            {PriceUtils.formatPrice(selection.price || 0)}
-                          </div>
-                        </>
-                      ) : !isIncluded && itemPrice > 0 ? (
-                        <>
-                          {/* Remove "zzgl." from specified sections */}
-                          {![
-                            "gebaeudehuelle",
-                            "innenverkleidung",
-                            "fussboden",
-                          ].includes(key) && (
-                            <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                              zzgl.
-                            </div>
-                          )}
-                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                            {PriceUtils.formatPrice(itemPrice)}
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                          inkludiert
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              }
-
-              // Special handling for paket
-              if (key === "planungspaket" && selection.value) {
-                const itemPrice = getItemPrice(key, selection);
-
-                return (
-                  <div
-                    key={key}
-                    className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
-                  >
-                    <div className="flex-1 min-w-0 max-w-[50%]">
-                      <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                        {selection.name}
-                      </div>
-                      <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                        {getPaketShortText(selection.value)}
-                      </div>
-                    </div>
-                    <div className="flex-1 text-right max-w-[50%] min-w-0">
-                      {itemPrice > 0 ? (
-                        <>
-                          {/* Remove "zzgl." from planungspaket */}
-                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                            {PriceUtils.formatPrice(itemPrice)}
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                          inkludiert
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              }
-
-              // Handle other selections
-              if (selection.value) {
-                const itemPrice = getItemPrice(key, selection);
-
-                return (
-                  <div
-                    key={key}
-                    className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
-                  >
-                    <div className="flex-1 min-w-0 max-w-[50%]">
-                      <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                        {key === "fenster"
-                          ? getFensterDisplayName(selection, true)
-                          : selection.name}
-                        {key === "pvanlage" &&
-                          selection.quantity &&
-                          selection.quantity > 1 &&
-                          ` (${selection.quantity}x)`}
-                      </div>
-                      {selection.description && (
-                        <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                          {selection.description}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 text-right max-w-[50%] min-w-0">
-                      {itemPrice > 0 ? (
-                        <>
-                          {/* Remove "zzgl." from fenster, pvanlage, and grundstueckscheck */}
-                          {/* zzgl. is not shown for fenster, pvanlage, or grundstueckscheck as required */}
-                          {![
-                            "fenster",
-                            "pvanlage",
-                            "grundstueckscheck",
-                          ].includes(key) && (
-                            <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                              zzgl.
-                            </div>
-                          )}
-                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                            {PriceUtils.formatPrice(itemPrice)}
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                          inkludiert
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              }
-
-              return null;
-            })}
+                  )}
+                </>
+              );
+            })()}
           </div>
 
           {/* Total Price */}
@@ -388,14 +415,18 @@ export default function SummaryPanel({
           {isClient && (
             <div className="flex flex-col items-center gap-3">
               {/* Navigate to Warenkorb Button - Primary button first */}
-              <Link href="/warenkorb">
-                <Button
-                  variant="landing-primary"
-                  size="xs"
-                  className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
-                >
-                  {isConfigurationComplete() ? "In den Warenkorb" : "Jetzt bauen"}
-                </Button>
+              <Link
+                href="/warenkorb"
+                className={`bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl h-[44px] min-h-[44px] px-6 whitespace-nowrap ${
+                  !isConfigurationComplete()
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                onClick={(e) =>
+                  !isConfigurationComplete() && e.preventDefault()
+                }
+              >
+                {isConfigurationComplete() ? "In den Warenkorb" : "Jetzt bauen"}
               </Link>
 
               {/* Neu konfigurieren Button - Secondary button below */}

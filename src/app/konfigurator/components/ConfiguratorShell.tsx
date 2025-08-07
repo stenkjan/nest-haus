@@ -13,6 +13,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import { PriceCalculator } from "../core/PriceCalculator";
+import { ImageManager } from "../core/ImageManager";
 import { configuratorData } from "../data/configuratorData";
 import CategorySection from "./CategorySection";
 import SelectionOption from "./SelectionOption";
@@ -66,12 +67,72 @@ export default function ConfiguratorShell({
   const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] =
     useState(false);
 
+  // State for confirmation buttons on PV and Fenster sections
+  const [showPvConfirmation, setShowPvConfirmation] = useState<boolean>(false);
+  const [showFensterConfirmation, setShowFensterConfirmation] =
+    useState<boolean>(false);
+
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
   const [isGrundstueckCheckDialogOpen, setIsGrundstueckCheckDialogOpen] =
     useState(false);
   const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] =
     useState(false);
+
+  // Auto-scroll utility function for both mobile and desktop - Currently unused
+  const _scrollToSection = useCallback(
+    (sectionId: string) => {
+      // Small delay to ensure DOM has updated after selection
+      setTimeout(() => {
+        const targetElement = document.getElementById(sectionId);
+        if (!targetElement) return;
+
+        // Check if we're on mobile or desktop
+        const isMobile = window.innerWidth < 1024;
+
+        if (isMobile) {
+          // Mobile: Use document/window scroll with offset for sticky header
+          const headerHeight = 80; // Approximate navbar height
+          const elementTop = targetElement.offsetTop - headerHeight;
+
+          window.scrollTo({
+            top: elementTop,
+            behavior: "smooth",
+          });
+        } else {
+          // Desktop: Use right panel scroll
+          const rightPanel = (rightPanelRef as React.RefObject<HTMLDivElement>)
+            ?.current;
+          if (rightPanel) {
+            const elementTop = targetElement.offsetTop;
+            const targetScrollTop = elementTop - 20; // Small offset for better visual
+
+            rightPanel.scrollTo({
+              top: targetScrollTop,
+              behavior: "smooth",
+            });
+          }
+        }
+      }, 150); // 150ms delay for DOM updates
+    },
+    [rightPanelRef]
+  );
+
+  // Add scroll debugging
+  useEffect(() => {
+    // Track window scroll (for mobile)
+    const handleWindowScroll = () => {
+      const _scrollY =
+        window.pageYOffset || document.documentElement.scrollTop || 0;
+    };
+
+    // Add window scroll listener
+    window.addEventListener("scroll", handleWindowScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleWindowScroll);
+    };
+  }, []);
 
   // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
   // This prevents individual calculations during render for every option
@@ -139,8 +200,7 @@ export default function ConfiguratorShell({
     [calculateOptionPrices]
   );
 
-  // OPTIMIZED: Trigger bulk calculation when nest or core selections change
-  // REMOVED redundant preloading trigger - now handled by PreviewPanel
+  // Trigger bulk calculation when nest or core selections change
   useEffect(() => {
     if (!configuration?.nest) return;
 
@@ -191,6 +251,20 @@ export default function ConfiguratorShell({
     bulkCalculateOptionPrices,
   ]);
 
+  // PERFORMANCE BOOST: Intelligent image preloading when configuration changes
+  useEffect(() => {
+    // Only preload if we have a meaningful configuration
+    if (!configuration?.nest) return;
+
+    // Debounce preloading to avoid excessive API calls during rapid changes
+    const preloadTimer = setTimeout(() => {
+      // Use static import from top of file
+      ImageManager.preloadImages(configuration);
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(preloadTimer);
+  }, [configuration]); // Use full configuration object as dependency
+
   // Initialize session once on mount
   useEffect(() => {
     // REMOVED: Don't initialize here since KonfiguratorClient already does it
@@ -218,6 +292,21 @@ export default function ConfiguratorShell({
     setPvQuantity(0);
     setFensterSquareMeters(0);
     setIsGrundstuecksCheckSelected(false);
+    setShowPvConfirmation(false);
+    setShowFensterConfirmation(false);
+  }, []);
+
+  // Confirmation handlers for PV and Fenster sections
+  const handlePvConfirmation = useCallback(() => {
+    setShowPvConfirmation(false);
+    // After confirming PV selection, scroll to grundstückscheck
+    // scrollToSection("section-grundstueckscheck"); // Commented out auto-scroll
+  }, []);
+
+  const handleFensterConfirmation = useCallback(() => {
+    setShowFensterConfirmation(false);
+    // After confirming Fenster selection, scroll to pvanlage
+    // scrollToSection("section-pvanlage"); // Commented out auto-scroll
   }, []);
 
   // Optimized selection handlers using useCallback to prevent re-renders
@@ -274,6 +363,26 @@ export default function ConfiguratorShell({
           price: option.price.amount || 0,
           description: option.description,
         });
+
+        // Auto-scroll to next section after selection - Commented out
+        /*
+        if (categoryId === "nest") {
+          // After selecting nest module, scroll to gebäudehülle
+          scrollToSection("section-gebaeudehuelle");
+        } else if (categoryId === "gebaeudehuelle") {
+          // After selecting gebäudehülle, scroll to innenverkleidung
+          scrollToSection("section-innenverkleidung");
+        } else if (categoryId === "innenverkleidung") {
+          // After selecting innenverkleidung, scroll to fussboden
+          scrollToSection("section-fussboden");
+        } else if (categoryId === "fussboden") {
+          // After selecting fussboden, scroll to fenster
+          scrollToSection("section-fenster");
+        } else if (categoryId === "planungspaket") {
+          // After selecting planungspaket, scroll to grundstückscheck
+          scrollToSection("section-grundstueckscheck");
+        }
+        */
       }
     },
     [updateSelection, removeSelection, configuration]
@@ -294,6 +403,8 @@ export default function ConfiguratorShell({
           description: option.description,
           quantity: 1,
         });
+        // Show confirmation button for PV selection
+        setShowPvConfirmation(true);
       }
     },
     [updateSelection]
@@ -336,6 +447,8 @@ export default function ConfiguratorShell({
           description: option.description,
           squareMeters: 1,
         });
+        // Show confirmation button for Fenster selection
+        setShowFensterConfirmation(true);
       }
     },
     [updateSelection]
@@ -378,6 +491,42 @@ export default function ConfiguratorShell({
         description:
           "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
       });
+      // After selecting grundstückscheck, scroll to summary panel - Commented out
+      /*
+      setTimeout(() => {
+        const summaryElement = document.querySelector(
+          ".summary-panel"
+        ) as HTMLElement;
+        if (summaryElement) {
+          // Check if we're on mobile or desktop
+          const isMobile = window.innerWidth < 1024;
+
+          if (isMobile) {
+            // Mobile: Use window scroll
+            const elementTop =
+              summaryElement.getBoundingClientRect().top + window.pageYOffset;
+            const headerHeight = 80;
+            window.scrollTo({
+              top: elementTop - headerHeight,
+              behavior: "smooth",
+            });
+          } else {
+            // Desktop: Use right panel scroll
+            const rightPanel = (
+              rightPanelRef as React.RefObject<HTMLDivElement>
+            )?.current;
+            if (rightPanel) {
+              const elementTop = summaryElement.offsetTop;
+              const targetScrollTop = elementTop - 20;
+              rightPanel.scrollTo({
+                top: targetScrollTop,
+                behavior: "smooth",
+              });
+            }
+          }
+        }
+      }, 150);
+      */
     } else {
       // Remove selection when unchecked
       removeSelection("grundstueckscheck");
@@ -548,6 +697,7 @@ export default function ConfiguratorShell({
       {configuratorData.map((category) => (
         <CategorySection
           key={category.id}
+          id={`section-${category.id}`} // Add ID for auto-scroll targeting
           title={category.title}
           subtitle={category.subtitle}
         >
@@ -582,25 +732,51 @@ export default function ConfiguratorShell({
 
           {/* PV Quantity Selector */}
           {category.id === "pvanlage" && configuration?.pvanlage && (
-            <QuantitySelector
-              label="Anzahl der PV-Module"
-              value={pvQuantity}
-              max={getMaxPvModules()}
-              unitPrice={configuration.pvanlage.price || 0}
-              onChange={handlePvQuantityChange}
-            />
+            <>
+              <QuantitySelector
+                label="Anzahl der PV-Module"
+                value={pvQuantity}
+                max={getMaxPvModules()}
+                unitPrice={configuration.pvanlage.price || 0}
+                onChange={handlePvQuantityChange}
+              />
+              {/* PV Confirmation Button */}
+              {showPvConfirmation && (
+                <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
+                  <button
+                    onClick={handlePvConfirmation}
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
+                  >
+                    ✔
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           {/* Fenster Square Meters Selector */}
           {category.id === "fenster" && configuration?.fenster && (
-            <QuantitySelector
-              label="Anzahl der Fenster / Türen"
-              value={fensterSquareMeters}
-              max={getMaxFensterSquareMeters()}
-              unitPrice={configuration.fenster.price || 0}
-              unit="m²"
-              onChange={handleFensterSquareMetersChange}
-            />
+            <>
+              <QuantitySelector
+                label="Anzahl der Fenster / Türen"
+                value={fensterSquareMeters}
+                max={getMaxFensterSquareMeters()}
+                unitPrice={configuration.fenster.price || 0}
+                unit="m²"
+                onChange={handleFensterSquareMetersChange}
+              />
+              {/* Fenster Confirmation Button */}
+              {showFensterConfirmation && (
+                <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
+                  <button
+                    onClick={handleFensterConfirmation}
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
+                  >
+                    ✔
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           {/* Info Box - Use new responsive cards for specific categories */}
@@ -645,6 +821,7 @@ export default function ConfiguratorShell({
 
       {/* Grundstücks-Check Section */}
       <CategorySection
+        id="section-grundstueckscheck"
         title="Grundstückscheck"
         subtitle={
           <span className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-400">

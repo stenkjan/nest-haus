@@ -174,33 +174,41 @@ export default function WarenkorbClient() {
   const renderConfigurationDetails = (
     item: CartItem | ConfigurationCartItem
   ) => {
-    const details = [];
+    const details: Array<{
+      label: string;
+      value: string;
+      price: number;
+      isIncluded: boolean;
+      category: string;
+      isBottomItem?: boolean;
+    }> = [];
 
     // Only render configuration details for ConfigurationCartItem
     if ("nest" in item) {
-      // Mirror SummaryPanel logic exactly - show all configuration items individually
-      Object.entries(item).forEach(([key, selection]) => {
-        if (
-          !selection ||
-          key === "sessionId" ||
-          key === "totalPrice" ||
-          key === "timestamp" ||
-          key === "id" ||
-          key === "addedAt" ||
-          key === "isFromConfigurator"
-        ) {
-          return;
-        }
+      // Filter configuration entries (exclude nest which is shown as main title)
+      const configEntries = Object.entries(item).filter(
+        ([key, selection]) =>
+          selection &&
+          key !== "sessionId" &&
+          key !== "totalPrice" &&
+          key !== "timestamp" &&
+          key !== "id" &&
+          key !== "addedAt" &&
+          key !== "isFromConfigurator" &&
+          key !== "nest" // Exclude nest from details as it's shown as the main title
+      );
 
-        // Handle all configuration categories (except nest which is shown as the main title)
+      const { middleItems, bottomItems } =
+        PriceUtils.sortConfigurationEntries(configEntries);
+
+      // Process middle items (regular configuration categories)
+      middleItems.forEach(([key, selection]) => {
         if (
           key === "gebaeudehuelle" ||
           key === "innenverkleidung" ||
           key === "fussboden" ||
           key === "pvanlage" ||
-          key === "fenster" ||
-          key === "planungspaket" ||
-          key === "grundstueckscheck"
+          key === "fenster"
         ) {
           let displayName = selection.name;
           let displayPrice = selection.price || 0;
@@ -228,6 +236,27 @@ export default function WarenkorbClient() {
             price: isIncluded ? 0 : displayPrice,
             isIncluded: isIncluded,
             category: key,
+            isBottomItem: false,
+          });
+        }
+      });
+
+      // Process bottom items (planungspaket, grundstueckscheck)
+      bottomItems.forEach(([key, selection]) => {
+        if (key === "planungspaket" || key === "grundstueckscheck") {
+          const displayName = selection.name;
+          const displayPrice = selection.price || 0;
+
+          // Determine if the item price should be shown or marked as included
+          const isIncluded = displayPrice === 0;
+
+          details.push({
+            label: getCategoryDisplayName(key),
+            value: displayName,
+            price: isIncluded ? 0 : displayPrice,
+            isIncluded: isIncluded,
+            category: key,
+            isBottomItem: true,
           });
         }
       });
@@ -240,6 +269,7 @@ export default function WarenkorbClient() {
           price: item.price,
           isIncluded: false,
           category: "item",
+          isBottomItem: false,
         });
         if (item.description) {
           details.push({
@@ -248,6 +278,7 @@ export default function WarenkorbClient() {
             price: 0,
             isIncluded: true,
             category: "description",
+            isBottomItem: false,
           });
         }
       }
@@ -404,37 +435,84 @@ export default function WarenkorbClient() {
 
                     {/* Configuration Details with right panel styling */}
                     <div className="space-y-4">
-                      {renderConfigurationDetails(item).map((detail, idx) => {
-                        if (!detail.value || detail.value === "—") return null;
+                      {(() => {
+                        const details = renderConfigurationDetails(item);
+                        const topAndMiddleItems = details.filter(
+                          (detail) => !detail.isBottomItem
+                        );
+                        const bottomItems = details.filter(
+                          (detail) => detail.isBottomItem
+                        );
+
+                        const renderDetailItem = (
+                          detail: {
+                            label: string;
+                            value: string;
+                            price: number;
+                            isIncluded: boolean;
+                            category: string;
+                            isBottomItem?: boolean;
+                          },
+                          idx: number
+                        ) => {
+                          if (!detail.value || detail.value === "—")
+                            return null;
+
+                          return (
+                            <div
+                              key={`${detail.category}-${idx}`}
+                              className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
+                            >
+                              <div className="flex-1 min-w-0 max-w-[50%]">
+                                <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                                  {detail.value}
+                                </div>
+                                <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
+                                  {detail.label}
+                                </div>
+                              </div>
+                              <div className="flex-1 text-right max-w-[50%] min-w-0">
+                                {detail.isIncluded ||
+                                (detail.price && detail.price === 0) ? (
+                                  <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
+                                    inkludiert
+                                  </div>
+                                ) : (
+                                  <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                                    {PriceUtils.formatPrice(detail.price || 0)}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        };
 
                         return (
-                          <div
-                            key={idx}
-                            className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
-                          >
-                            <div className="flex-1 min-w-0 max-w-[50%]">
-                              <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                                {detail.value}
+                          <>
+                            {/* Top and middle items (regular configuration categories) */}
+                            {topAndMiddleItems.map(renderDetailItem)}
+
+                            {/* Divider line before bottom items */}
+                            {bottomItems.length > 0 && (
+                              <div className="border-t border-gray-200 pt-6 mt-4">
+                                {/* Bottom items (planungspaket, grundstueckscheck) */}
+                                {bottomItems.map((detail, idx) => (
+                                  <div
+                                    key={`${detail.category}-${idx}`}
+                                    className={
+                                      detail.category === "grundstueckscheck"
+                                        ? "pt-2"
+                                        : ""
+                                    }
+                                  >
+                                    {renderDetailItem(detail, idx)}
+                                  </div>
+                                ))}
                               </div>
-                              <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                                {detail.label}
-                              </div>
-                            </div>
-                            <div className="flex-1 text-right max-w-[50%] min-w-0">
-                              {detail.isIncluded ||
-                              (detail.price && detail.price === 0) ? (
-                                <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                                  inkludiert
-                                </div>
-                              ) : (
-                                <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                                  {PriceUtils.formatPrice(detail.price || 0)}
-                                </div>
-                              )}
-                            </div>
-                          </div>
+                            )}
+                          </>
                         );
-                      })}
+                      })()}
                     </div>
                   </div>
                 ))}

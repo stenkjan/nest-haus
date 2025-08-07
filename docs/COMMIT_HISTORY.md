@@ -4,6 +4,316 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a04d6004edfa1ee7f919f94870f5061d3144bbea] - Thu Aug 7 13:54:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: improve rendering of bottom items in SummaryPanel and WarenkorbClient  - Updated the rendering logic for bottom items in both SummaryPanel and WarenkorbClient to include conditional padding for the "grundstueckscheck" category. - Enhanced the mapping of items to ensure proper key assignment and maintain layout consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
+## [7f77c166927d69a52e93b144fed88053cb89da85] - Thu Aug 7 13:38:16 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: comment out unused auto-scroll functionality in ConfiguratorShell and adjust spacing in SummaryPanel and WarenkorbClient  - Renamed the unused scrollToSection function to _scrollToSection for clarity. - Commented out auto-scroll calls in handlePvConfirmation and handleFensterConfirmation to prevent unintended behavior. - Updated spacing in SummaryPanel and WarenkorbClient to improve layout consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
+## [30a9a2c853e915e9b4a7561ba095eed897e1d07a] - Thu Aug 7 13:18:00 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b683d2b2998837283d638747403d0d5777c2725c] - Thu Aug 7 13:11:07 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6dfcdeb66d12d6de0dbfb7161816552bdf70a244] - Thu Aug 7 12:51:28 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4e5045d16910f65a6d42eca282423810a5b03a80] - Thu Aug 7 12:38:10 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [9532df81b67c06a340e3f1d29e9d174d2f178c9c] - Thu Aug 7 12:17:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: clean up navbar scroll behavior and add cleanup function  - Removed unnecessary else statements in the scroll detection logic to streamline the code. - Added a cleanup function to the useEffect hook for better resource management, ensuring no actions are taken when conditions are not met.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/layout/Navbar.tsx
+
+
+---
+
+## [b7629d8940b33b05985d0370265f3a63ade3ce29] - Thu Aug 7 12:00:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [8384616bb530638eb502ce5bd5882f89fad84493] - Thu Aug 7 11:36:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [0585593a4599ae5dd037c88946e7b1765334709f] - Wed Aug 6 19:17:57 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [3f348e75ba7d1b41e44f6ddeb95ad353bd4a1f12] - Wed Aug 6 19:12:18 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6d1831feb487a26bee7aa1533decc487d08aa648] - Wed Aug 6 19:07:56 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [ee102fe6688c20a105981b1a259abc237897aa5b] - Wed Aug 6 19:03:01 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [8b831660a682dd7b16d7713a87726ac56a81108d] - Wed Aug 6 18:55:10 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: improve navbar visibility behavior on mobile devices  - Updated the navbar's visibility logic to ensure it only hides when scrolling down on mobile devices if the user is not at the very top of the page. - This change enhances the user experience by preventing the navbar from disappearing unexpectedly, allowing for easier navigation.  These adjustments improve the usability of the navbar in the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/layout/Navbar.tsx
+
+
+---
+
+## [cee9c7015fb52ce14d9f1e60ed8959082545fe5e] - Wed Aug 6 18:39:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [ff5b7e04659c5e334707176f4aa4e8885de7cde9] - Wed Aug 6 18:30:08 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1d39a77a8996e8b78bb1c280add2ae29a91e68cb] - Wed Aug 6 18:06:42 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: optimize image handling in PreviewPanel and ImageManager  - Moved the available views calculation in PreviewPanel to a more efficient location, improving performance and clarity. - Cleaned up the ImageManager's batch preloading function by removing unnecessary comments and ensuring consistent error handling. - Enhanced type safety in ImageManager by specifying types for success count calculations.  These changes improve the overall efficiency and maintainability of the image handling logic in the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/components/images/ClientBlobImage.tsx
+
+
+---
+
+## [ebf1dbfaace1bbe31be6ceca5a84e6b7103dc5cf] - Wed Aug 6 17:58:26 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: improve error handling and code clarity in image processing and configuration  - Simplified error handling in the image batch processing function to continue on failure without explicit error logging. - Updated dependency array in ConfiguratorShell to use the full configuration object for better performance and clarity. - Enhanced type safety in ImageManager by replacing  with specific types for improved maintainability. - Cleaned up formatting and consistency in ClientBlobImage for better readability.  These changes enhance the robustness and clarity of the image handling logic in the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/images/batch/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/components/images/ClientBlobImage.tsx
+
+
+---
+
+## [37c1fa16ad0afffe2a4c064dfbccd5dfb310bcc4] - Wed Aug 6 13:59:12 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [04d68de98e1780a9b72a7e4ecb9169efcb22d091] - Wed Aug 6 13:49:31 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance dynamic image handling in ImageManager  - Updated the logic for generating stirnseite images to use gebäudehülle instead of nest size, improving accuracy based on building envelope material. - Introduced dynamic mappings for interior combinations, allowing for more flexible image key generation based on user selections. - Added error handling for invalid combinations and fallback mechanisms to ensure robust image retrieval.  These changes improve the configurator's responsiveness and accuracy in image rendering.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
+## [2592dfaeae8e2a393a010184dd5c89712e02e2e0] - Wed Aug 6 13:40:34 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/showcase/grids/page.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/FullWidthVideoGrid.tsx
+- src/components/sections/MaterialShowcase.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [925f442ce3c272a8c966106439b607a5993ad842] - Wed Aug 6 13:31:47 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/__tests__/ImageManager.performance.test.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [63685b9c22c1b5f1d3e0616a5317027c9c852750] - Wed Aug 6 13:24:01 2025 +0200
 
 **Author**: stenkjan
