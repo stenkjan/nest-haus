@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7f77c166927d69a52e93b144fed88053cb89da85] - Thu Aug 7 13:38:16 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: comment out unused auto-scroll functionality in ConfiguratorShell and adjust spacing in SummaryPanel and WarenkorbClient  - Renamed the unused scrollToSection function to _scrollToSection for clarity. - Commented out auto-scroll calls in handlePvConfirmation and handleFensterConfirmation to prevent unintended behavior. - Updated spacing in SummaryPanel and WarenkorbClient to improve layout consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [30a9a2c853e915e9b4a7561ba095eed897e1d07a] - Thu Aug 7 13:18:00 2025 +0200
 
 **Author**: stenkjan
