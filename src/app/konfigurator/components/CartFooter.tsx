@@ -49,7 +49,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
 
   // Fix hydration error by using client-side only state for completion check
   const [isComplete, setIsComplete] = useState(false);
-  
+
   useEffect(() => {
     setIsComplete(isConfigurationComplete());
   }, [isConfigurationComplete]);

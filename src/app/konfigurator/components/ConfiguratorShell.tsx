@@ -746,9 +746,9 @@ export default function ConfiguratorShell({
                 <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
                   <button
                     onClick={handlePvConfirmation}
-                    className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
                   >
-                    Okay
+                    ✔
                   </button>
                 </div>
               )}
@@ -771,9 +771,9 @@ export default function ConfiguratorShell({
                 <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
                   <button
                     onClick={handleFensterConfirmation}
-                    className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
                   >
-                    Okay
+                    ✔
                   </button>
                 </div>
               )}
