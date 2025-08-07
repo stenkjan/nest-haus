@@ -136,22 +136,25 @@ export default function DeinPartClient() {
                 </h3>
               </div>
 
-              <div className="flex justify-center">
-                <div
-                  className="w-full relative"
-                  style={{ aspectRatio: "1.9/1" }}
-                >
-                  <HybridBlobImage
-                    path={IMAGES.function.nestHausGrundrissSchema}
-                    alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
-                    strategy="client"
-                    isInteractive={true}
-                    enableCache={true}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, 1550px"
-                    quality={85}
-                  />
+              {/* Image container with same sizing as unser-part page */}
+              <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
+                <div className="flex justify-center">
+                  <div className="w-full max-w-6xl overflow-hidden">
+                    <HybridBlobImage
+                      path={IMAGES.function.nestHausGrundrissSchema}
+                      alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
+                      width={1920}
+                      height={1011}
+                      className="w-full h-auto object-contain"
+                      sizes="(max-width: 768px) calc(100vw - 32px), (max-width: 1024px) calc(100vw - 64px), 1152px"
+                      quality={85}
+                      strategy="client"
+                      enableCache={true}
+                      isInteractive={true}
+                      isAboveFold={false}
+                      isCritical={false}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -229,10 +232,10 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               title="Ob Decke einziehen, oder Haus erweitern."
               subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
               text="<span class='text-gray-400'>Durch intelligente</span> Standardisierung <span class='text-gray-400'>garantieren wir</span> höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für</span> Stabilität, Energieeffizienz <span class='text-gray-400'>und ein unvergleichliches Wohngefühl.</span> Dein Zuhause. Dein Stil. Deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden,</span> denn du bekommst alles."
-              image1={IMAGES.function.nestHausModulSeiteKonzept}
-              image2={IMAGES.function.nestHausModulSeiteKonzept}
-              image1Description="NEST-Haus Modul Ansicht Seite - Holz Schema Konzept"
-              image2Description="NEST-Haus Modul Ansicht Seite - Holz Schema Konzept"
+              image1={IMAGES.function.nestHausFundamentPunktfundament}
+              image2={IMAGES.function.nestHausFlexibilitaetErweiterung}
+              image1Description="NEST-Haus Erweiterung Modulbau vergrößern Leichtbau Modul flexibel"
+              image2Description="NEST-Haus Flexibilität Erweiterung Modulbau"
               textPosition="right"
               backgroundColor="black"
               maxWidth={false}

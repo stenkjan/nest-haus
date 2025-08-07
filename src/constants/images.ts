@@ -61,8 +61,9 @@ export const IMAGES = {
         nestHausModulElektrikSanitaer: '35-NEST-Haus-Planung-Elektrik-Sanitaer-Einbau-Gebaeudetechnik-HKLS-Modul',
         nestHausPlattenFundament: '36-NEST-Haus-Planung-Innenausbau-Zwischendecke-Leichtbau-Modul',
         nestHausFundamentStreifenfundament: '37-NEST-Haus-Planung-Innenausbau-Zwischendecke-Leichtbau-Modul',
-        nestHausFundamentPunktfundament: '38-NEST-Haus-erweiterung-Modulbau-vergrößern-Leichtbau-Modul-flexibel',
+        nestHausFundamentPunktfundament: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung',
+        nestHausFlexibilitaetErweiterung: '40-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         // Mobile versions for function images
         mobile: {
             nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',

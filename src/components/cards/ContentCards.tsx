@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo } from "motion/react";
 import { HybridBlobImage } from "@/components/images";
+import "@/app/konfigurator/components/hide-scrollbar.css";
 
 interface CardData {
   id: number;
@@ -38,11 +39,11 @@ interface PricingCardData {
   mobileDescription?: string;
   image: string;
   price: string;
-  originalPrice?: string;
-  savings?: string;
+  monthlyPrice?: string;
   extendedDescription?: string;
   mobileExtendedDescription?: string;
   backgroundColor: string;
+  grayWord?: string; // Word to make gray in the title
 }
 
 interface ContentCardsProps {
@@ -163,64 +164,64 @@ const pricingCardData: PricingCardData[] = [
   {
     id: 1,
     title: "Planungspaket 01 Basis",
-    subtitle: "Basis",
+    subtitle: "",
     description:
       "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
-    mobileTitle: "Starter",
-    mobileSubtitle: "Einstieg",
+    mobileTitle: "Planungspaket 01",
+    mobileSubtitle: "Basis",
     mobileDescription:
-      "Erster Schritt ins modulare Wohnen mit wesentlicher Ausstattung.",
+      "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
     image:
       "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    price: "€189,000",
-    originalPrice: "€210,000",
-    savings: "€21,000",
+    price: "€10.900",
+    monthlyPrice: "€66,00/Monat",
     backgroundColor: "#F4F4F4",
+    grayWord: "Basis",
     extendedDescription:
-      "Das NEST Starter Paket bietet Ihnen den idealen Einstieg in die Welt des modularen Wohnens. Mit durchdachter Grundausstattung und flexiblen Erweiterungsmöglichkeiten schaffen Sie sich Ihr individuelles Zuhause.",
+      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
     mobileExtendedDescription:
-      "Idealer Einstieg ins modulare Wohnen mit Grundausstattung und flexiblen Erweiterungen.",
+      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
   },
   {
     id: 2,
-    title: "NEST Comfort",
-    subtitle: "Komfortpaket",
+    title: "Planungspaket 02 Plus",
+    subtitle: "",
     description:
-      "Erweiterte Ausstattung für höchsten Wohnkomfort. Inklusive Premium-Materialien und Smart-Home-Integration.",
-    mobileTitle: "Comfort",
-    mobileSubtitle: "Komfort",
+      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
+    mobileTitle: "Planungspaket 02",
+    mobileSubtitle: "Plus",
     mobileDescription:
-      "Erweiterte Ausstattung mit Premium-Materialien und Smart-Home.",
+      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    price: "€259,000",
-    originalPrice: "€290,000",
-    savings: "€31,000",
+    price: "€15.900",
+    monthlyPrice: "€97,00/Monat",
     backgroundColor: "#F4F4F4",
+    grayWord: "Plus",
     extendedDescription:
-      "Das NEST Comfort Paket vereint hochwertige Materialien mit intelligenter Haustechnik. Genießen Sie erstklassigen Wohnkomfort mit energieeffizienten Lösungen und modernster Ausstattung.",
+      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
     mobileExtendedDescription:
-      "Hochwertige Materialien mit intelligenter Haustechnik für erstklassigen Wohnkomfort.",
+      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
   },
   {
     id: 3,
-    title: "NEST Premium",
-    subtitle: "Luxuspaket",
+    title: "Planungspaket 03 Pro",
+    subtitle: "",
     description:
-      "Luxuriöse Vollausstattung mit exklusiven Materialien und maßgeschneiderten Lösungen für anspruchsvolle Wohnträume.",
-    mobileTitle: "Premium",
-    mobileSubtitle: "Luxus",
+      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
+    mobileTitle: "Planungspaket 03",
+    mobileSubtitle: "Pro",
     mobileDescription:
-      "Luxuriöse Vollausstattung mit exklusiven Materialien und maßgeschneiderten Lösungen.",
+      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
     image:
       "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    price: "€349,000",
-    originalPrice: "€390,000",
-    savings: "€41,000",
+    price: "€20.900",
+    monthlyPrice: "€127,50/Monat",
     backgroundColor: "#F4F4F4",
+    grayWord: "Pro",
     extendedDescription:
-      "Das NEST Premium Paket erfüllt höchste Ansprüche an Luxus und Individualität. Exklusive Materialien, maßgeschneiderte Lösungen und außergewöhnliche Ausstattungsdetails machen Ihr Zuhause zu etwas Besonderem.",
+      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
     mobileExtendedDescription:
-      "Höchste Ansprüche an Luxus mit exklusiven Materialien und maßgeschneiderten Lösungen.",
+      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
   },
 ];
 
@@ -231,6 +232,21 @@ const getImagePath = (imageUrl: string): string => {
     return decodeURIComponent(url.searchParams.get("path") || "");
   }
   return imageUrl;
+};
+
+// Helper function to render title with specified word in gray
+const renderTitle = (title: string, grayWord?: string) => {
+  if (grayWord && title.includes(grayWord)) {
+    const parts = title.split(grayWord);
+    return (
+      <>
+        {parts[0]}
+        <span className="text-gray-400">{grayWord}</span>
+        {parts[1]}
+      </>
+    );
+  }
+  return title;
 };
 
 export default function ContentCards({
@@ -519,61 +535,70 @@ export default function ContentCards({
                 transition={{ duration: 0.2 }}
                 onClick={onCardClick ? () => onCardClick(card.id) : undefined}
               >
-                {/* Top Section - Text left, Price right */}
-                <div className="flex flex-1 min-h-0">
-                  {/* Text Content - Left Side */}
-                  <div className="flex-1 flex flex-col justify-start items-start text-left px-6 pt-6 pb-1">
-                    <motion.div
-                      initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1, duration: 0.6 }}
-                    >
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">
-                        {getCardText(card, "title")}
-                      </h3>
-                      <h4 className="text-sm font-medium text-gray-700 mb-5">
-                        {getCardText(card, "subtitle")}
-                      </h4>
-                      <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line">
-                        {getCardText(card, "description")}
-                      </p>
-                    </motion.div>
+                {/* Top Section - FIXED HEIGHT */}
+                <div className="h-48 min-h-48 px-6 pt-6 pb-1 overflow-hidden">
+                  {/* Header Row - Title/Subtitle left, Price right */}
+                  <div className="flex mb-5">
+                    {/* Title/Subtitle - Left Side */}
+                    <div className="flex-1">
+                      <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1, duration: 0.6 }}
+                      >
+                        <h3 className="text-xl font-bold text-gray-900 mb-1">
+                          {renderTitle(
+                            getCardText(card, "title"),
+                            (card as PricingCardData).grayWord
+                          )}
+                        </h3>
+                        <h4 className="text-sm font-medium text-gray-700">
+                          {getCardText(card, "subtitle")}
+                        </h4>
+                      </motion.div>
+                    </div>
+
+                    {/* Price - Right Side */}
+                    <div className="w-24 flex flex-col justify-start items-end text-right">
+                      <motion.div
+                        initial={{ x: 20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+                        className="text-right"
+                      >
+                        <div className="text-lg font-bold text-gray-900 mb-1">
+                          {card.price}
+                        </div>
+                        {card.monthlyPrice && (
+                          <div className="text-xs text-gray-600 font-medium">
+                            {card.monthlyPrice}
+                          </div>
+                        )}
+                      </motion.div>
+                    </div>
                   </div>
 
-                  {/* Price Content - Right Side */}
-                  <div className="w-24 flex flex-col justify-start items-end text-right px-6 pt-6 pb-1">
-                    <motion.div
-                      initial={{ x: 20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-                      className="text-right"
-                    >
-                      <div className="text-lg font-bold text-gray-900 mb-1">
-                        {card.price}
-                      </div>
-                      {card.originalPrice && (
-                        <div className="text-xs text-gray-500 line-through mb-1">
-                          {card.originalPrice}
-                        </div>
-                      )}
-                      {card.savings && (
-                        <div className="text-xs text-green-600 font-medium">
-                          Save {card.savings}
-                        </div>
-                      )}
-                    </motion.div>
-                  </div>
+                  {/* Description - Full Width */}
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
+                  >
+                    <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line overflow-hidden">
+                      {getCardText(card, "description")}
+                    </p>
+                  </motion.div>
                 </div>
 
-                {/* Bottom Section - Extended Description (Full Width) */}
+                {/* Bottom Section - Extended Description (Full Width) - FIXED POSITION */}
                 {card.extendedDescription && (
-                  <div className="px-6 pt-1 pb-6">
+                  <div className="px-6 pt-2 pb-6">
                     <motion.div
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
                     >
-                      <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+                      <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line line-clamp-3">
                         {getCardText(card, "extendedDescription")}
                       </p>
                     </motion.div>
@@ -626,7 +651,11 @@ export default function ContentCards({
                 {displayCards.map((card, index) => (
                   <motion.div
                     key={card.id}
-                    className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${
+                    className={`flex-shrink-0 rounded-3xl shadow-lg ${
+                      isPricing && isLightboxMode
+                        ? "overflow-y-auto hide-scrollbar"
+                        : "overflow-hidden"
+                    } hover:shadow-xl transition-shadow duration-300 ${
                       (isStatic && isClient && screenWidth >= 1024) ||
                       isPricing ||
                       (isResponsive && isClient && screenWidth >= 1024)
@@ -639,8 +668,8 @@ export default function ContentCards({
                         isPricing && isLightboxMode
                           ? typeof window !== "undefined" &&
                             window.innerWidth < 768
-                            ? Math.min(600, window.innerHeight * 0.75)
-                            : Math.min(800, window.innerHeight * 0.7) // Dynamic height based on viewport
+                            ? Math.min(600, window.innerHeight * 0.75) // Original mobile size
+                            : Math.min(1000, window.innerHeight * 0.875) // 25% taller for desktop only
                           : isStatic
                           ? isClient && screenWidth >= 1600
                             ? Math.min(
@@ -704,58 +733,73 @@ export default function ContentCards({
                     {isPricing && isLightboxMode ? (
                       // Lightbox Pricing layout: Responsive with mobile-friendly sizing
                       <>
-                        {/* Top Section - Text left, Price right */}
-                        <div className="flex">
-                          {/* Text Content - Left Side */}
-                          <div className="flex-1 flex flex-col justify-start items-start text-left px-4 md:px-12 pt-4 md:pt-12 pb-2">
-                            <motion.div
-                              initial={{ x: -20, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{ delay: index * 0.1, duration: 0.6 }}
-                            >
-                              <h3 className="text-lg md:text-3xl font-bold text-gray-900 mb-2 md:mb-3">
-                                {getCardText(card, "title")}
-                              </h3>
-                              <h4 className="text-sm md:text-xl font-medium text-gray-700 mb-5">
-                                {getCardText(card, "subtitle")}
-                              </h4>
-                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
-                                {getCardText(card, "description")}
-                              </p>
-                            </motion.div>
+                        {/* Top Section - Header and Description */}
+                        <div className="flex-shrink-0 px-4 md:px-12 pt-4 md:pt-12 pb-2">
+                          {/* Header Row - Title/Subtitle left, Price right */}
+                          <div className="flex mb-5">
+                            {/* Title/Subtitle - Left Side */}
+                            <div className="flex-1">
+                              <motion.div
+                                initial={{ x: -20, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{
+                                  delay: index * 0.1,
+                                  duration: 0.6,
+                                }}
+                              >
+                                <h3 className="text-lg md:text-3xl font-bold text-gray-900 mb-2 md:mb-3">
+                                  {renderTitle(
+                                    getCardText(card, "title"),
+                                    (card as PricingCardData).grayWord
+                                  )}
+                                </h3>
+                                <h4 className="text-sm md:text-xl font-medium text-gray-700">
+                                  {getCardText(card, "subtitle")}
+                                </h4>
+                              </motion.div>
+                            </div>
+
+                            {/* Price - Right Side */}
+                            <div className="w-20 md:w-32 flex flex-col justify-start items-end text-right">
+                              <motion.div
+                                initial={{ x: 20, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{
+                                  delay: index * 0.1 + 0.2,
+                                  duration: 0.6,
+                                }}
+                                className="text-right"
+                              >
+                                <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
+                                  {(card as PricingCardData).price}
+                                </div>
+                                {(card as PricingCardData).monthlyPrice && (
+                                  <div className="text-xs md:text-sm text-gray-600 font-medium">
+                                    {(card as PricingCardData).monthlyPrice}
+                                  </div>
+                                )}
+                              </motion.div>
+                            </div>
                           </div>
 
-                          {/* Price Content - Right Side */}
-                          <div className="w-20 md:w-32 flex flex-col justify-start items-end text-right px-4 md:px-12 pt-4 md:pt-12 pb-2">
-                            <motion.div
-                              initial={{ x: 20, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{
-                                delay: index * 0.1 + 0.2,
-                                duration: 0.6,
-                              }}
-                              className="text-right"
-                            >
-                              <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
-                                {(card as PricingCardData).price}
-                              </div>
-                              {(card as PricingCardData).originalPrice && (
-                                <div className="text-sm md:text-lg text-gray-500 line-through mb-1 md:mb-2">
-                                  {(card as PricingCardData).originalPrice}
-                                </div>
-                              )}
-                              {(card as PricingCardData).savings && (
-                                <div className="text-xs md:text-sm text-green-600 font-medium">
-                                  Save {(card as PricingCardData).savings}
-                                </div>
-                              )}
-                            </motion.div>
-                          </div>
+                          {/* Description - Full Width */}
+                          <motion.div
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{
+                              delay: index * 0.1 + 0.3,
+                              duration: 0.6,
+                            }}
+                          >
+                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
+                              {getCardText(card, "description")}
+                            </p>
+                          </motion.div>
                         </div>
 
                         {/* Bottom Section - Extended Description (Full Width) */}
                         {(card as PricingCardData).extendedDescription && (
-                          <div className="px-4 md:px-12 pt-4 md:pt-8 pb-4 md:pb-12">
+                          <div className="px-4 md:px-12 pt-4 md:pt-8 pb-4 md:pb-12 flex-1 min-h-0">
                             <motion.div
                               initial={{ y: 20, opacity: 0 }}
                               animate={{ y: 0, opacity: 1 }}
@@ -763,6 +807,7 @@ export default function ContentCards({
                                 delay: index * 0.1 + 0.4,
                                 duration: 0.8,
                               }}
+                              className="h-full overflow-y-auto hide-scrollbar"
                             >
                               <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
                                 {getCardText(card, "extendedDescription")}
@@ -784,7 +829,12 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1, duration: 0.6 }}
                             >
                               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {getCardText(card, "title")}
+                                {renderTitle(
+                                  getCardText(card, "title"),
+                                  isPricing
+                                    ? (card as PricingCardData).grayWord
+                                    : undefined
+                                )}
                               </h3>
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, "subtitle")}
@@ -842,7 +892,12 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1, duration: 0.6 }}
                             >
                               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {getCardText(card, "title")}
+                                {renderTitle(
+                                  getCardText(card, "title"),
+                                  isPricing
+                                    ? (card as PricingCardData).grayWord
+                                    : undefined
+                                )}
                               </h3>
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, "subtitle")}
@@ -890,7 +945,12 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1, duration: 0.6 }}
                             >
                               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {getCardText(card, "title")}
+                                {renderTitle(
+                                  getCardText(card, "title"),
+                                  isPricing
+                                    ? (card as PricingCardData).grayWord
+                                    : undefined
+                                )}
                               </h3>
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, "subtitle")}
@@ -948,7 +1008,12 @@ export default function ContentCards({
                               transition={{ delay: index * 0.1, duration: 0.6 }}
                             >
                               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {getCardText(card, "title")}
+                                {renderTitle(
+                                  getCardText(card, "title"),
+                                  isPricing
+                                    ? (card as PricingCardData).grayWord
+                                    : undefined
+                                )}
                               </h3>
                               <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                                 {getCardText(card, "subtitle")}
@@ -994,7 +1059,12 @@ export default function ContentCards({
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
                             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                              {getCardText(card, "title")}
+                              {renderTitle(
+                                getCardText(card, "title"),
+                                isPricing
+                                  ? (card as PricingCardData).grayWord
+                                  : undefined
+                              )}
                             </h3>
                             <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
