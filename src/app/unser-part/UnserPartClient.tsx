@@ -435,8 +435,6 @@ export default function UnserPartClient() {
               title="Die Vielfalt unserer Module"
               subtitle="Entdecke die verschiedenen Konfigurationsmöglichkeiten und Modulkombinationen"
               backgroundColor="white"
-              textBox1="Diese Animation zeigt die vielfältigen Möglichkeiten unseres modularen Bausystems. Von kompakten Lösungen bis hin zu großzügigen Wohnkonzepten."
-              textBox2="Jede Modulkombination ist individuell planbar und lässt sich perfekt an deine Bedürfnisse und dein Grundstück anpassen."
               maxWidth={false}
               video={IMAGES.variantvideo.nine}
               autoPlay={true}
