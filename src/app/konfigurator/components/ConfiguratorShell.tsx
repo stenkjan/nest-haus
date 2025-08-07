@@ -66,6 +66,11 @@ export default function ConfiguratorShell({
   const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] =
     useState(false);
 
+  // State for confirmation buttons on PV and Fenster sections
+  const [showPvConfirmation, setShowPvConfirmation] = useState<boolean>(false);
+  const [showFensterConfirmation, setShowFensterConfirmation] =
+    useState<boolean>(false);
+
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
   const [isGrundstueckCheckDialogOpen, setIsGrundstueckCheckDialogOpen] =
@@ -288,7 +293,22 @@ export default function ConfiguratorShell({
     setPvQuantity(0);
     setFensterSquareMeters(0);
     setIsGrundstuecksCheckSelected(false);
+    setShowPvConfirmation(false);
+    setShowFensterConfirmation(false);
   }, []);
+
+  // Confirmation handlers for PV and Fenster sections
+  const handlePvConfirmation = useCallback(() => {
+    setShowPvConfirmation(false);
+    // After confirming PV selection, scroll to grundstückscheck
+    scrollToSection("section-grundstueckscheck");
+  }, [scrollToSection]);
+
+  const handleFensterConfirmation = useCallback(() => {
+    setShowFensterConfirmation(false);
+    // After confirming Fenster selection, scroll to pvanlage
+    scrollToSection("section-pvanlage");
+  }, [scrollToSection]);
 
   // Optimized selection handlers using useCallback to prevent re-renders
   const handleSelection = useCallback(
@@ -352,6 +372,15 @@ export default function ConfiguratorShell({
         } else if (categoryId === "gebaeudehuelle") {
           // After selecting gebäudehülle, scroll to innenverkleidung
           scrollToSection("section-innenverkleidung");
+        } else if (categoryId === "innenverkleidung") {
+          // After selecting innenverkleidung, scroll to fussboden
+          scrollToSection("section-fussboden");
+        } else if (categoryId === "fussboden") {
+          // After selecting fussboden, scroll to fenster
+          scrollToSection("section-fenster");
+        } else if (categoryId === "planungspaket") {
+          // After selecting planungspaket, scroll to grundstückscheck
+          scrollToSection("section-grundstueckscheck");
         }
       }
     },
@@ -373,6 +402,8 @@ export default function ConfiguratorShell({
           description: option.description,
           quantity: 1,
         });
+        // Show confirmation button for PV selection
+        setShowPvConfirmation(true);
       }
     },
     [updateSelection]
@@ -415,6 +446,8 @@ export default function ConfiguratorShell({
           description: option.description,
           squareMeters: 1,
         });
+        // Show confirmation button for Fenster selection
+        setShowFensterConfirmation(true);
       }
     },
     [updateSelection]
@@ -457,11 +490,50 @@ export default function ConfiguratorShell({
         description:
           "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
       });
+      // After selecting grundstückscheck, scroll to summary panel
+      setTimeout(() => {
+        const summaryElement = document.querySelector(
+          ".summary-panel"
+        ) as HTMLElement;
+        if (summaryElement) {
+          // Check if we're on mobile or desktop
+          const isMobile = window.innerWidth < 1024;
+
+          if (isMobile) {
+            // Mobile: Use window scroll
+            const elementTop =
+              summaryElement.getBoundingClientRect().top + window.pageYOffset;
+            const headerHeight = 80;
+            window.scrollTo({
+              top: elementTop - headerHeight,
+              behavior: "smooth",
+            });
+          } else {
+            // Desktop: Use right panel scroll
+            const rightPanel = (
+              rightPanelRef as React.RefObject<HTMLDivElement>
+            )?.current;
+            if (rightPanel) {
+              const elementTop = summaryElement.offsetTop;
+              const targetScrollTop = elementTop - 20;
+              rightPanel.scrollTo({
+                top: targetScrollTop,
+                behavior: "smooth",
+              });
+            }
+          }
+        }
+      }, 150);
     } else {
       // Remove selection when unchecked
       removeSelection("grundstueckscheck");
     }
-  }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
+  }, [
+    isGrundstuecksCheckSelected,
+    updateSelection,
+    removeSelection,
+    rightPanelRef,
+  ]);
 
   const handleInfoClick = useCallback((infoKey: string) => {
     console.log("🚀 Info click:", infoKey);
@@ -662,25 +734,51 @@ export default function ConfiguratorShell({
 
           {/* PV Quantity Selector */}
           {category.id === "pvanlage" && configuration?.pvanlage && (
-            <QuantitySelector
-              label="Anzahl der PV-Module"
-              value={pvQuantity}
-              max={getMaxPvModules()}
-              unitPrice={configuration.pvanlage.price || 0}
-              onChange={handlePvQuantityChange}
-            />
+            <>
+              <QuantitySelector
+                label="Anzahl der PV-Module"
+                value={pvQuantity}
+                max={getMaxPvModules()}
+                unitPrice={configuration.pvanlage.price || 0}
+                onChange={handlePvQuantityChange}
+              />
+              {/* PV Confirmation Button */}
+              {showPvConfirmation && (
+                <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
+                  <button
+                    onClick={handlePvConfirmation}
+                    className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
+                  >
+                    Okay
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           {/* Fenster Square Meters Selector */}
           {category.id === "fenster" && configuration?.fenster && (
-            <QuantitySelector
-              label="Anzahl der Fenster / Türen"
-              value={fensterSquareMeters}
-              max={getMaxFensterSquareMeters()}
-              unitPrice={configuration.fenster.price || 0}
-              unit="m²"
-              onChange={handleFensterSquareMetersChange}
-            />
+            <>
+              <QuantitySelector
+                label="Anzahl der Fenster / Türen"
+                value={fensterSquareMeters}
+                max={getMaxFensterSquareMeters()}
+                unitPrice={configuration.fenster.price || 0}
+                unit="m²"
+                onChange={handleFensterSquareMetersChange}
+              />
+              {/* Fenster Confirmation Button */}
+              {showFensterConfirmation && (
+                <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
+                  <button
+                    onClick={handleFensterConfirmation}
+                    className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
+                  >
+                    Okay
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           {/* Info Box - Use new responsive cards for specific categories */}
@@ -725,6 +823,7 @@ export default function ConfiguratorShell({
 
       {/* Grundstücks-Check Section */}
       <CategorySection
+        id="section-grundstueckscheck"
         title="Grundstückscheck"
         subtitle={
           <span className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-400">
