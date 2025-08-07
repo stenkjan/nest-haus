@@ -413,19 +413,15 @@ export default function WarenkorbClient() {
                           <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
                             {getConfigurationTitle(item)}
                           </div>
-                          <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                            Hinzugefügt am{" "}
-                            {new Date(
-                              item.addedAt || Date.now()
-                            ).toLocaleDateString("de-DE")}
-                          </div>
                         </div>
                         <div className="flex-1 text-right max-w-[30%] min-w-0">
                           <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                             {PriceUtils.formatPrice(
-                              "totalPrice" in item
-                                ? item.totalPrice
-                                : item.price
+                              "totalPrice" in item && item.nest
+                                ? item.nest.price || 0
+                                : "totalPrice" in item
+                                  ? item.totalPrice
+                                  : item.price
                             )}
                           </div>
                           {(() => {
