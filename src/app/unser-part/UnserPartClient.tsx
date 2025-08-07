@@ -21,6 +21,7 @@ import { PricingCardsLightbox } from "@/components/cards/ContentCardsLightbox";
 import { IMAGES } from "@/constants/images";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
+import Footer from "@/components/Footer";
 
 // Define sections with proper structure for unser-part
 const sections: SectionDefinition[] = [
@@ -476,6 +477,7 @@ export default function UnserPartClient() {
           />
         </section>
       </SectionRouter>
+      <Footer />
     </div>
   );
 }

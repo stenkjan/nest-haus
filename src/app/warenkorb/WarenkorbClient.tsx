@@ -12,11 +12,11 @@ export default function WarenkorbClient() {
     items,
     isProcessingOrder,
     addConfigurationToCart,
+    removeFromCart,
     clearCart,
     setOrderDetails,
     processOrder,
     getCartTotal,
-    getCartCount,
     canProceedToCheckout,
   } = useCartStore();
 
@@ -60,7 +60,6 @@ export default function WarenkorbClient() {
     if (!cartConfig) return;
 
     // Check if this exact configuration is already in the cart
-    // Compare by sessionId if available, otherwise compare configuration content
     const hasExistingConfig = items.some((item) => {
       if ("sessionId" in item && item.isFromConfigurator) {
         // If both have sessionId, compare them
@@ -70,7 +69,6 @@ export default function WarenkorbClient() {
 
         // If no sessionId available, compare configuration content to avoid duplicates
         if ("nest" in item) {
-          // Compare key configuration values to detect duplicates
           const sameNest = item.nest?.value === cartConfig.nest?.value;
           const sameGebaeudehuelle =
             item.gebaeudehuelle?.value === cartConfig.gebaeudehuelle?.value;
@@ -81,7 +79,6 @@ export default function WarenkorbClient() {
           const sameGrundstueckscheck =
             !!item.grundstueckscheck === !!cartConfig.grundstueckscheck;
 
-          // Consider it a duplicate if all main configuration values match
           return (
             sameNest &&
             sameGebaeudehuelle &&
@@ -111,7 +108,7 @@ export default function WarenkorbClient() {
     hasManuallyCleared,
   ]);
 
-  // Calculate monthly payment
+  // Calculate monthly payment with total months
   const calculateMonthlyPayment = (price: number) => {
     const months = 240;
     const interestRate = 0.035 / 12;
@@ -119,6 +116,60 @@ export default function WarenkorbClient() {
       (price * (interestRate * Math.pow(1 + interestRate, months))) /
       (Math.pow(1 + interestRate, months) - 1);
     return PriceUtils.formatPrice(monthlyPayment);
+  };
+
+  // Get next higher planungspaket for upgrade suggestions
+  const getNextPlanungspaket = (currentPackage?: string) => {
+    const packageHierarchy = [
+      { id: "basis", name: "Planung Basis", price: 8900 },
+      { id: "plus", name: "Planung Plus", price: 13900 },
+      { id: "pro", name: "Planung Pro", price: 18900 },
+    ];
+
+    if (!currentPackage) {
+      return packageHierarchy[0]; // Suggest basis if no package selected
+    }
+
+    const currentIndex = packageHierarchy.findIndex(
+      (pkg) => pkg.id === currentPackage
+    );
+    if (currentIndex !== -1 && currentIndex < packageHierarchy.length - 1) {
+      return packageHierarchy[currentIndex + 1];
+    }
+
+    return null; // No higher package available
+  };
+
+  // Get upgrade suggestion for user's configuration
+  const getUpgradeSuggestion = (item: CartItem | ConfigurationCartItem) => {
+    if (!("nest" in item) || !item.nest) return null;
+
+    // Priority 1: Planungspaket upgrade
+    const currentPlanungspaket = item.planungspaket?.value;
+    const nextPlanungspaket = getNextPlanungspaket(currentPlanungspaket);
+
+    if (nextPlanungspaket) {
+      const currentPrice = item.planungspaket?.price || 0;
+      const upgradePrice = nextPlanungspaket.price - currentPrice;
+      return {
+        type: "planungspaket",
+        name: nextPlanungspaket.name,
+        price: upgradePrice,
+        description: "Planungspaket " + nextPlanungspaket.name + " hinzufügen",
+      };
+    }
+
+    // Priority 2: Grundstückscheck if not selected
+    if (!item.grundstueckscheck) {
+      return {
+        type: "grundstueckscheck",
+        name: "Grundstückscheck",
+        price: 2000,
+        description: "Grundstückscheck hinzufügen",
+      };
+    }
+
+    return null;
   };
 
   // Handle form submission
@@ -138,7 +189,6 @@ export default function WarenkorbClient() {
 
     const success = await processOrder();
     if (success) {
-      // Redirect to success page or show success message
       console.log("Order processed successfully");
     }
   };
@@ -146,31 +196,52 @@ export default function WarenkorbClient() {
   // Handle clear cart with debugging
   const handleClearCart = () => {
     console.log("🛒 Clear cart button clicked");
-    console.log("🛒 Items before clear:", items.length);
-    console.log("🛒 Items content before clear:", items);
-
-    // Set immediate flag to prevent auto-add during clear operation
     clearingCartRef.current = true;
-
-    // Set flag to prevent auto-add after clearing
     setHasManuallyCleared(true);
-
     clearCart();
-    console.log("🛒 Clear cart function called");
 
-    // Reset the clearing flag after clearing is complete
     setTimeout(() => {
       clearingCartRef.current = false;
-      console.log("🛒 Items after clear (50ms):", items.length);
     }, 100);
-
-    setTimeout(() => {
-      console.log("🛒 Items after clear (200ms):", items.length);
-      console.log("🛒 Items content after clear:", items);
-    }, 200);
   };
 
-  // Render configuration item details with right panel styling
+  // Helper function to get display names for categories
+  const getCategoryDisplayName = (category: string): string => {
+    const categoryNames: Record<string, string> = {
+      nest: "Nest",
+      gebaeudehuelle: "Gebäudehülle",
+      innenverkleidung: "Innenverkleidung",
+      fussboden: "Fußboden",
+      pvanlage: "PV-Anlage",
+      fenster: "Fenster",
+      planungspaket: "Planungspaket",
+      grundstueckscheck: "Grundstückscheck",
+    };
+    return categoryNames[category] || category;
+  };
+
+  // Helper function to get the main configuration title
+  const getConfigurationTitle = (
+    item: CartItem | ConfigurationCartItem
+  ): string => {
+    if ("nest" in item) {
+      if (item.nest?.name) {
+        return item.nest.name;
+      } else if (item.grundstueckscheck && !item.nest) {
+        return "Grundstückscheck";
+      } else {
+        return "Nest Konfiguration";
+      }
+    } else {
+      if ("name" in item) {
+        return item.name;
+      } else {
+        return "Artikel";
+      }
+    }
+  };
+
+  // Render configuration item details
   const renderConfigurationDetails = (
     item: CartItem | ConfigurationCartItem
   ) => {
@@ -195,27 +266,29 @@ export default function WarenkorbClient() {
           key !== "id" &&
           key !== "addedAt" &&
           key !== "isFromConfigurator" &&
-          key !== "nest" // Exclude nest from details as it's shown as the main title
+          key !== "nest"
       );
 
       const { middleItems, bottomItems } =
         PriceUtils.sortConfigurationEntries(configEntries);
 
-      // Process middle items (regular configuration categories)
+      // Process middle items
       middleItems.forEach(([key, selection]) => {
         if (
-          key === "gebaeudehuelle" ||
-          key === "innenverkleidung" ||
-          key === "fussboden" ||
-          key === "pvanlage" ||
-          key === "fenster"
+          [
+            "gebaeudehuelle",
+            "innenverkleidung",
+            "fussboden",
+            "pvanlage",
+            "fenster",
+          ].includes(key)
         ) {
           let displayName = selection.name;
           let displayPrice = selection.price || 0;
 
-          // Special formatting for specific categories
           if (key === "fenster" && selection.squareMeters) {
-            displayName = `${selection.name} (${selection.squareMeters}m²)`;
+            displayName =
+              selection.name + " (" + selection.squareMeters + "m²)";
             displayPrice =
               (selection.squareMeters || 1) * (selection.price || 0);
           } else if (
@@ -223,11 +296,10 @@ export default function WarenkorbClient() {
             selection.quantity &&
             selection.quantity > 1
           ) {
-            displayName = `${selection.name} (${selection.quantity}x)`;
+            displayName = selection.name + " (" + selection.quantity + "x)";
             displayPrice = (selection.quantity || 1) * (selection.price || 0);
           }
 
-          // Determine if the item price should be shown or marked as included
           const isIncluded = displayPrice === 0;
 
           details.push({
@@ -241,13 +313,11 @@ export default function WarenkorbClient() {
         }
       });
 
-      // Process bottom items (planungspaket, grundstueckscheck)
+      // Process bottom items
       bottomItems.forEach(([key, selection]) => {
         if (key === "planungspaket" || key === "grundstueckscheck") {
           const displayName = selection.name;
           const displayPrice = selection.price || 0;
-
-          // Determine if the item price should be shown or marked as included
           const isIncluded = displayPrice === 0;
 
           details.push({
@@ -260,104 +330,42 @@ export default function WarenkorbClient() {
           });
         }
       });
-    } else {
-      // For regular cart items, show basic info
-      if ("name" in item) {
-        details.push({
-          label: "Artikel",
-          value: item.name,
-          price: item.price,
-          isIncluded: false,
-          category: "item",
-          isBottomItem: false,
-        });
-        if (item.description) {
-          details.push({
-            label: "Beschreibung",
-            value: item.description,
-            price: 0,
-            isIncluded: true,
-            category: "description",
-            isBottomItem: false,
-          });
-        }
-      }
     }
 
     return details;
-  };
-
-  // Helper function to get display names for categories
-  const getCategoryDisplayName = (category: string): string => {
-    const categoryNames: Record<string, string> = {
-      nest: "Nest",
-      gebaeudehuelle: "Gebäudehülle",
-      innenverkleidung: "Innenverkleidung",
-      fussboden: "Fußboden",
-      pvanlage: "PV-Anlage",
-      fenster: "Fenster",
-      planungspaket: "Planungspaket",
-      grundstueckscheck: "Grundstückscheck",
-    };
-    return categoryNames[category] || category;
-  };
-
-  // Helper function to get the main configuration title
-  const getConfigurationTitle = (
-    item: CartItem | ConfigurationCartItem
-  ): string => {
-    if ("nest" in item) {
-      // Configuration cart item
-      if (item.nest?.name) {
-        // Full configuration with nest module
-        return item.nest.name;
-      } else if (item.grundstueckscheck && !item.nest) {
-        // Standalone grundstückscheck
-        return "Grundstückscheck";
-      } else {
-        // Fallback for other configurations
-        return "Nest Konfiguration";
-      }
-    } else {
-      // Regular cart item
-      if ("name" in item) {
-        return item.name;
-      } else {
-        return "Artikel";
-      }
-    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ paddingTop: "5vh" }}>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center gap-4 mb-8">
-            <Link
-              href="/konfigurator"
-              className="bg-white/90 hover:bg-white rounded-full p-[clamp(0.75rem,1.5vw,1rem)] shadow-lg transition-all backdrop-blur-sm min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="Zurück zum Konfigurator"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-gray-700"
-              >
-                <path d="M19 12H5" />
-                <path d="M12 19L5 12L12 5" />
-              </svg>
-            </Link>
-            <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.015em] leading-[1.2]">
-              <span className="text-black">Dein Nest.</span>{" "}
-              <span className="text-[#999999]">Warenkorb</span>
+          {/* Centered Header Section */}
+          <div className="text-center mb-12">
+            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4">
+              Bereit einzuziehen?
             </h1>
+            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto">
+              Liefergarantie von 6 Monaten
+            </h3>
+            <div className="flex gap-4 justify-center items-center">
+              <Link
+                href="/konfigurator"
+                className="bg-transparent border border-gray-300 text-gray-700 px-6 py-3 rounded-full hover:bg-gray-50 transition-colors text-[clamp(0.875rem,1.5vw,1rem)] font-medium"
+              >
+                Neu konfigurieren
+              </Link>
+              <button
+                onClick={() => {
+                  const contactForm = document.getElementById("contact-form");
+                  if (contactForm) {
+                    contactForm.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors text-[clamp(0.875rem,1.5vw,1rem)] font-medium"
+              >
+                Check Out
+              </button>
+            </div>
           </div>
 
           {items.length === 0 ? (
@@ -378,200 +386,312 @@ export default function WarenkorbClient() {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Cart Items */}
-              <div className="lg:col-span-2 space-y-6">
-                <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2] mb-4">
-                  Ihre Konfigurationen
+            <div className="space-y-8">
+              {/* Section Titles - Aligned */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2]">
+                  <span className="text-black">Dein Nest.</span>{" "}
+                  <span className="text-[#999999]">Überblick</span>
                 </h3>
+                <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-bold tracking-[-0.015em] leading-[1.2]">
+                  Dein Preis
+                </h3>
+              </div>
 
-                {items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="border border-gray-300 rounded-[19px] px-6 py-4"
-                  >
-                    {/* Item Header with right panel styling */}
-                    <div className="flex justify-between items-start mb-4 border-b border-gray-100 pb-3">
-                      <div className="flex-1 min-w-0 max-w-[70%]">
-                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {getConfigurationTitle(item)}
+              {/* Main Content Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                {/* Left: Cart Items */}
+                <div className="space-y-6">
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="border border-gray-300 rounded-[19px] px-6 py-4"
+                    >
+                      {/* Item Header */}
+                      <div className="flex justify-between items-start mb-4 border-b border-gray-100 pb-3">
+                        <div className="flex-1 min-w-0 max-w-[70%]">
+                          <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                            {getConfigurationTitle(item)}
+                          </div>
                         </div>
-                        <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                          Hinzugefügt am{" "}
-                          {new Date(
-                            item.addedAt || Date.now()
-                          ).toLocaleDateString("de-DE")}
-                        </div>
-                      </div>
-                      <div className="flex-1 text-right max-w-[30%] min-w-0">
-                        <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                          {PriceUtils.formatPrice(
-                            "totalPrice" in item ? item.totalPrice : item.price
+                        <div className="flex-1 text-right max-w-[30%] min-w-0">
+                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                            {PriceUtils.formatPrice(
+                              "totalPrice" in item && item.nest
+                                ? item.nest.price || 0
+                                : "totalPrice" in item
+                                  ? item.totalPrice
+                                  : item.price
+                            )}
+                          </div>
+                          {(() => {
+                            const isConfigItem = "nest" in item;
+                            if (isConfigItem) {
+                              return !!item.nest;
+                            } else {
+                              return true;
+                            }
+                          })() && (
+                            <div className="text-[clamp(10px,2.5vw,12px)] text-gray-600 mt-1">
+                              oder{" "}
+                              {calculateMonthlyPayment(
+                                "totalPrice" in item && item.nest
+                                  ? item.nest.price || 0
+                                  : "totalPrice" in item
+                                    ? item.totalPrice
+                                    : item.price
+                              )}{" "}
+                              für 240 Monate
+                            </div>
                           )}
                         </div>
-                        {/* Show monthly payment only for house configurations (with nest module), not for grundstückscheck-only */}
+                      </div>
+
+                      {/* Configuration Details */}
+                      <div className="space-y-4">
                         {(() => {
-                          const isConfigItem = "nest" in item;
-                          if (isConfigItem) {
-                            // Configuration items: show monthly only if has nest module
-                            return !!item.nest;
-                          } else {
-                            // Regular cart items: always show monthly
-                            return true;
-                          }
-                        })() && (
-                          <div className="text-[clamp(10px,2.5vw,12px)] text-gray-600 mt-1">
-                            oder{" "}
-                            {calculateMonthlyPayment(
-                              "totalPrice" in item
-                                ? item.totalPrice
-                                : item.price
-                            )}{" "}
-                            monatlich
-                          </div>
+                          const details = renderConfigurationDetails(item);
+                          const topAndMiddleItems = details.filter(
+                            (detail) => !detail.isBottomItem
+                          );
+                          const bottomItems = details.filter(
+                            (detail) => detail.isBottomItem
+                          );
+
+                          const renderDetailItem = (
+                            detail: {
+                              label: string;
+                              value: string;
+                              price: number;
+                              isIncluded: boolean;
+                              category: string;
+                              isBottomItem?: boolean;
+                            },
+                            idx: number
+                          ) => {
+                            if (!detail.value || detail.value === "—")
+                              return null;
+
+                            return (
+                              <div
+                                key={detail.category + "-" + idx}
+                                className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
+                              >
+                                <div className="flex-1 min-w-0 max-w-[50%]">
+                                  <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                                    {detail.value}
+                                  </div>
+                                  <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
+                                    {detail.label}
+                                  </div>
+                                </div>
+                                <div className="flex-1 text-right max-w-[50%] min-w-0">
+                                  {detail.isIncluded ||
+                                  (detail.price && detail.price === 0) ? (
+                                    <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
+                                      inkludiert
+                                    </div>
+                                  ) : (
+                                    <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                                      {PriceUtils.formatPrice(
+                                        detail.price || 0
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          };
+
+                          return (
+                            <>
+                              {topAndMiddleItems.map(renderDetailItem)}
+                              {bottomItems.length > 0 && (
+                                <div className="border-t border-gray-200 pt-6 mt-4">
+                                  {bottomItems.map((detail, idx) => (
+                                    <div
+                                      key={detail.category + "-" + idx}
+                                      className={
+                                        detail.category === "grundstueckscheck"
+                                          ? "pt-2"
+                                          : ""
+                                      }
+                                    >
+                                      {renderDetailItem(detail, idx)}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Clear Cart Button */}
+                  <div className="flex justify-center">
+                    <button
+                      onClick={handleClearCart}
+                      className="text-gray-600 hover:text-gray-800 underline text-[clamp(12px,2.5vw,14px)] transition-colors"
+                    >
+                      Warenkorb leeren
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right: Price Summary & Upgrade */}
+                <div className="space-y-6">
+                  {/* Price Summary Box */}
+                  <div className="border border-gray-300 rounded-[19px] px-6 py-4">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center gap-4">
+                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black">
+                          Gesamt:
+                        </div>
+                        <div className="text-black text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2]">
+                          {PriceUtils.formatPrice(getCartTotal())}
+                        </div>
+                      </div>
+
+                      {/* Monthly Payment */}
+                      <div className="text-right">
+                        {/* Updated monthly payment format with total months */}
+                        {items.some((item) => {
+                          if (!("nest" in item)) return true;
+                          return !!item.nest;
+                        }) && (
+                          <p className="text-[clamp(12px,2.5vw,12px)] text-gray-600 mt-2 leading-[1.3]">
+                            oder {calculateMonthlyPayment(getCartTotal())} für
+                            240 Monate
+                          </p>
                         )}
                       </div>
                     </div>
-
-                    {/* Configuration Details with right panel styling */}
-                    <div className="space-y-4">
-                      {(() => {
-                        const details = renderConfigurationDetails(item);
-                        const topAndMiddleItems = details.filter(
-                          (detail) => !detail.isBottomItem
-                        );
-                        const bottomItems = details.filter(
-                          (detail) => detail.isBottomItem
-                        );
-
-                        const renderDetailItem = (
-                          detail: {
-                            label: string;
-                            value: string;
-                            price: number;
-                            isIncluded: boolean;
-                            category: string;
-                            isBottomItem?: boolean;
-                          },
-                          idx: number
-                        ) => {
-                          if (!detail.value || detail.value === "—")
-                            return null;
-
-                          return (
-                            <div
-                              key={`${detail.category}-${idx}`}
-                              className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
-                            >
-                              <div className="flex-1 min-w-0 max-w-[50%]">
-                                <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                                  {detail.value}
-                                </div>
-                                <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                                  {detail.label}
-                                </div>
-                              </div>
-                              <div className="flex-1 text-right max-w-[50%] min-w-0">
-                                {detail.isIncluded ||
-                                (detail.price && detail.price === 0) ? (
-                                  <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                                    inkludiert
-                                  </div>
-                                ) : (
-                                  <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                                    {PriceUtils.formatPrice(detail.price || 0)}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        };
-
-                        return (
-                          <>
-                            {/* Top and middle items (regular configuration categories) */}
-                            {topAndMiddleItems.map(renderDetailItem)}
-
-                            {/* Divider line before bottom items */}
-                            {bottomItems.length > 0 && (
-                              <div className="border-t border-gray-200 pt-6 mt-4">
-                                {/* Bottom items (planungspaket, grundstueckscheck) */}
-                                {bottomItems.map((detail, idx) => (
-                                  <div
-                                    key={`${detail.category}-${idx}`}
-                                    className={
-                                      detail.category === "grundstueckscheck"
-                                        ? "pt-2"
-                                        : ""
-                                    }
-                                  >
-                                    {renderDetailItem(detail, idx)}
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </>
-                        );
-                      })()}
-                    </div>
                   </div>
-                ))}
 
-                {/* Clear Cart Button */}
-                <div className="flex justify-center">
-                  <button
-                    onClick={handleClearCart}
-                    className="text-gray-600 hover:text-gray-800 underline text-[clamp(12px,2.5vw,14px)] transition-colors"
-                  >
-                    Warenkorb leeren
-                  </button>
+                  {/* Upgrade Box */}
+                  {(() => {
+                    const upgradeItem = items.find(
+                      (item) => "nest" in item && item.nest
+                    );
+                    const upgrade = upgradeItem
+                      ? getUpgradeSuggestion(upgradeItem)
+                      : null;
+
+                    if (!upgrade) return null;
+
+                    return (
+                      <div className="border border-gray-300 rounded-[19px] px-6 py-4">
+                        <div className="space-y-4">
+                          <div className="text-center">
+                            <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black mb-2">
+                              für weitere
+                            </div>
+                            <div className="text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2] text-black mb-2">
+                              {PriceUtils.formatPrice(upgrade.price)}
+                            </div>
+                            <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black mb-4">
+                              {upgrade.description}
+                            </div>
+                            <button
+                              onClick={() => {
+                                // Find the configuration item to upgrade
+                                const upgradeItem = items.find(
+                                  (item) => "nest" in item && item.nest
+                                ) as ConfigurationCartItem | undefined;
+
+                                if (
+                                  upgradeItem &&
+                                  upgrade.type === "planungspaket"
+                                ) {
+                                  const nextPlanungspaket =
+                                    getNextPlanungspaket(
+                                      upgradeItem.planungspaket?.value
+                                    );
+
+                                  if (nextPlanungspaket) {
+                                    // Create updated configuration item
+                                    const updatedItem: ConfigurationCartItem = {
+                                      ...upgradeItem,
+                                      planungspaket: {
+                                        category: "planungspaket",
+                                        value: nextPlanungspaket.id,
+                                        name: nextPlanungspaket.name,
+                                        price: nextPlanungspaket.price,
+                                        description: `Planungspaket ${nextPlanungspaket.name}`,
+                                      },
+                                      totalPrice:
+                                        upgradeItem.totalPrice + upgrade.price,
+                                    };
+
+                                    // Remove the old item and add the updated one
+                                    removeFromCart(upgradeItem.id);
+                                    addConfigurationToCart(updatedItem);
+
+                                    console.log(
+                                      "🔄 Planungspaket upgraded:",
+                                      nextPlanungspaket.name
+                                    );
+                                  }
+                                } else if (
+                                  upgradeItem &&
+                                  upgrade.type === "grundstueckscheck"
+                                ) {
+                                  // Create updated configuration with grundstueckscheck
+                                  const updatedItem: ConfigurationCartItem = {
+                                    ...upgradeItem,
+                                    grundstueckscheck: {
+                                      category: "grundstueckscheck",
+                                      value: "grundstueckscheck",
+                                      name: "Grundstückscheck",
+                                      price: 2000,
+                                      description: "Grundstückscheck",
+                                    },
+                                    totalPrice: upgradeItem.totalPrice + 2000,
+                                  };
+
+                                  // Remove the old item and add the updated one
+                                  removeFromCart(upgradeItem.id);
+                                  addConfigurationToCart(updatedItem);
+
+                                  console.log("🔄 Grundstückscheck added");
+                                }
+                              }}
+                              className="w-full bg-gray-100 text-gray-700 py-3 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-gray-200 transition-colors"
+                            >
+                              Hinzufügen
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Checkout Button */}
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => {
+                        const contactForm =
+                          document.getElementById("contact-form");
+                        if (contactForm) {
+                          contactForm.scrollIntoView({ behavior: "smooth" });
+                        }
+                      }}
+                      className="bg-blue-600 text-white py-3 px-8 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
+                    >
+                      Check Out
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Order Summary & Checkout */}
-              <div className="space-y-6">
-                {/* Price Summary */}
-                <div className="border border-gray-300 rounded-[19px] px-6 py-4">
-                  <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2] mb-4">
-                    Zusammenfassung
-                  </h3>
-
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4">
-                      <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black">
-                        Anzahl Konfigurationen
-                      </div>
-                      <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                        {getCartCount()}
-                      </div>
-                    </div>
-
-                    {/* Total Price with right panel styling */}
-                    <div className="mt-6 text-right">
-                      <h3 className="text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2]">
-                        <span className="text-black">Gesamtpreis:</span>
-                        <span className="font-medium">
-                          {" "}
-                          {PriceUtils.formatPrice(getCartTotal())}
-                        </span>
-                      </h3>
-                      {/* Show monthly payment only if cart contains house configurations (with nest module) */}
-                      {items.some((item) => {
-                        // Check if any item qualifies for monthly payment
-                        if (!("nest" in item)) return true; // Regular cart items
-                        return !!item.nest; // Configuration items with nest module
-                      }) && (
-                        <p className="text-[clamp(12px,2.5vw,12px)] text-gray-600 mt-2 leading-[1.3]">
-                          oder {calculateMonthlyPayment(getCartTotal())}{" "}
-                          monatlich
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Customer Form */}
-                <div className="border border-gray-300 rounded-[19px] px-6 py-4">
+              {/* Customer Form - Moved to bottom */}
+              <div className="mt-16 max-w-2xl mx-auto">
+                <div
+                  className="border border-gray-300 rounded-[19px] px-6 py-4"
+                  id="contact-form"
+                >
                   <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2] mb-4">
                     Kontaktdaten
                   </h3>

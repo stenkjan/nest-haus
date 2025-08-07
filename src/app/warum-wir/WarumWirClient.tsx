@@ -12,6 +12,7 @@ import {
 } from "@/components/grids";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
+import Footer from "@/components/Footer";
 
 // Define sections with proper structure for warum-wir page
 const sections = [
@@ -486,6 +487,7 @@ export default function WarumWirClient() {
           />
         </section>
       </SectionRouter>
+      <Footer />
     </div>
   );
 }

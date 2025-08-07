@@ -4,6 +4,117 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [96d81c0d9c7099576d794932c27c47a00e334b10] - Thu Aug 7 16:02:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [587f6a098a90d9251f7701e92f38d77961ab4fc0] - Thu Aug 7 16:01:44 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [091e74bf25adb3a4438926b292353c459711e812] - Thu Aug 7 15:54:49 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [882e7789bf86efa6d43cac215235cf956dbf6e50] - Thu Aug 7 15:43:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance price display logic in WarenkorbClient  - Simplified the price calculation logic to prioritize the nest price if available, improving clarity in price representation. - Removed the display of the addition date for cart items to streamline the user interface and focus on essential information.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
+## [619a2dc5c9b8e0d8a0943f595fd6fcb512df28fb] - Thu Aug 7 15:28:43 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update styling and content in WarenkorbClient  - Removed the unused getCartCount function to streamline the cart logic. - Enhanced the price display by changing the label from "Anzahl Konfigurationen" to "Gesamt" for clarity. - Updated the price formatting to display the total cart amount directly, improving user understanding. - Adjusted the font weight of the price header for better emphasis and visual hierarchy.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
+## [78feb260955dfc3361c97ade3710c1740c6671f8] - Thu Aug 7 15:18:38 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/components/cards/ContentCards.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4915c9f1e07b9bb3b98a25cbb22a38f3d187369d] - Thu Aug 7 14:33:46 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/images/batch/route.ts
+- src/app/konfigurator/__tests__/ImageManager.performance.test.ts
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/CategorySection.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/layout/Navbar.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [a04d6004edfa1ee7f919f94870f5061d3144bbea] - Thu Aug 7 13:54:39 2025 +0200
 
 **Author**: stenkjan

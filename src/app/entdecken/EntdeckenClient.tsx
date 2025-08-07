@@ -12,6 +12,7 @@ import {
 import { HybridBlobImage } from "@/components/images";
 import { ContentCardsGlass } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
+import Footer from "@/components/Footer";
 
 // Define sections with proper structure for entdecken page
 const sections = [
@@ -346,6 +347,7 @@ export default function EntdeckenClient() {
           />
         </section>
       </SectionRouter>
+      <Footer />
     </div>
   );
 }
