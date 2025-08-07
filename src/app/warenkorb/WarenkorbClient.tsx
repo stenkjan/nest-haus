@@ -435,9 +435,11 @@ export default function WarenkorbClient() {
                             <div className="text-[clamp(10px,2.5vw,12px)] text-gray-600 mt-1">
                               oder{" "}
                               {calculateMonthlyPayment(
-                                "totalPrice" in item
-                                  ? item.totalPrice
-                                  : item.price
+                                "totalPrice" in item && item.nest
+                                  ? item.nest.price || 0
+                                  : "totalPrice" in item
+                                    ? item.totalPrice
+                                    : item.price
                               )}{" "}
                               für 240 Monate
                             </div>
