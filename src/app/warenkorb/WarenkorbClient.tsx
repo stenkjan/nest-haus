@@ -244,8 +244,8 @@ export default function WarenkorbClient() {
       // Process bottom items (planungspaket, grundstueckscheck)
       bottomItems.forEach(([key, selection]) => {
         if (key === "planungspaket" || key === "grundstueckscheck") {
-          let displayName = selection.name;
-          let displayPrice = selection.price || 0;
+          const displayName = selection.name;
+          const displayPrice = selection.price || 0;
 
           // Determine if the item price should be shown or marked as included
           const isIncluded = displayPrice === 0;
@@ -444,7 +444,17 @@ export default function WarenkorbClient() {
                           (detail) => detail.isBottomItem
                         );
 
-                        const renderDetailItem = (detail: any, idx: number) => {
+                        const renderDetailItem = (
+                          detail: {
+                            label: string;
+                            value: string;
+                            price: number;
+                            isIncluded: boolean;
+                            category: string;
+                            isBottomItem?: boolean;
+                          },
+                          idx: number
+                        ) => {
                           if (!detail.value || detail.value === "—")
                             return null;
 

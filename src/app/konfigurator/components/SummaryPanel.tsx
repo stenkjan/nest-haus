@@ -9,7 +9,10 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useConfiguratorStore } from "@/store/configuratorStore";
+import {
+  useConfiguratorStore,
+  type ConfigurationItem,
+} from "@/store/configuratorStore";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { PriceUtils } from "../core/PriceUtils";
 import InfoBox from "./InfoBox";
@@ -98,13 +101,10 @@ export default function SummaryPanel({
   ]);
 
   // SIMPLIFIED: Helper functions without unnecessary useCallback (per React docs)
-  const getItemPrice = (
-    key: string,
-    selection: Record<string, unknown>
-  ): number => {
+  const getItemPrice = (key: string, selection: ConfigurationItem): number => {
     // For core categories that change with NEST size, use dynamic pricing
     if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value as string);
+      const dynamicPrice = getDynamicPrice(key, selection.value);
       if (
         dynamicPrice &&
         dynamicPrice.type === "upgrade" &&
@@ -117,35 +117,29 @@ export default function SummaryPanel({
 
     // For other items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
-      return (
-        ((selection.quantity as number) || 1) *
-        ((selection.price as number) || 0)
-      );
+      return (selection.quantity || 1) * (selection.price || 0);
     }
     if (key === "fenster") {
-      return (
-        ((selection.squareMeters as number) || 1) *
-        ((selection.price as number) || 0)
-      );
+      return (selection.squareMeters || 1) * (selection.price || 0);
     }
 
     // Default case
-    return (selection.price as number) || 0;
+    return selection.price || 0;
   };
 
   const isItemIncluded = (
     key: string,
-    selection: Record<string, unknown>
+    selection: ConfigurationItem
   ): boolean => {
     // For core categories that change with NEST size, check dynamic pricing
     if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value as string);
+      const dynamicPrice = getDynamicPrice(key, selection.value);
       return !dynamicPrice || dynamicPrice.type === "included";
     }
 
     // For other items, check if price is 0
     if (!selection?.price) return true;
-    return !(selection.price as number) || (selection.price as number) === 0;
+    return !selection.price || selection.price === 0;
   };
 
   if (!configuration) {
@@ -206,7 +200,7 @@ export default function SummaryPanel({
 
               const renderConfigurationItem = ([key, selection]: [
                 string,
-                any,
+                ConfigurationItem,
               ]) => {
                 // Handle base configuration items (including preselected)
                 if (
@@ -417,9 +411,13 @@ export default function SummaryPanel({
               <Link
                 href="/warenkorb"
                 className={`bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl h-[44px] min-h-[44px] px-6 whitespace-nowrap ${
-                  !isConfigurationComplete() ? "opacity-50 cursor-not-allowed" : ""
+                  !isConfigurationComplete()
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
                 }`}
-                onClick={(e) => !isConfigurationComplete() && e.preventDefault()}
+                onClick={(e) =>
+                  !isConfigurationComplete() && e.preventDefault()
+                }
               >
                 {isConfigurationComplete() ? "In den Warenkorb" : "Jetzt bauen"}
               </Link>
