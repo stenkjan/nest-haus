@@ -18,39 +18,19 @@ export default function Footer() {
     },
     {
       title: "Warum Wir",
-      items: [
-        "Deine Vorteile",
-        "Funktionsweise",
-        "Nachhaltigkeit",
-        "Qualität",
-      ],
+      items: ["Deine Vorteile", "Funktionsweise", "Nachhaltigkeit", "Qualität"],
     },
     {
       title: "Unsere Services",
-      items: [
-        "Die Pakete",
-        "Beratungen",
-        "Finanzierung",
-        "Support",
-      ],
+      items: ["Die Pakete", "Beratungen", "Finanzierung", "Support"],
     },
     {
       title: "Unternehmen",
-      items: [
-        "Über uns",
-        "Team",
-        "Karriere",
-        "Presse",
-      ],
+      items: ["Über uns", "Team", "Karriere", "Presse"],
     },
     {
       title: "Kontakt",
-      items: [
-        "Beratung",
-        "Support",
-        "Standorte",
-        "Newsletter",
-      ],
+      items: ["Beratung", "Support", "Standorte", "Newsletter"],
     },
   ];
 
