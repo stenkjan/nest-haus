@@ -85,7 +85,6 @@ export default function Navbar() {
           if (shouldShow) {
             header.style.transform = "translateY(0)";
             header.style.transition = "transform 0.3s ease-out";
-          } else {
           }
         }
         lastScrollTop = currentScrollY;
@@ -145,7 +144,6 @@ export default function Navbar() {
           if (shouldShow) {
             header.style.transform = "translateY(0)";
             header.style.transition = "transform 0.3s ease-out";
-          } else {
           }
         }
         lastScrollTop = currentScrollY;
@@ -167,6 +165,11 @@ export default function Navbar() {
         clearInterval(testInterval);
       };
     }
+
+    // Return cleanup function for cases where neither condition is met
+    return () => {
+      // No cleanup needed for this case
+    };
   }, [pathname, isMobile, rightPanelRef]);
 
   useEffect(() => {

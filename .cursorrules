@@ -787,3 +787,74 @@ const trackSelection = async (selection: Selection) => {
 - **Debugging**: Use structured logging with emojis for easy identification (🚀 🏪 💰 🔧)
 - **Database Errors**: Use upsert patterns to handle race conditions and missing records
 - **Session Management**: Implement fail-safe session operations that never block user interactions
+
+## Git & Line Ending Rules (Windows Development)
+
+### **Line Ending Configuration**
+
+- **CRITICAL**: Always use `.gitattributes` file to enforce consistent line endings
+- **Git Config**: Set `core.autocrlf=true` and `core.safecrlf=false` for Windows development
+- **Text Files**: All source code files (.ts, .tsx, .js, .jsx, .json, .md, .css) should be normalized to LF
+- **Binary Files**: Explicitly mark binary files (.png, .jpg, .exe, .dll) to prevent line ending conversion
+
+### **Required .gitattributes Setup**
+
+```gitattributes
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Explicitly declare text files for normalization
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.json text
+*.md text
+*.css text
+*.html text
+
+# Keep Windows-specific files with CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Keep Unix-specific files with LF
+*.sh text eol=lf
+
+# Mark binary files explicitly
+*.png binary
+*.jpg binary
+*.exe binary
+*.dll binary
+```
+
+### **Prevention Rules**
+
+- ✅ **ALWAYS** create `.gitattributes` file in new repositories
+- ✅ **NEVER** commit files named `nul` (Windows reserved name)
+- ✅ **ALWAYS** run `git config core.autocrlf true` on Windows setup
+- ✅ **VERIFY** line endings before major commits using `git ls-files --eol`
+- ❌ **NEVER** use Windows reserved names for files (`nul`, `con`, `prn`, `aux`, etc.)
+- ❌ **DON'T** mix line ending styles within the same file
+
+### **Troubleshooting Commands**
+
+```bash
+# Fix line ending issues
+git config core.autocrlf true
+git config core.safecrlf false
+git rm --cached -r .
+git reset
+git add .
+
+# Check line endings
+git ls-files --eol
+
+# Clean problematic files
+find . -name "nul" -delete
+```
+
+### **Development Environment Setup**
+
+- **VS Code**: Set `"files.eol": "\n"` in settings.json for consistent LF endings
+- **Git Bash**: Use Git Bash terminal for Windows development to avoid path issues
+- **File System**: Avoid Windows reserved names in any file or directory names
