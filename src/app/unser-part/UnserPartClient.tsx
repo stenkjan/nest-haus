@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button, CallToAction } from "@/components/ui";
+import { Button } from "@/components/ui";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,

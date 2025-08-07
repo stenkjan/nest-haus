@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button, CallToAction } from "@/components/ui";
+import { Button } from "@/components/ui";
 import {
   FullWidthVideoGrid,
   FullWidthTextGrid,
