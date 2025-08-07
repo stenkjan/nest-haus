@@ -73,6 +73,22 @@ export default function ConfiguratorShell({
   const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] =
     useState(false);
 
+  // Add scroll debugging
+  useEffect(() => {
+    // Track window scroll (for mobile)
+    const handleWindowScroll = () => {
+      const scrollY =
+        window.pageYOffset || document.documentElement.scrollTop || 0;
+    };
+
+    // Add window scroll listener
+    window.addEventListener("scroll", handleWindowScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleWindowScroll);
+    };
+  }, []);
+
   // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
   // This prevents individual calculations during render for every option
   const [optionPricesCache, setOptionPricesCache] = useState<

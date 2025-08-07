@@ -40,7 +40,6 @@ export default function Navbar() {
       const summary = getCartSummary();
       setCartCount(count);
       setCartSummary(summary);
-      console.log("🔄 Navbar: Cart updated, count:", count);
     } catch (error) {
       console.error("Error getting cart count:", error);
       setCartCount(0);
@@ -50,20 +49,32 @@ export default function Navbar() {
 
   // Enhanced scroll behavior with WebKit support
   useEffect(() => {
-    if (
-      pathname === "/konfigurator" &&
-      rightPanelRef &&
-      rightPanelRef.current
-    ) {
+    if (pathname === "/konfigurator") {
       const header = headerRef.current;
-      if (!header) return;
-      const rightPanel = rightPanelRef.current;
+      if (!header) {
+        return;
+      }
+
       let lastScrollTop = 0;
-      const getScrollPosition = () => rightPanel.scrollTop;
+
+      // For konfigurator, always use window scroll since we confirmed that's what works
+      const getScrollPosition = () => {
+        return (
+          window.pageYOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop ||
+          0
+        );
+      };
+
       const onScroll = () => {
         const currentScrollY = getScrollPosition();
         const threshold = isMobile ? 3 : 5;
-        if (Math.abs(currentScrollY - lastScrollTop) < threshold) return;
+
+        if (Math.abs(currentScrollY - lastScrollTop) < threshold) {
+          return;
+        }
+
         if (currentScrollY > lastScrollTop && currentScrollY > 50) {
           header.style.transform = "translateY(-100%)";
           header.style.transition = "transform 0.3s ease-out";
@@ -74,47 +85,88 @@ export default function Navbar() {
           if (shouldShow) {
             header.style.transform = "translateY(0)";
             header.style.transition = "transform 0.3s ease-out";
+          } else {
           }
         }
         lastScrollTop = currentScrollY;
       };
-      rightPanel.addEventListener("scroll", onScroll);
-      return () => rightPanel.removeEventListener("scroll", onScroll);
+
+      window.addEventListener("scroll", onScroll);
+
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+      };
     }
-    const header = headerRef.current;
-    if (!header) return;
-    // Cross-browser scroll position with WebKit optimizations
-    const getScrollPosition = () => {
-      return (
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop ||
-        0
-      );
-    };
-    lastScrollTop.current = getScrollPosition();
-    // Optimized polling for better performance on mobile
-    const intervalId = setInterval(
-      () => {
+
+    // Standard scroll handler for other pages
+    if (rightPanelRef && rightPanelRef.current) {
+      const header = headerRef.current;
+      if (!header) {
+        return;
+      }
+      const rightPanel = rightPanelRef.current;
+      let lastScrollTop = 0;
+
+      // Check if we're on mobile (panel doesn't have overflow-y-auto)
+      const panelIsScrollable =
+        rightPanel.scrollHeight > rightPanel.clientHeight;
+      const panelHasOverflow =
+        window.getComputedStyle(rightPanel).overflowY === "auto";
+      const shouldUseDocumentScroll = isMobile || !panelHasOverflow;
+
+      const getScrollPosition = () => {
+        if (shouldUseDocumentScroll) {
+          return (
+            window.pageYOffset ||
+            document.documentElement.scrollTop ||
+            document.body.scrollTop ||
+            0
+          );
+        } else {
+          return rightPanel.scrollTop;
+        }
+      };
+
+      const onScroll = () => {
         const currentScrollY = getScrollPosition();
-        // Reduced threshold for mobile WebKit
         const threshold = isMobile ? 3 : 5;
-        if (Math.abs(currentScrollY - lastScrollTop.current) < threshold)
+
+        if (Math.abs(currentScrollY - lastScrollTop) < threshold) {
           return;
-        if (currentScrollY > lastScrollTop.current && currentScrollY > 50) {
-          // Scrolling down - hide (WebKit-friendly transform)
+        }
+
+        if (currentScrollY > lastScrollTop && currentScrollY > 50) {
           header.style.transform = "translateY(-100%)";
           header.style.transition = "transform 0.3s ease-out";
-        } else if (currentScrollY < lastScrollTop.current) {
-          // Scrolling up - show
-          header.style.transform = "translateY(0)";
-          header.style.transition = "transform 0.3s ease-out";
+        } else if (currentScrollY < lastScrollTop) {
+          // For mobile konfigurator, only show navbar when very close to top
+          const shouldShow = isMobile ? currentScrollY <= 10 : true;
+
+          if (shouldShow) {
+            header.style.transform = "translateY(0)";
+            header.style.transition = "transform 0.3s ease-out";
+          } else {
+          }
         }
-        lastScrollTop.current = currentScrollY;
-      },
-      isMobile ? 150 : 200
-    ); // Faster polling on mobile
-    return () => clearInterval(intervalId);
+        lastScrollTop = currentScrollY;
+      };
+
+      // Choose the correct scroll target
+      const scrollTarget = shouldUseDocumentScroll ? window : rightPanel;
+      const eventType = shouldUseDocumentScroll ? "scroll" : "scroll";
+
+      scrollTarget.addEventListener(eventType, onScroll);
+
+      // Also test manual scroll detection
+      const testInterval = setInterval(() => {
+        const currentScroll = getScrollPosition();
+      }, 2000);
+
+      return () => {
+        scrollTarget.removeEventListener(eventType, onScroll);
+        clearInterval(testInterval);
+      };
+    }
   }, [pathname, isMobile, rightPanelRef]);
 
   useEffect(() => {
