@@ -19,6 +19,7 @@ import {
 import { IMAGES } from "@/constants/images";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
+import Footer from "@/components/Footer";
 
 // Define sections with proper structure for unser-part
 const sections: SectionDefinition[] = [
@@ -445,6 +446,7 @@ export default function UnserPartClient() {
           </div>
         </section>
       </SectionRouter>
+      <Footer />
     </div>
   );
 }

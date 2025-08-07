@@ -6,6 +6,7 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
+import Footer from "@/components/Footer";
 
 // Define sections for landing page
 const sections = [
@@ -249,6 +250,7 @@ export default function LandingPageClient() {
           </section>
         ))}
       </SectionRouter>
+      <Footer />
     </div>
   );
 }

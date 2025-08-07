@@ -13,6 +13,7 @@ import { HybridBlobImage } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
 import { SquareGlassCardsScroll } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
+import Footer from "@/components/Footer";
 
 // Define sections with proper structure for dein-part page
 const sections = [
@@ -338,6 +339,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             />
           </section>
         </SectionRouter>
+        <Footer />
       </div>
     </div>
   );

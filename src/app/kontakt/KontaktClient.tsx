@@ -7,6 +7,7 @@ import { CallToAction } from "@/components/ui";
 import { ImageGallery } from "@/components/grids";
 import AppointmentBooking from "./components/AppointmentBooking";
 import GrundstueckCheckWrapper from "./components/GrundstueckCheckWrapper";
+import Footer from "@/components/Footer";
 
 // Define sections for kontakt page
 const sections = [
@@ -185,6 +186,7 @@ export default function KontaktClient() {
           />
         </section>
       </SectionRouter>
+      <Footer />
     </div>
   );
 }
