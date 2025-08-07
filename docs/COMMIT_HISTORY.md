@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9532df81b67c06a340e3f1d29e9d174d2f178c9c] - Thu Aug 7 12:17:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: clean up navbar scroll behavior and add cleanup function  - Removed unnecessary else statements in the scroll detection logic to streamline the code. - Added a cleanup function to the useEffect hook for better resource management, ensuring no actions are taken when conditions are not met.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/layout/Navbar.tsx
+
+
+---
+
 ## [b7629d8940b33b05985d0370265f3a63ade3ce29] - Thu Aug 7 12:00:22 2025 +0200
 
 **Author**: stenkjan
