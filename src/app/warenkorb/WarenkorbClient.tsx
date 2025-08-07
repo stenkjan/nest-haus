@@ -17,7 +17,6 @@ export default function WarenkorbClient() {
     setOrderDetails,
     processOrder,
     getCartTotal,
-    getCartCount,
     canProceedToCheckout,
   } = useCartStore();
 
@@ -394,7 +393,7 @@ export default function WarenkorbClient() {
                   <span className="text-black">Dein Nest.</span>{" "}
                   <span className="text-[#999999]">Überblick</span>
                 </h3>
-                <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2]">
+                <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-bold tracking-[-0.015em] leading-[1.2]">
                   Dein Preis
                 </h3>
               </div>
@@ -548,22 +547,17 @@ export default function WarenkorbClient() {
                   {/* Price Summary Box */}
                   <div className="border border-gray-300 rounded-[19px] px-6 py-4">
                     <div className="space-y-4">
-                      <div className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4">
+                      <div className="flex justify-between items-center gap-4">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black">
-                          Anzahl Konfigurationen
+                          Gesamt:
                         </div>
-                        <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                          {getCartCount()}
+                        <div className="text-black text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2]">
+                          {PriceUtils.formatPrice(getCartTotal())}
                         </div>
                       </div>
 
-                      {/* Total Price - Removed "Gesamtpreis:" label */}
-                      <div className="mt-6 text-right">
-                        <h3 className="text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2]">
-                          <span className="font-medium text-black">
-                            {PriceUtils.formatPrice(getCartTotal())}
-                          </span>
-                        </h3>
+                      {/* Monthly Payment */}
+                      <div className="text-right">
                         {/* Updated monthly payment format with total months */}
                         {items.some((item) => {
                           if (!("nest" in item)) return true;
