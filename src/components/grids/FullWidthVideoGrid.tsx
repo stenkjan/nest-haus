@@ -10,8 +10,6 @@ interface FullWidthVideoGridProps {
   subtitle?: string;
   maxWidth?: boolean;
   video?: string;
-  textBox1?: string;
-  textBox2?: string;
   backgroundColor?: "white" | "black";
   autoPlay?: boolean;
   muted?: boolean;
@@ -21,11 +19,9 @@ interface FullWidthVideoGridProps {
 
 export default function FullWidthVideoGrid({
   title = "Full Width Video Grid",
-  subtitle = "Large video with two text boxes below",
+  subtitle = "Large video",
   maxWidth = true,
   video = IMAGES.function.nestHausModulSchemaIntro,
-  textBox1 = "Video content with descriptive text below explaining the key concepts and features of the NEST-Haus system.",
-  textBox2 = "Additional information about the video content and how it relates to the overall NEST-Haus experience and philosophy.",
   backgroundColor = "black",
   autoPlay = true,
   muted = true,
@@ -56,17 +52,11 @@ export default function FullWidthVideoGrid({
     ? "w-full max-w-screen-2xl mx-auto"
     : "w-full";
 
-  // Determine if we should use mobile layout
-  const isMobile = isClient && screenWidth < 1024;
-
   // Background and text color classes
   const backgroundClasses =
     backgroundColor === "black"
       ? "bg-black text-white"
       : "bg-white text-gray-900";
-
-  const textColorClasses =
-    backgroundColor === "black" ? "text-white" : "text-gray-800";
 
   // Prevent hydration mismatch
   if (!isClient) {
@@ -193,47 +183,6 @@ export default function FullWidthVideoGrid({
             </div>
           </div>
         </motion.div>
-
-        {/* Two Text Boxes Below - Responsive Layout */}
-        <div className="px-4 md:px-8 mt-4">
-          <div
-            className={`grid ${
-              isMobile ? "grid-cols-1" : "grid-cols-2"
-            } gap-4 md:gap-6 max-w-4xl mx-auto`}
-          >
-            {/* Text Box 1 */}
-            <motion.div
-              className="flex items-center justify-center"
-              style={isMobile ? {} : { minHeight: "200px" }}
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
-                  isMobile ? "text-center" : "text-left"
-                }`}
-                dangerouslySetInnerHTML={{ __html: textBox1 }}
-              />
-            </motion.div>
-
-            {/* Text Box 2 */}
-            <motion.div
-              className="flex items-center justify-center"
-              style={isMobile ? {} : { minHeight: "200px" }}
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
-                  isMobile ? "text-center" : "text-left"
-                }`}
-                dangerouslySetInnerHTML={{ __html: textBox2 }}
-              />
-            </motion.div>
-          </div>
-        </div>
       </div>
     </div>
   );
