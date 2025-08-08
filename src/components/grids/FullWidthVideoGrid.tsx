@@ -15,6 +15,9 @@ interface FullWidthVideoGridProps {
   muted?: boolean;
   controls?: boolean;
   cropPercent?: number; // Percentage to crop from top and bottom (e.g., 20 for 20%)
+  // Optional text fields for compatibility with existing pages
+  textBox1?: string;
+  textBox2?: string;
 }
 
 export default function FullWidthVideoGrid({
