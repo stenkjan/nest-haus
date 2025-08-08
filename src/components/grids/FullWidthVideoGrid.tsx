@@ -29,7 +29,7 @@ export default function FullWidthVideoGrid({
   cropPercent = 0,
 }: FullWidthVideoGridProps) {
   const [isClient, setIsClient] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(0);
+  const [_screenWidth, setScreenWidth] = useState(0);
 
   // Initialize client-side state
   useEffect(() => {
