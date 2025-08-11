@@ -14,6 +14,10 @@ interface ResponsiveHybridImageProps extends Omit<ImageProps, "src"> {
   isInteractive?: boolean;
   enableCache?: boolean;
   fallbackSrc?: string;
+  // Aspect ratio handling
+  desktopAspectRatio?: string; // e.g., "16/9" for landscape
+  mobileAspectRatio?: string; // e.g., "9/16" or "auto" for natural ratio
+  useMobileNaturalRatio?: boolean; // If true, mobile uses natural image ratio
 }
 
 /**
@@ -35,10 +39,30 @@ export default function ResponsiveHybridImage({
   enableCache = true,
   fallbackSrc,
   alt,
+  desktopAspectRatio = "16/9",
+  mobileAspectRatio = "auto",
+  useMobileNaturalRatio = true,
   ...props
 }: ResponsiveHybridImageProps) {
-  // Initialize with no assumption - wait for client-side detection
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  // Initialize with intelligent guess based on user agent and viewport
+  const getInitialMobileState = (): boolean => {
+    if (typeof window === "undefined") {
+      // SSR: Use conservative mobile-first approach
+      return true;
+    }
+
+    // Client-side: Immediate detection
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileUserAgent =
+      /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+        userAgent
+      );
+    const isSmallViewport = window.innerWidth < breakpoint;
+
+    return isMobileUserAgent || isSmallViewport;
+  };
+
+  const [isMobile, setIsMobile] = useState<boolean>(getInitialMobileState);
   const [isClient, setIsClient] = useState(false);
 
   // Determine device type on client side only
@@ -46,23 +70,8 @@ export default function ResponsiveHybridImage({
     setIsClient(true);
 
     const checkDevice = () => {
-      // Enhanced mobile detection with user agent + viewport
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isMobileUserAgent =
-        /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
-          userAgent
-        );
-      const isSmallViewport = window.innerWidth < breakpoint;
-
-      const newIsMobile = isMobileUserAgent || isSmallViewport;
+      const newIsMobile = window.innerWidth < breakpoint;
       setIsMobile(newIsMobile);
-
-      // Debug logging
-      if (process.env.NODE_ENV === "development") {
-        console.log(
-          `🔄 Device check: ${newIsMobile ? "Mobile" : "Desktop"} (width: ${window.innerWidth}, userAgent: ${isMobileUserAgent ? "mobile" : "desktop"})`
-        );
-      }
     };
 
     // Immediate check on mount
@@ -74,8 +83,24 @@ export default function ResponsiveHybridImage({
     return () => window.removeEventListener("resize", debouncedResize);
   }, [breakpoint]);
 
-  // Show loading state during SSR and until device type is determined
-  if (!isClient || isMobile === null) {
+  // Show loading state only during SSR to prevent hydration mismatch
+  if (!isClient) {
+    // During SSR, show placeholder with mobile-first image if critical
+    if (isCritical || isAboveFold) {
+      return (
+        <HybridBlobImage
+          path={mobilePath} // Mobile-first for SSR performance
+          alt={`${alt} - Loading`}
+          strategy="ssr"
+          isAboveFold={isAboveFold}
+          isCritical={isCritical}
+          enableCache={enableCache}
+          fallbackSrc={fallbackSrc}
+          {...props}
+        />
+      );
+    }
+
     return (
       <div
         className="animate-pulse bg-gray-200 w-full"
@@ -100,31 +125,59 @@ export default function ResponsiveHybridImage({
     console.log(`📱 Mobile path: ${mobilePath}`);
     console.log(`💻 Desktop path: ${desktopPath}`);
     console.log(`✅ Selected path: ${imagePath}`);
-    console.log(
-      `🔍 Mobile has -mobile suffix: ${mobilePath.includes("-mobile")}`
-    );
-    console.log(
-      `🔍 Desktop has NO -mobile suffix: ${!desktopPath.includes("-mobile")}`
-    );
-    console.log(
-      `🎯 Final choice is correct: ${isMobile ? mobilePath.includes("-mobile") : !imagePath.includes("-mobile")}`
-    );
-    console.log("---");
+    console.log(`📐 Aspect ratio: ${isMobile ? mobileAspectRatio : desktopAspectRatio}`);
   }
 
-  return (
-    <HybridBlobImage
-      path={imagePath}
-      alt={enhancedAlt}
-      strategy={strategy}
-      isAboveFold={isAboveFold}
-      isCritical={isCritical}
-      isInteractive={isInteractive}
-      enableCache={enableCache}
-      fallbackSrc={fallbackSrc}
-      {...props}
-    />
-  );
+  // Handle different rendering approaches for mobile vs desktop
+  if (isMobile && useMobileNaturalRatio) {
+    // Mobile: Use natural aspect ratio for vertical images
+    return (
+      <div className="relative w-full">
+        <HybridBlobImage
+          path={imagePath}
+          alt={enhancedAlt}
+          strategy={strategy}
+          isAboveFold={isAboveFold}
+          isCritical={isCritical}
+          isInteractive={isInteractive}
+          enableCache={enableCache}
+          fallbackSrc={fallbackSrc}
+          width={0}
+          height={0}
+          className="w-full h-auto object-cover"
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "auto",
+          }}
+          {...props}
+        />
+      </div>
+    );
+  } else {
+    // Desktop: Use fixed aspect ratio container
+    const aspectRatio = isMobile ? mobileAspectRatio : desktopAspectRatio;
+    return (
+      <div 
+        className="relative w-full h-full"
+        style={{ aspectRatio }}
+      >
+        <HybridBlobImage
+          path={imagePath}
+          alt={enhancedAlt}
+          strategy={strategy}
+          isAboveFold={isAboveFold}
+          isCritical={isCritical}
+          isInteractive={isInteractive}
+          enableCache={enableCache}
+          fallbackSrc={fallbackSrc}
+          fill
+          className="object-cover"
+          {...props}
+        />
+      </div>
+    );
+  }
 }
 
 // Simple debounce utility

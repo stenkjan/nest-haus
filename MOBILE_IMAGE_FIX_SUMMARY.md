@@ -15,6 +15,8 @@ Your site was loading BOTH mobile and desktop images on mobile devices, causing:
   - Real-time device detection via `window.innerWidth < 768`
   - User-agent detection for immediate mobile identification
   - Mobile-first SSR approach for critical images
+  - **Aspect ratio handling**: Desktop (16:9 landscape) vs Mobile (natural vertical ratio)
+  - **Natural mobile sizing**: Mobile images display in their original vertical aspect ratio
   - Debug logging in development mode
 
 ### 2. **Updated Landing Page**
@@ -97,8 +99,17 @@ const getInitialMobileState = (): boolean => {
   return isMobileUserAgent || isSmallViewport;
 };
 
-// Image path selection
+// Image path and aspect ratio selection
 const imagePath = isMobile ? mobilePath : desktopPath;
+
+// Mobile: Natural vertical ratio, Desktop: Fixed 16:9 landscape
+if (isMobile && useMobileNaturalRatio) {
+  // Mobile images use their natural aspect ratio (usually vertical)
+  return <HybridBlobImage width={0} height={0} className="w-full h-auto" />;
+} else {
+  // Desktop images use fixed 16:9 aspect ratio container
+  return <div style={{ aspectRatio: "16/9" }}><HybridBlobImage fill /></div>;
+}
 ```
 
 ### Mobile Path Mapping:
@@ -122,15 +133,20 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
 - [ ] **Console Logs**: Confirm device detection working
 - [ ] **Performance**: Measure bandwidth reduction in Network tab
 - [ ] **Visual**: All images display correctly on both mobile/desktop
+- [ ] **Aspect Ratios**: Mobile images are vertical/natural, desktop images are 16:9 landscape
+- [ ] **Mobile Layout**: Images use full width but natural height (no forced aspect ratio)
+- [ ] **Desktop Layout**: Images use 16:9 landscape container
 - [ ] **Functionality**: All buttons, overlays, and interactions work
 
 ## 🎯 **Success Criteria**
 
 1. **Mobile devices load ONLY mobile images** (with `-mobile` suffix)
 2. **Desktop devices load ONLY desktop images** (without `-mobile` suffix)
-3. **No visual regressions** in image display or overlays
-4. **Improved mobile PageSpeed scores** in subsequent tests
-5. **Reduced mobile bandwidth usage** by ~50%
+3. **Mobile images display in natural vertical aspect ratio** (not forced into 16:9)
+4. **Desktop images display in 16:9 landscape aspect ratio** 
+5. **No visual regressions** in image display or overlays
+6. **Improved mobile PageSpeed scores** in subsequent tests
+7. **Reduced mobile bandwidth usage** by ~50%
 
 ## 🗑️ **Cleanup (Optional)**
 

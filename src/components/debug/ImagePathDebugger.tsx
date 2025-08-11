@@ -61,29 +61,20 @@ export default function ImagePathDebugger() {
         const mobilePath = getMobileImagePath(section.imagePath);
         const selectedPath = isMobile ? mobilePath : desktopPath;
 
-        const isCorrectChoice = isMobile
-          ? selectedPath.includes("-mobile")
-          : !selectedPath.includes("-mobile");
-
         return (
           <div key={section.id} className="mb-2 border-t pt-2">
-            <div>
-              <strong>Section {section.id}:</strong>
-            </div>
-            <div
-              className={isCorrectChoice ? "text-green-400" : "text-red-400"}
-            >
-              {isCorrectChoice ? "✅" : "❌"} Selected: {selectedPath}
-            </div>
-            <div className="text-gray-400">💻 Desktop: {desktopPath}</div>
-            <div className="text-gray-400">📱 Mobile: {mobilePath}</div>
-            <div
-              className={isCorrectChoice ? "text-green-400" : "text-red-400"}
-            >
-              Using: {selectedPath.includes("-mobile") ? "Mobile" : "Desktop"}{" "}
-              variant
-              {!isCorrectChoice && " 🚨 WRONG!"}
-            </div>
+                       <div>
+             <strong>Section {section.id}:</strong>
+           </div>
+           <div className="text-green-400">✅ Selected: {selectedPath}</div>
+           <div className="text-gray-400">💻 Desktop: {desktopPath}</div>
+           <div className="text-gray-400">📱 Mobile: {mobilePath}</div>
+           <div className="text-yellow-400">
+             Using: {selectedPath.includes("-mobile") ? "Mobile" : "Desktop"} variant
+           </div>
+           <div className="text-blue-400">
+             📐 Ratio: {isMobile ? "Natural (vertical)" : "16:9 (landscape)"}
+           </div>
           </div>
         );
       })}
