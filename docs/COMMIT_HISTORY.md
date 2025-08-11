@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b8a209e18b61f58223aa9bfa8e3e47ec146d9f3d] - Mon Aug 11 21:43:00 2025 +0200
+
+**Author**: stenkjan
+**Message**: `removed unused spinner  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/HybridBlobImage.tsx
+
+
+---
+
 ## [a15775b0261964f6b2a297aef72193e7d67a7bd6] - Mon Aug 11 18:17:15 2025 +0200
 
 **Author**: stenkjan
