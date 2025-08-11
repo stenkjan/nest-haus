@@ -20,7 +20,6 @@ interface HybridBlobImageProps extends Omit<ImageProps, "src"> {
   // Client-specific options
   enableCache?: boolean;
   enableMobileDetection?: boolean;
-  showLoadingSpinner?: boolean;
 }
 
 /**
@@ -50,7 +49,6 @@ export default function HybridBlobImage({
   isInteractive = false,
   enableCache = true,
   enableMobileDetection = false,
-  showLoadingSpinner = false,
   ...props
 }: HybridBlobImageProps) {
   // Since we're in client context, always use ClientBlobImage
@@ -69,7 +67,6 @@ export default function HybridBlobImage({
       fallbackSrc={fallbackSrc}
       enableCache={enableCache && optimizedSettings.enableCache}
       enableMobileDetection={enableMobileDetection}
-      showLoadingSpinner={true}
       priority={isAboveFold || isCritical}
       {...props}
     />
@@ -89,7 +86,6 @@ function getClientOptimizedSettings(
   if (isAboveFold || isCritical) {
     return {
       enableCache: true,
-      showLoadingSpinner: false, // Don't show spinner for critical content
     };
   }
 
@@ -97,14 +93,12 @@ function getClientOptimizedSettings(
   if (isInteractive) {
     return {
       enableCache: true,
-      showLoadingSpinner: true, // Show feedback for dynamic content
     };
   }
 
   // Default optimizations
   return {
     enableCache: true,
-    showLoadingSpinner: false,
   };
 }
 
