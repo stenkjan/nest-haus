@@ -413,7 +413,7 @@ export default function SummaryPanel({
         {/* Action Buttons */}
         <div className="mt-6">
           {isClient && (
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col sm:flex-row sm:justify-center sm:items-center gap-1">
               {/* Navigate to Warenkorb Button - Primary button first */}
               <Link
                 href="/warenkorb"
@@ -426,10 +426,10 @@ export default function SummaryPanel({
                   !isConfigurationComplete() && e.preventDefault()
                 }
               >
-                {isConfigurationComplete() ? "In den Warenkorb" : "Jetzt bauen"}
+                {isConfigurationComplete() ? "Zum Warenkorb" : "Jetzt bauen"}
               </Link>
 
-              {/* Neu konfigurieren Button - Secondary button below */}
+              {/* Neu konfigurieren Button - Secondary button beside on desktop, below on mobile */}
               <Button
                 variant="tertiary"
                 size="xs"
