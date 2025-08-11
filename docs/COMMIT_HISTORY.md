@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [63253e59eb73e19d1663e5822c57fae6fc10b5f6] - Mon Aug 11 13:50:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance image loading performance and responsiveness across components  - Replaced  with  in  for optimized image loading based on device type. - Updated API routes to support direct redirects for immediate image serving, improving load times. - Implemented connection-aware preloading in  to enhance user experience on varying network conditions. - Switched  to  in  for lazy loading of videos, reducing initial load impact. - Added new image components to streamline image handling and improve performance across the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/api/images/batch/route.ts
+- src/app/api/images/route.ts
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/components/grids/FullWidthVideoGrid.tsx
+- src/components/images/LazyVideoLoader.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+- src/components/images/index.ts
+
+
+---
+
 ## [4359384689d34290231c01fb046368dc916eae0e] - Mon Aug 11 12:47:48 2025 +0200
 
 **Author**: stenkjan
