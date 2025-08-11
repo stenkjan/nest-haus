@@ -37,7 +37,22 @@ export default function ResponsiveHybridImage({
   alt,
   ...props
 }: ResponsiveHybridImageProps) {
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  // Initialize with intelligent guess based on user agent and viewport
+  const getInitialMobileState = (): boolean => {
+    if (typeof window === 'undefined') {
+      // SSR: Use conservative mobile-first approach
+      return true;
+    }
+    
+    // Client-side: Immediate detection
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileUserAgent = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+    const isSmallViewport = window.innerWidth < breakpoint;
+    
+    return isMobileUserAgent || isSmallViewport;
+  };
+
+  const [isMobile, setIsMobile] = useState<boolean>(getInitialMobileState);
   const [isClient, setIsClient] = useState(false);
 
   // Determine device type on client side only
@@ -45,9 +60,11 @@ export default function ResponsiveHybridImage({
     setIsClient(true);
 
     const checkDevice = () => {
-      setIsMobile(window.innerWidth < breakpoint);
+      const newIsMobile = window.innerWidth < breakpoint;
+      setIsMobile(newIsMobile);
     };
 
+    // Immediate check on mount
     checkDevice();
 
     const debouncedResize = debounce(checkDevice, 150);
@@ -56,8 +73,24 @@ export default function ResponsiveHybridImage({
     return () => window.removeEventListener("resize", debouncedResize);
   }, [breakpoint]);
 
-  // Show loading state during SSR and initial client render to prevent hydration mismatch
-  if (!isClient || isMobile === null) {
+  // Show loading state only during SSR to prevent hydration mismatch
+  if (!isClient) {
+    // During SSR, show placeholder with mobile-first image if critical
+    if (isCritical || isAboveFold) {
+      return (
+        <HybridBlobImage
+          path={mobilePath} // Mobile-first for SSR performance
+          alt={`${alt} - Loading`}
+          strategy="ssr"
+          isAboveFold={isAboveFold}
+          isCritical={isCritical}
+          enableCache={enableCache}
+          fallbackSrc={fallbackSrc}
+          {...props}
+        />
+      );
+    }
+    
     return (
       <div
         className="animate-pulse bg-gray-200 w-full"
@@ -73,6 +106,14 @@ export default function ResponsiveHybridImage({
 
   // Enhanced alt text with device context for debugging
   const enhancedAlt = `${alt} - ${deviceType} optimized`;
+
+  // Debug logging in development to verify correct path selection
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`🖼️ ResponsiveHybridImage: ${deviceType} detected (width: ${typeof window !== 'undefined' ? window.innerWidth : 'SSR'})`);
+    console.log(`📱 Mobile path: ${mobilePath}`);
+    console.log(`💻 Desktop path: ${desktopPath}`);
+    console.log(`✅ Selected path: ${imagePath}`);
+  }
 
   return (
     <HybridBlobImage

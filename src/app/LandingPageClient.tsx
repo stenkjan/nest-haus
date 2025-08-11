@@ -7,6 +7,7 @@ import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import Footer from "@/components/Footer";
+import ImagePathDebugger from "@/components/debug/ImagePathDebugger";
 
 // Define sections for landing page
 const sections = [
@@ -204,6 +205,7 @@ export default function LandingPageClient() {
         ))}
       </SectionRouter>
       <Footer />
+      <ImagePathDebugger />
     </div>
   );
 }
