@@ -67,10 +67,7 @@ export default function ConfiguratorShell({
   const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] =
     useState(false);
 
-  // State for confirmation buttons on PV and Fenster sections
-  const [showPvConfirmation, setShowPvConfirmation] = useState<boolean>(false);
-  const [showFensterConfirmation, setShowFensterConfirmation] =
-    useState<boolean>(false);
+  // State for confirmation buttons on PV and Fenster sections - REMOVED
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -292,22 +289,9 @@ export default function ConfiguratorShell({
     setPvQuantity(0);
     setFensterSquareMeters(0);
     setIsGrundstuecksCheckSelected(false);
-    setShowPvConfirmation(false);
-    setShowFensterConfirmation(false);
   }, []);
 
-  // Confirmation handlers for PV and Fenster sections
-  const handlePvConfirmation = useCallback(() => {
-    setShowPvConfirmation(false);
-    // After confirming PV selection, scroll to grundstückscheck
-    // scrollToSection("section-grundstueckscheck"); // Commented out auto-scroll
-  }, []);
-
-  const handleFensterConfirmation = useCallback(() => {
-    setShowFensterConfirmation(false);
-    // After confirming Fenster selection, scroll to pvanlage
-    // scrollToSection("section-pvanlage"); // Commented out auto-scroll
-  }, []);
+  // Confirmation handlers for PV and Fenster sections - REMOVED
 
   // Optimized selection handlers using useCallback to prevent re-renders
   const handleSelection = useCallback(
@@ -403,8 +387,6 @@ export default function ConfiguratorShell({
           description: option.description,
           quantity: 1,
         });
-        // Show confirmation button for PV selection
-        setShowPvConfirmation(true);
       }
     },
     [updateSelection]
@@ -447,8 +429,6 @@ export default function ConfiguratorShell({
           description: option.description,
           squareMeters: 1,
         });
-        // Show confirmation button for Fenster selection
-        setShowFensterConfirmation(true);
       }
     },
     [updateSelection]
@@ -740,42 +720,6 @@ export default function ConfiguratorShell({
                 unitPrice={configuration.pvanlage.price || 0}
                 onChange={handlePvQuantityChange}
               />
-              {/* PV Confirmation Button */}
-              {showPvConfirmation && (
-                <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
-                  <button
-                    onClick={handlePvConfirmation}
-                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
-                  >
-                    ✔
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-
-          {/* Fenster Square Meters Selector */}
-          {category.id === "fenster" && configuration?.fenster && (
-            <>
-              <QuantitySelector
-                label="Anzahl der Fenster / Türen"
-                value={fensterSquareMeters}
-                max={getMaxFensterSquareMeters()}
-                unitPrice={configuration.fenster.price || 0}
-                unit="m²"
-                onChange={handleFensterSquareMetersChange}
-              />
-              {/* Fenster Confirmation Button */}
-              {showFensterConfirmation && (
-                <div className="mt-4 flex justify-end px-[clamp(1rem,2vw,1.5rem)]">
-                  <button
-                    onClick={handleFensterConfirmation}
-                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors text-sm font-medium min-w-[80px] min-h-[44px] touch-manipulation"
-                  >
-                    ✔
-                  </button>
-                </div>
-              )}
             </>
           )}
 
@@ -805,6 +749,20 @@ export default function ConfiguratorShell({
                   onClick={() => handleInfoClick(category.id)}
                 />
               )}
+            </>
+          )}
+
+          {/* Fenster Square Meters Selector */}
+          {category.id === "fenster" && configuration?.fenster && (
+            <>
+              <QuantitySelector
+                label="Anzahl der Fenster / Türen"
+                value={fensterSquareMeters}
+                max={getMaxFensterSquareMeters()}
+                unitPrice={configuration.fenster.price || 0}
+                unit="m²"
+                onChange={handleFensterSquareMetersChange}
+              />
             </>
           )}
 

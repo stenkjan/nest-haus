@@ -43,7 +43,7 @@ interface HybridBlobImageProps extends Omit<ImageProps, "src"> {
 export default function HybridBlobImage({
   path,
   mobilePath,
-  fallbackSrc = "/api/placeholder/1200/800?style=nest&text=Lädt...",
+  fallbackSrc,
   strategy = "auto",
   isAboveFold = false,
   isCritical = false,
@@ -69,9 +69,7 @@ export default function HybridBlobImage({
       fallbackSrc={fallbackSrc}
       enableCache={enableCache && optimizedSettings.enableCache}
       enableMobileDetection={enableMobileDetection}
-      showLoadingSpinner={
-        showLoadingSpinner || optimizedSettings.showLoadingSpinner
-      }
+      showLoadingSpinner={true}
       priority={isAboveFold || isCritical}
       {...props}
     />

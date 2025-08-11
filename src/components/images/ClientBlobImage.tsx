@@ -428,14 +428,9 @@ export default function ClientBlobImage({
 }: ClientBlobImageProps) {
   // Generate appropriate fallback based on image dimensions
   const defaultFallback = React.useMemo(() => {
-    if (fill) {
-      return "/api/placeholder/1200/800?style=nest&text=Lädt...";
-    } else if (width && height) {
-      return `/api/placeholder/${width}/${height}?style=nest&text=Lädt...`;
-    } else {
-      return "/api/placeholder/1200/800?style=nest&text=Lädt...";
-    }
-  }, [fill, width, height]);
+    // Return transparent placeholder to avoid showing gray placeholder
+    return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDgwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9zdmc+";
+  }, []);
 
   const effectiveFallbackSrc = fallbackSrc || defaultFallback;
   const [imageSrc, setImageSrc] = useState<string>(effectiveFallbackSrc);
