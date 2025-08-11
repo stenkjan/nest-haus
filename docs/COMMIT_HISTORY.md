@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5e0aa299b1c7b99ef500bcfdf4ff8b03f56ea03d] - Fri Aug 8 11:59:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: add optional text fields to FullWidthVideoGrid component  - Introduced  and  properties to enhance compatibility with existing pages. - This addition allows for more flexible content presentation within the video grid.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/grids/FullWidthVideoGrid.tsx
+
+
+---
+
 ## [2692e5058b73fa08cd1d170078f9219e3bc875d3] - Fri Aug 8 11:54:12 2025 +0200
 
 **Author**: stenkjan
