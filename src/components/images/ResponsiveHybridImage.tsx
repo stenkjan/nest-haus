@@ -37,22 +37,8 @@ export default function ResponsiveHybridImage({
   alt,
   ...props
 }: ResponsiveHybridImageProps) {
-  // Initialize with intelligent guess based on user agent and viewport
-  const getInitialMobileState = (): boolean => {
-    if (typeof window === 'undefined') {
-      // SSR: Use conservative mobile-first approach
-      return true;
-    }
-    
-    // Client-side: Immediate detection
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobileUserAgent = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
-    const isSmallViewport = window.innerWidth < breakpoint;
-    
-    return isMobileUserAgent || isSmallViewport;
-  };
-
-  const [isMobile, setIsMobile] = useState<boolean>(getInitialMobileState);
+  // Initialize with no assumption - wait for client-side detection
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
   const [isClient, setIsClient] = useState(false);
 
   // Determine device type on client side only
@@ -60,8 +46,23 @@ export default function ResponsiveHybridImage({
     setIsClient(true);
 
     const checkDevice = () => {
-      const newIsMobile = window.innerWidth < breakpoint;
+      // Enhanced mobile detection with user agent + viewport
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileUserAgent =
+        /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+          userAgent
+        );
+      const isSmallViewport = window.innerWidth < breakpoint;
+
+      const newIsMobile = isMobileUserAgent || isSmallViewport;
       setIsMobile(newIsMobile);
+
+      // Debug logging
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `🔄 Device check: ${newIsMobile ? "Mobile" : "Desktop"} (width: ${window.innerWidth}, userAgent: ${isMobileUserAgent ? "mobile" : "desktop"})`
+        );
+      }
     };
 
     // Immediate check on mount
@@ -73,24 +74,8 @@ export default function ResponsiveHybridImage({
     return () => window.removeEventListener("resize", debouncedResize);
   }, [breakpoint]);
 
-  // Show loading state only during SSR to prevent hydration mismatch
-  if (!isClient) {
-    // During SSR, show placeholder with mobile-first image if critical
-    if (isCritical || isAboveFold) {
-      return (
-        <HybridBlobImage
-          path={mobilePath} // Mobile-first for SSR performance
-          alt={`${alt} - Loading`}
-          strategy="ssr"
-          isAboveFold={isAboveFold}
-          isCritical={isCritical}
-          enableCache={enableCache}
-          fallbackSrc={fallbackSrc}
-          {...props}
-        />
-      );
-    }
-    
+  // Show loading state during SSR and until device type is determined
+  if (!isClient || isMobile === null) {
     return (
       <div
         className="animate-pulse bg-gray-200 w-full"
@@ -108,11 +93,23 @@ export default function ResponsiveHybridImage({
   const enhancedAlt = `${alt} - ${deviceType} optimized`;
 
   // Debug logging in development to verify correct path selection
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`🖼️ ResponsiveHybridImage: ${deviceType} detected (width: ${typeof window !== 'undefined' ? window.innerWidth : 'SSR'})`);
+  if (process.env.NODE_ENV === "development") {
+    console.log(
+      `🖼️ ResponsiveHybridImage: ${deviceType} detected (width: ${typeof window !== "undefined" ? window.innerWidth : "SSR"})`
+    );
     console.log(`📱 Mobile path: ${mobilePath}`);
     console.log(`💻 Desktop path: ${desktopPath}`);
     console.log(`✅ Selected path: ${imagePath}`);
+    console.log(
+      `🔍 Mobile has -mobile suffix: ${mobilePath.includes("-mobile")}`
+    );
+    console.log(
+      `🔍 Desktop has NO -mobile suffix: ${!desktopPath.includes("-mobile")}`
+    );
+    console.log(
+      `🎯 Final choice is correct: ${isMobile ? mobilePath.includes("-mobile") : !imagePath.includes("-mobile")}`
+    );
+    console.log("---");
   }
 
   return (

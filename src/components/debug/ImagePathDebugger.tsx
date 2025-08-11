@@ -5,7 +5,7 @@ import { IMAGES } from "@/constants/images";
 
 /**
  * ImagePathDebugger - Development tool to verify mobile/desktop image path selection
- * 
+ *
  * Shows what image paths are being selected for landing page sections
  * Only renders in development mode
  */
@@ -16,14 +16,14 @@ export default function ImagePathDebugger() {
   useEffect(() => {
     setIsClient(true);
     setWindowWidth(window.innerWidth);
-    
+
     const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Only show in development
-  if (process.env.NODE_ENV !== 'development' || !isClient) {
+  if (process.env.NODE_ENV !== "development" || !isClient) {
     return null;
   }
 
@@ -52,22 +52,37 @@ export default function ImagePathDebugger() {
     <div className="fixed bottom-4 right-4 bg-black text-white p-4 rounded-lg z-50 max-w-md text-xs">
       <h3 className="font-bold mb-2">🛠️ Image Path Debug</h3>
       <div className="mb-2">
-        <strong>Screen:</strong> {windowWidth}px ({isMobile ? 'Mobile' : 'Desktop'})
+        <strong>Screen:</strong> {windowWidth}px (
+        {isMobile ? "Mobile" : "Desktop"})
       </div>
-      
-      {sections.map(section => {
+
+      {sections.map((section) => {
         const desktopPath = section.imagePath;
         const mobilePath = getMobileImagePath(section.imagePath);
         const selectedPath = isMobile ? mobilePath : desktopPath;
-        
+
+        const isCorrectChoice = isMobile
+          ? selectedPath.includes("-mobile")
+          : !selectedPath.includes("-mobile");
+
         return (
           <div key={section.id} className="mb-2 border-t pt-2">
-            <div><strong>Section {section.id}:</strong></div>
-            <div className="text-green-400">✅ Selected: {selectedPath}</div>
-            <div className="text-gray-400">Desktop: {desktopPath}</div>
-            <div className="text-gray-400">Mobile: {mobilePath}</div>
-            <div className="text-yellow-400">
-              Using: {selectedPath.includes('-mobile') ? 'Mobile' : 'Desktop'} variant
+            <div>
+              <strong>Section {section.id}:</strong>
+            </div>
+            <div
+              className={isCorrectChoice ? "text-green-400" : "text-red-400"}
+            >
+              {isCorrectChoice ? "✅" : "❌"} Selected: {selectedPath}
+            </div>
+            <div className="text-gray-400">💻 Desktop: {desktopPath}</div>
+            <div className="text-gray-400">📱 Mobile: {mobilePath}</div>
+            <div
+              className={isCorrectChoice ? "text-green-400" : "text-red-400"}
+            >
+              Using: {selectedPath.includes("-mobile") ? "Mobile" : "Desktop"}{" "}
+              variant
+              {!isCorrectChoice && " 🚨 WRONG!"}
             </div>
           </div>
         );
