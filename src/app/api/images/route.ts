@@ -8,6 +8,7 @@ const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const path = searchParams.get('path');
+  const redirect = searchParams.get('redirect') === 'true';
 
   if (!path) {
     return NextResponse.json({ error: 'No path provided' }, { status: 400 });
@@ -19,11 +20,21 @@ export async function GET(request: NextRequest) {
     if (process.env.NODE_ENV === 'development') {
       console.log(`📦 Cache hit for: ${path}`);
     }
-    return NextResponse.json({
+
+    // Performance improvement: Direct redirect for immediate image serving
+    if (redirect) {
+      const response = NextResponse.redirect(cached.url, 302);
+      response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+      return response;
+    }
+
+    const jsonResponse = NextResponse.json({
       url: cached.url,
       path: path,
       type: 'cached'
     });
+    jsonResponse.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    return jsonResponse;
   }
 
   try {
@@ -59,11 +70,20 @@ export async function GET(request: NextRequest) {
             console.log(`🖼️ Found image: ${pathToTry} -> ${imageUrl.substring(0, 50)}...`);
           }
 
-          return NextResponse.json({
+          // Performance improvement: Direct redirect for immediate image serving
+          if (redirect) {
+            const response = NextResponse.redirect(imageUrl, 302);
+            response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+            return response;
+          }
+
+          const jsonResponse = NextResponse.json({
             url: imageUrl,
             path: path,
             type: 'blob'
           });
+          jsonResponse.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+          return jsonResponse;
         }
       } catch (extError) {
         // Log individual extension failures in development
@@ -82,11 +102,20 @@ export async function GET(request: NextRequest) {
       console.warn(`🖼️ Image not found: ${imagePath} - returning placeholder`);
     }
 
-    return NextResponse.json({
+    // Performance improvement: Direct redirect for immediate image serving
+    if (redirect) {
+      const response = NextResponse.redirect(placeholderUrl, 302);
+      response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
+      return response;
+    }
+
+    const jsonResponse = NextResponse.json({
       url: placeholderUrl,
       path: path,
       type: 'placeholder'
     });
+    jsonResponse.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
+    return jsonResponse;
 
   } catch (error) {
     const isTimeoutError = error instanceof Error && error.message.includes('timeout');
@@ -108,11 +137,20 @@ export async function GET(request: NextRequest) {
     const errorType = isTimeoutError ? 'Timeout' : 'Error';
     const fallbackUrl = `/api/placeholder/400/300?text=${errorType}&style=nest&bgColor=%23ffeeee&textColor=%23cc0000`;
 
-    return NextResponse.json({
+    // Performance improvement: Direct redirect for immediate image serving
+    if (redirect) {
+      const response = NextResponse.redirect(fallbackUrl, 302);
+      response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=3600');
+      return response;
+    }
+
+    const jsonResponse = NextResponse.json({
       url: fallbackUrl,
       path: path,
       type: 'fallback',
       error: error instanceof Error ? error.message : 'Unknown error'
     });
+    jsonResponse.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=3600');
+    return jsonResponse;
   }
 }

@@ -346,15 +346,32 @@ export class ImageManager {
 
   /**
    * Intelligent preloading of all likely images based on configuration
-   * ENHANCED: Predictive loading of all views user is likely to access
+   * ENHANCED: Predictive loading with connection-aware optimization
    */
   static async preloadImages(configuration: Configuration | null): Promise<void> {
     if (!configuration || typeof window === 'undefined') return;
 
     try {
-      // Get all likely images user will need based on current configuration
-      const imagesToPreload = this.getPredictiveImageList(configuration);
+      // Connection-aware preloading
+      const { shouldLimitPreloading, getOptimalPreloadCount, getPreloadDelay } = await import('@/utils/connectionDetection');
 
+      if (shouldLimitPreloading()) {
+        // Conservative preloading for slow connections/mobile
+        const maxPreloads = getOptimalPreloadCount();
+        const delay = getPreloadDelay();
+
+        setTimeout(async () => {
+          const imagesToPreload = this.getPredictiveImageList(configuration).slice(0, maxPreloads);
+          if (imagesToPreload.length > 0) {
+            await this.batchPreloadImages(imagesToPreload);
+          }
+        }, delay);
+
+        return;
+      }
+
+      // Full preloading for fast connections
+      const imagesToPreload = this.getPredictiveImageList(configuration);
       if (imagesToPreload.length === 0) return;
 
       // Use batch loading for better performance

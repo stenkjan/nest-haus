@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui";
-import { HybridBlobImage } from "@/components/images";
+import { ResponsiveHybridImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
@@ -155,13 +155,14 @@ export default function LandingPageClient() {
               marginBottom: section.id !== sectionsContent.length ? "1vh" : "0",
             }}
           >
-            {/* Desktop image container - 16:9 aspect ratio */}
+            {/* PERFORMANCE FIX: Single responsive image container - only loads ONE image based on device */}
             <div
-              className="hidden md:block relative w-full h-full"
+              className="relative w-full h-full"
               style={{ aspectRatio: "16/9" }}
             >
-              <HybridBlobImage
-                path={section.imagePath}
+              <ResponsiveHybridImage
+                desktopPath={section.imagePath}
+                mobilePath={getMobileImagePath(section)}
                 alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
                 fill
                 className="object-cover"
@@ -170,69 +171,21 @@ export default function LandingPageClient() {
                 isAboveFold={section.id <= 3}
                 isCritical={section.id <= 2}
                 priority={section.id <= 3}
-                enableMobileDetection={false}
                 sizes="100vw"
                 quality={90}
                 unoptimized={true}
+                breakpoint={768}
               />
 
-              {/* Desktop Content Overlay */}
+              {/* Content Overlay - responsive for both mobile and desktop */}
               <div
                 className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? "px-0" : "px-8"}`}
               >
                 <div className="text-center">
-                  <h1 className="font-bold text-white text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">
+                  <h1 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">
                     {section.h1}
                   </h1>
-                  <h3 className="text-white text-xl lg:text-2xl xl:text-3xl mb-4 lg:mb-5">
-                    {section.h3}
-                  </h3>
-                </div>
-
-                <div className="flex gap-4">
-                  <Button variant="landing-primary" size="xs">
-                    {section.button1}
-                  </Button>
-                  <Button variant={section.secondaryButtonVariant} size="xs">
-                    {section.button2}
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile image container - natural aspect ratio */}
-            <div className="block md:hidden relative w-full">
-              <HybridBlobImage
-                path={getMobileImagePath(section)}
-                alt={`${section.h1} - NEST-Haus modulare Häuser Mobile Ansicht ${section.id}`}
-                width={0}
-                height={0}
-                className="w-full h-auto object-cover"
-                style={{
-                  ...landingImageStyle,
-                  position: "relative",
-                  width: "100%",
-                  height: "auto",
-                }}
-                strategy={section.id <= 2 ? "ssr" : "client"}
-                isAboveFold={section.id <= 3}
-                isCritical={section.id <= 2}
-                priority={section.id <= 3}
-                enableMobileDetection={false}
-                sizes="100vw"
-                quality={90}
-                unoptimized={true}
-              />
-
-              {/* Mobile Content Overlay */}
-              <div
-                className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? "px-0" : "px-8"}`}
-              >
-                <div className="text-center">
-                  <h1 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl mb-1">
-                    {section.h1}
-                  </h1>
-                  <h3 className="text-white text-lg sm:text-xl mb-4">
+                  <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 lg:mb-5">
                     {section.h3}
                   </h3>
                 </div>

@@ -54,11 +54,13 @@ export async function POST(request: NextRequest) {
             console.log(`🔄 Batch processed ${paths.length} images`);
         }
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             results,
             processed: paths.length
         });
+        response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+        return response;
 
     } catch (error) {
         console.error('Batch images API error:', error);
@@ -123,11 +125,11 @@ async function processSingleImage(path: string): Promise<{
                         url: imageUrl,
                         type: 'blob'
                     };
-                         }
-       } catch {
-         // Continue to next extension if this one fails
-         continue;
-       }
+                }
+            } catch {
+                // Continue to next extension if this one fails
+                continue;
+            }
         }
 
         // Image not found - return placeholder

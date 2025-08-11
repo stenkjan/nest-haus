@@ -81,30 +81,46 @@ export default function PreviewPanel({
     );
   }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
 
-    // Get current image path with preloading optimization
+  // Get current image path with preloading optimization
   const currentImagePath = useMemo(() => {
     const imagePath = ImageManager.getPreviewImage(configuration, activeView);
-    
-    // PERFORMANCE: Preload next likely image in background
+
+    // PERFORMANCE: Connection-aware preload of next likely image
     if (configuration && typeof window !== "undefined") {
-      // Preload other views user might switch to
       const otherViews = availableViews.filter((view) => view !== activeView);
       if (otherViews.length > 0) {
-        // Preload the most likely next view in background
-        const nextView = otherViews[0];
-        const nextImagePath = ImageManager.getPreviewImage(
-          configuration,
-          nextView
-        );
-        
-        // Preload with low priority to not interfere with current image
-        setTimeout(() => {
-          const img = new Image();
-          img.src = `/api/images?path=${encodeURIComponent(nextImagePath)}`;
-        }, 100); // Small delay to not interfere with current image loading
+        // Dynamic import for tree-shaking
+        import("@/utils/connectionDetection")
+          .then(({ shouldLimitPreloading, getPreloadDelay }) => {
+            const delay = shouldLimitPreloading() ? getPreloadDelay() : 100;
+
+            setTimeout(() => {
+              const nextView = otherViews[0];
+              const nextImagePath = ImageManager.getPreviewImage(
+                configuration,
+                nextView
+              );
+
+              // Use redirect parameter for single-request loading (performance improvement)
+              const img = new Image();
+              img.src = `/api/images?path=${encodeURIComponent(nextImagePath)}&redirect=true`;
+            }, delay);
+          })
+          .catch(() => {
+            // Fallback if connection detection fails
+            setTimeout(() => {
+              const nextView = otherViews[0];
+              const nextImagePath = ImageManager.getPreviewImage(
+                configuration,
+                nextView
+              );
+              const img = new Image();
+              img.src = `/api/images?path=${encodeURIComponent(nextImagePath)}&redirect=true`;
+            }, 200);
+          });
       }
     }
-    
+
     return imagePath;
   }, [configuration, activeView, availableViews]);
 

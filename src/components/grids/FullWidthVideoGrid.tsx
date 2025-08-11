@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { ClientBlobVideo } from "@/components/images";
+import { LazyVideoLoader } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 interface FullWidthVideoGridProps {
@@ -133,7 +133,7 @@ export default function FullWidthVideoGrid({
               }`}
             >
               {video === IMAGES.function.nestHausModulSchemaIntro ? (
-                <ClientBlobVideo
+                <LazyVideoLoader
                   path={video}
                   className="w-full h-auto object-contain"
                   autoPlay={autoPlay}
@@ -142,6 +142,8 @@ export default function FullWidthVideoGrid({
                   playsInline={true}
                   controls={controls}
                   enableCache={true}
+                  priority={false} // Not critical, can load lazily
+                  rootMargin="100px" // Start loading when 100px away
                 />
               ) : (
                 <div
@@ -165,7 +167,7 @@ export default function FullWidthVideoGrid({
                         : undefined
                     }
                   >
-                    <ClientBlobVideo
+                    <LazyVideoLoader
                       path={video}
                       className="w-full h-auto object-contain"
                       autoPlay={autoPlay}
@@ -174,6 +176,8 @@ export default function FullWidthVideoGrid({
                       playsInline={true}
                       controls={controls}
                       enableCache={true}
+                      priority={false} // Not critical, can load lazily
+                      rootMargin="100px" // Start loading when 100px away
                     />
                   </div>
                 </div>
