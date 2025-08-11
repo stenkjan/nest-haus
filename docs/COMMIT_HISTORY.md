@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a15775b0261964f6b2a297aef72193e7d67a7bd6] - Mon Aug 11 18:17:15 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: remove confirmation button states and update fallback images  - Eliminated the confirmation button states for PV and Fenster sections in ConfiguratorShell to streamline the component. - Updated the fallback images in ClientBlobImage and HybridBlobImage to use a transparent SVG placeholder instead of a placeholder API URL. - Adjusted the fallback images in the constants to match the new SVG format for consistency across the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/HybridBlobImage.tsx
+
+
+---
+
 ## [782e3aced483fa288f2838ec7dc2762a091d5293] - Mon Aug 11 14:28:35 2025 +0200
 
 **Author**: stenkjan
