@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3aae0585cb09137aeaed374594895e73bd0264d6] - Tue Aug 12 15:13:50 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update label for window/door quantity selector in ConfiguratorShell  - Changed the label from "Anzahl der Fenster / Türen" to "Größe der Fenster / Türen" for better clarity in the user interface.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [9dc57972171e20d33a6f238447533abe3e984a99] - Tue Aug 12 12:31:48 2025 +0200
 
 **Author**: stenkjan
