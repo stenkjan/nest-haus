@@ -64,10 +64,6 @@ export const configuratorData: CategoryData[] = [
         price: { type: 'base', amount: 289900, monthly: 1522 }
       }
     ],
-    infoBox: {
-      title: 'Noch Fragen offen?',
-      description: 'Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch.'
-    },
     facts: {
       title: 'Energieausweis A++',
       content: [
