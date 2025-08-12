@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1f13c5b8cda81393863b0f531901d71cae9c4f6f] - Tue Aug 12 11:42:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/HybridBlobImage.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [b8a209e18b61f58223aa9bfa8e3e47ec146d9f3d] - Mon Aug 11 21:43:00 2025 +0200
 
 **Author**: stenkjan
