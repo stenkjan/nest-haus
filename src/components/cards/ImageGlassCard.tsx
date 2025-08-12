@@ -68,7 +68,7 @@ export default function ImageGlassCard({
                   path={image}
                   alt="NEST-Haus Planung und Innenausbau Zeichnung Grundriss"
                   width={1200}
-                  height={0}
+                  height={800}
                   className="w-full h-auto object-cover"
                   strategy="client"
                   isInteractive={true}

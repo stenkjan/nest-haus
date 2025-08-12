@@ -118,7 +118,7 @@ export default function ThreeByOneAdaptiveHeight({
                 path={image}
                 alt={imageDescription}
                 width={400}
-                height={0}
+                height={300}
                 className="max-w-full h-auto object-contain rounded-lg"
                 sizes="100vw"
                 quality={85}
@@ -168,7 +168,7 @@ export default function ThreeByOneAdaptiveHeight({
                 path={image}
                 alt={imageDescription}
                 width={400}
-                height={0}
+                height={300}
                 className="w-full h-auto object-contain rounded-lg"
                 sizes="33vw"
                 quality={85}

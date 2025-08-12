@@ -7,7 +7,6 @@ import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import Footer from "@/components/Footer";
-import ImagePathDebugger from "@/components/debug/ImagePathDebugger";
 
 // Define sections for landing page
 const sections = [
@@ -137,8 +136,7 @@ export default function LandingPageClient() {
   // Landing page specific image styling - applies to all 8 images
   const landingImageStyle = {
     objectPosition: "center center",
-    transform: "scale(1.05)",
-    transformOrigin: "center center",
+    objectFit: "contain" as const,
   };
 
   return (
@@ -157,7 +155,7 @@ export default function LandingPageClient() {
             }}
           >
             {/* PERFORMANCE FIX: Single responsive image container with proper overlay positioning */}
-            <div className="relative w-full">
+            <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
               <ResponsiveHybridImage
                 desktopPath={section.imagePath}
                 mobilePath={getMobileImagePath(section)}
@@ -171,13 +169,16 @@ export default function LandingPageClient() {
                 quality={90}
                 unoptimized={true}
                 breakpoint={768}
+                fill
                 // Aspect ratio configuration
-                desktopAspectRatio="16/9"  // Desktop: landscape 16:9
-                useMobileNaturalRatio={true}  // Mobile: natural vertical ratio
+                desktopAspectRatio="16/9" // Desktop: landscape 16:9
+                useMobileNaturalRatio={true} // Mobile: natural vertical ratio
               />
 
               {/* Content Overlay - responsive for both mobile and desktop */}
-              <div className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? "px-0" : "px-8"}`}>
+              <div
+                className={`absolute inset-0 z-20 flex flex-col items-center justify-start pt-[5vh] ${section.id === 2 ? "px-0" : "px-8"}`}
+              >
                 <div className="text-center">
                   <h1 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">
                     {section.h1}
@@ -201,7 +202,6 @@ export default function LandingPageClient() {
         ))}
       </SectionRouter>
       <Footer />
-      <ImagePathDebugger />
     </div>
   );
 }

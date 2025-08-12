@@ -125,7 +125,9 @@ export default function ResponsiveHybridImage({
     console.log(`📱 Mobile path: ${mobilePath}`);
     console.log(`💻 Desktop path: ${desktopPath}`);
     console.log(`✅ Selected path: ${imagePath}`);
-    console.log(`📐 Aspect ratio: ${isMobile ? mobileAspectRatio : desktopAspectRatio}`);
+    console.log(
+      `📐 Aspect ratio: ${isMobile ? mobileAspectRatio : desktopAspectRatio}`
+    );
   }
 
   // Handle different rendering approaches for mobile vs desktop
@@ -142,8 +144,7 @@ export default function ResponsiveHybridImage({
           isInteractive={isInteractive}
           enableCache={enableCache}
           fallbackSrc={fallbackSrc}
-          width={0}
-          height={0}
+          fill
           className="w-full h-auto object-cover"
           style={{
             position: "relative",
@@ -155,13 +156,9 @@ export default function ResponsiveHybridImage({
       </div>
     );
   } else {
-    // Desktop: Use fixed aspect ratio container
-    const aspectRatio = isMobile ? mobileAspectRatio : desktopAspectRatio;
+    // Desktop: Use natural image dimensions for full-width display
     return (
-      <div 
-        className="relative w-full h-full"
-        style={{ aspectRatio }}
-      >
+      <div className="relative w-full">
         <HybridBlobImage
           path={imagePath}
           alt={enhancedAlt}
@@ -172,7 +169,11 @@ export default function ResponsiveHybridImage({
           enableCache={enableCache}
           fallbackSrc={fallbackSrc}
           fill
-          className="object-cover"
+          className="w-full h-auto object-contain"
+          style={{
+            width: "100%",
+            height: "auto",
+          }}
           {...props}
         />
       </div>
