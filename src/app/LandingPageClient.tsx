@@ -155,7 +155,7 @@ export default function LandingPageClient() {
             }}
           >
             {/* PERFORMANCE FIX: Single responsive image container with proper overlay positioning */}
-            <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+            <div className="relative w-full">
               <ResponsiveHybridImage
                 desktopPath={section.imagePath}
                 mobilePath={getMobileImagePath(section)}
@@ -169,7 +169,6 @@ export default function LandingPageClient() {
                 quality={90}
                 unoptimized={true}
                 breakpoint={768}
-                fill
                 // Aspect ratio configuration
                 desktopAspectRatio="16/9" // Desktop: landscape 16:9
                 useMobileNaturalRatio={true} // Mobile: natural vertical ratio
