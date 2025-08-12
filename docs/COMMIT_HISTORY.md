@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [de0e9cb821177366f190b551cf8d36c8c5773f3c] - Tue Aug 12 11:46:59 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update ResponsiveHybridImage component to set width and height properties  - Added width and height properties with values of 0 to the ResponsiveHybridImage component for better image handling. - Included sizes attribute set to "100vw" to enhance responsiveness across different viewports.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+
+
+---
+
 ## [1f13c5b8cda81393863b0f531901d71cae9c4f6f] - Tue Aug 12 11:42:30 2025 +0200
 
 **Author**: stenkjan
