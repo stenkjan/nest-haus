@@ -756,7 +756,7 @@ export default function ConfiguratorShell({
           {category.id === "fenster" && configuration?.fenster && (
             <>
               <QuantitySelector
-                label="Anzahl der Fenster / Türen"
+                label="Größe der Fenster / Türen"
                 value={fensterSquareMeters}
                 max={getMaxFensterSquareMeters()}
                 unitPrice={configuration.fenster.price || 0}
