@@ -729,6 +729,7 @@ export default function ConfiguratorShell({
               {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
               {category.id === "gebaeudehuelle" ||
               category.id === "innenverkleidung" ||
+              category.id === "fussboden" ||
               category.id === "fenster" ||
               category.id === "pvanlage" ? (
                 <ConfiguratorContentCardsLightbox
@@ -737,7 +738,9 @@ export default function ConfiguratorShell({
                       ? "materials"
                       : category.id === "pvanlage"
                         ? "photovoltaik"
-                        : (category.id as "innenverkleidung" | "fenster")
+                        : category.id === "fussboden"
+                          ? "fussboden"
+                          : (category.id as "innenverkleidung" | "fenster")
                   }
                   triggerText={category.infoBox.title}
                 />

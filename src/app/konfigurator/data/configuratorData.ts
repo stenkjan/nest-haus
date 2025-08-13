@@ -112,6 +112,22 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
+    id: 'pvanlage',
+    title: 'PV-Anlage',
+    subtitle: 'Kleide dich ein',
+    options: [
+      {
+        id: 'pv_panels',
+        name: 'Photovoltaik-Panels',
+        description: '0,4 kWpeak pro Panel',
+        price: { type: 'upgrade', amount: 390, monthly: 2 }
+      }
+    ],
+    infoBox: {
+      title: 'Mehr Informationen zu Photovoltaik'
+    }
+  },
+  {
     id: 'innenverkleidung',
     title: 'Innenverkleidung',
     subtitle: 'Der Charakter',
@@ -163,18 +179,8 @@ export const configuratorData: CategoryData[] = [
         price: { type: 'upgrade', amount: 5500, monthly: 29 }
       }
     ],
-    facts: {
-      title: 'Ein Patentiertes System',
-      content: [
-        'Die Technologie, die dein Nest transportabel macht, wird mittels unseres patentierten Systems sichergestellt. Unsere technischen Innovationen sind einzigartig am Markt und wurden in Kooperation mit der "Technical University of Graz" entwickelt.',
-        'Erprobt im Labor für Bauphysik und getestet unter realen Bedingungen in Österreich. Dein Nest.'
-      ],
-      links: [
-        {
-          text: 'Mehr Informationen',
-          href: '/system'
-        }
-      ]
+    infoBox: {
+      title: 'Mehr Informationen zum Fußboden'
     }
   },
   {
@@ -253,22 +259,6 @@ export const configuratorData: CategoryData[] = [
           href: '/planungspakete'
         }
       ]
-    }
-  },
-  {
-    id: 'pvanlage',
-    title: 'PV-Anlage',
-    subtitle: 'Kleide dich ein',
-    options: [
-      {
-        id: 'pv_panels',
-        name: 'Photovoltaik-Panels',
-        description: '0,4 kWpeak pro Panel',
-        price: { type: 'upgrade', amount: 390, monthly: 2 }
-      }
-    ],
-    infoBox: {
-      title: 'Mehr Informationen zu Photovoltaik'
     }
   }
 ] 
