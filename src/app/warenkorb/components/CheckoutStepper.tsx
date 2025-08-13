@@ -48,13 +48,14 @@ export default function CheckoutStepper({
         ? (updater as (i: number) => number)(stepIndex)
         : updater;
     if (isControlled) {
-      onStepChange &&
+      if (onStepChange) {
         onStepChange(Math.max(0, Math.min(next, steps.length - 1)));
+      }
     } else {
       setInternalStepIndex(Math.max(0, Math.min(next, steps.length - 1)));
     }
   };
-  const { configuration, hasPart2BeenActive, hasPart3BeenActive } =
+  const { configuration: _configuration, hasPart2BeenActive: _hasPart2BeenActive, hasPart3BeenActive: _hasPart3BeenActive } =
     useConfiguratorStore();
 
   const configItem = useMemo(() => {
@@ -253,7 +254,7 @@ export default function CheckoutStepper({
     return null;
   };
 
-  const getUpgradeSuggestion = (item: CartItem | ConfigurationCartItem) => {
+  const _getUpgradeSuggestion = (item: CartItem | ConfigurationCartItem) => {
     if (!("nest" in item) || !item.nest) return null;
     const currentPlanungspaket = item.planungspaket?.value;
     const nextPlanungspaket = getNextPlanungspaket(currentPlanungspaket);
@@ -588,12 +589,12 @@ export default function CheckoutStepper({
     return Boolean(
       sourceConfig?.innenverkleidung ||
         sourceConfig?.fussboden ||
-        hasPart2BeenActive
+        _hasPart2BeenActive
     );
   }, [
     sourceConfig?.innenverkleidung,
     sourceConfig?.fussboden,
-    hasPart2BeenActive,
+    _hasPart2BeenActive,
   ]);
 
   // Gallery state for overview step (uses the cart configuration images)

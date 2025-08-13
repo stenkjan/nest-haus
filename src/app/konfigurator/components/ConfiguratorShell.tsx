@@ -26,7 +26,7 @@ import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox
 import { CalendarDialog } from "@/components/dialogs";
 
 // Simple debounce implementation to avoid lodash dependency
-function debounce(
+function _debounce(
   func: (
     nestValue: string,
     configurationSelections: Record<string, unknown>

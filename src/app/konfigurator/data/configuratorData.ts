@@ -197,8 +197,6 @@ export const configuratorData: CategoryData[] = [
     ],
     infoBox: {
       title: 'Mehr Informationen zum Fußboden'
-    infoBox: {
-      title: 'Mehr Informationen zum Fußboden'
     }
   },
   {

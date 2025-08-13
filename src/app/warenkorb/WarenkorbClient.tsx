@@ -13,19 +13,19 @@ import { CHECKOUT_STEPS } from "./steps";
 export default function WarenkorbClient() {
   const {
     items,
-    isProcessingOrder,
+    isProcessingOrder: _isProcessingOrder,
     addConfigurationToCart,
     removeFromCart,
     clearCart,
     setOrderDetails,
     processOrder,
     getCartTotal,
-    canProceedToCheckout,
+    canProceedToCheckout: _canProceedToCheckout,
   } = useCartStore();
 
   const { configuration, getConfigurationForCart } = useConfiguratorStore();
 
-  const [customerForm, setCustomerForm] = useState({
+  const [customerForm, _setCustomerForm] = useState({
     email: "",
     name: "",
     phone: "",
@@ -116,7 +116,7 @@ export default function WarenkorbClient() {
   ]);
 
   // Calculate monthly payment with total months
-  const calculateMonthlyPayment = (price: number) => {
+  const _calculateMonthlyPayment = (price: number) => {
     const months = 240;
     const interestRate = 0.035 / 12;
     const monthlyPayment =
@@ -148,7 +148,7 @@ export default function WarenkorbClient() {
   };
 
   // Get upgrade suggestion for user's configuration
-  const getUpgradeSuggestion = (item: CartItem | ConfigurationCartItem) => {
+  const _getUpgradeSuggestion = (item: CartItem | ConfigurationCartItem) => {
     if (!("nest" in item) || !item.nest) return null;
 
     // Priority 1: Planungspaket upgrade
@@ -180,7 +180,7 @@ export default function WarenkorbClient() {
   };
 
   // Handle form submission
-  const handleOrderSubmit = async (e: React.FormEvent) => {
+  const _handleOrderSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!customerForm.email) return;
@@ -201,7 +201,7 @@ export default function WarenkorbClient() {
   };
 
   // Handle clear cart with debugging
-  const handleClearCart = () => {
+  const _handleClearCart = () => {
     console.log("🛒 Clear cart button clicked");
     clearingCartRef.current = true;
     setHasManuallyCleared(true);
@@ -228,7 +228,7 @@ export default function WarenkorbClient() {
   };
 
   // Helper function to get the main configuration title
-  const getConfigurationTitle = (
+  const _getConfigurationTitle = (
     item: CartItem | ConfigurationCartItem
   ): string => {
     if ("nest" in item) {
@@ -256,7 +256,7 @@ export default function WarenkorbClient() {
   };
 
   // Render configuration item details
-  const renderConfigurationDetails = (
+  const _renderConfigurationDetails = (
     item: CartItem | ConfigurationCartItem
   ) => {
     const details: Array<{
