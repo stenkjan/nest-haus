@@ -138,122 +138,7 @@ export default function ConfiguratorShell({
     };
   }, []);
 
-  // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
-  // This prevents individual calculations during render for every option
-  const [_optionPricesCache, setOptionPricesCache] = useState<
-    Map<
-      string,
-      {
-        type: "base" | "upgrade" | "included";
-        amount?: number;
-        monthly?: number;
-      }
-    >
-  >(new Map());
-
-  // Bulk price calculation function
-  const calculateOptionPrices = useCallback(
-    (nestValue: string, configurationSelections: Record<string, unknown>) => {
-      if (!nestValue) return;
-
-      const newCache = new Map();
-      const coreCategories = [
-        "gebaeudehuelle",
-        "innenverkleidung",
-        "fussboden",
-      ];
-
-      // Pre-calculate prices for all core options that depend on nest size
-      configuratorData.forEach((category) => {
-        if (coreCategories.includes(category.id)) {
-          category.options.forEach((option) => {
-            try {
-              const price = PriceCalculator.getOptionDisplayPrice(
-                nestValue,
-                configurationSelections,
-                category.id,
-                option.id
-              );
-              newCache.set(`${category.id}:${option.id}`, price);
-            } catch {
-              // Fallback for any calculation errors
-              newCache.set(`${category.id}:${option.id}`, {
-                type: "included" as const,
-              });
-            }
-          });
-        } else {
-          // For non-core categories, use static prices from configuratorData
-          category.options.forEach((option) => {
-            newCache.set(
-              `${category.id}:${option.id}`,
-              option.price || { type: "included" as const }
-            );
-          });
-        }
-      });
-
-      setOptionPricesCache(newCache);
-    },
-    [setOptionPricesCache]
-  );
-
-  // Debounced version for performance - using useMemo to avoid dependency issues
-  const bulkCalculateOptionPrices = useMemo(
-    () => debounce(calculateOptionPrices, 150), // 150ms debounce to prevent rapid recalculations
-    [calculateOptionPrices]
-  );
-
-  // Trigger bulk calculation when nest or core selections change
-  useEffect(() => {
-    if (!configuration?.nest) return;
-
-    const configurationSelections = {
-      nest: configuration.nest
-        ? {
-            category: configuration.nest.category,
-            value: configuration.nest.value,
-            name: configuration.nest.name,
-            price: configuration.nest.price || 0,
-          }
-        : undefined,
-      gebaeudehuelle: configuration.gebaeudehuelle
-        ? {
-            category: configuration.gebaeudehuelle.category,
-            value: configuration.gebaeudehuelle.value,
-            name: configuration.gebaeudehuelle.name,
-            price: configuration.gebaeudehuelle.price || 0,
-          }
-        : undefined,
-      innenverkleidung: configuration.innenverkleidung
-        ? {
-            category: configuration.innenverkleidung.category,
-            value: configuration.innenverkleidung.value,
-            name: configuration.innenverkleidung.name,
-            price: configuration.innenverkleidung.price || 0,
-          }
-        : undefined,
-      fussboden: configuration.fussboden
-        ? {
-            category: configuration.fussboden.category,
-            value: configuration.fussboden.value,
-            name: configuration.fussboden.name,
-            price: configuration.fussboden.price || 0,
-          }
-        : undefined,
-    };
-
-    bulkCalculateOptionPrices(
-      configuration.nest.value,
-      configurationSelections
-    );
-  }, [
-    configuration?.nest,
-    configuration?.gebaeudehuelle,
-    configuration?.innenverkleidung,
-    configuration?.fussboden,
-    bulkCalculateOptionPrices,
-  ]);
+  // REMOVED: Complex price caching system that was causing display issues
 
   // PERFORMANCE BOOST: Intelligent image preloading when configuration changes
   useEffect(() => {
@@ -604,7 +489,7 @@ export default function ConfiguratorShell({
     return 30 + moduleCount * 4;
   }, [configuration?.nest?.value, getModuleCount]);
 
-  // NEW: Dynamic price display based on current selection and new pricing logic
+  // REVERTED: Simple price display - show prices directly from configuratorData
   const getDisplayPrice = useCallback(
     (categoryId: string, optionId: string) => {
       const category = configuratorData.find((cat) => cat.id === categoryId);
@@ -614,38 +499,10 @@ export default function ConfiguratorShell({
         return { type: "included" as const };
       }
 
-      // Handle new pricing types for categories with standard items
-      if (["gebaeudehuelle", "innenverkleidung"].includes(categoryId)) {
-        const currentSelection = configuration?.[
-          categoryId as keyof typeof configuration
-        ] as ConfigurationItem | null | undefined;
-        const isCurrentlySelected = currentSelection?.value === optionId;
-
-        // For standard items: show "inkludiert" when selected, show price when not selected
-        if (option.price.type === "standard") {
-          if (isCurrentlySelected) {
-            return { type: "included" as const };
-          } else {
-            // Show price if this standard item is not selected
-            return option.price;
-          }
-        }
-
-        // For discount items: always show negative price relative to standard
-        if (option.price.type === "discount") {
-          return option.price; // Will show negative amount
-        }
-
-        // For upgrade items: show price relative to standard
-        if (option.price.type === "upgrade") {
-          return option.price;
-        }
-      }
-
-      // For other categories or price types, use original logic
+      // Simply return the price from configuratorData without complex logic
       return option.price;
     },
-    [configuration]
+    []
   );
 
   // Adjust PV quantity when nest size changes and exceeds new maximum

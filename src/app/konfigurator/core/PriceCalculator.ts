@@ -14,41 +14,7 @@ import {
   type CombinationKey
 } from '@/constants/configurator'
 
-// Simplified cache without performance overhead
-class SimplePriceCache {
-  private static cache = new Map<string, { amount: number; monthly: number }>();
-  private static readonly MAX_SIZE = 50;
-
-  static get(key: string): { amount: number; monthly: number } | null {
-    return this.cache.get(key) || null;
-  }
-
-  static set(key: string, amount: number, monthly: number): void {
-    // Simple LRU: remove oldest if at capacity
-    if (this.cache.size >= this.MAX_SIZE) {
-      const firstKey = this.cache.keys().next().value;
-      if (firstKey) {
-        this.cache.delete(firstKey);
-      }
-    }
-    this.cache.set(key, { amount, monthly });
-  }
-
-  static createCacheKey(nestType: string, categoryId: string, optionValue: string): string {
-    return `${nestType}|${categoryId}|${optionValue}`;
-  }
-
-  static clear(): void {
-    this.cache.clear();
-  }
-
-  static getCacheInfo(): { size: number; keys: string[] } {
-    return {
-      size: this.cache.size,
-      keys: Array.from(this.cache.keys())
-    };
-  }
-}
+// REMOVED: SimplePriceCache class - no longer needed after reverting complex pricing logic
 
 interface SelectionOption {
   category: string
@@ -149,98 +115,9 @@ export class PriceCalculator {
     categoryId: string,
     optionValue: string
   ): { type: 'base' | 'upgrade' | 'included'; amount?: number; monthly?: number } {
-    // Input validation
-    if (!nestType || typeof nestType !== 'string') {
-      return { type: 'included' };
-    }
-
-    // For core material options that affect combination pricing
-    if (['gebaeudehuelle', 'innenverkleidung', 'fussboden'].includes(categoryId)) {
-      // NEW: Standard selections (what shows as "included" but adds to background price)
-      const standardSelections = {
-        gebaeudehuelle: 'holzlattung', // holzlattung lärche natur is now standard
-        innenverkleidung: 'fichte',    // fichte is now standard
-        fussboden: 'parkett'           // parkett eiche remains standard
-      };
-
-      // If this is a standard selection, show as included (but price added to background)
-      if (optionValue === standardSelections[categoryId as keyof typeof standardSelections]) {
-        return { type: 'included' };
-      }
-
-      // Create cache key for this specific calculation (includes nest size for scaling)
-      const cacheKey = SimplePriceCache.createCacheKey(nestType, categoryId, optionValue);
-
-      // Check cache first for performance optimization
-      const cached = SimplePriceCache.get(cacheKey);
-      if (cached) {
-        return {
-          type: 'upgrade',
-          amount: cached.amount,
-          monthly: cached.monthly
-        };
-      }
-
-      try {
-        // NEW: Calculate price relative to STANDARD configuration for the CURRENT nest size
-        // Standard items have their prices added to background
-        const standardCombination = {
-          gebaeudehuelle: standardSelections.gebaeudehuelle,
-          innenverkleidung: standardSelections.innenverkleidung,
-          fussboden: standardSelections.fussboden
-        };
-
-        // Calculate price with this option selected (rest remain standard)
-        const upgradeCombination = {
-          ...standardCombination,
-          [categoryId]: optionValue
-        };
-
-        // Use the CURRENT nest size for both calculations so material costs scale properly
-        const standardPrice = this.calculateCombinationPrice(
-          nestType,
-          standardCombination.gebaeudehuelle,
-          standardCombination.innenverkleidung,
-          standardCombination.fussboden
-        );
-
-        const upgradePrice = this.calculateCombinationPrice(
-          nestType,
-          upgradeCombination.gebaeudehuelle,
-          upgradeCombination.innenverkleidung,
-          upgradeCombination.fussboden
-        );
-
-        const upgradeAmount = upgradePrice - standardPrice;
-
-        if (upgradeAmount <= 0) {
-          return { type: 'included' };
-        }
-
-        const monthlyAmount = this.calculateMonthlyPaymentAmount(upgradeAmount);
-
-        // Cache successful calculation
-        SimplePriceCache.set(cacheKey, upgradeAmount, monthlyAmount);
-
-        return {
-          type: 'upgrade',
-          amount: upgradeAmount,
-          monthly: monthlyAmount
-        };
-      } catch (error) {
-        // Graceful error handling - log in development, fail silently in production
-        if (process.env.NODE_ENV === 'development') {
-          console.error(`💰 Price calculation error for ${categoryId}:${optionValue}:`, error);
-        }
-
-        // Return safe fallback
-        return { type: 'included' };
-      }
-    }
-
-    // For non-combination options (PV, Fenster, Planung), return static pricing
-    // These don't scale with nest size in the current pricing model
-    return { type: 'included' }; // Will be handled by existing static logic
+    // REVERTED: Simplified method - just return included for compatibility
+    // This removes the complex pricing logic that was causing display issues
+    return { type: 'included' };
   }
 
   /**
