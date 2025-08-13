@@ -518,7 +518,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           // Just ensure sessionId is set and recalculate price, no defaults
           setTimeout(() => {
             if (!state.sessionId) {
-              state.initialize()
+              state.initializeSession()
             }
             // Always recalculate price after rehydration to ensure consistency
             state.calculatePrice()

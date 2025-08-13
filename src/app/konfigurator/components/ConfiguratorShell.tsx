@@ -11,7 +11,10 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useConfiguratorStore } from "@/store/configuratorStore";
+import {
+  useConfiguratorStore,
+  type ConfigurationItem,
+} from "@/store/configuratorStore";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { ImageManager } from "../core/ImageManager";
 import { configuratorData } from "../data/configuratorData";
@@ -22,7 +25,11 @@ import SummaryPanel from "./SummaryPanel";
 import PreviewPanel from "./PreviewPanel";
 import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
-import { InfoBox, GrundstuecksCheckBox, CartFooter } from "./index";
+import {
+  InfoBox,
+  GrundstuecksCheckBox as _GrundstuecksCheckBox,
+  CartFooter,
+} from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
 import {
   CalendarDialog,
@@ -133,7 +140,7 @@ export default function ConfiguratorShell({
 
   // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
   // This prevents individual calculations during render for every option
-  const [optionPricesCache, setOptionPricesCache] = useState<
+  const [_optionPricesCache, setOptionPricesCache] = useState<
     Map<
       string,
       {
@@ -458,7 +465,7 @@ export default function ConfiguratorShell({
 
   // Handle Grundstückscheck unselection (removed separate handler since visual button removed)
 
-  const handleGrundstuecksCheckToggle = useCallback(() => {
+  const _handleGrundstuecksCheckToggle = useCallback(() => {
     const newSelected = !isGrundstuecksCheckSelected;
     setIsGrundstuecksCheckSelected(newSelected);
 
@@ -611,7 +618,7 @@ export default function ConfiguratorShell({
       if (["gebaeudehuelle", "innenverkleidung"].includes(categoryId)) {
         const currentSelection = configuration?.[
           categoryId as keyof typeof configuration
-        ] as any;
+        ] as ConfigurationItem | null | undefined;
         const isCurrentlySelected = currentSelection?.value === optionId;
 
         // For standard items: show "inkludiert" when selected, show price when not selected
