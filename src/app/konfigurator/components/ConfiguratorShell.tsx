@@ -543,10 +543,10 @@ export default function ConfiguratorShell({
                     category.id === "gebaeudehuelle"
                       ? "materials"
                       : category.id === "pvanlage"
-                      ? "photovoltaik"
-                      : category.id === "fussboden"
-                      ? "fussboden"
-                      : (category.id as "innenverkleidung" | "fenster")
+                        ? "photovoltaik"
+                        : category.id === "fussboden"
+                          ? "fussboden"
+                          : (category.id as "innenverkleidung" | "fenster")
                   }
                   triggerText={category.infoBox.title}
                 />
