@@ -21,6 +21,7 @@ import SummaryPanel from "./SummaryPanel";
 import PreviewPanel from "./PreviewPanel";
 import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
+import { InfoBox, CartFooter } from "./index";
 import {
   InfoBox,
   GrundstuecksCheckBox as _GrundstuecksCheckBox,
@@ -34,7 +35,23 @@ import {
 } from "@/components/dialogs";
 import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
 
-// REMOVED: debounce function no longer needed after reverting complex pricing logic
+// Simple debounce implementation to avoid lodash dependency
+function debounce(
+  func: (
+    nestValue: string,
+    configurationSelections: Record<string, unknown>
+  ) => void,
+  wait: number
+) {
+  let timeout: NodeJS.Timeout;
+  return (
+    nestValue: string,
+    configurationSelections: Record<string, unknown>
+  ) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(nestValue, configurationSelections), wait);
+  };
+}
 
 export default function ConfiguratorShell({
   onPriceChange,
@@ -51,17 +68,9 @@ export default function ConfiguratorShell({
   // Local state for quantities and special selections
   const [pvQuantity, setPvQuantity] = useState<number>(0);
   const [fensterSquareMeters, setFensterSquareMeters] = useState<number>(0);
-  const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] =
-    useState(false);
-
-  // State for confirmation buttons on PV and Fenster sections - REMOVED
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
-  const [isGrundstueckCheckDialogOpen, setIsGrundstueckCheckDialogOpen] =
-    useState(false);
-  const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] =
-    useState(false);
 
   // Auto-scroll utility function for both mobile and desktop - Currently unused
   const _scrollToSection = useCallback(
@@ -147,20 +156,11 @@ export default function ConfiguratorShell({
     onPriceChange?.(currentPrice);
   }, [currentPrice, onPriceChange]);
 
-  // Synchronize local Grundstückscheck state with store configuration
-  useEffect(() => {
-    const hasGrundstuecksCheck = !!configuration?.grundstueckscheck;
-    if (hasGrundstuecksCheck !== isGrundstuecksCheckSelected) {
-      setIsGrundstuecksCheckSelected(hasGrundstuecksCheck);
-    }
-  }, [configuration?.grundstueckscheck, isGrundstuecksCheckSelected]);
-
   // Reset local state function for CartFooter
   const resetLocalState = useCallback(() => {
     console.log("🔄 ConfiguratorShell: Resetting local state");
     setPvQuantity(0);
     setFensterSquareMeters(0);
-    setIsGrundstuecksCheckSelected(false);
   }, []);
 
   // Confirmation handlers for PV and Fenster sections - REMOVED
@@ -393,12 +393,6 @@ export default function ConfiguratorShell({
       case "nest": // "Noch Fragen offen?" box after module selection
         setIsCalendarDialogOpen(true);
         break;
-      case "grundcheck":
-        setIsGrundstueckCheckDialogOpen(true);
-        break;
-      case "planungspaket":
-        setIsPlanungspaketeDialogOpen(true);
-        break;
       default:
         // Other info clicks are handled by individual ConfiguratorContentCardsLightbox components
         break;
@@ -556,6 +550,9 @@ export default function ConfiguratorShell({
               // Use static price from configuratorData for consistent display
               const displayPrice = getDisplayPrice(category.id, option.id);
 
+              // Disable selections until nest module is chosen (except nest itself)
+              const isDisabled = !configuration?.nest && category.id !== "nest";
+
               return (
                 <SelectionOption
                   key={option.id}
@@ -566,7 +563,11 @@ export default function ConfiguratorShell({
                   isSelected={isOptionSelected(category.id, option.id)}
                   categoryId={category.id}
                   nestModel={configuration?.nest?.value}
+                  disabled={isDisabled}
                   onClick={(optionId) => {
+                    // Don't allow selections if nest is not chosen (except nest itself)
+                    if (isDisabled) return;
+
                     if (category.id === "pvanlage") {
                       handlePvSelection(category.id, optionId);
                     } else if (category.id === "fenster") {
@@ -740,16 +741,6 @@ export default function ConfiguratorShell({
       <CalendarDialog
         isOpen={isCalendarDialogOpen}
         onClose={() => setIsCalendarDialogOpen(false)}
-      />
-
-      <GrundstueckCheckDialog
-        isOpen={isGrundstueckCheckDialogOpen}
-        onClose={() => setIsGrundstueckCheckDialogOpen(false)}
-      />
-
-      <PlanungspaketeDialog
-        isOpen={isPlanungspaketeDialogOpen}
-        onClose={() => setIsPlanungspaketeDialogOpen(false)}
       />
     </div>
   );

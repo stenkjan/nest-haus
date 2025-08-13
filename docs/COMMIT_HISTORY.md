@@ -4,6 +4,34 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f9cc9dddc667bd4ed581ad3ba37586654d0b18af] - Wed Aug 13 15:05:33 2025 +0200
+
+**Author**: stenkjan
+**Message**: `� Configurator structure improvements  - Remove 'ein patentiertes system' text from fussboden section - Add 'Mehr informationen zum Fußboden' lightbox button - Move PV-Anlage section before innenverkleidung - Create fussboden lightbox support - Maintain all existing pricing logic unchanged  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
+## [3aae0585cb09137aeaed374594895e73bd0264d6] - Tue Aug 12 15:13:50 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update label for window/door quantity selector in ConfiguratorShell  - Changed the label from "Anzahl der Fenster / Türen" to "Größe der Fenster / Türen" for better clarity in the user interface.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [9dc57972171e20d33a6f238447533abe3e984a99] - Tue Aug 12 12:31:48 2025 +0200
 
 **Author**: stenkjan

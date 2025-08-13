@@ -172,16 +172,7 @@ export class PriceCalculator {
         additionalPrice += fensterPrice;
       }
 
-      // Add planning package price
-      if (selections.paket) {
-        const paketPrice = selections.paket.price || 0;
-        additionalPrice += paketPrice;
-      }
-
-      // Add Grundstückscheck price if selected (works standalone)
-      if (selections.grundstueckscheck) {
-        additionalPrice += GRUNDSTUECKSCHECK_PRICE;
-      }
+      // Planning package and Grundstückscheck removed - handled in separate cart logic
 
       return totalPrice + additionalPrice;
     } catch (error) {
