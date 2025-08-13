@@ -14,8 +14,11 @@ const PlanungspaketeDialog: React.FC<PlanungspaketeDialogProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { configuration: _configuration, updateSelection: _updateSelection, removeSelection: _removeSelection } =
-    useConfiguratorStore();
+  const {
+    configuration: _configuration,
+    updateSelection: _updateSelection,
+    removeSelection: _removeSelection,
+  } = useConfiguratorStore();
   const [selectedPackage, setSelectedPackage] = useState<string | null>(
     null // Planungspaket removed from configurator - always start with no selection
   );

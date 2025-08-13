@@ -24,9 +24,7 @@ import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
 import { InfoBox, CartFooter } from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
-import {
-  CalendarDialog,
-} from "@/components/dialogs";
+import { CalendarDialog } from "@/components/dialogs";
 
 // Simple debounce implementation to avoid lodash dependency
 function debounce(
@@ -436,8 +434,6 @@ export default function ConfiguratorShell({
     [configuration?.fenster, updateSelection, removeSelection]
   );
 
-
-
   const handleInfoClick = useCallback((infoKey: string) => {
     console.log("🚀 Info click:", infoKey);
 
@@ -622,7 +618,7 @@ export default function ConfiguratorShell({
                   onClick={(optionId) => {
                     // Don't allow selections if nest is not chosen (except nest itself)
                     if (isDisabled) return;
-                    
+
                     if (category.id === "pvanlage") {
                       handlePvSelection(category.id, optionId);
                     } else if (category.id === "fenster") {
@@ -705,8 +701,6 @@ export default function ConfiguratorShell({
           )}
         </CategorySection>
       ))}
-
-
 
       {/* Summary Panel */}
       <SummaryPanel onInfoClick={handleInfoClick} />
