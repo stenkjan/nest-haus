@@ -22,18 +22,8 @@ import PreviewPanel from "./PreviewPanel";
 import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
 import { InfoBox, CartFooter } from "./index";
-import {
-  InfoBox,
-  GrundstuecksCheckBox as _GrundstuecksCheckBox,
-  CartFooter,
-} from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
-import {
-  CalendarDialog,
-  GrundstueckCheckDialog,
-  PlanungspaketeDialog,
-} from "@/components/dialogs";
-import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
+import { CalendarDialog } from "@/components/dialogs";
 
 // Simple debounce implementation to avoid lodash dependency
 function debounce(
@@ -328,62 +318,7 @@ export default function ConfiguratorShell({
     [configuration?.fenster, updateSelection, removeSelection]
   );
 
-  // Handle Grundstückscheck unselection (removed separate handler since visual button removed)
-
-  const _handleGrundstuecksCheckToggle = useCallback(() => {
-    const newSelected = !isGrundstuecksCheckSelected;
-    setIsGrundstuecksCheckSelected(newSelected);
-
-    if (newSelected) {
-      updateSelection({
-        category: "grundstueckscheck",
-        value: "grundstueckscheck",
-        name: "Grundstückscheck",
-        price: GRUNDSTUECKSCHECK_PRICE,
-        description:
-          "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
-      });
-      // After selecting grundstückscheck, scroll to summary panel - Commented out
-      /*
-      setTimeout(() => {
-        const summaryElement = document.querySelector(
-          ".summary-panel"
-        ) as HTMLElement;
-        if (summaryElement) {
-          // Check if we're on mobile or desktop
-          const isMobile = window.innerWidth < 1024;
-
-          if (isMobile) {
-            // Mobile: Use window scroll
-            const elementTop =
-              summaryElement.getBoundingClientRect().top + window.pageYOffset;
-            const headerHeight = 80;
-            window.scrollTo({
-              top: elementTop - headerHeight,
-              behavior: "smooth",
-            });
-          } else {
-            // Desktop: Use right panel scroll
-            const rightPanel = (
-              rightPanelRef as React.RefObject<HTMLDivElement>
-            )?.current;
-            if (rightPanel) {
-              const elementTop = summaryElement.offsetTop;
-              const targetScrollTop = elementTop - 20;
-              rightPanel.scrollTo({
-                top: targetScrollTop,
-                behavior: "smooth",
-              });
-            }
-          }
-        }
-      }, 150);
-      */
-    } else {
-      // Remove selection when unchecked
-      removeSelection("grundstueckscheck");
-    }
-  }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
+  // Grundstückscheck logic removed from configurator; now handled in Warenkorb
 
   const handleInfoClick = useCallback((infoKey: string) => {
     console.log("🚀 Info click:", infoKey);
@@ -608,10 +543,10 @@ export default function ConfiguratorShell({
                     category.id === "gebaeudehuelle"
                       ? "materials"
                       : category.id === "pvanlage"
-                        ? "photovoltaik"
-                        : category.id === "fussboden"
-                          ? "fussboden"
-                          : (category.id as "innenverkleidung" | "fenster")
+                      ? "photovoltaik"
+                      : category.id === "fussboden"
+                      ? "fussboden"
+                      : (category.id as "innenverkleidung" | "fenster")
                   }
                   triggerText={category.infoBox.title}
                 />
@@ -651,26 +586,7 @@ export default function ConfiguratorShell({
         </CategorySection>
       ))}
 
-      {/* COMMENTED OUT - Grundstücks-Check Section temporarily disabled
-      <CategorySection
-        id="section-grundstueckscheck"
-        title="Grundstückscheck"
-        subtitle={
-          <span className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-400">
-            Optional
-          </span>
-        }
-      >
-        <GrundstuecksCheckBox
-          isSelected={isGrundstuecksCheckSelected}
-          onClick={handleGrundstuecksCheckToggle}
-        />
-        <InfoBox
-          title="Mehr Informationen zum Grundstückscheck"
-          onClick={() => handleInfoClick("grundcheck")}
-        />
-      </CategorySection>
-      */}
+      {/* Grundstückscheck now handled in Warenkorb */}
 
       {/* Summary Panel */}
       <SummaryPanel onInfoClick={handleInfoClick} />
