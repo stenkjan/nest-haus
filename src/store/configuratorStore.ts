@@ -21,8 +21,6 @@ export interface Configuration {
   fussboden?: ConfigurationItem | null
   pvanlage?: ConfigurationItem | null
   fenster?: ConfigurationItem | null
-  planungspaket?: ConfigurationItem | null
-  grundstueckscheck?: ConfigurationItem | null
   totalPrice: number
   timestamp: number
 }
@@ -91,8 +89,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         fussboden: null,
         pvanlage: null,
         fenster: null,
-        planungspaket: null,
-        grundstueckscheck: null,
         totalPrice: 0,
         timestamp: 0
       },
@@ -118,10 +114,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
 
-        // ALWAYS set defaults first, then calculate price immediately
-        get().setDefaultSelections()
-
-        // Calculate price immediately instead of using setTimeout
+        // NO preselections - start with empty configuration
+        // Calculate price immediately (will be 0 with no selections)
         get().calculatePrice()
       },
 
@@ -173,9 +167,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
           // No view switching for fenster - stays on current view
           shouldSwitchToView = null;
-        } else if (item.category === 'planungspaket' || item.category === 'grundstueckscheck') {
-          // For non-visual selections, don't switch views - keep current view
-          shouldSwitchToView = null;
         }
 
         // Clear image cache if this is a visual change (nest, gebäudehülle, innenverkleidung, fussboden)
@@ -201,7 +192,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // SIMPLIFIED: Calculate price immediately and synchronously (avoid unnecessary Effects)
         // Following React docs: "Avoid unnecessary Effects that update state"
-        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'pvanlage', 'fenster', 'planungspaket', 'grundstueckscheck'];
+        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'pvanlage', 'fenster'];
         if (priceAffectingCategories.includes(item.category)) {
           // Calculate immediately in the same update cycle
           const newState = get();
@@ -211,9 +202,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             innenverkleidung: newState.configuration.innenverkleidung || undefined,
             fussboden: newState.configuration.fussboden || undefined,
             pvanlage: newState.configuration.pvanlage || undefined,
-            fenster: newState.configuration.fenster || undefined,
-            paket: newState.configuration.planungspaket || undefined,
-            grundstueckscheck: !!newState.configuration.grundstueckscheck
+            fenster: newState.configuration.fenster || undefined
           };
 
           const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>);
@@ -297,9 +286,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           innenverkleidung: state.configuration.innenverkleidung || undefined,
           fussboden: state.configuration.fussboden || undefined,
           pvanlage: state.configuration.pvanlage || undefined,
-          fenster: state.configuration.fenster || undefined,
-          paket: state.configuration.planungspaket || undefined,
-          grundstueckscheck: !!state.configuration.grundstueckscheck
+          fenster: state.configuration.fenster || undefined
         }
 
         const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>)
@@ -377,7 +364,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         return 'exterior'
       },
 
-      // Reset configuration - Complete defaults matching old configurator
+      // Reset configuration - NO preselections
       resetConfiguration: () => {
 
         // Only generate sessionId if not in test environment
@@ -391,8 +378,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           fussboden: null,
           pvanlage: null,
           fenster: null,
-          planungspaket: null,
-          grundstueckscheck: null,
           totalPrice: 0,
           timestamp: Date.now()
         }
@@ -409,113 +394,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           lastSelectionCategory: null
         })
 
-        // IMPORTANT: Set default selections (nest80 + holzlattung) after reset
-        // Set defaults immediately after state reset
-        get().setDefaultSelections()
+        // NO preselections - calculate price with empty configuration (will be 0)
+        get().calculatePrice()
       },
 
-      // Set default preselections on startup (nest80 + holzlattung/lärche)
+      // Set default preselections - DISABLED (no preselections wanted)
       setDefaultSelections: () => {
-        const state = get()
-
-        // Generate sessionId if not set
-        const sessionId = state.sessionId || `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
-
-        // Check if we need to set any defaults
-        const needsNest = !state.configuration.nest
-        const needsGebaeudehuelle = !state.configuration.gebaeudehuelle
-        const needsInnenverkleidung = !state.configuration.innenverkleidung
-        const needsFussboden = !state.configuration.fussboden
-
-        if (needsNest || needsGebaeudehuelle || needsInnenverkleidung || needsFussboden) {
-          // Set both defaults in a single state update to prevent race conditions
-          const updatedConfiguration = {
-            ...state.configuration,
-            sessionId,
-            timestamp: Date.now()
-          }
-
-          if (needsNest) {
-            updatedConfiguration.nest = {
-              category: 'nest',
-              value: 'nest80',
-              name: 'Nest. 80',
-              price: 155500,
-              description: '80m² Nutzfläche'
-            }
-          }
-
-          if (needsGebaeudehuelle) {
-            updatedConfiguration.gebaeudehuelle = {
-              category: 'gebaeudehuelle',
-              value: 'holzlattung',
-              name: 'Holzlattung Lärche Natur',
-              price: 9600,
-              description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
-            }
-          }
-
-          if (needsInnenverkleidung) {
-            updatedConfiguration.innenverkleidung = {
-              category: 'innenverkleidung',
-              value: 'kiefer',
-              name: 'Kiefer Natur',
-              price: 0,
-              description: 'Natürlich und warm'
-            }
-          }
-
-          if (needsFussboden) {
-            updatedConfiguration.fussboden = {
-              category: 'fussboden',
-              value: 'parkett',
-              name: 'Parkett Eiche',
-              price: 0,
-              description: 'Klassisch und elegant'
-            }
-          }
-
-          // Update state with both defaults at once
-          set(state => ({
-            ...state,
-            sessionId,
-            configuration: updatedConfiguration
-          }))
-
-          // Calculate price immediately after setting defaults
-          const selections = {
-            nest: updatedConfiguration.nest || undefined,
-            gebaeudehuelle: updatedConfiguration.gebaeudehuelle || undefined,
-            innenverkleidung: updatedConfiguration.innenverkleidung || undefined,
-            fussboden: updatedConfiguration.fussboden || undefined,
-            pvanlage: updatedConfiguration.pvanlage || undefined,
-            fenster: updatedConfiguration.fenster || undefined,
-            paket: updatedConfiguration.planungspaket || undefined,
-            grundstueckscheck: !!updatedConfiguration.grundstueckscheck
-          }
-
-          const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>)
-          const priceBreakdown = PriceCalculator.getPriceBreakdown(selections as unknown as Record<string, unknown>)
-
-          // Update price and configuration in final state update
-          set(state => ({
-            ...state,
-            currentPrice: totalPrice,
-            priceBreakdown,
-            configuration: {
-              ...state.configuration,
-              totalPrice,
-              timestamp: Date.now()
-            }
-          }))
-
-          // Switch to optimal view for the default configuration
-          const optimalView = get().determineOptimalView()
-          set({ shouldSwitchToView: optimalView })
-        } else {
-          // If defaults are already set, just recalculate price to ensure consistency
-          get().calculatePrice()
-        }
+        // NO preselections - this function intentionally does nothing
+        // Start with completely empty configuration
       },
 
 
@@ -562,25 +448,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       isConfigurationComplete: () => {
         const state = get()
 
-        // Configuration is complete if EITHER:
-        // 1. Full configuration: nest + gebäudehülle + innenverkleidung + fussboden
-        // 2. Grundstückscheck-only: just grundstueckscheck selected
-        const hasFullConfiguration = (
-          !!state.configuration.nest &&
-          !!state.configuration.gebaeudehuelle &&
-          !!state.configuration.innenverkleidung &&
-          !!state.configuration.fussboden
-        )
-
-        const hasGrundstueckscheckOnly = (
-          !!state.configuration.grundstueckscheck &&
-          !state.configuration.nest &&
-          !state.configuration.gebaeudehuelle &&
-          !state.configuration.innenverkleidung &&
-          !state.configuration.fussboden
-        )
-
-        return hasFullConfiguration || hasGrundstueckscheckOnly
+        // Configuration is complete if nest module is selected
+        // This allows checkout once a module is chosen
+        return !!state.configuration.nest
       }
     }),
     {
@@ -597,25 +467,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         shouldSwitchToView: state.shouldSwitchToView,
         lastSelectionCategory: state.lastSelectionCategory
       }),
-      // Add onRehydrateStorage to ensure defaults are applied after rehydration
+      // Add onRehydrateStorage to ensure price calculation after rehydration
       onRehydrateStorage: () => (state) => {
         if (state && process.env.NODE_ENV !== 'test') {
-          // Set defaults after rehydration ONLY if NO selections exist at all
+          // NO preselections - just recalculate price after rehydration
           setTimeout(() => {
-            const hasAnySelection = !!(
-              state.configuration.nest ||
-              state.configuration.gebaeudehuelle ||
-              state.configuration.innenverkleidung ||
-              state.configuration.fussboden ||
-              state.configuration.pvanlage ||
-              state.configuration.fenster ||
-              state.configuration.planungspaket ||
-              state.configuration.grundstueckscheck
-            );
-
-            if (!hasAnySelection) {
-              state.setDefaultSelections()
-            }
             // Always recalculate price after rehydration to ensure consistency
             state.calculatePrice()
           }, 150) // Longer delay to ensure proper hydration

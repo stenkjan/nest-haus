@@ -217,48 +217,5 @@ export const configuratorData: CategoryData[] = [
       title: 'Fenster & Türen',
       description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
     }
-  },
-  {
-    id: 'planungspaket',
-    title: 'Die Planungspakete',
-    subtitle: 'Unser Service',
-    options: [
-      {
-        id: 'basis',
-        name: 'Planung Basis',
-        description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
-        price: { type: 'base', amount: 8900, monthly: 47 }
-      },
-      {
-        id: 'plus',
-        name: 'Planung Plus',
-        description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-        price: { type: 'base', amount: 13900, monthly: 73 }
-      },
-      {
-        id: 'pro',
-        name: 'Planung Pro',
-        description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-        price: { type: 'base', amount: 18900, monthly: 99 }
-      }
-    ],
-    infoBox: {
-      title: 'Welches Planungspaket passt zu dir?',
-      description: 'Siehe dir die Pakete im Detail an und entdecke welches am besten zu dir passt',
-      action: 'Weitere Informationen'
-    },
-    facts: {
-      title: 'Gemeinsam großes schaffen.',
-      content: [
-        'Wir konzentrieren uns darauf alle standardisierten Arbeitsprozesse zu optimieren und höchste Qualität zu fairen Preisen sicher zu stellen.',
-        'Darauf aufbauend machst du dein Nest. Individuell.'
-      ],
-      links: [
-        {
-          text: 'Weitere Informationen',
-          href: '/planungspakete'
-        }
-      ]
-    }
   }
 ] 

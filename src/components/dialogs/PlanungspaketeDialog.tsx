@@ -14,10 +14,10 @@ const PlanungspaketeDialog: React.FC<PlanungspaketeDialogProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { configuration, updateSelection, removeSelection } =
+  const { configuration: _configuration, updateSelection: _updateSelection, removeSelection: _removeSelection } =
     useConfiguratorStore();
   const [selectedPackage, setSelectedPackage] = useState<string | null>(
-    configuration?.planungspaket?.value || null
+    null // Planungspaket removed from configurator - always start with no selection
   );
 
   const handlePackageSelect = (packageValue: string) => {
@@ -35,16 +35,13 @@ const PlanungspaketeDialog: React.FC<PlanungspaketeDialogProps> = ({
         (pkg) => pkg.value === selectedPackage
       );
       if (selectedPlanningPackage) {
-        updateSelection({
-          category: "planungspaket",
-          value: selectedPackage,
-          name: selectedPlanningPackage.name,
-          price: selectedPlanningPackage.price,
-        });
+        // Planungspaket no longer handled by configurator - this dialog is now for informational purposes only
+        console.log("Planungspaket selected:", selectedPlanningPackage.name);
+        // Note: Actual planungspaket selection will be handled in the separate cart flow
       }
     } else {
-      // Remove selection if none selected
-      removeSelection("planungspaket");
+      // Planungspaket no longer part of configurator - no need to remove
+      console.log("No planungspaket selected");
     }
     onClose();
   };

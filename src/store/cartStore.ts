@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { Configuration } from './configuratorStore'
+import { Configuration, ConfigurationItem } from './configuratorStore'
 
 export interface CartItem {
   id: string
@@ -14,7 +14,14 @@ export interface CartItem {
   isFromConfigurator?: boolean
 }
 
-export interface ConfigurationCartItem extends Configuration {
+// Cart configuration interface - includes all properties needed for cart logic
+// This extends the configurator Configuration but adds back the properties needed for cart
+export interface CartConfiguration extends Configuration {
+  planungspaket?: ConfigurationItem | null
+  grundstueckscheck?: ConfigurationItem | null
+}
+
+export interface ConfigurationCartItem extends CartConfiguration {
   id: string
   addedAt: number
   isFromConfigurator: boolean

@@ -22,14 +22,11 @@ import SummaryPanel from "./SummaryPanel";
 import PreviewPanel from "./PreviewPanel";
 import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
-import { InfoBox, GrundstuecksCheckBox, CartFooter } from "./index";
+import { InfoBox, CartFooter } from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
 import {
   CalendarDialog,
-  GrundstueckCheckDialog,
-  PlanungspaketeDialog,
 } from "@/components/dialogs";
-import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
 
 // Simple debounce implementation to avoid lodash dependency
 function debounce(
@@ -64,17 +61,9 @@ export default function ConfiguratorShell({
   // Local state for quantities and special selections
   const [pvQuantity, setPvQuantity] = useState<number>(0);
   const [fensterSquareMeters, setFensterSquareMeters] = useState<number>(0);
-  const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] =
-    useState(false);
-
-  // State for confirmation buttons on PV and Fenster sections - REMOVED
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
-  const [isGrundstueckCheckDialogOpen, setIsGrundstueckCheckDialogOpen] =
-    useState(false);
-  const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] =
-    useState(false);
 
   // Auto-scroll utility function for both mobile and desktop - Currently unused
   const _scrollToSection = useCallback(
@@ -275,20 +264,11 @@ export default function ConfiguratorShell({
     onPriceChange?.(currentPrice);
   }, [currentPrice, onPriceChange]);
 
-  // Synchronize local Grundstückscheck state with store configuration
-  useEffect(() => {
-    const hasGrundstuecksCheck = !!configuration?.grundstueckscheck;
-    if (hasGrundstuecksCheck !== isGrundstuecksCheckSelected) {
-      setIsGrundstuecksCheckSelected(hasGrundstuecksCheck);
-    }
-  }, [configuration?.grundstueckscheck, isGrundstuecksCheckSelected]);
-
   // Reset local state function for CartFooter
   const resetLocalState = useCallback(() => {
     console.log("🔄 ConfiguratorShell: Resetting local state");
     setPvQuantity(0);
     setFensterSquareMeters(0);
-    setIsGrundstuecksCheckSelected(false);
   }, []);
 
   // Confirmation handlers for PV and Fenster sections - REMOVED
@@ -456,62 +436,7 @@ export default function ConfiguratorShell({
     [configuration?.fenster, updateSelection, removeSelection]
   );
 
-  // Handle Grundstückscheck unselection (removed separate handler since visual button removed)
 
-  const handleGrundstuecksCheckToggle = useCallback(() => {
-    const newSelected = !isGrundstuecksCheckSelected;
-    setIsGrundstuecksCheckSelected(newSelected);
-
-    if (newSelected) {
-      updateSelection({
-        category: "grundstueckscheck",
-        value: "grundstueckscheck",
-        name: "Grundstückscheck",
-        price: GRUNDSTUECKSCHECK_PRICE,
-        description:
-          "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
-      });
-      // After selecting grundstückscheck, scroll to summary panel - Commented out
-      /*
-      setTimeout(() => {
-        const summaryElement = document.querySelector(
-          ".summary-panel"
-        ) as HTMLElement;
-        if (summaryElement) {
-          // Check if we're on mobile or desktop
-          const isMobile = window.innerWidth < 1024;
-
-          if (isMobile) {
-            // Mobile: Use window scroll
-            const elementTop =
-              summaryElement.getBoundingClientRect().top + window.pageYOffset;
-            const headerHeight = 80;
-            window.scrollTo({
-              top: elementTop - headerHeight,
-              behavior: "smooth",
-            });
-          } else {
-            // Desktop: Use right panel scroll
-            const rightPanel = (
-              rightPanelRef as React.RefObject<HTMLDivElement>
-            )?.current;
-            if (rightPanel) {
-              const elementTop = summaryElement.offsetTop;
-              const targetScrollTop = elementTop - 20;
-              rightPanel.scrollTo({
-                top: targetScrollTop,
-                behavior: "smooth",
-              });
-            }
-          }
-        }
-      }, 150);
-      */
-    } else {
-      // Remove selection when unchecked
-      removeSelection("grundstueckscheck");
-    }
-  }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
 
   const handleInfoClick = useCallback((infoKey: string) => {
     console.log("🚀 Info click:", infoKey);
@@ -520,12 +445,6 @@ export default function ConfiguratorShell({
       case "beratung":
       case "nest": // "Noch Fragen offen?" box after module selection
         setIsCalendarDialogOpen(true);
-        break;
-      case "grundcheck":
-        setIsGrundstueckCheckDialogOpen(true);
-        break;
-      case "planungspaket":
-        setIsPlanungspaketeDialogOpen(true);
         break;
       default:
         // Other info clicks are handled by individual ConfiguratorContentCardsLightbox components
@@ -686,6 +605,9 @@ export default function ConfiguratorShell({
               // Use static price from configuratorData for consistent display
               const displayPrice = getDisplayPrice(category.id, option.id);
 
+              // Disable selections until nest module is chosen (except nest itself)
+              const isDisabled = !configuration?.nest && category.id !== "nest";
+
               return (
                 <SelectionOption
                   key={option.id}
@@ -696,7 +618,11 @@ export default function ConfiguratorShell({
                   isSelected={isOptionSelected(category.id, option.id)}
                   categoryId={category.id}
                   nestModel={configuration?.nest?.value}
+                  disabled={isDisabled}
                   onClick={(optionId) => {
+                    // Don't allow selections if nest is not chosen (except nest itself)
+                    if (isDisabled) return;
+                    
                     if (category.id === "pvanlage") {
                       handlePvSelection(category.id, optionId);
                     } else if (category.id === "fenster") {
@@ -780,25 +706,7 @@ export default function ConfiguratorShell({
         </CategorySection>
       ))}
 
-      {/* Grundstücks-Check Section */}
-      <CategorySection
-        id="section-grundstueckscheck"
-        title="Grundstückscheck"
-        subtitle={
-          <span className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-400">
-            Optional
-          </span>
-        }
-      >
-        <GrundstuecksCheckBox
-          isSelected={isGrundstuecksCheckSelected}
-          onClick={handleGrundstuecksCheckToggle}
-        />
-        <InfoBox
-          title="Mehr Informationen zum Grundstückscheck"
-          onClick={() => handleInfoClick("grundcheck")}
-        />
-      </CategorySection>
+
 
       {/* Summary Panel */}
       <SummaryPanel onInfoClick={handleInfoClick} />
@@ -869,16 +777,6 @@ export default function ConfiguratorShell({
       <CalendarDialog
         isOpen={isCalendarDialogOpen}
         onClose={() => setIsCalendarDialogOpen(false)}
-      />
-
-      <GrundstueckCheckDialog
-        isOpen={isGrundstueckCheckDialogOpen}
-        onClose={() => setIsGrundstueckCheckDialogOpen(false)}
-      />
-
-      <PlanungspaketeDialog
-        isOpen={isPlanungspaketeDialogOpen}
-        onClose={() => setIsPlanungspaketeDialogOpen(false)}
       />
     </div>
   );

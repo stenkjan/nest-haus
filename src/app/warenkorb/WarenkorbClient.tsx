@@ -76,8 +76,9 @@ export default function WarenkorbClient() {
             item.innenverkleidung?.value === cartConfig.innenverkleidung?.value;
           const sameFussboden =
             item.fussboden?.value === cartConfig.fussboden?.value;
-          const sameGrundstueckscheck =
-            !!item.grundstueckscheck === !!cartConfig.grundstueckscheck;
+          // Handle grundstueckscheck comparison - cartConfig from configurator never has grundstueckscheck
+          // So we only need to check if the cart item has it (if it does, they're different)
+          const sameGrundstueckscheck = !item.grundstueckscheck;
 
           return (
             sameNest &&
