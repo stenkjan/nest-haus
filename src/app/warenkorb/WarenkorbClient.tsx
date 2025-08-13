@@ -7,6 +7,8 @@ import { useConfiguratorStore } from "../../store/configuratorStore";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
+import CheckoutProgress from "./components/CheckoutProgress";
+import { CHECKOUT_STEPS } from "./steps";
 
 export default function WarenkorbClient() {
   const {
@@ -29,6 +31,9 @@ export default function WarenkorbClient() {
     phone: "",
     notes: "",
   });
+
+  // Step state to reflect progress at top of page
+  const [stepIndex, setStepIndex] = useState<number>(0);
 
   // Flag to prevent auto-add after manual cart clearing
   const [hasManuallyCleared, setHasManuallyCleared] = useState(false);
@@ -346,36 +351,12 @@ export default function WarenkorbClient() {
   return (
     <div className="min-h-screen bg-gray-50" style={{ paddingTop: "5vh" }}>
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Centered Header Section */}
-          <div className="text-center mb-12">
-            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4">
-              Bereit einzuziehen?
-            </h1>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto">
-              Liefergarantie von 6 Monaten
-            </h3>
-            <div className="flex gap-4 justify-center items-center">
-              <Link
-                href="/konfigurator"
-                className="bg-transparent border border-gray-300 text-gray-700 px-6 py-3 rounded-full hover:bg-gray-50 transition-colors text-[clamp(0.875rem,1.5vw,1rem)] font-medium"
-              >
-                Neu konfigurieren
-              </Link>
-              <button
-                onClick={() => {
-                  const contactForm = document.getElementById("contact-form");
-                  if (contactForm) {
-                    contactForm.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors text-[clamp(0.875rem,1.5vw,1rem)] font-medium"
-              >
-                Check Out
-              </button>
-            </div>
+        {items.length > 0 && (
+          <div className="max-w-6xl mx-auto mb-6">
+            <CheckoutProgress steps={CHECKOUT_STEPS} stepIndex={stepIndex} />
           </div>
-
+        )}
+        <div className="max-w-6xl mx-auto">
           {items.length === 0 ? (
             /* Empty Cart */
             <div className="text-center py-16 bg-white rounded-lg shadow-sm">
@@ -395,8 +376,6 @@ export default function WarenkorbClient() {
             </div>
           ) : (
             <div className="space-y-8">
-              {/* Section titles removed – now part of CheckoutStepper step 1 */}
-
               {/* Full-width Checkout Stepper */}
               <div className="mt-8">
                 <CheckoutStepper
@@ -405,104 +384,10 @@ export default function WarenkorbClient() {
                   removeFromCart={removeFromCart}
                   addConfigurationToCart={addConfigurationToCart}
                   onScrollToContact={scrollToContactForm}
+                  stepIndex={stepIndex}
+                  onStepChange={setStepIndex}
+                  hideProgress={true}
                 />
-              </div>
-
-              {/* Customer Form - Moved to bottom */}
-              <div className="mt-16 max-w-2xl mx-auto">
-                <div
-                  className="border border-gray-300 rounded-[19px] px-6 py-4"
-                  id="contact-form"
-                >
-                  <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2] mb-4">
-                    Kontaktdaten
-                  </h3>
-
-                  <form onSubmit={handleOrderSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-[clamp(12px,2.5vw,14px)] font-medium mb-2 text-black">
-                        E-Mail *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={customerForm.email}
-                        onChange={(e) =>
-                          setCustomerForm((prev) => ({
-                            ...prev,
-                            email: e.target.value,
-                          }))
-                        }
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[clamp(14px,3vw,16px)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="ihre@email.de"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[clamp(12px,2.5vw,14px)] font-medium mb-2 text-black">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        value={customerForm.name}
-                        onChange={(e) =>
-                          setCustomerForm((prev) => ({
-                            ...prev,
-                            name: e.target.value,
-                          }))
-                        }
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[clamp(14px,3vw,16px)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Ihr Name"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[clamp(12px,2.5vw,14px)] font-medium mb-2 text-black">
-                        Telefon
-                      </label>
-                      <input
-                        type="tel"
-                        value={customerForm.phone}
-                        onChange={(e) =>
-                          setCustomerForm((prev) => ({
-                            ...prev,
-                            phone: e.target.value,
-                          }))
-                        }
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[clamp(14px,3vw,16px)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="+49 123 456789"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[clamp(12px,2.5vw,14px)] font-medium mb-2 text-black">
-                        Nachricht (optional)
-                      </label>
-                      <textarea
-                        value={customerForm.notes}
-                        onChange={(e) =>
-                          setCustomerForm((prev) => ({
-                            ...prev,
-                            notes: e.target.value,
-                          }))
-                        }
-                        rows={3}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[clamp(14px,3vw,16px)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Zusätzliche Informationen..."
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={!canProceedToCheckout() || isProcessingOrder}
-                      className="w-full bg-blue-600 text-white py-3 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed mt-6"
-                    >
-                      {isProcessingOrder
-                        ? "Wird verarbeitet..."
-                        : "Anfrage senden"}
-                    </button>
-                  </form>
-                </div>
               </div>
             </div>
           )}

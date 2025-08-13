@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
 import { PLANNING_PACKAGES } from "@/constants/configurator";
@@ -10,6 +10,11 @@ import {
   pricingCardData,
   type PricingCardData,
 } from "@/components/cards/ContentCards";
+import { ImageManager } from "@/app/konfigurator/core/ImageManager";
+import { HybridBlobImage } from "@/components/images";
+import { useConfiguratorStore } from "@/store/configuratorStore";
+import type { ViewType } from "@/app/konfigurator/types/configurator.types";
+import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
 
 interface CheckoutStepperProps {
   items: (CartItem | ConfigurationCartItem)[];
@@ -17,6 +22,9 @@ interface CheckoutStepperProps {
   removeFromCart: (itemId: string) => void;
   addConfigurationToCart: (config: ConfigurationCartItem) => void;
   onScrollToContact?: () => void;
+  stepIndex?: number;
+  onStepChange?: (nextIndex: number) => void;
+  hideProgress?: boolean;
 }
 
 export default function CheckoutStepper({
@@ -25,8 +33,29 @@ export default function CheckoutStepper({
   removeFromCart,
   addConfigurationToCart,
   onScrollToContact,
+  stepIndex: controlledStepIndex,
+  onStepChange,
+  hideProgress = false,
 }: CheckoutStepperProps) {
-  const [stepIndex, setStepIndex] = useState<number>(0);
+  const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
+  const isControlled = typeof controlledStepIndex === "number";
+  const stepIndex = isControlled
+    ? (controlledStepIndex as number)
+    : internalStepIndex;
+  const setStepIndex = (updater: number | ((i: number) => number)) => {
+    const next =
+      typeof updater === "function"
+        ? (updater as (i: number) => number)(stepIndex)
+        : updater;
+    if (isControlled) {
+      onStepChange &&
+        onStepChange(Math.max(0, Math.min(next, steps.length - 1)));
+    } else {
+      setInternalStepIndex(Math.max(0, Math.min(next, steps.length - 1)));
+    }
+  };
+  const { configuration, hasPart2BeenActive, hasPart3BeenActive } =
+    useConfiguratorStore();
 
   const configItem = useMemo(() => {
     return items.find((it) => "nest" in it && it.nest) as
@@ -34,13 +63,7 @@ export default function CheckoutStepper({
       | undefined;
   }, [items]);
 
-  const steps = [
-    "Übersicht",
-    "Grundstückscheck",
-    "Planungspaket",
-    "Termin",
-    "Zusammenfassung",
-  ] as const;
+  const steps = CHECKOUT_STEPS;
 
   const goNext = () => setStepIndex((i) => Math.min(i + 1, steps.length - 1));
   const goPrev = () => setStepIndex((i) => Math.max(i - 1, 0));
@@ -272,8 +295,8 @@ export default function CheckoutStepper({
               const circleClass = isDone
                 ? "bg-blue-600 border-blue-600"
                 : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
+                ? "bg-white border-blue-600"
+                : "bg-white border-gray-300";
               const dotInner = isDone ? (
                 <span className="w-2 h-2 bg-white rounded-full" />
               ) : null;
@@ -421,6 +444,19 @@ export default function CheckoutStepper({
     const c = copyByStep[stepIndex];
     const total = getCartTotal();
     const dueNow = 0; // Current upfront payment (service-only) – adjustable later
+    const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
+    const planungspaketDone = Boolean(configItem?.planungspaket?.value);
+    const terminDone = false; // Integrate with AppointmentBooking state if available
+
+    const rowClass = (rowStep: number) => {
+      const isCurrent = stepIndex === rowStep;
+      const isDone = stepIndex > rowStep;
+      const base =
+        "flex items-center justify-between gap-4 py-3 -mx-4 px-4 border-b border-gray-100";
+      if (isCurrent) return `${base} bg-blue-50`;
+      if (isDone) return `${base} bg-gray-50`;
+      return base;
+    };
     return (
       <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-6">
         <div className="w-full md:w-1/2">
@@ -436,8 +472,8 @@ export default function CheckoutStepper({
         </div>
         <div className="w-full md:w-1/2">
           <div className="border border-gray-300 rounded-2xl px-4 py-3 md:min-w-[260px] w-full">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+            <div className="divide-y divide-gray-100">
+              <div className="flex items-center justify-between gap-4 py-3 -mx-4 px-4">
                 <div className="text-sm md:text-base text-gray-800 font-medium">
                   Dein Nest Haus:
                 </div>
@@ -445,31 +481,52 @@ export default function CheckoutStepper({
                   {PriceUtils.formatPrice(total)}
                 </div>
               </div>
-              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+              <div className={rowClass(1)}>
                 <div className="text-sm md:text-base text-gray-800 font-medium">
                   Grundstückscheck:
                 </div>
                 <div className="text-sm md:text-base font-semibold text-gray-900">
-                  inkludiert
+                  <span className="inline-flex items-center gap-2">
+                    inkludiert
+                    {grundstueckscheckDone && (
+                      <span aria-hidden className="text-green-600">
+                        ✓
+                      </span>
+                    )}
+                  </span>
                 </div>
               </div>
-              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+              <div className={rowClass(2)}>
                 <div className="text-sm md:text-base text-gray-800 font-medium">
                   Planungspaket:
                 </div>
                 <div className="text-sm md:text-base font-semibold text-gray-900">
-                  {configItem?.planungspaket?.name || "—"}
+                  <span className="inline-flex items-center gap-2">
+                    {configItem?.planungspaket?.name || "—"}
+                    {planungspaketDone && (
+                      <span aria-hidden className="text-green-600">
+                        ✓
+                      </span>
+                    )}
+                  </span>
                 </div>
               </div>
-              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+              <div className={rowClass(3)}>
                 <div className="text-sm md:text-base text-gray-800 font-medium">
                   Termin mit dem Nest Team:
                 </div>
                 <div className="text-sm md:text-base font-semibold text-gray-900">
-                  —
+                  <span className="inline-flex items-center gap-2">
+                    —
+                    {terminDone && (
+                      <span aria-hidden className="text-green-600">
+                        ✓
+                      </span>
+                    )}
+                  </span>
                 </div>
               </div>
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center justify-between gap-4 py-3 -mx-4 px-4">
                 <div className="text-sm md:text-base text-gray-800 font-medium">
                   Garantierter Liefertermin:
                 </div>
@@ -521,11 +578,61 @@ export default function CheckoutStepper({
     </div>
   );
 
+  // Decide which configuration to use for images: prefer the cart's config item
+  const sourceConfig = useMemo(() => {
+    return (configItem as ConfigurationCartItem | undefined) || undefined;
+  }, [configItem]);
+
+  // Determine interior availability based on actual selections in the source config
+  const interiorActive = useMemo(() => {
+    return Boolean(
+      sourceConfig?.innenverkleidung ||
+        sourceConfig?.fussboden ||
+        hasPart2BeenActive
+    );
+  }, [
+    sourceConfig?.innenverkleidung,
+    sourceConfig?.fussboden,
+    hasPart2BeenActive,
+  ]);
+
+  // Gallery state for overview step (uses the cart configuration images)
+  const availableViews: ViewType[] = useMemo(() => {
+    return ImageManager.getAvailableViews(sourceConfig || null, interiorActive);
+  }, [sourceConfig, interiorActive]);
+
+  const galleryViews: ViewType[] = useMemo(() => {
+    return availableViews && availableViews.length > 0
+      ? availableViews
+      : (["exterior"] as ViewType[]);
+  }, [availableViews]);
+
+  const [galleryIndex, setGalleryIndex] = useState<number>(0);
+  useEffect(() => {
+    setGalleryIndex(0);
+  }, [galleryViews.length]);
+
+  const currentView: ViewType =
+    galleryViews[Math.min(galleryIndex, galleryViews.length - 1)] || "exterior";
+  const currentImagePath = ImageManager.getPreviewImage(
+    sourceConfig || null,
+    currentView
+  );
+
+  const goPrevImage = () =>
+    setGalleryIndex((i) => (i - 1 + galleryViews.length) % galleryViews.length);
+  const goNextImage = () =>
+    setGalleryIndex((i) => (i + 1) % galleryViews.length);
+
+  useEffect(() => {
+    ImageManager.preloadImages(sourceConfig || null);
+  }, [sourceConfig]);
+
   return (
-    <div className="border border-gray-300 rounded-[19px] px-6 py-6 bg-white">
+    <div className="border border-gray-300 rounded-[19px] px-6 py-6">
       {renderIntro()}
       <div className="mt-6 border-t border-gray-200 pt-6">
-        {renderProgress()}
+        {!hideProgress && renderProgress()}
         {renderStepHeader()}
 
         {stepIndex === 0 && (
@@ -551,8 +658,8 @@ export default function CheckoutStepper({
                               (item as ConfigurationCartItem).nest
                               ? (item as ConfigurationCartItem).nest?.price || 0
                               : "totalPrice" in item
-                                ? (item as ConfigurationCartItem).totalPrice
-                                : (item as CartItem).price
+                              ? (item as ConfigurationCartItem).totalPrice
+                              : (item as CartItem).price
                           )}
                         </div>
                         {(() => {
@@ -570,8 +677,8 @@ export default function CheckoutStepper({
                                 ? (item as ConfigurationCartItem).nest?.price ||
                                     0
                                 : "totalPrice" in item
-                                  ? (item as ConfigurationCartItem).totalPrice
-                                  : (item as CartItem).price
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price
                             )}{" "}
                             für 240 Monate
                           </div>
@@ -659,108 +766,62 @@ export default function CheckoutStepper({
               </div>
 
               <div className="space-y-6">
-                {/* Price Summary Box */}
-                <div className="border border-gray-300 rounded-[19px] px-6 py-4">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center gap-4">
-                      <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black">
-                        Gesamt:
-                      </div>
-                      <div className="text-black text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2]">
-                        {PriceUtils.formatPrice(getCartTotal())}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      {items.some((it) => {
-                        if (!("nest" in it)) return true;
-                        return !!(it as ConfigurationCartItem).nest;
-                      }) && (
-                        <p className="text-[clamp(12px,2.5vw,12px)] text-gray-600 mt-2 leading-[1.3]">
-                          oder {calculateMonthlyPayment(getCartTotal())} für 240
-                          Monate
-                        </p>
-                      )}
-                    </div>
+                {/* Configuration Image Gallery */}
+                <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent">
+                  <div
+                    className="relative w-full"
+                    style={{ aspectRatio: "16/10" }}
+                  >
+                    <HybridBlobImage
+                      key={`${currentView}:${currentImagePath}`}
+                      path={currentImagePath}
+                      alt={`Konfiguration Vorschau – ${currentView}`}
+                      fill
+                      className="object-contain"
+                      strategy="client"
+                      isInteractive={true}
+                      sizes="(max-width: 1023px) 100vw, 70vw"
+                      quality={85}
+                      priority={true}
+                    />
+                    {galleryViews.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Vorheriges Bild"
+                          onClick={goPrevImage}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                        >
+                          ‹
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Nächstes Bild"
+                          onClick={goNextImage}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                        >
+                          ›
+                        </button>
+                      </>
+                    )}
                   </div>
-                </div>
-
-                {/* Upgrade Box */}
-                {(() => {
-                  const upgradeItem = items.find(
-                    (it) => "nest" in it && (it as ConfigurationCartItem).nest
-                  );
-                  const upgrade = upgradeItem
-                    ? getUpgradeSuggestion(upgradeItem as ConfigurationCartItem)
-                    : null;
-                  if (!upgrade) return null;
-                  return (
-                    <div className="border border-gray-300 rounded-[19px] px-6 py-4">
-                      <div className="space-y-4">
-                        <div className="text-center">
-                          <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black mb-2">
-                            für weitere
-                          </div>
-                          <div className="text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2] text-black mb-2">
-                            {PriceUtils.formatPrice(upgrade.price)}
-                          </div>
-                          <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black mb-4">
-                            {upgrade.description}
-                          </div>
-                          <button
-                            onClick={() => {
-                              const upItem = items.find(
-                                (it) =>
-                                  "nest" in it &&
-                                  (it as ConfigurationCartItem).nest
-                              ) as ConfigurationCartItem | undefined;
-                              if (upItem && upgrade.type === "planungspaket") {
-                                const nextPkg = getNextPlanungspaket(
-                                  upItem.planungspaket?.value
-                                );
-                                if (nextPkg) {
-                                  const updatedItem: ConfigurationCartItem = {
-                                    ...upItem,
-                                    planungspaket: {
-                                      category: "planungspaket",
-                                      value: nextPkg.id,
-                                      name: nextPkg.name,
-                                      price: nextPkg.price,
-                                      description: `Planungspaket ${nextPkg.name}`,
-                                    },
-                                    totalPrice:
-                                      upItem.totalPrice + upgrade.price,
-                                  };
-                                  removeFromCart(upItem.id);
-                                  addConfigurationToCart(updatedItem);
-                                }
-                              } else if (
-                                upItem &&
-                                upgrade.type === "grundstueckscheck"
-                              ) {
-                                const updatedItem: ConfigurationCartItem = {
-                                  ...upItem,
-                                  grundstueckscheck: {
-                                    category: "grundstueckscheck",
-                                    value: "grundstueckscheck",
-                                    name: "Grundstückscheck",
-                                    price: 2000,
-                                    description: "Grundstückscheck",
-                                  },
-                                  totalPrice: upItem.totalPrice + 2000,
-                                };
-                                removeFromCart(upItem.id);
-                                addConfigurationToCart(updatedItem);
-                              }
-                            }}
-                            className="w-full bg-gray-100 text-gray-700 py-3 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-gray-200 transition-colors"
-                          >
-                            Hinzufügen
-                          </button>
-                        </div>
-                      </div>
+                  {galleryViews.length > 1 && (
+                    <div className="flex items-center justify-center gap-2 py-2">
+                      {galleryViews.map((v, i) => (
+                        <button
+                          key={v + i}
+                          type="button"
+                          aria-label={`Wechsel zu Ansicht ${v}`}
+                          onClick={() => setGalleryIndex(i)}
+                          className={
+                            "w-2.5 h-2.5 rounded-full " +
+                            (i === galleryIndex ? "bg-blue-600" : "bg-gray-300")
+                          }
+                        />
+                      ))}
                     </div>
-                  );
-                })()}
+                  )}
+                </div>
               </div>
             </div>
 
@@ -770,7 +831,7 @@ export default function CheckoutStepper({
                 onClick={goNext}
                 className="bg-blue-600 text-white py-3 px-8 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
               >
-                Weiter zum Checkout
+                Weiter zum Vorentwurfsplan
               </button>
             </div>
           </div>
@@ -804,8 +865,8 @@ export default function CheckoutStepper({
                   const value = card.title.toLowerCase().includes("pro")
                     ? "pro"
                     : card.title.toLowerCase().includes("plus")
-                      ? "plus"
-                      : "basis";
+                    ? "plus"
+                    : "basis";
                   const isSelected = configItem?.planungspaket?.value === value;
                   return (
                     <button
