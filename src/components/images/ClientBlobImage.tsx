@@ -720,7 +720,11 @@ export default function ClientBlobImage({
       <Image
         src={imageSrc}
         alt={alt}
-        {...(fill ? { fill } : width === 0 && height === 0 ? { width: 1200, height: 800 } : { width, height })}
+        {...(fill
+          ? { fill }
+          : (width === 0 && height === 0) || (!width && !height)
+          ? { width: 1200, height: 800 }
+          : { width, height })}
         sizes={sizes}
         className={className}
         style={style}

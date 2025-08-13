@@ -6,6 +6,7 @@ import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
+import CheckoutStepper from "./components/CheckoutStepper";
 
 export default function WarenkorbClient() {
   const {
@@ -241,6 +242,13 @@ export default function WarenkorbClient() {
     }
   };
 
+  const scrollToContactForm = () => {
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+      contactForm.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   // Render configuration item details
   const renderConfigurationDetails = (
     item: CartItem | ConfigurationCartItem
@@ -387,16 +395,7 @@ export default function WarenkorbClient() {
             </div>
           ) : (
             <div className="space-y-8">
-              {/* Section Titles - Aligned */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2]">
-                  <span className="text-black">Dein Nest.</span>{" "}
-                  <span className="text-[#999999]">Überblick</span>
-                </h3>
-                <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-bold tracking-[-0.015em] leading-[1.2]">
-                  Dein Preis
-                </h3>
-              </div>
+              {/* Section titles removed – now part of CheckoutStepper step 1 */}
 
               {/* Main Content Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -420,8 +419,8 @@ export default function WarenkorbClient() {
                               "totalPrice" in item && item.nest
                                 ? item.nest.price || 0
                                 : "totalPrice" in item
-                                  ? item.totalPrice
-                                  : item.price
+                                ? item.totalPrice
+                                : item.price
                             )}
                           </div>
                           {(() => {
@@ -438,8 +437,8 @@ export default function WarenkorbClient() {
                                 "totalPrice" in item && item.nest
                                   ? item.nest.price || 0
                                   : "totalPrice" in item
-                                    ? item.totalPrice
-                                    : item.price
+                                  ? item.totalPrice
+                                  : item.price
                               )}{" "}
                               für 240 Monate
                             </div>
@@ -667,23 +666,18 @@ export default function WarenkorbClient() {
                       </div>
                     );
                   })()}
-
-                  {/* Checkout Button */}
-                  <div className="flex justify-center">
-                    <button
-                      onClick={() => {
-                        const contactForm =
-                          document.getElementById("contact-form");
-                        if (contactForm) {
-                          contactForm.scrollIntoView({ behavior: "smooth" });
-                        }
-                      }}
-                      className="bg-blue-600 text-white py-3 px-8 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
-                    >
-                      Check Out
-                    </button>
-                  </div>
                 </div>
+              </div>
+
+              {/* Full-width Checkout Stepper */}
+              <div className="mt-8">
+                <CheckoutStepper
+                  items={items}
+                  getCartTotal={getCartTotal}
+                  removeFromCart={removeFromCart}
+                  addConfigurationToCart={addConfigurationToCart}
+                  onScrollToContact={scrollToContactForm}
+                />
               </div>
 
               {/* Customer Form - Moved to bottom */}
