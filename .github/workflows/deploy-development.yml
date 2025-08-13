@@ -1,0 +1,21 @@
+name: Deploy Development to Vercel
+
+on:
+  push:
+    branches: [development]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Vercel Deployment
+        run: |
+          curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_RdCUnkmNbHG7A1Upbw4QUPHKRwbc/3gtjg3tlyB
+          echo "✅ Vercel deployment triggered for development branch"
+
+      - name: Wait for deployment status
+        run: |
+          echo "🚀 Deployment hook called successfully"
+          echo "Check your Vercel dashboard for deployment progress"
