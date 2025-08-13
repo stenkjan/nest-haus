@@ -1,23 +1,33 @@
-'use client';
+"use client";
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { Dialog } from '@/components/ui';
-import { ContentCards } from '@/components/cards';
-import { getConfiguratorDialogData, type TransformedDialogData } from '../core/DialogDataTransformer';
+import React, { useState, useMemo, useEffect } from "react";
+import { Dialog } from "@/components/ui";
+import { ContentCards } from "@/components/cards";
+import {
+  getConfiguratorDialogData,
+  type TransformedDialogData,
+} from "../core/DialogDataTransformer";
 
 interface ConfiguratorContentCardsLightboxProps {
-  categoryKey: 'materials' | 'innenverkleidung' | 'fenster' | 'photovoltaik';
+  categoryKey:
+    | "materials"
+    | "innenverkleidung"
+    | "fenster"
+    | "fussboden"
+    | "photovoltaik";
   triggerClassName?: string;
   triggerText?: string;
 }
 
-export default function ConfiguratorContentCardsLightbox({ 
+export default function ConfiguratorContentCardsLightbox({
   categoryKey,
-  triggerClassName = '',
-  triggerText = 'Mehr Informationen anzeigen'
+  triggerClassName = "",
+  triggerText = "Mehr Informationen anzeigen",
 }: ConfiguratorContentCardsLightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [dialogData, setDialogData] = useState<TransformedDialogData | null>(null);
+  const [dialogData, setDialogData] = useState<TransformedDialogData | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   const handleOpen = () => setIsOpen(true);
@@ -33,10 +43,10 @@ export default function ConfiguratorContentCardsLightbox({
       } catch (error) {
         console.error(`Failed to load dialog data for ${categoryKey}:`, error);
         setDialogData({
-          title: 'Information',
-          subtitle: 'Details',
+          title: "Information",
+          subtitle: "Details",
           cards: [],
-          actionButton: undefined
+          actionButton: undefined,
         });
       } finally {
         setIsLoading(false);
@@ -49,15 +59,15 @@ export default function ConfiguratorContentCardsLightbox({
   // Transform dialog data to ContentCards format
   const cardData = useMemo(() => {
     if (!dialogData?.cards) return [];
-    
-    return dialogData.cards.map(card => ({
+
+    return dialogData.cards.map((card) => ({
       id: card.id,
       title: card.title,
       subtitle: card.subtitle,
       description: card.description,
       mobileDescription: card.mobileDescription,
       image: card.image,
-      backgroundColor: card.backgroundColor
+      backgroundColor: card.backgroundColor,
     }));
   }, [dialogData?.cards]);
 
@@ -72,10 +82,21 @@ export default function ConfiguratorContentCardsLightbox({
             Lade...
           </p>
         </div>
-        
+
         <div className="min-w-[1.5rem] min-h-[1.5rem] rounded-full border border-gray-400 flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-[0.75rem] h-[0.75rem]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-[0.75rem] h-[0.75rem]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </div>
       </div>
@@ -94,17 +115,28 @@ export default function ConfiguratorContentCardsLightbox({
             {triggerText}
           </p>
         </div>
-        
+
         <div className="min-w-[1.5rem] min-h-[1.5rem] rounded-full border border-gray-400 flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-[0.75rem] h-[0.75rem]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-[0.75rem] h-[0.75rem]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </div>
       </div>
 
       {/* Lightbox Dialog */}
-      <Dialog 
-        isOpen={isOpen} 
+      <Dialog
+        isOpen={isOpen}
         onClose={handleClose}
         transparent={true}
         className="p-0"
@@ -112,7 +144,7 @@ export default function ConfiguratorContentCardsLightbox({
         <div className="w-full h-full flex flex-col items-center justify-center p-1 md:p-4 overflow-y-auto">
           {/* ContentCards with responsive variant and custom data - Compact spacing for lightbox */}
           <div className="w-full max-w-none">
-            <ContentCards 
+            <ContentCards
               variant="responsive"
               title={dialogData.title}
               subtitle={dialogData.subtitle}
@@ -126,4 +158,4 @@ export default function ConfiguratorContentCardsLightbox({
       </Dialog>
     </>
   );
-} 
+}
