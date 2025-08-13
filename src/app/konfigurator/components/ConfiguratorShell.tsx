@@ -10,12 +10,8 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import {
-  useConfiguratorStore,
-  type ConfigurationItem,
-} from "@/store/configuratorStore";
-import { PriceCalculator } from "../core/PriceCalculator";
+import React, { useState, useEffect, useCallback } from "react";
+import { useConfiguratorStore } from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
 import { configuratorData } from "../data/configuratorData";
 import CategorySection from "./CategorySection";
@@ -38,23 +34,7 @@ import {
 } from "@/components/dialogs";
 import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
 
-// Simple debounce implementation to avoid lodash dependency
-function debounce(
-  func: (
-    nestValue: string,
-    configurationSelections: Record<string, unknown>
-  ) => void,
-  wait: number
-) {
-  let timeout: NodeJS.Timeout;
-  return (
-    nestValue: string,
-    configurationSelections: Record<string, unknown>
-  ) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(nestValue, configurationSelections), wait);
-  };
-}
+// REMOVED: debounce function no longer needed after reverting complex pricing logic
 
 export default function ConfiguratorShell({
   onPriceChange,

@@ -110,10 +110,10 @@ export class PriceCalculator {
    * RESTORED: Material upgrade prices scale with nest size as intended
    */
   static getOptionDisplayPrice(
-    nestType: string,
-    currentSelections: Selections,
-    categoryId: string,
-    optionValue: string
+    _nestType: string,
+    _currentSelections: Selections,
+    _categoryId: string,
+    _optionValue: string
   ): { type: 'base' | 'upgrade' | 'included'; amount?: number; monthly?: number } {
     // REVERTED: Simplified method - just return included for compatibility
     // This removes the complex pricing logic that was causing display issues

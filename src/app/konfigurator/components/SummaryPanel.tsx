@@ -7,13 +7,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   useConfiguratorStore,
   type ConfigurationItem,
 } from "@/store/configuratorStore";
-import { PriceCalculator } from "../core/PriceCalculator";
+// REMOVED: PriceCalculator import no longer needed after reverting complex pricing logic
 import { PriceUtils } from "../core/PriceUtils";
 import InfoBox from "./InfoBox";
 import Button from "@/components/ui/Button";
@@ -39,8 +39,7 @@ export default function SummaryPanel({
     setIsClient(true);
   }, []);
 
-  // REVERTED: Simplified - no complex dynamic pricing calculations needed
-  const getDynamicPrice = () => null;
+  // REMOVED: getDynamicPrice variable no longer needed after reverting complex pricing logic
 
   // REVERTED: Simplified item price calculation
   const getItemPrice = (key: string, selection: ConfigurationItem): number => {
