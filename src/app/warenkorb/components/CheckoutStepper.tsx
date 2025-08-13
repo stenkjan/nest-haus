@@ -257,17 +257,13 @@ export default function CheckoutStepper({
   const renderProgress = () => {
     return (
       <div className="w-full mb-6">
-        <div className="relative">
-          {/* Background line */}
+        {/* Desktop/Tablet */}
+        <div className="relative hidden md:block">
           <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
-          {/* Progress line */}
           <div
             className="absolute left-0 top-3 h-0.5 bg-blue-600 transition-all"
-            style={{
-              width: `${(stepIndex / (steps.length - 1)) * 100}%`,
-            }}
+            style={{ width: `${(stepIndex / (steps.length - 1)) * 100}%` }}
           />
-          {/* Steps */}
           <div className="grid grid-cols-5 gap-0">
             {steps.map((label, idx) => {
               const isDone = idx < stepIndex;
@@ -288,12 +284,94 @@ export default function CheckoutStepper({
                   >
                     {dotInner}
                   </div>
-                  <div className="mt-2 text-[12px] md:text-sm text-center text-gray-700 leading-tight">
+                  <div className="mt-2 text-sm text-center text-gray-700 leading-tight break-words px-1">
                     {label}
                   </div>
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Mobile: two rows with circles and labels */}
+        <div className="md:hidden">
+          {/* Top row with connecting line and fill */}
+          <div className="relative mb-1">
+            <div className="absolute left-0 right-0 top-2.5 h-0.5 bg-gray-200" />
+            <div
+              className="absolute left-0 top-2.5 h-0.5 bg-blue-600 transition-all"
+              style={{
+                width: `${Math.min(100, (Math.min(stepIndex, 2) / 2) * 100)}%`,
+              }}
+            />
+            <div className="grid grid-cols-3 gap-2">
+              {steps.slice(0, 3).map((label, i) => {
+                const idx = i;
+                const isDone = idx < stepIndex;
+                const isCurrent = idx === stepIndex;
+                const circleClass = isDone
+                  ? "bg-blue-600 border-blue-600"
+                  : isCurrent
+                  ? "bg-white border-blue-600"
+                  : "bg-white border-gray-300";
+                const dotInner = isDone ? (
+                  <span className="w-2 h-2 bg-white rounded-full" />
+                ) : null;
+                return (
+                  <div
+                    key={`mrow1-${idx}`}
+                    className="flex flex-col items-center"
+                  >
+                    <div
+                      className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
+                    >
+                      {dotInner}
+                    </div>
+                    <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
+                      {label}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {/* Bottom row with connecting line and fill */}
+          <div className="relative mt-2">
+            <div className="absolute left-0 right-0 top-2.5 h-0.5 bg-gray-200" />
+            <div
+              className="absolute left-0 top-2.5 h-0.5 bg-blue-600 transition-all"
+              style={{ width: `${stepIndex >= 4 ? 100 : 0}%` }}
+            />
+            <div className="grid grid-cols-2 gap-2">
+              {steps.slice(3).map((label, i) => {
+                const idx = i + 3;
+                const isDone = idx < stepIndex;
+                const isCurrent = idx === stepIndex;
+                const circleClass = isDone
+                  ? "bg-blue-600 border-blue-600"
+                  : isCurrent
+                  ? "bg-white border-blue-600"
+                  : "bg-white border-gray-300";
+                const dotInner = isDone ? (
+                  <span className="w-2 h-2 bg-white rounded-full" />
+                ) : null;
+                return (
+                  <div
+                    key={`mrow2-${idx}`}
+                    className="flex flex-col items-center"
+                  >
+                    <div
+                      className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
+                    >
+                      {dotInner}
+                    </div>
+                    <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
+                      {label}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -343,28 +421,67 @@ export default function CheckoutStepper({
     const total = getCartTotal();
     const dueNow = 0; // Current upfront payment (service-only) – adjustable later
     return (
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-        <div className="md:max-w-3xl">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-6">
+        <div className="w-full md:w-1/2">
           <h2 className="font-medium text-2xl md:text-[32px] tracking-[-0.02em] mb-2 text-left">
             {c.title}
           </h2>
-          <h3 className="text-lg md:text-xl font-medium tracking-[-0.015em] leading-7 mb-3 text-left text-gray-900">
+          <h3 className="text-lg md:text-xl font-normal tracking-[-0.015em] leading-7 mb-5 text-left text-gray-900">
             {c.subtitle}
           </h3>
           <p className="text-base md:text-[17px] text-gray-600 leading-7 text-left">
             {c.description}
           </p>
         </div>
-        <div className="w-full md:w-auto">
-          <div className="border border-gray-300 rounded-2xl px-4 py-3 md:min-w-[260px]">
-            <div className="flex items-center justify-between gap-4 mb-2">
-              <div className="text-sm text-gray-600">Gesamtpreis</div>
-              <div className="text-base md:text-lg font-semibold text-gray-900">
-                {PriceUtils.formatPrice(total)}
+        <div className="w-full md:w-1/2">
+          <div className="border border-gray-300 rounded-2xl px-4 py-3 md:min-w-[260px] w-full">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+                <div className="text-sm md:text-base text-gray-800 font-medium">
+                  Dein Nest Haus:
+                </div>
+                <div className="text-base md:text-lg font-semibold text-gray-900">
+                  {PriceUtils.formatPrice(total)}
+                </div>
+              </div>
+              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+                <div className="text-sm md:text-base text-gray-800 font-medium">
+                  Grundstückscheck:
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-900">
+                  inkludiert
+                </div>
+              </div>
+              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+                <div className="text-sm md:text-base text-gray-800 font-medium">
+                  Planungspaket:
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-900">
+                  {configItem?.planungspaket?.name || "—"}
+                </div>
+              </div>
+              <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-3">
+                <div className="text-sm md:text-base text-gray-800 font-medium">
+                  Termin mit dem Nest Team:
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-900">
+                  —
+                </div>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="text-sm md:text-base text-gray-800 font-medium">
+                  Garantierter Liefertermin:
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-900">
+                  —
+                </div>
               </div>
             </div>
-            <div className="flex items-center justify-between gap-4">
-              <div className="text-sm text-gray-600">Heute fällig</div>
+
+            <div className="flex items-center justify-between gap-4 border-t border-gray-200 pt-3 mt-3">
+              <div className="text-sm md:text-base text-gray-800 font-medium">
+                Heute zu bezahlen:
+              </div>
               <div className="text-base md:text-lg font-semibold text-gray-900">
                 {PriceUtils.formatPrice(dueNow)}
               </div>
