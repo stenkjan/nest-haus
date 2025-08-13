@@ -7,7 +7,7 @@ interface SelectionOptionProps {
   name: string;
   description: string;
   price?: {
-    type: "base" | "upgrade" | "included";
+    type: "base" | "upgrade" | "included" | "standard" | "discount";
     amount?: number;
     monthly?: number;
   };

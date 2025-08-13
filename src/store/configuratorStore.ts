@@ -118,11 +118,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
 
-        // ALWAYS set defaults first, then calculate price immediately
-        get().setDefaultSelections()
-
-        // Calculate price immediately instead of using setTimeout
-        get().calculatePrice()
+        // REMOVED: No more default selections on initialization
+        // Start with empty configuration and 0 price
       },
 
       // Update selection with intelligent view switching and price calculation
@@ -409,113 +406,31 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           lastSelectionCategory: null
         })
 
-        // IMPORTANT: Set default selections (nest80 + holzlattung) after reset
-        // Set defaults immediately after state reset
-        get().setDefaultSelections()
+        // REMOVED: No more default selections after reset
+        // Just ensure sessionId is set and show placeholder
+        if (!sessionId) {
+          set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
+        }
       },
 
-      // Set default preselections on startup (nest80 + holzlattung/lärche)
+      // Set default preselections on startup - DISABLED: No more preselections
       setDefaultSelections: () => {
         const state = get()
 
         // Generate sessionId if not set
         const sessionId = state.sessionId || `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
 
-        // Check if we need to set any defaults
-        const needsNest = !state.configuration.nest
-        const needsGebaeudehuelle = !state.configuration.gebaeudehuelle
-        const needsInnenverkleidung = !state.configuration.innenverkleidung
-        const needsFussboden = !state.configuration.fussboden
-
-        if (needsNest || needsGebaeudehuelle || needsInnenverkleidung || needsFussboden) {
-          // Set both defaults in a single state update to prevent race conditions
-          const updatedConfiguration = {
-            ...state.configuration,
-            sessionId,
-            timestamp: Date.now()
-          }
-
-          if (needsNest) {
-            updatedConfiguration.nest = {
-              category: 'nest',
-              value: 'nest80',
-              name: 'Nest. 80',
-              price: 155500,
-              description: '80m² Nutzfläche'
-            }
-          }
-
-          if (needsGebaeudehuelle) {
-            updatedConfiguration.gebaeudehuelle = {
-              category: 'gebaeudehuelle',
-              value: 'holzlattung',
-              name: 'Holzlattung Lärche Natur',
-              price: 9600,
-              description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
-            }
-          }
-
-          if (needsInnenverkleidung) {
-            updatedConfiguration.innenverkleidung = {
-              category: 'innenverkleidung',
-              value: 'kiefer',
-              name: 'Kiefer Natur',
-              price: 0,
-              description: 'Natürlich und warm'
-            }
-          }
-
-          if (needsFussboden) {
-            updatedConfiguration.fussboden = {
-              category: 'fussboden',
-              value: 'parkett',
-              name: 'Parkett Eiche',
-              price: 0,
-              description: 'Klassisch und elegant'
-            }
-          }
-
-          // Update state with both defaults at once
-          set(state => ({
-            ...state,
-            sessionId,
-            configuration: updatedConfiguration
-          }))
-
-          // Calculate price immediately after setting defaults
-          const selections = {
-            nest: updatedConfiguration.nest || undefined,
-            gebaeudehuelle: updatedConfiguration.gebaeudehuelle || undefined,
-            innenverkleidung: updatedConfiguration.innenverkleidung || undefined,
-            fussboden: updatedConfiguration.fussboden || undefined,
-            pvanlage: updatedConfiguration.pvanlage || undefined,
-            fenster: updatedConfiguration.fenster || undefined,
-            paket: updatedConfiguration.planungspaket || undefined,
-            grundstueckscheck: !!updatedConfiguration.grundstueckscheck
-          }
-
-          const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>)
-          const priceBreakdown = PriceCalculator.getPriceBreakdown(selections as unknown as Record<string, unknown>)
-
-          // Update price and configuration in final state update
-          set(state => ({
-            ...state,
-            currentPrice: totalPrice,
-            priceBreakdown,
-            configuration: {
-              ...state.configuration,
-              totalPrice,
-              timestamp: Date.now()
-            }
-          }))
-
-          // Switch to optimal view for the default configuration
-          const optimalView = get().determineOptimalView()
-          set({ shouldSwitchToView: optimalView })
-        } else {
-          // If defaults are already set, just recalculate price to ensure consistency
-          get().calculatePrice()
+        // Set sessionId if missing, but don't set any defaults
+        if (!state.sessionId) {
+          set({ sessionId })
         }
+
+        // Show placeholder image for nest 80 holzlattung without selection
+        // This will be handled by the ImageManager to show the default preview
+        set({ shouldSwitchToView: 'exterior' })
+
+        // No preselections - start with empty configuration
+        // Price will be 0 until user makes selections
       },
 
 
@@ -597,24 +512,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         shouldSwitchToView: state.shouldSwitchToView,
         lastSelectionCategory: state.lastSelectionCategory
       }),
-      // Add onRehydrateStorage to ensure defaults are applied after rehydration
+      // Add onRehydrateStorage - NO defaults set after rehydration
       onRehydrateStorage: () => (state) => {
         if (state && process.env.NODE_ENV !== 'test') {
-          // Set defaults after rehydration ONLY if NO selections exist at all
+          // Just ensure sessionId is set and recalculate price, no defaults
           setTimeout(() => {
-            const hasAnySelection = !!(
-              state.configuration.nest ||
-              state.configuration.gebaeudehuelle ||
-              state.configuration.innenverkleidung ||
-              state.configuration.fussboden ||
-              state.configuration.pvanlage ||
-              state.configuration.fenster ||
-              state.configuration.planungspaket ||
-              state.configuration.grundstueckscheck
-            );
-
-            if (!hasAnySelection) {
-              state.setDefaultSelections()
+            if (!state.sessionId) {
+              state.initialize()
             }
             // Always recalculate price after rehydration to ensure consistency
             state.calculatePrice()

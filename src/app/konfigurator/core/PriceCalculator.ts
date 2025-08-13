@@ -156,15 +156,15 @@ export class PriceCalculator {
 
     // For core material options that affect combination pricing
     if (['gebaeudehuelle', 'innenverkleidung', 'fussboden'].includes(categoryId)) {
-      // Default/base selections (what shows as "included")
-      const baseSelections = {
-        gebaeudehuelle: 'trapezblech',
-        innenverkleidung: 'kiefer',
-        fussboden: 'parkett'
+      // NEW: Standard selections (what shows as "included" but adds to background price)
+      const standardSelections = {
+        gebaeudehuelle: 'holzlattung', // holzlattung lärche natur is now standard
+        innenverkleidung: 'fichte',    // fichte is now standard
+        fussboden: 'parkett'           // parkett eiche remains standard
       };
 
-      // If this is a base selection, show as included
-      if (optionValue === baseSelections[categoryId as keyof typeof baseSelections]) {
+      // If this is a standard selection, show as included (but price added to background)
+      if (optionValue === standardSelections[categoryId as keyof typeof standardSelections]) {
         return { type: 'included' };
       }
 
@@ -182,26 +182,26 @@ export class PriceCalculator {
       }
 
       try {
-        // RESTORED: Calculate upgrade price relative to BASE configuration for the CURRENT nest size
-        // This allows material upgrade prices to scale properly with nest size
-        const baseCombination = {
-          gebaeudehuelle: baseSelections.gebaeudehuelle,
-          innenverkleidung: baseSelections.innenverkleidung,
-          fussboden: baseSelections.fussboden
+        // NEW: Calculate price relative to STANDARD configuration for the CURRENT nest size
+        // Standard items have their prices added to background
+        const standardCombination = {
+          gebaeudehuelle: standardSelections.gebaeudehuelle,
+          innenverkleidung: standardSelections.innenverkleidung,
+          fussboden: standardSelections.fussboden
         };
 
-        // Calculate price with this option selected (rest remain base)
+        // Calculate price with this option selected (rest remain standard)
         const upgradeCombination = {
-          ...baseCombination,
+          ...standardCombination,
           [categoryId]: optionValue
         };
 
         // Use the CURRENT nest size for both calculations so material costs scale properly
-        const basePrice = this.calculateCombinationPrice(
+        const standardPrice = this.calculateCombinationPrice(
           nestType,
-          baseCombination.gebaeudehuelle,
-          baseCombination.innenverkleidung,
-          baseCombination.fussboden
+          standardCombination.gebaeudehuelle,
+          standardCombination.innenverkleidung,
+          standardCombination.fussboden
         );
 
         const upgradePrice = this.calculateCombinationPrice(
@@ -211,7 +211,7 @@ export class PriceCalculator {
           upgradeCombination.fussboden
         );
 
-        const upgradeAmount = upgradePrice - basePrice;
+        const upgradeAmount = upgradePrice - standardPrice;
 
         if (upgradeAmount <= 0) {
           return { type: 'included' };

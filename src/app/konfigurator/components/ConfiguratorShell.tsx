@@ -597,22 +597,48 @@ export default function ConfiguratorShell({
     return 30 + moduleCount * 4;
   }, [configuration?.nest?.value, getModuleCount]);
 
-  // PERFORMANCE FIX: Simple cache lookup instead of calculation during render
+  // NEW: Dynamic price display based on current selection and new pricing logic
   const getDisplayPrice = useCallback(
     (categoryId: string, optionId: string) => {
-      const cacheKey = `${categoryId}:${optionId}`;
-      const cachedPrice = optionPricesCache.get(cacheKey);
-
-      if (cachedPrice) {
-        return cachedPrice;
-      }
-
-      // Fallback to static price from configuratorData (no expensive calculation)
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
-      return option?.price || { type: "included" as const };
+
+      if (!option) {
+        return { type: "included" as const };
+      }
+
+      // Handle new pricing types for categories with standard items
+      if (["gebaeudehuelle", "innenverkleidung"].includes(categoryId)) {
+        const currentSelection = configuration?.[
+          categoryId as keyof typeof configuration
+        ] as any;
+        const isCurrentlySelected = currentSelection?.value === optionId;
+
+        // For standard items: show "inkludiert" when selected, show price when not selected
+        if (option.price.type === "standard") {
+          if (isCurrentlySelected) {
+            return { type: "included" as const };
+          } else {
+            // Show price if this standard item is not selected
+            return option.price;
+          }
+        }
+
+        // For discount items: always show negative price relative to standard
+        if (option.price.type === "discount") {
+          return option.price; // Will show negative amount
+        }
+
+        // For upgrade items: show price relative to standard
+        if (option.price.type === "upgrade") {
+          return option.price;
+        }
+      }
+
+      // For other categories or price types, use original logic
+      return option.price;
     },
-    [optionPricesCache]
+    [configuration]
   );
 
   // Adjust PV quantity when nest size changes and exceeds new maximum
@@ -780,7 +806,7 @@ export default function ConfiguratorShell({
         </CategorySection>
       ))}
 
-      {/* Grundstücks-Check Section */}
+      {/* COMMENTED OUT - Grundstücks-Check Section temporarily disabled
       <CategorySection
         id="section-grundstueckscheck"
         title="Grundstückscheck"
@@ -799,6 +825,7 @@ export default function ConfiguratorShell({
           onClick={() => handleInfoClick("grundcheck")}
         />
       </CategorySection>
+      */}
 
       {/* Summary Panel */}
       <SummaryPanel onInfoClick={handleInfoClick} />
