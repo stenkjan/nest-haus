@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
+import { PLANNING_PACKAGES } from "@/constants/configurator";
 import GrundstueckCheckWrapper from "@/app/kontakt/components/GrundstueckCheckWrapper";
 import AppointmentBooking from "@/app/kontakt/components/AppointmentBooking";
 import {
@@ -271,8 +272,8 @@ export default function CheckoutStepper({
               const circleClass = isDone
                 ? "bg-blue-600 border-blue-600"
                 : isCurrent
-                ? "bg-white border-blue-600"
-                : "bg-white border-gray-300";
+                  ? "bg-white border-blue-600"
+                  : "bg-white border-gray-300";
               const dotInner = isDone ? (
                 <span className="w-2 h-2 bg-white rounded-full" />
               ) : null;
@@ -507,7 +508,7 @@ export default function CheckoutStepper({
     </div>
   );
 
-  const renderOverviewPrice = () => (
+  const _renderOverviewPrice = () => (
     <div className="border border-gray-300 rounded-[19px] px-6 py-4">
       <div className="flex justify-between items-center gap-4">
         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black">
@@ -550,8 +551,8 @@ export default function CheckoutStepper({
                               (item as ConfigurationCartItem).nest
                               ? (item as ConfigurationCartItem).nest?.price || 0
                               : "totalPrice" in item
-                              ? (item as ConfigurationCartItem).totalPrice
-                              : (item as CartItem).price
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price
                           )}
                         </div>
                         {(() => {
@@ -569,8 +570,8 @@ export default function CheckoutStepper({
                                 ? (item as ConfigurationCartItem).nest?.price ||
                                     0
                                 : "totalPrice" in item
-                                ? (item as ConfigurationCartItem).totalPrice
-                                : (item as CartItem).price
+                                  ? (item as ConfigurationCartItem).totalPrice
+                                  : (item as CartItem).price
                             )}{" "}
                             für 240 Monate
                           </div>
@@ -689,7 +690,7 @@ export default function CheckoutStepper({
                     (it) => "nest" in it && (it as ConfigurationCartItem).nest
                   );
                   const upgrade = upgradeItem
-                    ? getUpgradeSuggestion(upgradeItem as any)
+                    ? getUpgradeSuggestion(upgradeItem as ConfigurationCartItem)
                     : null;
                   if (!upgrade) return null;
                   return (
@@ -803,8 +804,8 @@ export default function CheckoutStepper({
                   const value = card.title.toLowerCase().includes("pro")
                     ? "pro"
                     : card.title.toLowerCase().includes("plus")
-                    ? "plus"
-                    : "basis";
+                      ? "plus"
+                      : "basis";
                   const isSelected = configItem?.planungspaket?.value === value;
                   return (
                     <button

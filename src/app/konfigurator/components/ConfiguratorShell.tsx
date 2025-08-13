@@ -10,9 +10,8 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useConfiguratorStore } from "@/store/configuratorStore";
-import { PriceCalculator } from "../core/PriceCalculator";
 import { ImageManager } from "../core/ImageManager";
 import { configuratorData } from "../data/configuratorData";
 import CategorySection from "./CategorySection";
@@ -22,7 +21,11 @@ import SummaryPanel from "./SummaryPanel";
 import PreviewPanel from "./PreviewPanel";
 import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
-import { InfoBox, GrundstuecksCheckBox, CartFooter } from "./index";
+import {
+  InfoBox,
+  GrundstuecksCheckBox as _GrundstuecksCheckBox,
+  CartFooter,
+} from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
 import {
   CalendarDialog,
@@ -31,23 +34,7 @@ import {
 } from "@/components/dialogs";
 import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
 
-// Simple debounce implementation to avoid lodash dependency
-function debounce(
-  func: (
-    nestValue: string,
-    configurationSelections: Record<string, unknown>
-  ) => void,
-  wait: number
-) {
-  let timeout: NodeJS.Timeout;
-  return (
-    nestValue: string,
-    configurationSelections: Record<string, unknown>
-  ) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(nestValue, configurationSelections), wait);
-  };
-}
+// REMOVED: debounce function no longer needed after reverting complex pricing logic
 
 export default function ConfiguratorShell({
   onPriceChange,
@@ -131,122 +118,7 @@ export default function ConfiguratorShell({
     };
   }, []);
 
-  // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
-  // This prevents individual calculations during render for every option
-  const [optionPricesCache, setOptionPricesCache] = useState<
-    Map<
-      string,
-      {
-        type: "base" | "upgrade" | "included";
-        amount?: number;
-        monthly?: number;
-      }
-    >
-  >(new Map());
-
-  // Bulk price calculation function
-  const calculateOptionPrices = useCallback(
-    (nestValue: string, configurationSelections: Record<string, unknown>) => {
-      if (!nestValue) return;
-
-      const newCache = new Map();
-      const coreCategories = [
-        "gebaeudehuelle",
-        "innenverkleidung",
-        "fussboden",
-      ];
-
-      // Pre-calculate prices for all core options that depend on nest size
-      configuratorData.forEach((category) => {
-        if (coreCategories.includes(category.id)) {
-          category.options.forEach((option) => {
-            try {
-              const price = PriceCalculator.getOptionDisplayPrice(
-                nestValue,
-                configurationSelections,
-                category.id,
-                option.id
-              );
-              newCache.set(`${category.id}:${option.id}`, price);
-            } catch {
-              // Fallback for any calculation errors
-              newCache.set(`${category.id}:${option.id}`, {
-                type: "included" as const,
-              });
-            }
-          });
-        } else {
-          // For non-core categories, use static prices from configuratorData
-          category.options.forEach((option) => {
-            newCache.set(
-              `${category.id}:${option.id}`,
-              option.price || { type: "included" as const }
-            );
-          });
-        }
-      });
-
-      setOptionPricesCache(newCache);
-    },
-    [setOptionPricesCache]
-  );
-
-  // Debounced version for performance - using useMemo to avoid dependency issues
-  const bulkCalculateOptionPrices = useMemo(
-    () => debounce(calculateOptionPrices, 150), // 150ms debounce to prevent rapid recalculations
-    [calculateOptionPrices]
-  );
-
-  // Trigger bulk calculation when nest or core selections change
-  useEffect(() => {
-    if (!configuration?.nest) return;
-
-    const configurationSelections = {
-      nest: configuration.nest
-        ? {
-            category: configuration.nest.category,
-            value: configuration.nest.value,
-            name: configuration.nest.name,
-            price: configuration.nest.price || 0,
-          }
-        : undefined,
-      gebaeudehuelle: configuration.gebaeudehuelle
-        ? {
-            category: configuration.gebaeudehuelle.category,
-            value: configuration.gebaeudehuelle.value,
-            name: configuration.gebaeudehuelle.name,
-            price: configuration.gebaeudehuelle.price || 0,
-          }
-        : undefined,
-      innenverkleidung: configuration.innenverkleidung
-        ? {
-            category: configuration.innenverkleidung.category,
-            value: configuration.innenverkleidung.value,
-            name: configuration.innenverkleidung.name,
-            price: configuration.innenverkleidung.price || 0,
-          }
-        : undefined,
-      fussboden: configuration.fussboden
-        ? {
-            category: configuration.fussboden.category,
-            value: configuration.fussboden.value,
-            name: configuration.fussboden.name,
-            price: configuration.fussboden.price || 0,
-          }
-        : undefined,
-    };
-
-    bulkCalculateOptionPrices(
-      configuration.nest.value,
-      configurationSelections
-    );
-  }, [
-    configuration?.nest,
-    configuration?.gebaeudehuelle,
-    configuration?.innenverkleidung,
-    configuration?.fussboden,
-    bulkCalculateOptionPrices,
-  ]);
+  // REMOVED: Complex price caching system that was causing display issues
 
   // PERFORMANCE BOOST: Intelligent image preloading when configuration changes
   useEffect(() => {
@@ -458,7 +330,7 @@ export default function ConfiguratorShell({
 
   // Handle Grundstückscheck unselection (removed separate handler since visual button removed)
 
-  const handleGrundstuecksCheckToggle = useCallback(() => {
+  const _handleGrundstuecksCheckToggle = useCallback(() => {
     const newSelected = !isGrundstuecksCheckSelected;
     setIsGrundstuecksCheckSelected(newSelected);
 
@@ -597,22 +469,20 @@ export default function ConfiguratorShell({
     return 30 + moduleCount * 4;
   }, [configuration?.nest?.value, getModuleCount]);
 
-  // PERFORMANCE FIX: Simple cache lookup instead of calculation during render
+  // REVERTED: Simple price display - show prices directly from configuratorData
   const getDisplayPrice = useCallback(
     (categoryId: string, optionId: string) => {
-      const cacheKey = `${categoryId}:${optionId}`;
-      const cachedPrice = optionPricesCache.get(cacheKey);
-
-      if (cachedPrice) {
-        return cachedPrice;
-      }
-
-      // Fallback to static price from configuratorData (no expensive calculation)
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
-      return option?.price || { type: "included" as const };
+
+      if (!option) {
+        return { type: "included" as const };
+      }
+
+      // Simply return the price from configuratorData without complex logic
+      return option.price;
     },
-    [optionPricesCache]
+    []
   );
 
   // Adjust PV quantity when nest size changes and exceeds new maximum
@@ -780,7 +650,7 @@ export default function ConfiguratorShell({
         </CategorySection>
       ))}
 
-      {/* Grundstücks-Check Section */}
+      {/* COMMENTED OUT - Grundstücks-Check Section temporarily disabled
       <CategorySection
         id="section-grundstueckscheck"
         title="Grundstückscheck"
@@ -799,6 +669,7 @@ export default function ConfiguratorShell({
           onClick={() => handleInfoClick("grundcheck")}
         />
       </CategorySection>
+      */}
 
       {/* Summary Panel */}
       <SummaryPanel onInfoClick={handleInfoClick} />

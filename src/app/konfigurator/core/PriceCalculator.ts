@@ -14,41 +14,7 @@ import {
   type CombinationKey
 } from '@/constants/configurator'
 
-// Simplified cache without performance overhead
-class SimplePriceCache {
-  private static cache = new Map<string, { amount: number; monthly: number }>();
-  private static readonly MAX_SIZE = 50;
-
-  static get(key: string): { amount: number; monthly: number } | null {
-    return this.cache.get(key) || null;
-  }
-
-  static set(key: string, amount: number, monthly: number): void {
-    // Simple LRU: remove oldest if at capacity
-    if (this.cache.size >= this.MAX_SIZE) {
-      const firstKey = this.cache.keys().next().value;
-      if (firstKey) {
-        this.cache.delete(firstKey);
-      }
-    }
-    this.cache.set(key, { amount, monthly });
-  }
-
-  static createCacheKey(nestType: string, categoryId: string, optionValue: string): string {
-    return `${nestType}|${categoryId}|${optionValue}`;
-  }
-
-  static clear(): void {
-    this.cache.clear();
-  }
-
-  static getCacheInfo(): { size: number; keys: string[] } {
-    return {
-      size: this.cache.size,
-      keys: Array.from(this.cache.keys())
-    };
-  }
-}
+// REMOVED: SimplePriceCache class - no longer needed after reverting complex pricing logic
 
 interface SelectionOption {
   category: string
@@ -144,103 +110,14 @@ export class PriceCalculator {
    * RESTORED: Material upgrade prices scale with nest size as intended
    */
   static getOptionDisplayPrice(
-    nestType: string,
-    currentSelections: Selections,
-    categoryId: string,
-    optionValue: string
+    _nestType: string,
+    _currentSelections: Selections,
+    _categoryId: string,
+    _optionValue: string
   ): { type: 'base' | 'upgrade' | 'included'; amount?: number; monthly?: number } {
-    // Input validation
-    if (!nestType || typeof nestType !== 'string') {
-      return { type: 'included' };
-    }
-
-    // For core material options that affect combination pricing
-    if (['gebaeudehuelle', 'innenverkleidung', 'fussboden'].includes(categoryId)) {
-      // Default/base selections (what shows as "included")
-      const baseSelections = {
-        gebaeudehuelle: 'trapezblech',
-        innenverkleidung: 'kiefer',
-        fussboden: 'parkett'
-      };
-
-      // If this is a base selection, show as included
-      if (optionValue === baseSelections[categoryId as keyof typeof baseSelections]) {
-        return { type: 'included' };
-      }
-
-      // Create cache key for this specific calculation (includes nest size for scaling)
-      const cacheKey = SimplePriceCache.createCacheKey(nestType, categoryId, optionValue);
-
-      // Check cache first for performance optimization
-      const cached = SimplePriceCache.get(cacheKey);
-      if (cached) {
-        return {
-          type: 'upgrade',
-          amount: cached.amount,
-          monthly: cached.monthly
-        };
-      }
-
-      try {
-        // RESTORED: Calculate upgrade price relative to BASE configuration for the CURRENT nest size
-        // This allows material upgrade prices to scale properly with nest size
-        const baseCombination = {
-          gebaeudehuelle: baseSelections.gebaeudehuelle,
-          innenverkleidung: baseSelections.innenverkleidung,
-          fussboden: baseSelections.fussboden
-        };
-
-        // Calculate price with this option selected (rest remain base)
-        const upgradeCombination = {
-          ...baseCombination,
-          [categoryId]: optionValue
-        };
-
-        // Use the CURRENT nest size for both calculations so material costs scale properly
-        const basePrice = this.calculateCombinationPrice(
-          nestType,
-          baseCombination.gebaeudehuelle,
-          baseCombination.innenverkleidung,
-          baseCombination.fussboden
-        );
-
-        const upgradePrice = this.calculateCombinationPrice(
-          nestType,
-          upgradeCombination.gebaeudehuelle,
-          upgradeCombination.innenverkleidung,
-          upgradeCombination.fussboden
-        );
-
-        const upgradeAmount = upgradePrice - basePrice;
-
-        if (upgradeAmount <= 0) {
-          return { type: 'included' };
-        }
-
-        const monthlyAmount = this.calculateMonthlyPaymentAmount(upgradeAmount);
-
-        // Cache successful calculation
-        SimplePriceCache.set(cacheKey, upgradeAmount, monthlyAmount);
-
-        return {
-          type: 'upgrade',
-          amount: upgradeAmount,
-          monthly: monthlyAmount
-        };
-      } catch (error) {
-        // Graceful error handling - log in development, fail silently in production
-        if (process.env.NODE_ENV === 'development') {
-          console.error(`💰 Price calculation error for ${categoryId}:${optionValue}:`, error);
-        }
-
-        // Return safe fallback
-        return { type: 'included' };
-      }
-    }
-
-    // For non-combination options (PV, Fenster, Planung), return static pricing
-    // These don't scale with nest size in the current pricing model
-    return { type: 'included' }; // Will be handled by existing static logic
+    // REVERTED: Simplified method - just return included for compatibility
+    // This removes the complex pricing logic that was causing display issues
+    return { type: 'included' };
   }
 
   /**
@@ -485,14 +362,5 @@ export class PriceCalculator {
     return Object.keys(MODULAR_PRICING.combinations) as CombinationKey[];
   }
 
-  /**
-   * Cache management methods for performance optimization
-   */
-  static clearPriceCache(): void {
-    SimplePriceCache.clear();
-  }
-
-  static getPriceCacheInfo(): { size: number; keys: string[] } {
-    return SimplePriceCache.getCacheInfo();
-  }
+  // REMOVED: Cache management methods no longer needed after reverting complex pricing logic
 } 

@@ -7,7 +7,7 @@ export interface CategoryData {
     name: string
     description: string
     price: {
-      type: 'base' | 'upgrade' | 'included'
+      type: 'base' | 'upgrade' | 'included' | 'standard' | 'discount'
       amount?: number
       monthly?: number
     }
@@ -83,32 +83,60 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Kleide dich ein',
     options: [
       {
-        id: 'trapezblech',
-        name: 'Trapezblech',
-        description: 'RAL 9005 - 3000 x 1142 mm',
-        price: { type: 'included' }
-      },
-      {
         id: 'holzlattung',
         name: 'Holzlattung Lärche Natur',
         description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.',
-        price: { type: 'upgrade', amount: 9600, monthly: 50 }
+        price: { type: 'standard', amount: 9600, monthly: 50 } // Standard item with background price
+      },
+      {
+        id: 'trapezblech',
+        name: 'Trapezblech',
+        description: 'RAL 9005 - 3000 x 1142 mm',
+        price: { type: 'discount', amount: -9600, monthly: -50 } // Cheaper option vs standard
       },
       {
         id: 'fassadenplatten_schwarz',
         name: 'Fassadenplatten Schwarz',
         description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
-        price: { type: 'upgrade', amount: 36400, monthly: 191 }
+        price: { type: 'upgrade', amount: 26800, monthly: 141 } // 36400 - 9600 = 26800 vs standard
       },
       {
         id: 'fassadenplatten_weiss',
         name: 'Fassadenplatten Weiß',
         description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
-        price: { type: 'upgrade', amount: 36400, monthly: 191 }
+        price: { type: 'upgrade', amount: 26800, monthly: 141 } // 36400 - 9600 = 26800 vs standard
       }
     ],
     infoBox: {
       title: 'Mehr Informationen zu den Materialien'
+    }
+  },
+  {
+    id: 'innenverkleidung',
+    title: 'Innenverkleidung',
+    subtitle: 'Der Charakter',
+    options: [
+      {
+        id: 'fichte',
+        name: 'Fichte',
+        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
+        price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
+      },
+      {
+        id: 'kiefer',
+        name: 'Kiefer',
+        description: 'PEFC - Zertifiziert - Sicht 1,5 cm',
+        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
+      },
+      {
+        id: 'steirische_eiche',
+        name: 'Steirische Eiche',
+        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
+        price: { type: 'upgrade', amount: 8800, monthly: 47 } // 10200 - 1400 = 8800 vs standard
+      }
+    ],
+    infoBox: {
+      title: 'Mehr Informationen zur Innenverkleidung'
     }
   },
   {
@@ -125,34 +153,6 @@ export const configuratorData: CategoryData[] = [
     ],
     infoBox: {
       title: 'Mehr Informationen zu Photovoltaik'
-    }
-  },
-  {
-    id: 'innenverkleidung',
-    title: 'Innenverkleidung',
-    subtitle: 'Der Charakter',
-    options: [
-      {
-        id: 'kiefer',
-        name: 'Kiefer',
-        description: 'PEFC - Zertifiziert - Sicht 1,5 cm',
-        price: { type: 'included' }
-      },
-      {
-        id: 'fichte',
-        name: 'Fichte',
-        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
-        price: { type: 'upgrade', amount: 1400, monthly: 7 }
-      },
-      {
-        id: 'steirische_eiche',
-        name: 'Steirische Eiche',
-        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
-        price: { type: 'upgrade', amount: 10200, monthly: 54 }
-      }
-    ],
-    infoBox: {
-      title: 'Mehr Informationen zur Innenverkleidung'
     }
   },
   {
@@ -217,8 +217,9 @@ export const configuratorData: CategoryData[] = [
       title: 'Fenster & Türen',
       description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
     }
-  },
-  {
+  }
+  /* COMMENTED OUT - Planungspaket section temporarily disabled
+  ,{
     id: 'planungspaket',
     title: 'Die Planungspakete',
     subtitle: 'Unser Service',
@@ -261,4 +262,5 @@ export const configuratorData: CategoryData[] = [
       ]
     }
   }
+  */
 ] 

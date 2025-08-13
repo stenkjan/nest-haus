@@ -7,13 +7,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   useConfiguratorStore,
   type ConfigurationItem,
 } from "@/store/configuratorStore";
-import { PriceCalculator } from "../core/PriceCalculator";
+// REMOVED: PriceCalculator import no longer needed after reverting complex pricing logic
 import { PriceUtils } from "../core/PriceUtils";
 import InfoBox from "./InfoBox";
 import Button from "@/components/ui/Button";
@@ -39,83 +39,11 @@ export default function SummaryPanel({
     setIsClient(true);
   }, []);
 
-  // PERFORMANCE FIX: Memoize dynamic price calculations to prevent recalculation during rendering
-  const getDynamicPrice = useMemo(() => {
-    if (!configuration?.nest) return () => null;
+  // REMOVED: getDynamicPrice variable no longer needed after reverting complex pricing logic
 
-    const selections = {
-      nest: {
-        category: configuration.nest.category,
-        value: configuration.nest.value,
-        name: configuration.nest.name,
-        price: configuration.nest.price,
-      },
-      gebaeudehuelle: configuration.gebaeudehuelle
-        ? {
-            category: configuration.gebaeudehuelle.category,
-            value: configuration.gebaeudehuelle.value,
-            name: configuration.gebaeudehuelle.name,
-            price: configuration.gebaeudehuelle.price,
-          }
-        : undefined,
-      innenverkleidung: configuration.innenverkleidung
-        ? {
-            category: configuration.innenverkleidung.category,
-            value: configuration.innenverkleidung.value,
-            name: configuration.innenverkleidung.name,
-            price: configuration.innenverkleidung.price,
-          }
-        : undefined,
-      fussboden: configuration.fussboden
-        ? {
-            category: configuration.fussboden.category,
-            value: configuration.fussboden.value,
-            name: configuration.fussboden.name,
-            price: configuration.fussboden.price,
-          }
-        : undefined,
-    };
-
-    // Return a function that uses the memoized selections
-    return (categoryId: string, selectionValue: string) => {
-      if (
-        !["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
-          categoryId
-        )
-      ) {
-        return null;
-      }
-
-      return PriceCalculator.getOptionDisplayPrice(
-        configuration.nest!.value,
-        selections,
-        categoryId,
-        selectionValue
-      );
-    };
-  }, [
-    configuration?.nest,
-    configuration?.gebaeudehuelle,
-    configuration?.innenverkleidung,
-    configuration?.fussboden,
-  ]);
-
-  // SIMPLIFIED: Helper functions without unnecessary useCallback (per React docs)
+  // REVERTED: Simplified item price calculation
   const getItemPrice = (key: string, selection: ConfigurationItem): number => {
-    // For core categories that change with NEST size, use dynamic pricing
-    if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value);
-      if (
-        dynamicPrice &&
-        dynamicPrice.type === "upgrade" &&
-        dynamicPrice.amount
-      ) {
-        return dynamicPrice.amount;
-      }
-      return 0; // If it's included or no price
-    }
-
-    // For other items, calculate based on quantity/squareMeters
+    // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
       return (selection.quantity || 1) * (selection.price || 0);
     }
@@ -123,7 +51,7 @@ export default function SummaryPanel({
       return (selection.squareMeters || 1) * (selection.price || 0);
     }
 
-    // Default case
+    // For all other items, use the base price
     return selection.price || 0;
   };
 
@@ -131,15 +59,8 @@ export default function SummaryPanel({
     key: string,
     selection: ConfigurationItem
   ): boolean => {
-    // For core categories that change with NEST size, check dynamic pricing
-    if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value);
-      return !dynamicPrice || dynamicPrice.type === "included";
-    }
-
-    // For other items, check if price is 0
-    if (!selection?.price) return true;
-    return !selection.price || selection.price === 0;
+    // REVERTED: Simple check - item is included if price is 0 or not set
+    return !selection?.price || selection.price === 0;
   };
 
   if (!configuration) {

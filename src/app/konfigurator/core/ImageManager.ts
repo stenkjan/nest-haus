@@ -136,13 +136,15 @@ export class ImageManager {
    * CLIENT-SIDE calculation for efficiency
    */
   static getExteriorImage(configuration: Configuration): string {
-    if (!configuration?.nest?.value || !configuration?.gebaeudehuelle?.value) {
+    // If no nest selection, use fallback
+    if (!configuration?.nest?.value) {
       return IMAGE_FALLBACKS.exterior;
     }
 
     // Map nest value to image size
     const nestType = configuration.nest.value;
-    const gebaeudehuelle = configuration.gebaeudehuelle.value;
+    // Use default gebaeudehuelle if not selected yet
+    const gebaeudehuelle = configuration.gebaeudehuelle?.value || 'holzlattung';
 
     const nestSize = NEST_SIZE_MAPPING[nestType];
     const exteriorType = GEBAEUDE_EXTERIOR_MAPPING[gebaeudehuelle];
@@ -169,11 +171,8 @@ export class ImageManager {
    * CLIENT-SIDE calculation for efficiency
    */
   static getStirnseiteImage(configuration: Configuration): string {
-    if (!configuration?.gebaeudehuelle?.value) {
-      return IMAGE_FALLBACKS.stirnseite;
-    }
-
-    const gebaeudehuelle = configuration.gebaeudehuelle.value;
+    // Use default gebaeudehuelle if not selected yet
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'holzlattung';
     const stirnseiteKey = STIRNSEITE_MAPPING[gebaeudehuelle];
 
     if (!stirnseiteKey) {
@@ -192,9 +191,9 @@ export class ImageManager {
    * FIXED: Now respects selected gebäudehülle instead of always defaulting to trapezblech
    */
   static getInteriorImage(configuration: Configuration): string {
-    // Use selected gebäudehülle or default to trapezblech only if not selected
-    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
-    const innenverkleidung = configuration?.innenverkleidung?.value || 'kiefer';
+    // Use selected values or defaults matching new pricing structure
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'holzlattung';
+    const innenverkleidung = configuration?.innenverkleidung?.value || 'fichte';
     const fussboden = configuration?.fussboden?.value || 'parkett';
 
     // Create combination key for exact matching
@@ -274,11 +273,8 @@ export class ImageManager {
    * CLIENT-SIDE calculation for efficiency
    */
   static getPVImage(configuration: Configuration): string {
-    if (!configuration?.gebaeudehuelle?.value) {
-      return IMAGES.configurations.pv_holzfassade || IMAGE_FALLBACKS.exterior;
-    }
-
-    const gebaeudehuelle = configuration.gebaeudehuelle.value;
+    // Use default gebaeudehuelle if not selected yet
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'holzlattung';
     const pvKey = PV_IMAGE_MAPPING[gebaeudehuelle];
 
     if (!pvKey) {
