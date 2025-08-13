@@ -362,14 +362,5 @@ export class PriceCalculator {
     return Object.keys(MODULAR_PRICING.combinations) as CombinationKey[];
   }
 
-  /**
-   * Cache management methods for performance optimization
-   */
-  static clearPriceCache(): void {
-    SimplePriceCache.clear();
-  }
-
-  static getPriceCacheInfo(): { size: number; keys: string[] } {
-    return SimplePriceCache.getCacheInfo();
-  }
+  // REMOVED: Cache management methods no longer needed after reverting complex pricing logic
 } 
