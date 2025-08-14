@@ -156,22 +156,6 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
-    id: 'pvanlage',
-    title: 'PV-Anlage',
-    subtitle: 'Kleide dich ein',
-    options: [
-      {
-        id: 'pv_panels',
-        name: 'Photovoltaik-Panels',
-        description: '0,4 kWpeak pro Panel',
-        price: { type: 'upgrade', amount: 390, monthly: 2 }
-      }
-    ],
-    infoBox: {
-      title: 'Mehr Informationen zu Photovoltaik'
-    }
-  },
-  {
     id: 'fussboden',
     title: 'Der Fußboden',
     subtitle: 'Oberflächen',

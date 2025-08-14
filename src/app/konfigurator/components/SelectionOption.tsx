@@ -7,7 +7,13 @@ interface SelectionOptionProps {
   name: string;
   description: string;
   price?: {
-    type: "base" | "upgrade" | "included" | "standard" | "discount";
+    type:
+      | "base"
+      | "upgrade"
+      | "included"
+      | "standard"
+      | "discount"
+      | "selected";
     amount?: number;
     monthly?: number;
   };
@@ -37,6 +43,11 @@ export default function SelectionOption({
 }: SelectionOptionProps) {
   const renderPrice = () => {
     if (!price) return null;
+
+    if (price.type === "selected") {
+      // Selected option shows no price at all
+      return null;
+    }
 
     if (price.type === "included") {
       return (
@@ -77,6 +88,17 @@ export default function SelectionOption({
     }
 
     if (price.type === "upgrade") {
+      // When amount is 0 (same price), only show "+/-" and hide any numeric values
+      if (price.amount === 0) {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              +/-
+            </p>
+          </div>
+        );
+      }
+
       const formattedPrice = price.amount
         ? PriceUtils.formatPrice(price.amount)
         : "0 €";
@@ -86,8 +108,9 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
-      // Remove "zzgl." from specified sections: innenverkleidung, fussboden, gebaeudehuelle, fenster, pvanlage
+      // Remove "zzgl." from specified sections: nest, innenverkleidung, fussboden, gebaeudehuelle, fenster, pvanlage
       const sectionsWithoutZzgl = [
+        "nest",
         "innenverkleidung",
         "fussboden",
         "gebaeudehuelle",
@@ -103,6 +126,69 @@ export default function SelectionOption({
               zzgl.
             </p>
           )}
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            {price.amount !== undefined && price.amount > 0
+              ? `+${formattedPrice}`
+              : formattedPrice}
+          </p>
+          {shouldShowPricePerSqm &&
+            nestModel &&
+            price.amount &&
+            price.amount !== 0 && (
+              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+                {PriceUtils.calculateOptionPricePerSquareMeter(
+                  price.amount,
+                  nestModel,
+                  categoryId,
+                  id
+                )}
+              </p>
+            )}
+        </div>
+      );
+    }
+
+    if (price.type === "discount") {
+      const formattedPrice = price.amount
+        ? PriceUtils.formatPrice(price.amount)
+        : "0 €";
+
+      const shouldShowPricePerSqm =
+        categoryId &&
+        PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
+        categoryId !== "fenster";
+
+      return (
+        <div className="text-right">
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-green-600">
+            -{formattedPrice}
+          </p>
+          {shouldShowPricePerSqm && nestModel && price.amount && (
+            <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+              {PriceUtils.calculateOptionPricePerSquareMeter(
+                price.amount,
+                nestModel,
+                categoryId,
+                id
+              )}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    if (price.type === "standard") {
+      const formattedPrice = price.amount
+        ? PriceUtils.formatPrice(price.amount)
+        : "0 €";
+
+      const shouldShowPricePerSqm =
+        categoryId &&
+        PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
+        categoryId !== "fenster";
+
+      return (
+        <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {formattedPrice}
           </p>

@@ -289,8 +289,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           fenster: state.configuration.fenster || undefined
         }
 
-        const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>)
-        const priceBreakdown = PriceCalculator.getPriceBreakdown(selections as unknown as Record<string, unknown>)
+        const totalPrice = PriceCalculator.calculateTotalPrice(selections)
+        const priceBreakdown = PriceCalculator.getPriceBreakdown(selections)
 
         set({
           currentPrice: totalPrice,

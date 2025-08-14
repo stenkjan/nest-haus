@@ -11,8 +11,12 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useConfiguratorStore } from "@/store/configuratorStore";
+import {
+  useConfiguratorStore,
+  type ConfigurationItem,
+} from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
+import { PriceCalculator } from "../core/PriceCalculator";
 import { configuratorData } from "../data/configuratorData";
 import CategorySection from "./CategorySection";
 import SelectionOption from "./SelectionOption";
@@ -168,6 +172,8 @@ export default function ConfiguratorShell({
         "gebaeudehuelle",
         "innenverkleidung",
         "fussboden",
+        "fenster",
+        "pvanlage",
       ];
 
       if (toggleableCategories.includes(categoryId)) {
@@ -398,7 +404,7 @@ export default function ConfiguratorShell({
     return 30 + moduleCount * 4;
   }, [configuration?.nest?.value, getModuleCount]);
 
-  // REVERTED: Simple price display - show prices directly from configuratorData
+  // RELATIVE price display - show price differences relative to currently selected option
   const getDisplayPrice = useCallback(
     (categoryId: string, optionId: string) => {
       const category = configuratorData.find((cat) => cat.id === categoryId);
@@ -408,10 +414,212 @@ export default function ConfiguratorShell({
         return { type: "included" as const };
       }
 
-      // Simply return the price from configuratorData without complex logic
+      // For PV anlage, convert upgrade types to standard for initial display
+      if (categoryId === "pvanlage") {
+        const originalPrice = option.price;
+        if (originalPrice.type === "upgrade") {
+          return {
+            type: "standard" as const,
+            amount: originalPrice.amount,
+            monthly: originalPrice.monthly,
+          };
+        }
+        return originalPrice;
+      }
+
+      // For relative pricing sections (nest, gebäudehülle, innenverkleidung, fussboden, fenster)
+      if (
+        [
+          "nest",
+          "gebaeudehuelle",
+          "innenverkleidung",
+          "fussboden",
+          "fenster",
+        ].includes(categoryId)
+      ) {
+        // Get currently selected option in this category
+        const currentSelection = configuration[
+          categoryId as keyof typeof configuration
+        ] as ConfigurationItem | undefined;
+
+        // If this option is currently selected, show no price at all
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+
+        // If no option is selected yet, calculate actual price based on current nest module
+        if (!currentSelection) {
+          const originalPrice = option.price;
+
+          // For nest-dependent categories, calculate modular price based on current nest size
+          if (
+            configuration?.nest &&
+            ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+              categoryId
+            )
+          ) {
+            // Calculate the actual price for this option with current nest module
+            const currentNestValue = configuration.nest.value;
+            const currentGebaeudehuelle =
+              configuration?.gebaeudehuelle?.value || "trapezblech";
+            const currentInnenverkleidung =
+              configuration?.innenverkleidung?.value || "kiefer";
+            const currentFussboden =
+              configuration?.fussboden?.value || "parkett";
+
+            // Create combination with this specific option
+            let testGebaeudehuelle = currentGebaeudehuelle;
+            let testInnenverkleidung = currentInnenverkleidung;
+            let testFussboden = currentFussboden;
+
+            if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
+            if (categoryId === "innenverkleidung")
+              testInnenverkleidung = optionId;
+            if (categoryId === "fussboden") testFussboden = optionId;
+
+            // Calculate combination price with this option
+            const combinationPrice = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              testGebaeudehuelle,
+              testInnenverkleidung,
+              testFussboden
+            );
+
+            // Calculate base combination price (all defaults)
+            const basePrice = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              "trapezblech",
+              "kiefer",
+              "parkett"
+            );
+
+            // Get the individual option price (difference from base)
+            const optionPrice = combinationPrice - basePrice;
+
+            if (optionPrice < 0) {
+              // Negative prices should show as "inklusive"
+              return { type: "included" as const };
+            } else if (optionPrice === 0) {
+              // Zero price should show as "inklusive"
+              return { type: "included" as const };
+            } else {
+              // Positive price should show as standard price
+              return {
+                type: "standard" as const,
+                amount: optionPrice,
+                monthly: originalPrice.monthly,
+              };
+            }
+          }
+
+          // For other categories or when no nest selected, use original logic
+          if (
+            originalPrice.type === "discount" &&
+            originalPrice.amount !== undefined &&
+            originalPrice.amount < 0
+          ) {
+            // Negative discount amounts should show as "inklusive"
+            return { type: "included" as const };
+          } else if (originalPrice.type === "upgrade") {
+            // Upgrade types should show as standard prices (no + sign)
+            return {
+              type: "standard" as const,
+              amount: originalPrice.amount,
+              monthly: originalPrice.monthly,
+            };
+          } else {
+            // Keep other types as is (included, standard, base)
+            return originalPrice;
+          }
+        }
+
+        // Calculate relative price difference using simpler direct price comparison
+        if (
+          currentSelection &&
+          option.price.amount !== undefined &&
+          currentSelection.price !== undefined
+        ) {
+          // For sections with direct price amounts, use simple difference calculation
+          const currentPrice = currentSelection.price || 0;
+          const optionPrice = option.price.amount || 0;
+          const priceDifference = optionPrice - currentPrice;
+
+          if (priceDifference === 0) {
+            return {
+              type: "upgrade" as const,
+              amount: 0,
+              monthly: option.price.monthly,
+            };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: option.price.monthly,
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
+        // Fallback to total price calculation for complex cases
+        // Build current configuration
+        const currentConfig = {
+          nest: configuration.nest || undefined,
+          gebaeudehuelle: configuration.gebaeudehuelle || undefined,
+          innenverkleidung: configuration.innenverkleidung || undefined,
+          fussboden: configuration.fussboden || undefined,
+          fenster: configuration.fenster || undefined,
+          pvanlage: configuration.pvanlage || undefined,
+        };
+
+        // Build configuration with this option
+        const newConfig = {
+          ...currentConfig,
+          [categoryId]: {
+            category: categoryId,
+            value: optionId,
+            name: option.name,
+            price: option.price.amount || 0,
+          },
+        };
+
+        // Calculate total prices
+        const currentTotal = PriceCalculator.calculateTotalPrice(currentConfig);
+        const newTotal = PriceCalculator.calculateTotalPrice(newConfig);
+
+        // Calculate the difference
+        const priceDifference = newTotal - currentTotal;
+
+        // Return the appropriate price type
+        if (priceDifference === 0) {
+          return {
+            type: "upgrade" as const,
+            amount: 0,
+            monthly: option.price.monthly,
+          };
+        } else if (priceDifference > 0) {
+          return {
+            type: "upgrade" as const,
+            amount: priceDifference,
+            monthly: option.price.monthly,
+          };
+        } else {
+          return {
+            type: "discount" as const,
+            amount: Math.abs(priceDifference),
+            monthly: option.price.monthly,
+          };
+        }
+      }
+
+      // For all other categories, return original price
       return option.price;
     },
-    []
+    [configuration]
   );
 
   // Adjust PV quantity when nest size changes and exceeds new maximum
@@ -503,13 +711,8 @@ export default function ConfiguratorShell({
                     // Don't allow selections if nest is not chosen (except nest itself)
                     if (isDisabled) return;
 
-                    if (category.id === "pvanlage") {
-                      handlePvSelection(category.id, optionId);
-                    } else if (category.id === "fenster") {
-                      handleFensterSelection(category.id, optionId);
-                    } else {
-                      handleSelection(category.id, optionId);
-                    }
+                    // Use regular handleSelection for all categories (now supports unselection)
+                    handleSelection(category.id, optionId);
                   }}
                 />
               );
