@@ -240,26 +240,6 @@ export default function ConfiguratorShell({
     [updateSelection, removeSelection, configuration]
   );
 
-  const handlePvSelection = useCallback(
-    (categoryId: string, optionId: string) => {
-      const category = configuratorData.find((cat) => cat.id === categoryId);
-      const option = category?.options.find((opt) => opt.id === optionId);
-
-      if (option && category) {
-        setPvQuantity(1);
-        updateSelection({
-          category: categoryId,
-          value: optionId,
-          name: option.name,
-          price: option.price.amount || 0,
-          description: option.description,
-          quantity: 1,
-        });
-      }
-    },
-    [updateSelection]
-  );
-
   const handlePvQuantityChange = useCallback(
     (newQuantity: number) => {
       setPvQuantity(newQuantity);
@@ -280,26 +260,6 @@ export default function ConfiguratorShell({
       }
     },
     [configuration?.pvanlage, updateSelection, removeSelection]
-  );
-
-  const handleFensterSelection = useCallback(
-    (categoryId: string, optionId: string) => {
-      const category = configuratorData.find((cat) => cat.id === categoryId);
-      const option = category?.options.find((opt) => opt.id === optionId);
-
-      if (option && category) {
-        setFensterSquareMeters(1);
-        updateSelection({
-          category: categoryId,
-          value: optionId,
-          name: option.name,
-          price: option.price.amount || 0,
-          description: option.description,
-          squareMeters: 1,
-        });
-      }
-    },
-    [updateSelection]
   );
 
   const handleFensterSquareMetersChange = useCallback(
