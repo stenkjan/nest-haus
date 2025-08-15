@@ -32,7 +32,7 @@ export default function AuthPage() {
       } else {
         setError("Incorrect password");
       }
-    } catch (error) {
+    } catch {
       setError("An error occurred");
     } finally {
       setLoading(false);
