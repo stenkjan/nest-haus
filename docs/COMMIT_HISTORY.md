@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3f4ece9bafbf6873852bc0b8b84f21030ed52cde] - Fri Aug 15 13:05:01 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Add password protection for production  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/auth/route.ts
+- src/app/auth/page.tsx
+
+
+---
+
 ## [f9cc9dddc667bd4ed581ad3ba37586654d0b18af] - Wed Aug 13 15:05:33 2025 +0200
 
 **Author**: stenkjan
