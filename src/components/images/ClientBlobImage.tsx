@@ -428,8 +428,12 @@ export default function ClientBlobImage({
 }: ClientBlobImageProps) {
   // Generate appropriate fallback based on image dimensions
   const defaultFallback = React.useMemo(() => {
-    // Return transparent placeholder to avoid showing gray placeholder
-    return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDgwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9zdmc+";
+    // Create a proper SVG placeholder with correct dimensions
+    const svgContent = `<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="transparent"/>
+    </svg>`;
+
+    return `data:image/svg+xml;base64,${btoa(svgContent)}`;
   }, []);
 
   const effectiveFallbackSrc = fallbackSrc || defaultFallback;
@@ -720,7 +724,12 @@ export default function ClientBlobImage({
       <Image
         src={imageSrc}
         alt={alt}
-        {...(fill ? { fill } : width === 0 && height === 0 ? { width: 1200, height: 800 } : { width, height })}
+        {...(fill
+          ? { fill }
+          : (width === 0 || width === undefined) &&
+              (height === 0 || height === undefined)
+            ? { width: 1200, height: 800 }
+            : { width: width || 1200, height: height || 800 })}
         sizes={sizes}
         className={className}
         style={style}

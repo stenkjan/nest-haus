@@ -144,8 +144,8 @@ export default function ResponsiveHybridImage({
           isInteractive={isInteractive}
           enableCache={enableCache}
           fallbackSrc={fallbackSrc}
-          width={0}
-          height={0}
+          width={1200}
+          height={800}
           className="w-full h-auto object-cover"
           style={{
             position: "relative",
@@ -169,8 +169,8 @@ export default function ResponsiveHybridImage({
           isInteractive={isInteractive}
           enableCache={enableCache}
           fallbackSrc={fallbackSrc}
-          width={0}
-          height={0}
+          width={1200}
+          height={800}
           className="w-full h-auto object-contain"
           style={{
             width: "100%",
