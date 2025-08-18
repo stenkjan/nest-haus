@@ -407,90 +407,10 @@ export default function ConfiguratorShell({
           return { type: "selected" as const };
         }
 
-        // If no option is selected yet, calculate actual price based on current nest module
+        // If no option is selected yet, return original static prices like main branch
         if (!currentSelection) {
-          const originalPrice = option.price;
-
-          // For nest-dependent categories, calculate modular price based on current nest size
-          if (
-            configuration?.nest &&
-            ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
-              categoryId
-            )
-          ) {
-            // Calculate the actual price for this option with current nest module
-            const currentNestValue = configuration.nest.value;
-            const currentGebaeudehuelle =
-              configuration?.gebaeudehuelle?.value || "trapezblech";
-            const currentInnenverkleidung =
-              configuration?.innenverkleidung?.value || "kiefer";
-            const currentFussboden =
-              configuration?.fussboden?.value || "parkett";
-
-            // Create combination with this specific option
-            let testGebaeudehuelle = currentGebaeudehuelle;
-            let testInnenverkleidung = currentInnenverkleidung;
-            let testFussboden = currentFussboden;
-
-            if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
-            if (categoryId === "innenverkleidung")
-              testInnenverkleidung = optionId;
-            if (categoryId === "fussboden") testFussboden = optionId;
-
-            // Calculate combination price with this option
-            const combinationPrice = PriceCalculator.calculateCombinationPrice(
-              currentNestValue,
-              testGebaeudehuelle,
-              testInnenverkleidung,
-              testFussboden
-            );
-
-            // Calculate base combination price (all defaults)
-            const basePrice = PriceCalculator.calculateCombinationPrice(
-              currentNestValue,
-              "trapezblech",
-              "kiefer",
-              "parkett"
-            );
-
-            // Get the individual option price (difference from base)
-            const optionPrice = combinationPrice - basePrice;
-
-            if (optionPrice < 0) {
-              // Negative prices should show as "inklusive"
-              return { type: "included" as const };
-            } else if (optionPrice === 0) {
-              // Zero price should show as "inklusive"
-              return { type: "included" as const };
-            } else {
-              // Positive price should show as standard price
-              return {
-                type: "standard" as const,
-                amount: optionPrice,
-                monthly: originalPrice.monthly,
-              };
-            }
-          }
-
-          // For other categories or when no nest selected, use original logic
-          if (
-            originalPrice.type === "discount" &&
-            originalPrice.amount !== undefined &&
-            originalPrice.amount < 0
-          ) {
-            // Negative discount amounts should show as "inklusive"
-            return { type: "included" as const };
-          } else if (originalPrice.type === "upgrade") {
-            // Upgrade types should show as standard prices (no + sign)
-            return {
-              type: "standard" as const,
-              amount: originalPrice.amount,
-              monthly: originalPrice.monthly,
-            };
-          } else {
-            // Keep other types as is (included, standard, base)
-            return originalPrice;
-          }
+          // Return original price from configuratorData for consistent initial display
+          return option.price;
         }
 
         // Calculate relative price difference using simpler direct price comparison
