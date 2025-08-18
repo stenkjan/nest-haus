@@ -337,6 +337,12 @@ export class ImagesConstantsUpdater {
         continue;
       }
 
+      // CRITICAL: NEVER TOUCH HERO IMAGES - They are manually managed!
+      if (variableName.startsWith('hero.')) {
+        console.log(`🚫 SKIPPING hero image (manually managed): ${variableName}`);
+        continue;
+      }
+
       // Extract number from current path to match with blob images
       const numberMatch = currentPath.match(/^(\d+)-/);
       if (numberMatch) {
