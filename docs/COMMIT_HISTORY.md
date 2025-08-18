@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8af5d3acf374038a33d23219d316d6de754e40f0] - Mon Aug 18 12:23:25 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: improve middleware password protection logic  - Updated middleware to apply password protection only on Vercel production environment. - Simplified the condition check for production environment, enhancing code clarity.  `
+
+### Changes Analysis
+
+---
+
 ## [dd8ecf02f2945af9091cef7de0f7ca50a4daba2d] - Mon Aug 18 11:59:24 2025 +0200
 
 **Author**: stenkjan
