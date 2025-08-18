@@ -215,7 +215,7 @@ export const configuratorData: CategoryData[] = [
     ],
     infoBox: {
       title: 'Fenster & Türen',
-      description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
+      // description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
     }
   }
 ] 
