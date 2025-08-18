@@ -541,11 +541,77 @@ export default function ConfiguratorShell({
           }
         }
 
-        // Calculate relative price difference using simpler direct price comparison
+        // For nest-dependent categories with current selection, use modular pricing calculation
+        if (
+          currentSelection &&
+          configuration?.nest &&
+          ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+            categoryId
+          )
+        ) {
+          const currentNestValue = configuration.nest.value;
+          const currentGebaeudehuelle =
+            configuration?.gebaeudehuelle?.value || "trapezblech";
+          const currentInnenverkleidung =
+            configuration?.innenverkleidung?.value || "kiefer";
+          const currentFussboden = configuration?.fussboden?.value || "parkett";
+
+          // Calculate current total with existing selections
+          const currentTotal = PriceCalculator.calculateCombinationPrice(
+            currentNestValue,
+            currentGebaeudehuelle,
+            currentInnenverkleidung,
+            currentFussboden
+          );
+
+          // Calculate total if we switched to this option
+          let testGebaeudehuelle = currentGebaeudehuelle;
+          let testInnenverkleidung = currentInnenverkleidung;
+          let testFussboden = currentFussboden;
+
+          if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
+          if (categoryId === "innenverkleidung")
+            testInnenverkleidung = optionId;
+          if (categoryId === "fussboden") testFussboden = optionId;
+
+          const newTotal = PriceCalculator.calculateCombinationPrice(
+            currentNestValue,
+            testGebaeudehuelle,
+            testInnenverkleidung,
+            testFussboden
+          );
+
+          const priceDifference = newTotal - currentTotal;
+
+          if (priceDifference === 0) {
+            return {
+              type: "upgrade" as const,
+              amount: 0,
+              monthly: option.price.monthly,
+            };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: option.price.monthly,
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
+        // Calculate relative price difference using simpler direct price comparison for other categories
         if (
           currentSelection &&
           option.price.amount !== undefined &&
-          currentSelection.price !== undefined
+          currentSelection.price !== undefined &&
+          !["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+            categoryId
+          )
         ) {
           // For sections with direct price amounts, use simple difference calculation
           const currentPrice = currentSelection.price || 0;
@@ -696,104 +762,125 @@ export default function ConfiguratorShell({
           title={category.title}
           subtitle={category.subtitle}
         >
-          <div className="space-y-2">
-            {category.options.map((option) => {
-              // Use static price from configuratorData for consistent display
-              const displayPrice = getDisplayPrice(category.id, option.id);
+          {(() => {
+            // Disable selections until nest module is chosen (except nest itself)
+            const isDisabled = !configuration?.nest && category.id !== "nest";
 
-              // Disable selections until nest module is chosen (except nest itself)
-              const isDisabled = !configuration?.nest && category.id !== "nest";
+            return (
+              <>
+                <div className="space-y-2">
+                  {category.options.map((option) => {
+                    // Use static price from configuratorData for consistent display
+                    const displayPrice = getDisplayPrice(
+                      category.id,
+                      option.id
+                    );
 
-              return (
-                <SelectionOption
-                  key={option.id}
-                  id={option.id}
-                  name={option.name}
-                  description={option.description}
-                  price={displayPrice}
-                  isSelected={isOptionSelected(category.id, option.id)}
-                  categoryId={category.id}
-                  nestModel={configuration?.nest?.value}
-                  disabled={isDisabled}
-                  onClick={(optionId) => {
-                    // Don't allow selections if nest is not chosen (except nest itself)
-                    if (isDisabled) return;
+                    return (
+                      <SelectionOption
+                        key={option.id}
+                        id={option.id}
+                        name={option.name}
+                        description={option.description}
+                        price={displayPrice}
+                        isSelected={isOptionSelected(category.id, option.id)}
+                        categoryId={category.id}
+                        nestModel={configuration?.nest?.value}
+                        disabled={isDisabled}
+                        onClick={(optionId) => {
+                          // Don't allow selections if nest is not chosen (except nest itself)
+                          if (isDisabled) return;
 
-                    // Use regular handleSelection for all categories (now supports unselection)
-                    handleSelection(category.id, optionId);
-                  }}
-                />
-              );
-            })}
-          </div>
+                          // Use regular handleSelection for all categories (now supports unselection)
+                          handleSelection(category.id, optionId);
+                        }}
+                      />
+                    );
+                  })}
+                </div>
 
-          {/* PV Quantity Selector */}
-          {category.id === "pvanlage" && configuration?.pvanlage && (
-            <>
-              <QuantitySelector
-                label="Anzahl der PV-Module"
-                value={pvQuantity}
-                max={getMaxPvModules()}
-                unitPrice={configuration.pvanlage.price || 0}
-                onChange={handlePvQuantityChange}
-              />
-            </>
-          )}
+                {/* PV Quantity Selector */}
+                {category.id === "pvanlage" && configuration?.pvanlage && (
+                  <>
+                    <QuantitySelector
+                      label="Anzahl der PV-Module"
+                      value={pvQuantity}
+                      max={getMaxPvModules()}
+                      unitPrice={configuration.pvanlage.price || 0}
+                      onChange={handlePvQuantityChange}
+                    />
+                  </>
+                )}
 
-          {/* Info Box - Use new responsive cards for specific categories */}
-          {category.infoBox && (
-            <>
-              {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
-              {category.id === "gebaeudehuelle" ||
-              category.id === "innenverkleidung" ||
-              category.id === "fussboden" ||
-              category.id === "fenster" ||
-              category.id === "pvanlage" ? (
-                <ConfiguratorContentCardsLightbox
-                  categoryKey={
-                    category.id === "gebaeudehuelle"
-                      ? "materials"
-                      : category.id === "pvanlage"
-                        ? "photovoltaik"
-                        : category.id === "fussboden"
-                          ? "fussboden"
-                          : (category.id as "innenverkleidung" | "fenster")
-                  }
-                  triggerText={category.infoBox.title}
-                />
-              ) : (
-                /* Use regular InfoBox for other categories */
-                <InfoBox
-                  title={category.infoBox.title}
-                  description={category.infoBox.description}
-                  onClick={() => handleInfoClick(category.id)}
-                />
-              )}
-            </>
-          )}
+                {/* Info Box - Use new responsive cards for specific categories */}
+                {category.infoBox && (
+                  <>
+                    {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
+                    {category.id === "gebaeudehuelle" ||
+                    category.id === "innenverkleidung" ||
+                    category.id === "fussboden" ||
+                    category.id === "fenster" ||
+                    category.id === "pvanlage" ? (
+                      isDisabled ? (
+                        /* Use regular InfoBox when disabled */
+                        <InfoBox
+                          title={category.infoBox.title}
+                          description={category.infoBox.description}
+                          onClick={() => handleInfoClick(category.id)}
+                          className="opacity-50 cursor-not-allowed"
+                        />
+                      ) : (
+                        <ConfiguratorContentCardsLightbox
+                          categoryKey={
+                            category.id === "gebaeudehuelle"
+                              ? "materials"
+                              : category.id === "pvanlage"
+                                ? "photovoltaik"
+                                : category.id === "fussboden"
+                                  ? "fussboden"
+                                  : (category.id as
+                                      | "innenverkleidung"
+                                      | "fenster")
+                          }
+                          triggerText={category.infoBox.title}
+                        />
+                      )
+                    ) : (
+                      /* Use regular InfoBox for other categories */
+                      <InfoBox
+                        title={category.infoBox.title}
+                        description={category.infoBox.description}
+                        onClick={() => handleInfoClick(category.id)}
+                      />
+                    )}
+                  </>
+                )}
 
-          {/* Fenster Square Meters Selector */}
-          {category.id === "fenster" && configuration?.fenster && (
-            <>
-              <QuantitySelector
-                label="Größe der Fenster / Türen"
-                value={fensterSquareMeters}
-                max={getMaxFensterSquareMeters()}
-                unitPrice={configuration.fenster.price || 0}
-                unit="m²"
-                onChange={handleFensterSquareMetersChange}
-              />
-            </>
-          )}
+                {/* Fenster Square Meters Selector */}
+                {category.id === "fenster" && configuration?.fenster && (
+                  <>
+                    <QuantitySelector
+                      label="Größe der Fenster / Türen"
+                      value={fensterSquareMeters}
+                      max={getMaxFensterSquareMeters()}
+                      unitPrice={configuration.fenster.price || 0}
+                      unit="m²"
+                      onChange={handleFensterSquareMetersChange}
+                    />
+                  </>
+                )}
 
-          {/* Facts Box */}
-          {category.facts && (
-            <FactsBox
-              title={category.facts.title}
-              facts={category.facts.content}
-              links={category.facts.links}
-            />
-          )}
+                {/* Facts Box */}
+                {category.facts && (
+                  <FactsBox
+                    title={category.facts.title}
+                    facts={category.facts.content}
+                    links={category.facts.links}
+                  />
+                )}
+              </>
+            );
+          })()}
         </CategorySection>
       ))}
 
