@@ -5,6 +5,8 @@
  * on both client and server side without database dependencies.
  */
 
+import { NEST_OPTIONS } from '@/constants/configurator';
+
 export class PriceUtils {
   /**
    * Format price for display
@@ -93,11 +95,8 @@ export class PriceUtils {
   static calculateOptionPricePerSquareMeter(price: number, nestModel: string, categoryId?: string, optionId?: string): string {
     // For NEST modules themselves, ALWAYS use the full module price from constants
     if (categoryId === 'nest' && optionId) {
-      // Import constants to get the full nest price
-      const { NEST_OPTIONS } = require('@/constants/configurator');
-
       // Find the specific nest option to get its full price
-      const nestOption = NEST_OPTIONS.find((option: any) => option.id === optionId);
+      const nestOption = NEST_OPTIONS.find((option: { id: string; price: number; modules: number }) => option.id === optionId);
       if (!nestOption) {
         return ''; // No pricing data available
       }
@@ -105,7 +104,7 @@ export class PriceUtils {
       // Use the full nest price (not the dynamic price difference)
       const fullNestPrice = nestOption.price;
       const adjustedNutzflaeche = this.getAdjustedNutzflaeche(optionId);
-      if (adjustedNutzflaeche === 0 || fullNestPrice === 0) return '';
+      if (adjustedNutzflaeche === 0) return '';
 
       const pricePerSqm = Math.round(fullNestPrice / adjustedNutzflaeche);
       return `${this.formatPrice(pricePerSqm)} /m²`;
