@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-    // Only apply password protection in production
-    if (process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV !== 'production') {
+    // Only apply password protection on Vercel production
+    const isProduction = process.env.VERCEL_ENV === 'production';
+
+    if (!isProduction) {
         return NextResponse.next();
     }
 
