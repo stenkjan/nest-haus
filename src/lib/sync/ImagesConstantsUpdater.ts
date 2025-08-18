@@ -129,10 +129,15 @@ export class ImagesConstantsUpdater {
 
           // Clean the blob path for constants: remove images/ prefix, hash, and extension
           // CRITICAL: Maintain mobile/desktop distinction in the clean path
-          const cleanBlobPath = blob.pathname
+          // FIXED: More aggressive hash removal to prevent hash suffixes in images.ts
+          let cleanBlobPath = blob.pathname
             .replace(/^images\//, '') // Remove images/ prefix
-            .replace(/-[a-zA-Z0-9]{20,}\.([a-zA-Z0-9]+)$/, '') // Remove hash and extension
+            .replace(/-[a-zA-Z0-9]{10,}\.([a-zA-Z0-9]+)$/, '') // Remove hash and extension (shorter pattern)
+            .replace(/-[a-zA-Z0-9]{10,}$/, '') // Remove hash without extension
             .replace(/\.([a-zA-Z0-9]+)$/, ''); // Remove extension if no hash
+
+          // EXTRA SAFETY: Remove any remaining hash-like suffixes
+          cleanBlobPath = cleanBlobPath.replace(/-[A-Za-z0-9]{10,}$/, '');
 
           mappings.push({
             number: parsed.number,
