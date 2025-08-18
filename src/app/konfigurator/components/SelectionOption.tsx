@@ -160,7 +160,7 @@ export default function SelectionOption({
 
       return (
         <div className="text-right">
-          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-green-600">
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
             -{formattedPrice}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (

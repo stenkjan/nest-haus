@@ -195,6 +195,7 @@ export default function ConfiguratorShell({
               "gebaeudehuelle",
               "innenverkleidung",
               "fussboden",
+              "fenster",
             ];
             dependentCategories.forEach((depCategory) => {
               if (configuration?.[depCategory as keyof typeof configuration]) {
