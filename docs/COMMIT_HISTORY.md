@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [dd8ecf02f2945af9091cef7de0f7ca50a4daba2d] - Mon Aug 18 11:59:24 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance image fallback handling in ClientBlobImage and ResponsiveHybridImage components  - Updated default fallback in ClientBlobImage to generate a proper SVG placeholder with correct dimensions. - Set default width and height for images in ResponsiveHybridImage to 1200x800 for improved consistency and layout stability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+
+
+---
+
 ## [f308455049f9c398c981eb8e559507ab27a2f9eb] - Fri Aug 15 13:13:02 2025 +0200
 
 **Author**: stenkjan
