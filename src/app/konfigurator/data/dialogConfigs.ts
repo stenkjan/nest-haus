@@ -291,5 +291,103 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
         imagePath: IMAGES.configurations.pv_plattenweiss
       }
     ]
+  },
+
+  beleuchtungspaket: {
+    title: {
+      main: "Beleuchtungspaket",
+      subtitle: "Natürliches Licht für Ihr Zuhause"
+    },
+    sliderKey: "beleuchtungspaket-slider",
+    actionButton: {
+      text: "Mehr über Fenster & Türen",
+      href: "/fenster-tueren"
+    },
+    cards: [
+      {
+        id: 1,
+        title: "Beleuchtungspaket - Light",
+        subtitle: "Grundbeleuchtung",
+        description: {
+          mobile: "Das Light-Paket bietet eine solide Grundbeleuchtung mit 12% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
+          desktop: "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 12% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche, in denen gezieltes, warmes Licht gewünscht ist. Die bewusst reduzierte Verglasung sorgt für optimale Energieeffizienz bei gleichzeitig ausreichend natürlichem Lichteinfall."
+        },
+        imagePath: IMAGES.configurations.nest75_holzlattung
+      },
+      {
+        id: 2,
+        title: "Beleuchtungspaket - Medium",
+        subtitle: "Ausgewogene Beleuchtung",
+        description: {
+          mobile: "Das Medium-Paket bietet ausgewogene Helligkeit mit 16% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
+          desktop: "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 16% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die sowohl Gemütlichkeit als auch ausreichend Tageslicht benötigen. Die durchdachte Verteilung der Öffnungen sorgt für optimale Raumausleuchtung."
+        },
+        imagePath: IMAGES.configurations.nest95_holzlattung
+      },
+      {
+        id: 3,
+        title: "Beleuchtungspaket - Bright",
+        subtitle: "Maximale Helligkeit",
+        description: {
+          mobile: "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
+          desktop: "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und eine starke Verbindung zur Natur schaffen möchten. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke und ein Gefühl von Grenzenlosigkeit."
+        },
+        imagePath: IMAGES.configurations.nest115_holzlattung
+      }
+    ]
+  },
+
+  stirnseite: {
+    title: {
+      main: "Stirnseite Verglasung",
+      subtitle: "Licht und Ausblick"
+    },
+    sliderKey: "stirnseite-slider",
+    actionButton: {
+      text: "Mehr über Verglasung",
+      href: "/fenster-tueren"
+    },
+    cards: [
+      {
+        id: 1,
+        title: "Stirnseite - Keine Verglasung",
+        subtitle: "Geschlossen",
+        description: {
+          mobile: "Die geschlossene Stirnseite bietet maximale Privatsphäre und Energieeffizienz. Ideal für ruhige Bereiche ohne zusätzliche Fensteröffnungen.",
+          desktop: "Die geschlossene Stirnseite bietet maximale Privatsphäre, Energieeffizienz und strukturelle Integrität. Diese Option eignet sich besonders für Bereiche, in denen Ruhe und Intimität gewünscht sind, oder wenn die Hauptverglasung bereits über andere Gebäudeseiten realisiert wird. Die geschlossene Konstruktion minimiert Wärmeverluste und bietet optimalen Schutz vor Witterungseinflüssen."
+        },
+        imagePath: IMAGES.configurations.nest75_holzlattung
+      },
+      {
+        id: 2,
+        title: "Stirnseite - Verglasung Oben",
+        subtitle: "8m² Verglasung",
+        description: {
+          mobile: "Die obere Verglasung schafft interessante Lichteffekte und ermöglicht Ausblicke nach oben. 8m² strategisch positionierte Fensterfläche für natürliches Licht.",
+          desktop: "Die obere Verglasung der Stirnseite schafft faszinierende Lichteffekte und ermöglicht einzigartige Ausblicke in den Himmel und die Baumkronen. Mit 8m² strategisch positionierter Fensterfläche bringt diese Option natürliches Licht in die oberen Bereiche des Raumes und schafft eine offene, luftige Atmosphäre. Besonders wirkungsvoll in Räumen mit hohen Decken oder Galeriebereichen."
+        },
+        imagePath: IMAGES.configurations.stirnseiteHolzfassade
+      },
+      {
+        id: 3,
+        title: "Stirnseite - Verglasung Unten",
+        subtitle: "17m² Verglasung",
+        description: {
+          mobile: "Die untere Verglasung bietet direkten Ausblick und Zugang. 17m² Fensterfläche im Erdgeschossbereich für optimale Raumverbindung.",
+          desktop: "Die untere Verglasung der Stirnseite bietet direkten Ausblick auf Augenhöhe und ermöglicht eine starke Verbindung zwischen Innen- und Außenraum. Mit 17m² großzügiger Fensterfläche im Erdgeschossbereich schaffen Sie optimale Sichtbeziehungen und natürlichen Lichteinfall. Diese Option eignet sich besonders für Wohnbereiche, die eine direkte Verbindung zur Terrasse oder zum Garten schaffen sollen."
+        },
+        imagePath: IMAGES.configurations.stirnseitePlattenSchwarz
+      },
+      {
+        id: 4,
+        title: "Stirnseite - Vollverglasung",
+        subtitle: "25m² Verglasung",
+        description: {
+          mobile: "Die komplette Stirnseite verglast bietet maximales Licht und spektakuläre Ausblicke. 25m² durchgehende Verglasung für ein Gefühl von Grenzenlosigkeit.",
+          desktop: "Die komplette Verglasung der Stirnseite bietet ein spektakuläres, raumgreifendes Erlebnis mit maximaler Transparenz und Lichtdurchflutung. Mit 25m² durchgehender Verglasung entsteht ein Gefühl von Grenzenlosigkeit und eine dramatische Verbindung zur Landschaft. Diese Option schafft einen wahren Blickfang und eignet sich besonders für Häuser mit außergewöhnlichen Ausblicken oder als architektonisches Statement."
+        },
+        imagePath: IMAGES.configurations.stirnseiteTrapezblech
+      }
+    ]
   }
 }; 

@@ -13,7 +13,7 @@ import {
   useConfiguratorStore,
   type ConfigurationItem,
 } from "@/store/configuratorStore";
-// REMOVED: PriceCalculator import no longer needed after reverting complex pricing logic
+import { PriceCalculator } from "../core/PriceCalculator"; // Re-added for dynamic price calculations
 import { PriceUtils } from "../core/PriceUtils";
 import InfoBox from "./InfoBox";
 import Button from "@/components/ui/Button";
@@ -41,7 +41,7 @@ export default function SummaryPanel({
 
   // REMOVED: getDynamicPrice variable no longer needed after reverting complex pricing logic
 
-  // REVERTED: Simplified item price calculation
+  // Enhanced item price calculation with dynamic pricing for beleuchtungspaket and stirnseite
   const getItemPrice = (key: string, selection: ConfigurationItem): number => {
     // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
@@ -49,6 +49,48 @@ export default function SummaryPanel({
     }
     if (key === "fenster") {
       return (selection.squareMeters || 1) * (selection.price || 0);
+    }
+
+    // For beleuchtungspaket, calculate dynamic price
+    if (key === "beleuchtungspaket" && configuration?.nest) {
+      try {
+        const selectionOption = {
+          category: key,
+          value: selection.value,
+          name: selection.name,
+          price: selection.price || 0,
+        };
+        return PriceCalculator.calculateBeleuchtungspaketPrice(
+          selectionOption,
+          configuration.nest,
+          configuration.fenster || undefined
+        );
+      } catch (error) {
+        console.error(
+          "Error calculating beleuchtungspaket price in summary:",
+          error
+        );
+        return selection.price || 0;
+      }
+    }
+
+    // For stirnseite, calculate dynamic price
+    if (key === "stirnseite" && selection.value !== "keine_verglasung") {
+      try {
+        const selectionOption = {
+          category: key,
+          value: selection.value,
+          name: selection.name,
+          price: selection.price || 0,
+        };
+        return PriceCalculator.calculateStirnseitePrice(
+          selectionOption,
+          configuration.fenster || undefined
+        );
+      } catch (error) {
+        console.error("Error calculating stirnseite price in summary:", error);
+        return selection.price || 0;
+      }
     }
 
     // For all other items, use the base price
@@ -59,8 +101,9 @@ export default function SummaryPanel({
     key: string,
     selection: ConfigurationItem
   ): boolean => {
-    // REVERTED: Simple check - item is included if price is 0 or not set
-    return !selection?.price || selection.price === 0;
+    // Use the calculated price to determine if item is included
+    const calculatedPrice = getItemPrice(key, selection);
+    return calculatedPrice === 0;
   };
 
   if (!configuration) {
@@ -108,12 +151,14 @@ export default function SummaryPanel({
             {/* Show all configuration items individually, including preselected ones */}
             {(() => {
               // Filter and sort configuration entries
+              // Exclude fenster from cart display since its price is incorporated into beleuchtungspaket and stirnseite
               const configEntries = Object.entries(configuration).filter(
                 ([key, selection]) =>
                   selection &&
                   key !== "sessionId" &&
                   key !== "totalPrice" &&
-                  key !== "timestamp"
+                  key !== "timestamp" &&
+                  key !== "fenster" // Fenster price is included in beleuchtungspaket/stirnseite calculations
               );
 
               const { topItems, middleItems, bottomItems } =
@@ -160,14 +205,14 @@ export default function SummaryPanel({
                           </>
                         ) : !isIncluded && itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from specified sections */}
                             {![
                               "gebaeudehuelle",
                               "innenverkleidung",
                               "fussboden",
+                              "beleuchtungspaket",
+                              "stirnseite",
                             ].includes(key) && (
                               <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                                zzgl.
                               </div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
@@ -204,7 +249,6 @@ export default function SummaryPanel({
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from planungspaket */}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
                             </div>
@@ -247,15 +291,12 @@ export default function SummaryPanel({
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from fenster, pvanlage, and grundstueckscheck */}
-                            {/* zzgl. is not shown for fenster, pvanlage, or grundstueckscheck as required */}
                             {![
                               "fenster",
                               "pvanlage",
                               "grundstueckscheck",
                             ].includes(key) && (
                               <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                                zzgl.
                               </div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">

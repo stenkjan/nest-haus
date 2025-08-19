@@ -25,6 +25,7 @@ interface SelectionOptionProps {
   className?: string;
   categoryId?: string;
   nestModel?: string;
+  contributionPrice?: number | null; // Actual price contribution for selected options
 }
 
 export default function SelectionOption({
@@ -36,16 +37,26 @@ export default function SelectionOption({
   onClick,
   onUnselect,
   canUnselect = false,
-  disabled = false,
+  disabled: _disabled = false,
   className = "",
   categoryId,
   nestModel,
+  contributionPrice,
 }: SelectionOptionProps) {
   const renderPrice = () => {
     if (!price) return null;
 
     if (price.type === "selected") {
-      // Selected option shows no price at all
+      // Selected option shows contribution price (smaller and greyer)
+      if (contributionPrice !== null && contributionPrice !== undefined) {
+        return (
+          <p className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-500 tracking-wide leading-[1.2]">
+            {contributionPrice === 0
+              ? "inklusive"
+              : PriceUtils.formatPrice(contributionPrice)}
+          </p>
+        );
+      }
       return null;
     }
 
@@ -72,6 +83,7 @@ export default function SelectionOption({
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {showAbPrefix ? `Ab ${formattedPrice}` : formattedPrice}
+            {categoryId === "fenster" && "/m²"}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
@@ -108,13 +120,15 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
-      // Remove "zzgl." from specified sections: nest, innenverkleidung, fussboden, gebaeudehuelle, fenster, pvanlage
+      // Remove "zzgl." from specified sections: nest, innenverkleidung, fussboden, gebaeudehuelle, beleuchtungspaket, fenster, stirnseite, pvanlage
       const sectionsWithoutZzgl = [
         "nest",
         "innenverkleidung",
         "fussboden",
         "gebaeudehuelle",
+        "beleuchtungspaket",
         "fenster",
+        "stirnseite",
         "pvanlage",
       ];
       const showZzglPrefix = !sectionsWithoutZzgl.includes(categoryId || "");
@@ -130,6 +144,7 @@ export default function SelectionOption({
             {price.amount !== undefined && price.amount > 0
               ? `+${formattedPrice}`
               : formattedPrice}
+            {categoryId === "fenster" && "/m²"}
           </p>
           {shouldShowPricePerSqm &&
             nestModel &&
@@ -162,6 +177,7 @@ export default function SelectionOption({
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
             -{formattedPrice}
+            {categoryId === "fenster" && "/m²"}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
@@ -191,6 +207,7 @@ export default function SelectionOption({
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {formattedPrice}
+            {categoryId === "fenster" && "/m²"}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
@@ -211,9 +228,7 @@ export default function SelectionOption({
   };
 
   const handleClick = () => {
-    if (!disabled) {
-      onClick(id);
-    }
+    onClick(id);
   };
 
   const handleUnselect = (e: React.MouseEvent) => {
@@ -228,9 +243,7 @@ export default function SelectionOption({
       className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
         isSelected
           ? "selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50"
-          : disabled
-            ? "border-gray-200 opacity-50 cursor-not-allowed"
-            : "border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm"
+          : "border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm"
       } ${className}`}
       onClick={handleClick}
     >

@@ -12,7 +12,9 @@ interface ConfiguratorContentCardsLightboxProps {
   categoryKey:
     | "materials"
     | "innenverkleidung"
+    | "beleuchtungspaket"
     | "fenster"
+    | "stirnseite"
     | "fussboden"
     | "photovoltaik";
   triggerClassName?: string;

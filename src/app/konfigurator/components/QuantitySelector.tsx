@@ -47,7 +47,7 @@ export default function QuantitySelector({
       .replace(" €", "€"); // Remove space before €
 
     // Add unit suffix based on unit type
-    const unitSuffix = unit === "m²" ? "/m²" : "/Panel";
+    const unitSuffix = unit === "m²" ? "/m²" : "/Modul";
     return `${formattedPrice}${unitSuffix}`;
   };
 

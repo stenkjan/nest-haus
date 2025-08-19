@@ -19,8 +19,10 @@ export interface Configuration {
   gebaeudehuelle?: ConfigurationItem | null
   innenverkleidung?: ConfigurationItem | null
   fussboden?: ConfigurationItem | null
+  beleuchtungspaket?: ConfigurationItem | null
   pvanlage?: ConfigurationItem | null
   fenster?: ConfigurationItem | null
+  stirnseite?: ConfigurationItem | null
   totalPrice: number
   timestamp: number
 }
@@ -87,8 +89,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         gebaeudehuelle: null,
         innenverkleidung: null,
         fussboden: null,
+        beleuchtungspaket: null,
         pvanlage: null,
         fenster: null,
+        stirnseite: null,
         totalPrice: 0,
         timestamp: 0
       },
@@ -109,13 +113,20 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           return;
         }
 
+        // Check if this is a completely new session (no sessionId and no selections)
+        const isNewSession = !state.sessionId && !state.configuration.nest;
+
         // Generate sessionId if missing
         if (!state.sessionId) {
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
 
-        // NO preselections - start with empty configuration
-        // Calculate price immediately (will be 0 with no selections)
+        // Set default preselections only for completely new sessions
+        if (isNewSession) {
+          get().setDefaultSelections()
+        }
+
+        // Calculate price immediately
         get().calculatePrice()
       },
 
@@ -154,12 +165,15 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
           shouldSwitchToView = 'interior';
         } else if (item.category === 'pvanlage') {
-          // Activate Part 3 but don't switch views - PV has its own info dialog
+          // Activate Part 3 and switch to exterior view to show gebäudehülle with PV overlay
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
-          // No view switching for PV - stays on current view
-          shouldSwitchToView = null;
+          // Switch to exterior view to show PV modules on the house
+          shouldSwitchToView = 'exterior';
+        } else if (item.category === 'beleuchtungspaket') {
+          // When selecting beleuchtungspaket, switch to exterior view to show gebäudehülle
+          shouldSwitchToView = 'exterior';
         } else if (item.category === 'fenster') {
           // Activate Part 3 but don't switch views - Fenster has its own info dialog
           if (!state.hasPart3BeenActive) {
@@ -167,6 +181,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
           // No view switching for fenster - stays on current view
           shouldSwitchToView = null;
+        } else if (item.category === 'stirnseite') {
+          // When selecting any stirnseite option, switch to stirnseite view
+          // This includes "keine_verglasung" to show the stirnseite image
+          shouldSwitchToView = 'stirnseite';
         }
 
         // Clear image cache if this is a visual change (nest, gebäudehülle, innenverkleidung, fussboden)
@@ -376,8 +394,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           gebaeudehuelle: null,
           innenverkleidung: null,
           fussboden: null,
+          beleuchtungspaket: null,
           pvanlage: null,
           fenster: null,
+          stirnseite: null,
           totalPrice: 0,
           timestamp: Date.now()
         }
@@ -394,14 +414,100 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           lastSelectionCategory: null
         })
 
-        // NO preselections - calculate price with empty configuration (will be 0)
+        // Set default selections after reset
+        get().setDefaultSelections()
+        // Calculate price with defaults
         get().calculatePrice()
       },
 
       // Set default preselections - DISABLED (no preselections wanted)
       setDefaultSelections: () => {
-        // NO preselections - this function intentionally does nothing
-        // Start with completely empty configuration
+        // Set default selections as requested
+        const defaultSelections = [
+          // Nest 80
+          {
+            category: 'nest',
+            value: 'nest80',
+            name: 'Nest. 80',
+            price: 155500,
+            description: '75m² Nutzfläche'
+          },
+          // Holzlattung Lärche
+          {
+            category: 'gebaeudehuelle',
+            value: 'holzlattung',
+            name: 'Holzlattung Lärche Natur',
+            price: 9600,
+            description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
+          },
+          // Kiefer
+          {
+            category: 'innenverkleidung',
+            value: 'kiefer',
+            name: 'Kiefer',
+            price: -1400,
+            description: 'PEFC - Zertifiziert - Sicht 1,5 cm'
+          },
+          // Parkett Eiche
+          {
+            category: 'fussboden',
+            value: 'parkett',
+            name: 'Parkett Eiche',
+            price: 0,
+            description: 'Schwimmend verlegt'
+          },
+          // Light Beleuchtungspaket
+          {
+            category: 'beleuchtungspaket',
+            value: 'light',
+            name: 'Light',
+            price: 0, // Will be calculated dynamically
+            description: '12% der Nestfläche\nGrundbeleuchtung'
+          },
+          // PVC Fenster
+          {
+            category: 'fenster',
+            value: 'pvc_fenster',
+            name: 'PVC Fenster',
+            price: 280,
+            description: 'RAL 9016 - Kunststoff'
+          },
+          // Keine Verglasung (default)
+          {
+            category: 'stirnseite',
+            value: 'keine_verglasung',
+            name: 'Keine Verglasung',
+            price: 0,
+            description: 'Geschlossene Stirnseite\nKeine zusätzlichen Fenster'
+          }
+        ];
+
+        // Apply default selections directly to avoid multiple view switches
+        const state = get();
+
+        // Build new configuration with defaults
+        const newConfiguration: Configuration = {
+          ...state.configuration,
+          nest: defaultSelections[0] as ConfigurationItem,
+          gebaeudehuelle: defaultSelections[1] as ConfigurationItem,
+          innenverkleidung: defaultSelections[2] as ConfigurationItem,
+          fussboden: defaultSelections[3] as ConfigurationItem,
+          beleuchtungspaket: defaultSelections[4] as ConfigurationItem,
+          fenster: defaultSelections[5] as ConfigurationItem,
+          stirnseite: defaultSelections[6] as ConfigurationItem,
+          timestamp: Date.now()
+        };
+
+        // Update configuration with all defaults at once
+        set({
+          configuration: newConfiguration,
+          shouldSwitchToView: 'exterior', // Show exterior view with defaults
+          hasPart2BeenActive: true, // Enable interior view
+          hasPart3BeenActive: false // Don't enable part 3 yet
+        });
+
+        // Calculate price with all defaults
+        get().calculatePrice();
       },
 
 
@@ -429,7 +535,39 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Reset alias (for test compatibility)
       reset: () => {
-        get().resetConfiguration()
+        console.log("🔄 ConfiguratorStore: Complete reset")
+
+        // Clear localStorage to force fresh start
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('configurator-store')
+        }
+
+        // Reset to initial state
+        set({
+          sessionId: null,
+          configuration: {
+            sessionId: '',
+            nest: null,
+            gebaeudehuelle: null,
+            innenverkleidung: null,
+            fussboden: null,
+            beleuchtungspaket: null,
+            pvanlage: null,
+            fenster: null,
+            stirnseite: null,
+            totalPrice: 0,
+            timestamp: 0
+          },
+          currentPrice: 0,
+          priceBreakdown: null,
+          hasPart2BeenActive: false,
+          hasPart3BeenActive: false,
+          shouldSwitchToView: null,
+          lastSelectionCategory: null
+        })
+
+        // Initialize fresh session with defaults
+        get().initializeSession()
       },
 
       // Get configuration (for test compatibility)
