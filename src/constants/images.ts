@@ -38,6 +38,10 @@ export const IMAGES = {
         ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation',
     },
 
+    pvModue : {
+        pvOverlay: '179-nest-solar-solarenergie-solarpanel-nachhaltig-sonne-icon-strom-energie',
+    },
+
     // Function/Process images
     function: {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',

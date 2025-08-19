@@ -117,10 +117,10 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Kleide dich ein',
     options: [
       {
-        id: 'pv_panels',
-        name: 'Photovoltaik-Panels',
-        description: '0,4 kWpeak pro Panel',
-        price: { type: 'upgrade', amount: 390, monthly: 2 }
+        id: 'pv_modules',
+        name: 'Photovoltaik-Module',
+        description: '3 x 0,4 kWpeak Panele pro Modul',
+        price: { type: 'upgrade', amount: 1170, monthly: 6 }
       }
     ],
     infoBox: {
@@ -184,6 +184,35 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
+    id: 'beleuchtungspaket',
+    title: 'Beleuchtungspaket',
+    subtitle: 'Deine Helligkeit',
+    options: [
+      {
+        id: 'light',
+        name: 'Light',
+        description: '12% der Nestfläche\nGrundbeleuchtung',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'medium',
+        name: 'Medium',
+        description: '16% der Nestfläche\nAusgewogene Beleuchtung',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'bright',
+        name: 'Bright',
+        description: '22% der Nestfläche\nMaximale Helligkeit',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      }
+    ],
+    infoBox: {
+      title: 'Beleuchtungspaket',
+      description: 'Wähle die Menge an Fenstern und Türen basierend auf deinen Lichtbedürfnissen.'
+    }
+  },
+  {
     id: 'fenster',
     title: 'Fenster & Türen',
     subtitle: 'Deine Öffnungen',
@@ -195,27 +224,62 @@ export const configuratorData: CategoryData[] = [
         price: { type: 'upgrade', amount: 280, monthly: 2 }
       },
       {
-        id: 'fichte',
-        name: 'Fichte',
+        id: 'holz',
+        name: 'Holz',
         description: 'Holzfenster Lärche',
         price: { type: 'upgrade', amount: 400, monthly: 3 }
       },
       {
-        id: 'steirische_eiche',
-        name: 'Steirische Eiche',
-        description: 'RAL 9005 - Tiefschwarz',
-        price: { type: 'upgrade', amount: 550, monthly: 3 }
+        id: 'aluminium_schwarz',
+        name: 'Aluminium Schwarz',
+        description: 'RAL 9005 - Tiefschwarz\nbis 6000 x 3200 mm',
+        price: { type: 'upgrade', amount: 700, monthly: 4 }
       },
       {
-        id: 'aluminium',
-        name: 'Aluminium',
-        description: 'RAL 9005 - Tiefschwarz\nbis 6000 x 3200 mm',
+        id: 'aluminium_weiss',
+        name: 'Aluminium Weiß',
+        description: 'RAL 9016 - Weiß\nbis 6000 x 3200 mm',
         price: { type: 'upgrade', amount: 700, monthly: 4 }
       }
     ],
     infoBox: {
       title: 'Fenster & Türen',
       // description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
+    }
+  },
+  {
+    id: 'stirnseite',
+    title: 'Stirnseite',
+    subtitle: 'Deine Verglasung',
+    options: [
+      {
+        id: 'keine_verglasung',
+        name: 'Keine Verglasung',
+        description: 'Geschlossene Stirnseite\nKeine zusätzlichen Fenster',
+        price: { type: 'included' }
+      },
+      {
+        id: 'verglasung_oben',
+        name: 'Verglasung Oben',
+        description: '8m² Verglasung\nOberer Bereich der Stirnseite',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'verglasung_unten',
+        name: 'Verglasung Unten',
+        description: '17m² Verglasung\nUnterer Bereich der Stirnseite',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'vollverglasung',
+        name: 'Vollverglasung',
+        description: '25m² Verglasung\nKomplette Stirnseite verglast',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      }
+    ],
+    infoBox: {
+      title: 'Stirnseite Verglasung',
+      description: 'Wähle die Verglasung für die Stirnseite deines NEST-Hauses.'
     }
   }
 ] 

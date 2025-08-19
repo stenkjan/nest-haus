@@ -30,8 +30,10 @@ interface Selections {
   gebaeudehuelle?: SelectionOption
   innenverkleidung?: SelectionOption
   fussboden?: SelectionOption
+  beleuchtungspaket?: SelectionOption
   pvanlage?: SelectionOption
   fenster?: SelectionOption
+  stirnseite?: SelectionOption
   paket?: SelectionOption
   grundstueckscheck?: boolean
 }
@@ -166,6 +168,25 @@ export class PriceCalculator {
         additionalPrice += pvPrice;
       }
 
+      // Add beleuchtungspaket price (calculated based on nest size and fenster material)
+      if (selections.beleuchtungspaket && selections.nest) {
+        const beleuchtungspaketPrice = this.calculateBeleuchtungspaketPrice(
+          selections.beleuchtungspaket,
+          selections.nest,
+          selections.fenster
+        );
+        additionalPrice += beleuchtungspaketPrice;
+      }
+
+      // Add stirnseite verglasung price (calculated based on fenster material)
+      if (selections.stirnseite && selections.stirnseite.value !== 'keine_verglasung') {
+        const stirnseitePrice = this.calculateStirnseitePrice(
+          selections.stirnseite,
+          selections.fenster
+        );
+        additionalPrice += stirnseitePrice;
+      }
+
       // Add window price
       if (selections.fenster && selections.fenster.squareMeters) {
         const fensterPrice = selections.fenster.squareMeters * (selections.fenster.price || 0);
@@ -177,6 +198,92 @@ export class PriceCalculator {
       return totalPrice + additionalPrice;
     } catch (error) {
       console.error('💰 PriceCalculator: Error calculating price:', error);
+      return 0;
+    }
+  }
+
+  /**
+   * Calculate beleuchtungspaket price based on nest size and fenster material
+   * Formula: nest_size * percentage * fenster_material_price_per_sqm
+   * Percentages: light=12%, medium=16%, bright=22%
+   * Default fenster material: PVC (280€/m²) if no fenster selected
+   */
+  static calculateBeleuchtungspaketPrice(
+    beleuchtungspaket: SelectionOption,
+    nest: SelectionOption,
+    fenster?: SelectionOption
+  ): number {
+    try {
+      // Get nest size in square meters
+      const nestSizeMap: Record<string, number> = {
+        'nest80': 80,
+        'nest100': 100,
+        'nest120': 120,
+        'nest140': 140,
+        'nest160': 160
+      };
+
+      const nestSize = nestSizeMap[nest.value] || 80;
+
+      // Get percentage based on beleuchtungspaket option
+      const percentageMap: Record<string, number> = {
+        'light': 0.12,   // 12%
+        'medium': 0.16,  // 16%
+        'bright': 0.22   // 22%
+      };
+
+      const percentage = percentageMap[beleuchtungspaket.value] || 0.12;
+
+      // Calculate square meters for beleuchtungspaket
+      const beleuchtungsSquareMeters = Math.ceil(nestSize * percentage);
+
+      // Get fenster material price (default to PVC 280€ if no fenster selected)
+      const fensterPricePerSqm = fenster?.price || 280;
+
+      // Calculate total price
+      const totalPrice = beleuchtungsSquareMeters * fensterPricePerSqm;
+
+      console.log(`💡 Beleuchtungspaket calculation: ${nestSize}m² * ${percentage * 100}% = ${beleuchtungsSquareMeters}m² * ${fensterPricePerSqm}€ = ${totalPrice}€`);
+
+      return totalPrice;
+    } catch (error) {
+      console.error('💡 Error calculating beleuchtungspaket price:', error);
+      return 0;
+    }
+  }
+
+  /**
+   * Calculate stirnseite verglasung price based on fenster material
+   * Formula: verglasung_area * fenster_material_price_per_sqm
+   * Areas: oben=8m², unten=17m², vollverglasung=25m²
+   * Default fenster material: PVC (280€/m²) if no fenster selected
+   */
+  static calculateStirnseitePrice(
+    stirnseite: SelectionOption,
+    fenster?: SelectionOption
+  ): number {
+    try {
+      // Get area based on stirnseite option
+      const areaMap: Record<string, number> = {
+        'verglasung_oben': 8,      // 8m²
+        'verglasung_unten': 17,    // 17m²
+        'vollverglasung': 25,      // 25m²
+        'keine_verglasung': 0      // 0m² (should not be called for this)
+      };
+
+      const area = areaMap[stirnseite.value] || 0;
+
+      // Get fenster material price (default to PVC 280€ if no fenster selected)
+      const fensterPricePerSqm = fenster?.price || 280;
+
+      // Calculate total price
+      const totalPrice = area * fensterPricePerSqm;
+
+      console.log(`🪟 Stirnseite calculation: ${stirnseite.value} = ${area}m² × ${fensterPricePerSqm}€ = ${totalPrice}€`);
+
+      return totalPrice;
+    } catch (error) {
+      console.error('🪟 Error calculating stirnseite price:', error);
       return 0;
     }
   }
@@ -298,6 +405,48 @@ export class PriceCalculator {
         breakdown.options.pvanlage = {
           name: `${selections.pvanlage.name} (${selections.pvanlage.quantity}x)`,
           price: selections.pvanlage.quantity * selections.pvanlage.price
+        }
+      }
+
+      if (selections.beleuchtungspaket && selections.nest) {
+        const beleuchtungspaketPrice = this.calculateBeleuchtungspaketPrice(
+          selections.beleuchtungspaket,
+          selections.nest,
+          selections.fenster
+        );
+
+        // Calculate square meters for display
+        const nestSizeMap: Record<string, number> = {
+          'nest80': 80, 'nest100': 100, 'nest120': 120, 'nest140': 140, 'nest160': 160
+        };
+        const nestSize = nestSizeMap[selections.nest.value] || 80;
+        const percentageMap: Record<string, number> = {
+          'light': 0.12, 'medium': 0.16, 'bright': 0.22
+        };
+        const percentage = percentageMap[selections.beleuchtungspaket.value] || 0.12;
+        const beleuchtungsSquareMeters = Math.ceil(nestSize * percentage);
+
+        breakdown.options.beleuchtungspaket = {
+          name: `${selections.beleuchtungspaket.name} (${beleuchtungsSquareMeters}m²)`,
+          price: beleuchtungspaketPrice
+        }
+      }
+
+      if (selections.stirnseite && selections.stirnseite.value !== 'keine_verglasung') {
+        const stirnseitePrice = this.calculateStirnseitePrice(
+          selections.stirnseite,
+          selections.fenster
+        );
+
+        // Calculate area for display
+        const areaMap: Record<string, number> = {
+          'verglasung_oben': 8, 'verglasung_unten': 17, 'vollverglasung': 25
+        };
+        const area = areaMap[selections.stirnseite.value] || 0;
+
+        breakdown.options.stirnseite = {
+          name: `${selections.stirnseite.name} (${area}m²)`,
+          price: stirnseitePrice
         }
       }
 

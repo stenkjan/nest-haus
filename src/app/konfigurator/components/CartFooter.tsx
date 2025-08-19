@@ -12,12 +12,8 @@ interface CartFooterProps {
 
 export default function CartFooter({ onReset }: CartFooterProps) {
   // Use same subscription pattern as SummaryPanel (which works correctly)
-  const {
-    currentPrice,
-    resetConfiguration,
-    configuration,
-    isConfigurationComplete,
-  } = useConfiguratorStore();
+  const { currentPrice, resetConfiguration, configuration } =
+    useConfiguratorStore();
 
   const footerRef = useRef<HTMLDivElement>(null);
 
@@ -47,12 +43,8 @@ export default function CartFooter({ onReset }: CartFooterProps) {
     }
   };
 
-  // Fix hydration error by using client-side only state for completion check
-  const [isComplete, setIsComplete] = useState(false);
-
-  useEffect(() => {
-    setIsComplete(isConfigurationComplete());
-  }, [isConfigurationComplete]);
+  // Always enabled now since we have default selections
+  const isComplete = true;
 
   return (
     <div
@@ -89,10 +81,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
           {/* Cart button */}
           <Link
             href="/warenkorb"
-            className={`bg-[#3D6DE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation ${
-              !isComplete ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            onClick={(e) => !isComplete && e.preventDefault()}
+            className="bg-[#3D6DE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation"
           >
             Jetzt bauen
           </Link>
