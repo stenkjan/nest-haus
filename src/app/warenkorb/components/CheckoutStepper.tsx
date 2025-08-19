@@ -15,6 +15,8 @@ import { HybridBlobImage } from "@/components/images";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import type { ViewType } from "@/app/konfigurator/types/configurator.types";
 import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
+import { IMAGES } from "@/constants/images";
+import { Button } from "@/components/ui";
 
 interface CheckoutStepperProps {
   items: (CartItem | ConfigurationCartItem)[];
@@ -38,7 +40,9 @@ export default function CheckoutStepper({
   hideProgress = false,
 }: CheckoutStepperProps) {
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
-  const isControlled = typeof controlledStepIndex === "number";
+  const isControlled =
+    typeof controlledStepIndex === "number" &&
+    typeof onStepChange === "function";
   const stepIndex = isControlled
     ? (controlledStepIndex as number)
     : internalStepIndex;
@@ -48,21 +52,39 @@ export default function CheckoutStepper({
         ? (updater as (i: number) => number)(stepIndex)
         : updater;
     if (isControlled) {
-      if (onStepChange) {
-        onStepChange(Math.max(0, Math.min(next, steps.length - 1)));
-      }
+      // Controlled: delegate to parent
+      onStepChange!(Math.max(0, Math.min(next, steps.length - 1)));
     } else {
+      // Uncontrolled or missing handler: update internal state
       setInternalStepIndex(Math.max(0, Math.min(next, steps.length - 1)));
     }
   };
-  const { configuration: _configuration, hasPart2BeenActive: _hasPart2BeenActive, hasPart3BeenActive: _hasPart3BeenActive } =
-    useConfiguratorStore();
+  const {
+    configuration: _configuration,
+    hasPart2BeenActive: _hasPart2BeenActive,
+    hasPart3BeenActive: _hasPart3BeenActive,
+  } = useConfiguratorStore();
 
   const configItem = useMemo(() => {
     return items.find((it) => "nest" in it && it.nest) as
       | ConfigurationCartItem
       | undefined;
   }, [items]);
+
+  const [localSelectedPlan, setLocalSelectedPlan] = useState<string | null>(
+    ((): string | null => {
+      const initial = (
+        items.find((it) => "nest" in it && it.nest) as
+          | ConfigurationCartItem
+          | undefined
+      )?.planungspaket?.value;
+      return initial ?? null;
+    })()
+  );
+
+  useEffect(() => {
+    setLocalSelectedPlan(configItem?.planungspaket?.value ?? null);
+  }, [configItem?.planungspaket?.value]);
 
   const steps = CHECKOUT_STEPS;
 
@@ -409,17 +431,18 @@ export default function CheckoutStepper({
     description: string;
   }> = [
     {
-      title: "Dein Nest-Haus ist bereit",
+      title: "Bereit für dein neues Zuhause? ",
       subtitle:
-        "Schnell, individuell, stressfrei – wir bringen dein neues Zuhause zu dir.",
+        "In wenigen Schritten zu deinem neuen Zuhause - ganz ohne Verpflichtungen!",
       description:
-        "Du hast dich für dein Nest-Haus entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
+        "Du hast dich für dein Nest-Haus entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
     },
     {
-      title: "Grundstückscheck",
-      subtitle: "Wir prüfen Machbarkeit, Vorschriften und Anschlüsse.",
+      title: "Vorentwurfsplan & Grundstückscheck",
+      subtitle:
+        "Wo sollen die Fenster & Türen hin? \n Ist mein Grundstück für ein Nest-Haus geeignet?",
       description:
-        "Teile die Daten zu deinem Grundstück – wir prüfen Bebauungsrichtlinien, Abstände, Zufahrt, Versorgungsanschlüsse und rechtliche Rahmenbedingungen. Du erhältst eine klare Einschätzung, ob und wie dein Nest bei dir stehen kann. Der Grundstückscheck ist inkludiert und unverbindlich.",
+        "Gemeinsam mit dir legen wir persönlich die genaue Position deiner Fenster und Türen fest – Schritt für Schritt, damit alles zu deinem Grundriss und Alltag passt.\n\nMit unserem Grundstückscheck-Formular prüfen wir alle relevanten Gegebenheiten wie Bebauungsrichtlinien, Abstände, Zufahrten und Versorgungsanschlüsse, sodass du Planungssicherheit hast.\n\nWichtig: Sollten im Zuge der Prüfung unvorhersehbare Erkenntnisse auftreten, die dein Projekt verhindern oder unzumutbar machen, kannst du vom Kauf zurücktreten – ohne Verpflichtung.",
     },
     {
       title: "Wähle dein Planungspaket",
@@ -449,100 +472,114 @@ export default function CheckoutStepper({
     const planungspaketDone = Boolean(configItem?.planungspaket?.value);
     const terminDone = false; // Integrate with AppointmentBooking state if available
 
+    // Use local selection if available so summary reflects user choice immediately
+    const selectedPlanValue =
+      localSelectedPlan ?? configItem?.planungspaket?.value ?? null;
+    const selectedPlanName = selectedPlanValue
+      ? PLANNING_PACKAGES.find((p) => p.value === selectedPlanValue)?.name ||
+        selectedPlanValue
+      : "—";
+    const isPlanSelected = Boolean(selectedPlanValue);
+
     const rowClass = (rowStep: number) => {
       const isCurrent = stepIndex === rowStep;
       const isDone = stepIndex > rowStep;
       const base =
-        "flex items-center justify-between gap-4 py-3 -mx-4 px-4 border-b border-gray-100";
+        "flex items-center justify-between gap-4 py-3 px-4 border-b border-gray-100";
       if (isCurrent) return `${base} bg-blue-50`;
       if (isDone) return `${base} bg-gray-50`;
       return base;
     };
     return (
-      <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-6">
-        <div className="w-full md:w-1/2">
-          <h2 className="font-medium text-2xl md:text-[32px] tracking-[-0.02em] mb-2 text-left">
+      <div className="flex flex-col gap-6">
+        <div className="w-full">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center pt-4 md:pt-6 pb-2 md:pb-3 whitespace-pre-line">
             {c.title}
           </h2>
-          <h3 className="text-lg md:text-xl font-normal tracking-[-0.015em] leading-7 mb-5 text-left text-gray-900">
-            {c.subtitle}
-          </h3>
-          <p className="text-base md:text-[17px] text-gray-600 leading-7 text-left">
-            {c.description}
-          </p>
+          <div className="border-b border-gray-200 w-full"></div>
         </div>
-        <div className="w-full md:w-1/2">
-          <div className="border border-gray-300 rounded-2xl px-4 py-3 md:min-w-[260px] w-full">
-            <div className="divide-y divide-gray-100">
-              <div className="flex items-center justify-between gap-4 py-3 -mx-4 px-4">
-                <div className="text-sm md:text-base text-gray-800 font-medium">
-                  Dein Nest Haus:
+        <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
+          <div className="w-full md:w-3/5 text-left md:pr-12">
+            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal mb-8 text-left text-gray-900 whitespace-pre-line">
+              {c.subtitle}
+            </h3>
+            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
+              {c.description}
+            </p>
+          </div>
+          <div className="w-full md:w-2/5">
+            <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+              <div className="divide-y divide-gray-100">
+                <div className={rowClass(0)}>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
+                    Dein Nest Haus:
+                  </div>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
+                    {PriceUtils.formatPrice(total)}
+                  </div>
                 </div>
-                <div className="text-base md:text-lg font-semibold text-gray-900">
-                  {PriceUtils.formatPrice(total)}
+                <div className={rowClass(1)}>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
+                    Grundstückscheck:
+                  </div>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
+                    <span className="inline-flex items-center gap-2">
+                      inkludiert
+                      {grundstueckscheckDone && (
+                        <span aria-hidden className="text-green-600">
+                          ✓
+                        </span>
+                      )}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className={rowClass(1)}>
-                <div className="text-sm md:text-base text-gray-800 font-medium">
-                  Grundstückscheck:
+                <div className={rowClass(2)}>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
+                    Planungspaket:
+                  </div>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
+                    <span className="inline-flex items-center gap-2">
+                      {selectedPlanName}
+                      {isPlanSelected && (
+                        <span aria-hidden className="text-green-600">
+                          ✓
+                        </span>
+                      )}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-sm md:text-base font-semibold text-gray-900">
-                  <span className="inline-flex items-center gap-2">
-                    inkludiert
-                    {grundstueckscheckDone && (
-                      <span aria-hidden className="text-green-600">
-                        ✓
-                      </span>
-                    )}
-                  </span>
+                <div className={rowClass(3)}>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
+                    Termin mit dem Nest Team:
+                  </div>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
+                    <span className="inline-flex items-center gap-2">
+                      —
+                      {terminDone && (
+                        <span aria-hidden className="text-green-600">
+                          ✓
+                        </span>
+                      )}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className={rowClass(2)}>
-                <div className="text-sm md:text-base text-gray-800 font-medium">
-                  Planungspaket:
-                </div>
-                <div className="text-sm md:text-base font-semibold text-gray-900">
-                  <span className="inline-flex items-center gap-2">
-                    {configItem?.planungspaket?.name || "—"}
-                    {planungspaketDone && (
-                      <span aria-hidden className="text-green-600">
-                        ✓
-                      </span>
-                    )}
-                  </span>
-                </div>
-              </div>
-              <div className={rowClass(3)}>
-                <div className="text-sm md:text-base text-gray-800 font-medium">
-                  Termin mit dem Nest Team:
-                </div>
-                <div className="text-sm md:text-base font-semibold text-gray-900">
-                  <span className="inline-flex items-center gap-2">
+                <div className="flex items-center justify-between gap-4 py-3 px-4 border-b border-gray-100">
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
+                    Garantierter Liefertermin:
+                  </div>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
                     —
-                    {terminDone && (
-                      <span aria-hidden className="text-green-600">
-                        ✓
-                      </span>
-                    )}
-                  </span>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center justify-between gap-4 py-3 -mx-4 px-4">
-                <div className="text-sm md:text-base text-gray-800 font-medium">
-                  Garantierter Liefertermin:
-                </div>
-                <div className="text-sm md:text-base font-semibold text-gray-900">
-                  —
-                </div>
-              </div>
-            </div>
 
-            <div className="flex items-center justify-between gap-4 border-t border-gray-200 pt-3 mt-3">
-              <div className="text-sm md:text-base text-gray-800 font-medium">
-                Heute zu bezahlen:
-              </div>
-              <div className="text-base md:text-lg font-semibold text-gray-900">
-                {PriceUtils.formatPrice(dueNow)}
+                <div className="flex items-center justify-between gap-4 border-t border-gray-200 pt-3 mt-3 px-4 pb-3">
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
+                    Heute zu bezahlen:
+                  </div>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
+                    {PriceUtils.formatPrice(dueNow)}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -637,7 +674,7 @@ export default function CheckoutStepper({
         {renderStepHeader()}
 
         {stepIndex === 0 && (
-          <div className="space-y-6">
+          <div className="space-y-6 pt-8">
             {/* Overview grid: cart on left, summary/upgrade on right */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
               <div className="space-y-6">
@@ -839,7 +876,32 @@ export default function CheckoutStepper({
         )}
 
         {stepIndex === 1 && (
-          <div className="space-y-4">
+          <div className="space-y-4 pt-8">
+            {/* Vorentwurfsplan section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mb-6">
+              <div className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white">
+                <HybridBlobImage
+                  path={IMAGES.function.nestHausHandDrawing}
+                  alt="Vorentwurfsplan – Handzeichnung Grundriss"
+                  width={1920}
+                  height={1080}
+                  className="w-full h-auto object-contain"
+                  strategy="client"
+                  enableCache={true}
+                  quality={85}
+                />
+              </div>
+              <div className="text-left">
+                <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal mb-8 text-left text-gray-900 whitespace-pre-line">
+                  Vorentwurfsplan
+                </h3>
+                <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
+                  {`Gemeinsam mit dir entwickeln wir den Vorentwurfsplan deines Nest-Hauses: Raumaufteilung, Funktionsbereiche und die optimale Position von Fenstern und Türen. Schritt für Schritt – so, dass es zu deinem Alltag, deinen Blickbeziehungen und deinem Grundstück passt.`}
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 mt-10 mb-6"></div>
             <p className="text-sm text-gray-600">Preis: inkludiert</p>
             <GrundstueckCheckWrapper />
             <div className="flex justify-end">
@@ -858,8 +920,8 @@ export default function CheckoutStepper({
         )}
 
         {stepIndex === 2 && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-4 pt-8">
+            <div className="space-y-6">
               {(pricingCardData as PricingCardData[])
                 .slice(0, 3)
                 .map((card) => {
@@ -868,57 +930,94 @@ export default function CheckoutStepper({
                     : card.title.toLowerCase().includes("plus")
                     ? "plus"
                     : "basis";
-                  const isSelected = configItem?.planungspaket?.value === value;
+                  const isSelected = localSelectedPlan === value;
+                  const isBasis = value === "basis";
                   return (
-                    <button
-                      key={card.id}
-                      type="button"
-                      onClick={() => setPlanningPackage(value)}
-                      className={
-                        "text-left border rounded-3xl p-5 transition-colors " +
-                        (isSelected
-                          ? "border-blue-600 bg-blue-50"
-                          : "border-gray-200 bg-white hover:bg-gray-50")
-                      }
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="pr-3">
-                          <div className="text-lg font-semibold text-gray-900">
-                            {card.title}
-                          </div>
-                          {card.subtitle && (
-                            <div className="text-sm text-gray-700">
-                              {card.subtitle}
+                    <div key={card.id}>
+                      <div
+                        className={
+                          "w-full rounded-3xl overflow-hidden border bg-white " +
+                          (isSelected ? "border-blue-600" : "border-gray-300")
+                        }
+                      >
+                        {/* Top Section */}
+                        <div className="px-6 pt-6 pb-4">
+                          {/* Header Row - Title/Subtitle left, Price right */}
+                          <div className="flex mb-5">
+                            {/* Title/Subtitle - Left Side */}
+                            <div className="flex-1 pr-3">
+                              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-2">
+                                {card.title}
+                              </div>
+                              {card.subtitle && (
+                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal text-gray-700">
+                                  {card.subtitle}
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                        <div className="text-right min-w-[96px]">
-                          <div className="text-base font-bold text-gray-900">
-                            {card.price}
-                          </div>
-                          {card.monthlyPrice && (
-                            <div className="text-xs text-gray-600">
-                              {card.monthlyPrice}
+                            {/* Price - Right Side */}
+                            <div className="w-24 md:w-32 flex flex-col justify-start items-end text-right">
+                              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1 md:mb-2">
+                                {isBasis ? (
+                                  <span className="line-through opacity-60">
+                                    {card.price}
+                                  </span>
+                                ) : (
+                                  card.price
+                                )}
+                              </div>
+                              <div className="text-xs md:text-sm font-medium">
+                                {isBasis ? (
+                                  <span className="text-green-600">
+                                    inkludiert
+                                  </span>
+                                ) : (
+                                  <span className="text-gray-600">
+                                    {card.monthlyPrice || ""}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          )}
+                          </div>
+                          {/* Description */}
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
+                            {card.description}
+                          </div>
                         </div>
+
+                        {/* Extended Description */}
+                        {card.extendedDescription && (
+                          <div className="px-6 pt-2 pb-4">
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
+                              {card.extendedDescription}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="text-sm text-gray-600 whitespace-pre-line">
-                        {card.description}
+
+                      {/* Select Button below the card */}
+                      <div className="pt-3 pb-6 flex justify-center">
+                        <Button
+                          variant="primary"
+                          size="xs"
+                          onClick={() => setLocalSelectedPlan(value)}
+                        >
+                          Paket auswählen
+                        </Button>
                       </div>
-                      {card.extendedDescription && (
-                        <div className="mt-3 text-sm text-gray-700 whitespace-pre-line">
-                          {card.extendedDescription}
-                        </div>
-                      )}
-                    </button>
+                    </div>
                   );
                 })}
             </div>
             <div className="flex justify-end">
               <button
                 type="button"
-                onClick={goNext}
+                onClick={() => {
+                  if (localSelectedPlan) {
+                    setPlanningPackage(localSelectedPlan);
+                  }
+                  goNext();
+                }}
                 className="bg-blue-600 text-white py-2 px-6 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
               >
                 Weiter
@@ -928,7 +1027,7 @@ export default function CheckoutStepper({
         )}
 
         {stepIndex === 3 && (
-          <div className="space-y-4">
+          <div className="space-y-4 pt-8">
             <AppointmentBooking />
             <div className="flex justify-end">
               <button
@@ -943,8 +1042,48 @@ export default function CheckoutStepper({
         )}
 
         {stepIndex === 4 && (
-          <div className="space-y-4">
-            <div className="space-y-2">
+          <div className="space-y-4 pt-8">
+            <div className="border-t border-gray-200 pt-2"></div>
+            <div className="flex items-start justify-between gap-4 py-3">
+              <div className="text-left">
+                <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                  Heute zu bezahlen
+                </div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                  (1. Teilzahlung)
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                  {PriceUtils.formatPrice(3000)}
+                </div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                  (wird vom Gesamtpreis abgezogen)
+                </div>
+              </div>
+            </div>
+            <div className="border-b border-gray-200 pb-2"></div>
+            <div className="border border-gray-300 rounded-[19px] px-6 py-4 bg-white">
+              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-2">
+                Doch anders entschieden?
+              </div>
+              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                Im Hauspreis enthalten. Bei erfolgreichem ersten Termin und
+                Start des Vorentwurfsplans wird dieser Betrag vollständig vom
+                Gesamtpreis abgezogen. Sollte der Vorentwurfsplan ergeben, dass
+                das Projekt nicht möglich oder unzumutbar ist, erstatten wir den
+                Betrag vollständig.
+              </div>
+            </div>
+            <div className="border-b border-gray-200 my-4"></div>
+            {/* Deine Auswahl Title */}
+            <div className="border-t border-gray-200 pt-2"></div>
+            <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+              Deine Auswahl:
+            </div>
+            <div className="border-b border-gray-200 pb-2"></div>
+
+            <div className="space-y-0">
               {configItem ? (
                 <>
                   {Object.entries(configItem)
@@ -970,24 +1109,25 @@ export default function CheckoutStepper({
                       return (
                         <div
                           key={key}
-                          className="flex justify-between border-b border-gray-100 pb-2"
+                          className="flex items-start justify-between gap-4 py-3 px-4 border-b border-gray-100"
                         >
-                          <div className="text-sm text-gray-700 capitalize">
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-2xl font-normal text-gray-700 leading-relaxed capitalize">
                             {key}
                           </div>
-                          <div className="text-sm font-medium">
-                            {selection.name || "—"}
-                            {typeof selection.price === "number" &&
-                              selection.price > 0 && (
-                                <span className="ml-2 text-gray-500">
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-2xl font-bold text-gray-700 leading-relaxed text-right">
+                            <span className="inline-flex items-center gap-2">
+                              {selection.name || "—"}
+                              {typeof selection.price === "number" &&
+                              selection.price > 0 ? (
+                                <span className="text-gray-600 font-normal">
                                   {PriceUtils.formatPrice(selection.price)}
                                 </span>
-                              )}
-                            {selection.price === 0 && (
-                              <span className="ml-2 text-gray-400">
-                                inkludiert
-                              </span>
-                            )}
+                              ) : selection.price === 0 ? (
+                                <span className="text-gray-400 font-normal">
+                                  inkludiert
+                                </span>
+                              ) : null}
+                            </span>
                           </div>
                         </div>
                       );
@@ -999,6 +1139,66 @@ export default function CheckoutStepper({
                 </div>
               )}
             </div>
+
+            {/* Teilzahlungen Title */}
+            <div className="border-t border-gray-200 pt-2"></div>
+            <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+              Teilzahlungen:
+            </div>
+            <div className="border-b border-gray-200 pb-2"></div>
+
+            {/* Instalment Breakdown */}
+            {(() => {
+              const totalPrice = Math.max(0, getCartTotal());
+              const firstPayment = 3000;
+              const secondPayment = Math.max(0, totalPrice * 0.3);
+              const thirdPayment = Math.max(0, totalPrice * 0.5);
+              const fourthPayment = Math.max(
+                0,
+                totalPrice - firstPayment - secondPayment - thirdPayment
+              );
+              return (
+                <div className="border border-gray-300 rounded-[19px] px-6 py-4 mt-4">
+                  <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-2">
+                    Teilzahlungen
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                        1. Teilzahlung (Grundstückscheck)
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
+                        {PriceUtils.formatPrice(firstPayment)}
+                      </div>
+                    </div>
+                    <div className="flex items-start justify-between gap-4 pt-2">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                        2. Teilzahlung (30% vom Gesamtpreis)
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
+                        {PriceUtils.formatPrice(secondPayment)}
+                      </div>
+                    </div>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                        3. Teilzahlung (50% vom Gesamtpreis)
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
+                        {PriceUtils.formatPrice(thirdPayment)}
+                      </div>
+                    </div>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                        4. Teilzahlung (Restbetrag)
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
+                        {PriceUtils.formatPrice(fourthPayment)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
             <div className="flex items-center justify-between mt-4">
               <div className="font-medium">Gesamt</div>

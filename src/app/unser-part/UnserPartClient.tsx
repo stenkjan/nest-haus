@@ -118,9 +118,10 @@ export default function UnserPartClient() {
               <SectionHeader
                 title="Hochpräzise Produktionsmethoden"
                 subtitle="Schaffen beste Qualität zu fairen Preisen."
-                titleSize="large"
-                titleClassName="text-gray-900"
-                subtitleClassName="text-black"
+                titleSize="default"
+                maxWidth={false}
+                titleClassName="text-gray-900 font-bold mb-3 tracking-normal"
+                subtitleClassName="text-black text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal leading-normal mb-0 tracking-normal"
               />
 
               <ButtonGroup

@@ -350,7 +350,7 @@ export default function WarenkorbClient() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50" style={{ paddingTop: "5vh" }}>
+    <div className="min-h-screen bg-white-50" style={{ paddingTop: "5vh" }}>
       <div className="container mx-auto px-4 py-8">
         {items.length > 0 && (
           <div className="max-w-6xl mx-auto mb-6">
