@@ -205,7 +205,6 @@ export default function SummaryPanel({
                           </>
                         ) : !isIncluded && itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from specified sections */}
                             {![
                               "gebaeudehuelle",
                               "innenverkleidung",
@@ -214,7 +213,6 @@ export default function SummaryPanel({
                               "stirnseite",
                             ].includes(key) && (
                               <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                                zzgl.
                               </div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
@@ -251,7 +249,6 @@ export default function SummaryPanel({
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from planungspaket */}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
                             </div>
@@ -294,15 +291,12 @@ export default function SummaryPanel({
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from fenster, pvanlage, and grundstueckscheck */}
-                            {/* zzgl. is not shown for fenster, pvanlage, or grundstueckscheck as required */}
                             {![
                               "fenster",
                               "pvanlage",
                               "grundstueckscheck",
                             ].includes(key) && (
                               <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                                zzgl.
                               </div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
