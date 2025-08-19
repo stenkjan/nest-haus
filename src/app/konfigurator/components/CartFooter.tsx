@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 
 import { PriceUtils } from "../core/PriceUtils";
@@ -44,7 +44,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
   };
 
   // Always enabled now since we have default selections
-  const isComplete = true;
+  const _isComplete = true;
 
   return (
     <div

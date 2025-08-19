@@ -12,7 +12,7 @@ interface PvModuleOverlayProps {
 }
 
 export default function PvModuleOverlay({
-  nestSize,
+  nestSize: _nestSize,
   moduleCount,
   isVisible = true,
   className = "",

@@ -442,7 +442,7 @@ export default function ConfiguratorShell({
         return null;
       }
     },
-    [configuration, configuratorData]
+    [configuration]
   );
 
   const getDisplayPrice = useCallback(
@@ -686,7 +686,7 @@ export default function ConfiguratorShell({
           // Get the current selection for THIS category only
           const currentCategorySelection = configuration?.[
             categoryId as keyof typeof configuration
-          ] as any;
+          ] as ConfigurationItem | undefined;
 
           // Calculate current total with defaults + current category selection
           let currentGebaeudehuelle = baseGebaeudehuelle;

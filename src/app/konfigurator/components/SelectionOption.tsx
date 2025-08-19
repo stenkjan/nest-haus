@@ -37,7 +37,7 @@ export default function SelectionOption({
   onClick,
   onUnselect,
   canUnselect = false,
-  disabled = false,
+  disabled: _disabled = false,
   className = "",
   categoryId,
   nestModel,
