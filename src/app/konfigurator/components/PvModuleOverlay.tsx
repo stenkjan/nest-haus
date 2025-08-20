@@ -113,7 +113,7 @@ export default function PvModuleOverlay({
     >
       {/* PV overlay image - EXACT same styling as main preview image */}
       <HybridBlobImage
-        path={IMAGES.pvModue.pvOverlay}
+        path={IMAGES.pvModule.pvOverlay}
         alt="PV Module Overlay"
         fill
         className="transition-opacity duration-300 object-contain z-10"

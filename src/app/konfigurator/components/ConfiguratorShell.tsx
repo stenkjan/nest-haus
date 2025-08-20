@@ -62,6 +62,8 @@ export default function ConfiguratorShell({
   // Local state for quantities and special selections
   const [pvQuantity, setPvQuantity] = useState<number>(0);
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(false);
+  const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
+    useState<boolean>(false);
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -203,7 +205,7 @@ export default function ConfiguratorShell({
           // After selecting fussboden, scroll to beleuchtungspaket
           scrollToSection("section-beleuchtungspaket");
         } else if (categoryId === "beleuchtungspaket") {
-          // After selecting beleuchtungspaket, scroll to fenster
+          // After selecting belichtungspaket, scroll to fenster
           scrollToSection("section-fenster");
         } else if (categoryId === "fenster") {
           // After selecting fenster, scroll to stirnseite
@@ -390,10 +392,10 @@ export default function ConfiguratorShell({
             configuration.beleuchtungspaket &&
             configuration.nest
           ) {
-            // Calculate total fenster area needed (beleuchtungspaket + stirnseite)
+            // Calculate total fenster area needed (belichtungspaket + stirnseite)
             let totalArea = 0;
 
-            // Add beleuchtungspaket area
+            // Add belichtungspaket area
             const nestSizeMap: Record<string, number> = {
               nest80: 80,
               nest100: 100,
@@ -537,7 +539,7 @@ export default function ConfiguratorShell({
 
             const calculatedPrice =
               PriceCalculator.calculateBeleuchtungspaketPrice(
-                mockBeleuchtungspaket,
+                mockBelichtungspaket,
                 configuration.nest,
                 configuration.fenster || undefined
               );
@@ -1061,6 +1063,30 @@ export default function ConfiguratorShell({
                   </>
                 )}
 
+                {/* Brightness Overlay Visibility Checkbox */}
+                {category.id === "beleuchtungspaket" &&
+                  configuration?.beleuchtungspaket && (
+                    <div className="mt-4 flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="brightness-overlay-visibility"
+                        checked={!isBrightnessOverlayVisible}
+                        onChange={(e) =>
+                          setIsBrightnessOverlayVisible(!e.target.checked)
+                        }
+                        className="w-4 h-4 text-[#3D6DE1] bg-gray-100 border-gray-300 rounded focus:ring-[#3D6DE1] focus:ring-2 accent-[#3D6DE1]"
+                      />
+                      <label
+                        htmlFor="brightness-overlay-visibility"
+                        className="text-sm text-gray-700 cursor-pointer"
+                      >
+                        {isBrightnessOverlayVisible
+                          ? "Belichtung verstecken"
+                          : "Belichtung anzeigen"}
+                      </label>
+                    </div>
+                  )}
+
                 {/* Info Box - Use new responsive cards for specific categories */}
                 {category.infoBox && (
                   <>
@@ -1136,6 +1162,7 @@ export default function ConfiguratorShell({
           <PreviewPanel
             isMobile={true}
             isPvOverlayVisible={isPvOverlayVisible}
+            isBrightnessOverlayVisible={isBrightnessOverlayVisible}
           />
         </div>
 
@@ -1167,6 +1194,7 @@ export default function ConfiguratorShell({
           <PreviewPanel
             isMobile={false}
             isPvOverlayVisible={isPvOverlayVisible}
+            isBrightnessOverlayVisible={isBrightnessOverlayVisible}
           />
         </div>
 

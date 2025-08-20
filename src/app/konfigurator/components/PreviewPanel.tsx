@@ -20,17 +20,20 @@ import { useConfiguratorStore } from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
+import BrightnessOverlay from "./BrightnessOverlay";
 
 interface PreviewPanelProps {
   isMobile?: boolean;
   className?: string;
   isPvOverlayVisible?: boolean;
+  isBrightnessOverlayVisible?: boolean;
 }
 
 export default function PreviewPanel({
   isMobile = false,
   className = "",
   isPvOverlayVisible = true,
+  isBrightnessOverlayVisible = true,
 }: PreviewPanelProps) {
   const {
     configuration,
@@ -260,6 +263,21 @@ export default function PreviewPanel({
                   }
                   moduleCount={configuration.pvanlage.quantity}
                   isVisible={isPvOverlayVisible}
+                  className="opacity-90"
+                />
+              )}
+
+            {/* Brightness Overlay - only show on stirnseite view when belichtungspaket is selected */}
+            {activeView === "stirnseite" &&
+              configuration?.beleuchtungspaket && (
+                <BrightnessOverlay
+                  brightnessLevel={
+                    configuration.beleuchtungspaket.value as
+                      | "light"
+                      | "medium"
+                      | "bright"
+                  }
+                  isVisible={isBrightnessOverlayVisible}
                   className="opacity-90"
                 />
               )}

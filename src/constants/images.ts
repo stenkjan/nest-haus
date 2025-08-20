@@ -38,10 +38,15 @@ export const IMAGES = {
         ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation',
     },
 
-    pvModue : {
+    pvModule: {
         pvOverlay: '179-nest-solar-solarenergie-solarpanel-nachhaltig-sonne-icon-strom-energie',
     },
 
+    brightnessLevel: {
+        light: '66-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-leicht-light',
+        medium: '67-nest-haus-oeffnungen-fenster-tueren-licht-mittel-belichtung-belichtungsgrad-mittel-medium',
+        bright: '68-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-hell-bright'
+    },
     // Function/Process images
     function: {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
