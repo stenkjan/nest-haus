@@ -44,7 +44,7 @@ export const IMAGES = {
 
     brightnessLevel: {
         light: '66-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-leicht-light',
-        medium: '67-nest-haus-oeffnungen-fenster-tueren-licht-mittel-belichtung-belichtungsgrad-mittel-medium',
+        medium: '67-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-mittel-medium',
         bright: '68-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-hell-bright'
     },
     // Function/Process images
