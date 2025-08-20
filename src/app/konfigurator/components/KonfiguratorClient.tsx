@@ -18,13 +18,14 @@ export default function KonfiguratorClient() {
   // Development performance monitoring - runs once on mount
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      // REMOVED: Price cache debugging helper no longer needed after reverting complex pricing logic
+      console.log(
+        "🔧 Configurator Debug Mode: Use window.exportDebugSession() for session export"
+      );
 
-      // Add export function to window
+      // Add export function to window for development debugging
       (
         window as unknown as { exportDebugSession?: () => void }
       ).exportDebugSession = () => {
-        // Get current state at export time
         const currentStore = useConfiguratorStore.getState();
         const sessionData = {
           timestamp: new Date().toISOString(),
@@ -48,8 +49,7 @@ export default function KonfiguratorClient() {
       };
 
       return () => {
-        delete (window as unknown as { showPriceStats?: () => void })
-          .showPriceStats;
+        // Cleanup debug functions on unmount
         delete (window as unknown as { exportDebugSession?: () => void })
           .exportDebugSession;
       };

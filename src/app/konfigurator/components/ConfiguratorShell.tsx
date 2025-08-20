@@ -61,7 +61,7 @@ export default function ConfiguratorShell({
 
   // Local state for quantities and special selections
   const [pvQuantity, setPvQuantity] = useState<number>(0);
-  const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
+  const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(false);
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -222,6 +222,11 @@ export default function ConfiguratorShell({
     (newQuantity: number) => {
       setPvQuantity(newQuantity);
 
+      // Auto-show overlay when PV modules are selected/increased
+      if (newQuantity > 0) {
+        setIsPvOverlayVisible(true);
+      }
+
       if (newQuantity === 0) {
         // Remove PV selection entirely when set to 0
         removeSelection("pvanlage");
@@ -237,7 +242,12 @@ export default function ConfiguratorShell({
         });
       }
     },
-    [configuration?.pvanlage, updateSelection, removeSelection]
+    [
+      configuration?.pvanlage,
+      updateSelection,
+      removeSelection,
+      setIsPvOverlayVisible,
+    ]
   );
 
   // Grundstückscheck logic removed from configurator; now handled in Warenkorb
@@ -1036,7 +1046,7 @@ export default function ConfiguratorShell({
                           onChange={(e) =>
                             setIsPvOverlayVisible(!e.target.checked)
                           }
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                          className="w-4 h-4 text-[#3D6DE1] bg-gray-100 border-gray-300 rounded focus:ring-[#3D6DE1] focus:ring-2 accent-[#3D6DE1]"
                         />
                         <label
                           htmlFor="pv-overlay-visibility"
