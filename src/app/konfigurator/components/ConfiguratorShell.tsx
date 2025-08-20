@@ -15,6 +15,7 @@ import {
   useConfiguratorStore,
   type ConfigurationItem,
 } from "@/store/configuratorStore";
+import type { SelectionOption as SelectionOptionType } from "../types/configurator.types";
 import { ImageManager } from "../core/ImageManager";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { configuratorData } from "../data/configuratorData";
@@ -170,7 +171,7 @@ export default function ConfiguratorShell({
       if (categoryId === "pvanlage") {
         const currentSelection =
           configuration?.[categoryId as keyof typeof configuration];
-        
+
         // If clicking the same option that's already selected
         if (
           currentSelection &&
@@ -186,7 +187,7 @@ export default function ConfiguratorShell({
             return;
           }
         }
-        
+
         // If clicking PV option when quantity is 0, set to 1
         if (pvQuantity === 0) {
           setPvQuantity(1);
@@ -869,9 +870,9 @@ export default function ConfiguratorShell({
           let currentPrice = 0;
           if (categoryId === "belichtungspaket") {
             currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
-              currentSelection,
-              configuration.nest || undefined,
-              configuration.fenster || undefined
+              currentSelection as SelectionOptionType,
+              configuration.nest as SelectionOptionType,
+              configuration.fenster as SelectionOptionType | undefined
             );
           } else if (categoryId === "stirnseite") {
             currentPrice = PriceCalculator.calculateStirnseitePrice(
@@ -891,9 +892,9 @@ export default function ConfiguratorShell({
               description: option.description || "",
             };
             optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
-              mockOption,
-              configuration.nest || undefined,
-              configuration.fenster || undefined
+              mockOption as SelectionOptionType,
+              configuration.nest as SelectionOptionType,
+              configuration.fenster as SelectionOptionType | undefined
             );
           } else if (categoryId === "stirnseite") {
             const mockOption = {
