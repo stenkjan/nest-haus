@@ -47,7 +47,36 @@ export default function SelectionOption({
     if (!price) return null;
 
     if (price.type === "selected") {
-      // Selected option shows contribution price (smaller and greyer)
+      // For nest modules, show the same format as non-selected
+      if (
+        categoryId === "nest" &&
+        contributionPrice !== null &&
+        contributionPrice !== undefined
+      ) {
+        const formattedPrice = PriceUtils.formatPrice(contributionPrice);
+        const shouldShowPricePerSqm =
+          PriceUtils.shouldShowPricePerSquareMeter(categoryId);
+
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              Ab {formattedPrice}
+            </p>
+            {shouldShowPricePerSqm && nestModel && contributionPrice && (
+              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+                {PriceUtils.calculateOptionPricePerSquareMeter(
+                  contributionPrice,
+                  nestModel,
+                  categoryId,
+                  id
+                )}
+              </p>
+            )}
+          </div>
+        );
+      }
+
+      // For other categories, show contribution price (smaller and greyer)
       if (contributionPrice !== null && contributionPrice !== undefined) {
         return (
           <p className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-500 tracking-wide leading-[1.2]">
