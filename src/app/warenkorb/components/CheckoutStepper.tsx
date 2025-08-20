@@ -464,6 +464,20 @@ export default function CheckoutStepper({
     },
   ];
 
+  // Helper: parse euro-formatted strings like "€10.900" into integer euros (10900)
+  const parseEuro = (s: string): number => {
+    const digitsOnly = s.replace(/[^\d]/g, "");
+    return digitsOnly ? parseInt(digitsOnly, 10) : 0;
+  };
+
+  // Basis price from displayed pricing cards to compute deltas consistently
+  const basisDisplayPrice = useMemo(() => {
+    const basisCard = (pricingCardData as PricingCardData[]).find((c) =>
+      c.title.toLowerCase().includes("basis")
+    );
+    return parseEuro(basisCard?.price || "€0");
+  }, []);
+
   const renderIntro = () => {
     const c = copyByStep[stepIndex];
     const total = getCartTotal();
@@ -493,9 +507,26 @@ export default function CheckoutStepper({
     return (
       <div className="flex flex-col gap-6">
         <div className="w-full">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center pt-4 md:pt-6 pb-2 md:pb-3 whitespace-pre-line">
-            {c.title}
-          </h2>
+          {stepIndex === 4 ? (
+            <div className="pt-4 md:pt-6 pb-2 md:pb-3">
+              <div className="flex items-start justify-between gap-4">
+                <div className="text-left">
+                  <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                    Garantierter Liefertermin
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                    {deliveryDateString}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center pt-4 md:pt-6 pb-2 md:pb-3 whitespace-pre-line">
+              {c.title}
+            </h2>
+          )}
           <div className="border-b border-gray-200 w-full"></div>
         </div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
@@ -524,7 +555,7 @@ export default function CheckoutStepper({
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
                     <span className="inline-flex items-center gap-2">
-                      inkludiert
+                      {PriceUtils.formatPrice(3000)}
                       {grundstueckscheckDone && (
                         <span aria-hidden className="text-green-600">
                           ✓
@@ -616,6 +647,18 @@ export default function CheckoutStepper({
     </div>
   );
 
+  // Compute guaranteed delivery date (6 months from now)
+  const deliveryDateString = useMemo(() => {
+    const date = new Date();
+    const currentMonth = date.getMonth();
+    date.setMonth(currentMonth + 6);
+    return date.toLocaleDateString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  }, []);
+
   // Decide which configuration to use for images: prefer the cart's config item
   const sourceConfig = useMemo(() => {
     return (configItem as ConfigurationCartItem | undefined) || undefined;
@@ -665,6 +708,8 @@ export default function CheckoutStepper({
   useEffect(() => {
     ImageManager.preloadImages(sourceConfig || null);
   }, [sourceConfig]);
+
+  // No extra memoization for summary; rely on lightweight renderer
 
   return (
     <div className="border border-gray-300 rounded-[19px] px-6 py-6">
@@ -932,6 +977,11 @@ export default function CheckoutStepper({
                       : "basis";
                   const isSelected = localSelectedPlan === value;
                   const isBasis = value === "basis";
+                  const cardPriceNumber = parseEuro(card.price);
+                  const deltaPrice = Math.max(
+                    0,
+                    cardPriceNumber - basisDisplayPrice
+                  );
                   return (
                     <div key={card.id}>
                       <div
@@ -959,23 +1009,15 @@ export default function CheckoutStepper({
                             <div className="w-24 md:w-32 flex flex-col justify-start items-end text-right">
                               <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1 md:mb-2">
                                 {isBasis ? (
-                                  <span className="line-through opacity-60">
-                                    {card.price}
-                                  </span>
-                                ) : (
-                                  card.price
-                                )}
-                              </div>
-                              <div className="text-xs md:text-sm font-medium">
-                                {isBasis ? (
                                   <span className="text-green-600">
                                     inkludiert
                                   </span>
                                 ) : (
-                                  <span className="text-gray-600">
-                                    {card.monthlyPrice || ""}
-                                  </span>
+                                  PriceUtils.formatPrice(deltaPrice)
                                 )}
+                              </div>
+                              <div className="text-xs md:text-sm font-medium text-gray-600 line-through opacity-60">
+                                {card.price}
                               </div>
                             </div>
                           </div>
@@ -1029,7 +1071,7 @@ export default function CheckoutStepper({
         {stepIndex === 3 && (
           <div className="space-y-4 pt-8">
             <AppointmentBooking />
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-6">
               <button
                 type="button"
                 onClick={goNext}
@@ -1044,38 +1086,7 @@ export default function CheckoutStepper({
         {stepIndex === 4 && (
           <div className="space-y-4 pt-8">
             <div className="border-t border-gray-200 pt-2"></div>
-            <div className="flex items-start justify-between gap-4 py-3">
-              <div className="text-left">
-                <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
-                  Heute zu bezahlen
-                </div>
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                  (1. Teilzahlung)
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
-                  {PriceUtils.formatPrice(3000)}
-                </div>
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                  (wird vom Gesamtpreis abgezogen)
-                </div>
-              </div>
-            </div>
-            <div className="border-b border-gray-200 pb-2"></div>
-            <div className="border border-gray-300 rounded-[19px] px-6 py-4 bg-white">
-              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-2">
-                Doch anders entschieden?
-              </div>
-              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                Im Hauspreis enthalten. Bei erfolgreichem ersten Termin und
-                Start des Vorentwurfsplans wird dieser Betrag vollständig vom
-                Gesamtpreis abgezogen. Sollte der Vorentwurfsplan ergeben, dass
-                das Projekt nicht möglich oder unzumutbar ist, erstatten wir den
-                Betrag vollständig.
-              </div>
-            </div>
-            <div className="border-b border-gray-200 my-4"></div>
+            {/* Title row replaced above - keep spacing consistent */}
             {/* Deine Auswahl Title */}
             <div className="border-t border-gray-200 pt-2"></div>
             <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
@@ -1083,55 +1094,251 @@ export default function CheckoutStepper({
             </div>
             <div className="border-b border-gray-200 pb-2"></div>
 
-            <div className="space-y-0">
+            <div className="space-y-4">
               {configItem ? (
                 <>
-                  {Object.entries(configItem)
-                    .filter(
-                      ([key, value]) =>
-                        value &&
-                        ![
-                          "sessionId",
-                          "totalPrice",
-                          "timestamp",
-                          "id",
-                          "addedAt",
-                          "isFromConfigurator",
-                        ].includes(key)
-                    )
-                    .map(([key, value]) => {
-                      const selection = value as {
-                        name?: string;
-                        price?: number;
-                      };
-                      if (!selection || typeof selection !== "object")
-                        return null;
+                  {(() => {
+                    const details = renderConfigurationDetails(configItem);
+                    const topAndMiddleItems = details.filter(
+                      (d) => !d.isBottomItem
+                    );
+                    const bottomItems = details.filter((d) => d.isBottomItem);
+
+                    const renderDetailItem = (
+                      detail: {
+                        label: string;
+                        value: string;
+                        price: number;
+                        isIncluded: boolean;
+                        category: string;
+                        isBottomItem?: boolean;
+                        selectionValue?: string;
+                      },
+                      idx: number
+                    ) => {
+                      if (!detail.value || detail.value === "—") return null;
                       return (
                         <div
-                          key={key}
-                          className="flex items-start justify-between gap-4 py-3 px-4 border-b border-gray-100"
+                          key={detail.category + "-" + idx}
+                          className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4"
                         >
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-2xl font-normal text-gray-700 leading-relaxed capitalize">
-                            {key}
+                          <div className="flex-1 min-w-0 max-w-[50%]">
+                            <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                              {detail.value}
+                            </div>
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                              {detail.label}
+                            </div>
                           </div>
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-2xl font-bold text-gray-700 leading-relaxed text-right">
-                            <span className="inline-flex items-center gap-2">
-                              {selection.name || "—"}
-                              {typeof selection.price === "number" &&
-                              selection.price > 0 ? (
-                                <span className="text-gray-600 font-normal">
-                                  {PriceUtils.formatPrice(selection.price)}
-                                </span>
-                              ) : selection.price === 0 ? (
-                                <span className="text-gray-400 font-normal">
-                                  inkludiert
-                                </span>
-                              ) : null}
-                            </span>
+                          <div className="flex-1 text-right max-w-[50%] min-w-0">
+                            {detail.isIncluded ||
+                            (detail.price && detail.price === 0) ? (
+                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600">
+                                inkludiert
+                              </div>
+                            ) : (
+                              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
+                                {PriceUtils.formatPrice(detail.price || 0)}
+                              </div>
+                            )}
                           </div>
                         </div>
                       );
-                    })}
+                    };
+
+                    return (
+                      <>
+                        {topAndMiddleItems.length > 0 && (
+                          <div className="border border-gray-300 rounded-[19px] px-6 py-4 bg-white">
+                            {topAndMiddleItems.map(renderDetailItem)}
+                          </div>
+                        )}
+                        <div className="border border-gray-300 rounded-[19px] px-6 py-4 bg-white">
+                          {/* Grundstückscheck row */}
+                          {configItem?.grundstueckscheck && (
+                            <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
+                              <div className="flex-1 min-w-0 max-w-[50%]">
+                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                                  {configItem.grundstueckscheck.name}
+                                </div>
+                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                                  Grundstückscheck
+                                </div>
+                              </div>
+                              <div className="flex-1 text-right max-w-[50%] min-w-0">
+                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
+                                  {PriceUtils.formatPrice(3000)}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          {/* Planungspaket row - show if exists in cart OR if locally selected */}
+                          {(configItem?.planungspaket || localSelectedPlan) && (
+                            <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
+                              <div className="flex-1 min-w-0 max-w-[50%]">
+                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                                  {(() => {
+                                    // Get name from cart item first
+                                    if (configItem?.planungspaket?.name) {
+                                      return configItem.planungspaket.name;
+                                    }
+                                    // Otherwise get from pricing cards based on localSelectedPlan
+                                    if (localSelectedPlan) {
+                                      const pricingCard = (
+                                        pricingCardData as PricingCardData[]
+                                      ).find((card) => {
+                                        const cardValue = card.title
+                                          .toLowerCase()
+                                          .includes("pro")
+                                          ? "pro"
+                                          : card.title
+                                              .toLowerCase()
+                                              .includes("plus")
+                                          ? "plus"
+                                          : "basis";
+                                        return cardValue === localSelectedPlan;
+                                      });
+                                      return (
+                                        pricingCard?.title || localSelectedPlan
+                                      );
+                                    }
+                                    return "—";
+                                  })()}
+                                </div>
+                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                                  Planungspaket
+                                </div>
+                              </div>
+                              <div className="flex-1 text-right max-w-[50%] min-w-0">
+                                {(() => {
+                                  // Get pricing info from cart item first
+                                  if (
+                                    configItem?.planungspaket?.price !==
+                                    undefined
+                                  ) {
+                                    // For cart items, we might not have the full pricing card info
+                                    // So we'll try to find the matching pricing card for display consistency
+                                    const matchingCard = (
+                                      pricingCardData as PricingCardData[]
+                                    ).find(
+                                      (card) =>
+                                        card.title ===
+                                        configItem.planungspaket?.name
+                                    );
+                                    if (matchingCard) {
+                                      const isBasis = matchingCard.title
+                                        .toLowerCase()
+                                        .includes("basis");
+                                      const fullPrice = parseEuro(
+                                        matchingCard.price
+                                      );
+                                      const deltaPrice = Math.max(
+                                        0,
+                                        fullPrice - basisDisplayPrice
+                                      );
+
+                                      return (
+                                        <div className="flex flex-col items-end">
+                                          <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1">
+                                            {isBasis ? (
+                                              <span className="text-green-600">
+                                                inkludiert
+                                              </span>
+                                            ) : (
+                                              PriceUtils.formatPrice(deltaPrice)
+                                            )}
+                                          </div>
+                                          <div className="text-xs md:text-sm font-medium text-gray-600 line-through opacity-60">
+                                            {matchingCard.price}
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                    // Fallback if no matching card found
+                                    return (
+                                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
+                                        {PriceUtils.formatPrice(
+                                          configItem.planungspaket.price
+                                        )}
+                                      </div>
+                                    );
+                                  }
+
+                                  // Otherwise get from pricing cards based on localSelectedPlan
+                                  if (localSelectedPlan) {
+                                    const pricingCard = (
+                                      pricingCardData as PricingCardData[]
+                                    ).find((card) => {
+                                      const cardValue = card.title
+                                        .toLowerCase()
+                                        .includes("pro")
+                                        ? "pro"
+                                        : card.title
+                                            .toLowerCase()
+                                            .includes("plus")
+                                        ? "plus"
+                                        : "basis";
+                                      return cardValue === localSelectedPlan;
+                                    });
+                                    if (pricingCard) {
+                                      const isBasis =
+                                        localSelectedPlan === "basis";
+                                      const fullPrice = parseEuro(
+                                        pricingCard.price
+                                      );
+                                      const deltaPrice = Math.max(
+                                        0,
+                                        fullPrice - basisDisplayPrice
+                                      );
+
+                                      return (
+                                        <div className="flex flex-col items-end">
+                                          <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1">
+                                            {isBasis ? (
+                                              <span className="text-green-600">
+                                                inkludiert
+                                              </span>
+                                            ) : (
+                                              PriceUtils.formatPrice(deltaPrice)
+                                            )}
+                                          </div>
+                                          <div className="text-xs md:text-sm font-medium text-gray-600 line-through opacity-60">
+                                            {pricingCard.price}
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                  }
+
+                                  return (
+                                    <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
+                                      —
+                                    </div>
+                                  );
+                                })()}
+                              </div>
+                            </div>
+                          )}
+                          {/* Termin mit dem Nest Team row */}
+                          <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
+                            <div className="flex-1 min-w-0 max-w-[50%]">
+                              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                                —
+                              </div>
+                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                                Termin mit dem Nest Team
+                              </div>
+                            </div>
+                            <div className="flex-1 text-right max-w-[50%] min-w-0">
+                              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
+                                —
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </>
               ) : (
                 <div className="text-sm text-gray-600">
@@ -1151,47 +1358,89 @@ export default function CheckoutStepper({
             {(() => {
               const totalPrice = Math.max(0, getCartTotal());
               const firstPayment = 3000;
-              const secondPayment = Math.max(0, totalPrice * 0.3);
+              const grundstueckscheckCredit = 3000;
+              const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
+              const secondPayment = Math.max(
+                0,
+                secondPaymentOriginal - grundstueckscheckCredit
+              );
               const thirdPayment = Math.max(0, totalPrice * 0.5);
               const fourthPayment = Math.max(
                 0,
-                totalPrice - firstPayment - secondPayment - thirdPayment
+                totalPrice - firstPayment - secondPaymentOriginal - thirdPayment
               );
               return (
-                <div className="border border-gray-300 rounded-[19px] px-6 py-4 mt-4">
-                  <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-2">
-                    Teilzahlungen
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                        1. Teilzahlung (Grundstückscheck)
+                <div className="border border-gray-300 rounded-[19px] px-6 py-4 bg-white">
+                  <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
+                    <div className="flex-1 min-w-0 max-w-[50%]">
+                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                        1. Teilzahlung
                       </div>
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                        Grundstückscheck <br /> Kosten werden bei negativem
+                        Erstgespräch rückerstattet
+                      </div>
+                    </div>
+                    <div className="flex-1 text-right max-w-[50%] min-w-0">
+                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
                         {PriceUtils.formatPrice(firstPayment)}
                       </div>
                     </div>
-                    <div className="flex items-start justify-between gap-4 pt-2">
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                        2. Teilzahlung (30% vom Gesamtpreis)
+                  </div>
+                  <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
+                    <div className="flex-1 min-w-0 max-w-[50%]">
+                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                        2. Teilzahlung
                       </div>
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
-                        {PriceUtils.formatPrice(secondPayment)}
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                        30% vom Gesamtpreis <br /> abzüglich Grundstückscheck:{" "}
+                        {PriceUtils.formatPrice(grundstueckscheckCredit)} <br />
+                        Planungspaket:
+                        <ul className="list-disc list-inside mt-2 text-sm md:text-base lg:text-lg 2xl:text-xl">
+                          <li>Einreichplanung des Gesamtprojekts</li>
+                          <li>Fachberatung und Baubegleitung</li>
+                          <li>Bürokratische Unterstützung</li>
+                        </ul>
                       </div>
                     </div>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                        3. Teilzahlung (50% vom Gesamtpreis)
+                    <div className="flex-1 text-right max-w-[50%] min-w-0">
+                      <div className="flex flex-col items-end">
+                        <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1">
+                          {PriceUtils.formatPrice(secondPayment)}
+                        </div>
+                        <div className="text-xs md:text-sm font-medium text-gray-600 line-through opacity-60">
+                          {PriceUtils.formatPrice(secondPaymentOriginal)}
+                        </div>
                       </div>
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
+                    <div className="flex-1 min-w-0 max-w-[50%]">
+                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                        3. Teilzahlung
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                        50% vom Gesamtpreis <br /> Fällig nach fertigstellung in
+                        der Produktion
+                      </div>
+                    </div>
+                    <div className="flex-1 text-right max-w-[50%] min-w-0">
+                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
                         {PriceUtils.formatPrice(thirdPayment)}
                       </div>
                     </div>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                        4. Teilzahlung (Restbetrag)
+                  </div>
+                  <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
+                    <div className="flex-1 min-w-0 max-w-[50%]">
+                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                        4. Teilzahlung
                       </div>
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-900">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
+                        Restbetrag <br /> Fällig nach Errichtung am Grundstück
+                      </div>
+                    </div>
+                    <div className="flex-1 text-right max-w-[50%] min-w-0">
+                      <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
                         {PriceUtils.formatPrice(fourthPayment)}
                       </div>
                     </div>
@@ -1200,28 +1449,65 @@ export default function CheckoutStepper({
               );
             })()}
 
-            <div className="flex items-center justify-between mt-4">
-              <div className="font-medium">Gesamt</div>
-              <div className="font-semibold">
-                {PriceUtils.formatPrice(getCartTotal())}
+            <div className="border border-gray-300 rounded-[19px] px-6 py-4 bg-blue-50 mt-4">
+              <div className="flex justify-between items-start gap-4">
+                <div className="flex-1 min-w-0 max-w-[50%]">
+                  <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                    Gesamtpreis
+                  </div>
+                </div>
+                <div className="flex-1 text-right max-w-[50%] min-w-0">
+                  <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 underline">
+                    {PriceUtils.formatPrice(getCartTotal())}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-end mt-4">
+            {/* Moved: Heute zu bezahlen section at the end */}
+            <div className="border-t border-gray-200 pt-2"></div>
+            <div className="flex items-start justify-between gap-4 py-3">
+              <div className="text-left">
+                <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                  Heute zu bezahlen
+                </div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed"></div>
+              </div>
+              <div className="text-right">
+                <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                  {PriceUtils.formatPrice(3000)}
+                </div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed"></div>
+              </div>
+            </div>
+            <div className="border-b border-gray-200 pb-2"></div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
               <button
                 type="button"
-                onClick={goPrev}
-                className="px-6 py-2 rounded-full border border-gray-300 text-[clamp(14px,3vw,16px)]"
+                className="bg-black text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-gray-800 transition-colors"
               >
-                Zurück
+                Mit Apple Pay bezahlen
               </button>
               <button
                 type="button"
                 onClick={onScrollToContact}
-                className="bg-blue-600 text-white py-2 px-6 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
               >
-                Jetzt bauen
+                Zur Kassa
               </button>
+            </div>
+
+            <div className="border border-gray-300 rounded-[19px] px-6 py-4 bg-white mt-6">
+              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-2">
+                Doch anders entschieden?
+              </div>
+              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                Im Hauspreis enthalten. Bei erfolgreichem ersten Termin und
+                Start des Vorentwurfsplans wird dieser Betrag vollständig vom
+                Gesamtpreis abgezogen. Sollte der Vorentwurfsplan ergeben, dass
+                das Projekt nicht möglich oder unzumutbar ist, erstatten wir den
+                Betrag vollständig.
+              </div>
             </div>
           </div>
         )}
