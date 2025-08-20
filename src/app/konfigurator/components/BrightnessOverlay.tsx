@@ -34,13 +34,11 @@ export default function BrightnessOverlay({
     }
   };
 
-  const imagePath = getImagePath();
-
   return (
     <div className={`absolute inset-0 pointer-events-none ${className}`}>
       {/* Brightness overlay image - EXACT same styling as main preview image */}
       <HybridBlobImage
-        path={imagePath}
+        path={getImagePath()}
         alt={`Belichtung ${brightnessLevel} Overlay`}
         fill
         className="transition-opacity duration-300 object-contain z-10"
