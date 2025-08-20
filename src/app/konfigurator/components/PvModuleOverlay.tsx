@@ -43,20 +43,20 @@ export default function PvModuleOverlay({
       // Typical house image aspect ratio (adjust if needed)
       const imageAspectRatio = 16 / 9; // or 4/3, depending on your images
 
-      let renderedWidth, renderedHeight, imageTop, imageLeft;
+      let renderedWidth, renderedHeight, imageTop, _imageLeft;
 
       if (containerAspectRatio > imageAspectRatio) {
         // Container is wider than image - image is constrained by height
         renderedHeight = containerHeight;
         renderedWidth = renderedHeight * imageAspectRatio;
         imageTop = 0;
-        imageLeft = (containerWidth - renderedWidth) / 2;
+        _imageLeft = (containerWidth - renderedWidth) / 2;
       } else {
         // Container is taller than image - image is constrained by width
         renderedWidth = containerWidth;
         renderedHeight = renderedWidth / imageAspectRatio;
         imageTop = (containerHeight - renderedHeight) / 2;
-        imageLeft = 0;
+        _imageLeft = 0;
       }
 
       // Calculate scale factor for responsive text sizing

@@ -539,7 +539,7 @@ export default function ConfiguratorShell({
 
             const calculatedPrice =
               PriceCalculator.calculateBeleuchtungspaketPrice(
-                mockBelichtungspaket,
+                mockBeleuchtungspaket,
                 configuration.nest,
                 configuration.fenster || undefined
               );

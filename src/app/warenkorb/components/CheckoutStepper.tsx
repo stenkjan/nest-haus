@@ -1102,7 +1102,7 @@ export default function CheckoutStepper({
                     const topAndMiddleItems = details.filter(
                       (d) => !d.isBottomItem
                     );
-                    const bottomItems = details.filter((d) => d.isBottomItem);
+                    const _bottomItems = details.filter((d) => d.isBottomItem);
 
                     const renderDetailItem = (
                       detail: {
