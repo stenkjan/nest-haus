@@ -41,7 +41,7 @@ export default function SummaryPanel({
 
   // REMOVED: getDynamicPrice variable no longer needed after reverting complex pricing logic
 
-  // Enhanced item price calculation with dynamic pricing for beleuchtungspaket and stirnseite
+  // Enhanced item price calculation with dynamic pricing for belichtungspaket and stirnseite
   const getItemPrice = (key: string, selection: ConfigurationItem): number => {
     // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
@@ -51,8 +51,8 @@ export default function SummaryPanel({
       return (selection.squareMeters || 1) * (selection.price || 0);
     }
 
-    // For beleuchtungspaket, calculate dynamic price
-    if (key === "beleuchtungspaket" && configuration?.nest) {
+    // For belichtungspaket, calculate dynamic price
+    if (key === "belichtungspaket" && configuration?.nest) {
       try {
         const selectionOption = {
           category: key,
@@ -60,14 +60,14 @@ export default function SummaryPanel({
           name: selection.name,
           price: selection.price || 0,
         };
-        return PriceCalculator.calculateBeleuchtungspaketPrice(
+        return PriceCalculator.calculateBelichtungspaketPrice(
           selectionOption,
           configuration.nest,
           configuration.fenster || undefined
         );
       } catch (error) {
         console.error(
-          "Error calculating beleuchtungspaket price in summary:",
+          "Error calculating belichtungspaket price in summary:",
           error
         );
         return selection.price || 0;
@@ -151,14 +151,14 @@ export default function SummaryPanel({
             {/* Show all configuration items individually, including preselected ones */}
             {(() => {
               // Filter and sort configuration entries
-              // Exclude fenster from cart display since its price is incorporated into beleuchtungspaket and stirnseite
+              // Exclude fenster from cart display since its price is incorporated into belichtungspaket and stirnseite
               const configEntries = Object.entries(configuration).filter(
                 ([key, selection]) =>
                   selection &&
                   key !== "sessionId" &&
                   key !== "totalPrice" &&
                   key !== "timestamp" &&
-                  key !== "fenster" // Fenster price is included in beleuchtungspaket/stirnseite calculations
+                  key !== "fenster" // Fenster price is included in belichtungspaket/stirnseite calculations
               );
 
               const { topItems, middleItems, bottomItems } =
@@ -209,11 +209,10 @@ export default function SummaryPanel({
                               "gebaeudehuelle",
                               "innenverkleidung",
                               "fussboden",
-                              "beleuchtungspaket",
+                              "belichtungspaket",
                               "stirnseite",
                             ].includes(key) && (
-                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                              </div>
+                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
@@ -296,8 +295,7 @@ export default function SummaryPanel({
                               "pvanlage",
                               "grundstueckscheck",
                             ].includes(key) && (
-                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                              </div>
+                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}

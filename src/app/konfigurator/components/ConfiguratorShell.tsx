@@ -63,7 +63,7 @@ export default function ConfiguratorShell({
   const [pvQuantity, setPvQuantity] = useState<number>(0);
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(false);
   const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
-    useState<boolean>(false);
+    useState<boolean>(false); // Initially hidden even with light preselected
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -166,18 +166,33 @@ export default function ConfiguratorShell({
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
 
-      // Only allow unselection for PV-Anlage by clicking the same option
+      // Special handling for PV-Anlage selection
       if (categoryId === "pvanlage") {
         const currentSelection =
           configuration?.[categoryId as keyof typeof configuration];
+        
+        // If clicking the same option that's already selected
         if (
           currentSelection &&
           typeof currentSelection === "object" &&
           "value" in currentSelection &&
           currentSelection.value === optionId
         ) {
-          removeSelection(categoryId);
-          return;
+          // If quantity is > 0, unselect (set to 0)
+          if (pvQuantity > 0) {
+            setPvQuantity(0);
+            removeSelection(categoryId);
+            setIsPvOverlayVisible(false);
+            return;
+          }
+        }
+        
+        // If clicking PV option when quantity is 0, set to 1
+        if (pvQuantity === 0) {
+          setPvQuantity(1);
+          setIsPvOverlayVisible(true);
+          // Hide brightness overlay when PV overlay is shown (mutual exclusivity)
+          setIsBrightnessOverlayVisible(false);
         }
       }
 
@@ -189,6 +204,13 @@ export default function ConfiguratorShell({
           price: option.price.amount || 0,
           description: option.description,
         });
+
+        // Auto-show brightness overlay when belichtungspaket is selected
+        if (categoryId === "belichtungspaket") {
+          setIsBrightnessOverlayVisible(true);
+          // Hide PV overlay when brightness overlay is shown (mutual exclusivity)
+          setIsPvOverlayVisible(false);
+        }
 
         // Auto-scroll to next section after selection - Commented out
         /*
@@ -202,9 +224,9 @@ export default function ConfiguratorShell({
           // After selecting innenverkleidung, scroll to fussboden
           scrollToSection("section-fussboden");
         } else if (categoryId === "fussboden") {
-          // After selecting fussboden, scroll to beleuchtungspaket
-          scrollToSection("section-beleuchtungspaket");
-        } else if (categoryId === "beleuchtungspaket") {
+          // After selecting fussboden, scroll to belichtungspaket
+          scrollToSection("section-belichtungspaket");
+        } else if (categoryId === "belichtungspaket") {
           // After selecting belichtungspaket, scroll to fenster
           scrollToSection("section-fenster");
         } else if (categoryId === "fenster") {
@@ -217,7 +239,14 @@ export default function ConfiguratorShell({
         */
       }
     },
-    [updateSelection, removeSelection, configuration]
+    [
+      updateSelection,
+      removeSelection,
+      configuration,
+      setIsBrightnessOverlayVisible,
+      pvQuantity,
+      setIsPvOverlayVisible,
+    ]
   );
 
   const handlePvQuantityChange = useCallback(
@@ -227,6 +256,8 @@ export default function ConfiguratorShell({
       // Auto-show overlay when PV modules are selected/increased
       if (newQuantity > 0) {
         setIsPvOverlayVisible(true);
+        // Hide brightness overlay when PV overlay is shown (mutual exclusivity)
+        setIsBrightnessOverlayVisible(false);
       }
 
       if (newQuantity === 0) {
@@ -315,15 +346,15 @@ export default function ConfiguratorShell({
       if (!configuration?.nest) return null;
 
       try {
-        // For beleuchtungspaket, calculate actual price
-        if (categoryId === "beleuchtungspaket") {
+        // For belichtungspaket, calculate actual price
+        if (categoryId === "belichtungspaket") {
           const selectionOption = {
             category: categoryId,
             value: optionId,
             name: "", // Not needed for calculation
             price: 0, // Not needed for calculation
           };
-          return PriceCalculator.calculateBeleuchtungspaketPrice(
+          return PriceCalculator.calculateBelichtungspaketPrice(
             selectionOption,
             configuration.nest,
             configuration.fenster || undefined
@@ -389,7 +420,7 @@ export default function ConfiguratorShell({
 
           if (
             option?.price?.amount &&
-            configuration.beleuchtungspaket &&
+            configuration.belichtungspaket &&
             configuration.nest
           ) {
             // Calculate total fenster area needed (belichtungspaket + stirnseite)
@@ -410,7 +441,7 @@ export default function ConfiguratorShell({
               bright: 0.22,
             };
             const percentage =
-              percentageMap[configuration.beleuchtungspaket.value] || 0.12;
+              percentageMap[configuration.belichtungspaket.value] || 0.12;
             totalArea += Math.ceil(nestSize * percentage);
 
             // Add stirnseite area if selected
@@ -502,13 +533,13 @@ export default function ConfiguratorShell({
         return originalPrice;
       }
 
-      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, beleuchtungspaket, fenster, stirnseite)
+      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, stirnseite)
       if (
         [
           "gebaeudehuelle",
           "innenverkleidung",
           "fussboden",
-          "beleuchtungspaket",
+          "belichtungspaket",
           "fenster",
           "stirnseite",
         ].includes(categoryId)
@@ -527,10 +558,10 @@ export default function ConfiguratorShell({
         if (!currentSelection) {
           const originalPrice = option.price;
 
-          // Special pricing for beleuchtungspaket - calculate based on nest size and fenster material
-          if (categoryId === "beleuchtungspaket" && configuration?.nest) {
+          // Special pricing for belichtungspaket - calculate based on nest size and fenster material
+          if (categoryId === "belichtungspaket" && configuration?.nest) {
             const mockBeleuchtungspaket = {
-              category: "beleuchtungspaket",
+              category: "belichtungspaket",
               value: optionId,
               name: option.name,
               price: option.price.amount || 0,
@@ -538,7 +569,7 @@ export default function ConfiguratorShell({
             };
 
             const calculatedPrice =
-              PriceCalculator.calculateBeleuchtungspaketPrice(
+              PriceCalculator.calculateBelichtungspaketPrice(
                 mockBeleuchtungspaket,
                 configuration.nest,
                 configuration.fenster || undefined
@@ -673,33 +704,6 @@ export default function ConfiguratorShell({
             // Keep other types as is (included, standard, base)
             return originalPrice;
           }
-        }
-
-        // Special pricing for stirnseite - calculate based on fenster material
-        if (categoryId === "stirnseite") {
-          const mockStirnseite = {
-            category: "stirnseite",
-            value: optionId,
-            name: option.name,
-            price: option.price.amount || 0,
-            description: option.description || "",
-          };
-
-          const calculatedPrice = PriceCalculator.calculateStirnseitePrice(
-            mockStirnseite,
-            configuration?.fenster || undefined
-          );
-
-          // Keine Verglasung shows as included (0€)
-          if (optionId === "keine_verglasung") {
-            return { type: "included" as const };
-          }
-
-          return {
-            type: "upgrade" as const,
-            amount: calculatedPrice,
-            monthly: Math.round(calculatedPrice / 240), // 20-year financing
-          };
         }
 
         // For nest-dependent categories with current selection, use modular pricing calculation
@@ -852,18 +856,90 @@ export default function ConfiguratorShell({
           }
         }
 
+        // For belichtungspaket and stirnseite with current selection, calculate relative pricing
+        if (
+          currentSelection &&
+          ["belichtungspaket", "stirnseite"].includes(categoryId)
+        ) {
+          // Special case: keine_verglasung always shows as included
+          if (categoryId === "stirnseite" && optionId === "keine_verglasung") {
+            return { type: "included" as const };
+          }
+          // Calculate current total with currently selected option
+          let currentPrice = 0;
+          if (categoryId === "belichtungspaket") {
+            currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
+              currentSelection,
+              configuration.nest || undefined,
+              configuration.fenster || undefined
+            );
+          } else if (categoryId === "stirnseite") {
+            currentPrice = PriceCalculator.calculateStirnseitePrice(
+              currentSelection,
+              configuration.fenster || undefined
+            );
+          }
+
+          // Calculate price with this option
+          let optionPrice = 0;
+          if (categoryId === "belichtungspaket") {
+            const mockOption = {
+              category: "belichtungspaket",
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description || "",
+            };
+            optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
+              mockOption,
+              configuration.nest || undefined,
+              configuration.fenster || undefined
+            );
+          } else if (categoryId === "stirnseite") {
+            const mockOption = {
+              category: "stirnseite",
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description || "",
+            };
+            optionPrice = PriceCalculator.calculateStirnseitePrice(
+              mockOption,
+              configuration.fenster || undefined
+            );
+          }
+
+          const priceDifference = optionPrice - currentPrice;
+
+          if (priceDifference === 0) {
+            return {
+              type: "upgrade" as const,
+              amount: 0,
+              monthly: option.price.monthly,
+            };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: option.price.monthly,
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
         // Calculate relative price difference using simpler direct price comparison for other categories
         if (
           currentSelection &&
           option.price.amount !== undefined &&
           currentSelection.price !== undefined &&
-          ![
-            "gebaeudehuelle",
-            "innenverkleidung",
-            "fussboden",
-            "beleuchtungspaket",
-            "stirnseite",
-          ].includes(categoryId)
+          !["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+            categoryId
+          )
         ) {
           // For sections with direct price amounts, use simple difference calculation
           const currentPrice = currentSelection.price || 0;
@@ -898,7 +974,7 @@ export default function ConfiguratorShell({
           gebaeudehuelle: configuration.gebaeudehuelle || undefined,
           innenverkleidung: configuration.innenverkleidung || undefined,
           fussboden: configuration.fussboden || undefined,
-          beleuchtungspaket: configuration.beleuchtungspaket || undefined,
+          belichtungspaket: configuration.belichtungspaket || undefined,
           fenster: configuration.fenster || undefined,
           stirnseite: configuration.stirnseite || undefined,
           pvanlage: configuration.pvanlage || undefined,
@@ -1064,8 +1140,8 @@ export default function ConfiguratorShell({
                 )}
 
                 {/* Brightness Overlay Visibility Checkbox */}
-                {category.id === "beleuchtungspaket" &&
-                  configuration?.beleuchtungspaket && (
+                {category.id === "belichtungspaket" &&
+                  configuration?.belichtungspaket && (
                     <div className="mt-4 flex items-center space-x-2">
                       <input
                         type="checkbox"
@@ -1094,7 +1170,7 @@ export default function ConfiguratorShell({
                     {category.id === "gebaeudehuelle" ||
                     category.id === "innenverkleidung" ||
                     category.id === "fussboden" ||
-                    category.id === "beleuchtungspaket" ||
+                    category.id === "belichtungspaket" ||
                     category.id === "fenster" ||
                     category.id === "stirnseite" ||
                     category.id === "pvanlage" ? (
@@ -1106,8 +1182,8 @@ export default function ConfiguratorShell({
                               ? "photovoltaik"
                               : category.id === "fussboden"
                                 ? "fussboden"
-                                : category.id === "beleuchtungspaket"
-                                  ? "beleuchtungspaket"
+                                : category.id === "belichtungspaket"
+                                  ? "belichtungspaket"
                                   : category.id === "stirnseite"
                                     ? "stirnseite"
                                     : (category.id as

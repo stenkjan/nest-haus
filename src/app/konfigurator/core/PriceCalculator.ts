@@ -30,7 +30,7 @@ interface Selections {
   gebaeudehuelle?: SelectionOption
   innenverkleidung?: SelectionOption
   fussboden?: SelectionOption
-  beleuchtungspaket?: SelectionOption
+  belichtungspaket?: SelectionOption
   pvanlage?: SelectionOption
   fenster?: SelectionOption
   stirnseite?: SelectionOption
@@ -168,14 +168,14 @@ export class PriceCalculator {
         additionalPrice += pvPrice;
       }
 
-      // Add beleuchtungspaket price (calculated based on nest size and fenster material)
-      if (selections.beleuchtungspaket && selections.nest) {
-        const beleuchtungspaketPrice = this.calculateBeleuchtungspaketPrice(
-          selections.beleuchtungspaket,
+      // Add belichtungspaket price (calculated based on nest size and fenster material)
+      if (selections.belichtungspaket && selections.nest) {
+        const belichtungspaketPrice = this.calculateBelichtungspaketPrice(
+          selections.belichtungspaket,
           selections.nest,
           selections.fenster
         );
-        additionalPrice += beleuchtungspaketPrice;
+        additionalPrice += belichtungspaketPrice;
       }
 
       // Add stirnseite verglasung price (calculated based on fenster material)
@@ -203,13 +203,13 @@ export class PriceCalculator {
   }
 
   /**
-   * Calculate beleuchtungspaket price based on nest size and fenster material
+   * Calculate belichtungspaket price based on nest size and fenster material
    * Formula: nest_size * percentage * fenster_material_price_per_sqm
    * Percentages: light=12%, medium=16%, bright=22%
    * Default fenster material: PVC (280€/m²) if no fenster selected
    */
-  static calculateBeleuchtungspaketPrice(
-    beleuchtungspaket: SelectionOption,
+  static calculateBelichtungspaketPrice(
+    belichtungspaket: SelectionOption,
     nest: SelectionOption,
     fenster?: SelectionOption
   ): number {
@@ -225,16 +225,16 @@ export class PriceCalculator {
 
       const nestSize = nestSizeMap[nest.value] || 80;
 
-      // Get percentage based on beleuchtungspaket option
+      // Get percentage based on belichtungspaket option
       const percentageMap: Record<string, number> = {
         'light': 0.12,   // 12%
         'medium': 0.16,  // 16%
         'bright': 0.22   // 22%
       };
 
-      const percentage = percentageMap[beleuchtungspaket.value] || 0.12;
+      const percentage = percentageMap[belichtungspaket.value] || 0.12;
 
-      // Calculate square meters for beleuchtungspaket
+      // Calculate square meters for belichtungspaket
       const beleuchtungsSquareMeters = Math.ceil(nestSize * percentage);
 
       // Get fenster material price (default to PVC 280€ if no fenster selected)
@@ -247,7 +247,7 @@ export class PriceCalculator {
 
       return totalPrice;
     } catch (error) {
-      console.error('💡 Error calculating beleuchtungspaket price:', error);
+      console.error('💡 Error calculating belichtungspaket price:', error);
       return 0;
     }
   }
@@ -408,9 +408,9 @@ export class PriceCalculator {
         }
       }
 
-      if (selections.beleuchtungspaket && selections.nest) {
-        const beleuchtungspaketPrice = this.calculateBeleuchtungspaketPrice(
-          selections.beleuchtungspaket,
+      if (selections.belichtungspaket && selections.nest) {
+        const belichtungspaketPrice = this.calculateBelichtungspaketPrice(
+          selections.belichtungspaket,
           selections.nest,
           selections.fenster
         );
@@ -423,12 +423,12 @@ export class PriceCalculator {
         const percentageMap: Record<string, number> = {
           'light': 0.12, 'medium': 0.16, 'bright': 0.22
         };
-        const percentage = percentageMap[selections.beleuchtungspaket.value] || 0.12;
+        const percentage = percentageMap[selections.belichtungspaket.value] || 0.12;
         const beleuchtungsSquareMeters = Math.ceil(nestSize * percentage);
 
-        breakdown.options.beleuchtungspaket = {
-          name: `${selections.beleuchtungspaket.name} (${beleuchtungsSquareMeters}m²)`,
-          price: beleuchtungspaketPrice
+        breakdown.options.belichtungspaket = {
+          name: `${selections.belichtungspaket.name} (${beleuchtungsSquareMeters}m²)`,
+          price: belichtungspaketPrice
         }
       }
 

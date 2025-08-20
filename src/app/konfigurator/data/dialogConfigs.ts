@@ -293,12 +293,12 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
     ]
   },
 
-  beleuchtungspaket: {
+  belichtungspaket: {
     title: {
       main: "Beleuchtungspaket",
       subtitle: "Natürliches Licht für Ihr Zuhause"
     },
-    sliderKey: "beleuchtungspaket-slider",
+    sliderKey: "belichtungspaket-slider",
     actionButton: {
       text: "Mehr über Fenster & Türen",
       href: "/fenster-tueren"

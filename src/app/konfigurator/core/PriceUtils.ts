@@ -161,7 +161,7 @@ export class PriceUtils {
     const bottomItems: [string, T][] = [];
 
     // Define the order for middle items
-    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'beleuchtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
+    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
 
     entries.forEach(([key, value]) => {
       if (key === 'nest') {

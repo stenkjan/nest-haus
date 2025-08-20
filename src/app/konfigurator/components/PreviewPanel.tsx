@@ -262,25 +262,26 @@ export default function PreviewPanel({
                       | "nest160"
                   }
                   moduleCount={configuration.pvanlage.quantity}
-                  isVisible={isPvOverlayVisible}
+                  isVisible={isPvOverlayVisible && activeView === "exterior"}
                   className="opacity-90"
                 />
               )}
 
-            {/* Brightness Overlay - only show on stirnseite view when belichtungspaket is selected */}
-            {activeView === "stirnseite" &&
-              configuration?.beleuchtungspaket && (
-                <BrightnessOverlay
-                  brightnessLevel={
-                    configuration.beleuchtungspaket.value as
-                      | "light"
-                      | "medium"
-                      | "bright"
-                  }
-                  isVisible={isBrightnessOverlayVisible}
-                  className="opacity-90"
-                />
-              )}
+            {/* Brightness Overlay - only show on exterior view when belichtungspaket is selected */}
+            {activeView === "exterior" && configuration?.belichtungspaket && (
+              <BrightnessOverlay
+                brightnessLevel={
+                  configuration.belichtungspaket?.value as
+                    | "light"
+                    | "medium"
+                    | "bright"
+                }
+                isVisible={
+                  isBrightnessOverlayVisible && activeView === "exterior"
+                }
+                className="opacity-90"
+              />
+            )}
           </div>
         </div>
 

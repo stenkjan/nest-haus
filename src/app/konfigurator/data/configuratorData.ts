@@ -184,7 +184,7 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
-    id: 'beleuchtungspaket',
+    id: 'belichtungspaket',
     title: 'Beleuchtungspaket',
     subtitle: 'Deine Helligkeit',
     options: [

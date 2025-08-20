@@ -12,7 +12,7 @@ interface ConfiguratorContentCardsLightboxProps {
   categoryKey:
     | "materials"
     | "innenverkleidung"
-    | "beleuchtungspaket"
+    | "belichtungspaket"
     | "fenster"
     | "stirnseite"
     | "fussboden"

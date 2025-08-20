@@ -34,6 +34,8 @@ export default function BrightnessOverlay({
     }
   };
 
+  const imagePath = getImagePath();
+
   return (
     <div className={`absolute inset-0 pointer-events-none ${className}`}>
       {/* Brightness overlay image - EXACT same styling as main preview image */}

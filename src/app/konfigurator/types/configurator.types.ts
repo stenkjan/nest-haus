@@ -45,7 +45,7 @@ export interface Selections {
   gebaeudehuelle?: SelectionOption;
   innenverkleidung?: SelectionOption;
   fussboden?: SelectionOption;
-  beleuchtungspaket?: SelectionOption;
+  belichtungspaket?: SelectionOption;
   pvanlage?: SelectionOption & { quantity?: number };
   fenster?: SelectionOption & { squareMeters?: number };
   stirnseite?: SelectionOption;

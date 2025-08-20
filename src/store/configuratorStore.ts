@@ -19,7 +19,7 @@ export interface Configuration {
   gebaeudehuelle?: ConfigurationItem | null
   innenverkleidung?: ConfigurationItem | null
   fussboden?: ConfigurationItem | null
-  beleuchtungspaket?: ConfigurationItem | null
+  belichtungspaket?: ConfigurationItem | null
   pvanlage?: ConfigurationItem | null
   fenster?: ConfigurationItem | null
   stirnseite?: ConfigurationItem | null
@@ -89,7 +89,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         gebaeudehuelle: null,
         innenverkleidung: null,
         fussboden: null,
-        beleuchtungspaket: null,
+        belichtungspaket: null,
         pvanlage: null,
         fenster: null,
         stirnseite: null,
@@ -394,7 +394,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           gebaeudehuelle: null,
           innenverkleidung: null,
           fussboden: null,
-          beleuchtungspaket: null,
+          belichtungspaket: null,
           pvanlage: null,
           fenster: null,
           stirnseite: null,
@@ -492,7 +492,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           gebaeudehuelle: defaultSelections[1] as ConfigurationItem,
           innenverkleidung: defaultSelections[2] as ConfigurationItem,
           fussboden: defaultSelections[3] as ConfigurationItem,
-          beleuchtungspaket: defaultSelections[4] as ConfigurationItem,
+          belichtungspaket: defaultSelections[4] as ConfigurationItem,
           fenster: defaultSelections[5] as ConfigurationItem,
           stirnseite: defaultSelections[6] as ConfigurationItem,
           timestamp: Date.now()
@@ -551,7 +551,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             gebaeudehuelle: null,
             innenverkleidung: null,
             fussboden: null,
-            beleuchtungspaket: null,
+            belichtungspaket: null,
             pvanlage: null,
             fenster: null,
             stirnseite: null,

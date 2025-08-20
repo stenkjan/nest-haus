@@ -53,7 +53,7 @@ interface TransformedDialogData {
 const CATEGORY_COLORS = {
   materials: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
   innenverkleidung: ['#fefcfb', '#fef7ed', '#fed7aa', '#fdba74', '#fb923c'],
-  beleuchtungspaket: ['#fef7ed', '#fed7aa', '#fb923c', '#f97316', '#ea580c'],
+  belichtungspaket: ['#fef7ed', '#fed7aa', '#fb923c', '#f97316', '#ea580c'],
   fenster: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
   stirnseite: ['#e0f2fe', '#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9'],
   fussboden: ['#fefdf2', '#fef3c7', '#fde68a', '#f59e0b', '#d97706'],

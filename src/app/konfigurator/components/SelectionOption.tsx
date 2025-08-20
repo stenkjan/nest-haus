@@ -149,13 +149,13 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
-      // Remove "zzgl." from specified sections: nest, innenverkleidung, fussboden, gebaeudehuelle, beleuchtungspaket, fenster, stirnseite, pvanlage
+      // Remove "zzgl." from specified sections: nest, innenverkleidung, fussboden, gebaeudehuelle, belichtungspaket, fenster, stirnseite, pvanlage
       const sectionsWithoutZzgl = [
         "nest",
         "innenverkleidung",
         "fussboden",
         "gebaeudehuelle",
-        "beleuchtungspaket",
+        "belichtungspaket",
         "fenster",
         "stirnseite",
         "pvanlage",
