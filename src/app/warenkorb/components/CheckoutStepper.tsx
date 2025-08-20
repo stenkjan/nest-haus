@@ -1471,15 +1471,13 @@ export default function CheckoutStepper({
                 <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
                   Heute zu bezahlen
                 </div>
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                </div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed"></div>
               </div>
               <div className="text-right">
                 <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
                   {PriceUtils.formatPrice(3000)}
                 </div>
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                </div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed"></div>
               </div>
             </div>
             <div className="border-b border-gray-200 pb-2"></div>
