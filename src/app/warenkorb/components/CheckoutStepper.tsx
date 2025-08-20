@@ -318,8 +318,8 @@ export default function CheckoutStepper({
               const circleClass = isDone
                 ? "bg-blue-600 border-blue-600"
                 : isCurrent
-                ? "bg-white border-blue-600"
-                : "bg-white border-gray-300";
+                  ? "bg-white border-blue-600"
+                  : "bg-white border-gray-300";
               const dotInner = isDone ? (
                 <span className="w-2 h-2 bg-white rounded-full" />
               ) : null;
@@ -359,8 +359,8 @@ export default function CheckoutStepper({
                 const circleClass = isDone
                   ? "bg-blue-600 border-blue-600"
                   : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
+                    ? "bg-white border-blue-600"
+                    : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
                 ) : null;
@@ -397,8 +397,8 @@ export default function CheckoutStepper({
                 const circleClass = isDone
                   ? "bg-blue-600 border-blue-600"
                   : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
+                    ? "bg-white border-blue-600"
+                    : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
                 ) : null;
@@ -483,7 +483,7 @@ export default function CheckoutStepper({
     const total = getCartTotal();
     const dueNow = 0; // Current upfront payment (service-only) – adjustable later
     const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
-    const planungspaketDone = Boolean(configItem?.planungspaket?.value);
+    const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
     const terminDone = false; // Integrate with AppointmentBooking state if available
 
     // Use local selection if available so summary reflects user choice immediately
@@ -741,8 +741,8 @@ export default function CheckoutStepper({
                               (item as ConfigurationCartItem).nest
                               ? (item as ConfigurationCartItem).nest?.price || 0
                               : "totalPrice" in item
-                              ? (item as ConfigurationCartItem).totalPrice
-                              : (item as CartItem).price
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price
                           )}
                         </div>
                         {(() => {
@@ -760,8 +760,8 @@ export default function CheckoutStepper({
                                 ? (item as ConfigurationCartItem).nest?.price ||
                                     0
                                 : "totalPrice" in item
-                                ? (item as ConfigurationCartItem).totalPrice
-                                : (item as CartItem).price
+                                  ? (item as ConfigurationCartItem).totalPrice
+                                  : (item as CartItem).price
                             )}{" "}
                             für 240 Monate
                           </div>
@@ -973,8 +973,8 @@ export default function CheckoutStepper({
                   const value = card.title.toLowerCase().includes("pro")
                     ? "pro"
                     : card.title.toLowerCase().includes("plus")
-                    ? "plus"
-                    : "basis";
+                      ? "plus"
+                      : "basis";
                   const isSelected = localSelectedPlan === value;
                   const isBasis = value === "basis";
                   const cardPriceNumber = parseEuro(card.price);

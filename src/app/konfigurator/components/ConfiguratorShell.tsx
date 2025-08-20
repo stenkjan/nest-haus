@@ -467,10 +467,32 @@ export default function ConfiguratorShell({
         return originalPrice;
       }
 
-      // For relative pricing sections (nest, gebäudehülle, innenverkleidung, fussboden, beleuchtungspaket, fenster, stirnseite)
+      // For nest modules, show total prices instead of relative prices
+      if (categoryId === "nest") {
+        const currentSelection = configuration[
+          categoryId as keyof typeof configuration
+        ] as ConfigurationItem | undefined;
+
+        // If this option is currently selected, show no price at all
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+
+        // For nest modules, always show the total price (not relative)
+        const originalPrice = option.price;
+        if (originalPrice.type === "upgrade") {
+          return {
+            type: "standard" as const,
+            amount: originalPrice.amount,
+            monthly: originalPrice.monthly,
+          };
+        }
+        return originalPrice;
+      }
+
+      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, beleuchtungspaket, fenster, stirnseite)
       if (
         [
-          "nest",
           "gebaeudehuelle",
           "innenverkleidung",
           "fussboden",
