@@ -4,6 +4,69 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0e5071a2499fe4d12fbf7d4003a084b19ba38270] - Thu Aug 21 12:24:29 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'development'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/BrightnessOverlay.tsx
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/components/PvModuleOverlay.tsx
+- src/app/konfigurator/components/QuantitySelector.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/DialogDataTransformer.ts
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/konfigurator/page.tsx
+- src/app/konfigurator/types/configurator.types.ts
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutProgress.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/steps.ts
+- src/components/cards/ContentCards.tsx
+- src/components/dialogs/PlanungspaketeDialog.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+- src/components/layout/Navbar.tsx
+
+
+#### ⚙️ Backend Changes
+- scripts/README-Image-Swap.md
+- scripts/execute-image-swap.ps1
+- scripts/image-name-swap.js
+- scripts/verify-image-swap.js
+
+
+#### 🔧 Configuration Changes
+- .github/workflows/deploy-development.yml
+- package.json
+
+
+#### 📚 Documentation Changes
+- README.md
+- docs/CONFIGURATOR_CODE_REVIEW.md
+- docs/CONFIGURATOR_OPTIMIZATION_GUIDE.md
+- docs/CONFIGURATOR_STATE_INTEGRATION.md
+- docs/PARTNERS_EXTRACTION.md
+- docs/PERFORMANCE_OPTIMIZATION_FIXES.md
+- docs/PRICE_CONFIGURATION_OPTIMIZATION.md
+- docs/SEO_OPTIMIZATION_ROADMAP.md
+
+
+---
+
 ## [8af5d3acf374038a33d23219d316d6de754e40f0] - Mon Aug 18 12:23:25 2025 +0200
 
 **Author**: stenkjan
