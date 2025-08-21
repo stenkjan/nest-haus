@@ -138,8 +138,8 @@ export default function Navbar() {
           header.style.transform = "translateY(-100%)";
           header.style.transition = "transform 0.3s ease-out";
         } else if (currentScrollY < lastScrollTop) {
-          // For mobile konfigurator, only show navbar when very close to top
-          const shouldShow = isMobile ? currentScrollY <= 10 : true;
+          // For non-konfigurator pages, always show navbar when scrolling up
+          const shouldShow = true;
 
           if (shouldShow) {
             header.style.transform = "translateY(0)";

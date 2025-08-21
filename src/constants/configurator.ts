@@ -68,9 +68,10 @@ export const PV_IMAGE_MAPPING: Record<string, string> = {
 // Fenster image mapping
 export const FENSTER_IMAGE_MAPPING: Record<string, string> = {
   'pvc_fenster': 'pvc',
-  'fichte': 'fichte',
-  'eiche': 'eiche',
-  'aluminium': 'aluminium'
+  'holz': 'fichte', // Renamed from 'fichte' to 'holz', but still maps to fichte image
+  'steirische_eiche': 'eiche', // Keep for backward compatibility if needed
+  'aluminium_schwarz': 'aluminium', // Renamed from 'aluminium', maps to same image
+  'aluminium_weiss': 'aluminium' // New option, maps to same aluminium image for now
 } as const;
 
 // Exact mappings for specific interior combinations

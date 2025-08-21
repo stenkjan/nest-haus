@@ -7,7 +7,13 @@ interface SelectionOptionProps {
   name: string;
   description: string;
   price?: {
-    type: "base" | "upgrade" | "included";
+    type:
+      | "base"
+      | "upgrade"
+      | "included"
+      | "standard"
+      | "discount"
+      | "selected";
     amount?: number;
     monthly?: number;
   };
@@ -19,6 +25,7 @@ interface SelectionOptionProps {
   className?: string;
   categoryId?: string;
   nestModel?: string;
+  contributionPrice?: number | null; // Actual price contribution for selected options
 }
 
 export default function SelectionOption({
@@ -30,13 +37,73 @@ export default function SelectionOption({
   onClick,
   onUnselect,
   canUnselect = false,
-  disabled = false,
+  disabled: _disabled = false,
   className = "",
   categoryId,
   nestModel,
+  contributionPrice,
 }: SelectionOptionProps) {
   const renderPrice = () => {
     if (!price) return null;
+
+    if (price.type === "selected") {
+      // For nest modules, show the same format as non-selected
+      if (
+        categoryId === "nest" &&
+        contributionPrice !== null &&
+        contributionPrice !== undefined
+      ) {
+        const formattedPrice = PriceUtils.formatPrice(contributionPrice);
+        const shouldShowPricePerSqm =
+          PriceUtils.shouldShowPricePerSquareMeter(categoryId);
+
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
+              Ab {formattedPrice}
+            </p>
+            {shouldShowPricePerSqm && nestModel && contributionPrice && (
+              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
+                {PriceUtils.calculateOptionPricePerSquareMeter(
+                  contributionPrice,
+                  nestModel,
+                  categoryId,
+                  id
+                )}
+              </p>
+            )}
+          </div>
+        );
+      }
+
+      // For other categories, show contribution price (smaller and greyer) with m² price
+      if (contributionPrice !== null && contributionPrice !== undefined) {
+        const shouldShowPricePerSqm =
+          categoryId && PriceUtils.shouldShowPricePerSquareMeter(categoryId);
+
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
+              {contributionPrice === 0
+                ? "inklusive"
+                : PriceUtils.formatPrice(contributionPrice)}
+              {categoryId === "fenster" && "/m²"}
+            </p>
+            {shouldShowPricePerSqm && nestModel && contributionPrice > 0 && (
+              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
+                {PriceUtils.calculateOptionPricePerSquareMeter(
+                  contributionPrice,
+                  nestModel,
+                  categoryId,
+                  id
+                )}
+              </p>
+            )}
+          </div>
+        );
+      }
+      return null;
+    }
 
     if (price.type === "included") {
       return (
@@ -61,6 +128,7 @@ export default function SelectionOption({
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {showAbPrefix ? `Ab ${formattedPrice}` : formattedPrice}
+            {categoryId === "fenster" && "/m²"}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
@@ -77,6 +145,17 @@ export default function SelectionOption({
     }
 
     if (price.type === "upgrade") {
+      // When amount is 0 (same price), only show "+/-" and hide any numeric values
+      if (price.amount === 0) {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              +/-
+            </p>
+          </div>
+        );
+      }
+
       const formattedPrice = price.amount
         ? PriceUtils.formatPrice(price.amount)
         : "0 €";
@@ -86,28 +165,86 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
-      // Remove "zzgl." from specified sections: innenverkleidung, fussboden, gebaeudehuelle, fenster, pvanlage
-      const sectionsWithoutZzgl = [
-        "innenverkleidung",
-        "fussboden",
-        "gebaeudehuelle",
-        "fenster",
-        "pvanlage",
-      ];
-      const showZzglPrefix = !sectionsWithoutZzgl.includes(categoryId || "");
+      return (
+        <div className="text-right">
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            {price.amount !== undefined && price.amount > 0
+              ? `+${formattedPrice}`
+              : formattedPrice}
+            {categoryId === "fenster" && "/m²"}
+          </p>
+          {shouldShowPricePerSqm &&
+            nestModel &&
+            price.amount &&
+            price.amount !== 0 && (
+              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+                {PriceUtils.calculateOptionPricePerSquareMeter(
+                  price.amount,
+                  nestModel,
+                  categoryId,
+                  id
+                )}
+              </p>
+            )}
+        </div>
+      );
+    }
+
+    if (price.type === "discount") {
+      const formattedPrice = price.amount
+        ? PriceUtils.formatPrice(price.amount)
+        : "0 €";
+
+      const shouldShowPricePerSqm =
+        categoryId &&
+        PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
+        categoryId !== "fenster";
 
       return (
         <div className="text-right">
-          {showZzglPrefix && (
-            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-              zzgl.
-            </p>
-          )}
-          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-            {formattedPrice}
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
+            -{formattedPrice}
+            {categoryId === "fenster" && "/m²"}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (
             <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+              {PriceUtils.calculateOptionPricePerSquareMeter(
+                price.amount,
+                nestModel,
+                categoryId,
+                id
+              )}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    if (price.type === "standard") {
+      const formattedPrice = price.amount
+        ? PriceUtils.formatPrice(price.amount)
+        : "0 €";
+
+      const shouldShowPricePerSqm =
+        categoryId &&
+        PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
+        categoryId !== "fenster";
+
+      // Use grey text for selected options, even when type is "standard"
+      const textColor = isSelected ? "text-gray-500" : "";
+
+      return (
+        <div className="text-right">
+          <p
+            className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}
+          >
+            {formattedPrice}
+            {categoryId === "fenster" && "/m²"}
+          </p>
+          {shouldShowPricePerSqm && nestModel && price.amount && (
+            <p
+              className={`text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] ${isSelected ? "text-gray-500" : "text-gray-600"} mt-1`}
+            >
               {PriceUtils.calculateOptionPricePerSquareMeter(
                 price.amount,
                 nestModel,
@@ -125,9 +262,7 @@ export default function SelectionOption({
   };
 
   const handleClick = () => {
-    if (!disabled) {
-      onClick(id);
-    }
+    onClick(id);
   };
 
   const handleUnselect = (e: React.MouseEvent) => {
@@ -142,9 +277,7 @@ export default function SelectionOption({
       className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] relative ${
         isSelected
           ? "selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50"
-          : disabled
-            ? "border-gray-200 opacity-50 cursor-not-allowed"
-            : "border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm"
+          : "border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm"
       } ${className}`}
       onClick={handleClick}
     >

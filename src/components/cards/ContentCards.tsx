@@ -38,7 +38,7 @@ interface StaticCardData {
   }>;
 }
 
-interface PricingCardData {
+export interface PricingCardData {
   id: number;
   title: string;
   subtitle: string;
@@ -169,7 +169,7 @@ const staticCardData: StaticCardData[] = [
   },
 ];
 
-const pricingCardData: PricingCardData[] = [
+export const pricingCardData: PricingCardData[] = [
   {
     id: 1,
     title: "Planungspaket 01 Basis",

@@ -5,6 +5,8 @@
  * on both client and server side without database dependencies.
  */
 
+import { NEST_OPTIONS } from '@/constants/configurator';
+
 export class PriceUtils {
   /**
    * Format price for display
@@ -86,22 +88,29 @@ export class PriceUtils {
   }
 
   /**
- * Calculate and format price per m² for individual options
- * For NEST modules: uses the option's own price and area (stable per module)
- * For other options: calculates dynamically based on current module size
- */
+* Calculate and format price per m² for individual options
+* For NEST modules: uses the option's own FULL price and area (not dynamic price difference)
+* For other options: calculates dynamically based on current module size
+*/
   static calculateOptionPricePerSquareMeter(price: number, nestModel: string, categoryId?: string, optionId?: string): string {
-    // For NEST modules themselves, calculate based on their own price and area
+    // For NEST modules themselves, ALWAYS use the full module price from constants
     if (categoryId === 'nest' && optionId) {
-      // Use the specific option's own area, not the currently selected module's area
-      const adjustedNutzflaeche = this.getAdjustedNutzflaeche(optionId);
-      if (adjustedNutzflaeche === 0 || price === 0) return '';
+      // Find the specific nest option to get its full price
+      const nestOption = NEST_OPTIONS.find((option: { id: string; price: number; modules: number }) => option.id === optionId);
+      if (!nestOption) {
+        return ''; // No pricing data available
+      }
 
-      const pricePerSqm = Math.round(price / adjustedNutzflaeche);
+      // Use the full nest price (not the dynamic price difference)
+      const fullNestPrice = nestOption.price;
+      const adjustedNutzflaeche = this.getAdjustedNutzflaeche(optionId);
+      if (adjustedNutzflaeche === 0) return '';
+
+      const pricePerSqm = Math.round(fullNestPrice / adjustedNutzflaeche);
       return `${this.formatPrice(pricePerSqm)} /m²`;
     }
 
-    // For all other options, calculate dynamically based on current module size
+    // For all other options, calculate based on current module size (unchanged)
     const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel);
     if (adjustedNutzflaeche === 0 || price === 0) return '';
 
@@ -152,7 +161,7 @@ export class PriceUtils {
     const bottomItems: [string, T][] = [];
 
     // Define the order for middle items
-    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'pvanlage', 'fenster'];
+    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
 
     entries.forEach(([key, value]) => {
       if (key === 'nest') {

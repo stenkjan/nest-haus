@@ -120,7 +120,9 @@ export default function ResponsiveHybridImage({
   // Debug logging in development to verify correct path selection
   if (process.env.NODE_ENV === "development") {
     console.log(
-      `🖼️ ResponsiveHybridImage: ${deviceType} detected (width: ${typeof window !== "undefined" ? window.innerWidth : "SSR"})`
+      `🖼️ ResponsiveHybridImage: ${deviceType} detected (width: ${
+        typeof window !== "undefined" ? window.innerWidth : "SSR"
+      })`
     );
     console.log(`📱 Mobile path: ${mobilePath}`);
     console.log(`💻 Desktop path: ${desktopPath}`);
@@ -144,8 +146,8 @@ export default function ResponsiveHybridImage({
           isInteractive={isInteractive}
           enableCache={enableCache}
           fallbackSrc={fallbackSrc}
-          width={1200}
-          height={800}
+          width={800}
+          height={1200}
           className="w-full h-auto object-cover"
           style={{
             position: "relative",

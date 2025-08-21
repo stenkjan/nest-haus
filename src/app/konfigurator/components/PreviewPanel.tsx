@@ -19,15 +19,21 @@ import { HybridBlobImage } from "@/components/images";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
+import PvModuleOverlay from "./PvModuleOverlay";
+import BrightnessOverlay from "./BrightnessOverlay";
 
 interface PreviewPanelProps {
   isMobile?: boolean;
   className?: string;
+  isPvOverlayVisible?: boolean;
+  isBrightnessOverlayVisible?: boolean;
 }
 
 export default function PreviewPanel({
   isMobile = false,
   className = "",
+  isPvOverlayVisible = true,
+  isBrightnessOverlayVisible = true,
 }: PreviewPanelProps) {
   const {
     configuration,
@@ -239,6 +245,43 @@ export default function PreviewPanel({
               quality={85}
               priority={activeView === "exterior"}
             />
+
+            {/* PV Module Overlay - only show on exterior view when PV is selected */}
+            {activeView === "exterior" &&
+              configuration?.pvanlage &&
+              configuration?.pvanlage?.quantity &&
+              configuration?.pvanlage?.quantity > 0 &&
+              configuration?.nest && (
+                <PvModuleOverlay
+                  nestSize={
+                    configuration.nest.value as
+                      | "nest80"
+                      | "nest100"
+                      | "nest120"
+                      | "nest140"
+                      | "nest160"
+                  }
+                  moduleCount={configuration.pvanlage.quantity}
+                  isVisible={isPvOverlayVisible && activeView === "exterior"}
+                  className="opacity-90"
+                />
+              )}
+
+            {/* Brightness Overlay - only show on exterior view when belichtungspaket is selected */}
+            {activeView === "exterior" && configuration?.belichtungspaket && (
+              <BrightnessOverlay
+                brightnessLevel={
+                  configuration.belichtungspaket?.value as
+                    | "light"
+                    | "medium"
+                    | "bright"
+                }
+                isVisible={
+                  isBrightnessOverlayVisible && activeView === "exterior"
+                }
+                className="opacity-90"
+              />
+            )}
           </div>
         </div>
 

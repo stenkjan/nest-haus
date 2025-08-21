@@ -19,10 +19,11 @@ export interface Configuration {
   gebaeudehuelle?: ConfigurationItem | null
   innenverkleidung?: ConfigurationItem | null
   fussboden?: ConfigurationItem | null
+  belichtungspaket?: ConfigurationItem | null
   pvanlage?: ConfigurationItem | null
   fenster?: ConfigurationItem | null
+  stirnseite?: ConfigurationItem | null
   planungspaket?: ConfigurationItem | null
-  grundstueckscheck?: ConfigurationItem | null
   totalPrice: number
   timestamp: number
 }
@@ -70,6 +71,7 @@ interface ConfiguratorState {
 
   // View switching
   clearViewSwitchSignal: () => void
+  switchToView: (view: string) => void
   determineOptimalView: () => string
 
   // Getters
@@ -89,10 +91,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         gebaeudehuelle: null,
         innenverkleidung: null,
         fussboden: null,
+        belichtungspaket: null,
         pvanlage: null,
         fenster: null,
+        stirnseite: null,
         planungspaket: null,
-        grundstueckscheck: null,
         totalPrice: 0,
         timestamp: 0
       },
@@ -113,15 +116,20 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           return;
         }
 
+        // Check if this is a completely new session (no sessionId and no selections)
+        const isNewSession = !state.sessionId && !state.configuration.nest;
+
         // Generate sessionId if missing
         if (!state.sessionId) {
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
 
-        // ALWAYS set defaults first, then calculate price immediately
-        get().setDefaultSelections()
+        // Set default preselections only for completely new sessions
+        if (isNewSession) {
+          get().setDefaultSelections()
+        }
 
-        // Calculate price immediately instead of using setTimeout
+        // Calculate price immediately
         get().calculatePrice()
       },
 
@@ -160,12 +168,15 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
           shouldSwitchToView = 'interior';
         } else if (item.category === 'pvanlage') {
-          // Activate Part 3 but don't switch views - PV has its own info dialog
+          // Activate Part 3 and switch to exterior view to show gebäudehülle with PV overlay
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
-          // No view switching for PV - stays on current view
-          shouldSwitchToView = null;
+          // Switch to exterior view to show PV modules on the house
+          shouldSwitchToView = 'exterior';
+        } else if (item.category === 'belichtungspaket') {
+          // When selecting belichtungspaket, switch to exterior view to show gebäudehülle
+          shouldSwitchToView = 'exterior';
         } else if (item.category === 'fenster') {
           // Activate Part 3 but don't switch views - Fenster has its own info dialog
           if (!state.hasPart3BeenActive) {
@@ -173,9 +184,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
           // No view switching for fenster - stays on current view
           shouldSwitchToView = null;
-        } else if (item.category === 'planungspaket' || item.category === 'grundstueckscheck') {
-          // For non-visual selections, don't switch views - keep current view
-          shouldSwitchToView = null;
+        } else if (item.category === 'stirnseite') {
+          // When selecting any stirnseite option, switch to stirnseite view
+          // This includes "keine_verglasung" to show the stirnseite image
+          shouldSwitchToView = 'stirnseite';
         }
 
         // Clear image cache if this is a visual change (nest, gebäudehülle, innenverkleidung, fussboden)
@@ -201,7 +213,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // SIMPLIFIED: Calculate price immediately and synchronously (avoid unnecessary Effects)
         // Following React docs: "Avoid unnecessary Effects that update state"
-        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'pvanlage', 'fenster', 'planungspaket', 'grundstueckscheck'];
+        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite', 'planungspaket'];
         if (priceAffectingCategories.includes(item.category)) {
           // Calculate immediately in the same update cycle
           const newState = get();
@@ -210,10 +222,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             gebaeudehuelle: newState.configuration.gebaeudehuelle || undefined,
             innenverkleidung: newState.configuration.innenverkleidung || undefined,
             fussboden: newState.configuration.fussboden || undefined,
+            belichtungspaket: newState.configuration.belichtungspaket || undefined,
             pvanlage: newState.configuration.pvanlage || undefined,
             fenster: newState.configuration.fenster || undefined,
-            paket: newState.configuration.planungspaket || undefined,
-            grundstueckscheck: !!newState.configuration.grundstueckscheck
+            stirnseite: newState.configuration.stirnseite || undefined,
+            planungspaket: newState.configuration.planungspaket || undefined
           };
 
           const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>);
@@ -296,14 +309,15 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           gebaeudehuelle: state.configuration.gebaeudehuelle || undefined,
           innenverkleidung: state.configuration.innenverkleidung || undefined,
           fussboden: state.configuration.fussboden || undefined,
+          belichtungspaket: state.configuration.belichtungspaket || undefined,
           pvanlage: state.configuration.pvanlage || undefined,
           fenster: state.configuration.fenster || undefined,
-          paket: state.configuration.planungspaket || undefined,
-          grundstueckscheck: !!state.configuration.grundstueckscheck
+          stirnseite: state.configuration.stirnseite || undefined,
+          planungspaket: state.configuration.planungspaket || undefined
         }
 
-        const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>)
-        const priceBreakdown = PriceCalculator.getPriceBreakdown(selections as unknown as Record<string, unknown>)
+        const totalPrice = PriceCalculator.calculateTotalPrice(selections)
+        const priceBreakdown = PriceCalculator.getPriceBreakdown(selections)
 
         set({
           currentPrice: totalPrice,
@@ -357,6 +371,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         set({ shouldSwitchToView: null })
       },
 
+      switchToView: (view: string) => {
+        set({ shouldSwitchToView: view })
+      },
+
       // Determine optimal view based on current configuration and user context
       determineOptimalView: () => {
         const state = get()
@@ -377,7 +395,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         return 'exterior'
       },
 
-      // Reset configuration - Complete defaults matching old configurator
+      // Reset configuration - NO preselections
       resetConfiguration: () => {
 
         // Only generate sessionId if not in test environment
@@ -389,10 +407,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           gebaeudehuelle: null,
           innenverkleidung: null,
           fussboden: null,
+          belichtungspaket: null,
           pvanlage: null,
           fenster: null,
+          stirnseite: null,
           planungspaket: null,
-          grundstueckscheck: null,
           totalPrice: 0,
           timestamp: Date.now()
         }
@@ -409,113 +428,109 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           lastSelectionCategory: null
         })
 
-        // IMPORTANT: Set default selections (nest80 + holzlattung) after reset
-        // Set defaults immediately after state reset
+        // Set default selections after reset
         get().setDefaultSelections()
+        // Calculate price with defaults
+        get().calculatePrice()
       },
 
-      // Set default preselections on startup (nest80 + holzlattung/lärche)
+      // Set default preselections - DISABLED (no preselections wanted)
       setDefaultSelections: () => {
-        const state = get()
-
-        // Generate sessionId if not set
-        const sessionId = state.sessionId || `client_${Date.now()}_${Math.random().toString(36).substring(2)}`
-
-        // Check if we need to set any defaults
-        const needsNest = !state.configuration.nest
-        const needsGebaeudehuelle = !state.configuration.gebaeudehuelle
-        const needsInnenverkleidung = !state.configuration.innenverkleidung
-        const needsFussboden = !state.configuration.fussboden
-
-        if (needsNest || needsGebaeudehuelle || needsInnenverkleidung || needsFussboden) {
-          // Set both defaults in a single state update to prevent race conditions
-          const updatedConfiguration = {
-            ...state.configuration,
-            sessionId,
-            timestamp: Date.now()
+        // Set default selections as requested
+        const defaultSelections = [
+          // Nest 80
+          {
+            category: 'nest',
+            value: 'nest80',
+            name: 'Nest. 80',
+            price: 155500,
+            description: '75m² Nutzfläche'
+          },
+          // Holzlattung Lärche
+          {
+            category: 'gebaeudehuelle',
+            value: 'holzlattung',
+            name: 'Holzlattung Lärche Natur',
+            price: 9600,
+            description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
+          },
+          // Kiefer
+          {
+            category: 'innenverkleidung',
+            value: 'kiefer',
+            name: 'Kiefer',
+            price: -1400,
+            description: 'PEFC - Zertifiziert - Sicht 1,5 cm'
+          },
+          // Parkett Eiche
+          {
+            category: 'fussboden',
+            value: 'parkett',
+            name: 'Parkett Eiche',
+            price: 0,
+            description: 'Schwimmend verlegt'
+          },
+          // Light Belichtungspaket
+          {
+            category: 'belichtungspaket',
+            value: 'light',
+            name: 'Light',
+            price: 0, // Will be calculated dynamically
+            description: '12% der Nestfläche\nGrundbeleuchtung'
+          },
+          // PVC Fenster
+          {
+            category: 'fenster',
+            value: 'pvc_fenster',
+            name: 'PVC Fenster',
+            price: 280,
+            description: 'RAL 9016 - Kunststoff'
+          },
+          // Keine Verglasung (default)
+          {
+            category: 'stirnseite',
+            value: 'keine_verglasung',
+            name: 'Keine Verglasung',
+            price: 0,
+            description: 'Geschlossene Stirnseite\nKeine zusätzlichen Fenster'
+          },
+          // Planung Basis (default)
+          {
+            category: 'planungspaket',
+            value: 'basis',
+            name: 'Planung Basis',
+            price: 8900,
+            description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung'
           }
+        ];
 
-          if (needsNest) {
-            updatedConfiguration.nest = {
-              category: 'nest',
-              value: 'nest80',
-              name: 'Nest. 80',
-              price: 155500,
-              description: '80m² Nutzfläche'
-            }
-          }
+        // Apply default selections directly to avoid multiple view switches
+        const state = get();
 
-          if (needsGebaeudehuelle) {
-            updatedConfiguration.gebaeudehuelle = {
-              category: 'gebaeudehuelle',
-              value: 'holzlattung',
-              name: 'Holzlattung Lärche Natur',
-              price: 9600,
-              description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
-            }
-          }
+        // Build new configuration with defaults
+        const newConfiguration: Configuration = {
+          ...state.configuration,
+          nest: defaultSelections[0] as ConfigurationItem,
+          gebaeudehuelle: defaultSelections[1] as ConfigurationItem,
+          innenverkleidung: defaultSelections[2] as ConfigurationItem,
+          fussboden: defaultSelections[3] as ConfigurationItem,
+          belichtungspaket: defaultSelections[4] as ConfigurationItem,
+          fenster: defaultSelections[5] as ConfigurationItem,
+          stirnseite: defaultSelections[6] as ConfigurationItem,
+          planungspaket: defaultSelections[7] as ConfigurationItem,
+          timestamp: Date.now()
+        };
 
-          if (needsInnenverkleidung) {
-            updatedConfiguration.innenverkleidung = {
-              category: 'innenverkleidung',
-              value: 'kiefer',
-              name: 'Kiefer Natur',
-              price: 0,
-              description: 'Natürlich und warm'
-            }
-          }
+        // Update configuration with all defaults at once
+        set({
+          configuration: newConfiguration,
+          shouldSwitchToView: 'exterior', // Show exterior view with defaults
+          hasPart2BeenActive: true, // Enable interior view
+          hasPart3BeenActive: false // Don't enable part 3 yet
+        });
 
-          if (needsFussboden) {
-            updatedConfiguration.fussboden = {
-              category: 'fussboden',
-              value: 'parkett',
-              name: 'Parkett Eiche',
-              price: 0,
-              description: 'Klassisch und elegant'
-            }
-          }
-
-          // Update state with both defaults at once
-          set(state => ({
-            ...state,
-            sessionId,
-            configuration: updatedConfiguration
-          }))
-
-          // Calculate price immediately after setting defaults
-          const selections = {
-            nest: updatedConfiguration.nest || undefined,
-            gebaeudehuelle: updatedConfiguration.gebaeudehuelle || undefined,
-            innenverkleidung: updatedConfiguration.innenverkleidung || undefined,
-            fussboden: updatedConfiguration.fussboden || undefined,
-            pvanlage: updatedConfiguration.pvanlage || undefined,
-            fenster: updatedConfiguration.fenster || undefined,
-            paket: updatedConfiguration.planungspaket || undefined,
-            grundstueckscheck: !!updatedConfiguration.grundstueckscheck
-          }
-
-          const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>)
-          const priceBreakdown = PriceCalculator.getPriceBreakdown(selections as unknown as Record<string, unknown>)
-
-          // Update price and configuration in final state update
-          set(state => ({
-            ...state,
-            currentPrice: totalPrice,
-            priceBreakdown,
-            configuration: {
-              ...state.configuration,
-              totalPrice,
-              timestamp: Date.now()
-            }
-          }))
-
-          // Switch to optimal view for the default configuration
-          const optimalView = get().determineOptimalView()
-          set({ shouldSwitchToView: optimalView })
-        } else {
-          // If defaults are already set, just recalculate price to ensure consistency
-          get().calculatePrice()
-        }
+        // Calculate price with all defaults
+        get().calculatePrice();
       },
 
 
@@ -543,7 +558,40 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Reset alias (for test compatibility)
       reset: () => {
-        get().resetConfiguration()
+        console.log("🔄 ConfiguratorStore: Complete reset")
+
+        // Clear localStorage to force fresh start
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('configurator-store')
+        }
+
+        // Reset to initial state
+        set({
+          sessionId: null,
+          configuration: {
+            sessionId: '',
+            nest: null,
+            gebaeudehuelle: null,
+            innenverkleidung: null,
+            fussboden: null,
+            belichtungspaket: null,
+            pvanlage: null,
+            fenster: null,
+            stirnseite: null,
+            planungspaket: null,
+            totalPrice: 0,
+            timestamp: 0
+          },
+          currentPrice: 0,
+          priceBreakdown: null,
+          hasPart2BeenActive: false,
+          hasPart3BeenActive: false,
+          shouldSwitchToView: null,
+          lastSelectionCategory: null
+        })
+
+        // Initialize fresh session with defaults
+        get().initializeSession()
       },
 
       // Get configuration (for test compatibility)
@@ -562,25 +610,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       isConfigurationComplete: () => {
         const state = get()
 
-        // Configuration is complete if EITHER:
-        // 1. Full configuration: nest + gebäudehülle + innenverkleidung + fussboden
-        // 2. Grundstückscheck-only: just grundstueckscheck selected
-        const hasFullConfiguration = (
-          !!state.configuration.nest &&
-          !!state.configuration.gebaeudehuelle &&
-          !!state.configuration.innenverkleidung &&
-          !!state.configuration.fussboden
-        )
-
-        const hasGrundstueckscheckOnly = (
-          !!state.configuration.grundstueckscheck &&
-          !state.configuration.nest &&
-          !state.configuration.gebaeudehuelle &&
-          !state.configuration.innenverkleidung &&
-          !state.configuration.fussboden
-        )
-
-        return hasFullConfiguration || hasGrundstueckscheckOnly
+        // Configuration is complete if nest module is selected
+        // This allows checkout once a module is chosen
+        return !!state.configuration.nest
       }
     }),
     {
@@ -597,25 +629,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         shouldSwitchToView: state.shouldSwitchToView,
         lastSelectionCategory: state.lastSelectionCategory
       }),
-      // Add onRehydrateStorage to ensure defaults are applied after rehydration
+      // Add onRehydrateStorage to ensure price calculation after rehydration
       onRehydrateStorage: () => (state) => {
         if (state && process.env.NODE_ENV !== 'test') {
-          // Set defaults after rehydration ONLY if NO selections exist at all
+          // NO preselections - just recalculate price after rehydration
           setTimeout(() => {
-            const hasAnySelection = !!(
-              state.configuration.nest ||
-              state.configuration.gebaeudehuelle ||
-              state.configuration.innenverkleidung ||
-              state.configuration.fussboden ||
-              state.configuration.pvanlage ||
-              state.configuration.fenster ||
-              state.configuration.planungspaket ||
-              state.configuration.grundstueckscheck
-            );
-
-            if (!hasAnySelection) {
-              state.setDefaultSelections()
-            }
             // Always recalculate price after rehydration to ensure consistency
             state.calculatePrice()
           }, 150) // Longer delay to ensure proper hydration

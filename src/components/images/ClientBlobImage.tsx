@@ -726,10 +726,9 @@ export default function ClientBlobImage({
         alt={alt}
         {...(fill
           ? { fill }
-          : (width === 0 || width === undefined) &&
-              (height === 0 || height === undefined)
-            ? { width: 1200, height: 800 }
-            : { width: width || 1200, height: height || 800 })}
+          : (width === 0 && height === 0) || (!width && !height)
+          ? { width: 1200, height: 800 }
+          : { width, height })}
         sizes={sizes}
         className={className}
         style={style}

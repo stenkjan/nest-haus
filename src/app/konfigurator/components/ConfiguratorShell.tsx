@@ -10,10 +10,14 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useConfiguratorStore } from "@/store/configuratorStore";
-import { PriceCalculator } from "../core/PriceCalculator";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  useConfiguratorStore,
+  type ConfigurationItem,
+} from "@/store/configuratorStore";
+import type { SelectionOption as SelectionOptionType } from "../types/configurator.types";
 import { ImageManager } from "../core/ImageManager";
+import { PriceCalculator } from "../core/PriceCalculator";
 import { configuratorData } from "../data/configuratorData";
 import CategorySection from "./CategorySection";
 import SelectionOption from "./SelectionOption";
@@ -22,17 +26,12 @@ import SummaryPanel from "./SummaryPanel";
 import PreviewPanel from "./PreviewPanel";
 import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
-import { InfoBox, GrundstuecksCheckBox, CartFooter } from "./index";
+import { InfoBox, CartFooter } from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
-import {
-  CalendarDialog,
-  GrundstueckCheckDialog,
-  PlanungspaketeDialog,
-} from "@/components/dialogs";
-import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
+import { CalendarDialog } from "@/components/dialogs";
 
 // Simple debounce implementation to avoid lodash dependency
-function debounce(
+function _debounce(
   func: (
     nestValue: string,
     configurationSelections: Record<string, unknown>
@@ -63,18 +62,12 @@ export default function ConfiguratorShell({
 
   // Local state for quantities and special selections
   const [pvQuantity, setPvQuantity] = useState<number>(0);
-  const [fensterSquareMeters, setFensterSquareMeters] = useState<number>(0);
-  const [isGrundstuecksCheckSelected, setIsGrundstuecksCheckSelected] =
-    useState(false);
-
-  // State for confirmation buttons on PV and Fenster sections - REMOVED
+  const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
+  const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
+    useState<boolean>(false); // Hidden by default, only show when actively selecting
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
-  const [isGrundstueckCheckDialogOpen, setIsGrundstueckCheckDialogOpen] =
-    useState(false);
-  const [isPlanungspaketeDialogOpen, setIsPlanungspaketeDialogOpen] =
-    useState(false);
 
   // Auto-scroll utility function for both mobile and desktop - Currently unused
   const _scrollToSection = useCallback(
@@ -131,122 +124,7 @@ export default function ConfiguratorShell({
     };
   }, []);
 
-  // PERFORMANCE FIX: Pre-calculate all option prices when nest changes (bulk calculation)
-  // This prevents individual calculations during render for every option
-  const [optionPricesCache, setOptionPricesCache] = useState<
-    Map<
-      string,
-      {
-        type: "base" | "upgrade" | "included";
-        amount?: number;
-        monthly?: number;
-      }
-    >
-  >(new Map());
-
-  // Bulk price calculation function
-  const calculateOptionPrices = useCallback(
-    (nestValue: string, configurationSelections: Record<string, unknown>) => {
-      if (!nestValue) return;
-
-      const newCache = new Map();
-      const coreCategories = [
-        "gebaeudehuelle",
-        "innenverkleidung",
-        "fussboden",
-      ];
-
-      // Pre-calculate prices for all core options that depend on nest size
-      configuratorData.forEach((category) => {
-        if (coreCategories.includes(category.id)) {
-          category.options.forEach((option) => {
-            try {
-              const price = PriceCalculator.getOptionDisplayPrice(
-                nestValue,
-                configurationSelections,
-                category.id,
-                option.id
-              );
-              newCache.set(`${category.id}:${option.id}`, price);
-            } catch {
-              // Fallback for any calculation errors
-              newCache.set(`${category.id}:${option.id}`, {
-                type: "included" as const,
-              });
-            }
-          });
-        } else {
-          // For non-core categories, use static prices from configuratorData
-          category.options.forEach((option) => {
-            newCache.set(
-              `${category.id}:${option.id}`,
-              option.price || { type: "included" as const }
-            );
-          });
-        }
-      });
-
-      setOptionPricesCache(newCache);
-    },
-    [setOptionPricesCache]
-  );
-
-  // Debounced version for performance - using useMemo to avoid dependency issues
-  const bulkCalculateOptionPrices = useMemo(
-    () => debounce(calculateOptionPrices, 150), // 150ms debounce to prevent rapid recalculations
-    [calculateOptionPrices]
-  );
-
-  // Trigger bulk calculation when nest or core selections change
-  useEffect(() => {
-    if (!configuration?.nest) return;
-
-    const configurationSelections = {
-      nest: configuration.nest
-        ? {
-            category: configuration.nest.category,
-            value: configuration.nest.value,
-            name: configuration.nest.name,
-            price: configuration.nest.price || 0,
-          }
-        : undefined,
-      gebaeudehuelle: configuration.gebaeudehuelle
-        ? {
-            category: configuration.gebaeudehuelle.category,
-            value: configuration.gebaeudehuelle.value,
-            name: configuration.gebaeudehuelle.name,
-            price: configuration.gebaeudehuelle.price || 0,
-          }
-        : undefined,
-      innenverkleidung: configuration.innenverkleidung
-        ? {
-            category: configuration.innenverkleidung.category,
-            value: configuration.innenverkleidung.value,
-            name: configuration.innenverkleidung.name,
-            price: configuration.innenverkleidung.price || 0,
-          }
-        : undefined,
-      fussboden: configuration.fussboden
-        ? {
-            category: configuration.fussboden.category,
-            value: configuration.fussboden.value,
-            name: configuration.fussboden.name,
-            price: configuration.fussboden.price || 0,
-          }
-        : undefined,
-    };
-
-    bulkCalculateOptionPrices(
-      configuration.nest.value,
-      configurationSelections
-    );
-  }, [
-    configuration?.nest,
-    configuration?.gebaeudehuelle,
-    configuration?.innenverkleidung,
-    configuration?.fussboden,
-    bulkCalculateOptionPrices,
-  ]);
+  // REMOVED: Complex price caching system that was causing display issues
 
   // PERFORMANCE BOOST: Intelligent image preloading when configuration changes
   useEffect(() => {
@@ -275,20 +153,10 @@ export default function ConfiguratorShell({
     onPriceChange?.(currentPrice);
   }, [currentPrice, onPriceChange]);
 
-  // Synchronize local Grundstückscheck state with store configuration
-  useEffect(() => {
-    const hasGrundstuecksCheck = !!configuration?.grundstueckscheck;
-    if (hasGrundstuecksCheck !== isGrundstuecksCheckSelected) {
-      setIsGrundstuecksCheckSelected(hasGrundstuecksCheck);
-    }
-  }, [configuration?.grundstueckscheck, isGrundstuecksCheckSelected]);
-
   // Reset local state function for CartFooter
   const resetLocalState = useCallback(() => {
     console.log("🔄 ConfiguratorShell: Resetting local state");
     setPvQuantity(0);
-    setFensterSquareMeters(0);
-    setIsGrundstuecksCheckSelected(false);
   }, []);
 
   // Confirmation handlers for PV and Fenster sections - REMOVED
@@ -299,43 +167,45 @@ export default function ConfiguratorShell({
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
 
-      // Allow unselection by clicking the same option for these categories
-      const toggleableCategories = [
-        "planungspaket",
-        "nest",
-        "gebaeudehuelle",
-        "innenverkleidung",
-        "fussboden",
-      ];
-
-      if (toggleableCategories.includes(categoryId)) {
+      // Special handling for PV-Anlage selection
+      if (categoryId === "pvanlage") {
         const currentSelection =
           configuration?.[categoryId as keyof typeof configuration];
+
+        // If clicking the same option that's already selected
         if (
           currentSelection &&
           typeof currentSelection === "object" &&
           "value" in currentSelection &&
           currentSelection.value === optionId
         ) {
-          removeSelection(categoryId);
+          // If quantity is > 0, unselect (set to 0)
+          if (pvQuantity > 0) {
+            setPvQuantity(0);
+            removeSelection(categoryId);
+            return;
+          }
+        }
 
-          // Cascading unselection: If nest module is being unselected,
-          // also unselect dependent options that rely on nest module
-          if (categoryId === "nest") {
-            // Remove dependent selections since they depend on nest module for context/pricing
-            const dependentCategories = [
-              "gebaeudehuelle",
-              "innenverkleidung",
-              "fussboden",
-            ];
-            dependentCategories.forEach((depCategory) => {
-              if (configuration?.[depCategory as keyof typeof configuration]) {
-                removeSelection(depCategory);
-              }
+        // If clicking PV option when quantity is 0, set to 1 and show overlay immediately
+        if (pvQuantity === 0) {
+          setPvQuantity(1);
+          // Show PV overlay and hide belichtung overlay (mutual exclusivity)
+          setIsPvOverlayVisible(true);
+          setIsBrightnessOverlayVisible(false);
+
+          // Update the selection immediately with quantity 1
+          if (option && category) {
+            updateSelection({
+              category: categoryId,
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description,
+              quantity: 1,
             });
           }
-
-          return;
+          return; // Exit early to avoid duplicate updateSelection call
         }
       }
 
@@ -347,6 +217,19 @@ export default function ConfiguratorShell({
           price: option.price.amount || 0,
           description: option.description,
         });
+
+        // Auto-switch to exterior view when belichtungspaket is selected
+        if (categoryId === "belichtungspaket") {
+          // Show belichtung overlay and hide PV overlay (mutual exclusivity)
+          setIsBrightnessOverlayVisible(true);
+          setIsPvOverlayVisible(false);
+
+          // Switch to exterior view to show the belichtungspaket overlay
+          const { switchToView } = useConfiguratorStore.getState();
+          if (switchToView) {
+            switchToView("exterior");
+          }
+        }
 
         // Auto-scroll to next section after selection - Commented out
         /*
@@ -360,8 +243,14 @@ export default function ConfiguratorShell({
           // After selecting innenverkleidung, scroll to fussboden
           scrollToSection("section-fussboden");
         } else if (categoryId === "fussboden") {
-          // After selecting fussboden, scroll to fenster
+          // After selecting fussboden, scroll to belichtungspaket
+          scrollToSection("section-belichtungspaket");
+        } else if (categoryId === "belichtungspaket") {
+          // After selecting belichtungspaket, scroll to fenster
           scrollToSection("section-fenster");
+        } else if (categoryId === "fenster") {
+          // After selecting fenster, scroll to stirnseite
+          scrollToSection("section-stirnseite");
         } else if (categoryId === "planungspaket") {
           // After selecting planungspaket, scroll to grundstückscheck
           scrollToSection("section-grundstueckscheck");
@@ -369,32 +258,29 @@ export default function ConfiguratorShell({
         */
       }
     },
-    [updateSelection, removeSelection, configuration]
-  );
-
-  const handlePvSelection = useCallback(
-    (categoryId: string, optionId: string) => {
-      const category = configuratorData.find((cat) => cat.id === categoryId);
-      const option = category?.options.find((opt) => opt.id === optionId);
-
-      if (option && category) {
-        setPvQuantity(1);
-        updateSelection({
-          category: categoryId,
-          value: optionId,
-          name: option.name,
-          price: option.price.amount || 0,
-          description: option.description,
-          quantity: 1,
-        });
-      }
-    },
-    [updateSelection]
+    [
+      updateSelection,
+      removeSelection,
+      configuration,
+      pvQuantity,
+      setIsPvOverlayVisible,
+      setIsBrightnessOverlayVisible,
+    ]
   );
 
   const handlePvQuantityChange = useCallback(
     (newQuantity: number) => {
       setPvQuantity(newQuantity);
+
+      // Handle overlay visibility and mutual exclusivity
+      if (newQuantity > 0) {
+        // Show PV overlay and hide belichtung overlay (mutual exclusivity)
+        setIsPvOverlayVisible(true);
+        setIsBrightnessOverlayVisible(false);
+      } else {
+        // Hide PV overlay when quantity is 0
+        setIsPvOverlayVisible(false);
+      }
 
       if (newQuantity === 0) {
         // Remove PV selection entirely when set to 0
@@ -414,104 +300,7 @@ export default function ConfiguratorShell({
     [configuration?.pvanlage, updateSelection, removeSelection]
   );
 
-  const handleFensterSelection = useCallback(
-    (categoryId: string, optionId: string) => {
-      const category = configuratorData.find((cat) => cat.id === categoryId);
-      const option = category?.options.find((opt) => opt.id === optionId);
-
-      if (option && category) {
-        setFensterSquareMeters(1);
-        updateSelection({
-          category: categoryId,
-          value: optionId,
-          name: option.name,
-          price: option.price.amount || 0,
-          description: option.description,
-          squareMeters: 1,
-        });
-      }
-    },
-    [updateSelection]
-  );
-
-  const handleFensterSquareMetersChange = useCallback(
-    (newSquareMeters: number) => {
-      setFensterSquareMeters(newSquareMeters);
-
-      if (newSquareMeters === 0) {
-        // Remove fenster selection entirely when set to 0
-        removeSelection("fenster");
-      } else if (configuration?.fenster) {
-        // Update the selection with new square meters
-        updateSelection({
-          category: configuration.fenster.category,
-          value: configuration.fenster.value,
-          name: configuration.fenster.name,
-          price: configuration.fenster.price,
-          description: configuration.fenster.description,
-          squareMeters: newSquareMeters,
-        });
-      }
-    },
-    [configuration?.fenster, updateSelection, removeSelection]
-  );
-
-  // Handle Grundstückscheck unselection (removed separate handler since visual button removed)
-
-  const handleGrundstuecksCheckToggle = useCallback(() => {
-    const newSelected = !isGrundstuecksCheckSelected;
-    setIsGrundstuecksCheckSelected(newSelected);
-
-    if (newSelected) {
-      updateSelection({
-        category: "grundstueckscheck",
-        value: "grundstueckscheck",
-        name: "Grundstückscheck",
-        price: GRUNDSTUECKSCHECK_PRICE,
-        description:
-          "Prüfung der rechtlichen und baulichen Voraussetzungen deines Grundstücks",
-      });
-      // After selecting grundstückscheck, scroll to summary panel - Commented out
-      /*
-      setTimeout(() => {
-        const summaryElement = document.querySelector(
-          ".summary-panel"
-        ) as HTMLElement;
-        if (summaryElement) {
-          // Check if we're on mobile or desktop
-          const isMobile = window.innerWidth < 1024;
-
-          if (isMobile) {
-            // Mobile: Use window scroll
-            const elementTop =
-              summaryElement.getBoundingClientRect().top + window.pageYOffset;
-            const headerHeight = 80;
-            window.scrollTo({
-              top: elementTop - headerHeight,
-              behavior: "smooth",
-            });
-          } else {
-            // Desktop: Use right panel scroll
-            const rightPanel = (
-              rightPanelRef as React.RefObject<HTMLDivElement>
-            )?.current;
-            if (rightPanel) {
-              const elementTop = summaryElement.offsetTop;
-              const targetScrollTop = elementTop - 20;
-              rightPanel.scrollTo({
-                top: targetScrollTop,
-                behavior: "smooth",
-              });
-            }
-          }
-        }
-      }, 150);
-      */
-    } else {
-      // Remove selection when unchecked
-      removeSelection("grundstueckscheck");
-    }
-  }, [isGrundstuecksCheckSelected, updateSelection, removeSelection]);
+  // Grundstückscheck logic removed from configurator; now handled in Warenkorb
 
   const handleInfoClick = useCallback((infoKey: string) => {
     console.log("🚀 Info click:", infoKey);
@@ -520,12 +309,6 @@ export default function ConfiguratorShell({
       case "beratung":
       case "nest": // "Noch Fragen offen?" box after module selection
         setIsCalendarDialogOpen(true);
-        break;
-      case "grundcheck":
-        setIsGrundstueckCheckDialogOpen(true);
-        break;
-      case "planungspaket":
-        setIsPlanungspaketeDialogOpen(true);
         break;
       default:
         // Other info clicks are handled by individual ConfiguratorContentCardsLightbox components
@@ -573,46 +356,728 @@ export default function ConfiguratorShell({
     return moduleCount * 2;
   }, [configuration?.nest?.value, getModuleCount]);
 
-  /**
-   * Calculate maximum Fenster square meters based on nest size
-   *
-   * Formula: 30 + (x * 4) where x = number of additional modules beyond base Nest 80
-   *
-   * Examples:
-   * - Nest 80 (0 modules): 30 + (0 * 4) = 30m²
-   * - Nest 100 (1 module): 30 + (1 * 4) = 34m²
-   * - Nest 120 (2 modules): 30 + (2 * 4) = 38m²
-   * - Nest 140 (3 modules): 30 + (3 * 4) = 42m²
-   * - Nest 160 (4 modules): 30 + (4 * 4) = 46m²
-   *
-   * This formula ensures that larger nest sizes allow proportionally more window area
-   * while maintaining reasonable architectural constraints.
-   *
-   * Updated: 2025-01-31 - Changed from 52 + (x * 12) to 30 + (x * 4) formula
-   */
-  const getMaxFensterSquareMeters = useCallback((): number => {
-    if (!configuration?.nest?.value) return 30; // Default for nest80 (base formula: 30 + 0*4)
-    const moduleCount = getModuleCount(configuration.nest.value);
-    // Formula: 30 + (number_of_modules * 4)
-    return 30 + moduleCount * 4;
-  }, [configuration?.nest?.value, getModuleCount]);
+  // RELATIVE price display - show price differences relative to currently selected option
+  // Get actual price contribution of a selected option for visual indicator
+  const getActualContributionPrice = useCallback(
+    (categoryId: string, optionId: string): number | null => {
+      if (!configuration?.nest) return null;
 
-  // PERFORMANCE FIX: Simple cache lookup instead of calculation during render
+      try {
+        // For belichtungspaket, calculate actual price
+        if (categoryId === "belichtungspaket") {
+          const selectionOption = {
+            category: categoryId,
+            value: optionId,
+            name: "", // Not needed for calculation
+            price: 0, // Not needed for calculation
+          };
+          return PriceCalculator.calculateBelichtungspaketPrice(
+            selectionOption,
+            configuration.nest,
+            configuration.fenster || undefined
+          );
+        }
+
+        // For stirnseite, calculate actual price
+        if (categoryId === "stirnseite" && optionId !== "keine_verglasung") {
+          const selectionOption = {
+            category: categoryId,
+            value: optionId,
+            name: "", // Not needed for calculation
+            price: 0, // Not needed for calculation
+          };
+          return PriceCalculator.calculateStirnseitePrice(
+            selectionOption,
+            configuration.fenster || undefined
+          );
+        }
+
+        // For nest-dependent categories (gebaeudehuelle, innenverkleidung, fussboden)
+        if (
+          ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+            categoryId
+          )
+        ) {
+          const currentNestValue = configuration.nest.value;
+
+          // Use defaults for base calculation
+          let testGebaeudehuelle = "trapezblech";
+          let testInnenverkleidung = "kiefer";
+          let testFussboden = "parkett";
+
+          if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
+          if (categoryId === "innenverkleidung")
+            testInnenverkleidung = optionId;
+          if (categoryId === "fussboden") testFussboden = optionId;
+
+          const optionTotal = PriceCalculator.calculateCombinationPrice(
+            currentNestValue,
+            testGebaeudehuelle,
+            testInnenverkleidung,
+            testFussboden
+          );
+
+          const baseTotal = PriceCalculator.calculateCombinationPrice(
+            currentNestValue,
+            "trapezblech",
+            "kiefer",
+            "parkett"
+          );
+
+          const contribution = optionTotal - baseTotal;
+          return contribution === 0 ? 0 : contribution; // Return 0 for inklusive items
+        }
+
+        // For fenster, calculate area × price
+        if (categoryId === "fenster") {
+          const category = configuratorData.find(
+            (cat) => cat.id === categoryId
+          );
+          const option = category?.options.find((opt) => opt.id === optionId);
+
+          if (
+            option?.price?.amount &&
+            configuration.belichtungspaket &&
+            configuration.nest
+          ) {
+            // Calculate total fenster area needed (belichtungspaket + stirnseite)
+            let totalArea = 0;
+
+            // Add belichtungspaket area
+            const nestSizeMap: Record<string, number> = {
+              nest80: 80,
+              nest100: 100,
+              nest120: 120,
+              nest140: 140,
+              nest160: 160,
+            };
+            const nestSize = nestSizeMap[configuration.nest.value] || 80;
+            const percentageMap: Record<string, number> = {
+              light: 0.12,
+              medium: 0.16,
+              bright: 0.22,
+            };
+            const percentage =
+              percentageMap[configuration.belichtungspaket.value] || 0.12;
+            totalArea += Math.ceil(nestSize * percentage);
+
+            // Add stirnseite area if selected
+            if (
+              configuration.stirnseite &&
+              configuration.stirnseite.value !== "keine_verglasung"
+            ) {
+              const areaMap: Record<string, number> = {
+                verglasung_oben: 8,
+                verglasung_einfache_schiebetuer: 8.5,
+                verglasung_doppelte_schiebetuer: 17,
+                vollverglasung: 25,
+              };
+              totalArea += areaMap[configuration.stirnseite.value] || 0;
+            }
+
+            return totalArea * option.price.amount;
+          }
+        }
+
+        // For PV, calculate quantity × price
+        if (categoryId === "pvanlage" && configuration.pvanlage?.quantity) {
+          const category = configuratorData.find(
+            (cat) => cat.id === categoryId
+          );
+          const option = category?.options.find((opt) => opt.id === optionId);
+          return (
+            (configuration.pvanlage.quantity || 0) *
+            (option?.price?.amount || 0)
+          );
+        }
+
+        // For other categories, use original price
+        const category = configuratorData.find((cat) => cat.id === categoryId);
+        const option = category?.options.find((opt) => opt.id === optionId);
+        return option?.price?.amount || 0;
+      } catch (error) {
+        console.error(
+          `Error calculating contribution price for ${categoryId}:${optionId}:`,
+          error
+        );
+        return null;
+      }
+    },
+    [configuration]
+  );
+
   const getDisplayPrice = useCallback(
     (categoryId: string, optionId: string) => {
-      const cacheKey = `${categoryId}:${optionId}`;
-      const cachedPrice = optionPricesCache.get(cacheKey);
-
-      if (cachedPrice) {
-        return cachedPrice;
-      }
-
-      // Fallback to static price from configuratorData (no expensive calculation)
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
-      return option?.price || { type: "included" as const };
+
+      if (!option) {
+        return { type: "included" as const };
+      }
+
+      // For PV anlage, convert upgrade types to standard for initial display
+      if (categoryId === "pvanlage") {
+        const originalPrice = option.price;
+        if (originalPrice.type === "upgrade") {
+          return {
+            type: "standard" as const,
+            amount: originalPrice.amount,
+            monthly: originalPrice.monthly,
+          };
+        }
+        return originalPrice;
+      }
+
+      // For nest modules, show total prices instead of relative prices
+      if (categoryId === "nest") {
+        const currentSelection = configuration[
+          categoryId as keyof typeof configuration
+        ] as ConfigurationItem | undefined;
+
+        // If this option is currently selected, show no price at all
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+
+        // For nest modules, always show the total price (not relative)
+        const originalPrice = option.price;
+        if (originalPrice.type === "upgrade") {
+          return {
+            type: "standard" as const,
+            amount: originalPrice.amount,
+            monthly: originalPrice.monthly,
+          };
+        }
+        return originalPrice;
+      }
+
+      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, stirnseite, planungspaket)
+      if (
+        [
+          "gebaeudehuelle",
+          "innenverkleidung",
+          "fussboden",
+          "belichtungspaket",
+          "fenster",
+          "stirnseite",
+          "planungspaket",
+        ].includes(categoryId)
+      ) {
+        // Get currently selected option in this category
+        const currentSelection = configuration[
+          categoryId as keyof typeof configuration
+        ] as ConfigurationItem | undefined;
+
+        // If this option is currently selected, show per m² price for fenster, no price for others
+        if (currentSelection && currentSelection.value === optionId) {
+          if (categoryId === "fenster") {
+            // Show per m² price for selected fenster option
+            return {
+              type: "standard" as const,
+              amount: option.price.amount || 0,
+              monthly: option.price.monthly,
+            };
+          }
+          return { type: "selected" as const };
+        }
+
+        // If no option is selected yet, calculate actual price based on current nest module
+        if (!currentSelection) {
+          const originalPrice = option.price;
+
+          // Special pricing for belichtungspaket - calculate based on nest size and fenster material
+          if (categoryId === "belichtungspaket" && configuration?.nest) {
+            const mockBelichtungspaket = {
+              category: "belichtungspaket",
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description || "",
+            };
+
+            const calculatedPrice =
+              PriceCalculator.calculateBelichtungspaketPrice(
+                mockBelichtungspaket,
+                configuration.nest,
+                configuration.fenster || undefined
+              );
+
+            return {
+              type: "upgrade" as const,
+              amount: calculatedPrice,
+              monthly: Math.round(calculatedPrice / 240), // 20-year financing
+            };
+          }
+
+          // For nest-dependent categories, calculate modular price based on current nest size
+          if (
+            configuration?.nest &&
+            ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+              categoryId
+            )
+          ) {
+            // Calculate the actual price for this option with current nest module
+            const currentNestValue = configuration.nest.value;
+
+            // Always use defaults for base calculation - prices should only depend on nest size, not other selections
+            let testGebaeudehuelle = "trapezblech"; // Always use default
+            let testInnenverkleidung = "kiefer"; // Always use default
+            let testFussboden = "parkett"; // Always use default
+
+            if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
+            if (categoryId === "innenverkleidung")
+              testInnenverkleidung = optionId;
+            if (categoryId === "fussboden") testFussboden = optionId;
+
+            // Calculate combination price with this option
+            const combinationPrice = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              testGebaeudehuelle,
+              testInnenverkleidung,
+              testFussboden
+            );
+
+            // Calculate base combination price (all defaults)
+            const basePrice = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              "trapezblech",
+              "kiefer",
+              "parkett"
+            );
+
+            // Get the individual option price (difference from base)
+            const optionPrice = combinationPrice - basePrice;
+
+            if (optionPrice < 0) {
+              // Negative prices should show as "inklusive"
+              return { type: "included" as const };
+            } else if (optionPrice === 0) {
+              // Zero price should show as "inklusive"
+              return { type: "included" as const };
+            } else {
+              // Positive price should show as standard price
+              return {
+                type: "standard" as const,
+                amount: optionPrice,
+                monthly: originalPrice.monthly,
+              };
+            }
+          }
+
+          // For nest-dependent categories when NO nest is selected, calculate as if smallest nest (nest80) is selected
+          if (
+            ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+              categoryId
+            )
+          ) {
+            // Use nest80 as base reference for pricing when nothing is selected
+            let testGebaeudehuelle = "trapezblech";
+            let testInnenverkleidung = "kiefer";
+            let testFussboden = "parkett";
+
+            if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
+            if (categoryId === "innenverkleidung")
+              testInnenverkleidung = optionId;
+            if (categoryId === "fussboden") testFussboden = optionId;
+
+            // Calculate combination price with this option for nest80
+            const combinationPrice = PriceCalculator.calculateCombinationPrice(
+              "nest80",
+              testGebaeudehuelle,
+              testInnenverkleidung,
+              testFussboden
+            );
+
+            // Calculate base combination price (all defaults) for nest80
+            const basePrice = PriceCalculator.calculateCombinationPrice(
+              "nest80",
+              "trapezblech",
+              "kiefer",
+              "parkett"
+            );
+
+            // Get the individual option price (difference from base)
+            const optionPrice = combinationPrice - basePrice;
+
+            if (optionPrice < 0) {
+              return { type: "included" as const };
+            } else if (optionPrice === 0) {
+              return { type: "included" as const };
+            } else {
+              return {
+                type: "standard" as const,
+                amount: optionPrice,
+                monthly: originalPrice.monthly,
+              };
+            }
+          }
+
+          // For other categories or when no nest selected, use original logic
+          if (
+            originalPrice.type === "discount" &&
+            originalPrice.amount !== undefined &&
+            originalPrice.amount < 0
+          ) {
+            // Negative discount amounts should show as "inklusive"
+            return { type: "included" as const };
+          } else if (originalPrice.type === "upgrade") {
+            // Upgrade types should show as standard prices (no + sign)
+            return {
+              type: "standard" as const,
+              amount: originalPrice.amount,
+              monthly: originalPrice.monthly,
+            };
+          } else {
+            // Keep other types as is (included, standard, base)
+            return originalPrice;
+          }
+        }
+
+        // For nest-dependent categories with current selection, use modular pricing calculation
+        if (
+          currentSelection &&
+          configuration?.nest &&
+          ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+            categoryId
+          )
+        ) {
+          const currentNestValue = configuration.nest.value;
+
+          // Use defaults for base calculation, only change the current category for relative pricing
+          const baseGebaeudehuelle = "trapezblech";
+          const baseInnenverkleidung = "kiefer";
+          const baseFussboden = "parkett";
+
+          // Get the current selection for THIS category only
+          const currentCategorySelection = configuration?.[
+            categoryId as keyof typeof configuration
+          ] as ConfigurationItem | undefined;
+
+          // Calculate current total with defaults + current category selection
+          let currentGebaeudehuelle = baseGebaeudehuelle;
+          let currentInnenverkleidung = baseInnenverkleidung;
+          let currentFussboden = baseFussboden;
+
+          if (categoryId === "gebaeudehuelle" && currentCategorySelection) {
+            currentGebaeudehuelle = currentCategorySelection.value;
+          } else if (
+            categoryId === "innenverkleidung" &&
+            currentCategorySelection
+          ) {
+            currentInnenverkleidung = currentCategorySelection.value;
+          } else if (categoryId === "fussboden" && currentCategorySelection) {
+            currentFussboden = currentCategorySelection.value;
+          }
+
+          const currentTotal = PriceCalculator.calculateCombinationPrice(
+            currentNestValue,
+            currentGebaeudehuelle,
+            currentInnenverkleidung,
+            currentFussboden
+          );
+
+          // Calculate total if we switched to this option (only change the relevant category)
+          let testGebaeudehuelle = baseGebaeudehuelle;
+          let testInnenverkleidung = baseInnenverkleidung;
+          let testFussboden = baseFussboden;
+
+          if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
+          if (categoryId === "innenverkleidung")
+            testInnenverkleidung = optionId;
+          if (categoryId === "fussboden") testFussboden = optionId;
+
+          const newTotal = PriceCalculator.calculateCombinationPrice(
+            currentNestValue,
+            testGebaeudehuelle,
+            testInnenverkleidung,
+            testFussboden
+          );
+
+          const priceDifference = newTotal - currentTotal;
+
+          // Special handling for "Inklusive" options with negative prices
+          const currentOptionPrice = currentSelection.price || 0;
+          const targetOptionPrice = option.price.amount || 0;
+
+          if (currentOptionPrice < 0) {
+            // Current selection is "Inklusive" - show absolute price of target option
+            // Calculate what the total would be with this target option
+            let testGebaeudehuelle = baseGebaeudehuelle;
+            let testInnenverkleidung = baseInnenverkleidung;
+            let testFussboden = baseFussboden;
+
+            if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
+            if (categoryId === "innenverkleidung")
+              testInnenverkleidung = optionId;
+            if (categoryId === "fussboden") testFussboden = optionId;
+
+            const targetTotal = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              testGebaeudehuelle,
+              testInnenverkleidung,
+              testFussboden
+            );
+
+            const defaultTotal = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              baseGebaeudehuelle,
+              baseInnenverkleidung,
+              baseFussboden
+            );
+
+            const absolutePrice = targetTotal - defaultTotal;
+
+            if (absolutePrice === 0) {
+              return { type: "included" as const };
+            } else if (absolutePrice > 0) {
+              return {
+                type: "upgrade" as const,
+                amount: absolutePrice,
+                monthly: option.price.monthly,
+              };
+            } else {
+              return {
+                type: "discount" as const,
+                amount: Math.abs(absolutePrice),
+                monthly: option.price.monthly,
+              };
+            }
+          } else if (targetOptionPrice < 0) {
+            // Target option is "Inklusive" - show negative of current selection's absolute price
+            // Calculate how much the current selection costs compared to the baseline
+            const defaultTotal = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              baseGebaeudehuelle,
+              baseInnenverkleidung,
+              baseFussboden
+            );
+
+            const discountAmount = currentTotal - defaultTotal;
+
+            return {
+              type: "discount" as const,
+              amount: discountAmount,
+              monthly: option.price.monthly,
+            };
+          } else {
+            // Normal relative pricing
+            if (priceDifference === 0) {
+              return {
+                type: "upgrade" as const,
+                amount: 0,
+                monthly: option.price.monthly,
+              };
+            } else if (priceDifference > 0) {
+              return {
+                type: "upgrade" as const,
+                amount: priceDifference,
+                monthly: option.price.monthly,
+              };
+            } else {
+              return {
+                type: "discount" as const,
+                amount: Math.abs(priceDifference),
+                monthly: option.price.monthly,
+              };
+            }
+          }
+        }
+
+        // For belichtungspaket and stirnseite with current selection, calculate relative pricing
+        if (
+          currentSelection &&
+          ["belichtungspaket", "stirnseite"].includes(categoryId)
+        ) {
+          // Special case: keine_verglasung always shows as included
+          if (categoryId === "stirnseite" && optionId === "keine_verglasung") {
+            return { type: "included" as const };
+          }
+          // Calculate current total with currently selected option
+          let currentPrice = 0;
+          if (categoryId === "belichtungspaket") {
+            currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
+              currentSelection as SelectionOptionType,
+              configuration.nest as SelectionOptionType,
+              configuration.fenster as SelectionOptionType | undefined
+            );
+          } else if (categoryId === "stirnseite") {
+            currentPrice = PriceCalculator.calculateStirnseitePrice(
+              currentSelection,
+              configuration.fenster || undefined
+            );
+          }
+
+          // Calculate price with this option
+          let optionPrice = 0;
+          if (categoryId === "belichtungspaket") {
+            const mockOption = {
+              category: "belichtungspaket",
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description || "",
+            };
+            optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
+              mockOption as SelectionOptionType,
+              configuration.nest as SelectionOptionType,
+              configuration.fenster as SelectionOptionType | undefined
+            );
+          } else if (categoryId === "stirnseite") {
+            const mockOption = {
+              category: "stirnseite",
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description || "",
+            };
+            optionPrice = PriceCalculator.calculateStirnseitePrice(
+              mockOption,
+              configuration.fenster || undefined
+            );
+          }
+
+          const priceDifference = optionPrice - currentPrice;
+
+          if (priceDifference === 0) {
+            return {
+              type: "upgrade" as const,
+              amount: 0,
+              monthly: option.price.monthly,
+            };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: option.price.monthly,
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
+        // For planungspaket with current selection, calculate relative pricing using fixed prices
+        if (currentSelection && categoryId === "planungspaket") {
+          const currentPrice = currentSelection.price || 0;
+          const optionPrice = option.price.amount || 0;
+          const priceDifference = optionPrice - currentPrice;
+
+          if (priceDifference === 0) {
+            return {
+              type: "upgrade" as const,
+              amount: 0,
+              monthly: option.price.monthly,
+            };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: option.price.monthly,
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
+        // Calculate relative price difference using simpler direct price comparison for other categories
+        if (
+          currentSelection &&
+          option.price.amount !== undefined &&
+          currentSelection.price !== undefined &&
+          !["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
+            categoryId
+          )
+        ) {
+          // For sections with direct price amounts, use simple difference calculation
+          const currentPrice = currentSelection.price || 0;
+          const optionPrice = option.price.amount || 0;
+          const priceDifference = optionPrice - currentPrice;
+
+          if (priceDifference === 0) {
+            return {
+              type: "upgrade" as const,
+              amount: 0,
+              monthly: option.price.monthly,
+            };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: option.price.monthly,
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
+        // Fallback to total price calculation for complex cases
+        // Build current configuration
+        const currentConfig = {
+          nest: configuration.nest || undefined,
+          gebaeudehuelle: configuration.gebaeudehuelle || undefined,
+          innenverkleidung: configuration.innenverkleidung || undefined,
+          fussboden: configuration.fussboden || undefined,
+          belichtungspaket: configuration.belichtungspaket || undefined,
+          fenster: configuration.fenster || undefined,
+          stirnseite: configuration.stirnseite || undefined,
+          pvanlage: configuration.pvanlage || undefined,
+        };
+
+        // Build configuration with this option
+        const newConfig = {
+          ...currentConfig,
+          [categoryId]: {
+            category: categoryId,
+            value: optionId,
+            name: option.name,
+            price: option.price.amount || 0,
+          },
+        };
+
+        // Calculate total prices
+        const currentTotal = PriceCalculator.calculateTotalPrice(currentConfig);
+        const newTotal = PriceCalculator.calculateTotalPrice(newConfig);
+
+        // Calculate the difference
+        const priceDifference = newTotal - currentTotal;
+
+        // Return the appropriate price type
+        if (priceDifference === 0) {
+          return {
+            type: "upgrade" as const,
+            amount: 0,
+            monthly: option.price.monthly,
+          };
+        } else if (priceDifference > 0) {
+          return {
+            type: "upgrade" as const,
+            amount: priceDifference,
+            monthly: option.price.monthly,
+          };
+        } else {
+          return {
+            type: "discount" as const,
+            amount: Math.abs(priceDifference),
+            monthly: option.price.monthly,
+          };
+        }
+      }
+
+      // For all other categories, return original price
+      return option.price;
     },
-    [optionPricesCache]
+    [configuration]
   );
 
   // Adjust PV quantity when nest size changes and exceeds new maximum
@@ -634,42 +1099,12 @@ export default function ConfiguratorShell({
     }
   }, [getMaxPvModules, pvQuantity, configuration?.pvanlage, updateSelection]);
 
-  // Adjust Fenster quantity when nest size changes and exceeds new maximum
-  useEffect(() => {
-    const maxFenster = getMaxFensterSquareMeters();
-    if (fensterSquareMeters > maxFenster) {
-      setFensterSquareMeters(maxFenster);
-      // Update the configuration with the new capped quantity
-      if (configuration?.fenster) {
-        updateSelection({
-          category: configuration.fenster.category,
-          value: configuration.fenster.value,
-          name: configuration.fenster.name,
-          price: configuration.fenster.price,
-          description: configuration.fenster.description,
-          squareMeters: maxFenster,
-        });
-      }
-    }
-  }, [
-    getMaxFensterSquareMeters,
-    fensterSquareMeters,
-    configuration?.fenster,
-    updateSelection,
-  ]);
-
   // Reset local quantities when selections are removed
   useEffect(() => {
     if (!configuration?.pvanlage && pvQuantity > 0) {
       setPvQuantity(0);
     }
   }, [configuration?.pvanlage, pvQuantity]);
-
-  useEffect(() => {
-    if (!configuration?.fenster && fensterSquareMeters > 0) {
-      setFensterSquareMeters(0);
-    }
-  }, [configuration?.fenster, fensterSquareMeters]);
 
   // Render selection content
   const SelectionContent = () => (
@@ -681,124 +1116,115 @@ export default function ConfiguratorShell({
           title={category.title}
           subtitle={category.subtitle}
         >
-          <div className="space-y-2">
-            {category.options.map((option) => {
-              // Use static price from configuratorData for consistent display
-              const displayPrice = getDisplayPrice(category.id, option.id);
+          {(() => {
+            // No more disabled states - always allow selections with defaults
 
-              return (
-                <SelectionOption
-                  key={option.id}
-                  id={option.id}
-                  name={option.name}
-                  description={option.description}
-                  price={displayPrice}
-                  isSelected={isOptionSelected(category.id, option.id)}
-                  categoryId={category.id}
-                  nestModel={configuration?.nest?.value}
-                  onClick={(optionId) => {
-                    if (category.id === "pvanlage") {
-                      handlePvSelection(category.id, optionId);
-                    } else if (category.id === "fenster") {
-                      handleFensterSelection(category.id, optionId);
-                    } else {
-                      handleSelection(category.id, optionId);
-                    }
-                  }}
-                />
-              );
-            })}
-          </div>
+            return (
+              <>
+                <div className="space-y-2">
+                  {category.options.map((option) => {
+                    // Use static price from configuratorData for consistent display
+                    const displayPrice = getDisplayPrice(
+                      category.id,
+                      option.id
+                    );
 
-          {/* PV Quantity Selector */}
-          {category.id === "pvanlage" && configuration?.pvanlage && (
-            <>
-              <QuantitySelector
-                label="Anzahl der PV-Module"
-                value={pvQuantity}
-                max={getMaxPvModules()}
-                unitPrice={configuration.pvanlage.price || 0}
-                onChange={handlePvQuantityChange}
-              />
-            </>
-          )}
+                    // Get actual contribution price for selected options
+                    const contributionPrice = isOptionSelected(
+                      category.id,
+                      option.id
+                    )
+                      ? getActualContributionPrice(category.id, option.id)
+                      : null;
 
-          {/* Info Box - Use new responsive cards for specific categories */}
-          {category.infoBox && (
-            <>
-              {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
-              {category.id === "gebaeudehuelle" ||
-              category.id === "innenverkleidung" ||
-              category.id === "fussboden" ||
-              category.id === "fenster" ||
-              category.id === "pvanlage" ? (
-                <ConfiguratorContentCardsLightbox
-                  categoryKey={
-                    category.id === "gebaeudehuelle"
-                      ? "materials"
-                      : category.id === "pvanlage"
-                        ? "photovoltaik"
-                        : category.id === "fussboden"
-                          ? "fussboden"
-                          : (category.id as "innenverkleidung" | "fenster")
-                  }
-                  triggerText={category.infoBox.title}
-                />
-              ) : (
-                /* Use regular InfoBox for other categories */
-                <InfoBox
-                  title={category.infoBox.title}
-                  description={category.infoBox.description}
-                  onClick={() => handleInfoClick(category.id)}
-                />
-              )}
-            </>
-          )}
+                    return (
+                      <SelectionOption
+                        key={option.id}
+                        id={option.id}
+                        name={option.name}
+                        description={option.description}
+                        price={displayPrice}
+                        isSelected={isOptionSelected(category.id, option.id)}
+                        categoryId={category.id}
+                        nestModel={configuration?.nest?.value}
+                        contributionPrice={contributionPrice}
+                        onClick={(optionId) => {
+                          // Always allow selections with defaults in place
+                          handleSelection(category.id, optionId);
+                        }}
+                      />
+                    );
+                  })}
+                </div>
 
-          {/* Fenster Square Meters Selector */}
-          {category.id === "fenster" && configuration?.fenster && (
-            <>
-              <QuantitySelector
-                label="Größe der Fenster / Türen"
-                value={fensterSquareMeters}
-                max={getMaxFensterSquareMeters()}
-                unitPrice={configuration.fenster.price || 0}
-                unit="m²"
-                onChange={handleFensterSquareMetersChange}
-              />
-            </>
-          )}
+                {/* PV Quantity Selector */}
+                {category.id === "pvanlage" && configuration?.pvanlage && (
+                  <>
+                    <QuantitySelector
+                      label="Anzahl der PV-Module"
+                      value={pvQuantity}
+                      max={getMaxPvModules()}
+                      unitPrice={configuration.pvanlage.price || 0}
+                      onChange={handlePvQuantityChange}
+                    />
+                  </>
+                )}
 
-          {/* Facts Box */}
-          {category.facts && (
-            <FactsBox
-              title={category.facts.title}
-              facts={category.facts.content}
-              links={category.facts.links}
-            />
-          )}
+                {/* Info Box - Use new responsive cards for specific categories */}
+                {category.infoBox && (
+                  <>
+                    {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
+                    {category.id === "gebaeudehuelle" ||
+                    category.id === "innenverkleidung" ||
+                    category.id === "fussboden" ||
+                    category.id === "belichtungspaket" ||
+                    category.id === "fenster" ||
+                    category.id === "stirnseite" ||
+                    category.id === "pvanlage" ? (
+                      <ConfiguratorContentCardsLightbox
+                        categoryKey={
+                          category.id === "gebaeudehuelle"
+                            ? "materials"
+                            : category.id === "pvanlage"
+                              ? "photovoltaik"
+                              : category.id === "fussboden"
+                                ? "fussboden"
+                                : category.id === "belichtungspaket"
+                                  ? "belichtungspaket"
+                                  : category.id === "stirnseite"
+                                    ? "stirnseite"
+                                    : (category.id as
+                                        | "innenverkleidung"
+                                        | "fenster")
+                        }
+                        triggerText={category.infoBox.title}
+                      />
+                    ) : (
+                      /* Use regular InfoBox for other categories */
+                      <InfoBox
+                        title={category.infoBox.title}
+                        description={category.infoBox.description}
+                        onClick={() => handleInfoClick(category.id)}
+                      />
+                    )}
+                  </>
+                )}
+
+                {/* Facts Box */}
+                {category.facts && (
+                  <FactsBox
+                    title={category.facts.title}
+                    facts={category.facts.content}
+                    links={category.facts.links}
+                  />
+                )}
+              </>
+            );
+          })()}
         </CategorySection>
       ))}
 
-      {/* Grundstücks-Check Section */}
-      <CategorySection
-        id="section-grundstueckscheck"
-        title="Grundstückscheck"
-        subtitle={
-          <span className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-400">
-            Optional
-          </span>
-        }
-      >
-        <GrundstuecksCheckBox
-          isSelected={isGrundstuecksCheckSelected}
-          onClick={handleGrundstuecksCheckToggle}
-        />
-        <InfoBox
-          title="Mehr Informationen zum Grundstückscheck"
-          onClick={() => handleInfoClick("grundcheck")}
-        />
-      </CategorySection>
+      {/* Grundstückscheck now handled in Warenkorb */}
 
       {/* Summary Panel */}
       <SummaryPanel onInfoClick={handleInfoClick} />
@@ -816,7 +1242,11 @@ export default function ConfiguratorShell({
       <div className="lg:hidden min-h-screen bg-white">
         {/* Sticky Image Header - sticks to top during scroll */}
         <div className="sticky top-0 z-40 bg-white shadow-sm">
-          <PreviewPanel isMobile={true} />
+          <PreviewPanel
+            isMobile={true}
+            isPvOverlayVisible={isPvOverlayVisible}
+            isBrightnessOverlayVisible={isBrightnessOverlayVisible}
+          />
         </div>
 
         {/* Scrollable Content - flows underneath sticky image */}
@@ -844,7 +1274,11 @@ export default function ConfiguratorShell({
             paddingTop: panelPaddingTop,
           }}
         >
-          <PreviewPanel isMobile={false} />
+          <PreviewPanel
+            isMobile={false}
+            isPvOverlayVisible={isPvOverlayVisible}
+            isBrightnessOverlayVisible={isBrightnessOverlayVisible}
+          />
         </div>
 
         {/* Right: Selection Panel (30%) - Matches left panel positioning */}
@@ -869,16 +1303,6 @@ export default function ConfiguratorShell({
       <CalendarDialog
         isOpen={isCalendarDialogOpen}
         onClose={() => setIsCalendarDialogOpen(false)}
-      />
-
-      <GrundstueckCheckDialog
-        isOpen={isGrundstueckCheckDialogOpen}
-        onClose={() => setIsGrundstueckCheckDialogOpen(false)}
-      />
-
-      <PlanungspaketeDialog
-        isOpen={isPlanungspaketeDialogOpen}
-        onClose={() => setIsPlanungspaketeDialogOpen(false)}
       />
     </div>
   );

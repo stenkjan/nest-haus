@@ -7,13 +7,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   useConfiguratorStore,
   type ConfigurationItem,
 } from "@/store/configuratorStore";
-import { PriceCalculator } from "../core/PriceCalculator";
+import { PriceCalculator } from "../core/PriceCalculator"; // Re-added for dynamic price calculations
 import { PriceUtils } from "../core/PriceUtils";
 import InfoBox from "./InfoBox";
 import Button from "@/components/ui/Button";
@@ -27,103 +27,127 @@ export default function SummaryPanel({
   onInfoClick,
   className = "",
 }: SummaryPanelProps) {
-  const {
-    configuration,
-    currentPrice,
-    isConfigurationComplete,
-    resetConfiguration,
-  } = useConfiguratorStore();
+  const { configuration, currentPrice, resetConfiguration } =
+    useConfiguratorStore();
 
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // PERFORMANCE FIX: Memoize dynamic price calculations to prevent recalculation during rendering
-  const getDynamicPrice = useMemo(() => {
-    if (!configuration?.nest) return () => null;
+  // REMOVED: getDynamicPrice variable no longer needed after reverting complex pricing logic
 
-    const selections = {
-      nest: {
-        category: configuration.nest.category,
-        value: configuration.nest.value,
-        name: configuration.nest.name,
-        price: configuration.nest.price,
-      },
-      gebaeudehuelle: configuration.gebaeudehuelle
-        ? {
-            category: configuration.gebaeudehuelle.category,
-            value: configuration.gebaeudehuelle.value,
-            name: configuration.gebaeudehuelle.name,
-            price: configuration.gebaeudehuelle.price,
-          }
-        : undefined,
-      innenverkleidung: configuration.innenverkleidung
-        ? {
-            category: configuration.innenverkleidung.category,
-            value: configuration.innenverkleidung.value,
-            name: configuration.innenverkleidung.name,
-            price: configuration.innenverkleidung.price,
-          }
-        : undefined,
-      fussboden: configuration.fussboden
-        ? {
-            category: configuration.fussboden.category,
-            value: configuration.fussboden.value,
-            name: configuration.fussboden.name,
-            price: configuration.fussboden.price,
-          }
-        : undefined,
-    };
-
-    // Return a function that uses the memoized selections
-    return (categoryId: string, selectionValue: string) => {
-      if (
-        !["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
-          categoryId
-        )
-      ) {
-        return null;
-      }
-
-      return PriceCalculator.getOptionDisplayPrice(
-        configuration.nest!.value,
-        selections,
-        categoryId,
-        selectionValue
-      );
-    };
-  }, [
-    configuration?.nest,
-    configuration?.gebaeudehuelle,
-    configuration?.innenverkleidung,
-    configuration?.fussboden,
-  ]);
-
-  // SIMPLIFIED: Helper functions without unnecessary useCallback (per React docs)
+  // Enhanced item price calculation with dynamic pricing for belichtungspaket and stirnseite
   const getItemPrice = (key: string, selection: ConfigurationItem): number => {
-    // For core categories that change with NEST size, use dynamic pricing
-    if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value);
-      if (
-        dynamicPrice &&
-        dynamicPrice.type === "upgrade" &&
-        dynamicPrice.amount
-      ) {
-        return dynamicPrice.amount;
-      }
-      return 0; // If it's included or no price
-    }
-
-    // For other items, calculate based on quantity/squareMeters
+    // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
       return (selection.quantity || 1) * (selection.price || 0);
     }
     if (key === "fenster") {
-      return (selection.squareMeters || 1) * (selection.price || 0);
+      // Fenster price is already included in belichtungspaket calculation, so return 0
+      return 0;
     }
 
-    // Default case
+    // For belichtungspaket, calculate dynamic price
+    if (key === "belichtungspaket" && configuration?.nest) {
+      try {
+        // Ensure we have valid selection data
+        if (!selection.value || !configuration.nest.value) {
+          console.warn(
+            "Invalid belichtungspaket or nest data, using base price"
+          );
+          return selection.price || 0;
+        }
+
+        const selectionOption = {
+          category: key,
+          value: selection.value,
+          name: selection.name,
+          price: selection.price || 0,
+        };
+        return PriceCalculator.calculateBelichtungspaketPrice(
+          selectionOption,
+          configuration.nest,
+          configuration.fenster ?? undefined
+        );
+      } catch (error) {
+        console.error(
+          "Error calculating belichtungspaket price in summary:",
+          error
+        );
+        return selection.price || 0;
+      }
+    }
+
+    // For stirnseite, calculate dynamic price
+    if (key === "stirnseite" && selection.value !== "keine_verglasung") {
+      try {
+        const selectionOption = {
+          category: key,
+          value: selection.value,
+          name: selection.name,
+          price: selection.price || 0,
+        };
+        return PriceCalculator.calculateStirnseitePrice(
+          selectionOption,
+          configuration.fenster ?? undefined
+        );
+      } catch (error) {
+        console.error("Error calculating stirnseite price in summary:", error);
+        return selection.price || 0;
+      }
+    }
+
+    // For gebäudehülle, innenverkleidung, and fussboden, calculate dynamic price based on nest size
+    if (
+      (key === "gebaeudehuelle" ||
+        key === "innenverkleidung" ||
+        key === "fussboden") &&
+      configuration?.nest
+    ) {
+      try {
+        // Calculate the price difference for this specific option
+        const currentNestValue = configuration.nest.value;
+
+        // Use defaults for base calculation
+        const baseGebaeudehuelle = "trapezblech";
+        const baseInnenverkleidung = "kiefer";
+        const baseFussboden = "parkett";
+
+        // Calculate base combination price (all defaults)
+        const basePrice = PriceCalculator.calculateCombinationPrice(
+          currentNestValue,
+          baseGebaeudehuelle,
+          baseInnenverkleidung,
+          baseFussboden
+        );
+
+        // Calculate combination price with this specific option
+        let testGebaeudehuelle = baseGebaeudehuelle;
+        let testInnenverkleidung = baseInnenverkleidung;
+        let testFussboden = baseFussboden;
+
+        if (key === "gebaeudehuelle") testGebaeudehuelle = selection.value;
+        if (key === "innenverkleidung") testInnenverkleidung = selection.value;
+        if (key === "fussboden") testFussboden = selection.value;
+
+        const combinationPrice = PriceCalculator.calculateCombinationPrice(
+          currentNestValue,
+          testGebaeudehuelle,
+          testInnenverkleidung,
+          testFussboden
+        );
+
+        // Return the price difference (this option's contribution)
+        const optionPrice = combinationPrice - basePrice;
+        return Math.max(0, optionPrice); // Don't show negative prices in summary
+      } catch (error) {
+        console.error(`Error calculating ${key} price in summary:`, error);
+        return selection.price || 0;
+      }
+    }
+
+    // For all other items, use the base price
     return selection.price || 0;
   };
 
@@ -131,15 +155,9 @@ export default function SummaryPanel({
     key: string,
     selection: ConfigurationItem
   ): boolean => {
-    // For core categories that change with NEST size, check dynamic pricing
-    if (["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(key)) {
-      const dynamicPrice = getDynamicPrice(key, selection.value);
-      return !dynamicPrice || dynamicPrice.type === "included";
-    }
-
-    // For other items, check if price is 0
-    if (!selection?.price) return true;
-    return !selection.price || selection.price === 0;
+    // Use the calculated price to determine if item is included
+    const calculatedPrice = getItemPrice(key, selection);
+    return calculatedPrice === 0;
   };
 
   if (!configuration) {
@@ -174,6 +192,27 @@ export default function SummaryPanel({
     return selection.name;
   };
 
+  // Helper function to get display name for belichtungspaket
+  const getBelichtungspaketDisplayName = (
+    belichtungspaket: ConfigurationItem,
+    fenster?: ConfigurationItem | null
+  ) => {
+    if (!belichtungspaket) return "";
+
+    const levelNames = {
+      light: "Light",
+      medium: "Medium",
+      bright: "Bright",
+    };
+
+    const levelName =
+      levelNames[belichtungspaket.value as keyof typeof levelNames] ||
+      belichtungspaket.name;
+    const fensterName = fenster?.name ? ` - ${fenster.name}` : " - PVC Fenster";
+
+    return `Beleuchtungspaket ${levelName}${fensterName}`;
+  };
+
   return (
     <div className={`summary-panel ${className}`}>
       <div className="mt-12">
@@ -187,12 +226,14 @@ export default function SummaryPanel({
             {/* Show all configuration items individually, including preselected ones */}
             {(() => {
               // Filter and sort configuration entries
+              // Exclude fenster from cart display since its price is incorporated into belichtungspaket and stirnseite
               const configEntries = Object.entries(configuration).filter(
                 ([key, selection]) =>
                   selection &&
                   key !== "sessionId" &&
                   key !== "totalPrice" &&
-                  key !== "timestamp"
+                  key !== "timestamp" &&
+                  key !== "fenster" // Fenster price is included in belichtungspaket/stirnseite calculations
               );
 
               const { topItems, middleItems, bottomItems } =
@@ -239,15 +280,14 @@ export default function SummaryPanel({
                           </>
                         ) : !isIncluded && itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from specified sections */}
                             {![
                               "gebaeudehuelle",
                               "innenverkleidung",
                               "fussboden",
+                              "belichtungspaket",
+                              "stirnseite",
                             ].includes(key) && (
-                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                                zzgl.
-                              </div>
+                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
@@ -283,7 +323,6 @@ export default function SummaryPanel({
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from planungspaket */}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
                             </div>
@@ -309,9 +348,14 @@ export default function SummaryPanel({
                     >
                       <div className="flex-1 min-w-0 max-w-[50%]">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {key === "fenster"
-                            ? getFensterDisplayName(selection, true)
-                            : selection.name}
+                          {key === "belichtungspaket"
+                            ? getBelichtungspaketDisplayName(
+                                selection,
+                                configuration?.fenster ?? null
+                              )
+                            : key === "fenster"
+                              ? getFensterDisplayName(selection, true)
+                              : selection.name}
                           {key === "pvanlage" &&
                             selection.quantity &&
                             selection.quantity > 1 &&
@@ -326,16 +370,12 @@ export default function SummaryPanel({
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {itemPrice > 0 ? (
                           <>
-                            {/* Remove "zzgl." from fenster, pvanlage, and grundstueckscheck */}
-                            {/* zzgl. is not shown for fenster, pvanlage, or grundstueckscheck as required */}
                             {![
                               "fenster",
                               "pvanlage",
                               "grundstueckscheck",
                             ].includes(key) && (
-                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
-                                zzgl.
-                              </div>
+                              <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]"></div>
                             )}
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
@@ -417,16 +457,9 @@ export default function SummaryPanel({
               {/* Navigate to Warenkorb Button - Primary button first */}
               <Link
                 href="/warenkorb"
-                className={`bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl h-[44px] min-h-[44px] px-6 whitespace-nowrap ${
-                  !isConfigurationComplete()
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                onClick={(e) =>
-                  !isConfigurationComplete() && e.preventDefault()
-                }
+                className="bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl h-[44px] min-h-[44px] px-6 whitespace-nowrap"
               >
-                {isConfigurationComplete() ? "Zum Warenkorb" : "Jetzt bauen"}
+                Zum Warenkorb
               </Link>
 
               {/* Neu konfigurieren Button - Secondary button beside on desktop, below on mobile */}

@@ -7,7 +7,7 @@ export interface CategoryData {
     name: string
     description: string
     price: {
-      type: 'base' | 'upgrade' | 'included'
+      type: 'base' | 'upgrade' | 'included' | 'standard' | 'discount'
       amount?: number
       monthly?: number
     }
@@ -83,28 +83,28 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Kleide dich ein',
     options: [
       {
-        id: 'trapezblech',
-        name: 'Trapezblech',
-        description: 'RAL 9005 - 3000 x 1142 mm',
-        price: { type: 'included' }
-      },
-      {
         id: 'holzlattung',
         name: 'Holzlattung Lärche Natur',
         description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.',
-        price: { type: 'upgrade', amount: 9600, monthly: 50 }
+        price: { type: 'standard', amount: 9600, monthly: 50 } // Standard item with background price
+      },
+      {
+        id: 'trapezblech',
+        name: 'Trapezblech',
+        description: 'RAL 9005 - 3000 x 1142 mm',
+        price: { type: 'discount', amount: -9600, monthly: -50 } // Cheaper option vs standard
       },
       {
         id: 'fassadenplatten_schwarz',
         name: 'Fassadenplatten Schwarz',
         description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
-        price: { type: 'upgrade', amount: 36400, monthly: 191 }
+        price: { type: 'upgrade', amount: 26800, monthly: 141 } // 36400 - 9600 = 26800 vs standard
       },
       {
         id: 'fassadenplatten_weiss',
         name: 'Fassadenplatten Weiß',
         description: 'FUNDERMAX® 268 x 130 cm\nSustainability Award 2024',
-        price: { type: 'upgrade', amount: 36400, monthly: 191 }
+        price: { type: 'upgrade', amount: 26800, monthly: 141 } // 36400 - 9600 = 26800 vs standard
       }
     ],
     infoBox: {
@@ -117,10 +117,10 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Kleide dich ein',
     options: [
       {
-        id: 'pv_panels',
-        name: 'Photovoltaik-Panels',
-        description: '0,4 kWpeak pro Panel',
-        price: { type: 'upgrade', amount: 390, monthly: 2 }
+        id: 'pv_modules',
+        name: 'Photovoltaik-Module',
+        description: '3 x 0,4 kWpeak Panele pro Modul',
+        price: { type: 'upgrade', amount: 1170, monthly: 6 }
       }
     ],
     infoBox: {
@@ -133,22 +133,22 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Der Charakter',
     options: [
       {
-        id: 'kiefer',
-        name: 'Kiefer',
-        description: 'PEFC - Zertifiziert - Sicht 1,5 cm',
-        price: { type: 'included' }
-      },
-      {
         id: 'fichte',
         name: 'Fichte',
         description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
-        price: { type: 'upgrade', amount: 1400, monthly: 7 }
+        price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
+      },
+      {
+        id: 'kiefer',
+        name: 'Kiefer',
+        description: 'PEFC - Zertifiziert - Sicht 1,5 cm',
+        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
       },
       {
         id: 'steirische_eiche',
         name: 'Steirische Eiche',
         description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
-        price: { type: 'upgrade', amount: 10200, monthly: 54 }
+        price: { type: 'upgrade', amount: 8800, monthly: 47 } // 10200 - 1400 = 8800 vs standard
       }
     ],
     infoBox: {
@@ -184,6 +184,35 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
+    id: 'belichtungspaket',
+    title: 'Belichtungspaket',
+    subtitle: 'Deine Helligkeit',
+    options: [
+      {
+        id: 'light',
+        name: 'Light',
+        description: '12% der Nestfläche\nGrundbelichtung',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'medium',
+        name: 'Medium',
+        description: '16% der Nestfläche\nAusgewogene Belichtung',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'bright',
+        name: 'Bright',
+        description: '22% der Nestfläche\nMaximale Helligkeit',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      }
+    ],
+    infoBox: {
+      title: 'Beliuchtungspaket',
+      description: 'Wähle die Menge an Fenstern und Türen basierend auf deinen Lichtbedürfnissen.'
+    }
+  },
+  {
     id: 'fenster',
     title: 'Fenster & Türen',
     subtitle: 'Deine Öffnungen',
@@ -195,27 +224,68 @@ export const configuratorData: CategoryData[] = [
         price: { type: 'upgrade', amount: 280, monthly: 2 }
       },
       {
-        id: 'fichte',
-        name: 'Fichte',
+        id: 'holz',
+        name: 'Holz',
         description: 'Holzfenster Lärche',
         price: { type: 'upgrade', amount: 400, monthly: 3 }
       },
       {
-        id: 'steirische_eiche',
-        name: 'Steirische Eiche',
-        description: 'RAL 9005 - Tiefschwarz',
-        price: { type: 'upgrade', amount: 550, monthly: 3 }
+        id: 'aluminium_schwarz',
+        name: 'Aluminium Schwarz',
+        description: 'RAL 9005 - Tiefschwarz\nbis 6000 x 3200 mm',
+        price: { type: 'upgrade', amount: 700, monthly: 4 }
       },
       {
-        id: 'aluminium',
-        name: 'Aluminium',
-        description: 'RAL 9005 - Tiefschwarz\nbis 6000 x 3200 mm',
+        id: 'aluminium_weiss',
+        name: 'Aluminium Weiß',
+        description: 'RAL 9016 - Weiß\nbis 6000 x 3200 mm',
         price: { type: 'upgrade', amount: 700, monthly: 4 }
       }
     ],
     infoBox: {
       title: 'Fenster & Türen',
-      description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
+      // description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
+    }
+  },
+  {
+    id: 'stirnseite',
+    title: 'Stirnseite',
+    subtitle: 'Deine Verglasung',
+    options: [
+      {
+        id: 'keine_verglasung',
+        name: 'Keine Verglasung',
+        description: 'Geschlossene Stirnseite\nKeine zusätzlichen Fenster',
+        price: { type: 'included' }
+      },
+      {
+        id: 'verglasung_oben',
+        name: 'Verglasung Oben',
+        description: '8m² Verglasung\nOberer Bereich der Stirnseite',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'verglasung_einfache_schiebetuer',
+        name: 'Verglasung einfache Schiebetür',
+        description: '8.5m² Verglasung\nEinfache Schiebetür',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'verglasung_doppelte_schiebetuer',
+        name: 'Verglasung doppelte Schiebetür',
+        description: '17m² Verglasung\nDoppelte Schiebetür',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'vollverglasung',
+        name: 'Vollverglasung',
+        description: '25m² Verglasung\nKomplette Stirnseite verglast',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      }
+    ],
+    infoBox: {
+      title: 'Stirnseite Verglasung',
+      description: 'Wähle die Verglasung für die Stirnseite deines NEST-Hauses.'
     }
   },
   {
@@ -227,38 +297,20 @@ export const configuratorData: CategoryData[] = [
         id: 'basis',
         name: 'Planung Basis',
         description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
-        price: { type: 'base', amount: 8900, monthly: 47 }
+        price: { type: 'upgrade', amount: 8900, monthly: 57 }
       },
       {
         id: 'plus',
         name: 'Planung Plus',
         description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-        price: { type: 'base', amount: 13900, monthly: 73 }
+        price: { type: 'upgrade', amount: 13900, monthly: 90 }
       },
       {
         id: 'pro',
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-        price: { type: 'base', amount: 18900, monthly: 99 }
+        price: { type: 'upgrade', amount: 18900, monthly: 122 }
       }
-    ],
-    infoBox: {
-      title: 'Welches Planungspaket passt zu dir?',
-      description: 'Siehe dir die Pakete im Detail an und entdecke welches am besten zu dir passt',
-      action: 'Weitere Informationen'
-    },
-    facts: {
-      title: 'Gemeinsam großes schaffen.',
-      content: [
-        'Wir konzentrieren uns darauf alle standardisierten Arbeitsprozesse zu optimieren und höchste Qualität zu fairen Preisen sicher zu stellen.',
-        'Darauf aufbauend machst du dein Nest. Individuell.'
-      ],
-      links: [
-        {
-          text: 'Weitere Informationen',
-          href: '/planungspakete'
-        }
-      ]
-    }
+    ]
   }
 ] 
