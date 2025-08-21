@@ -51,6 +51,14 @@ export default function SummaryPanel({
     // For belichtungspaket, calculate dynamic price
     if (key === "belichtungspaket" && configuration?.nest) {
       try {
+        // Ensure we have valid selection data
+        if (!selection.value || !configuration.nest.value) {
+          console.warn(
+            "Invalid belichtungspaket or nest data, using base price"
+          );
+          return selection.price || 0;
+        }
+
         const selectionOption = {
           category: key,
           value: selection.value,
@@ -60,7 +68,7 @@ export default function SummaryPanel({
         return PriceCalculator.calculateBelichtungspaketPrice(
           selectionOption,
           configuration.nest,
-          configuration.fenster || undefined
+          configuration.fenster ?? undefined
         );
       } catch (error) {
         console.error(
@@ -82,7 +90,7 @@ export default function SummaryPanel({
         };
         return PriceCalculator.calculateStirnseitePrice(
           selectionOption,
-          configuration.fenster || undefined
+          configuration.fenster ?? undefined
         );
       } catch (error) {
         console.error("Error calculating stirnseite price in summary:", error);
@@ -187,7 +195,7 @@ export default function SummaryPanel({
   // Helper function to get display name for belichtungspaket
   const getBelichtungspaketDisplayName = (
     belichtungspaket: ConfigurationItem,
-    fenster?: ConfigurationItem
+    fenster?: ConfigurationItem | null
   ) => {
     if (!belichtungspaket) return "";
 
@@ -200,7 +208,7 @@ export default function SummaryPanel({
     const levelName =
       levelNames[belichtungspaket.value as keyof typeof levelNames] ||
       belichtungspaket.name;
-    const fensterName = fenster ? ` - ${fenster.name}` : " - PVC Fenster";
+    const fensterName = fenster?.name ? ` - ${fenster.name}` : " - PVC Fenster";
 
     return `Beleuchtungspaket ${levelName}${fensterName}`;
   };
@@ -252,12 +260,7 @@ export default function SummaryPanel({
                     >
                       <div className="flex-1 min-w-0 max-w-[50%]">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {key === "belichtungspaket"
-                            ? getBelichtungspaketDisplayName(
-                                selection,
-                                configuration.fenster
-                              )
-                            : selection.name}
+                          {selection.name}
                         </div>
                         {selection.description && (
                           <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
@@ -345,9 +348,14 @@ export default function SummaryPanel({
                     >
                       <div className="flex-1 min-w-0 max-w-[50%]">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {key === "fenster"
-                            ? getFensterDisplayName(selection, true)
-                            : selection.name}
+                          {key === "belichtungspaket"
+                            ? getBelichtungspaketDisplayName(
+                                selection,
+                                configuration?.fenster ?? null
+                              )
+                            : key === "fenster"
+                              ? getFensterDisplayName(selection, true)
+                              : selection.name}
                           {key === "pvanlage" &&
                             selection.quantity &&
                             selection.quantity > 1 &&
