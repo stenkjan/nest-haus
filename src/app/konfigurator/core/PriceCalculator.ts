@@ -34,6 +34,7 @@ interface Selections {
   pvanlage?: SelectionOption
   fenster?: SelectionOption
   stirnseite?: SelectionOption
+  planungspaket?: SelectionOption
   paket?: SelectionOption
   grundstueckscheck?: boolean
 }
@@ -187,10 +188,11 @@ export class PriceCalculator {
         additionalPrice += stirnseitePrice;
       }
 
-      // Add window price
-      if (selections.fenster && selections.fenster.squareMeters) {
-        const fensterPrice = selections.fenster.squareMeters * (selections.fenster.price || 0);
-        additionalPrice += fensterPrice;
+      // Fenster price is already included in belichtungspaket calculation, so don't add it separately
+
+      // Add planungspaket price (fixed price independent of nest module)
+      if (selections.planungspaket) {
+        additionalPrice += selections.planungspaket.price || 0;
       }
 
       // Planning package and Grundstückscheck removed - handled in separate cart logic
@@ -255,7 +257,7 @@ export class PriceCalculator {
   /**
    * Calculate stirnseite verglasung price based on fenster material
    * Formula: verglasung_area * fenster_material_price_per_sqm
-   * Areas: oben=8m², unten=17m², vollverglasung=25m²
+   * Areas: oben=8m², einfache_schiebetuer=8.5m², doppelte_schiebetuer=17m², vollverglasung=25m²
    * Default fenster material: PVC (280€/m²) if no fenster selected
    */
   static calculateStirnseitePrice(
@@ -265,10 +267,11 @@ export class PriceCalculator {
     try {
       // Get area based on stirnseite option
       const areaMap: Record<string, number> = {
-        'verglasung_oben': 8,      // 8m²
-        'verglasung_unten': 17,    // 17m²
-        'vollverglasung': 25,      // 25m²
-        'keine_verglasung': 0      // 0m² (should not be called for this)
+        'verglasung_oben': 8,                        // 8m²
+        'verglasung_einfache_schiebetuer': 8.5,      // 8.5m² (half of doppelte)
+        'verglasung_doppelte_schiebetuer': 17,       // 17m² (same as old verglasung_unten)
+        'vollverglasung': 25,                        // 25m²
+        'keine_verglasung': 0                        // 0m² (should not be called for this)
       };
 
       const area = areaMap[stirnseite.value] || 0;
@@ -440,7 +443,7 @@ export class PriceCalculator {
 
         // Calculate area for display
         const areaMap: Record<string, number> = {
-          'verglasung_oben': 8, 'verglasung_unten': 17, 'vollverglasung': 25
+          'verglasung_oben': 8, 'verglasung_einfache_schiebetuer': 8.5, 'verglasung_doppelte_schiebetuer': 17, 'vollverglasung': 25
         };
         const area = areaMap[selections.stirnseite.value] || 0;
 

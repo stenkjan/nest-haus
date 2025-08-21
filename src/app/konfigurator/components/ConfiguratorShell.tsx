@@ -468,7 +468,8 @@ export default function ConfiguratorShell({
             ) {
               const areaMap: Record<string, number> = {
                 verglasung_oben: 8,
-                verglasung_unten: 17,
+                verglasung_einfache_schiebetuer: 8.5,
+                verglasung_doppelte_schiebetuer: 17,
                 vollverglasung: 25,
               };
               totalArea += areaMap[configuration.stirnseite.value] || 0;
@@ -550,7 +551,7 @@ export default function ConfiguratorShell({
         return originalPrice;
       }
 
-      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, stirnseite)
+      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, stirnseite, planungspaket)
       if (
         [
           "gebaeudehuelle",
@@ -559,6 +560,7 @@ export default function ConfiguratorShell({
           "belichtungspaket",
           "fenster",
           "stirnseite",
+          "planungspaket",
         ].includes(categoryId)
       ) {
         // Get currently selected option in this category
@@ -566,8 +568,16 @@ export default function ConfiguratorShell({
           categoryId as keyof typeof configuration
         ] as ConfigurationItem | undefined;
 
-        // If this option is currently selected, show no price at all
+        // If this option is currently selected, show per m² price for fenster, no price for others
         if (currentSelection && currentSelection.value === optionId) {
+          if (categoryId === "fenster") {
+            // Show per m² price for selected fenster option
+            return {
+              type: "standard" as const,
+              amount: option.price.amount || 0,
+              monthly: option.price.monthly,
+            };
+          }
           return { type: "selected" as const };
         }
 
@@ -926,6 +936,33 @@ export default function ConfiguratorShell({
             );
           }
 
+          const priceDifference = optionPrice - currentPrice;
+
+          if (priceDifference === 0) {
+            return {
+              type: "upgrade" as const,
+              amount: 0,
+              monthly: option.price.monthly,
+            };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: option.price.monthly,
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
+        // For planungspaket with current selection, calculate relative pricing using fixed prices
+        if (currentSelection && categoryId === "planungspaket") {
+          const currentPrice = currentSelection.price || 0;
+          const optionPrice = option.price.amount || 0;
           const priceDifference = optionPrice - currentPrice;
 
           if (priceDifference === 0) {

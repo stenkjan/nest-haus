@@ -59,11 +59,11 @@ export default function SelectionOption({
 
         return (
           <div className="text-right">
-            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
               Ab {formattedPrice}
             </p>
             {shouldShowPricePerSqm && nestModel && contributionPrice && (
-              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
                 {PriceUtils.calculateOptionPricePerSquareMeter(
                   contributionPrice,
                   nestModel,
@@ -76,14 +76,30 @@ export default function SelectionOption({
         );
       }
 
-      // For other categories, show contribution price (smaller and greyer)
+      // For other categories, show contribution price (smaller and greyer) with m² price
       if (contributionPrice !== null && contributionPrice !== undefined) {
+        const shouldShowPricePerSqm =
+          categoryId && PriceUtils.shouldShowPricePerSquareMeter(categoryId);
+
         return (
-          <p className="text-[clamp(0.5rem,0.9vw,0.75rem)] text-gray-500 tracking-wide leading-[1.2]">
-            {contributionPrice === 0
-              ? "inklusive"
-              : PriceUtils.formatPrice(contributionPrice)}
-          </p>
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
+              {contributionPrice === 0
+                ? "inklusive"
+                : PriceUtils.formatPrice(contributionPrice)}
+              {categoryId === "fenster" && "/m²"}
+            </p>
+            {shouldShowPricePerSqm && nestModel && contributionPrice > 0 && (
+              <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
+                {PriceUtils.calculateOptionPricePerSquareMeter(
+                  contributionPrice,
+                  nestModel,
+                  categoryId,
+                  id
+                )}
+              </p>
+            )}
+          </div>
         );
       }
       return null;
@@ -149,26 +165,8 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
-      // Remove "zzgl." from specified sections: nest, innenverkleidung, fussboden, gebaeudehuelle, belichtungspaket, fenster, stirnseite, pvanlage
-      const sectionsWithoutZzgl = [
-        "nest",
-        "innenverkleidung",
-        "fussboden",
-        "gebaeudehuelle",
-        "belichtungspaket",
-        "fenster",
-        "stirnseite",
-        "pvanlage",
-      ];
-      const showZzglPrefix = !sectionsWithoutZzgl.includes(categoryId || "");
-
       return (
         <div className="text-right">
-          {showZzglPrefix && (
-            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-              zzgl.
-            </p>
-          )}
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {price.amount !== undefined && price.amount > 0
               ? `+${formattedPrice}`
@@ -232,14 +230,21 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
+      // Use grey text for selected options, even when type is "standard"
+      const textColor = isSelected ? "text-gray-500" : "";
+
       return (
         <div className="text-right">
-          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+          <p
+            className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}
+          >
             {formattedPrice}
             {categoryId === "fenster" && "/m²"}
           </p>
           {shouldShowPricePerSqm && nestModel && price.amount && (
-            <p className="text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] text-gray-600 mt-1">
+            <p
+              className={`text-[clamp(0.5rem,1vw,0.75rem)] tracking-wide leading-[1.2] ${isSelected ? "text-gray-500" : "text-gray-600"} mt-1`}
+            >
               {PriceUtils.calculateOptionPricePerSquareMeter(
                 price.amount,
                 nestModel,

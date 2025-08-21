@@ -23,6 +23,7 @@ export interface Configuration {
   pvanlage?: ConfigurationItem | null
   fenster?: ConfigurationItem | null
   stirnseite?: ConfigurationItem | null
+  planungspaket?: ConfigurationItem | null
   totalPrice: number
   timestamp: number
 }
@@ -94,6 +95,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         pvanlage: null,
         fenster: null,
         stirnseite: null,
+        planungspaket: null,
         totalPrice: 0,
         timestamp: 0
       },
@@ -211,7 +213,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // SIMPLIFIED: Calculate price immediately and synchronously (avoid unnecessary Effects)
         // Following React docs: "Avoid unnecessary Effects that update state"
-        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'pvanlage', 'fenster'];
+        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite', 'planungspaket'];
         if (priceAffectingCategories.includes(item.category)) {
           // Calculate immediately in the same update cycle
           const newState = get();
@@ -220,8 +222,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             gebaeudehuelle: newState.configuration.gebaeudehuelle || undefined,
             innenverkleidung: newState.configuration.innenverkleidung || undefined,
             fussboden: newState.configuration.fussboden || undefined,
+            belichtungspaket: newState.configuration.belichtungspaket || undefined,
             pvanlage: newState.configuration.pvanlage || undefined,
-            fenster: newState.configuration.fenster || undefined
+            fenster: newState.configuration.fenster || undefined,
+            stirnseite: newState.configuration.stirnseite || undefined,
+            planungspaket: newState.configuration.planungspaket || undefined
           };
 
           const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>);
@@ -304,8 +309,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           gebaeudehuelle: state.configuration.gebaeudehuelle || undefined,
           innenverkleidung: state.configuration.innenverkleidung || undefined,
           fussboden: state.configuration.fussboden || undefined,
+          belichtungspaket: state.configuration.belichtungspaket || undefined,
           pvanlage: state.configuration.pvanlage || undefined,
-          fenster: state.configuration.fenster || undefined
+          fenster: state.configuration.fenster || undefined,
+          stirnseite: state.configuration.stirnseite || undefined,
+          planungspaket: state.configuration.planungspaket || undefined
         }
 
         const totalPrice = PriceCalculator.calculateTotalPrice(selections)
@@ -403,6 +411,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           pvanlage: null,
           fenster: null,
           stirnseite: null,
+          planungspaket: null,
           totalPrice: 0,
           timestamp: Date.now()
         }
@@ -484,6 +493,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             name: 'Keine Verglasung',
             price: 0,
             description: 'Geschlossene Stirnseite\nKeine zusätzlichen Fenster'
+          },
+          // Planung Basis (default)
+          {
+            category: 'planungspaket',
+            value: 'basis',
+            name: 'Planung Basis',
+            price: 8900,
+            description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung'
           }
         ];
 
@@ -500,6 +517,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           belichtungspaket: defaultSelections[4] as ConfigurationItem,
           fenster: defaultSelections[5] as ConfigurationItem,
           stirnseite: defaultSelections[6] as ConfigurationItem,
+          planungspaket: defaultSelections[7] as ConfigurationItem,
           timestamp: Date.now()
         };
 
@@ -560,6 +578,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             pvanlage: null,
             fenster: null,
             stirnseite: null,
+            planungspaket: null,
             totalPrice: 0,
             timestamp: 0
           },

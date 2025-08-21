@@ -27,12 +27,8 @@ export default function SummaryPanel({
   onInfoClick,
   className = "",
 }: SummaryPanelProps) {
-  const {
-    configuration,
-    currentPrice,
-    isConfigurationComplete,
-    resetConfiguration,
-  } = useConfiguratorStore();
+  const { configuration, currentPrice, resetConfiguration } =
+    useConfiguratorStore();
 
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
@@ -48,7 +44,8 @@ export default function SummaryPanel({
       return (selection.quantity || 1) * (selection.price || 0);
     }
     if (key === "fenster") {
-      return (selection.squareMeters || 1) * (selection.price || 0);
+      // Fenster price is already included in belichtungspaket calculation, so return 0
+      return 0;
     }
 
     // For belichtungspaket, calculate dynamic price
@@ -89,6 +86,55 @@ export default function SummaryPanel({
         );
       } catch (error) {
         console.error("Error calculating stirnseite price in summary:", error);
+        return selection.price || 0;
+      }
+    }
+
+    // For gebäudehülle, innenverkleidung, and fussboden, calculate dynamic price based on nest size
+    if (
+      (key === "gebaeudehuelle" ||
+        key === "innenverkleidung" ||
+        key === "fussboden") &&
+      configuration?.nest
+    ) {
+      try {
+        // Calculate the price difference for this specific option
+        const currentNestValue = configuration.nest.value;
+
+        // Use defaults for base calculation
+        const baseGebaeudehuelle = "trapezblech";
+        const baseInnenverkleidung = "kiefer";
+        const baseFussboden = "parkett";
+
+        // Calculate base combination price (all defaults)
+        const basePrice = PriceCalculator.calculateCombinationPrice(
+          currentNestValue,
+          baseGebaeudehuelle,
+          baseInnenverkleidung,
+          baseFussboden
+        );
+
+        // Calculate combination price with this specific option
+        let testGebaeudehuelle = baseGebaeudehuelle;
+        let testInnenverkleidung = baseInnenverkleidung;
+        let testFussboden = baseFussboden;
+
+        if (key === "gebaeudehuelle") testGebaeudehuelle = selection.value;
+        if (key === "innenverkleidung") testInnenverkleidung = selection.value;
+        if (key === "fussboden") testFussboden = selection.value;
+
+        const combinationPrice = PriceCalculator.calculateCombinationPrice(
+          currentNestValue,
+          testGebaeudehuelle,
+          testInnenverkleidung,
+          testFussboden
+        );
+
+        // Return the price difference (this option's contribution)
+        const optionPrice = combinationPrice - basePrice;
+        return Math.max(0, optionPrice); // Don't show negative prices in summary
+      } catch (error) {
+        console.error(`Error calculating ${key} price in summary:`, error);
         return selection.price || 0;
       }
     }
@@ -138,6 +184,27 @@ export default function SummaryPanel({
     return selection.name;
   };
 
+  // Helper function to get display name for belichtungspaket
+  const getBelichtungspaketDisplayName = (
+    belichtungspaket: ConfigurationItem,
+    fenster?: ConfigurationItem
+  ) => {
+    if (!belichtungspaket) return "";
+
+    const levelNames = {
+      light: "Light",
+      medium: "Medium",
+      bright: "Bright",
+    };
+
+    const levelName =
+      levelNames[belichtungspaket.value as keyof typeof levelNames] ||
+      belichtungspaket.name;
+    const fensterName = fenster ? ` - ${fenster.name}` : " - PVC Fenster";
+
+    return `Beleuchtungspaket ${levelName}${fensterName}`;
+  };
+
   return (
     <div className={`summary-panel ${className}`}>
       <div className="mt-12">
@@ -185,7 +252,12 @@ export default function SummaryPanel({
                     >
                       <div className="flex-1 min-w-0 max-w-[50%]">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {selection.name}
+                          {key === "belichtungspaket"
+                            ? getBelichtungspaketDisplayName(
+                                selection,
+                                configuration.fenster
+                              )
+                            : selection.name}
                         </div>
                         {selection.description && (
                           <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
@@ -377,16 +449,9 @@ export default function SummaryPanel({
               {/* Navigate to Warenkorb Button - Primary button first */}
               <Link
                 href="/warenkorb"
-                className={`bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl h-[44px] min-h-[44px] px-6 whitespace-nowrap ${
-                  !isConfigurationComplete()
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                onClick={(e) =>
-                  !isConfigurationComplete() && e.preventDefault()
-                }
+                className="bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl h-[44px] min-h-[44px] px-6 whitespace-nowrap"
               >
-                {isConfigurationComplete() ? "Zum Warenkorb" : "Jetzt bauen"}
+                Zum Warenkorb
               </Link>
 
               {/* Neu konfigurieren Button - Secondary button beside on desktop, below on mobile */}

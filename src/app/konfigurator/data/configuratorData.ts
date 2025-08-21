@@ -265,9 +265,15 @@ export const configuratorData: CategoryData[] = [
         price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
       },
       {
-        id: 'verglasung_unten',
-        name: 'Verglasung Unten',
-        description: '17m² Verglasung\nUnterer Bereich der Stirnseite',
+        id: 'verglasung_einfache_schiebetuer',
+        name: 'Verglasung einfache Schiebetür',
+        description: '8.5m² Verglasung\nEinfache Schiebetür',
+        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
+      },
+      {
+        id: 'verglasung_doppelte_schiebetuer',
+        name: 'Verglasung doppelte Schiebetür',
+        description: '17m² Verglasung\nDoppelte Schiebetür',
         price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
       },
       {
@@ -281,5 +287,30 @@ export const configuratorData: CategoryData[] = [
       title: 'Stirnseite Verglasung',
       description: 'Wähle die Verglasung für die Stirnseite deines NEST-Hauses.'
     }
+  },
+  {
+    id: 'planungspaket',
+    title: 'Die Planungspakete',
+    subtitle: 'Unser Service',
+    options: [
+      {
+        id: 'basis',
+        name: 'Planung Basis',
+        description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
+        price: { type: 'upgrade', amount: 8900, monthly: 57 }
+      },
+      {
+        id: 'plus',
+        name: 'Planung Plus',
+        description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
+        price: { type: 'upgrade', amount: 13900, monthly: 90 }
+      },
+      {
+        id: 'pro',
+        name: 'Planung Pro',
+        description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
+        price: { type: 'upgrade', amount: 18900, monthly: 122 }
+      }
+    ]
   }
 ] 
