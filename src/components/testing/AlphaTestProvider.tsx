@@ -12,6 +12,7 @@ import AlphaTestButton from "./AlphaTestButton";
 
 export default function AlphaTestProvider() {
   const [isAlphaTestEnabled, setIsAlphaTestEnabled] = useState(false);
+  const [shouldAutoOpen, setShouldAutoOpen] = useState(false);
 
   useEffect(() => {
     // Check for alpha test parameter or existing test state
@@ -20,7 +21,22 @@ export default function AlphaTestProvider() {
       const hasAlphaParam = urlParams.get("alpha-test") === "true";
       const hasExistingTest = localStorage.getItem("nest-haus-test-session-id");
 
+      // Check if navigation was triggered by popup
+      const navigationTriggered = localStorage.getItem(
+        "alphaTestNavigationTriggered"
+      );
+
       setIsAlphaTestEnabled(hasAlphaParam || !!hasExistingTest);
+
+      // Auto-open popup if navigation was triggered by popup
+      if (
+        navigationTriggered === "true" &&
+        (hasAlphaParam || hasExistingTest)
+      ) {
+        setShouldAutoOpen(true);
+        // Clear the flag after detecting it
+        localStorage.removeItem("alphaTestNavigationTriggered");
+      }
     };
 
     // Check on mount
@@ -47,5 +63,11 @@ export default function AlphaTestProvider() {
     };
   }, []);
 
-  return <AlphaTestButton isEnabled={isAlphaTestEnabled} />;
+  return (
+    <AlphaTestButton
+      isEnabled={isAlphaTestEnabled}
+      shouldAutoOpen={shouldAutoOpen}
+      onAutoOpenHandled={() => setShouldAutoOpen(false)}
+    />
+  );
 }

@@ -5,10 +5,14 @@ import UsabilityTestPopup from "./UsabilityTestPopup";
 
 interface AlphaTestButtonProps {
   isEnabled?: boolean;
+  shouldAutoOpen?: boolean;
+  onAutoOpenHandled?: () => void;
 }
 
 export default function AlphaTestButton({
   isEnabled = false,
+  shouldAutoOpen = false,
+  onAutoOpenHandled,
 }: AlphaTestButtonProps) {
   const [isTestActive, setIsTestActive] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -58,6 +62,19 @@ export default function AlphaTestButton({
       return () => clearTimeout(timer);
     }
   }, [isEnabled, hasSeenButton, isTestActive, hasExistingTest]);
+
+  // Handle auto-open when navigation was triggered by popup
+  useEffect(() => {
+    if (shouldAutoOpen && isEnabled) {
+      setIsTestActive(true);
+      setIsMinimized(false); // Ensure popup is not minimized
+
+      // Notify parent that auto-open was handled
+      if (onAutoOpenHandled) {
+        onAutoOpenHandled();
+      }
+    }
+  }, [shouldAutoOpen, isEnabled, onAutoOpenHandled]);
 
   const handleStartTest = () => {
     // If we have an existing test, just activate it

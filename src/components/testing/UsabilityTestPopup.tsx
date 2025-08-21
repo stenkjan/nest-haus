@@ -260,6 +260,9 @@ export default function UsabilityTestPopup({
 
       // Handle navigation
       if (currentStep.nextAction === "navigate" && currentStep.nextTarget) {
+        // Mark that navigation was triggered by the popup
+        localStorage.setItem("alphaTestNavigationTriggered", "true");
+
         // Preserve alpha-test parameter during navigation
         const targetUrl = new URL(
           currentStep.nextTarget,
@@ -344,6 +347,9 @@ export default function UsabilityTestPopup({
 
   // Handle manual navigation to a specific page during the test
   const handleNavigateToPage = (targetPage: string) => {
+    // Mark that navigation was triggered by the popup
+    localStorage.setItem("alphaTestNavigationTriggered", "true");
+
     const targetUrl = new URL(targetPage, window.location.origin);
     targetUrl.searchParams.set("alpha-test", "true");
     window.location.href = targetUrl.toString();
