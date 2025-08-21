@@ -36,11 +36,14 @@ export const IMAGES = {
     variantvideo: {
         nine: '9-NEST-Haus-Module-Konstellation-Varianten-Versionen-Serienanfertigung-Animation',
         ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation',
+        eleven: '11-NEST-Haus-Module-Transport-Animation-Schema',
     },
 
     pvModule: {
         pvOverlay: '179-nest-solar-solarenergie-solarpanel-nachhaltig-sonne-icon-strom-energie',
     },
+
+
 
     brightnessLevel: {
         light: '66-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-leicht-light',

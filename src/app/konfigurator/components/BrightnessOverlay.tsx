@@ -38,6 +38,7 @@ export default function BrightnessOverlay({
     <div className={`absolute inset-0 pointer-events-none ${className}`}>
       {/* Brightness overlay image - EXACT same styling as main preview image */}
       <HybridBlobImage
+        key={`brightness-${brightnessLevel}`} // Force re-render when brightness level changes
         path={getImagePath()}
         alt={`Belichtung ${brightnessLevel} Overlay`}
         fill

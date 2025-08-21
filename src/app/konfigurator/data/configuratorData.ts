@@ -185,7 +185,7 @@ export const configuratorData: CategoryData[] = [
   },
   {
     id: 'belichtungspaket',
-    title: 'Beleuchtungspaket',
+    title: 'Belichtungspaket',
     subtitle: 'Deine Helligkeit',
     options: [
       {
@@ -208,7 +208,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Beleuchtungspaket',
+      title: 'Beliuchtungspaket',
       description: 'Wähle die Menge an Fenstern und Türen basierend auf deinen Lichtbedürfnissen.'
     }
   },

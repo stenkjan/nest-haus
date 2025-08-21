@@ -70,6 +70,7 @@ interface ConfiguratorState {
 
   // View switching
   clearViewSwitchSignal: () => void
+  switchToView: (view: string) => void
   determineOptimalView: () => string
 
   // Getters
@@ -171,8 +172,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           }
           // Switch to exterior view to show PV modules on the house
           shouldSwitchToView = 'exterior';
-        } else if (item.category === 'beleuchtungspaket') {
-          // When selecting beleuchtungspaket, switch to exterior view to show gebäudehülle
+        } else if (item.category === 'belichtungspaket') {
+          // When selecting belichtungspaket, switch to exterior view to show gebäudehülle
           shouldSwitchToView = 'exterior';
         } else if (item.category === 'fenster') {
           // Activate Part 3 but don't switch views - Fenster has its own info dialog
@@ -362,6 +363,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         set({ shouldSwitchToView: null })
       },
 
+      switchToView: (view: string) => {
+        set({ shouldSwitchToView: view })
+      },
+
       // Determine optimal view based on current configuration and user context
       determineOptimalView: () => {
         const state = get()
@@ -456,9 +461,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: 0,
             description: 'Schwimmend verlegt'
           },
-          // Light Beleuchtungspaket
+          // Light Belichtungspaket
           {
-            category: 'beleuchtungspaket',
+            category: 'belichtungspaket',
             value: 'light',
             name: 'Light',
             price: 0, // Will be calculated dynamically

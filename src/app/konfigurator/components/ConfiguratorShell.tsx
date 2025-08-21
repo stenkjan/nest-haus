@@ -62,9 +62,9 @@ export default function ConfiguratorShell({
 
   // Local state for quantities and special selections
   const [pvQuantity, setPvQuantity] = useState<number>(0);
-  const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(false);
+  const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
   const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
-    useState<boolean>(false); // Initially hidden even with light preselected
+    useState<boolean>(false); // Hidden by default, only show when actively selecting
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -183,17 +183,29 @@ export default function ConfiguratorShell({
           if (pvQuantity > 0) {
             setPvQuantity(0);
             removeSelection(categoryId);
-            setIsPvOverlayVisible(false);
             return;
           }
         }
 
-        // If clicking PV option when quantity is 0, set to 1
+        // If clicking PV option when quantity is 0, set to 1 and show overlay immediately
         if (pvQuantity === 0) {
           setPvQuantity(1);
+          // Show PV overlay and hide belichtung overlay (mutual exclusivity)
           setIsPvOverlayVisible(true);
-          // Hide brightness overlay when PV overlay is shown (mutual exclusivity)
           setIsBrightnessOverlayVisible(false);
+
+          // Update the selection immediately with quantity 1
+          if (option && category) {
+            updateSelection({
+              category: categoryId,
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description,
+              quantity: 1,
+            });
+          }
+          return; // Exit early to avoid duplicate updateSelection call
         }
       }
 
@@ -206,11 +218,17 @@ export default function ConfiguratorShell({
           description: option.description,
         });
 
-        // Auto-show brightness overlay when belichtungspaket is selected
+        // Auto-switch to exterior view when belichtungspaket is selected
         if (categoryId === "belichtungspaket") {
+          // Show belichtung overlay and hide PV overlay (mutual exclusivity)
           setIsBrightnessOverlayVisible(true);
-          // Hide PV overlay when brightness overlay is shown (mutual exclusivity)
           setIsPvOverlayVisible(false);
+
+          // Switch to exterior view to show the belichtungspaket overlay
+          const { switchToView } = useConfiguratorStore.getState();
+          if (switchToView) {
+            switchToView("exterior");
+          }
         }
 
         // Auto-scroll to next section after selection - Commented out
@@ -244,9 +262,9 @@ export default function ConfiguratorShell({
       updateSelection,
       removeSelection,
       configuration,
-      setIsBrightnessOverlayVisible,
       pvQuantity,
       setIsPvOverlayVisible,
+      setIsBrightnessOverlayVisible,
     ]
   );
 
@@ -254,11 +272,14 @@ export default function ConfiguratorShell({
     (newQuantity: number) => {
       setPvQuantity(newQuantity);
 
-      // Auto-show overlay when PV modules are selected/increased
+      // Handle overlay visibility and mutual exclusivity
       if (newQuantity > 0) {
+        // Show PV overlay and hide belichtung overlay (mutual exclusivity)
         setIsPvOverlayVisible(true);
-        // Hide brightness overlay when PV overlay is shown (mutual exclusivity)
         setIsBrightnessOverlayVisible(false);
+      } else {
+        // Hide PV overlay when quantity is 0
+        setIsPvOverlayVisible(false);
       }
 
       if (newQuantity === 0) {
@@ -276,12 +297,7 @@ export default function ConfiguratorShell({
         });
       }
     },
-    [
-      configuration?.pvanlage,
-      updateSelection,
-      removeSelection,
-      setIsPvOverlayVisible,
-    ]
+    [configuration?.pvanlage, updateSelection, removeSelection]
   );
 
   // Grundstückscheck logic removed from configurator; now handled in Warenkorb
@@ -561,7 +577,7 @@ export default function ConfiguratorShell({
 
           // Special pricing for belichtungspaket - calculate based on nest size and fenster material
           if (categoryId === "belichtungspaket" && configuration?.nest) {
-            const mockBeleuchtungspaket = {
+            const mockBelichtungspaket = {
               category: "belichtungspaket",
               value: optionId,
               name: option.name,
@@ -571,7 +587,7 @@ export default function ConfiguratorShell({
 
             const calculatedPrice =
               PriceCalculator.calculateBelichtungspaketPrice(
-                mockBeleuchtungspaket,
+                mockBelichtungspaket,
                 configuration.nest,
                 configuration.fenster || undefined
               );
@@ -1114,55 +1130,8 @@ export default function ConfiguratorShell({
                       unitPrice={configuration.pvanlage.price || 0}
                       onChange={handlePvQuantityChange}
                     />
-
-                    {/* PV Overlay Visibility Checkbox */}
-                    {pvQuantity > 0 && (
-                      <div className="mt-4 flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          id="pv-overlay-visibility"
-                          checked={!isPvOverlayVisible}
-                          onChange={(e) =>
-                            setIsPvOverlayVisible(!e.target.checked)
-                          }
-                          className="w-4 h-4 text-[#3D6DE1] bg-gray-100 border-gray-300 rounded focus:ring-[#3D6DE1] focus:ring-2 accent-[#3D6DE1]"
-                        />
-                        <label
-                          htmlFor="pv-overlay-visibility"
-                          className="text-sm text-gray-700 cursor-pointer"
-                        >
-                          {isPvOverlayVisible
-                            ? "Module verstecken"
-                            : "Module anzeigen"}
-                        </label>
-                      </div>
-                    )}
                   </>
                 )}
-
-                {/* Brightness Overlay Visibility Checkbox */}
-                {category.id === "belichtungspaket" &&
-                  configuration?.belichtungspaket && (
-                    <div className="mt-4 flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="brightness-overlay-visibility"
-                        checked={!isBrightnessOverlayVisible}
-                        onChange={(e) =>
-                          setIsBrightnessOverlayVisible(!e.target.checked)
-                        }
-                        className="w-4 h-4 text-[#3D6DE1] bg-gray-100 border-gray-300 rounded focus:ring-[#3D6DE1] focus:ring-2 accent-[#3D6DE1]"
-                      />
-                      <label
-                        htmlFor="brightness-overlay-visibility"
-                        className="text-sm text-gray-700 cursor-pointer"
-                      >
-                        {isBrightnessOverlayVisible
-                          ? "Belichtung verstecken"
-                          : "Belichtung anzeigen"}
-                      </label>
-                    </div>
-                  )}
 
                 {/* Info Box - Use new responsive cards for specific categories */}
                 {category.infoBox && (

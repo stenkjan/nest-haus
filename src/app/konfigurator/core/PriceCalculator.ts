@@ -243,7 +243,7 @@ export class PriceCalculator {
       // Calculate total price
       const totalPrice = beleuchtungsSquareMeters * fensterPricePerSqm;
 
-      console.log(`💡 Beleuchtungspaket calculation: ${nestSize}m² * ${percentage * 100}% = ${beleuchtungsSquareMeters}m² * ${fensterPricePerSqm}€ = ${totalPrice}€`);
+      console.log(`💡 Belichtungspaket calculation: ${nestSize}m² * ${percentage * 100}% = ${beleuchtungsSquareMeters}m² * ${fensterPricePerSqm}€ = ${totalPrice}€`);
 
       return totalPrice;
     } catch (error) {

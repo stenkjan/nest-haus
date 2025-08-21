@@ -295,7 +295,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
 
   belichtungspaket: {
     title: {
-      main: "Beleuchtungspaket",
+      main: "Belichtungspaket",
       subtitle: "Natürliches Licht für Ihr Zuhause"
     },
     sliderKey: "belichtungspaket-slider",
@@ -306,7 +306,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
     cards: [
       {
         id: 1,
-        title: "Beleuchtungspaket - Light",
+        title: "Belichtungspaket - Light",
         subtitle: "Grundbeleuchtung",
         description: {
           mobile: "Das Light-Paket bietet eine solide Grundbeleuchtung mit 12% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
@@ -316,7 +316,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       },
       {
         id: 2,
-        title: "Beleuchtungspaket - Medium",
+        title: "Belichtungspaket - Medium",
         subtitle: "Ausgewogene Beleuchtung",
         description: {
           mobile: "Das Medium-Paket bietet ausgewogene Helligkeit mit 16% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
@@ -326,7 +326,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       },
       {
         id: 3,
-        title: "Beleuchtungspaket - Bright",
+        title: "Belichtungspaket - Bright",
         subtitle: "Maximale Helligkeit",
         description: {
           mobile: "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
