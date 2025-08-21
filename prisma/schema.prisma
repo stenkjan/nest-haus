@@ -204,3 +204,79 @@ enum ContactMethod {
   PHONE
   WHATSAPP
 }
+
+model UsabilityTest {
+  id                String              @id @default(cuid())
+  testId            String              @unique
+  sessionId         String?
+  testType          String              @default("alpha")
+  status            TestStatus          @default(IN_PROGRESS)
+  startedAt         DateTime            @default(now())
+  completedAt       DateTime?
+  totalDuration     Int?                // milliseconds
+  deviceInfo        Json?               // device, browser, viewport
+  ipAddress         String?
+  userAgent         String?
+  
+  // Test results
+  responses         UsabilityResponse[]
+  interactions      TestInteraction[]
+  
+  // Summary metrics
+  overallRating     Float?              // 1-10 average
+  completionRate    Float?              // percentage completed
+  errorCount        Int                 @default(0)
+  consoleErrors     Json?               // captured console errors
+  
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  
+  @@map("usability_tests")
+}
+
+model UsabilityResponse {
+  id              String         @id @default(cuid())
+  testId          String
+  questionId      String         // unique identifier for each question
+  questionType    QuestionType   // RATING, TEXT, MULTIPLE_CHOICE
+  questionText    String
+  response        Json           // flexible response storage
+  responseTime    Int?           // milliseconds to answer
+  timestamp       DateTime       @default(now())
+  
+  test            UsabilityTest  @relation(fields: [testId], references: [testId], onDelete: Cascade)
+  
+  @@map("usability_responses")
+}
+
+model TestInteraction {
+  id              String         @id @default(cuid())
+  testId          String
+  stepId          String         // which test step/page
+  eventType       String         // click, scroll, navigation, error
+  elementId       String?
+  elementText     String?
+  timestamp       DateTime       @default(now())
+  duration        Int?           // time spent on this step
+  success         Boolean        @default(true)
+  errorMessage    String?
+  additionalData  Json?
+  
+  test            UsabilityTest  @relation(fields: [testId], references: [testId], onDelete: Cascade)
+  
+  @@map("test_interactions")
+}
+
+enum TestStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+  ERROR
+}
+
+enum QuestionType {
+  RATING
+  TEXT
+  MULTIPLE_CHOICE
+  YES_NO
+}

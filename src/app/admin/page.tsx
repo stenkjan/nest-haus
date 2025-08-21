@@ -158,6 +158,30 @@ export default function AdminDashboard() {
               <div className="text-4xl">📈</div>
             </div>
           </Link>
+
+          <Link
+            href="/admin/alpha-tests"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  Alpha Test Results
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  View usability test results, user feedback, and identify areas
+                  for improvement in the user experience.
+                </p>
+                <div className="mt-4 text-sm text-gray-500">
+                  • User feedback analysis
+                  <br />
+                  • Usability metrics
+                  <br />• Test completion rates
+                </div>
+              </div>
+              <div className="text-4xl">🧪</div>
+            </div>
+          </Link>
         </div>
 
         {/* System Management */}
