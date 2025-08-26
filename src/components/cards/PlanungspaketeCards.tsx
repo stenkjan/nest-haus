@@ -1,0 +1,656 @@
+"use client";
+
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { motion, useMotionValue, PanInfo } from "motion/react";
+import { Dialog } from "@/components/ui/Dialog";
+import "@/app/konfigurator/components/hide-scrollbar.css";
+
+export interface PlanungspaketeCardData {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  mobileTitle?: string;
+  mobileSubtitle?: string;
+  mobileDescription?: string;
+  image: string;
+  price: string;
+  monthlyPrice?: string;
+  extendedDescription?: string;
+  mobileExtendedDescription?: string;
+  backgroundColor: string;
+  grayWord?: string; // Word to make gray in the title
+}
+
+interface PlanungspaketeCardsProps {
+  title?: string;
+  subtitle?: string;
+  maxWidth?: boolean;
+  showInstructions?: boolean;
+  isLightboxMode?: boolean;
+  enableBuiltInLightbox?: boolean; // New prop for built-in lightbox
+  onCardClick?: (cardId: number) => void;
+  customData?: PlanungspaketeCardData[];
+}
+
+export const planungspaketeCardData: PlanungspaketeCardData[] = [
+  {
+    id: 1,
+    title: "Planungspaket 01 Basis",
+    subtitle: "",
+    description:
+      "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
+    mobileTitle: "Planungspaket 01",
+    mobileSubtitle: "Basis",
+    mobileDescription:
+      "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
+    image:
+      "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+    price: "€10.900",
+    monthlyPrice: "€66,00/Monat",
+    backgroundColor: "#F4F4F4",
+    grayWord: "Basis",
+    extendedDescription:
+      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
+    mobileExtendedDescription:
+      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
+  },
+  {
+    id: 2,
+    title: "Planungspaket 02 Plus",
+    subtitle: "",
+    description:
+      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
+    mobileTitle: "Planungspaket 02",
+    mobileSubtitle: "Plus",
+    mobileDescription:
+      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
+    image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
+    price: "€15.900",
+    monthlyPrice: "€97,00/Monat",
+    backgroundColor: "#F4F4F4",
+    grayWord: "Plus",
+    extendedDescription:
+      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+    mobileExtendedDescription:
+      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+  },
+  {
+    id: 3,
+    title: "Planungspaket 03 Pro",
+    subtitle: "",
+    description:
+      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
+    mobileTitle: "Planungspaket 03",
+    mobileSubtitle: "Pro",
+    mobileDescription:
+      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
+    image:
+      "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
+    price: "€20.900",
+    monthlyPrice: "€127,50/Monat",
+    backgroundColor: "#F4F4F4",
+    grayWord: "Pro",
+    extendedDescription:
+      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+    mobileExtendedDescription:
+      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+  },
+];
+
+// Helper function to render title with specified word in gray
+const renderTitle = (title: string, grayWord?: string) => {
+  if (grayWord && title.includes(grayWord)) {
+    const parts = title.split(grayWord);
+    return (
+      <>
+        {parts[0]}
+        <span className="text-gray-400">{grayWord}</span>
+        {parts[1]}
+      </>
+    );
+  }
+  return title;
+};
+
+export default function PlanungspaketeCards({
+  title = "Planungspakete Cards",
+  subtitle = "Click on any card to see detailed information",
+  maxWidth = true,
+  showInstructions = true,
+  isLightboxMode = false,
+  enableBuiltInLightbox = true, // Default to true for built-in lightbox
+  onCardClick,
+  customData,
+}: PlanungspaketeCardsProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardWidth, setCardWidth] = useState(320);
+  const [cardsPerView, setCardsPerView] = useState(3);
+  const [isClient, setIsClient] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const x = useMotionValue(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Use appropriate data source based on custom data
+  const cardData = customData || planungspaketeCardData;
+
+  // Initialize client-side state
+  useEffect(() => {
+    setIsClient(true);
+    setScreenWidth(window.innerWidth);
+  }, []);
+
+  // Calculate responsive card dimensions
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      setScreenWidth(width);
+
+      if (isLightboxMode) {
+        // Lightbox mode: Use mobile-friendly dimensions instead of large fixed ones
+        if (width >= 1280) {
+          setCardsPerView(1.5);
+          setCardWidth(760); // Desktop: larger cards
+        } else if (width >= 1024) {
+          setCardsPerView(1.2);
+          setCardWidth(720);
+        } else if (width >= 768) {
+          setCardsPerView(1);
+          setCardWidth(680);
+        } else {
+          // Mobile: Use mobile variant dimensions for perfect fit
+          setCardsPerView(1);
+          setCardWidth(320); // Much smaller, similar to mobile variant
+        }
+      } else {
+        // Normal mode - responsive grid layout
+        // Use consistent width since flex-wrap handles the layout
+        setCardsPerView(3);
+        // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 350px below lg breakpoint
+        setCardWidth(width >= 1024 ? 450 : 350);
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, [isLightboxMode]);
+
+  const gap = 24;
+  const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
+  const maxScroll = -(maxIndex * (cardWidth + gap));
+
+  // Show only the first 3 cards
+  const displayCards = cardData.slice(0, 3);
+  const adjustedMaxIndex = Math.max(
+    0,
+    displayCards.length - Math.floor(cardsPerView)
+  );
+
+  // Navigation logic
+  const navigateCard = useCallback(
+    (direction: number) => {
+      const targetMaxIndex = displayCards.length - Math.floor(cardsPerView);
+      const newIndex = Math.max(
+        0,
+        Math.min(targetMaxIndex, currentIndex + direction)
+      );
+      setCurrentIndex(newIndex);
+      const newX = -(newIndex * (cardWidth + gap));
+      x.set(newX);
+    },
+    [displayCards.length, cardsPerView, currentIndex, cardWidth, gap, x]
+  );
+
+  // Keyboard navigation - disabled for normal mode
+  useEffect(() => {
+    if (!isLightboxMode) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        navigateCard(-1);
+      } else if (event.key === "ArrowRight") {
+        navigateCard(1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigateCard, isLightboxMode]);
+
+  const handleDragEnd = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
+    const offset = info.offset.x;
+    const velocity = info.velocity.x;
+
+    // Calculate which card to snap to based on drag
+    const currentX = x.get();
+    let targetIndex = Math.round(-currentX / (cardWidth + gap));
+
+    const targetMaxIndex = adjustedMaxIndex;
+
+    // Adjust based on drag direction and velocity
+    if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
+      if (offset > 0 || velocity > 500) {
+        targetIndex = Math.max(0, targetIndex - 1);
+      } else if (offset < 0 || velocity < -500) {
+        targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
+      }
+    }
+
+    setCurrentIndex(targetIndex);
+    const newX = -(targetIndex * (cardWidth + gap));
+    x.set(newX);
+  };
+
+  const containerClasses = maxWidth
+    ? "w-full max-w-screen-2xl mx-auto"
+    : "w-full";
+
+  // Prevent hydration mismatch by showing loading state until client is ready
+  if (!isClient) {
+    return (
+      <div className={containerClasses}>
+        <div className="text-center mb-8">
+          {!(
+            isLightboxMode &&
+            typeof window !== "undefined" &&
+            window.innerWidth < 768
+          ) && (
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+          )}
+          {subtitle && <p className="text-gray-600">{subtitle}</p>}
+        </div>
+        <div className="flex justify-center items-center py-8">
+          <div
+            className="animate-pulse bg-gray-200 rounded-3xl"
+            style={{ width: 320, height: 480 }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Helper function to get appropriate text based on screen size
+  const getCardText = (
+    card: PlanungspaketeCardData,
+    field: "title" | "subtitle" | "description" | "extendedDescription"
+  ) => {
+    const isMobileScreen = isClient && screenWidth < 1024;
+
+    switch (field) {
+      case "title":
+        return isMobileScreen && card.mobileTitle
+          ? card.mobileTitle
+          : card.title;
+      case "subtitle":
+        return isMobileScreen && card.mobileSubtitle
+          ? card.mobileSubtitle
+          : card.subtitle;
+      case "description":
+        return isMobileScreen && card.mobileDescription
+          ? card.mobileDescription
+          : card.description;
+      case "extendedDescription":
+        return isMobileScreen && card.mobileExtendedDescription
+          ? card.mobileExtendedDescription
+          : card.extendedDescription || "";
+      default:
+        return "";
+    }
+  };
+
+  return (
+    <div className={containerClasses}>
+      <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
+        {!(
+          isLightboxMode &&
+          typeof window !== "undefined" &&
+          window.innerWidth < 768
+        ) && <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>}
+        {subtitle && <p className="text-gray-600">{subtitle}</p>}
+      </div>
+
+      {/* Cards Container */}
+      <div className={`relative ${isLightboxMode ? "py-2" : "py-8"}`}>
+        {!isLightboxMode ? (
+          /* Normal Mode - Responsive Grid Layout */
+          <div
+            className={`flex flex-wrap justify-center items-center gap-6 ${
+              maxWidth ? "px-8" : "px-4"
+            }`}
+          >
+            {displayCards.map((card, index) => (
+              <motion.div
+                key={card.id}
+                className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
+                style={{
+                  width: cardWidth,
+                  height: 360,
+                  backgroundColor: card.backgroundColor,
+                }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => {
+                  if (enableBuiltInLightbox && !isLightboxMode) {
+                    setLightboxOpen(true);
+                  } else if (onCardClick) {
+                    onCardClick(card.id);
+                  }
+                }}
+              >
+                {/* Top Section - EXPANDED HEIGHT */}
+                <div className="h-56 min-h-56 px-6 pt-6 pb-1 overflow-hidden">
+                  {/* Header Row - Title/Subtitle left, Price right */}
+                  <div className="flex mb-5">
+                    {/* Title/Subtitle - Left Side */}
+                    <div className="flex-1">
+                      <motion.div
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1, duration: 0.6 }}
+                      >
+                        <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
+                          {renderTitle(
+                            getCardText(card, "title"),
+                            card.grayWord
+                          )}
+                        </h3>
+                        <h4 className="text-sm md:text-base lg:text-lg font-medium text-gray-700">
+                          {getCardText(card, "subtitle")}
+                        </h4>
+                      </motion.div>
+                    </div>
+
+                    {/* Price - Right Side */}
+                    <div className="w-24 flex flex-col justify-start items-end text-right">
+                      <motion.div
+                        initial={{ x: 20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+                        className="text-right"
+                      >
+                        <div className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">
+                          {card.price}
+                        </div>
+                        {card.monthlyPrice && (
+                          <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
+                            {card.monthlyPrice}
+                          </div>
+                        )}
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Description - Full Width */}
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
+                  >
+                    <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line overflow-hidden">
+                      {getCardText(card, "description")}
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* Bottom Section - Extended Description (Full Width) - FLEXIBLE HEIGHT */}
+                {card.extendedDescription && (
+                  <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden">
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
+                      className="h-full"
+                    >
+                      <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line line-clamp-4">
+                        {getCardText(card, "extendedDescription")}
+                      </p>
+                    </motion.div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          /* Lightbox Mode - Horizontal Scrolling Layout */
+          <div className="overflow-x-clip">
+            <div
+              ref={containerRef}
+              className={`overflow-x-hidden ${
+                maxWidth ? "px-8" : "px-4"
+              } cursor-grab active:cursor-grabbing`}
+              style={{ overflow: "visible" }}
+            >
+              <motion.div
+                className="flex gap-6"
+                style={{
+                  x,
+                  width: `${(cardWidth + gap) * displayCards.length - gap}px`,
+                }}
+                drag="x"
+                dragConstraints={{
+                  left: maxScroll,
+                  right: 0,
+                }}
+                dragElastic={0.1}
+                onDragEnd={handleDragEnd}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 30,
+                }}
+              >
+                {displayCards.map((card, index) => (
+                  <motion.div
+                    key={card.id}
+                    className="flex-shrink-0 rounded-3xl shadow-lg overflow-y-auto hide-scrollbar hover:shadow-xl transition-shadow duration-300 flex-col"
+                    style={{
+                      width: cardWidth,
+                      height:
+                        typeof window !== "undefined" && window.innerWidth < 768
+                          ? Math.min(600, window.innerHeight * 0.75) // Original mobile size
+                          : Math.min(1000, window.innerHeight * 0.875), // 25% taller for desktop only
+                      backgroundColor: card.backgroundColor,
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Lightbox layout: Responsive with mobile-friendly sizing */}
+                    {/* Top Section - Header and Description */}
+                    <div className="flex-shrink-0 px-4 md:px-12 pt-4 md:pt-12 pb-2">
+                      {/* Header Row - Title/Subtitle left, Price right */}
+                      <div className="flex mb-5">
+                        {/* Title/Subtitle - Left Side */}
+                        <div className="flex-1">
+                          <motion.div
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{
+                              delay: index * 0.1,
+                              duration: 0.6,
+                            }}
+                          >
+                            <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                              {renderTitle(
+                                getCardText(card, "title"),
+                                card.grayWord
+                              )}
+                            </h3>
+                            <h4 className="text-base md:text-lg lg:text-xl font-medium text-gray-700">
+                              {getCardText(card, "subtitle")}
+                            </h4>
+                          </motion.div>
+                        </div>
+
+                        {/* Price - Right Side */}
+                        <div className="w-20 md:w-32 flex flex-col justify-start items-end text-right">
+                          <motion.div
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{
+                              delay: index * 0.1 + 0.2,
+                              duration: 0.6,
+                            }}
+                            className="text-right"
+                          >
+                            <div className="text-lg md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
+                              {card.price}
+                            </div>
+                            {card.monthlyPrice && (
+                              <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
+                                {card.monthlyPrice}
+                              </div>
+                            )}
+                          </motion.div>
+                        </div>
+                      </div>
+
+                      {/* Description - Full Width */}
+                      <motion.div
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{
+                          delay: index * 0.1 + 0.3,
+                          duration: 0.6,
+                        }}
+                      >
+                        <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line">
+                          {getCardText(card, "description")}
+                        </p>
+                      </motion.div>
+                    </div>
+
+                    {/* Bottom Section - Extended Description (Full Width) */}
+                    {card.extendedDescription && (
+                      <div className="px-4 md:px-12 pt-4 md:pt-8 pb-4 md:pb-12 flex-1 min-h-0">
+                        <motion.div
+                          initial={{ y: 20, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{
+                            delay: index * 0.1 + 0.4,
+                            duration: 0.8,
+                          }}
+                          className="h-full overflow-y-auto hide-scrollbar"
+                        >
+                          <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line">
+                            {getCardText(card, "extendedDescription")}
+                          </p>
+                        </motion.div>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        )}
+
+        {/* Navigation Arrows - Only for lightbox mode */}
+        {isLightboxMode && (
+          <>
+            {currentIndex > 0 && (
+              <button
+                onClick={() => navigateCard(-1)}
+                className={`absolute left-0 top-1/2 transform -translate-y-1/2 ${
+                  maxWidth ? "-translate-x-4" : "translate-x-2"
+                } bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+              >
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+            )}
+
+            {currentIndex < displayCards.length - Math.floor(cardsPerView) && (
+              <button
+                onClick={() => navigateCard(1)}
+                className={`absolute right-0 top-1/2 transform -translate-y-1/2 ${
+                  maxWidth ? "translate-x-4" : "-translate-x-2"
+                } bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+              >
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Progress Indicator - Only for lightbox mode */}
+      {isLightboxMode && displayCards.length > Math.floor(cardsPerView) && (
+        <div className="flex justify-center mt-8">
+          <div className="bg-gray-200 rounded-full h-1 w-32">
+            <motion.div
+              className="bg-gray-900 rounded-full h-1"
+              style={{
+                width: `${Math.min(
+                  100,
+                  ((currentIndex + Math.floor(cardsPerView)) /
+                    displayCards.length) *
+                    100
+                )}%`,
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Instructions */}
+      {showInstructions && (
+        <div className="text-center mt-6 text-sm text-gray-500">
+          <p>Click on any card to see detailed information</p>
+        </div>
+      )}
+
+      {/* Built-in Lightbox Dialog */}
+      {enableBuiltInLightbox && (
+        <Dialog
+          isOpen={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+          transparent={true}
+          className="p-0"
+        >
+          <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
+            <div className="w-full max-w-none my-4">
+              <PlanungspaketeCards
+                title={title}
+                subtitle=""
+                maxWidth={false}
+                showInstructions={false}
+                isLightboxMode={true}
+                enableBuiltInLightbox={false} // Disable nested lightbox
+                customData={customData}
+              />
+            </div>
+          </div>
+        </Dialog>
+      )}
+    </div>
+  );
+}

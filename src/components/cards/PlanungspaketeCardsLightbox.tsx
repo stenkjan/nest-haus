@@ -2,25 +2,25 @@
 
 import React, { useState } from "react";
 import { Dialog } from "@/components/ui/Dialog";
-import ContentCards from "./ContentCards";
+import PlanungspaketeCards, {
+  PlanungspaketeCardData,
+} from "./PlanungspaketeCards";
 
-interface ContentCardsLightboxProps {
-  variant?: "responsive" | "static";
+interface PlanungspaketeCardsLightboxProps {
   title?: string;
   subtitle?: string;
   triggerClassName?: string;
   triggerText?: string;
-  customData?: any[];
+  customData?: PlanungspaketeCardData[];
 }
 
-export default function ContentCardsLightbox({
-  variant = "responsive",
-  title = "Content Cards",
-  subtitle: _subtitle = "Navigate with arrow keys or swipe on mobile",
+export default function PlanungspaketeCardsLightbox({
+  title = "Planungspakete Details",
+  subtitle = "Click on any card to see detailed information",
   triggerClassName = "",
-  triggerText = "Open in Lightbox",
+  triggerText = "Open Planungspakete in Lightbox",
   customData,
-}: ContentCardsLightboxProps) {
+}: PlanungspaketeCardsLightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => setIsOpen(true);
@@ -44,10 +44,9 @@ export default function ContentCardsLightbox({
         className="p-0"
       >
         <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
-          {/* ContentCards with transparent background */}
+          {/* PlanungspaketeCards with transparent background */}
           <div className="w-full max-w-none my-4">
-            <ContentCards
-              variant={variant}
+            <PlanungspaketeCards
               title={title}
               subtitle=""
               maxWidth={false}

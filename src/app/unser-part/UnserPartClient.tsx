@@ -17,8 +17,9 @@ import {
   MaterialShowcase,
 } from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
-import { PricingCardsLightbox } from "@/components/cards/ContentCardsLightbox";
+import { PlanungspaketeCards } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
+import { CONTENT_CARD_PRESETS } from "@/constants/contentCardPresets";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
 import Footer from "@/components/Footer";
@@ -384,31 +385,7 @@ export default function UnserPartClient() {
               subtitle=""
               maxWidth={false}
               showInstructions={false}
-              customData={[
-                {
-                  id: 1,
-                  title: "Sicherheit",
-                  subtitle: "",
-                  description:
-                    "Häuser bauen bedeutet, sich an die Spielregeln zu halten und diese können je nach Region unterschiedlich sein. Wir kennen die gesetzlichen Vorgaben genau und unterstützen dich dabei, die Anforderungen deines Baugrunds zu verstehen. Mit unserem Grundstücks-Check prüfen wir, welche Gegebenheiten du bei deinem Wunschgrundstück beachten musst.",
-                  image: IMAGES.function.nestHausGrundstueckCheck,
-                  backgroundColor: "#F4F4F4",
-                  buttons: [
-                    {
-                      text: "Dein Part",
-                      variant: "primary" as const,
-                      size: "xs" as const,
-                      link: "/dein-part",
-                    },
-                    {
-                      text: "Jetzt bauen",
-                      variant: "secondary" as const,
-                      size: "xs" as const,
-                      link: "/konfigurator",
-                    },
-                  ],
-                },
-              ]}
+              customData={[CONTENT_CARD_PRESETS.sicherheit]}
             />
           </div>
         </section>
@@ -426,7 +403,12 @@ export default function UnserPartClient() {
               </h3>
             </div>
 
-            <PricingCardsLightbox title="" subtitle="" />
+            <PlanungspaketeCards
+              title=""
+              subtitle=""
+              maxWidth={false}
+              showInstructions={false}
+            />
 
             {/* Button Combo After Component */}
             <div className="flex gap-4 justify-center w-full mt-16">

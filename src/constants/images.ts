@@ -39,6 +39,11 @@ export const IMAGES = {
         eleven: '11-NEST-Haus-Module-Transport-Animation-Schema',
     },
 
+    // Video content for cards
+    videos: {
+        nestHausTransport: '11-NEST-Haus-Module-Transport-Animation-Schema',
+    },
+
     pvModule: {
         pvOverlay: '179-nest-solar-solarenergie-solarpanel-nachhaltig-sonne-icon-strom-energie',
     },
@@ -76,11 +81,16 @@ export const IMAGES = {
         nestHausFundamentPunktfundament: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung',
         nestHausFlexibilitaetErweiterung: '40-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
+        // Desktop versions of images 13-16
+        nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau',
+        nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz',
+        nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung',
+        nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept',
         // Mobile versions for function images
         mobile: {
             nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
             nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz-mobile',
-            nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-möblierung-personlisierung-mobile',
+            nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung-mobile',
             nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept-mobile',
             nestHausErweiterungModulbau: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel-mobile'
         }

@@ -12,7 +12,7 @@ import {
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
 import { SquareGlassCardsScroll } from "@/components/cards";
-import { PricingCardsLightbox } from "@/components/cards/ContentCardsLightbox";
+import { PlanungspaketeCards } from "@/components/cards";
 
 import { IMAGES } from "@/constants/images";
 import Footer from "@/components/Footer";
@@ -339,7 +339,12 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
                 </h3>
               </div>
 
-              <PricingCardsLightbox title="" subtitle="" />
+              <PlanungspaketeCards
+                title=""
+                subtitle=""
+                maxWidth={false}
+                showInstructions={false}
+              />
 
               {/* Button Combo After Component */}
               <div className="flex gap-4 justify-center w-full mt-16">
