@@ -14,6 +14,7 @@ interface GridItem {
   backgroundColor: string;
   primaryAction: string;
   secondaryAction: string;
+  textColor?: string; // Optional custom text color, defaults to white
 }
 
 interface TwoByTwoImageGridProps {
@@ -175,10 +176,18 @@ export default function TwoByTwoImageGrid({
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
                 <div className={`${isUltraWide ? "p-6" : "p-4"} text-center`}>
-                  <h2 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-white mb-1">
+                  <h2
+                    className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold mb-1 ${
+                      item.textColor || "text-white"
+                    }`}
+                  >
                     {item.title}
                   </h2>
-                  <h4 className="text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-white">
+                  <h4
+                    className={`text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl ${
+                      item.textColor || "text-white"
+                    }`}
+                  >
                     {item.subtitle}
                   </h4>
                 </div>
@@ -193,7 +202,11 @@ export default function TwoByTwoImageGrid({
               >
                 <div className={`${isUltraWide ? "p-6" : "p-4"}`}>
                   {/* Description Text */}
-                  <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-white mb-4 text-center">
+                  <p
+                    className={`text-sm md:text-base lg:text-lg 2xl:text-xl mb-4 text-center ${
+                      item.textColor || "text-white"
+                    }`}
+                  >
                     {item.description}
                   </p>
 

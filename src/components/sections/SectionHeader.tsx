@@ -1,5 +1,18 @@
 import React from "react";
 
+/**
+ * SectionHeader Component
+ *
+ * Provides consistent typography for section titles and subtitles.
+ * Automatically applies responsive breakpoints and proper semantic HTML.
+ *
+ * Typography Standards:
+ * - Title: text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl (font-weight via titleClassName)
+ * - Subtitle: text-base md:text-lg lg:text-xl 2xl:text-2xl
+ *
+ * See: /docs/TYPOGRAPHY_STANDARDS.md
+ */
+
 interface SectionHeaderProps {
   title: string;
   subtitle?: string;
@@ -21,13 +34,15 @@ export function SectionHeader({
   subtitleClassName = "",
   maxWidth = "max-w-3xl",
 }: SectionHeaderProps) {
-  const baseContainerClasses = `${alignment === "center" ? "text-center" : "text-left"} ${className}`;
-  const titleClasses = `font-medium tracking-[-0.02em] mb-4 ${
+  const baseContainerClasses = `${
+    alignment === "center" ? "text-center" : "text-left"
+  } ${className}`;
+  const titleClasses = `mb-3 ${
     titleSize === "large"
-      ? "text-4xl md:text-[60px]"
+      ? "text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl"
       : "text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl"
   } ${titleClassName}`;
-  const subtitleClasses = `text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 ${
+  const subtitleClasses = `text-base md:text-lg lg:text-xl 2xl:text-2xl mb-8 ${
     alignment === "center" ? "mx-auto" : ""
   } ${maxWidth ? maxWidth : ""} ${subtitleClassName}`;
 

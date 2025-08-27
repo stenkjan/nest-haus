@@ -121,8 +121,8 @@ export default function UnserPartClient() {
                 subtitle="Schaffen beste Qualität zu fairen Preisen."
                 titleSize="default"
                 maxWidth={false}
-                titleClassName="text-gray-900 font-bold mb-3 tracking-normal"
-                subtitleClassName="text-black text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal leading-normal mb-0 tracking-normal"
+                titleClassName="text-gray-900 font-bold"
+                subtitleClassName="text-gray-600 font-normal mb-0"
               />
 
               <ButtonGroup
@@ -153,10 +153,10 @@ export default function UnserPartClient() {
               <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
                 Dein Nest System
               </h2>
-              <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
                 Effizienz schafft.
-              </p>
+              </h3>
             </div>
 
             <div className="flex justify-center">
@@ -286,9 +286,9 @@ export default function UnserPartClient() {
               <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
                 Wir liefern Möglichkeiten
               </h2>
-              <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300">
                 Wo Effizienz auf Architektur trifft - Nest
-              </p>
+              </h3>
             </div>
 
             <div className="flex justify-center">
@@ -321,9 +321,9 @@ export default function UnserPartClient() {
               <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
                 Du individualisierst dein NEST Haus.
               </h2>
-              <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300">
                 Weil nur du weißt, wie du richtig wohnst.
-              </p>
+              </h3>
             </div>
           </div>
 
@@ -370,10 +370,10 @@ export default function UnserPartClient() {
         <section id="grundstueck-check" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Dein Grundstück - Unser Check
               </h2>
-              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
                 deiner Wahl passt.
               </h3>
@@ -394,10 +394,10 @@ export default function UnserPartClient() {
         <section id="planungspakete" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Unterstützung gefällig?
               </h2>
-              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
               </h3>
@@ -430,10 +430,10 @@ export default function UnserPartClient() {
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-medium text-gray-900 mb-3">
                 Kein Plan? Kein Problem!
               </h2>
-              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz
                 bequem telefonisch
               </h3>

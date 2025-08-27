@@ -6,6 +6,7 @@ import { Button } from "@/components/ui";
 import { ClientBlobVideo } from "@/components/images";
 import { VideoCard16by9, PlanungspaketeCards } from "@/components/cards";
 import { TwoByTwoImageGrid } from "@/components/grids";
+import { GetInContactBanner, PartnersSection } from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
 import { IMAGES } from "@/constants/images";
 import {
@@ -45,6 +46,11 @@ const sections = [
     id: "planungspakete",
     title: "Unterstützung gefällig?",
     slug: "planungspakete",
+  },
+  {
+    id: "partners",
+    title: "Gemeinsam mit starken Partnern",
+    slug: "partners",
   },
 ];
 
@@ -86,9 +92,9 @@ export default function EntdeckenClient() {
               <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Design für dich gemacht
               </h2>
-              <p className="text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
+              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-gray-600">
                 Dein Design im Freistil
-              </p>
+              </h3>
             </div>
           </div>
         </section>
@@ -117,9 +123,9 @@ export default function EntdeckenClient() {
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
                   Design für dich gemacht
                 </h2>
-                <p className="text-base sm:text-lg text-black mb-8">
+                <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-gray-600">
                   Dein Design im Freistil
-                </p>
+                </h3>
               </div>
 
               {/* Text Blocks positioned closer to buttons - Hidden on tablet and mobile */}
@@ -185,9 +191,9 @@ export default function EntdeckenClient() {
               <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Dein Zuhause zieht um
               </h2>
-              <p className="text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
+              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-gray-600">
                 Architektur für ein bewegtes Leben.
-              </p>
+              </h3>
             </div>
 
             {/* VideoCard16by9 Component */}
@@ -228,6 +234,7 @@ export default function EntdeckenClient() {
                   backgroundColor: "#F4F4F4",
                   primaryAction: "Die Materialien",
                   secondaryAction: "Jetzt bauen",
+                  textColor: "text-black",
                 },
                 {
                   id: 3,
@@ -258,10 +265,10 @@ export default function EntdeckenClient() {
         <section id="grundstueck-check" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Dein Grundstück - Unser Check
               </h2>
-              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
                 deiner Wahl passt.
               </h3>
@@ -282,10 +289,10 @@ export default function EntdeckenClient() {
         <section id="planungspakete" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Unterstützung gefällig?
               </h2>
-              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
               </h3>
@@ -309,7 +316,18 @@ export default function EntdeckenClient() {
             </div>
           </div>
         </section>
+
+        {/* Section 7 - Partners */}
+        <section id="partners" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <PartnersSection backgroundColor="white" showButtons={true} />
+          </div>
+        </section>
       </SectionRouter>
+
+      {/* Contact Banner - Testing Typography Standards */}
+      <GetInContactBanner />
+
       <Footer />
     </div>
   );

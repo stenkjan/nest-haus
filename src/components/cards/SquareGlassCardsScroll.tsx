@@ -241,12 +241,18 @@ export default function SquareGlassCardsScroll({
       <div className={`${containerClasses}`}>
         {/* Header */}
         <div className="text-center mb-12 px-4 md:px-8">
-          <h2 className={`text-3xl md:text-5xl font-bold ${textColor} mb-4`}>
+          <h2
+            className={`text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold ${textColor} mb-3`}
+          >
             {title}
           </h2>
-          <p className={`text-lg md:text-xl ${textColor} opacity-80`}>
+          <h3
+            className={`text-base md:text-lg lg:text-xl 2xl:text-2xl ${
+              backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+            } mb-8`}
+          >
             {subtitle}
-          </p>
+          </h3>
         </div>
 
         {/* Cards Container */}
