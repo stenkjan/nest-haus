@@ -190,14 +190,14 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
       : `${remainingSeconds}s`;
   };
 
-  const renderExpandableBox = (
+  const renderExpandableBox = <T,>(
     title: string,
     icon: string,
     mainValue: string,
     subtitle: string,
     boxId: string,
-    data: unknown[],
-    renderItem: (item: unknown, _index: number) => React.ReactNode
+    data: T[],
+    renderItem: (item: T, _index: number) => React.ReactNode
   ) => {
     const isExpanded = expandedBox === boxId;
     const displayData = isExpanded ? data.slice(0, 10) : data.slice(0, 1);
