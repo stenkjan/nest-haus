@@ -65,7 +65,7 @@ function analyzeSentiment(responses: string[]): { positive: number; neutral: num
 }
 
 // Configuration Analytics Processing
-function processConfigurationAnalytics(tests: Array<Record<string, unknown>>) {
+function processConfigurationAnalytics(tests: Array<{ testId: string; interactions?: Array<Record<string, unknown>> }>) {
     const configSelections = new Map<string, { category: string; value: string; name: string; count: number }>();
     const pageTimeData = new Map<string, { path: string; title: string; totalTime: number; visits: number; sessions: Set<string> }>();
     const clickedPages = new Map<string, { path: string; title: string; visits: number; sessions: Set<string> }>();
@@ -73,7 +73,7 @@ function processConfigurationAnalytics(tests: Array<Record<string, unknown>>) {
 
     tests.forEach(test => {
         const testId = test.testId;
-        const interactions = test.interactions || [];
+        const interactions = (test.interactions || []) as Array<Record<string, unknown>>;
 
         // Process configurator selections
         interactions
@@ -102,7 +102,7 @@ function processConfigurationAnalytics(tests: Array<Record<string, unknown>>) {
             const data = additionalData.data as Record<string, unknown> || {};
             const path = String(data.path || '/');
             const title = String(data.title || path);
-            const timestamp = new Date(visit.timestamp).getTime();
+            const timestamp = new Date(visit.timestamp as string | number | Date).getTime();
 
             // Skip test pages
             if (path.includes('alpha-test') || path.includes('test')) return;
@@ -110,7 +110,7 @@ function processConfigurationAnalytics(tests: Array<Record<string, unknown>>) {
             // Calculate time spent on page
             const nextVisit = pageVisits[index + 1];
             if (nextVisit) {
-                const nextTimestamp = new Date(nextVisit.timestamp).getTime();
+                const nextTimestamp = new Date(nextVisit.timestamp as string | number | Date).getTime();
                 const timeSpent = nextTimestamp - timestamp;
 
                 if (pageTimeData.has(path)) {
@@ -162,7 +162,7 @@ function processConfigurationAnalytics(tests: Array<Record<string, unknown>>) {
             const additionalData = visit.additionalData as Record<string, unknown> || {};
             const data = additionalData.data as Record<string, unknown> || {};
             const path = String(data.path || '/');
-            const timestamp = new Date(visit.timestamp).getTime();
+            const timestamp = new Date(visit.timestamp as string | number | Date).getTime();
 
             // Check if it's a section route (contains #)
             if (path.includes('#')) {
@@ -172,7 +172,7 @@ function processConfigurationAnalytics(tests: Array<Record<string, unknown>>) {
                 // Calculate time spent on section
                 const nextVisit = pageVisits[index + 1];
                 if (nextVisit) {
-                    const nextTimestamp = new Date(nextVisit.timestamp).getTime();
+                    const nextTimestamp = new Date(nextVisit.timestamp as string | number | Date).getTime();
                     const timeSpent = nextTimestamp - timestamp;
 
                     if (sectionTimeData.has(sectionKey)) {
@@ -446,7 +446,7 @@ export async function GET(request: NextRequest) {
             }
 
             // Error rate calculation
-            const totalInteractions = test.interactions.length;
+            const totalInteractions = (test.interactions || []).length;
             if (totalInteractions > 0) {
                 const errorRate = (test.errorCount / totalInteractions) * 100;
                 performanceStats.errorRates.push(errorRate);
@@ -461,7 +461,7 @@ export async function GET(request: NextRequest) {
                 acc.consoleErrors += test.consoleErrors.length;
             }
 
-            const failedInteractions = test.interactions.filter(i => !i.success);
+            const failedInteractions = (test.interactions || []).filter((i: Record<string, unknown>) => !i.success);
             acc.interactionErrors += failedInteractions.length;
 
             return acc;
@@ -473,7 +473,7 @@ export async function GET(request: NextRequest) {
 
         // Session tracking analytics
         const sessionTrackingStats = tests.reduce((acc, test) => {
-            const interactions = test.interactions || [];
+            const interactions = (test.interactions || []) as Array<Record<string, unknown>>;
 
             // Count interaction types
             interactions.forEach(interaction => {
@@ -536,7 +536,7 @@ export async function GET(request: NextRequest) {
             errorCount: test.errorCount,
             duration: test.totalDuration,
             deviceType: getDeviceType(test.deviceInfo as Record<string, unknown> || {}),
-            interactionCount: test.interactions?.length || 0
+            interactionCount: (test.interactions || []).length
         }));
 
         // Calculate performance metrics
@@ -701,10 +701,10 @@ async function getTestDetails(testId: string) {
             }, { status: 404 });
         }
 
-        console.log(`🔍 API: Found test with ${test.responses.length} responses and ${test.interactions.length} interactions`);
+        console.log(`🔍 API: Found test with ${test.responses.length} responses and ${(test.interactions || []).length} interactions`);
 
-        if (test.interactions.length > 0) {
-            console.log(`🔍 API: Sample interactions:`, test.interactions.slice(0, 3).map(i => ({
+        if ((test.interactions || []).length > 0) {
+            console.log(`🔍 API: Sample interactions:`, (test.interactions || []).slice(0, 3).map(i => ({
                 eventType: i.eventType,
                 elementId: i.elementId,
                 stepId: i.stepId,
@@ -734,7 +734,7 @@ async function getTestDetails(testId: string) {
         }, {} as Record<string, Array<Record<string, unknown>>>);
 
         // Process interactions by step
-        const interactionsByStep = test.interactions.reduce((acc, interaction) => {
+        const interactionsByStep = (test.interactions || []).reduce((acc, interaction) => {
             if (!acc[interaction.stepId]) {
                 acc[interaction.stepId] = [];
             }
@@ -772,8 +772,8 @@ async function getTestDetails(testId: string) {
                 },
                 responsesByStep,
                 interactionsByStep,
-                interactions: test.interactions, // Add raw interactions for debugging
-                timeline: [...test.responses, ...test.interactions]
+                interactions: test.interactions || [], // Add raw interactions for debugging
+                timeline: [...test.responses, ...(test.interactions || [])]
                     .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
                     .map(item => ({
                         type: 'questionId' in item ? 'response' : 'interaction',
@@ -786,7 +786,7 @@ async function getTestDetails(testId: string) {
         console.log(`🔍 API: Returning test details with:`, {
             testId: test.testId,
             responseCount: test.responses.length,
-            interactionCount: test.interactions.length,
+            interactionCount: (test.interactions || []).length,
             interactionsByStepKeys: Object.keys(interactionsByStep),
             timelineLength: responseData.data.timeline.length
         });
