@@ -64,7 +64,7 @@ const getMobileVideoPath = (desktopPath: string): string => {
 };
 
 export default function EntdeckenClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
   const [isMobile, setIsMobile] = useState(false);
 
   // Simple width-based mobile detection (same as ResponsiveHybridImage)

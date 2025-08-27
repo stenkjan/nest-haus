@@ -55,18 +55,30 @@ export default function UnifiedCardPreset({
 
   // Render appropriate component based on style
   if (style === "glass") {
+    // Filter out "pricing" variant for ContentCardsGlass (only supports "responsive" | "static")
+    const glassConfig = {
+      ...config,
+      variant: config.variant === "pricing" ? "responsive" : config.variant,
+    };
+
     return (
       <ContentCardsGlass
-        {...config}
+        {...glassConfig}
         isLightboxMode={isLightboxMode}
         onCardClick={onCardClick}
       />
     );
   }
 
+  // Filter out "pricing" variant for ContentCards (only supports "responsive" | "static")
+  const defaultConfig = {
+    ...config,
+    variant: config.variant === "pricing" ? "responsive" : config.variant,
+  };
+
   return (
     <ContentCards
-      {...config}
+      {...defaultConfig}
       isLightboxMode={isLightboxMode}
       onCardClick={onCardClick}
     />

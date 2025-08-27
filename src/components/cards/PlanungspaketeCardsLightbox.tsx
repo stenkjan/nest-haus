@@ -16,7 +16,7 @@ interface PlanungspaketeCardsLightboxProps {
 
 export default function PlanungspaketeCardsLightbox({
   title = "Planungspakete Details",
-  subtitle = "Click on any card to see detailed information",
+  subtitle: _subtitle = "Click on any card to see detailed information",
   triggerClassName = "",
   triggerText = "Open Planungspakete in Lightbox",
   customData,

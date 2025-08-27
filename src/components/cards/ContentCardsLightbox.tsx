@@ -4,13 +4,44 @@ import React, { useState } from "react";
 import { Dialog } from "@/components/ui/Dialog";
 import ContentCards from "./ContentCards";
 
+interface CardData {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  mobileTitle?: string;
+  mobileSubtitle?: string;
+  mobileDescription?: string;
+  image: string;
+  backgroundColor: string;
+}
+
+interface StaticCardData {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  mobileTitle?: string;
+  mobileSubtitle?: string;
+  mobileDescription?: string;
+  image: string;
+  backgroundColor: string;
+  buttons?: Array<{
+    text: string;
+    variant: "primary" | "secondary";
+    size: "xs" | "sm" | "md" | "lg";
+    link?: string;
+    onClick?: () => void;
+  }>;
+}
+
 interface ContentCardsLightboxProps {
   variant?: "responsive" | "static";
   title?: string;
   subtitle?: string;
   triggerClassName?: string;
   triggerText?: string;
-  customData?: any[];
+  customData?: CardData[] | StaticCardData[];
 }
 
 export default function ContentCardsLightbox({

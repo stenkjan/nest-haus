@@ -57,13 +57,13 @@ export default function VideoCard16by9({
   subtitle = "Video content with 16:9 aspect ratio",
   maxWidth = true,
   showInstructions = true,
-  isLightboxMode = false,
+  isLightboxMode: _isLightboxMode = false,
   onCardClick,
   customData,
 }: VideoCard16by9Props) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(1280); // Default to desktop width for SSR
-  const containerRef = useRef<HTMLDivElement>(null);
+  const _containerRef = useRef<HTMLDivElement>(null);
 
   // Client-side hydration and screen width detection
   useEffect(() => {

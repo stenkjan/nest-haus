@@ -168,7 +168,7 @@ export default function ContentCards({
   maxWidth = true,
   showInstructions = true,
   isLightboxMode = false,
-  onCardClick,
+  onCardClick: _onCardClick,
   customData,
 }: ContentCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -443,66 +443,66 @@ export default function ContentCards({
                               : 830
                           )
                         : isClient && screenWidth >= 1280
-                        ? Math.min(
-                            692,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 692
-                          )
-                        : isClient && screenWidth >= 1024
-                        ? Math.min(
-                            577, // Proportional height: 960 * (692/1152) = 577
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 577
-                          )
-                        : Math.min(
-                            720,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 720
-                          )
+                          ? Math.min(
+                              692,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.7
+                                : 692
+                            )
+                          : isClient && screenWidth >= 1024
+                            ? Math.min(
+                                577, // Proportional height: 960 * (692/1152) = 577
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.7
+                                  : 577
+                              )
+                            : Math.min(
+                                720,
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.75
+                                  : 720
+                              )
                       : isResponsive
-                      ? isClient && screenWidth >= 1600
-                        ? Math.min(
-                            830,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 830
-                          )
-                        : isClient && screenWidth >= 1280
-                        ? Math.min(
-                            692,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 692
-                          )
-                        : isClient && screenWidth >= 1024
-                        ? Math.min(
-                            577, // Proportional height: 960 * (692/1152) = 577
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 577
-                          )
-                        : Math.min(
-                            720,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 720
-                          )
-                      : isClient && screenWidth >= 1600
-                      ? Math.min(
-                          750,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.8
-                            : 750
-                        )
-                      : Math.min(
-                          600,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.75
-                            : 600
-                        ),
+                        ? isClient && screenWidth >= 1600
+                          ? Math.min(
+                              830,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 830
+                            )
+                          : isClient && screenWidth >= 1280
+                            ? Math.min(
+                                692,
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.7
+                                  : 692
+                              )
+                            : isClient && screenWidth >= 1024
+                              ? Math.min(
+                                  577, // Proportional height: 960 * (692/1152) = 577
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.7
+                                    : 577
+                                )
+                              : Math.min(
+                                  720,
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.75
+                                    : 720
+                                )
+                        : isClient && screenWidth >= 1600
+                          ? Math.min(
+                              750,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.8
+                                : 750
+                            )
+                          : Math.min(
+                              600,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 600
+                            ),
                     backgroundColor: card.backgroundColor,
                   }}
                   whileHover={{ scale: 1.02 }}
