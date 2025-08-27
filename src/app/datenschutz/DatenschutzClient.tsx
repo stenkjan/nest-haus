@@ -18,7 +18,7 @@ const sections = [
 ];
 
 export default function DatenschutzClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("overview");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("overview");
 
   return (
     <div className="min-h-screen pt-16">

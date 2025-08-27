@@ -16,7 +16,7 @@ const sections = [
 ];
 
 export default function ImpressumClient() {
-  const [currentSectionId, setCurrentSectionId] =
+  const [_currentSectionId, setCurrentSectionId] =
     useState<string>("company-info");
 
   return (
