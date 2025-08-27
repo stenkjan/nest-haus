@@ -130,17 +130,22 @@ export default function TwoByTwoImageGrid({
 
   return (
     <div className={containerClasses}>
-      <div className="text-center mb-8">
+      {/* Header with padding only on mobile */}
+      <div
+        className={`text-center mb-8 ${
+          isClient && screenWidth < 1024 ? "px-4" : ""
+        }`}
+      >
         <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
         {subtitle && <p className="text-gray-600">{subtitle}</p>}
       </div>
 
-      {/* 2x2 Grid Container */}
+      {/* 2x2 Grid Container - No padding on mobile */}
       <div
         className={`grid grid-cols-1 lg:grid-cols-2 ${
-          maxWidth ? "max-w-[1700px] mx-auto" : "w-full"
+          maxWidth ? "max-w-[1700px] mx-auto lg:px-4" : "w-full lg:px-4"
         }`}
-        style={{ gap: "15px" }}
+        style={{ gap: isClient && screenWidth < 1024 ? "8px" : "15px" }}
       >
         {displayData.map((item, index) => (
           <motion.div
