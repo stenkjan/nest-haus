@@ -8,15 +8,21 @@ import { prisma } from '@/lib/prisma';
  */
 
 export async function POST(request: NextRequest) {
+    let testId: string | undefined;
+
     try {
         const body = await request.json();
-        const { testId, totalDuration, consoleErrors, completionRate, finalUrl } = body;
+        const extractedData = body;
+        testId = extractedData.testId;
+        const { totalDuration, consoleErrors, completionRate, finalUrl } = extractedData;
 
         if (!testId) {
             return NextResponse.json({
                 error: 'Missing required field: testId'
             }, { status: 400 });
         }
+
+        console.log(`🧪 Completing test: ${testId}`);
 
         const startTime = Date.now();
 
@@ -30,10 +36,13 @@ export async function POST(request: NextRequest) {
         });
 
         if (!test) {
+            console.log(`❌ Test not found: ${testId}`);
             return NextResponse.json({
                 error: 'Test not found'
             }, { status: 404 });
         }
+
+        console.log(`🧪 Test found, updating completion status for: ${testId}`);
 
         // Calculate overall rating from responses
         const ratingResponses = test.responses.filter(r =>
@@ -120,16 +129,18 @@ export async function POST(request: NextRequest) {
         console.error('❌ Failed to complete usability test:', error);
 
         // Try to mark test as error state
-        try {
-            await prisma.usabilityTest.update({
-                where: { testId },
-                data: {
-                    status: 'ERROR',
-                    updatedAt: new Date()
-                }
-            });
-        } catch (updateError) {
-            console.error('Failed to update test status to ERROR:', updateError);
+        if (testId) {
+            try {
+                await prisma.usabilityTest.update({
+                    where: { testId },
+                    data: {
+                        status: 'ERROR',
+                        updatedAt: new Date()
+                    }
+                });
+            } catch (updateError) {
+                console.error('Failed to update test status to ERROR:', updateError);
+            }
         }
 
         return NextResponse.json({

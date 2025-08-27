@@ -162,6 +162,7 @@ export default function UnserPartClient() {
               <div className="w-full max-w-6xl rounded-lg overflow-hidden bg-gray-900">
                 <ClientBlobVideo
                   path={IMAGES.function.nestHausModulSchemaIntro}
+                  // path={IMAGES.variantvideo.eleven}
                   className="w-full h-auto object-contain"
                   autoPlay={true}
                   loop={true}

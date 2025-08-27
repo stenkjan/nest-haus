@@ -12,7 +12,10 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const { testId, stepId, responses } = body;
 
+        console.log(`📝 Response API called with:`, { testId, stepId, responsesCount: responses?.length });
+
         if (!testId || !stepId || !responses || !Array.isArray(responses)) {
+            console.log(`❌ Missing required fields:`, { testId: !!testId, stepId: !!stepId, responses: Array.isArray(responses) });
             return NextResponse.json({
                 error: 'Missing required fields: testId, stepId, responses (array)'
             }, { status: 400 });
@@ -26,29 +29,36 @@ export async function POST(request: NextRequest) {
         });
 
         if (!test) {
+            console.log(`❌ Test not found in database: ${testId}`);
             return NextResponse.json({
                 error: 'Test not found'
             }, { status: 404 });
         }
 
+        console.log(`✅ Test found: ${test.id} (status: ${test.status})`);
+
         // Save all responses for this step
         const savedResponses = await Promise.all(
-            responses.map(async (response: any) => {
-                const { questionId, questionType, questionText, response: responseValue, responseTime } = response;
+            responses.map(async (response: Record<string, unknown>) => {
+                const questionId = String(response.questionId);
+                const questionType = String(response.questionType);
+                const questionText = String(response.questionText);
+                const responseValue = response.response;
+                const responseTime = response.responseTime;
 
                 return await prisma.usabilityResponse.create({
                     data: {
                         testId,
                         questionId,
-                        questionType: questionType.toUpperCase(),
+                        questionType: questionType.toUpperCase() as 'RATING' | 'TEXT' | 'MULTIPLE_CHOICE' | 'YES_NO',
                         questionText,
                         response: {
-                            value: responseValue,
-                            stepId,
+                            value: responseValue as string | number | boolean | null,
+                            stepId: String(stepId),
                             timestamp: new Date().toISOString(),
-                            responseTime
+                            responseTime: responseTime as number | null
                         },
-                        responseTime
+                        responseTime: responseTime as number | null
                     }
                 });
             })

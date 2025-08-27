@@ -3,6 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import AlphaTestProvider from "@/components/testing/AlphaTestProvider";
+import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
+import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
+import CookieBanner from "@/components/CookieBanner";
+import CookieSettingsHandler from "@/components/CookieSettingsHandler";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -107,9 +111,14 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased bg-white min-h-screen flex flex-col`}
       >
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <AlphaTestProvider />
+        <CookieConsentProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <AlphaTestProvider />
+          <AlphaSessionTracker />
+          <CookieBanner />
+          <CookieSettingsHandler />
+        </CookieConsentProvider>
       </body>
     </html>
   );

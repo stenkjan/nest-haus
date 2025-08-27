@@ -1,550 +1,399 @@
 /**
- * ========================================
- * NEST-HAUS ALPHA TEST QUESTIONS CONFIG
- * ========================================
+ * ===================================================================
+ * NEST-HAUS ALPHA TEST CONFIGURATION
+ * ===================================================================
  * 
- * This file contains ALL questions for the usability test.
- * Edit this file to modify questions, add new ones, or change the test flow.
+ * This file contains the complete test flow for the NEST-Haus alpha test.
+ * The test follows a 4-step user journey:
  * 
- * IMPORTANT: Only edit the content in this file - the logic is handled elsewhere.
+ * 1. OVERVIEW PHASE - User explores the website
+ * 2. CONFIGURATOR PHASE - User designs their house
+ * 3. CART PHASE - User completes the order process
+ * 4. FEEDBACK PHASE - User provides detailed feedback
  * 
- * Last Updated: January 2025
- * Team Review Status: [ ] Pending Review [ ] Approved
- */
-
-// ========================================
-// QUESTION TYPES AVAILABLE
-// ========================================
-// - 'rating': 1-10 scale questions
-// - 'text': Open text input
-// - 'multiple_choice': Select one option from list
-// - 'yes_no': Simple yes/no questions
-
-// ========================================
-// SECTION 1: WELCOME & CONSENT
-// ========================================
-// Purpose: Get user consent and basic device comfort assessment
-// Duration: ~1-2 minutes
-// Critical: These questions are required for legal compliance
-
-const WELCOME_QUESTIONS = [
-    {
-        id: "consent",
-        type: "yes_no" as const,
-        question: "Sind Sie damit einverstanden, dass wir Ihre Interaktionen für die Verbesserung unserer Website aufzeichnen?",
-        required: true,
-        // Internal note: GDPR compliance - user must consent to data collection
-    },
-    {
-        id: "device_comfort",
-        type: "rating" as const,
-        question: "Wie vertraut sind Sie mit der Nutzung von Websites auf diesem Gerät?",
-        required: true,
-        // Internal note: Helps contextualize other usability scores
-    },
-];
-
-// ========================================
-// SECTION 2: LANDING PAGE EVALUATION
-// ========================================
-// Purpose: First impression and navigation clarity
-// Duration: ~2-3 minutes
-// Target Page: / (Homepage)
-
-const LANDING_PAGE_QUESTIONS = [
-    {
-        id: "first_impression",
-        type: "rating" as const,
-        question: "Wie ist Ihr erster Eindruck der Website? (1 = sehr schlecht, 10 = ausgezeichnet)",
-        required: true,
-        // Internal note: Key metric for overall website appeal
-    },
-    {
-        id: "clarity",
-        type: "rating" as const,
-        question: "Wie klar ist es, worum es bei NEST-Haus geht?",
-        required: true,
-        // Internal note: Measures brand message clarity
-    },
-    {
-        id: "navigation_clarity",
-        type: "multiple_choice" as const,
-        question: "Welche Seite interessiert Sie als nächstes am meisten?",
-        options: [
-            "Entdecken - Mehr über modulare Häuser",
-            "Unser Part - Was NEST-Haus bietet",
-            "Dein Part - Ihre Rolle im Bauprozess",
-            "Warum Wir - Unsere Philosophie",
-            "Konfigurator - Haus konfigurieren",
-            "Kontakt - Beratung anfragen",
-        ],
-        required: true,
-        // Internal note: Shows user interest priorities and navigation preferences
-    },
-];
-
-// ========================================
-// SECTION 3: ENTDECKEN PAGE
-// ========================================
-// Purpose: Content clarity and visual appeal assessment
-// Duration: ~2 minutes
-// Target Page: /entdecken
-
-const ENTDECKEN_PAGE_QUESTIONS = [
-    {
-        id: "content_clarity",
-        type: "rating" as const,
-        question: "Wie verständlich sind die Informationen über modulare Häuser?",
-        required: true,
-        // Internal note: Tests educational content effectiveness
-    },
-    {
-        id: "visual_presentation",
-        type: "rating" as const,
-        question: "Wie ansprechend ist die visuelle Darstellung?",
-        required: true,
-        // Internal note: Visual design assessment
-    },
-    {
-        id: "information_completeness",
-        type: "rating" as const,
-        question: "Finden Sie genügend Informationen über das Konzept?",
-        required: true,
-        // Internal note: Content depth evaluation
-    },
-];
-
-// ========================================
-// SECTION 4: UNSER PART PAGE
-// ========================================
-// Purpose: Service clarity and trust building
-// Duration: ~2 minutes
-// Target Page: /unser-part
-
-const UNSER_PART_QUESTIONS = [
-    {
-        id: "service_clarity",
-        type: "rating" as const,
-        question: "Wie klar wird vermittelt, was NEST-Haus für Sie übernimmt?",
-        required: true,
-        // Internal note: Service communication effectiveness
-    },
-    {
-        id: "trust_building",
-        type: "rating" as const,
-        question: "Wie vertrauenswürdig wirkt das Unternehmen auf Sie?",
-        required: true,
-        // Internal note: Brand trust assessment - critical for conversion
-    },
-    {
-        id: "service_completeness",
-        type: "multiple_choice" as const,
-        question: "Welcher Service-Aspekt interessiert Sie am meisten?",
-        options: [
-            "Planung und Design",
-            "Baugenehmigung",
-            "Fertigung",
-            "Montage vor Ort",
-            "Qualitätskontrolle",
-        ],
-        required: true,
-        // Internal note: Identifies most valued services for marketing focus
-    },
-];
-
-// ========================================
-// SECTION 5: DEIN PART PAGE
-// ========================================
-// Purpose: Role clarity and process understanding
-// Duration: ~2 minutes
-// Target Page: /dein-part
-
-const DEIN_PART_QUESTIONS = [
-    {
-        id: "role_clarity",
-        type: "rating" as const,
-        question: "Wie klar wird Ihre Rolle im Bauprozess erklärt?",
-        required: true,
-        // Internal note: Customer responsibility communication
-    },
-    {
-        id: "responsibility_understanding",
-        type: "rating" as const,
-        question: "Verstehen Sie, was Sie selbst beitragen müssen?",
-        required: true,
-        // Internal note: Expectation management effectiveness
-    },
-    {
-        id: "process_transparency",
-        type: "rating" as const,
-        question: "Wie transparent ist der gesamte Bauprozess dargestellt?",
-        required: true,
-        // Internal note: Process communication clarity
-    },
-];
-
-// ========================================
-// SECTION 6: WARUM WIR PAGE
-// ========================================
-// Purpose: Philosophy and values alignment
-// Duration: ~2 minutes
-// Target Page: /warum-wir
-
-const WARUM_WIR_QUESTIONS = [
-    {
-        id: "philosophy_clarity",
-        type: "rating" as const,
-        question: "Wie überzeugend ist die Unternehmensphilosophie?",
-        required: true,
-        // Internal note: Brand philosophy effectiveness
-    },
-    {
-        id: "values_alignment",
-        type: "rating" as const,
-        question: "Wie sehr entsprechen die Werte Ihren eigenen Vorstellungen?",
-        required: true,
-        // Internal note: Value proposition alignment
-    },
-    {
-        id: "differentiation",
-        type: "rating" as const,
-        question: "Wie gut hebt sich NEST-Haus von anderen Anbietern ab?",
-        required: true,
-        // Internal note: Competitive differentiation perception
-    },
-];
-
-// ========================================
-// SECTION 7: CONFIGURATOR FIRST IMPRESSION
-// ========================================
-// Purpose: Initial configurator usability assessment
-// Duration: ~2 minutes
-// Target Page: /konfigurator
-
-const CONFIGURATOR_START_QUESTIONS = [
-    {
-        id: "configurator_clarity",
-        type: "rating" as const,
-        question: "Wie intuitiv ist die Bedienung des Konfigurators?",
-        required: true,
-        // Internal note: Initial usability impression - critical for tool adoption
-    },
-    {
-        id: "visual_appeal",
-        type: "rating" as const,
-        question: "Wie gefällt Ihnen das Design des Konfigurators?",
-        required: true,
-        // Internal note: Visual design assessment for main tool
-    },
-    {
-        id: "navigation_ease",
-        type: "rating" as const,
-        question: "Wie einfach ist die Navigation zwischen den Optionen?",
-        required: true,
-        // Internal note: Navigation usability within configurator
-    },
-];
-
-// ========================================
-// SECTION 8: CONFIGURATOR FULL USAGE
-// ========================================
-// Purpose: Complete configurator testing and understanding
-// Duration: ~5-7 minutes (longest section)
-// Target Page: /konfigurator
-
-const CONFIGURATOR_USAGE_QUESTIONS = [
-    {
-        id: "ease_of_use",
-        type: "rating" as const,
-        question: "Wie einfach war es, Ihre gewünschte Konfiguration zu erstellen?",
-        required: true,
-        // Internal note: Overall configurator usability - primary conversion tool
-    },
-    {
-        id: "price_understanding",
-        type: "rating" as const,
-        question: "Verstehen Sie die Preislogik und wie sich Preise zusammensetzen?",
-        required: true,
-        // Internal note: Price transparency - critical for purchase decisions
-    },
-    {
-        id: "house_visualization",
-        type: "rating" as const,
-        question: "Können Sie sich vorstellen, wie Ihr konfiguriertes Haus aussehen wird?",
-        required: true,
-        // Internal note: Visualization effectiveness - key for customer confidence
-    },
-    {
-        id: "option_completeness",
-        type: "rating" as const,
-        question: "Sind genügend Konfigurationsoptionen vorhanden?",
-        required: true,
-        // Internal note: Feature completeness assessment
-    },
-    {
-        id: "missing_features",
-        type: "text" as const,
-        question: "Welche Funktionen oder Optionen haben Sie vermisst?",
-        required: false,
-        // Internal note: Feature gap identification for product development
-    },
-];
-
-// ========================================
-// SECTION 9: ORDER PROCESS UNDERSTANDING
-// ========================================
-// Purpose: Purchase process clarity and confidence
-// Duration: ~3 minutes
-// Target Page: /konfigurator
-
-const ORDER_PROCESS_QUESTIONS = [
-    {
-        id: "payment_understanding",
-        type: "rating" as const,
-        question: "Verstehen Sie, was Sie wann bezahlen müssen?",
-        required: true,
-        // Internal note: Payment process clarity - critical for conversion
-    },
-    {
-        id: "included_services",
-        type: "rating" as const,
-        question: "Ist klar, was im Hauspreis enthalten ist?",
-        required: true,
-        // Internal note: Service inclusion transparency
-    },
-    {
-        id: "customer_responsibilities",
-        type: "rating" as const,
-        question: "Verstehen Sie Ihre Aufgaben im Bauprozess?",
-        required: true,
-        // Internal note: Customer role clarity in purchase process
-    },
-    {
-        id: "timeline_clarity",
-        type: "rating" as const,
-        question: "Ist der Zeitplan für den Hausbau verständlich?",
-        required: true,
-        // Internal note: Timeline communication effectiveness
-    },
-    {
-        id: "next_steps",
-        type: "multiple_choice" as const,
-        question: "Was wären Ihre nächsten Schritte nach der Konfiguration?",
-        options: [
-            "Beratungstermin vereinbaren",
-            "Weitere Informationen anfordern",
-            "Finanzierung klären",
-            "Grundstück suchen",
-            "Ich bin noch unsicher",
-        ],
-        required: true,
-        // Internal note: Next action preferences - guides CTA optimization
-    },
-];
-
-// ========================================
-// SECTION 10: FINAL EVALUATION & PURCHASE INTENT
-// ========================================
-// Purpose: Overall assessment and realistic purchase likelihood
-// Duration: ~3-4 minutes
-// Target Page: /kontakt
-
-const FINAL_EVALUATION_QUESTIONS = [
-    {
-        id: "overall_experience",
-        type: "rating" as const,
-        question: "Wie bewerten Sie die gesamte Website-Erfahrung?",
-        required: true,
-        // Internal note: Overall UX score - primary success metric
-    },
-    {
-        id: "process_understanding",
-        type: "rating" as const,
-        question: "War es einfach, alle Schritte zu verstehen?",
-        required: true,
-        // Internal note: Process clarity across entire journey
-    },
-    {
-        id: "configuration_satisfaction",
-        type: "rating" as const,
-        question: "Wie zufrieden sind Sie mit den Konfigurationsmöglichkeiten?",
-        required: true,
-        // Internal note: Configurator satisfaction - tool effectiveness
-    },
-    {
-        id: "purchase_likelihood",
-        type: "rating" as const,
-        question: "Wie wahrscheinlich würden Sie realistisch ein solches Haus kaufen? (1 = sehr unwahrscheinlich, 10 = sehr wahrscheinlich)",
-        required: true,
-        // Internal note: CRITICAL METRIC - Realistic purchase intent
-    },
-    {
-        id: "recommendation",
-        type: "rating" as const,
-        question: "Wie wahrscheinlich würden Sie NEST-Haus weiterempfehlen?",
-        required: true,
-        // Internal note: Net Promoter Score equivalent
-    },
-    {
-        id: "main_concerns",
-        type: "text" as const,
-        question: "Falls Sie kein Haus kaufen würden: Was sind die Hauptgründe oder Bedenken?",
-        required: false,
-        // Internal note: Barrier identification - critical for addressing objections
-    },
-    {
-        id: "improvement_suggestions",
-        type: "text" as const,
-        question: "Was können wir verbessern? (Optional)",
-        required: false,
-        // Internal note: Direct improvement feedback
-    },
-];
-
-// ========================================
-// TEST STEP CONFIGURATION
-// ========================================
-// This combines questions with page information and instructions
-// Edit the instructions to change what users see during the test
-
-export const TEST_STEPS = [
-    {
-        id: "welcome",
-        title: "Willkommen zum NEST-Haus Alpha Test",
-        description: "Vielen Dank für Ihre Teilnahme! Dieser Test dauert ca. 15-20 Minuten.",
-        targetPage: "/",
-        questions: WELCOME_QUESTIONS,
-        instructions: "Bitte beantworten Sie zunächst diese Fragen, bevor wir mit dem Test beginnen.",
-        nextAction: "stay" as const,
-    },
-    {
-        id: "landing_page",
-        title: "Startseite Bewertung",
-        description: "Schauen Sie sich die Startseite an und bewerten Sie den ersten Eindruck.",
-        targetPage: "/",
-        questions: LANDING_PAGE_QUESTIONS,
-        instructions: "Scrollen Sie durch die Startseite und verschaffen Sie sich einen Überblick.",
-        nextAction: "navigate" as const,
-        nextTarget: "/entdecken",
-    },
-    {
-        id: "entdecken_page",
-        title: "Entdecken Seite",
-        description: "Bewerten Sie die Informationen über modulare Häuser.",
-        targetPage: "/entdecken",
-        questions: ENTDECKEN_PAGE_QUESTIONS,
-        instructions: "Schauen Sie sich die Inhalte auf der Entdecken-Seite an und navigieren Sie durch die verschiedenen Abschnitte.",
-        nextAction: "navigate" as const,
-        nextTarget: "/unser-part",
-    },
-    {
-        id: "unser_part_page",
-        title: "Unser Part Seite",
-        description: "Bewerten Sie die Informationen über NEST-Haus Services.",
-        targetPage: "/unser-part",
-        questions: UNSER_PART_QUESTIONS,
-        instructions: "Lesen Sie die Informationen über die Services von NEST-Haus.",
-        nextAction: "navigate" as const,
-        nextTarget: "/dein-part",
-    },
-    {
-        id: "dein_part_page",
-        title: "Dein Part Seite",
-        description: "Bewerten Sie die Informationen über Ihre Rolle im Bauprozess.",
-        targetPage: "/dein-part",
-        questions: DEIN_PART_QUESTIONS,
-        instructions: "Informieren Sie sich über Ihre Aufgaben und Verantwortlichkeiten.",
-        nextAction: "navigate" as const,
-        nextTarget: "/warum-wir",
-    },
-    {
-        id: "warum_wir_page",
-        title: "Warum Wir Seite",
-        description: "Bewerten Sie die Unternehmensphilosophie und Werte.",
-        targetPage: "/warum-wir",
-        questions: WARUM_WIR_QUESTIONS,
-        instructions: "Lesen Sie über die Philosophie und Werte von NEST-Haus.",
-        nextAction: "navigate" as const,
-        nextTarget: "/konfigurator",
-    },
-    {
-        id: "configurator_start",
-        title: "Konfigurator - Erster Eindruck",
-        description: "Bewerten Sie den Konfigurator beim ersten Öffnen.",
-        targetPage: "/konfigurator",
-        questions: CONFIGURATOR_START_QUESTIONS,
-        instructions: "Schauen Sie sich den Konfigurator an, aber machen Sie noch keine Auswahl.",
-        nextAction: "stay" as const,
-    },
-    {
-        id: "configurator_usage",
-        title: "Konfigurator - Vollständige Nutzung",
-        description: "Verwenden Sie den Konfigurator und konfigurieren Sie ein komplettes Haus.",
-        targetPage: "/konfigurator",
-        questions: CONFIGURATOR_USAGE_QUESTIONS,
-        instructions: "Gehen Sie durch ALLE Konfigurationsoptionen: Nest-Typ, Gebäudehülle, Innenverkleidung, Fußboden, PV-Anlage, Fenster und Planungspaket. Erstellen Sie eine vollständige Konfiguration.",
-        nextAction: "stay" as const,
-    },
-    {
-        id: "order_process",
-        title: "Bestellprozess & Verständnis",
-        description: "Bewerten Sie Ihr Verständnis des Bestellprozesses.",
-        targetPage: "/konfigurator",
-        questions: ORDER_PROCESS_QUESTIONS,
-        instructions: "Denken Sie über den gesamten Prozess nach: von der Konfiguration bis zum fertigen Haus.",
-        nextAction: "navigate" as const,
-        nextTarget: "/kontakt",
-    },
-    {
-        id: "final_evaluation",
-        title: "Gesamtbewertung & Kaufinteresse",
-        description: "Abschließende Bewertung der gesamten Website-Erfahrung.",
-        targetPage: "/kontakt",
-        questions: FINAL_EVALUATION_QUESTIONS,
-        instructions: "Schauen Sie sich die Kontaktseite an. Denken Sie über die gesamte Erfahrung nach.",
-        nextAction: "complete" as const,
-    },
-];
-
-// ========================================
-// EXPORT FOR USE IN COMPONENTS
-// ========================================
-export default TEST_STEPS;
-
-/**
- * ========================================
- * EDITING GUIDELINES FOR TEAM REVIEW
- * ========================================
- * 
- * TO ADD A NEW QUESTION:
- * 1. Add it to the appropriate section above
- * 2. Use the format: { id: "unique_id", type: "question_type", question: "Your question?", required: true/false }
- * 3. For multiple choice, add: options: ["Option 1", "Option 2", ...]
- * 
- * TO MODIFY EXISTING QUESTIONS:
- * 1. Find the question by its ID
- * 2. Change the "question" text
- * 3. For multiple choice, modify the "options" array
- * 
- * TO CHANGE TEST FLOW:
- * 1. Modify the TEST_STEPS array at the bottom
- * 2. Change "instructions" to update what users see
- * 3. Change "nextTarget" to modify page navigation
- * 
- * TO REMOVE A QUESTION:
- * 1. Delete the question object from its section
- * 2. Make sure no other questions depend on it
+ * EDITING INSTRUCTIONS:
+ * - Each step has specific trigger conditions and content
+ * - Questions can be modified without changing the technical structure
+ * - Add/remove questions by updating the questions array
+ * - Maintain the step IDs and structure for proper functionality
  * 
  * QUESTION TYPES:
- * - "rating": 1-10 scale (good for satisfaction, clarity, likelihood)
- * - "text": Open text input (good for feedback, suggestions, concerns)
- * - "multiple_choice": Select one option (good for preferences, next actions)
- * - "yes_no": Simple yes/no (good for consent, understanding)
+ * - "rating": 1-6 scale buttons
+ * - "text": Open text area
+ * - "multiple_choice": Radio button options
+ * - "yes_no": Yes/No radio buttons
+ */
+
+interface TestQuestion {
+    id: string;
+    type: "rating" | "text" | "multiple_choice" | "yes_no";
+    question: string;
+    options?: string[];
+    required?: boolean;
+    step?: string;
+}
+
+interface TestStep {
+    id: string;
+    title: string;
+    description: string;
+    targetPage: string;
+    questions: TestQuestion[];
+    instructions?: string;
+    nextAction?: "navigate" | "stay" | "complete" | "none";
+    nextTarget?: string;
+    triggerCondition?: string; // Custom condition for when this step should appear
+}
+
+/**
+ * ===================================================================
+ * MAIN TEST FLOW CONFIGURATION
+ * ===================================================================
+ */
+
+export const TEST_STEPS: TestStep[] = [
+    /**
+ * STEP 1: OVERVIEW PHASE
+ * Only shows when user manually opens popup after exploring the website
+ * Should only show instruction text and a "Weiter" button, no questions
+ */
+    {
+        id: "overview-phase",
+        title: "Schritt 1: Website erkunden",
+        description: "Mach dir einen Überblick über unsere Website",
+        targetPage: "/", // Can appear on any page
+        triggerCondition: "manual_open_only",
+        instructions: "Hast du dir einen Überblick über die Website verschafft? Falls nicht, schließ das Popup, verschaff dir einen Überblick und öffne das Popup dann wieder um dann auf weiter zu klicken.",
+        questions: [], // No questions, just instruction text
+        nextAction: "stay"
+    },
+
+    /**
+     * STEP 2: CONFIGURATOR AND CART PHASE (MERGED)
+     * Appears when user is in configurator and has completed step 1
+     * Covers both configuration and cart completion
+     */
+    {
+        id: "configurator-phase",
+        title: "Schritt 2: Haus konfigurieren und bestellen",
+        description: "Gestalte dein Traumhaus und schließ die Bestellung ab",
+        targetPage: "/konfigurator",
+        triggerCondition: "step1_completed_and_in_configurator",
+        instructions: "Jetzt geht es an die Substanz - gestalte dir dein Haus mit unserem Konfigurator, schaue dir dabei jede Sektion an und treffe eine Auswahl, bestelle das Haus anschließend und führe dabei den Kaufabschluss bis zum Ende durch (Keine Angst, du musst es nicht wirklich kaufen ;-)",
+        questions: [], // No questions, just instruction text
+        nextAction: "stay"
+    },
+
+    /**
+     * STEP 3A: PURCHASE VALIDATION
+     * Appears when user tries to access step 3 without completing purchase
+     * Asks user to complete purchase process or provides skip option
+     */
+    {
+        id: "purchase-validation",
+        title: "Schritt 3: Kaufprozess abschließen",
+        description: "Bitte schließ den Kaufprozess ab",
+        targetPage: "/warenkorb",
+        triggerCondition: "step2_completed_but_not_purchased",
+        instructions: "Bitte geh durch den vollständigen Kaufprozess und klick auf 'Zur Kassa' oder 'Mit Apple Pay bezahlen', bevor du zu Schritt 3 weitergehen kannst.",
+        questions: [
+            {
+                id: "purchase-completion-issue",
+                type: "text",
+                question: "Falls du Probleme beim Abschluss des Prozesses hast, gib uns hier dein Feedback, warum du Schritt 2 nicht beenden konntest:",
+                required: false,
+                step: "purchase-validation"
+            }
+        ],
+        nextAction: "none"
+    },
+
+    /**
+     * STEP 3B: FEEDBACK PHASE
+     * Appears when user has completed the purchase process or manually triggered
+     * Contains the main questionnaire with quantitative and qualitative questions
+     */
+    {
+        id: "feedback-phase",
+        title: "Schritt 3: Feedback-Fragebogen",
+        description: "Teile deine Erfahrungen mit uns",
+        targetPage: "*", // Can appear on any page
+        triggerCondition: "purchase_completed_or_manual",
+        instructions: "Nun würden wir uns sehr freuen wenn du dir ein paar Minuten Zeit nimmst, und versuchst unsere Feedback-Fragen bestmöglichst zu beantworten. Keine Sorge, es gibt kein richtig oder falsch, uns hilft jede ehrliche Antwort.",
+        questions: [
+            // ===== QUANTITATIVE QUESTIONS (1-6 Scale) =====
+            {
+                id: "overall-satisfaction",
+                type: "rating",
+                question: "Wie zufrieden bist du insgesamt mit der NEST-Haus Website?",
+                required: true,
+                step: "feedback"
+            },
+            {
+                id: "navigation-ease",
+                type: "rating",
+                question: "Wie einfach war es, sich auf der Website zu orientieren und zu navigieren?",
+                required: true,
+                step: "feedback"
+            },
+            {
+                id: "configurator-usability",
+                type: "rating",
+                question: "Wie benutzerfreundlich fandest du den Haus-Konfigurator?",
+                required: true,
+                step: "feedback"
+            },
+            {
+                id: "content-clarity",
+                type: "rating",
+                question: "Wie klar und verständlich waren die Informationen auf der Website?",
+                required: true,
+                step: "feedback"
+            },
+            {
+                id: "purchase-process",
+                type: "rating",
+                question: "Wie bewertest du den Bestellprozess im Warenkorb?",
+                required: true,
+                step: "feedback"
+            },
+
+            // ===== QUALITATIVE QUESTIONS (Open Text) =====
+            {
+                id: "content-readability",
+                type: "text",
+                question: "Waren die Inhalte auf der Seite gut lesbar und die Grafiken richtig erkennbar? Gab es Probleme oder Hindernisse bei der Darstellung von Inhalt?",
+                required: true,
+                step: "feedback"
+            },
+            {
+                id: "most-helpful-feature",
+                type: "text",
+                question: "Welche Funktion oder welcher Bereich der Website war für dich am hilfreichsten?",
+                required: false,
+                step: "feedback"
+            },
+            {
+                id: "biggest-challenge",
+                type: "text",
+                question: "Was war die größte Herausforderung oder das größte Problem bei der Nutzung der Website?",
+                required: false,
+                step: "feedback"
+            },
+            {
+                id: "missing-information",
+                type: "text",
+                question: "Welche Informationen hast du vermisst oder hättest du gerne zusätzlich gesehen?",
+                required: false,
+                step: "feedback"
+            },
+            {
+                id: "improvement-suggestions",
+                type: "text",
+                question: "Hast du konkrete Verbesserungsvorschläge für die Website oder den Konfigurator?",
+                required: false,
+                step: "feedback"
+            }
+        ],
+        nextAction: "complete"
+    }
+];
+
+/**
+ * ===================================================================
+ * HELPER FUNCTIONS FOR TEST LOGIC
+ * ===================================================================
+ */
+
+/**
+ * Get the current step based on user progress and current page
+ */
+export function getCurrentTestStep(currentPath: string, manualOpen: boolean = false, isPopupActive: boolean = false): TestStep | null {
+    // Check localStorage for test progress
+    const step1Completed = localStorage.getItem("nest-haus-test-step1-completed") === "true";
+    const step2Completed = localStorage.getItem("nest-haus-test-step2-completed") === "true";
+    const purchaseCompleted = localStorage.getItem("nest-haus-test-purchase-completed") === "true";
+
+    console.log("🧪 Step status:", {
+        step1Completed,
+        step2Completed,
+        purchaseCompleted,
+        currentPath,
+        manualOpen,
+        localStorage: {
+            step1: localStorage.getItem("nest-haus-test-step1-completed"),
+            step2: localStorage.getItem("nest-haus-test-step2-completed"),
+            purchase: localStorage.getItem("nest-haus-test-purchase-completed")
+        }
+    });
+
+    // Step 3B: Feedback (after purchase completed or purchase validation completed)
+    const purchaseValidationCompleted = localStorage.getItem("nest-haus-test-purchase-validation-completed") === "true";
+    console.log("🧪 Step detection - purchaseCompleted:", purchaseCompleted, "purchaseValidationCompleted:", purchaseValidationCompleted);
+    if (purchaseCompleted || purchaseValidationCompleted) {
+        console.log("🧪 Showing feedback phase");
+        return TEST_STEPS.find(step => step.id === "feedback-phase") || null;
+    }
+
+    // Step 3A: Purchase validation (if step 2 completed but not purchased, when manually opened or popup is already active)
+    if (step1Completed && step2Completed && !purchaseCompleted && (manualOpen || isPopupActive)) {
+        console.log("🧪 Showing purchase validation (manual open or popup active, steps 1&2 done, not purchased)");
+        return TEST_STEPS.find(step => step.id === "purchase-validation") || null;
+    }
+
+    // Handle warenkorb page - show purchase validation if step 2 completed but not purchased
+    if (currentPath === "/warenkorb") {
+        // If step 1 is not completed, show catch-up logic
+        if (!step1Completed) {
+            return TEST_STEPS.find(step => step.id === "overview-phase") || null;
+        }
+        // Purchase validation logic moved above to handle all paths
+        // Don't show popup automatically until "zur Kassa" is clicked
+        console.log("🧪 No popup in warenkorb - waiting for purchase trigger");
+        return null;
+    }
+
+    // Step 2: Configurator phase - show if user is in configurator and step 1 is completed
+    if (currentPath === "/konfigurator") {
+        if (step1Completed && !step2Completed) {
+            return TEST_STEPS.find(step => step.id === "configurator-phase") || null;
+        }
+        // If step 1 is not completed, show step 1
+        if (!step1Completed) {
+            return TEST_STEPS.find(step => step.id === "overview-phase") || null;
+        }
+    }
+
+    // Step 1: Overview phase - show if manually opened and step 1 not completed
+    // OR if on landing page and step 1 not completed
+    if (!step1Completed && (manualOpen || currentPath === "/")) {
+        return TEST_STEPS.find(step => step.id === "overview-phase") || null;
+    }
+
+    // Step 2: If step 1 completed but step 2 not completed, show configurator phase
+    // (This handles the case where user completed step 1 but is still on landing page)
+    if (step1Completed && !step2Completed && (manualOpen || currentPath === "/")) {
+        return TEST_STEPS.find(step => step.id === "configurator-phase") || null;
+    }
+
+    // Step 3A: If steps 1 and 2 completed but not purchased, show purchase validation
+    // (This handles the case where user completed step 2 but hasn't clicked "zur Kassa")
+    if (step1Completed && step2Completed && !purchaseCompleted && manualOpen) {
+        return TEST_STEPS.find(step => step.id === "purchase-validation") || null;
+    }
+
+    return null;
+}
+
+/**
+ * Mark a test step as completed
+ */
+export function markStepCompleted(stepId: string): void {
+    console.log("🧪 markStepCompleted called with:", stepId);
+    switch (stepId) {
+        case "overview-phase":
+            localStorage.setItem("nest-haus-test-step1-completed", "true");
+            console.log("🧪 Step 1 marked as completed");
+            break;
+        case "configurator-phase":
+            localStorage.setItem("nest-haus-test-step2-completed", "true");
+            console.log("🧪 Step 2 (configurator + cart) marked as completed");
+            break;
+        case "purchase-validation":
+            // Mark purchase validation as completed to allow access to feedback phase
+            localStorage.setItem("nest-haus-test-purchase-validation-completed", "true");
+            console.log("🧪 Purchase validation step completed (user skipped to feedback)");
+            break;
+        case "feedback-phase":
+            localStorage.setItem("nest-haus-test-completed", "true");
+            console.log("🧪 Test marked as completed");
+            break;
+        default:
+            console.warn("🧪 Unknown step ID:", stepId);
+    }
+}
+
+/**
+ * Check if user should see the "zur Kassa" completion trigger
+ */
+export function shouldTriggerPurchaseComplete(): boolean {
+    const step1Completed = localStorage.getItem("nest-haus-test-step1-completed") === "true";
+    const _step2Completed = localStorage.getItem("nest-haus-test-step2-completed") === "true";
+    const step3Completed = localStorage.getItem("nest-haus-test-step3-completed") === "true";
+
+    return step1Completed && _step2Completed && step3Completed;
+}
+
+/**
+ * Check if we should show the tooltip for step 1
+ */
+export function shouldShowStep1Tooltip(): boolean {
+    const step1Completed = localStorage.getItem("nest-haus-test-step1-completed") === "true";
+    const testStarted = localStorage.getItem("nest-haus-test-session-id") !== null;
+
+    return testStarted && !step1Completed;
+}
+
+/**
+ * Reset all test data and return to intro screen
+ */
+export function resetAlphaTest(): void {
+    // Clear all test-related localStorage items
+    localStorage.removeItem("nest-haus-test-session-id");
+    localStorage.removeItem("nest-haus-test-step1-completed");
+    localStorage.removeItem("nest-haus-test-step2-completed");
+
+    localStorage.removeItem("nest-haus-test-purchase-completed");
+    localStorage.removeItem("nest-haus-test-purchase-validation-completed");
+    localStorage.removeItem("nest-haus-test-completed");
+    localStorage.removeItem("nest-haus-test-user-name");
+    localStorage.removeItem("nest-haus-test-current-step");
+    localStorage.removeItem("nest-haus-test-responses");
+    localStorage.removeItem("nest-haus-test-start-time");
+    localStorage.removeItem("nest-haus-test-last-closed");
+    localStorage.removeItem("alphaTestNavigationTriggered");
+
+    console.log("🧪 Alpha test data cleared - fresh start");
+}
+
+/**
+ * Check if we're in local development environment
+ */
+export function isLocalDevelopment(): boolean {
+    return typeof window !== "undefined" &&
+        (window.location.hostname === "localhost" ||
+            window.location.hostname === "127.0.0.1" ||
+            window.location.hostname.includes("localhost"));
+}
+
+/**
+ * ===================================================================
+ * CONFIGURATION NOTES FOR TEAM REVIEW
+ * ===================================================================
  * 
- * BEST PRACTICES:
- * - Keep questions clear and specific
- * - Avoid leading questions
- * - Use consistent rating scales (1-10)
- * - Mark critical questions as required: true
- * - Add internal notes for context
+ * STEP FLOW LOGIC:
+ * 1. User starts test → Step 1 (Overview) appears
+ * 2. User completes Step 1 → Popup hides, user explores freely
+ * 3. User goes to /konfigurator → Step 2 (Configurator) appears
+ * 4. User completes Step 2 → Popup hides, user configures freely
+ * 5. User goes to /warenkorb → Step 3 (Cart) appears
+ * 6. User completes Step 3 → Popup hides, user completes purchase
+ * 7. User clicks "zur Kassa" OR manually opens popup → Step 4 (Feedback) appears
+ * 8. User completes feedback → Test ends, redirect to thank you page
+ * 
+ * CATCH-UP LOGIC:
+ * - If user goes to /warenkorb without completing Steps 1&2, show catch-up question
+ * - If user goes to Step 4 without completing purchase, show purchase validation
+ * 
+ * POPUP BEHAVIOR:
+ * - Popup only opens automatically on specific triggers
+ * - User can manually open/close popup anytime via floating button
+ * - Popup state persists across page navigation
+ * - No automatic redirections - user navigates manually
+ * 
+ * QUESTION CUSTOMIZATION:
+ * - Modify question text directly in the questions array
+ * - Add/remove questions by updating the array
+ * - Change rating scale by modifying the rating component (currently 1-6)
+ * - All questions support required/optional flags
  */

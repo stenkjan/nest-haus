@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { shouldShowStep1Tooltip } from "./config/TestQuestions";
 import UsabilityTestPopup from "./UsabilityTestPopup";
 
 interface AlphaTestButtonProps {
@@ -19,55 +20,79 @@ export default function AlphaTestButton({
   const [hasSeenButton, setHasSeenButton] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [hasExistingTest, setHasExistingTest] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [manualOpen, setManualOpen] = useState(false);
 
   // Check if this is an alpha test session
   useEffect(() => {
-    // Don't show test button on admin pages
+    // Don't show test button on admin pages or alpha-test intro page
     const isAdminPage = window.location.pathname.startsWith("/admin");
+    const isAlphaTestIntroPage = window.location.pathname === "/alpha-test";
 
-    if (isEnabled && !isAdminPage) {
+    // Only show button if alpha test is explicitly enabled AND user has started a test
+    const hasActiveTest = localStorage.getItem("nest-haus-test-session-id");
+    const isTestCompleted =
+      localStorage.getItem("nest-haus-test-completed") === "true";
+    const alphaTestParam = new URLSearchParams(window.location.search).get(
+      "alpha-test"
+    );
+
+    if (
+      isEnabled &&
+      !isAdminPage &&
+      !isAlphaTestIntroPage &&
+      (hasActiveTest || alphaTestParam === "true") &&
+      !isTestCompleted
+    ) {
       setIsVisible(true);
 
-      // Check for existing test state
-      const existingStep = localStorage.getItem("nest-haus-test-step");
+      // Note: Removed auto-reset logic that was interfering with step progression
+
+      // Check for existing test state (simplified)
       const existingSessionId = localStorage.getItem(
         "nest-haus-test-session-id"
       );
 
-      if (existingStep && existingSessionId) {
+      if (existingSessionId) {
         setHasExistingTest(true);
         setHasSeenButton(true);
-
-        // If we have an existing test and we're on the landing page, auto-activate
-        if (window.location.pathname === "/" && !isTestActive) {
-          setIsTestActive(true);
-        }
+      } else {
+        setHasExistingTest(false);
       }
 
-      // Show welcome message after a short delay
-      const timer = setTimeout(() => {
-        if (!hasSeenButton && !hasExistingTest) {
-          setHasSeenButton(true);
-          // Auto-start test after 2 seconds if user hasn't interacted
-          const autoStartTimer = setTimeout(() => {
-            if (!isTestActive) {
-              setIsTestActive(true);
-            }
-          }, 2000);
+      // Check if we should show tooltip for step 1
+      setShowTooltip(shouldShowStep1Tooltip());
 
-          return () => clearTimeout(autoStartTimer);
+      // Show button after a short delay
+      const timer = setTimeout(() => {
+        if (!hasSeenButton) {
+          setHasSeenButton(true);
         }
       }, 1000);
 
       return () => clearTimeout(timer);
+    } else {
+      setIsVisible(false);
     }
+
+    return () => {}; // Return empty cleanup function when not enabled
   }, [isEnabled, hasSeenButton, isTestActive, hasExistingTest]);
 
   // Handle auto-open when navigation was triggered by popup
   useEffect(() => {
+    console.log("🧪 Auto-open check:", {
+      shouldAutoOpen,
+      isEnabled,
+      currentPath: window.location.pathname,
+    });
     if (shouldAutoOpen && isEnabled) {
+      console.log(
+        "🧪 Auto-opening popup after navigation to:",
+        window.location.pathname
+      );
       setIsTestActive(true);
       setIsMinimized(false); // Ensure popup is not minimized
+      setManualOpen(true); // Ensure manual open is set
 
       // Notify parent that auto-open was handled
       if (onAutoOpenHandled) {
@@ -76,17 +101,49 @@ export default function AlphaTestButton({
     }
   }, [shouldAutoOpen, isEnabled, onAutoOpenHandled]);
 
-  const handleStartTest = () => {
-    // If we have an existing test, just activate it
-    if (hasExistingTest) {
-      setIsTestActive(true);
-      setIsMinimized(false);
-      return;
-    }
+  // Listen for purchase completion event
+  useEffect(() => {
+    const handlePurchaseCompleted = () => {
+      console.log(
+        "🧪 Purchase completion event received, isEnabled:",
+        isEnabled
+      );
+      if (isEnabled) {
+        console.log("🧪 Opening popup for feedback phase");
+        setIsTestActive(true);
+        setIsMinimized(false);
+        // Force manual open to ensure step detection re-runs
+        setManualOpen(true);
+      }
+    };
 
-    // For new tests, check if we need to navigate to the landing page first
+    window.addEventListener(
+      "alpha-test-purchase-completed",
+      handlePurchaseCompleted
+    );
+
+    return () => {
+      window.removeEventListener(
+        "alpha-test-purchase-completed",
+        handlePurchaseCompleted
+      );
+    };
+  }, [isEnabled]);
+
+  const handleStartTest = () => {
+    console.log("🧪 Starting test");
+
+    // Check if step 1 is completed
+    const step1Completed =
+      localStorage.getItem("nest-haus-test-step1-completed") === "true";
     const currentPath = window.location.pathname;
-    if (currentPath !== "/") {
+
+    // Only redirect to landing page if step 1 is NOT completed and not already on landing page
+    if (!step1Completed && currentPath !== "/") {
+      console.log("🧪 Step 1 not completed, redirecting to landing page");
+      // Set flag to auto-open popup after navigation
+      localStorage.setItem("alphaTestNavigationTriggered", "true");
+
       // Navigate to landing page with alpha test parameter
       const landingUrl = new URL("/", window.location.origin);
       landingUrl.searchParams.set("alpha-test", "true");
@@ -94,27 +151,28 @@ export default function AlphaTestButton({
       return;
     }
 
+    // Simply open the popup (no redirect needed)
+    console.log("🧪 Opening popup directly, step1Completed:", step1Completed);
+    setManualOpen(true);
     setIsTestActive(true);
     setHasSeenButton(true);
     setIsMinimized(false);
+    setShowTooltip(false);
+
+    console.log("🧪 Popup should now be visible");
   };
 
   const handleCloseTest = () => {
     setIsTestActive(false);
     setIsMinimized(false);
+    setManualOpen(false);
 
-    // Clear test state if user manually closes
-    localStorage.removeItem("nest-haus-test-step");
-    localStorage.removeItem("nest-haus-test-responses");
-    localStorage.removeItem("nest-haus-test-session-id");
-    localStorage.removeItem("nest-haus-test-start-time");
+    // Set a timestamp to prevent immediate auto-reopening
+    localStorage.setItem("nest-haus-test-last-closed", Date.now().toString());
 
-    setHasExistingTest(false);
-
-    // Remove alpha-test parameter from URL
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.delete("alpha-test");
-    window.history.replaceState({}, "", currentUrl.toString());
+    // Don't clear test state completely, just close the popup
+    // This allows the button to remain visible for resuming
+    // Only clear if user explicitly wants to end the test
   };
 
   const handleMinimizeToggle = () => {
@@ -125,9 +183,16 @@ export default function AlphaTestButton({
 
   return (
     <>
-      {/* Floating Test Button */}
-      <div className="fixed bottom-6 right-6 z-40">
-        {!isTestActive && (
+      {/* Floating Test Button - Hidden when popup is minimized */}
+      {!isMinimized && (
+        <div
+          className={`fixed right-4 sm:right-6 z-50 ${
+            typeof window !== "undefined" &&
+            window.location.pathname === "/konfigurator"
+              ? "bottom-32 sm:bottom-40" // Higher position in configurator, adjusted for mobile
+              : "bottom-4 sm:bottom-6" // Lower position on mobile for better reach
+          }`}
+        >
           <div className="relative">
             {/* Pulse animation for new users */}
             {!hasSeenButton && (
@@ -168,30 +233,24 @@ export default function AlphaTestButton({
               </div>
             )}
 
-            {/* Existing test tooltip */}
-            {hasExistingTest && !isTestActive && (
-              <div className="absolute bottom-full right-0 mb-4 w-64 bg-white rounded-lg shadow-lg border p-4 transform transition-all duration-300">
+            {/* Step 1 tooltip */}
+            {showTooltip && hasSeenButton && (
+              <div className="absolute bottom-full right-0 mb-4 w-72 bg-white rounded-lg shadow-lg border p-4 transform transition-all duration-300">
                 <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-sm">🔄</span>
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm">1</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900 text-sm">
-                      Test fortsetzen
+                      Schritt 1: Website erkunden
                     </h3>
                     <p className="text-xs text-gray-600 mt-1">
-                      Sie haben einen laufenden Test. Klicken Sie hier, um
-                      fortzufahren.
+                      Haben Sie sich bereits einen Überblick verschafft? Dann
+                      können Sie hier den Test starten.
                     </p>
-                    <button
-                      onClick={handleStartTest}
-                      className="mt-2 text-xs bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors"
-                    >
-                      Fortsetzen
-                    </button>
                   </div>
                   <button
-                    onClick={() => setHasExistingTest(false)}
+                    onClick={() => setShowTooltip(false)}
                     className="text-gray-400 hover:text-gray-600 flex-shrink-0"
                   >
                     <span className="text-sm">✕</span>
@@ -205,14 +264,24 @@ export default function AlphaTestButton({
             {/* Main button */}
             <button
               onClick={handleStartTest}
-              className={`relative text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 group ${
-                hasExistingTest
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
+              className={`relative text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 group ${
+                typeof window !== "undefined" &&
+                window.location.pathname === "/konfigurator"
+                  ? "p-5 sm:p-6" // 10% smaller, responsive
+                  : "p-6 sm:p-7" // 10% smaller, responsive
+              } bg-blue-600 hover:bg-blue-700`}
               title={hasExistingTest ? "Test fortsetzen" : "Alpha Test starten"}
             >
-              <span className="text-2xl">{hasExistingTest ? "🔄" : "🧪"}</span>
+              <span
+                className={`${
+                  typeof window !== "undefined" &&
+                  window.location.pathname === "/konfigurator"
+                    ? "text-3xl sm:text-4xl" // 10% smaller, responsive
+                    : "text-4xl sm:text-5xl" // 10% smaller, responsive
+                }`}
+              >
+                🧪
+              </span>
 
               {/* Badge for new test */}
               {!hasSeenButton && (
@@ -227,8 +296,8 @@ export default function AlphaTestButton({
               </div>
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Test Popup */}
       <UsabilityTestPopup
@@ -236,6 +305,7 @@ export default function AlphaTestButton({
         onClose={handleCloseTest}
         onMinimize={handleMinimizeToggle}
         isMinimized={isMinimized}
+        manualOpen={manualOpen}
       />
     </>
   );

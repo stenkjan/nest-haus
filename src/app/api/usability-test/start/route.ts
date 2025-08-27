@@ -10,7 +10,7 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { testId, deviceInfo, startUrl } = body;
+        const { testId, deviceInfo, startUrl, participantName } = body;
 
         if (!testId) {
             return NextResponse.json({
@@ -20,12 +20,20 @@ export async function POST(request: NextRequest) {
 
         const startTime = Date.now();
 
-        // Create new usability test record
-        const test = await prisma.usabilityTest.create({
-            data: {
+        // Create or update usability test record (handle duplicates)
+        const test = await prisma.usabilityTest.upsert({
+            where: { testId },
+            update: {
+                // Update existing test if it exists
+                status: 'IN_PROGRESS',
+                updatedAt: new Date()
+            },
+            create: {
+                // Create new test if it doesn't exist
                 testId,
                 testType: 'alpha',
                 status: 'IN_PROGRESS',
+                participantName: participantName || 'Anonymous',
                 deviceInfo: {
                     ...deviceInfo,
                     startUrl,
@@ -58,6 +66,7 @@ export async function POST(request: NextRequest) {
         });
 
         console.log(`🧪 Usability test started: ${testId}`);
+        console.log(`🧪 Test record created with ID: ${test.id}`);
 
         return NextResponse.json({
             success: true,
