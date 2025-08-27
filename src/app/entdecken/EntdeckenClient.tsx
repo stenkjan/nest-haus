@@ -92,7 +92,7 @@ export default function EntdeckenClient() {
               <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Design für dich gemacht
               </h2>
-              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-gray-600">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                 Dein Design im Freistil
               </h3>
             </div>
@@ -123,7 +123,7 @@ export default function EntdeckenClient() {
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
                   Design für dich gemacht
                 </h2>
-                <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-gray-600">
+                <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                   Dein Design im Freistil
                 </h3>
               </div>
@@ -191,7 +191,7 @@ export default function EntdeckenClient() {
               <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                 Dein Zuhause zieht um
               </h2>
-              <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-gray-600">
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                 Architektur für ein bewegtes Leben.
               </h3>
             </div>
@@ -209,11 +209,11 @@ export default function EntdeckenClient() {
 
         {/* Section 4 - Interactive 2x2 Image Grid */}
         <section id="image-grid" className="w-full py-16 bg-white">
-          <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <TwoByTwoImageGrid
               title=""
               subtitle=""
-              maxWidth={true}
+              maxWidth={false}
               customData={[
                 {
                   id: 1,

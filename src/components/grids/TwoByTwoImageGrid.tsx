@@ -137,7 +137,9 @@ export default function TwoByTwoImageGrid({
 
       {/* 2x2 Grid Container */}
       <div
-        className="grid grid-cols-1 lg:grid-cols-2 max-w-[1700px] mx-auto"
+        className={`grid grid-cols-1 lg:grid-cols-2 ${
+          maxWidth ? "max-w-[1700px] mx-auto" : "w-full"
+        }`}
         style={{ gap: "15px" }}
       >
         {displayData.map((item, index) => (

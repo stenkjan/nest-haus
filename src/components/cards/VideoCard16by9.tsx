@@ -62,10 +62,16 @@ export default function VideoCard16by9({
   customData,
 }: VideoCard16by9Props) {
   const [isClient, setIsClient] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(1280); // Default to desktop width for SSR
+  const [screenWidth, setScreenWidth] = useState(0); // Start with 0 to prevent SSR mismatch
   const _containerRef = useRef<HTMLDivElement>(null);
 
-  // Client-side hydration and screen width detection
+  // Initialize client-side state
+  useEffect(() => {
+    setIsClient(true);
+    setScreenWidth(window.innerWidth);
+  }, []);
+
+  // Track screen width for responsive behavior
   useEffect(() => {
     const updateScreenWidth = () => {
       const width = window.innerWidth;
@@ -80,10 +86,7 @@ export default function VideoCard16by9({
       }
     };
 
-    // Set client flag and get initial screen width
-    setIsClient(true);
     updateScreenWidth();
-
     window.addEventListener("resize", updateScreenWidth);
     return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
@@ -109,6 +112,36 @@ export default function VideoCard16by9({
     // For now, return the path as-is. This will be handled by HybridBlobImage
     return videoPath;
   };
+
+  // Prevent hydration mismatch by showing loading state until client is ready
+  if (!isClient) {
+    return (
+      <div className="w-full">
+        {/* Header Section */}
+        {showInstructions && (
+          <div
+            className={`text-center mb-12 ${
+              maxWidth ? "max-w-7xl mx-auto px-4" : "px-4"
+            }`}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {title}
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              {subtitle}
+            </p>
+          </div>
+        )}
+
+        {/* Loading placeholder */}
+        <div className={`${maxWidth ? "max-w-[1700px] mx-auto px-4" : "px-4"}`}>
+          <div className="flex justify-center">
+            <div className="w-full max-w-[1380px] h-[548px] animate-pulse bg-gray-200 rounded-3xl" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -283,8 +316,8 @@ export default function VideoCard16by9({
                       </motion.div>
                     </div>
 
-                    {/* Video Content - Bottom Half */}
-                    <div className="h-1/2 relative overflow-hidden p-[15px]">
+                    {/* Video Content - Bottom Half with 1:1 aspect ratio */}
+                    <div className="h-1/2 relative overflow-hidden p-[15px] flex items-center justify-center">
                       <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -292,7 +325,13 @@ export default function VideoCard16by9({
                           delay: index * 0.1 + 0.2,
                           duration: 0.8,
                         }}
-                        className="relative w-full h-full rounded-3xl overflow-hidden"
+                        className="relative rounded-3xl overflow-hidden"
+                        style={{
+                          aspectRatio: "1/1", // 1:1 aspect ratio for mobile video
+                          width: "100%",
+                          maxWidth: "280px", // Reasonable max size for mobile
+                          height: "auto",
+                        }}
                       >
                         <ClientBlobVideo
                           path={getVideoPath(card.video)}
