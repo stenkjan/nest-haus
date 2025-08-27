@@ -43,8 +43,9 @@ export default function AgbClient() {
                   <p className="leading-relaxed">
                     Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle
                     Verträge zwischen der NEST-Haus GmbH (nachfolgend
-                    "NEST-Haus" oder "Anbieter") und ihren Kunden über die
-                    Planung, Lieferung und Montage modularer Häuser.
+                    &quot;NEST-Haus&quot; oder &quot;Anbieter&quot;) und ihren
+                    Kunden über die Planung, Lieferung und Montage modularer
+                    Häuser.
                   </p>
                   <p className="leading-relaxed">
                     Abweichende Bedingungen des Kunden werden nicht anerkannt,
@@ -351,7 +352,7 @@ export default function AgbClient() {
                   </p>
                   <p className="leading-relaxed">
                     Liefertermine sind nur dann verbindlich, wenn sie
-                    ausdrücklich als "Fixtermin" vereinbart wurden.
+                    ausdrücklich als &quot;Fixtermin&quot; vereinbart wurden.
                   </p>
                   <p className="leading-relaxed">
                     Verzögerungen durch höhere Gewalt, Streik oder behördliche
