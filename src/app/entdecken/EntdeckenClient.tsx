@@ -136,27 +136,27 @@ export default function EntdeckenClient() {
                     Nest 80
                   </div>
                   <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
-                    75qm ab € 177.000
+                    75m² ab € 177.000
                   </div>
                 </div>
 
                 {/* Center Text Block */}
                 <div className="text-center">
                   <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
-                    Nest 80
+                    Nest 120
                   </div>
                   <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
-                    75qm ab € 177.000
+                    115m² ab € 245.000
                   </div>
                 </div>
 
                 {/* Right Text Block */}
                 <div className="text-center">
                   <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
-                    Nest 80
+                    Nest 160
                   </div>
                   <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
-                    75qm ab € 177.000
+                    155m² ab € 313.000
                   </div>
                 </div>
               </div>
