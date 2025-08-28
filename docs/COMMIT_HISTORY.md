@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c6445350008509b61edd740b886175fd006d8373] - Thu Aug 28 18:27:21 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix Prisma deployment issue: Add binary targets for Vercel  `
+
+### Changes Analysis
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+---
+
 ## [132cef5874fd404b2d9564a8f029828a96d5dfdf] - Thu Aug 28 16:31:58 2025 +0200
 
 **Author**: stenkjan
