@@ -275,22 +275,22 @@ export async function GET(request: NextRequest) {
         console.log(`📊 Generating usability test analytics for ${timeRange}`);
         console.log(`📊 Date range: ${startDate.toISOString()} to ${new Date().toISOString()}`);
 
-        // Update abandoned tests (30 minutes timeout)
-        const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
-        const abandonedCount = await prisma.usabilityTest.updateMany({
-            where: {
-                status: 'IN_PROGRESS',
-                startedAt: { lt: thirtyMinutesAgo }
-            },
-            data: {
-                status: 'ABANDONED',
-                updatedAt: new Date()
-            }
-        });
+        // Update abandoned tests (30 minutes timeout) - TEMPORARILY DISABLED DUE TO PRISMA DEPLOYMENT ISSUE
+        // const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+        // const abandonedCount = await prisma.usabilityTest.updateMany({
+        //     where: {
+        //         status: 'IN_PROGRESS',
+        //         startedAt: { lt: thirtyMinutesAgo }
+        //     },
+        //     data: {
+        //         status: 'ABANDONED',
+        //         updatedAt: new Date()
+        //     }
+        // });
 
-        if (abandonedCount.count > 0) {
-            console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (30+ minutes inactive)`);
-        }
+        // if (abandonedCount.count > 0) {
+        //     console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (30+ minutes inactive)`);
+        // }
 
         // Get all tests in range
         const tests = await prisma.usabilityTest.findMany({
