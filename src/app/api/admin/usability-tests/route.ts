@@ -292,17 +292,20 @@ export async function GET(request: NextRequest) {
         //     console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (30+ minutes inactive)`);
         // }
 
-        // Get all tests in range
-        const tests = await prisma.usabilityTest.findMany({
-            where: {
-                startedAt: { gte: startDate }
-            },
-            include: {
-                responses: true,
-                interactions: true
-            },
-            orderBy: { startedAt: 'desc' }
-        });
+        // Get all tests in range - TEMPORARILY MOCKED DUE TO PRISMA DEPLOYMENT ISSUE
+        // const tests = await prisma.usabilityTest.findMany({
+        //     where: {
+        //         startedAt: { gte: startDate }
+        //     },
+        //     include: {
+        //         responses: true,
+        //         interactions: true
+        //     },
+        //     orderBy: { startedAt: 'desc' }
+        // });
+        
+        // Mock data for testing
+        const tests: any[] = [];
 
         console.log(`📊 Found ${tests.length} tests in date range`);
         if (tests.length > 0) {
