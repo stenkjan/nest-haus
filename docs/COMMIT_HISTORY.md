@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [524bf564175ec5e1f5260fb67d73f7e4b782e1ae] - Thu Aug 28 18:50:46 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix TypeScript lint error: Replace any[] with proper type  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/route.ts
+
+
+---
+
 ## [c1ac81dfcb67b33bda61295a845f49388ca3bc7b] - Thu Aug 28 18:36:22 2025 +0200
 
 **Author**: stenkjan
