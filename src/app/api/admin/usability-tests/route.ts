@@ -307,6 +307,16 @@ export async function GET(request: NextRequest) {
         // Mock data for testing
         const tests: Array<{
             testId: string;
+            status: string;
+            overallRating: number | null;
+            totalDuration: number | null;
+            errorCount: number;
+            consoleErrors: Array<unknown> | null;
+            participantName: string | null;
+            startedAt: Date;
+            completedAt: Date | null;
+            deviceInfo: Record<string, unknown> | null;
+            id: string;
             responses: Array<Record<string, unknown>>;
             interactions: Array<Record<string, unknown>>;
         }> = [];
