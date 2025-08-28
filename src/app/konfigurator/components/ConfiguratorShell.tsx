@@ -1128,27 +1128,6 @@ export default function ConfiguratorShell({
                   </>
                 )}
 
-                {/* Kamindurchzug Checkbox - Add after nest section */}
-                {category.id === "nest" && (
-                  <ConfiguratorCheckbox
-                    id="kamindurchzug-checkbox"
-                    uncheckedText="ohne Kamindurchzug"
-                    checkedText="mit Kamindurchzug"
-                    price={2000}
-                    pricePerSqm={
-                      configuration?.nest?.value
-                        ? 2000 /
-                          (parseInt(
-                            configuration.nest.value.replace("nest", "")
-                          ) || 80)
-                        : 25
-                    }
-                    isChecked={!!configuration?.kamindurchzug}
-                    onChange={handleKamindurchzugChange}
-                    className="mt-4"
-                  />
-                )}
-
                 {/* Info Box - Use new responsive cards for specific categories */}
                 {category.infoBox && (
                   <>
@@ -1186,7 +1165,28 @@ export default function ConfiguratorShell({
                   </>
                 )}
 
-                {/* Fußbodenheizung Checkbox - Add after fussboden info box */}
+                {/* Kamindurchzug Checkbox - Add before fußbodenheizung */}
+                {category.id === "fussboden" && (
+                  <ConfiguratorCheckbox
+                    id="kamindurchzug-checkbox"
+                    uncheckedText="ohne Kamindurchzug"
+                    checkedText="mit Kamindurchzug"
+                    price={2000}
+                    pricePerSqm={
+                      configuration?.nest?.value
+                        ? 2000 /
+                          (parseInt(
+                            configuration.nest.value.replace("nest", "")
+                          ) || 80)
+                        : 25
+                    }
+                    isChecked={!!configuration?.kamindurchzug}
+                    onChange={handleKamindurchzugChange}
+                    className="mt-4"
+                  />
+                )}
+
+                {/* Fußbodenheizung Checkbox - Add after kamindurchzug */}
                 {category.id === "fussboden" && (
                   <ConfiguratorCheckbox
                     id="fussbodenheizung-checkbox"
