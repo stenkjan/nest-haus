@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fca31a4849e4783316072b9716420db18dfdb695] - Thu Aug 28 16:23:01 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: add energy certificate facts to configurator data  - Introduced a new 'facts' section for each category in configuratorData, detailing the energy certificate A++ specifications, including heating type, energy demand, CO₂ emissions, and efficiency class.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [85f6045987f648ad1fcfca33783d825317d41c57] - Thu Aug 28 16:17:22 2025 +0200
 
 **Author**: stenkjan
