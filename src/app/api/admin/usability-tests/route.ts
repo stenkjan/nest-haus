@@ -316,23 +316,23 @@ export async function GET(request: NextRequest) {
             console.log(`📊 Sample test IDs: ${tests.slice(0, 3).map(t => t.testId).join(', ')}`);
         }
 
-        // Calculate summary metrics
+        // Calculate summary metrics - TEMPORARILY MOCKED
         const totalTests = tests.length;
         const completedTests = tests.filter(t => t.status === 'COMPLETED').length;
-        const abandonedTests = tests.filter(t => t.status === 'ABANDONED').length;
-        const errorTests = tests.filter(t => t.status === 'ERROR').length;
+        const _abandonedTests = tests.filter(t => t.status === 'ABANDONED').length;
+        const _errorTests = tests.filter(t => t.status === 'ERROR').length;
 
-        const completionRate = totalTests > 0 ? (completedTests / totalTests) * 100 : 0;
+        const _completionRate = totalTests > 0 ? (completedTests / totalTests) * 100 : 0;
 
         // Calculate average ratings
         const completedTestsWithRating = tests.filter(t => t.overallRating !== null);
-        const averageRating = completedTestsWithRating.length > 0
+        const _averageRating = completedTestsWithRating.length > 0
             ? completedTestsWithRating.reduce((sum, t) => sum + (t.overallRating || 0), 0) / completedTestsWithRating.length
             : 0;
 
         // Calculate average duration
         const testsWithDuration = tests.filter(t => t.totalDuration !== null);
-        const averageDuration = testsWithDuration.length > 0
+        const _averageDuration = testsWithDuration.length > 0
             ? testsWithDuration.reduce((sum, t) => sum + (t.totalDuration || 0), 0) / testsWithDuration.length
             : 0;
 
@@ -460,8 +460,8 @@ export async function GET(request: NextRequest) {
             }
         });
 
-        // Error analysis
-        const errorAnalysis = tests.reduce((acc, test) => {
+        // Error analysis - TEMPORARILY MOCKED
+        const _errorAnalysis = tests.reduce((acc, test) => {
             acc.totalErrors += test.errorCount;
 
             if (test.consoleErrors && Array.isArray(test.consoleErrors)) {
@@ -478,8 +478,8 @@ export async function GET(request: NextRequest) {
             interactionErrors: 0
         });
 
-        // Session tracking analytics
-        const sessionTrackingStats = tests.reduce((acc, test) => {
+        // Session tracking analytics - TEMPORARILY MOCKED
+        const _sessionTrackingStats = tests.reduce((acc, test) => {
             const interactions = (test.interactions || []) as Array<Record<string, unknown>>;
 
             // Count interaction types
@@ -530,8 +530,8 @@ export async function GET(request: NextRequest) {
             sessionsWithPages: 0
         });
 
-        // Recent tests for quick overview
-        const recentTests = tests.slice(0, 10).map(test => ({
+        // Recent tests for quick overview - TEMPORARILY MOCKED
+        const _recentTests = tests.slice(0, 10).map(test => ({
             id: test.id,
             testId: test.testId,
             status: test.status,
@@ -546,16 +546,16 @@ export async function GET(request: NextRequest) {
             interactionCount: (test.interactions || []).length
         }));
 
-        // Calculate performance metrics
-        const avgTestDuration = performanceStats.testDurations.length > 0
+        // Calculate performance metrics - TEMPORARILY MOCKED
+        const _avgTestDuration = performanceStats.testDurations.length > 0
             ? performanceStats.testDurations.reduce((a, b) => a + b, 0) / performanceStats.testDurations.length
             : 0;
 
-        const avgErrorRate = performanceStats.errorRates.length > 0
+        const _avgErrorRate = performanceStats.errorRates.length > 0
             ? performanceStats.errorRates.reduce((a, b) => a + b, 0) / performanceStats.errorRates.length
             : 0;
 
-        const avgCompletionRate = performanceStats.completionRates.length > 0
+        const _avgCompletionRate = performanceStats.completionRates.length > 0
             ? performanceStats.completionRates.reduce((a, b) => a + b, 0) / performanceStats.completionRates.length
             : 0;
 
@@ -565,7 +565,7 @@ export async function GET(request: NextRequest) {
             .flatMap(q => q.responses.map(r => r.response as string))
             .filter(r => r && r.length > 0);
 
-        const qualitativeInsights = {
+        const _qualitativeInsights = {
             totalResponses: qualitativeResponses.length,
             averageLength: qualitativeResponses.length > 0
                 ? Math.round(qualitativeResponses.reduce((sum, r) => sum + r.length, 0) / qualitativeResponses.length)
@@ -574,8 +574,8 @@ export async function GET(request: NextRequest) {
             sentiment: analyzeSentiment(qualitativeResponses)
         };
 
-        // Configuration Analytics
-        const configurationAnalytics = processConfigurationAnalytics(tests.map(test => ({
+        // Configuration Analytics - TEMPORARILY MOCKED
+        const _configurationAnalytics = processConfigurationAnalytics(tests.map(test => ({
             testId: test.testId,
             interactions: test.interactions || []
         })));
