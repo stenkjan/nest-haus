@@ -317,7 +317,14 @@ export async function GET(request: NextRequest) {
             completedAt: Date | null;
             deviceInfo: Record<string, unknown> | null;
             id: string;
-            responses: Array<Record<string, unknown>>;
+            responses: Array<{
+                questionId: string;
+                questionText: string;
+                questionType: string;
+                response: Record<string, unknown>;
+                responseTime: number;
+                timestamp: Date;
+            }>;
             interactions: Array<Record<string, unknown>>;
         }> = [];
 
