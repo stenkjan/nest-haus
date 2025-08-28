@@ -8,6 +8,9 @@
   "functions": {
     "src/app/api/sync/google-drive/route.ts": {
       "maxDuration": 300
+    },
+    "src/app/api/admin/usability-tests/route.ts": {
+      "maxDuration": 60
     }
   }
 } 
