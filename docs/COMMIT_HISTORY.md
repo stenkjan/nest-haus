@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a2b7995dffdd46a70921d6aa89d296832f6a8264] - Thu Aug 28 16:09:31 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update configurator components and pricing logic  - Refactored the CategorySection component to adjust subtitle color for better visibility. - Enhanced the ConfiguratorShell component by adding checkbox options for 'kamindurchzug' and 'fussbodenheizung', including their respective handlers and pricing logic. - Updated the PriceCalculator to incorporate new checkbox options in pricing calculations. - Modified the ImageManager to reflect changes in interior configuration defaults. - Cleaned up the configuratorData by removing the 'stirnseite' category and correcting the title of 'Belichtungspaket'. - Improved the configurator store to manage new checkbox options effectively, ensuring accurate price calculations.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/route.ts
+- src/app/konfigurator/components/CategorySection.tsx
+- src/app/konfigurator/components/ConfiguratorCheckbox.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [ca2e6353c9d136ee65b8d60fbdbc6d7f2987227f] - Wed Aug 27 12:02:37 2025 +0200
 
 **Author**: stenkjan
