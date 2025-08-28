@@ -275,83 +275,57 @@ export async function GET(request: NextRequest) {
         console.log(`📊 Generating usability test analytics for ${timeRange}`);
         console.log(`📊 Date range: ${startDate.toISOString()} to ${new Date().toISOString()}`);
 
-        // Update abandoned tests (30 minutes timeout) - TEMPORARILY DISABLED DUE TO PRISMA DEPLOYMENT ISSUE
-        // const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
-        // const abandonedCount = await prisma.usabilityTest.updateMany({
-        //     where: {
-        //         status: 'IN_PROGRESS',
-        //         startedAt: { lt: thirtyMinutesAgo }
-        //     },
-        //     data: {
-        //         status: 'ABANDONED',
-        //         updatedAt: new Date()
-        //     }
-        // });
+        // Update abandoned tests (30 minutes timeout)
+        const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+        const abandonedCount = await prisma.usabilityTest.updateMany({
+            where: {
+                status: 'IN_PROGRESS',
+                startedAt: { lt: thirtyMinutesAgo }
+            },
+            data: {
+                status: 'ABANDONED',
+                updatedAt: new Date()
+            }
+        });
 
-        // if (abandonedCount.count > 0) {
-        //     console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (30+ minutes inactive)`);
-        // }
+        if (abandonedCount.count > 0) {
+            console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (30+ minutes inactive)`);
+        }
 
-        // Get all tests in range - TEMPORARILY MOCKED DUE TO PRISMA DEPLOYMENT ISSUE
-        // const tests = await prisma.usabilityTest.findMany({
-        //     where: {
-        //         startedAt: { gte: startDate }
-        //     },
-        //     include: {
-        //         responses: true,
-        //         interactions: true
-        //     },
-        //     orderBy: { startedAt: 'desc' }
-        // });
-        
-        // Mock data for testing
-        const tests: Array<{
-            testId: string;
-            status: string;
-            overallRating: number | null;
-            totalDuration: number | null;
-            completionRate: number | null;
-            errorCount: number;
-            consoleErrors: Array<unknown> | null;
-            participantName: string | null;
-            startedAt: Date;
-            completedAt: Date | null;
-            deviceInfo: Record<string, unknown> | null;
-            userAgent: string | null;
-            id: string;
-            responses: Array<{
-                questionId: string;
-                questionText: string;
-                questionType: string;
-                response: Record<string, unknown>;
-                responseTime: number;
-                timestamp: Date;
-            }>;
-            interactions: Array<Record<string, unknown>>;
-        }> = [];
+        // Get all tests in range
+        const tests = await prisma.usabilityTest.findMany({
+            where: {
+                startedAt: { gte: startDate }
+            },
+            include: {
+                responses: true,
+                interactions: true
+            },
+            orderBy: { startedAt: 'desc' }
+        });
 
         console.log(`📊 Found ${tests.length} tests in date range`);
         if (tests.length > 0) {
             console.log(`📊 Sample test IDs: ${tests.slice(0, 3).map(t => t.testId).join(', ')}`);
         }
 
-        // Calculate summary metrics - TEMPORARILY MOCKED
+        // Calculate summary metrics
         const totalTests = tests.length;
         const completedTests = tests.filter(t => t.status === 'COMPLETED').length;
-        const _abandonedTests = tests.filter(t => t.status === 'ABANDONED').length;
-        const _errorTests = tests.filter(t => t.status === 'ERROR').length;
+        const abandonedTests = tests.filter(t => t.status === 'ABANDONED').length;
+        const errorTests = tests.filter(t => t.status === 'ERROR').length;
 
-        const _completionRate = totalTests > 0 ? (completedTests / totalTests) * 100 : 0;
+        const completionRate = totalTests > 0 ? (completedTests / totalTests) * 100 : 0;
 
         // Calculate average ratings
         const completedTestsWithRating = tests.filter(t => t.overallRating !== null);
-        const _averageRating = completedTestsWithRating.length > 0
+        const averageRating = completedTestsWithRating.length > 0
             ? completedTestsWithRating.reduce((sum, t) => sum + (t.overallRating || 0), 0) / completedTestsWithRating.length
             : 0;
 
         // Calculate average duration
         const testsWithDuration = tests.filter(t => t.totalDuration !== null);
-        const _averageDuration = testsWithDuration.length > 0
+        const averageDuration = testsWithDuration.length > 0
             ? testsWithDuration.reduce((sum, t) => sum + (t.totalDuration || 0), 0) / testsWithDuration.length
             : 0;
 
@@ -479,8 +453,8 @@ export async function GET(request: NextRequest) {
             }
         });
 
-        // Error analysis - TEMPORARILY MOCKED
-        const _errorAnalysis = tests.reduce((acc, test) => {
+        // Error analysis
+        const errorAnalysis = tests.reduce((acc, test) => {
             acc.totalErrors += test.errorCount;
 
             if (test.consoleErrors && Array.isArray(test.consoleErrors)) {
@@ -497,8 +471,8 @@ export async function GET(request: NextRequest) {
             interactionErrors: 0
         });
 
-        // Session tracking analytics - TEMPORARILY MOCKED
-        const _sessionTrackingStats = tests.reduce((acc, test) => {
+        // Session tracking analytics
+        const sessionTrackingStats = tests.reduce((acc, test) => {
             const interactions = (test.interactions || []) as Array<Record<string, unknown>>;
 
             // Count interaction types
@@ -549,8 +523,8 @@ export async function GET(request: NextRequest) {
             sessionsWithPages: 0
         });
 
-        // Recent tests for quick overview - TEMPORARILY MOCKED
-        const _recentTests = tests.slice(0, 10).map(test => ({
+        // Recent tests for quick overview
+        const recentTests = tests.slice(0, 10).map(test => ({
             id: test.id,
             testId: test.testId,
             status: test.status,
@@ -565,16 +539,16 @@ export async function GET(request: NextRequest) {
             interactionCount: (test.interactions || []).length
         }));
 
-        // Calculate performance metrics - TEMPORARILY MOCKED
-        const _avgTestDuration = performanceStats.testDurations.length > 0
+        // Calculate performance metrics
+        const avgTestDuration = performanceStats.testDurations.length > 0
             ? performanceStats.testDurations.reduce((a, b) => a + b, 0) / performanceStats.testDurations.length
             : 0;
 
-        const _avgErrorRate = performanceStats.errorRates.length > 0
+        const avgErrorRate = performanceStats.errorRates.length > 0
             ? performanceStats.errorRates.reduce((a, b) => a + b, 0) / performanceStats.errorRates.length
             : 0;
 
-        const _avgCompletionRate = performanceStats.completionRates.length > 0
+        const avgCompletionRate = performanceStats.completionRates.length > 0
             ? performanceStats.completionRates.reduce((a, b) => a + b, 0) / performanceStats.completionRates.length
             : 0;
 
@@ -584,7 +558,7 @@ export async function GET(request: NextRequest) {
             .flatMap(q => q.responses.map(r => r.response as string))
             .filter(r => r && r.length > 0);
 
-        const _qualitativeInsights = {
+        const qualitativeInsights = {
             totalResponses: qualitativeResponses.length,
             averageLength: qualitativeResponses.length > 0
                 ? Math.round(qualitativeResponses.reduce((sum, r) => sum + r.length, 0) / qualitativeResponses.length)
@@ -593,67 +567,52 @@ export async function GET(request: NextRequest) {
             sentiment: analyzeSentiment(qualitativeResponses)
         };
 
-        // Configuration Analytics - TEMPORARILY MOCKED
-        const _configurationAnalytics = processConfigurationAnalytics(tests.map(test => ({
+        // Configuration Analytics
+        const configurationAnalytics = processConfigurationAnalytics(tests.map(test => ({
             testId: test.testId,
             interactions: test.interactions || []
         })));
 
-        // TEMPORARY: Return mock analytics data to test frontend
         const analytics = {
             summary: {
-                totalTests: 0,
-                completedTests: 0,
-                abandonedTests: 0,
-                errorTests: 0,
-                completionRate: 0,
-                averageRating: 0,
-                averageDuration: 0,
-                avgTestDuration: 0,
-                avgErrorRate: 0,
-                avgCompletionRate: 0
+                totalTests,
+                completedTests,
+                abandonedTests,
+                errorTests,
+                completionRate: Math.round(completionRate * 100) / 100,
+                averageRating: Math.round(averageRating * 100) / 100,
+                averageDuration: Math.round(averageDuration / 1000 / 60 * 100) / 100, // minutes
+                avgTestDuration: Math.round(avgTestDuration / 1000 / 60 * 100) / 100, // minutes
+                avgErrorRate: Math.round(avgErrorRate * 100) / 100,
+                avgCompletionRate: Math.round(avgCompletionRate * 100) / 100
             },
             sessionTracking: {
-                totalInteractions: 0,
-                pageVisits: 0,
-                buttonClicks: 0,
-                configuratorSelections: 0,
-                formInteractions: 0,
-                avgPagesPerSession: 0,
-                sessionsWithTracking: 0
+                totalInteractions: sessionTrackingStats.totalInteractions,
+                pageVisits: sessionTrackingStats.pageVisits,
+                buttonClicks: sessionTrackingStats.buttonClicks,
+                configuratorSelections: sessionTrackingStats.configuratorSelections,
+                formInteractions: sessionTrackingStats.formInteractions,
+                avgPagesPerSession: Math.round(sessionTrackingStats.avgPagesPerSession * 100) / 100,
+                sessionsWithTracking: sessionTrackingStats.sessionsWithPages
             },
-            configurationAnalytics: {
-                configSelections: [],
-                pageTimeData: [],
-                clickedPages: [],
-                sectionTimeData: []
-            },
-            questionAnalysis: [],
-            deviceStats: {},
-            browserStats: {},
-            platformStats: {},
+            configurationAnalytics,
+            questionAnalysis: Object.values(responsesByQuestion),
+            deviceStats,
+            browserStats,
+            platformStats,
             performanceMetrics: {
-                testDurations: [],
-                errorRates: [],
-                completionRates: [],
+                testDurations: performanceStats.testDurations,
+                errorRates: performanceStats.errorRates,
+                completionRates: performanceStats.completionRates,
                 averages: {
-                    duration: 0,
-                    errorRate: 0,
-                    completionRate: 0
+                    duration: avgTestDuration,
+                    errorRate: avgErrorRate,
+                    completionRate: avgCompletionRate
                 }
             },
-            qualitativeInsights: {
-                totalResponses: 0,
-                averageLength: 0,
-                keyThemes: [],
-                sentiment: { positive: 0, neutral: 0, negative: 0 }
-            },
-            errorAnalysis: {
-                totalErrors: 0,
-                consoleErrors: 0,
-                interactionErrors: 0
-            },
-            recentTests: [],
+            qualitativeInsights,
+            errorAnalysis,
+            recentTests,
             timeRange,
             generatedAt: new Date().toISOString()
         };
