@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [73f23ac29726006a6de6630d923173a297bd28de] - Thu Aug 28 19:23:42 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix 500 error by temporarily disabling problematic Prisma updateMany call  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/route.ts
+
+
+---
+
 ## [92bdb21e73e5a42adec3b8a471b7c9395a555553] - Thu Aug 28 19:17:39 2025 +0200
 
 **Author**: stenkjan
