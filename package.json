@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "build:windows": "taskkill /f /im node.exe 2>nul & timeout /t 2 & npx prisma generate && next build",
+    "postinstall": "npx prisma generate",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
