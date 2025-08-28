@@ -310,12 +310,14 @@ export async function GET(request: NextRequest) {
             status: string;
             overallRating: number | null;
             totalDuration: number | null;
+            completionRate: number | null;
             errorCount: number;
             consoleErrors: Array<unknown> | null;
             participantName: string | null;
             startedAt: Date;
             completedAt: Date | null;
             deviceInfo: Record<string, unknown> | null;
+            userAgent: string | null;
             id: string;
             responses: Array<{
                 questionId: string;
