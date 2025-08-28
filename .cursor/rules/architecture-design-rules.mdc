@@ -1,0 +1,183 @@
+---
+alwaysApply: false
+---
+  // ... other SEO metadata
+};
+
+export default function Page() {
+  return <PageClient />;
+}
+```
+
+### **SectionRouter Configuration Rules**
+
+#### Section Definition Requirements:
+
+- ✅ **Unique IDs**: Each section must have a unique `id` that matches the HTML section element
+- ✅ **SEO-friendly slugs**: Use kebab-case slugs that describe the content
+- ✅ **Descriptive titles**: Clear, user-friendly titles for navigation
+- ✅ **Logical ordering**: Sections should flow logically from top to bottom
+
+#### Section Layout Standards:
+
+- ✅ **Consistent spacing**: Use `py-16` for vertical section padding
+- ✅ **Background alternation**: Alternate between `bg-white` and `bg-gray-50`
+- ✅ **1536px max width**: Use `max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8`
+- ✅ **Responsive padding**: Use responsive padding classes for mobile/desktop
+
+#### Navigation Behavior:
+
+- ✅ **Automatic scroll**: SectionRouter handles smooth scrolling to sections
+- ✅ **URL updates**: Browser URL updates with section slugs for bookmarkability
+- ✅ **Mobile-friendly**: Touch and swipe navigation support
+- ✅ **Keyboard accessible**: Arrow key navigation support
+
+### **Content Structure Guidelines**
+
+#### Section Header Pattern:
+
+```tsx
+<section id="section-id" className="w-full py-16 [bg-class]">
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+      Section Title
+    </h2>
+    <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+      Section subtitle or description
+    </h3>
+
+    {/* Section content */}
+  </div>
+</section>
+```
+
+#### Typography Consistency:
+
+- ✅ **Main headers**: `text-4xl md:text-[60px]` with tracking adjustments
+- ✅ **Subheaders**: `text-xl md:text-2xl` with proper line height
+- ✅ **Body text**: Follow responsive text scaling patterns
+- ✅ **Font weights**: Use `font-medium` for headers, `font-normal` for body
+
+### **Implementation Checklist**
+
+#### Before Creating New Content Pages:
+
+1. ✅ **Plan sections**: Define logical content sections and flow
+2. ✅ **Create sections array**: Define IDs, titles, and slugs
+3. ✅ **Implement PageClient**: Use SectionRouter wrapper pattern
+4. ✅ **Add SEO metadata**: Include proper metadata in page.tsx
+5. ✅ **Test navigation**: Verify smooth scrolling and URL updates
+6. ✅ **Mobile testing**: Ensure touch navigation works properly
+
+#### Quality Assurance:
+
+- ✅ **Section IDs match**: HTML section IDs must match sections array IDs
+- ✅ **Consistent styling**: All sections follow layout and typography rules
+- ✅ **Responsive design**: Test on mobile, tablet, and desktop breakpoints
+- ✅ **Accessibility**: Ensure keyboard navigation and screen reader compatibility
+- ✅ **Performance**: Monitor loading times and smooth scrolling performance
+
+### **DO/DON'T Rules**
+
+#### ✅ DO:
+
+- Use SectionRouter for all multi-section content pages
+- Follow the exact implementation pattern shown above
+- Maintain consistent section spacing and typography
+- Test navigation thoroughly on all devices
+- Use descriptive, SEO-friendly section slugs
+- Implement proper metadata for each page
+- Follow the 1536px max-width standard
+
+#### ❌ DON'T:
+
+- Skip SectionRouter for pages that could benefit from section navigation
+- Use different layout patterns without architectural approval
+- Hardcode navigation - always use SectionRouter component
+- Ignore mobile touch navigation requirements
+- Create sections without proper IDs or accessibility
+- Mix different width constraints within the same page
+- Forget to test URL bookmarking and sharing functionality
+
+### **Future Page Planning**
+
+When creating new content pages, always consider:
+
+- **Will this page have multiple sections?** → Use SectionRouter
+- **Could this page expand with more sections?** → Use SectionRouter proactively
+- **Does this need section-based navigation?** → Use SectionRouter
+- **Is this a utility/tool page?** → May not need SectionRouter (like konfigurator)
+
+## Responsive Design Guidelines
+
+- Use Tailwind and Medium's responsive design system in combination
+- Prefer relative units (em, vh, vw) over fixed pixel sizes
+- Set max-width of 1144px for descriptive content (e.g. navbar)
+- No width restrictions for main site content
+- Implement mobile view switch at 600-700px using window.innerWidth
+- Detect mobile access and differentiate between WebKit (iOS) and Android
+- Handle WebKit-specific requirements:
+  - Hide address bar appropriately
+  - Manage nested scrolling containers carefully due to WebKit limitations
+- Use Tailwind's responsive classes for consistent breakpoint handling
+- Implement fluid typography using clamp() for dynamic text sizing
+- Ensure all interactive elements have minimum touch target size of 44x44px
+- Test layouts across standard breakpoints (sm: 640px, md: 768px, lg: 1024px, xl: 1280px)
+- Maintain aspect ratios for media content using aspect-ratio utility
+- Use CSS Grid and Flexbox for responsive layouts instead of fixed dimensions
+
+## DOM Features & Sizing (React/Next.js projects)
+
+- For any DOM feature or sizing communication between layout and page (e.g., scroll handling, dynamic sizing), always use a React context to provide refs or state.
+- Never use querySelector, getElementById, or direct DOM traversal for such communication.
+- This context-based approach is the default and required for all such requirements in this project.
+
+## Landing Page Image Handling Rules
+
+**CRITICAL: Landing Page Images (src/app/page.tsx) ONLY**
+
+When working with background images on the landing page, ALWAYS use this exact pattern:
+
+### Required Structure:
+
+```tsx
+// Landing page specific image styling - applies to all 8 images
+const landingImageStyle = {
+  objectPosition: "center center",
+  transform: "scale(1.05)",
+  transformOrigin: "center center",
+};
+
+// Section with 16:9 aspect ratio constraint
+<section
+  key={section.id}
+  className="relative w-full overflow-hidden"
+  style={{ aspectRatio: "16/9" }}
+>
+  <div className="absolute inset-0 w-full h-full">
+    <Image
+      src={section.image}
+      alt={section.h1}
+      fill
+      className="object-cover"
+      style={landingImageStyle}
+      unoptimized
+      priority={section.id === 1}
+    />
+  </div>
+</section>;
+```
+
+### Rules:
+
+- ✅ ALWAYS maintain 16:9 aspect ratio using `style={{ aspectRatio: '16/9' }}` on section
+- ✅ ALWAYS use `unoptimized` prop (for future Vercel blob compatibility)
+- ✅ ALWAYS use component-level `landingImageStyle` object (not global CSS)
+- ✅ ALWAYS apply same styling to ALL 8 landing page images
+- ✅ NEVER add overlays unless specifically requested
+- ❌ NEVER use `h-screen` on landing page sections (conflicts with 16:9)
+- ❌ NEVER apply this pattern to other pages (konfigurator, etc.)
+
+### Future-Proof:
+
+This pattern works with any image source (current files or future Vercel blob URLs).

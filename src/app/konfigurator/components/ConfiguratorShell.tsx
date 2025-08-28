@@ -28,6 +28,7 @@ import FactsBox from "./FactsBox";
 import type { ConfiguratorProps } from "../types/configurator.types";
 import { InfoBox, CartFooter } from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
+import ConfiguratorCheckbox from "./ConfiguratorCheckbox";
 import { CalendarDialog } from "@/components/dialogs";
 
 // Simple debounce implementation to avoid lodash dependency
@@ -55,6 +56,7 @@ export default function ConfiguratorShell({
   const {
     updateSelection,
     removeSelection,
+    updateCheckboxOption,
     configuration,
     currentPrice,
     finalizeSession,
@@ -316,6 +318,21 @@ export default function ConfiguratorShell({
     }
   }, []);
 
+  // Checkbox handlers
+  const handleKamindurchzugChange = useCallback(
+    (isChecked: boolean) => {
+      updateCheckboxOption("kamindurchzug", isChecked);
+    },
+    [updateCheckboxOption]
+  );
+
+  const handleFussbodenheizungChange = useCallback(
+    (isChecked: boolean) => {
+      updateCheckboxOption("fussbodenheizung", isChecked);
+    },
+    [updateCheckboxOption]
+  );
+
   // Fixed selection detection logic - more robust checking
   const isOptionSelected = useCallback(
     (categoryId: string, optionId: string): boolean => {
@@ -374,20 +391,6 @@ export default function ConfiguratorShell({
           return PriceCalculator.calculateBelichtungspaketPrice(
             selectionOption,
             configuration.nest,
-            configuration.fenster || undefined
-          );
-        }
-
-        // For stirnseite, calculate actual price
-        if (categoryId === "stirnseite" && optionId !== "keine_verglasung") {
-          const selectionOption = {
-            category: categoryId,
-            value: optionId,
-            name: "", // Not needed for calculation
-            price: 0, // Not needed for calculation
-          };
-          return PriceCalculator.calculateStirnseitePrice(
-            selectionOption,
             configuration.fenster || undefined
           );
         }
@@ -460,20 +463,6 @@ export default function ConfiguratorShell({
             const percentage =
               percentageMap[configuration.belichtungspaket.value] || 0.12;
             totalArea += Math.ceil(nestSize * percentage);
-
-            // Add stirnseite area if selected
-            if (
-              configuration.stirnseite &&
-              configuration.stirnseite.value !== "keine_verglasung"
-            ) {
-              const areaMap: Record<string, number> = {
-                verglasung_oben: 8,
-                verglasung_einfache_schiebetuer: 8.5,
-                verglasung_doppelte_schiebetuer: 17,
-                vollverglasung: 25,
-              };
-              totalArea += areaMap[configuration.stirnseite.value] || 0;
-            }
 
             return totalArea * option.price.amount;
           }
@@ -551,7 +540,7 @@ export default function ConfiguratorShell({
         return originalPrice;
       }
 
-      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, stirnseite, planungspaket)
+      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, planungspaket)
       if (
         [
           "gebaeudehuelle",
@@ -559,7 +548,6 @@ export default function ConfiguratorShell({
           "fussboden",
           "belichtungspaket",
           "fenster",
-          "stirnseite",
           "planungspaket",
         ].includes(categoryId)
       ) {
@@ -883,58 +871,28 @@ export default function ConfiguratorShell({
           }
         }
 
-        // For belichtungspaket and stirnseite with current selection, calculate relative pricing
-        if (
-          currentSelection &&
-          ["belichtungspaket", "stirnseite"].includes(categoryId)
-        ) {
-          // Special case: keine_verglasung always shows as included
-          if (categoryId === "stirnseite" && optionId === "keine_verglasung") {
-            return { type: "included" as const };
-          }
+        // For belichtungspaket with current selection, calculate relative pricing
+        if (currentSelection && categoryId === "belichtungspaket") {
           // Calculate current total with currently selected option
-          let currentPrice = 0;
-          if (categoryId === "belichtungspaket") {
-            currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
-              currentSelection as SelectionOptionType,
-              configuration.nest as SelectionOptionType,
-              configuration.fenster as SelectionOptionType | undefined
-            );
-          } else if (categoryId === "stirnseite") {
-            currentPrice = PriceCalculator.calculateStirnseitePrice(
-              currentSelection,
-              configuration.fenster || undefined
-            );
-          }
+          const currentPrice = PriceCalculator.calculateBelichtungspaketPrice(
+            currentSelection as SelectionOptionType,
+            configuration.nest as SelectionOptionType,
+            configuration.fenster as SelectionOptionType | undefined
+          );
 
           // Calculate price with this option
-          let optionPrice = 0;
-          if (categoryId === "belichtungspaket") {
-            const mockOption = {
-              category: "belichtungspaket",
-              value: optionId,
-              name: option.name,
-              price: option.price.amount || 0,
-              description: option.description || "",
-            };
-            optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
-              mockOption as SelectionOptionType,
-              configuration.nest as SelectionOptionType,
-              configuration.fenster as SelectionOptionType | undefined
-            );
-          } else if (categoryId === "stirnseite") {
-            const mockOption = {
-              category: "stirnseite",
-              value: optionId,
-              name: option.name,
-              price: option.price.amount || 0,
-              description: option.description || "",
-            };
-            optionPrice = PriceCalculator.calculateStirnseitePrice(
-              mockOption,
-              configuration.fenster || undefined
-            );
-          }
+          const mockOption = {
+            category: "belichtungspaket",
+            value: optionId,
+            name: option.name,
+            price: option.price.amount || 0,
+            description: option.description || "",
+          };
+          const optionPrice = PriceCalculator.calculateBelichtungspaketPrice(
+            mockOption as SelectionOptionType,
+            configuration.nest as SelectionOptionType,
+            configuration.fenster as SelectionOptionType | undefined
+          );
 
           const priceDifference = optionPrice - currentPrice;
 
@@ -1030,7 +988,7 @@ export default function ConfiguratorShell({
           fussboden: configuration.fussboden || undefined,
           belichtungspaket: configuration.belichtungspaket || undefined,
           fenster: configuration.fenster || undefined,
-          stirnseite: configuration.stirnseite || undefined,
+
           pvanlage: configuration.pvanlage || undefined,
         };
 
@@ -1108,7 +1066,7 @@ export default function ConfiguratorShell({
 
   // Render selection content
   const SelectionContent = () => (
-    <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(1rem,2vh,1.5rem)]">
+    <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(1.25rem,2.5vh,1.75rem)]">
       {configuratorData.map((category) => (
         <CategorySection
           key={category.id}
@@ -1170,6 +1128,27 @@ export default function ConfiguratorShell({
                   </>
                 )}
 
+                {/* Kamindurchzug Checkbox - Add after nest section */}
+                {category.id === "nest" && (
+                  <ConfiguratorCheckbox
+                    id="kamindurchzug-checkbox"
+                    uncheckedText="ohne Kamindurchzug"
+                    checkedText="mit Kamindurchzug"
+                    price={2000}
+                    pricePerSqm={
+                      configuration?.nest?.value
+                        ? 2000 /
+                          (parseInt(
+                            configuration.nest.value.replace("nest", "")
+                          ) || 80)
+                        : 25
+                    }
+                    isChecked={!!configuration?.kamindurchzug}
+                    onChange={handleKamindurchzugChange}
+                    className="mt-4"
+                  />
+                )}
+
                 {/* Info Box - Use new responsive cards for specific categories */}
                 {category.infoBox && (
                   <>
@@ -1179,7 +1158,6 @@ export default function ConfiguratorShell({
                     category.id === "fussboden" ||
                     category.id === "belichtungspaket" ||
                     category.id === "fenster" ||
-                    category.id === "stirnseite" ||
                     category.id === "pvanlage" ? (
                       <ConfiguratorContentCardsLightbox
                         categoryKey={
@@ -1191,11 +1169,9 @@ export default function ConfiguratorShell({
                                 ? "fussboden"
                                 : category.id === "belichtungspaket"
                                   ? "belichtungspaket"
-                                  : category.id === "stirnseite"
-                                    ? "stirnseite"
-                                    : (category.id as
-                                        | "innenverkleidung"
-                                        | "fenster")
+                                  : (category.id as
+                                      | "innenverkleidung"
+                                      | "fenster")
                         }
                         triggerText={category.infoBox.title}
                       />
@@ -1208,6 +1184,27 @@ export default function ConfiguratorShell({
                       />
                     )}
                   </>
+                )}
+
+                {/* Fußbodenheizung Checkbox - Add after fussboden info box */}
+                {category.id === "fussboden" && (
+                  <ConfiguratorCheckbox
+                    id="fussbodenheizung-checkbox"
+                    uncheckedText="ohne Fußbodenheizung"
+                    checkedText="mit Fußbodenheizung"
+                    price={5000}
+                    pricePerSqm={
+                      configuration?.nest?.value
+                        ? 5000 /
+                          (parseInt(
+                            configuration.nest.value.replace("nest", "")
+                          ) || 80)
+                        : 62.5
+                    }
+                    isChecked={!!configuration?.fussbodenheizung}
+                    onChange={handleFussbodenheizungChange}
+                    className="mt-4"
+                  />
                 )}
 
                 {/* Facts Box */}

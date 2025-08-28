@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 // Helper functions for qualitative analysis
 function extractKeyThemes(responses: string[]): Array<{ theme: string; count: number; examples: string[] }> {
@@ -568,7 +570,10 @@ export async function GET(request: NextRequest) {
         };
 
         // Configuration Analytics
-        const configurationAnalytics = processConfigurationAnalytics(tests);
+        const configurationAnalytics = processConfigurationAnalytics(tests.map(test => ({
+            testId: test.testId,
+            interactions: test.interactions || []
+        })));
 
         const analytics = {
             summary: {

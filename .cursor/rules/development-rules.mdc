@@ -1,0 +1,460 @@
+---
+alwaysApply: false
+---
+
+# Development & Technical Rules
+
+## Code Quality & Documentation
+
+- Make sure to include the indexed documentations of the languages and tools we use when needed: React, Next.js, Prisma, Redis, PostgreSQL
+- Always try to keep the codebase slim and the code you generate concise
+- Don't change any content or design properties that are not directly related to a prompt, if unsure, always ask
+- Documentation in /docs must be updated after every commit, using the predefined .md files and continuing them as needed
+- Use GitHub Actions or equivalent CI to continuously generate and update documentation
+
+## TypeScript & Type Safety Rules
+
+- **NEVER use `any` type**: Always specify proper TypeScript types to prevent type errors and maintain code quality
+- **Use strict typing**: Prefer union types, interfaces, and proper generics over loose typing
+- **Type assertions**: Use proper type assertions like `as Type` or type guards instead of `any`
+- **Global window extensions**: Use proper type extensions like `typeof window & { property: Type }` instead of `any`
+- **Unknown over any**: When type is truly unknown, prefer `unknown` over `any` and use type guards
+
+## Verification & Testing Rules
+
+- **ESLint Check**: Run `npm run lint` to ensure code follows project standards
+- **Build Verification**: For significant changes, run `npm run build` to ensure production compatibility
+- **Hot Reload Check**: Verify that localhost:3000 is running and changes are reflected without breaking the development server
+
+## Development Workflow
+
+- Check for existing running servers (localhost:3000) before running a new server, we have hot reload in place
+- Fill out the documentation in /docs after every commit, use the predefined .md files and continue them
+- Use GitHub actions to continuously document
+
+## Terminal & PowerShell Guidelines
+
+### **Windows Development Environment**
+
+- **Shell Environment**: Git Bash is used as the primary shell (not PowerShell)
+- **Python Access**: Python is installed via winget at standard Windows location
+- **PowerShell Syntax**: Never use `&&` for command chaining (not supported in PowerShell)
+- **Use PowerShell operators**: Use `;` for command separation or separate commands
+- **Call external executables**: Use `&` operator: `& "path\to\executable.exe" args`
+- **Path format**: Use Windows paths with backslashes or forward slashes
+- **Package management**: Use `python -m pip install package` for Python packages
+
+### **Server Management & Monitoring**
+
+#### Development Server Best Practices:
+
+- **ALWAYS check if server is running**: Use `netstat -an | findstr :3000` before starting new server
+- **Hot Reload Priority**: Never restart server unnecessarily - leverage Next.js hot reload
+- **Background Process Management**: Use `npm run dev` with `is_background: true` for non-blocking server starts
+- **Process Cleanup**: On Windows, use `taskkill /f /im node.exe` to clean up stuck processes
+
+#### Server Status Commands:
+
+```bash
+# ✅ Check if development server is running
+netstat -an | findstr :3000
+
+# ✅ Start development server (background)
+npm run dev &
+
+# ✅ Kill Node.js processes on Windows (if needed)
+taskkill /f /im node.exe
+```
+
+### **Prisma Database Management**
+
+#### Connection & Schema Management:
+
+- **Schema Sync**: Always run `npx prisma db push` after schema changes
+- **Client Regeneration**: Use `npx prisma generate` after model updates
+- **Connection Testing**: Use `/api/test/db` endpoint to verify database connectivity
+- **Windows File Lock Issues**: Clear `.prisma` cache if generation fails: `rm -rf node_modules/.prisma`
+
+#### Prisma Commands:
+
+```bash
+# ✅ Regenerate Prisma client
+npx prisma generate
+
+# ✅ Push schema changes to database
+npx prisma db push
+
+# ✅ Clear Prisma cache (Windows file lock issues)
+rm -rf node_modules/.prisma
+
+# ✅ Test database connection
+curl -s "http://localhost:3000/api/test/db"
+```
+
+#### Prisma Client Import Patterns:
+
+```typescript
+// ✅ Standard pattern (works in most cases)
+import { prisma } from "@/lib/prisma";
+
+// ✅ Direct import (for problematic routes)
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+```
+
+### **API Testing & Debugging**
+
+#### cURL Command Patterns:
+
+```bash
+# ✅ Basic API test
+curl -s "http://localhost:3000/api/endpoint"
+
+# ✅ JSON response formatting
+curl -s "http://localhost:3000/api/endpoint" | python -m json.tool
+
+# ✅ Extract specific JSON fields
+curl -s "http://localhost:3000/api/endpoint" | grep -o '"success":[^,]*'
+
+# ✅ Test with query parameters
+curl -s "http://localhost:3000/api/admin/usability-tests?timeRange=7d"
+
+# ✅ Verbose output for debugging
+curl -v "http://localhost:3000/api/endpoint" 2>&1 | head -10
+```
+
+#### API Response Analysis:
+
+- **Success Check**: Look for `"success": true` in JSON responses
+- **Error Debugging**: Check `details` field for specific error messages
+- **Performance Monitoring**: Use verbose mode to check response times
+- **Status Codes**: 404 = route not found, 500 = server error, 200 = success
+
+### **Example Commands**:
+
+```bash
+# ✅ Correct Git Bash syntax
+cd preiskalkulation; python read_prices.py
+python -m pip install pandas openpyxl
+netstat -an | findstr :3000
+
+# ❌ Incorrect (Unix-style, doesn't work in PowerShell)
+cd preiskalkulation && python read_prices.py
+```
+
+## Testing & CI
+
+- All integration tests must be automated and run as part of the CI pipeline
+- Integration tests should be cleaned up after execution to avoid redundant or stale test artifacts
+- Test files, data, and temporary resources created during tests must be removed or reset after each test run
+- Periodically review and remove obsolete or redundant tests to keep the test suite lean
+- Ensure that test coverage is maintained without accumulating unnecessary or duplicate tests
+
+## Error Handling & Debugging Guidelines
+
+- **Client-side errors**: Log to console in development, use error boundaries in production
+- **API failures**: Always have fallback states, don't block user experience
+- **State synchronization**: Use optimistic updates with conflict resolution
+- **Performance monitoring**: Track response times and bundle sizes
+- **Debugging**: Use structured logging with emojis for easy identification (🚀 🏪 💰 🔧)
+- **Database Errors**: Use upsert patterns to handle race conditions and missing records
+- **Session Management**: Implement fail-safe session operations that never block user interactions
+
+## Git & Line Ending Rules (Windows Development)
+
+### **Line Ending Configuration**
+
+- **CRITICAL**: Always use `.gitattributes` file to enforce consistent line endings
+- **Git Config**: Set `core.autocrlf=true` and `core.safecrlf=false` for Windows development
+- **Text Files**: All source code files (.ts, .tsx, .js, .jsx, .json, .md, .css) should be normalized to LF
+- **Binary Files**: Explicitly mark binary files (.png, .jpg, .exe, .dll) to prevent line ending conversion
+
+### **Required .gitattributes Setup**
+
+```gitattributes
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Explicitly declare text files for normalization
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.json text
+*.md text
+*.css text
+*.html text
+
+# Keep Windows-specific files with CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Keep Unix-specific files with LF
+*.sh text eol=lf
+
+# Mark binary files explicitly
+*.png binary
+*.jpg binary
+*.exe binary
+*.dll binary
+```
+
+### **Prevention Rules**
+
+- ✅ **ALWAYS** create `.gitattributes` file in new repositories
+- ✅ **NEVER** commit files named `nul` (Windows reserved name)
+- ✅ **ALWAYS** run `git config core.autocrlf true` on Windows setup
+- ✅ **VERIFY** line endings before major commits using `git ls-files --eol`
+- ❌ **NEVER** use Windows reserved names for files (`nul`, `con`, `prn`, `aux`, etc.)
+- ❌ **DON'T** mix line ending styles within the same file
+
+### **Troubleshooting Commands**
+
+```bash
+# Fix line ending issues
+git config core.autocrlf true
+git config core.safecrlf false
+git rm --cached -r .
+git reset
+git add .
+
+# Check line endings
+git ls-files --eol
+
+# Clean problematic files
+find . -name "nul" -delete
+```
+
+### **Development Environment Setup**
+
+- **VS Code**: Set `"files.eol": "\n"` in settings.json for consistent LF endings
+- **Git Bash**: Use Git Bash terminal for Windows development to avoid path issues
+- **File System**: Avoid Windows reserved names in any file or directory names
+# Development & Technical Rules
+
+## Code Quality & Documentation
+
+- Make sure to include the indexed documentations of the languages and tools we use when needed: React, Next.js, Prisma, Redis, PostgreSQL
+- Always try to keep the codebase slim and the code you generate concise
+- Don't change any content or design properties that are not directly related to a prompt, if unsure, always ask
+- Documentation in /docs must be updated after every commit, using the predefined .md files and continuing them as needed
+- Use GitHub Actions or equivalent CI to continuously generate and update documentation
+
+## TypeScript & Type Safety Rules
+
+- **NEVER use `any` type**: Always specify proper TypeScript types to prevent type errors and maintain code quality
+- **Use strict typing**: Prefer union types, interfaces, and proper generics over loose typing
+- **Type assertions**: Use proper type assertions like `as Type` or type guards instead of `any`
+- **Global window extensions**: Use proper type extensions like `typeof window & { property: Type }` instead of `any`
+- **Unknown over any**: When type is truly unknown, prefer `unknown` over `any` and use type guards
+
+## Verification & Testing Rules
+
+- **ESLint Check**: Run `npm run lint` to ensure code follows project standards
+- **Build Verification**: For significant changes, run `npm run build` to ensure production compatibility
+- **Hot Reload Check**: Verify that localhost:3000 is running and changes are reflected without breaking the development server
+
+## Development Workflow
+
+- Check for existing running servers (localhost:3000) before running a new server, we have hot reload in place
+- Fill out the documentation in /docs after every commit, use the predefined .md files and continue them
+- Use GitHub actions to continuously document
+
+## Terminal & PowerShell Guidelines
+
+### **Windows Development Environment**
+
+- **Shell Environment**: Git Bash is used as the primary shell (not PowerShell)
+- **Python Access**: Python is installed via winget at standard Windows location
+- **PowerShell Syntax**: Never use `&&` for command chaining (not supported in PowerShell)
+- **Use PowerShell operators**: Use `;` for command separation or separate commands
+- **Call external executables**: Use `&` operator: `& "path\to\executable.exe" args`
+- **Path format**: Use Windows paths with backslashes or forward slashes
+- **Package management**: Use `python -m pip install package` for Python packages
+
+### **Server Management & Monitoring**
+
+#### Development Server Best Practices:
+
+- **ALWAYS check if server is running**: Use `netstat -an | findstr :3000` before starting new server
+- **Hot Reload Priority**: Never restart server unnecessarily - leverage Next.js hot reload
+- **Background Process Management**: Use `npm run dev` with `is_background: true` for non-blocking server starts
+- **Process Cleanup**: On Windows, use `taskkill /f /im node.exe` to clean up stuck processes
+
+#### Server Status Commands:
+
+```bash
+# ✅ Check if development server is running
+netstat -an | findstr :3000
+
+# ✅ Start development server (background)
+npm run dev &
+
+# ✅ Kill Node.js processes on Windows (if needed)
+taskkill /f /im node.exe
+```
+
+### **Prisma Database Management**
+
+#### Connection & Schema Management:
+
+- **Schema Sync**: Always run `npx prisma db push` after schema changes
+- **Client Regeneration**: Use `npx prisma generate` after model updates
+- **Connection Testing**: Use `/api/test/db` endpoint to verify database connectivity
+- **Windows File Lock Issues**: Clear `.prisma` cache if generation fails: `rm -rf node_modules/.prisma`
+
+#### Prisma Commands:
+
+```bash
+# ✅ Regenerate Prisma client
+npx prisma generate
+
+# ✅ Push schema changes to database
+npx prisma db push
+
+# ✅ Clear Prisma cache (Windows file lock issues)
+rm -rf node_modules/.prisma
+
+# ✅ Test database connection
+curl -s "http://localhost:3000/api/test/db"
+```
+
+#### Prisma Client Import Patterns:
+
+```typescript
+// ✅ Standard pattern (works in most cases)
+import { prisma } from "@/lib/prisma";
+
+// ✅ Direct import (for problematic routes)
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+```
+
+### **API Testing & Debugging**
+
+#### cURL Command Patterns:
+
+```bash
+# ✅ Basic API test
+curl -s "http://localhost:3000/api/endpoint"
+
+# ✅ JSON response formatting
+curl -s "http://localhost:3000/api/endpoint" | python -m json.tool
+
+# ✅ Extract specific JSON fields
+curl -s "http://localhost:3000/api/endpoint" | grep -o '"success":[^,]*'
+
+# ✅ Test with query parameters
+curl -s "http://localhost:3000/api/admin/usability-tests?timeRange=7d"
+
+# ✅ Verbose output for debugging
+curl -v "http://localhost:3000/api/endpoint" 2>&1 | head -10
+```
+
+#### API Response Analysis:
+
+- **Success Check**: Look for `"success": true` in JSON responses
+- **Error Debugging**: Check `details` field for specific error messages
+- **Performance Monitoring**: Use verbose mode to check response times
+- **Status Codes**: 404 = route not found, 500 = server error, 200 = success
+
+### **Example Commands**:
+
+```bash
+# ✅ Correct Git Bash syntax
+cd preiskalkulation; python read_prices.py
+python -m pip install pandas openpyxl
+netstat -an | findstr :3000
+
+# ❌ Incorrect (Unix-style, doesn't work in PowerShell)
+cd preiskalkulation && python read_prices.py
+```
+
+## Testing & CI
+
+- All integration tests must be automated and run as part of the CI pipeline
+- Integration tests should be cleaned up after execution to avoid redundant or stale test artifacts
+- Test files, data, and temporary resources created during tests must be removed or reset after each test run
+- Periodically review and remove obsolete or redundant tests to keep the test suite lean
+- Ensure that test coverage is maintained without accumulating unnecessary or duplicate tests
+
+## Error Handling & Debugging Guidelines
+
+- **Client-side errors**: Log to console in development, use error boundaries in production
+- **API failures**: Always have fallback states, don't block user experience
+- **State synchronization**: Use optimistic updates with conflict resolution
+- **Performance monitoring**: Track response times and bundle sizes
+- **Debugging**: Use structured logging with emojis for easy identification (🚀 🏪 💰 🔧)
+- **Database Errors**: Use upsert patterns to handle race conditions and missing records
+- **Session Management**: Implement fail-safe session operations that never block user interactions
+
+## Git & Line Ending Rules (Windows Development)
+
+### **Line Ending Configuration**
+
+- **CRITICAL**: Always use `.gitattributes` file to enforce consistent line endings
+- **Git Config**: Set `core.autocrlf=true` and `core.safecrlf=false` for Windows development
+- **Text Files**: All source code files (.ts, .tsx, .js, .jsx, .json, .md, .css) should be normalized to LF
+- **Binary Files**: Explicitly mark binary files (.png, .jpg, .exe, .dll) to prevent line ending conversion
+
+### **Required .gitattributes Setup**
+
+```gitattributes
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Explicitly declare text files for normalization
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.json text
+*.md text
+*.css text
+*.html text
+
+# Keep Windows-specific files with CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Keep Unix-specific files with LF
+*.sh text eol=lf
+
+# Mark binary files explicitly
+*.png binary
+*.jpg binary
+*.exe binary
+*.dll binary
+```
+
+### **Prevention Rules**
+
+- ✅ **ALWAYS** create `.gitattributes` file in new repositories
+- ✅ **NEVER** commit files named `nul` (Windows reserved name)
+- ✅ **ALWAYS** run `git config core.autocrlf true` on Windows setup
+- ✅ **VERIFY** line endings before major commits using `git ls-files --eol`
+- ❌ **NEVER** use Windows reserved names for files (`nul`, `con`, `prn`, `aux`, etc.)
+- ❌ **DON'T** mix line ending styles within the same file
+
+### **Troubleshooting Commands**
+
+```bash
+# Fix line ending issues
+git config core.autocrlf true
+git config core.safecrlf false
+git rm --cached -r .
+git reset
+git add .
+
+# Check line endings
+git ls-files --eol
+
+# Clean problematic files
+find . -name "nul" -delete
+```
+
+### **Development Environment Setup**
+
+- **VS Code**: Set `"files.eol": "\n"` in settings.json for consistent LF endings
+- **Git Bash**: Use Git Bash terminal for Windows development to avoid path issues
+- **File System**: Avoid Windows reserved names in any file or directory names

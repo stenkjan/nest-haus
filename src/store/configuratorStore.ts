@@ -24,6 +24,8 @@ export interface Configuration {
   fenster?: ConfigurationItem | null
   stirnseite?: ConfigurationItem | null
   planungspaket?: ConfigurationItem | null
+  kamindurchzug?: ConfigurationItem | null
+  fussbodenheizung?: ConfigurationItem | null
   totalPrice: number
   timestamp: number
 }
@@ -58,6 +60,7 @@ interface ConfiguratorState {
   initializeSession: () => void
   updateSelection: (item: ConfigurationItem) => void
   removeSelection: (category: string) => void
+  updateCheckboxOption: (category: 'kamindurchzug' | 'fussbodenheizung', isChecked: boolean) => void
   calculatePrice: () => void
   saveConfiguration: (userDetails?: Record<string, unknown>) => Promise<boolean>
   resetConfiguration: () => void
@@ -96,6 +99,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         fenster: null,
         stirnseite: null,
         planungspaket: null,
+        kamindurchzug: null,
+        fussbodenheizung: null,
         totalPrice: 0,
         timestamp: 0
       },
@@ -349,6 +354,46 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         get().calculatePrice()
       },
 
+      // Update checkbox options (kamindurchzug, fussbodenheizung)
+      updateCheckboxOption: (category: 'kamindurchzug' | 'fussbodenheizung', isChecked: boolean) => {
+        const state = get()
+
+        const updatedConfig: Configuration = {
+          ...state.configuration,
+          timestamp: Date.now()
+        }
+
+        if (isChecked) {
+          // Add the option
+          const optionData = {
+            kamindurchzug: {
+              name: 'Kamindurchzug',
+              price: 2000,
+              description: 'Vorbereitung für Kaminanschluss'
+            },
+            fussbodenheizung: {
+              name: 'Fußbodenheizung',
+              price: 5000,
+              description: 'Elektrische Fußbodenheizung'
+            }
+          }
+
+          updatedConfig[category] = {
+            category,
+            value: 'enabled',
+            name: optionData[category].name,
+            price: optionData[category].price,
+            description: optionData[category].description
+          }
+        } else {
+          // Remove the option
+          updatedConfig[category] = null
+        }
+
+        set({ configuration: updatedConfig })
+        get().calculatePrice()
+      },
+
       // Calculate price using client-side PriceCalculator
       calculatePrice: () => {
         const state = get()
@@ -362,8 +407,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           belichtungspaket: state.configuration.belichtungspaket || undefined,
           pvanlage: state.configuration.pvanlage || undefined,
           fenster: state.configuration.fenster || undefined,
-          stirnseite: state.configuration.stirnseite || undefined,
-          planungspaket: state.configuration.planungspaket || undefined
+
+          planungspaket: state.configuration.planungspaket || undefined,
+          kamindurchzug: state.configuration.kamindurchzug || undefined,
+          fussbodenheizung: state.configuration.fussbodenheizung || undefined
         }
 
         const totalPrice = PriceCalculator.calculateTotalPrice(selections)
@@ -536,14 +583,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: 280,
             description: 'RAL 9016 - Kunststoff'
           },
-          // Keine Verglasung (default)
-          {
-            category: 'stirnseite',
-            value: 'keine_verglasung',
-            name: 'Keine Verglasung',
-            price: 0,
-            description: 'Geschlossene Stirnseite\nKeine zusätzlichen Fenster'
-          },
+
           // Planung Basis (default)
           {
             category: 'planungspaket',

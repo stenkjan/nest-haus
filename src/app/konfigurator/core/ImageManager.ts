@@ -193,7 +193,7 @@ export class ImageManager {
   static getInteriorImage(configuration: Configuration): string {
     // Use selected values or defaults matching new pricing structure
     const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'holzlattung';
-    const innenverkleidung = configuration?.innenverkleidung?.value || 'fichte';
+    const innenverkleidung = configuration?.innenverkleidung?.value || 'kiefer';
     const fussboden = configuration?.fussboden?.value || 'parkett';
 
     // Create combination key for exact matching

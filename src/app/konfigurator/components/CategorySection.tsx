@@ -24,7 +24,7 @@ export default function CategorySection({
     >
       <h3 className="text-[clamp(1rem,2.2vw,1.25rem)] font-medium tracking-[-0.015em] leading-[1.2] mb-4">
         <span className="text-black">{title}</span>{" "}
-        <span className="text-gray-600">{subtitle}</span>
+        <span className="text-gray-400">{subtitle}</span>
       </h3>
       {children}
     </div>

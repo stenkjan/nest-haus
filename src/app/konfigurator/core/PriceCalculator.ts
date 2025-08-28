@@ -37,6 +37,8 @@ interface Selections {
   planungspaket?: SelectionOption
   paket?: SelectionOption
   grundstueckscheck?: boolean
+  kamindurchzug?: SelectionOption
+  fussbodenheizung?: SelectionOption
 }
 
 export class PriceCalculator {
@@ -193,6 +195,15 @@ export class PriceCalculator {
       // Add planungspaket price (fixed price independent of nest module)
       if (selections.planungspaket) {
         additionalPrice += selections.planungspaket.price || 0;
+      }
+
+      // Add checkbox options (kamindurchzug, fussbodenheizung)
+      if (selections.kamindurchzug) {
+        additionalPrice += selections.kamindurchzug.price || 0;
+      }
+
+      if (selections.fussbodenheizung) {
+        additionalPrice += selections.fussbodenheizung.price || 0;
       }
 
       // Planning package and Grundstückscheck removed - handled in separate cart logic
@@ -471,6 +482,21 @@ export class PriceCalculator {
         breakdown.options.grundstueckscheck = {
           name: 'Grundstückscheck',
           price: GRUNDSTUECKSCHECK_PRICE
+        }
+      }
+
+      // Add checkbox options
+      if (selections.kamindurchzug) {
+        breakdown.options.kamindurchzug = {
+          name: selections.kamindurchzug.name,
+          price: selections.kamindurchzug.price
+        }
+      }
+
+      if (selections.fussbodenheizung) {
+        breakdown.options.fussbodenheizung = {
+          name: selections.fussbodenheizung.name,
+          price: selections.fussbodenheizung.price
         }
       }
 

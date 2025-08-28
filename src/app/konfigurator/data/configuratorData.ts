@@ -208,7 +208,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Beliuchtungspaket',
+      title: 'Belichtungspaket',
       description: 'Wähle die Menge an Fenstern und Türen basierend auf deinen Lichtbedürfnissen.'
     }
   },
@@ -248,47 +248,6 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
-    id: 'stirnseite',
-    title: 'Stirnseite',
-    subtitle: 'Deine Verglasung',
-    options: [
-      {
-        id: 'keine_verglasung',
-        name: 'Keine Verglasung',
-        description: 'Geschlossene Stirnseite\nKeine zusätzlichen Fenster',
-        price: { type: 'included' }
-      },
-      {
-        id: 'verglasung_oben',
-        name: 'Verglasung Oben',
-        description: '8m² Verglasung\nOberer Bereich der Stirnseite',
-        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
-      },
-      {
-        id: 'verglasung_einfache_schiebetuer',
-        name: 'Verglasung einfache Schiebetür',
-        description: '8.5m² Verglasung\nEinfache Schiebetür',
-        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
-      },
-      {
-        id: 'verglasung_doppelte_schiebetuer',
-        name: 'Verglasung doppelte Schiebetür',
-        description: '17m² Verglasung\nDoppelte Schiebetür',
-        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
-      },
-      {
-        id: 'vollverglasung',
-        name: 'Vollverglasung',
-        description: '25m² Verglasung\nKomplette Stirnseite verglast',
-        price: { type: 'upgrade', amount: 0, monthly: 0 } // Dynamic pricing
-      }
-    ],
-    infoBox: {
-      title: 'Stirnseite Verglasung',
-      description: 'Wähle die Verglasung für die Stirnseite deines NEST-Hauses.'
-    }
-  },
-  {
     id: 'planungspaket',
     title: 'Die Planungspakete',
     subtitle: 'Unser Service',
@@ -297,7 +256,8 @@ export const configuratorData: CategoryData[] = [
         id: 'basis',
         name: 'Planung Basis',
         description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
-        price: { type: 'upgrade', amount: 8900, monthly: 57 }
+        price: { type: 'included', amount: 0, monthly: 0 }
+        // Old price: { type: 'upgrade', amount: 8900, monthly: 57 }
       },
       {
         id: 'plus',

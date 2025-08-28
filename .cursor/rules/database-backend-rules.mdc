@@ -1,0 +1,222 @@
+---
+alwaysApply: false
+---
+
+# Database & Backend Rules
+
+## Architecture Constraints
+
+- Backend tracking system (Redis + PostgreSQL) must remain intact for analytics
+- Session management and analytics should not be disrupted but should be non-blocking
+- Price calculations must be CLIENT-SIDE for instant response times
+- State management should use the established store pattern (Zustand)
+- API calls should be optimistic and fail-safe (don't block user experience)
+
+## Integration Guidelines
+
+- New configurator components must integrate with useConfiguratorStore and useCartStore
+- User selections should be tracked via session APIs as background tasks (non-blocking)
+- Cart functionality should remain compatible across the app
+- Maintain backward compatibility during migrations
+- Prioritize instant user feedback over server synchronization
+
+## Database & Session Management Rules
+
+### **Session Lifecycle Management**
+
+- **Session Creation**: Always use `upsert()` instead of `create()` to handle race conditions
+- **Session Updates**: Use `upsert()` instead of `update()` to prevent "record not found" errors (P2025)
+- **Session Finalization**: Never assume session exists - always handle missing records gracefully
+- **Background Tracking**: Session operations must be non-blocking and fail-safe
+
+### **Prisma Error Handling Patterns**
+
+```tsx
+// ✅ ALWAYS use upsert for session operations
+await prisma.userSession.upsert({
+  where: { sessionId },
+  update: {
+    endTime: new Date(),
+    totalInteractions: data.totalInteractions,
+  },
+  create: {
+    sessionId,
+    endTime: new Date(),
+    totalInteractions: data.totalInteractions,
+    // ... other required fields
+  },
+});
+
+// ❌ NEVER use update() alone - causes P2025 errors
+await prisma.userSession.update({
+  where: { sessionId },
+  data: { endTime: new Date() },
+});
+```
+
+### **Race Condition Prevention**
+
+- **Concurrent Sessions**: Handle multiple browser tabs creating sessions simultaneously
+- **Session Tracking**: Use unique session IDs with timestamp + random suffixes
+- **Database Constraints**: Implement proper unique constraints and indexes
+- **Timeout Handling**: Add timeout handling for long-running database operations
+
+### **Windows Development Environment**
+
+- **Prisma Build Issues**: Use `taskkill /f /im node.exe` before builds to prevent file locking
+- **Process Management**: Check for running Node.js processes before starting new builds
+- **Build Scripts**: Use dedicated `build:windows` script for Windows-specific build requirements
+- **File Permissions**: Handle EPERM errors during Prisma query engine operations
+
+## Configurator Architecture Patterns
+
+### **Modular Component Structure**
+
+- **ConfiguratorShell**: Main container with state management integration
+- **PreviewPanel**: Image rendering with ImageManager integration
+- **SummaryPanel**: Price calculations with PriceCalculator core module
+- **CategorySection**: Selection UI with optimistic updates
+- **Component Boundaries**: Keep components focused and testable
+
+### **Core Module Integration**
+
+- **ImageManager**: Centralized image path resolution and caching
+- **PriceCalculator**: Client-side price calculations with compatibility methods
+- **InteractionTracker**: Background session tracking (non-blocking)
+- **PerformanceMonitor**: Development-time performance insights
+
+### **State Management Patterns**
+
+```tsx
+// ✅ Use established Zustand stores
+const { configuration, updateConfiguration } = useConfiguratorStore();
+const { addToCart, cartItems } = useCartStore();
+
+// ✅ Background session tracking
+const trackSelection = async (selection: Selection) => {
+  // Non-blocking API call
+  fetch("/api/sessions/track", {
+    method: "POST",
+    body: JSON.stringify({ selection }),
+  }).catch(() => {
+    // Fail silently - don't block user experience
+  });
+};
+```
+
+### **Development Hot Reload Best Practices**
+
+- **Server Status Check**: Always verify localhost:3000 is running before starting new dev server
+- **Hot Module Replacement**: Leverage existing HMR - don't restart entire server
+- **State Preservation**: Use React Fast Refresh to maintain component state during development
+- **Memory Management**: Monitor memory usage during long development sessions
+- **TypeScript Compilation**: Use `npx tsc --noEmit` for type checking without restarts
+# Database & Backend Rules
+
+## Architecture Constraints
+
+- Backend tracking system (Redis + PostgreSQL) must remain intact for analytics
+- Session management and analytics should not be disrupted but should be non-blocking
+- Price calculations must be CLIENT-SIDE for instant response times
+- State management should use the established store pattern (Zustand)
+- API calls should be optimistic and fail-safe (don't block user experience)
+
+## Integration Guidelines
+
+- New configurator components must integrate with useConfiguratorStore and useCartStore
+- User selections should be tracked via session APIs as background tasks (non-blocking)
+- Cart functionality should remain compatible across the app
+- Maintain backward compatibility during migrations
+- Prioritize instant user feedback over server synchronization
+
+## Database & Session Management Rules
+
+### **Session Lifecycle Management**
+
+- **Session Creation**: Always use `upsert()` instead of `create()` to handle race conditions
+- **Session Updates**: Use `upsert()` instead of `update()` to prevent "record not found" errors (P2025)
+- **Session Finalization**: Never assume session exists - always handle missing records gracefully
+- **Background Tracking**: Session operations must be non-blocking and fail-safe
+
+### **Prisma Error Handling Patterns**
+
+```tsx
+// ✅ ALWAYS use upsert for session operations
+await prisma.userSession.upsert({
+  where: { sessionId },
+  update: {
+    endTime: new Date(),
+    totalInteractions: data.totalInteractions,
+  },
+  create: {
+    sessionId,
+    endTime: new Date(),
+    totalInteractions: data.totalInteractions,
+    // ... other required fields
+  },
+});
+
+// ❌ NEVER use update() alone - causes P2025 errors
+await prisma.userSession.update({
+  where: { sessionId },
+  data: { endTime: new Date() },
+});
+```
+
+### **Race Condition Prevention**
+
+- **Concurrent Sessions**: Handle multiple browser tabs creating sessions simultaneously
+- **Session Tracking**: Use unique session IDs with timestamp + random suffixes
+- **Database Constraints**: Implement proper unique constraints and indexes
+- **Timeout Handling**: Add timeout handling for long-running database operations
+
+### **Windows Development Environment**
+
+- **Prisma Build Issues**: Use `taskkill /f /im node.exe` before builds to prevent file locking
+- **Process Management**: Check for running Node.js processes before starting new builds
+- **Build Scripts**: Use dedicated `build:windows` script for Windows-specific build requirements
+- **File Permissions**: Handle EPERM errors during Prisma query engine operations
+
+## Configurator Architecture Patterns
+
+### **Modular Component Structure**
+
+- **ConfiguratorShell**: Main container with state management integration
+- **PreviewPanel**: Image rendering with ImageManager integration
+- **SummaryPanel**: Price calculations with PriceCalculator core module
+- **CategorySection**: Selection UI with optimistic updates
+- **Component Boundaries**: Keep components focused and testable
+
+### **Core Module Integration**
+
+- **ImageManager**: Centralized image path resolution and caching
+- **PriceCalculator**: Client-side price calculations with compatibility methods
+- **InteractionTracker**: Background session tracking (non-blocking)
+- **PerformanceMonitor**: Development-time performance insights
+
+### **State Management Patterns**
+
+```tsx
+// ✅ Use established Zustand stores
+const { configuration, updateConfiguration } = useConfiguratorStore();
+const { addToCart, cartItems } = useCartStore();
+
+// ✅ Background session tracking
+const trackSelection = async (selection: Selection) => {
+  // Non-blocking API call
+  fetch("/api/sessions/track", {
+    method: "POST",
+    body: JSON.stringify({ selection }),
+  }).catch(() => {
+    // Fail silently - don't block user experience
+  });
+};
+```
+
+### **Development Hot Reload Best Practices**
+
+- **Server Status Check**: Always verify localhost:3000 is running before starting new dev server
+- **Hot Module Replacement**: Leverage existing HMR - don't restart entire server
+- **State Preservation**: Use React Fast Refresh to maintain component state during development
+- **Memory Management**: Monitor memory usage during long development sessions
+- **TypeScript Compilation**: Use `npx tsc --noEmit` for type checking without restarts

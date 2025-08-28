@@ -76,6 +76,7 @@ export const FENSTER_IMAGE_MAPPING: Record<string, string> = {
 
 // Exact mappings for specific interior combinations
 export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
+  // Trapezblech combinations
   'trapezblech_kiefer_parkett': 'trapezblech_holznatur_parkett',
   'trapezblech_kiefer_kalkstein_kanafar': 'trapezblech_holznatur_kalkstein',
   'trapezblech_kiefer_schiefer_massiv': 'trapezblech_holznatur_granit',
@@ -84,7 +85,40 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   'trapezblech_fichte_schiefer_massiv': 'trapezblech_holzweiss_granit',
   'trapezblech_steirische_eiche_parkett': 'trapezblech_eiche_parkett',
   'trapezblech_steirische_eiche_kalkstein_kanafar': 'trapezblech_eiche_kalkstein',
-  'trapezblech_steirische_eiche_schiefer_massiv': 'trapezblech_eiche_granit'
+  'trapezblech_steirische_eiche_schiefer_massiv': 'trapezblech_eiche_granit',
+
+  // Holzlattung combinations
+  'holzlattung_kiefer_parkett': 'holzlattung_holznatur_parkett',
+  'holzlattung_kiefer_kalkstein_kanafar': 'holzlattung_holznatur_kalkstein',
+  'holzlattung_kiefer_schiefer_massiv': 'holzlattung_holznatur_schiefer',
+  'holzlattung_fichte_parkett': 'holzlattung_holzweiss_parkett',
+  'holzlattung_fichte_kalkstein_kanafar': 'holzlattung_holzweiss_kalkstein',
+  'holzlattung_fichte_schiefer_massiv': 'holzlattung_holzweiss_schiefer',
+  'holzlattung_steirische_eiche_parkett': 'holzlattung_eiche_parkett',
+  'holzlattung_steirische_eiche_kalkstein_kanafar': 'holzlattung_eiche_kalkstein',
+  'holzlattung_steirische_eiche_schiefer_massiv': 'holzlattung_eiche_schiefer',
+
+  // Fassadenplatten schwarz combinations
+  'fassadenplatten_schwarz_kiefer_parkett': 'plattenschwarz_holznatur_parkett',
+  'fassadenplatten_schwarz_kiefer_kalkstein_kanafar': 'plattenschwarz_holznatur_kalkstein',
+  'fassadenplatten_schwarz_kiefer_schiefer_massiv': 'plattenschwarz_holznatur_schiefer',
+  'fassadenplatten_schwarz_fichte_parkett': 'plattenschwarz_holzweiss_parkett',
+  'fassadenplatten_schwarz_fichte_kalkstein_kanafar': 'plattenschwarz_holzweiss_kalkstein',
+  'fassadenplatten_schwarz_fichte_schiefer_massiv': 'plattenschwarz_holzweiss_schiefer',
+  'fassadenplatten_schwarz_steirische_eiche_parkett': 'plattenschwarz_eiche_parkett',
+  'fassadenplatten_schwarz_steirische_eiche_kalkstein_kanafar': 'plattenschwarz_eiche_kalkstein',
+  'fassadenplatten_schwarz_steirische_eiche_schiefer_massiv': 'plattenschwarz_eiche_schiefer',
+
+  // Fassadenplatten weiss combinations
+  'fassadenplatten_weiss_kiefer_parkett': 'plattenweiss_holznatur_parkett',
+  'fassadenplatten_weiss_kiefer_kalkstein_kanafar': 'plattenweiss_holznatur_kalkstein',
+  'fassadenplatten_weiss_kiefer_schiefer_massiv': 'plattenweiss_holznatur_schiefer',
+  'fassadenplatten_weiss_fichte_parkett': 'plattenweiss_holzweiss_parkett',
+  'fassadenplatten_weiss_fichte_kalkstein_kanafar': 'plattenweiss_holzweiss_kalkstein',
+  'fassadenplatten_weiss_fichte_schiefer_massiv': 'plattenweiss_holzweiss_schiefer',
+  'fassadenplatten_weiss_steirische_eiche_parkett': 'plattenweiss_eiche_parkett',
+  'fassadenplatten_weiss_steirische_eiche_kalkstein_kanafar': 'plattenweiss_eiche_kalkstein',
+  'fassadenplatten_weiss_steirische_eiche_schiefer_massiv': 'plattenweiss_eiche_schiefer'
 } as const;
 
 // Valid view types
@@ -94,7 +128,7 @@ export type ValidViewType = typeof VALID_VIEW_TYPES[number];
 // Image fallbacks for each view type
 export const IMAGE_FALLBACKS = {
   exterior: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
-  interior: '137-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-Kalkstein',
+  interior: '167-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Parkett-Eiche',
   stirnseite: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite'
 } as const;
 
