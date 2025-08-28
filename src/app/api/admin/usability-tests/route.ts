@@ -580,46 +580,61 @@ export async function GET(request: NextRequest) {
             interactions: test.interactions || []
         })));
 
+        // TEMPORARY: Return mock analytics data to test frontend
         const analytics = {
             summary: {
-                totalTests,
-                completedTests,
-                abandonedTests,
-                errorTests,
-                completionRate: Math.round(completionRate * 100) / 100,
-                averageRating: Math.round(averageRating * 100) / 100,
-                averageDuration: Math.round(averageDuration / 1000 / 60 * 100) / 100, // minutes
-                avgTestDuration: Math.round(avgTestDuration / 1000 / 60 * 100) / 100, // minutes
-                avgErrorRate: Math.round(avgErrorRate * 100) / 100,
-                avgCompletionRate: Math.round(avgCompletionRate * 100) / 100
+                totalTests: 0,
+                completedTests: 0,
+                abandonedTests: 0,
+                errorTests: 0,
+                completionRate: 0,
+                averageRating: 0,
+                averageDuration: 0,
+                avgTestDuration: 0,
+                avgErrorRate: 0,
+                avgCompletionRate: 0
             },
             sessionTracking: {
-                totalInteractions: sessionTrackingStats.totalInteractions,
-                pageVisits: sessionTrackingStats.pageVisits,
-                buttonClicks: sessionTrackingStats.buttonClicks,
-                configuratorSelections: sessionTrackingStats.configuratorSelections,
-                formInteractions: sessionTrackingStats.formInteractions,
-                avgPagesPerSession: Math.round(sessionTrackingStats.avgPagesPerSession * 100) / 100,
-                sessionsWithTracking: sessionTrackingStats.sessionsWithPages
+                totalInteractions: 0,
+                pageVisits: 0,
+                buttonClicks: 0,
+                configuratorSelections: 0,
+                formInteractions: 0,
+                avgPagesPerSession: 0,
+                sessionsWithTracking: 0
             },
-            configurationAnalytics,
-            questionAnalysis: Object.values(responsesByQuestion),
-            deviceStats,
-            browserStats,
-            platformStats,
+            configurationAnalytics: {
+                configSelections: [],
+                pageTimeData: [],
+                clickedPages: [],
+                sectionTimeData: []
+            },
+            questionAnalysis: [],
+            deviceStats: {},
+            browserStats: {},
+            platformStats: {},
             performanceMetrics: {
-                testDurations: performanceStats.testDurations,
-                errorRates: performanceStats.errorRates,
-                completionRates: performanceStats.completionRates,
+                testDurations: [],
+                errorRates: [],
+                completionRates: [],
                 averages: {
-                    duration: avgTestDuration,
-                    errorRate: avgErrorRate,
-                    completionRate: avgCompletionRate
+                    duration: 0,
+                    errorRate: 0,
+                    completionRate: 0
                 }
             },
-            qualitativeInsights,
-            errorAnalysis,
-            recentTests,
+            qualitativeInsights: {
+                totalResponses: 0,
+                averageLength: 0,
+                keyThemes: [],
+                sentiment: { positive: 0, neutral: 0, negative: 0 }
+            },
+            errorAnalysis: {
+                totalErrors: 0,
+                consoleErrors: 0,
+                interactionErrors: 0
+            },
+            recentTests: [],
             timeRange,
             generatedAt: new Date().toISOString()
         };
