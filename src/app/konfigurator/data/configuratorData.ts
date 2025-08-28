@@ -109,6 +109,18 @@ export const configuratorData: CategoryData[] = [
     ],
     infoBox: {
       title: 'Mehr Informationen zu den Materialien'
+    },
+    facts: {
+      title: 'Energieausweis A++',
+      content: [
+        'Heizungsart: Beliebig',
+        'Heizwärmebedarf: ≤60kWh/m²a',
+        'CO₂-Emissionen: 15kg CO2/m²',
+        'CO₂-Bindung: ca. 1.000kg/m²',
+        'U-Wert: 0,15W/m²K',
+        'Gesamteffizienzklasse: A++',
+        'Berechnungsnormen: OIB RL 1-6'
+      ]
     }
   },
   {
@@ -153,6 +165,18 @@ export const configuratorData: CategoryData[] = [
     ],
     infoBox: {
       title: 'Mehr Informationen zur Innenverkleidung'
+    },
+    facts: {
+      title: 'Energieausweis A++',
+      content: [
+        'Heizungsart: Beliebig',
+        'Heizwärmebedarf: ≤60kWh/m²a',
+        'CO₂-Emissionen: 15kg CO2/m²',
+        'CO₂-Bindung: ca. 1.000kg/m²',
+        'U-Wert: 0,15W/m²K',
+        'Gesamteffizienzklasse: A++',
+        'Berechnungsnormen: OIB RL 1-6'
+      ]
     }
   },
   {
@@ -181,6 +205,18 @@ export const configuratorData: CategoryData[] = [
     ],
     infoBox: {
       title: 'Mehr Informationen zum Fußboden'
+    },
+    facts: {
+      title: 'Energieausweis A++',
+      content: [
+        'Heizungsart: Beliebig',
+        'Heizwärmebedarf: ≤60kWh/m²a',
+        'CO₂-Emissionen: 15kg CO2/m²',
+        'CO₂-Bindung: ca. 1.000kg/m²',
+        'U-Wert: 0,15W/m²K',
+        'Gesamteffizienzklasse: A++',
+        'Berechnungsnormen: OIB RL 1-6'
+      ]
     }
   },
   {
@@ -210,6 +246,18 @@ export const configuratorData: CategoryData[] = [
     infoBox: {
       title: 'Belichtungspaket',
       description: 'Wähle die Menge an Fenstern und Türen basierend auf deinen Lichtbedürfnissen.'
+    },
+    facts: {
+      title: 'Energieausweis A++',
+      content: [
+        'Heizungsart: Beliebig',
+        'Heizwärmebedarf: ≤60kWh/m²a',
+        'CO₂-Emissionen: 15kg CO2/m²',
+        'CO₂-Bindung: ca. 1.000kg/m²',
+        'U-Wert: 0,15W/m²K',
+        'Gesamteffizienzklasse: A++',
+        'Berechnungsnormen: OIB RL 1-6'
+      ]
     }
   },
   {
@@ -245,6 +293,18 @@ export const configuratorData: CategoryData[] = [
     infoBox: {
       title: 'Fenster & Türen',
       // description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
+    },
+    facts: {
+      title: 'Energieausweis A++',
+      content: [
+        'Heizungsart: Beliebig',
+        'Heizwärmebedarf: ≤60kWh/m²a',
+        'CO₂-Emissionen: 15kg CO2/m²',
+        'CO₂-Bindung: ca. 1.000kg/m²',
+        'U-Wert: 0,15W/m²K',
+        'Gesamteffizienzklasse: A++',
+        'Berechnungsnormen: OIB RL 1-6'
+      ]
     }
   },
   {
