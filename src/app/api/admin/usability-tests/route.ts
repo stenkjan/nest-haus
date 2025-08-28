@@ -305,7 +305,11 @@ export async function GET(request: NextRequest) {
         // });
         
         // Mock data for testing
-        const tests: any[] = [];
+        const tests: Array<{
+            testId: string;
+            responses: Array<Record<string, unknown>>;
+            interactions: Array<Record<string, unknown>>;
+        }> = [];
 
         console.log(`📊 Found ${tests.length} tests in date range`);
         if (tests.length > 0) {
