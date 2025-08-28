@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cf84f9d247a0221d95449429bc0e830fb36d27cc] - Thu Aug 28 18:59:11 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix TypeScript lint errors: Add underscore prefix to unused variables  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/route.ts
+
+
+---
+
 ## [98450cc527639b84f4f9d2df0442e38b4b2f1637] - Thu Aug 28 18:53:00 2025 +0200
 
 **Author**: stenkjan
