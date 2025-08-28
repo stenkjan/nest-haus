@@ -38,6 +38,12 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
     }
+    
+    // Ensure Prisma client is properly bundled for Vercel
+    if (isServer) {
+      config.externals = [...(config.externals || []), '_http_common'];
+    }
+    
     return config;
   },
   experimental: {
