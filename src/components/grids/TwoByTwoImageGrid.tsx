@@ -229,7 +229,11 @@ export default function TwoByTwoImageGrid({
                       {item.primaryAction}
                     </Button>
                     <Button
-                      variant="landing-secondary"
+                      variant={
+                        item.id === 2
+                          ? "landing-secondary-blue"
+                          : "landing-secondary"
+                      }
                       size={isUltraWide ? "sm" : "xs"}
                       onClick={() => {
                         console.log(`Secondary action for ${item.title}`);

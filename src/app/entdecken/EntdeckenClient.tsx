@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import { ClientBlobVideo } from "@/components/images";
-import { VideoCard16by9, PlanungspaketeCards } from "@/components/cards";
+import {
+  VideoCard16by9,
+  PlanungspaketeCards,
+  SquareTextCard,
+} from "@/components/cards";
 import { TwoByTwoImageGrid } from "@/components/grids";
 import { GetInContactBanner, PartnersSection } from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
@@ -36,6 +40,11 @@ const sections = [
     id: "image-grid",
     title: "Image Grid",
     slug: "image-grid",
+  },
+  {
+    id: "square-text-cards",
+    title: "Square Text Cards",
+    slug: "square-text-cards",
   },
   {
     id: "grundstueck-check",
@@ -261,7 +270,28 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 5 - Grundstück Check */}
+        {/* Section 5 - Square Text Cards */}
+        <section id="square-text-cards" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+                So läuft es ab
+              </h2>
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+                Der Weg zu deinem Nest Haus
+              </h3>
+            </div>
+
+            <SquareTextCard
+              title=""
+              subtitle=""
+              maxWidth={false}
+              showInstructions={false}
+            />
+          </div>
+        </section>
+
+        {/* Section 6 - Grundstück Check */}
         <section id="grundstueck-check" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -285,7 +315,7 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 6 - Planungspakete */}
+        {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -317,7 +347,7 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 7 - Partners */}
+        {/* Section 8 - Partners */}
         <section id="partners" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <PartnersSection backgroundColor="white" showButtons={true} />

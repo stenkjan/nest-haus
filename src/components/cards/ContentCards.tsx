@@ -443,66 +443,66 @@ export default function ContentCards({
                               : 830
                           )
                         : isClient && screenWidth >= 1280
-                          ? Math.min(
-                              692,
-                              typeof window !== "undefined"
-                                ? window.innerHeight * 0.7
-                                : 692
-                            )
-                          : isClient && screenWidth >= 1024
-                            ? Math.min(
-                                577, // Proportional height: 960 * (692/1152) = 577
-                                typeof window !== "undefined"
-                                  ? window.innerHeight * 0.7
-                                  : 577
-                              )
-                            : Math.min(
-                                720,
-                                typeof window !== "undefined"
-                                  ? window.innerHeight * 0.75
-                                  : 720
-                              )
+                        ? Math.min(
+                            692,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : 692
+                          )
+                        : isClient && screenWidth >= 1024
+                        ? Math.min(
+                            577, // Proportional height: 960 * (692/1152) = 577
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : 577
+                          )
+                        : Math.min(
+                            720,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.75
+                              : 720
+                          )
                       : isResponsive
-                        ? isClient && screenWidth >= 1600
-                          ? Math.min(
-                              830,
-                              typeof window !== "undefined"
-                                ? window.innerHeight * 0.75
-                                : 830
-                            )
-                          : isClient && screenWidth >= 1280
-                            ? Math.min(
-                                692,
-                                typeof window !== "undefined"
-                                  ? window.innerHeight * 0.7
-                                  : 692
-                              )
-                            : isClient && screenWidth >= 1024
-                              ? Math.min(
-                                  577, // Proportional height: 960 * (692/1152) = 577
-                                  typeof window !== "undefined"
-                                    ? window.innerHeight * 0.7
-                                    : 577
-                                )
-                              : Math.min(
-                                  720,
-                                  typeof window !== "undefined"
-                                    ? window.innerHeight * 0.75
-                                    : 720
-                                )
-                        : isClient && screenWidth >= 1600
-                          ? Math.min(
-                              750,
-                              typeof window !== "undefined"
-                                ? window.innerHeight * 0.8
-                                : 750
-                            )
-                          : Math.min(
-                              600,
-                              typeof window !== "undefined"
-                                ? window.innerHeight * 0.75
-                                : 600
-                            ),
+                      ? isClient && screenWidth >= 1600
+                        ? Math.min(
+                            830,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.75
+                              : 830
+                          )
+                        : isClient && screenWidth >= 1280
+                        ? Math.min(
+                            692,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : 692
+                          )
+                        : isClient && screenWidth >= 1024
+                        ? Math.min(
+                            577, // Proportional height: 960 * (692/1152) = 577
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : 577
+                          )
+                        : Math.min(
+                            720,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.75
+                              : 720
+                          )
+                      : isClient && screenWidth >= 1600
+                      ? Math.min(
+                          750,
+                          typeof window !== "undefined"
+                            ? window.innerHeight * 0.8
+                            : 750
+                        )
+                      : Math.min(
+                          600,
+                          typeof window !== "undefined"
+                            ? window.innerHeight * 0.75
+                            : 600
+                        ),
                     backgroundColor: card.backgroundColor,
                   }}
                   whileHover={{ scale: 1.02 }}
@@ -640,24 +640,25 @@ export default function ContentCards({
                             {isStatic && (card as StaticCardData).buttons && (
                               <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
                                 {(card as StaticCardData).buttons!.map(
-                                  (button, btnIndex) =>
-                                    button.link ? (
+                                  (button, btnIndex) => {
+                                    // Convert standard variants to narrow variants
+                                    // For GrundstueckCheckSection (sicherheit preset), make secondary button blue
+                                    const narrowVariant =
+                                      button.variant === "primary"
+                                        ? "primary-narrow"
+                                        : button.variant === "secondary"
+                                        ? "secondary-narrow-blue"
+                                        : button.variant;
+
+                                    return button.link ? (
                                       <Link
                                         key={btnIndex}
                                         href={button.link}
                                         className="flex-shrink-0"
                                       >
                                         <Button
-                                          variant={button.variant}
+                                          variant={narrowVariant}
                                           size={button.size}
-                                          className={
-                                            // Override button width at 1024px breakpoint to fit both buttons
-                                            isClient &&
-                                            screenWidth >= 1024 &&
-                                            screenWidth < 1280
-                                              ? "!w-28 !min-w-28 !max-w-28" // Narrower width at smallest desktop
-                                              : "" // Default width at all other sizes
-                                          }
                                         >
                                           {button.text}
                                         </Button>
@@ -665,21 +666,15 @@ export default function ContentCards({
                                     ) : (
                                       <Button
                                         key={btnIndex}
-                                        variant={button.variant}
+                                        variant={narrowVariant}
                                         size={button.size}
                                         onClick={button.onClick}
-                                        className={
-                                          // Override button width at 1024px breakpoint to fit both buttons
-                                          isClient &&
-                                          screenWidth >= 1024 &&
-                                          screenWidth < 1280
-                                            ? "!w-28 !min-w-28 !max-w-28 flex-shrink-0" // Narrower width at smallest desktop
-                                            : "flex-shrink-0" // Default width at all other sizes
-                                        }
+                                        className="flex-shrink-0"
                                       >
                                         {button.text}
                                       </Button>
-                                    )
+                                    );
+                                  }
                                 )}
                               </div>
                             )}

@@ -658,24 +658,25 @@ export default function ContentCardsGlass({
                             {isStatic && (card as StaticCardData).buttons && (
                               <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
                                 {(card as StaticCardData).buttons!.map(
-                                  (button, btnIndex) =>
-                                    button.link ? (
+                                  (button, btnIndex) => {
+                                    // Convert standard variants to narrow variants
+                                    // For GrundstueckCheckSection (sicherheit preset), make secondary button blue
+                                    const narrowVariant =
+                                      button.variant === "primary"
+                                        ? "primary-narrow"
+                                        : button.variant === "secondary"
+                                        ? "secondary-narrow-blue"
+                                        : button.variant;
+
+                                    return button.link ? (
                                       <Link
                                         key={btnIndex}
                                         href={button.link}
                                         className="flex-shrink-0"
                                       >
                                         <Button
-                                          variant={button.variant}
+                                          variant={narrowVariant}
                                           size={button.size}
-                                          className={
-                                            // Override button width at 1024px breakpoint to fit both buttons
-                                            isClient &&
-                                            screenWidth >= 1024 &&
-                                            screenWidth < 1280
-                                              ? "!w-28 !min-w-28 !max-w-28" // Narrower width at smallest desktop
-                                              : "" // Default width at all other sizes
-                                          }
                                         >
                                           {button.text}
                                         </Button>
@@ -683,21 +684,15 @@ export default function ContentCardsGlass({
                                     ) : (
                                       <Button
                                         key={btnIndex}
-                                        variant={button.variant}
+                                        variant={narrowVariant}
                                         size={button.size}
                                         onClick={button.onClick}
-                                        className={
-                                          // Override button width at 1024px breakpoint to fit both buttons
-                                          isClient &&
-                                          screenWidth >= 1024 &&
-                                          screenWidth < 1280
-                                            ? "!w-28 !min-w-28 !max-w-28 flex-shrink-0" // Narrower width at smallest desktop
-                                            : "flex-shrink-0" // Default width at all other sizes
-                                        }
+                                        className="flex-shrink-0"
                                       >
                                         {button.text}
                                       </Button>
-                                    )
+                                    );
+                                  }
                                 )}
                               </div>
                             )}

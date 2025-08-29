@@ -95,7 +95,7 @@ const sectionsContent = [
     h3: "Mit Nest bleibt kein Ort unerreichbar",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 6,
@@ -115,7 +115,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 8,
@@ -125,7 +125,7 @@ const sectionsContent = [
     h3: "So individuell wie du",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
 
@@ -183,10 +183,26 @@ export default function LandingPageClient() {
                 } ${section.id === 2 ? "px-0" : "px-8"}`}
               >
                 <div className="text-center">
-                  <h1 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">
+                  <h1
+                    className={`font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 ${
+                      section.id === 2 ? "text-[#605047]" : "text-white"
+                    } ${
+                      section.id === 3 || section.id === 6 || section.id === 7
+                        ? "drop-shadow-lg"
+                        : ""
+                    }`}
+                  >
                     {section.h1}
                   </h1>
-                  <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 lg:mb-5">
+                  <h3
+                    className={`text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 lg:mb-5 ${
+                      section.id === 2 ? "text-[#605047]" : "text-white"
+                    } ${
+                      section.id === 3 || section.id === 6 || section.id === 7
+                        ? "drop-shadow-lg"
+                        : ""
+                    }`}
+                  >
                     {section.h3}
                   </h3>
                 </div>

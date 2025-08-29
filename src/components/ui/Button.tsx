@@ -3,6 +3,9 @@ import React from "react";
 export type ButtonVariant =
   | "primary"
   | "secondary"
+  | "primary-narrow" // Primary button with 1/3 smaller width
+  | "secondary-narrow" // Secondary button with 1/3 smaller width
+  | "secondary-narrow-blue" // Blue secondary button with 1/3 smaller width
   | "tertiary" // Blue outline button
   | "outline" // Outlined button
   | "ghost" // Minimal button
@@ -59,9 +62,38 @@ const Button: React.FC<ButtonProps> = ({
     }
   };
 
-  const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal ${getWidthClasses(
-    size
-  )}`;
+  // Narrow width classes - 1/3 smaller than standard buttons
+  const getNarrowWidthClasses = (buttonSize: ButtonSize) => {
+    switch (buttonSize) {
+      case "xxs":
+        return "w-16 sm:w-19 lg:w-21 xl:w-24";
+      case "xs":
+        return "w-24 sm:w-27 lg:w-29 xl:w-32 2xl:w-37";
+      case "sm":
+        return "w-21 sm:w-24 lg:w-27 xl:w-29";
+      case "md":
+        return "w-24 sm:w-27 lg:w-29 xl:w-32";
+      case "lg":
+        return "w-27 sm:w-29 lg:w-32 xl:w-35 2xl:w-37";
+      case "xl":
+        return "w-29 sm:w-32 lg:w-35 xl:w-37 2xl:w-40";
+      case "responsive":
+        return "w-27 sm:w-29 lg:w-32 xl:w-35";
+      default:
+        return "w-21 lg:w-24 xl:w-27";
+    }
+  };
+
+  // Determine width classes based on variant
+  const isNarrowVariant =
+    variant === "primary-narrow" ||
+    variant === "secondary-narrow" ||
+    variant === "secondary-narrow-blue";
+  const widthClasses = isNarrowVariant
+    ? getNarrowWidthClasses(size)
+    : getWidthClasses(size);
+
+  const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal ${widthClasses}`;
 
   const variants = {
     // Standard Buttons - all with fixed width
@@ -69,6 +101,13 @@ const Button: React.FC<ButtonProps> = ({
       "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm",
     secondary:
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
+    // Narrow Buttons - 1/3 smaller width
+    "primary-narrow":
+      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm",
+    "secondary-narrow":
+      "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
+    "secondary-narrow-blue":
+      "bg-transparent border-1 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500",
     tertiary:
       "bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500",
     outline:
