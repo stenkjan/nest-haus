@@ -4,6 +4,54 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b48aae9874d3df2d75c74bf5ac9bc734feb5cb54] - Fri Aug 29 11:40:04 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'development'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/kontakt/KontaktClient.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCards.tsx.backup
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/ContentCardsLightbox.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/PlanungspaketeCardsLightbox.tsx
+- src/components/cards/README.md
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/UnifiedCardPreset.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/cards/cardTypes.ts
+- src/components/cards/cardUtils.ts
+- src/components/cards/index.ts
+- src/components/cards/presetSystem.ts
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/FullWidthVideoGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/PartnersSection.tsx
+- src/components/sections/PlanungspaketeSection.tsx
+- src/components/sections/SectionHeader.tsx
+- src/components/sections/index.ts
+
+
+#### 📚 Documentation Changes
+- docs/PROJECT_OVERVIEW.md
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
 ## [268b13088fd1b80506b463c4603155b969746e8d] - Fri Aug 29 11:21:46 2025 +0200
 
 **Author**: stenkjan
