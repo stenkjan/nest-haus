@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ac14aff9e6ee25f6247442b2c2d9ad84568c4141] - Fri Aug 29 11:14:58 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix ESLint error: prefix unused index parameter with underscore  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/route.ts
+
+
+---
+
 ## [6f6753aff637637f73443eb1dd596887a695b865] - Fri Aug 29 11:11:19 2025 +0200
 
 **Author**: stenkjan
