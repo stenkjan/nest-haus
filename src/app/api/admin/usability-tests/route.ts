@@ -113,16 +113,34 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                 const nextTimestamp = new Date(nextVisit.timestamp as string | number | Date).getTime();
                 const timeSpent = nextTimestamp - timestamp;
 
+                // Only count reasonable time spans (between 1 second and 10 minutes)
+                if (timeSpent > 1000 && timeSpent < 600000) {
+                    if (pageTimeData.has(path)) {
+                        const existing = pageTimeData.get(path)!;
+                        existing.totalTime += timeSpent;
+                        existing.visits++;
+                        existing.sessions.add(testId);
+                    } else {
+                        pageTimeData.set(path, {
+                            path,
+                            title,
+                            totalTime: timeSpent,
+                            visits: 1,
+                            sessions: new Set([testId])
+                        });
+                    }
+                }
+            } else {
+                // For the last page visit, add a default visit count without time
                 if (pageTimeData.has(path)) {
                     const existing = pageTimeData.get(path)!;
-                    existing.totalTime += timeSpent;
                     existing.visits++;
                     existing.sessions.add(testId);
                 } else {
                     pageTimeData.set(path, {
                         path,
                         title,
-                        totalTime: timeSpent,
+                        totalTime: 0,
                         visits: 1,
                         sessions: new Set([testId])
                     });
@@ -283,6 +301,20 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
     }
     if (sectionTimeArray.length > 0) {
         console.log(`   - Top section by time: ${sectionTimeArray[0].section} (${Math.round(sectionTimeArray[0].avgTime/1000)}s)`);
+    }
+
+    // Debug: Log sample interactions to understand data structure
+    if (tests.length > 0) {
+        const sampleTest = tests[0];
+        const sampleInteractions = (sampleTest.interactions || []).slice(0, 3);
+        console.log(`📊 Sample interactions from test ${sampleTest.testId}:`);
+        sampleInteractions.forEach((interaction, i) => {
+            console.log(`   ${i + 1}. Event: ${interaction.eventType}, Step: ${interaction.stepId}`);
+            if (interaction.additionalData) {
+                const data = (interaction.additionalData as Record<string, unknown>).data as Record<string, unknown> || {};
+                console.log(`      Data: path=${data.path}, buttonText=${data.buttonText}, elementType=${data.elementType}`);
+            }
+        });
     }
 
     return {
