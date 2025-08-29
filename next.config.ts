@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
 
 const nextConfig: NextConfig = {
   images: {
@@ -42,6 +43,9 @@ const nextConfig: NextConfig = {
     // Ensure Prisma client is properly bundled for Vercel
     if (isServer) {
       config.externals = [...(config.externals || []), '_http_common'];
+      
+      // Add Prisma plugin for Vercel deployment
+      config.plugins = [...(config.plugins || []), new PrismaPlugin()];
       
       // Ensure Prisma binaries are included in serverless functions
       config.resolve = {
