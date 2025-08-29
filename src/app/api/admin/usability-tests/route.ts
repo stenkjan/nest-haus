@@ -104,8 +104,8 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
             const title = String(data.title || getPageTitle(path));
             const timestamp = new Date(visit.timestamp as string | number | Date).getTime();
 
-            // Skip test pages but allow all other pages
-            if (path.includes('alpha-test') || path.includes('/test/')) return;
+            // Skip test pages and alpha-test routes - these are not real user navigation
+            if (path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests')) return;
 
             // Calculate time spent on page
             const nextVisit = pageVisits[index + 1];
@@ -160,8 +160,8 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                 const data = additionalData.data as Record<string, unknown> || {};
                 const path = String(data.path || click.stepId || '/');
 
-                // Skip only test pages, allow all other navigation
-                if (path.includes('alpha-test') || path.includes('/test/')) return;
+                // Skip test pages and alpha-test routes - these are not real user navigation
+                if (path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests') || path.includes('/admin/')) return;
 
                 const title = getPageTitle(path);
 
@@ -209,6 +209,11 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                     section = 'configurator';
                     sectionKey = '/konfigurator#main';
                 } else {
+                    // Skip test-related paths for section analytics too
+                    if (path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests') || path.includes('/admin/')) {
+                        return; // Skip this interaction
+                    }
+                    
                     // Create section from page path
                     const pathParts = path.split('/').filter(p => p);
                     if (pathParts.length > 0) {
@@ -306,13 +311,17 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
     // Debug: Log sample interactions to understand data structure
     if (tests.length > 0) {
         const sampleTest = tests[0];
-        const sampleInteractions = (sampleTest.interactions || []).slice(0, 3);
+        const sampleInteractions = (sampleTest.interactions || []).slice(0, 5);
         console.log(`📊 Sample interactions from test ${sampleTest.testId}:`);
         sampleInteractions.forEach((interaction, i) => {
-            console.log(`   ${i + 1}. Event: ${interaction.eventType}, Step: ${interaction.stepId}`);
+            const additionalData = interaction.additionalData as Record<string, unknown> || {};
+            const data = additionalData.data as Record<string, unknown> || {};
+            const path = String(data.path || interaction.stepId || '/');
+            const isFiltered = path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests') || path.includes('/admin/');
+            
+            console.log(`   ${i + 1}. Event: ${interaction.eventType}, Step: ${interaction.stepId}, Path: ${path} ${isFiltered ? '(FILTERED)' : '(COUNTED)'}`);
             if (interaction.additionalData) {
-                const data = (interaction.additionalData as Record<string, unknown>).data as Record<string, unknown> || {};
-                console.log(`      Data: path=${data.path}, buttonText=${data.buttonText}, elementType=${data.elementType}`);
+                console.log(`      Data: buttonText=${data.buttonText}, elementType=${data.elementType}`);
             }
         });
     }
