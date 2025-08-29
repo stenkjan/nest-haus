@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [91b3353f4da5feaccbb87623c48abcdd26b23867] - Fri Aug 29 10:26:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix Prisma Query Engine deployment issue - Add additional binary targets and webpack config  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorCheckbox.tsx
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 🔧 Configuration Changes
+- next.config.ts
+
+
+---
+
 ## [5ec7d22ee8f69210112373f4ca2b77fde4ea0d71] - Thu Aug 28 19:33:54 2025 +0200
 
 **Author**: stenkjan
