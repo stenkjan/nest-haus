@@ -63,13 +63,13 @@ export default function ConfiguratorCheckbox({
 
       <div className="flex flex-col items-end">
         <span
-          className={`text-sm font-semibold ${isChecked ? "text-gray-900" : "text-gray-400"}`}
+          className={`text-sm text-gray-900`}
         >
           {formatPrice(price)}
         </span>
         {pricePerSqm && (
           <span
-            className={`text-xs ${isChecked ? "text-gray-500" : "text-gray-300"}`}
+            className={`text-xs text-gray-400`}
           >
             {formatPrice(pricePerSqm)}/m²
           </span>

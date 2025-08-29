@@ -42,6 +42,15 @@ const nextConfig: NextConfig = {
     // Ensure Prisma client is properly bundled for Vercel
     if (isServer) {
       config.externals = [...(config.externals || []), '_http_common'];
+      
+      // Ensure Prisma binaries are included in serverless functions
+      config.resolve = {
+        ...config.resolve,
+        alias: {
+          ...config.resolve?.alias,
+          '.prisma/client/index-browser': './node_modules/.prisma/client/index.js',
+        },
+      };
     }
     
     return config;
