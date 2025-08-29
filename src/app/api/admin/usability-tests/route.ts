@@ -100,12 +100,12 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
         pageVisits.forEach((visit: Record<string, unknown>, index: number) => {
             const additionalData = visit.additionalData as Record<string, unknown> || {};
             const data = additionalData.data as Record<string, unknown> || {};
-            const path = String(data.path || '/');
-            const title = String(data.title || path);
+            const path = String(data.path || visit.stepId || '/');
+            const title = String(data.title || getPageTitle(path));
             const timestamp = new Date(visit.timestamp as string | number | Date).getTime();
 
-            // Skip test pages
-            if (path.includes('alpha-test') || path.includes('test')) return;
+            // Skip test pages but allow all other pages
+            if (path.includes('alpha-test') || path.includes('/test/')) return;
 
             // Calculate time spent on page
             const nextVisit = pageVisits[index + 1];
@@ -132,14 +132,18 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
         // Process button clicks for navigation analytics
         interactions
-            .filter((i: Record<string, unknown>) => i.eventType === 'button_click')
+            .filter((i: Record<string, unknown>) => 
+                i.eventType === 'button_click' || 
+                i.eventType === 'navigation' || 
+                i.eventType === 'page_visit'
+            )
             .forEach((click: Record<string, unknown>) => {
                 const additionalData = click.additionalData as Record<string, unknown> || {};
                 const data = additionalData.data as Record<string, unknown> || {};
-                const path = String(data.path || '/');
+                const path = String(data.path || click.stepId || '/');
 
-                // Skip landing page, konfigurator, warenkorb, and test pages
-                if (path === '/' || path.includes('konfigurator') || path.includes('warenkorb') || path.includes('alpha-test') || path.includes('test')) return;
+                // Skip only test pages, allow all other navigation
+                if (path.includes('alpha-test') || path.includes('/test/')) return;
 
                 const title = getPageTitle(path);
 
@@ -157,41 +161,74 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                 }
             });
 
-        // Process section routes (hash-based navigation)
-        pageVisits.forEach((visit: Record<string, unknown>, index: number) => {
-            const additionalData = visit.additionalData as Record<string, unknown> || {};
-            const data = additionalData.data as Record<string, unknown> || {};
-            const path = String(data.path || '/');
-            const timestamp = new Date(visit.timestamp as string | number | Date).getTime();
+        // Process section routes (hash-based navigation and configurator sections)
+        interactions
+            .filter((i: Record<string, unknown>) => 
+                i.eventType === 'page_visit' || 
+                i.eventType === 'section_navigation' ||
+                i.eventType === 'configurator_selection'
+            )
+            .forEach((visit: Record<string, unknown>, index: number) => {
+                const additionalData = visit.additionalData as Record<string, unknown> || {};
+                const data = additionalData.data as Record<string, unknown> || {};
+                const path = String(data.path || visit.stepId || '/');
+                const timestamp = new Date(visit.timestamp as string | number | Date).getTime();
 
-            // Check if it's a section route (contains #)
-            if (path.includes('#')) {
-                const [basePath, section] = path.split('#');
-                const sectionKey = `${basePath}#${section}`;
+                let section = '';
+                let sectionKey = '';
 
-                // Calculate time spent on section
-                const nextVisit = pageVisits[index + 1];
-                if (nextVisit) {
-                    const nextTimestamp = new Date(nextVisit.timestamp as string | number | Date).getTime();
-                    const timeSpent = nextTimestamp - timestamp;
-
-                    if (sectionTimeData.has(sectionKey)) {
-                        const existing = sectionTimeData.get(sectionKey)!;
-                        existing.totalTime += timeSpent;
-                        existing.visits++;
-                        existing.sessions.add(testId);
-                    } else {
-                        sectionTimeData.set(sectionKey, {
-                            section,
-                            path: sectionKey,
-                            totalTime: timeSpent,
-                            visits: 1,
-                            sessions: new Set([testId])
-                        });
+                // Check if it's a section route (contains #)
+                if (path.includes('#')) {
+                    const [basePath, sectionPart] = path.split('#');
+                    section = sectionPart;
+                    sectionKey = `${basePath}#${section}`;
+                } else if (visit.eventType === 'configurator_selection') {
+                    // Handle configurator sections
+                    section = String(data.category || 'configurator');
+                    sectionKey = `/konfigurator#${section}`;
+                } else if (path.includes('/konfigurator')) {
+                    // Handle configurator page sections
+                    section = 'configurator';
+                    sectionKey = '/konfigurator#main';
+                } else {
+                    // Create section from page path
+                    const pathParts = path.split('/').filter(p => p);
+                    if (pathParts.length > 0) {
+                        section = pathParts[pathParts.length - 1];
+                        sectionKey = `${path}#${section}`;
                     }
                 }
-            }
-        });
+
+                if (section && sectionKey) {
+                    // Calculate time spent on section
+                    const allInteractions = interactions.filter(i => 
+                        new Date(i.timestamp as string).getTime() > timestamp
+                    );
+                    const nextInteraction = allInteractions[0];
+                    
+                    if (nextInteraction) {
+                        const nextTimestamp = new Date(nextInteraction.timestamp as string | number | Date).getTime();
+                        const timeSpent = nextTimestamp - timestamp;
+
+                        if (timeSpent > 0 && timeSpent < 300000) { // Max 5 minutes per section
+                            if (sectionTimeData.has(sectionKey)) {
+                                const existing = sectionTimeData.get(sectionKey)!;
+                                existing.totalTime += timeSpent;
+                                existing.visits++;
+                                existing.sessions.add(testId);
+                            } else {
+                                sectionTimeData.set(sectionKey, {
+                                    section,
+                                    path: sectionKey,
+                                    totalTime: timeSpent,
+                                    visits: 1,
+                                    sessions: new Set([testId])
+                                });
+                            }
+                        }
+                    }
+                }
+            });
     });
 
     // Convert maps to arrays and calculate averages
@@ -230,6 +267,23 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
             sessions: item.sessions.size
         }))
         .sort((a, b) => b.avgTime - a.avgTime);
+
+    // Debug logging
+    console.log(`📊 Configuration Analytics Processing Complete:`);
+    console.log(`   - Config Selections: ${configSelectionsArray.length} items`);
+    console.log(`   - Page Time Data: ${pageTimeArray.length} pages`);
+    console.log(`   - Clicked Pages: ${clickedPagesArray.length} pages`);
+    console.log(`   - Section Time Data: ${sectionTimeArray.length} sections`);
+    
+    if (pageTimeArray.length > 0) {
+        console.log(`   - Top page by time: ${pageTimeArray[0].title} (${Math.round(pageTimeArray[0].avgTime/1000)}s)`);
+    }
+    if (clickedPagesArray.length > 0) {
+        console.log(`   - Most clicked page: ${clickedPagesArray[0].title} (${clickedPagesArray[0].visits} visits)`);
+    }
+    if (sectionTimeArray.length > 0) {
+        console.log(`   - Top section by time: ${sectionTimeArray[0].section} (${Math.round(sectionTimeArray[0].avgTime/1000)}s)`);
+    }
 
     return {
         configSelections: configSelectionsArray,
