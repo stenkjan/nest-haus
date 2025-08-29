@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a895ccd7a2ef17f6161206dba9ec919e693e2a9a] - Fri Aug 29 11:46:38 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Add useAlphaSessionTracking hook to index exports  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/hooks/index.ts
+- src/hooks/useAlphaSessionTracking.ts
+
+
+---
+
 ## [b48aae9874d3df2d75c74bf5ac9bc734feb5cb54] - Fri Aug 29 11:40:04 2025 +0200
 
 **Author**: stenkjan
