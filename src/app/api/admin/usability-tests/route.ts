@@ -186,7 +186,7 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                 i.eventType === 'section_navigation' ||
                 i.eventType === 'configurator_selection'
             )
-            .forEach((visit: Record<string, unknown>, index: number) => {
+            .forEach((visit: Record<string, unknown>, _index: number) => {
                 const additionalData = visit.additionalData as Record<string, unknown> || {};
                 const data = additionalData.data as Record<string, unknown> || {};
                 const path = String(data.path || visit.stepId || '/');
