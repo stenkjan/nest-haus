@@ -38,32 +38,15 @@ interface StaticCardData {
   }>;
 }
 
-export interface PricingCardData {
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  mobileTitle?: string;
-  mobileSubtitle?: string;
-  mobileDescription?: string;
-  image: string;
-  price: string;
-  monthlyPrice?: string;
-  extendedDescription?: string;
-  mobileExtendedDescription?: string;
-  backgroundColor: string;
-  grayWord?: string; // Word to make gray in the title
-}
-
 interface ContentCardsProps {
-  variant?: "responsive" | "static" | "pricing";
+  variant?: "responsive" | "static";
   title?: string;
   subtitle?: string;
   maxWidth?: boolean;
   showInstructions?: boolean;
   isLightboxMode?: boolean;
   onCardClick?: (cardId: number) => void;
-  customData?: CardData[] | StaticCardData[] | PricingCardData[];
+  customData?: CardData[] | StaticCardData[];
 }
 
 const contentCardData: CardData[] = [
@@ -169,71 +152,6 @@ const staticCardData: StaticCardData[] = [
   },
 ];
 
-export const pricingCardData: PricingCardData[] = [
-  {
-    id: 1,
-    title: "Planungspaket 01 Basis",
-    subtitle: "",
-    description:
-      "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
-    mobileTitle: "Planungspaket 01",
-    mobileSubtitle: "Basis",
-    mobileDescription:
-      "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
-    image:
-      "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    price: "€10.900",
-    monthlyPrice: "€66,00/Monat",
-    backgroundColor: "#F4F4F4",
-    grayWord: "Basis",
-    extendedDescription:
-      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
-    mobileExtendedDescription:
-      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
-  },
-  {
-    id: 2,
-    title: "Planungspaket 02 Plus",
-    subtitle: "",
-    description:
-      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
-    mobileTitle: "Planungspaket 02",
-    mobileSubtitle: "Plus",
-    mobileDescription:
-      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
-    image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    price: "€15.900",
-    monthlyPrice: "€97,00/Monat",
-    backgroundColor: "#F4F4F4",
-    grayWord: "Plus",
-    extendedDescription:
-      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
-    mobileExtendedDescription:
-      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
-  },
-  {
-    id: 3,
-    title: "Planungspaket 03 Pro",
-    subtitle: "",
-    description:
-      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
-    mobileTitle: "Planungspaket 03",
-    mobileSubtitle: "Pro",
-    mobileDescription:
-      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
-    image:
-      "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    price: "€20.900",
-    monthlyPrice: "€127,50/Monat",
-    backgroundColor: "#F4F4F4",
-    grayWord: "Pro",
-    extendedDescription:
-      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
-    mobileExtendedDescription:
-      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
-  },
-];
-
 // Helper function to extract path from API URL
 const getImagePath = (imageUrl: string): string => {
   if (imageUrl.startsWith("/api/images?path=")) {
@@ -243,21 +161,6 @@ const getImagePath = (imageUrl: string): string => {
   return imageUrl;
 };
 
-// Helper function to render title with specified word in gray
-const renderTitle = (title: string, grayWord?: string) => {
-  if (grayWord && title.includes(grayWord)) {
-    const parts = title.split(grayWord);
-    return (
-      <>
-        {parts[0]}
-        <span className="text-gray-400">{grayWord}</span>
-        {parts[1]}
-      </>
-    );
-  }
-  return title;
-};
-
 export default function ContentCards({
   variant = "responsive",
   title = "Content Cards",
@@ -265,7 +168,7 @@ export default function ContentCards({
   maxWidth = true,
   showInstructions = true,
   isLightboxMode = false,
-  onCardClick,
+  onCardClick: _onCardClick,
   customData,
 }: ContentCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -277,13 +180,10 @@ export default function ContentCards({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isStatic = variant === "static";
-  const isPricing = variant === "pricing";
   const isResponsive = variant === "responsive";
 
   // Use appropriate data source based on variant or custom data
-  const cardData =
-    customData ||
-    (isPricing ? pricingCardData : isStatic ? staticCardData : contentCardData);
+  const cardData = customData || (isStatic ? staticCardData : contentCardData);
 
   // Initialize client-side state
   useEffect(() => {
@@ -321,31 +221,6 @@ export default function ContentCards({
           setCardsPerView(1);
           setCardWidth(312); // Mobile card size (20% larger)
         }
-      } else if (isPricing) {
-        // Pricing variant: medium-sized cards, 3 total, no images
-        if (isLightboxMode) {
-          // Lightbox mode: Use mobile-friendly dimensions instead of large fixed ones
-          if (width >= 1280) {
-            setCardsPerView(1.5);
-            setCardWidth(760); // Desktop: larger cards
-          } else if (width >= 1024) {
-            setCardsPerView(1.2);
-            setCardWidth(720);
-          } else if (width >= 768) {
-            setCardsPerView(1);
-            setCardWidth(680);
-          } else {
-            // Mobile: Use mobile variant dimensions for perfect fit
-            setCardsPerView(1);
-            setCardWidth(320); // Much smaller, similar to mobile variant
-          }
-        } else {
-          // Normal pricing mode - responsive grid layout
-          // Use consistent width since flex-wrap handles the layout
-          setCardsPerView(3);
-          // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 350px below lg breakpoint
-          setCardWidth(width >= 1024 ? 450 : 350);
-        }
       } else if (isResponsive) {
         // Responsive variant: Wide layout on desktop (>=1024px), Mobile layout on tablet/mobile (<1024px)
         if (width >= 1600) {
@@ -375,25 +250,20 @@ export default function ContentCards({
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
-  }, [isStatic, isPricing, isResponsive, isLightboxMode]);
+  }, [isStatic, isResponsive, isLightboxMode]);
 
   const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
   const maxScroll = -(maxIndex * (cardWidth + gap));
 
   // For static variant, show only the first card
-  // For pricing variant, show only the first 3 cards
-  const displayCards = isStatic
-    ? cardData.slice(0, 1)
-    : isPricing
-    ? cardData.slice(0, 3)
-    : cardData;
+  const displayCards = isStatic ? cardData.slice(0, 1) : cardData;
   const adjustedMaxIndex = Math.max(
     0,
     displayCards.length - Math.floor(cardsPerView)
   );
 
-  // FIXED: Navigation logic to always work properly
+  // Navigation logic
   const navigateCard = useCallback(
     (direction: number) => {
       const targetMaxIndex = displayCards.length - Math.floor(cardsPerView);
@@ -408,10 +278,8 @@ export default function ContentCards({
     [displayCards.length, cardsPerView, currentIndex, cardWidth, gap, x]
   );
 
-  // Keyboard navigation - disabled for pricing cards
+  // Keyboard navigation
   useEffect(() => {
-    if (isPricing && !isLightboxMode) return;
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowLeft") {
         navigateCard(-1);
@@ -422,7 +290,7 @@ export default function ContentCards({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [navigateCard, isPricing, isLightboxMode]);
+  }, [navigateCard]);
 
   const handleDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
@@ -481,8 +349,8 @@ export default function ContentCards({
 
   // Helper function to get appropriate text based on screen size
   const getCardText = (
-    card: CardData | StaticCardData | PricingCardData,
-    field: "title" | "subtitle" | "description" | "extendedDescription"
+    card: CardData | StaticCardData,
+    field: "title" | "subtitle" | "description"
   ) => {
     const isMobileScreen = isClient && screenWidth < 1024;
 
@@ -499,13 +367,6 @@ export default function ContentCards({
         return isMobileScreen && card.mobileDescription
           ? card.mobileDescription
           : card.description;
-      case "extendedDescription":
-        if ("extendedDescription" in card) {
-          return isMobileScreen && card.mobileExtendedDescription
-            ? card.mobileExtendedDescription
-            : card.extendedDescription || "";
-        }
-        return "";
       default:
         return "";
     }
@@ -524,175 +385,76 @@ export default function ContentCards({
 
       {/* Cards Container */}
       <div className={`relative ${isLightboxMode ? "py-2" : "py-8"}`}>
-        {isPricing && !isLightboxMode ? (
-          /* Pricing Cards - Responsive Grid Layout */
+        {/* Horizontal Scrolling Layout */}
+        <div className="overflow-x-clip">
           <div
-            className={`flex flex-wrap justify-center items-center gap-6 ${
-              maxWidth ? "px-8" : "px-4"
+            ref={containerRef}
+            className={`overflow-x-hidden ${maxWidth ? "px-8" : "px-4"} ${
+              isStatic ? "" : "cursor-grab active:cursor-grabbing"
             }`}
+            style={{ overflow: "visible" }}
           >
-            {(displayCards as PricingCardData[]).map((card, index) => (
-              <motion.div
-                key={card.id}
-                className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
-                style={{
-                  width: cardWidth,
-                  height: 300,
-                  backgroundColor: card.backgroundColor,
-                }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                onClick={onCardClick ? () => onCardClick(card.id) : undefined}
-              >
-                {/* Top Section - FIXED HEIGHT */}
-                <div className="h-48 min-h-48 px-6 pt-6 pb-1 overflow-hidden">
-                  {/* Header Row - Title/Subtitle left, Price right */}
-                  <div className="flex mb-5">
-                    {/* Title/Subtitle - Left Side */}
-                    <div className="flex-1">
-                      <motion.div
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1, duration: 0.6 }}
-                      >
-                        <h3 className="text-xl font-bold text-gray-900 mb-1">
-                          {renderTitle(
-                            getCardText(card, "title"),
-                            (card as PricingCardData).grayWord
-                          )}
-                        </h3>
-                        <h4 className="text-sm font-medium text-gray-700">
-                          {getCardText(card, "subtitle")}
-                        </h4>
-                      </motion.div>
-                    </div>
-
-                    {/* Price - Right Side */}
-                    <div className="w-24 flex flex-col justify-start items-end text-right">
-                      <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-                        className="text-right"
-                      >
-                        <div className="text-lg font-bold text-gray-900 mb-1">
-                          {card.price}
-                        </div>
-                        {card.monthlyPrice && (
-                          <div className="text-xs text-gray-600 font-medium">
-                            {card.monthlyPrice}
-                          </div>
-                        )}
-                      </motion.div>
-                    </div>
-                  </div>
-
-                  {/* Description - Full Width */}
-                  <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
-                  >
-                    <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-line overflow-hidden">
-                      {getCardText(card, "description")}
-                    </p>
-                  </motion.div>
-                </div>
-
-                {/* Bottom Section - Extended Description (Full Width) - FIXED POSITION */}
-                {card.extendedDescription && (
-                  <div className="px-6 pt-2 pb-6">
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
-                    >
-                      <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line line-clamp-3">
-                        {getCardText(card, "extendedDescription")}
-                      </p>
-                    </motion.div>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          /* Other Variants - Horizontal Scrolling Layout */
-          <div className="overflow-x-clip">
-            <div
-              ref={containerRef}
-              className={`overflow-x-hidden ${maxWidth ? "px-8" : "px-4"} ${
-                isStatic || (isPricing && isLightboxMode)
-                  ? ""
-                  : "cursor-grab active:cursor-grabbing"
-              }`}
-              style={{ overflow: "visible" }}
+            <motion.div
+              className={`flex gap-6 ${isStatic ? "justify-center" : ""}`}
+              style={
+                isStatic
+                  ? {}
+                  : {
+                      x,
+                      width: `${
+                        (cardWidth + gap) * displayCards.length - gap
+                      }px`,
+                    }
+              }
+              drag={isStatic ? false : "x"}
+              dragConstraints={
+                isStatic
+                  ? undefined
+                  : {
+                      left: maxScroll,
+                      right: 0,
+                    }
+              }
+              dragElastic={isStatic ? undefined : 0.1}
+              onDragEnd={isStatic ? undefined : handleDragEnd}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+              }}
             >
-              <motion.div
-                className={`flex gap-6 ${isStatic ? "justify-center" : ""}`}
-                style={
-                  isStatic
-                    ? {}
-                    : {
-                        x,
-                        width: `${
-                          (cardWidth + gap) * displayCards.length - gap
-                        }px`,
-                      }
-                }
-                drag={isStatic ? false : "x"}
-                dragConstraints={
-                  isStatic
-                    ? undefined
-                    : {
-                        left: maxScroll,
-                        right: 0,
-                      }
-                }
-                dragElastic={isStatic ? undefined : 0.1}
-                onDragEnd={isStatic ? undefined : handleDragEnd}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 30,
-                }}
-              >
-                {displayCards.map((card, index) => (
-                  <motion.div
-                    key={card.id}
-                    className={`flex-shrink-0 rounded-3xl shadow-lg ${
-                      isPricing && isLightboxMode
-                        ? "overflow-y-auto hide-scrollbar"
-                        : "overflow-hidden"
-                    } hover:shadow-xl transition-shadow duration-300 ${
-                      (isStatic && isClient && screenWidth >= 1024) ||
-                      isPricing ||
-                      (isResponsive && isClient && screenWidth >= 1024)
-                        ? "flex"
-                        : ""
-                    } ${isPricing && isLightboxMode ? "flex-col" : ""}`}
-                    style={{
-                      width: cardWidth,
-                      height:
-                        isPricing && isLightboxMode
-                          ? typeof window !== "undefined" &&
-                            window.innerWidth < 768
-                            ? Math.min(600, window.innerHeight * 0.75) // Original mobile size
-                            : Math.min(1000, window.innerHeight * 0.875) // 25% taller for desktop only
-                          : isStatic
-                          ? isClient && screenWidth >= 1600
+              {displayCards.map((card, index) => (
+                <motion.div
+                  key={card.id}
+                  className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${
+                    (isStatic && isClient && screenWidth >= 1024) ||
+                    (isResponsive && isClient && screenWidth >= 1024)
+                      ? "flex"
+                      : ""
+                  }`}
+                  style={{
+                    width: cardWidth,
+                    height: isStatic
+                      ? isClient && screenWidth >= 1600
+                        ? Math.min(
+                            830,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.75
+                              : 830
+                          )
+                        : isClient && screenWidth >= 1280
+                          ? Math.min(
+                              692,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.7
+                                : 692
+                            )
+                          : isClient && screenWidth >= 1024
                             ? Math.min(
-                                830,
-                                typeof window !== "undefined"
-                                  ? window.innerHeight * 0.75
-                                  : 830
-                              )
-                            : isClient && screenWidth >= 1024
-                            ? Math.min(
-                                692,
+                                577, // Proportional height: 960 * (692/1152) = 577
                                 typeof window !== "undefined"
                                   ? window.innerHeight * 0.7
-                                  : 692
+                                  : 577
                               )
                             : Math.min(
                                 720,
@@ -700,28 +462,35 @@ export default function ContentCards({
                                   ? window.innerHeight * 0.75
                                   : 720
                               )
-                          : isResponsive
-                          ? isClient && screenWidth >= 1600
-                            ? Math.min(
-                                830,
-                                typeof window !== "undefined"
-                                  ? window.innerHeight * 0.75
-                                  : 830
-                              )
-                            : isClient && screenWidth >= 1024
+                      : isResponsive
+                        ? isClient && screenWidth >= 1600
+                          ? Math.min(
+                              830,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 830
+                            )
+                          : isClient && screenWidth >= 1280
                             ? Math.min(
                                 692,
                                 typeof window !== "undefined"
                                   ? window.innerHeight * 0.7
                                   : 692
                               )
-                            : Math.min(
-                                720,
-                                typeof window !== "undefined"
-                                  ? window.innerHeight * 0.75
-                                  : 720
-                              )
-                          : isClient && screenWidth >= 1600
+                            : isClient && screenWidth >= 1024
+                              ? Math.min(
+                                  577, // Proportional height: 960 * (692/1152) = 577
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.7
+                                    : 577
+                                )
+                              : Math.min(
+                                  720,
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.75
+                                    : 720
+                                )
+                        : isClient && screenWidth >= 1600
                           ? Math.min(
                               750,
                               typeof window !== "undefined"
@@ -734,359 +503,73 @@ export default function ContentCards({
                                 ? window.innerHeight * 0.75
                                 : 600
                             ),
-                      backgroundColor: card.backgroundColor,
-                    }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {isPricing && isLightboxMode ? (
-                      // Lightbox Pricing layout: Responsive with mobile-friendly sizing
+                    backgroundColor: card.backgroundColor,
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isResponsive ? (
+                    // Responsive layout: Wide on desktop (>=1024px), mobile on tablet/mobile (<1024px)
+                    isClient && screenWidth >= 1024 ? (
+                      // Desktop: Wide layout (Text left 1/3, Image right 2/3)
                       <>
-                        {/* Top Section - Header and Description */}
-                        <div className="flex-shrink-0 px-4 md:px-12 pt-4 md:pt-12 pb-2">
-                          {/* Header Row - Title/Subtitle left, Price right */}
-                          <div className="flex mb-5">
-                            {/* Title/Subtitle - Left Side */}
-                            <div className="flex-1">
-                              <motion.div
-                                initial={{ x: -20, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{
-                                  delay: index * 0.1,
-                                  duration: 0.6,
-                                }}
-                              >
-                                <h3 className="text-lg md:text-3xl font-bold text-gray-900 mb-2 md:mb-3">
-                                  {renderTitle(
-                                    getCardText(card, "title"),
-                                    (card as PricingCardData).grayWord
-                                  )}
-                                </h3>
-                                <h4 className="text-sm md:text-xl font-medium text-gray-700">
-                                  {getCardText(card, "subtitle")}
-                                </h4>
-                              </motion.div>
-                            </div>
-
-                            {/* Price - Right Side */}
-                            <div className="w-20 md:w-32 flex flex-col justify-start items-end text-right">
-                              <motion.div
-                                initial={{ x: 20, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{
-                                  delay: index * 0.1 + 0.2,
-                                  duration: 0.6,
-                                }}
-                                className="text-right"
-                              >
-                                <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
-                                  {(card as PricingCardData).price}
-                                </div>
-                                {(card as PricingCardData).monthlyPrice && (
-                                  <div className="text-xs md:text-sm text-gray-600 font-medium">
-                                    {(card as PricingCardData).monthlyPrice}
-                                  </div>
-                                )}
-                              </motion.div>
-                            </div>
-                          </div>
-
-                          {/* Description - Full Width */}
+                        {/* Text Content - Left Third */}
+                        <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
                           <motion.div
-                            initial={{ y: 10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{
-                              delay: index * 0.1 + 0.3,
-                              duration: 0.6,
-                            }}
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                              {getCardText(card, "title")}
+                            </h3>
+                            <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                              {getCardText(card, "subtitle")}
+                            </h4>
+                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
                         </div>
 
-                        {/* Bottom Section - Extended Description (Full Width) */}
-                        {(card as PricingCardData).extendedDescription && (
-                          <div className="px-4 md:px-12 pt-4 md:pt-8 pb-4 md:pb-12 flex-1 min-h-0">
-                            <motion.div
-                              initial={{ y: 20, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{
-                                delay: index * 0.1 + 0.4,
-                                duration: 0.8,
-                              }}
-                              className="h-full overflow-y-auto hide-scrollbar"
-                            >
-                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
-                                {getCardText(card, "extendedDescription")}
-                              </p>
-                            </motion.div>
-                          </div>
-                        )}
+                        {/* Image Content - Right Two-Thirds with 1:1 aspect ratio */}
+                        <div className="w-2/3 relative overflow-hidden p-[15px] flex items-center justify-end">
+                          <motion.div
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{
+                              delay: index * 0.1 + 0.2,
+                              duration: 0.8,
+                            }}
+                            className="relative rounded-3xl overflow-hidden"
+                            style={{
+                              width: "100%", // Fill available width within padding
+                              height: "100%", // Fill available height within padding
+                              maxWidth:
+                                isClient && screenWidth >= 1600
+                                  ? "800px"
+                                  : "662px", // Larger for ultra-wide screens
+                              maxHeight:
+                                isClient && screenWidth >= 1600
+                                  ? "800px"
+                                  : "662px", // Larger for ultra-wide screens
+                              aspectRatio: "1/1", // Maintain 1:1 square aspect ratio
+                            }}
+                          >
+                            <HybridBlobImage
+                              path={getImagePath(card.image)}
+                              alt={getCardText(card, "title")}
+                              fill
+                              className="object-cover object-center"
+                              strategy="client"
+                              isInteractive={true}
+                              enableCache={true}
+                            />
+                          </motion.div>
+                        </div>
                       </>
-                    ) : isResponsive ? (
-                      // Responsive layout: Wide on desktop (>=1024px), mobile on tablet/mobile (<1024px)
-                      isClient && screenWidth >= 1024 ? (
-                        // Desktop: Wide layout (Text left 1/3, Image right 2/3)
-                        <>
-                          {/* Text Content - Left Third */}
-                          <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
-                            <motion.div
-                              initial={{ x: -20, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{ delay: index * 0.1, duration: 0.6 }}
-                            >
-                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {renderTitle(
-                                  getCardText(card, "title"),
-                                  isPricing
-                                    ? (card as PricingCardData).grayWord
-                                    : undefined
-                                )}
-                              </h3>
-                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
-                                {getCardText(card, "subtitle")}
-                              </h4>
-                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
-                                {getCardText(card, "description")}
-                              </p>
-                            </motion.div>
-                          </div>
-
-                          {/* Image Content - Right Two-Thirds with 1:1 aspect ratio */}
-                          <div className="w-2/3 relative overflow-hidden p-[15px] flex items-center justify-end">
-                            <motion.div
-                              initial={{ x: 20, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{
-                                delay: index * 0.1 + 0.2,
-                                duration: 0.8,
-                              }}
-                              className="relative rounded-3xl overflow-hidden"
-                              style={{
-                                width: "100%", // Fill available width within padding
-                                height: "100%", // Fill available height within padding
-                                maxWidth:
-                                  isClient && screenWidth >= 1600
-                                    ? "800px"
-                                    : "662px", // Larger for ultra-wide screens
-                                maxHeight:
-                                  isClient && screenWidth >= 1600
-                                    ? "800px"
-                                    : "662px", // Larger for ultra-wide screens
-                                aspectRatio: "1/1", // Maintain 1:1 square aspect ratio
-                              }}
-                            >
-                              <HybridBlobImage
-                                path={getImagePath(card.image)}
-                                alt={getCardText(card, "title")}
-                                fill
-                                className="object-cover object-center"
-                                strategy="client"
-                                isInteractive={true}
-                                enableCache={true}
-                              />
-                            </motion.div>
-                          </div>
-                        </>
-                      ) : (
-                        // Tablet/Mobile: Mobile layout (Text top, Image bottom)
-                        <>
-                          {/* Text Content - Top Half */}
-                          <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
-                            <motion.div
-                              initial={{ y: 20, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{ delay: index * 0.1, duration: 0.6 }}
-                            >
-                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {renderTitle(
-                                  getCardText(card, "title"),
-                                  isPricing
-                                    ? (card as PricingCardData).grayWord
-                                    : undefined
-                                )}
-                              </h3>
-                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
-                                {getCardText(card, "subtitle")}
-                              </h4>
-                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
-                                {getCardText(card, "description")}
-                              </p>
-                            </motion.div>
-                          </div>
-
-                          {/* Image Content - Bottom Half */}
-                          <div className="h-1/2 relative overflow-hidden p-[15px]">
-                            <motion.div
-                              initial={{ y: 30, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{
-                                delay: index * 0.1 + 0.2,
-                                duration: 0.8,
-                              }}
-                              className="relative w-full h-full rounded-3xl overflow-hidden"
-                            >
-                              <HybridBlobImage
-                                path={getImagePath(card.image)}
-                                alt={getCardText(card, "title")}
-                                fill
-                                className="object-cover object-center"
-                                strategy="client"
-                                isInteractive={true}
-                                enableCache={true}
-                              />
-                            </motion.div>
-                          </div>
-                        </>
-                      )
-                    ) : isStatic ? (
-                      // Static layout: Responsive single card - wide on desktop, mobile on tablet/mobile
-                      isClient && screenWidth >= 1024 ? (
-                        // Desktop: Wide layout (Text left 1/3, Image right 2/3)
-                        <>
-                          {/* Text Content - Left Third */}
-                          <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
-                            <motion.div
-                              initial={{ x: -20, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{ delay: index * 0.1, duration: 0.6 }}
-                            >
-                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {renderTitle(
-                                  getCardText(card, "title"),
-                                  isPricing
-                                    ? (card as PricingCardData).grayWord
-                                    : undefined
-                                )}
-                              </h3>
-                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
-                                {getCardText(card, "subtitle")}
-                              </h4>
-                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
-                                {getCardText(card, "description")}
-                              </p>
-
-                              {/* Buttons for Static Cards - Desktop Layout */}
-                              {isStatic && (card as StaticCardData).buttons && (
-                                <div className="flex gap-4 justify-center w-full mt-8">
-                                  {(card as StaticCardData).buttons!.map(
-                                    (button, btnIndex) =>
-                                      button.link ? (
-                                        <Link key={btnIndex} href={button.link}>
-                                          <Button
-                                            variant={button.variant}
-                                            size={button.size}
-                                          >
-                                            {button.text}
-                                          </Button>
-                                        </Link>
-                                      ) : (
-                                        <Button
-                                          key={btnIndex}
-                                          variant={button.variant}
-                                          size={button.size}
-                                          onClick={button.onClick}
-                                        >
-                                          {button.text}
-                                        </Button>
-                                      )
-                                  )}
-                                </div>
-                              )}
-                            </motion.div>
-                          </div>
-
-                          {/* Image Content - Right Two-Thirds with 1:1 aspect ratio */}
-                          <div className="w-2/3 relative overflow-hidden p-[15px] flex items-center justify-end">
-                            <motion.div
-                              initial={{ x: 20, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{
-                                delay: index * 0.1 + 0.2,
-                                duration: 0.8,
-                              }}
-                              className="relative rounded-3xl overflow-hidden"
-                              style={{
-                                width: "100%", // Fill available width within padding
-                                height: "100%", // Fill available height within padding
-                                maxWidth:
-                                  isClient && screenWidth >= 1600
-                                    ? "800px"
-                                    : "662px", // Larger for ultra-wide screens
-                                maxHeight:
-                                  isClient && screenWidth >= 1600
-                                    ? "800px"
-                                    : "662px", // Larger for ultra-wide screens
-                                aspectRatio: "1/1", // Maintain 1:1 square aspect ratio
-                              }}
-                            >
-                              <HybridBlobImage
-                                path={getImagePath(card.image)}
-                                alt={getCardText(card, "title")}
-                                fill
-                                className="object-cover object-center"
-                                strategy="client"
-                                isInteractive={true}
-                                enableCache={true}
-                              />
-                            </motion.div>
-                          </div>
-                        </>
-                      ) : (
-                        // Tablet/Mobile: Mobile layout (Text top, Image bottom)
-                        <>
-                          {/* Text Content - Top Half */}
-                          <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
-                            <motion.div
-                              initial={{ y: 20, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{ delay: index * 0.1, duration: 0.6 }}
-                            >
-                              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                                {renderTitle(
-                                  getCardText(card, "title"),
-                                  isPricing
-                                    ? (card as PricingCardData).grayWord
-                                    : undefined
-                                )}
-                              </h3>
-                              <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
-                                {getCardText(card, "subtitle")}
-                              </h4>
-                              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
-                                {getCardText(card, "description")}
-                              </p>
-                            </motion.div>
-                          </div>
-
-                          {/* Image Content - Bottom Half */}
-                          <div className="h-1/2 relative overflow-hidden p-[15px]">
-                            <motion.div
-                              initial={{ y: 30, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{
-                                delay: index * 0.1 + 0.2,
-                                duration: 0.8,
-                              }}
-                              className="relative w-full h-full rounded-3xl overflow-hidden"
-                            >
-                              <HybridBlobImage
-                                path={getImagePath(card.image)}
-                                alt={getCardText(card, "title")}
-                                fill
-                                className="object-cover object-center"
-                                strategy="client"
-                                isInteractive={true}
-                                enableCache={true}
-                              />
-                            </motion.div>
-                          </div>
-                        </>
-                      )
                     ) : (
-                      // Normal layout: Text top, Image bottom
+                      // Tablet/Mobile: Mobile layout (Text top, Image bottom)
                       <>
                         {/* Text Content - Top Half */}
                         <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
@@ -1095,18 +578,13 @@ export default function ContentCards({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                              {renderTitle(
-                                getCardText(card, "title"),
-                                isPricing
-                                  ? (card as PricingCardData).grayWord
-                                  : undefined
-                              )}
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                              {getCardText(card, "title")}
                             </h3>
                             <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
                             </h4>
-                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
+                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -1135,16 +613,215 @@ export default function ContentCards({
                           </motion.div>
                         </div>
                       </>
-                    )}
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
-        )}
+                    )
+                  ) : isStatic ? (
+                    // Static layout: Responsive single card - wide on desktop, mobile on tablet/mobile
+                    isClient && screenWidth >= 1024 ? (
+                      // Desktop: Wide layout (Text left 1/3, Image right 2/3)
+                      <>
+                        {/* Text Content - Left Third */}
+                        <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
+                          <motion.div
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: index * 0.1, duration: 0.6 }}
+                          >
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                              {getCardText(card, "title")}
+                            </h3>
+                            <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                              {getCardText(card, "subtitle")}
+                            </h4>
+                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                              {getCardText(card, "description")}
+                            </p>
 
-        {/* Navigation Arrows - FIXED: Better visibility conditions */}
-        {!isStatic && !(isPricing && !isLightboxMode) && (
+                            {/* Buttons for Static Cards - Desktop Layout */}
+                            {isStatic && (card as StaticCardData).buttons && (
+                              <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
+                                {(card as StaticCardData).buttons!.map(
+                                  (button, btnIndex) =>
+                                    button.link ? (
+                                      <Link
+                                        key={btnIndex}
+                                        href={button.link}
+                                        className="flex-shrink-0"
+                                      >
+                                        <Button
+                                          variant={button.variant}
+                                          size={button.size}
+                                          className={
+                                            // Override button width at 1024px breakpoint to fit both buttons
+                                            isClient &&
+                                            screenWidth >= 1024 &&
+                                            screenWidth < 1280
+                                              ? "!w-28 !min-w-28 !max-w-28" // Narrower width at smallest desktop
+                                              : "" // Default width at all other sizes
+                                          }
+                                        >
+                                          {button.text}
+                                        </Button>
+                                      </Link>
+                                    ) : (
+                                      <Button
+                                        key={btnIndex}
+                                        variant={button.variant}
+                                        size={button.size}
+                                        onClick={button.onClick}
+                                        className={
+                                          // Override button width at 1024px breakpoint to fit both buttons
+                                          isClient &&
+                                          screenWidth >= 1024 &&
+                                          screenWidth < 1280
+                                            ? "!w-28 !min-w-28 !max-w-28 flex-shrink-0" // Narrower width at smallest desktop
+                                            : "flex-shrink-0" // Default width at all other sizes
+                                        }
+                                      >
+                                        {button.text}
+                                      </Button>
+                                    )
+                                )}
+                              </div>
+                            )}
+                          </motion.div>
+                        </div>
+
+                        {/* Image Content - Right Two-Thirds with 1:1 aspect ratio */}
+                        <div className="w-2/3 relative overflow-hidden p-[15px] flex items-center justify-end">
+                          <motion.div
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{
+                              delay: index * 0.1 + 0.2,
+                              duration: 0.8,
+                            }}
+                            className="relative rounded-3xl overflow-hidden"
+                            style={{
+                              width: "100%", // Fill available width within padding
+                              height: "100%", // Fill available height within padding
+                              maxWidth:
+                                isClient && screenWidth >= 1600
+                                  ? "800px"
+                                  : "662px", // Larger for ultra-wide screens
+                              maxHeight:
+                                isClient && screenWidth >= 1600
+                                  ? "800px"
+                                  : "662px", // Larger for ultra-wide screens
+                              aspectRatio: "1/1", // Maintain 1:1 square aspect ratio
+                            }}
+                          >
+                            <HybridBlobImage
+                              path={getImagePath(card.image)}
+                              alt={getCardText(card, "title")}
+                              fill
+                              className="object-cover object-center"
+                              strategy="client"
+                              isInteractive={true}
+                              enableCache={true}
+                            />
+                          </motion.div>
+                        </div>
+                      </>
+                    ) : (
+                      // Tablet/Mobile: Mobile layout (Text top, Image bottom)
+                      <>
+                        {/* Text Content - Top Half */}
+                        <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
+                          <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: index * 0.1, duration: 0.6 }}
+                          >
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                              {getCardText(card, "title")}
+                            </h3>
+                            <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                              {getCardText(card, "subtitle")}
+                            </h4>
+                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                              {getCardText(card, "description")}
+                            </p>
+                          </motion.div>
+                        </div>
+
+                        {/* Image Content - Bottom Half */}
+                        <div className="h-1/2 relative overflow-hidden p-[15px]">
+                          <motion.div
+                            initial={{ y: 30, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{
+                              delay: index * 0.1 + 0.2,
+                              duration: 0.8,
+                            }}
+                            className="relative w-full h-full rounded-3xl overflow-hidden"
+                          >
+                            <HybridBlobImage
+                              path={getImagePath(card.image)}
+                              alt={getCardText(card, "title")}
+                              fill
+                              className="object-cover object-center"
+                              strategy="client"
+                              isInteractive={true}
+                              enableCache={true}
+                            />
+                          </motion.div>
+                        </div>
+                      </>
+                    )
+                  ) : (
+                    // Normal layout: Text top, Image bottom
+                    <>
+                      {/* Text Content - Top Half */}
+                      <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
+                        <motion.div
+                          initial={{ y: 20, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ delay: index * 0.1, duration: 0.6 }}
+                        >
+                          <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                            {getCardText(card, "title")}
+                          </h3>
+                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                            {getCardText(card, "subtitle")}
+                          </h4>
+                          <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                            {getCardText(card, "description")}
+                          </p>
+                        </motion.div>
+                      </div>
+
+                      {/* Image Content - Bottom Half */}
+                      <div className="h-1/2 relative overflow-hidden p-[15px]">
+                        <motion.div
+                          initial={{ y: 30, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{
+                            delay: index * 0.1 + 0.2,
+                            duration: 0.8,
+                          }}
+                          className="relative w-full h-full rounded-3xl overflow-hidden"
+                        >
+                          <HybridBlobImage
+                            path={getImagePath(card.image)}
+                            alt={getCardText(card, "title")}
+                            fill
+                            className="object-cover object-center"
+                            strategy="client"
+                            isInteractive={true}
+                            enableCache={true}
+                          />
+                        </motion.div>
+                      </div>
+                    </>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        {!isStatic && (
           <>
             {currentIndex > 0 && (
               <button
@@ -1195,27 +872,25 @@ export default function ContentCards({
         )}
       </div>
 
-      {/* FIXED: Progress Indicator - Only one and only when needed */}
-      {!isStatic &&
-        !(isPricing && !isLightboxMode) &&
-        displayCards.length > Math.floor(cardsPerView) && (
-          <div className="flex justify-center mt-8">
-            <div className="bg-gray-200 rounded-full h-1 w-32">
-              <motion.div
-                className="bg-gray-900 rounded-full h-1"
-                style={{
-                  width: `${Math.min(
-                    100,
-                    ((currentIndex + Math.floor(cardsPerView)) /
-                      displayCards.length) *
-                      100
-                  )}%`,
-                }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
+      {/* Progress Indicator */}
+      {!isStatic && displayCards.length > Math.floor(cardsPerView) && (
+        <div className="flex justify-center mt-8">
+          <div className="bg-gray-200 rounded-full h-1 w-32">
+            <motion.div
+              className="bg-gray-900 rounded-full h-1"
+              style={{
+                width: `${Math.min(
+                  100,
+                  ((currentIndex + Math.floor(cardsPerView)) /
+                    displayCards.length) *
+                    100
+                )}%`,
+              }}
+              transition={{ duration: 0.3 }}
+            />
           </div>
-        )}
+        </div>
+      )}
 
       {/* Instructions */}
       {showInstructions && (
@@ -1225,8 +900,6 @@ export default function ContentCards({
               Single responsive card • Wide layout on desktop, mobile layout on
               tablets/phones
             </p>
-          ) : isPricing ? (
-            <p>Click on any card to see detailed information</p>
           ) : (
             <>
               <p className="hidden md:block">

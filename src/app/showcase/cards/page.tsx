@@ -6,11 +6,17 @@ import {
   ContentCardsLightbox,
   ContentCardsGlass,
   ContentCardsGlassLightbox,
-  PricingCardsLightbox,
+  PlanungspaketeCards,
+  PlanungspaketeCardsLightbox,
   ImageGlassCard,
   SquareGlassCard,
   SquareGlassCardsScroll,
+  VideoCard16by9,
 } from "@/components/cards";
+import {
+  CONTENT_CARD_PRESETS,
+  VIDEO_CARD_PRESETS,
+} from "@/constants/contentCardPresets";
 
 export default function CardsShowcasePage() {
   return (
@@ -53,12 +59,24 @@ export default function CardsShowcasePage() {
           </div>
         </section>
 
-        {/* Content Cards Pricing Section - Clickable Cards with Lightbox */}
+        {/* Planungspakete Cards Section - Clickable Cards with Lightbox */}
         <section className="overflow-visible">
-          <PricingCardsLightbox
-            title="Content Cards Pricing"
-            subtitle="Click on any card to see detailed information in lightbox"
+          <PlanungspaketeCards
+            title="Planungspakete Cards"
+            subtitle="Planning packages with pricing information • Grid layout for easy comparison"
+            maxWidth={false}
+            enableBuiltInLightbox={false}
           />
+
+          {/* Lightbox Button for Planungspakete Cards */}
+          <div className="flex justify-center mt-8">
+            <PlanungspaketeCardsLightbox
+              title="Planungspakete Cards - Lightbox View"
+              subtitle="Detailed view with extended descriptions • Click outside or press ESC to close"
+              triggerText="Open Planungspakete in Lightbox"
+              triggerClassName="mx-2"
+            />
+          </div>
         </section>
 
         {/* Content Cards Static Section - Single Responsive Card */}
@@ -80,6 +98,39 @@ export default function CardsShowcasePage() {
               triggerClassName="mx-2"
             />
           </div>
+        </section>
+
+        {/* Sicherheit Card Preset Section */}
+        <section className="overflow-visible">
+          <ContentCards
+            variant="static"
+            title="Sicherheit Card Preset"
+            subtitle="Reusable preset used across the site • Wide layout on desktop, mobile layout on tablets/phones"
+            maxWidth={false}
+            customData={[CONTENT_CARD_PRESETS.sicherheit]}
+          />
+
+          {/* Lightbox Button for Sicherheit Preset */}
+          <div className="flex justify-center mt-8">
+            <ContentCardsLightbox
+              variant="static"
+              title="Sicherheit Card Preset - Lightbox View"
+              subtitle="Reusable preset with buttons • Adapts layout based on screen size • Click outside or press ESC to close"
+              triggerText="Open Sicherheit Preset in Lightbox"
+              triggerClassName="mx-2"
+              customData={[CONTENT_CARD_PRESETS.sicherheit]}
+            />
+          </div>
+        </section>
+
+        {/* Video Card 16by9 Section */}
+        <section className="overflow-visible">
+          <VideoCard16by9
+            title="Video Card 16:9 Preset"
+            subtitle="Video content with 16:9 aspect ratio on desktop, 1:1 on mobile • Same text space as content cards"
+            maxWidth={false}
+            customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+          />
         </section>
 
         {/* Content Cards Glass Section - Responsive */}

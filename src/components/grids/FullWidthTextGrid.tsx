@@ -65,9 +65,13 @@ export default function FullWidthTextGrid({
             {title}
           </h2>
           {subtitle && (
-            <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl">
+            <h3
+              className={`text-base md:text-lg lg:text-xl 2xl:text-2xl ${
+                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
               {subtitle}
-            </p>
+            </h3>
           )}
         </div>
         <div className="px-4 md:px-8">
@@ -99,9 +103,13 @@ export default function FullWidthTextGrid({
             {title}
           </h2>
           {subtitle && (
-            <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl">
+            <h3
+              className={`text-base md:text-lg lg:text-xl 2xl:text-2xl ${
+                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
               {subtitle}
-            </p>
+            </h3>
           )}
         </div>
       </div>

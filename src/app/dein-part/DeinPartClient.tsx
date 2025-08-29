@@ -9,10 +9,11 @@ import {
   ImageWithFourTextGrid,
   ThreeByOneGrid,
 } from "@/components/grids";
+import { GetInContactBanner } from "@/components/sections";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
 import { SquareGlassCardsScroll } from "@/components/cards";
-import { PricingCardsLightbox } from "@/components/cards/ContentCardsLightbox";
+import { PlanungspaketeCards } from "@/components/cards";
 
 import { IMAGES } from "@/constants/images";
 import Footer from "@/components/Footer";
@@ -108,9 +109,9 @@ export default function DeinPartClient() {
                 <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                   Dein kreativer Freiraum
                 </h2>
-                <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-black mb-8">
+                <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                   Gestalte dein NEST Haus nach deinen Vorstellungen.
-                </p>
+                </h3>
 
                 <div className="flex gap-4 justify-center">
                   <Button variant="primary" size="xs">
@@ -146,10 +147,10 @@ export default function DeinPartClient() {
           <section id="individualisierung" className="w-full py-16 bg-black">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-white">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
                   Du individualisierst dein NEST Haus.
                 </h2>
-                <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 text-white max-w-3xl mx-auto">
+                <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300 mb-8">
                   Weil nur du weißt, wie du richtig wohnst.
                 </h3>
               </div>
@@ -330,16 +331,21 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           <section id="planungspakete" className="w-full py-16 bg-white">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="font-bold text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
                   Unterstützung gefällig?
                 </h2>
-                <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
+                <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                   Entdecke unsere Planungs-Pakete, um das Beste für dich und
                   dein Nest rauszuholen.
                 </h3>
               </div>
 
-              <PricingCardsLightbox title="" subtitle="" />
+              <PlanungspaketeCards
+                title=""
+                subtitle=""
+                maxWidth={false}
+                showInstructions={false}
+              />
 
               {/* Button Combo After Component */}
               <div className="flex gap-4 justify-center w-full mt-16">
@@ -354,30 +360,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Beratung Section - Kein Plan? Kein Problem! */}
-          <section
-            id="beratung"
-            className="w-full py-16"
-            style={{ backgroundColor: "#F4F4F4" }}
-          >
-            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
-                <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-gray-900">
-                  Kein Plan? Kein Problem!
-                </h2>
-                <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 text-gray-600 max-w-6xl mx-auto">
-                  Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz
-                  bequem telefonisch
-                </h3>
-              </div>
-
-              {/* Single Button */}
-              <div className="flex justify-center w-full">
-                <Button variant="primary" size="xs">
-                  Termin vereinbaren
-                </Button>
-              </div>
-            </div>
-          </section>
+          <GetInContactBanner id="beratung" />
 
           {/* Video Section - exactly as unser-part */}
           <section id="video-section" className="w-full pt-8 bg-white">

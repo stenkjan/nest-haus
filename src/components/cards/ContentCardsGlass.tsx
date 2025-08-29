@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo } from "motion/react";
+import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
+import { Button } from "@/components/ui";
 
 interface CardData {
   id: number;
@@ -26,6 +28,13 @@ interface StaticCardData {
   mobileDescription?: string;
   image: string;
   backgroundColor: string;
+  buttons?: Array<{
+    text: string;
+    variant: "primary" | "secondary";
+    size: "xs" | "sm" | "md" | "lg";
+    link?: string;
+    onClick?: () => void;
+  }>;
 }
 
 interface ContentCardsGlassProps {
@@ -449,12 +458,19 @@ export default function ContentCardsGlass({
                               ? window.innerHeight * 0.75
                               : 830
                           )
-                        : isClient && screenWidth >= 1024
+                        : isClient && screenWidth >= 1280
                         ? Math.min(
                             692,
                             typeof window !== "undefined"
                               ? window.innerHeight * 0.7
                               : 692
+                          )
+                        : isClient && screenWidth >= 1024
+                        ? Math.min(
+                            577, // Proportional height: 960 * (692/1152) = 577
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : 577
                           )
                         : Math.min(
                             720,
@@ -470,12 +486,19 @@ export default function ContentCardsGlass({
                               ? window.innerHeight * 0.75
                               : 830
                           )
-                        : isClient && screenWidth >= 1024
+                        : isClient && screenWidth >= 1280
                         ? Math.min(
                             692,
                             typeof window !== "undefined"
                               ? window.innerHeight * 0.7
                               : 692
+                          )
+                        : isClient && screenWidth >= 1024
+                        ? Math.min(
+                            577, // Proportional height: 960 * (692/1152) = 577
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : 577
                           )
                         : Math.min(
                             720,
@@ -515,7 +538,7 @@ export default function ContentCardsGlass({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-white mb-2">
                               {getCardText(card, "title")}
                             </h3>
                             <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
@@ -573,7 +596,7 @@ export default function ContentCardsGlass({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-white mb-2">
                               {getCardText(card, "title")}
                             </h3>
                             <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
@@ -621,7 +644,7 @@ export default function ContentCardsGlass({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-white mb-2">
                               {getCardText(card, "title")}
                             </h3>
                             <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">
@@ -630,6 +653,54 @@ export default function ContentCardsGlass({
                             <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
+
+                            {/* Buttons for Static Cards - Desktop Layout */}
+                            {isStatic && (card as StaticCardData).buttons && (
+                              <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
+                                {(card as StaticCardData).buttons!.map(
+                                  (button, btnIndex) =>
+                                    button.link ? (
+                                      <Link
+                                        key={btnIndex}
+                                        href={button.link}
+                                        className="flex-shrink-0"
+                                      >
+                                        <Button
+                                          variant={button.variant}
+                                          size={button.size}
+                                          className={
+                                            // Override button width at 1024px breakpoint to fit both buttons
+                                            isClient &&
+                                            screenWidth >= 1024 &&
+                                            screenWidth < 1280
+                                              ? "!w-28 !min-w-28 !max-w-28" // Narrower width at smallest desktop
+                                              : "" // Default width at all other sizes
+                                          }
+                                        >
+                                          {button.text}
+                                        </Button>
+                                      </Link>
+                                    ) : (
+                                      <Button
+                                        key={btnIndex}
+                                        variant={button.variant}
+                                        size={button.size}
+                                        onClick={button.onClick}
+                                        className={
+                                          // Override button width at 1024px breakpoint to fit both buttons
+                                          isClient &&
+                                          screenWidth >= 1024 &&
+                                          screenWidth < 1280
+                                            ? "!w-28 !min-w-28 !max-w-28 flex-shrink-0" // Narrower width at smallest desktop
+                                            : "flex-shrink-0" // Default width at all other sizes
+                                        }
+                                      >
+                                        {button.text}
+                                      </Button>
+                                    )
+                                )}
+                              </div>
+                            )}
                           </motion.div>
                         </div>
 
@@ -679,7 +750,7 @@ export default function ContentCardsGlass({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-white mb-2">
                               {getCardText(card, "title")}
                             </h3>
                             <h4 className="text-lg md:text-xl font-medium text-gray-300 mb-5">

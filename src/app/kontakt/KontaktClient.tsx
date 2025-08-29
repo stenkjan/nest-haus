@@ -75,10 +75,10 @@ export default function KontaktClient() {
         {/* Dein Grundstück - Unser Check - Section 3 */}
         <section id="contact" className="w-full py-16">
           <div className="w-full px-[7.5%]">
-            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center">
               Dein Grundstück - Unser Check
             </h2>
-            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-12 max-w-3xl mx-auto text-center">
+            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
               Wir überprüfen für dich wie dein neues Haus auf ein Grundstück
               deiner Wahl passt
             </h3>

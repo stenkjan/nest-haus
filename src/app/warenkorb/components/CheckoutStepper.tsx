@@ -7,9 +7,9 @@ import { PLANNING_PACKAGES } from "@/constants/configurator";
 import GrundstueckCheckWrapper from "@/app/kontakt/components/GrundstueckCheckWrapper";
 import AppointmentBooking from "@/app/kontakt/components/AppointmentBooking";
 import {
-  pricingCardData,
-  type PricingCardData,
-} from "@/components/cards/ContentCards";
+  planungspaketeCardData,
+  type PlanungspaketeCardData,
+} from "@/components/cards/PlanungspaketeCards";
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 import { HybridBlobImage } from "@/components/images";
 import { useConfiguratorStore } from "@/store/configuratorStore";
@@ -318,8 +318,8 @@ export default function CheckoutStepper({
               const circleClass = isDone
                 ? "bg-blue-600 border-blue-600"
                 : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
+                ? "bg-white border-blue-600"
+                : "bg-white border-gray-300";
               const dotInner = isDone ? (
                 <span className="w-2 h-2 bg-white rounded-full" />
               ) : null;
@@ -359,8 +359,8 @@ export default function CheckoutStepper({
                 const circleClass = isDone
                   ? "bg-blue-600 border-blue-600"
                   : isCurrent
-                    ? "bg-white border-blue-600"
-                    : "bg-white border-gray-300";
+                  ? "bg-white border-blue-600"
+                  : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
                 ) : null;
@@ -397,8 +397,8 @@ export default function CheckoutStepper({
                 const circleClass = isDone
                   ? "bg-blue-600 border-blue-600"
                   : isCurrent
-                    ? "bg-white border-blue-600"
-                    : "bg-white border-gray-300";
+                  ? "bg-white border-blue-600"
+                  : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
                 ) : null;
@@ -472,8 +472,8 @@ export default function CheckoutStepper({
 
   // Basis price from displayed pricing cards to compute deltas consistently
   const basisDisplayPrice = useMemo(() => {
-    const basisCard = (pricingCardData as PricingCardData[]).find((c) =>
-      c.title.toLowerCase().includes("basis")
+    const basisCard = (planungspaketeCardData as PlanungspaketeCardData[]).find(
+      (c) => c.title.toLowerCase().includes("basis")
     );
     return parseEuro(basisCard?.price || "€0");
   }, []);
@@ -741,8 +741,8 @@ export default function CheckoutStepper({
                               (item as ConfigurationCartItem).nest
                               ? (item as ConfigurationCartItem).nest?.price || 0
                               : "totalPrice" in item
-                                ? (item as ConfigurationCartItem).totalPrice
-                                : (item as CartItem).price
+                              ? (item as ConfigurationCartItem).totalPrice
+                              : (item as CartItem).price
                           )}
                         </div>
                         {(() => {
@@ -760,8 +760,8 @@ export default function CheckoutStepper({
                                 ? (item as ConfigurationCartItem).nest?.price ||
                                     0
                                 : "totalPrice" in item
-                                  ? (item as ConfigurationCartItem).totalPrice
-                                  : (item as CartItem).price
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price
                             )}{" "}
                             für 240 Monate
                           </div>
@@ -967,14 +967,14 @@ export default function CheckoutStepper({
         {stepIndex === 2 && (
           <div className="space-y-4 pt-8">
             <div className="space-y-6">
-              {(pricingCardData as PricingCardData[])
+              {(planungspaketeCardData as PlanungspaketeCardData[])
                 .slice(0, 3)
                 .map((card) => {
                   const value = card.title.toLowerCase().includes("pro")
                     ? "pro"
                     : card.title.toLowerCase().includes("plus")
-                      ? "plus"
-                      : "basis";
+                    ? "plus"
+                    : "basis";
                   const isSelected = localSelectedPlan === value;
                   const isBasis = value === "basis";
                   const cardPriceNumber = parseEuro(card.price);
@@ -1185,7 +1185,7 @@ export default function CheckoutStepper({
                                     // Otherwise get from pricing cards based on localSelectedPlan
                                     if (localSelectedPlan) {
                                       const pricingCard = (
-                                        pricingCardData as PricingCardData[]
+                                        planungspaketeCardData as PlanungspaketeCardData[]
                                       ).find((card) => {
                                         const cardValue = card.title
                                           .toLowerCase()
@@ -1219,7 +1219,7 @@ export default function CheckoutStepper({
                                     // For cart items, we might not have the full pricing card info
                                     // So we'll try to find the matching pricing card for display consistency
                                     const matchingCard = (
-                                      pricingCardData as PricingCardData[]
+                                      planungspaketeCardData as PlanungspaketeCardData[]
                                     ).find(
                                       (card) =>
                                         card.title ===
@@ -1267,7 +1267,7 @@ export default function CheckoutStepper({
                                   // Otherwise get from pricing cards based on localSelectedPlan
                                   if (localSelectedPlan) {
                                     const pricingCard = (
-                                      pricingCardData as PricingCardData[]
+                                      planungspaketeCardData as PlanungspaketeCardData[]
                                     ).find((card) => {
                                       const cardValue = card.title
                                         .toLowerCase()

@@ -2,351 +2,332 @@
 
 import React, { useState, useEffect } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button, CallToAction } from "@/components/ui";
-import {
-  ThreeByOneGrid,
-  FullWidthImageGrid,
-  FullWidthTextGrid,
-  ImageGallery,
-} from "@/components/grids";
-import { HybridBlobImage } from "@/components/images";
-import { ContentCardsGlass } from "@/components/cards";
+import { Button } from "@/components/ui";
+import { ClientBlobVideo } from "@/components/images";
+import { VideoCard16by9, PlanungspaketeCards } from "@/components/cards";
+import { TwoByTwoImageGrid } from "@/components/grids";
+import { GetInContactBanner, PartnersSection } from "@/components/sections";
+import ContentCards from "@/components/cards/ContentCards";
 import { IMAGES } from "@/constants/images";
+import {
+  VIDEO_CARD_PRESETS,
+  CONTENT_CARD_PRESETS,
+} from "@/constants/contentCardPresets";
 import Footer from "@/components/Footer";
 
 // Define sections with proper structure for entdecken page
 const sections = [
   {
-    id: "innovation",
-    title: "Innovation im modularen Bauen",
-    slug: "innovation",
+    id: "hero",
+    title: "Design für dich gemacht",
+    slug: "hero",
   },
   {
-    id: "nachhaltigkeit",
-    title: "Nachhaltigkeit & Zukunft",
-    slug: "nachhaltigkeit",
+    id: "video",
+    title: "Video Segment",
+    slug: "video",
   },
   {
-    id: "technologie",
-    title: "Modernste Technologie",
-    slug: "technologie",
+    id: "zuhause-zieht-um",
+    title: "Dein Zuhause zieht um",
+    slug: "zuhause-zieht-um",
   },
   {
-    id: "design",
-    title: "Design & Architektur",
-    slug: "design",
+    id: "image-grid",
+    title: "Image Grid",
+    slug: "image-grid",
   },
   {
-    id: "lebensqualitaet",
-    title: "Lebensqualität neu definiert",
-    slug: "lebensqualitaet",
+    id: "grundstueck-check",
+    title: "Dein Grundstück - Unser Check",
+    slug: "grundstueck-check",
   },
   {
-    id: "zukunft",
-    title: "Die Zukunft des Wohnens",
-    slug: "zukunft",
+    id: "planungspakete",
+    title: "Unterstützung gefällig?",
+    slug: "planungspakete",
   },
   {
-    id: "gallery",
-    title: "Unsere Referenzen",
-    slug: "referenzen",
-  },
-  {
-    id: "call-to-action",
-    title: "Entdecke dein NEST Haus",
-    slug: "entdecke",
+    id: "partners",
+    title: "Gemeinsam mit starken Partnern",
+    slug: "partners",
   },
 ];
 
+// Helper function to get mobile video path
+const getMobileVideoPath = (desktopPath: string): string => {
+  // Map desktop video path to mobile version
+  if (desktopPath === IMAGES.variantvideo.ten) {
+    return "10-NEST-Haus-Module-Konstellation-Varianten-Versionen-mobile";
+  }
+  return desktopPath;
+};
+
 export default function EntdeckenClient() {
-  const [currentSectionId, setCurrentSectionId] =
-    useState<string>("innovation");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Performance: Preload critical images based on current section
+  // Simple width-based mobile detection (same as ResponsiveHybridImage)
   useEffect(() => {
-    const preloadImages = () => {
-      // Preload next section's images when user is in current section
-      const currentIndex = sections.findIndex((s) => s.id === currentSectionId);
-      const nextSection = sections[currentIndex + 1];
-
-      if (nextSection && typeof window !== "undefined") {
-        // Preload key images for smooth transitions
-        if (nextSection.id === "technologie") {
-          const link = document.createElement("link");
-          link.rel = "prefetch";
-          link.as = "image";
-          link.href = `/api/images?path=${IMAGES.function.nestHausModulElektrikSanitaer}`;
-          document.head.appendChild(link);
-        }
-        if (nextSection.id === "lebensqualitaet") {
-          const link = document.createElement("link");
-          link.rel = "prefetch";
-          link.as = "image";
-          link.href = `/api/images?path=${IMAGES.function.nestHausModulAnsicht}`;
-          document.head.appendChild(link);
-        }
-      }
+    const checkDevice = () => {
+      const newIsMobile = window.innerWidth < 768; // Same breakpoint as landing page
+      setIsMobile(newIsMobile);
     };
 
-    const timeoutId = setTimeout(preloadImages, 1000); // Preload after initial render
-    return () => clearTimeout(timeoutId);
-  }, [currentSectionId]);
+    // Initial check
+    checkDevice();
+
+    // Listen for resize events
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen md:pt-16 bg-white">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        {/* Section 1 - Innovation */}
-        <section id="innovation" className="w-full py-16">
+        {/* Section 1 - Hero with Title and Subtitle (Desktop only) */}
+        <section id="hero" className="w-full py-12 bg-white hidden md:block">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
-              Innovation im modularen Bauen
-            </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
-              Entdecken Sie die revolutionäre Technologie hinter NEST-Haus
-            </h3>
-
-            <div className="text-center mb-12">
-              <p className="text-lg leading-relaxed max-w-4xl mx-auto mb-8">
-                Bei NEST-Haus verschmelzen Innovation und Tradition zu einem
-                einzigartigen Baukonzept. Unsere modularen Systeme
-                revolutionieren die Art, wie wir über Hausbau denken - flexibel,
-                nachhaltig und zukunftsorientiert.
-              </p>
-              <div className="flex gap-4 justify-center">
-                <Button variant="primary" size="lg">
-                  Zum Konfigurator
-                </Button>
-                <Button variant="secondary" size="lg">
-                  Mehr erfahren
-                </Button>
-              </div>
-            </div>
-
-            <ThreeByOneGrid
-              title="Präzision trifft auf Flexibilität"
-              subtitle="Modernste Fertigungstechnologie für höchste Qualität"
-              text="Jedes NEST-Haus Modul wird mit millimetergenauer Präzision gefertigt. Unsere computergesteuerten Produktionsanlagen garantieren gleichbleibend hohe Qualität und ermöglichen dabei maximale Flexibilität in der Gestaltung."
-              image1={IMAGES.function.nestHausModulKonzept}
-              image2={IMAGES.function.nestHausModulSeiteKonzept}
-              image1Description="Präzisionsfertigung im NEST-Haus Werk"
-              image2Description="Modulare Bauweise ermöglicht individuelle Gestaltung"
-              backgroundColor="white"
-              maxWidth={false}
-            />
-          </div>
-        </section>
-
-        {/* Section 2 - Nachhaltigkeit */}
-        <section id="nachhaltigkeit" className="w-full py-16 bg-gray-50">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
-              Nachhaltigkeit & Zukunft
-            </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
-              Bauen im Einklang mit der Natur
-            </h3>
-
-            <FullWidthTextGrid
-              title="Für eine bessere Zukunft"
-              subtitle="Nachhaltigkeit als Grundprinzip"
-              backgroundColor="white"
-              textBox1="Nachhaltiges Bauen bedeutet für uns mehr als nur Energieeffizienz. Es geht um eine ganzheitliche Betrachtung des Lebenszyklus - von der Materialauswahl über die Produktion bis hin zur späteren Wiederverwertung."
-              textBox2="Unsere Module bestehen aus nachhaltigen, regional verfügbaren Materialien. Der modulare Aufbau ermöglicht es, Gebäude bei Bedarf zu erweitern, zu verkleinern oder sogar komplett zu versetzen - für maximale Flexibilität im Lebensverlauf."
-              maxWidth={false}
-            />
-          </div>
-        </section>
-
-        {/* Section 3 - Technologie */}
-        <section id="technologie" className="w-full py-16">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
-              Modernste Technologie
-            </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
-              Digitale Innovation im traditionellen Handwerk
-            </h3>
-
-            <FullWidthImageGrid
-              title="Smart Building für die Zukunft"
-              subtitle="Technologie, die Ihr Leben vereinfacht"
-              backgroundColor="white"
-              textBox1="Intelligente Haustechnik ist bei NEST-Haus bereits ab Werk integriert. Von der automatischen Klimasteuerung bis hin zur integrierten Photovoltaikanlage - Ihr Zuhause denkt mit."
-              textBox2="Dank unserer digitalen Planungstools können Sie Ihr Haus vorab virtuell erkunden und anpassen. Was Sie im Konfigurator sehen, ist exakt das, was Sie später erhalten - ohne böse Überraschungen."
-              image={IMAGES.function.nestHausModulElektrikSanitaer}
-              maxWidth={false}
-            />
-          </div>
-        </section>
-
-        {/* Section 4 - Design */}
-        <section id="design" className="w-full py-16 bg-gray-50">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
-              Design & Architektur
-            </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
-              Ästhetik trifft auf Funktionalität
-            </h3>
-
-            <div className="text-center mb-12">
-              <p className="text-lg leading-relaxed max-w-4xl mx-auto mb-8">
-                Modulares Bauen bedeutet nicht Verzicht auf individuelles
-                Design. Im Gegenteil: Die standardisierten Module bieten
-                unendliche Kombinationsmöglichkeiten für einzigartige
-                Architekturen.
-              </p>
-            </div>
-
-            <ContentCardsGlass
-              title="Grenzenlose Gestaltungsmöglichkeiten"
-              subtitle="Ihr individueller Stil, unsere Expertise"
-              maxWidth={false}
-            />
-          </div>
-        </section>
-
-        {/* Section 5 - Lebensqualität */}
-        <section id="lebensqualitaet" className="w-full py-16">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
-              Lebensqualität neu definiert
-            </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
-              Wohnen, wie es sein sollte
-            </h3>
-
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h4 className="text-2xl font-semibold mb-6">
-                  Gesundes Raumklima
-                </h4>
-                <p className="text-lg leading-relaxed mb-6">
-                  Natürliche Materialien und durchdachte Belüftungskonzepte
-                  sorgen für ein optimales Raumklima. Ihre Gesundheit und Ihr
-                  Wohlbefinden stehen im Mittelpunkt.
-                </p>
-
-                <h4 className="text-2xl font-semibold mb-6">
-                  Energieeffizienz
-                </h4>
-                <p className="text-lg leading-relaxed mb-8">
-                  Niedrigste Energiekosten durch optimale Dämmung und
-                  intelligente Haustechnik. Ein NEST-Haus ist eine Investition
-                  in die Zukunft.
-                </p>
-
-                <Button variant="primary" size="lg">
-                  Energiekonzept erkunden
-                </Button>
-              </div>
-
-              <div className="relative" style={{ aspectRatio: "4/3" }}>
-                <HybridBlobImage
-                  path={IMAGES.function.nestHausModulAnsicht}
-                  alt="NEST-Haus Innenansicht - Lebensqualität und Komfort"
-                  strategy="auto"
-                  isAboveFold={false}
-                  isCritical={currentSectionId === "lebensqualitaet"}
-                  enableCache={true}
-                  fill
-                  className="object-cover rounded-lg"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  quality={85}
-                  priority={currentSectionId === "lebensqualitaet"}
-                />
-              </div>
+            <div className="text-center">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+                Design für dich gemacht
+              </h2>
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+                Dein Design im Freistil
+              </h3>
             </div>
           </div>
         </section>
 
-        {/* Section 6 - Zukunft */}
-        <section id="zukunft" className="w-full py-16 bg-gray-50">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
-              Die Zukunft des Wohnens
-            </h2>
-            <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
-              Heute planen, morgen wohnen
-            </h3>
+        {/* Section 2 - Video with Overlay Text and Buttons */}
+        <section id="video" className="w-full relative bg-white">
+          <div className="relative w-full">
+            {/* Video Background */}
+            <ClientBlobVideo
+              path={
+                isMobile
+                  ? getMobileVideoPath(IMAGES.variantvideo.ten)
+                  : IMAGES.variantvideo.ten
+              }
+              autoPlay={true}
+              muted={true}
+              controls={false}
+              loop={true}
+              className="w-full h-auto"
+            />
 
-            <div className="text-center mb-12">
-              <p className="text-lg leading-relaxed max-w-4xl mx-auto mb-8">
-                NEST-Haus steht für eine neue Ära des Bauens. Schneller,
-                nachhaltiger und individueller als je zuvor. Entdecken Sie
-                selbst, was modulares Bauen für Ihr Traumhaus bedeuten kann.
-              </p>
-
-              <div className="flex gap-4 justify-center flex-wrap">
-                <Button variant="primary" size="lg">
-                  Jetzt konfigurieren
-                </Button>
-                <Button variant="secondary" size="lg">
-                  Beratung vereinbaren
-                </Button>
-                <Button variant="outline" size="lg">
-                  Referenzen ansehen
-                </Button>
+            {/* Overlay Content */}
+            <div className="absolute inset-0 flex flex-col justify-end">
+              {/* Mobile Title/Subtitle Overlay - More gap from navbar */}
+              <div className="absolute top-24 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                  Design für dich gemacht
+                </h2>
+                <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+                  Dein Design im Freistil
+                </h3>
               </div>
-            </div>
 
-            <div className="bg-white rounded-lg p-8 shadow-sm">
-              <div className="grid md:grid-cols-3 gap-8 text-center">
-                <div>
-                  <div className="text-3xl font-bold text-blue-600 mb-2">
-                    &lt; 12 Wochen
+              {/* Text Blocks positioned closer to buttons - Hidden on tablet and mobile */}
+              <div className="absolute bottom-20 lg:bottom-20 xl:bottom-28 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-32 max-w-[1536px] mx-auto w-full hidden lg:flex">
+                {/* Left Text Block */}
+                <div className="text-center">
+                  <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
+                    Nest 80
                   </div>
-                  <h4 className="text-lg font-semibold mb-2">Bauzeit</h4>
-                  <p className="text-gray-600">
-                    Von der Planung bis zum Einzug
-                  </p>
+                  <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
+                    75m² ab € 177.000
+                  </div>
                 </div>
-                <div>
-                  <div className="text-3xl font-bold text-green-600 mb-2">
-                    A+
+
+                {/* Center Text Block */}
+                <div className="text-center">
+                  <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
+                    Nest 120
                   </div>
-                  <h4 className="text-lg font-semibold mb-2">
-                    Energieeffizienz
-                  </h4>
-                  <p className="text-gray-600">
-                    Höchste Standards für niedrigste Kosten
-                  </p>
+                  <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
+                    115m² ab € 245.000
+                  </div>
                 </div>
-                <div>
-                  <div className="text-3xl font-bold text-purple-600 mb-2">
-                    100%
+
+                {/* Right Text Block */}
+                <div className="text-center">
+                  <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
+                    Nest 160
                   </div>
-                  <h4 className="text-lg font-semibold mb-2">Individuell</h4>
-                  <p className="text-gray-600">
-                    Maßgeschneidert für Ihre Bedürfnisse
-                  </p>
+                  <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
+                    155m² ab € 313.000
+                  </div>
                 </div>
               </div>
+
+              {/* Mobile Buttons - Same gap from bottom as title from top */}
+              <div className="absolute bottom-24 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
+                <Button variant="primary" size="xs">
+                  Dein Part
+                </Button>
+                <Button variant="secondary" size="xs">
+                  Unser Part
+                </Button>
+              </div>
+
+              {/* Desktop Buttons - Positioned at bottom */}
+              <div className="absolute bottom-8 lg:bottom-8 xl:bottom-6 2xl:bottom-8 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
+                <Button variant="primary" size="xs">
+                  Dein Part
+                </Button>
+                <Button variant="secondary" size="xs">
+                  Unser Part
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Image Gallery Section */}
-        <section id="gallery" className="w-full py-16">
-          <ImageGallery
-            useHeroImages={true}
-            backgroundColor="white"
-            maxWidth={false}
-          />
+        {/* Section 3 - Dein Zuhause zieht um */}
+        <section id="zuhause-zieht-um" className="w-full py-16 bg-gray-50">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+                Dein Zuhause zieht um
+              </h2>
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+                Architektur für ein bewegtes Leben.
+              </h3>
+            </div>
+
+            {/* VideoCard16by9 Component */}
+            <VideoCard16by9
+              title=""
+              subtitle=""
+              maxWidth={false}
+              showInstructions={false}
+              customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+            />
+          </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section id="call-to-action" className="w-full py-16">
-          <CallToAction
-            title="Entdecke dein NEST Haus"
-            subtitle="Beginne jetzt deine Reise zum nachhaltigen und individuellen Traumhaus"
-            buttonText="Konfigurator starten"
-            buttonLink="/konfigurator"
-            backgroundColor="gray"
-            maxWidth={false}
-          />
+        {/* Section 4 - Interactive 2x2 Image Grid */}
+        <section id="image-grid" className="w-full py-16 bg-white">
+          <div className="w-full">
+            <TwoByTwoImageGrid
+              title=""
+              subtitle=""
+              maxWidth={false}
+              customData={[
+                {
+                  id: 1,
+                  title: "Das Nest System",
+                  subtitle: "Das übernehmen wir",
+                  description: "Dein Raum. Deine Ideen",
+                  image: IMAGES.function.nestHausSystemModulbau,
+                  backgroundColor: "#F8F9FA",
+                  primaryAction: "Das Nest System",
+                  secondaryAction: "Jetzt bauen",
+                },
+                {
+                  id: 2,
+                  title: "Dein Zuhause aus Holz",
+                  subtitle: "Gut für Dich. Besser für die Zukunft.",
+                  description: "Qualität aus Österreich.",
+                  image: IMAGES.function.nestHausMaterialienSchema,
+                  backgroundColor: "#F4F4F4",
+                  primaryAction: "Die Materialien",
+                  secondaryAction: "Jetzt bauen",
+                  textColor: "text-black",
+                },
+                {
+                  id: 3,
+                  title: "Fenster und Türenausbau",
+                  subtitle: "Wir hören zu. Du entscheidest.",
+                  description: "Dein Fenster für deine Räume.",
+                  image: IMAGES.function.nestHausInnenausbauFenster,
+                  backgroundColor: "#F8F9FA",
+                  primaryAction: "Fenster & Türen",
+                  secondaryAction: "Jetzt bauen",
+                },
+                {
+                  id: 4,
+                  title: "Individuell wie du",
+                  subtitle: "Deine Ideen in deinem Zuhause",
+                  description: "Dein Raum. Deine Ideen.",
+                  image: IMAGES.function.nestHausSystemDeinPart,
+                  backgroundColor: "#F4F4F4",
+                  primaryAction: "Gestalten",
+                  secondaryAction: "Jetzt bauen",
+                },
+              ]}
+            />
+          </div>
+        </section>
+
+        {/* Section 5 - Grundstück Check */}
+        <section id="grundstueck-check" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+                Dein Grundstück - Unser Check
+              </h2>
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+                Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
+                deiner Wahl passt.
+              </h3>
+            </div>
+
+            <ContentCards
+              variant="static"
+              title=""
+              subtitle=""
+              maxWidth={false}
+              showInstructions={false}
+              customData={[CONTENT_CARD_PRESETS.sicherheit]}
+            />
+          </div>
+        </section>
+
+        {/* Section 6 - Planungspakete */}
+        <section id="planungspakete" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+                Unterstützung gefällig?
+              </h2>
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+                Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
+                Nest rauszuholen.
+              </h3>
+            </div>
+
+            <PlanungspaketeCards
+              title=""
+              subtitle=""
+              maxWidth={false}
+              showInstructions={false}
+            />
+
+            {/* Button Combo After Component */}
+            <div className="flex gap-4 justify-center w-full mt-16">
+              <Button variant="primary" size="xs">
+                Die Pakete
+              </Button>
+              <Button variant="secondary" size="xs">
+                Mehr Information
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 7 - Partners */}
+        <section id="partners" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <PartnersSection backgroundColor="white" showButtons={true} />
+          </div>
         </section>
       </SectionRouter>
+
+      {/* Contact Banner - Testing Typography Standards */}
+      <GetInContactBanner />
+
       <Footer />
     </div>
   );

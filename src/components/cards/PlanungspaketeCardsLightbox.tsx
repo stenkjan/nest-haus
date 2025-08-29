@@ -2,56 +2,25 @@
 
 import React, { useState } from "react";
 import { Dialog } from "@/components/ui/Dialog";
-import ContentCards from "./ContentCards";
+import PlanungspaketeCards, {
+  PlanungspaketeCardData,
+} from "./PlanungspaketeCards";
 
-interface CardData {
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  mobileTitle?: string;
-  mobileSubtitle?: string;
-  mobileDescription?: string;
-  image: string;
-  backgroundColor: string;
-}
-
-interface StaticCardData {
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  mobileTitle?: string;
-  mobileSubtitle?: string;
-  mobileDescription?: string;
-  image: string;
-  backgroundColor: string;
-  buttons?: Array<{
-    text: string;
-    variant: "primary" | "secondary";
-    size: "xs" | "sm" | "md" | "lg";
-    link?: string;
-    onClick?: () => void;
-  }>;
-}
-
-interface ContentCardsLightboxProps {
-  variant?: "responsive" | "static";
+interface PlanungspaketeCardsLightboxProps {
   title?: string;
   subtitle?: string;
   triggerClassName?: string;
   triggerText?: string;
-  customData?: CardData[] | StaticCardData[];
+  customData?: PlanungspaketeCardData[];
 }
 
-export default function ContentCardsLightbox({
-  variant = "responsive",
-  title = "Content Cards",
-  subtitle: _subtitle = "Navigate with arrow keys or swipe on mobile",
+export default function PlanungspaketeCardsLightbox({
+  title = "Planungspakete Details",
+  subtitle: _subtitle = "Click on any card to see detailed information",
   triggerClassName = "",
-  triggerText = "Open in Lightbox",
+  triggerText = "Open Planungspakete in Lightbox",
   customData,
-}: ContentCardsLightboxProps) {
+}: PlanungspaketeCardsLightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => setIsOpen(true);
@@ -75,10 +44,9 @@ export default function ContentCardsLightbox({
         className="p-0"
       >
         <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
-          {/* ContentCards with transparent background */}
+          {/* PlanungspaketeCards with transparent background */}
           <div className="w-full max-w-none my-4">
-            <ContentCards
-              variant={variant}
+            <PlanungspaketeCards
               title={title}
               subtitle=""
               maxWidth={false}
