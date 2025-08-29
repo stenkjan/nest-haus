@@ -1192,10 +1192,10 @@ export default function CheckoutStepper({
                                           .includes("pro")
                                           ? "pro"
                                           : card.title
-                                                .toLowerCase()
-                                                .includes("plus")
-                                            ? "plus"
-                                            : "basis";
+                                              .toLowerCase()
+                                              .includes("plus")
+                                          ? "plus"
+                                          : "basis";
                                         return cardValue === localSelectedPlan;
                                       });
                                       return (
@@ -1274,10 +1274,10 @@ export default function CheckoutStepper({
                                         .includes("pro")
                                         ? "pro"
                                         : card.title
-                                              .toLowerCase()
-                                              .includes("plus")
-                                          ? "plus"
-                                          : "basis";
+                                            .toLowerCase()
+                                            .includes("plus")
+                                        ? "plus"
+                                        : "basis";
                                       return cardValue === localSelectedPlan;
                                     });
                                     if (pricingCard) {
@@ -1484,92 +1484,13 @@ export default function CheckoutStepper({
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
               <button
                 type="button"
-                onClick={() => {
-                  // Trigger alpha test purchase completion if test is active
-                  if (typeof window !== "undefined") {
-                    // Check if alpha test is active via localStorage (more reliable than URL params)
-                    const hasActiveTest =
-                      localStorage.getItem("nest-haus-test-session-id") !==
-                      null;
-                    const isAlphaTest = hasActiveTest;
-
-                    if (isAlphaTest) {
-                      console.log(
-                        "🧪 Purchase button clicked - triggering alpha test completion"
-                      );
-                      // Mark step 2 as completed (configurator + cart phase)
-                      localStorage.setItem(
-                        "nest-haus-test-step2-completed",
-                        "true"
-                      );
-                      localStorage.setItem(
-                        "nest-haus-test-purchase-completed",
-                        "true"
-                      );
-                      // Clear purchase validation flag if it was set (real purchase takes precedence)
-                      localStorage.removeItem(
-                        "nest-haus-test-purchase-validation-completed"
-                      );
-                      console.log(
-                        "🧪 Dispatching alpha-test-purchase-completed event"
-                      );
-                      // Trigger popup to show after a brief delay
-                      setTimeout(() => {
-                        window.dispatchEvent(
-                          new CustomEvent("alpha-test-purchase-completed")
-                        );
-                      }, 500);
-                    }
-                  }
-                }}
                 className="bg-black text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-gray-800 transition-colors"
               >
                 Mit Apple Pay bezahlen
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  // Trigger alpha test purchase completion if test is active
-                  if (typeof window !== "undefined") {
-                    // Check if alpha test is active via localStorage (more reliable than URL params)
-                    const hasActiveTest =
-                      localStorage.getItem("nest-haus-test-session-id") !==
-                      null;
-                    const isAlphaTest = hasActiveTest;
-
-                    if (isAlphaTest) {
-                      console.log(
-                        "🧪 Purchase button clicked - triggering alpha test completion"
-                      );
-                      // Mark step 2 as completed (configurator + cart phase)
-                      localStorage.setItem(
-                        "nest-haus-test-step2-completed",
-                        "true"
-                      );
-                      localStorage.setItem(
-                        "nest-haus-test-purchase-completed",
-                        "true"
-                      );
-                      // Clear purchase validation flag if it was set (real purchase takes precedence)
-                      localStorage.removeItem(
-                        "nest-haus-test-purchase-validation-completed"
-                      );
-                      console.log(
-                        "🧪 Dispatching alpha-test-purchase-completed event"
-                      );
-                      // Trigger popup to show after a brief delay
-                      setTimeout(() => {
-                        window.dispatchEvent(
-                          new CustomEvent("alpha-test-purchase-completed")
-                        );
-                      }, 500);
-                    }
-                  }
-
-                  if (onScrollToContact) {
-                    onScrollToContact();
-                  }
-                }}
+                onClick={onScrollToContact}
                 className="bg-blue-600 text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
               >
                 Zur Kassa
