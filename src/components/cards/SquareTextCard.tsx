@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo } from "motion/react";
 import "@/app/konfigurator/components/hide-scrollbar.css";
+import "./mobile-scroll-optimizations.css";
 
 interface SquareTextCardData {
   id: number;
@@ -217,17 +218,30 @@ export default function SquareTextCard({
     const currentX = x.get();
     let targetIndex = Math.round(-currentX / (cardWidth + gap));
 
-    // Adjust based on drag direction and velocity
-    if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
-      if (offset > 0 || velocity > 500) {
+    // Enhanced mobile-friendly thresholds
+    const isMobile = screenWidth < 768;
+    const offsetThreshold = isMobile ? 30 : 50;
+    const velocityThreshold = isMobile ? 300 : 500;
+
+    // Adjust based on drag direction and velocity with mobile optimization
+    if (
+      Math.abs(offset) > offsetThreshold ||
+      Math.abs(velocity) > velocityThreshold
+    ) {
+      if (offset > 0 || velocity > velocityThreshold) {
         targetIndex = Math.max(0, targetIndex - 1);
-      } else if (offset < 0 || velocity < -500) {
+      } else if (offset < 0 || velocity < -velocityThreshold) {
         targetIndex = Math.min(maxIndex, targetIndex + 1);
       }
     }
 
+    // Ensure target index is within bounds
+    targetIndex = Math.max(0, Math.min(maxIndex, targetIndex));
+
     setCurrentIndex(targetIndex);
     const newX = -(targetIndex * (cardWidth + gap));
+
+    // Animate to target position with mobile-optimized spring
     x.set(newX);
   };
 
@@ -278,7 +292,7 @@ export default function SquareTextCard({
                   : 640,
               height:
                 typeof window !== "undefined" && window.innerWidth < 768
-                  ? 312 * 1.4 // Mobile: taller aspect ratio with mobile width
+                  ? 312 * 1.75 // Mobile: taller aspect ratio with mobile width (25% increase)
                   : 640, // Desktop: square
             }}
           />
@@ -301,10 +315,10 @@ export default function SquareTextCard({
       {/* Cards Container */}
       <div className={`relative ${isLightboxMode ? "py-2" : "py-8"}`}>
         {/* Horizontal Scrolling Layout */}
-        <div className="overflow-visible">
+        <div className="overflow-x-clip">
           <div
             ref={containerRef}
-            className={`overflow-visible ${
+            className={`overflow-x-hidden cards-scroll-container cards-scroll-snap cards-touch-optimized cards-no-bounce ${
               maxWidth ? "px-8" : "px-4"
             } cursor-grab active:cursor-grabbing`}
             style={{ overflow: "visible" }}
@@ -320,23 +334,25 @@ export default function SquareTextCard({
                 left: maxScroll,
                 right: 0,
               }}
-              dragElastic={0.1}
+              dragElastic={0.05}
+              dragMomentum={false}
               onDragEnd={handleDragEnd}
               transition={{
                 type: "spring",
-                stiffness: 300,
-                damping: 30,
+                stiffness: 400,
+                damping: 35,
+                mass: 0.8,
               }}
             >
               {cardData.map((card, index) => (
                 <motion.div
                   key={card.id}
-                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer cards-scroll-snap-item cards-mobile-smooth"
                   style={{
                     width: cardWidth,
                     height:
                       isClient && screenWidth < 768
-                        ? cardWidth * 1.4 // Mobile: 1.4:1 aspect ratio (taller for more text space)
+                        ? cardWidth * 1.75 // Mobile: 1.75:1 aspect ratio (25% taller than 1.4 for more text space)
                         : cardWidth, // Desktop/Tablet: Square aspect ratio
                     backgroundColor: card.backgroundColor,
                   }}
@@ -345,7 +361,7 @@ export default function SquareTextCard({
                   onClick={() => onCardClick?.(card.id)}
                 >
                   {/* Text Content - Full card */}
-                  <div className="h-full flex flex-col justify-start items-center px-16 py-16 pt-20">
+                  <div className="h-full flex flex-col justify-start items-center px-8 md:px-16 py-16 pt-10 md:pt-20">
                     {/* Title and Subtitle - Centered horizontally */}
                     <motion.div
                       className="text-center mb-6"
@@ -361,7 +377,7 @@ export default function SquareTextCard({
                         {getCardText(card, "title")}
                       </h3>
                       <h4
-                        className={`text-lg md:text-xl font-medium mb-5 ${
+                        className={`text-sm md:text-xl font-medium mb-5 ${
                           card.textColor || "text-gray-700"
                         }`}
                       >

@@ -1,0 +1,68 @@
+/* Mobile Scroll Optimizations for Card Components */
+
+/* Hide scrollbars while maintaining functionality */
+.cards-scroll-container {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+}
+
+.cards-scroll-container::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+/* iOS-specific touch optimizations - Applied to the motion container for drag interactions */
+.cards-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    /* Smooth momentum scrolling on iOS */
+    overflow-scrolling: touch;
+    /* Standard property */
+}
+
+/* Scroll snap optimizations - Applied via JavaScript for Framer Motion compatibility */
+.cards-scroll-snap {
+    /* Note: CSS scroll-snap is handled via JavaScript for drag interactions */
+}
+
+.cards-scroll-snap-item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    /* Prevents skipping cards on fast scrolling */
+}
+
+/* Touch gesture improvements */
+.cards-touch-optimized {
+    touch-action: pan-x;
+    /* Only allow horizontal panning */
+    user-select: none;
+    /* Prevent text selection during dragging */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Prevent bounce effect on iOS when reaching scroll boundaries */
+.cards-no-bounce {
+    overscroll-behavior-x: contain;
+    -webkit-overscroll-behavior-x: contain;
+}
+
+/* Smooth transitions for mobile */
+@media (max-width: 768px) {
+    .cards-mobile-smooth {
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .cards-scroll-container {
+        scroll-behavior: auto;
+    }
+
+    .cards-mobile-smooth {
+        transition: none;
+    }
+}

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo } from "motion/react";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
+import "./mobile-scroll-optimizations.css";
 
 interface SquareCardData {
   id: number;
@@ -189,17 +190,30 @@ export default function SquareGlassCardsScroll({
     const currentX = x.get();
     let targetIndex = Math.round(-currentX / (cardSize + gap));
 
-    // Adjust based on drag direction and velocity
-    if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
-      if (offset > 0 || velocity > 500) {
+    // Enhanced mobile-friendly thresholds
+    const isMobile = screenWidth < 768;
+    const offsetThreshold = isMobile ? 30 : 50;
+    const velocityThreshold = isMobile ? 300 : 500;
+
+    // Adjust based on drag direction and velocity with mobile optimization
+    if (
+      Math.abs(offset) > offsetThreshold ||
+      Math.abs(velocity) > velocityThreshold
+    ) {
+      if (offset > 0 || velocity > velocityThreshold) {
         targetIndex = Math.max(0, targetIndex - 1);
-      } else if (offset < 0 || velocity < -500) {
+      } else if (offset < 0 || velocity < -velocityThreshold) {
         targetIndex = Math.min(maxIndex, targetIndex + 1);
       }
     }
 
+    // Ensure target index is within bounds
+    targetIndex = Math.max(0, Math.min(maxIndex, targetIndex));
+
     setCurrentIndex(targetIndex);
     const newX = -(targetIndex * (cardSize + gap));
+
+    // Animate to target position with mobile-optimized spring
     x.set(newX);
   };
 
@@ -259,7 +273,7 @@ export default function SquareGlassCardsScroll({
         <div className="relative overflow-x-clip">
           <div
             ref={containerRef}
-            className="overflow-x-hidden px-4 md:px-8"
+            className="overflow-x-hidden cards-scroll-container cards-scroll-snap cards-touch-optimized cards-no-bounce px-4 md:px-8 cursor-grab active:cursor-grabbing"
             style={{ overflow: "visible" }}
           >
             <motion.div
@@ -274,12 +288,19 @@ export default function SquareGlassCardsScroll({
                 right: 0,
               }}
               onDragEnd={handleDragEnd}
-              dragElastic={0.1}
+              dragElastic={0.05}
+              dragMomentum={false}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 35,
+                mass: 0.8,
+              }}
             >
               {cardData.map((card, index) => (
                 <motion.div
                   key={card.id}
-                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col"
+                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col cards-scroll-snap-item cards-mobile-smooth"
                   style={{
                     width: cardSize,
                     height:

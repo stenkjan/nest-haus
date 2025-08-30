@@ -6,6 +6,7 @@ import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
 import { Button } from "@/components/ui";
 import "@/app/konfigurator/components/hide-scrollbar.css";
+import "./mobile-scroll-optimizations.css";
 
 interface CardData {
   id: number;
@@ -305,17 +306,30 @@ export default function ContentCards({
 
     const targetMaxIndex = isStatic ? adjustedMaxIndex : maxIndex;
 
-    // Adjust based on drag direction and velocity
-    if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
-      if (offset > 0 || velocity > 500) {
+    // Enhanced mobile-friendly thresholds
+    const isMobile = screenWidth < 768;
+    const offsetThreshold = isMobile ? 30 : 50;
+    const velocityThreshold = isMobile ? 300 : 500;
+
+    // Adjust based on drag direction and velocity with mobile optimization
+    if (
+      Math.abs(offset) > offsetThreshold ||
+      Math.abs(velocity) > velocityThreshold
+    ) {
+      if (offset > 0 || velocity > velocityThreshold) {
         targetIndex = Math.max(0, targetIndex - 1);
-      } else if (offset < 0 || velocity < -500) {
+      } else if (offset < 0 || velocity < -velocityThreshold) {
         targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
       }
     }
 
+    // Ensure target index is within bounds
+    targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
+
     setCurrentIndex(targetIndex);
     const newX = -(targetIndex * (cardWidth + gap));
+
+    // Animate to target position with mobile-optimized spring
     x.set(newX);
   };
 
@@ -389,9 +403,11 @@ export default function ContentCards({
         <div className="overflow-x-clip">
           <div
             ref={containerRef}
-            className={`overflow-x-hidden ${maxWidth ? "px-8" : "px-4"} ${
-              isStatic ? "" : "cursor-grab active:cursor-grabbing"
-            }`}
+            className={`overflow-x-hidden cards-scroll-container ${
+              isStatic ? "" : "cards-scroll-snap"
+            } cards-touch-optimized cards-no-bounce ${
+              maxWidth ? "px-8" : "px-4"
+            } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
             style={{ overflow: "visible" }}
           >
             <motion.div
@@ -415,12 +431,14 @@ export default function ContentCards({
                       right: 0,
                     }
               }
-              dragElastic={isStatic ? undefined : 0.1}
+              dragElastic={isStatic ? undefined : 0.05}
+              dragMomentum={isStatic ? undefined : false}
               onDragEnd={isStatic ? undefined : handleDragEnd}
               transition={{
                 type: "spring",
-                stiffness: 300,
-                damping: 30,
+                stiffness: 400,
+                damping: 35,
+                mass: 0.8,
               }}
             >
               {displayCards.map((card, index) => (
@@ -431,7 +449,9 @@ export default function ContentCards({
                     (isResponsive && isClient && screenWidth >= 1024)
                       ? "flex"
                       : ""
-                  }`}
+                  } ${
+                    isStatic ? "" : "cards-scroll-snap-item"
+                  } cards-mobile-smooth`}
                   style={{
                     width: cardWidth,
                     height: isStatic
