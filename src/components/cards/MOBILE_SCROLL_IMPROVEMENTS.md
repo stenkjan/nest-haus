@@ -48,11 +48,13 @@ overscroll-behavior-x: contain;
 - Prevents bounce effect at scroll boundaries
 - Maintains native iOS scroll feel
 
-### 3. **Enhanced Touch Gestures**
+### 3. **Enhanced Touch Gestures & Smart Snapping**
 
-- **Mobile-optimized thresholds**: Lower sensitivity for mobile devices
-  - Desktop: 50px offset, 500px/s velocity
-  - Mobile: 30px offset, 300px/s velocity
+- **Device-Specific Behavior**:
+  - **Mobile (<1024px)**: Smart snapping with visual feedback
+  - **Desktop (≥1024px)**: Free scrolling, no forced snapping
+- **Mobile-optimized thresholds**: 30px offset, 300px/s velocity
+- **Desktop natural scrolling**: Momentum continuation with smooth deceleration
 - **Improved drag constraints**: `dragElastic: 0.05` (reduced from 0.1)
 - **Disabled drag momentum**: `dragMomentum: false` for precise control
 
@@ -139,14 +141,17 @@ transition: {
 ### Before:
 
 - ❌ Jerky scrolling on iOS
-- ❌ Cards didn't snap to positions
+- ❌ Confusing snapping without visual feedback
+- ❌ Desktop snapping interfered with browser scrolling
 - ❌ Inconsistent touch responsiveness
 - ❌ Poor user experience on mobile
 
 ### After:
 
 - ✅ Smooth momentum scrolling on iOS
-- ✅ Perfect card snapping behavior
+- ✅ **Mobile-only smart snapping** with visual feedback
+- ✅ **Desktop free scrolling** (no forced snapping)
+- ✅ Clear directional feedback when cards change
 - ✅ Responsive touch gestures
 - ✅ Native-like mobile experience
 - ✅ Consistent behavior across devices

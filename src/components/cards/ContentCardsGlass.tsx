@@ -324,31 +324,51 @@ export default function ContentCardsGlass({
 
     const targetMaxIndex = isStatic ? adjustedMaxIndex : maxIndex;
 
-    // Enhanced mobile-friendly thresholds
-    const isMobile = screenWidth < 768;
-    const offsetThreshold = isMobile ? 30 : 50;
-    const velocityThreshold = isMobile ? 300 : 500;
+    // Mobile vs Desktop behavior
+    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
 
-    // Adjust based on drag direction and velocity with mobile optimization
-    if (
-      Math.abs(offset) > offsetThreshold ||
-      Math.abs(velocity) > velocityThreshold
-    ) {
-      if (offset > 0 || velocity > velocityThreshold) {
-        targetIndex = Math.max(0, targetIndex - 1);
-      } else if (offset < 0 || velocity < -velocityThreshold) {
-        targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
+    if (isMobile) {
+      // Mobile: Enhanced snapping with visual feedback
+      const offsetThreshold = 30;
+      const velocityThreshold = 300;
+
+      // Adjust based on drag direction and velocity
+      if (
+        Math.abs(offset) > offsetThreshold ||
+        Math.abs(velocity) > velocityThreshold
+      ) {
+        if (offset > 0 || velocity > velocityThreshold) {
+          targetIndex = Math.max(0, targetIndex - 1);
+        } else if (offset < 0 || velocity < -velocityThreshold) {
+          targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
+        }
       }
+
+      // Ensure target index is within bounds
+      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
+
+      // Animate with visual feedback for direction
+      setCurrentIndex(targetIndex);
+      const newX = -(targetIndex * (cardWidth + gap));
+
+      // Add visual feedback animation with directional easing
+      x.set(newX);
+    } else {
+      // Desktop: Free scrolling, no snapping
+      // Let the drag settle naturally without forced snapping
+      const naturalX = currentX + velocity * 0.1; // Small momentum continuation
+      const boundedX = Math.max(
+        -(targetMaxIndex * (cardWidth + gap)),
+        Math.min(0, naturalX)
+      );
+
+      // Update current index based on final position
+      const finalIndex = Math.round(-boundedX / (cardWidth + gap));
+      setCurrentIndex(Math.max(0, Math.min(targetMaxIndex, finalIndex)));
+
+      // Smooth deceleration without snapping
+      x.set(boundedX);
     }
-
-    // Ensure target index is within bounds
-    targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
-
-    setCurrentIndex(targetIndex);
-    const newX = -(targetIndex * (cardWidth + gap));
-
-    // Animate to target position with mobile-optimized spring
-    x.set(newX);
   };
 
   const containerClasses = maxWidth
@@ -420,10 +440,14 @@ export default function ContentCardsGlass({
           <div
             ref={containerRef}
             className={`overflow-x-hidden cards-scroll-container ${
-              isStatic ? "" : "cards-scroll-snap"
-            } cards-touch-optimized cards-no-bounce ${
-              maxWidth ? "px-8" : "px-4"
-            } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
+              isStatic
+                ? ""
+                : isClient && screenWidth < 1024
+                ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
+                : ""
+            } ${maxWidth ? "px-8" : "px-4"} ${
+              isStatic ? "" : "cursor-grab active:cursor-grabbing"
+            }`}
             style={{ overflow: "visible" }}
           >
             <motion.div
