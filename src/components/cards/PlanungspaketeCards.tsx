@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo } from "motion/react";
+import { motion, useMotionValue, PanInfo, animate } from "motion/react";
 import { Dialog } from "@/components/ui/Dialog";
+import { useIOSViewport, getIOSViewportStyles } from "@/hooks/useIOSViewport";
 import "@/app/konfigurator/components/hide-scrollbar.css";
+import "./mobile-scroll-optimizations.css";
 
 export interface PlanungspaketeCardData {
   id: number;
@@ -132,6 +134,9 @@ export default function PlanungspaketeCards({
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // iOS viewport hook for stable lightbox sizing
+  const viewport = useIOSViewport();
+
   // Use appropriate data source based on custom data
   const cardData = customData || planungspaketeCardData;
 
@@ -232,18 +237,116 @@ export default function PlanungspaketeCards({
 
     const targetMaxIndex = adjustedMaxIndex;
 
-    // Adjust based on drag direction and velocity
-    if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
-      if (offset > 0 || velocity > 500) {
-        targetIndex = Math.max(0, targetIndex - 1);
-      } else if (offset < 0 || velocity < -500) {
-        targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
-      }
-    }
+    // Mobile vs Desktop behavior
+    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
 
-    setCurrentIndex(targetIndex);
-    const newX = -(targetIndex * (cardWidth + gap));
-    x.set(newX);
+    if (isMobile) {
+      // Mobile: Enhanced snapping with visual feedback
+      const offsetThreshold = 30;
+      const velocityThreshold = 300;
+
+      // Better snapping logic: only change cards with intentional movement
+      // Start with current card as default
+      targetIndex = currentIndex;
+
+      // Only change cards if there's significant drag or velocity
+      if (
+        Math.abs(offset) > offsetThreshold ||
+        Math.abs(velocity) > velocityThreshold
+      ) {
+        if (offset > 0 || velocity > velocityThreshold) {
+          // Dragging/flicking right (previous card)
+          targetIndex = Math.max(0, currentIndex - 1);
+        } else if (offset < 0 || velocity < -velocityThreshold) {
+          // Dragging/flicking left (next card)
+          targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
+        }
+      } else {
+        // Small movements: check if we're more than 70% to next card
+        const currentCardPosition = -(currentIndex * (cardWidth + gap));
+        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
+        const cardThreshold = (cardWidth + gap) * 0.7; // 70% of card width
+
+        if (distanceFromCurrent > cardThreshold) {
+          // We're far enough to snap to the next logical card
+          if (currentX < currentCardPosition) {
+            // Scrolled significantly left, go to next card
+            targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
+          } else {
+            // Scrolled significantly right, go to previous card
+            targetIndex = Math.max(0, currentIndex - 1);
+          }
+        }
+      }
+
+      // Ensure target index is within bounds
+      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
+
+      // Animate with visual feedback for direction
+      setCurrentIndex(targetIndex);
+      const newX = -(targetIndex * (cardWidth + gap));
+
+      if (targetIndex !== currentIndex) {
+        // Two-stage animation for mobile: bounce + slide
+        const direction = targetIndex > currentIndex ? -1 : 1;
+        const bounceDistance = 15; // Small bounce distance
+
+        animate(x, x.get() + direction * bounceDistance, {
+          type: "spring",
+          stiffness: 400,
+          damping: 25,
+          mass: 0.6,
+          duration: 0.15,
+        }).then(() => {
+          animate(x, newX, {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            mass: 0.8,
+            duration: 0.4,
+          });
+        });
+      } else {
+        // Return to current position smoothly
+        animate(x, newX, {
+          type: "spring",
+          stiffness: 400,
+          damping: 35,
+          mass: 0.7,
+          duration: 0.3,
+        });
+      }
+    } else {
+      // Desktop: Smooth deceleration without snapping
+      // Adjust based on drag direction and velocity
+      if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
+        if (offset > 0 || velocity > 500) {
+          targetIndex = Math.max(0, targetIndex - 1);
+        } else if (offset < 0 || velocity < -500) {
+          targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
+        }
+      }
+
+      // Ensure target index is within bounds
+      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
+
+      setCurrentIndex(targetIndex);
+      const newX = -(targetIndex * (cardWidth + gap));
+
+      // Smooth deceleration for desktop
+      const boundedX = Math.max(
+        -(targetMaxIndex * (cardWidth + gap)),
+        Math.min(0, newX)
+      );
+
+      animate(x, boundedX, {
+        type: "spring",
+        stiffness: 250,
+        damping: 25,
+        mass: 1,
+        duration: 0.6,
+      });
+    }
   };
 
   const containerClasses = maxWidth
@@ -422,11 +525,15 @@ export default function PlanungspaketeCards({
               ref={containerRef}
               className={`overflow-x-hidden ${
                 maxWidth ? "px-8" : "px-4"
-              } cursor-grab active:cursor-grabbing`}
+              } cursor-grab active:cursor-grabbing cards-scroll-container`}
               style={{ overflow: "visible" }}
             >
               <motion.div
-                className="flex gap-6"
+                className={`flex gap-6 ${
+                  isClient && screenWidth < 1024
+                    ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
+                    : ""
+                }`}
                 style={{
                   x,
                   width: `${(cardWidth + gap) * displayCards.length - gap}px`,
@@ -436,12 +543,14 @@ export default function PlanungspaketeCards({
                   left: maxScroll,
                   right: 0,
                 }}
-                dragElastic={0.1}
+                dragElastic={0.05}
+                dragMomentum={false}
                 onDragEnd={handleDragEnd}
                 transition={{
                   type: "spring",
-                  stiffness: 300,
-                  damping: 30,
+                  stiffness: 400,
+                  damping: 35,
+                  mass: 0.8,
                 }}
               >
                 {displayCards.map((card, index) => (
@@ -452,9 +561,10 @@ export default function PlanungspaketeCards({
                       width: cardWidth,
                       height:
                         typeof window !== "undefined" && window.innerWidth < 768
-                          ? Math.min(600, window.innerHeight * 0.75) // Original mobile size
-                          : Math.min(1000, window.innerHeight * 0.875), // 25% taller for desktop only
+                          ? Math.min(600, viewport.height * 0.75) // Use stable viewport height for mobile
+                          : Math.min(1000, viewport.height * 0.875), // Use stable viewport height for desktop
                       backgroundColor: card.backgroundColor,
+                      scrollSnapAlign: "start",
                     }}
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.2 }}
@@ -636,7 +746,10 @@ export default function PlanungspaketeCards({
           transparent={true}
           className="p-0"
         >
-          <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
+          <div
+            className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto ios-dialog-container"
+            style={getIOSViewportStyles(viewport)}
+          >
             <div className="w-full max-w-none my-4">
               <PlanungspaketeCards
                 title={title}

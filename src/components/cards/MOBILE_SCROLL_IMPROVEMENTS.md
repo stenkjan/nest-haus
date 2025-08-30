@@ -23,6 +23,13 @@ This document outlines the comprehensive improvements made to enhance mobile scr
 - Overflow containers preventing proper expansion
 - Z-index stacking issues with progress indicators
 
+### 4. **iOS Safari Lightbox Height Snapping**
+
+- Lightboxes opening with correct height but snapping smaller when scrolling
+- iOS Safari address bar show/hide causing viewport height changes
+- `window.innerHeight` changing dynamically during scroll interactions
+- Lightbox content getting cropped or misaligned
+
 ## Solutions Implemented
 
 ### 1. **CSS Scroll Snap Integration**
@@ -90,6 +97,25 @@ transition: {
 - Allows vertical expansion for hover effects
 - Prevents progress indicator overlap issues
 
+### 7. **iOS Safari Stable Viewport**
+
+```javascript
+import { useIOSViewport, getIOSViewportStyles } from "@/hooks/useIOSViewport";
+
+const viewport = useIOSViewport();
+
+// Use stable viewport height instead of window.innerHeight
+height: viewport.height * 0.75
+
+// Apply iOS viewport styles to dialog containers
+<div style={getIOSViewportStyles(viewport)} className="ios-dialog-container">
+```
+
+- **Visual Viewport API**: Uses stable viewport measurements on iOS Safari
+- **Prevents address bar issues**: Height remains consistent during scroll
+- **Fallback support**: Works on all browsers with appropriate fallbacks
+- **Dialog-specific**: Only affects lightbox/dialog components, not main content
+
 ## Components Updated
 
 ### 1. **SquareTextCard.tsx**
@@ -124,6 +150,18 @@ transition: {
 - ✅ Enhanced spring animations
 - ✅ Touch gesture improvements
 - ✅ Maintained working overflow structure
+
+### 5. **PlanungspaketeCards.tsx**
+
+- ✅ CSS scroll-snap implementation
+- ✅ iOS momentum scrolling
+- ✅ Mobile-optimized drag thresholds (30px offset, 300px/s velocity)
+- ✅ Enhanced spring animations with two-stage mobile feedback
+- ✅ Touch gesture improvements
+- ✅ 70% card threshold for gentle scrolling
+- ✅ Desktop vs mobile behavior differentiation (1024px breakpoint)
+- ✅ **iOS Safari stable viewport**: Fixed lightbox height snapping issue
+- ✅ **Visual Viewport API**: Prevents address bar resize problems
 
 ## New CSS File: `mobile-scroll-optimizations.css`
 
