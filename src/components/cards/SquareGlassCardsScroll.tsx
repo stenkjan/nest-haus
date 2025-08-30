@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo } from "motion/react";
+import { motion, useMotionValue, PanInfo, animate } from "motion/react";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import "./mobile-scroll-optimizations.css";
@@ -198,15 +198,38 @@ export default function SquareGlassCardsScroll({
       const offsetThreshold = 30;
       const velocityThreshold = 300;
 
-      // Adjust based on drag direction and velocity
+      // Better snapping logic: only change cards with intentional movement
+      // Start with current card as default
+      targetIndex = currentIndex;
+
+      // Only change cards if there's significant drag or velocity
       if (
         Math.abs(offset) > offsetThreshold ||
         Math.abs(velocity) > velocityThreshold
       ) {
         if (offset > 0 || velocity > velocityThreshold) {
-          targetIndex = Math.max(0, targetIndex - 1);
+          // Dragging/flicking right (previous card)
+          targetIndex = Math.max(0, currentIndex - 1);
         } else if (offset < 0 || velocity < -velocityThreshold) {
-          targetIndex = Math.min(maxIndex, targetIndex + 1);
+          // Dragging/flicking left (next card)
+          targetIndex = Math.min(maxIndex, currentIndex + 1);
+        }
+      } else {
+        // Small movements: check if we're more than 70% to next card
+        const currentX = x.get();
+        const currentCardPosition = -(currentIndex * (cardSize + gap));
+        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
+        const cardThreshold = (cardSize + gap) * 0.7; // 70% of card width
+
+        if (distanceFromCurrent > cardThreshold) {
+          // We're far enough to snap to the next logical card
+          if (currentX < currentCardPosition) {
+            // Scrolled significantly left, go to next card
+            targetIndex = Math.min(maxIndex, currentIndex + 1);
+          } else {
+            // Scrolled significantly right, go to previous card
+            targetIndex = Math.max(0, currentIndex - 1);
+          }
         }
       }
 
@@ -218,7 +241,25 @@ export default function SquareGlassCardsScroll({
       const newX = -(targetIndex * (cardSize + gap));
 
       // Add visual feedback animation with directional easing
-      x.set(newX);
+      // First, add a small bounce in the opposite direction for visual feedback
+      const direction = targetIndex > currentIndex ? -1 : 1;
+      const bounceDistance = 15; // Small bounce distance
+
+      animate(x, x.get() + direction * bounceDistance, {
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        duration: 0.15,
+      }).then(() => {
+        // Then animate to the final position
+        animate(x, newX, {
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
+          duration: 0.5,
+        });
+      });
     } else {
       // Desktop: Free scrolling, no snapping
       // Let the drag settle naturally without forced snapping
@@ -233,7 +274,12 @@ export default function SquareGlassCardsScroll({
       setCurrentIndex(Math.max(0, Math.min(maxIndex, finalIndex)));
 
       // Smooth deceleration without snapping
-      x.set(boundedX);
+      animate(x, boundedX, {
+        type: "spring",
+        stiffness: 150,
+        damping: 20,
+        mass: 1.0,
+      });
     }
   };
 
