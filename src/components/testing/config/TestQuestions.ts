@@ -185,84 +185,84 @@ export const TEST_STEPS: TestStep[] = [
                 id: "main-challenge",
                 type: "text",
                 question: "Gab es eine grundsätzliche Herausforderung oder ein großes Problem bei der Nutzung der Website?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "nest-haus-concept-understanding",
                 type: "text",
                 question: "Hast du nach dem Besuch der Website verstanden, wie das NEST-Haus funktioniert (z. B. Module, Aufbau, Flexibilität)?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "missing-information",
                 type: "text",
                 question: "Welche Informationen hast du vermisst oder hättest du gerne zusätzlich gesehen?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "improvement-suggestions",
                 type: "text",
                 question: "Hast du konkrete Verbesserungsvorschläge für die Website oder den Konfigurator?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "advantages-disadvantages",
                 type: "text",
                 question: "Versuche Vor- und Nachteile aus deiner Sicht gegenüber herkömmlichen Hausbaumethoden zu erklären. (Bitte bestmöglich beantworten - ist für uns eine sehr wichtige Frage)",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "purchase-to-move-in-process",
                 type: "text",
                 question: "Erkläre den Prozess von Kauf bis zum bezugsfertigen Haus in eigenen Worten in 5 Schritten.",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "window-wall-positioning",
                 type: "text",
                 question: "Wie/wann/von wem werden die Positionierung von Fenstern und Innenwänden festgelegt?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "house-categorization",
                 type: "text",
                 question: "Wie würdest du das Nest Haus kategorisieren? (Fertigteilhaus, Tiny House, Massivhaus, Modulbauhaus, Holz-Haus, mobile-home oder eine eigene Kategorie?)",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "additional-costs",
                 type: "text",
                 question: "Welche weiteren Kosten kommen deiner Meinung nach, nach dem Kauf noch auf dich zu, bis du einziehen kannst?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "unclear-topics",
                 type: "text",
                 question: "Welches Thema ist für dich noch am unklarsten? Wo bleiben Fragezeichen?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "confusing-elements",
                 type: "text",
                 question: "Gab es irgendetwas, was dich irritiert oder verunsichert hat?",
-                required: false,
+                required: true,
                 step: "feedback"
             },
             {
                 id: "detailed-description-needs",
                 type: "text",
                 question: "Was hättest du gerne noch genauer beschrieben?",
-                required: false,
+                required: true,
                 step: "feedback"
             }
         ],
