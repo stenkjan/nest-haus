@@ -1484,13 +1484,35 @@ export default function CheckoutStepper({
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
               <button
                 type="button"
+                onClick={() => {
+                  // Mark purchase as completed for alpha test
+                  localStorage.setItem("nest-haus-test-purchase-completed", "true");
+                  console.log("🧪 Apple Pay clicked - marking purchase as completed");
+                  
+                  // Dispatch event to trigger feedback popup
+                  window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));
+                  console.log("🧪 Dispatched alpha-test-purchase-completed event");
+                }}
                 className="bg-black text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-gray-800 transition-colors"
               >
                 Mit Apple Pay bezahlen
               </button>
               <button
                 type="button"
-                onClick={onScrollToContact}
+                onClick={() => {
+                  // Mark purchase as completed for alpha test
+                  localStorage.setItem("nest-haus-test-purchase-completed", "true");
+                  console.log("🧪 Zur Kassa clicked - marking purchase as completed");
+                  
+                  // Dispatch event to trigger feedback popup
+                  window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));
+                  console.log("🧪 Dispatched alpha-test-purchase-completed event");
+                  
+                  // Also call the original scroll function
+                  if (onScrollToContact) {
+                    onScrollToContact();
+                  }
+                }}
                 className="bg-blue-600 text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
               >
                 Zur Kassa
