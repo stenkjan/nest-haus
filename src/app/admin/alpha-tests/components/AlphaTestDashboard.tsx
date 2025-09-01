@@ -737,7 +737,7 @@ export default function AlphaTestDashboard() {
     );
   }
 
-  const { summary, questionAnalysis, deviceStats, errorAnalysis, recentTests } =
+  const { summary, deviceStats, errorAnalysis, recentTests } =
     analytics;
 
   return (
@@ -1102,11 +1102,11 @@ export default function AlphaTestDashboard() {
             });
           });
 
-          const totalRatings = Object.values(ratingCounts).reduce(
+          const _totalRatings = Object.values(ratingCounts).reduce(
             (a, b) => a + b,
             0
           );
-          const maxCount = Math.max(...Object.values(ratingCounts));
+          const _maxCount = Math.max(...Object.values(ratingCounts));
 
           return sortedRatingQuestions.length > 0 ? (
             <div className="mb-8">
@@ -1532,7 +1532,7 @@ export default function AlphaTestDashboard() {
                             <td colSpan={6} className="px-6 py-4 bg-gray-50">
                               <div className="space-y-3">
                                 <h5 className="font-medium text-gray-900 mb-3">
-                                  Alle Antworten zu: "{question.questionText}"
+                                  Alle Antworten zu: &quot;{question.questionText}&quot;
                                 </h5>
                                 {question.responses.length > 0 ? (
                                   <div className="space-y-2">
