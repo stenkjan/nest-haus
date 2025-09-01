@@ -1108,46 +1108,50 @@ export default function AlphaTestDashboard() {
           );
           const maxCount = Math.max(...Object.values(ratingCounts));
 
-          return totalRatings > 0 ? (
+          return sortedRatingQuestions.length > 0 ? (
             <div className="mb-8">
               <h4 className="text-md font-medium text-gray-900 mb-4">
-                Rating Distribution (All Questions)
+                Rating Distribution by Question ({sortedRatingQuestions.length} Fragen)
               </h4>
-              <div className="grid grid-cols-6 gap-2">
-                {Object.entries(ratingCounts).map(([rating, count]) => {
-                  const percentage =
-                    totalRatings > 0 ? (count / totalRatings) * 100 : 0;
-                  const height = maxCount > 0 ? (count / maxCount) * 100 : 0;
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3">
+                {sortedRatingQuestions.map((item) => {
+                  const question = item.data!;
+                  const questionAverage = question.averageRating || 0;
+                  const responseCount = question.responseCount;
 
                   return (
-                    <div key={rating} className="text-center">
+                    <div key={question.questionId} className="text-center">
                       <div className="relative h-32 bg-gray-100 rounded-t-lg mb-2 flex items-end">
                         <div
                           className={`w-full rounded-t-lg transition-all duration-500 ${
-                            parseInt(rating) <= 2
+                            questionAverage <= 2
                               ? "bg-red-400"
-                              : parseInt(rating) <= 4
+                              : questionAverage <= 4
                                 ? "bg-yellow-400"
                                 : "bg-green-400"
                           }`}
-                          style={{ height: `${height}%` }}
+                          style={{ height: `${questionAverage > 0 ? (questionAverage / 6) * 100 : 0}%` }}
                         ></div>
                         <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-700">
-                          {count}
+                          {questionAverage.toFixed(1)}
                         </div>
                       </div>
-                      <div className="text-sm font-medium text-gray-900">
-                        {rating}/6
+                      <div className="text-xs font-medium text-gray-900 mb-1">
+                        {item.label}
                       </div>
                       <div className="text-xs text-gray-500">
-                        {percentage.toFixed(1)}%
+                        {responseCount} Antworten
                       </div>
                     </div>
                   );
                 })}
               </div>
             </div>
-          ) : null;
+          ) : (
+            <div className="mb-8 text-center py-8 text-gray-500">
+              Keine Rating-Fragen verfügbar
+            </div>
+          );
         })()}
 
         {/* Individual Question Rating Distributions */}

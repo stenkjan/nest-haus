@@ -436,17 +436,28 @@ export async function GET(request: NextRequest) {
 
         // Define current question IDs (only show questions that are currently in the test)
         const currentQuestionIds = [
-            'purchase-completion-issue',
-            'overall-satisfaction',
+            // Rating questions (1-6 scale)
             'navigation-ease',
             'configurator-usability',
-            'content-clarity',
+            'nest-haus-understanding',
             'purchase-process',
-            'content-readability',
-            'most-helpful-feature',
-            'biggest-challenge',
+            'configurator-options',
+            'website-overall',
+            'purchase-intention',
+            // Open text questions
+            'content-display-issues',
+            'main-challenge',
+            'nest-haus-concept-understanding',
             'missing-information',
-            'improvement-suggestions'
+            'improvement-suggestions',
+            'advantages-disadvantages',
+            'purchase-to-move-in-process',
+            'window-wall-positioning',
+            'house-categorization',
+            'additional-costs',
+            'unclear-topics',
+            'confusing-elements',
+            'detailed-description-needs'
         ];
 
         // Analyze responses by question (filter to only current questions)
