@@ -416,6 +416,100 @@ export default function AlphaTestDashboard() {
   const [showTestModal, setShowTestModal] = useState(false);
   const [isQuestionRatingsExpanded, setIsQuestionRatingsExpanded] =
     useState(false);
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
+
+  // Helper function to extract key findings from responses
+  const extractKeyFindings = (responses: Array<Record<string, unknown>>): string[] => {
+    const allText = responses
+      .map(r => String(r.value || '').trim())
+      .filter(text => text.length > 2)
+      .join(' ');
+    
+    if (!allText) return [];
+    
+    // Simple keyword extraction - split by common separators and get frequent words
+    const words = allText
+      .toLowerCase()
+      .replace(/[.,!?;()]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 3)
+      .filter(word => !['dass', 'eine', 'sind', 'haben', 'kann', 'wird', 'auch', 'sehr', 'mehr', 'aber', 'oder', 'und', 'der', 'die', 'das', 'ein', 'ist', 'für', 'mit', 'auf', 'von', 'zu', 'im', 'es', 'sich', 'nicht', 'war', 'bei', 'ich', 'sie', 'er', 'wir', 'ihr'].includes(word));
+    
+    // Count word frequency
+    const wordCount = words.reduce((acc: Record<string, number>, word) => {
+      acc[word] = (acc[word] || 0) + 1;
+      return acc;
+    }, {});
+    
+    // Return top 5-6 most frequent words
+    return Object.entries(wordCount)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 6)
+      .map(([word]) => word);
+  };
+
+  // Helper function to generate summary
+  const generateSummary = (responses: Array<Record<string, unknown>>): string => {
+    const validResponses = responses
+      .map(r => String(r.value || '').trim())
+      .filter(text => text.length > 5);
+    
+    if (validResponses.length === 0) return 'Keine Antworten verfügbar';
+    if (validResponses.length === 1) return validResponses[0];
+    
+    // For multiple responses, create a simple summary
+    const commonThemes = extractKeyFindings(responses);
+    const avgLength = Math.round(validResponses.reduce((sum, text) => sum + text.length, 0) / validResponses.length);
+    
+    return `${validResponses.length} Antworten mit durchschnittlich ${avgLength} Zeichen. Häufige Themen: ${commonThemes.slice(0, 3).join(', ')}.`;
+  };
+
+  // Helper function to detect tendency
+  const detectTendency = (questionText: string, responses: Array<Record<string, unknown>>): { tendency: string; explanation: string } => {
+    const validResponses = responses
+      .map(r => String(r.value || '').trim().toLowerCase())
+      .filter(text => text.length > 3);
+    
+    if (validResponses.length === 0) return { tendency: 'Neutral', explanation: 'Keine Antworten verfügbar' };
+    
+    const positiveWords = ['gut', 'toll', 'super', 'perfekt', 'einfach', 'klar', 'schön', 'gefällt', 'gerne', 'ja', 'positiv', 'hilfreich', 'übersichtlich'];
+    const negativeWords = ['schlecht', 'schwer', 'kompliziert', 'unklar', 'fehlt', 'problem', 'schwierig', 'verwirrend', 'nein', 'nicht', 'negativ'];
+    
+    let positiveScore = 0;
+    let negativeScore = 0;
+    
+    validResponses.forEach(response => {
+      positiveWords.forEach(word => {
+        if (response.includes(word)) positiveScore++;
+      });
+      negativeWords.forEach(word => {
+        if (response.includes(word)) negativeScore++;
+      });
+    });
+    
+    const totalScore = positiveScore + negativeScore;
+    if (totalScore === 0) return { tendency: 'Neutral', explanation: 'Keine eindeutige Tendenz erkennbar' };
+    
+    const positiveRatio = positiveScore / totalScore;
+    
+    if (positiveRatio >= 0.7) {
+      return { tendency: 'Positiv', explanation: `${Math.round(positiveRatio * 100)}% positive Begriffe in den Antworten` };
+    } else if (positiveRatio <= 0.3) {
+      return { tendency: 'Negativ', explanation: `${Math.round((1 - positiveRatio) * 100)}% negative Begriffe in den Antworten` };
+    } else {
+      return { tendency: 'Gemischt', explanation: 'Ausgewogene Mischung aus positiven und negativen Aspekten' };
+    }
+  };
+
+  const toggleQuestionExpansion = (questionId: string) => {
+    const newExpanded = new Set(expandedQuestions);
+    if (newExpanded.has(questionId)) {
+      newExpanded.delete(questionId);
+    } else {
+      newExpanded.add(questionId);
+    }
+    setExpandedQuestions(newExpanded);
+  };
 
   const fetchAnalytics = useCallback(async () => {
     try {
@@ -974,14 +1068,33 @@ export default function AlphaTestDashboard() {
 
         {/* Rating Distribution Chart */}
         {(() => {
-          // Calculate rating distribution
+          // Define the expected question order and labels
+          const questionOrder = [
+            { id: "navigation-ease", label: "1. Orientierung/Navigation" },
+            { id: "configurator-usability", label: "2. Benutzerfreundlichkeit" },
+            { id: "nest-haus-understanding", label: "3. Nest-Haus-Verständnis" },
+            { id: "purchase-process", label: "4. Bestellprozess" },
+            { id: "configurator-options", label: "5. Auswahlmöglichkeiten" },
+            { id: "website-overall", label: "6. Website" },
+            { id: "purchase-intention", label: "7. Eigenes Nest" }
+          ];
+
+          // Get rating questions and sort them according to our defined order
           const ratingQuestions = analytics.questionAnalysis.filter(
             (q) => q.questionType === "RATING" && q.averageRating
           );
+
+          const sortedRatingQuestions = questionOrder
+            .map(orderItem => ({
+              ...orderItem,
+              data: ratingQuestions.find(q => q.questionId === orderItem.id)
+            }))
+            .filter(item => item.data); // Only include questions that have data
+
           const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
 
-          ratingQuestions.forEach((q) => {
-            q.responses.forEach((response: Record<string, unknown>) => {
+          sortedRatingQuestions.forEach((item) => {
+            item.data?.responses.forEach((response: Record<string, unknown>) => {
               const value = response?.value;
               if (typeof value === "number" && value >= 1 && value <= 6) {
                 ratingCounts[value as keyof typeof ratingCounts]++;
@@ -1039,11 +1152,30 @@ export default function AlphaTestDashboard() {
 
         {/* Individual Question Rating Distributions */}
         {(() => {
+          // Define the expected question order and labels
+          const questionOrder = [
+            { id: "navigation-ease", label: "1. Orientierung/Navigation" },
+            { id: "configurator-usability", label: "2. Benutzerfreundlichkeit" },
+            { id: "nest-haus-understanding", label: "3. Nest-Haus-Verständnis" },
+            { id: "purchase-process", label: "4. Bestellprozess" },
+            { id: "configurator-options", label: "5. Auswahlmöglichkeiten" },
+            { id: "website-overall", label: "6. Website" },
+            { id: "purchase-intention", label: "7. Eigenes Nest" }
+          ];
+
           const ratingQuestions = analytics.questionAnalysis.filter(
             (q) => q.questionType === "RATING" && q.averageRating
           );
 
-          return ratingQuestions.length > 0 ? (
+          // Sort questions according to our defined order
+          const sortedRatingQuestions = questionOrder
+            .map(orderItem => ({
+              ...orderItem,
+              data: ratingQuestions.find(q => q.questionId === orderItem.id)
+            }))
+            .filter(item => item.data); // Only include questions that have data
+
+          return sortedRatingQuestions.length > 0 ? (
             <div className="mb-8">
               <div
                 className="flex items-center justify-between cursor-pointer mb-6 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -1052,7 +1184,7 @@ export default function AlphaTestDashboard() {
                 }
               >
                 <h4 className="text-md font-medium text-gray-900">
-                  📊 Rating Distribution by Question ({ratingQuestions.length}{" "}
+                  📊 Rating Distribution by Question ({sortedRatingQuestions.length}{" "}
                   questions)
                 </h4>
                 <div className="flex items-center space-x-2">
@@ -1069,7 +1201,8 @@ export default function AlphaTestDashboard() {
 
               {isQuestionRatingsExpanded && (
                 <div className="space-y-6 animate-in slide-in-from-top-2 duration-300">
-                  {ratingQuestions.map((question, _index) => {
+                  {sortedRatingQuestions.map((item, _index) => {
+                    const question = item.data!;
                     // Calculate rating distribution for this specific question
                     const questionRatingCounts = {
                       1: 0,
@@ -1269,63 +1402,166 @@ export default function AlphaTestDashboard() {
         })()}
       </div>
 
-      {/* Question Analysis */}
+      {/* Question Analysis - Offene Fragen */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Question Analysis
+          Question Analysis - Offene Fragen
         </h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Question
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Responses
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Avg Rating
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {questionAnalysis.map((question) => (
-                <tr key={question.questionId} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    <div
-                      className="max-w-xs truncate"
-                      title={question.questionText}
-                    >
-                      {question.questionText}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      {question.questionType}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {question.responseCount}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {question.averageRating ? (
-                      <div className="flex items-center space-x-1">
-                        <span className="text-yellow-400">⭐</span>
-                        <span>{question.averageRating.toFixed(1)}</span>
-                      </div>
-                    ) : (
-                      <span className="text-gray-400">N/A</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {(() => {
+          // Define the expected open text question order
+          const openQuestionOrder = [
+            "content-display-issues",
+            "main-challenge", 
+            "nest-haus-concept-understanding",
+            "missing-information",
+            "improvement-suggestions",
+            "advantages-disadvantages",
+            "purchase-to-move-in-process",
+            "window-wall-positioning",
+            "house-categorization",
+            "additional-costs",
+            "unclear-topics",
+            "confusing-elements",
+            "detailed-description-needs"
+          ];
+
+          // Filter and sort open text questions
+          const openTextQuestions = analytics.questionAnalysis
+            .filter(q => q.questionType === "TEXT")
+            .sort((a, b) => {
+              const aIndex = openQuestionOrder.indexOf(a.questionId);
+              const bIndex = openQuestionOrder.indexOf(b.questionId);
+              if (aIndex === -1) return 1;
+              if (bIndex === -1) return -1;
+              return aIndex - bIndex;
+            });
+
+          return openTextQuestions.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Question
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Responses
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Key Findings
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Summary
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Tendency
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {openTextQuestions.map((question) => {
+                    const keyFindings = extractKeyFindings(question.responses);
+                    const summary = generateSummary(question.responses);
+                    const tendencyData = detectTendency(question.questionText, question.responses);
+                    const isExpanded = expandedQuestions.has(question.questionId);
+
+                    return (
+                      <React.Fragment key={question.questionId}>
+                        <tr className="hover:bg-gray-50">
+                          <td className="px-6 py-4 text-sm text-gray-900">
+                            <div className="max-w-sm">
+                              {question.questionText}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-900 text-center">
+                            {question.responseCount}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-600">
+                            <div className="max-w-xs">
+                              {keyFindings.length > 0 ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {keyFindings.map((finding, idx) => (
+                                    <span key={idx} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                      {finding}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="text-gray-400">Keine Schlüsselbegriffe</span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-600">
+                            <div className="max-w-sm">
+                              {summary}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-900">
+                            <button
+                              onClick={() => {/* TODO: Show tendency explanation */}}
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium cursor-pointer hover:opacity-80 ${
+                                tendencyData.tendency === 'Positiv' 
+                                  ? 'bg-green-100 text-green-800'
+                                  : tendencyData.tendency === 'Negativ'
+                                    ? 'bg-red-100 text-red-800'
+                                    : 'bg-gray-100 text-gray-800'
+                              }`}
+                              title={tendencyData.explanation}
+                            >
+                              {tendencyData.tendency}
+                            </button>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-500">
+                            <button
+                              onClick={() => toggleQuestionExpansion(question.questionId)}
+                              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            >
+                              {isExpanded ? 'Ausblenden' : 'Alle Antworten'}
+                            </button>
+                          </td>
+                        </tr>
+                        {isExpanded && (
+                          <tr>
+                            <td colSpan={6} className="px-6 py-4 bg-gray-50">
+                              <div className="space-y-3">
+                                <h5 className="font-medium text-gray-900 mb-3">
+                                  Alle Antworten zu: "{question.questionText}"
+                                </h5>
+                                {question.responses.length > 0 ? (
+                                  <div className="space-y-2">
+                                    {question.responses.map((response: Record<string, unknown>, idx) => (
+                                      <div key={idx} className="bg-white p-3 rounded border">
+                                        <div className="text-sm text-gray-900">
+                                          {String(response.value || 'Keine Antwort')}
+                                        </div>
+                                        <div className="text-xs text-gray-500 mt-1">
+                                          Antwortzeit: {response.responseTime ? `${Math.round(Number(response.responseTime) / 1000)}s` : 'N/A'}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <div className="text-gray-500 italic">Keine Antworten verfügbar</div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              Keine offenen Fragen verfügbar
+            </div>
+          );
+        })()}
       </div>
 
       {/* Recent Tests */}
