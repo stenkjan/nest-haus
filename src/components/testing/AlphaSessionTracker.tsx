@@ -29,8 +29,8 @@ export default function AlphaSessionTracker() {
       // Check if element or any parent has test-related classes/IDs
       let current: HTMLElement | null = element;
       while (current && current !== document.body) {
-        const className = current.className || "";
-        const id = current.id || "";
+        const className = String(current.className || "");
+        const id = String(current.id || "");
 
         // Check for test popup indicators
         if (
