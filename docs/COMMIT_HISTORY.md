@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [040dba29079476e1f6427ca61bfbfa4ab5791761] - Mon Sep 1 11:38:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix build errors in AlphaTestDashboard  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+
+
+---
+
 ## [c4afea1afb25ab69d5a6abed6bd10ec03aae32b7] - Mon Sep 1 11:31:45 2025 +0200
 
 **Author**: stenkjan
