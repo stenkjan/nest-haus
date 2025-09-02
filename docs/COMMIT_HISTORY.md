@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f42b3ec1e4e1c079595274635bc1844080b9c19f] - Tue Sep 2 14:05:58 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enhance PvModuleOverlay component with dynamic overlay images and improved module count display  - Refactored the PvModuleOverlay to use a new function for determining the overlay image based on nest size and module count. - Updated the module count badge to only display for amounts above 4 modules, with adjusted positioning for better visibility. - Added new PV overlay images for nest80 configurations to improve visual representation. - Adjusted image paths in the constants file for consistency and mobile compatibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/PvModuleOverlay.tsx
+
+
+---
+
 ## [166bc79d72d5a53699e35c1eb36e54c835924598] - Tue Sep 2 13:19:26 2025 +0200
 
 **Author**: stenkjan
