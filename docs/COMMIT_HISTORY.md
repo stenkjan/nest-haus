@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a4ce8c794f64b94da34a1d63a80a68c577c27c97] - Tue Sep 2 15:55:17 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix alpha test individual popup responses and tracking  - Fixed response display in individual test popup (response.response instead of response.response.value) - Fixed API endpoints in useAlphaSessionTracking hook (was using non-existent /api/alpha-test/track-interaction) - Added automatic page visit tracking to AlphaSessionTracker with navigation detection - Updated hook to use correct /api/usability-test/track-session endpoint - Added trackPageVisit function to useAlphaSessionTracking hook - Fixed button clicks and page visits now being properly captured and stored  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+- src/components/testing/AlphaSessionTracker.tsx
+- src/hooks/useAlphaSessionTracking.ts
+
+
+---
+
 ## [9bc23eea889b9e91dada7b5f005a8712b2baf1dd] - Tue Sep 2 14:09:48 2025 +0200
 
 **Author**: stenkjan
