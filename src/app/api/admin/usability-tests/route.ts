@@ -66,7 +66,7 @@ function analyzeSentiment(responses: string[]): { positive: number; neutral: num
 
 // Configuration Analytics Processing
 function processConfigurationAnalytics(tests: Array<{ testId: string; interactions?: Array<Record<string, unknown>> }>) {
-    const configSelections = new Map<string, { category: string; value: string; name: string; count: number }>();
+    const configSelections = new Map<string, { category: string; value: string; name: string; count: number; tests: Set<string> }>();
     const pageTimeData = new Map<string, { path: string; title: string; totalTime: number; visits: number; sessions: Set<string> }>();
     const clickedPages = new Map<string, { path: string; title: string; visits: number; sessions: Set<string> }>();
     const sectionTimeData = new Map<string, { section: string; path: string; totalTime: number; visits: number; sessions: Set<string> }>();
@@ -75,7 +75,8 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
         const testId = test.testId;
         const interactions = (test.interactions || []) as Array<Record<string, unknown>>;
 
-        // Process configurator selections
+        // Process configurator selections - track unique tests per selection
+        const testSelections = new Set<string>(); // Track unique selections per test
         interactions
             .filter((i: Record<string, unknown>) => i.eventType === 'configurator_selection')
             .forEach((interaction: Record<string, unknown>) => {
@@ -87,12 +88,19 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                 const name = String(data.name || value);
 
                 const key = `${category}-${value}`;
-                if (configSelections.has(key)) {
-                    configSelections.get(key)!.count++;
-                } else {
-                    configSelections.set(key, { category, value, name, count: 1 });
+                testSelections.add(key); // Only add once per test
+                
+                if (!configSelections.has(key)) {
+                    configSelections.set(key, { category, value, name, count: 0, tests: new Set() });
                 }
             });
+
+        // Now count each unique selection once per test
+        testSelections.forEach(key => {
+            const selection = configSelections.get(key)!;
+            selection.tests.add(testId);
+            selection.count = selection.tests.size; // Count = number of unique tests
+        });
 
         // Process page visits for time analytics
         const pageVisits = interactions.filter((i: Record<string, unknown>) => i.eventType === 'page_visit');
@@ -256,6 +264,12 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
     // Convert maps to arrays and calculate averages
     const configSelectionsArray = Array.from(configSelections.values())
+        .map(item => ({
+            category: item.category,
+            value: item.value,
+            name: item.name,
+            count: item.count // This is now the number of unique tests that selected this option
+        }))
         .sort((a, b) => b.count - a.count);
 
     const pageTimeArray = Array.from(pageTimeData.values())
@@ -294,6 +308,9 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
     // Debug logging
     console.log(`📊 Configuration Analytics Processing Complete:`);
     console.log(`   - Config Selections: ${configSelectionsArray.length} items`);
+    if (configSelectionsArray.length > 0) {
+        console.log(`   - Top config selection: ${configSelectionsArray[0].name} (${configSelectionsArray[0].count} tests selected this)`);
+    }
     console.log(`   - Page Time Data: ${pageTimeArray.length} pages`);
     console.log(`   - Clicked Pages: ${clickedPagesArray.length} pages`);
     console.log(`   - Section Time Data: ${sectionTimeArray.length} sections`);
