@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0adfc36292e3f5316fc759c7fae9f56bf93c88e4] - Tue Sep 2 18:54:38 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Improve session tracking and filter irrelevant form interactions  - Remove focus/blur tracking as they're not meaningful user interactions - Add configurator element filtering to avoid tracking configurator form changes - Enhanced debug logging for button clicks to include tracking status and path - Filter out configurator-related form elements (tracked separately via configurator store) - Focus on meaningful user interactions: button clicks, form submissions, and changes outside configurator - Should improve data quality in Most Clicked Pages and individual test analytics  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/testing/AlphaSessionTracker.tsx
+
+
+---
+
 ## [f33459c9f6056703c8d0860b4518b8a8b7238239] - Tue Sep 2 18:23:57 2025 +0200
 
 **Author**: stenkjan
