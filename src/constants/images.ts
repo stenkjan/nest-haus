@@ -3,14 +3,14 @@ export const IMAGES = {
     // Hero images for landing page
     hero: {
         homeButton: '0-homebutton-nest-haus',
-        nestHaus1: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche',
-        nestHaus2: '2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten',
-        nestHaus3: '7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite',
-        nestHaus4: '3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche',
-        nestHaus5: '4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade',
-        nestHaus6: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
-        nestHaus7: '5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten',
-        nestHaus8: '6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche',
+        nestHaus1: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche-mobile',
+        nestHaus2: '2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten-mobile',
+        nestHaus3: '7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-mobile',
+        nestHaus4: '3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche-mobile',
+        nestHaus5: '4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade-mobile',
+        nestHaus6: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten-mobile',
+        nestHaus7: '5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten-mobile',
+        nestHaus8: '6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche-mobile',
         // Mobile versions for landing page
         mobile: {
             nestHaus1: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche-mobile',
@@ -42,10 +42,16 @@ export const IMAGES = {
     // Video content for cards
     videos: {
         nestHausTransport: '11-NEST-Haus-Module-Transport-Animation-Schema',
+        nestHausKonfigurator: '18-nest-haus-module-konfigurator-modulbau-design-gestaltung-freiheit-auswahl-optionen-personalisieren',
     },
 
     pvModule: {
         pvOverlay: '179-nest-solar-solarenergie-solarpanel-nachhaltig-sonne-icon-strom-energie',
+        // New PV overlay images for nest80 (75m²) with different module counts
+        nest75_solar_overlay_mod_1: '190-nest-solarpaneele-dachmontage-modulhaus-anbringen-anpassen',
+        nest75_solar_overlay_mod_2: '191-nest-photovoltaik-module-dachinstallation-modulbauweise-haus',
+        nest75_solar_overlay_mod_3: '192-nest-solarpanel-anbringung-individuell-flexibel-modulhaus',
+        nest75_solar_overlay_mod_4: '193-nest-erneuerbare-energie-dach-solar-anlage-modulhaus',
     },
 
 
@@ -62,30 +68,30 @@ export const IMAGES = {
         nestHausModulSchemaOutro: '17-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-abschluss-animation',
         nestHausModulAnsicht: '20-NEST-Haus-Modul-Ansicht-Stirnseite-Holz-Schema-Konzept',
         nestHausModulKonzept: '21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept',
-        nestHausModulLiniengrafik: '22-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept-Liniengrafik',
+        nestHausModulLiniengrafik: '22-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept',
         nestHausModulSeiteKonzept: '23-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept',
-        nestHausModulSeiteLiniengrafik: '24-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept-Liniengrafik',
+        nestHausModulSeiteLiniengrafik: '24-NEST-Haus-Modul-Ansicht-Seite-Holz-Schema-Konzept',
         nestHausGrundstueckCheck: '25-NEST-Haus-Grundstueck-Check-Einreichung-Planung',
         nestHausHandDrawing: '26-NEST-Haus-Planung-Innenausbau-Zeichnen-Grundriss',
         nestHausLeitungenAnschluss: '27-NEST-Haus-Leitungen-Anschluss-Kanal-Wasser-Strom',
         nestHausLeitungenAnschlussModul: '28-NEST-Haus-Leitungen-Anschluss-Kanal-Wasser-Strom-Modul',
         nestHausLeitungenZusammenschluss: '29-NEST-Haus-Leitungen-Anschluss-Kanal-Wasser-Strom-Module',
         nestHausFensterTuerenPosition: '30-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Modul',
-        nestHausFensterTuerenMittelmodul: '31-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Mittelmodul-Liniengrafik',
-        nestHausFensterTuerenAbschlussmodul: '32-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung-Abschlussmodul-Liniengrafik',
+        nestHausFensterTuerenMittelmodul: '31-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung',
+        nestHausFensterTuerenAbschlussmodul: '32-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Einbau-Positionierung',
         nestHausGrundrissSchema: '33-NEST-Haus-Planung-Innenausbau-moeblierung-hausbau-flexibel',
-        nestHausFensterTuerenStirnseite: '34-NEST-Haus-Planung-Innenausbau-Fenster-Tueren-Stirnseite',
+        nestHausFensterTuerenStirnseite: '34-NEST-Haus-Planung-Innenausbau-Fenster-Tueren',
         nestHausModulElektrikSanitaer: '35-NEST-Haus-Planung-Elektrik-Sanitaer-Einbau-Gebaeudetechnik-HKLS-Modul-13',
         nestHausPlattenFundament: '36-NEST-Haus-Planung-Innenausbau-Zwischendecke-Leichtbau-Modul',
-        nestHausFundamentStreifenfundament: '37-NEST-Haus-Planung-Innenausbau-Zwischendecke-Leichtbau-Modul-Liniengrafik',
+        nestHausFundamentStreifenfundament: '37-NEST-Haus-Planung-Innenausbau-Zwischendecke-Leichtbau-Modul',
         nestHausFundamentPunktfundament: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung',
         nestHausFlexibilitaetErweiterung: '40-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         // Desktop versions of images 13-16
-        nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau',
-        nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz',
-        nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung',
-        nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept',
+        nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
+        nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz-mobile',
+        nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung-mobile',
+        nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept-mobile',
         // Mobile versions for function images
         mobile: {
             nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
@@ -133,10 +139,10 @@ export const IMAGES = {
         nest155_trapezblech: '123-NEST-Haus-Konfigurator-155-Trapezblech-Schwarz-Ansicht',
 
         // Stirnseite views
-        stirnseitePlattenSchwarz: '101-NEST-Haus-Konfigurator-75-Fassadenplatten-Schwarz-Stirnseite',
-        stirnseitePlattenWeiss: '103-NEST-Haus-Konfigurator-75-Fassadenplatten-Weiss-Stirnseite',
-        stirnseiteHolzfassade: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite',
-        stirnseiteTrapezblech: '107-NEST-Haus-Konfigurator-75-Trapezblech-Schwarz-Stirnseite',
+        stirnseitePlattenSchwarz: '101-NEST-Haus-Konfigurator-75-Fassadenplatten-Schwarz',
+        stirnseitePlattenWeiss: '103-NEST-Haus-Konfigurator-75-Fassadenplatten-Weiss',
+        stirnseiteHolzfassade: '105-NEST-Haus-Konfigurator-75',
+        stirnseiteTrapezblech: '107-NEST-Haus-Konfigurator-75-Trapezblech-Schwarz',
 
         // Material combinations - Trapezblech
         trapezblech_holznatur_schiefer: '136-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-Schiefer',
@@ -183,10 +189,10 @@ export const IMAGES = {
         holzlattung_eiche_parkett: '173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche',
 
         // Fenster/Windows
-        fenster_holz_eiche: '174-NEST-Haus-Fenster-Holz-Eiche-Holzfenster-Eichenfenster',
-        fenster_holz_fichte: '175-NEST-Haus-Fenster-Holz-Fichte-Holzfenster-Fichtenfenster',
-        fenster_aluminium: '176-NEST-Haus-Fenster-Aluminium-Fenster-Aluminiumfenster-Metallfenster',
-        fenster_pvc: '177-NEST-Haus-Fenster-Kunststoff-PVC-Fenster-Weiss-Kunststofffenster-PVCFenster',
+        fenster_holz_eiche: '174-NEST-Haus-Fenster-Holz-Eiche',
+        fenster_holz_fichte: '175-NEST-Haus-Fenster-Holz-Fichte',
+        fenster_aluminium: '176-NEST-Haus-Fenster-Aluminium-Fenster',
+        fenster_pvc: '177-NEST-Haus-Fenster-Kunststoff-PVC-Fenster-Weiss',
 
         // Photovoltaik/PV Panels
         pv_holzfassade: '134-NEST-Haus-Konfigurator-Modul-Fassade-Holzfassade-Photovoltaik-PV-Panel',
