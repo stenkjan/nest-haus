@@ -79,13 +79,13 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   // Trapezblech combinations
   'trapezblech_kiefer_parkett': 'trapezblech_holznatur_parkett',
   'trapezblech_kiefer_kalkstein_kanafar': 'trapezblech_holznatur_kalkstein',
-  'trapezblech_kiefer_schiefer_massiv': 'trapezblech_holznatur_granit',
+  'trapezblech_kiefer_schiefer_massiv': 'trapezblech_holznatur_schiefer',
   'trapezblech_fichte_parkett': 'trapezblech_holzweiss_parkett',
   'trapezblech_fichte_kalkstein_kanafar': 'trapezblech_holzweiss_kalkstein',
-  'trapezblech_fichte_schiefer_massiv': 'trapezblech_holzweiss_granit',
+  'trapezblech_fichte_schiefer_massiv': 'trapezblech_holzweiss_schiefer',
   'trapezblech_steirische_eiche_parkett': 'trapezblech_eiche_parkett',
   'trapezblech_steirische_eiche_kalkstein_kanafar': 'trapezblech_eiche_kalkstein',
-  'trapezblech_steirische_eiche_schiefer_massiv': 'trapezblech_eiche_granit',
+  'trapezblech_steirische_eiche_schiefer_massiv': 'trapezblech_eiche_schiefer',
 
   // Holzlattung combinations
   'holzlattung_kiefer_parkett': 'holzlattung_holznatur_parkett',

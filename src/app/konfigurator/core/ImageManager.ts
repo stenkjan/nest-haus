@@ -227,24 +227,14 @@ export class ImageManager {
       const fussbodenMapping = {
         'parkett': 'parkett',
         'kalkstein_kanafar': 'kalkstein',
-        'schiefer_massiv': 'granit' // Default: granit paths
-      };
-
-      // Special case: holzlattung uses 'schiefer' instead of 'granit' for schiefer_massiv
-      const fussbodenHolzlattungMapping = {
-        'parkett': 'parkett',
-        'kalkstein_kanafar': 'kalkstein',
-        'schiefer_massiv': 'schiefer' // For holzlattung: use schiefer paths
+        'schiefer_massiv': 'schiefer' // All gebäudehülle types now use schiefer paths
       };
 
       const gebaeude = gebaeudePrefixMapping[gebaeudehuelle as keyof typeof gebaeudePrefixMapping];
       const innen = innenverkleidungMapping[innenverkleidung as keyof typeof innenverkleidungMapping];
 
-      // Choose the appropriate fussboden mapping based on gebäudehülle
-      const fussbodenMap = gebaeudehuelle === 'holzlattung'
-        ? fussbodenHolzlattungMapping
-        : fussbodenMapping;
-      const fussBoden = fussbodenMap[fussboden as keyof typeof fussbodenMap];
+      // All gebäudehülle types now use the same fussboden mapping
+      const fussBoden = fussbodenMapping[fussboden as keyof typeof fussbodenMapping];
 
       if (gebaeude && innen && fussBoden) {
         // Build the image key: gebaeude_innen_fussboden
