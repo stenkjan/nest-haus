@@ -92,6 +92,8 @@ export default function AlphaSessionTracker() {
         className: target.className,
         id: target.id,
         textContent: target.textContent?.trim()?.substring(0, 50),
+        path: window.location.pathname,
+        isTrackingActive,
       });
 
       if (isButton) {
@@ -122,72 +124,16 @@ export default function AlphaSessionTracker() {
       }
     };
 
-    // Track form interactions
+    // Track meaningful form interactions (skip focus/blur, focus on changes and submissions)
     const handleFormFocus = (event: FocusEvent) => {
-      const target = event.target as
-        | HTMLInputElement
-        | HTMLTextAreaElement
-        | HTMLSelectElement;
-
-      if (!target || !isFormElement(target)) {
-        console.log("🔍 Form focus: not a form element", target);
-        return;
-      }
-
-      // Skip if it's part of the test popup
-      if (isTestPopupElement(target as HTMLElement)) {
-        console.log("🔍 Form focus: skipped (test popup element)", target);
-        return;
-      }
-
-      const fieldName =
-        target.name ||
-        target.id ||
-        (target as HTMLInputElement | HTMLTextAreaElement).placeholder ||
-        "unnamed_field";
-      const fieldType = target.type || target.tagName.toLowerCase();
-      const formId = target.form?.id || target.closest("form")?.id || undefined;
-
-      console.log("📝 Tracking form focus:", {
-        fieldName,
-        fieldType,
-        formId,
-        path: window.location.pathname,
-      });
-
-      trackFormInteraction(fieldName, fieldType, "focus", undefined, formId);
+      // Skip focus events as they're not meaningful user interactions
+      // We'll track changes and submissions instead
+      return;
     };
 
     const handleFormBlur = (event: FocusEvent) => {
-      const target = event.target as
-        | HTMLInputElement
-        | HTMLTextAreaElement
-        | HTMLSelectElement;
-
-      if (!target || !isFormElement(target)) return;
-
-      // Skip if it's part of the test popup
-      if (isTestPopupElement(target as HTMLElement)) {
-        console.log("🔍 Form blur: skipped (test popup element)", target);
-        return;
-      }
-
-      const fieldName =
-        target.name ||
-        target.id ||
-        (target as HTMLInputElement | HTMLTextAreaElement).placeholder ||
-        "unnamed_field";
-      const fieldType = target.type || target.tagName.toLowerCase();
-      const formId = target.form?.id || target.closest("form")?.id || undefined;
-
-      console.log("📝 Tracking form blur:", {
-        fieldName,
-        fieldType,
-        formId,
-        path: window.location.pathname,
-      });
-
-      trackFormInteraction(fieldName, fieldType, "blur", undefined, formId);
+      // Skip blur events as they're not meaningful user interactions
+      return;
     };
 
     const handleFormChange = (event: Event) => {
@@ -201,6 +147,19 @@ export default function AlphaSessionTracker() {
       // Skip if it's part of the test popup
       if (isTestPopupElement(target as HTMLElement)) {
         console.log("🔍 Form change: skipped (test popup element)", target);
+        return;
+      }
+
+      // Skip configurator-related form elements (these are tracked separately)
+      const isConfiguratorElement = 
+        window.location.pathname === '/konfigurator' && 
+        (target.closest('.configurator-panel') || 
+         target.closest('[data-configurator]') ||
+         target.name?.includes('config') ||
+         target.id?.includes('config'));
+
+      if (isConfiguratorElement) {
+        console.log("🔍 Form change: skipped (configurator element)", target);
         return;
       }
 
