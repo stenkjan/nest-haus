@@ -505,7 +505,6 @@ export default function AlphaTestDashboard() {
     // Question type detection
     const isWhatMissingQuestion = questionLower.includes('vermisst') || questionLower.includes('zusätzlich') || questionLower.includes('genauer beschrieben');
     const isProblemsQuestion = questionLower.includes('problem') || questionLower.includes('herausforderung') || questionLower.includes('schwierig');
-    const isImprovementQuestion = questionLower.includes('verbesserung') || questionLower.includes('optimier');
     const isConfusingQuestion = questionLower.includes('irritiert') || questionLower.includes('verunsichert') || questionLower.includes('verwirrend');
     const isUnclearQuestion = questionLower.includes('unklar') || questionLower.includes('fragezeichen');
     const isDisplayQuestion = questionLower.includes('darstellung') || questionLower.includes('erkennbar') || questionLower.includes('lade-problem');
@@ -565,9 +564,9 @@ export default function AlphaTestDashboard() {
         const negativeWords = ['schlecht', 'schwer', 'kompliziert', 'unklar', 'fehlt', 'problem', 'schwierig', 'verwirrend', 'negativ', 'frustrierend', 'langsam'];
         const neutralWords = ['ok', 'geht', 'normal', 'durchschnitt', 'weiß nicht', 'unsicher', 'vielleicht'];
         
-        let hasPositive = positiveWords.some(word => responseText.includes(word));
-        let hasNegative = negativeWords.some(word => responseText.includes(word));
-        let hasNeutral = neutralWords.some(word => responseText.includes(word));
+        const hasPositive = positiveWords.some(word => responseText.includes(word));
+        const hasNegative = negativeWords.some(word => responseText.includes(word));
+        const hasNeutral = neutralWords.some(word => responseText.includes(word));
         
         if (hasPositive && !hasNegative) {
           positiveCount++;
