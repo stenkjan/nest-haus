@@ -181,6 +181,16 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
   const sectionTimeData =
     analytics?.configurationAnalytics?.sectionTimeData || [];
 
+  // Debug logging
+  console.log("🔍 Configuration Analytics Data:", {
+    configSelections: configSelections.length,
+    pageTimeData: pageTimeData.length,
+    clickedPages: clickedPages.length,
+    sectionTimeData: sectionTimeData.length,
+    pageTimeDataSample: pageTimeData.slice(0, 2),
+    clickedPagesSample: clickedPages.slice(0, 2)
+  });
+
   const formatTime = (ms: number) => {
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -189,6 +199,12 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
       ? `${minutes}m ${remainingSeconds}s`
       : `${remainingSeconds}s`;
   };
+
+  // Calculate category totals for percentage calculation
+  const categoryTotals = configSelections.reduce((acc, selection) => {
+    acc[selection.category] = (acc[selection.category] || 0) + selection.count;
+    return acc;
+  }, {} as Record<string, number>);
 
   const renderExpandableBox = <T,>(
     title: string,
@@ -257,14 +273,20 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
                     Count
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Percentage
+                    % of Tests
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    % of Category
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {configSelections.map((selection, _index) => {
-                  const percentage = Math.round(
+                  const testPercentage = Math.round(
                     (selection.count / analytics.summary.totalTests) * 100
+                  );
+                  const categoryPercentage = Math.round(
+                    (selection.count / categoryTotals[selection.category]) * 100
                   );
                   return (
                     <tr key={`${selection.category}-${selection.value}`}>
@@ -280,7 +302,12 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {percentage}%
+                        {testPercentage}%
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                          {categoryPercentage}%
+                        </span>
                       </td>
                     </tr>
                   );
@@ -1838,12 +1865,6 @@ export default function AlphaTestDashboard() {
                               ? `Rating: ${response.response || "N/A"}/6`
                               : String(response.response) || "No response"}
                           </div>
-                          {typeof response.responseTime === "number" &&
-                          response.responseTime > 0 ? (
-                            <div className="text-xs text-gray-500 mt-1">
-                              Response time: {response.responseTime}ms
-                            </div>
-                          ) : null}
                         </div>
                       )
                     )}
