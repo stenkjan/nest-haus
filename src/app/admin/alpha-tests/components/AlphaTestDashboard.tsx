@@ -1835,11 +1835,8 @@ export default function AlphaTestDashboard() {
                           </div>
                           <div className="text-gray-700">
                             {response.questionType === "RATING"
-                              ? `Rating: ${(response.response as Record<string, unknown>)?.value || "N/A"}/6`
-                              : String(
-                                  (response.response as Record<string, unknown>)
-                                    ?.value
-                                ) || "No response"}
+                              ? `Rating: ${response.response || "N/A"}/6`
+                              : String(response.response) || "No response"}
                           </div>
                           {typeof response.responseTime === "number" &&
                           response.responseTime > 0 ? (

@@ -36,6 +36,7 @@ interface AlphaSessionTrackingHook {
         value?: string,
         formId?: string
     ) => void;
+    trackPageVisit: (path: string, title?: string) => void;
     sessionId: string | null;
 }
 
@@ -112,15 +113,16 @@ export function useAlphaSessionTracking(): AlphaSessionTrackingHook {
                 JSON.stringify(existingEvents)
             );
 
-            // Optional: Send to API endpoint
+            // Send to API endpoint
             if (sessionId) {
-                fetch("/api/alpha-test/track-interaction", {
+                fetch("/api/usability-test/track-session", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        sessionId,
-                        type: "button_click",
+                        testId: sessionId,
+                        eventType: "button_click",
                         data: event,
+                        timestamp: event.timestamp,
                     }),
                 }).catch((error) => {
                     console.warn("Failed to send button click to API:", error);
@@ -163,18 +165,53 @@ export function useAlphaSessionTracking(): AlphaSessionTrackingHook {
                 JSON.stringify(existingEvents)
             );
 
-            // Optional: Send to API endpoint
+            // Send to API endpoint
             if (sessionId) {
-                fetch("/api/alpha-test/track-interaction", {
+                fetch("/api/usability-test/track-session", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        sessionId,
-                        type: "form_interaction",
+                        testId: sessionId,
+                        eventType: "form_interaction",
                         data: event,
+                        timestamp: event.timestamp,
                     }),
                 }).catch((error) => {
                     console.warn("Failed to send form interaction to API:", error);
+                });
+            }
+        },
+        [isTrackingActive, sessionId]
+    );
+
+    // Track page visits
+    const trackPageVisit = useCallback(
+        (path: string, title?: string) => {
+            if (!isTrackingActive) return;
+
+            const event = {
+                path,
+                title: title || document.title,
+                timestamp: Date.now(),
+                referrer: document.referrer,
+                userAgent: navigator.userAgent,
+            };
+
+            console.log("📄 Alpha test page visit tracked:", event);
+
+            // Send to API endpoint
+            if (sessionId) {
+                fetch("/api/usability-test/track-session", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        testId: sessionId,
+                        eventType: "page_visit",
+                        data: event,
+                        timestamp: event.timestamp,
+                    }),
+                }).catch((error) => {
+                    console.warn("Failed to send page visit to API:", error);
                 });
             }
         },
@@ -185,6 +222,7 @@ export function useAlphaSessionTracking(): AlphaSessionTrackingHook {
         isTrackingActive,
         trackButtonClick,
         trackFormInteraction,
+        trackPageVisit,
         sessionId,
     };
 }

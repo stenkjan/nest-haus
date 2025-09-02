@@ -8,7 +8,7 @@ import { useAlphaSessionTracking } from "@/hooks/useAlphaSessionTracking";
  * Automatically tracks user interactions when alpha test is active
  */
 export default function AlphaSessionTracker() {
-  const { isTrackingActive, trackButtonClick, trackFormInteraction } =
+  const { isTrackingActive, trackButtonClick, trackFormInteraction, trackPageVisit } =
     useAlphaSessionTracking();
 
   useEffect(() => {
@@ -23,6 +23,22 @@ export default function AlphaSessionTracker() {
     }
 
     console.log("🔍 Setting up global event listeners for session tracking");
+
+    // Track initial page visit
+    trackPageVisit(window.location.pathname, document.title);
+
+    // Track navigation changes (for SPA routing)
+    let currentPath = window.location.pathname;
+    const checkForNavigation = () => {
+      if (window.location.pathname !== currentPath) {
+        currentPath = window.location.pathname;
+        console.log("📄 Navigation detected:", currentPath);
+        trackPageVisit(currentPath, document.title);
+      }
+    };
+
+    // Check for navigation changes periodically
+    const navigationInterval = setInterval(checkForNavigation, 1000);
 
     // Helper function to check if element is part of test popup
     const isTestPopupElement = (element: HTMLElement): boolean => {
@@ -256,9 +272,10 @@ export default function AlphaSessionTracker() {
       document.removeEventListener("focusout", handleFormBlur, true);
       document.removeEventListener("change", handleFormChange, true);
       document.removeEventListener("submit", handleFormSubmit, true);
-      console.log("✅ Event listeners removed");
+      clearInterval(navigationInterval);
+      console.log("✅ Event listeners and navigation tracking removed");
     };
-  }, [isTrackingActive, trackButtonClick, trackFormInteraction]);
+  }, [isTrackingActive, trackButtonClick, trackFormInteraction, trackPageVisit]);
 
   // This component doesn't render anything
   return null;
