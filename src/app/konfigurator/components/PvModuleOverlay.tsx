@@ -93,9 +93,6 @@ export default function PvModuleOverlay({
     return null;
   }
 
-  // Calculate total modules (each "moduleCount" represents 3 actual modules)
-  const totalModules = moduleCount * 3;
-
   // Determine which overlay image to use based on module count and nest size
   const getOverlayImage = (nestSize: string, moduleCount: number) => {
     // For nest80 (75m²), use the new progressive overlay system
