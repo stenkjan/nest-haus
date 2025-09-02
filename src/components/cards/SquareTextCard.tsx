@@ -129,6 +129,7 @@ export default function SquareTextCard({
   const [cardsPerView, setCardsPerView] = useState(3);
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
+  const [allCardsExpanded, setAllCardsExpanded] = useState(false);
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -189,6 +190,7 @@ export default function SquareTextCard({
       setCurrentIndex(newIndex);
       const newX = -(newIndex * (cardWidth + gap));
       x.set(newX);
+      // Note: Preserve allCardsExpanded state during navigation
     },
     [maxIndex, currentIndex, cardWidth, gap, x]
   );
@@ -267,6 +269,7 @@ export default function SquareTextCard({
       // Animate with visual feedback for direction
       setCurrentIndex(targetIndex);
       const newX = -(targetIndex * (cardWidth + gap));
+      // Note: Preserve allCardsExpanded state during drag navigation
 
       // Add visual feedback animation with directional easing
       // First, add a small bounce in the opposite direction for visual feedback
@@ -314,6 +317,14 @@ export default function SquareTextCard({
   const containerClasses = maxWidth
     ? "w-full max-w-screen-2xl mx-auto"
     : "w-full";
+
+  // Track if user is currently dragging to prevent accidental clicks
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Toggle all cards expansion for mobile
+  const toggleAllCardsExpansion = () => {
+    setAllCardsExpanded((prev) => !prev);
+  };
 
   // Helper function to get appropriate text based on screen size
   const getCardText = (
@@ -404,7 +415,12 @@ export default function SquareTextCard({
               }}
               dragElastic={0.05}
               dragMomentum={false}
-              onDragEnd={handleDragEnd}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={(event, info) => {
+                handleDragEnd(event, info);
+                // Small delay to prevent click after drag
+                setTimeout(() => setIsDragging(false), 100);
+              }}
               transition={{
                 type: "spring",
                 stiffness: 400,
@@ -412,67 +428,109 @@ export default function SquareTextCard({
                 mass: 0.8,
               }}
             >
-              {cardData.map((card, index) => (
-                <motion.div
-                  key={card.id}
-                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer cards-scroll-snap-item cards-mobile-smooth"
-                  style={{
-                    width: cardWidth,
-                    height:
-                      isClient && screenWidth < 768
-                        ? cardWidth * 1.75 // Mobile: 1.75:1 aspect ratio (25% taller than 1.4 for more text space)
-                        : cardWidth, // Desktop/Tablet: Square aspect ratio
-                    backgroundColor: card.backgroundColor,
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => onCardClick?.(card.id)}
-                >
-                  {/* Text Content - Full card */}
-                  <div className="h-full flex flex-col justify-start items-center px-8 md:px-16 py-16 pt-10 md:pt-20">
-                    {/* Title and Subtitle - Centered horizontally */}
-                    <motion.div
-                      className="text-center mb-6"
-                      initial={{ y: -20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1, duration: 0.6 }}
-                    >
-                      <h3
-                        className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold mb-1 ${
-                          card.textColor || "text-gray-900"
-                        }`}
-                      >
-                        {getCardText(card, "title")}
-                      </h3>
-                      <h4
-                        className={`text-sm md:text-xl font-medium mb-5 ${
-                          card.textColor || "text-gray-700"
-                        }`}
-                      >
-                        {getCardText(card, "subtitle")}
-                      </h4>
-                    </motion.div>
+              {cardData.map((card, index) => {
+                const isMobile = isClient && screenWidth < 1024;
 
-                    {/* Description - Left aligned on desktop, centered on mobile */}
-                    <motion.div
-                      className={`${
-                        screenWidth < 768 ? "text-center" : "text-left"
-                      }`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-                    >
-                      <p
-                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl leading-relaxed whitespace-pre-line max-w-3xl ${
-                          card.textColor || "text-black"
-                        }`}
+                return (
+                  <motion.div
+                    key={card.id}
+                    className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer cards-scroll-snap-item cards-mobile-smooth"
+                    style={{
+                      width: cardWidth,
+                      backgroundColor: card.backgroundColor,
+                    }}
+                    animate={{
+                      height:
+                        isMobile && allCardsExpanded
+                          ? "auto"
+                          : isClient && screenWidth < 768
+                          ? 360 // Mobile collapsed: compact height for title + subtitle + 6 lines of text + padding
+                          : cardWidth, // Desktop/Tablet: Square aspect ratio
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                      type: "tween",
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    onClick={() => {
+                      // Prevent toggle if user was just dragging
+                      if (isDragging) return;
+
+                      if (isMobile) {
+                        toggleAllCardsExpansion();
+                      } else if (onCardClick) {
+                        onCardClick(card.id);
+                      }
+                    }}
+                  >
+                    {/* Text Content - Full card */}
+                    <div className="h-full flex flex-col justify-start items-center px-8 md:px-16 py-16 pt-10 md:pt-20">
+                      {/* Title and Subtitle - Centered horizontally */}
+                      <motion.div
+                        className="text-center mb-6"
+                        initial={{ y: -20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1, duration: 0.6 }}
                       >
-                        {getCardText(card, "description")}
-                      </p>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              ))}
+                        <h3
+                          className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold mb-1 ${
+                            card.textColor || "text-gray-900"
+                          }`}
+                        >
+                          {getCardText(card, "title")}
+                        </h3>
+                        <h4
+                          className={`text-sm md:text-xl font-medium mb-5 ${
+                            card.textColor || "text-gray-700"
+                          }`}
+                        >
+                          {getCardText(card, "subtitle")}
+                        </h4>
+                      </motion.div>
+
+                      {/* Description - Left aligned on desktop, centered on mobile */}
+                      <motion.div
+                        className={`${
+                          screenWidth < 768 ? "text-center" : "text-left"
+                        } relative flex-1 overflow-hidden`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+                      >
+                        <motion.p
+                          className={`text-sm md:text-base lg:text-lg 2xl:text-xl leading-relaxed whitespace-pre-line max-w-3xl ${
+                            card.textColor || "text-black"
+                          } ${
+                            isMobile && !allCardsExpanded ? "line-clamp-6" : ""
+                          }`}
+                          animate={{
+                            opacity: 1,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {getCardText(card, "description")}
+                        </motion.p>
+
+                        {/* Blur gradient overlay for mobile when collapsed */}
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+                          style={{
+                            background: `linear-gradient(to top, ${card.backgroundColor} 0%, ${card.backgroundColor}f8 15%, ${card.backgroundColor}f0 25%, ${card.backgroundColor}e0 35%, ${card.backgroundColor}cc 45%, ${card.backgroundColor}b3 55%, ${card.backgroundColor}80 65%, ${card.backgroundColor}4d 75%, ${card.backgroundColor}26 85%, transparent 100%)`,
+                          }}
+                          animate={{
+                            opacity: isMobile && !allCardsExpanded ? 1 : 0,
+                          }}
+                          transition={{
+                            duration: 0.5,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          }}
+                        />
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </div>
         </div>
