@@ -38,8 +38,8 @@ interface PlanungspaketeCardsProps {
 export const planungspaketeCardData: PlanungspaketeCardData[] = [
   {
     id: 1,
-    title: "Planungspaket 01 Basis",
-    subtitle: "",
+    title: "Planungspaket 01",
+    subtitle: "Basis",
     description:
       "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
     mobileTitle: "Planungspaket 01",
@@ -59,8 +59,8 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
   },
   {
     id: 2,
-    title: "Planungspaket 02 Plus",
-    subtitle: "",
+    title: "Planungspaket 02",
+    subtitle: "Plus",
     description:
       "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
     mobileTitle: "Planungspaket 02",
@@ -79,8 +79,8 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
   },
   {
     id: 3,
-    title: "Planungspaket 03 Pro",
-    subtitle: "",
+    title: "Planungspaket 03",
+    subtitle: "Pro",
     description:
       "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
     mobileTitle: "Planungspaket 03",
@@ -131,6 +131,7 @@ export default function PlanungspaketeCards({
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -377,6 +378,19 @@ export default function PlanungspaketeCards({
     );
   }
 
+  // Toggle card expansion for mobile
+  const toggleCardExpansion = (cardId: number) => {
+    setExpandedCards((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(cardId)) {
+        newSet.delete(cardId);
+      } else {
+        newSet.add(cardId);
+      }
+      return newSet;
+    });
+  };
+
   // Helper function to get appropriate text based on screen size
   const getCardText = (
     card: PlanungspaketeCardData,
@@ -426,97 +440,133 @@ export default function PlanungspaketeCards({
               maxWidth ? "px-8" : "px-4"
             }`}
           >
-            {displayCards.map((card, index) => (
-              <motion.div
-                key={card.id}
-                className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
-                style={{
-                  width: cardWidth,
-                  height: 360,
-                  backgroundColor: card.backgroundColor,
-                }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => {
-                  if (enableBuiltInLightbox && !isLightboxMode) {
-                    setLightboxOpen(true);
-                  } else if (onCardClick) {
-                    onCardClick(card.id);
-                  }
-                }}
-              >
-                {/* Top Section - EXPANDED HEIGHT */}
-                <div className="h-56 min-h-56 px-6 pt-6 pb-1 overflow-hidden">
-                  {/* Header Row - Title/Subtitle left, Price right */}
-                  <div className="flex mb-5">
-                    {/* Title/Subtitle - Left Side */}
-                    <div className="flex-1">
-                      <motion.div
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1, duration: 0.6 }}
-                      >
-                        <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
-                          {renderTitle(
-                            getCardText(card, "title"),
-                            card.grayWord
-                          )}
-                        </h3>
-                        <h4 className="text-sm md:text-base lg:text-lg font-medium text-gray-700">
-                          {getCardText(card, "subtitle")}
-                        </h4>
-                      </motion.div>
-                    </div>
+            {displayCards.map((card, index) => {
+              const isExpanded = expandedCards.has(card.id);
+              const isMobile = isClient && screenWidth < 1024;
 
-                    {/* Price - Right Side */}
-                    <div className="w-24 flex flex-col justify-start items-end text-right">
-                      <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-                        className="text-right"
-                      >
-                        <div className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">
-                          {card.price}
-                        </div>
-                        {card.monthlyPrice && (
-                          <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
-                            {card.monthlyPrice}
+              return (
+                <motion.div
+                  key={card.id}
+                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
+                  style={{
+                    width: cardWidth,
+                    backgroundColor: card.backgroundColor,
+                  }}
+                  animate={{
+                    height: isMobile && isExpanded ? "auto" : 360,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                    type: "tween",
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => {
+                    if (isMobile) {
+                      toggleCardExpansion(card.id);
+                    } else if (enableBuiltInLightbox && !isLightboxMode) {
+                      setLightboxOpen(true);
+                    } else if (onCardClick) {
+                      onCardClick(card.id);
+                    }
+                  }}
+                >
+                  {/* Top Section - EXPANDED HEIGHT */}
+                  <div className="h-56 min-h-56 px-6 pt-6 pb-1 overflow-hidden">
+                    {/* Header Row - Title/Subtitle left, Price right */}
+                    <div className="flex mb-5">
+                      {/* Title/Subtitle - Left Side */}
+                      <div className="flex-1">
+                        <motion.div
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: index * 0.1, duration: 0.6 }}
+                        >
+                          <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
+                            {getCardText(card, "title")}
+                          </h3>
+                          <h4 className="text-sm md:text-base lg:text-lg font-medium text-gray-700">
+                            {getCardText(card, "subtitle") || card.grayWord}
+                          </h4>
+                        </motion.div>
+                      </div>
+
+                      {/* Price - Right Side */}
+                      <div className="w-24 flex flex-col justify-start items-end text-right">
+                        <motion.div
+                          initial={{ x: 20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{
+                            delay: index * 0.1 + 0.2,
+                            duration: 0.6,
+                          }}
+                          className="text-right"
+                        >
+                          <div className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">
+                            {card.price}
                           </div>
-                        )}
-                      </motion.div>
+                          {card.monthlyPrice && (
+                            <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
+                              {card.monthlyPrice}
+                            </div>
+                          )}
+                        </motion.div>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Description - Full Width */}
-                  <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
-                  >
-                    <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line overflow-hidden">
-                      {getCardText(card, "description")}
-                    </p>
-                  </motion.div>
-                </div>
-
-                {/* Bottom Section - Extended Description (Full Width) - FLEXIBLE HEIGHT */}
-                {card.extendedDescription && (
-                  <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden">
+                    {/* Description - Full Width */}
                     <motion.div
-                      initial={{ y: 20, opacity: 0 }}
+                      initial={{ y: 10, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
-                      className="h-full"
+                      transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                     >
-                      <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line line-clamp-4">
-                        {getCardText(card, "extendedDescription")}
+                      <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line overflow-hidden">
+                        {getCardText(card, "description")}
                       </p>
                     </motion.div>
                   </div>
-                )}
-              </motion.div>
-            ))}
+
+                  {/* Bottom Section - Extended Description (Full Width) - FLEXIBLE HEIGHT */}
+                  {card.extendedDescription && (
+                    <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden relative">
+                      <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
+                        className="h-full"
+                      >
+                        <motion.p
+                          className={`text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line ${
+                            isMobile && !isExpanded ? "line-clamp-4" : ""
+                          }`}
+                          animate={{
+                            opacity: isExpanded ? 1 : 1,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {getCardText(card, "extendedDescription")}
+                        </motion.p>
+
+                        {/* Blur gradient overlay for mobile when collapsed */}
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+                          style={{
+                            background: `linear-gradient(to top, ${card.backgroundColor} 0%, ${card.backgroundColor}f8 15%, ${card.backgroundColor}f0 25%, ${card.backgroundColor}e0 35%, ${card.backgroundColor}cc 45%, ${card.backgroundColor}b3 55%, ${card.backgroundColor}80 65%, ${card.backgroundColor}4d 75%, ${card.backgroundColor}26 85%, transparent 100%)`,
+                          }}
+                          animate={{
+                            opacity: isMobile && !isExpanded ? 1 : 0,
+                          }}
+                          transition={{
+                            duration: 0.5,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          }}
+                        />
+                      </motion.div>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         ) : (
           /* Lightbox Mode - Horizontal Scrolling Layout */
@@ -585,13 +635,10 @@ export default function PlanungspaketeCards({
                             }}
                           >
                             <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
-                              {renderTitle(
-                                getCardText(card, "title"),
-                                card.grayWord
-                              )}
+                              {getCardText(card, "title")}
                             </h3>
                             <h4 className="text-base md:text-lg lg:text-xl font-medium text-gray-700">
-                              {getCardText(card, "subtitle")}
+                              {getCardText(card, "subtitle") || card.grayWord}
                             </h4>
                           </motion.div>
                         </div>

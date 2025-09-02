@@ -5,6 +5,7 @@ export { MaterialShowcase } from "./MaterialShowcase";
 export { GetInContactBanner } from "./GetInContactBanner";
 export { PartnersSection } from "./PartnersSection";
 export { GrundstueckCheckSection } from "./GrundstueckCheckSection";
+export { GrundstueckCheckForm } from "./GrundstueckCheckForm";
 export { PlanungspaketeSection } from "./PlanungspaketeSection";
 export { ContactMap } from "./ContactMap";
 export { AppointmentBookingSection } from "./AppointmentBookingSection";

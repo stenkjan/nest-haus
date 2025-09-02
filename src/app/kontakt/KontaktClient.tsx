@@ -3,10 +3,14 @@
 import React, { useState, Suspense } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
-import { CallToAction } from "@/components/ui";
+
 import { ImageGallery } from "@/components/grids";
-import { ContactMap, AppointmentBookingSection } from "@/components/sections";
-import GrundstueckCheckWrapper from "./components/GrundstueckCheckWrapper";
+import {
+  ContactMap,
+  AppointmentBookingSection,
+  GrundstueckCheckForm,
+  GetInContactBanner,
+} from "@/components/sections";
 import Footer from "@/components/Footer";
 
 // Define sections for kontakt page
@@ -37,25 +41,9 @@ export default function KontaktClient() {
         </div>
 
         {/* Dein Grundstück - Unser Check - Section 3 */}
-        <section id="contact" className="w-full py-16">
-          <div className="w-full px-[7.5%]">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center">
-              Dein Grundstück - Unser Check
-            </h2>
-            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
-              Wir überprüfen für dich wie dein neues Haus auf ein Grundstück
-              deiner Wahl passt
-            </h3>
-
-            <Suspense
-              fallback={
-                <div className="animate-pulse bg-gray-200 h-96 rounded"></div>
-              }
-            >
-              <GrundstueckCheckWrapper />
-            </Suspense>
-          </div>
-        </section>
+        <div id="contact">
+          <GrundstueckCheckForm backgroundColor="white" maxWidth={false} />
+        </div>
 
         {/* Impressum - Section 4 */}
         <section id="impressum" className="w-full py-16 bg-gray-50">
@@ -129,17 +117,21 @@ export default function KontaktClient() {
           </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section id="call-to-action">
-          <CallToAction
-            title="Kein Plan? Kein Problem!"
-            subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
-            buttonText="Jetzt vereinbaren"
-            buttonLink="/kontakt"
-            backgroundColor="gray"
-            maxWidth={false}
-          />
-        </section>
+        {/* Get In Contact Banner Section */}
+        <GetInContactBanner
+          id="call-to-action"
+          title="Kein Plan? Kein Problem!"
+          subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
+          buttonText="Jetzt vereinbaren"
+          backgroundColor="#F4F4F4"
+          onButtonClick={() => {
+            // Scroll to calendar section for appointment booking
+            const calendarSection = document.getElementById("calendar");
+            if (calendarSection) {
+              calendarSection.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+        />
 
         {/* Image Gallery Section */}
         <section id="gallery">

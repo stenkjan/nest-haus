@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
 import { PLANNING_PACKAGES } from "@/constants/configurator";
-import GrundstueckCheckWrapper from "@/app/kontakt/components/GrundstueckCheckWrapper";
+import { GrundstueckCheckForm } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";
 import {
   planungspaketeCardData,
@@ -1021,7 +1021,7 @@ export default function CheckoutStepper({
 
             <div className="border-t border-gray-200 mt-6 mb-6"></div>
             <p className="text-sm text-gray-600">Preis: inkludiert</p>
-            <GrundstueckCheckWrapper />
+            <GrundstueckCheckForm backgroundColor="white" maxWidth={false} />
             <div className="flex justify-between">
               <Button
                 variant="secondary"
@@ -1154,7 +1154,7 @@ export default function CheckoutStepper({
 
         {stepIndex === 3 && (
           <div className="space-y-4 pt-8">
-            <AppointmentBooking />
+            <AppointmentBooking showLeftSide={false} />
             <div className="flex justify-between mt-6">
               <Button variant="secondary" size="md" onClick={goPrev}>
                 Zurück

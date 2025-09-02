@@ -25,7 +25,13 @@ interface AppointmentFormData {
   appointmentType: "personal" | "phone";
 }
 
-const AppointmentBooking = () => {
+interface AppointmentBookingProps {
+  showLeftSide?: boolean;
+}
+
+const AppointmentBooking = ({
+  showLeftSide = true,
+}: AppointmentBookingProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
@@ -207,17 +213,19 @@ const AppointmentBooking = () => {
       {/* Mobile Layout: Text first, then calendar and form below */}
       <div className="lg:hidden space-y-8">
         {/* Descriptive Text for Mobile - NO BOX */}
-        <div className="text-center px-4">
-          <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
-            Der Kauf deines Hauses ist ein großer Schritt – und{" "}
-            <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
-            Sicherheit und Klarheit{" "}
-            <strong>stehen wir dir jederzeit persönlich zur Seite</strong>. Ruf
-            uns an, um dein Beratungsgespräch zu vereinbaren, oder buche deinen{" "}
-            <strong>Termin ganz einfach online</strong>. Dein Weg zu deinem
-            Traumhaus beginnt mit einem Gespräch.
-          </p>
-        </div>
+        {showLeftSide && (
+          <div className="text-center px-4">
+            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
+              Der Kauf deines Hauses ist ein großer Schritt – und{" "}
+              <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
+              Sicherheit und Klarheit{" "}
+              <strong>stehen wir dir jederzeit persönlich zur Seite</strong>.
+              Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
+              deinen <strong>Termin ganz einfach online</strong>. Dein Weg zu
+              deinem Traumhaus beginnt mit einem Gespräch.
+            </p>
+          </div>
+        )}
 
         {/* Calendar Section for Mobile */}
         <div className="px-4 space-y-4">
@@ -245,8 +253,8 @@ const AppointmentBooking = () => {
             </button>
           </div>
 
-          {/* Calendar with Border - Updated to 1pt black border and 35px radius */}
-          <div className="border border-black rounded-[35px] p-4">
+          {/* Calendar with Border - Updated to grey border and 35px radius */}
+          <div className="border border-gray-300 rounded-[35px] p-4">
             <div className="grid grid-cols-7 gap-1 mb-4 text-center font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-500">
               <div>Mo</div>
               <div>Di</div>
@@ -398,121 +406,137 @@ const AppointmentBooking = () => {
             <button
               type="submit"
               disabled={isSubmitting || !selectedDate}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm md:text-base lg:text-lg 2xl:text-xl rounded-full px-8 py-4 disabled:bg-gray-400 transition-colors shadow-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
             </button>
           </div>
 
           {/* Contact Info Boxes for Mobile - UPDATED CONTENT */}
-          <div className="grid grid-cols-1 gap-4">
-            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-              <div className="p-6">
-                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3 text-center">
-                  Kontakt <span className="text-gray-400">Melde dich!</span>
-                </h3>
-                <div className="text-center">
-                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                    <span className="font-medium">Telefon:</span> +43 (0) 3847
-                    75090
-                    <br />
-                    <span className="font-medium">Mobil:</span> +43 (0) 664
-                    3949604
-                    <br />
-                    <span className="font-medium">Email:</span> nest@haus.at
-                  </p>
+          {showLeftSide && (
+            <div className="grid grid-cols-1 gap-4">
+              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+                <div className="p-6">
+                  <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3 text-center">
+                    Kontakt <span className="text-gray-400">Melde dich!</span>
+                  </h3>
+                  <div className="text-center">
+                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                      <span className="font-medium">Telefon:</span> +43 (0) 3847
+                      75090
+                      <br />
+                      <span className="font-medium">Mobil:</span> +43 (0) 664
+                      3949604
+                      <br />
+                      <span className="font-medium">Email:</span> nest@haus.at
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-              <div className="p-6">
-                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3 text-center">
-                  Adresse <span className="text-gray-400">Komm vorbei!</span>
-                </h3>
-                <div className="text-center">
-                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                    <span className="font-medium">Telefon:</span> +43 (0) 3847
-                    75090
-                    <br />
-                    <span className="font-medium">Mobil:</span> +43 (0) 664
-                    3949604
-                    <br />
-                    <span className="font-medium">Email:</span> nest@haus.at
-                  </p>
+              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+                <div className="p-6">
+                  <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3 text-center">
+                    Adresse <span className="text-gray-400">Komm vorbei!</span>
+                  </h3>
+                  <div className="text-center">
+                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                      <span className="font-medium">Telefon:</span> +43 (0) 3847
+                      75090
+                      <br />
+                      <span className="font-medium">Mobil:</span> +43 (0) 664
+                      3949604
+                      <br />
+                      <span className="font-medium">Email:</span> nest@haus.at
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </form>
       </div>
 
-      {/* Desktop Layout: Side by side */}
-      <div className="hidden lg:grid lg:grid-cols-2 gap-0 items-start max-w-[1536px] mx-auto px-[5%]">
+      {/* Desktop Layout: Side by side or centered form */}
+      <div
+        className={`hidden lg:${
+          showLeftSide
+            ? "grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
+            : "flex justify-center"
+        } items-start max-w-[1536px] mx-auto px-[5%]`}
+      >
         {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
-        <div className="space-y-8 max-w-[500px] justify-self-start">
-          {/* Spacer to align text with calendar border start */}
-          <div className="h-16"></div>
+        {showLeftSide && (
+          <div className="space-y-8 max-w-[500px] justify-self-start">
+            {/* Spacer to align text with calendar border start */}
+            <div className="h-16"></div>
 
-          {/* Descriptive Text - INCREASED LINE SPACING */}
-          <div>
-            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
-              Der Kauf deines Hauses ist ein großer Schritt – und{" "}
-              <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
-              Sicherheit und Klarheit{" "}
-              <strong>stehen wir dir jederzeit persönlich zur Seite</strong>.
-              Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
-              deinen <strong>Termin ganz einfach online</strong>. Dein Weg zu
-              deinem Traumhaus beginnt mit einem Gespräch.
-            </p>
-          </div>
+            {/* Descriptive Text - INCREASED LINE SPACING */}
+            <div>
+              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
+                Der Kauf deines Hauses ist ein großer Schritt – und{" "}
+                <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
+                Sicherheit und Klarheit{" "}
+                <strong>stehen wir dir jederzeit persönlich zur Seite</strong>.
+                Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
+                deinen <strong>Termin ganz einfach online</strong>. Dein Weg zu
+                deinem Traumhaus beginnt mit einem Gespräch.
+              </p>
+            </div>
 
-          {/* Spacer to push contact boxes down to radio button level */}
-          <div className="h-3"></div>
+            {/* Spacer to push contact boxes down to radio button level */}
+            <div className="h-3"></div>
 
-          {/* Contact Box - UPDATED CONTENT */}
-          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-            <div className="p-6">
-              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3">
-                Kontakt <span className="text-gray-400">Melde dich!</span>
-              </h3>
-              <div>
-                <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  <span className="font-medium">Telefon:</span> +43 (0) 3847
-                  75090
-                  <br />
-                  <span className="font-medium">Mobil:</span> +43 (0) 664
-                  3949604
-                  <br />
-                  <span className="font-medium">Email:</span> nest@haus.at
-                </p>
+            {/* Contact Box - UPDATED CONTENT */}
+            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+              <div className="p-6">
+                <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3">
+                  Kontakt <span className="text-gray-400">Melde dich!</span>
+                </h3>
+                <div>
+                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                    <span className="font-medium">Telefon:</span> +43 (0) 3847
+                    75090
+                    <br />
+                    <span className="font-medium">Mobil:</span> +43 (0) 664
+                    3949604
+                    <br />
+                    <span className="font-medium">Email:</span> nest@haus.at
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Address Box - UPDATED CONTENT */}
+            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+              <div className="p-6">
+                <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3">
+                  Adresse <span className="text-gray-400">Komm vorbei!</span>
+                </h3>
+                <div>
+                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                    <span className="font-medium">Telefon:</span> +43 (0) 3847
+                    75090
+                    <br />
+                    <span className="font-medium">Mobil:</span> +43 (0) 664
+                    3949604
+                    <br />
+                    <span className="font-medium">Email:</span> nest@haus.at
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Address Box - UPDATED CONTENT */}
-          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-            <div className="p-6">
-              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3">
-                Adresse <span className="text-gray-400">Komm vorbei!</span>
-              </h3>
-              <div>
-                <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  <span className="font-medium">Telefon:</span> +43 (0) 3847
-                  75090
-                  <br />
-                  <span className="font-medium">Mobil:</span> +43 (0) 664
-                  3949604
-                  <br />
-                  <span className="font-medium">Email:</span> nest@haus.at
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* Right side - Calendar and Form - POSITIONED AT RIGHT EDGE */}
-        <div className="space-y-6 max-w-[500px] justify-self-end">
+        <div
+          className={`space-y-6 ${
+            showLeftSide
+              ? "max-w-[500px] justify-self-end"
+              : "w-full max-w-none"
+          }`}
+        >
           <form onSubmit={handleSubmit}>
             {/* Month Navigation - ABOVE calendar - WITH CIRCLES */}
             <div className="flex justify-between items-center mb-4">
@@ -538,8 +562,8 @@ const AppointmentBooking = () => {
               </button>
             </div>
 
-            {/* Calendar with Border - Updated to 1pt black border and 35px radius */}
-            <div className="border border-black rounded-[35px] p-6 mb-4">
+            {/* Calendar with Border - Updated to grey border and 35px radius */}
+            <div className="border border-gray-300 rounded-[35px] p-6 mb-4">
               <div className="grid grid-cols-7 gap-2 mb-4 text-center font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-500">
                 <div>Mo</div>
                 <div>Di</div>
@@ -686,7 +710,7 @@ const AppointmentBooking = () => {
               <button
                 type="submit"
                 disabled={isSubmitting || !selectedDate}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base rounded-full px-8 py-4 disabled:bg-gray-400 transition-colors shadow-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
               </button>

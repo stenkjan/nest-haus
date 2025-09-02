@@ -28,7 +28,7 @@ export const ContactMap: React.FC<ContactMapProps> = ({
           {subtitle}
         </h3>
         <div
-          className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] group"
+          className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
           style={{ border: "15px solid #F4F4F4" }}
         >
           <iframe
