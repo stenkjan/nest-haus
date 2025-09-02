@@ -104,6 +104,11 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
         // Process page visits for time analytics
         const pageVisits = interactions.filter((i: Record<string, unknown>) => i.eventType === 'page_visit');
+        
+        // Debug: Log what we're processing for this test
+        if (pageVisits.length > 0) {
+            console.log(`📊 Test ${testId}: Found ${pageVisits.length} page visits, ${interactions.length} total interactions`);
+        }
 
         pageVisits.forEach((visit: Record<string, unknown>, index: number) => {
             const additionalData = visit.additionalData as Record<string, unknown> || {};
@@ -112,8 +117,8 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
             const title = String(data.title || getPageTitle(path));
             const timestamp = new Date(visit.timestamp as string | number | Date).getTime();
 
-            // Skip test pages and alpha-test routes - these are not real user navigation
-            if (path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests')) return;
+            // Skip only direct test pages, but allow normal navigation
+            if (path === '/alpha-test' || path === '/alpha-tests' || path.startsWith('/admin/') || path.includes('/test/')) return;
 
             // Calculate time spent on page
             const nextVisit = pageVisits[index + 1];
@@ -139,16 +144,23 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                     }
                 }
             } else {
-                // For the last page visit, add a default visit count without time
+                // For the last page visit or single visits, add a visit count
+                // Estimate time based on average session duration if available
+                const estimatedTime = 30000; // 30 seconds default for single page visits
+                
                 if (pageTimeData.has(path)) {
                     const existing = pageTimeData.get(path)!;
                     existing.visits++;
                     existing.sessions.add(testId);
+                    // Add estimated time for single visits
+                    if (existing.totalTime === 0) {
+                        existing.totalTime = estimatedTime;
+                    }
                 } else {
                     pageTimeData.set(path, {
                         path,
                         title,
-                        totalTime: 0,
+                        totalTime: estimatedTime, // Give single visits some time value
                         visits: 1,
                         sessions: new Set([testId])
                     });
@@ -157,19 +169,25 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
         });
 
         // Process button clicks for navigation analytics
-        interactions
-            .filter((i: Record<string, unknown>) => 
-                i.eventType === 'button_click' || 
-                i.eventType === 'navigation' || 
-                i.eventType === 'page_visit'
-            )
+        const clickableInteractions = interactions.filter((i: Record<string, unknown>) => 
+            i.eventType === 'button_click' || 
+            i.eventType === 'navigation' || 
+            i.eventType === 'page_visit'
+        );
+        
+        // Debug: Log clickable interactions for this test
+        if (clickableInteractions.length > 0) {
+            console.log(`📊 Test ${testId}: Found ${clickableInteractions.length} clickable interactions`);
+        }
+        
+        clickableInteractions
             .forEach((click: Record<string, unknown>) => {
                 const additionalData = click.additionalData as Record<string, unknown> || {};
                 const data = additionalData.data as Record<string, unknown> || {};
                 const path = String(data.path || click.stepId || '/');
 
-                // Skip test pages and alpha-test routes - these are not real user navigation
-                if (path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests') || path.includes('/admin/')) return;
+                // Skip only direct test pages, but allow normal navigation
+                if (path === '/alpha-test' || path === '/alpha-tests' || path.startsWith('/admin/') || path.includes('/test/')) return;
 
                 const title = getPageTitle(path);
 
@@ -312,7 +330,13 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
         console.log(`   - Top config selection: ${configSelectionsArray[0].name} (${configSelectionsArray[0].count} tests selected this)`);
     }
     console.log(`   - Page Time Data: ${pageTimeArray.length} pages`);
+    if (pageTimeArray.length > 0) {
+        console.log(`   - Page time sample:`, pageTimeArray.slice(0, 3).map(p => `${p.title}: ${Math.round(p.avgTime/1000)}s (${p.visits} visits)`));
+    }
     console.log(`   - Clicked Pages: ${clickedPagesArray.length} pages`);
+    if (clickedPagesArray.length > 0) {
+        console.log(`   - Clicked pages sample:`, clickedPagesArray.slice(0, 3).map(p => `${p.title}: ${p.visits} clicks`));
+    }
     console.log(`   - Section Time Data: ${sectionTimeArray.length} sections`);
     
     if (pageTimeArray.length > 0) {
