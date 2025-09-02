@@ -3,6 +3,20 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui";
 
+/**
+ * Text Preset: Description Text Small
+ * Usage: text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base
+ *
+ * This preset provides much smaller text than the standard description text preset
+ * (text-sm md:text-base lg:text-lg 2xl:text-xl) for compact UI elements.
+ *
+ * Standard Description Text: text-sm md:text-base lg:text-lg 2xl:text-xl
+ * Description Text Small: text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base
+ *
+ * Use this for most text elements in forms, labels, and general content
+ * where you want compact, readable text with consistent responsive scaling.
+ */
+
 interface AppointmentFormData {
   name: string;
   lastName: string;
@@ -148,10 +162,14 @@ const AppointmentBooking = () => {
       days.push(
         <div
           key={day}
-          className={`text-center p-3 rounded-full text-sm cursor-pointer transition-colors
+          className={`text-center p-3 rounded-full text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base cursor-pointer transition-colors
             ${isToday ? "border border-blue-500" : ""}
             ${isSelected ? "bg-blue-500 text-white" : ""}
-            ${!isAvailable ? "text-gray-300 cursor-not-allowed" : "hover:bg-gray-100"}
+            ${
+              !isAvailable
+                ? "text-gray-300 cursor-not-allowed"
+                : "hover:bg-gray-100"
+            }
             ${isAvailable && !isSelected ? "text-gray-700" : ""}
           `}
           onClick={() => isAvailable && setSelectedDate(date)}
@@ -170,7 +188,7 @@ const AppointmentBooking = () => {
         <h3 className="text-2xl font-semibold mb-4 text-green-700">
           Termin erfolgreich gebucht!
         </h3>
-        <p className="text-lg mb-6">
+        <p className="text-sm md:text-base lg:text-lg 2xl:text-xl mb-6">
           Vielen Dank für deine Terminanfrage. Wir melden uns in Kürze bei dir,
           um alle Details zu bestätigen.
         </p>
@@ -190,7 +208,7 @@ const AppointmentBooking = () => {
       <div className="lg:hidden space-y-8">
         {/* Descriptive Text for Mobile - NO BOX */}
         <div className="text-center px-4">
-          <p className="text-lg leading-7 text-gray-700">
+          <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
             Der Kauf deines Hauses ist ein großer Schritt – und{" "}
             <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
             Sicherheit und Klarheit{" "}
@@ -212,7 +230,7 @@ const AppointmentBooking = () => {
             >
               &#10094;
             </button>
-            <span className="font-medium text-xl">
+            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
               {currentMonth.toLocaleDateString("de-DE", {
                 month: "long",
                 year: "numeric",
@@ -229,7 +247,7 @@ const AppointmentBooking = () => {
 
           {/* Calendar with Border - Updated to 1pt black border and 35px radius */}
           <div className="border border-black rounded-[35px] p-4">
-            <div className="grid grid-cols-7 gap-1 mb-4 text-center font-medium text-sm text-gray-500">
+            <div className="grid grid-cols-7 gap-1 mb-4 text-center font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-500">
               <div>Mo</div>
               <div>Di</div>
               <div>Mi</div>
@@ -252,7 +270,7 @@ const AppointmentBooking = () => {
             >
               &#10094;
             </button>
-            <span className="font-medium text-base">
+            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
               {timeSlots[selectedTimeIndex]}
             </span>
             <button
@@ -266,16 +284,28 @@ const AppointmentBooking = () => {
           </div>
 
           {/* Availability and Opening Hours Text */}
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
             <div>
-              <div className="text-gray-700">verfügbar</div>
-              <div className="text-gray-400">nicht verfügbar</div>
+              <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                verfügbar
+              </div>
+              <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                nicht verfügbar
+              </div>
             </div>
             <div className="text-right">
-              <div className="text-gray-700">Öffnungszeiten</div>
-              <div className="text-gray-400 text-xs">Mo-Fr: 08:00-14:00</div>
-              <div className="text-gray-400 text-xs">15:30-19:00</div>
-              <div className="text-gray-400 text-xs">Sa: 08:00-14:00</div>
+              <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                Öffnungszeiten
+              </div>
+              <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                Mo-Fr: 08:00-14:00
+              </div>
+              <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                15:30-19:00
+              </div>
+              <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                Sa: 08:00-14:00
+              </div>
             </div>
           </div>
         </div>
@@ -284,7 +314,9 @@ const AppointmentBooking = () => {
         <form onSubmit={handleSubmit} className="space-y-6 px-4">
           {/* Contact Information - WIDER FORM FIELDS */}
           <div>
-            <h3 className="text-xl font-medium mb-6">Deine Daten</h3>
+            <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-6">
+              Deine Daten
+            </h3>
             <div className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <input
@@ -292,7 +324,7 @@ const AppointmentBooking = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                  className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                   placeholder="Name"
                   required
                 />
@@ -301,7 +333,7 @@ const AppointmentBooking = () => {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                  className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                   placeholder="Nachname"
                   required
                 />
@@ -312,7 +344,7 @@ const AppointmentBooking = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                  className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                   placeholder="Telefon"
                 />
                 <input
@@ -320,7 +352,7 @@ const AppointmentBooking = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                  className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                   placeholder="Email"
                   required
                 />
@@ -340,7 +372,9 @@ const AppointmentBooking = () => {
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-base">Persönliches Gespräch</span>
+                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                    Persönliches Gespräch
+                  </span>
                 </label>
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -352,7 +386,9 @@ const AppointmentBooking = () => {
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-base">Telefonische Beratung</span>
+                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                    Telefonische Beratung
+                  </span>
                 </label>
               </div>
             </div>
@@ -362,7 +398,7 @@ const AppointmentBooking = () => {
             <button
               type="submit"
               disabled={isSubmitting || !selectedDate}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg rounded-full px-8 py-4 disabled:bg-gray-400 transition-colors shadow-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm md:text-base lg:text-lg 2xl:text-xl rounded-full px-8 py-4 disabled:bg-gray-400 transition-colors shadow-lg"
             >
               {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
             </button>
@@ -370,53 +406,41 @@ const AppointmentBooking = () => {
 
           {/* Contact Info Boxes for Mobile - UPDATED CONTENT */}
           <div className="grid grid-cols-1 gap-4">
-            <div className="bg-gray-50 p-6 rounded-[35px] shadow-lg">
-              <h4 className="font-medium text-lg mb-3 text-center">
-                <span className="text-black">Kontakt</span>{" "}
-                <span
-                  className="text-gray-400 font-normal"
-                  style={{ fontSize: "calc(1.125rem + 3px)" }}
-                >
-                  Melde dich!
-                </span>
-              </h4>
-              <div className="text-center space-y-1 text-base text-gray-700">
-                <p>
-                  <span className="font-medium">Telefon:</span> +43 (0) 3847
-                  75090
-                </p>
-                <p>
-                  <span className="font-medium">Mobil:</span> +43 (0) 664
-                  3949604
-                </p>
-                <p>
-                  <span className="font-medium">Email:</span> nest@haus.at
-                </p>
+            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+              <div className="p-6">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3 text-center">
+                  Kontakt <span className="text-gray-400">Melde dich!</span>
+                </h3>
+                <div className="text-center">
+                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                    <span className="font-medium">Telefon:</span> +43 (0) 3847
+                    75090
+                    <br />
+                    <span className="font-medium">Mobil:</span> +43 (0) 664
+                    3949604
+                    <br />
+                    <span className="font-medium">Email:</span> nest@haus.at
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-[35px] shadow-lg">
-              <h4 className="font-medium text-lg mb-3 text-center">
-                <span className="text-black">Adresse</span>{" "}
-                <span
-                  className="text-gray-400 font-normal"
-                  style={{ fontSize: "calc(1.125rem + 3px)" }}
-                >
-                  Komm vorbei!
-                </span>
-              </h4>
-              <div className="text-center space-y-1 text-base text-gray-700">
-                <p>
-                  <span className="font-medium">Telefon:</span> +43 (0) 3847
-                  75090
-                </p>
-                <p>
-                  <span className="font-medium">Mobil:</span> +43 (0) 664
-                  3949604
-                </p>
-                <p>
-                  <span className="font-medium">Email:</span> nest@haus.at
-                </p>
+            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+              <div className="p-6">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3 text-center">
+                  Adresse <span className="text-gray-400">Komm vorbei!</span>
+                </h3>
+                <div className="text-center">
+                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                    <span className="font-medium">Telefon:</span> +43 (0) 3847
+                    75090
+                    <br />
+                    <span className="font-medium">Mobil:</span> +43 (0) 664
+                    3949604
+                    <br />
+                    <span className="font-medium">Email:</span> nest@haus.at
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -432,7 +456,7 @@ const AppointmentBooking = () => {
 
           {/* Descriptive Text - INCREASED LINE SPACING */}
           <div>
-            <p className="text-lg leading-[1.7] text-gray-700">
+            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}
               <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
               Sicherheit und Klarheit{" "}
@@ -447,50 +471,42 @@ const AppointmentBooking = () => {
           <div className="h-3"></div>
 
           {/* Contact Box - UPDATED CONTENT */}
-          <div className="bg-gray-50 p-6 rounded-[35px] shadow-xl">
-            <h4 className="font-medium text-lg mb-3">
-              <span className="text-black">Kontakt</span>{" "}
-              <span
-                className="text-gray-400 font-normal"
-                style={{ fontSize: "calc(1.125rem + 3px)" }}
-              >
-                Melde dich!
-              </span>
-            </h4>
-            <div className="space-y-1 text-lg leading-7">
-              <p>
-                <span className="font-medium">Telefon:</span> +43 (0) 3847 75090
-              </p>
-              <p>
-                <span className="font-medium">Mobil:</span> +43 (0) 664 3949604
-              </p>
-              <p>
-                <span className="font-medium">Email:</span> nest@haus.at
-              </p>
+          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+            <div className="p-6">
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3">
+                Kontakt <span className="text-gray-400">Melde dich!</span>
+              </h3>
+              <div>
+                <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                  <span className="font-medium">Telefon:</span> +43 (0) 3847
+                  75090
+                  <br />
+                  <span className="font-medium">Mobil:</span> +43 (0) 664
+                  3949604
+                  <br />
+                  <span className="font-medium">Email:</span> nest@haus.at
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Address Box - UPDATED CONTENT */}
-          <div className="bg-gray-50 p-6 rounded-[35px] shadow-xl">
-            <h4 className="font-medium text-lg mb-3">
-              <span className="text-black">Adresse</span>{" "}
-              <span
-                className="text-gray-400 font-normal"
-                style={{ fontSize: "calc(1.125rem + 3px)" }}
-              >
-                Komm vorbei!
-              </span>
-            </h4>
-            <div className="space-y-1 text-lg leading-7">
-              <p>
-                <span className="font-medium">Telefon:</span> +43 (0) 3847 75090
-              </p>
-              <p>
-                <span className="font-medium">Mobil:</span> +43 (0) 664 3949604
-              </p>
-              <p>
-                <span className="font-medium">Email:</span> nest@haus.at
-              </p>
+          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+            <div className="p-6">
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3">
+                Adresse <span className="text-gray-400">Komm vorbei!</span>
+              </h3>
+              <div>
+                <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                  <span className="font-medium">Telefon:</span> +43 (0) 3847
+                  75090
+                  <br />
+                  <span className="font-medium">Mobil:</span> +43 (0) 664
+                  3949604
+                  <br />
+                  <span className="font-medium">Email:</span> nest@haus.at
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -507,7 +523,7 @@ const AppointmentBooking = () => {
               >
                 &#10094;
               </button>
-              <span className="font-medium text-xl">
+              <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
                 {currentMonth.toLocaleDateString("de-DE", {
                   month: "long",
                   year: "numeric",
@@ -524,7 +540,7 @@ const AppointmentBooking = () => {
 
             {/* Calendar with Border - Updated to 1pt black border and 35px radius */}
             <div className="border border-black rounded-[35px] p-6 mb-4">
-              <div className="grid grid-cols-7 gap-2 mb-4 text-center font-medium text-sm text-gray-500">
+              <div className="grid grid-cols-7 gap-2 mb-4 text-center font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-500">
                 <div>Mo</div>
                 <div>Di</div>
                 <div>Mi</div>
@@ -547,7 +563,7 @@ const AppointmentBooking = () => {
               >
                 &#10094;
               </button>
-              <span className="font-medium text-base">
+              <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
                 {timeSlots[selectedTimeIndex]}
               </span>
               <button
@@ -561,22 +577,36 @@ const AppointmentBooking = () => {
             </div>
 
             {/* Availability and Opening Hours Text */}
-            <div className="flex justify-between text-sm mb-6">
+            <div className="flex justify-between text-sm md:text-sm lg:text-base 2xl:text-lg mb-6">
               <div>
-                <div className="text-gray-700">verfügbar</div>
-                <div className="text-gray-400">nicht verfügbar</div>
+                <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  verfügbar
+                </div>
+                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  nicht verfügbar
+                </div>
               </div>
               <div className="text-right">
-                <div className="text-gray-700">Öffnungszeiten</div>
-                <div className="text-gray-400 text-xs">Mo-Fr: 08:00-14:00</div>
-                <div className="text-gray-400 text-xs">15:30-19:00</div>
-                <div className="text-gray-400 text-xs">Sa: 08:00-14:00</div>
+                <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  Öffnungszeiten
+                </div>
+                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  Mo-Fr: 08:00-14:00
+                </div>
+                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  15:30-19:00
+                </div>
+                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  Sa: 08:00-14:00
+                </div>
               </div>
             </div>
 
             {/* Contact Information - WIDER FORM FIELDS */}
             <div className="mb-8">
-              <h3 className="text-xl font-medium mb-6">Deine Daten</h3>
+              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-6">
+                Deine Daten
+              </h3>
               <div className="space-y-3 mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input
@@ -584,7 +614,7 @@ const AppointmentBooking = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                     placeholder="Name"
                     required
                   />
@@ -593,7 +623,7 @@ const AppointmentBooking = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                     placeholder="Nachname"
                     required
                   />
@@ -604,7 +634,7 @@ const AppointmentBooking = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                     placeholder="Telefon"
                   />
                   <input
@@ -612,7 +642,7 @@ const AppointmentBooking = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                     placeholder="Email"
                     required
                   />
@@ -631,7 +661,9 @@ const AppointmentBooking = () => {
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-base">Persönliches Gespräch</span>
+                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                    Persönliches Gespräch
+                  </span>
                 </label>
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -643,7 +675,9 @@ const AppointmentBooking = () => {
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-base">Telefonische Beratung</span>
+                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                    Telefonische Beratung
+                  </span>
                 </label>
               </div>
             </div>
@@ -652,7 +686,7 @@ const AppointmentBooking = () => {
               <button
                 type="submit"
                 disabled={isSubmitting || !selectedDate}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg rounded-full px-8 py-4 disabled:bg-gray-400 transition-colors shadow-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base rounded-full px-8 py-4 disabled:bg-gray-400 transition-colors shadow-lg"
               >
                 {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
               </button>

@@ -5,7 +5,7 @@ import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
 import { PLANNING_PACKAGES } from "@/constants/configurator";
 import GrundstueckCheckWrapper from "@/app/kontakt/components/GrundstueckCheckWrapper";
-import AppointmentBooking from "@/app/kontakt/components/AppointmentBooking";
+import { AppointmentBooking } from "@/components/sections";
 import {
   planungspaketeCardData,
   type PlanungspaketeCardData,
