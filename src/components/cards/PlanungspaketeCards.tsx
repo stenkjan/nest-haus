@@ -100,21 +100,6 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
   },
 ];
 
-// Helper function to render title with specified word in gray
-const renderTitle = (title: string, grayWord?: string) => {
-  if (grayWord && title.includes(grayWord)) {
-    const parts = title.split(grayWord);
-    return (
-      <>
-        {parts[0]}
-        <span className="text-gray-400">{grayWord}</span>
-        {parts[1]}
-      </>
-    );
-  }
-  return title;
-};
-
 export default function PlanungspaketeCards({
   title = "Planungspakete Cards",
   subtitle = "Click on any card to see detailed information",
