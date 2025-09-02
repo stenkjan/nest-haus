@@ -28,7 +28,7 @@ interface SquareTextCardProps {
 }
 
 // Default data for demonstration
-const defaultSquareTextCardData: SquareTextCardData[] = [
+export const defaultSquareTextCardData: SquareTextCardData[] = [
   {
     id: 1,
     title: "1. Vorentwurf",
