@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [166bc79d72d5a53699e35c1eb36e54c835924598] - Tue Sep 2 13:19:26 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Remove unused performance and test files, and update image mappings for consistency across configurations  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
 ## [040dba29079476e1f6427ca61bfbfa4ab5791761] - Mon Sep 1 11:38:02 2025 +0200
 
 **Author**: stenkjan
