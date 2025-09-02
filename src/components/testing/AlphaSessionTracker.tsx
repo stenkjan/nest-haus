@@ -60,6 +60,27 @@ export default function AlphaSessionTracker() {
         ) {
           return true;
         }
+
+        // Check for usability test popup specific patterns
+        if (
+          // Fixed positioned overlay with high z-index (test popup container)
+          (className.includes("fixed") && className.includes("inset-0") && className.includes("z-50")) ||
+          // Backdrop blur with border (test popup content)
+          (className.includes("backdrop-blur") && className.includes("border-2") && className.includes("border-blue-300")) ||
+          // Check for test-specific text content
+          (current.textContent && (
+            current.textContent.includes("Schritt") ||
+            current.textContent.includes("Nächster Schritt") ||
+            current.textContent.includes("Ihre Antwort") ||
+            current.textContent.includes("Alpha Test") ||
+            current.textContent.includes("Usability Test")
+          )) ||
+          // Check for rating buttons (1-6 scale)
+          (current.tagName === "BUTTON" && /^[1-6]$/.test(current.textContent?.trim() || ""))
+        ) {
+          return true;
+        }
+
         current = current.parentElement;
       }
       return false;
@@ -75,7 +96,12 @@ export default function AlphaSessionTracker() {
 
       // Skip if it's part of the test popup
       if (isTestPopupElement(target)) {
-        console.log("🔍 Click event: skipped (test popup element)", target);
+        console.log("🔍 Click event: skipped (test popup element)", {
+          tagName: target.tagName,
+          textContent: target.textContent?.trim(),
+          className: target.className,
+          id: target.id
+        });
         return;
       }
 
@@ -137,79 +163,14 @@ export default function AlphaSessionTracker() {
     };
 
     const handleFormChange = (event: Event) => {
-      const target = event.target as
-        | HTMLInputElement
-        | HTMLTextAreaElement
-        | HTMLSelectElement;
-
-      if (!target || !isFormElement(target)) return;
-
-      // Skip if it's part of the test popup
-      if (isTestPopupElement(target as HTMLElement)) {
-        console.log("🔍 Form change: skipped (test popup element)", target);
-        return;
-      }
-
-      // Skip configurator-related form elements (these are tracked separately)
-      const isConfiguratorElement = 
-        window.location.pathname === '/konfigurator' && 
-        (target.closest('.configurator-panel') || 
-         target.closest('[data-configurator]') ||
-         target.name?.includes('config') ||
-         target.id?.includes('config'));
-
-      if (isConfiguratorElement) {
-        console.log("🔍 Form change: skipped (configurator element)", target);
-        return;
-      }
-
-      const fieldName =
-        target.name ||
-        target.id ||
-        (target as HTMLInputElement | HTMLTextAreaElement).placeholder ||
-        "unnamed_field";
-      const fieldType = target.type || target.tagName.toLowerCase();
-      const formId = target.form?.id || target.closest("form")?.id || undefined;
-
-      // Don't store sensitive values (passwords, etc.)
-      const value =
-        target.type === "password"
-          ? "[HIDDEN]"
-          : target.type === "email"
-            ? "[EMAIL]"
-            : target.value.length > 50
-              ? "[LONG_TEXT]"
-              : target.value;
-
-      console.log("📝 Tracking form change:", {
-        fieldName,
-        fieldType,
-        formId,
-        value: value.substring(0, 20),
-        path: window.location.pathname,
-      });
-
-      trackFormInteraction(fieldName, fieldType, "change", value, formId);
+      // Skip all form changes - we only want to track button and link clicks
+      // Form interactions are not meaningful for user behavior analysis
+      return;
     };
 
     const handleFormSubmit = (event: SubmitEvent) => {
-      const form = event.target as HTMLFormElement;
-      if (!form) return;
-
-      // Skip if it's part of the test popup
-      if (isTestPopupElement(form)) {
-        console.log("🔍 Form submit: skipped (test popup element)", form);
-        return;
-      }
-
-      const formId = form.id || form.className || "unnamed_form";
-
-      console.log("📝 Tracking form submit:", {
-        formId,
-        path: window.location.pathname,
-      });
-
-      trackFormInteraction(formId, "form", "submit", undefined, formId);
+      // Skip all form submissions - we only want to track button and link clicks
+      return;
     };
 
     // Add event listeners
