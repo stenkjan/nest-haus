@@ -36,11 +36,6 @@ export default function FensterOverlay({
     return overlayMappings[type] || IMAGES.fensterOverlays.holz; // Default to holz
   };
 
-  // Don't render if not visible
-  if (!isVisible) {
-    return null;
-  }
-
   const overlayImagePath = getOverlayImage(fensterType);
 
   // Update image metrics when container size changes
@@ -98,6 +93,11 @@ export default function FensterOverlay({
       resizeObserver.disconnect();
     };
   }, []);
+
+  // Don't render if not visible
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <div
