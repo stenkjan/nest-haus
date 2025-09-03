@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0a47f36bbb41d5dd5a60117ba1d2caa7a0c37811] - Wed Sep 3 15:56:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enhance image loading experience in PreviewPanel  - Introduced loading states for main and previous images to prevent blank spaces during transitions. - Updated logic to keep the previous image visible until the new one is fully loaded, improving user experience. - Adjusted overlays (PV Module, Brightness, Fenster) to only display when the main image is loaded, ensuring better performance and visual consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/PreviewPanel.tsx
+
+
+---
+
 ## [8c8f9e1f8f474cd17d1e9d3e92e045c5d35ddf45] - Wed Sep 3 15:42:55 2025 +0200
 
 **Author**: stenkjan
