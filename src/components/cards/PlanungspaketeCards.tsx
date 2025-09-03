@@ -244,10 +244,10 @@ export default function PlanungspaketeCards({
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [isClient, screenWidth, cardData]);
+  }, [isClient, screenWidth, cardData, cardHeights]);
 
   // Calculate and store card height when expanded
-  const measureCardHeight = useCallback((cardId: number) => {
+  const _measureCardHeight = useCallback((cardId: number) => {
     const cardElement = cardRefs.current.get(cardId);
     if (cardElement) {
       // Get sections for precise measurement

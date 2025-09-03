@@ -241,7 +241,7 @@ export default function SquareTextCard({
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [isClient, screenWidth, cardData]);
+  }, [isClient, screenWidth, cardData, cardHeights, cardWidth]);
 
   const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
@@ -655,14 +655,27 @@ export default function SquareTextCard({
               // Track initial touch position for better gesture detection
               const touch = e.touches[0];
               if (touch) {
-                (e.currentTarget as any).initialTouchX = touch.clientX;
-                (e.currentTarget as any).initialTouchY = touch.clientY;
+                (
+                  e.currentTarget as HTMLElement & {
+                    initialTouchX?: number;
+                    initialTouchY?: number;
+                  }
+                ).initialTouchX = touch.clientX;
+                (
+                  e.currentTarget as HTMLElement & {
+                    initialTouchX?: number;
+                    initialTouchY?: number;
+                  }
+                ).initialTouchY = touch.clientY;
               }
             }}
             onTouchMove={(e) => {
               // Only prevent default if this is clearly a horizontal swipe
               const touch = e.touches[0];
-              const target = e.currentTarget as any;
+              const target = e.currentTarget as HTMLElement & {
+                initialTouchX?: number;
+                initialTouchY?: number;
+              };
 
               if (
                 touch &&
