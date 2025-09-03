@@ -117,8 +117,12 @@ export default function PlanungspaketeCards({
   const [screenWidth, setScreenWidth] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
+  const [cardHeights, setCardHeights] = useState<Map<number, number>>(
+    new Map()
+  );
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   // iOS viewport hook for stable lightbox sizing
   const viewport = useIOSViewport();
@@ -130,6 +134,13 @@ export default function PlanungspaketeCards({
   useEffect(() => {
     setIsClient(true);
     setScreenWidth(window.innerWidth);
+
+    // iOS-specific: Force initial layout calculation
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event("resize"));
+      }, 100);
+    }
   }, []);
 
   // Calculate responsive card dimensions
@@ -167,6 +178,51 @@ export default function PlanungspaketeCards({
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, [isLightboxMode]);
+
+  // Pre-measure card heights on mobile for smooth expansion
+  useEffect(() => {
+    if (!isClient || screenWidth >= 1024) return;
+
+    const preMeasureHeights = () => {
+      cardData.forEach((card) => {
+        const cardElement = cardRefs.current.get(card.id);
+        if (cardElement && !cardHeights.has(card.id)) {
+          // Create a temporary clone to measure full height
+          const clone = cardElement.cloneNode(true) as HTMLElement;
+          clone.style.position = "absolute";
+          clone.style.visibility = "hidden";
+          clone.style.height = "auto";
+          clone.style.top = "-9999px";
+          document.body.appendChild(clone);
+
+          const fullHeight = clone.scrollHeight;
+          document.body.removeChild(clone);
+
+          setCardHeights((prev) => new Map(prev.set(card.id, fullHeight)));
+        }
+      });
+    };
+
+    // Delay to ensure DOM is ready
+    const timer = setTimeout(preMeasureHeights, 500);
+    return () => clearTimeout(timer);
+  }, [isClient, screenWidth, cardData, cardHeights]);
+
+  // Calculate and store card height when expanded
+  const measureCardHeight = useCallback((cardId: number) => {
+    const cardElement = cardRefs.current.get(cardId);
+    if (cardElement) {
+      // Temporarily expand to measure full height
+      const originalHeight = cardElement.style.height;
+      cardElement.style.height = "auto";
+      const fullHeight = cardElement.scrollHeight;
+      cardElement.style.height = originalHeight;
+
+      setCardHeights((prev) => new Map(prev.set(cardId, fullHeight)));
+      return fullHeight;
+    }
+    return 360; // fallback height
+  }, []);
 
   const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
@@ -363,15 +419,31 @@ export default function PlanungspaketeCards({
     );
   }
 
-  // Toggle card expansion for mobile
+  // Toggle card expansion for mobile with iOS-specific fixes
   const toggleCardExpansion = (cardId: number) => {
+    const isMobile = isClient && screenWidth < 1024;
+
     setExpandedCards((prev) => {
       const newSet = new Set(prev);
+      const isExpanding = !newSet.has(cardId);
+
       if (newSet.has(cardId)) {
         newSet.delete(cardId);
       } else {
         newSet.add(cardId);
+        // Measure height when expanding
+        if (isMobile && isExpanding) {
+          setTimeout(() => measureCardHeight(cardId), 50);
+        }
       }
+
+      // Force layout recalculation on iOS
+      if (isMobile && viewport.isIOSSafari) {
+        setTimeout(() => {
+          window.dispatchEvent(new Event("resize"));
+        }, 100);
+      }
+
       return newSet;
     });
   };
@@ -428,17 +500,23 @@ export default function PlanungspaketeCards({
             {displayCards.map((card, index) => {
               const isExpanded = expandedCards.has(card.id);
               const isMobile = isClient && screenWidth < 1024;
+              const expandedHeight = cardHeights.get(card.id) || 500; // fallback to reasonable height
 
               return (
                 <motion.div
                   key={card.id}
+                  ref={(el) => {
+                    if (el) {
+                      cardRefs.current.set(card.id, el);
+                    }
+                  }}
                   className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
                   style={{
                     width: cardWidth,
                     backgroundColor: card.backgroundColor,
                   }}
                   animate={{
-                    height: isMobile && isExpanded ? "auto" : 360,
+                    height: isMobile && isExpanded ? expandedHeight : 360,
                   }}
                   transition={{
                     duration: 0.6,
