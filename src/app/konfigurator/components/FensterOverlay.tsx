@@ -16,18 +16,13 @@ export default function FensterOverlay({
   className = "",
 }: FensterOverlayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [imageMetrics, setImageMetrics] = useState({
+  const [_imageMetrics, setImageMetrics] = useState({
     imageTop: 0,
     imageLeft: 0,
     imageWidth: 0,
     imageHeight: 0,
     scaleFactor: 1,
   });
-
-  // Don't render if not visible
-  if (!isVisible) {
-    return null;
-  }
 
   // Map fenster types to overlay image paths using constants
   const getOverlayImage = (type: string) => {
@@ -40,6 +35,11 @@ export default function FensterOverlay({
 
     return overlayMappings[type] || IMAGES.fensterOverlays.holz; // Default to holz
   };
+
+  // Don't render if not visible
+  if (!isVisible) {
+    return null;
+  }
 
   const overlayImagePath = getOverlayImage(fensterType);
 

@@ -363,7 +363,7 @@ export class ImagesConstantsUpdater {
 
         // Find matching blob image with EXACT same mobile/desktop type
         // CRITICAL: For desktop constants, prefer desktop versions even if mobile exists
-        let matchingMapping = blobMappings.find(mapping =>
+        const matchingMapping = blobMappings.find(mapping =>
           mapping.number === imageNumber &&
           mapping.isMobile === isCurrentMobile
         );

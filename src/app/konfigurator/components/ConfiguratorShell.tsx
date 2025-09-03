@@ -299,6 +299,9 @@ export default function ConfiguratorShell({
       pvQuantity,
       setIsPvOverlayVisible,
       setIsBrightnessOverlayVisible,
+      setIsFensterOverlayVisible,
+      isBrightnessOverlayVisible,
+      isFensterOverlayVisible,
     ]
   );
 
