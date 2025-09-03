@@ -194,7 +194,7 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 3 - Dein Zuhause zieht um */}
-        <section id="zuhause-zieht-um" className="w-full py-16 bg-white">
+        <section id="zuhause-zieht-um" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">

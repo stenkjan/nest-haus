@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "node scripts/start-dev.js",
     "dev:local": "next dev --hostname localhost",
+    "dev:network": "node scripts/start-dev.js",
+    "dev:all": "next dev --hostname 0.0.0.0",
     "build": "npx prisma generate && next build",
     "build:windows": "taskkill /f /im node.exe 2>nul & timeout /t 2 & npx prisma generate && next build",
     "start": "next start",
