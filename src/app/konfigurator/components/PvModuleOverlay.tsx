@@ -206,7 +206,7 @@ export default function PvModuleOverlay({
   // Position counter lower - at the height where the old PV overlay was positioned
   const counterTop = imageMetrics.imageTop + imageMetrics.imageHeight * 0.25; // Position 25% down from top of image (lower than before)
   const counterTopMobile =
-    imageMetrics.imageTop + imageMetrics.imageHeight * 0.25; // Position 25% down from top of image on mobile (5% higher than before)
+    imageMetrics.imageTop + imageMetrics.imageHeight * 0.20; // Position 25% down from top of image on mobile (5% higher than before)
 
   return (
     <div
@@ -254,7 +254,7 @@ export default function PvModuleOverlay({
             className="absolute bg-[#3D6DE1] text-white rounded-full flex items-center justify-center font-bold shadow-lg
                        max-[769px]:flex min-[770px]:hidden z-20"
             style={{
-              left: "80%", // 30% right of center (50% + 30%)
+              left: "50%", // 30% right of center (50% + 30%)
               top: `${counterTopMobile}px`, // Positioned 25% down from top of actual image (5% higher than before)
               width: `${counterSize.mobile}px`,
               height: `${counterSize.mobile}px`,
