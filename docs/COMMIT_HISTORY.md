@@ -4,6 +4,47 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f1a3f06e4f92937f7b9873ea6e334069267121ab] - Wed Sep 3 16:03:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'development'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/kontakt/KontaktClient.tsx
+- src/app/kontakt/components/GrundstueckCheckWrapper.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/MOBILE_SCROLL_IMPROVEMENTS.md
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/PlanungspaketeCardsLightbox.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/cards/index.ts
+- src/components/cards/mobile-scroll-optimizations.css
+- src/components/grids/TwoByTwoImageGrid.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/AppointmentBookingSection.tsx
+- src/components/sections/ContactMap.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/sections/PartnersSection.tsx
+- src/components/sections/index.ts
+- src/components/ui/Button.tsx
+
+
+#### 🔧 Configuration Changes
+- next.config.ts
+- package.json
+
+
+---
+
 ## [0a47f36bbb41d5dd5a60117ba1d2caa7a0c37811] - Wed Sep 3 15:56:48 2025 +0200
 
 **Author**: stenkjan
