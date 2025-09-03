@@ -184,44 +184,114 @@ export default function PlanungspaketeCards({
     if (!isClient || screenWidth >= 1024) return;
 
     const preMeasureHeights = () => {
-      cardData.forEach((card) => {
-        const cardElement = cardRefs.current.get(card.id);
-        if (cardElement && !cardHeights.has(card.id)) {
-          // Create a temporary clone to measure full height
-          const clone = cardElement.cloneNode(true) as HTMLElement;
-          clone.style.position = "absolute";
-          clone.style.visibility = "hidden";
-          clone.style.height = "auto";
-          clone.style.top = "-9999px";
-          document.body.appendChild(clone);
+      // Use requestAnimationFrame to ensure DOM is fully rendered
+      requestAnimationFrame(() => {
+        cardData.forEach((card) => {
+          const cardElement = cardRefs.current.get(card.id);
+          if (cardElement && !cardHeights.has(card.id)) {
+            // Calculate expanded height based on actual content
+            const topSection = cardElement.querySelector(
+              ".h-56"
+            ) as HTMLElement;
+            const bottomSection = cardElement.querySelector(
+              '[class*="px-6 pt-2 pb-6"]'
+            ) as HTMLElement;
 
-          const fullHeight = clone.scrollHeight;
-          document.body.removeChild(clone);
+            let calculatedHeight = 360; // base height
 
-          setCardHeights((prev) => new Map(prev.set(card.id, fullHeight)));
-        }
+            if (topSection && bottomSection) {
+              // Get the extended description text element
+              const extendedTextElement = bottomSection.querySelector(
+                "p"
+              ) as HTMLElement;
+
+              if (extendedTextElement) {
+                // Temporarily remove line-clamp to measure full height
+                const originalClasses = extendedTextElement.className;
+                extendedTextElement.className = originalClasses.replace(
+                  "line-clamp-4",
+                  ""
+                );
+
+                // Measure the full content height
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48; // Extra padding for iOS
+
+                // Restore original classes
+                extendedTextElement.className = originalClasses;
+              } else {
+                // Fallback measurement
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48;
+              }
+            }
+
+            // Ensure minimum height for iOS with more generous padding
+            const finalHeight = Math.max(calculatedHeight, 520);
+            setCardHeights((prev) => new Map(prev.set(card.id, finalHeight)));
+          }
+        });
       });
     };
 
-    // Delay to ensure DOM is ready
-    const timer = setTimeout(preMeasureHeights, 500);
-    return () => clearTimeout(timer);
-  }, [isClient, screenWidth, cardData, cardHeights]);
+    // Multiple attempts to ensure measurement
+    const timer1 = setTimeout(preMeasureHeights, 100);
+    const timer2 = setTimeout(preMeasureHeights, 300);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isClient, screenWidth, cardData]);
 
   // Calculate and store card height when expanded
   const measureCardHeight = useCallback((cardId: number) => {
     const cardElement = cardRefs.current.get(cardId);
     if (cardElement) {
-      // Temporarily expand to measure full height
-      const originalHeight = cardElement.style.height;
-      cardElement.style.height = "auto";
-      const fullHeight = cardElement.scrollHeight;
-      cardElement.style.height = originalHeight;
+      // Get sections for precise measurement
+      const topSection = cardElement.querySelector(".h-56") as HTMLElement;
+      const bottomSection = cardElement.querySelector(
+        '[class*="px-6 pt-2 pb-6"]'
+      ) as HTMLElement;
 
-      setCardHeights((prev) => new Map(prev.set(cardId, fullHeight)));
-      return fullHeight;
+      let calculatedHeight = 360;
+
+      if (topSection && bottomSection) {
+        // Get the extended description text element
+        const extendedTextElement = bottomSection.querySelector(
+          "p"
+        ) as HTMLElement;
+
+        if (extendedTextElement) {
+          // Temporarily remove line-clamp to measure full height
+          const originalClasses = extendedTextElement.className;
+          extendedTextElement.className = originalClasses.replace(
+            "line-clamp-4",
+            ""
+          );
+
+          // Measure the full content height
+          const topHeight = topSection.scrollHeight;
+          const bottomHeight = bottomSection.scrollHeight;
+          calculatedHeight = topHeight + bottomHeight + 48; // Extra padding
+
+          // Restore original classes
+          extendedTextElement.className = originalClasses;
+        } else {
+          // Fallback measurement
+          const topHeight = topSection.scrollHeight;
+          const bottomHeight = bottomSection.scrollHeight;
+          calculatedHeight = topHeight + bottomHeight + 48;
+        }
+      }
+
+      const finalHeight = Math.max(calculatedHeight, 520);
+      setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
+      return finalHeight;
     }
-    return 360; // fallback height
+    return 520; // fallback height
   }, []);
 
   const gap = 24;
@@ -422,6 +492,7 @@ export default function PlanungspaketeCards({
   // Toggle card expansion for mobile with iOS-specific fixes
   const toggleCardExpansion = (cardId: number) => {
     const isMobile = isClient && screenWidth < 1024;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     setExpandedCards((prev) => {
       const newSet = new Set(prev);
@@ -431,17 +502,69 @@ export default function PlanungspaketeCards({
         newSet.delete(cardId);
       } else {
         newSet.add(cardId);
-        // Measure height when expanding
-        if (isMobile && isExpanding) {
-          setTimeout(() => measureCardHeight(cardId), 50);
+
+        // Ensure height is measured before expansion
+        if (isMobile && isExpanding && !cardHeights.has(cardId)) {
+          const cardElement = cardRefs.current.get(cardId);
+          if (cardElement) {
+            // Immediate measurement for iOS with full content calculation
+            const topSection = cardElement.querySelector(
+              ".h-56"
+            ) as HTMLElement;
+            const bottomSection = cardElement.querySelector(
+              '[class*="px-6 pt-2 pb-6"]'
+            ) as HTMLElement;
+
+            let calculatedHeight = 360;
+            if (topSection && bottomSection) {
+              // Get the extended description text element
+              const extendedTextElement = bottomSection.querySelector(
+                "p"
+              ) as HTMLElement;
+
+              if (extendedTextElement) {
+                // Temporarily remove line-clamp to measure full height
+                const originalClasses = extendedTextElement.className;
+                extendedTextElement.className = originalClasses.replace(
+                  "line-clamp-4",
+                  ""
+                );
+
+                // Measure the full content height
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48; // Extra padding
+
+                // Restore original classes
+                extendedTextElement.className = originalClasses;
+              } else {
+                // Fallback measurement
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48;
+              }
+            }
+
+            const finalHeight = Math.max(calculatedHeight, isIOS ? 560 : 520);
+            setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
+          }
         }
       }
 
-      // Force layout recalculation on iOS
-      if (isMobile && viewport.isIOSSafari) {
-        setTimeout(() => {
+      // iOS-specific layout fixes
+      if (isMobile && isIOS) {
+        // Prevent scroll interference
+        document.body.style.overflow = "hidden";
+
+        // Multiple layout triggers for iOS
+        requestAnimationFrame(() => {
           window.dispatchEvent(new Event("resize"));
-        }, 100);
+
+          // Re-enable scrolling after animation
+          setTimeout(() => {
+            document.body.style.overflow = "";
+          }, 650); // Slightly longer than animation duration
+        });
       }
 
       return newSet;
@@ -514,6 +637,11 @@ export default function PlanungspaketeCards({
                   style={{
                     width: cardWidth,
                     backgroundColor: card.backgroundColor,
+                    // iOS-specific fixes
+                    WebkitTransform: "translateZ(0)", // Force hardware acceleration
+                    transform: "translateZ(0)",
+                    WebkitBackfaceVisibility: "hidden",
+                    backfaceVisibility: "hidden",
                   }}
                   animate={{
                     height: isMobile && isExpanded ? expandedHeight : 360,
@@ -545,9 +673,9 @@ export default function PlanungspaketeCards({
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
-                          <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
+                          <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
                             {getCardText(card, "title")}
-                          </h3>
+                          </h2>
                           <h4 className="text-sm md:text-base lg:text-lg font-medium text-gray-700">
                             {getCardText(card, "subtitle") || card.grayWord}
                           </h4>
@@ -624,6 +752,22 @@ export default function PlanungspaketeCards({
                             ease: [0.25, 0.46, 0.45, 0.94],
                           }}
                         />
+
+                        {/* Close instruction text for expanded cards */}
+                        <motion.div
+                          className="absolute bottom-2 left-0 right-0 text-center pointer-events-none"
+                          animate={{
+                            opacity: isMobile && isExpanded ? 1 : 0,
+                          }}
+                          transition={{
+                            duration: 0.3,
+                            delay: isMobile && isExpanded ? 0.3 : 0,
+                          }}
+                        >
+                          <p className="text-xs text-gray-500">
+                            drücken zum schließen
+                          </p>
+                        </motion.div>
                       </motion.div>
                     </div>
                   )}
@@ -697,9 +841,9 @@ export default function PlanungspaketeCards({
                               duration: 0.6,
                             }}
                           >
-                            <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
-                            </h3>
+                            </h2>
                             <h4 className="text-base md:text-lg lg:text-xl font-medium text-gray-700">
                               {getCardText(card, "subtitle") || card.grayWord}
                             </h4>

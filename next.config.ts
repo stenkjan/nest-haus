@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     // Enable SVG placeholders
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    
+
     remotePatterns: [
       {
         protocol: 'https',
@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       }
     ],
-    
+
     // Optimize image loading
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60 * 60 * 24, // 24 hours
@@ -43,6 +43,20 @@ const nextConfig: NextConfig = {
   experimental: {
     // Prevent webpack chunk issues
     optimizePackageImports: ['@prisma/client'],
+  },
+  // Allow cross-origin requests from local network
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+        ],
+      },
+    ];
   },
 };
 

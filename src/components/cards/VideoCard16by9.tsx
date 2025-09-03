@@ -195,17 +195,17 @@ export default function VideoCard16by9({
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1, duration: 0.6 }}
                       >
-                        <h3
-                          className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
+                        <h2
+                          className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
                             card.subtitle ? "mb-1" : "mb-6"
                           }`}
                         >
                           {getCardText(card, "title")}
-                        </h3>
+                        </h2>
                         {card.subtitle && (
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
-                          </h4>
+                          </h3>
                         )}
                         <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                           {getCardText(card, "description")}
@@ -295,17 +295,17 @@ export default function VideoCard16by9({
                         transition={{ delay: index * 0.1, duration: 0.6 }}
                         className="w-full max-w-md"
                       >
-                        <h3
-                          className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
+                        <h2
+                          className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
                             card.subtitle ? "mb-1" : "mb-6"
                           }`}
                         >
                           {getCardText(card, "title")}
-                        </h3>
+                        </h2>
                         {card.subtitle && (
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
-                          </h4>
+                          </h3>
                         )}
                         <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                           {getCardText(card, "description")}

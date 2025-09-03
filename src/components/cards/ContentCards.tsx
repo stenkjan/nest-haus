@@ -610,12 +610,12 @@ export default function ContentCards({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
-                            </h3>
-                            <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                            </h2>
+                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
-                            </h4>
+                            </h3>
                             <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
@@ -668,12 +668,12 @@ export default function ContentCards({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
-                            </h3>
-                            <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                            </h2>
+                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
-                            </h4>
+                            </h3>
                             <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
@@ -716,12 +716,12 @@ export default function ContentCards({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
-                            </h3>
-                            <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                            </h2>
+                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
-                            </h4>
+                            </h3>
                             <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
@@ -817,12 +817,12 @@ export default function ContentCards({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h3 className="text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
-                            </h3>
-                            <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                            </h2>
+                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
-                            </h4>
+                            </h3>
                             <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
@@ -866,9 +866,9 @@ export default function ContentCards({
                           <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
                             {getCardText(card, "title")}
                           </h3>
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
-                          </h4>
+                          </h3>
                           <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                             {getCardText(card, "description")}
                           </p>

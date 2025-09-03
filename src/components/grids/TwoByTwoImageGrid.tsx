@@ -182,21 +182,29 @@ export default function TwoByTwoImageGrid({
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
-                <div className={`${isUltraWide ? "p-6" : "p-4"} text-center`}>
+                <div
+                  className={`${
+                    isUltraWide
+                      ? "p-6"
+                      : screenWidth < 1024
+                      ? "p-0 -mt-2"
+                      : "p-4"
+                  } text-center`}
+                >
                   <h2
-                    className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold mb-1 ${
+                    className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-1 ${
                       item.textColor || "text-white"
                     }`}
                   >
                     {item.title}
                   </h2>
-                  <h4
-                    className={`text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl ${
+                  <h3
+                    className={`text-base md:text-lg lg:text-xl 2xl:text-2xl ${
                       item.textColor || "text-white"
                     }`}
                   >
                     {item.subtitle}
-                  </h4>
+                  </h3>
                 </div>
               </motion.div>
 
@@ -207,7 +215,15 @@ export default function TwoByTwoImageGrid({
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
               >
-                <div className={`${isUltraWide ? "p-6" : "p-4"}`}>
+                <div
+                  className={`${
+                    isUltraWide
+                      ? "p-6"
+                      : screenWidth < 1024
+                      ? "p-0 -mb-2"
+                      : "p-4"
+                  }`}
+                >
                   {/* Description Text */}
                   <p
                     className={`text-sm md:text-base lg:text-lg 2xl:text-xl mb-4 text-center ${
