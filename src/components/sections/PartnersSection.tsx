@@ -144,7 +144,7 @@ export function PartnersSection({
               </Button>
             </Link>
             <Link href="/konfigurator">
-              <Button variant="secondary" size="xs">
+              <Button variant="landing-secondary-blue" size="xs">
                 Jetzt bauen
               </Button>
             </Link>

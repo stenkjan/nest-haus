@@ -11,6 +11,7 @@ import {
   ImageGlassCard,
   SquareGlassCard,
   SquareGlassCardsScroll,
+  SquareTextCard,
   VideoCard16by9,
 } from "@/components/cards";
 import {
@@ -130,6 +131,15 @@ export default function CardsShowcasePage() {
             subtitle="Video content with 16:9 aspect ratio on desktop, 1:1 on mobile • Same text space as content cards"
             maxWidth={false}
             customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+          />
+        </section>
+
+        {/* Square Text Card Section */}
+        <section className="overflow-visible">
+          <SquareTextCard
+            title="Square Text Cards"
+            subtitle="Text-only square cards with responsive behavior • Navigate with arrow keys or swipe • Includes narrow buttons"
+            maxWidth={false}
           />
         </section>
 

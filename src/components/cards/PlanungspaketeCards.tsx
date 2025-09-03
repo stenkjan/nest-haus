@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo } from "motion/react";
+import { motion, useMotionValue, PanInfo, animate } from "motion/react";
 import { Dialog } from "@/components/ui/Dialog";
+import { useIOSViewport, getIOSViewportStyles } from "@/hooks/useIOSViewport";
 import "@/app/konfigurator/components/hide-scrollbar.css";
+import "./mobile-scroll-optimizations.css";
 
 export interface PlanungspaketeCardData {
   id: number;
@@ -36,8 +38,8 @@ interface PlanungspaketeCardsProps {
 export const planungspaketeCardData: PlanungspaketeCardData[] = [
   {
     id: 1,
-    title: "Planungspaket 01 Basis",
-    subtitle: "",
+    title: "Planungspaket 01",
+    subtitle: "Basis",
     description:
       "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
     mobileTitle: "Planungspaket 01",
@@ -57,8 +59,8 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
   },
   {
     id: 2,
-    title: "Planungspaket 02 Plus",
-    subtitle: "",
+    title: "Planungspaket 02",
+    subtitle: "Plus",
     description:
       "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
     mobileTitle: "Planungspaket 02",
@@ -77,8 +79,8 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
   },
   {
     id: 3,
-    title: "Planungspaket 03 Pro",
-    subtitle: "",
+    title: "Planungspaket 03",
+    subtitle: "Pro",
     description:
       "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
     mobileTitle: "Planungspaket 03",
@@ -98,21 +100,6 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
   },
 ];
 
-// Helper function to render title with specified word in gray
-const renderTitle = (title: string, grayWord?: string) => {
-  if (grayWord && title.includes(grayWord)) {
-    const parts = title.split(grayWord);
-    return (
-      <>
-        {parts[0]}
-        <span className="text-gray-400">{grayWord}</span>
-        {parts[1]}
-      </>
-    );
-  }
-  return title;
-};
-
 export default function PlanungspaketeCards({
   title = "Planungspakete Cards",
   subtitle = "Click on any card to see detailed information",
@@ -129,8 +116,16 @@ export default function PlanungspaketeCards({
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
+  const [cardHeights, setCardHeights] = useState<Map<number, number>>(
+    new Map()
+  );
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+
+  // iOS viewport hook for stable lightbox sizing
+  const viewport = useIOSViewport();
 
   // Use appropriate data source based on custom data
   const cardData = customData || planungspaketeCardData;
@@ -139,6 +134,13 @@ export default function PlanungspaketeCards({
   useEffect(() => {
     setIsClient(true);
     setScreenWidth(window.innerWidth);
+
+    // iOS-specific: Force initial layout calculation
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event("resize"));
+      }, 100);
+    }
   }, []);
 
   // Calculate responsive card dimensions
@@ -176,6 +178,121 @@ export default function PlanungspaketeCards({
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, [isLightboxMode]);
+
+  // Pre-measure card heights on mobile for smooth expansion
+  useEffect(() => {
+    if (!isClient || screenWidth >= 1024) return;
+
+    const preMeasureHeights = () => {
+      // Use requestAnimationFrame to ensure DOM is fully rendered
+      requestAnimationFrame(() => {
+        cardData.forEach((card) => {
+          const cardElement = cardRefs.current.get(card.id);
+          if (cardElement && !cardHeights.has(card.id)) {
+            // Calculate expanded height based on actual content
+            const topSection = cardElement.querySelector(
+              ".h-56"
+            ) as HTMLElement;
+            const bottomSection = cardElement.querySelector(
+              '[class*="px-6 pt-2 pb-6"]'
+            ) as HTMLElement;
+
+            let calculatedHeight = 360; // base height
+
+            if (topSection && bottomSection) {
+              // Get the extended description text element
+              const extendedTextElement = bottomSection.querySelector(
+                "p"
+              ) as HTMLElement;
+
+              if (extendedTextElement) {
+                // Temporarily remove line-clamp to measure full height
+                const originalClasses = extendedTextElement.className;
+                extendedTextElement.className = originalClasses.replace(
+                  "line-clamp-4",
+                  ""
+                );
+
+                // Measure the full content height
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48; // Extra padding for iOS
+
+                // Restore original classes
+                extendedTextElement.className = originalClasses;
+              } else {
+                // Fallback measurement
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48;
+              }
+            }
+
+            // Ensure minimum height for iOS with more generous padding
+            const finalHeight = Math.max(calculatedHeight, 520);
+            setCardHeights((prev) => new Map(prev.set(card.id, finalHeight)));
+          }
+        });
+      });
+    };
+
+    // Multiple attempts to ensure measurement
+    const timer1 = setTimeout(preMeasureHeights, 100);
+    const timer2 = setTimeout(preMeasureHeights, 300);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isClient, screenWidth, cardData, cardHeights]);
+
+  // Calculate and store card height when expanded
+  const _measureCardHeight = useCallback((cardId: number) => {
+    const cardElement = cardRefs.current.get(cardId);
+    if (cardElement) {
+      // Get sections for precise measurement
+      const topSection = cardElement.querySelector(".h-56") as HTMLElement;
+      const bottomSection = cardElement.querySelector(
+        '[class*="px-6 pt-2 pb-6"]'
+      ) as HTMLElement;
+
+      let calculatedHeight = 360;
+
+      if (topSection && bottomSection) {
+        // Get the extended description text element
+        const extendedTextElement = bottomSection.querySelector(
+          "p"
+        ) as HTMLElement;
+
+        if (extendedTextElement) {
+          // Temporarily remove line-clamp to measure full height
+          const originalClasses = extendedTextElement.className;
+          extendedTextElement.className = originalClasses.replace(
+            "line-clamp-4",
+            ""
+          );
+
+          // Measure the full content height
+          const topHeight = topSection.scrollHeight;
+          const bottomHeight = bottomSection.scrollHeight;
+          calculatedHeight = topHeight + bottomHeight + 48; // Extra padding
+
+          // Restore original classes
+          extendedTextElement.className = originalClasses;
+        } else {
+          // Fallback measurement
+          const topHeight = topSection.scrollHeight;
+          const bottomHeight = bottomSection.scrollHeight;
+          calculatedHeight = topHeight + bottomHeight + 48;
+        }
+      }
+
+      const finalHeight = Math.max(calculatedHeight, 520);
+      setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
+      return finalHeight;
+    }
+    return 520; // fallback height
+  }, []);
 
   const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
@@ -232,18 +349,116 @@ export default function PlanungspaketeCards({
 
     const targetMaxIndex = adjustedMaxIndex;
 
-    // Adjust based on drag direction and velocity
-    if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
-      if (offset > 0 || velocity > 500) {
-        targetIndex = Math.max(0, targetIndex - 1);
-      } else if (offset < 0 || velocity < -500) {
-        targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
-      }
-    }
+    // Mobile vs Desktop behavior
+    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
 
-    setCurrentIndex(targetIndex);
-    const newX = -(targetIndex * (cardWidth + gap));
-    x.set(newX);
+    if (isMobile) {
+      // Mobile: Enhanced snapping with visual feedback
+      const offsetThreshold = 30;
+      const velocityThreshold = 300;
+
+      // Better snapping logic: only change cards with intentional movement
+      // Start with current card as default
+      targetIndex = currentIndex;
+
+      // Only change cards if there's significant drag or velocity
+      if (
+        Math.abs(offset) > offsetThreshold ||
+        Math.abs(velocity) > velocityThreshold
+      ) {
+        if (offset > 0 || velocity > velocityThreshold) {
+          // Dragging/flicking right (previous card)
+          targetIndex = Math.max(0, currentIndex - 1);
+        } else if (offset < 0 || velocity < -velocityThreshold) {
+          // Dragging/flicking left (next card)
+          targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
+        }
+      } else {
+        // Small movements: check if we're more than 70% to next card
+        const currentCardPosition = -(currentIndex * (cardWidth + gap));
+        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
+        const cardThreshold = (cardWidth + gap) * 0.7; // 70% of card width
+
+        if (distanceFromCurrent > cardThreshold) {
+          // We're far enough to snap to the next logical card
+          if (currentX < currentCardPosition) {
+            // Scrolled significantly left, go to next card
+            targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
+          } else {
+            // Scrolled significantly right, go to previous card
+            targetIndex = Math.max(0, currentIndex - 1);
+          }
+        }
+      }
+
+      // Ensure target index is within bounds
+      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
+
+      // Animate with visual feedback for direction
+      setCurrentIndex(targetIndex);
+      const newX = -(targetIndex * (cardWidth + gap));
+
+      if (targetIndex !== currentIndex) {
+        // Two-stage animation for mobile: bounce + slide
+        const direction = targetIndex > currentIndex ? -1 : 1;
+        const bounceDistance = 15; // Small bounce distance
+
+        animate(x, x.get() + direction * bounceDistance, {
+          type: "spring",
+          stiffness: 400,
+          damping: 25,
+          mass: 0.6,
+          duration: 0.15,
+        }).then(() => {
+          animate(x, newX, {
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            mass: 0.8,
+            duration: 0.4,
+          });
+        });
+      } else {
+        // Return to current position smoothly
+        animate(x, newX, {
+          type: "spring",
+          stiffness: 400,
+          damping: 35,
+          mass: 0.7,
+          duration: 0.3,
+        });
+      }
+    } else {
+      // Desktop: Smooth deceleration without snapping
+      // Adjust based on drag direction and velocity
+      if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
+        if (offset > 0 || velocity > 500) {
+          targetIndex = Math.max(0, targetIndex - 1);
+        } else if (offset < 0 || velocity < -500) {
+          targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
+        }
+      }
+
+      // Ensure target index is within bounds
+      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
+
+      setCurrentIndex(targetIndex);
+      const newX = -(targetIndex * (cardWidth + gap));
+
+      // Smooth deceleration for desktop
+      const boundedX = Math.max(
+        -(targetMaxIndex * (cardWidth + gap)),
+        Math.min(0, newX)
+      );
+
+      animate(x, boundedX, {
+        type: "spring",
+        stiffness: 250,
+        damping: 25,
+        mass: 1,
+        duration: 0.6,
+      });
+    }
   };
 
   const containerClasses = maxWidth
@@ -273,6 +488,88 @@ export default function PlanungspaketeCards({
       </div>
     );
   }
+
+  // Toggle card expansion for mobile with iOS-specific fixes
+  const toggleCardExpansion = (cardId: number) => {
+    const isMobile = isClient && screenWidth < 1024;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    setExpandedCards((prev) => {
+      const newSet = new Set(prev);
+      const isExpanding = !newSet.has(cardId);
+
+      if (newSet.has(cardId)) {
+        newSet.delete(cardId);
+      } else {
+        newSet.add(cardId);
+
+        // Ensure height is measured before expansion
+        if (isMobile && isExpanding && !cardHeights.has(cardId)) {
+          const cardElement = cardRefs.current.get(cardId);
+          if (cardElement) {
+            // Immediate measurement for iOS with full content calculation
+            const topSection = cardElement.querySelector(
+              ".h-56"
+            ) as HTMLElement;
+            const bottomSection = cardElement.querySelector(
+              '[class*="px-6 pt-2 pb-6"]'
+            ) as HTMLElement;
+
+            let calculatedHeight = 360;
+            if (topSection && bottomSection) {
+              // Get the extended description text element
+              const extendedTextElement = bottomSection.querySelector(
+                "p"
+              ) as HTMLElement;
+
+              if (extendedTextElement) {
+                // Temporarily remove line-clamp to measure full height
+                const originalClasses = extendedTextElement.className;
+                extendedTextElement.className = originalClasses.replace(
+                  "line-clamp-4",
+                  ""
+                );
+
+                // Measure the full content height
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48; // Extra padding
+
+                // Restore original classes
+                extendedTextElement.className = originalClasses;
+              } else {
+                // Fallback measurement
+                const topHeight = topSection.scrollHeight;
+                const bottomHeight = bottomSection.scrollHeight;
+                calculatedHeight = topHeight + bottomHeight + 48;
+              }
+            }
+
+            const finalHeight = Math.max(calculatedHeight, isIOS ? 560 : 520);
+            setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
+          }
+        }
+      }
+
+      // iOS-specific layout fixes
+      if (isMobile && isIOS) {
+        // Prevent scroll interference
+        document.body.style.overflow = "hidden";
+
+        // Multiple layout triggers for iOS
+        requestAnimationFrame(() => {
+          window.dispatchEvent(new Event("resize"));
+
+          // Re-enable scrolling after animation
+          setTimeout(() => {
+            document.body.style.overflow = "";
+          }, 650); // Slightly longer than animation duration
+        });
+      }
+
+      return newSet;
+    });
+  };
 
   // Helper function to get appropriate text based on screen size
   const getCardText = (
@@ -323,97 +620,160 @@ export default function PlanungspaketeCards({
               maxWidth ? "px-8" : "px-4"
             }`}
           >
-            {displayCards.map((card, index) => (
-              <motion.div
-                key={card.id}
-                className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
-                style={{
-                  width: cardWidth,
-                  height: 360,
-                  backgroundColor: card.backgroundColor,
-                }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => {
-                  if (enableBuiltInLightbox && !isLightboxMode) {
-                    setLightboxOpen(true);
-                  } else if (onCardClick) {
-                    onCardClick(card.id);
-                  }
-                }}
-              >
-                {/* Top Section - EXPANDED HEIGHT */}
-                <div className="h-56 min-h-56 px-6 pt-6 pb-1 overflow-hidden">
-                  {/* Header Row - Title/Subtitle left, Price right */}
-                  <div className="flex mb-5">
-                    {/* Title/Subtitle - Left Side */}
-                    <div className="flex-1">
-                      <motion.div
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1, duration: 0.6 }}
-                      >
-                        <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
-                          {renderTitle(
-                            getCardText(card, "title"),
-                            card.grayWord
-                          )}
-                        </h3>
-                        <h4 className="text-sm md:text-base lg:text-lg font-medium text-gray-700">
-                          {getCardText(card, "subtitle")}
-                        </h4>
-                      </motion.div>
-                    </div>
+            {displayCards.map((card, index) => {
+              const isExpanded = expandedCards.has(card.id);
+              const isMobile = isClient && screenWidth < 1024;
+              const expandedHeight = cardHeights.get(card.id) || 500; // fallback to reasonable height
 
-                    {/* Price - Right Side */}
-                    <div className="w-24 flex flex-col justify-start items-end text-right">
-                      <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-                        className="text-right"
-                      >
-                        <div className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">
-                          {card.price}
-                        </div>
-                        {card.monthlyPrice && (
-                          <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
-                            {card.monthlyPrice}
+              return (
+                <motion.div
+                  key={card.id}
+                  ref={(el) => {
+                    if (el) {
+                      cardRefs.current.set(card.id, el);
+                    }
+                  }}
+                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
+                  style={{
+                    width: cardWidth,
+                    backgroundColor: card.backgroundColor,
+                    // iOS-specific fixes
+                    WebkitTransform: "translateZ(0)", // Force hardware acceleration
+                    transform: "translateZ(0)",
+                    WebkitBackfaceVisibility: "hidden",
+                    backfaceVisibility: "hidden",
+                  }}
+                  animate={{
+                    height: isMobile && isExpanded ? expandedHeight : 360,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                    type: "tween",
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => {
+                    if (isMobile) {
+                      toggleCardExpansion(card.id);
+                    } else if (enableBuiltInLightbox && !isLightboxMode) {
+                      setLightboxOpen(true);
+                    } else if (onCardClick) {
+                      onCardClick(card.id);
+                    }
+                  }}
+                >
+                  {/* Top Section - EXPANDED HEIGHT */}
+                  <div className="h-56 min-h-56 px-6 pt-6 pb-1 overflow-hidden">
+                    {/* Header Row - Title/Subtitle left, Price right */}
+                    <div className="flex mb-5">
+                      {/* Title/Subtitle - Left Side */}
+                      <div className="flex-1">
+                        <motion.div
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: index * 0.1, duration: 0.6 }}
+                        >
+                          <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
+                            {getCardText(card, "title")}
+                          </h2>
+                          <h4 className="text-sm md:text-base lg:text-lg font-medium text-gray-700">
+                            {getCardText(card, "subtitle") || card.grayWord}
+                          </h4>
+                        </motion.div>
+                      </div>
+
+                      {/* Price - Right Side */}
+                      <div className="w-24 flex flex-col justify-start items-end text-right">
+                        <motion.div
+                          initial={{ x: 20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{
+                            delay: index * 0.1 + 0.2,
+                            duration: 0.6,
+                          }}
+                          className="text-right"
+                        >
+                          <div className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">
+                            {card.price}
                           </div>
-                        )}
-                      </motion.div>
+                          {card.monthlyPrice && (
+                            <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
+                              {card.monthlyPrice}
+                            </div>
+                          )}
+                        </motion.div>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Description - Full Width */}
-                  <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
-                  >
-                    <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line overflow-hidden">
-                      {getCardText(card, "description")}
-                    </p>
-                  </motion.div>
-                </div>
-
-                {/* Bottom Section - Extended Description (Full Width) - FLEXIBLE HEIGHT */}
-                {card.extendedDescription && (
-                  <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden">
+                    {/* Description - Full Width */}
                     <motion.div
-                      initial={{ y: 20, opacity: 0 }}
+                      initial={{ y: 10, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
-                      className="h-full"
+                      transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                     >
-                      <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line line-clamp-4">
-                        {getCardText(card, "extendedDescription")}
+                      <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line overflow-hidden">
+                        {getCardText(card, "description")}
                       </p>
                     </motion.div>
                   </div>
-                )}
-              </motion.div>
-            ))}
+
+                  {/* Bottom Section - Extended Description (Full Width) - FLEXIBLE HEIGHT */}
+                  {card.extendedDescription && (
+                    <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden relative">
+                      <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
+                        className="h-full"
+                      >
+                        <motion.p
+                          className={`text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line ${
+                            isMobile && !isExpanded ? "line-clamp-4" : ""
+                          }`}
+                          animate={{
+                            opacity: isExpanded ? 1 : 1,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {getCardText(card, "extendedDescription")}
+                        </motion.p>
+
+                        {/* Blur gradient overlay for mobile when collapsed */}
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+                          style={{
+                            background: `linear-gradient(to top, ${card.backgroundColor} 0%, ${card.backgroundColor}f8 15%, ${card.backgroundColor}f0 25%, ${card.backgroundColor}e0 35%, ${card.backgroundColor}cc 45%, ${card.backgroundColor}b3 55%, ${card.backgroundColor}80 65%, ${card.backgroundColor}4d 75%, ${card.backgroundColor}26 85%, transparent 100%)`,
+                          }}
+                          animate={{
+                            opacity: isMobile && !isExpanded ? 1 : 0,
+                          }}
+                          transition={{
+                            duration: 0.5,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          }}
+                        />
+
+                        {/* Close instruction text for expanded cards */}
+                        <motion.div
+                          className="absolute bottom-2 left-0 right-0 text-center pointer-events-none"
+                          animate={{
+                            opacity: isMobile && isExpanded ? 1 : 0,
+                          }}
+                          transition={{
+                            duration: 0.3,
+                            delay: isMobile && isExpanded ? 0.3 : 0,
+                          }}
+                        >
+                          <p className="text-xs text-gray-500">
+                            drücken zum schließen
+                          </p>
+                        </motion.div>
+                      </motion.div>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         ) : (
           /* Lightbox Mode - Horizontal Scrolling Layout */
@@ -422,11 +782,15 @@ export default function PlanungspaketeCards({
               ref={containerRef}
               className={`overflow-x-hidden ${
                 maxWidth ? "px-8" : "px-4"
-              } cursor-grab active:cursor-grabbing`}
+              } cursor-grab active:cursor-grabbing cards-scroll-container`}
               style={{ overflow: "visible" }}
             >
               <motion.div
-                className="flex gap-6"
+                className={`flex gap-6 ${
+                  isClient && screenWidth < 1024
+                    ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
+                    : ""
+                }`}
                 style={{
                   x,
                   width: `${(cardWidth + gap) * displayCards.length - gap}px`,
@@ -436,12 +800,14 @@ export default function PlanungspaketeCards({
                   left: maxScroll,
                   right: 0,
                 }}
-                dragElastic={0.1}
+                dragElastic={0.05}
+                dragMomentum={false}
                 onDragEnd={handleDragEnd}
                 transition={{
                   type: "spring",
-                  stiffness: 300,
-                  damping: 30,
+                  stiffness: 400,
+                  damping: 35,
+                  mass: 0.8,
                 }}
               >
                 {displayCards.map((card, index) => (
@@ -452,9 +818,10 @@ export default function PlanungspaketeCards({
                       width: cardWidth,
                       height:
                         typeof window !== "undefined" && window.innerWidth < 768
-                          ? Math.min(600, window.innerHeight * 0.75) // Original mobile size
-                          : Math.min(1000, window.innerHeight * 0.875), // 25% taller for desktop only
+                          ? Math.min(600, viewport.height * 0.75) // Use stable viewport height for mobile
+                          : Math.min(1000, viewport.height * 0.875), // Use stable viewport height for desktop
                       backgroundColor: card.backgroundColor,
+                      scrollSnapAlign: "start",
                     }}
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.2 }}
@@ -474,14 +841,11 @@ export default function PlanungspaketeCards({
                               duration: 0.6,
                             }}
                           >
-                            <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
-                              {renderTitle(
-                                getCardText(card, "title"),
-                                card.grayWord
-                              )}
-                            </h3>
+                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1">
+                              {getCardText(card, "title")}
+                            </h2>
                             <h4 className="text-base md:text-lg lg:text-xl font-medium text-gray-700">
-                              {getCardText(card, "subtitle")}
+                              {getCardText(card, "subtitle") || card.grayWord}
                             </h4>
                           </motion.div>
                         </div>
@@ -636,7 +1000,10 @@ export default function PlanungspaketeCards({
           transparent={true}
           className="p-0"
         >
-          <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
+          <div
+            className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto ios-dialog-container"
+            style={getIOSViewportStyles(viewport)}
+          >
             <div className="w-full max-w-none my-4">
               <PlanungspaketeCards
                 title={title}

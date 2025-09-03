@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
-import { CallToAction } from "@/components/ui";
+
 import { ImageGallery } from "@/components/grids";
-import AppointmentBooking from "./components/AppointmentBooking";
-import GrundstueckCheckWrapper from "./components/GrundstueckCheckWrapper";
+import {
+  ContactMap,
+  AppointmentBookingSection,
+  GrundstueckCheckForm,
+  GetInContactBanner,
+} from "@/components/sections";
 import Footer from "@/components/Footer";
 
 // Define sections for kontakt page
@@ -27,71 +31,19 @@ export default function KontaktClient() {
     <div className="min-h-screen pt-16">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
-        <section id="calendar" className="w-full py-16 bg-white">
-          <div className="w-full px-[7.5%]">
-            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center">
-              Vereinbare jetzt deinen Termin
-            </h2>
-            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-12 max-w-3xl mx-auto text-center">
-              Wir helfen gerne.
-            </h3>
-            <Suspense
-              fallback={
-                <div className="animate-pulse bg-gray-200 h-96 rounded max-w-5xl mx-auto"></div>
-              }
-            >
-              <AppointmentBooking />
-            </Suspense>
-          </div>
-        </section>
+        <div id="calendar">
+          <AppointmentBookingSection backgroundColor="white" maxWidth={false} />
+        </div>
 
         {/* Wo du uns findest - Section 2 */}
-        <section id="address" className="w-full py-16 bg-gray-50">
-          <div className="w-full px-[8%]">
-            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 text-center">
-              Wo du uns findest
-            </h2>
-            <h3 className="text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl mb-8 lg:mb-8 max-w-3xl mx-auto text-center">
-              Komm vorbei um deinen Traum mit uns zu besprechen.
-            </h3>
-            <div
-              className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] group"
-              style={{ border: "15px solid #F4F4F4" }}
-            >
-              <iframe
-                title="Google Maps Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2717.0612860304307!2d15.416334776632444!3d47.08126897114428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476e3352d2429edf%3A0x3a9430b9a0f0fd25!2sKarmeliterplatz%201%2C%208010%20Graz%2C%20Austria!5e0!3m2!1sen!2sus!4v1712087456318!5m2!1sen!2sus"
-                width="600"
-                height="450"
-                style={{ width: "100%", height: "100%", border: 0 }}
-                allowFullScreen={true}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
-          </div>
-        </section>
+        <div id="address">
+          <ContactMap backgroundColor="gray" maxWidth={false} />
+        </div>
 
         {/* Dein Grundstück - Unser Check - Section 3 */}
-        <section id="contact" className="w-full py-16">
-          <div className="w-full px-[7.5%]">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center">
-              Dein Grundstück - Unser Check
-            </h2>
-            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
-              Wir überprüfen für dich wie dein neues Haus auf ein Grundstück
-              deiner Wahl passt
-            </h3>
-
-            <Suspense
-              fallback={
-                <div className="animate-pulse bg-gray-200 h-96 rounded"></div>
-              }
-            >
-              <GrundstueckCheckWrapper />
-            </Suspense>
-          </div>
-        </section>
+        <div id="contact">
+          <GrundstueckCheckForm backgroundColor="white" maxWidth={false} />
+        </div>
 
         {/* Impressum - Section 4 */}
         <section id="impressum" className="w-full py-16 bg-gray-50">
@@ -165,17 +117,21 @@ export default function KontaktClient() {
           </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section id="call-to-action">
-          <CallToAction
-            title="Kein Plan? Kein Problem!"
-            subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
-            buttonText="Jetzt vereinbaren"
-            buttonLink="/kontakt"
-            backgroundColor="gray"
-            maxWidth={false}
-          />
-        </section>
+        {/* Get In Contact Banner Section */}
+        <GetInContactBanner
+          id="call-to-action"
+          title="Kein Plan? Kein Problem!"
+          subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
+          buttonText="Jetzt vereinbaren"
+          backgroundColor="#F4F4F4"
+          onButtonClick={() => {
+            // Scroll to calendar section for appointment booking
+            const calendarSection = document.getElementById("calendar");
+            if (calendarSection) {
+              calendarSection.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+        />
 
         {/* Image Gallery Section */}
         <section id="gallery">

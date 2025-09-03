@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import { ClientBlobVideo } from "@/components/images";
-import { VideoCard16by9, PlanungspaketeCards } from "@/components/cards";
+import {
+  VideoCard16by9,
+  PlanungspaketeCards,
+  SquareTextCard,
+} from "@/components/cards";
 import { TwoByTwoImageGrid } from "@/components/grids";
 import { GetInContactBanner, PartnersSection } from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
@@ -36,6 +40,11 @@ const sections = [
     id: "image-grid",
     title: "Image Grid",
     slug: "image-grid",
+  },
+  {
+    id: "square-text-cards",
+    title: "Square Text Cards",
+    slug: "square-text-cards",
   },
   {
     id: "grundstueck-check",
@@ -89,9 +98,9 @@ export default function EntdeckenClient() {
         <section id="hero" className="w-full py-12 bg-white hidden md:block">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Design für dich gemacht
-              </h2>
+              </h1>
               <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                 Dein Design im Freistil
               </h3>
@@ -120,9 +129,9 @@ export default function EntdeckenClient() {
             <div className="absolute inset-0 flex flex-col justify-end">
               {/* Mobile Title/Subtitle Overlay - More gap from navbar */}
               <div className="absolute top-24 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
                   Design für dich gemacht
-                </h2>
+                </h1>
                 <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                   Dein Design im Freistil
                 </h3>
@@ -132,37 +141,37 @@ export default function EntdeckenClient() {
               <div className="absolute bottom-20 lg:bottom-20 xl:bottom-28 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-32 max-w-[1536px] mx-auto w-full hidden lg:flex">
                 {/* Left Text Block */}
                 <div className="text-center">
-                  <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                     Nest 80
-                  </div>
-                  <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
+                  </h2>
+                  <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-black">
                     75m² ab € 177.000
-                  </div>
+                  </h3>
                 </div>
 
                 {/* Center Text Block */}
                 <div className="text-center">
-                  <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                     Nest 120
-                  </div>
-                  <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
+                  </h2>
+                  <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-black">
                     115m² ab € 245.000
-                  </div>
+                  </h3>
                 </div>
 
                 {/* Right Text Block */}
                 <div className="text-center">
-                  <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mb-1">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                     Nest 160
-                  </div>
-                  <div className="text-sm md:text-base lg:text-lg xl:text-xl font-medium text-black">
+                  </h2>
+                  <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-black">
                     155m² ab € 313.000
-                  </div>
+                  </h3>
                 </div>
               </div>
 
-              {/* Mobile Buttons - Same gap from bottom as title from top */}
-              <div className="absolute bottom-24 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
+              {/* Mobile Buttons - Positioned in the middle */}
+              <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
                 <Button variant="primary" size="xs">
                   Dein Part
                 </Button>
@@ -185,12 +194,12 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 3 - Dein Zuhause zieht um */}
-        <section id="zuhause-zieht-um" className="w-full py-16 bg-gray-50">
+        <section id="zuhause-zieht-um" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Dein Zuhause zieht um
-              </h2>
+              </h1>
               <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                 Architektur für ein bewegtes Leben.
               </h3>
@@ -261,13 +270,35 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 5 - Grundstück Check */}
+        {/* Section 5 - Square Text Cards */}
+        <section id="square-text-cards" className="w-full py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                So läuft es ab
+              </h1>
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+                Der Weg zu deinem Nest Haus
+              </h3>
+            </div>
+          </div>
+
+          {/* SquareTextCard outside container to use full width */}
+          <SquareTextCard
+            title=""
+            subtitle=""
+            maxWidth={false}
+            showInstructions={false}
+          />
+        </section>
+
+        {/* Section 6 - Grundstück Check */}
         <section id="grundstueck-check" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
-                Dein Grundstück - Unser Check
-              </h2>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                Konfiguriere dein Zuhause
+              </h1>
               <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
                 deiner Wahl passt.
@@ -285,13 +316,13 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 6 - Planungspakete */}
+        {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
-              </h2>
+              </h1>
               <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
@@ -317,7 +348,7 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 7 - Partners */}
+        {/* Section 8 - Partners */}
         <section id="partners" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <PartnersSection backgroundColor="white" showButtons={true} />

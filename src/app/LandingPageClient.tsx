@@ -95,7 +95,7 @@ const sectionsContent = [
     h3: "Mit Nest bleibt kein Ort unerreichbar",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 6,
@@ -115,7 +115,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 8,
@@ -125,7 +125,7 @@ const sectionsContent = [
     h3: "So individuell wie du",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
 
@@ -177,16 +177,36 @@ export default function LandingPageClient() {
               {/* Content Overlay - responsive for both mobile and desktop */}
               <div
                 className={`absolute inset-0 z-20 flex flex-col items-center ${
+                  // Desktop: section 4 has buttons at bottom, others at top
+                  // Mobile: sections 3, 4, 6, 7 have buttons at bottom
                   section.id === 4
-                    ? "justify-between pt-[5vh] pb-[5vh]"
-                    : "justify-start pt-[5vh]"
+                    ? "justify-between pt-[5vh] pb-[5vh]" // Section 4: always bottom on both mobile and desktop
+                    : section.id === 3 || section.id === 6 || section.id === 7
+                    ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,6,7: bottom on mobile only
+                    : "justify-start pt-[5vh]" // Other sections: always top
                 } ${section.id === 2 ? "px-0" : "px-8"}`}
               >
                 <div className="text-center">
-                  <h1 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5">
+                  <h1
+                    className={`font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 ${
+                      section.id === 2 ? "text-[#605047]" : "text-white"
+                    } ${
+                      section.id === 3 || section.id === 6 || section.id === 7
+                        ? "drop-shadow-lg"
+                        : ""
+                    }`}
+                  >
                     {section.h1}
                   </h1>
-                  <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 lg:mb-5">
+                  <h3
+                    className={`text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 lg:mb-5 ${
+                      section.id === 2 ? "text-[#605047]" : "text-white"
+                    } ${
+                      section.id === 3 || section.id === 6 || section.id === 7
+                        ? "drop-shadow-lg"
+                        : ""
+                    }`}
+                  >
                     {section.h3}
                   </h3>
                 </div>

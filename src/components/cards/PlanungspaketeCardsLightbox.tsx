@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Dialog } from "@/components/ui/Dialog";
+import { useIOSViewport, getIOSViewportStyles } from "@/hooks/useIOSViewport";
 import PlanungspaketeCards, {
   PlanungspaketeCardData,
 } from "./PlanungspaketeCards";
@@ -23,6 +24,9 @@ export default function PlanungspaketeCardsLightbox({
 }: PlanungspaketeCardsLightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  // iOS viewport hook for stable lightbox sizing
+  const viewport = useIOSViewport();
+
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
@@ -43,7 +47,10 @@ export default function PlanungspaketeCardsLightbox({
         transparent={true}
         className="p-0"
       >
-        <div className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto">
+        <div
+          className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto ios-dialog-container"
+          style={getIOSViewportStyles(viewport)}
+        >
           {/* PlanungspaketeCards with transparent background */}
           <div className="w-full max-w-none my-4">
             <PlanungspaketeCards

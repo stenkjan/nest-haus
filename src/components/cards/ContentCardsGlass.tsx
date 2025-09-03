@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo } from "motion/react";
+import { motion, useMotionValue, PanInfo, animate } from "motion/react";
 import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
 import { Button } from "@/components/ui";
+import "./mobile-scroll-optimizations.css";
 
 interface CardData {
   id: number;
@@ -323,18 +324,97 @@ export default function ContentCardsGlass({
 
     const targetMaxIndex = isStatic ? adjustedMaxIndex : maxIndex;
 
-    // Adjust based on drag direction and velocity
-    if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
-      if (offset > 0 || velocity > 500) {
-        targetIndex = Math.max(0, targetIndex - 1);
-      } else if (offset < 0 || velocity < -500) {
-        targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
-      }
-    }
+    // Mobile vs Desktop behavior
+    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
 
-    setCurrentIndex(targetIndex);
-    const newX = -(targetIndex * (cardWidth + gap));
-    x.set(newX);
+    if (isMobile) {
+      // Mobile: Enhanced snapping with visual feedback
+      const offsetThreshold = 30;
+      const velocityThreshold = 300;
+
+      // Better snapping logic: only change cards with intentional movement
+      // Start with current card as default
+      targetIndex = currentIndex;
+
+      // Only change cards if there's significant drag or velocity
+      if (
+        Math.abs(offset) > offsetThreshold ||
+        Math.abs(velocity) > velocityThreshold
+      ) {
+        if (offset > 0 || velocity > velocityThreshold) {
+          // Dragging/flicking right (previous card)
+          targetIndex = Math.max(0, currentIndex - 1);
+        } else if (offset < 0 || velocity < -velocityThreshold) {
+          // Dragging/flicking left (next card)
+          targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
+        }
+      } else {
+        // Small movements: check if we're more than 70% to next card
+        const currentX = x.get();
+        const currentCardPosition = -(currentIndex * (cardWidth + gap));
+        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
+        const cardThreshold = (cardWidth + gap) * 0.7; // 70% of card width
+
+        if (distanceFromCurrent > cardThreshold) {
+          // We're far enough to snap to the next logical card
+          if (currentX < currentCardPosition) {
+            // Scrolled significantly left, go to next card
+            targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
+          } else {
+            // Scrolled significantly right, go to previous card
+            targetIndex = Math.max(0, currentIndex - 1);
+          }
+        }
+      }
+
+      // Ensure target index is within bounds
+      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
+
+      // Animate with visual feedback for direction
+      setCurrentIndex(targetIndex);
+      const newX = -(targetIndex * (cardWidth + gap));
+
+      // Add visual feedback animation with directional easing
+      // First, add a small bounce in the opposite direction for visual feedback
+      const direction = targetIndex > currentIndex ? -1 : 1;
+      const bounceDistance = 15; // Small bounce distance
+
+      animate(x, x.get() + direction * bounceDistance, {
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        duration: 0.15,
+      }).then(() => {
+        // Then animate to the final position
+        animate(x, newX, {
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
+          duration: 0.5,
+        });
+      });
+    } else {
+      // Desktop: Free scrolling, no snapping
+      // Let the drag settle naturally without forced snapping
+      const naturalX = currentX + velocity * 0.1; // Small momentum continuation
+      const boundedX = Math.max(
+        -(targetMaxIndex * (cardWidth + gap)),
+        Math.min(0, naturalX)
+      );
+
+      // Update current index based on final position
+      const finalIndex = Math.round(-boundedX / (cardWidth + gap));
+      setCurrentIndex(Math.max(0, Math.min(targetMaxIndex, finalIndex)));
+
+      // Smooth deceleration without snapping
+      animate(x, boundedX, {
+        type: "spring",
+        stiffness: 150,
+        damping: 20,
+        mass: 1.0,
+      });
+    }
   };
 
   const containerClasses = maxWidth
@@ -405,7 +485,13 @@ export default function ContentCardsGlass({
         <div className="overflow-x-clip">
           <div
             ref={containerRef}
-            className={`overflow-x-hidden ${maxWidth ? "px-8" : "px-4"} ${
+            className={`overflow-x-hidden cards-scroll-container ${
+              isStatic
+                ? ""
+                : isClient && screenWidth < 1024
+                ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
+                : ""
+            } ${maxWidth ? "px-8" : "px-4"} ${
               isStatic ? "" : "cursor-grab active:cursor-grabbing"
             }`}
             style={{ overflow: "visible" }}
@@ -431,12 +517,14 @@ export default function ContentCardsGlass({
                       right: 0,
                     }
               }
-              dragElastic={isStatic ? undefined : 0.1}
+              dragElastic={isStatic ? undefined : 0.05}
+              dragMomentum={isStatic ? undefined : false}
               onDragEnd={isStatic ? undefined : handleDragEnd}
               transition={{
                 type: "spring",
-                stiffness: 300,
-                damping: 30,
+                stiffness: 400,
+                damping: 35,
+                mass: 0.8,
               }}
             >
               {displayCards.map((card, index) => (
@@ -447,7 +535,9 @@ export default function ContentCardsGlass({
                     (isResponsive && isClient && screenWidth >= 1024)
                       ? "flex"
                       : ""
-                  }`}
+                  } ${
+                    isStatic ? "" : "cards-scroll-snap-item"
+                  } cards-mobile-smooth`}
                   style={{
                     width: cardWidth,
                     height: isStatic
@@ -658,24 +748,25 @@ export default function ContentCardsGlass({
                             {isStatic && (card as StaticCardData).buttons && (
                               <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
                                 {(card as StaticCardData).buttons!.map(
-                                  (button, btnIndex) =>
-                                    button.link ? (
+                                  (button, btnIndex) => {
+                                    // Convert standard variants to narrow variants
+                                    // For GrundstueckCheckSection (sicherheit preset), make secondary button blue
+                                    const narrowVariant =
+                                      button.variant === "primary"
+                                        ? "primary-narrow"
+                                        : button.variant === "secondary"
+                                        ? "secondary-narrow-blue"
+                                        : button.variant;
+
+                                    return button.link ? (
                                       <Link
                                         key={btnIndex}
                                         href={button.link}
                                         className="flex-shrink-0"
                                       >
                                         <Button
-                                          variant={button.variant}
+                                          variant={narrowVariant}
                                           size={button.size}
-                                          className={
-                                            // Override button width at 1024px breakpoint to fit both buttons
-                                            isClient &&
-                                            screenWidth >= 1024 &&
-                                            screenWidth < 1280
-                                              ? "!w-28 !min-w-28 !max-w-28" // Narrower width at smallest desktop
-                                              : "" // Default width at all other sizes
-                                          }
                                         >
                                           {button.text}
                                         </Button>
@@ -683,21 +774,15 @@ export default function ContentCardsGlass({
                                     ) : (
                                       <Button
                                         key={btnIndex}
-                                        variant={button.variant}
+                                        variant={narrowVariant}
                                         size={button.size}
                                         onClick={button.onClick}
-                                        className={
-                                          // Override button width at 1024px breakpoint to fit both buttons
-                                          isClient &&
-                                          screenWidth >= 1024 &&
-                                          screenWidth < 1280
-                                            ? "!w-28 !min-w-28 !max-w-28 flex-shrink-0" // Narrower width at smallest desktop
-                                            : "flex-shrink-0" // Default width at all other sizes
-                                        }
+                                        className="flex-shrink-0"
                                       >
                                         {button.text}
                                       </Button>
-                                    )
+                                    );
+                                  }
                                 )}
                               </div>
                             )}

@@ -195,17 +195,17 @@ export default function VideoCard16by9({
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1, duration: 0.6 }}
                       >
-                        <h3
-                          className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
+                        <h2
+                          className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
                             card.subtitle ? "mb-1" : "mb-6"
                           }`}
                         >
                           {getCardText(card, "title")}
-                        </h3>
+                        </h2>
                         {card.subtitle && (
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
-                          </h4>
+                          </h3>
                         )}
                         <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                           {getCardText(card, "description")}
@@ -214,22 +214,24 @@ export default function VideoCard16by9({
                         {/* Buttons for Video Cards - Desktop Layout */}
                         {card.buttons && (
                           <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
-                            {card.buttons.map((button, btnIndex) =>
-                              button.link ? (
+                            {card.buttons.map((button, btnIndex) => {
+                              // Convert standard variants to narrow variants
+                              const narrowVariant =
+                                button.variant === "primary"
+                                  ? "primary-narrow"
+                                  : button.variant === "secondary"
+                                  ? "secondary-narrow"
+                                  : button.variant;
+
+                              return button.link ? (
                                 <Link
                                   key={btnIndex}
                                   href={button.link}
                                   className="flex-shrink-0"
                                 >
                                   <Button
-                                    variant={button.variant}
+                                    variant={narrowVariant}
                                     size={button.size}
-                                    className={
-                                      // Override button width at 1024px breakpoint to fit both buttons
-                                      screenWidth >= 1024 && screenWidth < 1280
-                                        ? "!w-28 !min-w-28 !max-w-28" // Narrower width at smallest desktop
-                                        : "" // Default width at all other sizes
-                                    }
                                   >
                                     {button.text}
                                   </Button>
@@ -237,19 +239,15 @@ export default function VideoCard16by9({
                               ) : (
                                 <Button
                                   key={btnIndex}
-                                  variant={button.variant}
+                                  variant={narrowVariant}
                                   size={button.size}
                                   onClick={button.onClick}
-                                  className={
-                                    screenWidth >= 1024 && screenWidth < 1280
-                                      ? "!w-28 !min-w-28 !max-w-28 flex-shrink-0" // Narrower width at smallest desktop
-                                      : "flex-shrink-0" // Default width at all other sizes
-                                  }
+                                  className="flex-shrink-0"
                                 >
                                   {button.text}
                                 </Button>
-                              )
-                            )}
+                              );
+                            })}
                           </div>
                         )}
                       </motion.div>
@@ -297,17 +295,17 @@ export default function VideoCard16by9({
                         transition={{ delay: index * 0.1, duration: 0.6 }}
                         className="w-full max-w-md"
                       >
-                        <h3
-                          className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
+                        <h2
+                          className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
                             card.subtitle ? "mb-1" : "mb-6"
                           }`}
                         >
                           {getCardText(card, "title")}
-                        </h3>
+                        </h2>
                         {card.subtitle && (
-                          <h4 className="text-lg md:text-xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
-                          </h4>
+                          </h3>
                         )}
                         <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                           {getCardText(card, "description")}

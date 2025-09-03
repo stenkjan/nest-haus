@@ -4,12 +4,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
 import { PLANNING_PACKAGES } from "@/constants/configurator";
-import GrundstueckCheckWrapper from "@/app/kontakt/components/GrundstueckCheckWrapper";
-import AppointmentBooking from "@/app/kontakt/components/AppointmentBooking";
+import { GrundstueckCheckForm } from "@/components/sections";
+import { AppointmentBooking } from "@/components/sections";
 import {
   planungspaketeCardData,
   type PlanungspaketeCardData,
 } from "@/components/cards/PlanungspaketeCards";
+import { defaultSquareTextCardData } from "@/components/cards/SquareTextCard";
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 import { HybridBlobImage } from "@/components/images";
 import { useConfiguratorStore } from "@/store/configuratorStore";
@@ -40,6 +41,8 @@ export default function CheckoutStepper({
   hideProgress = false,
 }: CheckoutStepperProps) {
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
+  const [hasScrolledToBottom, setHasScrolledToBottom] =
+    useState<boolean>(false);
   const isControlled =
     typeof controlledStepIndex === "number" &&
     typeof onStepChange === "function";
@@ -85,6 +88,23 @@ export default function CheckoutStepper({
   useEffect(() => {
     setLocalSelectedPlan(configItem?.planungspaket?.value ?? null);
   }, [configItem?.planungspaket?.value]);
+
+  // Scroll detection for top forward button
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // Check if user has scrolled to within 100px of the bottom
+      const hasReachedBottom = scrollTop + windowHeight >= documentHeight - 100;
+      setHasScrolledToBottom(hasReachedBottom);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const steps = CHECKOUT_STEPS;
 
@@ -621,16 +641,23 @@ export default function CheckoutStepper({
 
   const renderStepHeader = () => (
     <div className="flex items-center justify-between mb-4">
-      <button
-        type="button"
+      <Button
+        variant="secondary-narrow"
+        size="xs"
         onClick={goPrev}
-        disabled={stepIndex === 0}
-        className="px-3 py-1 rounded-full border border-gray-300 text-sm disabled:opacity-50"
+        disabled={stepIndex <= 0}
       >
         Zurück
-      </button>
+      </Button>
       <div className="text-sm text-gray-600">{steps[stepIndex]}</div>
-      <div className="w-[64px]" />
+      <Button
+        variant="primary-narrow"
+        size="xs"
+        onClick={goNext}
+        disabled={stepIndex >= steps.length - 1 || !hasScrolledToBottom}
+      >
+        Weiter
+      </Button>
     </div>
   );
 
@@ -909,13 +936,9 @@ export default function CheckoutStepper({
             </div>
 
             <div className="flex justify-center">
-              <button
-                type="button"
-                onClick={goNext}
-                className="bg-blue-600 text-white py-3 px-8 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
-              >
+              <Button variant="primary" size="lg" onClick={goNext}>
                 Weiter zum Vorentwurfsplan
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -946,20 +969,78 @@ export default function CheckoutStepper({
               </div>
             </div>
 
+            {/* Process Steps Cards */}
             <div className="border-t border-gray-200 mt-10 mb-6"></div>
+            <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-6">
+              So läuft der Prozess ab:
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {defaultSquareTextCardData.map((card) => (
+                <div
+                  key={card.id}
+                  className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  style={{
+                    backgroundColor: card.backgroundColor,
+                    minHeight: "400px",
+                  }}
+                >
+                  <div className="h-full flex flex-col justify-start items-center px-8 md:px-16 py-16 pt-10 md:pt-20">
+                    {/* Title and Subtitle - Centered horizontally */}
+                    <div className="text-center mb-6">
+                      <h3
+                        className={`text-lg md:text-xl lg:text-3xl 2xl:text-4xl font-bold mb-1 ${
+                          card.textColor || "text-gray-900"
+                        }`}
+                      >
+                        {card.title}
+                      </h3>
+                      <h4
+                        className={`text-sm md:text-xl font-medium mb-5 ${
+                          card.textColor || "text-gray-700"
+                        }`}
+                      >
+                        {card.subtitle}
+                      </h4>
+                    </div>
+
+                    {/* Description - Left aligned on desktop, centered on mobile */}
+                    <div className="text-center md:text-left w-full">
+                      <p
+                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl leading-relaxed whitespace-pre-line max-w-3xl ${
+                          card.textColor || "text-black"
+                        }`}
+                      >
+                        {card.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="border-t border-gray-200 mt-6 mb-6"></div>
             <p className="text-sm text-gray-600">Preis: inkludiert</p>
-            <GrundstueckCheckWrapper />
-            <div className="flex justify-end">
-              <button
-                type="button"
+            <GrundstueckCheckForm backgroundColor="white" maxWidth={false} />
+            <div className="flex justify-between">
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Zurück
+              </Button>
+              <Button
+                variant="primary"
+                size="md"
                 onClick={() => {
                   ensureGrundstueckscheckIncluded();
                   goNext();
                 }}
-                className="bg-blue-600 text-white py-2 px-6 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
               >
                 Bestätigen & Weiter
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -1051,34 +1132,36 @@ export default function CheckoutStepper({
                   );
                 })}
             </div>
-            <div className="flex justify-end">
-              <button
-                type="button"
+            <div className="flex justify-between">
+              <Button variant="secondary" size="md" onClick={goPrev}>
+                Zurück
+              </Button>
+              <Button
+                variant="primary"
+                size="md"
                 onClick={() => {
                   if (localSelectedPlan) {
                     setPlanningPackage(localSelectedPlan);
                   }
                   goNext();
                 }}
-                className="bg-blue-600 text-white py-2 px-6 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
               >
                 Weiter
-              </button>
+              </Button>
             </div>
           </div>
         )}
 
         {stepIndex === 3 && (
           <div className="space-y-4 pt-8">
-            <AppointmentBooking />
-            <div className="flex justify-end mt-6">
-              <button
-                type="button"
-                onClick={goNext}
-                className="bg-blue-600 text-white py-2 px-6 rounded-full text-[clamp(14px,3vw,16px)] font-medium hover:bg-blue-700 transition-colors"
-              >
+            <AppointmentBooking showLeftSide={false} />
+            <div className="flex justify-between mt-6">
+              <Button variant="secondary" size="md" onClick={goPrev}>
+                Zurück
+              </Button>
+              <Button variant="primary" size="md" onClick={goNext}>
                 Weiter
-              </button>
+              </Button>
             </div>
           </div>
         )}
