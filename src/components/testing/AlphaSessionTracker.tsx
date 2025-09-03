@@ -8,8 +8,12 @@ import { useAlphaSessionTracking } from "@/hooks/useAlphaSessionTracking";
  * Automatically tracks user interactions when alpha test is active
  */
 export default function AlphaSessionTracker() {
-  const { isTrackingActive, trackButtonClick, trackFormInteraction, trackPageVisit } =
-    useAlphaSessionTracking();
+  const {
+    isTrackingActive,
+    trackButtonClick,
+    trackFormInteraction,
+    trackPageVisit,
+  } = useAlphaSessionTracking();
 
   useEffect(() => {
     console.log(
@@ -64,19 +68,23 @@ export default function AlphaSessionTracker() {
         // Check for usability test popup specific patterns
         if (
           // Fixed positioned overlay with high z-index (test popup container)
-          (className.includes("fixed") && className.includes("inset-0") && className.includes("z-50")) ||
+          (className.includes("fixed") &&
+            className.includes("inset-0") &&
+            className.includes("z-50")) ||
           // Backdrop blur with border (test popup content)
-          (className.includes("backdrop-blur") && className.includes("border-2") && className.includes("border-blue-300")) ||
+          (className.includes("backdrop-blur") &&
+            className.includes("border-2") &&
+            className.includes("border-blue-300")) ||
           // Check for test-specific text content
-          (current.textContent && (
-            current.textContent.includes("Schritt") ||
-            current.textContent.includes("Nächster Schritt") ||
-            current.textContent.includes("Ihre Antwort") ||
-            current.textContent.includes("Alpha Test") ||
-            current.textContent.includes("Usability Test")
-          )) ||
+          (current.textContent &&
+            (current.textContent.includes("Schritt") ||
+              current.textContent.includes("Nächster Schritt") ||
+              current.textContent.includes("Ihre Antwort") ||
+              current.textContent.includes("Alpha Test") ||
+              current.textContent.includes("Usability Test"))) ||
           // Check for rating buttons (1-6 scale)
-          (current.tagName === "BUTTON" && /^[1-6]$/.test(current.textContent?.trim() || ""))
+          (current.tagName === "BUTTON" &&
+            /^[1-6]$/.test(current.textContent?.trim() || ""))
         ) {
           return true;
         }
@@ -100,7 +108,7 @@ export default function AlphaSessionTracker() {
           tagName: target.tagName,
           textContent: target.textContent?.trim(),
           className: target.className,
-          id: target.id
+          id: target.id,
         });
         return;
       }
@@ -151,24 +159,24 @@ export default function AlphaSessionTracker() {
     };
 
     // Track meaningful form interactions (skip focus/blur, focus on changes and submissions)
-    const handleFormFocus = (event: FocusEvent) => {
+    const handleFormFocus = (_event: FocusEvent) => {
       // Skip focus events as they're not meaningful user interactions
       // We'll track changes and submissions instead
       return;
     };
 
-    const handleFormBlur = (event: FocusEvent) => {
+    const handleFormBlur = (_event: FocusEvent) => {
       // Skip blur events as they're not meaningful user interactions
       return;
     };
 
-    const handleFormChange = (event: Event) => {
+    const handleFormChange = (_event: Event) => {
       // Skip all form changes - we only want to track button and link clicks
       // Form interactions are not meaningful for user behavior analysis
       return;
     };
 
-    const handleFormSubmit = (event: SubmitEvent) => {
+    const handleFormSubmit = (_event: SubmitEvent) => {
       // Skip all form submissions - we only want to track button and link clicks
       return;
     };
@@ -195,14 +203,19 @@ export default function AlphaSessionTracker() {
       clearInterval(navigationInterval);
       console.log("✅ Event listeners and navigation tracking removed");
     };
-  }, [isTrackingActive, trackButtonClick, trackFormInteraction, trackPageVisit]);
+  }, [
+    isTrackingActive,
+    trackButtonClick,
+    trackFormInteraction,
+    trackPageVisit,
+  ]);
 
   // This component doesn't render anything
   return null;
 }
 
 // Helper function to check if element is a form element
-function isFormElement(
+function _isFormElement(
   element: Element
 ): element is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement {
   return (
