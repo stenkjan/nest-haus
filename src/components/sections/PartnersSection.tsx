@@ -127,7 +127,7 @@ export function PartnersSection({
                 strategy="auto"
                 isAboveFold={false}
                 isCritical={false}
-                className="w-full h-full object-contain transition-transform duration-300 hover:scale-105 filter grayscale hover:grayscale-0"
+                className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
                 sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
                 quality={85}
               />
