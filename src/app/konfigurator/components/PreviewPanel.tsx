@@ -297,7 +297,7 @@ export default function PreviewPanel({
                     | "aluminium_weiss"
                 }
                 isVisible={isFensterOverlayVisible && activeView === "interior"}
-                className="opacity-90"
+                className=""
               />
             )}
           </div>

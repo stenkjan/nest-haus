@@ -183,12 +183,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           // When selecting belichtungspaket, switch to exterior view to show gebäudehülle
           shouldSwitchToView = 'exterior';
         } else if (item.category === 'fenster') {
-          // Activate Part 3 but don't switch views - Fenster has its own info dialog
+          // Activate Part 3 and switch to interior view to show material combinations with fenster overlay
           if (!state.hasPart3BeenActive) {
             newHasPart3BeenActive = true;
           }
-          // No view switching for fenster - stays on current view
-          shouldSwitchToView = null;
+          // Switch to interior view to show fenster material overlay on interior combinations
+          shouldSwitchToView = 'interior';
         } else if (item.category === 'stirnseite') {
           // When selecting any stirnseite option, switch to stirnseite view
           // This includes "keine_verglasung" to show the stirnseite image
