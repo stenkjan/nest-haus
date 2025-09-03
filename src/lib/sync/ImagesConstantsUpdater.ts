@@ -403,7 +403,7 @@ export class ImagesConstantsUpdater {
       // Only add new images in the PV overlay range (190-220)
       if (mapping.number >= 190 && mapping.number <= 220 && !processedNumbers.has(mapping.number)) {
         // Generate appropriate constant key for PV overlays
-        const pvConstantKey = this.generatePvOverlayConstantKey(mapping.number, mapping.isMobile);
+        const pvConstantKey = this.generatePvOverlayConstantKey(mapping.number, mapping.isMobile || false);
 
         // FIXED: Check if constant already exists to prevent duplicates
         if (pvConstantKey && !updatedConstants[pvConstantKey] && !currentConstants[pvConstantKey]) {
