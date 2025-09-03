@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [90061b2452c08201bc53e9260df0448fe68ffc9e] - Wed Sep 3 15:12:28 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Refactor FensterOverlay component to improve visibility handling  - Moved visibility check to the appropriate location in the  component to ensure it only renders when  is true. - This change enhances performance by preventing unnecessary rendering of the overlay.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/FensterOverlay.tsx
+
+
+---
+
 ## [4639bd9279d2345ec7dde0945ce4547f008c5808] - Wed Sep 3 15:09:28 2025 +0200
 
 **Author**: stenkjan
