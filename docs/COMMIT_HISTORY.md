@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [290d36a940b1e98cba73f58f3f2fc6442a6651d4] - Wed Sep 3 15:26:04 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Adjust positioning of module count badge in PvModuleOverlay for improved layout  - Updated the positioning of the module count badge for both desktop and mobile views to enhance visibility and alignment. - Desktop badge now appears lower within the image area, while mobile badge is positioned more to the right and slightly higher, ensuring better user experience across devices.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/PvModuleOverlay.tsx
+
+
+---
+
 ## [90061b2452c08201bc53e9260df0448fe68ffc9e] - Wed Sep 3 15:12:28 2025 +0200
 
 **Author**: stenkjan
