@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7055306df98eb65178fa4aa69d1f0be514ca0b3a] - Wed Sep 3 15:03:10 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enhance configurator functionality with Fenster overlay support  - Added state management for Fenster overlay visibility in . - Implemented conditional rendering for Fenster overlay in . - Updated configurator data to reflect new pricing for Holz Fenster. - Introduced new image constants for Fenster overlays to improve visual representation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/FensterOverlay.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [15ca30fbf9faa6237454b810470cfa1e2bc1bcac] - Wed Sep 3 14:43:09 2025 +0200
 
 **Author**: stenkjan
