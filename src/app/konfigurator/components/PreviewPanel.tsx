@@ -52,6 +52,11 @@ export default function PreviewPanel({
   const previewRef = useRef<HTMLDivElement>(null);
   const [, startTransition] = useTransition();
 
+  // Image loading states to prevent blank spaces and control overlay visibility
+  const [isMainImageLoaded, setIsMainImageLoaded] = useState<boolean>(false);
+  const [previousImagePath, setPreviousImagePath] = useState<string>("");
+  const [showPreviousImage, setShowPreviousImage] = useState<boolean>(false);
+
   // Calculate preview height for mobile only - WebKit optimized
   useEffect(() => {
     if (!isMobile) return;
@@ -132,6 +137,30 @@ export default function PreviewPanel({
 
     return imagePath;
   }, [configuration, activeView, availableViews]);
+
+  // Handle image path changes - keep previous image visible until new one loads
+  useEffect(() => {
+    if (currentImagePath && currentImagePath !== previousImagePath) {
+      // New image is loading, keep previous image visible
+      if (previousImagePath) {
+        setShowPreviousImage(true);
+      }
+      setIsMainImageLoaded(false);
+      setPreviousImagePath(currentImagePath);
+    }
+  }, [currentImagePath, previousImagePath]);
+
+  // Handle main image load completion
+  const handleMainImageLoad = useCallback(() => {
+    setIsMainImageLoaded(true);
+    setShowPreviousImage(false); // Hide previous image once new one is loaded
+  }, []);
+
+  // Handle main image load error
+  const handleMainImageError = useCallback(() => {
+    setIsMainImageLoaded(true); // Still hide previous image even on error
+    setShowPreviousImage(false);
+  }, []);
 
   // PERFORMANCE FIX: Create a stable key for the image to prevent loading stale images
   const imageKey = useMemo(() => {
@@ -232,13 +261,31 @@ export default function PreviewPanel({
         {/* Image filling the entire container */}
         <div className="relative w-full h-full">
           <div className="relative w-full h-full">
+            {/* Previous image - shown during loading to prevent blank space */}
+            {showPreviousImage && previousImagePath && (
+              <HybridBlobImage
+                key={`previous-${previousImagePath}`}
+                path={previousImagePath}
+                alt="Previous image"
+                fill
+                className="object-contain"
+                strategy="client"
+                isInteractive={true}
+                enableCache={true}
+                sizes="(max-width: 1023px) 100vw, 70vw"
+                quality={85}
+              />
+            )}
+
             {/* Main image */}
             <HybridBlobImage
               key={imageKey}
               path={currentImagePath}
               alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
               fill
-              className="transition-opacity duration-300 object-contain"
+              className={`transition-opacity duration-300 object-contain ${
+                showPreviousImage ? "opacity-0" : "opacity-100"
+              }`}
               // Strategy optimized for interactive configurator
               strategy="client"
               isInteractive={true}
@@ -247,14 +294,17 @@ export default function PreviewPanel({
               sizes="(max-width: 1023px) 100vw, 70vw"
               quality={85}
               priority={activeView === "exterior"}
+              onLoad={handleMainImageLoad}
+              onError={handleMainImageError}
             />
 
-            {/* PV Module Overlay - only show on exterior view when PV is selected */}
+            {/* PV Module Overlay - only show on exterior view when PV is selected AND main image is loaded */}
             {activeView === "exterior" &&
               configuration?.pvanlage &&
               configuration?.pvanlage?.quantity &&
               configuration?.pvanlage?.quantity > 0 &&
-              configuration?.nest && (
+              configuration?.nest &&
+              isMainImageLoaded && (
                 <PvModuleOverlay
                   nestSize={
                     configuration.nest.value as
@@ -270,36 +320,42 @@ export default function PreviewPanel({
                 />
               )}
 
-            {/* Brightness Overlay - only show on exterior view when belichtungspaket is selected */}
-            {activeView === "exterior" && configuration?.belichtungspaket && (
-              <BrightnessOverlay
-                brightnessLevel={
-                  configuration.belichtungspaket?.value as
-                    | "light"
-                    | "medium"
-                    | "bright"
-                }
-                isVisible={
-                  isBrightnessOverlayVisible && activeView === "exterior"
-                }
-                className="opacity-90"
-              />
-            )}
+            {/* Brightness Overlay - only show on exterior view when belichtungspaket is selected AND main image is loaded */}
+            {activeView === "exterior" &&
+              configuration?.belichtungspaket &&
+              isMainImageLoaded && (
+                <BrightnessOverlay
+                  brightnessLevel={
+                    configuration.belichtungspaket?.value as
+                      | "light"
+                      | "medium"
+                      | "bright"
+                  }
+                  isVisible={
+                    isBrightnessOverlayVisible && activeView === "exterior"
+                  }
+                  className="opacity-90"
+                />
+              )}
 
-            {/* Fenster Overlay - show on interior view when fenster is selected */}
-            {activeView === "interior" && configuration?.fenster && (
-              <FensterOverlay
-                fensterType={
-                  configuration.fenster?.value as
-                    | "pvc_fenster"
-                    | "holz"
-                    | "aluminium_schwarz"
-                    | "aluminium_weiss"
-                }
-                isVisible={isFensterOverlayVisible && activeView === "interior"}
-                className=""
-              />
-            )}
+            {/* Fenster Overlay - show on interior view when fenster is selected AND main image is loaded */}
+            {activeView === "interior" &&
+              configuration?.fenster &&
+              isMainImageLoaded && (
+                <FensterOverlay
+                  fensterType={
+                    configuration.fenster?.value as
+                      | "pvc_fenster"
+                      | "holz"
+                      | "aluminium_schwarz"
+                      | "aluminium_weiss"
+                  }
+                  isVisible={
+                    isFensterOverlayVisible && activeView === "interior"
+                  }
+                  className=""
+                />
+              )}
           </div>
         </div>
 
