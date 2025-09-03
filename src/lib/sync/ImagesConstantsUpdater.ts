@@ -70,18 +70,23 @@ export class ImagesConstantsUpdater {
 
         const newContent = this.generateNewFileContent(this.originalContent, updatedConstants);
 
-        // Additional safety check: ensure the new content has the same number of variables
+        // Enhanced safety check: allow for new constants to be added
         const originalVarCount = (this.originalContent.match(/:\s*['"`][^'"`]*['"`]/g) || []).length;
         const newVarCount = (newContent.match(/:\s*['"`][^'"`]*['"`]/g) || []).length;
+        const newConstantsAdded = Object.keys(updatedConstants).filter(key => key.startsWith('pvModule.')).length;
 
-        if (originalVarCount !== newVarCount) {
-          console.warn('🚨 SAFETY CHECK FAILED: Variable count mismatch, aborting update');
+        if (newVarCount < originalVarCount) {
+          console.warn('🚨 SAFETY CHECK FAILED: Variables were removed, aborting update');
           console.warn(`   Original: ${originalVarCount} variables, New: ${newVarCount} variables`);
-          result.errors.push('Safety check failed: Variable count mismatch');
+          result.errors.push('Safety check failed: Variables were removed');
+        } else if (newVarCount > originalVarCount + newConstantsAdded) {
+          console.warn('🚨 SAFETY CHECK FAILED: Too many new variables added, aborting update');
+          console.warn(`   Original: ${originalVarCount} variables, New: ${newVarCount} variables, Expected new: ${newConstantsAdded}`);
+          result.errors.push('Safety check failed: Unexpected variable count increase');
         } else {
           await fs.writeFile(this.imagesFilePath, newContent, 'utf8');
           result.updated = true;
-          console.log(`✅ SAFELY updated images.ts paths (${pathChanges} path updates, ${originalVarCount} variables preserved)`);
+          console.log(`✅ ENHANCED update completed: ${pathChanges} path updates, ${newConstantsAdded} new constants added, ${originalVarCount} original variables preserved`);
         }
       } else {
         console.log('📄 No path changes needed in images.ts');
@@ -121,8 +126,8 @@ export class ImagesConstantsUpdater {
         if (parsed) {
           // CRITICAL: Precise mobile detection based on actual blob path
           // Check for -mobile suffix in the actual blob pathname (before hash removal)
-          const isMobile = blob.pathname.toLowerCase().includes('-mobile') ||
-            !!blob.pathname.toLowerCase().match(/-mobile\.[a-z]+$/);
+          // FIXED: More precise mobile detection to prevent false positives
+          const isMobile = !!blob.pathname.toLowerCase().match(/-mobile(-[a-zA-Z0-9]{10,})?\.[a-z]+$/);
 
           const category = this.inferCategory(parsed.number, parsed.title);
           const constantKey = this.generateConstantKey(parsed.number, parsed.title, category, isMobile);
@@ -138,6 +143,10 @@ export class ImagesConstantsUpdater {
 
           // EXTRA SAFETY: Remove any remaining hash-like suffixes
           cleanBlobPath = cleanBlobPath.replace(/-[A-Za-z0-9]{10,}$/, '');
+
+          // CRITICAL FIX: Don't add -mobile suffix to desktop images!
+          // The cleanBlobPath should already contain -mobile if it's a mobile image
+          // We should NOT add -mobile suffix here - it should come from the original filename
 
           mappings.push({
             number: parsed.number,
@@ -311,8 +320,8 @@ export class ImagesConstantsUpdater {
   }
 
   /**
- * Generate updated constants - SAFE MODE: Only updates path values, never variable names
- * Preserves all existing variable names and structure, only updates string paths
+ * Generate updated constants - ENHANCED: Updates existing paths AND adds new images
+ * Preserves all existing variable names and structure, updates paths, and adds new PV overlay images
  */
   private generateUpdatedConstants(
     currentConstants: Record<string, string>,
@@ -320,9 +329,11 @@ export class ImagesConstantsUpdater {
   ): Record<string, string> {
     const updatedConstants = { ...currentConstants };
     let pathUpdates = 0;
+    let newImages = 0;
 
     // Create a map of image numbers to their blob paths (without hash/extension)
     const numberToPathMap = new Map<number, string>();
+    const processedNumbers = new Set<number>();
 
     for (const mapping of blobMappings) {
       // Clean path: remove images/ prefix, hash, and extension
@@ -330,33 +341,44 @@ export class ImagesConstantsUpdater {
       numberToPathMap.set(mapping.number, cleanPath);
     }
 
-    // Only update existing constants' path values, never change variable names
+    // Step 1: Update existing constants' path values
     for (const [variableName, currentPath] of Object.entries(currentConstants)) {
       // Skip fallback/placeholder paths
       if (currentPath.startsWith('/api/placeholder/')) {
         continue;
       }
 
-      // CRITICAL: NEVER TOUCH HERO IMAGES - They are manually managed!
-      if (variableName.startsWith('hero.')) {
-        console.log(`🚫 SKIPPING hero image (manually managed): ${variableName}`);
-        continue;
-      }
+      // Allow hero image updates - they should sync from Google Drive like other images
+      // Removed the hardcoded skip to allow proper sync of hero images
 
       // Extract number from current path to match with blob images
       const numberMatch = currentPath.match(/^(\d+)-/);
       if (numberMatch) {
         const imageNumber = parseInt(numberMatch[1], 10);
+        processedNumbers.add(imageNumber);
 
         // FIXED: Determine if this is a mobile version based on the full variable key
         // e.g., "hero.mobile.nestHaus1" is mobile, "hero.nestHaus1" is desktop
         const isCurrentMobile = variableName.includes('.mobile.');
 
         // Find matching blob image with EXACT same mobile/desktop type
-        const matchingMapping = blobMappings.find(mapping =>
+        // CRITICAL: For desktop constants, prefer desktop versions even if mobile exists
+        let matchingMapping = blobMappings.find(mapping =>
           mapping.number === imageNumber &&
           mapping.isMobile === isCurrentMobile
         );
+
+        // FALLBACK: If no exact match and this is a desktop constant, 
+        // don't use mobile version - keep the existing path
+        if (!matchingMapping && !isCurrentMobile) {
+          const mobileVersion = blobMappings.find(mapping =>
+            mapping.number === imageNumber && mapping.isMobile === true
+          );
+          if (mobileVersion) {
+            console.log(`⚠️ Skipping desktop constant ${variableName}: Only mobile version available, keeping existing path`);
+            continue; // Skip this update to prevent desktop->mobile contamination
+          }
+        }
 
         if (matchingMapping && matchingMapping.blobPath !== currentPath) {
           updatedConstants[variableName] = matchingMapping.blobPath;
@@ -376,12 +398,87 @@ export class ImagesConstantsUpdater {
       }
     }
 
-    console.log(`📄 Safe path update completed:`);
-    console.log(`   • Preserved ${Object.keys(currentConstants).length} variable names`);
-    console.log(`   • Updated ${pathUpdates} path values`);
+    // Step 2: Add new PV overlay images (190-220 range) that don't exist yet
+    for (const mapping of blobMappings) {
+      // Only add new images in the PV overlay range (190-220)
+      if (mapping.number >= 190 && mapping.number <= 220 && !processedNumbers.has(mapping.number)) {
+        // Generate appropriate constant key for PV overlays
+        const pvConstantKey = this.generatePvOverlayConstantKey(mapping.number, mapping.isMobile);
+
+        // FIXED: Check if constant already exists to prevent duplicates
+        if (pvConstantKey && !updatedConstants[pvConstantKey] && !currentConstants[pvConstantKey]) {
+          updatedConstants[pvConstantKey] = mapping.blobPath;
+          newImages++;
+          console.log(`🆕 Added new PV overlay: ${pvConstantKey} → ${mapping.blobPath}`);
+        } else if (pvConstantKey && (updatedConstants[pvConstantKey] || currentConstants[pvConstantKey])) {
+          console.log(`⏭️ Skipping duplicate PV overlay: ${pvConstantKey} (already exists)`);
+        }
+      }
+    }
+
+    console.log(`📄 Enhanced update completed:`);
+    console.log(`   • Preserved ${Object.keys(currentConstants).length} existing variable names`);
+    console.log(`   • Updated ${pathUpdates} existing path values`);
+    console.log(`   • Added ${newImages} new PV overlay images`);
     console.log(`   • Found ${blobMappings.length} blob images for reference`);
 
     return updatedConstants;
+  }
+
+  /**
+   * Generate constant key for PV overlay images (190-220 range)
+   */
+  private generatePvOverlayConstantKey(number: number, isMobile: boolean): string | null {
+    // Only handle PV overlay range
+    if (number < 190 || number > 220) return null;
+
+    // Don't add mobile PV overlays to the main constants - they're not used
+    if (isMobile) return null;
+
+    // Map specific PV overlay numbers to their constant keys
+    const pvMappings: Record<number, string> = {
+      // Nest75 (nest80) overlays - updated range 191-194
+      191: 'pvModule.nest75_solar_overlay_mod_1',
+      192: 'pvModule.nest75_solar_overlay_mod_2',
+      193: 'pvModule.nest75_solar_overlay_mod_3',
+      194: 'pvModule.nest75_solar_overlay_mod_4',
+
+      // Nest95 (nest100) overlays - 195-199
+      195: 'pvModule.nest95_solar_overlay_mod_1',
+      196: 'pvModule.nest95_solar_overlay_mod_2',
+      197: 'pvModule.nest95_solar_overlay_mod_3',
+      198: 'pvModule.nest95_solar_overlay_mod_4',
+      199: 'pvModule.nest95_solar_overlay_mod_5',
+
+      // Nest115 (nest120) overlays - 200-205
+      200: 'pvModule.nest115_solar_overlay_mod_1',
+      201: 'pvModule.nest115_solar_overlay_mod_2',
+      202: 'pvModule.nest115_solar_overlay_mod_3',
+      203: 'pvModule.nest115_solar_overlay_mod_4',
+      204: 'pvModule.nest115_solar_overlay_mod_5',
+      205: 'pvModule.nest115_solar_overlay_mod_6',
+
+      // Nest135 (nest140) overlays - 206-212
+      206: 'pvModule.nest135_solar_overlay_mod_1',
+      207: 'pvModule.nest135_solar_overlay_mod_2',
+      208: 'pvModule.nest135_solar_overlay_mod_3',
+      209: 'pvModule.nest135_solar_overlay_mod_4',
+      210: 'pvModule.nest135_solar_overlay_mod_5',
+      211: 'pvModule.nest135_solar_overlay_mod_6',
+      212: 'pvModule.nest135_solar_overlay_mod_7',
+
+      // Nest155 (nest160) overlays - 213-220
+      213: 'pvModule.nest155_solar_overlay_mod_1',
+      214: 'pvModule.nest155_solar_overlay_mod_2',
+      215: 'pvModule.nest155_solar_overlay_mod_3',
+      216: 'pvModule.nest155_solar_overlay_mod_4',
+      217: 'pvModule.nest155_solar_overlay_mod_5',
+      218: 'pvModule.nest155_solar_overlay_mod_6',
+      219: 'pvModule.nest155_solar_overlay_mod_7',
+      220: 'pvModule.nest155_solar_overlay_mod_8'
+    };
+
+    return pvMappings[number] || null;
   }
 
   /**
@@ -407,8 +504,8 @@ export class ImagesConstantsUpdater {
   }
 
   /**
- * Generate new file content with updated constants - SAFE MODE
- * Only updates existing path values while preserving all structure, comments, and formatting
+ * Generate new file content with updated constants - ENHANCED MODE
+ * Updates existing path values AND adds new PV overlay constants while preserving structure
  */
   private generateNewFileContent(
     originalContent: string,
@@ -416,8 +513,13 @@ export class ImagesConstantsUpdater {
   ): string {
     let newContent = originalContent;
 
-    // Update each constant individually using precise regex replacement
+    // Step 1: Update existing constants
     for (const [fullKey, newValue] of Object.entries(updatedConstants)) {
+      // Skip new PV overlay constants for now - handle them separately
+      if (fullKey.startsWith('pvModule.')) {
+        continue;
+      }
+
       // Handle nested keys (like hero.mobile.nestHaus1) and flat keys
       const keyParts = fullKey.split('.');
       const searchKey = keyParts[keyParts.length - 1]; // Get the actual variable name
@@ -432,6 +534,33 @@ export class ImagesConstantsUpdater {
       // Only replace if the pattern is found
       if (valueRegex.test(newContent)) {
         newContent = newContent.replace(valueRegex, `$1${newValue}$3`);
+      }
+    }
+
+    // Step 2: Add new PV overlay constants to the pvModule section
+    const newPvOverlays = Object.entries(updatedConstants)
+      .filter(([key]) => key.startsWith('pvModule.'))
+      .map(([key, value]) => {
+        const constantName = key.replace('pvModule.', '');
+        return `        ${constantName}: '${value}',`;
+      });
+
+    if (newPvOverlays.length > 0) {
+      // Find the pvModule section and add new constants before the closing brace
+      const pvModuleMatch = newContent.match(/(pvModule:\s*{[\s\S]*?)(    },)/);
+      if (pvModuleMatch) {
+        const beforeClosing = pvModuleMatch[1];
+        const closingBrace = pvModuleMatch[2];
+
+        // Add new constants with proper indentation
+        const newPvSection = beforeClosing + '\n        \n        // New PV overlay images added by sync\n' +
+          newPvOverlays.join('\n') + '\n' + closingBrace;
+
+        newContent = newContent.replace(pvModuleMatch[0], newPvSection);
+
+        console.log(`📝 Added ${newPvOverlays.length} new PV overlay constants to images.ts`);
+      } else {
+        console.warn('⚠️ Could not find pvModule section to add new constants');
       }
     }
 

@@ -95,28 +95,107 @@ export default function PvModuleOverlay({
 
   // Determine which overlay image to use based on module count and nest size
   const getOverlayImage = (nestSize: string, moduleCount: number) => {
-    // For nest80 (75m²), use the new progressive overlay system
-    if (nestSize === "nest80") {
-      if (moduleCount === 1) {
-        return IMAGES.pvModule.nest75_solar_overlay_mod_1;
-      } else if (moduleCount === 2) {
-        return IMAGES.pvModule.nest75_solar_overlay_mod_2;
-      } else if (moduleCount === 3) {
-        return IMAGES.pvModule.nest75_solar_overlay_mod_3;
-      } else if (moduleCount >= 4) {
-        return IMAGES.pvModule.nest75_solar_overlay_mod_4;
-      }
+    switch (nestSize) {
+      case "nest80": // 75m² - 4 modules max
+        if (moduleCount === 1)
+          return IMAGES.pvModule.nest75_solar_overlay_mod_1;
+        if (moduleCount === 2)
+          return IMAGES.pvModule.nest75_solar_overlay_mod_2;
+        if (moduleCount === 3)
+          return IMAGES.pvModule.nest75_solar_overlay_mod_3;
+        if (moduleCount >= 4) return IMAGES.pvModule.nest75_solar_overlay_mod_4;
+        break;
+
+      case "nest100": // 95m² - 5 modules max
+        if (moduleCount === 1)
+          return IMAGES.pvModule.nest95_solar_overlay_mod_1;
+        if (moduleCount === 2)
+          return IMAGES.pvModule.nest95_solar_overlay_mod_2;
+        if (moduleCount === 3)
+          return IMAGES.pvModule.nest95_solar_overlay_mod_3;
+        if (moduleCount === 4)
+          return IMAGES.pvModule.nest95_solar_overlay_mod_4;
+        if (moduleCount >= 5) return IMAGES.pvModule.nest95_solar_overlay_mod_5;
+        break;
+
+      case "nest120": // 115m² - 6 modules max
+        if (moduleCount === 1)
+          return IMAGES.pvModule.nest115_solar_overlay_mod_1;
+        if (moduleCount === 2)
+          return IMAGES.pvModule.nest115_solar_overlay_mod_2;
+        if (moduleCount === 3)
+          return IMAGES.pvModule.nest115_solar_overlay_mod_3;
+        if (moduleCount === 4)
+          return IMAGES.pvModule.nest115_solar_overlay_mod_4;
+        if (moduleCount === 5)
+          return IMAGES.pvModule.nest115_solar_overlay_mod_5;
+        if (moduleCount >= 6)
+          return IMAGES.pvModule.nest115_solar_overlay_mod_6;
+        break;
+
+      case "nest140": // 135m² - 7 modules max
+        if (moduleCount === 1)
+          return IMAGES.pvModule.nest135_solar_overlay_mod_1;
+        if (moduleCount === 2)
+          return IMAGES.pvModule.nest135_solar_overlay_mod_2;
+        if (moduleCount === 3)
+          return IMAGES.pvModule.nest135_solar_overlay_mod_3;
+        if (moduleCount === 4)
+          return IMAGES.pvModule.nest135_solar_overlay_mod_4;
+        if (moduleCount === 5)
+          return IMAGES.pvModule.nest135_solar_overlay_mod_5;
+        if (moduleCount === 6)
+          return IMAGES.pvModule.nest135_solar_overlay_mod_6;
+        if (moduleCount >= 7)
+          return IMAGES.pvModule.nest135_solar_overlay_mod_7;
+        break;
+
+      case "nest160": // 155m² - 8 modules max
+        if (moduleCount === 1)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_1;
+        if (moduleCount === 2)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_2;
+        if (moduleCount === 3)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_3;
+        if (moduleCount === 4)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_4;
+        if (moduleCount === 5)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_5;
+        if (moduleCount === 6)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_6;
+        if (moduleCount === 7)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_7;
+        if (moduleCount >= 8)
+          return IMAGES.pvModule.nest155_solar_overlay_mod_8;
+        break;
     }
 
-    // For other nest sizes, use the original overlay (future: will have their own overlays)
+    // Fallback to original overlay if something goes wrong
     return IMAGES.pvModule.pvOverlay;
   };
 
   const overlayImagePath = getOverlayImage(nestSize, moduleCount);
 
-  // Only show counter for amounts above 4 modules (for nest80) or any amount (for other sizes)
-  const shouldShowCounter =
-    nestSize === "nest80" ? moduleCount > 4 : moduleCount > 0;
+  // Determine maximum modules and counter logic for each nest size
+  const getMaxModules = (nestSize: string) => {
+    switch (nestSize) {
+      case "nest80":
+        return 4; // 75m² - 4 modules max
+      case "nest100":
+        return 5; // 95m² - 5 modules max
+      case "nest120":
+        return 6; // 115m² - 6 modules max
+      case "nest140":
+        return 7; // 135m² - 7 modules max
+      case "nest160":
+        return 8; // 155m² - 8 modules max
+      default:
+        return 0;
+    }
+  };
+
+  const maxModules = getMaxModules(nestSize);
+  const shouldShowCounter = moduleCount > maxModules;
 
   // Calculate responsive counter positioning and sizing - positioned lower when visible
   const counterSize = {
@@ -166,8 +245,8 @@ export default function PvModuleOverlay({
               minHeight: "20px",
             }}
           >
-            +{moduleCount - 4}{" "}
-            {/* Show additional modules beyond 4 (e.g., +1 for 5 modules) */}
+            +{moduleCount - maxModules}{" "}
+            {/* Show additional modules beyond max (e.g., +1 for nest80 with 5 modules) */}
           </div>
 
           {/* Mobile: Close to overlay, 5% right of center, at overlay height */}
@@ -185,8 +264,8 @@ export default function PvModuleOverlay({
               minHeight: "18px",
             }}
           >
-            +{moduleCount - 4}{" "}
-            {/* Show additional modules beyond 4 (e.g., +1 for 5 modules) */}
+            +{moduleCount - maxModules}{" "}
+            {/* Show additional modules beyond max (e.g., +1 for nest80 with 5 modules) */}
           </div>
         </>
       )}

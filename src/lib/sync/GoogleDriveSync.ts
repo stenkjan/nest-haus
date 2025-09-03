@@ -484,6 +484,9 @@ export class GoogleDriveSync {
     // - Mobile: "Title-Name-mobile" → cleanTitle = "Title-Name", isMobile = true
     const cleanTitle = isMobile ? title.replace(/-mobile$/i, '').trim() : title;
 
+    // DEBUG: Log mobile detection for troubleshooting
+    console.log(`🔍 Mobile detection: "${fileName}" → isMobile: ${isMobile}, cleanTitle: "${cleanTitle}"`);
+
     return {
       number,
       title: cleanTitle,
