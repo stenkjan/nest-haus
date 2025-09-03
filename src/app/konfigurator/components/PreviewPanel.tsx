@@ -21,12 +21,14 @@ import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
 import BrightnessOverlay from "./BrightnessOverlay";
+import FensterOverlay from "./FensterOverlay";
 
 interface PreviewPanelProps {
   isMobile?: boolean;
   className?: string;
   isPvOverlayVisible?: boolean;
   isBrightnessOverlayVisible?: boolean;
+  isFensterOverlayVisible?: boolean;
 }
 
 export default function PreviewPanel({
@@ -34,6 +36,7 @@ export default function PreviewPanel({
   className = "",
   isPvOverlayVisible = true,
   isBrightnessOverlayVisible = true,
+  isFensterOverlayVisible = false,
 }: PreviewPanelProps) {
   const {
     configuration,
@@ -279,6 +282,21 @@ export default function PreviewPanel({
                 isVisible={
                   isBrightnessOverlayVisible && activeView === "exterior"
                 }
+                className="opacity-90"
+              />
+            )}
+
+            {/* Fenster Overlay - show on interior view when fenster is selected */}
+            {activeView === "interior" && configuration?.fenster && (
+              <FensterOverlay
+                fensterType={
+                  configuration.fenster?.value as
+                    | "pvc_fenster"
+                    | "holz"
+                    | "aluminium_schwarz"
+                    | "aluminium_weiss"
+                }
+                isVisible={isFensterOverlayVisible && activeView === "interior"}
                 className="opacity-90"
               />
             )}

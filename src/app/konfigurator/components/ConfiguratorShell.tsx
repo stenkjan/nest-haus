@@ -67,6 +67,8 @@ export default function ConfiguratorShell({
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
   const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
     useState<boolean>(false); // Hidden by default, only show when actively selecting
+  const [isFensterOverlayVisible, setIsFensterOverlayVisible] =
+    useState<boolean>(false); // Hidden by default, only show when fenster is selected
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -159,6 +161,9 @@ export default function ConfiguratorShell({
   const resetLocalState = useCallback(() => {
     console.log("🔄 ConfiguratorShell: Resetting local state");
     setPvQuantity(0);
+    setIsPvOverlayVisible(true);
+    setIsBrightnessOverlayVisible(false);
+    setIsFensterOverlayVisible(false);
   }, []);
 
   // Confirmation handlers for PV and Fenster sections - REMOVED
@@ -192,9 +197,10 @@ export default function ConfiguratorShell({
         // If clicking PV option when quantity is 0, set to 1 and show overlay immediately
         if (pvQuantity === 0) {
           setPvQuantity(1);
-          // Show PV overlay and hide belichtung overlay (mutual exclusivity)
+          // Show PV overlay and hide other overlays (mutual exclusivity)
           setIsPvOverlayVisible(true);
           setIsBrightnessOverlayVisible(false);
+          setIsFensterOverlayVisible(false);
 
           // Update the selection immediately with quantity 1
           if (option && category) {
@@ -209,6 +215,32 @@ export default function ConfiguratorShell({
           }
           return; // Exit early to avoid duplicate updateSelection call
         }
+      }
+
+      // Special handling for Fenster & Türen selection
+      if (categoryId === "fenster") {
+        // Show fenster overlay and hide other overlays
+        setIsFensterOverlayVisible(true);
+        setIsPvOverlayVisible(false);
+        setIsBrightnessOverlayVisible(false);
+      }
+
+      // Special handling for Belichtungspaket selection
+      if (categoryId === "belichtungspaket") {
+        // Show brightness overlay and hide other overlays
+        setIsBrightnessOverlayVisible(true);
+        setIsPvOverlayVisible(false);
+        setIsFensterOverlayVisible(false);
+      }
+
+      // Hide fenster overlay when switching to other sections (except fenster itself)
+      if (categoryId !== "fenster" && isFensterOverlayVisible) {
+        setIsFensterOverlayVisible(false);
+      }
+
+      // Hide brightness overlay when switching to other sections (except belichtungspaket)
+      if (categoryId !== "belichtungspaket" && isBrightnessOverlayVisible) {
+        setIsBrightnessOverlayVisible(false);
       }
 
       if (option && category) {
@@ -1243,6 +1275,7 @@ export default function ConfiguratorShell({
             isMobile={true}
             isPvOverlayVisible={isPvOverlayVisible}
             isBrightnessOverlayVisible={isBrightnessOverlayVisible}
+            isFensterOverlayVisible={isFensterOverlayVisible}
           />
         </div>
 
@@ -1275,6 +1308,7 @@ export default function ConfiguratorShell({
             isMobile={false}
             isPvOverlayVisible={isPvOverlayVisible}
             isBrightnessOverlayVisible={isBrightnessOverlayVisible}
+            isFensterOverlayVisible={isFensterOverlayVisible}
           />
         </div>
 

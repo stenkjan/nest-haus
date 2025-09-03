@@ -575,13 +575,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: 0, // Will be calculated dynamically
             description: '12% der Nestfläche\nGrundbeleuchtung'
           },
-          // PVC Fenster
+          // Holz Fenster (default)
           {
             category: 'fenster',
-            value: 'pvc_fenster',
-            name: 'PVC Fenster',
-            price: 280,
-            description: 'RAL 9016 - Kunststoff'
+            value: 'holz',
+            name: 'Holz',
+            price: 120,
+            description: 'Holzfenster Lärche'
           },
 
           // Planung Basis (default)

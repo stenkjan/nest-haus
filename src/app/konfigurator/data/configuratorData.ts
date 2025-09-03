@@ -239,19 +239,19 @@ export const configuratorData: CategoryData[] = [
         id: 'holz',
         name: 'Holz',
         description: 'Holzfenster Lärche',
-        price: { type: 'upgrade', amount: 400, monthly: 3 }
+        price: { type: 'upgrade', amount: 120, monthly: 1 }
       },
       {
         id: 'aluminium_schwarz',
         name: 'Aluminium Schwarz',
         description: 'RAL 9005 - Tiefschwarz\nbis 6000 x 3200 mm',
-        price: { type: 'upgrade', amount: 700, monthly: 4 }
+        price: { type: 'upgrade', amount: 420, monthly: 3 }
       },
       {
         id: 'aluminium_weiss',
         name: 'Aluminium Weiß',
         description: 'RAL 9016 - Weiß\nbis 6000 x 3200 mm',
-        price: { type: 'upgrade', amount: 700, monthly: 4 }
+        price: { type: 'upgrade', amount: 420, monthly: 3 }
       }
     ],
     infoBox: {
