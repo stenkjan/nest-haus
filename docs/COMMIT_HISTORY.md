@@ -4,6 +4,31 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bf254d0b599a289fb82321e02f39e70ac214d861] - Wed Sep 3 16:30:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'development'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+#### ⚙️ Backend Changes
+- scripts/README-DEV-SERVER.md
+- scripts/dev-with-ip.cmd
+- scripts/get-local-ip.js
+- scripts/start-dev.js
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
 ## [f1a3f06e4f92937f7b9873ea6e334069267121ab] - Wed Sep 3 16:03:14 2025 +0200
 
 **Author**: stenkjan
