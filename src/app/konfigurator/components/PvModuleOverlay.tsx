@@ -206,7 +206,7 @@ export default function PvModuleOverlay({
   // Position counter lower - at the height where the old PV overlay was positioned
   const counterTop = imageMetrics.imageTop + imageMetrics.imageHeight * 0.25; // Position 25% down from top of image (lower than before)
   const counterTopMobile =
-    imageMetrics.imageTop + imageMetrics.imageHeight * 0.3; // Position 30% down from top of image on mobile (lower than before)
+    imageMetrics.imageTop + imageMetrics.imageHeight * 0.25; // Position 25% down from top of image on mobile (5% higher than before)
 
   return (
     <div
@@ -230,10 +230,10 @@ export default function PvModuleOverlay({
       {/* Module count badge - only show for amounts above 4 modules */}
       {shouldShowCounter && (
         <>
-          {/* Desktop: Lower position within the image area */}
+          {/* Desktop: Lower position within the image area (above 770px) */}
           <div
             className="absolute bg-[#3D6DE1] text-white rounded-full flex items-center justify-center font-bold shadow-lg
-                       hidden md:flex z-20"
+                       hidden min-[770px]:flex z-20"
             style={{
               left: "50%",
               top: `${counterTop}px`, // Positioned lower than before (25% down from top of actual image)
@@ -249,13 +249,13 @@ export default function PvModuleOverlay({
             {/* Show additional modules beyond max (e.g., +1 for nest80 with 5 modules) */}
           </div>
 
-          {/* Mobile: Close to overlay, 5% right of center, at overlay height */}
+          {/* Mobile: Positioned more to the right and slightly higher (below 770px) */}
           <div
             className="absolute bg-[#3D6DE1] text-white rounded-full flex items-center justify-center font-bold shadow-lg
-                       md:hidden z-20"
+                       max-[769px]:flex min-[770px]:hidden z-20"
             style={{
-              left: "55%", // 5% right of center (50% + 5%)
-              top: `${counterTopMobile}px`, // Positioned lower than before (30% down from top of actual image)
+              left: "80%", // 30% right of center (50% + 30%)
+              top: `${counterTopMobile}px`, // Positioned 25% down from top of actual image (5% higher than before)
               width: `${counterSize.mobile}px`,
               height: `${counterSize.mobile}px`,
               fontSize: `${Math.round(8 * imageMetrics.scaleFactor)}px`, // Smaller font for mobile half-size
