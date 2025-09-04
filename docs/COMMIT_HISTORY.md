@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f12fcab44492ef6a7cc5819605f20797dd989884] - Thu Sep 4 15:37:29 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Implement 24-hour auto-abort for tests and enhance button click debugging  - Changed test auto-abort timeout from 30 minutes to 24 hours - Added try-catch for abandoned test updates to handle Prisma issues gracefully - Enhanced button click tracking debug logging:   * Added sessionId and isTrackingActive to debug output   * Added detailed API request/response logging   * Added warning when sessionId is missing - Updated both admin API route and export route with 24-hour timeout - Should help identify why button clicks aren't being captured properly  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/export/route.ts
+- src/app/api/admin/usability-tests/route.ts
+- src/components/testing/AlphaSessionTracker.tsx
+- src/hooks/useAlphaSessionTracking.ts
+
+
+---
+
 ## [d482ee4adf7d5ab58f2ca7baf2d7a17b256c8ac9] - Thu Sep 4 15:06:58 2025 +0200
 
 **Author**: stenkjan
