@@ -83,16 +83,16 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Kleide dich ein',
     options: [
       {
-        id: 'holzlattung',
-        name: 'Holzlattung Lärche Natur',
-        description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.',
-        price: { type: 'standard', amount: 9600, monthly: 50 } // Standard item with background price
-      },
-      {
         id: 'trapezblech',
         name: 'Trapezblech',
         description: 'RAL 9005 - 3000 x 1142 mm',
         price: { type: 'discount', amount: -9600, monthly: -50 } // Cheaper option vs standard
+      },
+      {
+        id: 'holzlattung',
+        name: 'Holzlattung Lärche Natur',
+        description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.',
+        price: { type: 'standard', amount: 9600, monthly: 50 } // Standard item with background price
       },
       {
         id: 'fassadenplatten_schwarz',
@@ -133,16 +133,16 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Der Charakter',
     options: [
       {
-        id: 'fichte',
-        name: 'Fichte',
-        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
-        price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
-      },
-      {
         id: 'kiefer',
         name: 'Kiefer',
         description: 'PEFC - Zertifiziert - Sicht 1,5 cm',
         price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
+      },
+      {
+        id: 'fichte',
+        name: 'Fichte',
+        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
+        price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
       },
       {
         id: 'steirische_eiche',
