@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [95e0275d38e6d5a71c843ac1d9c13c4fb18b3274] - Thu Sep 4 14:54:23 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance price calculation logic in CheckoutStepper  - Introduced a new function, getItemPrice, to streamline dynamic price calculations for various configuration items. - Implemented detailed price calculation logic for items such as belichtungspaket, stirnseite, and gebäudehülle, ensuring accurate pricing based on user selections. - Updated display logic to reflect calculated prices in the cart summary, improving the overall user experience and consistency in pricing information.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [f4573feb4e27823d0a754c6ce5e628da8fd68065] - Thu Sep 4 14:39:51 2025 +0200
 
 **Author**: stenkjan
