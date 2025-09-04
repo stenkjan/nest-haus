@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { SectionContainer } from "./SectionContainer";
-import { SectionHeader } from "./SectionHeader";
 import { Button } from "@/components/ui";
 
 interface GrundstueckCheckFormProps {
@@ -72,12 +71,15 @@ export function GrundstueckCheckForm({
       maxWidth={maxWidth}
       className={className}
     >
-      <SectionHeader
-        title="Dein Grundstück - Unser Check"
-        subtitle="Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt"
-        titleClassName="font-bold text-gray-900"
-        subtitleClassName="text-gray-600"
-      />
+      <div className="text-center mb-16">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+          Dein Grundstück - Unser Check
+        </h1>
+        <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner
+          Wahl passt
+        </h3>
+      </div>
 
       <div className="w-full px-[7.5%]">
         {/* Desktop Layout: Side by side with 500px width constraints */}
@@ -85,7 +87,7 @@ export function GrundstueckCheckForm({
           {/* Info Section - POSITIONED AT LEFT EDGE */}
           <div className="space-y-8 justify-self-start">
             <div>
-              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-4 mt-12">
+              <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-4 mt-12">
                 Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig,
                 dass dein Grundstück alle{" "}
                 <strong>rechtlichen und baulichen Anforderungen</strong>{" "}
@@ -93,7 +95,7 @@ export function GrundstueckCheckForm({
               </p>
               {/* Spacer to align with Name/Nachname form fields */}
               <div className="h-3"></div>
-              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-6">
+              <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-6">
                 <strong>Für nur € 200,-</strong> übernehmen wir für dich die
                 Prüfung der relevanten Rahmenbedingungen und Baugesetze, um dir{" "}
                 <strong>Sicherheit und Klarheit</strong> zu verschaffen. Jetzt
@@ -144,7 +146,7 @@ export function GrundstueckCheckForm({
           {/* Form Section - POSITIONED AT RIGHT EDGE */}
           <div className="space-y-6 justify-self-end">
             <form onSubmit={handleSubmit} className="space-y-4">
-              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-4">
+              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
                 Daten Bewerber
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -185,7 +187,7 @@ export function GrundstueckCheckForm({
                 />
               </div>
 
-              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-4">
+              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
                 Informationen zum Grundstück
               </h3>
               <div className="space-y-4 mb-6">
@@ -269,7 +271,7 @@ export function GrundstueckCheckForm({
                 </div>
               </div>
 
-              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-4">
+              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
                 Anmerkungen
               </h3>
               <textarea
@@ -294,13 +296,13 @@ export function GrundstueckCheckForm({
         <div className="lg:hidden space-y-8">
           {/* 1. Main text until "Planung deines Nest-Hauses starten kann" */}
           <div>
-            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-4">
+            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-4">
               Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig, dass
               dein Grundstück alle{" "}
               <strong>rechtlichen und baulichen Anforderungen</strong> erfüllt.
               Genau hier setzen wir an!
             </p>
-            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-6">
+            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-6">
               <strong>Für nur € 200,-</strong> übernehmen wir für dich die
               Prüfung der relevanten Rahmenbedingungen und Baugesetze, um dir{" "}
               <strong>Sicherheit und Klarheit</strong> zu verschaffen. Jetzt den{" "}
@@ -317,7 +319,7 @@ export function GrundstueckCheckForm({
           {/* 2. Form fields */}
           <div>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-4">
+              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
                 Daten Bewerber
               </h3>
               <div className="grid grid-cols-1 gap-4 mb-6">
@@ -358,7 +360,7 @@ export function GrundstueckCheckForm({
                 />
               </div>
 
-              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-4">
+              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
                 Informationen zum Grundstück
               </h3>
               <div className="space-y-4 mb-6">
@@ -433,7 +435,7 @@ export function GrundstueckCheckForm({
                 />
               </div>
 
-              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-4">
+              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
                 Anmerkungen
               </h3>
               <textarea

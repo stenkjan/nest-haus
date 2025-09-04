@@ -87,7 +87,7 @@ export default function StaticGlassCard({
 
               {/* Content */}
               <div className="relative z-10 p-8 md:p-12">
-                <p className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-white leading-relaxed text-center">
+                <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-white leading-relaxed text-center">
                   {cardContent}
                 </p>
               </div>

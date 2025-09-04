@@ -607,7 +607,11 @@ export default function PlanungspaketeCards({
           isLightboxMode &&
           typeof window !== "undefined" &&
           window.innerWidth < 768
-        ) && <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>}
+        ) && (
+          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+            {title}
+          </h1>
+        )}
         {subtitle && <p className="text-gray-600">{subtitle}</p>}
       </div>
 
@@ -673,12 +677,12 @@ export default function PlanungspaketeCards({
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
-                          <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
+                          <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl 2xl:text-2xl font-bold text-gray-900 mb-1">
                             {getCardText(card, "title")}
                           </h2>
-                          <h4 className="text-sm md:text-base lg:text-lg font-medium text-gray-700">
+                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-xl font-medium text-gray-700">
                             {getCardText(card, "subtitle") || card.grayWord}
-                          </h4>
+                          </h3>
                         </motion.div>
                       </div>
 
@@ -711,7 +715,7 @@ export default function PlanungspaketeCards({
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                     >
-                      <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line overflow-hidden">
+                      <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line overflow-hidden">
                         {getCardText(card, "description")}
                       </p>
                     </motion.div>
@@ -841,12 +845,12 @@ export default function PlanungspaketeCards({
                               duration: 0.6,
                             }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1">
+                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl 2xl:text-2xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
                             </h2>
-                            <h4 className="text-base md:text-lg lg:text-xl font-medium text-gray-700">
+                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-xl font-medium text-gray-700">
                               {getCardText(card, "subtitle") || card.grayWord}
-                            </h4>
+                            </h3>
                           </motion.div>
                         </div>
 
@@ -882,7 +886,7 @@ export default function PlanungspaketeCards({
                           duration: 0.6,
                         }}
                       >
-                        <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line">
+                        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                           {getCardText(card, "description")}
                         </p>
                       </motion.div>
@@ -900,7 +904,7 @@ export default function PlanungspaketeCards({
                           }}
                           className="h-full overflow-y-auto hide-scrollbar"
                         >
-                          <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line">
+                          <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                             {getCardText(card, "extendedDescription")}
                           </p>
                         </motion.div>

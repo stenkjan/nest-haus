@@ -11,11 +11,7 @@ import {
   ThreeByOneGrid,
 } from "@/components/grids";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
-import {
-  SectionHeader,
-  ButtonGroup,
-  MaterialShowcase,
-} from "@/components/sections";
+import { ButtonGroup, MaterialShowcase } from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
 import { PlanungspaketeCards } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
@@ -27,11 +23,6 @@ import Footer from "@/components/Footer";
 // Define sections with proper structure for unser-part
 const sections: SectionDefinition[] = [
   {
-    id: "hero",
-    title: "Hochpräzise Produktionsmethoden",
-    slug: "produktionsmethoden",
-  },
-  {
     id: "dein-nest-system",
     title: "Dein Nest System",
     slug: "nest-system",
@@ -40,11 +31,6 @@ const sections: SectionDefinition[] = [
     id: "groesse",
     title: "Manchmal kommt es auf die Größe an",
     slug: "groesse",
-  },
-  {
-    id: "raum-zum-traeumen",
-    title: "Raum zum Träumen",
-    slug: "raum-zum-traeumen",
   },
   {
     id: "materialien",
@@ -57,13 +43,8 @@ const sections: SectionDefinition[] = [
     slug: "fenster-tueren",
   },
   {
-    id: "moeglichkeiten",
-    title: "Wir liefern Möglichkeiten",
-    slug: "moeglichkeiten",
-  },
-  {
     id: "individualisierung",
-    title: "Du individualisierst dein NEST Haus",
+    title: "Raum zum Träumen",
     slug: "individualisierung",
   },
   {
@@ -96,7 +77,8 @@ const sections: SectionDefinition[] = [
 // Material data moved to shared constants for reusability
 
 export default function UnserPartClient() {
-  const [currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [currentSectionId, setCurrentSectionId] =
+    useState<string>("dein-nest-system");
 
   // Analytics tracking for content engagement
   const { trackButtonClick } = useContentAnalytics({
@@ -112,48 +94,14 @@ export default function UnserPartClient() {
       style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        {/* Hero Section - Hochpräzise Produktionsmethoden */}
-        <section id="hero" className="relative bg-white py-20 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center">
-              <SectionHeader
-                title="Hochpräzise Produktionsmethoden"
-                subtitle="Schaffen beste Qualität zu fairen Preisen."
-                titleSize="default"
-                maxWidth={false}
-                titleClassName="text-gray-900 font-bold"
-                subtitleClassName="text-gray-600 font-normal mb-0"
-              />
-
-              <ButtonGroup
-                buttons={[
-                  {
-                    text: "Unser Part",
-                    variant: "primary",
-                    size: "xs",
-                    onClick: () => trackButtonClick("Unser Part", "hero"),
-                  },
-                  {
-                    text: "Dein Part",
-                    variant: "secondary",
-                    size: "xs",
-                    link: "/dein-part",
-                    onClick: () => trackButtonClick("Dein Part", "hero"),
-                  },
-                ]}
-              />
-            </div>
-          </div>
-        </section>
-
         {/* Video Section - Dein Nest System */}
         <section id="dein-nest-system" className="bg-black pt-20 pb-8">
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-24">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-2 md:mb-3">
                 Dein Nest System
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300">
+              </h1>
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
                 Effizienz schafft.
               </h3>
@@ -214,18 +162,6 @@ export default function UnserPartClient() {
           </div>
         </section>
 
-        {/* FullWidthImageGrid - Raum zum Träumen */}
-        <section id="raum-zum-traeumen" className="pt-20 pb-8">
-          <FullWidthImageGrid
-            title="Raum zum Träumen"
-            subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
-            backgroundColor="black"
-            textBox1="<span class='text-gray-400'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> mit dem Nest System alles haben <span class='text-gray-400'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> maximale Freiheit ohne Kompromisse <span class='text-gray-400'>bietet. Durch</span> intelligente Standardisierung <span class='text-gray-400'>garantieren wir</span> höchste"
-            textBox2="Qualität, Langlebigkeit <span class='text-gray-400'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.</span>"
-            maxWidth={false}
-          />
-        </section>
-
         {/* MaterialShowcase Section - Optimized */}
         <MaterialShowcase
           backgroundColor="black"
@@ -279,101 +215,26 @@ export default function UnserPartClient() {
           </div>
         </section>
 
-        {/* Video Section - Wir liefern Möglichkeiten */}
-        <section id="moeglichkeiten" className="bg-black pt-20 pb-8">
-          <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-            <div className="text-center mb-24">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
-                Wir liefern Möglichkeiten
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300">
-                Wo Effizienz auf Architektur trifft - Nest
-              </h3>
-            </div>
-
-            <div className="flex justify-center">
-              <div className="w-full max-w-6xl rounded-lg overflow-hidden bg-gray-900">
-                <ClientBlobVideo
-                  path={IMAGES.function.nestHausModulSchemaIntro}
-                  className="w-full h-auto object-contain"
-                  autoPlay={true}
-                  loop={true}
-                  muted={true}
-                  playsInline={true}
-                  controls={false}
-                  enableCache={true}
-                />
-                {/* Accessibility description for screen readers */}
-                <span className="sr-only">
-                  Video demonstration of NEST-Haus modular construction system
-                  showing architectural components and assembly process in a
-                  continuous forward and reverse loop animation
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Single Image Section - Du individualisierst dein NEST Haus */}
-        <section id="individualisierung" className="bg-black pt-20 pb-20">
-          <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white mb-3">
-                Du individualisierst dein NEST Haus.
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300">
-                Weil nur du weißt, wie du richtig wohnst.
-              </h3>
-            </div>
-          </div>
-
-          {/* Image container with same sizing as video above */}
-          <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-            <div className="flex justify-center">
-              <div className="w-full max-w-6xl overflow-hidden">
-                <HybridBlobImage
-                  path={IMAGES.function.nestHausGrundrissSchema}
-                  alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
-                  width={1920}
-                  height={1011}
-                  className="w-full h-auto object-contain"
-                  sizes="(max-width: 768px) calc(100vw - 32px), (max-width: 1024px) calc(100vw - 64px), 1152px"
-                  quality={85}
-                  strategy="client"
-                  enableCache={true}
-                  isInteractive={true}
-                  isAboveFold={false}
-                  isCritical={false}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
-            {/* Button Combination - Navigation Links */}
-            <div className="flex gap-4 justify-center w-full mt-8">
-              <Link href="/dein-part">
-                <Button variant="primary" size="xs">
-                  Dein Part
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="secondary" size="xs">
-                  Jetzt bauen
-                </Button>
-              </Link>
-            </div>
-          </div>
+        {/* FullWidthImageGrid - Raum zum Träumen (moved to individualisierung) */}
+        <section id="individualisierung" className="pt-20 pb-8">
+          <FullWidthImageGrid
+            title="Raum zum Träumen"
+            subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
+            backgroundColor="black"
+            textBox1="<span class='text-gray-400'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> mit dem Nest System alles haben <span class='text-gray-400'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> maximale Freiheit ohne Kompromisse <span class='text-gray-400'>bietet. Durch</span> intelligente Standardisierung <span class='text-gray-400'>garantieren wir</span> höchste"
+            textBox2="Qualität, Langlebigkeit <span class='text-gray-400'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.</span>"
+            maxWidth={false}
+          />
         </section>
 
         {/* Grundstück Check Section */}
         <section id="grundstueck-check" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Dein Grundstück - Unser Check
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              </h1>
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
                 deiner Wahl passt.
               </h3>
@@ -394,10 +255,10 @@ export default function UnserPartClient() {
         <section id="planungspakete" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              </h1>
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
               </h3>
@@ -430,10 +291,10 @@ export default function UnserPartClient() {
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-medium text-gray-900 mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-medium text-gray-900 mb-2 md:mb-3">
                 Kein Plan? Kein Problem!
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              </h1>
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz
                 bequem telefonisch
               </h3>
@@ -445,22 +306,6 @@ export default function UnserPartClient() {
                 Termin vereinbaren
               </Button>
             </div>
-          </div>
-        </section>
-
-        {/* Video Gallery Section */}
-        <section id="video-gallery" className="w-full py-16 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <FullWidthVideoGrid
-              title="Die Vielfalt unserer Module"
-              subtitle="Entdecke die verschiedenen Konfigurationsmöglichkeiten und Modulkombinationen"
-              backgroundColor="white"
-              maxWidth={false}
-              video={IMAGES.variantvideo.nine}
-              autoPlay={true}
-              muted={true}
-              controls={false}
-            />
           </div>
         </section>
       </SectionRouter>

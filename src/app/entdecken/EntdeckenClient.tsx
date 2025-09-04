@@ -101,7 +101,7 @@ export default function EntdeckenClient() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Design für dich gemacht
               </h1>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                 Dein Design im Freistil
               </h3>
             </div>
@@ -132,7 +132,7 @@ export default function EntdeckenClient() {
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
                   Design für dich gemacht
                 </h1>
-                <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                   Dein Design im Freistil
                 </h3>
               </div>
@@ -144,7 +144,7 @@ export default function EntdeckenClient() {
                   <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                     Nest 80
                   </h2>
-                  <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-black">
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
                     75m² ab € 177.000
                   </h3>
                 </div>
@@ -154,7 +154,7 @@ export default function EntdeckenClient() {
                   <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                     Nest 120
                   </h2>
-                  <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-black">
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
                     115m² ab € 245.000
                   </h3>
                 </div>
@@ -164,7 +164,7 @@ export default function EntdeckenClient() {
                   <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                     Nest 160
                   </h2>
-                  <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-black">
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
                     155m² ab € 313.000
                   </h3>
                 </div>
@@ -200,7 +200,7 @@ export default function EntdeckenClient() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Dein Zuhause zieht um
               </h1>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
                 Architektur für ein bewegtes Leben.
               </h3>
             </div>
@@ -274,10 +274,10 @@ export default function EntdeckenClient() {
         <section id="square-text-cards" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 So läuft es ab
               </h1>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Der Weg zu deinem Nest Haus
               </h3>
             </div>
@@ -296,10 +296,10 @@ export default function EntdeckenClient() {
         <section id="grundstueck-check" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Konfiguriere dein Zuhause
               </h1>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
                 deiner Wahl passt.
               </h3>
@@ -320,10 +320,10 @@ export default function EntdeckenClient() {
         <section id="planungspakete" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
-              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
               </h3>
