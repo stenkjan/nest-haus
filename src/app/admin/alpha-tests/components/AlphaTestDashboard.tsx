@@ -273,10 +273,10 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
                     Count
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    % of Tests
+                    % of Category
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    % of Category
+                    % of Total Tests
                   </th>
                 </tr>
               </thead>
@@ -302,11 +302,13 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {testPercentage}%
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-50 text-gray-500">
+                          {categoryPercentage}%
+                        </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
-                          {categoryPercentage}%
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                          {testPercentage}%
                         </span>
                       </td>
                     </tr>

@@ -232,15 +232,20 @@ export default function Navbar() {
         <div
           className={`${isMobile ? "hidden" : "flex"} space-x-8 mx-auto px-6`}
         >
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              href={item.path}
-              className="text-black text-sm font-medium hover:opacity-80 transition-opacity leading-none"
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isActive = pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                className={`text-sm font-medium transition-all duration-200 leading-none ${
+                  isActive ? "text-gray-500" : "text-black hover:text-gray-500"
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Desktop Right Side Icons */}
@@ -249,7 +254,11 @@ export default function Navbar() {
         >
           <Link
             href="/konfigurator"
-            className="focus:outline-none text-black flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center"
+            className={`focus:outline-none flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center transition-all duration-200 ${
+              pathname === "/konfigurator"
+                ? "text-gray-500"
+                : "text-black hover:text-gray-500"
+            }`}
             aria-label="Konfigurator"
           >
             <svg
@@ -276,7 +285,11 @@ export default function Navbar() {
           {/* Shopping Cart Icon with Zustand integration */}
           <Link
             href="/warenkorb"
-            className="focus:outline-none relative text-black flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center"
+            className={`focus:outline-none relative flex items-center p-1.5 min-w-[44px] min-h-[44px] justify-center transition-all duration-200 ${
+              pathname === "/warenkorb"
+                ? "text-gray-500"
+                : "text-black hover:text-gray-500"
+            }`}
             aria-label={`Warenkorb - ${cartSummary}`}
             title={cartCount > 0 ? cartSummary : "Warenkorb leer"}
           >
@@ -296,7 +309,11 @@ export default function Navbar() {
               />
             </svg>
             {cartCount > 0 && (
-              <span className="absolute bottom-3 right-3 bg-black rounded-full w-2 h-2 flex items-center justify-center">
+              <span
+                className={`absolute bottom-3 right-3 rounded-full w-2 h-2 flex items-center justify-center ${
+                  pathname === "/warenkorb" ? "bg-yellow-500" : "bg-black"
+                }`}
+              >
                 <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
               </span>
             )}
@@ -335,21 +352,32 @@ export default function Navbar() {
       {mobileMenuOpen && isMobile && (
         <div className="absolute top-full left-0 right-0 bg-[#F4F4F4] border-b border-gray-200/50 shadow-lg">
           <div className="px-4 py-4 flex flex-col items-end space-y-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                href={item.path}
-                className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  className={`text-sm font-medium transition-all duration-200 py-2 ${
+                    isActive
+                      ? "text-gray-500"
+                      : "text-black hover:text-gray-500"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
 
             {/* Mobile Menu - Konfigurator Link */}
             <Link
               href="/konfigurator"
-              className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2 flex items-center gap-2"
+              className={`text-sm font-medium transition-all duration-200 py-2 flex items-center gap-2 ${
+                pathname === "/konfigurator"
+                  ? "text-gray-500"
+                  : "text-black hover:text-gray-500"
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <svg
@@ -377,7 +405,11 @@ export default function Navbar() {
             {/* Mobile Menu - Shopping Cart Link */}
             <Link
               href="/warenkorb"
-              className="text-black text-sm font-medium hover:opacity-80 transition-opacity py-2 flex items-center gap-2 relative"
+              className={`text-sm font-medium transition-all duration-200 py-2 flex items-center gap-2 relative ${
+                pathname === "/warenkorb"
+                  ? "text-gray-500"
+                  : "text-black hover:text-gray-500"
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <div className="relative">
@@ -397,7 +429,11 @@ export default function Navbar() {
                   />
                 </svg>
                 {cartCount > 0 && (
-                  <span className="absolute bottom-3 right-3 bg-black rounded-full w-2 h-2 flex items-center justify-center">
+                  <span
+                    className={`absolute bottom-3 right-3 rounded-full w-2 h-2 flex items-center justify-center ${
+                      pathname === "/warenkorb" ? "bg-yellow-500" : "bg-black"
+                    }`}
+                  >
                     <span className="w-0.5 h-0.5 bg-white rounded-full"></span>
                   </span>
                 )}
