@@ -338,8 +338,8 @@ export default function CheckoutStepper({
               const circleClass = isDone
                 ? "bg-blue-600 border-blue-600"
                 : isCurrent
-                ? "bg-white border-blue-600"
-                : "bg-white border-gray-300";
+                  ? "bg-white border-blue-600"
+                  : "bg-white border-gray-300";
               const dotInner = isDone ? (
                 <span className="w-2 h-2 bg-white rounded-full" />
               ) : null;
@@ -379,8 +379,8 @@ export default function CheckoutStepper({
                 const circleClass = isDone
                   ? "bg-blue-600 border-blue-600"
                   : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
+                    ? "bg-white border-blue-600"
+                    : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
                 ) : null;
@@ -417,8 +417,8 @@ export default function CheckoutStepper({
                 const circleClass = isDone
                   ? "bg-blue-600 border-blue-600"
                   : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
+                    ? "bg-white border-blue-600"
+                    : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
                 ) : null;
@@ -686,10 +686,15 @@ export default function CheckoutStepper({
     });
   }, []);
 
-  // Decide which configuration to use for images: prefer the cart's config item
+  // Decide which configuration to use for images: use live configurator state for real-time sync
   const sourceConfig = useMemo(() => {
-    return (configItem as ConfigurationCartItem | undefined) || undefined;
-  }, [configItem]);
+    // Use live configurator state to ensure images match current preview panel
+    return (
+      _configuration ||
+      (configItem as ConfigurationCartItem | undefined) ||
+      undefined
+    );
+  }, [_configuration, configItem]);
 
   // Determine interior availability based on actual selections in the source config
   const interiorActive = useMemo(() => {
@@ -768,8 +773,8 @@ export default function CheckoutStepper({
                               (item as ConfigurationCartItem).nest
                               ? (item as ConfigurationCartItem).nest?.price || 0
                               : "totalPrice" in item
-                              ? (item as ConfigurationCartItem).totalPrice
-                              : (item as CartItem).price
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price
                           )}
                         </div>
                         {(() => {
@@ -787,8 +792,8 @@ export default function CheckoutStepper({
                                 ? (item as ConfigurationCartItem).nest?.price ||
                                     0
                                 : "totalPrice" in item
-                                ? (item as ConfigurationCartItem).totalPrice
-                                : (item as CartItem).price
+                                  ? (item as ConfigurationCartItem).totalPrice
+                                  : (item as CartItem).price
                             )}{" "}
                             für 240 Monate
                           </div>
@@ -1054,8 +1059,8 @@ export default function CheckoutStepper({
                   const value = card.title.toLowerCase().includes("pro")
                     ? "pro"
                     : card.title.toLowerCase().includes("plus")
-                    ? "plus"
-                    : "basis";
+                      ? "plus"
+                      : "basis";
                   const isSelected = localSelectedPlan === value;
                   const isBasis = value === "basis";
                   const cardPriceNumber = parseEuro(card.price);
@@ -1275,10 +1280,10 @@ export default function CheckoutStepper({
                                           .includes("pro")
                                           ? "pro"
                                           : card.title
-                                              .toLowerCase()
-                                              .includes("plus")
-                                          ? "plus"
-                                          : "basis";
+                                                .toLowerCase()
+                                                .includes("plus")
+                                            ? "plus"
+                                            : "basis";
                                         return cardValue === localSelectedPlan;
                                       });
                                       return (
@@ -1357,10 +1362,10 @@ export default function CheckoutStepper({
                                         .includes("pro")
                                         ? "pro"
                                         : card.title
-                                            .toLowerCase()
-                                            .includes("plus")
-                                        ? "plus"
-                                        : "basis";
+                                              .toLowerCase()
+                                              .includes("plus")
+                                          ? "plus"
+                                          : "basis";
                                       return cardValue === localSelectedPlan;
                                     });
                                     if (pricingCard) {
@@ -1569,12 +1574,21 @@ export default function CheckoutStepper({
                 type="button"
                 onClick={() => {
                   // Mark purchase as completed for alpha test
-                  localStorage.setItem("nest-haus-test-purchase-completed", "true");
-                  console.log("🧪 Apple Pay clicked - marking purchase as completed");
-                  
+                  localStorage.setItem(
+                    "nest-haus-test-purchase-completed",
+                    "true"
+                  );
+                  console.log(
+                    "🧪 Apple Pay clicked - marking purchase as completed"
+                  );
+
                   // Dispatch event to trigger feedback popup
-                  window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));
-                  console.log("🧪 Dispatched alpha-test-purchase-completed event");
+                  window.dispatchEvent(
+                    new CustomEvent("alpha-test-purchase-completed")
+                  );
+                  console.log(
+                    "🧪 Dispatched alpha-test-purchase-completed event"
+                  );
                 }}
                 className="bg-black text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-gray-800 transition-colors"
               >
@@ -1584,13 +1598,22 @@ export default function CheckoutStepper({
                 type="button"
                 onClick={() => {
                   // Mark purchase as completed for alpha test
-                  localStorage.setItem("nest-haus-test-purchase-completed", "true");
-                  console.log("🧪 Zur Kassa clicked - marking purchase as completed");
-                  
+                  localStorage.setItem(
+                    "nest-haus-test-purchase-completed",
+                    "true"
+                  );
+                  console.log(
+                    "🧪 Zur Kassa clicked - marking purchase as completed"
+                  );
+
                   // Dispatch event to trigger feedback popup
-                  window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));
-                  console.log("🧪 Dispatched alpha-test-purchase-completed event");
-                  
+                  window.dispatchEvent(
+                    new CustomEvent("alpha-test-purchase-completed")
+                  );
+                  console.log(
+                    "🧪 Dispatched alpha-test-purchase-completed event"
+                  );
+
                   // Also call the original scroll function
                   if (onScrollToContact) {
                     onScrollToContact();
