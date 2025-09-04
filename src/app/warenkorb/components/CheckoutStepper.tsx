@@ -20,6 +20,9 @@ import type { ViewType } from "@/app/konfigurator/types/configurator.types";
 import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
 import { IMAGES } from "@/constants/images";
 import { Button } from "@/components/ui";
+import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
+import BrightnessOverlay from "@/app/konfigurator/components/BrightnessOverlay";
+import FensterOverlay from "@/app/konfigurator/components/FensterOverlay";
 
 interface CheckoutStepperProps {
   items: (CartItem | ConfigurationCartItem)[];
@@ -1065,6 +1068,57 @@ export default function CheckoutStepper({
                       quality={85}
                       priority={true}
                     />
+
+                    {/* PV Module Overlay - only show on exterior view when PV is selected */}
+                    {currentView === "exterior" &&
+                      sourceConfig?.pvanlage &&
+                      sourceConfig?.pvanlage?.quantity &&
+                      sourceConfig?.pvanlage?.quantity > 0 &&
+                      sourceConfig?.nest && (
+                        <PvModuleOverlay
+                          nestSize={
+                            sourceConfig.nest.value as
+                              | "nest80"
+                              | "nest100"
+                              | "nest120"
+                              | "nest140"
+                              | "nest160"
+                          }
+                          moduleCount={sourceConfig.pvanlage.quantity}
+                          isVisible={true} // Always show when PV is selected in warenkorb
+                          className="opacity-90"
+                        />
+                      )}
+
+                    {/* Brightness Overlay - only show on exterior view when belichtungspaket is selected */}
+                    {currentView === "exterior" &&
+                      sourceConfig?.belichtungspaket && (
+                        <BrightnessOverlay
+                          brightnessLevel={
+                            sourceConfig.belichtungspaket?.value as
+                              | "light"
+                              | "medium"
+                              | "bright"
+                          }
+                          isVisible={true} // Always show when belichtungspaket is selected in warenkorb
+                          className="opacity-90"
+                        />
+                      )}
+
+                    {/* Fenster Overlay - show on interior view when fenster is selected */}
+                    {currentView === "interior" && sourceConfig?.fenster && (
+                      <FensterOverlay
+                        fensterType={
+                          sourceConfig.fenster?.value as
+                            | "holz"
+                            | "pvc_fenster"
+                            | "aluminium_weiss"
+                            | "aluminium_schwarz"
+                        }
+                        isVisible={true} // Always show when fenster is selected in warenkorb
+                        className=""
+                      />
+                    )}
                     {galleryViews.length > 1 && (
                       <>
                         <button
