@@ -2,7 +2,9 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
+import { PriceCalculator } from "@/app/konfigurator/core/PriceCalculator";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
+import type { ConfigurationItem } from "@/store/configuratorStore";
 import { PLANNING_PACKAGES } from "@/constants/configurator";
 import { GrundstueckCheckForm } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";
@@ -166,6 +168,155 @@ export default function CheckoutStepper({
     return PriceUtils.formatPrice(monthlyPayment);
   };
 
+  // Enhanced item price calculation - same logic as konfigurator SummaryPanel
+  const getItemPrice = (
+    key: string,
+    selection: ConfigurationItem,
+    configuration: ConfigurationCartItem
+  ): number => {
+    // For quantity-based items, calculate based on quantity/squareMeters
+    if (key === "pvanlage") {
+      return (selection.quantity || 1) * (selection.price || 0);
+    }
+    if (key === "fenster") {
+      // Fenster price is already included in belichtungspaket calculation, so return 0
+      return 0;
+    }
+
+    // For belichtungspaket, calculate dynamic price
+    if (key === "belichtungspaket" && configuration?.nest) {
+      try {
+        // Ensure we have valid selection data
+        if (!selection.value || !configuration.nest.value) {
+          console.warn(
+            "Invalid belichtungspaket or nest data, using base price"
+          );
+          return selection.price || 0;
+        }
+
+        const selectionOption = {
+          category: key,
+          value: selection.value,
+          name: selection.name,
+          price: selection.price || 0,
+        };
+        return PriceCalculator.calculateBelichtungspaketPrice(
+          selectionOption,
+          configuration.nest,
+          configuration.fenster ?? undefined
+        );
+      } catch (error) {
+        console.error(
+          "Error calculating belichtungspaket price in summary:",
+          error
+        );
+        return selection.price || 0;
+      }
+    }
+
+    // For stirnseite, calculate dynamic price
+    if (key === "stirnseite" && selection.value !== "keine_verglasung") {
+      try {
+        const selectionOption = {
+          category: key,
+          value: selection.value,
+          name: selection.name,
+          price: selection.price || 0,
+        };
+        return PriceCalculator.calculateStirnseitePrice(
+          selectionOption,
+          configuration.fenster ?? undefined
+        );
+      } catch (error) {
+        console.error("Error calculating stirnseite price in summary:", error);
+        return selection.price || 0;
+      }
+    }
+
+    // For gebäudehülle, innenverkleidung, and fussboden, calculate dynamic price based on nest size
+    if (
+      (key === "gebaeudehuelle" ||
+        key === "innenverkleidung" ||
+        key === "fussboden") &&
+      configuration?.nest
+    ) {
+      try {
+        // Calculate the price difference for this specific option
+        const currentNestValue = configuration.nest.value;
+
+        // Use defaults for base calculation
+        const baseGebaeudehuelle = "trapezblech";
+        const baseInnenverkleidung = "kiefer";
+        const baseFussboden = "parkett";
+
+        // Calculate base combination price (all defaults)
+        const basePrice = PriceCalculator.calculateCombinationPrice(
+          currentNestValue,
+          baseGebaeudehuelle,
+          baseInnenverkleidung,
+          baseFussboden
+        );
+
+        // Calculate combination price with this specific option
+        let testGebaeudehuelle = baseGebaeudehuelle;
+        let testInnenverkleidung = baseInnenverkleidung;
+        let testFussboden = baseFussboden;
+
+        if (key === "gebaeudehuelle") testGebaeudehuelle = selection.value;
+        if (key === "innenverkleidung") testInnenverkleidung = selection.value;
+        if (key === "fussboden") testFussboden = selection.value;
+
+        const combinationPrice = PriceCalculator.calculateCombinationPrice(
+          currentNestValue,
+          testGebaeudehuelle,
+          testInnenverkleidung,
+          testFussboden
+        );
+
+        // Return the price difference (this option's contribution)
+        const optionPrice = combinationPrice - basePrice;
+        return Math.max(0, optionPrice); // Don't show negative prices in summary
+      } catch (error) {
+        console.error(`Error calculating ${key} price in summary:`, error);
+        return selection.price || 0;
+      }
+    }
+
+    // For all other items, use the base price
+    return selection.price || 0;
+  };
+
+  const isItemIncluded = (
+    key: string,
+    selection: ConfigurationItem,
+    configuration: ConfigurationCartItem
+  ): boolean => {
+    // Use the calculated price to determine if item is included
+    const calculatedPrice = getItemPrice(key, selection, configuration);
+    return calculatedPrice === 0;
+  };
+
+  // Helper function to get display name for belichtungspaket
+  const getBelichtungspaketDisplayName = (
+    belichtungspaket: ConfigurationItem,
+    fenster?: ConfigurationItem | null
+  ) => {
+    if (!belichtungspaket) return "";
+
+    const levelNames = {
+      light: "Light",
+      medium: "Medium",
+      bright: "Bright",
+    };
+
+    const levelName =
+      levelNames[belichtungspaket.value as keyof typeof levelNames] ||
+      belichtungspaket.name;
+    const fensterName = fenster?.name ? ` - ${fenster.name}` : " - PVC Fenster";
+
+    return `Beleuchtungspaket ${levelName}${fensterName}`;
+  };
+
   const getCategoryDisplayName = (category: string): string => {
     const categoryNames: Record<string, string> = {
       nest: "Nest",
@@ -228,30 +379,44 @@ export default function CheckoutStepper({
             "fussboden",
             "pvanlage",
             "fenster",
+            "belichtungspaket",
+            "stirnseite",
           ].includes(key)
         ) {
-          let displayName = selection.name;
-          let displayPrice = selection.price || 0;
+          // Use the same price calculation logic as konfigurator
+          const calculatedPrice = getItemPrice(
+            key,
+            selection,
+            item as ConfigurationCartItem
+          );
+          const isIncluded = isItemIncluded(
+            key,
+            selection,
+            item as ConfigurationCartItem
+          );
 
-          if (key === "fenster" && selection.squareMeters) {
+          let displayName = selection.name;
+
+          // Special display name handling
+          if (key === "belichtungspaket") {
+            displayName = getBelichtungspaketDisplayName(
+              selection,
+              (item as ConfigurationCartItem).fenster ?? null
+            );
+          } else if (key === "fenster" && selection.squareMeters) {
             displayName = `${selection.name} (${selection.squareMeters}m²)`;
-            displayPrice =
-              (selection.squareMeters || 1) * (selection.price || 0);
           } else if (
             key === "pvanlage" &&
             selection.quantity &&
             selection.quantity > 1
           ) {
             displayName = `${selection.name} (${selection.quantity}x)`;
-            displayPrice = (selection.quantity || 1) * (selection.price || 0);
           }
-
-          const isIncluded = displayPrice === 0;
 
           details.push({
             label: getCategoryDisplayName(key),
             value: displayName,
-            price: isIncluded ? 0 : displayPrice,
+            price: isIncluded ? 0 : calculatedPrice,
             isIncluded,
             category: key,
             isBottomItem: false,
@@ -260,7 +425,8 @@ export default function CheckoutStepper({
       });
 
       bottomItems.forEach(([key, selection]) => {
-        if (key === "planungspaket" || key === "grundstueckscheck") {
+        // Only show planungspaket in overview cart summary, exclude grundstueckscheck
+        if (key === "planungspaket") {
           const displayName = selection.name;
           const displayPrice = selection.price || 0;
           const isIncluded = displayPrice === 0;
