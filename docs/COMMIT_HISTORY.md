@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3086f0a6f22751c26d8e313ecd347641516a2142] - Thu Sep 4 14:19:28 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: reorder options in configuratorData for consistency  - Moved the 'Holzlattung Lärche Natur' and 'Fichte' options to maintain a consistent order in the options array. - This change aims to enhance readability and organization within the configurator data structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [556dd9064fa5825029b70a9496dc0cbe4e89ab35] - Thu Sep 4 14:07:16 2025 +0200
 
 **Author**: stenkjan
