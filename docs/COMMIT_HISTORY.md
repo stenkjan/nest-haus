@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a4994e4a8fbfa9be16efc69d34b7aba227d49712] - Thu Sep 4 13:58:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: adjust spacing in ConfiguratorShell and simplify FactsBox layout  - Updated padding and spacing in ConfiguratorShell to enhance visual consistency and responsiveness. - Simplified the layout of FactsBox by removing unnecessary padding, improving component clarity. - These changes aim to improve the overall user interface and maintain a clean design across components.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/FactsBox.tsx
+
+
+---
+
 ## [bf254d0b599a289fb82321e02f39e70ac214d861] - Wed Sep 3 16:30:02 2025 +0200
 
 **Author**: stenkjan
