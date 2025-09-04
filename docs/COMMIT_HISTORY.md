@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f4573feb4e27823d0a754c6ce5e628da8fd68065] - Thu Sep 4 14:39:51 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: improve code readability and image configuration logic in CheckoutStepper  - Adjusted indentation for better readability in conditional class assignments. - Updated image configuration logic to prioritize live configurator state for real-time synchronization, ensuring images match the current preview panel. - These changes aim to enhance code clarity and maintain a consistent user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [3086f0a6f22751c26d8e313ecd347641516a2142] - Thu Sep 4 14:19:28 2025 +0200
 
 **Author**: stenkjan
