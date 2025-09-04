@@ -1101,7 +1101,7 @@ export default function ConfiguratorShell({
 
   // Render selection content
   const SelectionContent = () => (
-    <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(1.25rem,2.5vh,1.75rem)]">
+    <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(2.75rem,5vh,3.75rem)]">
       {configuratorData.map((category) => (
         <CategorySection
           key={category.id}

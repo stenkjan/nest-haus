@@ -21,7 +21,7 @@ export default function FactsBox({
   className = '' 
 }: FactsBoxProps) {
   return (
-    <div className={`box_facts mt-4 rounded-[19px] px-6 py-4 ${className}`}>
+    <div className={`box_facts mt-4 rounded-[19px] px-6 ${className}`}>
       <p className="font-medium text-[16px] tracking-[0.02em] leading-tight mb-3 text-black">
         {title}
       </p>
