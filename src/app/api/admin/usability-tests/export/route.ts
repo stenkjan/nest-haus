@@ -17,12 +17,12 @@ export async function GET(request: NextRequest) {
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
 
-        // Update abandoned tests (30 minutes timeout)
-        const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+        // Update abandoned tests (24 hours timeout)
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
         await prisma.usabilityTest.updateMany({
             where: {
                 status: 'IN_PROGRESS',
-                startedAt: { lt: thirtyMinutesAgo }
+                startedAt: { lt: twentyFourHoursAgo }
             },
             data: {
                 status: 'ABANDONED',

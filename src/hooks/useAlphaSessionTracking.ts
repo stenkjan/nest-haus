@@ -115,6 +115,13 @@ export function useAlphaSessionTracking(): AlphaSessionTrackingHook {
 
             // Send to API endpoint
             if (sessionId) {
+                console.log("🖱️ Sending button click to API:", {
+                    testId: sessionId,
+                    eventType: "button_click",
+                    buttonText: event.buttonText,
+                    path: event.path
+                });
+                
                 fetch("/api/usability-test/track-session", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -124,9 +131,16 @@ export function useAlphaSessionTracking(): AlphaSessionTrackingHook {
                         data: event,
                         timestamp: event.timestamp,
                     }),
+                }).then(response => {
+                    console.log("🖱️ Button click API response:", response.status, response.statusText);
+                    return response.json();
+                }).then(data => {
+                    console.log("🖱️ Button click API data:", data);
                 }).catch((error) => {
                     console.warn("Failed to send button click to API:", error);
                 });
+            } else {
+                console.warn("🖱️ No sessionId available for button click tracking");
             }
         },
         [isTrackingActive, sessionId]

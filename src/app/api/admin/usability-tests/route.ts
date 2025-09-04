@@ -411,22 +411,27 @@ export async function GET(request: NextRequest) {
         console.log(`📊 Generating usability test analytics for ${timeRange}`);
         console.log(`📊 Date range: ${startDate.toISOString()} to ${new Date().toISOString()}`);
 
-        // Update abandoned tests (30 minutes timeout) - TEMPORARILY DISABLED DUE TO PRISMA updateMany ISSUE
-        // const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
-        // const abandonedCount = await prisma.usabilityTest.updateMany({
-        //     where: {
-        //         status: 'IN_PROGRESS',
-        //         startedAt: { lt: thirtyMinutesAgo }
-        //     },
-        //     data: {
-        //         status: 'ABANDONED',
-        //         updatedAt: new Date()
-        //     }
-        // });
+        // Update abandoned tests (24 hours timeout)
+        try {
+            const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            const abandonedCount = await prisma.usabilityTest.updateMany({
+                where: {
+                    status: 'IN_PROGRESS',
+                    startedAt: { lt: twentyFourHoursAgo }
+                },
+                data: {
+                    status: 'ABANDONED',
+                    updatedAt: new Date()
+                }
+            });
 
-        // if (abandonedCount.count > 0) {
-        //     console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (30+ minutes inactive)`);
-        // }
+            if (abandonedCount.count > 0) {
+                console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (24+ hours inactive)`);
+            }
+        } catch (abandonedUpdateError) {
+            console.warn('⚠️ Failed to update abandoned tests:', abandonedUpdateError);
+            // Continue with the rest of the function
+        }
 
         // Get all tests in range - with error handling for Prisma deployment issues
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

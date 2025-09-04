@@ -147,14 +147,16 @@ export default function AlphaSessionTracker() {
           y: event.clientY,
         };
 
-        console.log("🖱️ Tracking button click:", {
-          buttonText,
-          buttonId,
-          elementType,
-          path: window.location.pathname,
-        });
+               console.log("🖱️ Tracking button click:", {
+         buttonText,
+         buttonId,
+         elementType,
+         path: window.location.pathname,
+         isTrackingActive,
+         sessionId: localStorage.getItem("nest-haus-test-session-id")
+       });
 
-        trackButtonClick(buttonText, buttonId, elementType, coordinates);
+       trackButtonClick(buttonText, buttonId, elementType, coordinates);
       }
     };
 
