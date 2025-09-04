@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1cffa21983ad859a5f55f6b87a8040292d28d801] - Thu Sep 4 16:24:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update AlphaTestDashboard and Navbar for improved clarity and responsiveness  - Renamed table headers in AlphaTestDashboard for better accuracy: changed "% of Tests" to "% of Category" and "% of Category" to "% of Total Tests". - Enhanced Navbar component to highlight active links with improved styling and transitions for better user experience. - Updated class names for link elements to reflect active states, ensuring consistent visual feedback across both mobile and desktop views.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+- src/components/layout/Navbar.tsx
+
+
+---
+
 ## [f12fcab44492ef6a7cc5819605f20797dd989884] - Thu Sep 4 15:37:29 2025 +0200
 
 **Author**: stenkjan
