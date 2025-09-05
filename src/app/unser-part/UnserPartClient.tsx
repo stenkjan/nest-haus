@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
-  FullWidthVideoGrid,
   ThreeByOneGrid,
 } from "@/components/grids";
-import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
-import { ButtonGroup, MaterialShowcase } from "@/components/sections";
+import { ClientBlobVideo } from "@/components/images";
+import { MaterialShowcase } from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
 import { PlanungspaketeCards } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
@@ -81,7 +79,7 @@ export default function UnserPartClient() {
     useState<string>("dein-nest-system");
 
   // Analytics tracking for content engagement
-  const { trackButtonClick } = useContentAnalytics({
+  const { trackButtonClick: _trackButtonClick } = useContentAnalytics({
     pageType: "content",
     sections,
     currentSectionId,

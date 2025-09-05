@@ -272,7 +272,7 @@ export default function SquareTextCard({
   }, [isClient, screenWidth, cardData, cardHeights, cardWidth]);
 
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
-  const maxScroll = -(maxIndex * (cardWidth + gap));
+  const _maxScroll = -(maxIndex * (cardWidth + gap));
 
   // Navigation logic - Center active card
   const navigateCard = useCallback(
