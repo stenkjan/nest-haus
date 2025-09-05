@@ -801,6 +801,133 @@ export default function AlphaTestDashboard() {
         (el as HTMLElement).style.display = 'none';
       });
 
+      // Function to convert oklch colors to rgb for html2canvas compatibility
+      const convertOklchColors = (element: HTMLElement) => {
+        const walker = document.createTreeWalker(
+          element,
+          NodeFilter.SHOW_ELEMENT,
+          null
+        );
+
+        const elementsToFix: HTMLElement[] = [];
+        let node = walker.nextNode();
+        while (node) {
+          elementsToFix.push(node as HTMLElement);
+          node = walker.nextNode();
+        }
+
+        // Add the root element too
+        elementsToFix.push(element);
+
+        const originalStyles: Array<{ element: HTMLElement; property: string; value: string }> = [];
+
+        elementsToFix.forEach(el => {
+          const computedStyle = window.getComputedStyle(el);
+          const stylesToCheck = [
+            'color', 'backgroundColor', 'borderColor', 'borderTopColor', 
+            'borderRightColor', 'borderBottomColor', 'borderLeftColor',
+            'boxShadow', 'textShadow', 'fill', 'stroke'
+          ];
+
+          stylesToCheck.forEach(property => {
+            const value = computedStyle.getPropertyValue(property);
+            if (value && value.includes('oklch')) {
+              // Store original value
+              originalStyles.push({ 
+                element: el, 
+                property, 
+                value: el.style.getPropertyValue(property) || ''
+              });
+
+              // Convert oklch to a fallback color
+              let fallbackColor = value;
+              
+              // Common oklch color mappings to rgb equivalents
+              const oklchToRgb: Record<string, string> = {
+                'oklch(0.627 0.257 262.1)': 'rgb(59, 130, 246)', // blue-500
+                'oklch(0.599 0.292 262.1)': 'rgb(37, 99, 235)', // blue-600
+                'oklch(0.570 0.326 262.1)': 'rgb(29, 78, 216)', // blue-700
+                'oklch(0.548 0.17 252.89)': 'rgb(71, 85, 105)', // slate-600
+                'oklch(0.478 0.13 252.89)': 'rgb(51, 65, 85)', // slate-700
+                'oklch(0.972 0.013 106.75)': 'rgb(248, 250, 252)', // slate-50
+                'oklch(0.961 0.013 106.75)': 'rgb(241, 245, 249)', // slate-100
+                'oklch(0.943 0.013 106.75)': 'rgb(226, 232, 240)', // slate-200
+                'oklch(0.924 0.014 106.75)': 'rgb(203, 213, 225)', // slate-300
+                'oklch(0.883 0.015 106.75)': 'rgb(148, 163, 184)', // slate-400
+                'oklch(0.835 0.017 106.75)': 'rgb(100, 116, 139)', // slate-500
+                'oklch(0.648 0.26 142.5)': 'rgb(34, 197, 94)', // green-500
+                'oklch(0.599 0.292 142.5)': 'rgb(22, 163, 74)', // green-600
+                'oklch(0.550 0.326 142.5)': 'rgb(21, 128, 61)', // green-700
+                'oklch(0.705 0.292 27.33)': 'rgb(239, 68, 68)', // red-500
+                'oklch(0.643 0.326 27.33)': 'rgb(220, 38, 38)', // red-600
+                'oklch(0.581 0.359 27.33)': 'rgb(185, 28, 28)', // red-700
+              };
+
+              // Try to find exact match first
+              if (oklchToRgb[value]) {
+                fallbackColor = oklchToRgb[value];
+              } else {
+                // Extract oklch values and convert to approximate rgb
+                const oklchMatch = value.match(/oklch\(([^)]+)\)/);
+                if (oklchMatch) {
+                  const [l, c, h] = oklchMatch[1].split(' ').map(v => parseFloat(v));
+                  
+                  // Simple approximation - convert to hsl then rgb
+                  const lightness = Math.round(l * 100);
+                  const saturation = Math.round(Math.min(c * 100, 100));
+                  const hue = Math.round(h || 0);
+                  
+                  fallbackColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                }
+              }
+
+              // Apply the fallback color
+              el.style.setProperty(property, fallbackColor, 'important');
+            }
+          });
+        });
+
+        return originalStyles;
+      };
+
+      // Add temporary CSS to override oklch colors
+      const tempStyleSheet = document.createElement('style');
+      tempStyleSheet.textContent = `
+        /* Override oklch colors with rgb equivalents for html2canvas */
+        #admin-dashboard-content * {
+          --tw-text-opacity: 1 !important;
+          --tw-bg-opacity: 1 !important;
+          --tw-border-opacity: 1 !important;
+        }
+        
+        /* Force common Tailwind colors to use rgb */
+        .text-blue-600, .bg-blue-600, .border-blue-600 { color: rgb(37, 99, 235) !important; background-color: rgb(37, 99, 235) !important; border-color: rgb(37, 99, 235) !important; }
+        .text-blue-500, .bg-blue-500, .border-blue-500 { color: rgb(59, 130, 246) !important; background-color: rgb(59, 130, 246) !important; border-color: rgb(59, 130, 246) !important; }
+        .text-blue-700, .bg-blue-700, .border-blue-700 { color: rgb(29, 78, 216) !important; background-color: rgb(29, 78, 216) !important; border-color: rgb(29, 78, 216) !important; }
+        .text-slate-600, .bg-slate-600, .border-slate-600 { color: rgb(71, 85, 105) !important; background-color: rgb(71, 85, 105) !important; border-color: rgb(71, 85, 105) !important; }
+        .text-slate-700, .bg-slate-700, .border-slate-700 { color: rgb(51, 65, 85) !important; background-color: rgb(51, 65, 85) !important; border-color: rgb(51, 65, 85) !important; }
+        .text-slate-500, .bg-slate-500, .border-slate-500 { color: rgb(100, 116, 139) !important; background-color: rgb(100, 116, 139) !important; border-color: rgb(100, 116, 139) !important; }
+        .text-gray-500, .bg-gray-500, .border-gray-500 { color: rgb(107, 114, 128) !important; background-color: rgb(107, 114, 128) !important; border-color: rgb(107, 114, 128) !important; }
+        .text-gray-600, .bg-gray-600, .border-gray-600 { color: rgb(75, 85, 99) !important; background-color: rgb(75, 85, 99) !important; border-color: rgb(75, 85, 99) !important; }
+        .text-gray-700, .bg-gray-700, .border-gray-700 { color: rgb(55, 65, 81) !important; background-color: rgb(55, 65, 81) !important; border-color: rgb(55, 65, 81) !important; }
+        .text-green-500, .bg-green-500, .border-green-500 { color: rgb(34, 197, 94) !important; background-color: rgb(34, 197, 94) !important; border-color: rgb(34, 197, 94) !important; }
+        .text-green-600, .bg-green-600, .border-green-600 { color: rgb(22, 163, 74) !important; background-color: rgb(22, 163, 74) !important; border-color: rgb(22, 163, 74) !important; }
+        .text-red-500, .bg-red-500, .border-red-500 { color: rgb(239, 68, 68) !important; background-color: rgb(239, 68, 68) !important; border-color: rgb(239, 68, 68) !important; }
+        .text-red-600, .bg-red-600, .border-red-600 { color: rgb(220, 38, 38) !important; background-color: rgb(220, 38, 38) !important; border-color: rgb(220, 38, 38) !important; }
+        .bg-white { background-color: rgb(255, 255, 255) !important; }
+        .bg-gray-50 { background-color: rgb(249, 250, 251) !important; }
+        .bg-gray-100 { background-color: rgb(243, 244, 246) !important; }
+        .bg-gray-200 { background-color: rgb(229, 231, 235) !important; }
+        .text-white { color: rgb(255, 255, 255) !important; }
+        .text-black { color: rgb(0, 0, 0) !important; }
+        .text-gray-900 { color: rgb(17, 24, 39) !important; }
+        .text-gray-800 { color: rgb(31, 41, 55) !important; }
+      `;
+      document.head.appendChild(tempStyleSheet);
+
+      // Convert oklch colors before rendering
+      const originalColorStyles = convertOklchColors(dashboardElement);
+
       // Temporarily adjust styles for better PDF rendering
       const originalStyles = dashboardElement.style.cssText;
       dashboardElement.style.cssText += `
@@ -843,10 +970,24 @@ export default function AlphaTestDashboard() {
       // Restore original styles
       dashboardElement.style.cssText = originalStyles;
 
+      // Restore original color styles
+      originalColorStyles.forEach(({ element, property, value }) => {
+        if (value) {
+          element.style.setProperty(property, value);
+        } else {
+          element.style.removeProperty(property);
+        }
+      });
+
       // Restore hidden elements
       elementsToHide.forEach(el => {
         (el as HTMLElement).style.display = '';
       });
+
+      // Remove temporary stylesheet
+      if (tempStyleSheet.parentNode) {
+        tempStyleSheet.parentNode.removeChild(tempStyleSheet);
+      }
 
       const imgData = canvas.toDataURL('image/png');
       
@@ -919,7 +1060,21 @@ export default function AlphaTestDashboard() {
       console.log("✅ PDF exported successfully with styling preserved");
     } catch (error) {
       console.error("Error exporting to PDF:", error);
-      alert("Failed to export PDF. Please try again.");
+      
+      // Clean up temporary stylesheet in case of error
+      const tempStyleSheets = document.querySelectorAll('style');
+      tempStyleSheets.forEach(sheet => {
+        if (sheet.textContent?.includes('Override oklch colors')) {
+          sheet.remove();
+        }
+      });
+      
+      // Check if it's the oklch color error and provide specific guidance
+      if (error instanceof Error && error.message.includes('oklch')) {
+        alert("PDF export failed due to unsupported color format. This is a known issue with modern CSS colors. Please try using the Excel export instead, or contact support for assistance.");
+      } else {
+        alert("Failed to export PDF. Please try again or use the Excel export option.");
+      }
     } finally {
       setExportingPDF(false);
     }
