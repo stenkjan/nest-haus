@@ -188,7 +188,7 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
     clickedPages: clickedPages.length,
     sectionTimeData: sectionTimeData.length,
     pageTimeDataSample: pageTimeData.slice(0, 2),
-    clickedPagesSample: clickedPages.slice(0, 2)
+    clickedPagesSample: clickedPages.slice(0, 2),
   });
 
   const formatTime = (ms: number) => {
@@ -201,10 +201,14 @@ function ConfigurationAnalytics({ analytics }: ConfigurationAnalyticsProps) {
   };
 
   // Calculate category totals for percentage calculation
-  const categoryTotals = configSelections.reduce((acc, selection) => {
-    acc[selection.category] = (acc[selection.category] || 0) + selection.count;
-    return acc;
-  }, {} as Record<string, number>);
+  const categoryTotals = configSelections.reduce(
+    (acc, selection) => {
+      acc[selection.category] =
+        (acc[selection.category] || 0) + selection.count;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
 
   const renderExpandableBox = <T,>(
     title: string,
@@ -442,99 +446,180 @@ export default function AlphaTestDashboard() {
   const [resetSuccess, setResetSuccess] = useState<string | null>(null);
   const [_selectedTest, setSelectedTest] = useState<string | null>(null);
   const [testDetails, setTestDetails] = useState<TestDetails | null>(null);
-  const [exportingPDF, setExportingPDF] = useState(false);
   const [showTestModal, setShowTestModal] = useState(false);
   const [isQuestionRatingsExpanded, setIsQuestionRatingsExpanded] =
     useState(false);
-  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(
+    new Set()
+  );
 
   // Helper function to extract key findings from responses
-  const extractKeyFindings = (responses: Array<Record<string, unknown>>): string[] => {
+  const extractKeyFindings = (
+    responses: Array<Record<string, unknown>>
+  ): string[] => {
     const allText = responses
-      .map(r => String(r.value || '').trim())
-      .filter(text => text.length > 2)
-      .join(' ');
-    
+      .map((r) => String(r.value || "").trim())
+      .filter((text) => text.length > 2)
+      .join(" ");
+
     if (!allText) return [];
-    
+
     // Simple keyword extraction - split by common separators and get frequent words
     const words = allText
       .toLowerCase()
-      .replace(/[.,!?;()]/g, ' ')
+      .replace(/[.,!?;()]/g, " ")
       .split(/\s+/)
-      .filter(word => word.length > 3)
-      .filter(word => !['dass', 'eine', 'sind', 'haben', 'kann', 'wird', 'auch', 'sehr', 'mehr', 'aber', 'oder', 'und', 'der', 'die', 'das', 'ein', 'ist', 'für', 'mit', 'auf', 'von', 'zu', 'im', 'es', 'sich', 'nicht', 'war', 'bei', 'ich', 'sie', 'er', 'wir', 'ihr'].includes(word));
-    
+      .filter((word) => word.length > 3)
+      .filter(
+        (word) =>
+          ![
+            "dass",
+            "eine",
+            "sind",
+            "haben",
+            "kann",
+            "wird",
+            "auch",
+            "sehr",
+            "mehr",
+            "aber",
+            "oder",
+            "und",
+            "der",
+            "die",
+            "das",
+            "ein",
+            "ist",
+            "für",
+            "mit",
+            "auf",
+            "von",
+            "zu",
+            "im",
+            "es",
+            "sich",
+            "nicht",
+            "war",
+            "bei",
+            "ich",
+            "sie",
+            "er",
+            "wir",
+            "ihr",
+          ].includes(word)
+      );
+
     // Count word frequency
     const wordCount = words.reduce((acc: Record<string, number>, word) => {
       acc[word] = (acc[word] || 0) + 1;
       return acc;
     }, {});
-    
+
     // Return top 5-6 most frequent words
     return Object.entries(wordCount)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 6)
       .map(([word]) => word);
   };
 
   // Helper function to generate summary
-  const generateSummary = (responses: Array<Record<string, unknown>>): string => {
+  const generateSummary = (
+    responses: Array<Record<string, unknown>>
+  ): string => {
     const validResponses = responses
-      .map(r => String(r.value || '').trim())
-      .filter(text => text.length > 5);
-    
-    if (validResponses.length === 0) return 'Keine Antworten verfügbar';
+      .map((r) => String(r.value || "").trim())
+      .filter((text) => text.length > 5);
+
+    if (validResponses.length === 0) return "Keine Antworten verfügbar";
     if (validResponses.length === 1) return validResponses[0];
-    
+
     // For multiple responses, create a simple summary
     const commonThemes = extractKeyFindings(responses);
-    const avgLength = Math.round(validResponses.reduce((sum, text) => sum + text.length, 0) / validResponses.length);
-    
-    return `${validResponses.length} Antworten mit durchschnittlich ${avgLength} Zeichen. Häufige Themen: ${commonThemes.slice(0, 3).join(', ')}.`;
+    const avgLength = Math.round(
+      validResponses.reduce((sum, text) => sum + text.length, 0) /
+        validResponses.length
+    );
+
+    return `${validResponses.length} Antworten mit durchschnittlich ${avgLength} Zeichen. Häufige Themen: ${commonThemes.slice(0, 3).join(", ")}.`;
   };
 
   // Helper function to detect tendency with context awareness
-  const detectTendency = (questionText: string, responses: Array<Record<string, unknown>>): { tendency: string; explanation: string; percentage: number } => {
+  const detectTendency = (
+    questionText: string,
+    responses: Array<Record<string, unknown>>
+  ): { tendency: string; explanation: string; percentage: number } => {
     const validResponses = responses
-      .map(r => String(r.value || '').trim().toLowerCase())
-      .filter(text => text.length > 1);
-    
-    if (validResponses.length === 0) return { tendency: 'Neutral', explanation: 'Keine Antworten verfügbar', percentage: 0 };
-    
+      .map((r) =>
+        String(r.value || "")
+          .trim()
+          .toLowerCase()
+      )
+      .filter((text) => text.length > 1);
+
+    if (validResponses.length === 0)
+      return {
+        tendency: "Neutral",
+        explanation: "Keine Antworten verfügbar",
+        percentage: 0,
+      };
+
     // Analyze question type and context
     const questionLower = questionText.toLowerCase();
-    
+
     // Question type detection
-    const isWhatMissingQuestion = questionLower.includes('vermisst') || questionLower.includes('zusätzlich') || questionLower.includes('genauer beschrieben');
-    const isProblemsQuestion = questionLower.includes('problem') || questionLower.includes('herausforderung') || questionLower.includes('schwierig');
-    const isConfusingQuestion = questionLower.includes('irritiert') || questionLower.includes('verunsichert') || questionLower.includes('verwirrend');
-    const isUnclearQuestion = questionLower.includes('unklar') || questionLower.includes('fragezeichen');
-    const isDisplayQuestion = questionLower.includes('darstellung') || questionLower.includes('erkennbar') || questionLower.includes('lade-problem');
-    
+    const isWhatMissingQuestion =
+      questionLower.includes("vermisst") ||
+      questionLower.includes("zusätzlich") ||
+      questionLower.includes("genauer beschrieben");
+    const isProblemsQuestion =
+      questionLower.includes("problem") ||
+      questionLower.includes("herausforderung") ||
+      questionLower.includes("schwierig");
+    const isConfusingQuestion =
+      questionLower.includes("irritiert") ||
+      questionLower.includes("verunsichert") ||
+      questionLower.includes("verwirrend");
+    const isUnclearQuestion =
+      questionLower.includes("unklar") ||
+      questionLower.includes("fragezeichen");
+    const isDisplayQuestion =
+      questionLower.includes("darstellung") ||
+      questionLower.includes("erkennbar") ||
+      questionLower.includes("lade-problem");
+
     let positiveCount = 0;
     let negativeCount = 0;
     let neutralCount = 0;
-    
-    validResponses.forEach(response => {
+
+    validResponses.forEach((response) => {
       const responseText = response.trim();
-      
+
       // Context-aware analysis based on question type
       if (isWhatMissingQuestion) {
         // For "What's missing?" questions: "nothing/little" = positive, specific requests = negative
-        if (responseText.match(/^(nichts|nein|wenig|alles klar|passt|ok|gut so)$/i) || 
-            responseText.match(/^(nix|nope|-)$/i) ||
-            responseText.length < 10) {
+        if (
+          responseText.match(
+            /^(nichts|nein|wenig|alles klar|passt|ok|gut so)$/i
+          ) ||
+          responseText.match(/^(nix|nope|-)$/i) ||
+          responseText.length < 10
+        ) {
           positiveCount++; // Nothing missing = positive
-        } else if (responseText.match(/^(weiß nicht|unsicher|vielleicht|eventuell)$/i)) {
+        } else if (
+          responseText.match(/^(weiß nicht|unsicher|vielleicht|eventuell)$/i)
+        ) {
           neutralCount++; // Uncertain = neutral
         } else {
           negativeCount++; // Specific missing items = negative (room for improvement)
         }
       } else if (isProblemsQuestion || isConfusingQuestion) {
         // For "Problems?" questions: "no problems" = positive, specific problems = negative
-        if (responseText.match(/^(nein|nichts|keine|alles gut|kein problem|ok)$/i) ||
-            responseText.match(/^(nix|nope|-)$/i)) {
+        if (
+          responseText.match(
+            /^(nein|nichts|keine|alles gut|kein problem|ok)$/i
+          ) ||
+          responseText.match(/^(nix|nope|-)$/i)
+        ) {
           positiveCount++; // No problems = positive
         } else if (responseText.match(/^(weiß nicht|unsicher|manchmal)$/i)) {
           neutralCount++; // Uncertain = neutral
@@ -543,8 +628,10 @@ export default function AlphaTestDashboard() {
         }
       } else if (isUnclearQuestion) {
         // For "What's unclear?" questions: "nothing unclear" = positive, specific unclear items = negative
-        if (responseText.match(/^(nichts|nein|alles klar|verstehe alles|ok)$/i) ||
-            responseText.match(/^(nix|nope|-)$/i)) {
+        if (
+          responseText.match(/^(nichts|nein|alles klar|verstehe alles|ok)$/i) ||
+          responseText.match(/^(nix|nope|-)$/i)
+        ) {
           positiveCount++; // Nothing unclear = positive
         } else if (responseText.match(/^(weiß nicht|unsicher|teilweise)$/i)) {
           neutralCount++; // Uncertain = neutral
@@ -553,8 +640,14 @@ export default function AlphaTestDashboard() {
         }
       } else if (isDisplayQuestion) {
         // For display/technical questions: "no problems" = positive, issues = negative
-        if (responseText.match(/^(nein|nichts|alles gut|ok|gut erkennbar|keine probleme)$/i) ||
-            responseText.includes('gut') || responseText.includes('klar') || responseText.includes('schnell')) {
+        if (
+          responseText.match(
+            /^(nein|nichts|alles gut|ok|gut erkennbar|keine probleme)$/i
+          ) ||
+          responseText.includes("gut") ||
+          responseText.includes("klar") ||
+          responseText.includes("schnell")
+        ) {
           positiveCount++; // No display issues = positive
         } else if (responseText.match(/^(manchmal|teilweise|geht so)$/i)) {
           neutralCount++; // Sometimes issues = neutral
@@ -563,14 +656,55 @@ export default function AlphaTestDashboard() {
         }
       } else {
         // General sentiment analysis for other questions
-        const positiveWords = ['gut', 'toll', 'super', 'perfekt', 'einfach', 'klar', 'schön', 'gefällt', 'gerne', 'ja', 'positiv', 'hilfreich', 'übersichtlich', 'verständlich'];
-        const negativeWords = ['schlecht', 'schwer', 'kompliziert', 'unklar', 'fehlt', 'problem', 'schwierig', 'verwirrend', 'negativ', 'frustrierend', 'langsam'];
-        const neutralWords = ['ok', 'geht', 'normal', 'durchschnitt', 'weiß nicht', 'unsicher', 'vielleicht'];
-        
-        const hasPositive = positiveWords.some(word => responseText.includes(word));
-        const hasNegative = negativeWords.some(word => responseText.includes(word));
-        const hasNeutral = neutralWords.some(word => responseText.includes(word));
-        
+        const positiveWords = [
+          "gut",
+          "toll",
+          "super",
+          "perfekt",
+          "einfach",
+          "klar",
+          "schön",
+          "gefällt",
+          "gerne",
+          "ja",
+          "positiv",
+          "hilfreich",
+          "übersichtlich",
+          "verständlich",
+        ];
+        const negativeWords = [
+          "schlecht",
+          "schwer",
+          "kompliziert",
+          "unklar",
+          "fehlt",
+          "problem",
+          "schwierig",
+          "verwirrend",
+          "negativ",
+          "frustrierend",
+          "langsam",
+        ];
+        const neutralWords = [
+          "ok",
+          "geht",
+          "normal",
+          "durchschnitt",
+          "weiß nicht",
+          "unsicher",
+          "vielleicht",
+        ];
+
+        const hasPositive = positiveWords.some((word) =>
+          responseText.includes(word)
+        );
+        const hasNegative = negativeWords.some((word) =>
+          responseText.includes(word)
+        );
+        const hasNeutral = neutralWords.some((word) =>
+          responseText.includes(word)
+        );
+
         if (hasPositive && !hasNegative) {
           positiveCount++;
         } else if (hasNegative && !hasPositive) {
@@ -587,38 +721,46 @@ export default function AlphaTestDashboard() {
         }
       }
     });
-    
+
     const totalResponses = validResponses.length;
-    const positivePercentage = Math.round((positiveCount / totalResponses) * 100);
-    const negativePercentage = Math.round((negativeCount / totalResponses) * 100);
+    const positivePercentage = Math.round(
+      (positiveCount / totalResponses) * 100
+    );
+    const negativePercentage = Math.round(
+      (negativeCount / totalResponses) * 100
+    );
     const neutralPercentage = Math.round((neutralCount / totalResponses) * 100);
-    
+
     // Determine overall tendency
     if (positiveCount > negativeCount && positiveCount > neutralCount) {
-      return { 
-        tendency: 'Positiv', 
+      return {
+        tendency: "Positiv",
         explanation: `${positivePercentage}% positive Antworten (${positiveCount}/${totalResponses})`,
-        percentage: positivePercentage
+        percentage: positivePercentage,
       };
     } else if (negativeCount > positiveCount && negativeCount > neutralCount) {
-      return { 
-        tendency: 'Negativ', 
+      return {
+        tendency: "Negativ",
         explanation: `${negativePercentage}% negative Antworten (${negativeCount}/${totalResponses})`,
-        percentage: negativePercentage
+        percentage: negativePercentage,
       };
     } else if (neutralCount > positiveCount && neutralCount > negativeCount) {
-      return { 
-        tendency: 'Neutral', 
+      return {
+        tendency: "Neutral",
         explanation: `${neutralPercentage}% neutrale Antworten (${neutralCount}/${totalResponses})`,
-        percentage: neutralPercentage
+        percentage: neutralPercentage,
       };
     } else {
       // Mixed results
-      const maxPercentage = Math.max(positivePercentage, negativePercentage, neutralPercentage);
-      return { 
-        tendency: 'Gemischt', 
+      const maxPercentage = Math.max(
+        positivePercentage,
+        negativePercentage,
+        neutralPercentage
+      );
+      return {
+        tendency: "Gemischt",
         explanation: `Gemischte Antworten: ${positivePercentage}% positiv, ${negativePercentage}% negativ, ${neutralPercentage}% neutral`,
-        percentage: maxPercentage
+        percentage: maxPercentage,
       };
     }
   };
@@ -781,302 +923,41 @@ export default function AlphaTestDashboard() {
 
   const exportToPDF = async () => {
     try {
-      setExportingPDF(true);
-      console.log("📄 Exporting dashboard to PDF with styling...");
+      console.log("📄 Exporting dashboard to PDF...");
 
-      // Dynamic import to avoid SSR issues
-      const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
-        import('jspdf'),
-        import('html2canvas')
-      ]);
+      // Use browser's print functionality to generate PDF
+      const printContent = document.getElementById("admin-dashboard-content");
+      if (printContent) {
+        const originalTitle = document.title;
+        document.title = `Alpha Test Dashboard - ${timeRange} - ${new Date().toLocaleDateString()}`;
 
-      const dashboardElement = document.getElementById("admin-dashboard-content");
-      if (!dashboardElement) {
-        throw new Error("Dashboard content not found");
-      }
-
-      // Hide elements that shouldn't be in PDF
-      const elementsToHide = dashboardElement.querySelectorAll('.no-print');
-      elementsToHide.forEach(el => {
-        (el as HTMLElement).style.display = 'none';
-      });
-
-      // Function to convert oklch colors to rgb for html2canvas compatibility
-      const convertOklchColors = (element: HTMLElement) => {
-        const walker = document.createTreeWalker(
-          element,
-          NodeFilter.SHOW_ELEMENT,
-          null
-        );
-
-        const elementsToFix: HTMLElement[] = [];
-        let node = walker.nextNode();
-        while (node) {
-          elementsToFix.push(node as HTMLElement);
-          node = walker.nextNode();
-        }
-
-        // Add the root element too
-        elementsToFix.push(element);
-
-        const originalStyles: Array<{ element: HTMLElement; property: string; value: string }> = [];
-
-        elementsToFix.forEach(el => {
-          const computedStyle = window.getComputedStyle(el);
-          const stylesToCheck = [
-            'color', 'backgroundColor', 'borderColor', 'borderTopColor', 
-            'borderRightColor', 'borderBottomColor', 'borderLeftColor',
-            'boxShadow', 'textShadow', 'fill', 'stroke'
-          ];
-
-          stylesToCheck.forEach(property => {
-            const value = computedStyle.getPropertyValue(property);
-            if (value && value.includes('oklch')) {
-              // Store original value
-              originalStyles.push({ 
-                element: el, 
-                property, 
-                value: el.style.getPropertyValue(property) || ''
-              });
-
-              // Convert oklch to a fallback color
-              let fallbackColor = value;
-              
-              // Common oklch color mappings to rgb equivalents
-              const oklchToRgb: Record<string, string> = {
-                'oklch(0.627 0.257 262.1)': 'rgb(59, 130, 246)', // blue-500
-                'oklch(0.599 0.292 262.1)': 'rgb(37, 99, 235)', // blue-600
-                'oklch(0.570 0.326 262.1)': 'rgb(29, 78, 216)', // blue-700
-                'oklch(0.548 0.17 252.89)': 'rgb(71, 85, 105)', // slate-600
-                'oklch(0.478 0.13 252.89)': 'rgb(51, 65, 85)', // slate-700
-                'oklch(0.972 0.013 106.75)': 'rgb(248, 250, 252)', // slate-50
-                'oklch(0.961 0.013 106.75)': 'rgb(241, 245, 249)', // slate-100
-                'oklch(0.943 0.013 106.75)': 'rgb(226, 232, 240)', // slate-200
-                'oklch(0.924 0.014 106.75)': 'rgb(203, 213, 225)', // slate-300
-                'oklch(0.883 0.015 106.75)': 'rgb(148, 163, 184)', // slate-400
-                'oklch(0.835 0.017 106.75)': 'rgb(100, 116, 139)', // slate-500
-                'oklch(0.648 0.26 142.5)': 'rgb(34, 197, 94)', // green-500
-                'oklch(0.599 0.292 142.5)': 'rgb(22, 163, 74)', // green-600
-                'oklch(0.550 0.326 142.5)': 'rgb(21, 128, 61)', // green-700
-                'oklch(0.705 0.292 27.33)': 'rgb(239, 68, 68)', // red-500
-                'oklch(0.643 0.326 27.33)': 'rgb(220, 38, 38)', // red-600
-                'oklch(0.581 0.359 27.33)': 'rgb(185, 28, 28)', // red-700
-              };
-
-              // Try to find exact match first
-              if (oklchToRgb[value]) {
-                fallbackColor = oklchToRgb[value];
-              } else {
-                // Extract oklch values and convert to approximate rgb
-                const oklchMatch = value.match(/oklch\(([^)]+)\)/);
-                if (oklchMatch) {
-                  const [l, c, h] = oklchMatch[1].split(' ').map(v => parseFloat(v));
-                  
-                  // Simple approximation - convert to hsl then rgb
-                  const lightness = Math.round(l * 100);
-                  const saturation = Math.round(Math.min(c * 100, 100));
-                  const hue = Math.round(h || 0);
-                  
-                  fallbackColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-                }
-              }
-
-              // Apply the fallback color
-              el.style.setProperty(property, fallbackColor, 'important');
+        // Add print styles
+        const printStyles = `
+          <style>
+            @media print {
+              body * { visibility: hidden; }
+              #admin-dashboard-content, #admin-dashboard-content * { visibility: visible; }
+              #admin-dashboard-content { position: absolute; left: 0; top: 0; width: 100%; }
+              .no-print { display: none !important; }
+              .bg-gradient-to-br { background: #f3f4f6 !important; }
+              .shadow { box-shadow: none !important; border: 1px solid #e5e7eb !important; }
             }
-          });
-        });
+          </style>
+        `;
 
-        return originalStyles;
-      };
+        const head = document.head.innerHTML;
+        document.head.innerHTML = head + printStyles;
 
-      // Add temporary CSS to override oklch colors
-      const tempStyleSheet = document.createElement('style');
-      tempStyleSheet.textContent = `
-        /* Override oklch colors with rgb equivalents for html2canvas */
-        #admin-dashboard-content * {
-          --tw-text-opacity: 1 !important;
-          --tw-bg-opacity: 1 !important;
-          --tw-border-opacity: 1 !important;
-        }
-        
-        /* Force common Tailwind colors to use rgb */
-        .text-blue-600, .bg-blue-600, .border-blue-600 { color: rgb(37, 99, 235) !important; background-color: rgb(37, 99, 235) !important; border-color: rgb(37, 99, 235) !important; }
-        .text-blue-500, .bg-blue-500, .border-blue-500 { color: rgb(59, 130, 246) !important; background-color: rgb(59, 130, 246) !important; border-color: rgb(59, 130, 246) !important; }
-        .text-blue-700, .bg-blue-700, .border-blue-700 { color: rgb(29, 78, 216) !important; background-color: rgb(29, 78, 216) !important; border-color: rgb(29, 78, 216) !important; }
-        .text-slate-600, .bg-slate-600, .border-slate-600 { color: rgb(71, 85, 105) !important; background-color: rgb(71, 85, 105) !important; border-color: rgb(71, 85, 105) !important; }
-        .text-slate-700, .bg-slate-700, .border-slate-700 { color: rgb(51, 65, 85) !important; background-color: rgb(51, 65, 85) !important; border-color: rgb(51, 65, 85) !important; }
-        .text-slate-500, .bg-slate-500, .border-slate-500 { color: rgb(100, 116, 139) !important; background-color: rgb(100, 116, 139) !important; border-color: rgb(100, 116, 139) !important; }
-        .text-gray-500, .bg-gray-500, .border-gray-500 { color: rgb(107, 114, 128) !important; background-color: rgb(107, 114, 128) !important; border-color: rgb(107, 114, 128) !important; }
-        .text-gray-600, .bg-gray-600, .border-gray-600 { color: rgb(75, 85, 99) !important; background-color: rgb(75, 85, 99) !important; border-color: rgb(75, 85, 99) !important; }
-        .text-gray-700, .bg-gray-700, .border-gray-700 { color: rgb(55, 65, 81) !important; background-color: rgb(55, 65, 81) !important; border-color: rgb(55, 65, 81) !important; }
-        .text-green-500, .bg-green-500, .border-green-500 { color: rgb(34, 197, 94) !important; background-color: rgb(34, 197, 94) !important; border-color: rgb(34, 197, 94) !important; }
-        .text-green-600, .bg-green-600, .border-green-600 { color: rgb(22, 163, 74) !important; background-color: rgb(22, 163, 74) !important; border-color: rgb(22, 163, 74) !important; }
-        .text-red-500, .bg-red-500, .border-red-500 { color: rgb(239, 68, 68) !important; background-color: rgb(239, 68, 68) !important; border-color: rgb(239, 68, 68) !important; }
-        .text-red-600, .bg-red-600, .border-red-600 { color: rgb(220, 38, 38) !important; background-color: rgb(220, 38, 38) !important; border-color: rgb(220, 38, 38) !important; }
-        .bg-white { background-color: rgb(255, 255, 255) !important; }
-        .bg-gray-50 { background-color: rgb(249, 250, 251) !important; }
-        .bg-gray-100 { background-color: rgb(243, 244, 246) !important; }
-        .bg-gray-200 { background-color: rgb(229, 231, 235) !important; }
-        .text-white { color: rgb(255, 255, 255) !important; }
-        .text-black { color: rgb(0, 0, 0) !important; }
-        .text-gray-900 { color: rgb(17, 24, 39) !important; }
-        .text-gray-800 { color: rgb(31, 41, 55) !important; }
-      `;
-      document.head.appendChild(tempStyleSheet);
+        window.print();
 
-      // Convert oklch colors before rendering
-      const originalColorStyles = convertOklchColors(dashboardElement);
+        // Restore original title
+        document.title = originalTitle;
 
-      // Temporarily adjust styles for better PDF rendering
-      const originalStyles = dashboardElement.style.cssText;
-      dashboardElement.style.cssText += `
-        background: white !important;
-        padding: 20px !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        max-width: 1200px !important;
-        margin: 0 auto !important;
-      `;
-
-      // Configure html2canvas options for better quality
-      const canvas = await html2canvas(dashboardElement, {
-        scale: 2, // Higher resolution
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-        width: 1200, // Fixed width for consistent layout
-        height: dashboardElement.scrollHeight,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: 1200,
-        windowHeight: dashboardElement.scrollHeight,
-        onclone: (clonedDoc) => {
-          // Ensure all elements are visible in the clone
-          const clonedElement = clonedDoc.getElementById("admin-dashboard-content");
-          if (clonedElement) {
-            // Fix any overflow issues
-            clonedElement.style.overflow = 'visible';
-            // Ensure charts and images are rendered
-            const charts = clonedElement.querySelectorAll('canvas, svg');
-            charts.forEach(chart => {
-              (chart as HTMLElement).style.maxWidth = '100%';
-              (chart as HTMLElement).style.height = 'auto';
-            });
-          }
-        }
-      });
-
-      // Restore original styles
-      dashboardElement.style.cssText = originalStyles;
-
-      // Restore original color styles
-      originalColorStyles.forEach(({ element, property, value }) => {
-        if (value) {
-          element.style.setProperty(property, value);
-        } else {
-          element.style.removeProperty(property);
-        }
-      });
-
-      // Restore hidden elements
-      elementsToHide.forEach(el => {
-        (el as HTMLElement).style.display = '';
-      });
-
-      // Remove temporary stylesheet
-      if (tempStyleSheet.parentNode) {
-        tempStyleSheet.parentNode.removeChild(tempStyleSheet);
+        console.log("✅ PDF export initiated");
       }
-
-      const imgData = canvas.toDataURL('image/png');
-      
-      // Calculate PDF dimensions
-      const imgWidth = 210; // A4 width in mm
-      const pageHeight = 295; // A4 height in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-
-      // Create PDF with better layout
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      
-      // Add title page with more information
-      pdf.setFontSize(24);
-      pdf.setTextColor(59, 130, 246); // Blue color
-      pdf.text('Alpha Test Dashboard Report', 20, 30);
-      
-      pdf.setFontSize(14);
-      pdf.setTextColor(0, 0, 0); // Black color
-      pdf.text(`Generated: ${new Date().toLocaleString()}`, 20, 50);
-      pdf.text(`Time Range: ${timeRange}`, 20, 60);
-      
-      if (analytics?.summary) {
-        pdf.text(`Total Tests: ${analytics.summary.totalTests}`, 20, 70);
-        pdf.text(`Completed: ${analytics.summary.completedTests}`, 20, 80);
-        pdf.text(`Completion Rate: ${analytics.summary.completionRate.toFixed(1)}%`, 20, 90);
-        pdf.text(`Average Rating: ${analytics.summary.averageRating.toFixed(1)}/6`, 20, 100);
-      }
-      
-      // Add a line separator
-      pdf.setDrawColor(200, 200, 200);
-      pdf.line(20, 110, 190, 110);
-      
-      let position = 120; // Start position for content
-
-      // Add the dashboard content with better page handling
-      if (heightLeft <= pageHeight - position) {
-        // Content fits on first page
-        pdf.addImage(imgData, 'PNG', 5, position, imgWidth - 10, imgHeight);
-      } else {
-        // Content spans multiple pages - add first part
-        const firstPageHeight = pageHeight - position;
-        pdf.addImage(imgData, 'PNG', 5, position, imgWidth - 10, firstPageHeight);
-        heightLeft -= firstPageHeight;
-
-        // Add remaining content on new pages
-        while (heightLeft > 0) {
-          pdf.addPage();
-          const remainingHeight = Math.min(heightLeft, pageHeight - 20);
-          const sourceY = imgHeight - heightLeft;
-          
-          // Add image section for this page
-          pdf.addImage(
-            imgData, 
-            'PNG', 
-            5, 
-            10, 
-            imgWidth - 10, 
-            remainingHeight
-          );
-          
-          heightLeft -= remainingHeight;
-        }
-      }
-
-      // Save the PDF
-      const fileName = `alpha-test-dashboard-${timeRange}-${new Date().toISOString().split('T')[0]}.pdf`;
-      pdf.save(fileName);
-
-      console.log("✅ PDF exported successfully with styling preserved");
     } catch (error) {
       console.error("Error exporting to PDF:", error);
-      
-      // Clean up temporary stylesheet in case of error
-      const tempStyleSheets = document.querySelectorAll('style');
-      tempStyleSheets.forEach(sheet => {
-        if (sheet.textContent?.includes('Override oklch colors')) {
-          sheet.remove();
-        }
-      });
-      
-      // Check if it's the oklch color error and provide specific guidance
-      if (error instanceof Error && error.message.includes('oklch')) {
-        alert("PDF export failed due to unsupported color format. This is a known issue with modern CSS colors. Please try using the Excel export instead, or contact support for assistance.");
-      } else {
-        alert("Failed to export PDF. Please try again or use the Excel export option.");
-      }
-    } finally {
-      setExportingPDF(false);
+      alert("Failed to export PDF. Please try again.");
     }
   };
 
@@ -1120,8 +1001,7 @@ export default function AlphaTestDashboard() {
     );
   }
 
-  const { summary, deviceStats, errorAnalysis, recentTests } =
-    analytics;
+  const { summary, deviceStats, errorAnalysis, recentTests } = analytics;
 
   return (
     <div id="admin-dashboard-content" className="space-y-8">
@@ -1173,17 +1053,9 @@ export default function AlphaTestDashboard() {
             </button>
             <button
               onClick={exportToPDF}
-              disabled={exportingPDF}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
             >
-              {exportingPDF ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  Generating PDF...
-                </>
-              ) : (
-                <>📄 Export PDF</>
-              )}
+              📄 Export PDF
             </button>
             <button
               onClick={resetTestData}
@@ -1462,12 +1334,18 @@ export default function AlphaTestDashboard() {
           // Define the expected question order and labels
           const questionOrder = [
             { id: "navigation-ease", label: "1. Orientierung/Navigation" },
-            { id: "configurator-usability", label: "2. Benutzerfreundlichkeit" },
-            { id: "nest-haus-understanding", label: "3. Nest-Haus-Verständnis" },
+            {
+              id: "configurator-usability",
+              label: "2. Benutzerfreundlichkeit",
+            },
+            {
+              id: "nest-haus-understanding",
+              label: "3. Nest-Haus-Verständnis",
+            },
             { id: "purchase-process", label: "4. Bestellprozess" },
             { id: "configurator-options", label: "5. Auswahlmöglichkeiten" },
             { id: "website-overall", label: "6. Website" },
-            { id: "purchase-intention", label: "7. Eigenes Nest" }
+            { id: "purchase-intention", label: "7. Eigenes Nest" },
           ];
 
           // Get rating questions and sort them according to our defined order
@@ -1476,21 +1354,23 @@ export default function AlphaTestDashboard() {
           );
 
           const sortedRatingQuestions = questionOrder
-            .map(orderItem => ({
+            .map((orderItem) => ({
               ...orderItem,
-              data: ratingQuestions.find(q => q.questionId === orderItem.id)
+              data: ratingQuestions.find((q) => q.questionId === orderItem.id),
             }))
-            .filter(item => item.data); // Only include questions that have data
+            .filter((item) => item.data); // Only include questions that have data
 
           const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
 
           sortedRatingQuestions.forEach((item) => {
-            item.data?.responses.forEach((response: Record<string, unknown>) => {
-              const value = response?.value;
-              if (typeof value === "number" && value >= 1 && value <= 6) {
-                ratingCounts[value as keyof typeof ratingCounts]++;
+            item.data?.responses.forEach(
+              (response: Record<string, unknown>) => {
+                const value = response?.value;
+                if (typeof value === "number" && value >= 1 && value <= 6) {
+                  ratingCounts[value as keyof typeof ratingCounts]++;
+                }
               }
-            });
+            );
           });
 
           const _totalRatings = Object.values(ratingCounts).reduce(
@@ -1502,7 +1382,8 @@ export default function AlphaTestDashboard() {
           return sortedRatingQuestions.length > 0 ? (
             <div className="mb-8">
               <h4 className="text-md font-medium text-gray-900 mb-4">
-                Rating Distribution by Question ({sortedRatingQuestions.length} Fragen)
+                Rating Distribution by Question ({sortedRatingQuestions.length}{" "}
+                Fragen)
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3">
                 {sortedRatingQuestions.map((item) => {
@@ -1521,7 +1402,9 @@ export default function AlphaTestDashboard() {
                                 ? "bg-yellow-400"
                                 : "bg-green-400"
                           }`}
-                          style={{ height: `${questionAverage > 0 ? (questionAverage / 6) * 100 : 0}%` }}
+                          style={{
+                            height: `${questionAverage > 0 ? (questionAverage / 6) * 100 : 0}%`,
+                          }}
                         ></div>
                         <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-700">
                           {questionAverage.toFixed(1)}
@@ -1550,12 +1433,18 @@ export default function AlphaTestDashboard() {
           // Define the expected question order and labels
           const questionOrder = [
             { id: "navigation-ease", label: "1. Orientierung/Navigation" },
-            { id: "configurator-usability", label: "2. Benutzerfreundlichkeit" },
-            { id: "nest-haus-understanding", label: "3. Nest-Haus-Verständnis" },
+            {
+              id: "configurator-usability",
+              label: "2. Benutzerfreundlichkeit",
+            },
+            {
+              id: "nest-haus-understanding",
+              label: "3. Nest-Haus-Verständnis",
+            },
             { id: "purchase-process", label: "4. Bestellprozess" },
             { id: "configurator-options", label: "5. Auswahlmöglichkeiten" },
             { id: "website-overall", label: "6. Website" },
-            { id: "purchase-intention", label: "7. Eigenes Nest" }
+            { id: "purchase-intention", label: "7. Eigenes Nest" },
           ];
 
           const ratingQuestions = analytics.questionAnalysis.filter(
@@ -1564,11 +1453,11 @@ export default function AlphaTestDashboard() {
 
           // Sort questions according to our defined order
           const sortedRatingQuestions = questionOrder
-            .map(orderItem => ({
+            .map((orderItem) => ({
               ...orderItem,
-              data: ratingQuestions.find(q => q.questionId === orderItem.id)
+              data: ratingQuestions.find((q) => q.questionId === orderItem.id),
             }))
-            .filter(item => item.data); // Only include questions that have data
+            .filter((item) => item.data); // Only include questions that have data
 
           return sortedRatingQuestions.length > 0 ? (
             <div className="mb-8">
@@ -1579,8 +1468,8 @@ export default function AlphaTestDashboard() {
                 }
               >
                 <h4 className="text-md font-medium text-gray-900">
-                  📊 Rating Distribution by Question ({sortedRatingQuestions.length}{" "}
-                  questions)
+                  📊 Rating Distribution by Question (
+                  {sortedRatingQuestions.length} questions)
                 </h4>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-600">
@@ -1806,7 +1695,7 @@ export default function AlphaTestDashboard() {
           // Define the expected open text question order
           const openQuestionOrder = [
             "content-display-issues",
-            "main-challenge", 
+            "main-challenge",
             "nest-haus-concept-understanding",
             "missing-information",
             "improvement-suggestions",
@@ -1817,12 +1706,12 @@ export default function AlphaTestDashboard() {
             "additional-costs",
             "unclear-topics",
             "confusing-elements",
-            "detailed-description-needs"
+            "detailed-description-needs",
           ];
 
           // Filter and sort open text questions
           const openTextQuestions = analytics.questionAnalysis
-            .filter(q => q.questionType === "TEXT")
+            .filter((q) => q.questionType === "TEXT")
             .sort((a, b) => {
               const aIndex = openQuestionOrder.indexOf(a.questionId);
               const bIndex = openQuestionOrder.indexOf(b.questionId);
@@ -1860,8 +1749,13 @@ export default function AlphaTestDashboard() {
                   {openTextQuestions.map((question) => {
                     const keyFindings = extractKeyFindings(question.responses);
                     const summary = generateSummary(question.responses);
-                    const tendencyData = detectTendency(question.questionText, question.responses);
-                    const isExpanded = expandedQuestions.has(question.questionId);
+                    const tendencyData = detectTendency(
+                      question.questionText,
+                      question.responses
+                    );
+                    const isExpanded = expandedQuestions.has(
+                      question.questionId
+                    );
 
                     return (
                       <React.Fragment key={question.questionId}>
@@ -1879,33 +1773,38 @@ export default function AlphaTestDashboard() {
                               {keyFindings.length > 0 ? (
                                 <div className="flex flex-wrap gap-1">
                                   {keyFindings.map((finding, idx) => (
-                                    <span key={idx} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span
+                                      key={idx}
+                                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                    >
                                       {finding}
                                     </span>
                                   ))}
                                 </div>
                               ) : (
-                                <span className="text-gray-400">Keine Schlüsselbegriffe</span>
+                                <span className="text-gray-400">
+                                  Keine Schlüsselbegriffe
+                                </span>
                               )}
                             </div>
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-600">
-                            <div className="max-w-sm">
-                              {summary}
-                            </div>
+                            <div className="max-w-sm">{summary}</div>
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-900">
                             <div className="flex flex-col items-start space-y-1">
                               <button
-                                onClick={() => {/* TODO: Show tendency explanation */}}
+                                onClick={() => {
+                                  /* TODO: Show tendency explanation */
+                                }}
                                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium cursor-pointer hover:opacity-80 ${
-                                  tendencyData.tendency === 'Positiv' 
-                                    ? 'bg-green-100 text-green-800'
-                                    : tendencyData.tendency === 'Negativ'
-                                      ? 'bg-red-100 text-red-800'
-                                      : tendencyData.tendency === 'Gemischt'
-                                        ? 'bg-yellow-100 text-yellow-800'
-                                        : 'bg-gray-100 text-gray-800'
+                                  tendencyData.tendency === "Positiv"
+                                    ? "bg-green-100 text-green-800"
+                                    : tendencyData.tendency === "Negativ"
+                                      ? "bg-red-100 text-red-800"
+                                      : tendencyData.tendency === "Gemischt"
+                                        ? "bg-yellow-100 text-yellow-800"
+                                        : "bg-gray-100 text-gray-800"
                                 }`}
                                 title={tendencyData.explanation}
                               >
@@ -1920,10 +1819,12 @@ export default function AlphaTestDashboard() {
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-500">
                             <button
-                              onClick={() => toggleQuestionExpansion(question.questionId)}
+                              onClick={() =>
+                                toggleQuestionExpansion(question.questionId)
+                              }
                               className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                             >
-                              {isExpanded ? 'Ausblenden' : 'Alle Antworten'}
+                              {isExpanded ? "Ausblenden" : "Alle Antworten"}
                             </button>
                           </td>
                         </tr>
@@ -1932,23 +1833,39 @@ export default function AlphaTestDashboard() {
                             <td colSpan={6} className="px-6 py-4 bg-gray-50">
                               <div className="space-y-3">
                                 <h5 className="font-medium text-gray-900 mb-3">
-                                  Alle Antworten zu: &quot;{question.questionText}&quot;
+                                  Alle Antworten zu: &quot;
+                                  {question.questionText}&quot;
                                 </h5>
                                 {question.responses.length > 0 ? (
                                   <div className="space-y-2">
-                                    {question.responses.map((response: Record<string, unknown>, idx) => (
-                                      <div key={idx} className="bg-white p-3 rounded border">
-                                        <div className="text-sm text-gray-900">
-                                          {String(response.value || 'Keine Antwort')}
+                                    {question.responses.map(
+                                      (
+                                        response: Record<string, unknown>,
+                                        idx
+                                      ) => (
+                                        <div
+                                          key={idx}
+                                          className="bg-white p-3 rounded border"
+                                        >
+                                          <div className="text-sm text-gray-900">
+                                            {String(
+                                              response.value || "Keine Antwort"
+                                            )}
+                                          </div>
+                                          <div className="text-xs text-gray-500 mt-1">
+                                            Antwortzeit:{" "}
+                                            {response.responseTime
+                                              ? `${Math.round(Number(response.responseTime) / 1000)}s`
+                                              : "N/A"}
+                                          </div>
                                         </div>
-                                        <div className="text-xs text-gray-500 mt-1">
-                                          Antwortzeit: {response.responseTime ? `${Math.round(Number(response.responseTime) / 1000)}s` : 'N/A'}
-                                        </div>
-                                      </div>
-                                    ))}
+                                      )
+                                    )}
                                   </div>
                                 ) : (
-                                  <div className="text-gray-500 italic">Keine Antworten verfügbar</div>
+                                  <div className="text-gray-500 italic">
+                                    Keine Antworten verfügbar
+                                  </div>
                                 )}
                               </div>
                             </td>
