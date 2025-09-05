@@ -62,7 +62,7 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     title: "Planungspaket 02",
     subtitle: "Plus",
     description:
-      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
+      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau \n+Ausführungsplanung Elektrik",
     mobileTitle: "Planungspaket 02",
     mobileSubtitle: "Plus",
     mobileDescription:
@@ -82,7 +82,7 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     title: "Planungspaket 03",
     subtitle: "Pro",
     description:
-      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
+      "-Alle Services aus dem Pro Paket \n +Küchenplanung \n +Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
     mobileTitle: "Planungspaket 03",
     mobileSubtitle: "Pro",
     mobileDescription:
@@ -640,6 +640,12 @@ export default function PlanungspaketeCards({
                   className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
                   style={{
                     width: cardWidth,
+                    height:
+                      isMobile && isExpanded
+                        ? expandedHeight
+                        : isMobile
+                        ? 360
+                        : 280,
                     backgroundColor: card.backgroundColor,
                     // iOS-specific fixes
                     WebkitTransform: "translateZ(0)", // Force hardware acceleration
@@ -647,9 +653,13 @@ export default function PlanungspaketeCards({
                     WebkitBackfaceVisibility: "hidden",
                     backfaceVisibility: "hidden",
                   }}
-                  animate={{
-                    height: isMobile && isExpanded ? expandedHeight : 360,
-                  }}
+                  animate={
+                    isMobile
+                      ? {
+                          height: isExpanded ? expandedHeight : 360,
+                        }
+                      : {}
+                  }
                   transition={{
                     duration: 0.6,
                     ease: [0.25, 0.46, 0.45, 0.94],
@@ -667,7 +677,11 @@ export default function PlanungspaketeCards({
                   }}
                 >
                   {/* Top Section - EXPANDED HEIGHT */}
-                  <div className="h-56 min-h-56 px-6 pt-6 pb-1 overflow-hidden">
+                  <div
+                    className={`${
+                      isMobile ? "h-56 min-h-56" : ""
+                    } px-6 pt-8 pb-6 overflow-hidden`}
+                  >
                     {/* Header Row - Title/Subtitle left, Price right */}
                     <div className="flex mb-5">
                       {/* Title/Subtitle - Left Side */}
@@ -721,8 +735,8 @@ export default function PlanungspaketeCards({
                     </motion.div>
                   </div>
 
-                  {/* Bottom Section - Extended Description (Full Width) - FLEXIBLE HEIGHT */}
-                  {card.extendedDescription && (
+                  {/* Bottom Section - Extended Description (Mobile Only) - FLEXIBLE HEIGHT */}
+                  {card.extendedDescription && isMobile && (
                     <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden relative">
                       <motion.div
                         initial={{ y: 20, opacity: 0 }}
@@ -732,7 +746,7 @@ export default function PlanungspaketeCards({
                       >
                         <motion.p
                           className={`text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line ${
-                            isMobile && !isExpanded ? "line-clamp-4" : ""
+                            !isExpanded ? "line-clamp-4" : ""
                           }`}
                           animate={{
                             opacity: isExpanded ? 1 : 1,
@@ -749,7 +763,7 @@ export default function PlanungspaketeCards({
                             background: `linear-gradient(to top, ${card.backgroundColor} 0%, ${card.backgroundColor}f8 15%, ${card.backgroundColor}f0 25%, ${card.backgroundColor}e0 35%, ${card.backgroundColor}cc 45%, ${card.backgroundColor}b3 55%, ${card.backgroundColor}80 65%, ${card.backgroundColor}4d 75%, ${card.backgroundColor}26 85%, transparent 100%)`,
                           }}
                           animate={{
-                            opacity: isMobile && !isExpanded ? 1 : 0,
+                            opacity: !isExpanded ? 1 : 0,
                           }}
                           transition={{
                             duration: 0.5,
@@ -761,11 +775,11 @@ export default function PlanungspaketeCards({
                         <motion.div
                           className="absolute bottom-2 left-0 right-0 text-center pointer-events-none"
                           animate={{
-                            opacity: isMobile && isExpanded ? 1 : 0,
+                            opacity: isExpanded ? 1 : 0,
                           }}
                           transition={{
                             duration: 0.3,
-                            delay: isMobile && isExpanded ? 0.3 : 0,
+                            delay: isExpanded ? 0.3 : 0,
                           }}
                         >
                           <p className="text-xs text-gray-500">

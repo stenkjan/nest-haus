@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo, animate } from "motion/react";
+import { Button } from "@/components/ui";
+import Link from "next/link";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 import "./mobile-scroll-optimizations.css";
 
@@ -140,10 +142,21 @@ export default function SquareTextCard({
   // Use custom data if provided, otherwise use default
   const cardData = customData || defaultSquareTextCardData;
 
+  // Define gap constant at the top
+  const gap = 24;
+
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
     setScreenWidth(window.innerWidth);
+
+    // Center the first card initially
+    const containerWidth = window.innerWidth;
+    const effectiveWidth =
+      containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+    const centerOffset =
+      (effectiveWidth - cardWidth) / 2 + (containerWidth < 1024 ? 16 : 0);
+    x.set(centerOffset);
 
     // iOS-specific: Force initial layout calculation
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -151,7 +164,7 @@ export default function SquareTextCard({
         window.dispatchEvent(new Event("resize"));
       }, 100);
     }
-  }, []);
+  }, [cardWidth, x]);
 
   // Calculate responsive card dimensions - square cards
   useEffect(() => {
@@ -178,14 +191,29 @@ export default function SquareTextCard({
       } else {
         // Mobile: Show 1.2 cards (matches other components)
         setCardsPerView(1.2);
-        setCardWidth(312); // Mobile card size (matches other components)
+        // iOS Safari needs extra margin due to viewport quirks
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const margin = isIOS ? 40 : 32;
+        setCardWidth(Math.min(320, width - margin)); // Mobile card size with margin
+      }
+
+      // Recenter the current card after dimension changes
+      if (isClient) {
+        const containerWidth = width;
+        const effectiveWidth =
+          containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+        const centerOffset =
+          (effectiveWidth - cardWidth) / 2 + (containerWidth < 1024 ? 16 : 0);
+        const cardPosition = currentIndex * (cardWidth + gap);
+        const newX = centerOffset - cardPosition;
+        x.set(newX);
       }
     };
 
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
-  }, [isLightboxMode]);
+  }, [isLightboxMode, isClient, currentIndex, cardWidth, gap, x]);
 
   // Pre-measure card heights on mobile for smooth expansion
   useEffect(() => {
@@ -243,23 +271,33 @@ export default function SquareTextCard({
     };
   }, [isClient, screenWidth, cardData, cardHeights, cardWidth]);
 
-  const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
   const maxScroll = -(maxIndex * (cardWidth + gap));
 
-  // Navigation logic
+  // Navigation logic - Center active card
   const navigateCard = useCallback(
     (direction: number) => {
       const newIndex = Math.max(
         0,
-        Math.min(maxIndex, currentIndex + direction)
+        Math.min(cardData.length - 1, currentIndex + direction)
       );
       setCurrentIndex(newIndex);
-      const newX = -(newIndex * (cardWidth + gap));
+
+      // Calculate position to center the active card
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+      // Account for mobile padding
+      const effectiveWidth =
+        containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+      const centerOffset =
+        (effectiveWidth - cardWidth) / 2 + (containerWidth < 1024 ? 16 : 0);
+      const cardPosition = newIndex * (cardWidth + gap);
+      const newX = centerOffset - cardPosition;
+
       x.set(newX);
       // Note: Preserve allCardsExpanded state during navigation
     },
-    [maxIndex, currentIndex, cardWidth, gap, x]
+    [currentIndex, cardWidth, gap, x, cardData.length]
   );
 
   // Keyboard navigation
@@ -335,7 +373,14 @@ export default function SquareTextCard({
 
       // Animate with visual feedback for direction
       setCurrentIndex(targetIndex);
-      const newX = -(targetIndex * (cardWidth + gap));
+
+      // Calculate position to center the target card
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+      const centerOffset = (containerWidth - cardWidth) / 2;
+      const cardPosition = targetIndex * (cardWidth + gap);
+      const newX = centerOffset - cardPosition;
+
       // Note: Preserve allCardsExpanded state during drag navigation
 
       // Add visual feedback animation with directional easing
@@ -359,31 +404,36 @@ export default function SquareTextCard({
         });
       });
     } else {
-      // Desktop: Free scrolling, no snapping
-      // Let the drag settle naturally without forced snapping
-      const naturalX = currentX + velocity * 0.1; // Small momentum continuation
-      const boundedX = Math.max(
-        -(maxIndex * (cardWidth + gap)),
-        Math.min(0, naturalX)
+      // Desktop: Center the closest card
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+      const centerOffset = (containerWidth - cardWidth) / 2;
+
+      // Find the closest card to center
+      const currentCenterX = currentX - centerOffset;
+      const closestIndex = Math.round(-currentCenterX / (cardWidth + gap));
+      const finalIndex = Math.max(
+        0,
+        Math.min(cardData.length - 1, closestIndex)
       );
 
-      // Update current index based on final position
-      const finalIndex = Math.round(-boundedX / (cardWidth + gap));
-      setCurrentIndex(Math.max(0, Math.min(maxIndex, finalIndex)));
+      setCurrentIndex(finalIndex);
 
-      // Smooth deceleration without snapping
-      animate(x, boundedX, {
+      // Calculate centered position for the closest card
+      const cardPosition = finalIndex * (cardWidth + gap);
+      const newX = centerOffset - cardPosition;
+
+      // Smooth animation to center
+      animate(x, newX, {
         type: "spring",
-        stiffness: 150,
-        damping: 20,
+        stiffness: 250,
+        damping: 25,
         mass: 1.0,
       });
     }
   };
 
-  const containerClasses = maxWidth
-    ? "w-full max-w-screen-2xl mx-auto"
-    : "w-full";
+  const containerClasses = maxWidth ? "w-full" : "w-full";
 
   // Track if user is currently dragging to prevent accidental clicks
   const [isDragging, setIsDragging] = useState(false);
@@ -479,6 +529,13 @@ export default function SquareTextCard({
     }
   };
 
+  // Helper function to remove numbers from title for timeline display
+  const getTimelineTitle = (card: SquareTextCardData) => {
+    const title = getCardText(card, "title");
+    // Remove pattern like "1. ", "2. ", etc. from the beginning
+    return title.replace(/^\d+\.\s*/, "");
+  };
+
   // Prevent hydration mismatch by showing loading state until client is ready
   if (!isClient) {
     return (
@@ -507,7 +564,7 @@ export default function SquareTextCard({
   }
 
   return (
-    <div className={containerClasses}>
+    <div className={`${containerClasses} ${screenWidth < 1024 ? "px-4" : ""}`}>
       <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
         {!(
           isLightboxMode &&
@@ -520,34 +577,19 @@ export default function SquareTextCard({
       {/* Enhanced Progress Indicator - Moved above cards */}
       {cardData.length > 1 && (
         <div className="mb-8">
-          {/* Current Card Title */}
-          <div className="text-center mb-6">
-            <motion.h3
-              key={currentIndex}
-              className="text-lg md:text-xl font-semibold text-gray-900 mb-1"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {getCardText(cardData[currentIndex], "title")}
-            </motion.h3>
-            <p className="text-sm text-gray-500">
-              {currentIndex + 1} von {cardData.length}
-            </p>
-          </div>
-
           {/* Desktop: Horizontal Progress Steps */}
           <div className="hidden md:block">
-            <div className="relative max-w-2xl mx-auto">
+            <div className="relative max-w-4xl mx-auto">
               {/* Background Line */}
               <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
               {/* Progress Line */}
               <div
-                className="absolute left-0 top-3 h-0.5 bg-gray-900 transition-all duration-300"
+                className="absolute left-0 top-3 h-0.5 bg-blue-500 transition-all duration-300"
                 style={{
-                  width: `${
-                    (currentIndex / Math.max(1, cardData.length - 1)) * 100
-                  }%`,
+                  width:
+                    currentIndex === 0
+                      ? "0%"
+                      : `${(currentIndex / (cardData.length - 1)) * 100}%`,
                 }}
               />
               {/* Step Dots */}
@@ -561,38 +603,42 @@ export default function SquareTextCard({
                   const isActive = idx === currentIndex;
                   const isPassed = idx < currentIndex;
                   const circleClass = isPassed
-                    ? "bg-gray-900 border-gray-900"
+                    ? "bg-blue-500 border-blue-500 text-white"
                     : isActive
-                    ? "bg-white border-gray-900 ring-2 ring-gray-900 ring-offset-2"
-                    : "bg-white border-gray-300";
+                    ? "bg-white border-blue-500 text-blue-500"
+                    : "bg-white border-gray-300 text-gray-400";
 
                   return (
                     <div key={card.id} className="flex flex-col items-center">
                       <button
                         onClick={() => {
                           setCurrentIndex(idx);
-                          const newX = -(idx * (cardWidth + gap));
+                          // Calculate position to center the selected card
+                          const containerWidth =
+                            typeof window !== "undefined"
+                              ? window.innerWidth
+                              : 1200;
+                          const centerOffset = (containerWidth - cardWidth) / 2;
+                          const cardPosition = idx * (cardWidth + gap);
+                          const newX = centerOffset - cardPosition;
                           x.set(newX);
                         }}
-                        className={`relative z-10 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 hover:scale-110 ${circleClass}`}
-                        aria-label={`Zu Schritt ${idx + 1}: ${getCardText(
-                          card,
-                          "title"
+                        className={`relative z-10 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-200 hover:scale-110 ${circleClass}`}
+                        aria-label={`Zu Schritt ${idx + 1}: ${getTimelineTitle(
+                          card
                         )}`}
                       >
-                        {isPassed && (
-                          <span className="w-2 h-2 bg-white rounded-full" />
-                        )}
+                        <span className="text-xs font-medium">{idx + 1}</span>
                       </button>
-                      {/* Step Number - only show on hover or active */}
+                      {/* Card Title - show for all steps */}
                       <div
-                        className={`mt-2 text-xs text-center transition-opacity duration-200 ${
+                        className={`mt-3 text-xs text-center transition-opacity duration-200 max-w-24 leading-tight ${
                           isActive
                             ? "opacity-100 text-gray-900 font-medium"
-                            : "opacity-60 text-gray-500"
+                            : "opacity-60 text-gray-600 font-normal"
                         }`}
                       >
-                        {idx + 1}
+                        {getTimelineTitle(card)}
                       </div>
                     </div>
                   );
@@ -613,7 +659,14 @@ export default function SquareTextCard({
                     key={card.id}
                     onClick={() => {
                       setCurrentIndex(idx);
-                      const newX = -(idx * (cardWidth + gap));
+                      // Calculate position to center the selected card
+                      const containerWidth =
+                        typeof window !== "undefined"
+                          ? window.innerWidth
+                          : 1200;
+                      const centerOffset = (containerWidth - cardWidth) / 2;
+                      const cardPosition = idx * (cardWidth + gap);
+                      const newX = centerOffset - cardPosition;
                       x.set(newX);
                     }}
                     className={`w-3 h-3 rounded-full transition-all duration-200 ${
@@ -636,16 +689,22 @@ export default function SquareTextCard({
       )}
 
       {/* Cards Container */}
-      <div className={`relative ${isLightboxMode ? "py-2" : "py-8"}`}>
+      <div
+        className={`relative ${isLightboxMode ? "py-2" : "py-8"} ${
+          screenWidth < 1024 ? "overflow-hidden w-full" : ""
+        }`}
+      >
         {/* Horizontal Scrolling Layout */}
-        <div className="overflow-x-clip">
+        <div
+          className={`${screenWidth < 1024 ? "w-full" : ""} overflow-x-clip`}
+        >
           <div
             ref={containerRef}
             className={`overflow-x-hidden cards-scroll-container ${
               isClient && screenWidth < 1024
                 ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
                 : ""
-            } ${maxWidth ? "px-8" : "px-4"} cursor-grab active:cursor-grabbing`}
+            } cursor-grab active:cursor-grabbing`}
             style={{
               overflow: "visible",
               // Improve touch handling on mobile
@@ -696,12 +755,18 @@ export default function SquareTextCard({
               className="flex gap-6"
               style={{
                 x,
-                width: `${(cardWidth + gap) * cardData.length - gap}px`,
+                width:
+                  screenWidth < 1024
+                    ? `${(cardWidth + gap) * cardData.length}px`
+                    : `${(cardWidth + gap) * cardData.length - gap}px`,
               }}
               drag="x"
               dragConstraints={{
-                left: maxScroll,
-                right: 0,
+                left:
+                  screenWidth < 1024
+                    ? -((cardData.length - 1) * (cardWidth + gap))
+                    : -((cardData.length - 1) * (cardWidth + gap)) - cardWidth,
+                right: screenWidth < 1024 ? 0 : cardWidth,
               }}
               dragElastic={0.05}
               dragMomentum={false}
@@ -744,7 +809,7 @@ export default function SquareTextCard({
                         cardRefs.current.set(card.id, el);
                       }
                     }}
-                    className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer cards-scroll-snap-item cards-mobile-smooth"
+                    className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer cards-scroll-snap-item cards-mobile-smooth"
                     style={{
                       width: cardWidth,
                       backgroundColor: card.backgroundColor,
@@ -755,6 +820,8 @@ export default function SquareTextCard({
                       backfaceVisibility: "hidden",
                     }}
                     animate={{
+                      opacity: index === currentIndex ? 1 : 0.4,
+                      scale: index === currentIndex ? 1 : 0.95,
                       height:
                         isMobile && allCardsExpanded
                           ? expandedHeight
@@ -763,11 +830,10 @@ export default function SquareTextCard({
                           : cardWidth, // Desktop/Tablet: Square aspect ratio
                     }}
                     transition={{
-                      duration: 0.6,
+                      duration: 0.4,
                       ease: [0.25, 0.46, 0.45, 0.94],
                       type: "tween",
                     }}
-                    whileHover={{ scale: 1.02 }}
                     onClick={() => {
                       // Prevent toggle if user was just dragging
                       if (isDragging) return;
@@ -866,13 +932,19 @@ export default function SquareTextCard({
           </div>
         </div>
 
-        {/* Navigation Arrows */}
+        {/* Navigation Arrows - Positioned closer to active card */}
         {currentIndex > 0 && (
           <button
             onClick={() => navigateCard(-1)}
-            className={`absolute left-0 top-1/2 transform -translate-y-1/2 ${
-              maxWidth ? "-translate-x-4" : "translate-x-2"
-            } bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+              screenWidth < 1024 ? "p-3" : "p-4"
+            }`}
+            style={{
+              left:
+                screenWidth < 1024
+                  ? `max(24px, calc(50% - ${cardWidth / 2 + 30}px))`
+                  : `calc(50% - ${cardWidth / 2 + 60}px)`,
+            }}
           >
             <svg
               className="w-6 h-6 text-gray-700"
@@ -890,12 +962,20 @@ export default function SquareTextCard({
           </button>
         )}
 
-        {currentIndex < cardData.length - Math.floor(cardsPerView) && (
+        {currentIndex < cardData.length - 1 && (
           <button
             onClick={() => navigateCard(1)}
-            className={`absolute right-0 top-1/2 transform -translate-y-1/2 ${
-              maxWidth ? "translate-x-4" : "-translate-x-2"
-            } bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+              screenWidth < 1024 ? "p-3" : "p-4"
+            }`}
+            style={{
+              left:
+                screenWidth < 1024
+                  ? `min(calc(100% - 24px), calc(50% + ${
+                      cardWidth / 2 + 30
+                    }px))`
+                  : `calc(50% + ${cardWidth / 2 + 60}px)`,
+            }}
           >
             <svg
               className="w-6 h-6 text-gray-700"
@@ -912,6 +992,18 @@ export default function SquareTextCard({
             </svg>
           </button>
         )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-row gap-4 justify-center mt-16">
+        <Button variant="primary" size="xs">
+          Anleitung als PDF
+        </Button>
+        <Link href="/konfigurator">
+          <Button variant="landing-secondary-blue" size="xs">
+            Jetzt bauen
+          </Button>
+        </Link>
       </div>
 
       {/* Instructions */}
