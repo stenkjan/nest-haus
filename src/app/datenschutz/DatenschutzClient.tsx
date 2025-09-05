@@ -377,7 +377,7 @@ export default function DatenschutzClient() {
                 </p>
                 <div className="space-y-2">
                   <p>
-                    <strong>E-Mail:</strong> datenschutz@nest-haus.com
+                    <strong>E-Mail:</strong> datenschutz@nest-haus.at
                   </p>
                   <p>
                     <strong>Telefon:</strong> [Ihre Telefonnummer]

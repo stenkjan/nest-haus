@@ -287,10 +287,10 @@ const customConfig = {
 
 ```typescript
 allowedOrigins: [
-  'https://nest-haus.com',
-  'https://www.nest-haus.com',
+  'https://nest-haus.at',
+  'https://www.nest-haus.at',
   'http://localhost:3000',
-  'https://staging.nest-haus.com', // Add staging environment
+  'https://staging.nest-haus.at', // Add staging environment
 ],
 ```
 

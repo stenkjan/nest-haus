@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   keywords:
     "dein part, hausbau mitgestaltung, modulhaus planung, kundenpart, bauherr rolle, nest haus kunde, individueller hausbau",
   alternates: {
-    canonical: "https://nest-haus.com/dein-part",
+    canonical: "https://nest-haus.at/dein-part",
   },
   openGraph: {
     title: "Dein Part | NEST-Haus | Deine Rolle beim Hausbau",
     description:
       "Entdecke deine Rolle beim NEST-Haus Bauprozess. Von der ersten Idee bis zur Realisierung.",
-    url: "https://nest-haus.com/dein-part",
+    url: "https://nest-haus.at/dein-part",
     images: [
       {
         url: "/images/dein-part-hero.jpg",
@@ -52,7 +52,7 @@ const deinPartSchema = {
   name: "Dein Part - NEST-Haus",
   description:
     "Deine Rolle und dein Beitrag beim NEST-Haus Bauprozess - von der Planung bis zur Realisierung",
-  url: "https://nest-haus.com/dein-part",
+  url: "https://nest-haus.at/dein-part",
   mainEntity: {
     "@type": "Service",
     name: "Kundenbetreuung und Planungsunterstützung",

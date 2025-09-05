@@ -207,14 +207,14 @@ Two dedicated configuration files allow non-technical team members to modify tes
 
 ### **To Launch Alpha Test**:
 
-1. **Navigate to**: `https://nest-haus.com/?alpha-test=true`
+1. **Navigate to**: `https://nest-haus.at/?alpha-test=true`
 2. **Blue test button** appears in bottom-right corner
 3. **Click button** to start guided test experience
 4. **Users complete** 10-step journey with questions
 
 ### **To View Results**:
 
-1. **Admin dashboard**: `https://nest-haus.com/admin/alpha-tests`
+1. **Admin dashboard**: `https://nest-haus.at/admin/alpha-tests`
 2. **Real-time metrics** and user feedback
 3. **Export reports** for presentations and analysis
 4. **Monitor alerts** for concerning trends

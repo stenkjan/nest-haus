@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   keywords:
     "entdecken nest haus, modulhaus innovation, nachhaltiges bauen, modulare architektur, zukunft des wohnens, energieeffizient",
   alternates: {
-    canonical: "https://nest-haus.com/entdecken",
+    canonical: "https://nest-haus.at/entdecken",
   },
   openGraph: {
     title: "Entdecken | NEST-Haus | Modulare Häuser & Innovation",
     description:
       "Entdecken Sie die Welt der NEST-Haus modularen Bausysteme. Innovation, Nachhaltigkeit und Design.",
-    url: "https://nest-haus.com/entdecken",
+    url: "https://nest-haus.at/entdecken",
     images: [
       {
         url: "/images/entdecken-hero.jpg",
@@ -52,7 +52,7 @@ const entdeckenSchema = {
   name: "Entdecken - NEST-Haus",
   description:
     "Entdecken Sie die Innovation und Nachhaltigkeit der NEST-Haus modularen Bausysteme",
-  url: "https://nest-haus.com/entdecken",
+  url: "https://nest-haus.at/entdecken",
   mainEntity: {
     "@type": "Product",
     name: "NEST-Haus Modulares Bausystem",

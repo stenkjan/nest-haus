@@ -113,12 +113,12 @@ export default function ImpressumClient() {
 
                     <div>
                       <h4 className="font-medium mb-2">E-Mail</h4>
-                      <p>info@nest-haus.com</p>
+                      <p>info@nest-haus.at</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Website</h4>
-                      <p>www.nest-haus.com</p>
+                      <p>www.nest-haus.at</p>
                     </div>
 
                     <div>
@@ -137,22 +137,22 @@ export default function ImpressumClient() {
                   <div className="space-y-4">
                     <div>
                       <h4 className="font-medium mb-2">Beratung & Planung</h4>
-                      <p>beratung@nest-haus.com</p>
+                      <p>beratung@nest-haus.at</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Kundenservice</h4>
-                      <p>service@nest-haus.com</p>
+                      <p>service@nest-haus.at</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Datenschutz</h4>
-                      <p>datenschutz@nest-haus.com</p>
+                      <p>datenschutz@nest-haus.at</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Presse & Medien</h4>
-                      <p>presse@nest-haus.com</p>
+                      <p>presse@nest-haus.at</p>
                     </div>
                   </div>
                 </div>
@@ -328,7 +328,7 @@ export default function ImpressumClient() {
                 <p className="text-lg">
                   Bei Fragen zu diesem Impressum wenden Sie sich bitte an:
                 </p>
-                <p className="text-xl font-medium">info@nest-haus.com</p>
+                <p className="text-xl font-medium">info@nest-haus.at</p>
               </div>
             </div>
           </div>

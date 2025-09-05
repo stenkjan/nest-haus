@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   keywords:
     "warum nest haus, vision modulhaus, nachhaltig bauen motivation, unternehmen vision, modulare architektur philosophie",
   alternates: {
-    canonical: "https://nest-haus.com/warum-wir",
+    canonical: "https://nest-haus.at/warum-wir",
   },
   openGraph: {
     title: "Warum Wir | NEST-Haus | Unser Antrieb & Unsere Vision",
     description:
       "Erfahren Sie, warum NEST-Haus modulare Häuser baut und was uns antreibt. Unsere Vision für nachhaltiges Bauen.",
-    url: "https://nest-haus.com/warum-wir",
+    url: "https://nest-haus.at/warum-wir",
     images: [
       {
         url: "/images/warum-wir-hero.jpg",
@@ -52,7 +52,7 @@ const warumWirSchema = {
   name: "Warum Wir - NEST-Haus",
   description:
     "Die Vision und Motivation hinter NEST-Haus modularen Bausystemen",
-  url: "https://nest-haus.com/warum-wir",
+  url: "https://nest-haus.at/warum-wir",
   mainEntity: {
     "@type": "Organization",
     name: "NEST-Haus",

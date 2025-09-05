@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   keywords:
     "nest haus kontakt, beratungstermin, modulhaus beratung, hausbau beratung, kostenlose beratung, termin vereinbaren",
   alternates: {
-    canonical: "https://nest-haus.com/kontakt",
+    canonical: "https://nest-haus.at/kontakt",
   },
   openGraph: {
     title: "NEST-Haus Kontakt | Kostenlose Beratung",
     description:
       "Vereinbaren Sie einen kostenlosen Beratungstermin mit NEST-Haus. Professionelle Beratung für Ihr modulares Traumhaus.",
-    url: "https://nest-haus.com/kontakt",
+    url: "https://nest-haus.at/kontakt",
     images: [
       {
         url: "/images/kontakt-beratung.jpg",
@@ -52,7 +52,7 @@ const contactSchema = {
   name: "NEST-Haus Kontakt",
   description:
     "Kontaktieren Sie NEST-Haus für eine kostenlose Beratung zu modularen Häusern",
-  url: "https://nest-haus.com/kontakt",
+  url: "https://nest-haus.at/kontakt",
 };
 
 // Local Business Schema for Contact Information
@@ -60,7 +60,7 @@ const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "NEST-Haus",
-  image: "https://nest-haus.com/images/nest-haus-buero.jpg",
+  image: "https://nest-haus.at/images/nest-haus-buero.jpg",
   email: "hello@nest.at",
   telephone: "03847 75090",
   address: {

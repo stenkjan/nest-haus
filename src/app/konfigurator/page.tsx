@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   keywords:
     "hausbau konfigurator, modulhaus planen,  Hausplaner, fertighaus konfigurator, hausplaner online",
   alternates: {
-    canonical: "https://nest-haus.com/konfigurator",
+    canonical: "https://nest-haus.at/konfigurator",
   },
   openGraph: {
     title: "NEST-Haus Konfigurator | Ihr Traumhaus planen",
     description:
       "Gestalten Sie Ihr individuelles Modulhaus mit unserem interaktiven Konfigurator. Sofortige Preiskalkulation inklusive.",
-    url: "https://nest-haus.com/konfigurator",
+    url: "https://nest-haus.at/konfigurator",
     images: [
       {
         url: "/images/konfigurator-preview.jpg",

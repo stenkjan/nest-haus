@@ -14,11 +14,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Deutschland",
+  title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Österreich",
   description:
     "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
   keywords:
-    "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Deutschland, hausbau konfigurator",
+    "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator",
   authors: [{ name: "NEST-Haus" }],
   creator: "NEST-Haus",
   publisher: "NEST-Haus",
@@ -27,15 +27,15 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://nest-haus.com"),
+  metadataBase: new URL("https://nest-haus.at"),
   alternates: {
-    canonical: "https://nest-haus.com",
+    canonical: "https://nest-haus.at",
   },
   openGraph: {
     title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://nest-haus.com",
+    url: "https://nest-haus.at",
     siteName: "NEST-Haus",
     locale: "de_DE",
     type: "website",
@@ -74,8 +74,8 @@ const organizationSchema = {
   "@type": "Organization",
   name: "NEST-Haus",
   description: "Modulare Häuser und nachhaltiges Bauen",
-  url: "https://nest-haus.com",
-  logo: "https://nest-haus.com/logo.png",
+  url: "https://nest-haus.at",
+  logo: "https://nest-haus.at/logo.png",
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",

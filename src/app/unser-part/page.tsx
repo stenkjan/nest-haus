@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   keywords:
     "unser part, nest haus leistungen, modulhaus expertise, baubegleitung, hausbau service, nest haus team, professioneller hausbau",
   alternates: {
-    canonical: "https://nest-haus.com/unser-part",
+    canonical: "https://nest-haus.at/unser-part",
   },
   openGraph: {
     title: "Unser Part | NEST-Haus | Unsere Rolle beim Hausbau",
     description:
       "Entdecke unsere Rolle beim NEST-Haus Bauprozess. Von der Beratung bis zur Realisierung.",
-    url: "https://nest-haus.com/unser-part",
+    url: "https://nest-haus.at/unser-part",
     images: [
       {
         url: "/images/unser-part-hero.jpg",
@@ -52,7 +52,7 @@ const unserPartSchema = {
   name: "Unser Part - NEST-Haus",
   description:
     "Unsere Rolle und unser Beitrag beim NEST-Haus Bauprozess - von der Beratung bis zur Realisierung",
-  url: "https://nest-haus.com/unser-part",
+  url: "https://nest-haus.at/unser-part",
   mainEntity: {
     "@type": "Service",
     name: "NEST-Haus Baubegleitung und Expertise",

@@ -180,7 +180,7 @@ export const metadata: Metadata = {
   title: "Haus Konfigurator | Planung für Ihr Modulhaus | NEST-Haus",
   description: "...",
   keywords: "...",
-  alternates: { canonical: "https://nest-haus.com/konfigurator" },
+  alternates: { canonical: "https://nest-haus.at/konfigurator" },
   openGraph: {
     /* ... */
   },
@@ -368,6 +368,3 @@ If any optimization breaks functionality:
 **Next Implementation Session**: Reference this guide and implement optimizations incrementally, starting with High Priority items. Each optimization should be tested individually before proceeding to the next.
 
 **Contact**: Use this guide to brief development team on implementation requirements and preservation rules.
-
-
-

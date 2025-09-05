@@ -340,10 +340,10 @@ export default function CookieEinstellungenClient() {
                 Bei Fragen zu Cookies und Datenschutz kontaktieren Sie uns
                 unter:{" "}
                 <a
-                  href="mailto:datenschutz@nest-haus.com"
+                  href="mailto:datenschutz@nest-haus.at"
                   className="text-[#3D6DE1] hover:text-[#2855d6] underline"
                 >
-                  datenschutz@nest-haus.com
+                  datenschutz@nest-haus.at
                 </a>
               </p>
             </div>

@@ -3,19 +3,19 @@ import LandingPageClient from "./LandingPageClient";
 
 // Enhanced SEO metadata for the landing page
 export const metadata: Metadata = {
-  title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Deutschland",
+  title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Österreich",
   description:
     "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
   keywords:
-    "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Deutschland, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
+    "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
   alternates: {
-    canonical: "https://nest-haus.com",
+    canonical: "https://nest-haus.at",
   },
   openGraph: {
     title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://nest-haus.com",
+    url: "https://nest-haus.at",
     images: [
       {
         url: "/images/nest-haus-hero.jpg",
@@ -51,10 +51,10 @@ const websiteSchema = {
   "@type": "WebSite",
   name: "NEST-Haus",
   description: "Modulare Häuser und nachhaltiges Bauen",
-  url: "https://nest-haus.com",
+  url: "https://nest-haus.at",
   potentialAction: {
     "@type": "SearchAction",
-    target: "https://nest-haus.com/konfigurator?query={search_term_string}",
+    target: "https://nest-haus.at/konfigurator?query={search_term_string}",
     "query-input": "required name=search_term_string",
   },
 };
@@ -75,15 +75,13 @@ const productSchema = {
     "@type": "AggregateOffer",
     priceCurrency: "EUR",
     availability: "https://schema.org/InStock",
-    url: "https://nest-haus.com/konfigurator",
+    url: "https://nest-haus.at/konfigurator",
   },
   manufacturer: {
     "@type": "Organization",
     name: "NEST-Haus",
   },
 };
-
-
 
 // Server Component - Can handle SEO, metadata, and structured data
 export default function Home() {

@@ -12,7 +12,7 @@ Allow: /konfigurator
 Allow: /warenkorb
 
 # Sitemap location
-Sitemap: https://nest-haus.com/sitemap.xml
+Sitemap: https://nest-haus.at/sitemap.xml
 
 # Crawl delay to prevent overloading server
 Crawl-delay: 1 

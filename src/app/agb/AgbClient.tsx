@@ -464,7 +464,7 @@ export default function AgbClient() {
                       <strong>NEST-Haus GmbH</strong>
                     </p>
                     <p>[Adresse]</p>
-                    <p>E-Mail: widerruf@nest-haus.com</p>
+                    <p>E-Mail: widerruf@nest-haus.at</p>
                   </div>
                 </div>
               </div>
@@ -493,7 +493,7 @@ export default function AgbClient() {
                   </p>
                   <div className="bg-white p-4 rounded border text-sm">
                     <p className="mb-2">
-                      An: NEST-Haus GmbH, [Adresse], widerruf@nest-haus.com
+                      An: NEST-Haus GmbH, [Adresse], widerruf@nest-haus.at
                     </p>
                     <p className="mb-2">
                       Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*)
@@ -779,8 +779,7 @@ export default function AgbClient() {
                   Stand: {new Date().toLocaleDateString("de-AT")} | Version 1.0
                 </p>
                 <p className="text-sm text-gray-600">
-                  Bei Fragen zu diesen AGB wenden Sie sich an:
-                  info@nest-haus.com
+                  Bei Fragen zu diesen AGB wenden Sie sich an: info@nest-haus.at
                 </p>
               </div>
             </div>

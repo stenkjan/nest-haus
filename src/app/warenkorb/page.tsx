@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   keywords:
     "warenkorb, nest haus konfiguration, modulhaus anfrage, hausbau warenkorb, fertighaus bestellen",
   alternates: {
-    canonical: "https://nest-haus.com/warenkorb",
+    canonical: "https://nest-haus.at/warenkorb",
   },
   openGraph: {
     title: "NEST-Haus Warenkorb | Ihre Konfiguration",
     description:
       "Überprüfen Sie Ihre NEST-Haus Konfiguration und stellen Sie Ihre unverbindliche Anfrage.",
-    url: "https://nest-haus.com/warenkorb",
+    url: "https://nest-haus.at/warenkorb",
     images: [
       {
         url: "/images/warenkorb-preview.jpg",
@@ -44,7 +44,7 @@ const shoppingCartSchema = {
   "@type": "ShoppingCart",
   name: "NEST-Haus Warenkorb",
   description: "Modulhaus Konfiguration Warenkorb",
-  url: "https://nest-haus.com/warenkorb",
+  url: "https://nest-haus.at/warenkorb",
 };
 
 // Product schema for modular houses

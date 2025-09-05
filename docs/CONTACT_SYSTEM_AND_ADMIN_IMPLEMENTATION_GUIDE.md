@@ -1,6 +1,6 @@
 ﻿# NEST-Haus Contact System & Admin Panel Implementation Guide
 
-##  Table of Contents
+## Table of Contents
 
 1. [Overview & Architecture](#overview--architecture)
 2. [Contact System Implementation](#contact-system-implementation)
@@ -15,9 +15,10 @@
 
 ---
 
-##  Overview & Architecture
+## Overview & Architecture
 
 ### **System Goals**
+
 - **Lead Generation**: Capture customer inquiries with configuration data
 - **Customer Management**: Comprehensive admin panel for inquiry tracking
 - **Email Automation**: Automated customer communication and admin notifications
@@ -25,6 +26,7 @@
 - **SEO Optimization**: Improved search visibility and organic traffic
 
 ### **Technical Stack**
+
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Backend**: Prisma ORM, PostgreSQL, Redis
 - **Email Service**: Resend API for reliable email delivery
@@ -33,34 +35,34 @@
 - **Form Validation**: Zod for type-safe validation
 
 ### **Architecture Diagram**
+
 `
-        
-   Contact Form         Admin Panel         Email Service  
-   (Frontend)           (Management)        (Automation)   
-        
-                                                      
-          
-                                 
-                    
-                         Database Layer      
-                      (Prisma + PostgreSQL)  
-                    
+
+Contact Form Admin Panel Email Service  
+ (Frontend) (Management) (Automation)
+
+                         Database Layer
+                      (Prisma + PostgreSQL)
+
+
 `
 
 ---
 
-##  Contact System Implementation
+## Contact System Implementation
 
 ### **1. Contact Form Implementation**
 
 #### **Key Features:**
--  **Dual Mode**: General inquiry vs. appointment booking
--  **Smart Validation**: Real-time German error messages
--  **Configuration Integration**: Captures user's house configuration
--  **Contact Preferences**: Email, phone, WhatsApp options
--  **Responsive Design**: Mobile-optimized interface
+
+- **Dual Mode**: General inquiry vs. appointment booking
+- **Smart Validation**: Real-time German error messages
+- **Configuration Integration**: Captures user's house configuration
+- **Contact Preferences**: Email, phone, WhatsApp options
+- **Responsive Design**: Mobile-optimized interface
 
 #### **Form Structure:**
+
 `	ypescript
 interface ContactFormData {
   name: string;                    // Required: Customer name
@@ -77,13 +79,15 @@ interface ContactFormData {
 ### **2. Contact API Route (src/app/api/contact/route.ts)**
 
 #### **Features:**
--  **Data Validation**: Zod schema validation
--  **Database Integration**: CustomerInquiry creation
--  **Session Tracking**: Links to user analytics
--  **Email Automation**: Triggers customer & admin emails
--  **Error Handling**: Graceful failure management
+
+- **Data Validation**: Zod schema validation
+- **Database Integration**: CustomerInquiry creation
+- **Session Tracking**: Links to user analytics
+- **Email Automation**: Triggers customer & admin emails
+- **Error Handling**: Graceful failure management
 
 #### **Processing Flow:**
+
 1. Validate incoming data with Zod schema
 2. Extract client metadata (IP, User-Agent, Session)
 3. Process configuration data and calculate pricing
@@ -94,7 +98,7 @@ interface ContactFormData {
 
 ---
 
-##  Email Automation Service
+## Email Automation Service
 
 ### **EmailService Class (src/lib/EmailService.ts)**
 
@@ -104,6 +108,7 @@ interface ContactFormData {
 `	ypescript
 static async sendCustomerConfirmation(data: CustomerInquiryData): Promise<boolean>
 `
+
 - Professional HTML email templates with NEST-Haus branding
 - Configuration summary with pricing
 - Appointment confirmation details
@@ -114,6 +119,7 @@ static async sendCustomerConfirmation(data: CustomerInquiryData): Promise<boolea
 `	ypescript
 static async sendAdminNotification(data: AdminNotificationData): Promise<boolean>
 `
+
 - Priority flagging for appointment requests
 - Complete customer data summary
 - Configuration analysis with pricing
@@ -124,6 +130,7 @@ static async sendAdminNotification(data: AdminNotificationData): Promise<boolean
 `	ypescript
 static async sendFollowUpEmail(inquiryId: string, followUpType: string): Promise<boolean>
 `
+
 - Day 0: Immediate confirmation
 - Day 1: Configuration review reminder
 - Day 3: Additional resources
@@ -131,6 +138,7 @@ static async sendFollowUpEmail(inquiryId: string, followUpType: string): Promise
 - Day 14: Final follow-up
 
 #### **Email Templates:**
+
 - Mobile-responsive HTML design
 - Brand-consistent styling
 - Plain text fallbacks
@@ -139,11 +147,12 @@ static async sendFollowUpEmail(inquiryId: string, followUpType: string): Promise
 
 ---
 
-##  Admin Panel & Customer Management
+## Admin Panel & Customer Management
 
 ### **Current Structure:**
 
 #### **Main Dashboard (src/app/admin/page.tsx)**
+
 - Real-time metrics display
 - Navigation to specialized sections
 - Performance overview
@@ -152,18 +161,17 @@ static async sendFollowUpEmail(inquiryId: string, followUpType: string): Promise
 #### **Planned Customer Inquiry Management:**
 
 **File Structure:**
-`
-src/app/admin/customer-inquiries/
+`src/app/admin/customer-inquiries/
  page.tsx                 # Inquiry list dashboard
  [id]/page.tsx           # Individual inquiry details
  components/
     InquiryList.tsx     # Paginated table
     InquiryCard.tsx     # Individual cards
     InquiryFilter.tsx   # Search/filter controls
-    StatusBadge.tsx     # Status indicators
-`
+    StatusBadge.tsx     # Status indicators`
 
 **Dashboard Features:**
+
 - Paginated inquiry lists
 - Search and filter capabilities
 - Status tracking and updates
@@ -172,6 +180,7 @@ src/app/admin/customer-inquiries/
 - Configuration analysis
 
 **Individual Inquiry Features:**
+
 - Complete customer information
 - Configuration details and pricing
 - Communication history
@@ -181,11 +190,12 @@ src/app/admin/customer-inquiries/
 
 ---
 
-##  Database Integration & Analytics
+## Database Integration & Analytics
 
 ### **Key Models:**
 
 #### **CustomerInquiry**
+
 `prisma
 model CustomerInquiry {
   id                String        @id @default(cuid())
@@ -204,6 +214,7 @@ model CustomerInquiry {
 `
 
 #### **Analytics Integration:**
+
 - Links to UserSession for complete journey tracking
 - Configuration popularity analysis
 - Conversion funnel metrics
@@ -240,7 +251,7 @@ ORDER BY pc.selectionCount DESC;
 
 ---
 
-##  SEO Implementation Roadmap
+## SEO Implementation Roadmap
 
 ### **Phase 1: Technical Foundation**
 
@@ -249,13 +260,13 @@ ORDER BY pc.selectionCount DESC;
 export default function sitemap() {
   return [
     {
-      url: 'https://nest-haus.com',
+      url: 'https://nest-haus.at',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: 'https://nest-haus.com/kontakt',
+      url: 'https://nest-haus.at/kontakt',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
@@ -278,7 +289,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ['/images/kontakt-hero.jpg'],
     },
     alternates: {
-      canonical: 'https://nest-haus.com/kontakt',
+      canonical: 'https://nest-haus.at/kontakt',
     },
   };
 }
@@ -293,7 +304,7 @@ export async function generateMetadata(): Promise<Metadata> {
   "@type": "Organization",
   "name": "NEST-Haus",
   "description": "Modulare Häuser und nachhaltiges Bauen",
-  "url": "https://nest-haus.com",
+  "url": "https://nest-haus.at",
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "+49-XXX-XXXXXXX",
@@ -304,23 +315,26 @@ export async function generateMetadata(): Promise<Metadata> {
 
 ---
 
-##  Testing & Quality Assurance
+## Testing & Quality Assurance
 
 ### **Testing Strategy:**
 
 **Contact Form Tests:**
+
 - Form submission validation
 - API integration testing
 - Error handling verification
 - Analytics tracking validation
 
 **Email Service Tests:**
+
 - Template rendering verification
 - Delivery confirmation testing
 - Configuration data handling
 - Environment validation
 
 **Admin Panel Tests:**
+
 - Inquiry list functionality
 - Search and filter operations
 - Status updates and tracking
@@ -328,37 +342,44 @@ export async function generateMetadata(): Promise<Metadata> {
 
 ---
 
-##  Deployment & Environment Setup
+## Deployment & Environment Setup
 
 ### **Required Environment Variables:**
+
 `ash
+
 # Database
+
 DATABASE_URL="postgresql://user:password@localhost:5432/nesthaus"
 
 # Email Service
+
 RESEND_API_KEY="re_xxxxxxxxxx"
-RESEND_FROM_EMAIL="noreply@nest-haus.com"
-ADMIN_EMAIL="admin@nest-haus.com"
-SALES_EMAIL="sales@nest-haus.com"
+RESEND_FROM_EMAIL="noreply@nest-haus.at"
+ADMIN_EMAIL="admin@nest-haus.at"
+SALES_EMAIL="sales@nest-haus.at"
 
 # Application
-NEXT_PUBLIC_APP_URL="https://nest-haus.com"
+
+NEXT_PUBLIC_APP_URL="https://nest-haus.at"
 `
 
 ### **Deployment Checklist:**
--  Set up Resend email service
--  Configure DNS records for email
--  Test email delivery
--  Database migration setup
--  Environment variable configuration
--  SSL certificate setup
--  End-to-end testing
+
+- Set up Resend email service
+- Configure DNS records for email
+- Test email delivery
+- Database migration setup
+- Environment variable configuration
+- SSL certificate setup
+- End-to-end testing
 
 ---
 
-##  Usage Instructions
+## Usage Instructions
 
 ### **For Customers:**
+
 1. Visit /kontakt page
 2. Choose inquiry type (general/appointment)
 3. Fill contact form with preferences
@@ -366,6 +387,7 @@ NEXT_PUBLIC_APP_URL="https://nest-haus.com"
 5. Await follow-up within specified timeframe
 
 ### **For Administrators:**
+
 1. Access admin dashboard at /admin
 2. Monitor new inquiries in real-time
 3. Review customer details and configurations
@@ -375,9 +397,10 @@ NEXT_PUBLIC_APP_URL="https://nest-haus.com"
 
 ---
 
-##  Future Enhancements
+## Future Enhancements
 
 ### **Phase 2 Features:**
+
 - **Calendar Integration**: Google Calendar sync for appointments
 - **CRM Integration**: Export leads to external systems
 - **Advanced Analytics**: Machine learning insights
@@ -385,6 +408,7 @@ NEXT_PUBLIC_APP_URL="https://nest-haus.com"
 - **Live Chat**: Real-time customer support
 
 ### **Marketing Automation:**
+
 - **Drip Campaigns**: Automated email sequences
 - **Lead Scoring**: AI-powered qualification
 - **A/B Testing**: Form optimization experiments
@@ -392,9 +416,10 @@ NEXT_PUBLIC_APP_URL="https://nest-haus.com"
 
 ---
 
-##  Success Metrics
+## Success Metrics
 
 ### **Key Performance Indicators:**
+
 - Contact form submission rate
 - Email delivery and engagement rates
 - Admin response time to inquiries
@@ -403,6 +428,7 @@ NEXT_PUBLIC_APP_URL="https://nest-haus.com"
 - SEO ranking improvements
 
 ### **Technical Metrics:**
+
 - API response times
 - Database query performance
 - Email delivery success rate
