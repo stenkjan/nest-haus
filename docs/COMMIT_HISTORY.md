@@ -4,6 +4,39 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6ca915a286e59f89338d1200ca7d42e685d05978] - Fri Sep 5 11:49:09 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Update URLs in documentation and components to reflect the transition from .com to .at domain  - Changed all instances of 'nest-haus.com' to 'nest-haus.at' across various documentation files and components. - Updated metadata, canonical links, and contact information to ensure consistency with the new domain. - Adjusted sitemap and robots.txt to point to the new domain for SEO purposes. - Ensured all email addresses are updated to the new domain format for proper communication.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/agb/AgbClient.tsx
+- src/app/cookie-einstellungen/CookieEinstellungenClient.tsx
+- src/app/datenschutz/DatenschutzClient.tsx
+- src/app/dein-part/page.tsx
+- src/app/entdecken/page.tsx
+- src/app/impressum/ImpressumClient.tsx
+- src/app/konfigurator/page.tsx
+- src/app/kontakt/page.tsx
+- src/app/layout.tsx
+- src/app/page.tsx
+- src/app/sitemap.ts
+- src/app/unser-part/page.tsx
+- src/app/warenkorb/page.tsx
+- src/app/warum-wir/page.tsx
+
+
+#### 📚 Documentation Changes
+- docs/ALPHA_TEST_PRESENTATION_GUIDE.md
+- docs/CONFIGURATOR_OPTIMIZATION_GUIDE.md
+- docs/CONTACT_SYSTEM_AND_ADMIN_IMPLEMENTATION_GUIDE.md
+- docs/SECURITY_TESTING_GUIDE.md
+
+
+---
+
 ## [49df3d778037f91081bf6166b8872ff355bc9380] - Fri Sep 5 11:38:12 2025 +0200
 
 **Author**: stenkjan
