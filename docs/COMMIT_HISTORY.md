@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4898a0ae2eb13052662507975bc31240af8f0002] - Fri Sep 5 12:00:21 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix oklch color compatibility issue in PDF export  - Added comprehensive oklch to rgb color conversion for html2canvas compatibility - Implemented temporary CSS stylesheet to override problematic oklch colors - Added TreeWalker to scan and convert all oklch colors in the DOM - Included extensive color mapping for common Tailwind CSS colors - Added proper cleanup of temporary styles and stylesheets - Enhanced error handling with specific guidance for oklch color issues - Fallback color conversion using hsl approximation for unmapped colors  This resolves the 'Attempting to parse an unsupported color function oklch' error that prevented PDF generation with modern Tailwind CSS colors.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+
+
+---
+
 ## [6ca915a286e59f89338d1200ca7d42e685d05978] - Fri Sep 5 11:49:09 2025 +0200
 
 **Author**: stenkjan
