@@ -442,6 +442,7 @@ export default function AlphaTestDashboard() {
   const [resetSuccess, setResetSuccess] = useState<string | null>(null);
   const [_selectedTest, setSelectedTest] = useState<string | null>(null);
   const [testDetails, setTestDetails] = useState<TestDetails | null>(null);
+  const [exportingPDF, setExportingPDF] = useState(false);
   const [showTestModal, setShowTestModal] = useState(false);
   const [isQuestionRatingsExpanded, setIsQuestionRatingsExpanded] =
     useState(false);
@@ -780,41 +781,147 @@ export default function AlphaTestDashboard() {
 
   const exportToPDF = async () => {
     try {
-      console.log("📄 Exporting dashboard to PDF...");
+      setExportingPDF(true);
+      console.log("📄 Exporting dashboard to PDF with styling...");
 
-      // Use browser's print functionality to generate PDF
-      const printContent = document.getElementById("admin-dashboard-content");
-      if (printContent) {
-        const originalTitle = document.title;
-        document.title = `Alpha Test Dashboard - ${timeRange} - ${new Date().toLocaleDateString()}`;
+      // Dynamic import to avoid SSR issues
+      const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+        import('jspdf'),
+        import('html2canvas')
+      ]);
 
-        // Add print styles
-        const printStyles = `
-          <style>
-            @media print {
-              body * { visibility: hidden; }
-              #admin-dashboard-content, #admin-dashboard-content * { visibility: visible; }
-              #admin-dashboard-content { position: absolute; left: 0; top: 0; width: 100%; }
-              .no-print { display: none !important; }
-              .bg-gradient-to-br { background: #f3f4f6 !important; }
-              .shadow { box-shadow: none !important; border: 1px solid #e5e7eb !important; }
-            }
-          </style>
-        `;
-
-        const head = document.head.innerHTML;
-        document.head.innerHTML = head + printStyles;
-
-        window.print();
-
-        // Restore original title
-        document.title = originalTitle;
-
-        console.log("✅ PDF export initiated");
+      const dashboardElement = document.getElementById("admin-dashboard-content");
+      if (!dashboardElement) {
+        throw new Error("Dashboard content not found");
       }
+
+      // Hide elements that shouldn't be in PDF
+      const elementsToHide = dashboardElement.querySelectorAll('.no-print');
+      elementsToHide.forEach(el => {
+        (el as HTMLElement).style.display = 'none';
+      });
+
+      // Temporarily adjust styles for better PDF rendering
+      const originalStyles = dashboardElement.style.cssText;
+      dashboardElement.style.cssText += `
+        background: white !important;
+        padding: 20px !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+      `;
+
+      // Configure html2canvas options for better quality
+      const canvas = await html2canvas(dashboardElement, {
+        scale: 2, // Higher resolution
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        width: 1200, // Fixed width for consistent layout
+        height: dashboardElement.scrollHeight,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: 1200,
+        windowHeight: dashboardElement.scrollHeight,
+        onclone: (clonedDoc) => {
+          // Ensure all elements are visible in the clone
+          const clonedElement = clonedDoc.getElementById("admin-dashboard-content");
+          if (clonedElement) {
+            // Fix any overflow issues
+            clonedElement.style.overflow = 'visible';
+            // Ensure charts and images are rendered
+            const charts = clonedElement.querySelectorAll('canvas, svg');
+            charts.forEach(chart => {
+              (chart as HTMLElement).style.maxWidth = '100%';
+              (chart as HTMLElement).style.height = 'auto';
+            });
+          }
+        }
+      });
+
+      // Restore original styles
+      dashboardElement.style.cssText = originalStyles;
+
+      // Restore hidden elements
+      elementsToHide.forEach(el => {
+        (el as HTMLElement).style.display = '';
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      
+      // Calculate PDF dimensions
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 295; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+
+      // Create PDF with better layout
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      // Add title page with more information
+      pdf.setFontSize(24);
+      pdf.setTextColor(59, 130, 246); // Blue color
+      pdf.text('Alpha Test Dashboard Report', 20, 30);
+      
+      pdf.setFontSize(14);
+      pdf.setTextColor(0, 0, 0); // Black color
+      pdf.text(`Generated: ${new Date().toLocaleString()}`, 20, 50);
+      pdf.text(`Time Range: ${timeRange}`, 20, 60);
+      
+      if (analytics?.summary) {
+        pdf.text(`Total Tests: ${analytics.summary.totalTests}`, 20, 70);
+        pdf.text(`Completed: ${analytics.summary.completedTests}`, 20, 80);
+        pdf.text(`Completion Rate: ${analytics.summary.completionRate.toFixed(1)}%`, 20, 90);
+        pdf.text(`Average Rating: ${analytics.summary.averageRating.toFixed(1)}/6`, 20, 100);
+      }
+      
+      // Add a line separator
+      pdf.setDrawColor(200, 200, 200);
+      pdf.line(20, 110, 190, 110);
+      
+      let position = 120; // Start position for content
+
+      // Add the dashboard content with better page handling
+      if (heightLeft <= pageHeight - position) {
+        // Content fits on first page
+        pdf.addImage(imgData, 'PNG', 5, position, imgWidth - 10, imgHeight);
+      } else {
+        // Content spans multiple pages - add first part
+        const firstPageHeight = pageHeight - position;
+        pdf.addImage(imgData, 'PNG', 5, position, imgWidth - 10, firstPageHeight);
+        heightLeft -= firstPageHeight;
+
+        // Add remaining content on new pages
+        while (heightLeft > 0) {
+          pdf.addPage();
+          const remainingHeight = Math.min(heightLeft, pageHeight - 20);
+          const sourceY = imgHeight - heightLeft;
+          
+          // Add image section for this page
+          pdf.addImage(
+            imgData, 
+            'PNG', 
+            5, 
+            10, 
+            imgWidth - 10, 
+            remainingHeight
+          );
+          
+          heightLeft -= remainingHeight;
+        }
+      }
+
+      // Save the PDF
+      const fileName = `alpha-test-dashboard-${timeRange}-${new Date().toISOString().split('T')[0]}.pdf`;
+      pdf.save(fileName);
+
+      console.log("✅ PDF exported successfully with styling preserved");
     } catch (error) {
       console.error("Error exporting to PDF:", error);
       alert("Failed to export PDF. Please try again.");
+    } finally {
+      setExportingPDF(false);
     }
   };
 
@@ -911,9 +1018,17 @@ export default function AlphaTestDashboard() {
             </button>
             <button
               onClick={exportToPDF}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+              disabled={exportingPDF}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              📄 Export PDF
+              {exportingPDF ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Generating PDF...
+                </>
+              ) : (
+                <>📄 Export PDF</>
+              )}
             </button>
             <button
               onClick={resetTestData}
