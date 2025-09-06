@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import {
@@ -72,11 +72,43 @@ const sections: SectionDefinition[] = [
   },
 ];
 
-// Material data moved to shared constants for reusability
+// Helper function to get mobile video path
+const getMobileVideoPath = (desktopPath: string): string => {
+  // Map desktop video path to mobile version using constants
+  if (desktopPath === IMAGES.function.nestHausModulSchemaIntro) {
+    const mobilePath = IMAGES.function.mobile.nestHausModulSchemaIntro;
+    console.log("📱 Using mobile video path from constants:", mobilePath);
+    return mobilePath;
+  }
+  console.log("🖥️ Using desktop video path:", desktopPath);
+  return desktopPath;
+};
 
 export default function UnserPartClient() {
   const [currentSectionId, setCurrentSectionId] =
     useState<string>("dein-nest-system");
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Simple width-based mobile detection (same as entdecken page)
+  useEffect(() => {
+    const checkDevice = () => {
+      const newIsMobile = window.innerWidth < 768; // Same breakpoint as entdecken page
+      console.log(
+        "📏 Device check - Width:",
+        window.innerWidth,
+        "isMobile:",
+        newIsMobile
+      );
+      setIsMobile(newIsMobile);
+    };
+
+    // Initial check
+    checkDevice();
+
+    // Listen for resize events
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
   // Analytics tracking for content engagement
   const { trackButtonClick: _trackButtonClick } = useContentAnalytics({
@@ -108,7 +140,14 @@ export default function UnserPartClient() {
             <div className="flex justify-center">
               <div className="w-full max-w-6xl rounded-lg overflow-hidden bg-gray-900">
                 <ClientBlobVideo
-                  path={IMAGES.function.nestHausModulSchemaIntro}
+                  path={
+                    isMobile
+                      ? getMobileVideoPath(
+                          IMAGES.function.nestHausModulSchemaIntro
+                        )
+                      : IMAGES.function.nestHausModulSchemaIntro
+                  }
+                  fallbackSrc={IMAGES.function.mobile.nestHausModulSchemaIntro} // Fallback to mobile version
                   className="w-full h-auto object-contain"
                   autoPlay={true}
                   loop={true}
@@ -116,6 +155,10 @@ export default function UnserPartClient() {
                   playsInline={true}
                   controls={false}
                   enableCache={true}
+                  onError={(error) => {
+                    console.error("🎥 Video component error:", error);
+                    // Could add additional error handling here if needed
+                  }}
                 />
                 {/* Accessibility description for screen readers */}
                 <span className="sr-only">
