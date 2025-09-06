@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button, CallToAction } from "@/components/ui";
+import { LandingImagesCarousel } from "@/components/sections";
 import {
   ThreeByOneGrid,
   FullWidthImageGrid,
@@ -487,6 +488,12 @@ export default function WarumWirClient() {
           />
         </section>
       </SectionRouter>
+
+      {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
+      <div className="hidden md:block">
+        <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
+      </div>
+
       <Footer />
     </div>
   );

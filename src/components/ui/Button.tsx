@@ -5,6 +5,7 @@ export type ButtonVariant =
   | "secondary"
   | "primary-narrow" // Primary button with 1/3 smaller width
   | "secondary-narrow" // Secondary button with 1/3 smaller width
+  | "secondary-narrow-white" // White outline narrow button
   | "secondary-narrow-blue" // Blue secondary button with 1/3 smaller width
   | "tertiary" // Blue outline button
   | "outline" // Outlined button
@@ -88,6 +89,7 @@ const Button: React.FC<ButtonProps> = ({
   const isNarrowVariant =
     variant === "primary-narrow" ||
     variant === "secondary-narrow" ||
+    variant === "secondary-narrow-white" ||
     variant === "secondary-narrow-blue";
   const widthClasses = isNarrowVariant
     ? getNarrowWidthClasses(size)
@@ -106,6 +108,8 @@ const Button: React.FC<ButtonProps> = ({
       "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm",
     "secondary-narrow":
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
+    "secondary-narrow-white":
+      "bg-transparent border-1 border-white text-white hover:bg-white hover:text-black focus:ring-white",
     "secondary-narrow-blue":
       "bg-transparent border-1 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500",
     tertiary:

@@ -147,16 +147,7 @@ export default function ThreeByOneGrid({
                   className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
                   dangerouslySetInnerHTML={{ __html: displayText }}
                 />
-                {showButtons && (
-                  <div className="flex gap-4 justify-center">
-                    <Button variant="primary" size="xs">
-                      {primaryButtonText}
-                    </Button>
-                    <Button variant="secondary" size="xs">
-                      {secondaryButtonText}
-                    </Button>
-                  </div>
-                )}
+                {/* Buttons are hidden on mobile/tablet to match VideoCard16by9 behavior */}
               </motion.div>
             </div>
 
@@ -367,11 +358,19 @@ export default function ThreeByOneGrid({
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
-                      <div className="flex gap-4 justify-center w-full">
-                        <Button variant="primary" size="xs">
+                      <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
+                        <Button
+                          variant="primary-narrow"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {primaryButtonText}
                         </Button>
-                        <Button variant="secondary" size="xs">
+                        <Button
+                          variant="secondary-narrow-white"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {secondaryButtonText}
                         </Button>
                       </div>
@@ -586,11 +585,19 @@ export default function ThreeByOneGrid({
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
-                      <div className="flex gap-4 justify-center w-full">
-                        <Button variant="primary" size="xs">
+                      <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
+                        <Button
+                          variant="primary-narrow"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {primaryButtonText}
                         </Button>
-                        <Button variant="secondary" size="xs">
+                        <Button
+                          variant="secondary-narrow-white"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {secondaryButtonText}
                         </Button>
                       </div>

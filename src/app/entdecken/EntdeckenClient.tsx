@@ -10,7 +10,11 @@ import {
   SquareTextCard,
 } from "@/components/cards";
 import { TwoByTwoImageGrid } from "@/components/grids";
-import { GetInContactBanner, PartnersSection } from "@/components/sections";
+import {
+  GetInContactBanner,
+  PartnersSection,
+  LandingImagesCarousel,
+} from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
 import { IMAGES } from "@/constants/images";
 import {
@@ -341,8 +345,8 @@ export default function EntdeckenClient() {
               <Button variant="primary" size="xs">
                 Die Pakete
               </Button>
-              <Button variant="secondary" size="xs">
-                Mehr Information
+              <Button variant="landing-secondary-blue" size="xs">
+                Jetzt bauen
               </Button>
             </div>
           </div>
@@ -358,6 +362,11 @@ export default function EntdeckenClient() {
 
       {/* Contact Banner - Testing Typography Standards */}
       <GetInContactBanner />
+
+      {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
+      <div className="hidden md:block">
+        <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
+      </div>
 
       <Footer />
     </div>

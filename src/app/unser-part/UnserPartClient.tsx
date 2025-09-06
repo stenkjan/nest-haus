@@ -9,7 +9,7 @@ import {
   ThreeByOneGrid,
 } from "@/components/grids";
 import { ClientBlobVideo } from "@/components/images";
-import { MaterialShowcase } from "@/components/sections";
+import { MaterialShowcase, LandingImagesCarousel } from "@/components/sections";
 import ContentCards from "@/components/cards/ContentCards";
 import { PlanungspaketeCards } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
@@ -177,7 +177,7 @@ export default function UnserPartClient() {
             title="Manchmal kommt es auf die Größe an."
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
             backgroundColor="black"
-            text="<span class='text-gray-400'>Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch</span> intelligente Optimierung <span class='text-gray-400'>– und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert:</span> Präzisionsgefertigte Module, effiziente Fertigung <span class='text-gray-400'>und</span> bewährte Konstruktion <span class='text-gray-400'>sichern</span> höchste Qualität."
+            text="<span class='text-white font-medium'>Standardisierung</span> <span class='text-gray-400'>für</span> <span class='text-white font-medium'>Effizienz</span> <span class='text-gray-400'>und</span> <span class='text-white font-medium'>Kostenoptimierung.</span> <span class='text-gray-400'>Höchste Qualität zu einem leistbaren Preis durch</span> <span class='text-white font-medium'>intelligente</span> <span class='text-white font-medium'>Optimierung</span> <span class='text-gray-400'>– und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert:</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-white font-medium'>effiziente Fertigung</span> <span class='text-gray-400'>und bewährte</span> <span class='text-white font-medium'>Konstruktion</span> <span class='text-gray-400'>sichern</span> <span class='text-white font-medium'>höchste Qualität.</span>"
             textPosition="left"
             maxWidth={false}
             image1={IMAGES.function.nestHausModulKonzept}
@@ -192,7 +192,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="<span class='text-gray-400'>Das bedeutet:</span> schnelle Bauzeiten, zuverlässige Strukturen <span class='text-gray-400'>und ein unschlagbares Preis-Leistungs-Verhältnis. Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> maximale Freiheit: <span class='text-gray-400'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span>"
+              text="<span class='text-gray-400'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>Grundriss-gestaltung, Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span>"
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}
@@ -242,7 +242,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> eines unserer Planungspakete wählen. <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> deine Vision Wirklichkeit werden zu lassen."
+              text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>deine Vision Wirklichkeit werden zu lassen.</span>"
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}
@@ -251,7 +251,7 @@ export default function UnserPartClient() {
               image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
               showButtons={true}
               primaryButtonText="Die Pakete"
-              secondaryButtonText="Mehr erfahren"
+              secondaryButtonText="Jetzt bauen"
             />
           </div>
         </section>
@@ -266,10 +266,19 @@ export default function UnserPartClient() {
             textBox2="Qualität, Langlebigkeit <span class='text-gray-400'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.</span>"
             maxWidth={false}
           />
+          {/* Button Combo After Component */}
+          <div className="flex gap-4 justify-center w-full">
+            <Button variant="primary" size="xs">
+              Dein Part
+            </Button>
+            <Button variant="landing-secondary" size="xs">
+              Jetzt bauen
+            </Button>
+          </div>
         </section>
 
         {/* Grundstück Check Section */}
-        <section id="grundstueck-check" className="w-full py-16 bg-white">
+        <section id="grundstueck-check" className="w-full pt-28 pb-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
@@ -293,7 +302,7 @@ export default function UnserPartClient() {
         </section>
 
         {/* Planungspakete Section */}
-        <section id="planungspakete" className="w-full py-16 bg-white">
+        <section id="planungspakete" className="w-full pt-28 pb-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
@@ -317,8 +326,8 @@ export default function UnserPartClient() {
               <Button variant="primary" size="xs">
                 Die Pakete
               </Button>
-              <Button variant="secondary" size="xs">
-                Mehr Information
+              <Button variant="landing-secondary-blue" size="xs">
+                Jetzt bauen
               </Button>
             </div>
           </div>
@@ -350,6 +359,12 @@ export default function UnserPartClient() {
           </div>
         </section>
       </SectionRouter>
+
+      {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
+      <div className="hidden md:block">
+        <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
+      </div>
+
       <Footer />
     </div>
   );

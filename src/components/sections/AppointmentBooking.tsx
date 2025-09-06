@@ -417,9 +417,9 @@ const AppointmentBooking = ({
             <div className="grid grid-cols-1 gap-4">
               <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
                 <div className="p-6">
-                  <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
                     Kontakt <span className="text-gray-400">Melde dich!</span>
-                  </h3>
+                  </h2>
                   <div className="text-center">
                     <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                       <span className="font-medium">Telefon:</span> +43 (0) 3847
@@ -436,9 +436,9 @@ const AppointmentBooking = ({
 
               <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
                 <div className="p-6">
-                  <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
                     Adresse <span className="text-gray-400">Komm vorbei!</span>
-                  </h3>
+                  </h2>
                   <div className="text-center">
                     <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                       <span className="font-medium">Telefon:</span> +43 (0) 3847
@@ -490,9 +490,9 @@ const AppointmentBooking = ({
             {/* Contact Box - UPDATED CONTENT */}
             <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
               <div className="p-6">
-                <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
+                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
                   Kontakt <span className="text-gray-400">Melde dich!</span>
-                </h3>
+                </h2>
                 <div>
                   <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                     <span className="font-medium">Telefon:</span> +43 (0) 3847
@@ -510,9 +510,9 @@ const AppointmentBooking = ({
             {/* Address Box - UPDATED CONTENT */}
             <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
               <div className="p-6">
-                <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
+                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
                   Adresse <span className="text-gray-400">Komm vorbei!</span>
-                </h3>
+                </h2>
                 <div>
                   <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                     <span className="font-medium">Telefon:</span> +43 (0) 3847
