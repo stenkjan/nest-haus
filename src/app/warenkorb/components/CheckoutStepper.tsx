@@ -458,11 +458,10 @@ export default function CheckoutStepper({
         "Du hast dich für dein Nest-Haus entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
     },
     {
-      title: "Vorentwurfsplan & Grundstückscheck",
-      subtitle:
-        "Wo sollen die Fenster & Türen hin? \n Ist mein Grundstück für ein Nest-Haus geeignet?",
+      title: "Eine starke Basis",
+      subtitle: "Vorentwurf und Grundstückscheck",
       description:
-        "Gemeinsam mit dir legen wir persönlich die genaue Position deiner Fenster und Türen fest – Schritt für Schritt, damit alles zu deinem Grundriss und Alltag passt.\n\nMit unserem Grundstückscheck-Formular prüfen wir alle relevanten Gegebenheiten wie Bebauungsrichtlinien, Abstände, Zufahrten und Versorgungsanschlüsse, sodass du Planungssicherheit hast.\n\nWichtig: Sollten im Zuge der Prüfung unvorhersehbare Erkenntnisse auftreten, die dein Projekt verhindern oder unzumutbar machen, kannst du vom Kauf zurücktreten – ohne Verpflichtung.",
+        "Mit dem Grundstückscheck prüfen wir alle relevanten Rahmenbedingungen wie Bebauungsrichtlinien, Abstände, Zufahrten und Anschlüsse. So weißt du von Anfang an, womit du planen kannst und hast die Sicherheit, dass dein Projekt auf soliden Grundlagen steht.\n\nIm Vorentwurf legen wir gemeinsam die Position deiner Fenster und Türen fest. Schritt für Schritt entsteht so ein Grundriss, der zu deinem Alltag passt. All diese Leistungen sind Teil des Planungspakets Basis, das bereits im Preis deines Nest Hauses enthalten ist.",
     },
     {
       title: "Wähle dein Planungspaket",
@@ -504,7 +503,7 @@ export default function CheckoutStepper({
     const dueNow = 0; // Current upfront payment (service-only) – adjustable later
     const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
-    const terminDone = false; // Integrate with AppointmentBooking state if available
+    const _terminDone = false; // Integrate with AppointmentBooking state if available
 
     // Use local selection if available so summary reflects user choice immediately
     const selectedPlanValue =
@@ -555,6 +554,11 @@ export default function CheckoutStepper({
             <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center pt-4 md:pt-6 pb-2 md:pb-3 whitespace-pre-line">
               {c.title}
             </h2>
+          )}
+          {stepIndex !== 0 && (
+            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal mb-6 text-center text-gray-900 whitespace-pre-line">
+              {c.subtitle}
+            </h3>
           )}
           <div className="w-full"></div>
         </div>
