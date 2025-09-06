@@ -515,14 +515,23 @@ export default function CheckoutStepper({
       : "—";
     const isPlanSelected = Boolean(selectedPlanValue);
 
-    const rowClass = (rowStep: number) => {
-      const isCurrent = stepIndex === rowStep;
-      const isDone = stepIndex > rowStep;
-      const base =
-        "flex items-center justify-between gap-4 py-3 px-4 border-b border-gray-100";
-      if (isCurrent) return `${base} bg-blue-50`;
-      if (isDone) return `${base} bg-gray-50`;
-      return base;
+    const rowWrapperClass =
+      "flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7";
+    const rowTextClass = (rowStep: number) =>
+      stepIndex === rowStep ? "text-gray-900" : "text-gray-400";
+    const getRowSubtitle = (rowStep: number): string => {
+      switch (rowStep) {
+        case 0:
+          return "Preis deiner Auswahl";
+        case 1:
+          return "Prüfung deines Grundstücks";
+        case 2:
+          return "Gewähltes Planungsniveau";
+        case 3:
+          return "Terminplanung";
+        default:
+          return "Voraussichtliches Datum";
+      }
     };
     return (
       <div className="flex flex-col gap-6">
@@ -542,92 +551,169 @@ export default function CheckoutStepper({
                 </div>
               </div>
             </div>
-          ) : (
+          ) : stepIndex === 0 ? null : (
             <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3 text-center pt-4 md:pt-6 pb-2 md:pb-3 whitespace-pre-line">
               {c.title}
             </h2>
           )}
-          <div className="border-b border-gray-200 w-full"></div>
+          <div className="w-full"></div>
         </div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-          <div className="w-full md:w-3/5 text-left md:pr-12">
-            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal mb-8 text-left text-gray-900 whitespace-pre-line">
-              {c.subtitle}
-            </h3>
-            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
-              {c.description}
-            </p>
+          <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
+            {stepIndex !== 0 && (
+              <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal mb-8 text-left text-gray-900 whitespace-pre-line">
+                {c.subtitle}
+              </h3>
+            )}
+            {stepIndex === 0 ? (
+              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left">
+                <p>
+                  Du hast dich für {""}
+                  <span className="text-black">dein Nest-Haus</span> {""}
+                  entschieden. In den nächsten Schritten klären wir gemeinsam,
+                  was wir von dir benötigen und was wir für dich übernehmen,
+                  damit {""}
+                  <span className="text-black">dein Zuhause genau so</span> {""}
+                  wird, wie du es dir wünschst.
+                </p>
+                <p className="mt-6">
+                  <span className="text-black">Wir kümmern uns</span> um die
+                  Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst
+                  du nur für unseren Service – {""}
+                  <span className="text-black">keine Verpflichtung</span>, falls
+                  etwas nicht passt.
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line text-center md:text-left">
+                {c.description}
+              </p>
+            )}
           </div>
-          <div className="w-full md:w-2/5">
-            <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
-              <div className="divide-y divide-gray-100">
-                <div className={rowClass(0)}>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
-                    Dein Nest Haus:
+          <div className="w-full md:w-1/2">
+            <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+              <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500 mb-3">
+                <span className="text-black">Dein Preis</span>
+                <span className="text-gray-300"> Überblick</span>
+              </h2>
+              <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+                <div>
+                  <div className={rowWrapperClass}>
+                    <div className="flex-1 min-w-0">
+                      <div
+                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                          0
+                        )}`}
+                      >
+                        Dein Nest Haus
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                        {getRowSubtitle(0)}
+                      </div>
+                    </div>
+                    <div
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                        0
+                      )}`}
+                    >
+                      {PriceUtils.formatPrice(total)}
+                    </div>
                   </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
-                    {PriceUtils.formatPrice(total)}
+                  <div className={rowWrapperClass}>
+                    <div className="flex-1 min-w-0">
+                      <div
+                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                          1
+                        )}`}
+                      >
+                        Grundstückscheck
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                        {getRowSubtitle(1)}
+                      </div>
+                    </div>
+                    <div
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                        1
+                      )}`}
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        {PriceUtils.formatPrice(3000)}
+                        {grundstueckscheckDone && (
+                          <span aria-hidden className="text-green-600">
+                            ✓
+                          </span>
+                        )}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className={rowClass(1)}>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
-                    Grundstückscheck:
+                  <div className={rowWrapperClass}>
+                    <div className="flex-1 min-w-0">
+                      <div
+                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                          2
+                        )}`}
+                      >
+                        Planungspaket
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                        {getRowSubtitle(2)}
+                      </div>
+                    </div>
+                    <div
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                        2
+                      )}`}
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        {selectedPlanName}
+                        {isPlanSelected && (
+                          <span aria-hidden className="text-green-600">
+                            ✓
+                          </span>
+                        )}
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
-                    <span className="inline-flex items-center gap-2">
-                      {PriceUtils.formatPrice(3000)}
-                      {grundstueckscheckDone && (
-                        <span aria-hidden className="text-green-600">
-                          ✓
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div className={rowClass(2)}>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
-                    Planungspaket:
-                  </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
-                    <span className="inline-flex items-center gap-2">
-                      {selectedPlanName}
-                      {isPlanSelected && (
-                        <span aria-hidden className="text-green-600">
-                          ✓
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div className={rowClass(3)}>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
-                    Termin mit dem Nest Team:
-                  </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
-                    <span className="inline-flex items-center gap-2">
+                  <div className={rowWrapperClass}>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
+                        Termin mit dem Nest Team
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                        {getRowSubtitle(3)}
+                      </div>
+                    </div>
+                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
                       —
-                      {terminDone && (
-                        <span aria-hidden className="text-green-600">
-                          ✓
-                        </span>
-                      )}
-                    </span>
+                    </div>
+                  </div>
+                  <div className={rowWrapperClass}>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
+                        Garantierter Liefertermin
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                        {getRowSubtitle(4)}
+                      </div>
+                    </div>
+                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
+                      —
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between gap-4 py-3 px-4 border-b border-gray-100">
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
-                    Garantierter Liefertermin:
+              </div>
+              <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
+                <div className={rowWrapperClass}>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                      Heute zu bezahlen
+                    </div>
+                    <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                      Grundstückscheck
+                    </div>
                   </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
-                    —
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between gap-4 border-t border-gray-200 pt-3 mt-3 px-4 pb-3">
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed">
-                    Heute zu bezahlen:
-                  </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-bold text-gray-700 leading-relaxed">
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
                     {PriceUtils.formatPrice(dueNow)}
                   </div>
                 </div>
@@ -739,59 +825,55 @@ export default function CheckoutStepper({
   // No extra memoization for summary; rely on lightweight renderer
 
   return (
-    <div className="border border-gray-300 rounded-[19px] px-6 py-6">
+    <div className="px-6 py-6">
       {renderIntro()}
-      <div className="mt-6 border-t border-gray-200 pt-6">
+      <div className="mt-6 pt-6">
         {!hideProgress && renderProgress()}
-        {renderStepHeader()}
+        {stepIndex !== 0 && renderStepHeader()}
 
         {stepIndex === 0 && (
           <div className="space-y-6 pt-8">
             {/* Overview grid: cart on left, summary/upgrade on right */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              <div className="space-y-6">
+            <div className="flex flex-col lg:flex-row gap-8 items-start">
+              <div className="space-y-6 w-full max-w-[520px] lg:flex-none">
+                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500">
+                  <span className="text-black">Dein Nest</span>
+                  <span className="text-gray-300"> Deine Konfiguration</span>
+                </h2>
                 {items.map((item) => (
                   <div
                     key={item.id}
                     className="border border-gray-300 rounded-[19px] px-6 py-4"
                   >
-                    <div className="flex justify-between items-start mb-4 border-b border-gray-100 pb-3">
-                      <div className="flex-1 min-w-0 max-w-[70%]">
-                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                    <div className="flex items-center justify-between gap-4 py-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
                           {getConfigurationTitle(item)}
                         </div>
-                      </div>
-                      <div className="flex-1 text-right max-w-[30%] min-w-0">
-                        <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                          {PriceUtils.formatPrice(
-                            "totalPrice" in item &&
-                              (item as ConfigurationCartItem).nest
-                              ? (item as ConfigurationCartItem).nest?.price || 0
-                              : "totalPrice" in item
-                              ? (item as ConfigurationCartItem).totalPrice
-                              : (item as CartItem).price
-                          )}
-                        </div>
-                        {(() => {
-                          const isConfigItem = "nest" in item;
-                          if (isConfigItem) {
-                            return !!(item as ConfigurationCartItem).nest;
-                          }
-                          return true;
-                        })() && (
-                          <div className="text-[clamp(10px,2.5vw,12px)] text-gray-600 mt-1">
-                            oder{" "}
-                            {calculateMonthlyPayment(
+                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                          {(() => {
+                            const priceValue =
                               "totalPrice" in item &&
-                                (item as ConfigurationCartItem).nest
+                              (item as ConfigurationCartItem).nest
                                 ? (item as ConfigurationCartItem).nest?.price ||
-                                    0
+                                  0
                                 : "totalPrice" in item
                                 ? (item as ConfigurationCartItem).totalPrice
-                                : (item as CartItem).price
-                            )}{" "}
-                            für 240 Monate
-                          </div>
+                                : (item as CartItem).price;
+                            return `oder ${calculateMonthlyPayment(
+                              priceValue
+                            )} für 240 Monate`;
+                          })()}
+                        </div>
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
+                        {PriceUtils.formatPrice(
+                          "totalPrice" in item &&
+                            (item as ConfigurationCartItem).nest
+                            ? (item as ConfigurationCartItem).nest?.price || 0
+                            : "totalPrice" in item
+                            ? (item as ConfigurationCartItem).totalPrice
+                            : (item as CartItem).price
                         )}
                       </div>
                     </div>
@@ -822,24 +904,24 @@ export default function CheckoutStepper({
                           return (
                             <div
                               key={detail.category + "-" + idx}
-                              className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
+                              className="flex items-center justify-between gap-4 py-3"
                             >
-                              <div className="flex-1 min-w-0 max-w-[50%]">
-                                <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
                                   {detail.value}
                                 </div>
-                                <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
+                                <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1 break-words">
                                   {detail.label}
                                 </div>
                               </div>
-                              <div className="flex-1 text-right max-w-[50%] min-w-0">
+                              <div className="text-right min-w-0">
                                 {detail.isIncluded ||
                                 (detail.price && detail.price === 0) ? (
-                                  <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
+                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
                                     inkludiert
                                   </div>
                                 ) : (
-                                  <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
                                     {PriceUtils.formatPrice(detail.price || 0)}
                                   </div>
                                 )}
@@ -852,16 +934,9 @@ export default function CheckoutStepper({
                           <>
                             {topAndMiddleItems.map(renderDetailItem)}
                             {bottomItems.length > 0 && (
-                              <div className="border-t border-gray-200 pt-6 mt-4">
+                              <div>
                                 {bottomItems.map((detail, idx) => (
-                                  <div
-                                    key={detail.category + "-" + idx}
-                                    className={
-                                      detail.category === "grundstueckscheck"
-                                        ? "pt-2"
-                                        : ""
-                                    }
-                                  >
+                                  <div key={detail.category + "-" + idx}>
                                     {renderDetailItem(detail, idx)}
                                   </div>
                                 ))}
@@ -875,7 +950,14 @@ export default function CheckoutStepper({
                 ))}
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-6 w-full lg:flex-1 min-w-0">
+                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500">
+                  <span className="text-black">Dein Nest</span>
+                  <span className="text-gray-300">
+                    {" "}
+                    Ein Einblick in die Zukunft
+                  </span>
+                </h2>
                 {/* Configuration Image Gallery */}
                 <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent">
                   <div
@@ -935,9 +1017,24 @@ export default function CheckoutStepper({
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <Button variant="primary" size="lg" onClick={goNext}>
-                Weiter zum Vorentwurfsplan
+            <div className="flex justify-center mt-10 md:mt-14">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Neu konfigurieren
+              </Button>
+              <span className="inline-block w-3" />
+              <Button
+                variant="primary"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goNext}
+              >
+                Nächster Schritt
               </Button>
             </div>
           </div>
@@ -947,7 +1044,7 @@ export default function CheckoutStepper({
           <div className="space-y-4 pt-8">
             {/* Vorentwurfsplan section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mb-6">
-              <div className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white">
+              <div className="w-full overflow-hidden rounded-2xl bg-white">
                 <HybridBlobImage
                   path={IMAGES.function.nestHausHandDrawing}
                   alt="Vorentwurfsplan – Handzeichnung Grundriss"
@@ -970,7 +1067,7 @@ export default function CheckoutStepper({
             </div>
 
             {/* Process Steps Cards */}
-            <div className="border-t border-gray-200 mt-10 mb-6"></div>
+            <div className="mt-10 mb-6"></div>
             <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-6">
               So läuft der Prozess ab:
             </h4>
@@ -1019,7 +1116,7 @@ export default function CheckoutStepper({
               ))}
             </div>
 
-            <div className="border-t border-gray-200 mt-6 mb-6"></div>
+            <div className="mt-6 mb-6"></div>
             <p className="text-sm text-gray-600">Preis: inkludiert</p>
             <GrundstueckCheckForm backgroundColor="white" maxWidth={false} />
             <div className="flex justify-between">
@@ -1168,14 +1265,14 @@ export default function CheckoutStepper({
 
         {stepIndex === 4 && (
           <div className="space-y-4 pt-8">
-            <div className="border-t border-gray-200 pt-2"></div>
+            <div className="pt-2"></div>
             {/* Title row replaced above - keep spacing consistent */}
             {/* Deine Auswahl Title */}
-            <div className="border-t border-gray-200 pt-2"></div>
+            <div className="pt-2"></div>
             <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
               Deine Auswahl:
             </div>
-            <div className="border-b border-gray-200 pb-2"></div>
+            <div className="pb-2"></div>
 
             <div className="space-y-4">
               {configItem ? (
@@ -1554,13 +1651,13 @@ export default function CheckoutStepper({
                 <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
                   Heute zu bezahlen
                 </div>
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed"></div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
               </div>
               <div className="text-right">
                 <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
                   {PriceUtils.formatPrice(3000)}
                 </div>
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed"></div>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
               </div>
             </div>
             <div className="border-b border-gray-200 pb-2"></div>

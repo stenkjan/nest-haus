@@ -634,8 +634,8 @@ export default function SquareTextCard({
                   const circleClass = isPassed
                     ? "bg-blue-500 border-blue-500 text-white"
                     : isActive
-                      ? "bg-white border-blue-500 text-blue-500"
-                      : "bg-white border-gray-300 text-gray-400";
+                    ? "bg-white border-blue-500 text-blue-500"
+                    : "bg-white border-gray-300 text-gray-400";
 
                   return (
                     <div key={card.id} className="flex flex-col items-center">
@@ -737,8 +737,8 @@ export default function SquareTextCard({
                       isActive
                         ? "bg-gray-900 scale-125"
                         : isPassed
-                          ? "bg-gray-600"
-                          : "bg-gray-300"
+                        ? "bg-gray-600"
+                        : "bg-gray-300"
                     }`}
                     aria-label={`Zu Schritt ${idx + 1}: ${getCardText(
                       card,
@@ -890,8 +890,8 @@ export default function SquareTextCard({
                         isMobile && allCardsExpanded
                           ? expandedHeight
                           : isClient && screenWidth < 768
-                            ? 360 // Mobile collapsed: compact height for title + subtitle + 6 lines of text + padding
-                            : cardWidth, // Desktop/Tablet: Square aspect ratio
+                          ? 360 // Mobile collapsed: compact height for title + subtitle + 6 lines of text + padding
+                          : cardWidth, // Desktop/Tablet: Square aspect ratio
                     }}
                     transition={{
                       duration: 0.4,
@@ -911,7 +911,11 @@ export default function SquareTextCard({
                   >
                     {/* Text Content - Full card */}
                     <div
-                      className={`h-full flex flex-col ${screenWidth < 768 ? "justify-center" : "justify-start"} items-center px-8 md:px-16 py-16 ${screenWidth < 768 ? "pt-16" : "pt-10 md:pt-20"}`}
+                      className={`h-full flex flex-col ${
+                        screenWidth < 768 ? "justify-center" : "justify-start"
+                      } items-center px-8 md:px-16 py-16 ${
+                        screenWidth < 768 ? "pt-16" : "pt-10 md:pt-20"
+                      }`}
                     >
                       {/* Title and Subtitle - Centered horizontally */}
                       <motion.div
@@ -940,7 +944,9 @@ export default function SquareTextCard({
                       <motion.div
                         className={`${
                           screenWidth < 768 ? "text-center" : "text-left"
-                        } relative ${screenWidth < 768 ? "" : "flex-1"} overflow-hidden`}
+                        } relative ${
+                          screenWidth < 768 ? "" : "flex-1"
+                        } overflow-hidden`}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}

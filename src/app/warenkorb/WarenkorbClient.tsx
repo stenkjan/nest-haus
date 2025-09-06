@@ -9,6 +9,7 @@ import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
 import CheckoutProgress from "./components/CheckoutProgress";
 import { CHECKOUT_STEPS } from "./steps";
+import Footer from "@/components/Footer";
 
 export default function WarenkorbClient() {
   const {
@@ -350,14 +351,24 @@ export default function WarenkorbClient() {
   };
 
   return (
-    <div className="min-h-screen bg-white-50" style={{ paddingTop: "5vh" }}>
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-white-50 pt-20 md:pt-24">
+      <div className="w-full mx-auto px-4 py-8">
+        {items.length > 0 && stepIndex === 0 && (
+          <div className="max-w-[1440px] mx-auto mb-10 md:mb-14">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-4 md:mb-5 text-gray-900 text-center">
+              Bereit einzuziehen?
+            </h1>
+            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-10 md:mb-12 text-center">
+              Liefergarantie von 6 Monaten
+            </h3>
+          </div>
+        )}
         {items.length > 0 && (
-          <div className="max-w-6xl mx-auto mb-6">
+          <div className="max-w-[1440px] mx-auto mb-6 mt-12 md:mt-16">
             <CheckoutProgress steps={CHECKOUT_STEPS} stepIndex={stepIndex} />
           </div>
         )}
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-[1440px] mx-auto">
           {items.length === 0 ? (
             /* Empty Cart */
             <div className="text-center py-16 bg-white rounded-lg shadow-sm">
@@ -394,6 +405,7 @@ export default function WarenkorbClient() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
