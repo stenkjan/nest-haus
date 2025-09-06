@@ -53,7 +53,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
 
   const containerClass = maxWidth
     ? "w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8"
-    : "w-full px-[7.5%]";
+    : "w-full";
 
   const goTo = (index: number) => {
     if (isAnimatingRef.current) return;
@@ -136,11 +136,11 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
     <section className={`w-full ${bgClass} hidden md:block`}>
       <div className={containerClass}>
         <div
-          className="relative w-screen -ml-[calc((100vw-100%)/2)] -mr-[calc((100vw-100%)/2)] py-4"
+          className="relative w-full overflow-x-hidden py-4"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="relative w-full">
+          <div className="relative w-screen -ml-[calc((100vw-100%)/2)] -mr-[calc((100vw-100%)/2)]">
             <div className="flex items-center" style={trackStyle}>
               {infiniteImages.map((img, idx) => (
                 <div
