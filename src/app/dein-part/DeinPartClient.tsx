@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import {
-  FullWidthVideoGrid,
   FullWidthTextGrid,
   ImageWithFourTextGrid,
   ThreeByOneGrid,
@@ -13,9 +12,8 @@ import {
   GetInContactBanner,
   LandingImagesCarousel,
 } from "@/components/sections";
-import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
+import { HybridBlobImage } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
-import { SquareGlassCardsScroll } from "@/components/cards";
 import { PlanungspaketeCards } from "@/components/cards";
 
 import { IMAGES } from "@/constants/images";

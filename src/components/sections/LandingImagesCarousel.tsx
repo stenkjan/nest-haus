@@ -13,7 +13,10 @@ interface LandingImagesCarouselProps {
 }
 
 const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
+  // Unused props kept for future extensibility
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   title = "Bildergalerie",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   subtitle = "Einblicke in NEST-Haus",
   backgroundColor = "white",
   maxWidth = true,

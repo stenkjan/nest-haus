@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 
-import { ImageGallery } from "@/components/grids";
+// import { ImageGallery } from "@/components/grids";
 import {
   ContactMap,
   AppointmentBookingSection,
