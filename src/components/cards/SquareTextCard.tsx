@@ -7,7 +7,7 @@ import Link from "next/link";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 import "./mobile-scroll-optimizations.css";
 
-interface SquareTextCardData {
+export interface SquareTextCardData {
   id: number;
   title: string;
   subtitle: string;
