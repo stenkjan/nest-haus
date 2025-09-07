@@ -9,6 +9,7 @@ export { default as ImageGlassCard } from "./ImageGlassCard";
 export { default as SquareGlassCard } from "./SquareGlassCard";
 export { default as SquareGlassCardsScroll } from "./SquareGlassCardsScroll";
 export { default as SquareTextCard } from "./SquareTextCard";
+export { default as CheckoutStepCard } from "./CheckoutStepCard";
 export { default as VideoCard16by9 } from "./VideoCard16by9";
 
 // Unified preset system

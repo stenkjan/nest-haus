@@ -56,6 +56,44 @@
     }
 }
 
+/* Custom SquareTextCard Title Styling */
+.square-text-card-title {
+    font-size: 18px;
+    /* Default mobile */
+    font-weight: 400;
+    /* Regular weight */
+    margin-bottom: 0.3rem;
+    /* 4.8px */
+}
+
+@media (min-width: 768px) {
+    .square-text-card-title {
+        font-size: 24px;
+        /* md breakpoint */
+    }
+}
+
+@media (min-width: 1024px) {
+    .square-text-card-title {
+        font-size: 30px;
+        /* lg breakpoint */
+    }
+}
+
+@media (min-width: 1280px) {
+    .square-text-card-title {
+        font-size: 38px;
+        /* xl breakpoint */
+    }
+}
+
+@media (min-width: 1536px) {
+    .square-text-card-title {
+        font-size: 50px;
+        /* 2xl breakpoint */
+    }
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
     .cards-scroll-container {

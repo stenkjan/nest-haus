@@ -17,6 +17,7 @@ interface SquareTextCardData {
   mobileDescription?: string;
   backgroundColor: string;
   textColor?: string; // Optional custom text color, defaults to gray-900
+  icon?: React.ReactNode; // Optional icon to display above title
 }
 
 interface SquareTextCardProps {
@@ -29,6 +30,45 @@ interface SquareTextCardProps {
   customData?: SquareTextCardData[];
 }
 
+// Default icon component - easily customizable
+const DefaultSquareTextCardIcon = ({
+  className = "w-10 h-10 md:w-14 md:h-14 text-black",
+}: {
+  className?: string;
+}) => (
+  <svg
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    {/* Moving box icon */}
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 1L5 3l4 2 4-2-4-2z"
+    />
+  </svg>
+);
+
+// Helper function to create icons for specific cards - makes it easy to customize later
+export const createSquareTextCardIcon = (
+  cardId: number,
+  customIcon?: React.ReactNode
+): React.ReactNode => {
+  if (customIcon) return customIcon;
+
+  // Future: Add specific icons per card ID
+  // switch (cardId) {
+  //   case 1: return <SpecificIcon1 />;
+  //   case 2: return <SpecificIcon2 />;
+  //   default: return <DefaultSquareTextCardIcon />;
+  // }
+
+  return <DefaultSquareTextCardIcon />;
+};
+
 // Default data for demonstration
 export const defaultSquareTextCardData: SquareTextCardData[] = [
   {
@@ -36,84 +76,91 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     title: "1. Vorentwurf",
     subtitle: "Fenster, Türen, Innenwände",
     description:
-      "Bevor wir starten, prüfen wir gemeinsam die Machbarkeit deines Projekts auf deinem Grundstück. \n\n Im Vorentwurfsplan legen wir Fenster, Türen und Innenwände nach deinen Wünschen fest und stimmen diese Planung mit der zuständigen Gemeinde ab. \n\n Dabei prüfen wir für dich, rechtliche Rahmenbedingungen (Bebauungsplan, Widmung, Bauvorschriften), bautechnische Faktoren (Grundstücksgegebenheiten, Anbindung, Erschließung) und statische Machbarkeit (Tragfähigkeit, Fundament, Aufstellmöglichkeiten).",
+      "Der Vorentwurf verbindet deine Ideen mit unserer Erfahrung. Was du im Konfigurator auswählst, bleibt die Basis und sorgt für volle Preistransparenz.\n\n Gemeinsam planen wir Fenster, Türen, Innenwände und mögliche Zwischendecken. Alles wird mit der Gemeinde abgestimmt und von uns rechtlich wie statisch geprüft, damit dein Zuhause auf sicheren Grundlagen entsteht.",
     mobileTitle: "Modulbau",
     mobileSubtitle: "Flexibel & Erweiterbar",
     mobileDescription:
       "Bevor wir starten, prüfen wir gemeinsam die Machbarkeit deines Projekts auf deinem Grundstück. \n\n Im Vorentwurfsplan legen wir Fenster, Türen und Innenwände nach deinen Wünschen fest und stimmen diese Planung mit der zuständigen Gemeinde ab. \n\n Dabei prüfen wir für dich, rechtliche Rahmenbedingungen (Bebauungsplan, Widmung, Bauvorschriften), bautechnische Faktoren (Grundstücksgegebenheiten, Anbindung, Erschließung) und statische Machbarkeit (Tragfähigkeit, Fundament, Aufstellmöglichkeiten).",
     backgroundColor: "#F9FAFB",
+    icon: <DefaultSquareTextCardIcon />,
   },
   {
     id: 2,
-    title: "2. Einreichplanung",
-    subtitle: "Zwei Wege zum Ziel",
+    title: "2. Einreichplan",
+    subtitle: "Der Wege zum Ziel",
     description:
-      "Nach dem Vorentwurf erstellen wir die komplette Einreichplanung und reichen diese bei der zuständigen Gemeinde ein. Ab hier hast du die Wahl, wie du mit der Bestellung deines Nest Hauses fortfährst:\n\n Option A – Sofort starten\nDu bestellst dein Nest Haus direkt nach dem Vorentwurfsbescheid. Wir garantieren dir einen fixen Liefertermin innerhalb von 6 Monaten.\n\nOption B – Abwarten auf Baubescheid\nDu wartest den positiven Baubescheid der Gemeinde ab, bevor du die Bestellung freigibst. Erst nach dem Bescheid wird der Produktionstermin fixiert.",
+      "Nach dem Vorentwurf übernehmen wir die Einreichplanung und stimmen alles mit der Gemeinde ab. Du wählst den nächsten Schritt: \n\n sofort starten und dein Nest Haus fix nach sechs Monaten erhalten\n\nwarten, bis der Baubescheid vorliegt und wir danach den Produktionstermin festlegen.",
     mobileTitle: "Einreichplanung",
     mobileSubtitle: "Zwei Wege zum Ziel",
     mobileDescription:
       "Nach dem Vorentwurf erstellen wir die komplette Einreichplanung und reichen diese bei der zuständigen Gemeinde ein. Ab hier hast du die Wahl, wie du mit der Bestellung deines Nest Hauses fortfährst:\n\n Option A – Sofort starten\nDu bestellst dein Nest Haus direkt nach dem Vorentwurfsbescheid. Wir garantieren dir einen fixen Liefertermin innerhalb von 6 Monaten.\n\nOption B – Abwarten auf Baubescheid\nDu wartest den positiven Baubescheid der Gemeinde ab, bevor du die Bestellung freigibst. Erst nach dem Bescheid wird der Produktionstermin fixiert.",
     backgroundColor: "#F9FAFB",
+    icon: <DefaultSquareTextCardIcon />,
   },
   {
     id: 3,
-    title: "3. Positiver Baubescheid",
-    subtitle: "Grundstücksvorbereitung & Fundament",
+    title: "3. Baubescheid",
+    subtitle: "Grundstücksvorbereitung",
     description:
-      "Sobald dein Baubescheid vorliegt, startet die Vorbereitung deines Grundstücks. Dazu gehören alle notwendigen Erschließungsarbeiten wie Strom- und Wasseranschluss, Kanal sowie die Zufahrt.\n\nDiese Kosten sind grundstücksabhängig und werden von dir als Bauherr:in getragen. Wir unterstützen dich dabei mit unserem Netzwerk an erfahrenen Partnerfirmen, damit du reibungslos und effizient ans Ziel kommst.\n\nIm nächsten Schritt kümmern wir uns um das Fundament für dein Nest Haus. Planung, Organisation und Umsetzung übernimmt vollständig Nest Haus. Die Kosten dafür sind bereits im Projektpreis enthalten – für dich entstehen keine zusätzlichen Aufwendungen.",
+      "Sobald dein Baubescheid vorliegt, beginnt die Vorbereitung deines Grundstücks. Dazu gehören alle nötigen Erschließungsarbeiten wie Strom, Wasser, Kanal und Zufahrt. \n\nDie Kosten trägst du als Bauherrin oder Bauherr. Wir begleiten dich mit unserem Netzwerk an erfahrenen Partnerfirmen, damit jeder Schritt reibungslos und effizient umgesetzt wird.",
     mobileTitle: "Positiver Baubescheid",
     mobileSubtitle: "Grundstück & Fundament",
     mobileDescription:
       "Sobald dein Baubescheid vorliegt, startet die Vorbereitung deines Grundstücks. Dazu gehören alle notwendigen Erschließungsarbeiten wie Strom- und Wasseranschluss, Kanal sowie die Zufahrt.\n\nDiese Kosten sind grundstücksabhängig und werden von dir als Bauherr:in getragen. Wir unterstützen dich dabei mit unserem Netzwerk an erfahrenen Partnerfirmen, damit du reibungslos und effizient ans Ziel kommst.\n\nIm nächsten Schritt kümmern wir uns um das Fundament für dein Nest Haus. Planung, Organisation und Umsetzung übernimmt vollständig Nest Haus. Die Kosten dafür sind bereits im Projektpreis enthalten – für dich entstehen keine zusätzlichen Aufwendungen.",
     backgroundColor: "#F9FAFB",
+    icon: <DefaultSquareTextCardIcon />,
   },
   {
     id: 4,
     title: "4. Fundament",
-    subtitle: "Die Kosten tragen wir vollständig",
+    subtitle: "Keine zusätzlichen Kosten",
     description:
-      "Sobald dein Grundstück vorbereitet ist, kümmern wir uns um das Fundament für dein Nest Haus. Planung, Organisation und Umsetzung liegen vollständig in unserer Verantwortung.\n\nDie Kosten für das Fundament sind bereits im Gesamtpreis enthalten. Für dich entstehen keine zusätzlichen Aufwendungen. Damit ist die Basis deines Hauses sicher gelegt und alles für die anschließende Montage vorbereitet.",
+      "Ist dein Grundstück vorbereitet, kümmern wir uns um das Fundament deines Nest Hauses. Planung, Organisation und Umsetzung übernehmen wir vollständig. \n\nDie Kosten sind bereits im Gesamtpreis enthalten. So ist die Basis gelegt und dein Zuhause bereit für die Montage.",
     mobileTitle: "Fundament",
     mobileSubtitle: "Die Kosten tragen wir vollständig",
     mobileDescription:
       "Sobald dein Grundstück vorbereitet ist, kümmern wir uns um das Fundament für dein Nest Haus. Planung, Organisation und Umsetzung liegen vollständig in unserer Verantwortung.\n\nDie Kosten für das Fundament sind bereits im Gesamtpreis enthalten. Für dich entstehen keine zusätzlichen Aufwendungen. Damit ist die Basis deines Hauses sicher gelegt und alles für die anschließende Montage vorbereitet.",
     backgroundColor: "#F9FAFB",
+    icon: <DefaultSquareTextCardIcon />,
   },
   {
     id: 5,
-    title: "5. Lieferung & Montage",
-    subtitle: "Transparente Lieferkosten",
+    title: "5. Lieferung + Aufbau",
+    subtitle: "Immer transparent",
     description:
-      "Sobald das Fundament fertiggestellt ist, machen wir dein Nest Haus auf den Weg zu dir. Die Lieferung erfolgt direkt von unserem Produktionsstandort und wird von unserem Team bis ins Detail organisiert. Vor Ort kümmern wir uns um die fachgerechte Montage, sodass dein Haus innerhalb kürzester Zeit steht und beziehbar wird.\n\nDie Lieferkosten sind dabei transparent geregelt:\n\n• Bis 75 km: Kostenlos\n• 75-200 km: € 3.000 Pauschale\n• Über 200 km: Individuelles Angebot\n\nSo weißt du von Anfang an genau, womit du rechnen kannst.",
+      "Ist das Fundament fertig, bringen wir dein Nest Haus direkt zu dir. Lieferung und Montage erfolgen durch unser Team, sodass dein Zuhause in kürzester Zeit steht. Die Kosten sind klar geregelt:\n\nbis 75 km kostenlos\n bis 200 km € 3.000 Pauschale\ndarüber individuelles Angebot.",
     mobileTitle: "Lieferung & Montage",
     mobileSubtitle: "Transparente Lieferkosten",
     mobileDescription:
       "Sobald das Fundament fertiggestellt ist, machen wir dein Nest Haus auf den Weg zu dir. Die Lieferung erfolgt direkt von unserem Produktionsstandort und wird von unserem Team bis ins Detail organisiert. Vor Ort kümmern wir uns um die fachgerechte Montage, sodass dein Haus innerhalb kürzester Zeit steht und beziehbar wird.\n\nDie Lieferkosten sind dabei transparent geregelt:\n\n• Bis 75 km: Kostenlos\n• 75-200 km: € 3.000 Pauschale\n• Über 200 km: Individuelles Angebot\n\nSo weißt du von Anfang an genau, womit du rechnen kannst.",
     backgroundColor: "#F9FAFB",
+    icon: <DefaultSquareTextCardIcon />,
   },
   {
     id: 6,
     title: "6. Fertigstellung",
-    subtitle: "Mit Partnerunternehmen",
+    subtitle: "Gemeinsam stark",
     description:
-      "Für die Fertigstellung begleiten wir dich mit einem Netzwerk aus erfahrenen Partnerfirmen. Gemeinsam mit diesen Fachbetrieben und anhand klarer Planungspakete erhältst du einen Ablaufplan und die passende Unterstützung bis zur bezugsfertigen Übergabe.\n\nDas beinhaltet under anderem:\n• Elektrotechnik: Stromversorgung, Steckdosen, Leitungen, Beleuchtung, Internet, TV\n• Sanitärtechnik: Warmwasserbereitung, Abwasserleitungen, Regenwasserentsorgung, Armaturen, WC, Dusche, Badewanne\n • Heizungsanlagen, Wärmeverteilung, Klimaanlagen\n• Sicherheit & Brandschutz\n• Energie & Zusatzsysteme: Photovoltaikanlagen, Batteriespeicher\n• Innenwände & Zimmertüren\n• Auswahl und Einbau der Türen\n• Außengestaltung, Terrasse und Garten",
+      "Für die Fertigstellung begleiten wir dich mit erfahrenen Partnerfirmen.\n\nGemeinsam mit Fachbetrieben und klaren Planungspaketen erhältst du einen genauen Ablaufplan und Unterstützung bis zur Übergabe. Dazu zählen Elektro, Sanitär, Heizung, Sicherheit, Brandschutz und mehr.",
     mobileTitle: "Fertigstellung",
     mobileSubtitle: "Mit Partnerunternehmen",
     mobileDescription:
       "Für die Fertigstellung begleiten wir dich mit einem Netzwerk aus erfahrenen Partnerfirmen. Gemeinsam mit diesen Fachbetrieben und anhand klarer Planungspakete erhältst du einen Ablaufplan und die passende Unterstützung bis zur bezugsfertigen Übergabe.\n\nDas beinhaltet under anderem:\n• Elektrotechnik: Stromversorgung, Steckdosen, Leitungen, Beleuchtung, Internet, TV\n• Sanitärtechnik: Warmwasserbereitung, Abwasserleitungen, Regenwasserentsorgung, Armaturen, WC, Dusche, Badewanne\n • Heizungsanlagen, Wärmeverteilung, Klimaanlagen\n• Sicherheit & Brandschutz\n• Energie & Zusatzsysteme: Photovoltaikanlagen, Batteriespeicher\n• Innenwände & Zimmertüren\n• Auswahl und Einbau der Türen\n• Außengestaltung, Terrasse und Garten",
     backgroundColor: "#F9FAFB",
+    icon: <DefaultSquareTextCardIcon />,
   },
   {
     id: 7,
-    title: "7. Interior",
-    subtitle: "Planungspaket 03 Pro",
+    title: "7. Interior Design",
+    subtitle: "Planungspaket Pro",
     description:
-      "Bei der Interior-Planung geht es darum, wie sich Räume später anfühlen und genutzt werden – vom Grundriss über die Möblierung bis hin zu Materialien und Farben. Entscheidend ist, dass Küche, Beleuchtung und Ausstattung nicht nur funktional, sondern auch atmosphärisch überzeugen. Ebenso wichtig ist ein stimmiges Zusammenspiel von Innen- und Außenbereichen, damit dein Zuhause als Ganzes wirkt.\n\nMit dem Planungspaket 03 Pro erhältst du dafür eine ganzheitliche Lösung. Küche, Licht und Möblierung werden funktional durchdacht und gestalterisch integriert, während Farben und Materialien für Harmonie sorgen. So entsteht ein individuelles Interiorkonzept, das dein Nest Haus zu einem Ausdruck deiner Persönlichkeit macht – durchdacht, gestaltet und bereit zum Leben.",
+      "Bei der Interior-Planung geht es darum, wie sich deine Räume später anfühlen und genutzt werden – vom Grundriss über Möbel bis zu Materialien und Farben.\n\nWichtig ist, dass Küche, Licht und Ausstattung nicht nur praktisch, sondern auch atmosphärisch überzeugen und Innen- und Außenbereiche harmonisch zusammenspielen.",
     mobileTitle: "Interior",
     mobileSubtitle: "Planungspaket 03 Pro",
     mobileDescription:
       "Bei der Interior-Planung geht es darum, wie sich Räume später anfühlen und genutzt werden – vom Grundriss über die Möblierung bis hin zu Materialien und Farben. Entscheidend ist, dass Küche, Beleuchtung und Ausstattung nicht nur funktional, sondern auch atmosphärisch überzeugen. Ebenso wichtig ist ein stimmiges Zusammenspiel von Innen- und Außenbereichen, damit dein Zuhause als Ganzes wirkt.\n\nMit dem Planungspaket 03 Pro erhältst du dafür eine ganzheitliche Lösung. Küche, Licht und Möblierung werden funktional durchdacht und gestalterisch integriert, während Farben und Materialien für Harmonie sorgen. So entsteht ein individuelles Interiorkonzept, das dein Nest Haus zu einem Ausdruck deiner Persönlichkeit macht – durchdacht, gestaltet und bereit zum Leben.",
     backgroundColor: "#F9FAFB",
+    icon: <DefaultSquareTextCardIcon />,
   },
 ];
 
@@ -917,15 +964,24 @@ export default function SquareTextCard({
                         screenWidth < 768 ? "pt-16" : "pt-10 md:pt-20"
                       }`}
                     >
-                      {/* Title and Subtitle - Centered horizontally */}
+                      {/* Icon, Title and Subtitle - Centered horizontally */}
                       <motion.div
                         className="text-center mb-6"
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1, duration: 0.6 }}
                       >
+                        {/* Icon Space */}
+                        {card.icon && (
+                          <div className="flex justify-center mb-4">
+                            <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
+                              {card.icon}
+                            </div>
+                          </div>
+                        )}
+
                         <h2
-                          className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-1 ${
+                          className={`square-text-card-title ${
                             card.textColor || "text-gray-900"
                           }`}
                         >
