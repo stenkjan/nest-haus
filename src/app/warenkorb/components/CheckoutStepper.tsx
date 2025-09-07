@@ -44,7 +44,7 @@ export default function CheckoutStepper({
   hideProgress = false,
 }: CheckoutStepperProps) {
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
-  const [hasScrolledToBottom, setHasScrolledToBottom] =
+  const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
   const isControlled =
     typeof controlledStepIndex === "number" &&
@@ -111,8 +111,14 @@ export default function CheckoutStepper({
 
   const steps = CHECKOUT_STEPS;
 
-  const goNext = () => setStepIndex((i) => Math.min(i + 1, steps.length - 1));
-  const goPrev = () => setStepIndex((i) => Math.max(i - 1, 0));
+  const goNext = () => {
+    setStepIndex((i) => Math.min(i + 1, steps.length - 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const goPrev = () => {
+    setStepIndex((i) => Math.max(i - 1, 0));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const ensureGrundstueckscheckIncluded = () => {
     if (!configItem) return;

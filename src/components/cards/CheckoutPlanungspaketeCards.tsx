@@ -12,7 +12,7 @@ interface CheckoutPlanungspaketeCardsProps {
 export default function CheckoutPlanungspaketeCards({
   selectedPlan,
   onPlanSelect,
-  basisDisplayPrice = 8500, // Default basis price for delta calculation
+  basisDisplayPrice: _basisDisplayPrice = 8500, // Default basis price for delta calculation
 }: CheckoutPlanungspaketeCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -23,13 +23,13 @@ export default function CheckoutPlanungspaketeCards({
         return (
           <div key={pkg.value} className="h-full">
             <div
-              className={`w-full h-full rounded-3xl overflow-hidden border bg-white cursor-pointer transition-all duration-200 hover:shadow-lg flex flex-col ${
+              className={`w-full md:h-full rounded-3xl overflow-hidden border bg-white cursor-pointer transition-all duration-200 hover:shadow-lg flex flex-col ${
                 isSelected ? "border-blue-600 shadow-md" : "border-gray-300"
               }`}
               onClick={() => onPlanSelect(pkg.value)}
             >
-              {/* Content Section - Flex grow to push price to bottom */}
-              <div className="flex-1 px-6 pt-6 pb-4">
+              {/* Header Section - Title and Price */}
+              <div className="px-6 pt-6">
                 {/* Top Subtitle */}
                 <h3 className="text-base md:text-lg lg:text-lg xl:text-xl text-gray-600 mb-2">
                   {isBasis ? "Inkludiert im Preis" : "Für Aufpreis erhältlich"}
@@ -55,6 +55,25 @@ export default function CheckoutPlanungspaketeCards({
                   </span>
                 </h2>
 
+                {/* Price Section - Mobile: After title, Desktop: At bottom */}
+                <div className="md:hidden mb-6">
+                  <div className="text-lg font-regular text-gray-900">
+                    {pkg.value === "basis"
+                      ? "€ 00,00"
+                      : pkg.value === "komfort"
+                      ? "€ 13.900,00"
+                      : "€ 18.900,00"}
+                  </div>
+                  <div className="text-xs text-gray-600 mt-1">
+                    {pkg.value === "basis"
+                      ? "Wert im Preis inkludiert"
+                      : "Kosten nur bei Inanspruchnahme"}
+                  </div>
+                </div>
+              </div>
+
+              {/* Content Section - Description */}
+              <div className="flex-1 px-6 pb-4">
                 {/* Description */}
                 <div className="space-y-4">
                   {/* Smaller text for "Inkl." section */}
@@ -82,8 +101,8 @@ export default function CheckoutPlanungspaketeCards({
                 </div>
               </div>
 
-              {/* Price Section - At bottom */}
-              <div className="px-6 pb-6">
+              {/* Price Section - Desktop only (at bottom) */}
+              <div className="hidden md:block px-6 pb-6">
                 <div className="text-left pt-4">
                   <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
                     {pkg.value === "basis"
