@@ -32,19 +32,21 @@ export default function KontaktClient() {
     <div className="min-h-screen pt-16">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
-        <div id="calendar">
-          <AppointmentBookingSection backgroundColor="white" maxWidth={false} />
-        </div>
+        <AppointmentBookingSection
+          id="calendar"
+          backgroundColor="white"
+          maxWidth={false}
+        />
 
         {/* Wo du uns findest - Section 2 */}
-        <div id="address">
-          <ContactMap backgroundColor="gray" maxWidth={false} />
-        </div>
+        <ContactMap id="address" backgroundColor="gray" maxWidth={false} />
 
         {/* Dein Grundstück - Unser Check - Section 3 */}
-        <div id="contact">
-          <GrundstueckCheckForm backgroundColor="white" maxWidth={false} />
-        </div>
+        <GrundstueckCheckForm
+          id="contact"
+          backgroundColor="white"
+          maxWidth="max-w-[1440px]"
+        />
 
         {/* Get In Contact Banner Section */}
         <GetInContactBanner

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { SectionContainer } from "./SectionContainer";
 
 interface GrundstueckCheckFormProps {
+  id?: string;
   backgroundColor?: "white" | "gray" | "black";
   maxWidth?: string | false;
   padding?: "sm" | "md" | "lg";
@@ -27,6 +28,7 @@ interface FormData {
 }
 
 export function GrundstueckCheckForm({
+  id,
   backgroundColor = "white",
   maxWidth = false,
   padding = "lg",
@@ -209,7 +211,7 @@ export function GrundstueckCheckForm({
   // Default full-page layout for standalone use
   return (
     <SectionContainer
-      id="grundstueck-check-form"
+      id={id || "grundstueck-check-form"}
       backgroundColor={backgroundColor}
       padding={padding}
       maxWidth={maxWidth}
@@ -257,11 +259,11 @@ export function GrundstueckCheckForm({
 
               <div className="mt-2 space-y-4">
                 <div>
-                  <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
                     Was wir prüfen
                   </h4>
                   <p
-                    className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-relaxed"
+                    className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
                     style={{ color: "#99a1af" }}
                   >
                     Rechtliche Rahmenbedingungen: Wir prüfen, ob dein Grundstück
@@ -272,11 +274,11 @@ export function GrundstueckCheckForm({
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                  <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
                     Baugesetze
                   </h4>
                   <p
-                    className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-relaxed"
+                    className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
                     style={{ color: "#99a1af" }}
                   >
                     Alle relevanten Bauvorschriften werden detailliert
@@ -594,13 +596,13 @@ export function GrundstueckCheckForm({
 
           {/* 3. "Was wir prüfen" and "Baugesetze" sections */}
           <div>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div>
-                <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
                   Was wir prüfen
                 </h4>
                 <p
-                  className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-relaxed"
+                  className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
                   style={{ color: "#99a1af" }}
                 >
                   Rechtliche Rahmenbedingungen: Wir prüfen, ob dein Grundstück
@@ -611,11 +613,11 @@ export function GrundstueckCheckForm({
               </div>
 
               <div>
-                <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
                   Baugesetze
                 </h4>
                 <p
-                  className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-relaxed"
+                  className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
                   style={{ color: "#99a1af" }}
                 >
                   Alle relevanten Bauvorschriften werden detailliert überprüft,

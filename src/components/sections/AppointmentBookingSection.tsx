@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import AppointmentBooking from "./AppointmentBooking";
 
 interface AppointmentBookingSectionProps {
+  id?: string;
   title?: string;
   subtitle?: string;
   backgroundColor?: "white" | "gray";
@@ -11,6 +12,7 @@ interface AppointmentBookingSectionProps {
 export const AppointmentBookingSection: React.FC<
   AppointmentBookingSectionProps
 > = ({
+  id,
   title = "Vereinbare jetzt deinen Termin",
   subtitle = "Wir helfen gerne.",
   backgroundColor = "white",
@@ -22,7 +24,7 @@ export const AppointmentBookingSection: React.FC<
     : "w-full px-[7.5%]";
 
   return (
-    <section className={`w-full py-16 ${bgClass}`}>
+    <section id={id} className={`w-full py-16 ${bgClass}`}>
       <div className={containerClass}>
         <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3 text-center">
           {title}

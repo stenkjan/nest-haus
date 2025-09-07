@@ -459,10 +459,10 @@ const AppointmentBooking = ({
 
       {/* Desktop Layout: Side by side or centered form */}
       <div
-        className={`hidden lg:${
+        className={`hidden ${
           showLeftSide
-            ? "grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
-            : "flex justify-center"
+            ? "lg:grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
+            : "lg:flex lg:justify-center"
         } items-start max-w-[1536px] mx-auto px-[5%]`}
       >
         {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
