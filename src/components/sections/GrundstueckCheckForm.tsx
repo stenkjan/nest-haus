@@ -203,12 +203,6 @@ export function GrundstueckCheckForm({
           className="w-full border border-gray-300 rounded-xl p-3 mb-6"
           placeholder="Zusatzinformationen - optional"
         />
-
-        <div className="flex justify-center">
-          <Button variant="primary" size="xs" type="submit">
-            Prüfen
-          </Button>
-        </div>
       </form>
     );
   }
@@ -436,12 +430,6 @@ export function GrundstueckCheckForm({
                     className="w-full border border-gray-300 rounded-xl p-3 mb-6"
                     placeholder="Zusatzinformationen - optional"
                   />
-
-                  <div className="flex justify-center">
-                    <Button variant="primary" size="xs" type="submit">
-                      Prüfen
-                    </Button>
-                  </div>
                 </form>
               </div>
             </div>
@@ -639,13 +627,6 @@ export function GrundstueckCheckForm({
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* 4. Button at the bottom */}
-          <div className="flex justify-center">
-            <Button variant="primary" size="xs" onClick={handleSubmit}>
-              Prüfen
-            </Button>
           </div>
         </div>
       </div>

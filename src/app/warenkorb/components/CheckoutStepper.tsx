@@ -11,7 +11,10 @@ import {
   type PlanungspaketeCardData,
 } from "@/components/cards/PlanungspaketeCards";
 import { defaultSquareTextCardData } from "@/components/cards/SquareTextCard";
-import { CheckoutStepCard } from "@/components/cards";
+import {
+  CheckoutStepCard,
+  CheckoutPlanungspaketeCards,
+} from "@/components/cards";
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 import { HybridBlobImage } from "@/components/images";
 import { useConfiguratorStore } from "@/store/configuratorStore";
@@ -1119,10 +1122,16 @@ export default function CheckoutStepper({
 
           {stepIndex === 1 && (
             <div className="space-y-4 pt-8">
-              {/* Process Steps Cards */}
-              <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-6">
-                So läuft der Prozess ab:
-              </h4>
+              {/* Process Steps Title Section */}
+              <div className="text-center mb-16">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                  Step by Step nach Hause
+                </h1>
+                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+                  Deine Vorstellungen formen jeden Schritt am Weg zum neuen
+                  Zuhause
+                </h3>
+              </div>
 
               <CheckoutStepCard
                 cards={defaultSquareTextCardData}
@@ -1157,91 +1166,11 @@ export default function CheckoutStepper({
 
           {stepIndex === 2 && (
             <div className="space-y-4 pt-8">
-              <div className="space-y-6">
-                {(planungspaketeCardData as PlanungspaketeCardData[])
-                  .slice(0, 3)
-                  .map((card) => {
-                    const value = card.title.toLowerCase().includes("pro")
-                      ? "pro"
-                      : card.title.toLowerCase().includes("plus")
-                      ? "plus"
-                      : "basis";
-                    const isSelected = localSelectedPlan === value;
-                    const isBasis = value === "basis";
-                    const cardPriceNumber = parseEuro(card.price);
-                    const deltaPrice = Math.max(
-                      0,
-                      cardPriceNumber - basisDisplayPrice
-                    );
-                    return (
-                      <div key={card.id}>
-                        <div
-                          className={
-                            "w-full rounded-3xl overflow-hidden border bg-white " +
-                            (isSelected ? "border-blue-600" : "border-gray-300")
-                          }
-                        >
-                          {/* Top Section */}
-                          <div className="px-6 pt-6 pb-4">
-                            {/* Header Row - Title/Subtitle left, Price right */}
-                            <div className="flex mb-5">
-                              {/* Title/Subtitle - Left Side */}
-                              <div className="flex-1 pr-3">
-                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-2">
-                                  {card.title}
-                                </div>
-                                {card.subtitle && (
-                                  <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-normal text-gray-700">
-                                    {card.subtitle}
-                                  </div>
-                                )}
-                              </div>
-                              {/* Price - Right Side */}
-                              <div className="w-24 md:w-32 flex flex-col justify-start items-end text-right">
-                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1 md:mb-2">
-                                  {isBasis ? (
-                                    <span className="text-green-600">
-                                      inkludiert
-                                    </span>
-                                  ) : (
-                                    PriceUtils.formatPrice(deltaPrice)
-                                  )}
-                                </div>
-                                <div className="text-xs md:text-sm font-medium text-gray-600 line-through opacity-60">
-                                  {card.price}
-                                </div>
-                              </div>
-                            </div>
-                            {/* Description */}
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600 leading-relaxed whitespace-pre-line">
-                              {card.description}
-                            </div>
-                          </div>
-
-                          {/* Extended Description */}
-                          {card.extendedDescription && (
-                            <div className="px-6 pt-2 pb-4">
-                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed whitespace-pre-line">
-                                {card.extendedDescription}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Select Button below the card */}
-                        <div className="pt-3 pb-6 flex justify-center">
-                          <Button
-                            variant="primary"
-                            size="xs"
-                            onClick={() => setLocalSelectedPlan(value)}
-                          >
-                            Paket auswählen
-                          </Button>
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
+              <CheckoutPlanungspaketeCards
+                selectedPlan={localSelectedPlan}
+                onPlanSelect={setLocalSelectedPlan}
+                basisDisplayPrice={basisDisplayPrice}
+              />
 
               <div className="flex justify-center mt-10 md:mt-14">
                 <Button
@@ -1396,32 +1325,33 @@ export default function CheckoutStepper({
                                 <div className="flex-1 min-w-0 max-w-[50%]">
                                   <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
                                     {(() => {
-                                      // Get name from cart item first
+                                      // Get name from cart item first, but use new naming
                                       if (configItem?.planungspaket?.name) {
+                                        const name =
+                                          configItem.planungspaket.name.toLowerCase();
+                                        if (name.includes("basis"))
+                                          return "Planungspaket 01 Basis";
+                                        if (
+                                          name.includes("komfort") ||
+                                          name.includes("plus")
+                                        )
+                                          return "Planungspaket 02 Plus";
+                                        if (
+                                          name.includes("premium") ||
+                                          name.includes("pro")
+                                        )
+                                          return "Planungspaket 03 Pro";
                                         return configItem.planungspaket.name;
                                       }
-                                      // Otherwise get from pricing cards based on localSelectedPlan
+                                      // Otherwise get from localSelectedPlan
                                       if (localSelectedPlan) {
-                                        const pricingCard = (
-                                          planungspaketeCardData as PlanungspaketeCardData[]
-                                        ).find((card) => {
-                                          const cardValue = card.title
-                                            .toLowerCase()
-                                            .includes("pro")
-                                            ? "pro"
-                                            : card.title
-                                                .toLowerCase()
-                                                .includes("plus")
-                                            ? "plus"
-                                            : "basis";
-                                          return (
-                                            cardValue === localSelectedPlan
-                                          );
-                                        });
-                                        return (
-                                          pricingCard?.title ||
-                                          localSelectedPlan
-                                        );
+                                        if (localSelectedPlan === "basis")
+                                          return "Planungspaket 01 Basis";
+                                        if (localSelectedPlan === "komfort")
+                                          return "Planungspaket 02 Plus";
+                                        if (localSelectedPlan === "premium")
+                                          return "Planungspaket 03 Pro";
+                                        return localSelectedPlan;
                                       }
                                       return "—";
                                     })()}
@@ -1432,112 +1362,34 @@ export default function CheckoutStepper({
                                 </div>
                                 <div className="flex-1 text-right max-w-[50%] min-w-0">
                                   {(() => {
-                                    // Get pricing info from cart item first
-                                    if (
-                                      configItem?.planungspaket?.price !==
-                                      undefined
-                                    ) {
-                                      // For cart items, we might not have the full pricing card info
-                                      // So we'll try to find the matching pricing card for display consistency
-                                      const matchingCard = (
-                                        planungspaketeCardData as PlanungspaketeCardData[]
-                                      ).find(
-                                        (card) =>
-                                          card.title ===
-                                          configItem.planungspaket?.name
-                                      );
-                                      if (matchingCard) {
-                                        const isBasis = matchingCard.title
-                                          .toLowerCase()
-                                          .includes("basis");
-                                        const fullPrice = parseEuro(
-                                          matchingCard.price
-                                        );
-                                        const deltaPrice = Math.max(
-                                          0,
-                                          fullPrice - basisDisplayPrice
-                                        );
+                                    // Determine which package we're dealing with
+                                    let packageType = "basis";
 
-                                        return (
-                                          <div className="flex flex-col items-end">
-                                            <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1">
-                                              {isBasis ? (
-                                                <span className="text-green-600">
-                                                  inkludiert
-                                                </span>
-                                              ) : (
-                                                PriceUtils.formatPrice(
-                                                  deltaPrice
-                                                )
-                                              )}
-                                            </div>
-                                            <div className="text-xs md:text-sm font-medium text-gray-600 line-through opacity-60">
-                                              {matchingCard.price}
-                                            </div>
-                                          </div>
-                                        );
-                                      }
-                                      // Fallback if no matching card found
-                                      return (
-                                        <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
-                                          {PriceUtils.formatPrice(
-                                            configItem.planungspaket.price
-                                          )}
-                                        </div>
-                                      );
+                                    if (configItem?.planungspaket?.name) {
+                                      const name =
+                                        configItem.planungspaket.name.toLowerCase();
+                                      if (
+                                        name.includes("komfort") ||
+                                        name.includes("plus")
+                                      )
+                                        packageType = "komfort";
+                                      else if (
+                                        name.includes("premium") ||
+                                        name.includes("pro")
+                                      )
+                                        packageType = "premium";
+                                    } else if (localSelectedPlan) {
+                                      packageType = localSelectedPlan;
                                     }
 
-                                    // Otherwise get from pricing cards based on localSelectedPlan
-                                    if (localSelectedPlan) {
-                                      const pricingCard = (
-                                        planungspaketeCardData as PlanungspaketeCardData[]
-                                      ).find((card) => {
-                                        const cardValue = card.title
-                                          .toLowerCase()
-                                          .includes("pro")
-                                          ? "pro"
-                                          : card.title
-                                              .toLowerCase()
-                                              .includes("plus")
-                                          ? "plus"
-                                          : "basis";
-                                        return cardValue === localSelectedPlan;
-                                      });
-                                      if (pricingCard) {
-                                        const isBasis =
-                                          localSelectedPlan === "basis";
-                                        const fullPrice = parseEuro(
-                                          pricingCard.price
-                                        );
-                                        const deltaPrice = Math.max(
-                                          0,
-                                          fullPrice - basisDisplayPrice
-                                        );
-
-                                        return (
-                                          <div className="flex flex-col items-end">
-                                            <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 mb-1">
-                                              {isBasis ? (
-                                                <span className="text-green-600">
-                                                  inkludiert
-                                                </span>
-                                              ) : (
-                                                PriceUtils.formatPrice(
-                                                  deltaPrice
-                                                )
-                                              )}
-                                            </div>
-                                            <div className="text-xs md:text-sm font-medium text-gray-600 line-through opacity-60">
-                                              {pricingCard.price}
-                                            </div>
-                                          </div>
-                                        );
-                                      }
-                                    }
-
+                                    // Return simple price display
                                     return (
                                       <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
-                                        —
+                                        {packageType === "basis"
+                                          ? "€00,00"
+                                          : packageType === "komfort"
+                                          ? "€13.900,00"
+                                          : "€18.900,00"}
                                       </div>
                                     );
                                   })()}
