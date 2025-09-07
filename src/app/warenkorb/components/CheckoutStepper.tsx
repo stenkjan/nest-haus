@@ -20,7 +20,6 @@ import { HybridBlobImage } from "@/components/images";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import type { ViewType } from "@/app/konfigurator/types/configurator.types";
 import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
-import { IMAGES } from "@/constants/images";
 import { Button } from "@/components/ui";
 
 interface CheckoutStepperProps {
@@ -468,10 +467,10 @@ export default function CheckoutStepper({
         "Mit dem **Grundstückscheck** prüfen wir alle **relevanten Rahmenbedingungen** wie Bebauungsrichtlinien, Abstände, Zufahrten und Anschlüsse. So weißt du von Anfang an, womit du planen kannst und hast die **Sicherheit**, dass dein Projekt auf **soliden Grundlagen** steht.\n\nIm **Vorentwurf** legen wir gemeinsam die Position deiner Fenster und Türen fest. Schritt für Schritt entsteht so **ein Grundriss, der zu deinem Alltag passt**. All diese Leistungen sind Teil des **Planungspakets Basis**, das bereits **im Preis** deines Nest Hauses **enthalten ist**.",
     },
     {
-      title: "Wähle dein Planungspaket",
-      subtitle: "Basis ist inkludiert – Upgrades jederzeit möglich.",
+      title: "Unser Service",
+      subtitle: "Unsere Planungspakete sind hier, um dich zu unterstützen!",
       description:
-        "Starte mit dem Basis-Paket oder wähle Plus/Pro für mehr Leistungen. Wir erstellen die Einreichplanung, koordinieren Technik und unterstützen dich bei allen Schritten. Du kannst später jederzeit upgraden. Preise sind transparent – du zahlst nur, was du brauchst.",
+        "Deine aktuelle Konfiguration enthält das Paket Basis. Dieses ist bereits im Preis deines Nest Hauses inbegriffen und bildet die Grundlage für den gesamten Prozess. \n\n Wenn sich deine Ansprüche im Laufe der Planung verändern, kannst du deine Auswahl jederzeit anpassen. Die zusätzlichen Pakete Plus und Pro bieten dir noch mehr Unterstützung auf dem Weg zu deinem neuen Zuhause.",
     },
     {
       title: "Termin vereinbaren",
@@ -803,28 +802,6 @@ export default function CheckoutStepper({
     );
   };
 
-  const renderStepHeader = () => (
-    <div className="flex items-center justify-between mb-4">
-      <Button
-        variant="secondary-narrow"
-        size="xs"
-        onClick={goPrev}
-        disabled={stepIndex <= 0}
-      >
-        Zurück
-      </Button>
-      <div className="text-sm text-gray-600">{steps[stepIndex]}</div>
-      <Button
-        variant="primary-narrow"
-        size="xs"
-        onClick={goNext}
-        disabled={stepIndex >= steps.length - 1 || !hasScrolledToBottom}
-      >
-        Weiter
-      </Button>
-    </div>
-  );
-
   const _renderOverviewPrice = () => (
     <div className="border border-gray-300 rounded-[19px] px-6 py-4">
       <div className="flex justify-between items-center gap-4">
@@ -1097,7 +1074,7 @@ export default function CheckoutStepper({
                 </div>
               </div>
 
-              <div className="flex justify-center mt-10 md:mt-14">
+              <div className="flex justify-center mt-16 md:mt-20">
                 <Button
                   variant="landing-secondary-blue"
                   size="xs"
@@ -1138,7 +1115,7 @@ export default function CheckoutStepper({
                 maxWidth={true}
               />
 
-              <div className="flex justify-center mt-10 md:mt-14">
+              <div className="flex justify-center mt-16 md:mt-20">
                 <Button
                   variant="landing-secondary-blue"
                   size="xs"
@@ -1172,7 +1149,7 @@ export default function CheckoutStepper({
                 basisDisplayPrice={basisDisplayPrice}
               />
 
-              <div className="flex justify-center mt-10 md:mt-14">
+              <div className="flex justify-center mt-16 md:mt-20">
                 <Button
                   variant="landing-secondary-blue"
                   size="xs"
@@ -1204,7 +1181,7 @@ export default function CheckoutStepper({
             <div className="space-y-4 pt-8">
               <AppointmentBooking showLeftSide={false} />
 
-              <div className="flex justify-center mt-10 md:mt-14">
+              <div className="flex justify-center mt-16 md:mt-20">
                 <Button
                   variant="landing-secondary-blue"
                   size="xs"

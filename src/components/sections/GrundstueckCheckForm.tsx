@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { SectionContainer } from "./SectionContainer";
-import { Button } from "@/components/ui";
 
 interface GrundstueckCheckFormProps {
   backgroundColor?: "white" | "gray" | "black";

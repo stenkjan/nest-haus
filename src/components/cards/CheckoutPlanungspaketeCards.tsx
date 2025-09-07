@@ -2,7 +2,6 @@
 
 import React from "react";
 import { PLANNING_PACKAGES } from "@/constants/configurator";
-import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 
 interface CheckoutPlanungspaketeCardsProps {
   selectedPlan: string | null;
@@ -20,7 +19,6 @@ export default function CheckoutPlanungspaketeCards({
       {PLANNING_PACKAGES.map((pkg) => {
         const isSelected = selectedPlan === pkg.value;
         const isBasis = pkg.value === "basis";
-        const deltaPrice = Math.max(0, pkg.price - basisDisplayPrice);
 
         return (
           <div key={pkg.value} className="h-full">
@@ -89,10 +87,10 @@ export default function CheckoutPlanungspaketeCards({
                 <div className="text-left pt-4">
                   <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
                     {pkg.value === "basis"
-                      ? "€00,00"
+                      ? "€ 00,00"
                       : pkg.value === "komfort"
-                      ? "€13.900,00"
-                      : "€18.900,00"}
+                      ? "€ 13.900,00"
+                      : "€ 18.900,00"}
                   </div>
                   <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 mt-1">
                     {pkg.value === "basis"
