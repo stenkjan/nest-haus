@@ -21,9 +21,14 @@ export default function CheckoutProgress({
             className="absolute left-0 top-3 h-0.5 bg-blue-600 transition-all duration-300"
             style={{
               width:
-                steps.length > 1
-                  ? `${(stepIndex / (steps.length - 1)) * 100}%`
-                  : "0%",
+                steps.length <= 1
+                  ? "0%"
+                  : stepIndex === 0
+                    ? `${100 / steps.length / 2}%` // From left edge to center of first circle (10% for 5 steps)
+                    : stepIndex === steps.length - 1
+                      ? "100%" // Full width when on last step
+                      : `${((stepIndex + 0.5) * 100) / steps.length}%`, // From left edge to center of current step circle
+              transformOrigin: "left center",
             }}
           />
           {/* Step Dots */}
@@ -37,8 +42,8 @@ export default function CheckoutProgress({
               const circleClass = isPassed
                 ? "bg-blue-600 border-blue-600 text-white"
                 : isActive
-                ? "bg-white border-blue-600 text-blue-600"
-                : "bg-white border-gray-300 text-gray-400";
+                  ? "bg-white border-blue-600 text-blue-600"
+                  : "bg-white border-gray-300 text-gray-400";
               return (
                 <div key={idx} className="flex flex-col items-center">
                   <div
@@ -72,8 +77,8 @@ export default function CheckoutProgress({
             const dotClass = isActive
               ? "bg-gray-900 scale-125"
               : isPassed
-              ? "bg-gray-600"
-              : "bg-gray-300";
+                ? "bg-gray-600"
+                : "bg-gray-300";
             return (
               <div
                 key={idx}

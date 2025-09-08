@@ -87,7 +87,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
   {
     id: 2,
     title: "2. Einreichplan",
-    subtitle: "Der Wege zum Ziel",
+    subtitle: "Zwei Wege zum Ziel",
     description:
       "Nach dem Vorentwurf übernehmen wir die Einreichplanung und stimmen alles mit der Gemeinde ab. Du wählst den nächsten Schritt: \n\n sofort starten und dein Nest Haus fix nach sechs Monaten erhalten\n\nwarten, bis der Baubescheid vorliegt und wir danach den Produktionstermin festlegen.",
     mobileTitle: "Einreichplanung",
@@ -664,8 +664,13 @@ export default function SquareTextCard({
                 style={{
                   width:
                     currentIndex === 0
-                      ? "0%"
-                      : `${(currentIndex / (cardData.length - 1)) * 100}%`,
+                      ? `${(1 / (cardData.length * 2)) * 100}%` // From left edge to center of first circle
+                      : cardData.length === 1
+                        ? "100%"
+                        : currentIndex === cardData.length - 1
+                          ? "100%" // Full width when on last step
+                          : `${(1 / (cardData.length * 2)) * 100 + (currentIndex / (cardData.length - 1)) * (100 - 100 / cardData.length)}%`, // Cumulative: from left edge to current step center
+                  transformOrigin: "left center",
                 }}
               />
               {/* Step Dots */}
@@ -681,8 +686,8 @@ export default function SquareTextCard({
                   const circleClass = isPassed
                     ? "bg-blue-500 border-blue-500 text-white"
                     : isActive
-                    ? "bg-white border-blue-500 text-blue-500"
-                    : "bg-white border-gray-300 text-gray-400";
+                      ? "bg-white border-blue-500 text-blue-500"
+                      : "bg-white border-gray-300 text-gray-400";
 
                   return (
                     <div key={card.id} className="flex flex-col items-center">
@@ -784,8 +789,8 @@ export default function SquareTextCard({
                       isActive
                         ? "bg-gray-900 scale-125"
                         : isPassed
-                        ? "bg-gray-600"
-                        : "bg-gray-300"
+                          ? "bg-gray-600"
+                          : "bg-gray-300"
                     }`}
                     aria-label={`Zu Schritt ${idx + 1}: ${getCardText(
                       card,
@@ -937,8 +942,8 @@ export default function SquareTextCard({
                         isMobile && allCardsExpanded
                           ? expandedHeight
                           : isClient && screenWidth < 768
-                          ? 360 // Mobile collapsed: compact height for title + subtitle + 6 lines of text + padding
-                          : cardWidth, // Desktop/Tablet: Square aspect ratio
+                            ? 360 // Mobile collapsed: compact height for title + subtitle + 6 lines of text + padding
+                            : cardWidth, // Desktop/Tablet: Square aspect ratio
                     }}
                     transition={{
                       duration: 0.4,
