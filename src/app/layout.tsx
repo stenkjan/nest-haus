@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-// TODO: Integrate alpha test and cookie components when ready
+// Alpha test components - enable when needed
 // import AlphaTestProvider from "@/components/testing/AlphaTestProvider";
 // import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
-// import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
-// import CookieBanner from "@/components/CookieBanner";
-// import CookieSettingsHandler from "@/components/CookieSettingsHandler";
+// Cookie components - enabled for GDPR compliance
+import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
+import CookieBanner from "@/components/CookieBanner";
+import CookieSettingsHandler from "@/components/CookieSettingsHandler";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -112,8 +113,14 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased bg-white min-h-screen flex flex-col`}
       >
-        <Navbar />
-        <main className="flex-1">{children}</main>
+        <CookieConsentProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+
+          {/* Global Cookie Components */}
+          <CookieBanner />
+          <CookieSettingsHandler />
+        </CookieConsentProvider>
       </body>
     </html>
   );
