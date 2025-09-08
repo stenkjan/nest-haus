@@ -543,226 +543,274 @@ export default function AlphaTestDashboard() {
     return `${validResponses.length} Antworten mit durchschnittlich ${avgLength} Zeichen. Häufige Themen: ${commonThemes.slice(0, 3).join(", ")}.`;
   };
 
-  // Helper function to detect tendency with context awareness
+  // Helper function to detect tendency with improved context awareness (German-focused)
   const detectTendency = (
+    questionId: string,
     questionText: string,
     responses: Array<Record<string, unknown>>
   ): { tendency: string; explanation: string; percentage: number } => {
-    const validResponses = responses
+    const texts = responses
       .map((r) =>
         String(r.value || "")
           .trim()
           .toLowerCase()
       )
-      .filter((text) => text.length > 1);
+      .filter((t) => t.length > 0);
 
-    if (validResponses.length === 0)
+    if (texts.length === 0) {
       return {
         tendency: "Neutral",
         explanation: "Keine Antworten verfügbar",
         percentage: 0,
       };
+    }
 
-    // Analyze question type and context
-    const questionLower = questionText.toLowerCase();
+    const q = questionText.toLowerCase();
 
-    // Question type detection
-    const isWhatMissingQuestion =
-      questionLower.includes("vermisst") ||
-      questionLower.includes("zusätzlich") ||
-      questionLower.includes("genauer beschrieben");
-    const isProblemsQuestion =
-      questionLower.includes("problem") ||
-      questionLower.includes("herausforderung") ||
-      questionLower.includes("schwierig");
-    const isConfusingQuestion =
-      questionLower.includes("irritiert") ||
-      questionLower.includes("verunsichert") ||
-      questionLower.includes("verwirrend");
-    const isUnclearQuestion =
-      questionLower.includes("unklar") ||
-      questionLower.includes("fragezeichen");
-    const isDisplayQuestion =
-      questionLower.includes("darstellung") ||
-      questionLower.includes("erkennbar") ||
-      questionLower.includes("lade-problem");
+    // Question intent classification
+    const isMissing =
+      q.includes("vermisst") ||
+      q.includes("zusätzlich") ||
+      q.includes("genauer");
+    const isProblems =
+      q.includes("problem") ||
+      q.includes("herausforderung") ||
+      q.includes("schwierig");
+    const isConfusing =
+      q.includes("irritiert") ||
+      q.includes("verunsichert") ||
+      q.includes("verwirrend");
+    const isUnclear = q.includes("unklar") || q.includes("fragezeichen");
+    const isDisplay =
+      q.includes("darstellung") ||
+      q.includes("erkennbar") ||
+      q.includes("lade");
 
-    let positiveCount = 0;
-    let negativeCount = 0;
-    let neutralCount = 0;
+    // Generic lexicons (German)
+    const yesWords = ["ja", "jep", "jo", "y", "yes"]; // rarely used, but keep
+    const noWords = [
+      "nein",
+      "kein",
+      "keine",
+      "keines",
+      "nichts",
+      "nix",
+      "keinerlei",
+    ];
 
-    validResponses.forEach((response) => {
-      const responseText = response.trim();
+    const positiveCues = [
+      "gut",
+      "super",
+      "klar",
+      "verständlich",
+      "übersichtlich",
+      "alles",
+      "erkennbar",
+      "passt",
+      "ok",
+      "in ordnung",
+    ];
 
-      // Context-aware analysis based on question type
-      if (isWhatMissingQuestion) {
-        // For "What's missing?" questions: "nothing/little" = positive, specific requests = negative
-        if (
-          responseText.match(
-            /^(nichts|nein|wenig|alles klar|passt|ok|gut so)$/i
-          ) ||
-          responseText.match(/^(nix|nope|-)$/i) ||
-          responseText.length < 10
-        ) {
-          positiveCount++; // Nothing missing = positive
-        } else if (
-          responseText.match(/^(weiß nicht|unsicher|vielleicht|eventuell)$/i)
-        ) {
-          neutralCount++; // Uncertain = neutral
-        } else {
-          negativeCount++; // Specific missing items = negative (room for improvement)
+    const negativeCues = [
+      "schlecht",
+      "probleme",
+      "problem",
+      "lade",
+      "fehlt",
+      "fehlend",
+      "unklar",
+      "verwirrend",
+      "schwierig",
+      "irritiert",
+      "verunsichert",
+      "nicht sichtbar",
+      "nicht erkennbar",
+    ];
+
+    // Special handling: words that imply mixed/uncertain
+    const mixedCues = [
+      "jein",
+      "teilweise",
+      "manchmal",
+      "kommt drauf an",
+      "teils",
+    ];
+
+    // Per-intent polarity mapping where "no/none" should be treated as positive
+    const noMeansPositive =
+      isMissing || isProblems || isConfusing || isUnclear || isDisplay;
+
+    let pos = 0;
+    let neg = 0;
+    let neu = 0;
+
+    const countWords = (t: string) => t.split(/\s+/).filter(Boolean).length;
+    const looksLikeSteps = (t: string) =>
+      /(\b1\.|\b2\.|\b3\.|\b4\.|\b5\.|\bfirst\b|\bzweit|\bdritt)/i.test(t);
+
+    // Specialized handling for instructional questions
+    if (
+      questionId === "advantages-disadvantages" ||
+      questionId === "purchase-to-move-in-process" ||
+      questionId === "window-wall-positioning" ||
+      questionId === "house-categorization" ||
+      questionId === "additional-costs"
+    ) {
+      for (const t of texts) {
+        const w = countWords(t);
+
+        if (questionId === "advantages-disadvantages") {
+          // Detailed listing desired: long answers positive, very short negative
+          if (w >= 20) pos++;
+          else if (w <= 6) neg++;
+          else neu++;
+          continue;
         }
-      } else if (isProblemsQuestion || isConfusingQuestion) {
-        // For "Problems?" questions: "no problems" = positive, specific problems = negative
-        if (
-          responseText.match(
-            /^(nein|nichts|keine|alles gut|kein problem|ok)$/i
-          ) ||
-          responseText.match(/^(nix|nope|-)$/i)
-        ) {
-          positiveCount++; // No problems = positive
-        } else if (responseText.match(/^(weiß nicht|unsicher|manchmal)$/i)) {
-          neutralCount++; // Uncertain = neutral
-        } else {
-          negativeCount++; // Specific problems = negative
-        }
-      } else if (isUnclearQuestion) {
-        // For "What's unclear?" questions: "nothing unclear" = positive, specific unclear items = negative
-        if (
-          responseText.match(/^(nichts|nein|alles klar|verstehe alles|ok)$/i) ||
-          responseText.match(/^(nix|nope|-)$/i)
-        ) {
-          positiveCount++; // Nothing unclear = positive
-        } else if (responseText.match(/^(weiß nicht|unsicher|teilweise)$/i)) {
-          neutralCount++; // Uncertain = neutral
-        } else {
-          negativeCount++; // Specific unclear items = negative
-        }
-      } else if (isDisplayQuestion) {
-        // For display/technical questions: "no problems" = positive, issues = negative
-        if (
-          responseText.match(
-            /^(nein|nichts|alles gut|ok|gut erkennbar|keine probleme)$/i
-          ) ||
-          responseText.includes("gut") ||
-          responseText.includes("klar") ||
-          responseText.includes("schnell")
-        ) {
-          positiveCount++; // No display issues = positive
-        } else if (responseText.match(/^(manchmal|teilweise|geht so)$/i)) {
-          neutralCount++; // Sometimes issues = neutral
-        } else {
-          negativeCount++; // Display problems = negative
-        }
-      } else {
-        // General sentiment analysis for other questions
-        const positiveWords = [
-          "gut",
-          "toll",
-          "super",
-          "perfekt",
-          "einfach",
-          "klar",
-          "schön",
-          "gefällt",
-          "gerne",
-          "ja",
-          "positiv",
-          "hilfreich",
-          "übersichtlich",
-          "verständlich",
-        ];
-        const negativeWords = [
-          "schlecht",
-          "schwer",
-          "kompliziert",
-          "unklar",
-          "fehlt",
-          "problem",
-          "schwierig",
-          "verwirrend",
-          "negativ",
-          "frustrierend",
-          "langsam",
-        ];
-        const neutralWords = [
-          "ok",
-          "geht",
-          "normal",
-          "durchschnitt",
-          "weiß nicht",
-          "unsicher",
-          "vielleicht",
-        ];
 
-        const hasPositive = positiveWords.some((word) =>
-          responseText.includes(word)
-        );
-        const hasNegative = negativeWords.some((word) =>
-          responseText.includes(word)
-        );
-        const hasNeutral = neutralWords.some((word) =>
-          responseText.includes(word)
-        );
+        if (questionId === "purchase-to-move-in-process") {
+          // Detailed multi-step description desired
+          if (w >= 18 || looksLikeSteps(t)) pos++;
+          else if (w <= 6) neg++;
+          else neu++;
+          continue;
+        }
 
-        if (hasPositive && !hasNegative) {
-          positiveCount++;
-        } else if (hasNegative && !hasPositive) {
-          negativeCount++;
-        } else if (hasNeutral || (hasPositive && hasNegative)) {
-          neutralCount++;
-        } else {
-          // Default classification for ambiguous responses
-          if (responseText.length > 50) {
-            negativeCount++; // Long responses often indicate issues
-          } else {
-            neutralCount++; // Short ambiguous responses
-          }
+        if (questionId === "window-wall-positioning") {
+          // Short answer acceptable, empty negative
+          if (w === 0) neg++;
+          else if (w >= 2) pos++;
+          else neu++;
+          continue;
+        }
+
+        if (questionId === "house-categorization") {
+          // Short single-word answer fine, empty negative
+          if (w === 0) neg++;
+          else pos++;
+          continue;
+        }
+
+        if (questionId === "additional-costs") {
+          // At least one sentence desired; 1-2 words negative
+          if (w <= 2) neg++;
+          else if (w >= 8) pos++;
+          else neu++;
+          continue;
         }
       }
-    });
 
-    const totalResponses = validResponses.length;
-    const positivePercentage = Math.round(
-      (positiveCount / totalResponses) * 100
-    );
-    const negativePercentage = Math.round(
-      (negativeCount / totalResponses) * 100
-    );
-    const neutralPercentage = Math.round((neutralCount / totalResponses) * 100);
-
-    // Determine overall tendency
-    if (positiveCount > negativeCount && positiveCount > neutralCount) {
-      return {
-        tendency: "Positiv",
-        explanation: `${positivePercentage}% positive Antworten (${positiveCount}/${totalResponses})`,
-        percentage: positivePercentage,
-      };
-    } else if (negativeCount > positiveCount && negativeCount > neutralCount) {
-      return {
-        tendency: "Negativ",
-        explanation: `${negativePercentage}% negative Antworten (${negativeCount}/${totalResponses})`,
-        percentage: negativePercentage,
-      };
-    } else if (neutralCount > positiveCount && neutralCount > negativeCount) {
+      const totalS = Math.max(1, pos + neg + neu);
+      const pPctS = Math.round((pos / totalS) * 100);
+      const nPctS = Math.round((neg / totalS) * 100);
+      const uPctS = Math.round((neu / totalS) * 100);
+      if (pos > neg && pos >= neu)
+        return {
+          tendency: "Positiv",
+          explanation: `${pPctS}% positive Antworten (${pos}/${totalS})`,
+          percentage: pPctS,
+        };
+      if (neg > pos && neg >= neu)
+        return {
+          tendency: "Negativ",
+          explanation: `${nPctS}% negative Antworten (${neg}/${totalS})`,
+          percentage: nPctS,
+        };
       return {
         tendency: "Neutral",
-        explanation: `${neutralPercentage}% neutrale Antworten (${neutralCount}/${totalResponses})`,
-        percentage: neutralPercentage,
-      };
-    } else {
-      // Mixed results
-      const maxPercentage = Math.max(
-        positivePercentage,
-        negativePercentage,
-        neutralPercentage
-      );
-      return {
-        tendency: "Gemischt",
-        explanation: `Gemischte Antworten: ${positivePercentage}% positiv, ${negativePercentage}% negativ, ${neutralPercentage}% neutral`,
-        percentage: maxPercentage,
+        explanation: `${uPctS}% neutrale/unklare Antworten (${neu}/${totalS})`,
+        percentage: uPctS,
       };
     }
+
+    const countMatches = (text: string, list: string[]) =>
+      list.reduce((acc, w) => acc + (text.includes(w) ? 1 : 0), 0);
+
+    for (const t of texts) {
+      // quick exits
+      if (mixedCues.some((m) => t.includes(m))) {
+        neu++;
+        continue;
+      }
+
+      const hasNo = noWords.some(
+        (n) =>
+          // treat stand-alone "kein/keine/keines" or in tokenized forms
+          t === n ||
+          t.startsWith(n + " ") ||
+          t.includes(" " + n + " ") ||
+          t.endsWith(" " + n)
+      );
+
+      // If question intent is of type "problems/missing/unclear/display",
+      // then "no/none" answers are positive (no problems / nothing missing)
+      if (hasNo && noMeansPositive) {
+        pos++;
+        continue;
+      }
+
+      // Token-based polarity counts
+      const pCount =
+        countMatches(t, positiveCues) +
+        (yesWords.some((y) => t.includes(y)) ? 1 : 0);
+      const nCount = countMatches(t, negativeCues);
+
+      if (pCount > 0 && nCount === 0) {
+        pos++;
+      } else if (nCount > 0 && pCount === 0) {
+        neg++;
+      } else if (nCount > 0 && pCount > 0) {
+        // Mixed within a single answer: decide by ratio; fall back to Neutral if close
+        const total = pCount + nCount;
+        const ratio = pCount / total;
+        if (ratio >= 0.66) pos++;
+        else if (ratio <= 0.33) neg++;
+        else neu++;
+      } else {
+        // Unknown/short reply handling
+        if (t.length <= 3) {
+          // Short tokens like "ok", "gut", "top" -> treat if known, else neutral
+          if (t === "ok" || t === "gut" || t === "top") pos++;
+          else neu++;
+        } else {
+          neu++;
+        }
+      }
+    }
+
+    const total = pos + neg + neu;
+    const toPct = (v: number) => Math.round((v / Math.max(1, total)) * 100);
+    const pPct = toPct(pos);
+    const nPct = toPct(neg);
+    const uPct = toPct(neu);
+
+    // Decide tendency with clear priority, otherwise mark as mixed
+    if (pos > neg && pos >= neu) {
+      return {
+        tendency: "Positiv",
+        explanation: `${pPct}% positive Antworten (${pos}/${total})`,
+        percentage: pPct,
+      };
+    }
+    if (neg > pos && neg >= neu) {
+      return {
+        tendency: "Negativ",
+        explanation: `${nPct}% negative Antworten (${neg}/${total})`,
+        percentage: nPct,
+      };
+    }
+    if (neu >= pos && neu >= neg) {
+      return {
+        tendency: "Neutral",
+        explanation: `${uPct}% neutrale/unklare Antworten (${neu}/${total})`,
+        percentage: uPct,
+      };
+    }
+
+    return {
+      tendency: "Gemischt",
+      explanation: `Gemischte Antworten: ${pPct}% positiv, ${nPct}% negativ, ${uPct}% neutral`,
+      percentage: Math.max(pPct, nPct, uPct),
+    };
   };
 
   const toggleQuestionExpansion = (questionId: string) => {
@@ -1750,6 +1798,7 @@ export default function AlphaTestDashboard() {
                     const keyFindings = extractKeyFindings(question.responses);
                     const summary = generateSummary(question.responses);
                     const tendencyData = detectTendency(
+                      question.questionId,
                       question.questionText,
                       question.responses
                     );

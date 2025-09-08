@@ -219,14 +219,14 @@ export const TEST_STEPS: TestStep[] = [
             {
                 id: "purchase-to-move-in-process",
                 type: "text",
-                question: "Erkläre den Prozess von Kauf bis zum bezugsfertigen Haus in eigenen Worten in 5 Schritten.",
+                question: "Erkläre den Prozess von Kauf bis zum bezugsfertigen Haus in eigenen Worten.",
                 required: true,
                 step: "feedback"
             },
             {
                 id: "window-wall-positioning",
                 type: "text",
-                question: "Wie/wann/von wem werden die Positionierung von Fenstern und Innenwänden festgelegt?",
+                question: "Wie wird die Positionierung von Fenstern und Innenwänden festgelegt?",
                 required: true,
                 step: "feedback"
             },

@@ -1723,13 +1723,57 @@ export default function CheckoutStepper({
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
                 <button
                   type="button"
+                  onClick={() => {
+                    // Trigger alpha test Step 3 (feedback phase)
+                    const isAlphaTest =
+                      new URLSearchParams(window.location.search).get(
+                        "alpha-test"
+                      ) === "true" ||
+                      localStorage.getItem("nest-haus-test-session-id");
+                    if (isAlphaTest) {
+                      console.log(
+                        "🧪 Apple Pay clicked - triggering purchase completion for alpha test"
+                      );
+                      localStorage.setItem(
+                        "nest-haus-test-purchase-completed",
+                        "true"
+                      );
+                      window.dispatchEvent(
+                        new CustomEvent("alpha-test-purchase-completed")
+                      );
+                    }
+                    // TODO: Add actual Apple Pay integration here
+                  }}
                   className="bg-black text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-gray-800 transition-colors"
                 >
                   Mit Apple Pay bezahlen
                 </button>
                 <button
                   type="button"
-                  onClick={onScrollToContact}
+                  onClick={() => {
+                    // Trigger alpha test Step 3 (feedback phase)
+                    const isAlphaTest =
+                      new URLSearchParams(window.location.search).get(
+                        "alpha-test"
+                      ) === "true" ||
+                      localStorage.getItem("nest-haus-test-session-id");
+                    if (isAlphaTest) {
+                      console.log(
+                        "🧪 Zur Kassa clicked - triggering purchase completion for alpha test"
+                      );
+                      localStorage.setItem(
+                        "nest-haus-test-purchase-completed",
+                        "true"
+                      );
+                      window.dispatchEvent(
+                        new CustomEvent("alpha-test-purchase-completed")
+                      );
+                    }
+                    // Call the original scroll to contact function
+                    if (onScrollToContact) {
+                      onScrollToContact();
+                    }
+                  }}
                   className="bg-blue-600 text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
                 >
                   Zur Kassa
