@@ -69,9 +69,9 @@ export default function SquareGlassCard({
     if (!isClient) return 600;
 
     const sizeMultipliers = {
-      small: 0.7,
-      medium: 0.85,
-      large: 1.0,
+      small: 0.56, // 0.7 * 0.8 = 20% reduction
+      medium: 0.68, // 0.85 * 0.8 = 20% reduction
+      large: 0.8, // 1.0 * 0.8 = 20% reduction
     };
 
     const multiplier = sizeMultipliers[size];

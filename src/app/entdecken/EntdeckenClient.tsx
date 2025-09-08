@@ -71,7 +71,7 @@ const sections = [
 const getMobileVideoPath = (desktopPath: string): string => {
   // Map desktop video path to mobile version
   if (desktopPath === IMAGES.variantvideo.ten) {
-    return "10-NEST-Haus-Module-Konstellation-Varianten-Versionen-mobile";
+    return IMAGES.variantvideo.mobile.ten;
   }
   return desktopPath;
 };
@@ -119,7 +119,7 @@ export default function EntdeckenClient() {
             <ClientBlobVideo
               path={
                 isMobile
-                  ? getMobileVideoPath(IMAGES.variantvideo.ten)
+                  ? IMAGES.variantvideo.mobile.ten
                   : IMAGES.variantvideo.ten
               }
               autoPlay={true}

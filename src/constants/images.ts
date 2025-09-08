@@ -37,6 +37,9 @@ export const IMAGES = {
         nine: '9-NEST-Haus-Module-Konstellation-Varianten-Versionen-Serienanfertigung-Animation',
         ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation',
         eleven: '11-NEST-Haus-Module-Transport-Animation-Schema',
+        mobile: {
+            ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation-mobile'
+        }
     },
 
     // Video content for cards
@@ -109,8 +112,8 @@ export const IMAGES = {
     // Function/Process images
     function: {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
-        nestHausModulSchemaIntro: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-intro-animation-mobile',
-        nestHausModulSchemaOutro: '17-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-abschluss-animation-mobile',
+        nestHausModulSchemaIntro: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-intro-animation',
+        nestHausModulSchemaOutro: '17-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-abschluss-animation',
         nestHausModulAnsicht: '20-NEST-Haus-Modul-Ansicht-Stirnseite-Holz-Schema-Konzept',
         nestHausModulKonzept: '21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept',
         nestHausModulLiniengrafik: '22-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept',
@@ -133,10 +136,10 @@ export const IMAGES = {
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung',
         nestHausFlexibilitaetErweiterung: '40-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         // Desktop versions of images 13-16
-        nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
-        nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz-mobile',
-        nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung-mobile',
-        nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept-mobile',
+        nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau',
+        nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz',
+        nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung',
+        nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept',
         // Mobile versions for function images
         mobile: {
             nestHausModulSchemaIntro: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-intro-animation-mobile',

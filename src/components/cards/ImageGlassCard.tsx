@@ -51,7 +51,7 @@ export default function ImageGlassCard({
           <div className="flex justify-center">
             {/* Glass Card with Image - Standard responsive sizing */}
             <motion.div
-              className="w-full max-w-6xl rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="w-4/5 max-w-5xl mx-auto rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               style={{
                 backgroundColor: "#121212",
                 boxShadow:
@@ -67,13 +67,13 @@ export default function ImageGlassCard({
                 <HybridBlobImage
                   path={image}
                   alt="NEST-Haus Planung und Innenausbau Zeichnung Grundriss"
-                  width={1200}
-                  height={800}
+                  width={960}
+                  height={640}
                   className="w-full h-auto object-cover"
                   strategy="client"
                   isInteractive={true}
                   enableCache={true}
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 80vw, (max-width: 1280px) 70vw, 1024px"
+                  sizes="(max-width: 640px) 80vw, (max-width: 768px) 72vw, (max-width: 1024px) 64vw, (max-width: 1280px) 56vw, 819px"
                 />
               </div>
             </motion.div>

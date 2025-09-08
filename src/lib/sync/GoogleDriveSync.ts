@@ -715,6 +715,12 @@ export class GoogleDriveSync {
       const titleWithMobile = driveImg.isMobile ? `${driveImg.title}-mobile` : driveImg.title;
       const fileName = `images/${driveImg.number}-${titleWithMobile}-${hash}.${driveImg.extension}`;
 
+      // SAFETY CHECK: Ensure we're not accidentally adding -mobile to desktop images
+      if (!driveImg.isMobile && titleWithMobile.includes('-mobile')) {
+        console.error(`🚨 SAFETY CHECK FAILED: Desktop image has -mobile suffix: ${fileName}`);
+        throw new Error(`Desktop image contamination detected: ${fileName}`);
+      }
+
       console.log(`⬆️ Uploading ${driveImg.isMobile ? 'mobile' : 'desktop'} version: ${fileName}`);
 
       // Determine content type based on extension

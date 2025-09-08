@@ -1,36 +1,57 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  // Clean footer structure without functional links
+  // Footer structure with navigation links
   const footerColumns = [
     {
       title: "Mit uns Bauen",
       items: [
-        "Der Konfigurator",
-        "Unsere Angebote",
-        "Finanzierung",
-        "Rechtliches",
+        { text: "Der Konfigurator", href: "/konfigurator" },
+        { text: "Unsere Angebote", href: "/warenkorb" },
+        { text: "Finanzierung", href: "/warenkorb" },
+        { text: "Rechtliches", href: "/warenkorb" },
       ],
     },
     {
       title: "Warum Wir",
-      items: ["Deine Vorteile", "Funktionsweise", "Nachhaltigkeit", "Qualität"],
+      items: [
+        { text: "Deine Vorteile", href: "/entdecken" },
+        { text: "Funktionsweise", href: "/entdecken" },
+        { text: "Nachhaltigkeit", href: "/entdecken" },
+        { text: "Qualität", href: "/entdecken" },
+      ],
     },
     {
       title: "Unsere Services",
-      items: ["Die Pakete", "Beratungen", "Finanzierung", "Support"],
+      items: [
+        { text: "Die Pakete", href: "/unser-part" },
+        { text: "Beratungen", href: "/unser-part" },
+        { text: "Finanzierung", href: "/unser-part" },
+        { text: "Support", href: "/unser-part" },
+      ],
     },
     {
       title: "Unternehmen",
-      items: ["Über uns", "Team", "Karriere", "Presse"],
+      items: [
+        { text: "Über uns", href: "/warum-wir" },
+        { text: "Team", href: "/warum-wir" },
+        { text: "Karriere", href: "/warum-wir" },
+        { text: "Presse", href: "/warum-wir" },
+      ],
     },
     {
       title: "Kontakt",
-      items: ["Beratung", "Support", "Standorte", "Newsletter"],
+      items: [
+        { text: "Beratung", href: "/kontakt" },
+        { text: "Support", href: "/kontakt" },
+        { text: "Standorte", href: "/kontakt" },
+        { text: "Newsletter", href: "/kontakt" },
+      ],
     },
   ];
 
@@ -47,9 +68,12 @@ export default function Footer() {
               <ul className="space-y-3" role="list">
                 {column.items.map((item, itemIndex) => (
                   <li key={itemIndex}>
-                    <span className="text-[clamp(12px,2.2vw,14px)] text-gray-600 hover:text-gray-900 cursor-pointer transition-colors">
-                      {item}
-                    </span>
+                    <Link
+                      href={item.href}
+                      className="text-[clamp(12px,2.2vw,14px)] text-gray-600 hover:text-gray-900 cursor-pointer transition-colors"
+                    >
+                      {item.text}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -67,7 +91,9 @@ export default function Footer() {
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center text-[clamp(12px,2.2vw,14px)] text-gray-500 space-y-4 md:space-y-0">
           <div>
-            <p>Copyright © {currentYear} NEST-Haus. Alle Rechte vorbehalten.</p>
+            <p>
+              Copyright © {currentYear} NEST-Haus. Alle Rechte vorbehalten.
+            </p>
           </div>
 
           <div className="flex space-x-6">

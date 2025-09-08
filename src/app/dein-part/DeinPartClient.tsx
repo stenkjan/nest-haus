@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
+import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
+import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
 import {
   FullWidthTextGrid,
   ImageWithFourTextGrid,
@@ -90,6 +93,8 @@ const sections = [
 
 export default function DeinPartClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("freiraum");
+  const { isOpen, openPlanungspakete, closePlanungspakete } =
+    usePlanungspaketePopup();
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -125,10 +130,10 @@ export default function DeinPartClient() {
                     <HybridBlobImage
                       path={IMAGES.function.nestHausGrundrissSchema}
                       alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
-                      width={1920}
-                      height={1011}
-                      className="w-full h-auto object-contain"
-                      sizes="(max-width: 768px) calc(100vw - 32px), (max-width: 1024px) calc(100vw - 64px), 1152px"
+                      width={1536}
+                      height={809}
+                      className="w-4/5 h-auto object-contain mx-auto"
+                      sizes="(max-width: 768px) calc(80vw - 32px), (max-width: 1024px) calc(80vw - 64px), 922px"
                       quality={85}
                       strategy="client"
                       enableCache={true}
@@ -160,12 +165,18 @@ export default function DeinPartClient() {
 
                 {/* Additional Button Combination */}
                 <div className="flex gap-4 justify-center w-full mt-8">
-                  <Button variant="primary" size="xs">
+                  <Button
+                    variant="primary"
+                    size="xs"
+                    onClick={openPlanungspakete}
+                  >
                     Die Pakete
                   </Button>
-                  <Button variant="landing-secondary-blue" size="xs">
-                    Jetzt bauen
-                  </Button>
+                  <Link href="/konfigurator">
+                    <Button variant="landing-secondary-blue" size="xs">
+                      Jetzt bauen
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -246,12 +257,18 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
 
               {/* Button Combo After Component */}
               <div className="flex gap-4 justify-center w-full mt-16">
-                <Button variant="primary" size="xs">
+                <Button
+                  variant="primary"
+                  size="xs"
+                  onClick={openPlanungspakete}
+                >
                   Die Pakete
                 </Button>
-                <Button variant="landing-secondary-blue" size="xs">
-                  Mehr Information
-                </Button>
+                <Link href="/unser-part">
+                  <Button variant="landing-secondary-blue" size="xs">
+                    Mehr Information
+                  </Button>
+                </Link>
               </div>
             </div>
           </section>
@@ -266,6 +283,15 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
         </div>
 
         <Footer />
+
+        {/* Planungspakete Lightbox */}
+        <PlanungspaketeCardsLightbox
+          title="Planungspakete"
+          subtitle=""
+          isOpen={isOpen}
+          onClose={closePlanungspakete}
+          showTrigger={false}
+        />
       </div>
     </div>
   );

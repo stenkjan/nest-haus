@@ -353,15 +353,9 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     return () => clearTimeout(timeoutId);
   }, [autoPlay, videoUrl, loading, onLoad, onError]);
 
-  // Loading state
+  // Loading state - don't render anything while loading
   if (loading) {
-    return (
-      <div
-        className={`${className} flex items-center justify-center bg-gray-100`}
-      >
-        <div className="text-gray-500">Video wird geladen...</div>
-      </div>
-    );
+    return null;
   }
 
   // Error state

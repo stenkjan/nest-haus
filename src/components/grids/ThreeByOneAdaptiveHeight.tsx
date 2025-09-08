@@ -125,10 +125,10 @@ export default function ThreeByOneAdaptiveHeight({
               <HybridBlobImage
                 path={image}
                 alt={imageDescription}
-                width={400}
-                height={300}
-                className="max-w-full h-auto object-contain rounded-lg"
-                sizes="100vw"
+                width={320}
+                height={240}
+                className="w-4/5 h-auto object-contain rounded-lg"
+                sizes="80vw"
                 quality={85}
                 strategy="client"
                 enableCache={true}
@@ -175,10 +175,10 @@ export default function ThreeByOneAdaptiveHeight({
               <HybridBlobImage
                 path={image}
                 alt={imageDescription}
-                width={400}
-                height={300}
-                className="w-full h-auto object-contain rounded-lg"
-                sizes="33vw"
+                width={320}
+                height={240}
+                className="w-4/5 h-auto object-contain rounded-lg"
+                sizes="26vw"
                 quality={85}
                 strategy="client"
                 enableCache={true}

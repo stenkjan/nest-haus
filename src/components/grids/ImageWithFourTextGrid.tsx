@@ -138,10 +138,10 @@ export default function ImageWithFourTextGrid({
             <HybridBlobImage
               path={image}
               alt={imageDescription}
-              width={1550}
-              height={800}
-              className="w-full h-auto object-contain rounded-lg"
-              sizes="(max-width: 1536px) 100vw, 1536px"
+              width={1395}
+              height={720}
+              className="w-9/10 h-auto object-contain rounded-lg mx-auto"
+              sizes="(max-width: 1536px) 90vw, 1382px"
               quality={85}
               strategy="client"
               enableCache={true}

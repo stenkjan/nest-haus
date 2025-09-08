@@ -144,9 +144,10 @@ export class ImagesConstantsUpdater {
           // EXTRA SAFETY: Remove any remaining hash-like suffixes
           cleanBlobPath = cleanBlobPath.replace(/-[A-Za-z0-9]{10,}$/, '');
 
-          // CRITICAL FIX: Don't add -mobile suffix to desktop images!
-          // The cleanBlobPath should already contain -mobile if it's a mobile image
-          // We should NOT add -mobile suffix here - it should come from the original filename
+          // CRITICAL FIX: Ensure mobile/desktop distinction is preserved correctly
+          // For mobile images: cleanBlobPath should end with -mobile
+          // For desktop images: cleanBlobPath should NOT end with -mobile
+          // The blob pathname already contains the correct suffix, so we preserve it
 
           mappings.push({
             number: parsed.number,
@@ -362,22 +363,23 @@ export class ImagesConstantsUpdater {
         const isCurrentMobile = variableName.includes('.mobile.');
 
         // Find matching blob image with EXACT same mobile/desktop type
-        // CRITICAL: For desktop constants, prefer desktop versions even if mobile exists
+        // CRITICAL: For desktop constants, ONLY use desktop versions
+        // For mobile constants, ONLY use mobile versions
         const matchingMapping = blobMappings.find(mapping =>
           mapping.number === imageNumber &&
           mapping.isMobile === isCurrentMobile
         );
 
-        // FALLBACK: If no exact match and this is a desktop constant, 
-        // don't use mobile version - keep the existing path
+        // CRITICAL SAFETY: Never contaminate desktop constants with mobile paths
         if (!matchingMapping && !isCurrentMobile) {
-          const mobileVersion = blobMappings.find(mapping =>
-            mapping.number === imageNumber && mapping.isMobile === true
-          );
-          if (mobileVersion) {
-            console.log(`⚠️ Skipping desktop constant ${variableName}: Only mobile version available, keeping existing path`);
-            continue; // Skip this update to prevent desktop->mobile contamination
-          }
+          console.log(`⚠️ SAFETY: Skipping desktop constant ${variableName}: No desktop version found for image ${imageNumber}`);
+          continue; // Skip this update to prevent desktop->mobile contamination
+        }
+
+        // CRITICAL SAFETY: Never contaminate mobile constants with desktop paths  
+        if (!matchingMapping && isCurrentMobile) {
+          console.log(`⚠️ SAFETY: Skipping mobile constant ${variableName}: No mobile version found for image ${imageNumber}`);
+          continue; // Skip this update to prevent mobile->desktop contamination
         }
 
         if (matchingMapping && matchingMapping.blobPath !== currentPath) {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui";
 import { ResponsiveHybridImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
@@ -182,8 +183,8 @@ export default function LandingPageClient() {
                   section.id === 4
                     ? "justify-between pt-[5vh] pb-[5vh]" // Section 4: always bottom on both mobile and desktop
                     : section.id === 3 || section.id === 6 || section.id === 7
-                    ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,6,7: bottom on mobile only
-                    : "justify-start pt-[5vh]" // Other sections: always top
+                      ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,6,7: bottom on mobile only
+                      : "justify-start pt-[5vh]" // Other sections: always top
                 } ${section.id === 2 ? "px-0" : "px-8"}`}
               >
                 <div className="text-center">
@@ -212,12 +213,16 @@ export default function LandingPageClient() {
                 </div>
 
                 <div className="flex gap-4">
-                  <Button variant="landing-primary" size="xs">
-                    {section.button1}
-                  </Button>
-                  <Button variant={section.secondaryButtonVariant} size="xs">
-                    {section.button2}
-                  </Button>
+                  <Link href="/entdecken">
+                    <Button variant="landing-primary" size="xs">
+                      {section.button1}
+                    </Button>
+                  </Link>
+                  <Link href="/konfigurator">
+                    <Button variant={section.secondaryButtonVariant} size="xs">
+                      {section.button2}
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

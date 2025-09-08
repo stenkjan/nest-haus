@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
+import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
+import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
@@ -88,6 +91,8 @@ export default function UnserPartClient() {
   const [currentSectionId, setCurrentSectionId] =
     useState<string>("dein-nest-system");
   const [isMobile, setIsMobile] = useState(false);
+  const { isOpen, openPlanungspakete, closePlanungspakete } =
+    usePlanungspaketePopup();
 
   // Simple width-based mobile detection (same as entdecken page)
   useEffect(() => {
@@ -125,9 +130,9 @@ export default function UnserPartClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Video Section - Dein Nest System */}
-        <section id="dein-nest-system" className="bg-black pt-20 pb-8">
+        <section id="dein-nest-system" className="bg-black pt-12 pb-4">
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-            <div className="text-center mb-24">
+            <div className="text-center mb-12">
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-2 md:mb-3">
                 Dein Nest System
               </h1>
@@ -138,19 +143,19 @@ export default function UnserPartClient() {
             </div>
 
             <div className="flex justify-center">
-              <div className="w-full max-w-6xl rounded-lg overflow-hidden bg-gray-900">
+              <div className="w-4/5 max-w-5xl rounded-lg overflow-hidden bg-gray-900">
                 <ClientBlobVideo
                   path={
                     isMobile
                       ? getMobileVideoPath(
-                          IMAGES.function.nestHausModulSchemaIntro
+                          IMAGES.function.mobile.nestHausModulSchemaIntro
                         )
                       : IMAGES.function.nestHausModulSchemaIntro
                   }
                   fallbackSrc={IMAGES.function.mobile.nestHausModulSchemaIntro} // Fallback to mobile version
                   className="w-full h-auto object-contain"
                   autoPlay={true}
-                  loop={true}
+                  loop={false}
                   muted={true}
                   playsInline={true}
                   controls={false}
@@ -163,8 +168,7 @@ export default function UnserPartClient() {
                 {/* Accessibility description for screen readers */}
                 <span className="sr-only">
                   Video demonstration of NEST-Haus modular construction system
-                  showing architectural components and assembly process in a
-                  continuous forward and reverse loop animation
+                  showing architectural components and assembly process
                 </span>
               </div>
             </div>
@@ -172,7 +176,7 @@ export default function UnserPartClient() {
         </section>
 
         {/* Combined ThreeByOneGrid Section - Größe */}
-        <section id="groesse" className="pt-20 pb-8">
+        <section id="groesse" className="pt-8 pb-8">
           <ThreeByOneGrid
             title="Manchmal kommt es auf die Größe an."
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
@@ -268,12 +272,16 @@ export default function UnserPartClient() {
           />
           {/* Button Combo After Component */}
           <div className="flex gap-4 justify-center w-full">
-            <Button variant="primary" size="xs">
-              Dein Part
-            </Button>
-            <Button variant="landing-secondary" size="xs">
-              Jetzt bauen
-            </Button>
+            <Link href="/dein-part">
+              <Button variant="primary" size="xs">
+                Dein Part
+              </Button>
+            </Link>
+            <Link href="/konfigurator">
+              <Button variant="landing-secondary" size="xs">
+                Jetzt bauen
+              </Button>
+            </Link>
           </div>
         </section>
 
@@ -323,12 +331,14 @@ export default function UnserPartClient() {
 
             {/* Button Combo After Component */}
             <div className="flex gap-4 justify-center w-full mt-16">
-              <Button variant="primary" size="xs">
+              <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>
-              <Button variant="landing-secondary-blue" size="xs">
-                Jetzt bauen
-              </Button>
+              <Link href="/konfigurator">
+                <Button variant="landing-secondary-blue" size="xs">
+                  Jetzt bauen
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -352,9 +362,11 @@ export default function UnserPartClient() {
 
             {/* Single Button */}
             <div className="flex justify-center w-full">
-              <Button variant="primary" size="xs">
-                Termin vereinbaren
-              </Button>
+              <Link href="/kontakt">
+                <Button variant="primary" size="xs">
+                  Termin vereinbaren
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -366,6 +378,15 @@ export default function UnserPartClient() {
       </div>
 
       <Footer />
+
+      {/* Planungspakete Lightbox */}
+      <PlanungspaketeCardsLightbox
+        title="Planungspakete"
+        subtitle=""
+        isOpen={isOpen}
+        onClose={closePlanungspakete}
+        showTrigger={false}
+      />
     </div>
   );
 }
