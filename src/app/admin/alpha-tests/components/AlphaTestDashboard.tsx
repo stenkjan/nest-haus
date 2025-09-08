@@ -145,6 +145,17 @@ interface ConfigurationAnalyticsProps {
   analytics: TestAnalytics | null;
 }
 
+// Override outdated question texts coming from historical analytics payloads
+const QUESTION_TEXT_OVERRIDES: Record<string, string> = {
+  "purchase-to-move-in-process":
+    "Erkläre den Prozess von Kauf bis zum bezugsfertigen Haus in eigenen Worten.",
+  "window-wall-positioning":
+    "Wie wird die Positionierung von Fenstern und Innenwänden festgelegt?",
+};
+
+const getOverriddenQuestionText = (questionId: string, original: string) =>
+  QUESTION_TEXT_OVERRIDES[questionId] ?? original;
+
 interface _ConfigSelection {
   category: string;
   value: string;
@@ -1574,7 +1585,10 @@ export default function AlphaTestDashboard() {
                       >
                         <div className="mb-4">
                           <h5 className="font-medium text-gray-900 mb-1">
-                            {question.questionText}
+                            {getOverriddenQuestionText(
+                              question.questionId,
+                              question.questionText
+                            )}
                           </h5>
                           <div className="flex items-center space-x-4 text-sm text-gray-600">
                             <span>
