@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-// Alpha test components - enable when needed
-// import AlphaTestProvider from "@/components/testing/AlphaTestProvider";
-// import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
+// Alpha test components - enabled for usability testing
+import AlphaTestProvider from "@/components/testing/AlphaTestProvider";
+import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
 // Cookie components - enabled for GDPR compliance
 import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
 import CookieBanner from "@/components/CookieBanner";
@@ -117,9 +117,11 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
 
-          {/* Global Cookie Components */}
+          {/* Global Components */}
           <CookieBanner />
           <CookieSettingsHandler />
+          <AlphaTestProvider />
+          <AlphaSessionTracker />
         </CookieConsentProvider>
       </body>
     </html>
