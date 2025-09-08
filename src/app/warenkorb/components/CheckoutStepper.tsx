@@ -345,8 +345,6 @@ export default function CheckoutStepper({
                 width:
                   stepIndex === 0
                     ? `${(1 / (steps.length * 2)) * 100}%` // From left edge to center of first circle
-                    : steps.length === 1
-                    ? "100%"
                     : stepIndex === steps.length - 1
                     ? "100%" // Full width when on last step
                     : `${
