@@ -32,7 +32,7 @@ export default function PlanungspaketeCardsLightbox({
 
   // Use external state if provided, otherwise use internal state
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
-  const setIsOpen =
+  const _setIsOpen =
     externalOnClose !== undefined ? externalOnClose : setInternalIsOpen;
 
   // iOS viewport hook for stable lightbox sizing

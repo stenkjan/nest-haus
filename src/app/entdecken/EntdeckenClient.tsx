@@ -67,15 +67,6 @@ const sections = [
   },
 ];
 
-// Helper function to get mobile video path
-const getMobileVideoPath = (desktopPath: string): string => {
-  // Map desktop video path to mobile version
-  if (desktopPath === IMAGES.variantvideo.ten) {
-    return IMAGES.variantvideo.mobile.ten;
-  }
-  return desktopPath;
-};
-
 export default function EntdeckenClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
   const [isMobile, setIsMobile] = useState(false);
@@ -115,19 +106,34 @@ export default function EntdeckenClient() {
         {/* Section 2 - Video with Overlay Text and Buttons */}
         <section id="video" className="w-full relative bg-white">
           <div className="relative w-full">
-            {/* Video Background */}
-            <ClientBlobVideo
-              path={
-                isMobile
-                  ? IMAGES.variantvideo.mobile.ten
-                  : IMAGES.variantvideo.ten
-              }
-              autoPlay={true}
-              muted={true}
-              controls={false}
-              loop={true}
-              className="w-full h-auto"
-            />
+            {/* Video Background with cropping - no white space */}
+            <div
+              className="w-full overflow-hidden"
+              style={{
+                height: "70vh", // Container takes only 70% of viewport height
+              }}
+            >
+              <div
+                style={{
+                  clipPath: "inset(30% 0 0 0)", // Shows bottom 70% of video
+                  height: "142.857%", // Compensate for cropping (100% / 0.7)
+                  transform: "translateY(-30%)", // Move video up to show bottom portion
+                }}
+              >
+                <ClientBlobVideo
+                  path={
+                    isMobile
+                      ? IMAGES.variantvideo.mobile.ten
+                      : IMAGES.variantvideo.ten
+                  }
+                  autoPlay={true}
+                  muted={true}
+                  controls={false}
+                  loop={true}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
 
             {/* Overlay Content */}
             <div className="absolute inset-0 flex flex-col justify-end">
