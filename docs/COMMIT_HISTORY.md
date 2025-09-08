@@ -4,6 +4,67 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e5287cea5457f4e5848adcb2443320e6db081acf] - Mon Sep 8 10:21:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enhance typography standards and component structure  - Introduced standard responsive breakpoint patterns for consistent typography scaling across components. - Updated title and subtitle classes to improve responsiveness and visual hierarchy. - Added new LandingImagesCarousel component for better image handling in various sections. - Refactored existing sections to utilize the new carousel and updated typography classes. - Removed unused SectionHeader component to streamline the codebase.  These changes improve the overall design consistency and maintainability of the project.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/kontakt/KontaktClient.tsx
+- src/app/layout.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutProgress.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/Footer.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/cards/CheckoutStepCard.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/SquareGlassCard.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/cards/index.ts
+- src/components/cards/mobile-scroll-optimizations.css
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/FullWidthVideoGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/StaticGlassCard.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+- src/components/grids/VideoGallery.tsx
+- src/components/images/ClientBlobVideo.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/AppointmentBookingSection.tsx
+- src/components/sections/ContactMap.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+- src/components/sections/MaterialShowcase.tsx
+- src/components/sections/PartnersSection.tsx
+- src/components/sections/PlanungspaketeSection.tsx
+- src/components/sections/SectionHeader.tsx
+- src/components/sections/index.ts
+- src/components/ui/Button.tsx
+
+
+#### 📚 Documentation Changes
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
 ## [b74118fa071638a4b7a8cbbf8b4be6bbf8acb266] - Fri Sep 5 12:25:50 2025 +0200
 
 **Author**: stenkjan
