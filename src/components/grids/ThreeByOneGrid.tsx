@@ -132,16 +132,39 @@ export default function ThreeByOneGrid({
       {/* Grid Container */}
       <div>
         {isMobile ? (
-          /* Mobile Layout: Stack vertically */
+          /* Mobile Layout: Image - Text - Image */
           <div className="space-y-6">
-            {/* Text Section */}
+            {/* First Image */}
+            <motion.div
+              className="relative overflow-hidden px-4 md:px-8"
+              style={{ aspectRatio: "4/3" }}
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <HybridBlobImage
+                path={image1}
+                alt={image1Description}
+                fill
+                className="object-contain object-center"
+                sizes="100vw"
+                quality={85}
+                strategy="client"
+                enableCache={true}
+                isInteractive={false}
+                isAboveFold={true}
+                isCritical={true}
+              />
+            </motion.div>
+
+            {/* Text Section - Always in the middle */}
             <div className="px-4 md:px-8">
               <motion.div
                 className="flex flex-col items-center justify-center space-y-6"
                 style={{ minHeight: "200px" }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
               >
                 <p
                   className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
@@ -151,52 +174,28 @@ export default function ThreeByOneGrid({
               </motion.div>
             </div>
 
-            {/* Images Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <motion.div
-                className="relative overflow-hidden"
-                style={{ aspectRatio: "4/3" }}
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-              >
-                <HybridBlobImage
-                  path={image1}
-                  alt={image1Description}
-                  fill
-                  className="object-contain object-center"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  quality={85}
-                  strategy="client"
-                  enableCache={true}
-                  isInteractive={false}
-                  isAboveFold={true}
-                  isCritical={true}
-                />
-              </motion.div>
-
-              <motion.div
-                className="relative overflow-hidden"
-                style={{ aspectRatio: "4/3" }}
-                initial={{ x: 20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-              >
-                <HybridBlobImage
-                  path={image2}
-                  alt={image2Description}
-                  fill
-                  className="object-contain object-center"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  quality={85}
-                  strategy="client"
-                  enableCache={true}
-                  isInteractive={false}
-                  isAboveFold={false}
-                  isCritical={false}
-                />
-              </motion.div>
-            </div>
+            {/* Second Image */}
+            <motion.div
+              className="relative overflow-hidden px-4 md:px-8"
+              style={{ aspectRatio: "4/3" }}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <HybridBlobImage
+                path={image2}
+                alt={image2Description}
+                fill
+                className="object-contain object-center"
+                sizes="100vw"
+                quality={85}
+                strategy="client"
+                enableCache={true}
+                isInteractive={false}
+                isAboveFold={false}
+                isCritical={false}
+              />
+            </motion.div>
 
             {/* Mobile: More Information Toggle */}
             <div className="px-4 md:px-8">
