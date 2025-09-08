@@ -23,9 +23,10 @@ import { useConfiguratorStore } from "@/store/configuratorStore";
 import type { ViewType } from "@/app/konfigurator/types/configurator.types";
 import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
 import { Button } from "@/components/ui";
-import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
-import BrightnessOverlay from "@/app/konfigurator/components/BrightnessOverlay";
-import FensterOverlay from "@/app/konfigurator/components/FensterOverlay";
+// TODO: Use these overlay components when needed
+// import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
+// import BrightnessOverlay from "@/app/konfigurator/components/BrightnessOverlay";
+// import FensterOverlay from "@/app/konfigurator/components/FensterOverlay";
 
 interface CheckoutStepperProps {
   items: (CartItem | ConfigurationCartItem)[];
@@ -1091,8 +1092,8 @@ export default function CheckoutStepper({
                                   ? (item as ConfigurationCartItem).nest
                                       ?.price || 0
                                   : "totalPrice" in item
-                                  ? (item as ConfigurationCartItem).totalPrice
-                                  : (item as CartItem).price;
+                                    ? (item as ConfigurationCartItem).totalPrice
+                                    : (item as CartItem).price;
                               return `oder ${calculateMonthlyPayment(
                                 priceValue
                               )} für 240 Monate`;
@@ -1105,8 +1106,8 @@ export default function CheckoutStepper({
                               (item as ConfigurationCartItem).nest
                               ? (item as ConfigurationCartItem).nest?.price || 0
                               : "totalPrice" in item
-                              ? (item as ConfigurationCartItem).totalPrice
-                              : (item as CartItem).price
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price
                           )}
                         </div>
                       </div>
@@ -1545,8 +1546,8 @@ export default function CheckoutStepper({
                                         {packageType === "basis"
                                           ? "€00,00"
                                           : packageType === "komfort"
-                                          ? "€13.900,00"
-                                          : "€18.900,00"}
+                                            ? "€13.900,00"
+                                            : "€18.900,00"}
                                       </div>
                                     );
                                   })()}

@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-import AlphaTestProvider from "@/components/testing/AlphaTestProvider";
-import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
-import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
-import CookieBanner from "@/components/CookieBanner";
-import CookieSettingsHandler from "@/components/CookieSettingsHandler";
+// TODO: Integrate alpha test and cookie components when ready
+// import AlphaTestProvider from "@/components/testing/AlphaTestProvider";
+// import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
+// import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
+// import CookieBanner from "@/components/CookieBanner";
+// import CookieSettingsHandler from "@/components/CookieSettingsHandler";
 
 const inter = Inter({
   subsets: ["latin"],
