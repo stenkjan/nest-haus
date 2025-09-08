@@ -333,77 +333,66 @@ export default function CheckoutStepper({
   const renderProgress = () => {
     return (
       <div className="w-full mb-6">
-        {/* Desktop/Tablet */}
-        <div className="relative hidden md:block">
-          <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
-          <div
-            className="absolute left-0 top-3 h-0.5 bg-blue-600 transition-all"
-            style={{ width: `${(stepIndex / (steps.length - 1)) * 100}%` }}
-          />
-          <div className="grid grid-cols-5 gap-0">
-            {steps.map((label, idx) => {
-              const isDone = idx < stepIndex;
-              const isCurrent = idx === stepIndex;
-              const circleClass = isDone
-                ? "bg-blue-600 border-blue-600"
-                : isCurrent
-                ? "bg-white border-blue-600"
-                : "bg-white border-gray-300";
-              const dotInner = isDone ? (
-                <span className="w-2 h-2 bg-white rounded-full" />
-              ) : null;
-              return (
-                <div key={idx} className="flex flex-col items-center">
-                  <div
-                    className={`relative z-10 w-6 h-6 rounded-full border-2 flex items-center justify-center ${circleClass}`}
-                    aria-label={`Schritt ${idx + 1}: ${label}`}
-                  >
-                    {dotInner}
-                  </div>
-                  <div className="mt-2 text-sm text-center text-gray-700 leading-tight break-words px-1">
-                    {label}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Mobile: two rows with circles and labels */}
-        <div className="md:hidden">
-          {/* Top row with connecting line and fill */}
-          <div className="relative mb-1">
-            <div className="absolute left-0 right-0 top-2.5 h-0.5 bg-gray-200" />
+        {/* Desktop: Horizontal Progress Steps */}
+        <div className="hidden md:block">
+          <div className="relative mx-auto" style={{ maxWidth: "1440px" }}>
+            {/* Background Line */}
+            <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
+            {/* Progress Line */}
             <div
-              className="absolute left-0 top-2.5 h-0.5 bg-blue-600 transition-all"
+              className="absolute left-0 top-3 h-0.5 bg-blue-500 transition-all duration-300"
               style={{
-                width: `${Math.min(100, (Math.min(stepIndex, 2) / 2) * 100)}%`,
+                width:
+                  stepIndex === 0
+                    ? `${(1 / (steps.length * 2)) * 100}%` // From left edge to center of first circle
+                    : steps.length === 1
+                    ? "100%"
+                    : stepIndex === steps.length - 1
+                    ? "100%" // Full width when on last step
+                    : `${
+                        (1 / (steps.length * 2)) * 100 +
+                        (stepIndex / (steps.length - 1)) *
+                          (100 - 100 / steps.length)
+                      }%`, // Cumulative: from left edge to current step center
+                transformOrigin: "left center",
               }}
             />
-            <div className="grid grid-cols-3 gap-2">
-              {steps.slice(0, 3).map((label, i) => {
-                const idx = i;
-                const isDone = idx < stepIndex;
-                const isCurrent = idx === stepIndex;
-                const circleClass = isDone
-                  ? "bg-blue-600 border-blue-600"
-                  : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
-                const dotInner = isDone ? (
-                  <span className="w-2 h-2 bg-white rounded-full" />
-                ) : null;
+            {/* Step Dots */}
+            <div
+              className="grid gap-0"
+              style={{
+                gridTemplateColumns: `repeat(${steps.length}, 1fr)`,
+              }}
+            >
+              {steps.map((label, idx) => {
+                const isActive = idx === stepIndex;
+                const isPassed = idx < stepIndex;
+                const circleClass = isPassed
+                  ? "bg-blue-500 border-blue-500 text-white"
+                  : isActive
+                  ? "bg-white border-blue-500 text-blue-500"
+                  : "bg-white border-gray-300 text-gray-400";
+
                 return (
-                  <div
-                    key={`mrow1-${idx}`}
-                    className="flex flex-col items-center"
-                  >
-                    <div
-                      className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
+                  <div key={idx} className="flex flex-col items-center">
+                    <button
+                      onClick={() => {
+                        setStepIndex(idx);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className={`relative z-10 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-200 hover:scale-110 ${circleClass}`}
+                      aria-label={`Zu Schritt ${idx + 1}: ${label}`}
                     >
-                      {dotInner}
-                    </div>
-                    <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
+                      <span className="text-xs font-medium">{idx + 1}</span>
+                    </button>
+                    {/* Step Title - show for all steps */}
+                    <div
+                      className={`mt-3 text-xs text-center transition-opacity duration-200 max-w-24 leading-tight ${
+                        isActive
+                          ? "opacity-100 text-gray-900 font-medium"
+                          : "opacity-60 text-gray-600 font-normal"
+                      }`}
+                    >
                       {label}
                     </div>
                   </div>
@@ -411,42 +400,38 @@ export default function CheckoutStepper({
               })}
             </div>
           </div>
-          {/* Bottom row with connecting line and fill */}
-          <div className="relative mt-2">
-            <div className="absolute left-0 right-0 top-2.5 h-0.5 bg-gray-200" />
-            <div
-              className="absolute left-0 top-2.5 h-0.5 bg-blue-600 transition-all"
-              style={{ width: `${stepIndex >= 4 ? 100 : 0}%` }}
-            />
-            <div className="grid grid-cols-2 gap-2">
-              {steps.slice(3).map((label, i) => {
-                const idx = i + 3;
-                const isDone = idx < stepIndex;
-                const isCurrent = idx === stepIndex;
-                const circleClass = isDone
-                  ? "bg-blue-600 border-blue-600"
-                  : isCurrent
-                  ? "bg-white border-blue-600"
-                  : "bg-white border-gray-300";
-                const dotInner = isDone ? (
-                  <span className="w-2 h-2 bg-white rounded-full" />
-                ) : null;
+        </div>
+
+        {/* Mobile: Compact Dots with current step title */}
+        <div className="md:hidden">
+          <div className="flex flex-col items-center space-y-3">
+            <div className="flex justify-center items-center space-x-2">
+              {steps.map((label, idx) => {
+                const isActive = idx === stepIndex;
+                const isPassed = idx < stepIndex;
+
                 return (
-                  <div
-                    key={`mrow2-${idx}`}
-                    className="flex flex-col items-center"
-                  >
-                    <div
-                      className={`relative z-10 w-5 h-5 rounded-full border-2 flex items-center justify-center ${circleClass}`}
-                    >
-                      {dotInner}
-                    </div>
-                    <div className="mt-1 text-[11px] text-center text-gray-700 leading-tight break-words px-1">
-                      {label}
-                    </div>
-                  </div>
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setStepIndex(idx);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                      isActive
+                        ? "bg-gray-900 scale-125"
+                        : isPassed
+                        ? "bg-gray-600"
+                        : "bg-gray-300"
+                    }`}
+                    aria-label={`Zu Schritt ${idx + 1}: ${label}`}
+                  />
                 );
               })}
+            </div>
+            {/* Current step title */}
+            <div className="text-xs text-center text-gray-600 font-medium">
+              {steps[stepIndex]}
             </div>
           </div>
         </div>
@@ -573,8 +558,8 @@ export default function CheckoutStepper({
         </div>
         {/* Timeline directly after title/subtitle */}
         {!hideProgress && <div className="mb-6">{renderProgress()}</div>}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-          <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
+          <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24 order-2 md:order-1">
             {stepIndex === 0 ? (
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left">
                 <p>
@@ -615,7 +600,7 @@ export default function CheckoutStepper({
               </div>
             )}
           </div>
-          <div className="w-full md:w-1/2">
+          <div className="w-full md:w-1/2 order-1 md:order-2">
             <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
               <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500 mb-3">
                 <span className="text-black">Dein Preis</span>
@@ -746,64 +731,6 @@ export default function CheckoutStepper({
             </div>
           </div>
         </div>
-
-        {/* Full-width GrundstueckCheckForm section for step 2 */}
-        {stepIndex === 1 && (
-          <div className="mt-16">
-            <div className="text-center mb-8 pt-8">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
-                Dein Grundstück - Unser Check
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
-                Wir Prüfen deinen Baugrund
-              </h3>
-            </div>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-              <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
-                <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-4 mt-12">
-                  Wir prüfen, ob{" "}
-                  <span className="text-black">dein Grundstück</span> die
-                  gesetzlichen{" "}
-                  <span className="text-black">Anforderungen erfüllt</span>.
-                  Dazu gehören das jeweilige{" "}
-                  <span className="text-black">Landesbaugesetz</span>, das{" "}
-                  <span className="text-black">Raumordnungsgesetz</span> und die{" "}
-                  <span className="text-black">örtlichen Vorschriften</span>,
-                  damit dein Bauvorhaben von Beginn an auf{" "}
-                  <span className="text-black">sicheren Grundlagen</span> steht.
-                </p>
-                <div className="h-3"></div>
-                <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-6">
-                  Außerdem analysieren wir die{" "}
-                  <span className="text-black">Eignung des Grundstücks</span>{" "}
-                  für dein Nest Haus. Dabei geht es um alle notwendigen
-                  Voraussetzungen, die für Planung und Aufbau entscheidend sind,
-                  sodass{" "}
-                  <span className="text-black">
-                    dein Zuhause zuverlässig und ohne Hindernisse
-                  </span>{" "}
-                  entstehen kann.
-                </p>
-
-                <div className="mt-2 space-y-4">
-                  <div>
-                    <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base"></h4>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full md:w-1/2">
-                <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
-                  <GrundstueckCheckForm
-                    backgroundColor="white"
-                    maxWidth={false}
-                    padding="sm"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     );
   };
@@ -1139,6 +1066,10 @@ export default function CheckoutStepper({
                   onClick={() => {
                     ensureGrundstueckscheckIncluded();
                     goNext();
+                    // Ensure scroll happens on mobile with a small delay
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 100);
                   }}
                 >
                   Nächster Schritt
@@ -1185,7 +1116,131 @@ export default function CheckoutStepper({
 
           {stepIndex === 3 && (
             <div className="space-y-4 pt-8">
-              <AppointmentBooking showLeftSide={false} />
+              {/* AppointmentBooking section with standard layout */}
+              <div className="mt-8">
+                <div className="text-center mb-6 pt-4">
+                  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                    Termin vereinbaren
+                  </h1>
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-6 max-w-3xl mx-auto">
+                    Persönlich oder telefonisch – wie es dir am besten passt
+                  </h3>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
+                  <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24 order-2 md:order-1">
+                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-4 mt-12">
+                      Der Kauf deines Hauses ist ein großer Schritt – und{" "}
+                      <span className="text-black">
+                        wir sind da, um dir dabei zu helfen
+                      </span>
+                      . Für mehr Sicherheit und Klarheit{" "}
+                      <span className="text-black">
+                        stehen wir dir jederzeit persönlich zur Seite
+                      </span>
+                      .
+                    </p>
+                    <div className="h-3"></div>
+                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-6">
+                      Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder
+                      buche deinen{" "}
+                      <span className="text-black">
+                        Termin ganz einfach online
+                      </span>
+                      . Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+                    </p>
+
+                    <div className="mt-8 space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                          Kontakt
+                        </h4>
+                        <p
+                          className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
+                          style={{ color: "#99a1af" }}
+                        >
+                          <span className="font-medium">Telefon:</span> +43 (0)
+                          3847 75090
+                          <br />
+                          <span className="font-medium">Mobil:</span> +43 (0)
+                          664 3949604
+                          <br />
+                          <span className="font-medium">Email:</span>{" "}
+                          nest@haus.at
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="w-full md:w-1/2 order-1 md:order-2">
+                    <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+                      <AppointmentBooking
+                        showLeftSide={false}
+                        showSubmitButton={false}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* GrundstueckCheckForm section */}
+              <div className="mt-16">
+                <div className="text-center mb-8 pt-8">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                    Dein Grundstück - Unser Check
+                  </h2>
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
+                    Wir Prüfen deinen Baugrund
+                  </h3>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
+                  <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24 order-2 md:order-1">
+                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-4 mt-12">
+                      Wir prüfen, ob{" "}
+                      <span className="text-black">dein Grundstück</span> die
+                      gesetzlichen{" "}
+                      <span className="text-black">Anforderungen erfüllt</span>.
+                      Dazu gehören das jeweilige{" "}
+                      <span className="text-black">Landesbaugesetz</span>, das{" "}
+                      <span className="text-black">Raumordnungsgesetz</span> und
+                      die{" "}
+                      <span className="text-black">örtlichen Vorschriften</span>
+                      , damit dein Bauvorhaben von Beginn an auf{" "}
+                      <span className="text-black">sicheren Grundlagen</span>{" "}
+                      steht.
+                    </p>
+                    <div className="h-3"></div>
+                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-6">
+                      Außerdem analysieren wir die{" "}
+                      <span className="text-black">
+                        Eignung des Grundstücks
+                      </span>{" "}
+                      für dein Nest Haus. Dabei geht es um alle notwendigen
+                      Voraussetzungen, die für Planung und Aufbau entscheidend
+                      sind, sodass{" "}
+                      <span className="text-black">
+                        dein Zuhause zuverlässig und ohne Hindernisse
+                      </span>{" "}
+                      entstehen kann.
+                    </p>
+
+                    <div className="mt-2 space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base"></h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="w-full md:w-1/2 order-1 md:order-2">
+                    <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+                      <GrundstueckCheckForm
+                        backgroundColor="white"
+                        maxWidth={false}
+                        padding="sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button
@@ -1202,7 +1257,13 @@ export default function CheckoutStepper({
                   variant="primary"
                   size="xs"
                   className="whitespace-nowrap"
-                  onClick={goNext}
+                  onClick={() => {
+                    goNext();
+                    // Ensure scroll happens on mobile with a small delay
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 100);
+                  }}
                 >
                   Nächster Schritt
                 </Button>

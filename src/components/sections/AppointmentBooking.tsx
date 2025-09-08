@@ -27,10 +27,12 @@ interface AppointmentFormData {
 
 interface AppointmentBookingProps {
   showLeftSide?: boolean;
+  showSubmitButton?: boolean;
 }
 
 const AppointmentBooking = ({
   showLeftSide = true,
+  showSubmitButton = true,
 }: AppointmentBookingProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -402,15 +404,17 @@ const AppointmentBooking = ({
             </div>
           </div>
 
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              disabled={isSubmitting || !selectedDate}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
-            </button>
-          </div>
+          {showSubmitButton && (
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                disabled={isSubmitting || !selectedDate}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+              </button>
+            </div>
+          )}
 
           {/* Contact Info Boxes for Mobile - UPDATED CONTENT */}
           {showLeftSide && (
@@ -706,15 +710,17 @@ const AppointmentBooking = ({
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <button
-                type="submit"
-                disabled={isSubmitting || !selectedDate}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
-              </button>
-            </div>
+            {showSubmitButton && (
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !selectedDate}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>
