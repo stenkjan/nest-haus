@@ -179,7 +179,7 @@ export default function EntdeckenClient() {
                 <Button variant="primary" size="xs">
                   Dein Part
                 </Button>
-                <Button variant="secondary" size="xs">
+                <Button variant="landing-secondary-blue" size="xs">
                   Unser Part
                 </Button>
               </div>
@@ -189,7 +189,7 @@ export default function EntdeckenClient() {
                 <Button variant="primary" size="xs">
                   Dein Part
                 </Button>
-                <Button variant="secondary" size="xs">
+                <Button variant="landing-secondary-blue" size="xs">
                   Unser Part
                 </Button>
               </div>

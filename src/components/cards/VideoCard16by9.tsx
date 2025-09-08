@@ -220,7 +220,7 @@ export default function VideoCard16by9({
                                 button.variant === "primary"
                                   ? "primary-narrow"
                                   : button.variant === "secondary"
-                                  ? "secondary-narrow"
+                                  ? "secondary-narrow-blue"
                                   : button.variant;
 
                               return button.link ? (
