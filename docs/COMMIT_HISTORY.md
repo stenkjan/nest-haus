@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d9d9fea665a1865f92d0fbce217520ad3a68ea88] - Mon Sep 8 10:53:46 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enable alpha test components for usability testing  - Activated AlphaTestProvider and AlphaSessionTracker in layout.tsx to facilitate usability testing. - Updated comments to reflect the current status of alpha test components, indicating their readiness for integration. - These changes enhance the testing framework while maintaining compliance with existing functionalities.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+
+
+---
+
 ## [79be83beebfb0b0405f74472f20838173007bccd] - Mon Sep 8 10:44:46 2025 +0200
 
 **Author**: stenkjan
