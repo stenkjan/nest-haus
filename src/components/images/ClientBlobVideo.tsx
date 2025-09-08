@@ -159,6 +159,28 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Resolve a fallback source that might be a plain path via the same blob API
+  const switchToFallback = useCallback(async (): Promise<boolean> => {
+    if (!fallbackSrc) return false;
+    try {
+      if (
+        /^(https?:)?\/\//i.test(fallbackSrc) ||
+        fallbackSrc.startsWith("data:")
+      ) {
+        setVideoUrl(fallbackSrc);
+        setLoading(false);
+        return true;
+      }
+      const url = await VideoCache.getOrFetch(fallbackSrc);
+      setVideoUrl(url);
+      setLoading(false);
+      return true;
+    } catch (e) {
+      console.warn("⚠️ Failed to resolve fallback video path:", fallbackSrc, e);
+      return false;
+    }
+  }, [fallbackSrc]);
+
   // Resolve video URL from blob storage or use direct path
   const resolveVideoUrl = useCallback(async (): Promise<void> => {
     setLoading(true);
@@ -186,12 +208,9 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     } catch (err) {
       console.error(`❌ Failed to resolve video URL for ${path}:`, err);
 
-      // Use fallback if available
-      if (fallbackSrc) {
-        setVideoUrl(fallbackSrc);
-        setLoading(false);
-        console.log(`🔄 Using fallback video for ${path}: ${fallbackSrc}`);
-      } else {
+      // Use fallback if available (resolve if it's a path)
+      const switched = await switchToFallback();
+      if (!switched) {
         const error = new Error(`Failed to resolve video URL for ${path}`);
         setError(error);
         setLoading(false);
@@ -201,7 +220,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         }
       }
     }
-  }, [path, fallbackSrc, enableCache, onError]);
+  }, [path, enableCache, onError, switchToFallback]);
 
   // Load video URL on mount and path change
   useEffect(() => {
@@ -220,6 +239,30 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
       const videoError = e.currentTarget.error;
       const errorMessage = videoError?.message || "Unknown error";
+      const videoSrc = e.currentTarget.src;
+
+      console.error("🎥 Video error details:", {
+        message: errorMessage,
+        code: videoError?.code,
+        src: videoSrc,
+        path: path,
+        networkState: e.currentTarget.networkState,
+        readyState: e.currentTarget.readyState,
+      });
+
+      // Check if this is a DEMUXER_ERROR_COULD_NOT_OPEN error
+      if (errorMessage.includes("DEMUXER_ERROR_COULD_NOT_OPEN")) {
+        console.warn(
+          "🔧 DEMUXER error detected - video file may be corrupted or inaccessible"
+        );
+
+        // Try fallback if available
+        if (fallbackSrc && videoSrc !== fallbackSrc) {
+          console.log("🔄 Attempting fallback video source");
+          switchToFallback();
+          return;
+        }
+      }
 
       // Check if this is an audio decoding error that we can ignore for video-only content
       if (
@@ -246,6 +289,13 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         return;
       }
 
+      // For any other error type, attempt fallback if provided
+      if (fallbackSrc && videoSrc !== fallbackSrc) {
+        console.log("🔄 Generic error: switching to fallback video source");
+        switchToFallback();
+        return;
+      }
+
       const error = new Error(`Video playback failed: ${errorMessage}`);
       console.error("🎥 Video error:", error);
 
@@ -254,7 +304,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
         onError(error);
       }
     },
-    [onError, autoPlay]
+    [onError, autoPlay, fallbackSrc, path, switchToFallback]
   );
 
   // Auto-play setup

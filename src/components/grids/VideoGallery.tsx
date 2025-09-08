@@ -48,15 +48,15 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({
         {(title || subtitle) && (
           <div className="text-center mb-16">
             {title && (
-              <h2
-                className={`font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 ${titleColor}`}
+              <h1
+                className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3 ${titleColor}`}
               >
                 {title}
-              </h2>
+              </h1>
             )}
             {subtitle && (
               <h3
-                className={`text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 ${subtitleColor} max-w-3xl mx-auto`}
+                className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${subtitleColor} max-w-3xl mx-auto`}
               >
                 {subtitle}
               </h3>

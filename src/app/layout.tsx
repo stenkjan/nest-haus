@@ -14,11 +14,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Österreich",
+  title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Deutschland",
   description:
     "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
   keywords:
-    "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator",
+    "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Deutschland, hausbau konfigurator",
   authors: [{ name: "NEST-Haus" }],
   creator: "NEST-Haus",
   publisher: "NEST-Haus",
@@ -27,15 +27,15 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://nest-haus.at"),
+  metadataBase: new URL("https://nest-haus.com"),
   alternates: {
-    canonical: "https://nest-haus.at",
+    canonical: "https://nest-haus.com",
   },
   openGraph: {
     title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://nest-haus.at",
+    url: "https://nest-haus.com",
     siteName: "NEST-Haus",
     locale: "de_DE",
     type: "website",
@@ -74,8 +74,8 @@ const organizationSchema = {
   "@type": "Organization",
   name: "NEST-Haus",
   description: "Modulare Häuser und nachhaltiges Bauen",
-  url: "https://nest-haus.at",
-  logo: "https://nest-haus.at/logo.png",
+  url: "https://nest-haus.com",
+  logo: "https://nest-haus.com/logo.png",
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
@@ -111,14 +111,8 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased bg-white min-h-screen flex flex-col`}
       >
-        <CookieConsentProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <AlphaTestProvider />
-          <AlphaSessionTracker />
-          <CookieBanner />
-          <CookieSettingsHandler />
-        </CookieConsentProvider>
+        <Navbar />
+        <main className="flex-1">{children}</main>
       </body>
     </html>
   );

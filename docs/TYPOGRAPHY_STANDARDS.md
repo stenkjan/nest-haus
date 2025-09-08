@@ -192,7 +192,54 @@ All grid components (FullWidthTextGrid, ImageWithFourTextGrid, ThreeByOneGrid, e
 
 ## Typography Classes Reference
 
-### Title Classes
+### Standard Responsive Breakpoint Patterns
+
+**CRITICAL: Use these exact patterns for consistent typography scaling across all components.**
+
+#### H1 (Main Title/Page Title)
+
+```tsx
+// Standard main title/page title pattern
+"text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3";
+
+// Font size progression: 24px → 30px → 36px → 48px → 60px
+```
+
+#### P (Description Text)
+
+```tsx
+// Standard description/body text pattern
+"text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl";
+
+// Font size progression: 14px → 16px → 16px (stays same) → 18px → 20px
+```
+
+#### H2 (Title/Heading)
+
+```tsx
+// Standard title/heading pattern
+"text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl";
+
+// Font size progression: 18px → 20px → 24px → 30px → 36px
+```
+
+#### H3 (Subtitle/Subheading)
+
+```tsx
+// Standard subtitle/subheading pattern
+"text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl";
+
+// Font size progression: 16px → 18px → 18px (stays same) → 20px → 24px
+```
+
+**Key Pattern Notes:**
+
+- P and H3 both use "stay same at lg" pattern for better readability
+- H2 scales at every breakpoint for maximum impact
+- All patterns have complete breakpoint coverage (no gaps)
+- Use these by default unless specifically told otherwise
+
+### Legacy Title Classes (Main Sections)
 
 ```tsx
 // Main section titles
@@ -202,15 +249,15 @@ All grid components (FullWidthTextGrid, ImageWithFourTextGrid, ThreeByOneGrid, e
 "text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-medium mb-3";
 ```
 
-### Subtitle Classes
+### Legacy Subtitle Classes (Main Sections)
 
 ```tsx
-// Standard subtitles
-"text-base md:text-lg lg:text-xl 2xl:text-2xl mb-8";
+// Standard subtitles - UPDATED with xl breakpoint
+"text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-8";
 
 // With color variants
-"text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-300 mb-8"; // Black bg
-"text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8"; // Light bg
+"text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300 mb-8"; // Black bg
+"text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8"; // Light bg
 ```
 
 ### Container Classes

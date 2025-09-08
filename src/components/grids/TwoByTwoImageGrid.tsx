@@ -112,8 +112,14 @@ export default function TwoByTwoImageGrid({
     return (
       <div className={containerClasses}>
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-          {subtitle && <p className="text-gray-600">{subtitle}</p>}
+          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+            {title}
+          </h1>
+          {subtitle && (
+            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600">
+              {subtitle}
+            </h3>
+          )}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[1700px] mx-auto gap-4">
           {[1, 2, 3, 4].map((i) => (
@@ -136,8 +142,14 @@ export default function TwoByTwoImageGrid({
           isClient && screenWidth < 1024 ? "px-4" : ""
         }`}
       >
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-        {subtitle && <p className="text-gray-600">{subtitle}</p>}
+        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+          {title}
+        </h1>
+        {subtitle && (
+          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600">
+            {subtitle}
+          </h3>
+        )}
       </div>
 
       {/* 2x2 Grid Container - No padding on mobile */}
@@ -199,7 +211,7 @@ export default function TwoByTwoImageGrid({
                     {item.title}
                   </h2>
                   <h3
-                    className={`text-base md:text-lg lg:text-xl 2xl:text-2xl ${
+                    className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
                       item.textColor || "text-white"
                     }`}
                   >

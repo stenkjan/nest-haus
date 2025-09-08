@@ -613,10 +613,10 @@ export default function ContentCards({
                             <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -671,10 +671,10 @@ export default function ContentCards({
                             <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -719,10 +719,10 @@ export default function ContentCards({
                             <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
 
@@ -820,10 +820,10 @@ export default function ContentCards({
                             <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>

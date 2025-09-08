@@ -139,6 +139,7 @@ export const IMAGES = {
         nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept-mobile',
         // Mobile versions for function images
         mobile: {
+            nestHausModulSchemaIntro: '12-NEST-Haus-Modul-Schema-Konzept-Explosionszeichnung-intro-animation-mobile',
             nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
             nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz-mobile',
             nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung-mobile',

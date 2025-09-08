@@ -203,11 +203,11 @@ export default function VideoCard16by9({
                           {getCardText(card, "title")}
                         </h2>
                         {card.subtitle && (
-                          <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
                           </h3>
                         )}
-                        <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                           {getCardText(card, "description")}
                         </p>
 
@@ -303,11 +303,11 @@ export default function VideoCard16by9({
                           {getCardText(card, "title")}
                         </h2>
                         {card.subtitle && (
-                          <h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
                           </h3>
                         )}
-                        <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
                           {getCardText(card, "description")}
                         </p>
                         {/* Note: Buttons are not shown on mobile/tablet to match ContentCards behavior */}

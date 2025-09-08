@@ -7,8 +7,8 @@ import { useConfiguratorStore } from "../../store/configuratorStore";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
-import CheckoutProgress from "./components/CheckoutProgress";
-import { CHECKOUT_STEPS } from "./steps";
+
+import Footer from "@/components/Footer";
 
 export default function WarenkorbClient() {
   const {
@@ -350,50 +350,42 @@ export default function WarenkorbClient() {
   };
 
   return (
-    <div className="min-h-screen bg-white-50" style={{ paddingTop: "5vh" }}>
-      <div className="container mx-auto px-4 py-8">
-        {items.length > 0 && (
-          <div className="max-w-6xl mx-auto mb-6">
-            <CheckoutProgress steps={CHECKOUT_STEPS} stepIndex={stepIndex} />
-          </div>
-        )}
-        <div className="max-w-6xl mx-auto">
-          {items.length === 0 ? (
-            /* Empty Cart */
-            <div className="text-center py-16 bg-white rounded-lg shadow-sm">
-              <h2 className="text-xl font-semibold mb-4">
-                Ihr Warenkorb ist leer
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Konfigurieren Sie Ihr Nest-Haus, um es zum Warenkorb
-                hinzuzufügen.
-              </p>
-              <Link
-                href="/konfigurator"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Zum Konfigurator
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {/* Full-width Checkout Stepper */}
-              <div className="mt-8">
-                <CheckoutStepper
-                  items={items}
-                  getCartTotal={getCartTotal}
-                  removeFromCart={removeFromCart}
-                  addConfigurationToCart={addConfigurationToCart}
-                  onScrollToContact={scrollToContactForm}
-                  stepIndex={stepIndex}
-                  onStepChange={setStepIndex}
-                  hideProgress={true}
-                />
+    <div className="min-h-screen md:pt-16 bg-white">
+      <div className="w-full">
+        {items.length === 0 ? (
+          /* Empty Cart */
+          <section className="w-full py-16">
+            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center py-16 bg-white rounded-lg shadow-sm">
+                <h2 className="text-xl font-semibold mb-4">
+                  Ihr Warenkorb ist leer
+                </h2>
+                <p className="text-gray-600 mb-8">
+                  Konfigurieren Sie Ihr Nest-Haus, um es zum Warenkorb
+                  hinzuzufügen.
+                </p>
+                <Link
+                  href="/konfigurator"
+                  className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Zum Konfigurator
+                </Link>
               </div>
             </div>
-          )}
-        </div>
+          </section>
+        ) : (
+          <CheckoutStepper
+            items={items}
+            getCartTotal={getCartTotal}
+            removeFromCart={removeFromCart}
+            addConfigurationToCart={addConfigurationToCart}
+            onScrollToContact={scrollToContactForm}
+            stepIndex={stepIndex}
+            onStepChange={setStepIndex}
+          />
+        )}
       </div>
+      <Footer />
     </div>
   );
 }

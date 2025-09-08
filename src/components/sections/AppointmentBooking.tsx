@@ -8,9 +8,9 @@ import { Button } from "@/components/ui";
  * Usage: text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base
  *
  * This preset provides much smaller text than the standard description text preset
- * (text-sm md:text-base lg:text-lg 2xl:text-xl) for compact UI elements.
+ * (text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl) for compact UI elements.
  *
- * Standard Description Text: text-sm md:text-base lg:text-lg 2xl:text-xl
+ * Standard Description Text: text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl
  * Description Text Small: text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base
  *
  * Use this for most text elements in forms, labels, and general content
@@ -191,10 +191,10 @@ const AppointmentBooking = ({
   if (submitSuccess) {
     return (
       <div className="max-w-5xl mx-auto bg-green-50 border border-green-200 text-green-700 px-8 py-10 rounded-[35px] text-center shadow-lg">
-        <h3 className="text-2xl font-semibold mb-4 text-green-700">
+        <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-green-700">
           Termin erfolgreich gebucht!
         </h3>
-        <p className="text-sm md:text-base lg:text-lg 2xl:text-xl mb-6">
+        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl mb-6">
           Vielen Dank für deine Terminanfrage. Wir melden uns in Kürze bei dir,
           um alle Details zu bestätigen.
         </p>
@@ -215,7 +215,7 @@ const AppointmentBooking = ({
         {/* Descriptive Text for Mobile - NO BOX */}
         {showLeftSide && (
           <div className="text-center px-4">
-            <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
+            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}
               <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
               Sicherheit und Klarheit{" "}
@@ -238,7 +238,7 @@ const AppointmentBooking = ({
             >
               &#10094;
             </button>
-            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
+            <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
               {currentMonth.toLocaleDateString("de-DE", {
                 month: "long",
                 year: "numeric",
@@ -278,7 +278,7 @@ const AppointmentBooking = ({
             >
               &#10094;
             </button>
-            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
+            <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
               {timeSlots[selectedTimeIndex]}
             </span>
             <button
@@ -322,7 +322,7 @@ const AppointmentBooking = ({
         <form onSubmit={handleSubmit} className="space-y-6 px-4">
           {/* Contact Information - WIDER FORM FIELDS */}
           <div>
-            <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-6">
+            <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-6">
               Deine Daten
             </h3>
             <div className="space-y-3">
@@ -380,7 +380,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
                     Persönliches Gespräch
                   </span>
                 </label>
@@ -394,7 +394,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
                     Telefonische Beratung
                   </span>
                 </label>
@@ -417,9 +417,9 @@ const AppointmentBooking = ({
             <div className="grid grid-cols-1 gap-4">
               <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
                 <div className="p-6">
-                  <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3 text-center">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
                     Kontakt <span className="text-gray-400">Melde dich!</span>
-                  </h3>
+                  </h2>
                   <div className="text-center">
                     <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                       <span className="font-medium">Telefon:</span> +43 (0) 3847
@@ -436,9 +436,9 @@ const AppointmentBooking = ({
 
               <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
                 <div className="p-6">
-                  <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3 text-center">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
                     Adresse <span className="text-gray-400">Komm vorbei!</span>
-                  </h3>
+                  </h2>
                   <div className="text-center">
                     <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                       <span className="font-medium">Telefon:</span> +43 (0) 3847
@@ -459,10 +459,10 @@ const AppointmentBooking = ({
 
       {/* Desktop Layout: Side by side or centered form */}
       <div
-        className={`hidden lg:${
+        className={`hidden ${
           showLeftSide
-            ? "grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
-            : "flex justify-center"
+            ? "lg:grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
+            : "lg:flex lg:justify-center"
         } items-start max-w-[1536px] mx-auto px-[5%]`}
       >
         {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
@@ -473,7 +473,7 @@ const AppointmentBooking = ({
 
             {/* Descriptive Text - INCREASED LINE SPACING */}
             <div>
-              <p className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
+              <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
                 Der Kauf deines Hauses ist ein großer Schritt – und{" "}
                 <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
                 Sicherheit und Klarheit{" "}
@@ -490,9 +490,9 @@ const AppointmentBooking = ({
             {/* Contact Box - UPDATED CONTENT */}
             <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
               <div className="p-6">
-                <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3">
+                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
                   Kontakt <span className="text-gray-400">Melde dich!</span>
-                </h3>
+                </h2>
                 <div>
                   <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                     <span className="font-medium">Telefon:</span> +43 (0) 3847
@@ -510,9 +510,9 @@ const AppointmentBooking = ({
             {/* Address Box - UPDATED CONTENT */}
             <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
               <div className="p-6">
-                <h3 className="text-lg md:text-xl lg:text-2xl text-gray-900 mb-3">
+                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
                   Adresse <span className="text-gray-400">Komm vorbei!</span>
-                </h3>
+                </h2>
                 <div>
                   <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
                     <span className="font-medium">Telefon:</span> +43 (0) 3847
@@ -547,7 +547,7 @@ const AppointmentBooking = ({
               >
                 &#10094;
               </button>
-              <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
+              <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
                 {currentMonth.toLocaleDateString("de-DE", {
                   month: "long",
                   year: "numeric",
@@ -587,7 +587,7 @@ const AppointmentBooking = ({
               >
                 &#10094;
               </button>
-              <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium">
+              <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
                 {timeSlots[selectedTimeIndex]}
               </span>
               <button
@@ -628,7 +628,7 @@ const AppointmentBooking = ({
 
             {/* Contact Information - WIDER FORM FIELDS */}
             <div className="mb-8">
-              <h3 className="text-sm md:text-base lg:text-lg 2xl:text-xl font-medium mb-6">
+              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-6">
                 Deine Daten
               </h3>
               <div className="space-y-3 mb-8">
@@ -685,7 +685,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
                     Persönliches Gespräch
                   </span>
                 </label>
@@ -699,7 +699,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl">
+                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
                     Telefonische Beratung
                   </span>
                 </label>

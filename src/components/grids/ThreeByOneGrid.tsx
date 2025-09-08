@@ -84,12 +84,12 @@ export default function ThreeByOneGrid({
     return (
       <div className={`${containerClasses} ${backgroundClasses} py-8`}>
         <div className="text-center mb-24">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3">
             {title}
-          </h2>
+          </h1>
           {subtitle && (
             <h3
-              className={`text-base md:text-lg lg:text-xl 2xl:text-2xl ${
+              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
                 backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
               }`}
             >
@@ -114,12 +114,12 @@ export default function ThreeByOneGrid({
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
         <div className="text-center mb-24 px-4 md:px-8">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3">
             {title}
-          </h2>
+          </h1>
           {subtitle && (
             <h3
-              className={`text-base md:text-lg lg:text-xl 2xl:text-2xl ${
+              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
                 backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
               }`}
             >
@@ -147,16 +147,7 @@ export default function ThreeByOneGrid({
                   className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
                   dangerouslySetInnerHTML={{ __html: displayText }}
                 />
-                {showButtons && (
-                  <div className="flex gap-4 justify-center">
-                    <Button variant="primary" size="xs">
-                      {primaryButtonText}
-                    </Button>
-                    <Button variant="secondary" size="xs">
-                      {secondaryButtonText}
-                    </Button>
-                  </div>
-                )}
+                {/* Buttons are hidden on mobile/tablet to match VideoCard16by9 behavior */}
               </motion.div>
             </div>
 
@@ -367,11 +358,19 @@ export default function ThreeByOneGrid({
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
-                      <div className="flex gap-4 justify-center w-full">
-                        <Button variant="primary" size="xs">
+                      <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
+                        <Button
+                          variant="primary-narrow"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {primaryButtonText}
                         </Button>
-                        <Button variant="secondary" size="xs">
+                        <Button
+                          variant="secondary-narrow-white"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {secondaryButtonText}
                         </Button>
                       </div>
@@ -586,11 +585,19 @@ export default function ThreeByOneGrid({
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
-                      <div className="flex gap-4 justify-center w-full">
-                        <Button variant="primary" size="xs">
+                      <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
+                        <Button
+                          variant="primary-narrow"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {primaryButtonText}
                         </Button>
-                        <Button variant="secondary" size="xs">
+                        <Button
+                          variant="secondary-narrow-white"
+                          size="xs"
+                          className="flex-shrink-0"
+                        >
                           {secondaryButtonText}
                         </Button>
                       </div>
