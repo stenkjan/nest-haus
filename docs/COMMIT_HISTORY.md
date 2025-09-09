@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6cca9ac69b601cf6f4b73e678975881364c08786] - Tue Sep 9 08:28:27 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: add navigation links to buttons in EntdeckenClient for improved user experience  - Replaced static button elements with Next.js Link components for "Dein Part" and "Unser Part" in both mobile and desktop views. - This change enhances navigation and streamlines user flow within the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+
+
+---
+
 ## [70e1bcd5fb79cbf3476a0827a953db96c136fbaa] - Mon Sep 8 14:51:07 2025 +0200
 
 **Author**: stenkjan
