@@ -6,13 +6,13 @@ import redis from '../../../../lib/redis'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { 
-      sessionId, 
-      category, 
-      selection, 
-      previousSelection, 
+    const {
+      sessionId,
+      category,
+      selection,
+      previousSelection,
       priceChange,
-      totalPrice 
+      totalPrice
     } = body
 
     if (!sessionId || !category || !selection) {
@@ -25,13 +25,13 @@ export async function POST(request: Request) {
     // Update Redis session (this is the primary state store)
     const redisKey = `session:${sessionId}`
     const sessionData = await redis.get(redisKey)
-    
+
     if (typeof sessionData === 'string') {
       const session = JSON.parse(sessionData)
       session.selections[category] = selection
       session.lastActivity = Date.now()
       session.totalPrice = totalPrice
-      
+
       await redis.setex(redisKey, 7200, JSON.stringify(session))
     }
 
@@ -43,10 +43,16 @@ export async function POST(request: Request) {
       })
 
       if (!existingSession) {
-        // Session doesn't exist in PostgreSQL - create it
+        // Session doesn't exist in PostgreSQL - create it with upsert to handle race conditions
         console.log(`🔧 Creating missing session in PostgreSQL: ${sessionId}`)
-        await prisma.userSession.create({
-          data: {
+        await prisma.userSession.upsert({
+          where: { sessionId },
+          update: {
+            // Update existing session if somehow created between check and create
+            totalPrice: totalPrice || null,
+            lastActivity: new Date()
+          },
+          create: {
             sessionId,
             ipAddress: 'unknown',
             userAgent: 'unknown',
@@ -73,7 +79,7 @@ export async function POST(request: Request) {
       // Update session last activity
       await prisma.userSession.update({
         where: { sessionId },
-        data: { 
+        data: {
           lastActivity: new Date(),
           totalPrice: totalPrice || null
         }
@@ -83,7 +89,7 @@ export async function POST(request: Request) {
       // PostgreSQL tracking failed, but Redis update succeeded
       // This is non-blocking - the configurator continues to work
       console.warn(`⚠️ PostgreSQL tracking failed for session ${sessionId}:`, dbError)
-      
+
       // Return success anyway since Redis (primary state) was updated successfully
     }
 
@@ -94,10 +100,10 @@ export async function POST(request: Request) {
 
   } catch (error) {
     console.error('Failed to track selection:', error)
-    
+
     // Even if tracking fails completely, return success to not block the user experience
     return NextResponse.json(
-      { 
+      {
         success: true, // Changed to true to not block user experience
         error: 'Tracking temporarily unavailable',
         timestamp: Date.now()

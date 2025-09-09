@@ -243,6 +243,39 @@ export default function SummaryPanel({
                 string,
                 ConfigurationItem,
               ]) => {
+                // Special handling for planungspaket with proper display and pricing
+                if (key === "planungspaket" && selection.value) {
+                  const itemPrice = getItemPrice(key, selection);
+
+                  return (
+                    <div
+                      key={key}
+                      className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
+                    >
+                      <div className="flex-1 min-w-0 max-w-[50%]">
+                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
+                          {selection.name}
+                        </div>
+                        <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
+                          {getPaketShortText(selection.value)}
+                        </div>
+                      </div>
+                      <div className="flex-1 text-right max-w-[50%] min-w-0">
+                        {itemPrice > 0 ? (
+                          <>
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              {PriceUtils.formatPrice(itemPrice)}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
+                            inkludiert
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
                 // Handle base configuration items (including preselected)
                 if (
                   key === "nest" ||
@@ -303,42 +336,8 @@ export default function SummaryPanel({
                   );
                 }
 
-                // Special handling for paket
-                if (key === "planungspaket" && selection.value) {
-                  const itemPrice = getItemPrice(key, selection);
-
-                  return (
-                    <div
-                      key={key}
-                      className="flex justify-between items-center border-b border-gray-100 pb-3 gap-4"
-                    >
-                      <div className="flex-1 min-w-0 max-w-[50%]">
-                        <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {selection.name}
-                        </div>
-                        <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
-                          {getPaketShortText(selection.value)}
-                        </div>
-                      </div>
-                      <div className="flex-1 text-right max-w-[50%] min-w-0">
-                        {itemPrice > 0 ? (
-                          <>
-                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              {PriceUtils.formatPrice(itemPrice)}
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
-                            inkludiert
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                }
-
-                // Handle other selections
-                if (selection.value) {
+                // Handle other selections (planungspaket handled above to avoid duplicates)
+                if (selection.value && key !== "planungspaket") {
                   const itemPrice = getItemPrice(key, selection);
 
                   return (

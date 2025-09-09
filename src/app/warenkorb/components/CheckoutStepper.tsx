@@ -72,7 +72,7 @@ export default function CheckoutStepper({
     }
   };
   const {
-    configuration: _configuration,
+    configuration,
     hasPart2BeenActive: _hasPart2BeenActive,
     hasPart3BeenActive: _hasPart3BeenActive,
   } = useConfiguratorStore();
@@ -85,18 +85,46 @@ export default function CheckoutStepper({
 
   const [localSelectedPlan, setLocalSelectedPlan] = useState<string | null>(
     ((): string | null => {
-      const initial = (
+      // Priority: configurator's current planungspaket > cart item's planungspaket
+      const configuratorPlan = configuration?.planungspaket?.value;
+      const cartPlan = (
         items.find((it) => "nest" in it && it.nest) as
           | ConfigurationCartItem
           | undefined
       )?.planungspaket?.value;
-      return initial ?? null;
+      const selectedPlan = configuratorPlan ?? cartPlan ?? "basis"; // Default to basis if nothing selected
+      return selectedPlan;
     })()
   );
 
   useEffect(() => {
-    setLocalSelectedPlan(configItem?.planungspaket?.value ?? null);
-  }, [configItem?.planungspaket?.value]);
+    // Sync with configurator's planungspaket when it changes, otherwise use cart item
+    const configuratorPlan = configuration?.planungspaket?.value;
+    const cartPlan = configItem?.planungspaket?.value;
+    const selectedPlan = configuratorPlan ?? cartPlan ?? "basis"; // Default to basis
+    setLocalSelectedPlan(selectedPlan);
+  }, [configuration?.planungspaket?.value, configItem?.planungspaket?.value]);
+
+  // Listen for planungspaket changes from configurator to update local selection
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handlePlanungspaketChanged = () => {
+      const configuratorPlan = configuration?.planungspaket?.value;
+      const selectedPlan = configuratorPlan ?? "basis"; // Always ensure we have a selection
+      setLocalSelectedPlan(selectedPlan);
+    };
+
+    window.addEventListener(
+      "planungspaket-changed",
+      handlePlanungspaketChanged
+    );
+    return () =>
+      window.removeEventListener(
+        "planungspaket-changed",
+        handlePlanungspaketChanged
+      );
+  }, [configuration?.planungspaket?.value]);
 
   // Scroll detection for top forward button
   useEffect(() => {
@@ -116,6 +144,68 @@ export default function CheckoutStepper({
   }, []);
 
   const steps = CHECKOUT_STEPS;
+
+  // URL hash mapping for checkout steps - wrapped in useMemo to prevent re-creation
+  const stepToHash = useMemo(
+    () =>
+      ({
+        0: "übersicht",
+        1: "vorentwurfsplan",
+        2: "planungspakete",
+        3: "terminvereinbarung",
+        4: "liefertermin",
+      }) as const,
+    []
+  );
+
+  const hashToStep = useMemo(
+    () =>
+      ({
+        übersicht: 0,
+        vorentwurfsplan: 1,
+        planungspakete: 2,
+        terminvereinbarung: 3,
+        liefertermin: 4,
+      }) as const,
+    []
+  );
+
+  // Initialize step from URL hash on component mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.slice(1); // Remove #
+      const stepFromHash = hashToStep[hash as keyof typeof hashToStep];
+      if (stepFromHash !== undefined && !isControlled) {
+        setInternalStepIndex(stepFromHash);
+      }
+    }
+  }, [hashToStep, isControlled]);
+
+  // Listen for hash changes to update step
+  useEffect(() => {
+    if (typeof window === "undefined" || isControlled) return;
+
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      const stepFromHash = hashToStep[hash as keyof typeof hashToStep];
+      if (stepFromHash !== undefined) {
+        setInternalStepIndex(stepFromHash);
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [hashToStep, isControlled]);
+
+  // Update URL hash when step changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const targetHash = stepToHash[stepIndex as keyof typeof stepToHash];
+      if (targetHash && window.location.hash !== `#${targetHash}`) {
+        window.history.replaceState(null, "", `#${targetHash}`);
+      }
+    }
+  }, [stepIndex, stepToHash]);
 
   const goNext = () => {
     setStepIndex((i) => Math.min(i + 1, steps.length - 1));
@@ -391,11 +481,11 @@ export default function CheckoutStepper({
             "innenverkleidung",
             "fussboden",
             "pvanlage",
-            "fenster",
             "belichtungspaket",
             "stirnseite",
           ].includes(key)
         ) {
+          // Exclude fenster from cart display since its price is incorporated into belichtungspaket and stirnseite
           // Use the same price calculation logic as konfigurator
           const calculatedPrice = getItemPrice(
             key,
@@ -416,8 +506,6 @@ export default function CheckoutStepper({
               selection,
               (item as ConfigurationCartItem).fenster ?? null
             );
-          } else if (key === "fenster" && selection.squareMeters) {
-            displayName = `${selection.name} (${selection.squareMeters}m²)`;
           } else if (
             key === "pvanlage" &&
             selection.quantity &&
@@ -438,16 +526,17 @@ export default function CheckoutStepper({
       });
 
       bottomItems.forEach(([key, selection]) => {
-        // Only show planungspaket in overview cart summary, exclude grundstueckscheck
-        if (key === "planungspaket") {
+        // Show planungspaket in cart details
+        if (key === "planungspaket" || key === "grundstueckscheck") {
           const displayName = selection.name;
           const displayPrice = selection.price || 0;
-          const isIncluded = displayPrice === 0;
+          // Only "basis" planungspaket is included (0€), others show actual price
+          const isIncluded = displayPrice === 0 && key === "planungspaket";
 
           details.push({
             label: getCategoryDisplayName(key),
             value: displayName,
-            price: isIncluded ? 0 : displayPrice,
+            price: displayPrice,
             isIncluded,
             category: key,
             isBottomItem: true,
@@ -1048,11 +1137,11 @@ export default function CheckoutStepper({
   const sourceConfig = useMemo(() => {
     // Use live configurator state to ensure images match current preview panel
     return (
-      _configuration ||
+      configuration ||
       (configItem as ConfigurationCartItem | undefined) ||
       undefined
     );
-  }, [_configuration, configItem]);
+  }, [configuration, configItem]);
 
   // Determine interior availability based on actual selections in the source config
   const interiorActive = useMemo(() => {
@@ -1301,8 +1390,18 @@ export default function CheckoutStepper({
                   variant="landing-secondary-blue"
                   size="xs"
                   className="whitespace-nowrap"
-                  onClick={goPrev}
-                  disabled={stepIndex <= 0}
+                  onClick={() => {
+                    // Clear cart and reset configurator completely for fresh start
+                    items.forEach((item) => {
+                      removeFromCart(item.id);
+                    });
+
+                    const { resetConfiguration } =
+                      useConfiguratorStore.getState();
+                    resetConfiguration();
+
+                    window.location.href = "/konfigurator";
+                  }}
                 >
                   Neu konfigurieren
                 </Button>

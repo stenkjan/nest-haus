@@ -322,7 +322,7 @@ export class ImageManager {
       views.push('interior');
     }
 
-    // Add stirnseite view last (index 2) when nest or gebäudehülle is configured
+    // Add stirnseite view last when nest or gebäudehülle is configured
     if (configuration.nest || configuration.gebaeudehuelle) {
       views.push('stirnseite');
     }

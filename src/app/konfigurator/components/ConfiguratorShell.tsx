@@ -163,7 +163,7 @@ export default function ConfiguratorShell({
     setPvQuantity(0);
     setIsPvOverlayVisible(true);
     setIsBrightnessOverlayVisible(false);
-    setIsFensterOverlayVisible(false);
+    setIsFensterOverlayVisible(false); // Don't show on reset - only when actively selecting fenster
   }, []);
 
   // Confirmation handlers for PV and Fenster sections - REMOVED
@@ -223,6 +223,12 @@ export default function ConfiguratorShell({
         setIsFensterOverlayVisible(true);
         setIsPvOverlayVisible(false);
         setIsBrightnessOverlayVisible(false);
+
+        // Switch to interior view to show the fenster overlay
+        const { switchToView } = useConfiguratorStore.getState();
+        if (switchToView) {
+          switchToView("interior");
+        }
       }
 
       // Special handling for Belichtungspaket selection
@@ -243,6 +249,15 @@ export default function ConfiguratorShell({
         setIsBrightnessOverlayVisible(false);
       }
 
+      // Hide PV overlay when switching to non-PV sections
+      if (
+        categoryId !== "pvanlage" &&
+        isPvOverlayVisible &&
+        categoryId !== "nest"
+      ) {
+        setIsPvOverlayVisible(false);
+      }
+
       if (option && category) {
         updateSelection({
           category: categoryId,
@@ -254,9 +269,10 @@ export default function ConfiguratorShell({
 
         // Auto-switch to exterior view when belichtungspaket is selected
         if (categoryId === "belichtungspaket") {
-          // Show belichtung overlay and hide PV overlay (mutual exclusivity)
+          // Show belichtung overlay and hide other overlays (mutual exclusivity)
           setIsBrightnessOverlayVisible(true);
           setIsPvOverlayVisible(false);
+          setIsFensterOverlayVisible(false);
 
           // Switch to exterior view to show the belichtungspaket overlay
           const { switchToView } = useConfiguratorStore.getState();

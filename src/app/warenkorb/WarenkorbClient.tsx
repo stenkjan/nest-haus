@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
@@ -32,8 +32,108 @@ export default function WarenkorbClient() {
     notes: "",
   });
 
-  // Step state to reflect progress at top of page
-  const [stepIndex, setStepIndex] = useState<number>(0);
+  // URL hash mapping for checkout steps - wrapped in useMemo to prevent re-creation
+  const stepToHash = useMemo(
+    () =>
+      ({
+        0: "übersicht",
+        1: "vorentwurfsplan",
+        2: "planungspakete",
+        3: "terminvereinbarung",
+        4: "liefertermin",
+      }) as const,
+    []
+  );
+
+  const hashToStep = useMemo(
+    () =>
+      ({
+        übersicht: 0,
+        vorentwurfsplan: 1,
+        planungspakete: 2,
+        terminvereinbarung: 3,
+        liefertermin: 4,
+      }) as const,
+    []
+  );
+
+  // Step state to reflect progress at top of page - initialize from URL hash
+  const [stepIndex, setStepIndex] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.slice(1); // Remove #
+      const stepFromHash = hashToStep[hash as keyof typeof hashToStep];
+      if (stepFromHash !== undefined) {
+        return stepFromHash;
+      }
+    }
+    return 0;
+  });
+
+  // Set default hash after component mounts to avoid setState during render
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.location.hash) {
+      window.history.replaceState(null, "", "#übersicht");
+    }
+  }, []);
+
+  // Handle step changes and update URL hash
+  const handleStepChange = (nextIndex: number) => {
+    setStepIndex(nextIndex);
+    if (typeof window !== "undefined") {
+      const targetHash = stepToHash[nextIndex as keyof typeof stepToHash];
+      if (targetHash) {
+        window.history.replaceState(null, "", `#${targetHash}`);
+      }
+    }
+  };
+
+  // Listen for hash changes to sync step index
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      const stepFromHash = hashToStep[hash as keyof typeof hashToStep];
+      if (stepFromHash !== undefined) {
+        setStepIndex(stepFromHash);
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [hashToStep]);
+
+  // Force cart update when planungspaket changes in configurator
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handlePlanungspaketChanged = () => {
+      const cartConfig = getConfigurationForCart();
+
+      if (cartConfig) {
+        // Remove existing configurator items and add new one
+        items.forEach((item) => {
+          if ("isFromConfigurator" in item && item.isFromConfigurator) {
+            removeFromCart(item.id);
+          }
+        });
+        // Add updated configuration with new planungspaket
+        setTimeout(() => {
+          addConfigurationToCart(cartConfig);
+        }, 100);
+      }
+    };
+
+    window.addEventListener(
+      "planungspaket-changed",
+      handlePlanungspaketChanged
+    );
+    return () =>
+      window.removeEventListener(
+        "planungspaket-changed",
+        handlePlanungspaketChanged
+      );
+  }, [items, getConfigurationForCart, addConfigurationToCart, removeFromCart]);
 
   // Flag to prevent auto-add after manual cart clearing
   const [hasManuallyCleared, setHasManuallyCleared] = useState(false);
@@ -82,6 +182,22 @@ export default function WarenkorbClient() {
             item.innenverkleidung?.value === cartConfig.innenverkleidung?.value;
           const sameFussboden =
             item.fussboden?.value === cartConfig.fussboden?.value;
+          const sameBelichtungspaket =
+            item.belichtungspaket?.value === cartConfig.belichtungspaket?.value;
+          const sameStirnseite =
+            item.stirnseite?.value === cartConfig.stirnseite?.value;
+          const samePvanlage =
+            item.pvanlage?.value === cartConfig.pvanlage?.value &&
+            item.pvanlage?.quantity === cartConfig.pvanlage?.quantity;
+          const sameFenster =
+            item.fenster?.value === cartConfig.fenster?.value &&
+            item.fenster?.squareMeters === cartConfig.fenster?.squareMeters;
+          const samePlanungspaket =
+            item.planungspaket?.value === cartConfig.planungspaket?.value;
+          const sameKamindurchzug =
+            item.kamindurchzug?.value === cartConfig.kamindurchzug?.value;
+          const sameFussbodenheizung =
+            item.fussbodenheizung?.value === cartConfig.fussbodenheizung?.value;
           // Handle grundstueckscheck comparison - cartConfig from configurator never has grundstueckscheck
           // So we only need to check if the cart item has it (if it does, they're different)
           const sameGrundstueckscheck = !item.grundstueckscheck;
@@ -91,6 +207,13 @@ export default function WarenkorbClient() {
             sameGebaeudehuelle &&
             sameInnenverkleidung &&
             sameFussboden &&
+            sameBelichtungspaket &&
+            sameStirnseite &&
+            samePvanlage &&
+            sameFenster &&
+            samePlanungspaket &&
+            sameKamindurchzug &&
+            sameFussbodenheizung &&
             sameGrundstueckscheck
           );
         }
@@ -294,18 +417,13 @@ export default function WarenkorbClient() {
             "innenverkleidung",
             "fussboden",
             "pvanlage",
-            "fenster",
           ].includes(key)
         ) {
+          // Exclude fenster from cart display since its price is incorporated into belichtungspaket
           let displayName = selection.name;
           let displayPrice = selection.price || 0;
 
-          if (key === "fenster" && selection.squareMeters) {
-            displayName =
-              selection.name + " (" + selection.squareMeters + "m²)";
-            displayPrice =
-              (selection.squareMeters || 1) * (selection.price || 0);
-          } else if (
+          if (
             key === "pvanlage" &&
             selection.quantity &&
             selection.quantity > 1
@@ -381,7 +499,7 @@ export default function WarenkorbClient() {
             addConfigurationToCart={addConfigurationToCart}
             onScrollToContact={scrollToContactForm}
             stepIndex={stepIndex}
-            onStepChange={setStepIndex}
+            onStepChange={handleStepChange}
           />
         )}
       </div>

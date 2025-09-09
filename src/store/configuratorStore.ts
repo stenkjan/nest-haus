@@ -157,6 +157,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           timestamp: Date.now()
         }
 
+        // Force cart sync for planungspaket changes
+        if (item.category === "planungspaket" && typeof window !== 'undefined') {
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("planungspaket-changed"));
+          }, 100);
+        }
+
         // Determine view switching based on category and activation states
         // PRIORITY SYSTEM: Always switch to the most relevant view for the selection
         let shouldSwitchToView: string | null = null;
@@ -580,16 +587,16 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'fenster',
             value: 'holz',
             name: 'Holz',
-            price: 120,
+            price: 400,
             description: 'Holzfenster Lärche'
           },
 
-          // Planung Basis (default)
+          // Planung Basis (default) - included in base price
           {
             category: 'planungspaket',
             value: 'basis',
             name: 'Planung Basis',
-            price: 8900,
+            price: 0,
             description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung'
           }
         ];
@@ -606,8 +613,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           fussboden: defaultSelections[3] as ConfigurationItem,
           belichtungspaket: defaultSelections[4] as ConfigurationItem,
           fenster: defaultSelections[5] as ConfigurationItem,
-          stirnseite: defaultSelections[6] as ConfigurationItem,
-          planungspaket: defaultSelections[7] as ConfigurationItem,
+          planungspaket: defaultSelections[6] as ConfigurationItem,
+          stirnseite: null, // No default stirnseite
           timestamp: Date.now()
         };
 
