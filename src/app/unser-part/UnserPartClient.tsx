@@ -13,10 +13,8 @@ import {
 } from "@/components/grids";
 import { ClientBlobVideo } from "@/components/images";
 import { MaterialShowcase, LandingImagesCarousel } from "@/components/sections";
-import ContentCards from "@/components/cards/ContentCards";
 import { PlanungspaketeCards } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
-import { CONTENT_CARD_PRESETS } from "@/constants/contentCardPresets";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
 import Footer from "@/components/Footer";
