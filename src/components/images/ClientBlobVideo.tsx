@@ -374,6 +374,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     // Set playback rate when video is ready
     if (video.readyState >= 1) {
       setPlaybackRate();
+      return; // Explicit return for this path
     } else {
       video.addEventListener("loadedmetadata", setPlaybackRate);
       return () => video.removeEventListener("loadedmetadata", setPlaybackRate);
