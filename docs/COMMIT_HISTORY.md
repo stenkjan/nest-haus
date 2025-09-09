@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a0f949740d8c27bb4a6beab83026dfeb5f494f2d] - Tue Sep 9 13:35:32 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: streamline button component by removing unused width classes and optimizing imports in UnserPartClient  - Removed unnecessary width class functions from Button component to simplify styling logic. - Cleaned up imports in UnserPartClient for better maintainability.  These changes contribute to a more efficient codebase and improved component performance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/ui/Button.tsx
+
+
+---
+
 ## [02d492628e1917e468f5957fe63ad53c29ae2178] - Tue Sep 9 13:29:12 2025 +0200
 
 **Author**: stenkjan
