@@ -53,12 +53,8 @@ export default function CheckoutStepper({
   onStepChange,
   hideProgress = false,
 }: CheckoutStepperProps) {
-  const {
-    getAppointmentSummary,
-    getAppointmentSummaryShort,
-    getDeliveryDate,
-    getDeliveryDateFormatted,
-  } = useCartStore();
+  const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate } =
+    useCartStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
@@ -888,7 +884,7 @@ export default function CheckoutStepper({
 
     const rowWrapperClass =
       "flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7";
-    const rowTextClass = (rowStep: number) => "text-gray-900"; // Always show main content in black, only subtexts should be grey
+    const rowTextClass = (_rowStep: number) => "text-gray-900"; // Always show main content in black, only subtexts should be grey
     const getRowSubtitle = (rowStep: number): string => {
       switch (rowStep) {
         case 0:

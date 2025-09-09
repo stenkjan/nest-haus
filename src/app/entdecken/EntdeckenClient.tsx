@@ -16,12 +16,8 @@ import {
   PartnersSection,
   LandingImagesCarousel,
 } from "@/components/sections";
-import ContentCards from "@/components/cards/ContentCards";
 import { IMAGES } from "@/constants/images";
-import {
-  VIDEO_CARD_PRESETS,
-  CONTENT_CARD_PRESETS,
-} from "@/constants/contentCardPresets";
+import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
 import Footer from "@/components/Footer";
 
 // Define sections with proper structure for entdecken page

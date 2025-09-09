@@ -14,10 +14,7 @@ import {
   SquareTextCard,
   VideoCard16by9,
 } from "@/components/cards";
-import {
-  CONTENT_CARD_PRESETS,
-  VIDEO_CARD_PRESETS,
-} from "@/constants/contentCardPresets";
+import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
 
 export default function CardsShowcasePage() {
   return (
