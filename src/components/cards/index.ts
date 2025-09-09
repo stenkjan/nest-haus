@@ -14,7 +14,7 @@ export { default as CheckoutPlanungspaketeCards } from "./CheckoutPlanungspakete
 export { default as VideoCard16by9 } from "./VideoCard16by9";
 
 // Unified preset system
-export { default as UnifiedCardPreset, SicherheitCardPreset, SicherheitCardPresetGlass } from "./UnifiedCardPreset";
+export { default as UnifiedCardPreset } from "./UnifiedCardPreset";
 
 // Utilities and types
 export * from "./cardTypes";

@@ -85,11 +85,5 @@ export default function UnifiedCardPreset({
   );
 }
 
-// Export convenience components for specific presets
-export const SicherheitCardPreset = (
-  props: Omit<UnifiedCardPresetProps, "preset">
-) => <UnifiedCardPreset preset="sicherheit" {...props} />;
-
-export const SicherheitCardPresetGlass = (
-  props: Omit<UnifiedCardPresetProps, "preset" | "style">
-) => <UnifiedCardPreset preset="sicherheit" style="glass" {...props} />;
+// Note: Sicherheit preset has been moved to VIDEO_CARD_PRESETS and should use VideoCard16by9 component
+// The SicherheitCardPreset components have been removed as they are no longer compatible

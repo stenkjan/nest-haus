@@ -7,13 +7,11 @@ This system provides a consistent way to use card presets across both ContentCar
 ### Using Specific Preset Components
 
 ```tsx
-import { SicherheitCardPreset, SicherheitCardPresetGlass } from "@/components/cards";
+import { VideoCard16by9 } from "@/components/cards";
+import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
 
-// Default styling
-<SicherheitCardPreset />
-
-// Glass styling
-<SicherheitCardPresetGlass />
+// Use VideoCard16by9 with sicherheit preset
+<VideoCard16by9 customData={[VIDEO_CARD_PRESETS.sicherheit]} />
 ```
 
 ### Using the Unified Component

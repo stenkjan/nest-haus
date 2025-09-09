@@ -47,20 +47,6 @@ export const applyPresetConfig = (config: PresetConfig) => {
 
 // Predefined configurations for common use cases
 export const PRESET_CONFIGS: Record<string, PresetConfig> = {
-    sicherheitDefault: {
-        preset: "sicherheit",
-        variant: "static",
-        title: "Sicherheit Card Preset",
-        subtitle: "Reusable preset used across the site • Wide layout on desktop, mobile layout on tablets/phones",
-        maxWidth: false,
-        showInstructions: true,
-    },
-    sicherheitGlass: {
-        preset: "sicherheit",
-        variant: "static",
-        title: "Sicherheit Card Preset - Glass",
-        subtitle: "Glass variant with same functionality • Wide layout on desktop, mobile layout on tablets/phones",
-        maxWidth: false,
-        showInstructions: true,
-    },
+    // Note: Sicherheit preset has been moved to VIDEO_CARD_PRESETS
+    // Use VideoCard16by9 with VIDEO_CARD_PRESETS.sicherheit instead
 };
