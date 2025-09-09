@@ -93,6 +93,7 @@ export default function CheckoutStepper({
           | undefined
       )?.planungspaket?.value;
       const selectedPlan = configuratorPlan ?? cartPlan ?? "basis"; // Default to basis if nothing selected
+
       return selectedPlan;
     })()
   );
@@ -102,8 +103,13 @@ export default function CheckoutStepper({
     const configuratorPlan = configuration?.planungspaket?.value;
     const cartPlan = configItem?.planungspaket?.value;
     const selectedPlan = configuratorPlan ?? cartPlan ?? "basis"; // Default to basis
+
     setLocalSelectedPlan(selectedPlan);
-  }, [configuration?.planungspaket?.value, configItem?.planungspaket?.value]);
+  }, [
+    configuration?.planungspaket?.value,
+    configItem?.planungspaket?.value,
+    localSelectedPlan,
+  ]);
 
   // Listen for planungspaket changes from configurator to update local selection
   useEffect(() => {
@@ -124,7 +130,18 @@ export default function CheckoutStepper({
         "planungspaket-changed",
         handlePlanungspaketChanged
       );
-  }, [configuration?.planungspaket?.value]);
+  }, [configuration?.planungspaket?.value, localSelectedPlan]);
+
+  // Ensure proper initialization after component mount (handles hydration timing)
+  useEffect(() => {
+    const configuratorPlan = configuration?.planungspaket?.value;
+    const cartPlan = configItem?.planungspaket?.value;
+    const selectedPlan = configuratorPlan ?? cartPlan ?? "basis";
+
+    if (localSelectedPlan !== selectedPlan) {
+      setLocalSelectedPlan(selectedPlan);
+    }
+  }, [configuration, configItem, localSelectedPlan]);
 
   // Scroll detection for top forward button
   useEffect(() => {
@@ -256,6 +273,18 @@ export default function CheckoutStepper({
         (configItem.totalPrice || 0) - previousPrice + target.price
       ),
     };
+
+    // Update configurator store to keep it in sync
+    if (configuration) {
+      const { updateSelection } = useConfiguratorStore.getState();
+      updateSelection({
+        category: "planungspaket",
+        value: target.value,
+        name: target.name,
+        price: target.price,
+        description: target.description,
+      });
+    }
 
     removeFromCart(configItem.id);
     addConfigurationToCart(updated);
@@ -1645,9 +1674,9 @@ export default function CheckoutStepper({
                                       if (localSelectedPlan) {
                                         if (localSelectedPlan === "basis")
                                           return "Planungspaket 01 Basis";
-                                        if (localSelectedPlan === "komfort")
+                                        if (localSelectedPlan === "plus")
                                           return "Planungspaket 02 Plus";
-                                        if (localSelectedPlan === "premium")
+                                        if (localSelectedPlan === "pro")
                                           return "Planungspaket 03 Pro";
                                         return localSelectedPlan;
                                       }
@@ -1670,12 +1699,12 @@ export default function CheckoutStepper({
                                         name.includes("komfort") ||
                                         name.includes("plus")
                                       )
-                                        packageType = "komfort";
+                                        packageType = "plus";
                                       else if (
                                         name.includes("premium") ||
                                         name.includes("pro")
                                       )
-                                        packageType = "premium";
+                                        packageType = "pro";
                                     } else if (localSelectedPlan) {
                                       packageType = localSelectedPlan;
                                     }
@@ -1685,7 +1714,7 @@ export default function CheckoutStepper({
                                       <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
                                         {packageType === "basis"
                                           ? "€00,00"
-                                          : packageType === "komfort"
+                                          : packageType === "plus"
                                             ? "€13.900,00"
                                             : "€18.900,00"}
                                       </div>

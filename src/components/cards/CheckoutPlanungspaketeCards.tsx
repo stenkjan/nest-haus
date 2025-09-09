@@ -41,17 +41,17 @@ export default function CheckoutPlanungspaketeCards({
                     Planungspaket{" "}
                     {pkg.value === "basis"
                       ? "01"
-                      : pkg.value === "komfort"
-                      ? "02"
-                      : "03"}
+                      : pkg.value === "plus"
+                        ? "02"
+                        : "03"}
                   </span>
                   <span className="text-gray-300">
                     {" "}
                     {pkg.value === "basis"
                       ? "Basis"
-                      : pkg.value === "komfort"
-                      ? "Plus"
-                      : "Pro"}
+                      : pkg.value === "plus"
+                        ? "Plus"
+                        : "Pro"}
                   </span>
                 </h2>
 
@@ -60,9 +60,9 @@ export default function CheckoutPlanungspaketeCards({
                   <div className="text-lg font-regular text-gray-900">
                     {pkg.value === "basis"
                       ? "€ 00,00"
-                      : pkg.value === "komfort"
-                      ? "€ 13.900,00"
-                      : "€ 18.900,00"}
+                      : pkg.value === "plus"
+                        ? "€ 13.900,00"
+                        : "€ 18.900,00"}
                   </div>
                   <div className="text-xs text-gray-600 mt-1">
                     {pkg.value === "basis"
@@ -80,18 +80,18 @@ export default function CheckoutPlanungspaketeCards({
                   <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-relaxed whitespace-pre-line">
                     {pkg.value === "basis"
                       ? "Inkl.\nEinreichplanung des Gesamtprojekts\nFachberatung und Baubegleitung\nBürokratische Unterstützung\n\n"
-                      : pkg.value === "komfort"
-                      ? "Inkl.\nPlanungspaket Basis (Einreichplanung)\nElektrik und Sanitärplanung\nAusführungsplanung Innenausbau\n\n"
-                      : "Inkl.\nPlanungspaket Plus (HKLS Planung)\nBelauchtungskonzept, Möblierungsplanung,\nFarb- und Materialkonzept\n\n"}
+                      : pkg.value === "plus"
+                        ? "Inkl.\nPlanungspaket Basis (Einreichplanung)\nElektrik und Sanitärplanung\nAusführungsplanung Innenausbau\n\n"
+                        : "Inkl.\nPlanungspaket Plus (HKLS Planung)\nBelauchtungskonzept, Möblierungsplanung,\nFarb- und Materialkonzept\n\n"}
                   </div>
 
                   {/* Standard p text for main description */}
                   <div className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl black leading-relaxed whitespace-pre-line">
                     {pkg.value === "basis"
                       ? "Mit dem Basispaket legst du den Grundstein für dein Nest Haus. Wir übernehmen Einreichplanung, Statik, Detailplanung und Energieausweis, passen alles an lokale Vorgaben an und optimieren die Raumaufteilung. So bist du rechtssicher, planungssicher und bereit für den nächsten Schritt."
-                      : pkg.value === "komfort"
-                      ? "Das Plus Paket ergänzt alle Leistungen des Basispakets um die komplette technische Detailplanung für Elektrik, Sanitär, Abwasser und Innenausbau. So wird alles frühzeitig mitgedacht, Abstimmungsprobleme werden vermieden und dein Nest Haus ist von Anfang an technisch perfekt vorbereitet."
-                      : "Das Pro Paket erweitert Basis und Plus um eine umfassende Gestaltungsebene. Wir entwickeln ein Interiorkonzept mit Möblierung, Küche, Licht, Farben und Materialien, abgestimmt auf innen und außen. So wird dein Nest Haus zu einem stimmigen Ganzen und zum Ausdruck deiner Persönlichkeit."}
+                      : pkg.value === "plus"
+                        ? "Das Plus Paket ergänzt alle Leistungen des Basispakets um die komplette technische Detailplanung für Elektrik, Sanitär, Abwasser und Innenausbau. So wird alles frühzeitig mitgedacht, Abstimmungsprobleme werden vermieden und dein Nest Haus ist von Anfang an technisch perfekt vorbereitet."
+                        : "Das Pro Paket erweitert Basis und Plus um eine umfassende Gestaltungsebene. Wir entwickeln ein Interiorkonzept mit Möblierung, Küche, Licht, Farben und Materialien, abgestimmt auf innen und außen. So wird dein Nest Haus zu einem stimmigen Ganzen und zum Ausdruck deiner Persönlichkeit."}
                   </div>
 
                   {/* Additional small text */}
@@ -107,9 +107,9 @@ export default function CheckoutPlanungspaketeCards({
                   <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
                     {pkg.value === "basis"
                       ? "€ 00,00"
-                      : pkg.value === "komfort"
-                      ? "€ 13.900,00"
-                      : "€ 18.900,00"}
+                      : pkg.value === "plus"
+                        ? "€ 13.900,00"
+                        : "€ 18.900,00"}
                   </div>
                   <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 mt-1">
                     {pkg.value === "basis"

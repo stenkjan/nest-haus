@@ -120,7 +120,7 @@ export default function WarenkorbClient() {
         // Add updated configuration with new planungspaket
         setTimeout(() => {
           addConfigurationToCart(cartConfig);
-        }, 100);
+        }, 50); // Reduced timeout for faster sync
       }
     };
 
