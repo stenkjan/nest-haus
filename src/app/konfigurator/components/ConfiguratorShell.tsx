@@ -239,14 +239,21 @@ export default function ConfiguratorShell({
         setIsFensterOverlayVisible(false);
       }
 
-      // Hide fenster overlay when switching to other sections (except fenster itself)
-      if (categoryId !== "fenster" && isFensterOverlayVisible) {
-        setIsFensterOverlayVisible(false);
-      }
-
       // Hide brightness overlay when switching to other sections (except belichtungspaket)
       if (categoryId !== "belichtungspaket" && isBrightnessOverlayVisible) {
         setIsBrightnessOverlayVisible(false);
+      }
+
+      // Hide fenster overlay when switching to unrelated categories
+      if (categoryId !== "fenster" && isFensterOverlayVisible) {
+        // Keep fenster overlay visible for related interior categories
+        if (
+          !["innenverkleidung", "fussboden", "belichtungspaket"].includes(
+            categoryId
+          )
+        ) {
+          setIsFensterOverlayVisible(false);
+        }
       }
 
       // Hide PV overlay when switching to non-PV sections
@@ -267,18 +274,23 @@ export default function ConfiguratorShell({
           description: option.description,
         });
 
-        // Auto-switch to exterior view when belichtungspaket is selected
+        // Handle overlay visibility based on selection
         if (categoryId === "belichtungspaket") {
-          // Show belichtung overlay and hide other overlays (mutual exclusivity)
+          // Show belichtung overlay and hide other overlays when actively selecting belichtungspaket
           setIsBrightnessOverlayVisible(true);
           setIsPvOverlayVisible(false);
-          setIsFensterOverlayVisible(false);
+          // Don't hide fenster overlay - it should remain visible on interior view
 
           // Switch to exterior view to show the belichtungspaket overlay
           const { switchToView } = useConfiguratorStore.getState();
           if (switchToView) {
             switchToView("exterior");
           }
+        } else if (categoryId === "fenster") {
+          // Show fenster overlay when fenster is selected (will show on interior view)
+          setIsFensterOverlayVisible(true);
+          setIsBrightnessOverlayVisible(false);
+          setIsPvOverlayVisible(false);
         }
 
         // Auto-scroll to next section after selection - Commented out
@@ -316,6 +328,7 @@ export default function ConfiguratorShell({
       setIsPvOverlayVisible,
       setIsBrightnessOverlayVisible,
       setIsFensterOverlayVisible,
+      isPvOverlayVisible,
       isBrightnessOverlayVisible,
       isFensterOverlayVisible,
     ]

@@ -20,7 +20,7 @@ import { useConfiguratorStore } from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
-import BrightnessOverlay from "./BrightnessOverlay";
+import BelichtungsPaketOverlay from "./BelichtungsPaketOverlay";
 import FensterOverlay from "./FensterOverlay";
 
 interface PreviewPanelProps {
@@ -88,12 +88,21 @@ export default function PreviewPanel({
 
   // Get available views
   const availableViews = useMemo(() => {
-    return ImageManager.getAvailableViews(
+    const views = ImageManager.getAvailableViews(
       configuration,
       hasPart2BeenActive,
       hasPart3BeenActive
     );
-  }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
+    console.log(
+      "🪟 Available views:",
+      views,
+      "Current:",
+      activeView,
+      "Fenster config:",
+      !!configuration?.fenster
+    );
+    return views;
+  }, [configuration, hasPart2BeenActive, hasPart3BeenActive, activeView]);
 
   // Get current image path with preloading optimization
   const currentImagePath = useMemo(() => {
@@ -179,16 +188,29 @@ export default function PreviewPanel({
   // Listen for view switching signals from the store (manual navigation)
   useEffect(() => {
     if (shouldSwitchToView && shouldSwitchToView !== activeView) {
+      console.log(
+        "🪟 Switching to view:",
+        shouldSwitchToView,
+        "Available:",
+        availableViews
+      );
       startTransition(() => {
         setActiveView(shouldSwitchToView as ViewType);
         clearViewSwitchSignal();
       });
     }
-  }, [shouldSwitchToView, activeView, clearViewSwitchSignal]);
+  }, [shouldSwitchToView, activeView, clearViewSwitchSignal, availableViews]);
 
   // Reset to exterior view if current view becomes unavailable
   useEffect(() => {
     if (!availableViews.includes(activeView)) {
+      console.log(
+        "🪟 View",
+        activeView,
+        "not available in",
+        availableViews,
+        "- resetting to exterior"
+      );
       startTransition(() => {
         setActiveView("exterior");
       });
@@ -320,16 +342,34 @@ export default function PreviewPanel({
                 />
               )}
 
-            {/* Brightness Overlay - only show on exterior view when belichtungspaket is selected AND main image is loaded */}
+            {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected AND main image is loaded */}
             {activeView === "exterior" &&
               configuration?.belichtungspaket &&
+              configuration?.nest &&
               isMainImageLoaded && (
-                <BrightnessOverlay
+                <BelichtungsPaketOverlay
+                  nestSize={
+                    configuration.nest.value as
+                      | "nest80"
+                      | "nest100"
+                      | "nest120"
+                      | "nest140"
+                      | "nest160"
+                  }
                   brightnessLevel={
-                    configuration.belichtungspaket?.value as
+                    configuration.belichtungspaket.value as
                       | "light"
                       | "medium"
                       | "bright"
+                  }
+                  fensterMaterial={
+                    configuration.fenster?.value === "pvc_fenster"
+                      ? "pvc"
+                      : configuration.fenster?.value === "aluminium_weiss"
+                        ? "aluminium_hell"
+                        : configuration.fenster?.value === "aluminium_schwarz"
+                          ? "aluminium_dunkel"
+                          : "holz" // Default to holz (preselected)
                   }
                   isVisible={
                     isBrightnessOverlayVisible && activeView === "exterior"
@@ -338,24 +378,38 @@ export default function PreviewPanel({
                 />
               )}
 
-            {/* Fenster Overlay - only show on fenster view (materials selection view) when fenster is selected */}
-            {activeView === "fenster" &&
-              configuration?.fenster &&
-              isMainImageLoaded && (
-                <FensterOverlay
-                  fensterType={
-                    configuration.fenster?.value as
-                      | "pvc_fenster"
-                      | "holz"
-                      | "aluminium_schwarz"
-                      | "aluminium_weiss"
-                  }
-                  isVisible={
-                    isFensterOverlayVisible && activeView === "fenster"
-                  }
-                  className=""
-                />
-              )}
+            {/* Fenster Overlay - only show on interior view when fenster is selected AND main image is loaded */}
+            {(() => {
+              const shouldRender =
+                activeView === "interior" &&
+                configuration?.fenster &&
+                isMainImageLoaded;
+              const overlayVisible =
+                isFensterOverlayVisible && activeView === "interior";
+              console.log("🪟 Fenster Overlay render check:", {
+                activeView,
+                shouldRender,
+                overlayVisible,
+                fensterConfig: !!configuration?.fenster,
+                isMainImageLoaded,
+              });
+
+              return (
+                shouldRender && (
+                  <FensterOverlay
+                    fensterType={
+                      configuration.fenster?.value as
+                        | "pvc_fenster"
+                        | "holz"
+                        | "aluminium_schwarz"
+                        | "aluminium_weiss"
+                    }
+                    isVisible={overlayVisible}
+                    className="opacity-90"
+                  />
+                )
+              );
+            })()}
           </div>
         </div>
 
