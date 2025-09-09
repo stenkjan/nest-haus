@@ -53,7 +53,12 @@ export default function CheckoutStepper({
   onStepChange,
   hideProgress = false,
 }: CheckoutStepperProps) {
-  const { getAppointmentSummary } = useCartStore();
+  const {
+    getAppointmentSummary,
+    getAppointmentSummaryShort,
+    getDeliveryDate,
+    getDeliveryDateFormatted,
+  } = useCartStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
@@ -895,7 +900,7 @@ export default function CheckoutStepper({
         case 3:
           return "Terminplanung";
         default:
-          return "Voraussichtliches Datum";
+          return "6 Monate nach Terminvereinbarung";
       }
     };
     return (
@@ -906,13 +911,30 @@ export default function CheckoutStepper({
               <div className="flex items-start justify-between gap-4">
                 <div className="text-left">
                   <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
-                    Garantierter Liefertermin
+                    {getAppointmentSummary()
+                      ? "Garantierter Liefertermin"
+                      : "Liefertermin"}
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
-                    {deliveryDateString}
-                  </div>
+                  {getAppointmentSummary() ? (
+                    <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                      {deliveryDateString}
+                    </div>
+                  ) : (
+                    <div className="text-right">
+                      <div className="text-lg md:text-xl lg:text-2xl text-red-600 font-medium">
+                        Zum Fortfahren bitte einen{" "}
+                        <button
+                          onClick={() => onStepChange?.(3)}
+                          className="underline hover:text-red-700 transition-colors"
+                        >
+                          Termin vereinbaren
+                        </button>
+                        !
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1058,7 +1080,7 @@ export default function CheckoutStepper({
                                 : PriceUtils.formatPrice(selectedPlanPrice)}
                               )
                             </span>
-                            <span aria-hidden className="text-green-600">
+                            <span aria-hidden className="text-blue-500">
                               ✓
                             </span>
                           </>
@@ -1080,7 +1102,20 @@ export default function CheckoutStepper({
                     <div
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(3)}`}
                     >
-                      —
+                      <span className="inline-flex items-center gap-2">
+                        {getAppointmentSummaryShort() ? (
+                          <>
+                            <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line">
+                              {getAppointmentSummaryShort()}
+                            </span>
+                            <span aria-hidden className="text-blue-500">
+                              ✓
+                            </span>
+                          </>
+                        ) : (
+                          "—"
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div className={rowWrapperClass}>
@@ -1097,7 +1132,18 @@ export default function CheckoutStepper({
                     <div
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
                     >
-                      —
+                      {getAppointmentSummary() ? (
+                        <span className="inline-flex items-center gap-2">
+                          <span className="text-xs md:text-sm text-gray-600">
+                            {deliveryDateString}
+                          </span>
+                          <span aria-hidden className="text-blue-500">
+                            ✓
+                          </span>
+                        </span>
+                      ) : (
+                        "—"
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1137,17 +1183,17 @@ export default function CheckoutStepper({
     </div>
   );
 
-  // Compute guaranteed delivery date (6 months from now)
+  // Compute guaranteed delivery date (6 months from appointment date)
   const deliveryDateString = useMemo(() => {
-    const date = new Date();
-    const currentMonth = date.getMonth();
-    date.setMonth(currentMonth + 6);
-    return date.toLocaleDateString("de-DE", {
+    const deliveryDate = getDeliveryDate();
+    if (!deliveryDate) return "";
+
+    return deliveryDate.toLocaleDateString("de-DE", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     });
-  }, []);
+  }, [getDeliveryDate]);
 
   // Decide which configuration to use for images: use live configurator state for real-time sync
   const sourceConfig = useMemo(() => {
@@ -1789,7 +1835,15 @@ export default function CheckoutStepper({
                             <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
                               <div className="flex-1 min-w-0 max-w-[50%]">
                                 <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
-                                  {getAppointmentSummary() ? "✓" : "—"}
+                                  <span
+                                    className={
+                                      getAppointmentSummary()
+                                        ? "text-blue-500"
+                                        : ""
+                                    }
+                                  >
+                                    {getAppointmentSummary() ? "✓" : "—"}
+                                  </span>
                                 </div>
                                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
                                   Termin mit dem Nest Team

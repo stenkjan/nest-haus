@@ -79,6 +79,9 @@ interface CartState {
   setAppointmentDetails: (details: AppointmentDetails) => void
   clearAppointmentDetails: () => void
   getAppointmentSummary: () => string | null
+  getAppointmentSummaryShort: () => string | null
+  getDeliveryDate: () => Date | null
+  getDeliveryDateFormatted: () => string | null
 
   // Order actions
   setOrderDetails: (details: OrderDetails) => void
@@ -272,6 +275,92 @@ export const useCartStore = create<CartState>()(
         })
 
         return `${formattedDate}, ${state.appointmentDetails.time}`
+      },
+
+      // Get appointment summary in short format for price overview
+      getAppointmentSummaryShort: () => {
+        const state = get()
+        if (!state.appointmentDetails) return null
+
+        const date = new Date(state.appointmentDetails.date)
+        const formattedDate = date.toLocaleDateString('de-DE', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        })
+
+        return `${formattedDate}\n${state.appointmentDetails.time} Uhr`
+      },
+
+      // Calculate delivery date (6 months after appointment, skipping weekends/holidays)
+      getDeliveryDate: () => {
+        const state = get()
+        if (!state.appointmentDetails) return null
+
+        const appointmentDate = new Date(state.appointmentDetails.date)
+
+        // Add 6 months
+        const deliveryDate = new Date(appointmentDate)
+        deliveryDate.setMonth(deliveryDate.getMonth() + 6)
+
+        // Austrian holidays (simplified - major ones)
+        const getAustrianHolidays = (year: number) => {
+          const holidays = [
+            new Date(year, 0, 1),   // New Year's Day
+            new Date(year, 0, 6),   // Epiphany
+            new Date(year, 4, 1),   // Labour Day
+            new Date(year, 7, 15),  // Assumption of Mary
+            new Date(year, 9, 26),  // National Day
+            new Date(year, 10, 1),  // All Saints' Day
+            new Date(year, 11, 8),  // Immaculate Conception
+            new Date(year, 11, 25), // Christmas Day
+            new Date(year, 11, 26), // St. Stephen's Day
+          ]
+
+          // Easter-based holidays (simplified calculation)
+          const easter = new Date(year, 2, 21) // Approximate
+          holidays.push(
+            new Date(easter.getTime() + 1 * 24 * 60 * 60 * 1000), // Easter Monday
+            new Date(easter.getTime() + 39 * 24 * 60 * 60 * 1000), // Ascension Day
+            new Date(easter.getTime() + 50 * 24 * 60 * 60 * 1000), // Whit Monday
+            new Date(easter.getTime() + 60 * 24 * 60 * 60 * 1000), // Corpus Christi
+          )
+
+          return holidays
+        }
+
+        const isWorkingDay = (date: Date) => {
+          const dayOfWeek = date.getDay()
+          // 0 = Sunday, 6 = Saturday
+          if (dayOfWeek === 0 || dayOfWeek === 6) return false
+
+          const holidays = getAustrianHolidays(date.getFullYear())
+          return !holidays.some(holiday =>
+            holiday.getDate() === date.getDate() &&
+            holiday.getMonth() === date.getMonth() &&
+            holiday.getFullYear() === date.getFullYear()
+          )
+        }
+
+        // Skip to next working day if needed
+        while (!isWorkingDay(deliveryDate)) {
+          deliveryDate.setDate(deliveryDate.getDate() + 1)
+        }
+
+        return deliveryDate
+      },
+
+      // Get formatted delivery date
+      getDeliveryDateFormatted: () => {
+        const deliveryDate = get().getDeliveryDate()
+        if (!deliveryDate) return null
+
+        return deliveryDate.toLocaleDateString('de-DE', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
       },
 
       // Set order details
