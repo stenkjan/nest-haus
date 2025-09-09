@@ -110,7 +110,7 @@ export default function FensterOverlay({
         path={overlayImagePath}
         alt={`Fenster Material Overlay - ${fensterType}`}
         fill
-        className="transition-opacity duration-300 object-contain z-20"
+        className="transition-opacity duration-300 object-contain z-25"
         strategy="client"
         isInteractive={true}
         enableCache={true}

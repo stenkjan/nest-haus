@@ -338,7 +338,7 @@ export default function PreviewPanel({
                   }
                   moduleCount={configuration.pvanlage.quantity}
                   isVisible={isPvOverlayVisible && activeView === "exterior"}
-                  className="opacity-90"
+                  className=""
                 />
               )}
 
@@ -374,7 +374,7 @@ export default function PreviewPanel({
                   isVisible={
                     isBrightnessOverlayVisible && activeView === "exterior"
                   }
-                  className="opacity-90"
+                  className=""
                 />
               )}
 
@@ -405,7 +405,7 @@ export default function PreviewPanel({
                         | "aluminium_weiss"
                     }
                     isVisible={overlayVisible}
-                    className="opacity-90"
+                    className=""
                   />
                 )
               );

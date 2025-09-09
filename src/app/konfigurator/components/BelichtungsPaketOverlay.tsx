@@ -82,7 +82,7 @@ export default function BelichtungsPaketOverlay({
         path={overlayImagePath}
         alt={`Belichtungspaket ${brightnessLevel} Overlay - ${fensterMaterial}`}
         fill
-        className="transition-opacity duration-300 object-contain z-15" // Higher z-index than other overlays
+        className="transition-opacity duration-300 object-contain z-30" // Higher z-index than other overlays
         strategy="client"
         isInteractive={true}
         enableCache={true}

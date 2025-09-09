@@ -206,7 +206,7 @@ export default function PvModuleOverlay({
   // Position counter lower - at the height where the old PV overlay was positioned
   const counterTop = imageMetrics.imageTop + imageMetrics.imageHeight * 0.25; // Position 25% down from top of image (lower than before)
   const counterTopMobile =
-    imageMetrics.imageTop + imageMetrics.imageHeight * 0.20; // Position 25% down from top of image on mobile (5% higher than before)
+    imageMetrics.imageTop + imageMetrics.imageHeight * 0.2; // Position 25% down from top of image on mobile (5% higher than before)
 
   return (
     <div
@@ -219,7 +219,7 @@ export default function PvModuleOverlay({
         path={overlayImagePath}
         alt="PV Module Overlay"
         fill
-        className="transition-opacity duration-300 object-contain z-10"
+        className="transition-opacity duration-300 object-contain z-20"
         strategy="client"
         isInteractive={true}
         enableCache={true}
