@@ -138,7 +138,23 @@ export default function CheckoutStepper({
     const cartPlan = configItem?.planungspaket?.value;
     const selectedPlan = configuratorPlan ?? cartPlan ?? "basis";
 
+    console.log(
+      "🚀 CheckoutStepper: Post-mount planungspaket initialization:",
+      {
+        configuratorPlan,
+        cartPlan,
+        selectedPlan,
+        currentLocal: localSelectedPlan,
+        needsUpdate: localSelectedPlan !== selectedPlan,
+        hasConfiguration: !!configuration,
+        hasConfigItem: !!configItem,
+      }
+    );
+
     if (localSelectedPlan !== selectedPlan) {
+      console.log(
+        "🔄 CheckoutStepper: Correcting localSelectedPlan after mount"
+      );
       setLocalSelectedPlan(selectedPlan);
     }
   }, [configuration, configItem, localSelectedPlan]);
@@ -254,6 +270,8 @@ export default function CheckoutStepper({
   };
 
   const setPlanningPackage = (value: string) => {
+    console.log("📦 CheckoutStepper: Setting planning package to:", value);
+
     if (!configItem) return;
     const target = PLANNING_PACKAGES.find((p) => p.value === value);
     if (!target) return;
@@ -276,6 +294,9 @@ export default function CheckoutStepper({
 
     // Update configurator store to keep it in sync
     if (configuration) {
+      console.log(
+        "🔄 CheckoutStepper: Syncing planungspaket back to configurator store"
+      );
       const { updateSelection } = useConfiguratorStore.getState();
       updateSelection({
         category: "planungspaket",
@@ -1493,6 +1514,18 @@ export default function CheckoutStepper({
 
           {stepIndex === 2 && (
             <div className="space-y-4 pt-8">
+              {(() => {
+                console.log(
+                  "📋 CheckoutStepper: Rendering CheckoutPlanungspaketeCards with:",
+                  {
+                    selectedPlan: localSelectedPlan,
+                    stepIndex,
+                    configuratorPlan: configuration?.planungspaket?.value,
+                    cartPlan: configItem?.planungspaket?.value,
+                  }
+                );
+                return null;
+              })()}
               <CheckoutPlanungspaketeCards
                 selectedPlan={localSelectedPlan}
                 onPlanSelect={setLocalSelectedPlan}
