@@ -663,7 +663,7 @@ export default function CheckoutStepper({
           {/* Progress Line - Only between dots */}
           {steps.length > 1 && (
             <div
-              className="absolute top-3 h-0.5 bg-blue-600 transition-all duration-300"
+              className="absolute top-3 h-0.5 bg-blue-500 transition-all duration-300"
               style={{
                 left: `${100 / steps.length / 2}%`,
                 width:
@@ -678,9 +678,9 @@ export default function CheckoutStepper({
               const isDone = idx < stepIndex;
               const isCurrent = idx === stepIndex;
               const circleClass = isDone
-                ? "bg-blue-600 border-blue-600"
+                ? "bg-blue-500 border-blue-500"
                 : isCurrent
-                  ? "bg-white border-blue-600"
+                  ? "bg-white border-blue-500"
                   : "bg-white border-gray-300";
               const dotInner = isDone ? (
                 <span className="w-2 h-2 bg-white rounded-full" />
@@ -716,7 +716,7 @@ export default function CheckoutStepper({
             />
             {/* Top row progress line */}
             <div
-              className="absolute top-2.5 h-0.5 bg-blue-600 transition-all duration-300"
+              className="absolute top-2.5 h-0.5 bg-blue-500 transition-all duration-300"
               style={{
                 left: `${100 / 3 / 2}%`,
                 width:
@@ -731,9 +731,9 @@ export default function CheckoutStepper({
                 const isDone = idx < stepIndex;
                 const isCurrent = idx === stepIndex;
                 const circleClass = isDone
-                  ? "bg-blue-600 border-blue-600"
+                  ? "bg-blue-500 border-blue-500"
                   : isCurrent
-                    ? "bg-white border-blue-600"
+                    ? "bg-white border-blue-500"
                     : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
@@ -768,7 +768,7 @@ export default function CheckoutStepper({
             />
             {/* Bottom row progress line */}
             <div
-              className="absolute top-2.5 h-0.5 bg-blue-600 transition-all duration-300"
+              className="absolute top-2.5 h-0.5 bg-blue-500 transition-all duration-300"
               style={{
                 left: `${100 / 2 / 2}%`,
                 width: stepIndex <= 3 ? "0%" : "50%", // Full progress between the 2 dots when on step 4
@@ -780,9 +780,9 @@ export default function CheckoutStepper({
                 const isDone = idx < stepIndex;
                 const isCurrent = idx === stepIndex;
                 const circleClass = isDone
-                  ? "bg-blue-600 border-blue-600"
+                  ? "bg-blue-500 border-blue-500"
                   : isCurrent
-                    ? "bg-white border-blue-600"
+                    ? "bg-white border-blue-500"
                     : "bg-white border-gray-300";
                 const dotInner = isDone ? (
                   <span className="w-2 h-2 bg-white rounded-full" />
@@ -1040,7 +1040,7 @@ export default function CheckoutStepper({
                       <span className="inline-flex items-center gap-2">
                         {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
                         {grundstueckscheckDone && (
-                          <span aria-hidden className="text-green-600">
+                          <span aria-hidden className="text-blue-500">
                             ✓
                           </span>
                         )}
@@ -1432,7 +1432,7 @@ export default function CheckoutStepper({
                             className={
                               "w-2.5 h-2.5 rounded-full " +
                               (i === galleryIndex
-                                ? "bg-blue-600"
+                                ? "bg-blue-500"
                                 : "bg-gray-300")
                             }
                           />
@@ -2049,7 +2049,7 @@ export default function CheckoutStepper({
                       onScrollToContact();
                     }
                   }}
-                  className="bg-blue-600 text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
+                  className="bg-blue-500 text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
                 >
                   Zur Kassa
                 </button>
