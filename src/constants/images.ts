@@ -3,14 +3,14 @@ export const IMAGES = {
     // Hero images for landing page
     hero: {
         homeButton: '0-homebutton-nest-haus',
-        nestHaus1: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche-mobile',
-        nestHaus2: '2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten-mobile',
-        nestHaus3: '7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-mobile',
-        nestHaus4: '3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche-mobile',
-        nestHaus5: '4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade-mobile',
-        nestHaus6: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten-mobile',
-        nestHaus7: '5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten-mobile',
-        nestHaus8: '6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche-mobile',
+        nestHaus1: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche',
+        nestHaus2: '2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten',
+        nestHaus3: '7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite',
+        nestHaus4: '3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche',
+        nestHaus5: '4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade',
+        nestHaus6: '8-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
+        nestHaus7: '5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten',
+        nestHaus8: '6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche',
         // Mobile versions for landing page
         mobile: {
             nestHaus1: '1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche-mobile',

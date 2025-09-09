@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Dialog } from '@/components/ui';
+import { TerminVereinbarenContent } from '@/components/sections/TerminVereinbarenContent';
 
 interface CalendarDialogProps {
   isOpen: boolean;
@@ -147,8 +148,11 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
         {/* Title above the dialog */}
         <div className="absolute top-[5vh] z-[100] w-full max-w-[1700px] px-6 left-0 right-0 mx-auto">
           <h2 className="hidden md:block font-bold text-h2-mobile md:text-3xl text-center text-gray-900 mb-2">
-            Jetzt deinen Termin vereinbaren
+            Vereinbare jetzt deinen Termin
           </h2>
+          <h3 className="hidden md:block text-center text-gray-600 text-lg">
+            Wir helfen gerne.
+          </h3>
         </div>
         
         <div 
@@ -159,32 +163,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
               <div className="relative w-full flex flex-col md:flex-row justify-start items-start gap-4 md:gap-8 pt-6 md:pt-0 px-2 sm:px-4 lg:px-8 overflow-y-auto h-full pointer-events-auto z-10">
                 {/* Left Info Section */}
                 <div className="w-full md:flex-1 md:min-w-[180px] md:max-w-[340px] xl:min-w-[320px] xl:max-w-[420px] flex flex-col justify-start px-2 sm:px-4 md:pl-4 md:pr-0 lg:pl-10 mt-4 md:mt-7 z-10">
-                  <div className="flex flex-col gap-4">
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-700 mb-3 leading-snug">
-                        Der Kauf deines Hauses ist ein großer Schritt – <span className="font-bold">und wir sind da, um dir dabei zu helfen.</span> Für mehr Sicherheit und Klarheit <span className="font-bold">stehen wir dir jederzeit persönlich zur Seite.</span> Ruf uns an, um dein <span className="font-bold">Beratungsgespräch</span> zu vereinbaren, oder buche deinen <span className="font-bold">Termin ganz einfach online.</span> Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
-                      </p>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-                        <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">Kontakt</h4>
-                        <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm text-gray-700">
-                          <span>Telefon:</span><span>03847 75090</span>
-                          <span>Mobil:</span><span>0664 394 9604</span>
-                          <span>Email:</span><span>nest@haus.at</span>
-                        </div>
-                      </div>
-                      <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-                        <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">Adresse</h4>
-                        <div className="text-xs md:text-sm text-gray-700">
-                          Am Ölberg 17<br />
-                          8020, Graz<br />
-                          Steiermark<br />
-                          Österreich
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <TerminVereinbarenContent variant="popup" />
                 </div>
 
                 {/* Right Calendar/Form Section */}

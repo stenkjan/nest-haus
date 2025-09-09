@@ -10,3 +10,4 @@ export { ContactMap } from "./ContactMap";
 export { AppointmentBookingSection } from "./AppointmentBookingSection";
 export { default as AppointmentBooking } from "./AppointmentBooking";
 export { default as LandingImagesCarousel } from "./LandingImagesCarousel";
+export { TerminVereinbarenContent } from "./TerminVereinbarenContent";
