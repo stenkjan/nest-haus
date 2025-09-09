@@ -5,7 +5,10 @@ import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 import { PriceCalculator } from "@/app/konfigurator/core/PriceCalculator";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
 import type { ConfigurationItem } from "@/store/configuratorStore";
-import { PLANNING_PACKAGES } from "@/constants/configurator";
+import {
+  PLANNING_PACKAGES,
+  GRUNDSTUECKSCHECK_PRICE,
+} from "@/constants/configurator";
 import { GrundstueckCheckForm } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";
 import {
@@ -20,6 +23,7 @@ import {
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 import { HybridBlobImage } from "@/components/images";
 import { useConfiguratorStore } from "@/store/configuratorStore";
+import { useCartStore } from "@/store/cartStore";
 import type { ViewType } from "@/app/konfigurator/types/configurator.types";
 import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
 import { Button } from "@/components/ui";
@@ -49,6 +53,7 @@ export default function CheckoutStepper({
   onStepChange,
   hideProgress = false,
 }: CheckoutStepperProps) {
+  const { getAppointmentSummary } = useCartStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
@@ -259,7 +264,7 @@ export default function CheckoutStepper({
         category: "grundstueckscheck",
         value: "grundstueckscheck",
         name: "Grundstückscheck",
-        price: 0,
+        price: GRUNDSTUECKSCHECK_PRICE,
         description: "Grundstückscheck",
       },
       totalPrice: Math.max(0, (configItem.totalPrice || 0) - previousPrice),
@@ -467,7 +472,7 @@ export default function CheckoutStepper({
       belichtungspaket.name;
     const fensterName = fenster?.name ? ` - ${fenster.name}` : " - PVC Fenster";
 
-    return `Beleuchtungspaket ${levelName}${fensterName}`;
+    return `Belichtungspaket ${levelName}${fensterName}`;
   };
 
   const getCategoryDisplayName = (category: string): string => {
@@ -632,7 +637,7 @@ export default function CheckoutStepper({
       return {
         type: "grundstueckscheck" as const,
         name: "Grundstückscheck",
-        price: 2000,
+        price: GRUNDSTUECKSCHECK_PRICE,
         description: "Grundstückscheck hinzufügen",
       };
     }
@@ -859,24 +864,26 @@ export default function CheckoutStepper({
   const renderIntro = () => {
     const c = copyByStep[stepIndex];
     const total = getCartTotal();
-    const dueNow = 0; // Current upfront payment (service-only) – adjustable later
     const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
+    const dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
     const _terminDone = false; // Integrate with AppointmentBooking state if available
 
     // Use local selection if available so summary reflects user choice immediately
     const selectedPlanValue =
       localSelectedPlan ?? configItem?.planungspaket?.value ?? null;
-    const selectedPlanName = selectedPlanValue
-      ? PLANNING_PACKAGES.find((p) => p.value === selectedPlanValue)?.name ||
-        selectedPlanValue
-      : "—";
+    const selectedPlanPackage = selectedPlanValue
+      ? PLANNING_PACKAGES.find((p) => p.value === selectedPlanValue)
+      : null;
+    const selectedPlanName =
+      selectedPlanPackage?.name || selectedPlanValue || "—";
+    const selectedPlanPrice =
+      selectedPlanPackage?.price || configItem?.planungspaket?.price || 0;
     const isPlanSelected = Boolean(selectedPlanValue);
 
     const rowWrapperClass =
       "flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7";
-    const rowTextClass = (rowStep: number) =>
-      stepIndex === rowStep ? "text-gray-900" : "text-gray-400";
+    const rowTextClass = (rowStep: number) => "text-gray-900"; // Always show main content in black, only subtexts should be grey
     const getRowSubtitle = (rowStep: number): string => {
       switch (rowStep) {
         case 0:
@@ -1013,7 +1020,7 @@ export default function CheckoutStepper({
                       )}`}
                     >
                       <span className="inline-flex items-center gap-2">
-                        {PriceUtils.formatPrice(3000)}
+                        {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
                         {grundstueckscheckDone && (
                           <span aria-hidden className="text-green-600">
                             ✓
@@ -1043,36 +1050,53 @@ export default function CheckoutStepper({
                       <span className="inline-flex items-center gap-2">
                         {selectedPlanName}
                         {isPlanSelected && (
-                          <span aria-hidden className="text-green-600">
-                            ✓
-                          </span>
+                          <>
+                            <span className="text-gray-600">
+                              (
+                              {selectedPlanPrice === 0
+                                ? "inkludiert"
+                                : PriceUtils.formatPrice(selectedPlanPrice)}
+                              )
+                            </span>
+                            <span aria-hidden className="text-green-600">
+                              ✓
+                            </span>
+                          </>
                         )}
                       </span>
                     </div>
                   </div>
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
+                      <div
+                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(3)}`}
+                      >
                         Termin mit dem Nest Team
                       </div>
                       <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                         {getRowSubtitle(3)}
                       </div>
                     </div>
-                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
+                    <div
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(3)}`}
+                    >
                       —
                     </div>
                   </div>
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
+                      <div
+                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
+                      >
                         Garantierter Liefertermin
                       </div>
                       <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                         {getRowSubtitle(4)}
                       </div>
                     </div>
-                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-400">
+                    <div
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
+                    >
                       —
                     </div>
                   </div>
@@ -1096,64 +1120,6 @@ export default function CheckoutStepper({
             </div>
           </div>
         </div>
-
-        {/* Full-width GrundstueckCheckForm section for step 2 */}
-        {stepIndex === 1 && (
-          <div className="mt-16">
-            <div className="text-center mb-8 pt-8">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
-                Dein Grundstück - Unser Check
-              </h2>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
-                Wir Prüfen deinen Baugrund
-              </h3>
-            </div>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-              <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
-                <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-4 mt-12">
-                  Wir prüfen, ob{" "}
-                  <span className="text-black">dein Grundstück</span> die
-                  gesetzlichen{" "}
-                  <span className="text-black">Anforderungen erfüllt</span>.
-                  Dazu gehören das jeweilige{" "}
-                  <span className="text-black">Landesbaugesetz</span>, das{" "}
-                  <span className="text-black">Raumordnungsgesetz</span> und die{" "}
-                  <span className="text-black">örtlichen Vorschriften</span>,
-                  damit dein Bauvorhaben von Beginn an auf{" "}
-                  <span className="text-black">sicheren Grundlagen</span> steht.
-                </p>
-                <div className="h-3"></div>
-                <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-6">
-                  Außerdem analysieren wir die{" "}
-                  <span className="text-black">Eignung des Grundstücks</span>{" "}
-                  für dein Nest Haus. Dabei geht es um alle notwendigen
-                  Voraussetzungen, die für Planung und Aufbau entscheidend sind,
-                  sodass{" "}
-                  <span className="text-black">
-                    dein Zuhause zuverlässig und ohne Hindernisse
-                  </span>{" "}
-                  entstehen kann.
-                </p>
-
-                <div className="mt-2 space-y-4">
-                  <div>
-                    <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base"></h4>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full md:w-1/2">
-                <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
-                  <GrundstueckCheckForm
-                    backgroundColor="white"
-                    maxWidth={false}
-                    padding="sm"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     );
   };
@@ -1564,6 +1530,67 @@ export default function CheckoutStepper({
             <div className="space-y-4 pt-8">
               <AppointmentBooking showLeftSide={false} />
 
+              {/* Grundstückscheck Form Section */}
+              <div className="mt-16">
+                <div className="text-center mb-8 pt-8">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                    Dein Grundstück - Unser Check
+                  </h2>
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
+                    Wir Prüfen deinen Baugrund
+                  </h3>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
+                  <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
+                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-4 mt-12">
+                      Wir prüfen, ob{" "}
+                      <span className="text-black">dein Grundstück</span> die
+                      gesetzlichen{" "}
+                      <span className="text-black">Anforderungen erfüllt</span>.
+                      Dazu gehören das jeweilige{" "}
+                      <span className="text-black">Landesbaugesetz</span>, das{" "}
+                      <span className="text-black">Raumordnungsgesetz</span> und
+                      die{" "}
+                      <span className="text-black">örtlichen Vorschriften</span>
+                      , damit dein Bauvorhaben von Beginn an auf{" "}
+                      <span className="text-black">sicheren Grundlagen</span>{" "}
+                      steht.
+                    </p>
+                    <div className="h-3"></div>
+                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-6">
+                      Außerdem analysieren wir die{" "}
+                      <span className="text-black">
+                        Eignung des Grundstücks
+                      </span>{" "}
+                      für dein Nest Haus. Dabei geht es um alle notwendigen
+                      Voraussetzungen, die für Planung und Aufbau entscheidend
+                      sind, sodass{" "}
+                      <span className="text-black">
+                        dein Zuhause zuverlässig und ohne Hindernisse
+                      </span>{" "}
+                      entstehen kann.
+                    </p>
+
+                    <div className="mt-2 space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base"></h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="w-full md:w-1/2">
+                    <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+                      <GrundstueckCheckForm
+                        backgroundColor="white"
+                        maxWidth={false}
+                        padding="sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Move the buttons here, directly below the Grundstückscheck section */}
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button
                   variant="landing-secondary-blue"
@@ -1673,7 +1700,9 @@ export default function CheckoutStepper({
                                 </div>
                                 <div className="flex-1 text-right max-w-[50%] min-w-0">
                                   <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
-                                    {PriceUtils.formatPrice(3000)}
+                                    {PriceUtils.formatPrice(
+                                      GRUNDSTUECKSCHECK_PRICE
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -1746,10 +1775,10 @@ export default function CheckoutStepper({
                                     return (
                                       <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
                                         {packageType === "basis"
-                                          ? "€00,00"
+                                          ? "0,00€"
                                           : packageType === "plus"
-                                            ? "€13.900,00"
-                                            : "€18.900,00"}
+                                            ? "13.900,00€"
+                                            : "18.900,00€"}
                                       </div>
                                     );
                                   })()}
@@ -1760,15 +1789,15 @@ export default function CheckoutStepper({
                             <div className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4">
                               <div className="flex-1 min-w-0 max-w-[50%]">
                                 <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
-                                  —
+                                  {getAppointmentSummary() ? "✓" : "—"}
                                 </div>
                                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
                                   Termin mit dem Nest Team
                                 </div>
                               </div>
                               <div className="flex-1 text-right max-w-[50%] min-w-0">
-                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
-                                  —
+                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
+                                  {getAppointmentSummary() || "—"}
                                 </div>
                               </div>
                             </div>
@@ -1794,8 +1823,8 @@ export default function CheckoutStepper({
               {/* Instalment Breakdown */}
               {(() => {
                 const totalPrice = Math.max(0, getCartTotal());
-                const firstPayment = 3000;
-                const grundstueckscheckCredit = 3000;
+                const firstPayment = GRUNDSTUECKSCHECK_PRICE;
+                const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
                 const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
                 const secondPayment = Math.max(
                   0,
@@ -1916,7 +1945,7 @@ export default function CheckoutStepper({
                 </div>
                 <div className="text-right">
                   <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
-                    {PriceUtils.formatPrice(3000)}
+                    {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
                 </div>
@@ -1987,6 +2016,19 @@ export default function CheckoutStepper({
                   dass das Projekt nicht möglich oder unzumutbar ist, erstatten
                   wir den Betrag vollständig.
                 </div>
+              </div>
+
+              {/* Back Button */}
+              <div className="flex justify-center mt-16 md:mt-20">
+                <Button
+                  variant="landing-secondary-blue"
+                  size="xs"
+                  className="whitespace-nowrap"
+                  onClick={goPrev}
+                  disabled={stepIndex <= 0}
+                >
+                  Zurück
+                </Button>
               </div>
             </div>
           )}

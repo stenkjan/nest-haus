@@ -142,8 +142,8 @@ export type ImageCombinationKey = keyof typeof INTERIOR_EXACT_MAPPINGS;
  * Following project rules: shared constants in src/constants/
  */
 
-// Grundstückscheck price
-export const GRUNDSTUECKSCHECK_PRICE = 480;
+// Grundstückscheck price - Updated to match checkout pricing
+export const GRUNDSTUECKSCHECK_PRICE = 3000;
 
 // Nest options with base pricing
 export const NEST_OPTIONS = [

@@ -27,6 +27,18 @@ export interface ConfigurationCartItem extends CartConfiguration {
   isFromConfigurator: boolean
 }
 
+export interface AppointmentDetails {
+  date: Date
+  time: string
+  appointmentType: "personal" | "phone"
+  customerInfo: {
+    name: string
+    lastName: string
+    phone: string
+    email: string
+  }
+}
+
 export interface OrderDetails {
   customerInfo: {
     email: string
@@ -41,6 +53,9 @@ export interface OrderDetails {
 interface CartState {
   // Cart items
   items: (CartItem | ConfigurationCartItem)[]
+
+  // Appointment state
+  appointmentDetails: AppointmentDetails | null
 
   // Order state
   orderDetails: OrderDetails | null
@@ -59,6 +74,11 @@ interface CartState {
   updateQuantity: (itemId: string, quantity: number) => void
   clearCart: () => void
   getItemById: (itemId: string) => CartItem | ConfigurationCartItem | undefined
+
+  // Appointment actions
+  setAppointmentDetails: (details: AppointmentDetails) => void
+  clearAppointmentDetails: () => void
+  getAppointmentSummary: () => string | null
 
   // Order actions
   setOrderDetails: (details: OrderDetails) => void
@@ -81,6 +101,7 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       // Initial state
       items: [],
+      appointmentDetails: null,
       orderDetails: null,
       isProcessingOrder: false,
       total: 0,
@@ -203,6 +224,7 @@ export const useCartStore = create<CartState>()(
         // Force complete state reset with explicit empty array
         set(() => ({
           items: [],
+          appointmentDetails: null,
           orderDetails: null,
           isProcessingOrder: false,
           total: 0,
@@ -222,6 +244,34 @@ export const useCartStore = create<CartState>()(
           }))
           console.log("🛒 CartStore: items after forced update:", get().items.length)
         }, 50)
+      },
+
+      // Set appointment details
+      setAppointmentDetails: (details: AppointmentDetails) => {
+        console.log("🗓️ CartStore: Setting appointment details:", details)
+        set({ appointmentDetails: details })
+      },
+
+      // Clear appointment details
+      clearAppointmentDetails: () => {
+        console.log("🗓️ CartStore: Clearing appointment details")
+        set({ appointmentDetails: null })
+      },
+
+      // Get appointment summary
+      getAppointmentSummary: () => {
+        const state = get()
+        if (!state.appointmentDetails) return null
+
+        const date = new Date(state.appointmentDetails.date)
+        const formattedDate = date.toLocaleDateString('de-DE', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+
+        return `${formattedDate}, ${state.appointmentDetails.time}`
       },
 
       // Set order details
@@ -364,6 +414,7 @@ export const useCartStore = create<CartState>()(
       skipHydration: process.env.NODE_ENV === 'test',
       partialize: (state) => ({
         items: state.items,
+        appointmentDetails: state.appointmentDetails,
         orderDetails: state.orderDetails
       })
     }

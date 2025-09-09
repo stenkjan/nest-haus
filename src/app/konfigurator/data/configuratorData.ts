@@ -212,15 +212,9 @@ export const configuratorData: CategoryData[] = [
       description: 'Wähle die Menge an Fenstern und Türen basierend auf deinen Lichtbedürfnissen.'
     },
     facts: {
-      title: 'Energieausweis A++',
+      title: 'Informationen zu den Fenstern',
       content: [
-        'Heizungsart: Beliebig',
-        'Heizwärmebedarf: ≤60kWh/m²a',
-        'CO₂-Emissionen: 15kg CO2/m²',
-        'CO₂-Bindung: ca. 1.000kg/m²',
-        'U-Wert: 0,15W/m²K',
-        'Gesamteffizienzklasse: A++',
-        'Berechnungsnormen: OIB RL 1-6'
+        'Die Größe und Platzierung deiner Fenster in deinem Nest-Haus werden hier nur schematisch angezeigt.'
       ]
     }
   },

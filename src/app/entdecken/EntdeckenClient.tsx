@@ -343,13 +343,12 @@ export default function EntdeckenClient() {
               </h3>
             </div>
 
-            <ContentCards
-              variant="static"
+            <VideoCard16by9
               title=""
               subtitle=""
               maxWidth={false}
               showInstructions={false}
-              customData={[CONTENT_CARD_PRESETS.sicherheit]}
+              customData={[VIDEO_CARD_PRESETS.sicherheit]}
             />
           </div>
         </section>

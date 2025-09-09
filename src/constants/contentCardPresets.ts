@@ -31,6 +31,7 @@ export interface VideoCardPreset {
     mobileDescription?: string;
     video: string;
     backgroundColor: string;
+    playbackRate?: number; // Optional playback speed (1.0 = normal, 0.5 = half speed, 2.0 = double speed)
     buttons?: Array<{
         text: string;
         variant: "primary" | "secondary" | "landing-secondary-blue";
@@ -40,8 +41,8 @@ export interface VideoCardPreset {
     }>;
 }
 
-// Sicherheit Card Preset - Used on unser-part#sicherheit and showcase
-export const SICHERHEIT_CARD_PRESET: ContentCardPreset = {
+// Sicherheit Video Card Preset - Used on unser-part#sicherheit and showcase
+export const SICHERHEIT_VIDEO_PRESET: VideoCardPreset = {
     id: 1,
     title: "Sicherheit",
     subtitle: "",
@@ -51,8 +52,9 @@ export const SICHERHEIT_CARD_PRESET: ContentCardPreset = {
     mobileSubtitle: "",
     mobileDescription:
         "Wir kennen die gesetzlichen Vorgaben genau und unterstützen dich dabei, die Anforderungen deines Baugrunds zu verstehen. Mit unserem Grundstücks-Check prüfen wir alle Gegebenheiten.",
-    image: IMAGES.function.nestHausGrundstueckCheck,
+    video: IMAGES.variantvideo.twelve,
     backgroundColor: "#F4F4F4",
+    playbackRate: 0.5, // Play at half speed for better visibility
     buttons: [
         {
             text: "Dein Part",
@@ -96,9 +98,9 @@ export const UNSERE_TECHNIK_VIDEO_PRESET: VideoCardPreset = {
 
 // Export all presets for easy access
 export const CONTENT_CARD_PRESETS = {
-    sicherheit: SICHERHEIT_CARD_PRESET,
 };
 
 export const VIDEO_CARD_PRESETS = {
+    sicherheit: SICHERHEIT_VIDEO_PRESET,
     unsereTechnik: UNSERE_TECHNIK_VIDEO_PRESET,
 };

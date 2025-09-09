@@ -210,7 +210,7 @@ export default function SummaryPanel({
       belichtungspaket.name;
     const fensterName = fenster?.name ? ` - ${fenster.name}` : " - PVC Fenster";
 
-    return `Beleuchtungspaket ${levelName}${fensterName}`;
+    return `Belichtungspaket ${levelName}${fensterName}`;
   };
 
   return (

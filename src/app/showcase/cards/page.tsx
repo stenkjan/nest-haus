@@ -103,25 +103,14 @@ export default function CardsShowcasePage() {
 
         {/* Sicherheit Card Preset Section */}
         <section className="overflow-visible">
-          <ContentCards
-            variant="static"
-            title="Sicherheit Card Preset"
-            subtitle="Reusable preset used across the site • Wide layout on desktop, mobile layout on tablets/phones"
+          <VideoCard16by9
+            title="Sicherheit Video Preset"
+            subtitle="Reusable video preset used across the site • Wide layout on desktop, mobile layout on tablets/phones"
             maxWidth={false}
-            customData={[CONTENT_CARD_PRESETS.sicherheit]}
+            customData={[VIDEO_CARD_PRESETS.sicherheit]}
           />
 
-          {/* Lightbox Button for Sicherheit Preset */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsLightbox
-              variant="static"
-              title="Sicherheit Card Preset - Lightbox View"
-              subtitle="Reusable preset with buttons • Adapts layout based on screen size • Click outside or press ESC to close"
-              triggerText="Open Sicherheit Preset in Lightbox"
-              triggerClassName="mx-2"
-              customData={[CONTENT_CARD_PRESETS.sicherheit]}
-            />
-          </div>
+          {/* Note: VideoCard16by9 doesn't have a lightbox variant, so this section is removed */}
         </section>
 
         {/* Video Card 16by9 Section */}

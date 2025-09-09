@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
+import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
 
@@ -294,7 +295,7 @@ export default function WarenkorbClient() {
       return {
         type: "grundstueckscheck",
         name: "Grundstückscheck",
-        price: 2000,
+        price: GRUNDSTUECKSCHECK_PRICE,
         description: "Grundstückscheck hinzufügen",
       };
     }

@@ -269,6 +269,7 @@ export default function VideoCard16by9({
                           playsInline={true}
                           controls={false}
                           enableCache={true}
+                          playbackRate={card.playbackRate}
                         />
                       </motion.div>
                     </div>
@@ -332,6 +333,7 @@ export default function VideoCard16by9({
                           playsInline={true}
                           controls={false}
                           enableCache={true}
+                          playbackRate={card.playbackRate}
                         />
                       </motion.div>
                     </div>

@@ -1,6 +1,6 @@
 import React from "react";
-import ContentCards from "@/components/cards/ContentCards";
-import { CONTENT_CARD_PRESETS } from "@/constants/contentCardPresets";
+import { VideoCard16by9 } from "@/components/cards";
+import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
 
 /**
  * GrundstueckCheckSection Component
@@ -81,13 +81,12 @@ export function GrundstueckCheckSection({
         </div>
 
         {showCards && (
-          <ContentCards
-            variant="static"
+          <VideoCard16by9
             title=""
             subtitle=""
             maxWidth={false}
             showInstructions={false}
-            customData={[CONTENT_CARD_PRESETS.sicherheit]}
+            customData={[VIDEO_CARD_PRESETS.sicherheit]}
           />
         )}
       </div>

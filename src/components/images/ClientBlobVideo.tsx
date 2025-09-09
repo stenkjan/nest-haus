@@ -10,6 +10,7 @@ interface ClientBlobVideoProps {
   muted?: boolean; // Audio state
   playsInline?: boolean; // Mobile optimization
   controls?: boolean; // Show/hide controls
+  playbackRate?: number; // Playback speed (1.0 = normal, 0.5 = half speed, 2.0 = double speed)
   onLoad?: () => void; // Success callback
   onError?: (error: Error) => void; // Error callback
   quality?: number; // Video quality (not used but for consistency)
@@ -147,6 +148,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   muted = true, // Default to muted for autoplay compatibility
   playsInline = true,
   controls = false,
+  playbackRate = 1.0,
   onLoad,
   onError,
   fallbackSrc,
@@ -352,6 +354,31 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     const timeoutId = setTimeout(startPlayback, 100);
     return () => clearTimeout(timeoutId);
   }, [autoPlay, videoUrl, loading, onLoad, onError]);
+
+  // Playback rate setup
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !videoUrl || loading) return;
+
+    const setPlaybackRate = () => {
+      try {
+        video.playbackRate = playbackRate;
+        if (process.env.NODE_ENV === "development") {
+          console.log(`🎥 Playback rate set to ${playbackRate}x for ${path}`);
+        }
+      } catch (error) {
+        console.warn("⚠️ Failed to set playback rate:", error);
+      }
+    };
+
+    // Set playback rate when video is ready
+    if (video.readyState >= 1) {
+      setPlaybackRate();
+    } else {
+      video.addEventListener("loadedmetadata", setPlaybackRate);
+      return () => video.removeEventListener("loadedmetadata", setPlaybackRate);
+    }
+  }, [playbackRate, videoUrl, loading, path]);
 
   // Loading state - don't render anything while loading
   if (loading) {

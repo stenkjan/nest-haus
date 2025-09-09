@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui";
 import { TerminVereinbarenContent } from "./TerminVereinbarenContent";
+import { useCartStore } from "@/store/cartStore";
 
 /**
  * Text Preset: Description Text Small
@@ -33,6 +34,7 @@ interface AppointmentBookingProps {
 const AppointmentBooking = ({
   showLeftSide = true,
 }: AppointmentBookingProps) => {
+  const { setAppointmentDetails } = useCartStore();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
@@ -108,14 +110,23 @@ const AppointmentBooking = ({
     setIsSubmitting(true);
 
     try {
-      // In a real application, you would send this data to your API
-      const appointmentData = {
-        date: selectedDate.toISOString(),
+      // Create appointment details for cart store
+      const appointmentDetails = {
+        date: selectedDate,
         time: timeSlots[selectedTimeIndex],
-        ...formData,
+        appointmentType: formData.appointmentType,
+        customerInfo: {
+          name: formData.name,
+          lastName: formData.lastName,
+          phone: formData.phone,
+          email: formData.email,
+        },
       };
 
-      console.log("🗓️ Appointment data:", appointmentData);
+      console.log("🗓️ Appointment data:", appointmentDetails);
+
+      // Save appointment to cart store
+      setAppointmentDetails(appointmentDetails);
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -214,19 +225,7 @@ const AppointmentBooking = ({
       {/* Mobile Layout: Text first, then calendar and form below */}
       <div className="lg:hidden space-y-8">
         {/* Descriptive Text for Mobile - NO BOX */}
-        {showLeftSide && (
-          <div className="text-center px-4">
-            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
-              Der Kauf deines Hauses ist ein großer Schritt – und{" "}
-              <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
-              Sicherheit und Klarheit{" "}
-              <strong>stehen wir dir jederzeit persönlich zur Seite</strong>.
-              Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
-              deinen <strong>Termin ganz einfach online</strong>. Dein Weg zu
-              deinem Traumhaus beginnt mit einem Gespräch.
-            </p>
-          </div>
-        )}
+        {showLeftSide && <TerminVereinbarenContent variant="mobile" />}
 
         {/* Calendar Section for Mobile */}
         <div className="px-4 space-y-4">
@@ -412,49 +411,6 @@ const AppointmentBooking = ({
               {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
             </button>
           </div>
-
-          {/* Contact Info Boxes for Mobile - UPDATED CONTENT */}
-          {showLeftSide && (
-            <div className="grid grid-cols-1 gap-4">
-              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-                <div className="p-6">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
-                    Kontakt <span className="text-gray-400">Melde dich!</span>
-                  </h2>
-                  <div className="text-center">
-                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                      <span className="font-medium">Telefon:</span> +43 (0) 3847
-                      75090
-                      <br />
-                      <span className="font-medium">Mobil:</span> +43 (0) 664
-                      3949604
-                      <br />
-                      <span className="font-medium">Email:</span> nest@haus.at
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-                <div className="p-6">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
-                    Adresse <span className="text-gray-400">Komm vorbei!</span>
-                  </h2>
-                  <div className="text-center">
-                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                      <span className="font-medium">Telefon:</span> +43 (0) 3847
-                      75090
-                      <br />
-                      <span className="font-medium">Mobil:</span> +43 (0) 664
-                      3949604
-                      <br />
-                      <span className="font-medium">Email:</span> nest@haus.at
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </form>
       </div>
 
@@ -467,68 +423,7 @@ const AppointmentBooking = ({
         } items-start max-w-[1536px] mx-auto px-[5%]`}
       >
         {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
-        {showLeftSide && (
-          <div className="space-y-8 max-w-[500px] justify-self-start">
-            {/* Spacer to align text with calendar border start */}
-            <div className="h-16"></div>
-
-            {/* Descriptive Text - INCREASED LINE SPACING */}
-            <div>
-              <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed leading-relaxed">
-                Der Kauf deines Hauses ist ein großer Schritt – und{" "}
-                <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
-                Sicherheit und Klarheit{" "}
-                <strong>stehen wir dir jederzeit persönlich zur Seite</strong>.
-                Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
-                deinen <strong>Termin ganz einfach online</strong>. Dein Weg zu
-                deinem Traumhaus beginnt mit einem Gespräch.
-              </p>
-            </div>
-
-            {/* Spacer to push contact boxes down to radio button level */}
-            <div className="h-3"></div>
-
-            {/* Contact Box - UPDATED CONTENT */}
-            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-              <div className="p-6">
-                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
-                  Kontakt <span className="text-gray-400">Melde dich!</span>
-                </h2>
-                <div>
-                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                    <span className="font-medium">Telefon:</span> +43 (0) 3847
-                    75090
-                    <br />
-                    <span className="font-medium">Mobil:</span> +43 (0) 664
-                    3949604
-                    <br />
-                    <span className="font-medium">Email:</span> nest@haus.at
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Address Box - UPDATED CONTENT */}
-            <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-              <div className="p-6">
-                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
-                  Adresse <span className="text-gray-400">Komm vorbei!</span>
-                </h2>
-                <div>
-                  <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                    <span className="font-medium">Telefon:</span> +43 (0) 3847
-                    75090
-                    <br />
-                    <span className="font-medium">Mobil:</span> +43 (0) 664
-                    3949604
-                    <br />
-                    <span className="font-medium">Email:</span> nest@haus.at
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {showLeftSide && <TerminVereinbarenContent variant="desktop" />}
 
         {/* Right side - Calendar and Form - POSITIONED AT RIGHT EDGE */}
         <div
