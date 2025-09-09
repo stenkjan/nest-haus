@@ -41,18 +41,6 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  // Determine width classes based on variant
-  const isNarrowVariant =
-    variant === "primary-narrow" ||
-    variant === "secondary-narrow" ||
-    variant === "secondary-narrow-white" ||
-    variant === "secondary-narrow-blue";
-
-  const isLandingVariant =
-    variant === "landing-primary" ||
-    variant === "landing-secondary" ||
-    variant === "landing-secondary-blue";
-
   // Allow content-based sizing with appropriate padding for text fitting
   const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap`;
 
