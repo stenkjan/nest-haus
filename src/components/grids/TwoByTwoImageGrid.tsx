@@ -263,9 +263,6 @@ export default function TwoByTwoImageGrid({
                       <Button
                         variant="landing-primary"
                         size={isUltraWide ? "sm" : "xs"}
-                        onClick={() => {
-                          console.log(`Primary action for ${item.title}`);
-                        }}
                       >
                         {item.primaryAction}
                       </Button>
@@ -293,9 +290,6 @@ export default function TwoByTwoImageGrid({
                             : "landing-secondary"
                         }
                         size={isUltraWide ? "sm" : "xs"}
-                        onClick={() => {
-                          console.log(`Secondary action for ${item.title}`);
-                        }}
                       >
                         {item.secondaryAction}
                       </Button>

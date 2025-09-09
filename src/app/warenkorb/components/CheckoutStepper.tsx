@@ -1772,9 +1772,6 @@ export default function CheckoutStepper({
                       ) === "true" ||
                       localStorage.getItem("nest-haus-test-session-id");
                     if (isAlphaTest) {
-                      console.log(
-                        "🧪 Apple Pay clicked - triggering purchase completion for alpha test"
-                      );
                       localStorage.setItem(
                         "nest-haus-test-purchase-completed",
                         "true"
@@ -1799,9 +1796,6 @@ export default function CheckoutStepper({
                       ) === "true" ||
                       localStorage.getItem("nest-haus-test-session-id");
                     if (isAlphaTest) {
-                      console.log(
-                        "🧪 Zur Kassa clicked - triggering purchase completion for alpha test"
-                      );
                       localStorage.setItem(
                         "nest-haus-test-purchase-completed",
                         "true"

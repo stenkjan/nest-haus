@@ -76,14 +76,6 @@ export default function VideoCard16by9({
     const updateScreenWidth = () => {
       const width = window.innerWidth;
       setScreenWidth(width);
-
-      // Debug logging in development
-      if (process.env.NODE_ENV === "development") {
-        const dimensions = getCardDimensions(width);
-        console.log(
-          `🎬 VideoCard16by9 - Screen: ${width}px, Card: ${dimensions.width}x${dimensions.height}px`
-        );
-      }
     };
 
     updateScreenWidth();

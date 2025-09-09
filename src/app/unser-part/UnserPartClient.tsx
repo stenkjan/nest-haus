@@ -72,11 +72,8 @@ const sections: SectionDefinition[] = [
 const getMobileVideoPath = (desktopPath: string): string => {
   // Map desktop video path to mobile version using constants
   if (desktopPath === IMAGES.function.nestHausModulSchemaIntro) {
-    const mobilePath = IMAGES.function.mobile.nestHausModulSchemaIntro;
-    console.log("📱 Using mobile video path from constants:", mobilePath);
-    return mobilePath;
+    return IMAGES.function.mobile.nestHausModulSchemaIntro;
   }
-  console.log("🖥️ Using desktop video path:", desktopPath);
   return desktopPath;
 };
 
@@ -91,12 +88,6 @@ export default function UnserPartClient() {
   useEffect(() => {
     const checkDevice = () => {
       const newIsMobile = window.innerWidth < 768; // Same breakpoint as entdecken page
-      console.log(
-        "📏 Device check - Width:",
-        window.innerWidth,
-        "isMobile:",
-        newIsMobile
-      );
       setIsMobile(newIsMobile);
     };
 
