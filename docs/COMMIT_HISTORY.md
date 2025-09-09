@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4f874169fb405a4c41e243278cce08dbcd2a87bd] - Tue Sep 9 15:43:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance session tracking and configurator components for improved performance and maintainability  - Updated session tracking logic in the API to use upsert for PostgreSQL, ensuring race condition handling. - Improved configurator component behavior by refining overlay visibility and view switching based on user selections. - Added special handling for planungspaket in the summary panel to avoid duplicate entries and ensure accurate pricing. - Enhanced cart synchronization for planungspaket changes, ensuring the cart reflects the latest configurator state. - Cleaned up code formatting and comments for better readability and maintainability.  These changes contribute to a more efficient and user-friendly experience in the configurator and cart functionalities.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/sessions/track/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [0d1f0da5bcea491b8cb2e3b92a8766e3d8dc60cb] - Tue Sep 9 13:41:48 2025 +0200
 
 **Author**: stenkjan
