@@ -68,7 +68,7 @@ export default function ConfiguratorShell({
   const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
     useState<boolean>(false); // Hidden by default, only show when actively selecting
   const [isFensterOverlayVisible, setIsFensterOverlayVisible] =
-    useState<boolean>(false); // Hidden by default, only show when fenster is selected
+    useState<boolean>(false); // Hidden by default, only show when actively selecting fenster
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -163,7 +163,7 @@ export default function ConfiguratorShell({
     setPvQuantity(0);
     setIsPvOverlayVisible(true);
     setIsBrightnessOverlayVisible(false);
-    setIsFensterOverlayVisible(false); // Don't show on reset - only when actively selecting fenster
+    setIsFensterOverlayVisible(false); // Hidden by default, only show when actively selecting fenster
   }, []);
 
   // Confirmation handlers for PV and Fenster sections - REMOVED
@@ -224,10 +224,10 @@ export default function ConfiguratorShell({
         setIsPvOverlayVisible(false);
         setIsBrightnessOverlayVisible(false);
 
-        // Switch to interior view to show the fenster overlay
+        // Switch to fenster view to show materials selection with overlay
         const { switchToView } = useConfiguratorStore.getState();
         if (switchToView) {
-          switchToView("interior");
+          switchToView("fenster");
         }
       }
 

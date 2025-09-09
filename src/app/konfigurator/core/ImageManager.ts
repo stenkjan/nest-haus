@@ -281,7 +281,7 @@ export class ImageManager {
    */
   static getFensterImage(configuration: Configuration): string {
     if (!configuration?.fenster?.value) {
-      return IMAGES.windows.pvc || IMAGES.configurations.fenster_pvc || IMAGE_FALLBACKS.exterior;
+      return IMAGE_FALLBACKS.fenster;
     }
 
     const fensterType = configuration.fenster.value;
@@ -289,7 +289,7 @@ export class ImageManager {
     // Map to windows image keys
     const fensterKey = FENSTER_IMAGE_MAPPING[fensterType];
     if (!fensterKey) {
-      return IMAGES.windows.pvc || IMAGES.configurations.fenster_pvc || IMAGE_FALLBACKS.exterior;
+      return IMAGE_FALLBACKS.fenster;
     }
 
     // Try windows collection first, then configurations
@@ -299,9 +299,11 @@ export class ImageManager {
     }
 
     const configImage = IMAGES.configurations[`fenster_${fensterKey}` as keyof typeof IMAGES.configurations];
-    const stirnseitePath = configImage || IMAGES.windows.pvc;
+    if (configImage) {
+      return configImage;
+    }
 
-    return stirnseitePath || IMAGES.windows.pvc || IMAGE_FALLBACKS.exterior;
+    return IMAGE_FALLBACKS.fenster;
   }
 
   /**
@@ -320,6 +322,11 @@ export class ImageManager {
     // Add interior view first (index 1) when part 2 has been active
     if (hasPart2BeenActive) {
       views.push('interior');
+    }
+
+    // Add fenster view when fenster is configured (for materials selection)
+    if (configuration.fenster) {
+      views.push('fenster');
     }
 
     // Add stirnseite view last when nest or gebäudehülle is configured

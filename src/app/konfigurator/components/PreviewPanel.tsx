@@ -338,8 +338,8 @@ export default function PreviewPanel({
                 />
               )}
 
-            {/* Fenster Overlay - show on interior view when fenster is selected AND main image is loaded */}
-            {activeView === "interior" &&
+            {/* Fenster Overlay - only show on fenster view (materials selection view) when fenster is selected */}
+            {activeView === "fenster" &&
               configuration?.fenster &&
               isMainImageLoaded && (
                 <FensterOverlay
@@ -351,7 +351,7 @@ export default function PreviewPanel({
                       | "aluminium_weiss"
                   }
                   isVisible={
-                    isFensterOverlayVisible && activeView === "interior"
+                    isFensterOverlayVisible && activeView === "fenster"
                   }
                   className=""
                 />

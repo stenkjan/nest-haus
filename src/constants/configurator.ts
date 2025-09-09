@@ -122,14 +122,15 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
 } as const;
 
 // Valid view types
-export const VALID_VIEW_TYPES = ['exterior', 'interior', 'stirnseite'] as const;
+export const VALID_VIEW_TYPES = ['exterior', 'interior', 'stirnseite', 'fenster'] as const;
 export type ValidViewType = typeof VALID_VIEW_TYPES[number];
 
 // Image fallbacks for each view type
 export const IMAGE_FALLBACKS = {
   exterior: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
   interior: '167-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Parkett-Eiche',
-  stirnseite: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite'
+  stirnseite: '105-NEST-Haus-Konfigurator-75-Holzfassade-Stirnseite',
+  fenster: '167-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-Parkett-Eiche'
 } as const;
 
 // Type for combination keys used in pricing and image mappings
