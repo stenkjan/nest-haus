@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1c6e5df6db3b00b6f6647b9018e7e6076c0d5cdd] - Tue Sep 9 18:44:04 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update dialog content and improve color consistency  - Replaced static text in CalendarDialog with a new component for better modularity and maintainability. - Updated color values for the 'belichtungspaket' category in DialogDataTransformer to ensure consistency with other categories. - Adjusted image paths in constants to remove mobile suffix, aligning with the latest asset naming conventions.  These changes enhance the configurator's user interface and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/DialogDataTransformer.ts
+- src/components/dialogs/CalendarDialog.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+- src/components/sections/index.ts
+
+
+---
+
 ## [2f3d043c3206641a462e108c56e7c82c89df8496] - Tue Sep 9 18:23:27 2025 +0200
 
 **Author**: stenkjan
