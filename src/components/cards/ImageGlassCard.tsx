@@ -49,9 +49,9 @@ export default function ImageGlassCard({
       <div className={`${containerClasses}`}>
         <div className="px-4 md:px-8">
           <div className="flex justify-center">
-            {/* Glass Card with Image - Standard responsive sizing */}
+            {/* Glass Card with Image - Increased size to match elektrik image */}
             <motion.div
-              className="w-4/5 max-w-5xl mx-auto rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="w-9/10 mx-auto rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               style={{
                 backgroundColor: "#121212",
                 boxShadow:

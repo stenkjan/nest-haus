@@ -185,11 +185,34 @@ export default function ContentCardsGlass({
   // Use appropriate data source based on variant or custom data
   const cardData = customData || (isStatic ? staticCardData : contentCardData);
 
+  // Helper function to calculate center offset (avoid code duplication)
+  const calculateCenterOffset = useCallback(
+    (containerWidth: number, cardWidth: number) => {
+      if (containerWidth < 768) {
+        // Mobile: Center the card perfectly in viewport, accounting for container padding
+        const containerPadding = 32; // px-4 = 16px on each side = 32px total
+        return (containerWidth - cardWidth - containerPadding) / 2;
+      } else {
+        // Desktop/Tablet: Center the card in the available space
+        const effectiveWidth =
+          containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+        return (
+          (effectiveWidth - cardWidth) / 2 + (containerWidth < 1024 ? 16 : 0)
+        );
+      }
+    },
+    []
+  );
+
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
     setScreenWidth(window.innerWidth);
-  }, []);
+
+    // Center the first card initially (same behavior as SquareTextCard)
+    const centerOffset = calculateCenterOffset(window.innerWidth, cardWidth);
+    x.set(centerOffset);
+  }, [cardWidth, x, calculateCenterOffset]);
 
   // Calculate responsive card dimensions based on variant
   useEffect(() => {
@@ -282,19 +305,32 @@ export default function ContentCardsGlass({
     displayCards.length - Math.floor(cardsPerView)
   );
 
-  // FIXED: Navigation logic to always work properly
+  // Navigation logic with centering (same behavior as SquareTextCard)
   const navigateCard = useCallback(
     (direction: number) => {
-      const targetMaxIndex = displayCards.length - Math.floor(cardsPerView);
       const newIndex = Math.max(
         0,
-        Math.min(targetMaxIndex, currentIndex + direction)
+        Math.min(displayCards.length - 1, currentIndex + direction)
       );
       setCurrentIndex(newIndex);
-      const newX = -(newIndex * (cardWidth + gap));
+
+      // Calculate position to center the active card
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+      const centerOffset = calculateCenterOffset(containerWidth, cardWidth);
+      const cardPosition = newIndex * (cardWidth + gap);
+      const newX = centerOffset - cardPosition;
+
       x.set(newX);
     },
-    [displayCards.length, cardsPerView, currentIndex, cardWidth, gap, x]
+    [
+      displayCards.length,
+      currentIndex,
+      cardWidth,
+      gap,
+      x,
+      calculateCenterOffset,
+    ]
   );
 
   // Keyboard navigation
@@ -370,9 +406,15 @@ export default function ContentCardsGlass({
       // Ensure target index is within bounds
       targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
 
-      // Animate with visual feedback for direction
+      // Animate with visual feedback for direction using centering logic
       setCurrentIndex(targetIndex);
-      const newX = -(targetIndex * (cardWidth + gap));
+
+      // Use the same centering calculation as navigateCard
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+      const centerOffset = calculateCenterOffset(containerWidth, cardWidth);
+      const cardPosition = targetIndex * (cardWidth + gap);
+      const newX = centerOffset - cardPosition;
 
       // Add visual feedback animation with directional easing
       // First, add a small bounce in the opposite direction for visual feedback
@@ -395,24 +437,33 @@ export default function ContentCardsGlass({
         });
       });
     } else {
-      // Desktop: Free scrolling, no snapping
-      // Let the drag settle naturally without forced snapping
-      const naturalX = currentX + velocity * 0.1; // Small momentum continuation
-      const boundedX = Math.max(
-        -(targetMaxIndex * (cardWidth + gap)),
-        Math.min(0, naturalX)
+      // Desktop: Centering behavior with smooth deceleration
+      // Determine target card index based on current position and momentum
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+      const centerOffset = calculateCenterOffset(containerWidth, cardWidth);
+
+      // Calculate which card we're closest to
+      const estimatedIndex = Math.round(
+        (centerOffset - currentX) / (cardWidth + gap)
+      );
+      const finalIndex = Math.max(
+        0,
+        Math.min(displayCards.length - 1, estimatedIndex)
       );
 
-      // Update current index based on final position
-      const finalIndex = Math.round(-boundedX / (cardWidth + gap));
-      setCurrentIndex(Math.max(0, Math.min(targetMaxIndex, finalIndex)));
+      setCurrentIndex(finalIndex);
 
-      // Smooth deceleration without snapping
-      animate(x, boundedX, {
+      // Center the target card
+      const cardPosition = finalIndex * (cardWidth + gap);
+      const centeredX = centerOffset - cardPosition;
+
+      // Smooth animation to centered position
+      animate(x, centeredX, {
         type: "spring",
-        stiffness: 150,
-        damping: 20,
-        mass: 1.0,
+        stiffness: 300,
+        damping: 25,
+        mass: 0.8,
       });
     }
   };
@@ -489,8 +540,8 @@ export default function ContentCardsGlass({
               isStatic
                 ? ""
                 : isClient && screenWidth < 1024
-                ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
-                : ""
+                  ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
+                  : ""
             } ${maxWidth ? "px-8" : "px-4"} ${
               isStatic ? "" : "cursor-grab active:cursor-grabbing"
             }`}
@@ -549,66 +600,66 @@ export default function ContentCardsGlass({
                               : 830
                           )
                         : isClient && screenWidth >= 1280
-                        ? Math.min(
-                            692,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 692
-                          )
-                        : isClient && screenWidth >= 1024
-                        ? Math.min(
-                            577, // Proportional height: 960 * (692/1152) = 577
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 577
-                          )
-                        : Math.min(
-                            720,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 720
-                          )
+                          ? Math.min(
+                              692,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.7
+                                : 692
+                            )
+                          : isClient && screenWidth >= 1024
+                            ? Math.min(
+                                577, // Proportional height: 960 * (692/1152) = 577
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.7
+                                  : 577
+                              )
+                            : Math.min(
+                                720,
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.75
+                                  : 720
+                              )
                       : isResponsive
-                      ? isClient && screenWidth >= 1600
-                        ? Math.min(
-                            830,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 830
-                          )
-                        : isClient && screenWidth >= 1280
-                        ? Math.min(
-                            692,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 692
-                          )
-                        : isClient && screenWidth >= 1024
-                        ? Math.min(
-                            577, // Proportional height: 960 * (692/1152) = 577
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 577
-                          )
-                        : Math.min(
-                            720,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 720
-                          )
-                      : isClient && screenWidth >= 1600
-                      ? Math.min(
-                          750,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.8
-                            : 750
-                        )
-                      : Math.min(
-                          600,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.75
-                            : 600
-                        ),
+                        ? isClient && screenWidth >= 1600
+                          ? Math.min(
+                              830,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 830
+                            )
+                          : isClient && screenWidth >= 1280
+                            ? Math.min(
+                                692,
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.7
+                                  : 692
+                              )
+                            : isClient && screenWidth >= 1024
+                              ? Math.min(
+                                  577, // Proportional height: 960 * (692/1152) = 577
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.7
+                                    : 577
+                                )
+                              : Math.min(
+                                  720,
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.75
+                                    : 720
+                                )
+                        : isClient && screenWidth >= 1600
+                          ? Math.min(
+                              750,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.8
+                                : 750
+                            )
+                          : Math.min(
+                              600,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 600
+                            ),
                     backgroundColor: "#121212",
                     boxShadow:
                       "inset 0 6px 12px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3)",
@@ -755,8 +806,8 @@ export default function ContentCardsGlass({
                                       button.variant === "primary"
                                         ? "primary-narrow"
                                         : button.variant === "secondary"
-                                        ? "secondary-narrow-blue"
-                                        : button.variant;
+                                          ? "secondary-narrow-blue"
+                                          : button.variant;
 
                                     return button.link ? (
                                       <Link

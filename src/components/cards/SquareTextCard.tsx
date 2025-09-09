@@ -612,7 +612,7 @@ export default function SquareTextCard({
     return title.replace(/^\d+\.\s*/, "");
   };
 
-  // Prevent hydration mismatch by showing loading state until client is ready
+  // Prevent hydration mismatch by showing consistent loading state
   if (!isClient) {
     return (
       <div className={containerClasses}>
@@ -624,14 +624,8 @@ export default function SquareTextCard({
           <div
             className="animate-pulse bg-gray-200 rounded-3xl"
             style={{
-              width:
-                typeof window !== "undefined" && window.innerWidth < 768
-                  ? 312
-                  : 640,
-              height:
-                typeof window !== "undefined" && window.innerWidth < 768
-                  ? 312 * 1.75 // Mobile: taller aspect ratio with mobile width (25% increase)
-                  : 640, // Desktop: square
+              width: 320, // Use consistent dimensions for SSR
+              height: 360, // Use consistent dimensions for SSR
             }}
           />
         </div>
@@ -656,23 +650,29 @@ export default function SquareTextCard({
           {/* Desktop: Horizontal Progress Steps */}
           <div className="hidden md:block">
             <div className="relative max-w-4xl mx-auto">
-              {/* Background Line */}
-              <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
-              {/* Progress Line */}
-              <div
-                className="absolute left-0 top-3 h-0.5 bg-blue-500 transition-all duration-300"
-                style={{
-                  width:
-                    currentIndex === 0
-                      ? `${(1 / (cardData.length * 2)) * 100}%` // From left edge to center of first circle
-                      : cardData.length === 1
-                        ? "100%"
-                        : currentIndex === cardData.length - 1
-                          ? "100%" // Full width when on last step
-                          : `${(1 / (cardData.length * 2)) * 100 + (currentIndex / (cardData.length - 1)) * (100 - 100 / cardData.length)}%`, // Cumulative: from left edge to current step center
-                  transformOrigin: "left center",
-                }}
-              />
+              {/* Connecting Line - Only between dots, not extending to edges */}
+              {cardData.length > 1 && (
+                <div
+                  className="absolute top-3 h-0.5 bg-gray-200"
+                  style={{
+                    left: `${100 / cardData.length / 2}%`,
+                    right: `${100 / cardData.length / 2}%`,
+                  }}
+                />
+              )}
+              {/* Progress Line - Only between dots */}
+              {cardData.length > 1 && (
+                <div
+                  className="absolute top-3 h-0.5 bg-blue-500 transition-all duration-300"
+                  style={{
+                    left: `${100 / cardData.length / 2}%`,
+                    width:
+                      currentIndex === 0
+                        ? "0%"
+                        : `${(currentIndex / (cardData.length - 1)) * (100 - 100 / cardData.length)}%`,
+                  }}
+                />
+              )}
               {/* Step Dots */}
               <div
                 className="grid gap-0"

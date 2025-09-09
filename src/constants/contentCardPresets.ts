@@ -13,7 +13,7 @@ export interface ContentCardPreset {
     backgroundColor: string;
     buttons?: Array<{
         text: string;
-        variant: "primary" | "secondary";
+        variant: "primary" | "secondary" | "landing-secondary-blue";
         size: "xs" | "sm" | "md" | "lg";
         link?: string;
         onClick?: () => void;
@@ -33,7 +33,7 @@ export interface VideoCardPreset {
     backgroundColor: string;
     buttons?: Array<{
         text: string;
-        variant: "primary" | "secondary";
+        variant: "primary" | "secondary" | "landing-secondary-blue";
         size: "xs" | "sm" | "md" | "lg";
         link?: string;
         onClick?: () => void;
@@ -87,7 +87,7 @@ export const UNSERE_TECHNIK_VIDEO_PRESET: VideoCardPreset = {
         },
         {
             text: "Jetzt bauen",
-            variant: "secondary" as const,
+            variant: "landing-secondary-blue" as const,
             size: "xs" as const,
             link: "/konfigurator",
         },

@@ -212,14 +212,22 @@ export default function LandingPageClient() {
                   </h3>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <Link href="/entdecken">
-                    <Button variant="landing-primary" size="xs">
+                    <Button
+                      variant="landing-primary"
+                      size="xs"
+                      className="w-full"
+                    >
                       {section.button1}
                     </Button>
                   </Link>
                   <Link href="/konfigurator">
-                    <Button variant={section.secondaryButtonVariant} size="xs">
+                    <Button
+                      variant={section.secondaryButtonVariant}
+                      size="xs"
+                      className="w-full"
+                    >
                       {section.button2}
                     </Button>
                   </Link>

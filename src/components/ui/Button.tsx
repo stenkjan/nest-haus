@@ -85,35 +85,66 @@ const Button: React.FC<ButtonProps> = ({
     }
   };
 
+  // Get landing-specific width classes - 20% smaller than standard
+  const getLandingWidthClasses = (buttonSize: ButtonSize) => {
+    switch (buttonSize) {
+      case "xxs":
+        return "w-19 sm:w-22 lg:w-26 xl:w-29";
+      case "xs":
+        return "w-29 sm:w-32 lg:w-35 xl:w-38 2xl:w-45";
+      case "sm":
+        return "w-26 sm:w-29 lg:w-32 xl:w-35";
+      case "md":
+        return "w-29 sm:w-32 lg:w-35 xl:w-38";
+      case "lg":
+        return "w-32 sm:w-35 lg:w-38 xl:w-42 2xl:w-45";
+      case "xl":
+        return "w-35 sm:w-38 lg:w-42 xl:w-45 2xl:w-48";
+      case "responsive":
+        return "w-32 sm:w-35 lg:w-38 xl:w-42";
+      default:
+        return "w-26 lg:w-29 xl:w-32";
+    }
+  };
+
   // Determine width classes based on variant
   const isNarrowVariant =
     variant === "primary-narrow" ||
     variant === "secondary-narrow" ||
     variant === "secondary-narrow-white" ||
     variant === "secondary-narrow-blue";
+
+  const isLandingVariant =
+    variant === "landing-primary" ||
+    variant === "landing-secondary" ||
+    variant === "landing-secondary-blue";
+
   const widthClasses = isNarrowVariant
     ? getNarrowWidthClasses(size)
-    : getWidthClasses(size);
+    : isLandingVariant
+      ? getLandingWidthClasses(size)
+      : getWidthClasses(size);
 
-  const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal ${widthClasses}`;
+  // Allow content-based sizing with appropriate padding for text fitting
+  const baseStyles = `rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap`;
 
   const variants = {
     // Standard Buttons - all with fixed width
     primary:
-      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm",
+      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm",
     secondary:
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
     // Narrow Buttons - 1/3 smaller width
     "primary-narrow":
-      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm",
+      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm",
     "secondary-narrow":
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
     "secondary-narrow-white":
       "bg-transparent border-1 border-white text-white hover:bg-white hover:text-black focus:ring-white",
     "secondary-narrow-blue":
-      "bg-transparent border-1 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500",
+      "bg-transparent border-1 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500",
     tertiary:
-      "bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500",
+      "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500",
     outline:
       "border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500",
     ghost: "text-gray-600 hover:bg-gray-100 focus:ring-gray-500",
@@ -127,24 +158,24 @@ const Button: React.FC<ButtonProps> = ({
 
     // Page-Specific Buttons
     "landing-primary":
-      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm",
+      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm",
     "landing-secondary":
       "bg-transparent border-1 border-white text-white hover:bg-white hover:text-black focus:ring-white",
     "landing-secondary-blue":
-      "bg-transparent border-1 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500",
+      "bg-transparent border-1 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500",
     configurator:
       "bg-amber-500 text-white hover:bg-amber-600 focus:ring-amber-500 shadow-md",
   };
 
   const sizes = {
-    xxs: "px-1.5 py-1 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
-    xs: "px-2 py-1.5 text-sm xl:text-base 2xl:text-xl",
-    sm: "px-3 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
-    md: "px-4 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl",
-    lg: "px-6 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl",
-    xl: "px-8 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl",
+    xxs: "px-2.5 py-1 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
+    xs: "px-3 py-1.5 text-sm xl:text-base 2xl:text-xl",
+    sm: "px-5 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
+    md: "px-6 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl",
+    lg: "px-9 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl",
+    xl: "px-12 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl",
     responsive:
-      "px-4 py-1.5 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl", // Responsive for landing
+      "px-6 py-1.5 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl", // Responsive for landing
   };
 
   const buttonClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;

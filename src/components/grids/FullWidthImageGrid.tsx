@@ -158,7 +158,7 @@ export default function FullWidthImageGrid({
               <p
                 className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
                   isMobile ? "text-center" : "text-left"
-                }`}
+                } ${screenWidth > 1700 ? "px-8" : ""}`}
                 dangerouslySetInnerHTML={{ __html: textBox1 }}
               />
             </motion.div>
@@ -177,7 +177,7 @@ export default function FullWidthImageGrid({
               <p
                 className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
                   isMobile ? "text-center" : "text-left"
-                }`}
+                } ${screenWidth > 1700 ? "px-8" : ""}`}
                 dangerouslySetInnerHTML={{ __html: textBox2 }}
               />
             </motion.div>

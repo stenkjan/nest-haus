@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
+import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
 import { Button } from "@/components/ui";
 
@@ -15,6 +16,8 @@ interface GridItem {
   primaryAction: string;
   secondaryAction: string;
   textColor?: string; // Optional custom text color, defaults to white
+  primaryLink?: string; // Optional link for primary action
+  secondaryLink?: string; // Optional link for secondary action
 }
 
 interface TwoByTwoImageGridProps {
@@ -162,12 +165,11 @@ export default function TwoByTwoImageGrid({
         {displayData.map((item, index) => (
           <motion.div
             key={item.id}
-            className="relative flex-shrink-0 shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            className="relative flex-shrink-0 shadow-lg overflow-hidden"
             style={{
               aspectRatio: "1/1", // Perfect square
               minHeight: gridMinHeight,
             }}
-            whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
             {/* Background Image */}
@@ -199,8 +201,8 @@ export default function TwoByTwoImageGrid({
                     isUltraWide
                       ? "p-6"
                       : screenWidth < 1024
-                      ? "p-0 -mt-2"
-                      : "p-4"
+                        ? "p-0 -mt-2"
+                        : "p-4"
                   } text-center`}
                 >
                   <h2
@@ -232,8 +234,8 @@ export default function TwoByTwoImageGrid({
                     isUltraWide
                       ? "p-6"
                       : screenWidth < 1024
-                      ? "p-0 -mb-2"
-                      : "p-4"
+                        ? "p-0 -mb-2"
+                        : "p-4"
                   }`}
                 >
                   {/* Description Text */}
@@ -247,28 +249,57 @@ export default function TwoByTwoImageGrid({
 
                   {/* Button Group */}
                   <div className="flex gap-2 justify-center">
-                    <Button
-                      variant="landing-primary"
-                      size={isUltraWide ? "sm" : "xs"}
-                      onClick={() => {
-                        console.log(`Primary action for ${item.title}`);
-                      }}
-                    >
-                      {item.primaryAction}
-                    </Button>
-                    <Button
-                      variant={
-                        item.id === 2
-                          ? "landing-secondary-blue"
-                          : "landing-secondary"
-                      }
-                      size={isUltraWide ? "sm" : "xs"}
-                      onClick={() => {
-                        console.log(`Secondary action for ${item.title}`);
-                      }}
-                    >
-                      {item.secondaryAction}
-                    </Button>
+                    {/* Primary Button */}
+                    {item.primaryLink ? (
+                      <Link href={item.primaryLink}>
+                        <Button
+                          variant="landing-primary"
+                          size={isUltraWide ? "sm" : "xs"}
+                        >
+                          {item.primaryAction}
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button
+                        variant="landing-primary"
+                        size={isUltraWide ? "sm" : "xs"}
+                        onClick={() => {
+                          console.log(`Primary action for ${item.title}`);
+                        }}
+                      >
+                        {item.primaryAction}
+                      </Button>
+                    )}
+
+                    {/* Secondary Button */}
+                    {item.secondaryLink ? (
+                      <Link href={item.secondaryLink}>
+                        <Button
+                          variant={
+                            item.id === 2
+                              ? "landing-secondary-blue"
+                              : "landing-secondary"
+                          }
+                          size={isUltraWide ? "sm" : "xs"}
+                        >
+                          {item.secondaryAction}
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button
+                        variant={
+                          item.id === 2
+                            ? "landing-secondary-blue"
+                            : "landing-secondary"
+                        }
+                        size={isUltraWide ? "sm" : "xs"}
+                        onClick={() => {
+                          console.log(`Secondary action for ${item.title}`);
+                        }}
+                      >
+                        {item.secondaryAction}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </motion.div>

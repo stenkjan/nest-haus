@@ -256,7 +256,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               />
 
               {/* Button Combo After Component */}
-              <div className="flex gap-4 justify-center w-full mt-16">
+              <div className="flex gap-4 justify-center w-full mt-16 mb-8">
                 <Button
                   variant="primary"
                   size="xs"

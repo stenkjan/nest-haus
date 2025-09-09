@@ -42,14 +42,14 @@ const sections = [
     slug: "zuhause-zieht-um",
   },
   {
-    id: "image-grid",
-    title: "Image Grid",
-    slug: "image-grid",
+    id: "cards",
+    title: "Cards",
+    slug: "cards",
   },
   {
-    id: "square-text-cards",
-    title: "Square Text Cards",
-    slug: "square-text-cards",
+    id: "ablauf",
+    title: "So läuft es ab",
+    slug: "ablauf",
   },
   {
     id: "grundstueck-check",
@@ -97,7 +97,7 @@ export default function EntdeckenClient() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Design für dich gemacht
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
                 Dein Design im Freistil
               </h3>
             </div>
@@ -107,34 +107,45 @@ export default function EntdeckenClient() {
         {/* Section 2 - Video with Overlay Text and Buttons */}
         <section id="video" className="w-full relative bg-white">
           <div className="relative w-full">
-            {/* Video Background with cropping - no white space */}
-            <div
-              className="w-full overflow-hidden"
-              style={{
-                height: "70vh", // Container takes only 70% of viewport height
-              }}
-            >
-              <div
-                style={{
-                  clipPath: "inset(30% 0 0 0)", // Shows bottom 70% of video
-                  height: "142.857%", // Compensate for cropping (100% / 0.7)
-                  transform: "translateY(-30%)", // Move video up to show bottom portion
-                }}
-              >
+            {/* Video Background - Mobile: normal display, Desktop: cropped */}
+            {isMobile ? (
+              // Mobile: Display video normally without cropping
+              <div className="w-full">
                 <ClientBlobVideo
-                  path={
-                    isMobile
-                      ? IMAGES.variantvideo.mobile.ten
-                      : IMAGES.variantvideo.ten
-                  }
+                  path={IMAGES.variantvideo.mobile.ten}
                   autoPlay={true}
                   muted={true}
                   controls={false}
                   loop={true}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-cover"
                 />
               </div>
-            </div>
+            ) : (
+              // Desktop: Apply cropping to show bottom 70% of video
+              <div
+                className="w-full overflow-hidden"
+                style={{
+                  height: "70vh", // Container takes only 70% of viewport height
+                }}
+              >
+                <div
+                  style={{
+                    clipPath: "inset(30% 0 0 0)", // Shows bottom 70% of video
+                    height: "142.857%", // Compensate for cropping (100% / 0.7)
+                    transform: "translateY(-30%)", // Move video up to show bottom portion
+                  }}
+                >
+                  <ClientBlobVideo
+                    path={IMAGES.variantvideo.ten}
+                    autoPlay={true}
+                    muted={true}
+                    controls={false}
+                    loop={true}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Overlay Content */}
             <div className="absolute inset-0 flex flex-col justify-end">
@@ -143,7 +154,7 @@ export default function EntdeckenClient() {
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
                   Design für dich gemacht
                 </h1>
-                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
                   Dein Design im Freistil
                 </h3>
               </div>
@@ -189,7 +200,7 @@ export default function EntdeckenClient() {
                   </Button>
                 </Link>
                 <Link href="/unser-part">
-                  <Button variant="secondary" size="xs">
+                  <Button variant="landing-secondary-blue" size="xs">
                     Unser Part
                   </Button>
                 </Link>
@@ -203,7 +214,7 @@ export default function EntdeckenClient() {
                   </Button>
                 </Link>
                 <Link href="/unser-part">
-                  <Button variant="secondary" size="xs">
+                  <Button variant="landing-secondary-blue" size="xs">
                     Unser Part
                   </Button>
                 </Link>
@@ -219,7 +230,7 @@ export default function EntdeckenClient() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Dein Zuhause zieht um
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
                 Architektur für ein bewegtes Leben.
               </h3>
             </div>
@@ -235,8 +246,8 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 4 - Interactive 2x2 Image Grid */}
-        <section id="image-grid" className="w-full py-16 bg-white">
+        {/* Section 4 - Cards */}
+        <section id="cards" className="w-full py-16 bg-white">
           <div className="w-full">
             <TwoByTwoImageGrid
               title=""
@@ -247,11 +258,13 @@ export default function EntdeckenClient() {
                   id: 1,
                   title: "Das Nest System",
                   subtitle: "Das übernehmen wir",
-                  description: "Dein Raum. Deine Ideen",
+                  description: "Dein Raum. Deine Ideen.",
                   image: IMAGES.function.nestHausSystemModulbau,
                   backgroundColor: "#F8F9FA",
                   primaryAction: "Das Nest System",
                   secondaryAction: "Jetzt bauen",
+                  primaryLink: "/unser-part#nest-system",
+                  secondaryLink: "/konfigurator",
                 },
                 {
                   id: 2,
@@ -263,6 +276,8 @@ export default function EntdeckenClient() {
                   primaryAction: "Die Materialien",
                   secondaryAction: "Jetzt bauen",
                   textColor: "text-black",
+                  primaryLink: "/unser-part#materialien",
+                  secondaryLink: "/konfigurator",
                 },
                 {
                   id: 3,
@@ -273,6 +288,8 @@ export default function EntdeckenClient() {
                   backgroundColor: "#F8F9FA",
                   primaryAction: "Fenster & Türen",
                   secondaryAction: "Jetzt bauen",
+                  primaryLink: "/unser-part#fenster-tueren",
+                  secondaryLink: "/konfigurator",
                 },
                 {
                   id: 4,
@@ -281,22 +298,24 @@ export default function EntdeckenClient() {
                   description: "Dein Raum. Deine Ideen.",
                   image: IMAGES.function.nestHausSystemDeinPart,
                   backgroundColor: "#F4F4F4",
-                  primaryAction: "Gestalten",
+                  primaryAction: "Das Nest System",
                   secondaryAction: "Jetzt bauen",
+                  primaryLink: "/unser-part#nest-system",
+                  secondaryLink: "/konfigurator",
                 },
               ]}
             />
           </div>
         </section>
 
-        {/* Section 5 - Square Text Cards */}
-        <section id="square-text-cards" className="w-full py-16 bg-white">
+        {/* Section 5 - So läuft es ab */}
+        <section id="ablauf" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 So läuft es ab
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
                 Der Weg zu deinem Nest Haus
               </h3>
             </div>
@@ -318,7 +337,7 @@ export default function EntdeckenClient() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Konfiguriere dein Zuhause
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
                 Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
                 deiner Wahl passt.
               </h3>
@@ -342,7 +361,7 @@ export default function EntdeckenClient() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
               </h3>

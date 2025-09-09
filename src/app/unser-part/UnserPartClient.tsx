@@ -54,11 +54,6 @@ const sections: SectionDefinition[] = [
     slug: "kein-plan",
   },
   {
-    id: "grundstueck-check",
-    title: "Sicherheit",
-    slug: "sicherheit",
-  },
-  {
     id: "planungspakete",
     title: "Unterstützung gefällig?",
     slug: "planungspakete",
@@ -207,12 +202,26 @@ export default function UnserPartClient() {
           </div>
         </section>
 
-        {/* MaterialShowcase Section - Optimized */}
-        <MaterialShowcase
-          backgroundColor="black"
-          maxWidth={false}
-          showInstructions={true}
-        />
+        {/* Materialien Section */}
+        <section id="materialien" className="pt-20 pb-8">
+          <div className="text-center mb-12">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-2 md:mb-3">
+              Gut für Dich, besser für die Zukunft
+            </h1>
+            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300 mb-8">
+              Entdecke unsere sorgfältig ausgewählten Materialien
+            </h3>
+          </div>
+
+          {/* MaterialShowcase Section - Optimized */}
+          <MaterialShowcase
+            title=""
+            subtitle=""
+            backgroundColor="black"
+            maxWidth={false}
+            showInstructions={true}
+          />
+        </section>
 
         {/* ThreeByOneAdaptiveHeight Grid - Fenster & Türen */}
         <section id="fenster-tueren" className="pt-20 pb-8">
@@ -285,30 +294,6 @@ export default function UnserPartClient() {
           </div>
         </section>
 
-        {/* Grundstück Check Section */}
-        <section id="grundstueck-check" className="w-full pt-28 pb-16 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
-                Dein Grundstück - Unser Check
-              </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
-                Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
-                deiner Wahl passt.
-              </h3>
-            </div>
-
-            <ContentCards
-              variant="static"
-              title=""
-              subtitle=""
-              maxWidth={false}
-              showInstructions={false}
-              customData={[CONTENT_CARD_PRESETS.sicherheit]}
-            />
-          </div>
-        </section>
-
         {/* Planungspakete Section */}
         <section id="planungspakete" className="w-full pt-28 pb-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -330,7 +315,7 @@ export default function UnserPartClient() {
             />
 
             {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-16">
+            <div className="flex gap-4 justify-center w-full mt-16 mb-8">
               <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>

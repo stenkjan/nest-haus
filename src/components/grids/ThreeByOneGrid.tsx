@@ -354,7 +354,9 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left ${
+                        screenWidth > 1700 ? "px-8" : ""
+                      }`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
@@ -581,7 +583,9 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left`}
+                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left ${
+                        screenWidth > 1700 ? "px-8" : ""
+                      }`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (

@@ -604,7 +604,7 @@ export default function ContentCards({
                       // Desktop: Wide layout (Text left 1/3, Image right 2/3)
                       <>
                         {/* Text Content - Left Third */}
-                        <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
+                        <div className="w-1/3 flex flex-col justify-center items-start text-left px-8 py-6">
                           <motion.div
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
@@ -710,7 +710,7 @@ export default function ContentCards({
                       // Desktop: Wide layout (Text left 1/3, Image right 2/3)
                       <>
                         {/* Text Content - Left Third */}
-                        <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
+                        <div className="w-1/3 flex flex-col justify-center items-start text-left px-8 py-6">
                           <motion.div
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}

@@ -174,7 +174,7 @@ export default function VideoCard16by9({
               onClick={() => onCardClick?.(card.id)}
             >
               <div
-                className="w-full rounded-3xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:shadow-xl hover:scale-[1.01]"
+                className="w-full rounded-3xl shadow-lg overflow-hidden cursor-pointer"
                 style={{
                   backgroundColor: card.backgroundColor,
                   width: getCardDimensions(screenWidth).width,
@@ -189,7 +189,7 @@ export default function VideoCard16by9({
                     style={{ height: getCardDimensions(screenWidth).height }}
                   >
                     {/* Text Content - Same width as content cards (1/3) */}
-                    <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
+                    <div className="w-1/3 flex flex-col justify-center items-start text-left px-8 py-6">
                       <motion.div
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
@@ -220,8 +220,8 @@ export default function VideoCard16by9({
                                 button.variant === "primary"
                                   ? "primary-narrow"
                                   : button.variant === "secondary"
-                                  ? "secondary-narrow"
-                                  : button.variant;
+                                    ? "secondary-narrow"
+                                    : button.variant;
 
                               return button.link ? (
                                 <Link

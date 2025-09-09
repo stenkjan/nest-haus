@@ -505,11 +505,29 @@ export default function CheckoutStepper({
       <div className="w-full mb-6">
         {/* Desktop/Tablet */}
         <div className="relative hidden md:block">
-          <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
-          <div
-            className="absolute left-0 top-3 h-0.5 bg-blue-600 transition-all"
-            style={{ width: `${(stepIndex / (steps.length - 1)) * 100}%` }}
-          />
+          {/* Connecting Line - Only between dots, not extending to edges */}
+          {steps.length > 1 && (
+            <div
+              className="absolute top-3 h-0.5 bg-gray-200"
+              style={{
+                left: `${100 / steps.length / 2}%`,
+                right: `${100 / steps.length / 2}%`,
+              }}
+            />
+          )}
+          {/* Progress Line - Only between dots */}
+          {steps.length > 1 && (
+            <div
+              className="absolute top-3 h-0.5 bg-blue-600 transition-all duration-300"
+              style={{
+                left: `${100 / steps.length / 2}%`,
+                width:
+                  stepIndex === 0
+                    ? "0%"
+                    : `${(stepIndex / (steps.length - 1)) * (100 - 100 / steps.length)}%`,
+              }}
+            />
+          )}
           <div className="grid grid-cols-5 gap-0">
             {steps.map((label, idx) => {
               const isDone = idx < stepIndex;
@@ -541,13 +559,25 @@ export default function CheckoutStepper({
 
         {/* Mobile: two rows with circles and labels */}
         <div className="md:hidden">
-          {/* Top row with connecting line and fill */}
+          {/* Top row with circles and labels */}
           <div className="relative mb-1">
-            <div className="absolute left-0 right-0 top-2.5 h-0.5 bg-gray-200" />
+            {/* Top row connecting line - between 3 dots */}
             <div
-              className="absolute left-0 top-2.5 h-0.5 bg-blue-600 transition-all"
+              className="absolute top-2.5 h-0.5 bg-gray-200"
               style={{
-                width: `${Math.min(100, (Math.min(stepIndex, 2) / 2) * 100)}%`,
+                left: `${100 / 3 / 2}%`, // 16.67%
+                right: `${100 / 3 / 2}%`, // 16.67%
+              }}
+            />
+            {/* Top row progress line */}
+            <div
+              className="absolute top-2.5 h-0.5 bg-blue-600 transition-all duration-300"
+              style={{
+                left: `${100 / 3 / 2}%`,
+                width:
+                  Math.min(stepIndex, 2) === 0
+                    ? "0%"
+                    : `${(Math.min(stepIndex, 2) / 2) * (100 - 100 / 3)}%`,
               }}
             />
             <div className="grid grid-cols-3 gap-2">
@@ -581,12 +611,23 @@ export default function CheckoutStepper({
               })}
             </div>
           </div>
-          {/* Bottom row with connecting line and fill */}
+          {/* Bottom row with circles and labels */}
           <div className="relative mt-2">
-            <div className="absolute left-0 right-0 top-2.5 h-0.5 bg-gray-200" />
+            {/* Bottom row connecting line - between 2 dots */}
             <div
-              className="absolute left-0 top-2.5 h-0.5 bg-blue-600 transition-all"
-              style={{ width: `${stepIndex >= 4 ? 100 : 0}%` }}
+              className="absolute top-2.5 h-0.5 bg-gray-200"
+              style={{
+                left: `${100 / 2 / 2}%`, // 25%
+                right: `${100 / 2 / 2}%`, // 25%
+              }}
+            />
+            {/* Bottom row progress line */}
+            <div
+              className="absolute top-2.5 h-0.5 bg-blue-600 transition-all duration-300"
+              style={{
+                left: `${100 / 2 / 2}%`,
+                width: stepIndex <= 3 ? "0%" : "50%", // Full progress between the 2 dots when on step 4
+              }}
             />
             <div className="grid grid-cols-2 gap-2">
               {steps.slice(3).map((label, i) => {

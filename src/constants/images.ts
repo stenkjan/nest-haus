@@ -37,6 +37,7 @@ export const IMAGES = {
         nine: '9-NEST-Haus-Module-Konstellation-Varianten-Versionen-Serienanfertigung-Animation',
         ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation',
         eleven: '11-NEST-Haus-Module-Transport-Animation-Schema',
+        twelve: '18-nest-haus-module-konfigurator-modulbau-design-gestaltung-freiheit-auswahl-optionen-personalisieren',
         mobile: {
             ten: '10-NEST-Haus-Module-Konstellation-Varianten-Versionen-Animation-mobile'
         }
