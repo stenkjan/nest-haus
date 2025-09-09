@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import { ClientBlobVideo } from "@/components/images";
@@ -182,22 +183,30 @@ export default function EntdeckenClient() {
 
               {/* Mobile Buttons - Positioned in the middle */}
               <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
-                <Button variant="primary" size="xs">
-                  Dein Part
-                </Button>
-                <Button variant="secondary" size="xs">
-                  Unser Part
-                </Button>
+                <Link href="/dein-part">
+                  <Button variant="primary" size="xs">
+                    Dein Part
+                  </Button>
+                </Link>
+                <Link href="/unser-part">
+                  <Button variant="secondary" size="xs">
+                    Unser Part
+                  </Button>
+                </Link>
               </div>
 
               {/* Desktop Buttons - Positioned at bottom */}
               <div className="absolute bottom-8 lg:bottom-8 xl:bottom-6 2xl:bottom-8 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
-                <Button variant="primary" size="xs">
-                  Dein Part
-                </Button>
-                <Button variant="secondary" size="xs">
-                  Unser Part
-                </Button>
+                <Link href="/dein-part">
+                  <Button variant="primary" size="xs">
+                    Dein Part
+                  </Button>
+                </Link>
+                <Link href="/unser-part">
+                  <Button variant="secondary" size="xs">
+                    Unser Part
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
