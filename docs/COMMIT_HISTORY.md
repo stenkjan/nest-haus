@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [730475c4ae76cb7e2cbe61c6bd598bab01f41864] - Wed Sep 10 17:17:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update dialog configurations and enhance CheckoutStepper component  - Changed the image path in dialogConfigs to use a new hero image for better visual representation. - Improved price calculation logic in CheckoutStepper to display price per square meter for configuration items with nest, enhancing clarity for users. - Refactored layout in CheckoutStepCard for better alignment and spacing of icons and titles, improving overall presentation.  These updates aim to enhance the user experience by providing clearer information and a more visually appealing interface.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutStepCard.tsx
+
+
+---
+
 ## [c0a55abeea127b89c8f09d7712c9d6f2c88686f0] - Wed Sep 10 15:55:15 2025 +0200
 
 **Author**: stenkjan
