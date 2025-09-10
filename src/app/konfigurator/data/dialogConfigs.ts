@@ -19,6 +19,7 @@ export interface MaterialSliderDialogConfig {
       desktop: string;
     };
     imagePath: string;
+    overlayImagePath?: string; // Optional overlay image for belichtungspaket cards
   }>;
 }
 
