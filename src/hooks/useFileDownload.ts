@@ -7,6 +7,7 @@ interface FileDownloadState {
 
 interface UseFileDownloadReturn {
     downloadFile: (path: string, filename?: string) => Promise<void>;
+    openFile: (path: string) => Promise<void>;
     isLoading: boolean;
     error: string | null;
 }
@@ -114,8 +115,40 @@ export const useFileDownload = (): UseFileDownloadReturn => {
         }
     }, []);
 
+    const openFile = useCallback(async (path: string) => {
+        setState({ isLoading: true, error: null });
+
+        try {
+            // Get the file URL from our API
+            const fileUrl = await FileCache.getOrFetch(path);
+
+            if (process.env.NODE_ENV === 'development') {
+                console.log(`📄 Opening file in new window: ${fileUrl}`);
+            }
+
+            // Open file in new window/tab
+            const newWindow = window.open(fileUrl, '_blank', 'noopener,noreferrer');
+
+            // Check if popup was blocked
+            if (!newWindow) {
+                throw new Error('Popup blocked. Please allow popups for this site to view the file.');
+            }
+
+            setState({ isLoading: false, error: null });
+
+            if (process.env.NODE_ENV === 'development') {
+                console.log(`✅ File opened in new window for: ${path}`);
+            }
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to open file';
+            console.error(`❌ File open failed for ${path}:`, error);
+            setState({ isLoading: false, error: errorMessage });
+        }
+    }, []);
+
     return {
         downloadFile,
+        openFile,
         isLoading: state.isLoading,
         error: state.error,
     };

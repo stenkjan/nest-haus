@@ -8,18 +8,25 @@ interface ClientBlobFileProps {
   filename?: string;
   children: ReactNode;
   className?: string;
+  mode?: "download" | "open"; // 'download' for download, 'open' for new window
   onDownloadStart?: () => void;
   onDownloadComplete?: () => void;
   onError?: (error: string) => void;
 }
 
 /**
- * ClientBlobFile component for downloading files from Vercel blob storage
+ * ClientBlobFile component for downloading or opening files from Vercel blob storage
  *
  * Usage:
  * ```tsx
- * <ClientBlobFile path="anleitung.pdf" filename="Anleitung.pdf">
+ * // Download file
+ * <ClientBlobFile path="anleitung.pdf" filename="Anleitung.pdf" mode="download">
  *   <Button>Download PDF</Button>
+ * </ClientBlobFile>
+ *
+ * // Open file in new window
+ * <ClientBlobFile path="anleitung.pdf" mode="open">
+ *   <Button>View PDF</Button>
  * </ClientBlobFile>
  * ```
  */
@@ -28,26 +35,33 @@ const ClientBlobFile: React.FC<ClientBlobFileProps> = ({
   filename,
   children,
   className = "",
+  mode = "download", // Default to download mode
   onDownloadStart,
   onDownloadComplete,
   onError,
 }) => {
-  const { downloadFile, isLoading, error } = useFileDownload();
+  const { downloadFile, openFile, isLoading, error } = useFileDownload();
 
-  const handleDownload = async () => {
+  const handleFileAction = async () => {
     try {
       if (onDownloadStart) {
         onDownloadStart();
       }
 
-      await downloadFile(path, filename);
+      if (mode === "open") {
+        await openFile(path);
+      } else {
+        await downloadFile(path, filename);
+      }
 
       if (onDownloadComplete) {
         onDownloadComplete();
       }
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Download failed";
+        err instanceof Error
+          ? err.message
+          : `${mode === "open" ? "Open" : "Download"} failed`;
       if (onError) {
         onError(errorMessage);
       }
@@ -62,16 +76,16 @@ const ClientBlobFile: React.FC<ClientBlobFileProps> = ({
   return (
     <div
       className={`cursor-pointer ${isLoading ? "opacity-50 pointer-events-none" : ""} ${className}`}
-      onClick={handleDownload}
+      onClick={handleFileAction}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          handleDownload();
+          handleFileAction();
         }
       }}
-      aria-label={`Download ${filename || path}`}
+      aria-label={`${mode === "open" ? "Open" : "Download"} ${filename || path}`}
     >
       {children}
       {isLoading && <span className="ml-2 inline-block animate-spin">⏳</span>}

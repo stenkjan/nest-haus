@@ -1133,10 +1133,10 @@ export default function SquareTextCard({
       <div className="flex flex-row gap-4 justify-center mt-16">
         <ClientBlobFile
           path={FILES.anleitung.pdf}
-          filename="Nest-Haus-Anleitung.pdf"
-          onDownloadStart={() => console.log("📄 Starting PDF download...")}
-          onDownloadComplete={() => console.log("✅ PDF download completed")}
-          onError={(error) => console.error("❌ PDF download failed:", error)}
+          mode="open"
+          onDownloadStart={() => console.log("📄 Opening PDF in new window...")}
+          onDownloadComplete={() => console.log("✅ PDF opened successfully")}
+          onError={(error) => console.error("❌ PDF open failed:", error)}
         >
           <Button variant="primary" size="xs">
             Anleitung als PDF
