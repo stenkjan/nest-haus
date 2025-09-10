@@ -229,13 +229,7 @@ export default function ConfiguratorShell({
         }
       }
 
-      // Special handling for Belichtungspaket selection
-      if (categoryId === "belichtungspaket") {
-        // Show brightness overlay and hide other overlays
-        setIsBrightnessOverlayVisible(true);
-        setIsPvOverlayVisible(false);
-        setIsFensterOverlayVisible(false);
-      }
+      // REMOVED: Legacy belichtungspaket overlay logic - now handled in main selection logic below
 
       // Hide brightness overlay when switching to other sections (except belichtungspaket)
       if (categoryId !== "belichtungspaket" && isBrightnessOverlayVisible) {
