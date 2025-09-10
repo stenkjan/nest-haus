@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bd06c7937354b577293f56c233c2202c492fdcbc] - Wed Sep 10 13:02:15 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update test files for consistency and clarity  - Refactored integration tests in ConfiguratorShell to improve code readability and maintainability by standardizing import statements and formatting. - Updated test descriptions and assertions for better clarity and consistency across various test cases. - Adjusted mock configurations to reflect changes in naming conventions, ensuring alignment with recent updates in the codebase.  These changes enhance the overall quality and coherence of the test suite.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/__tests__/ConfiguratorShell.integration.test.tsx
+- src/app/konfigurator/__tests__/PriceCalculator.test.ts
+- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+- src/app/konfigurator/__tests__/performance.test.ts
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
 ## [0c4feaf3f47cd651dbb761d502da99bb79805755] - Wed Sep 10 12:50:16 2025 +0200
 
 **Author**: stenkjan
