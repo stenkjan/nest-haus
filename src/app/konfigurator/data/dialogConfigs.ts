@@ -313,7 +313,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
           mobile: "Das Light-Paket bietet eine solide Grundbeleuchtung mit 12% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
           desktop: "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 12% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche, in denen gezieltes, warmes Licht gewünscht ist. Die bewusst reduzierte Verglasung sorgt für optimale Energieeffizienz bei gleichzeitig ausreichend natürlichem Lichteinfall."
         },
-        imagePath: IMAGES.configurations.nest75_holzlattung,
+        imagePath: IMAGES.hero.nestHaus8,
         overlayImagePath: IMAGES.pvModule.nest_75_fenster_overlay_light_holz
       },
       {

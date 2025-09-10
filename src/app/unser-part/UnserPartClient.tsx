@@ -144,6 +144,7 @@ export default function UnserPartClient() {
                   playsInline={true}
                   controls={false}
                   enableCache={true}
+                  playbackRate={2.5}
                   onError={(error) => {
                     console.error("🎥 Video component error:", error);
                     // Could add additional error handling here if needed

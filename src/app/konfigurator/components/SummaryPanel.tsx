@@ -421,6 +421,10 @@ export default function SummaryPanel({
 
           {/* Total Price */}
           <div className="mt-6 text-right">
+            <p className="text-[clamp(10px,2.2vw,12px)] text-gray-800 mb-3 leading-[1.3]">
+              Wir arbeiten mit natürlichen Oberflächen, die Symbolbilder können
+              von der tatsächlichen Farbbildung abweichen.
+            </p>
             <h3 className="text-[clamp(16px,3vw,18px)] font-medium tracking-[-0.015em] leading-[1.2]">
               <span className="text-black">Gesamtpreis:</span>
               <span className="font-medium">

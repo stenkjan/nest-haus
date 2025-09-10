@@ -832,19 +832,19 @@ export default function CheckoutStepper({
       title: "Unser Service",
       subtitle: "Unsere Planungspakete sind hier, um dich zu unterstützen!",
       description:
-        "Deine aktuelle Konfiguration enthält das Paket Basis. Dieses ist bereits im Preis deines Nest Hauses inbegriffen und bildet die Grundlage für den gesamten Prozess. \n\n Wenn sich deine Ansprüche im Laufe der Planung verändern, kannst du deine Auswahl jederzeit anpassen. Die zusätzlichen Pakete Plus und Pro bieten dir noch mehr Unterstützung auf dem Weg zu deinem neuen Zuhause.",
+        "Deine aktuelle **Konfiguration** enthält das **Paket Basis**. Dieses ist bereits im Preis deines Nest Hauses **inbegriffen** und bildet die Grundlage für den gesamten Prozess. \n\n Wenn sich deine Ansprüche im Laufe der Planung verändern, kannst du deine Auswahl jederzeit anpassen. Die zusätzlichen **Pakete Plus und Pro** bieten dir noch mehr Unterstützung auf dem Weg zu deinem neuen Zuhause.",
     },
     {
       title: "Termin vereinbaren",
       subtitle: "Persönlich oder telefonisch – wie es dir am besten passt.",
       description:
-        "Wähle Datum und Uhrzeit und entscheide, ob du ein persönliches Gespräch oder einen Telefontermin möchtest. Wir besprechen die Ergebnisse des Grundstückschecks, deine Auswahl und die nächsten Schritte. Der Termin ist kostenlos und unverbindlich.",
+        "Wähle **Datum und Uhrzeit** und entscheide, ob du ein **persönliches Gespräch** oder einen **Telefontermin** möchtest. Wir besprechen die Ergebnisse des **Grundstückschecks**, deine Auswahl und die nächsten Schritte. Der Termin ist kostenlos und unverbindlich.",
     },
     {
       title: "Zusammenfassung & Anfrage",
       subtitle: "Prüfe deine Angaben und sende deine Anfrage.",
       description:
-        "Hier siehst du alle Details deiner Auswahl samt Preisen. Nach dem Absenden bestätigen wir alles schriftlich und klären offene Fragen. Bis zur finalen Freigabe entstehen dir keine Bauverpflichtungen und keine Kosten über unseren Service hinaus.",
+        "Hier siehst du alle **Details deiner Auswahl** samt Preisen. Nach dem Absenden bestätigen wir alles schriftlich und klären offene Fragen. Bis zur finalen Freigabe entstehen dir **keine Bauverpflichtungen** und keine Kosten über unseren Service hinaus.",
     },
   ];
 
@@ -1275,14 +1275,25 @@ export default function CheckoutStepper({
                           </div>
                           <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                             {(() => {
-                              const priceValue =
+                              // For configuration items with nest, show price per m²
+                              if (
                                 "totalPrice" in item &&
                                 (item as ConfigurationCartItem).nest
-                                  ? (item as ConfigurationCartItem).nest
-                                      ?.price || 0
-                                  : "totalPrice" in item
-                                    ? (item as ConfigurationCartItem).totalPrice
-                                    : (item as CartItem).price;
+                              ) {
+                                const configItem =
+                                  item as ConfigurationCartItem;
+                                const nestModel = configItem.nest?.value || "";
+                                const priceValue = configItem.nest?.price || 0;
+                                return PriceUtils.calculatePricePerSquareMeter(
+                                  priceValue,
+                                  nestModel
+                                );
+                              }
+                              // For other items, keep monthly payment
+                              const priceValue =
+                                "totalPrice" in item
+                                  ? (item as ConfigurationCartItem).totalPrice
+                                  : (item as CartItem).price;
                               return `oder ${calculateMonthlyPayment(
                                 priceValue
                               )} für 240 Monate`;
@@ -1656,7 +1667,7 @@ export default function CheckoutStepper({
               <div className="mt-16">
                 <div className="text-center mb-8 pt-8">
                   <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
-                    Dein Grundstück - Unser Check
+                    Deine Daten
                   </h2>
                   <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
                     Wir Prüfen deinen Baugrund
@@ -1706,6 +1717,7 @@ export default function CheckoutStepper({
                         backgroundColor="white"
                         maxWidth={false}
                         padding="sm"
+                        excludePersonalData={true}
                       />
                     </div>
                   </div>

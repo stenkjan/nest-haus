@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo, animate } from "motion/react";
 import { Button } from "@/components/ui";
 import Link from "next/link";
+import ClientBlobFile from "@/components/files/ClientBlobFile";
+import { FILES } from "@/constants/files";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 import "./mobile-scroll-optimizations.css";
 
@@ -128,7 +130,9 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     title: "5. Lieferung + Aufbau",
     subtitle: "Immer transparent",
     description:
-      "Ist das Fundament fertig, bringen wir dein Nest Haus direkt zu dir. Lieferung und Montage erfolgen durch unser Team, sodass dein Zuhause in kürzester Zeit steht. Die Kosten sind klar geregelt:\n\nbis 75 km kostenlos\n bis 200 km € 3.000 Pauschale\ndarüber individuelles Angebot.",
+      "Ist das Fundament fertig, bringen wir dein Nest Haus direkt zu dir. Lieferung und Montage erfolgen durch unser Team, sodass dein Zuhause in kürzester Zeit steht. Die Kosten sind klar geregelt:\n\n 8 € pro m² Wohnfläche je Kilometer Entfernung",
+    // description:
+    // "Ist das Fundament fertig, bringen wir dein Nest Haus direkt zu dir. Lieferung und Montage erfolgen durch unser Team, sodass dein Zuhause in kürzester Zeit steht. Die Kosten sind klar geregelt:\n\nbis 75 km kostenlos\n bis 200 km € 3.000 Pauschale\ndarüber individuelles Angebot.",
     mobileTitle: "Lieferung & Montage",
     mobileSubtitle: "Transparente Lieferkosten",
     mobileDescription:
@@ -946,9 +950,17 @@ export default function SquareTextCard({
 
       {/* Action Buttons */}
       <div className="flex flex-row gap-4 justify-center mt-16">
-        <Button variant="primary" size="xs">
-          Anleitung als PDF
-        </Button>
+        <ClientBlobFile
+          path={FILES.anleitung.pdf}
+          mode="open"
+          onDownloadStart={() => console.log("📄 Opening PDF in new window...")}
+          onDownloadComplete={() => console.log("✅ PDF opened successfully")}
+          onError={(error) => console.error("❌ PDF open failed:", error)}
+        >
+          <Button variant="primary" size="xs">
+            Anleitung als PDF
+          </Button>
+        </ClientBlobFile>
         <Link href="/konfigurator">
           <Button variant="landing-secondary-blue" size="xs">
             Jetzt bauen
