@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c90a48c5092d1a76d6a5bbd797518f7b63e4edda] - Wed Sep 10 12:24:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update component text and structure for improved clarity and consistency  - Changed button text in CartFooter from "Jetzt bauen" to "In den Warenkorb" for better user understanding. - Enhanced accessibility by ensuring view labels in PreviewPanel are properly defined and fallback values are provided. - Simplified the SummaryPanel layout by removing unnecessary button elements, focusing on a cleaner design. - Added optional overlay image handling in various components to improve visual presentation. - Updated CheckoutStepper to prioritize cart item configuration for consistent display and added overlays for enhanced user experience.  These changes aim to improve usability, accessibility, and visual coherence across the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/DialogDataTransformer.ts
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/sections/AppointmentBooking.tsx
+
+
+---
+
 ## [4c9f24f357e771e19851b6954bfa1ecd98432535] - Wed Sep 10 11:12:33 2025 +0200
 
 **Author**: stenkjan
