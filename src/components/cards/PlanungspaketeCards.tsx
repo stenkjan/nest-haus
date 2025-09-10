@@ -122,6 +122,9 @@ export default function PlanungspaketeCards({
   );
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Animation state for smooth transitions
+  const [isAnimating, setIsAnimating] = useState(false);
   const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   // iOS viewport hook for stable lightbox sizing
@@ -130,10 +133,30 @@ export default function PlanungspaketeCards({
   // Use appropriate data source based on custom data
   const cardData = customData || planungspaketeCardData;
 
+  const gap = 24;
+
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
     setScreenWidth(window.innerWidth);
+
+    // Center the first card initially
+    const containerWidth = window.innerWidth;
+    let centerOffset;
+
+    if (containerWidth < 768) {
+      // Mobile: Center the card perfectly in viewport, accounting for container padding
+      const containerPadding = 32; // px-4 = 16px on each side = 32px total
+      centerOffset = (containerWidth - cardWidth - containerPadding) / 2; // Center within available space
+    } else {
+      // Desktop/Tablet: Use existing logic
+      const effectiveWidth =
+        containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+      centerOffset =
+        (effectiveWidth - cardWidth) / 2 + (containerWidth < 1024 ? 16 : 0);
+    }
+
+    x.set(centerOffset);
 
     // iOS-specific: Force initial layout calculation
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -141,7 +164,7 @@ export default function PlanungspaketeCards({
         window.dispatchEvent(new Event("resize"));
       }, 100);
     }
-  }, []);
+  }, [cardWidth, x]);
 
   // Calculate responsive card dimensions
   useEffect(() => {
@@ -172,12 +195,34 @@ export default function PlanungspaketeCards({
         // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 350px below lg breakpoint
         setCardWidth(width >= 1024 ? 450 : 350);
       }
+
+      // Recenter the current card after dimension changes
+      if (isClient) {
+        const containerWidth = width;
+        let centerOffset;
+
+        if (containerWidth < 768) {
+          // Mobile: Center the card perfectly in viewport, accounting for container padding
+          const containerPadding = 32; // px-4 = 16px on each side = 32px total
+          centerOffset = (containerWidth - cardWidth - containerPadding) / 2; // Center within available space
+        } else {
+          // Desktop/Tablet: Use existing logic
+          const effectiveWidth =
+            containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+          centerOffset =
+            (effectiveWidth - cardWidth) / 2 + (containerWidth < 1024 ? 16 : 0);
+        }
+
+        const cardPosition = currentIndex * (cardWidth + gap);
+        const newX = centerOffset - cardPosition;
+        x.set(newX);
+      }
     };
 
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
-  }, [isLightboxMode]);
+  }, [isLightboxMode, isClient, currentIndex, cardWidth, gap, x]);
 
   // Pre-measure card heights on mobile for smooth expansion
   useEffect(() => {
@@ -294,7 +339,6 @@ export default function PlanungspaketeCards({
     return 520; // fallback height
   }, []);
 
-  const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
   const maxScroll = -(maxIndex * (cardWidth + gap));
 
@@ -314,8 +358,38 @@ export default function PlanungspaketeCards({
         Math.min(targetMaxIndex, currentIndex + direction)
       );
       setCurrentIndex(newIndex);
-      const newX = -(newIndex * (cardWidth + gap));
-      x.set(newX);
+
+      // Calculate position to center the active card
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+
+      let centerOffset;
+      if (containerWidth < 768) {
+        // Mobile: Center the card perfectly in viewport, accounting for container padding
+        const containerPadding = 32; // px-4 = 16px on each side = 32px total
+        centerOffset = (containerWidth - cardWidth - containerPadding) / 2; // Center within available space
+      } else {
+        // Desktop/Tablet: Use existing logic
+        const effectiveWidth =
+          containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+        centerOffset =
+          (effectiveWidth - cardWidth) / 2 + (containerWidth < 1024 ? 16 : 0);
+      }
+
+      const cardPosition = newIndex * (cardWidth + gap);
+      const newX = centerOffset - cardPosition;
+
+      // Add smooth animation for arrow navigation
+      setIsAnimating(true);
+      animate(x, newX, {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
+        duration: 0.3,
+      }).then(() => {
+        setIsAnimating(false);
+      });
     },
     [displayCards.length, cardsPerView, currentIndex, cardWidth, gap, x]
   );
@@ -335,131 +409,6 @@ export default function PlanungspaketeCards({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigateCard, isLightboxMode]);
-
-  const handleDragEnd = (
-    event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-
-    // Calculate which card to snap to based on drag
-    const currentX = x.get();
-    let targetIndex = Math.round(-currentX / (cardWidth + gap));
-
-    const targetMaxIndex = adjustedMaxIndex;
-
-    // Mobile vs Desktop behavior
-    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
-
-    if (isMobile) {
-      // Mobile: Enhanced snapping with visual feedback
-      const offsetThreshold = 30;
-      const velocityThreshold = 300;
-
-      // Better snapping logic: only change cards with intentional movement
-      // Start with current card as default
-      targetIndex = currentIndex;
-
-      // Only change cards if there's significant drag or velocity
-      if (
-        Math.abs(offset) > offsetThreshold ||
-        Math.abs(velocity) > velocityThreshold
-      ) {
-        if (offset > 0 || velocity > velocityThreshold) {
-          // Dragging/flicking right (previous card)
-          targetIndex = Math.max(0, currentIndex - 1);
-        } else if (offset < 0 || velocity < -velocityThreshold) {
-          // Dragging/flicking left (next card)
-          targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
-        }
-      } else {
-        // Small movements: check if we're more than 70% to next card
-        const currentCardPosition = -(currentIndex * (cardWidth + gap));
-        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
-        const cardThreshold = (cardWidth + gap) * 0.7; // 70% of card width
-
-        if (distanceFromCurrent > cardThreshold) {
-          // We're far enough to snap to the next logical card
-          if (currentX < currentCardPosition) {
-            // Scrolled significantly left, go to next card
-            targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
-          } else {
-            // Scrolled significantly right, go to previous card
-            targetIndex = Math.max(0, currentIndex - 1);
-          }
-        }
-      }
-
-      // Ensure target index is within bounds
-      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
-
-      // Animate with visual feedback for direction
-      setCurrentIndex(targetIndex);
-      const newX = -(targetIndex * (cardWidth + gap));
-
-      if (targetIndex !== currentIndex) {
-        // Two-stage animation for mobile: bounce + slide
-        const direction = targetIndex > currentIndex ? -1 : 1;
-        const bounceDistance = 15; // Small bounce distance
-
-        animate(x, x.get() + direction * bounceDistance, {
-          type: "spring",
-          stiffness: 400,
-          damping: 25,
-          mass: 0.6,
-          duration: 0.15,
-        }).then(() => {
-          animate(x, newX, {
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-            mass: 0.8,
-            duration: 0.4,
-          });
-        });
-      } else {
-        // Return to current position smoothly
-        animate(x, newX, {
-          type: "spring",
-          stiffness: 400,
-          damping: 35,
-          mass: 0.7,
-          duration: 0.3,
-        });
-      }
-    } else {
-      // Desktop: Smooth deceleration without snapping
-      // Adjust based on drag direction and velocity
-      if (Math.abs(offset) > 50 || Math.abs(velocity) > 500) {
-        if (offset > 0 || velocity > 500) {
-          targetIndex = Math.max(0, targetIndex - 1);
-        } else if (offset < 0 || velocity < -500) {
-          targetIndex = Math.min(targetMaxIndex, targetIndex + 1);
-        }
-      }
-
-      // Ensure target index is within bounds
-      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
-
-      setCurrentIndex(targetIndex);
-      const newX = -(targetIndex * (cardWidth + gap));
-
-      // Smooth deceleration for desktop
-      const boundedX = Math.max(
-        -(targetMaxIndex * (cardWidth + gap)),
-        Math.min(0, newX)
-      );
-
-      animate(x, boundedX, {
-        type: "spring",
-        stiffness: 250,
-        damping: 25,
-        mass: 1,
-        duration: 0.6,
-      });
-    }
-  };
 
   const containerClasses = maxWidth
     ? "w-full max-w-screen-2xl mx-auto"
@@ -644,8 +593,8 @@ export default function PlanungspaketeCards({
                       isMobile && isExpanded
                         ? expandedHeight
                         : isMobile
-                        ? 360
-                        : 280,
+                          ? 360
+                          : 280,
                     backgroundColor: card.backgroundColor,
                     // iOS-specific fixes
                     WebkitTransform: "translateZ(0)", // Force hardware acceleration
@@ -813,14 +762,6 @@ export default function PlanungspaketeCards({
                   x,
                   width: `${(cardWidth + gap) * displayCards.length - gap}px`,
                 }}
-                drag="x"
-                dragConstraints={{
-                  left: maxScroll,
-                  right: 0,
-                }}
-                dragElastic={0.05}
-                dragMomentum={false}
-                onDragEnd={handleDragEnd}
                 transition={{
                   type: "spring",
                   stiffness: 400,
@@ -937,9 +878,16 @@ export default function PlanungspaketeCards({
             {currentIndex > 0 && (
               <button
                 onClick={() => navigateCard(-1)}
-                className={`absolute left-0 top-1/2 transform -translate-y-1/2 ${
-                  maxWidth ? "-translate-x-4" : "translate-x-2"
-                } bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+                disabled={isAnimating}
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                  screenWidth < 1024 ? "p-3" : "p-4"
+                }`}
+                style={{
+                  left:
+                    screenWidth < 1024
+                      ? `max(24px, calc(50% - ${cardWidth / 2 + 30}px))`
+                      : `calc(50% - ${cardWidth / 2 + 60}px)`,
+                }}
               >
                 <svg
                   className="w-6 h-6 text-gray-700"
@@ -960,9 +908,18 @@ export default function PlanungspaketeCards({
             {currentIndex < displayCards.length - Math.floor(cardsPerView) && (
               <button
                 onClick={() => navigateCard(1)}
-                className={`absolute right-0 top-1/2 transform -translate-y-1/2 ${
-                  maxWidth ? "translate-x-4" : "-translate-x-2"
-                } bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+                disabled={isAnimating}
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                  screenWidth < 1024 ? "p-3" : "p-4"
+                }`}
+                style={{
+                  left:
+                    screenWidth < 1024
+                      ? `min(calc(100% - 24px), calc(50% + ${
+                          cardWidth / 2 + 30
+                        }px))`
+                      : `calc(50% + ${cardWidth / 2 + 60}px)`,
+                }}
               >
                 <svg
                   className="w-6 h-6 text-gray-700"

@@ -17,15 +17,31 @@ export default function ImageGlassCard({
   image = IMAGES.function.nestHausHandDrawing, // 26-NEST-Haus-Planung-Innenausbau-Zeichnen-Grundriss
 }: ImageGlassCardProps) {
   const [isClient, setIsClient] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
 
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
+    setScreenWidth(window.innerWidth);
+  }, []);
+
+  // Track screen width for responsive behavior
+  useEffect(() => {
+    const updateScreenWidth = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    updateScreenWidth();
+    window.addEventListener("resize", updateScreenWidth);
+    return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
 
   const containerClasses = maxWidth
     ? "w-full max-w-screen-2xl mx-auto"
     : "w-full";
+
+  // Determine if we should use mobile layout
+  const isMobile = isClient && screenWidth < 1024;
 
   // Background classes
   const backgroundClasses =
@@ -47,11 +63,11 @@ export default function ImageGlassCard({
   return (
     <div className={`${backgroundClasses} py-8`}>
       <div className={`${containerClasses}`}>
-        <div className="px-4 md:px-8">
+        <div className={`${isMobile ? "px-0" : "px-4 md:px-8"}`}>
           <div className="flex justify-center">
-            {/* Glass Card with Image - Increased size to match elektrik image */}
+            {/* Glass Card with Image - Full width on mobile */}
             <motion.div
-              className="w-9/10 mx-auto rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className={`${isMobile ? "w-full" : "w-9/10"} mx-auto rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300`}
               style={{
                 backgroundColor: "#121212",
                 boxShadow:
@@ -73,7 +89,7 @@ export default function ImageGlassCard({
                   strategy="client"
                   isInteractive={true}
                   enableCache={true}
-                  sizes="(max-width: 640px) 80vw, (max-width: 768px) 72vw, (max-width: 1024px) 64vw, (max-width: 1280px) 56vw, 819px"
+                  sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 72vw, 819px"
                 />
               </div>
             </motion.div>

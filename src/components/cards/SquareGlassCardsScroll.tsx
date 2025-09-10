@@ -91,7 +91,7 @@ export default function SquareGlassCardsScroll({
   maxWidth = true,
   backgroundColor = "black",
   title = "Square Glass Cards",
-  subtitle = "Navigate with arrow keys or swipe",
+  subtitle = "Navigate with arrow keys",
   showInstructions = true,
   customData,
   onCardClick,
@@ -105,13 +105,36 @@ export default function SquareGlassCardsScroll({
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Animation state for smooth transitions
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const cardData = customData || defaultSquareCardData;
+
+  const gap = 24;
 
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
     setScreenWidth(window.innerWidth);
-  }, []);
+
+    // Center the first card initially
+    const containerWidth = window.innerWidth;
+    let centerOffset;
+
+    if (containerWidth < 768) {
+      // Mobile: Center the card perfectly in viewport, accounting for container padding
+      const containerPadding = 32; // px-4 = 16px on each side = 32px total
+      centerOffset = (containerWidth - cardSize - containerPadding) / 2; // Center within available space
+    } else {
+      // Desktop/Tablet: Use existing logic
+      const effectiveWidth =
+        containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+      centerOffset =
+        (effectiveWidth - cardSize) / 2 + (containerWidth < 1024 ? 16 : 0);
+    }
+
+    x.set(centerOffset);
+  }, [cardSize, x]);
 
   // Calculate responsive dimensions for square cards (same scaling as ContentCardsGlass)
   useEffect(() => {
@@ -141,14 +164,35 @@ export default function SquareGlassCardsScroll({
         setCardsPerView(1.2);
         setCardSize(350);
       }
+
+      // Recenter the current card after dimension changes
+      if (isClient) {
+        const containerWidth = width;
+        let centerOffset;
+
+        if (containerWidth < 768) {
+          // Mobile: Center the card perfectly in viewport, accounting for container padding
+          const containerPadding = 32; // px-4 = 16px on each side = 32px total
+          centerOffset = (containerWidth - cardSize - containerPadding) / 2; // Center within available space
+        } else {
+          // Desktop/Tablet: Use existing logic
+          const effectiveWidth =
+            containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+          centerOffset =
+            (effectiveWidth - cardSize) / 2 + (containerWidth < 1024 ? 16 : 0);
+        }
+
+        const cardPosition = currentIndex * (cardSize + gap);
+        const newX = centerOffset - cardPosition;
+        x.set(newX);
+      }
     };
 
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
-  }, []);
+  }, [isClient, currentIndex, cardSize, gap, x]);
 
-  const gap = 24;
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
 
   // Navigation logic
@@ -159,8 +203,38 @@ export default function SquareGlassCardsScroll({
         Math.min(maxIndex, currentIndex + direction)
       );
       setCurrentIndex(newIndex);
-      const newX = -(newIndex * (cardSize + gap));
-      x.set(newX);
+
+      // Calculate position to center the active card
+      const containerWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+
+      let centerOffset;
+      if (containerWidth < 768) {
+        // Mobile: Center the card perfectly in viewport, accounting for container padding
+        const containerPadding = 32; // px-4 = 16px on each side = 32px total
+        centerOffset = (containerWidth - cardSize - containerPadding) / 2; // Center within available space
+      } else {
+        // Desktop/Tablet: Use existing logic
+        const effectiveWidth =
+          containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+        centerOffset =
+          (effectiveWidth - cardSize) / 2 + (containerWidth < 1024 ? 16 : 0);
+      }
+
+      const cardPosition = newIndex * (cardSize + gap);
+      const newX = centerOffset - cardPosition;
+
+      // Add smooth animation for arrow navigation
+      setIsAnimating(true);
+      animate(x, newX, {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
+        duration: 0.3,
+      }).then(() => {
+        setIsAnimating(false);
+      });
     },
     [currentIndex, cardSize, gap, x, maxIndex]
   );
@@ -178,110 +252,6 @@ export default function SquareGlassCardsScroll({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigateCard]);
-
-  const handleDragEnd = (
-    event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-
-    // Calculate which card to snap to based on drag
-    const currentX = x.get();
-    let targetIndex = Math.round(-currentX / (cardSize + gap));
-
-    // Mobile vs Desktop behavior
-    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
-
-    if (isMobile) {
-      // Mobile: Enhanced snapping with visual feedback
-      const offsetThreshold = 30;
-      const velocityThreshold = 300;
-
-      // Better snapping logic: only change cards with intentional movement
-      // Start with current card as default
-      targetIndex = currentIndex;
-
-      // Only change cards if there's significant drag or velocity
-      if (
-        Math.abs(offset) > offsetThreshold ||
-        Math.abs(velocity) > velocityThreshold
-      ) {
-        if (offset > 0 || velocity > velocityThreshold) {
-          // Dragging/flicking right (previous card)
-          targetIndex = Math.max(0, currentIndex - 1);
-        } else if (offset < 0 || velocity < -velocityThreshold) {
-          // Dragging/flicking left (next card)
-          targetIndex = Math.min(maxIndex, currentIndex + 1);
-        }
-      } else {
-        // Small movements: check if we're more than 70% to next card
-        const currentX = x.get();
-        const currentCardPosition = -(currentIndex * (cardSize + gap));
-        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
-        const cardThreshold = (cardSize + gap) * 0.7; // 70% of card width
-
-        if (distanceFromCurrent > cardThreshold) {
-          // We're far enough to snap to the next logical card
-          if (currentX < currentCardPosition) {
-            // Scrolled significantly left, go to next card
-            targetIndex = Math.min(maxIndex, currentIndex + 1);
-          } else {
-            // Scrolled significantly right, go to previous card
-            targetIndex = Math.max(0, currentIndex - 1);
-          }
-        }
-      }
-
-      // Ensure target index is within bounds
-      targetIndex = Math.max(0, Math.min(maxIndex, targetIndex));
-
-      // Animate with visual feedback for direction
-      setCurrentIndex(targetIndex);
-      const newX = -(targetIndex * (cardSize + gap));
-
-      // Add visual feedback animation with directional easing
-      // First, add a small bounce in the opposite direction for visual feedback
-      const direction = targetIndex > currentIndex ? -1 : 1;
-      const bounceDistance = 15; // Small bounce distance
-
-      animate(x, x.get() + direction * bounceDistance, {
-        type: "spring",
-        stiffness: 400,
-        damping: 30,
-        duration: 0.15,
-      }).then(() => {
-        // Then animate to the final position
-        animate(x, newX, {
-          type: "spring",
-          stiffness: 300,
-          damping: 25,
-          mass: 0.8,
-          duration: 0.5,
-        });
-      });
-    } else {
-      // Desktop: Free scrolling, no snapping
-      // Let the drag settle naturally without forced snapping
-      const naturalX = currentX + velocity * 0.1; // Small momentum continuation
-      const boundedX = Math.max(
-        -(maxIndex * (cardSize + gap)),
-        Math.min(0, naturalX)
-      );
-
-      // Update current index based on final position
-      const finalIndex = Math.round(-boundedX / (cardSize + gap));
-      setCurrentIndex(Math.max(0, Math.min(maxIndex, finalIndex)));
-
-      // Smooth deceleration without snapping
-      animate(x, boundedX, {
-        type: "spring",
-        stiffness: 150,
-        damping: 20,
-        mass: 1.0,
-      });
-    }
-  };
 
   const containerClasses = maxWidth
     ? "w-full max-w-screen-2xl mx-auto"
@@ -352,14 +322,6 @@ export default function SquareGlassCardsScroll({
                 x,
                 gap: `${gap}px`,
               }}
-              drag="x"
-              dragConstraints={{
-                left: -(maxIndex * (cardSize + gap)),
-                right: 0,
-              }}
-              onDragEnd={handleDragEnd}
-              dragElastic={0.05}
-              dragMomentum={false}
               transition={{
                 type: "spring",
                 stiffness: 400,
@@ -439,6 +401,67 @@ export default function SquareGlassCardsScroll({
             </motion.div>
           </div>
         </div>
+
+        {/* Navigation Arrows */}
+        {currentIndex > 0 && (
+          <button
+            onClick={() => navigateCard(-1)}
+            disabled={isAnimating}
+            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+              screenWidth < 1024 ? "p-3" : "p-4"
+            }`}
+            style={{
+              left:
+                screenWidth < 1024
+                  ? `max(24px, calc(50% - ${cardSize / 2 + 30}px))`
+                  : `calc(50% - ${cardSize / 2 + 60}px)`,
+            }}
+          >
+            <svg
+              className="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+        )}
+
+        {currentIndex < maxIndex && (
+          <button
+            onClick={() => navigateCard(1)}
+            disabled={isAnimating}
+            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+              screenWidth < 1024 ? "p-3" : "p-4"
+            }`}
+            style={{
+              left:
+                screenWidth < 1024
+                  ? `min(calc(100% - 24px), calc(50% + ${cardSize / 2 + 30}px))`
+                  : `calc(50% + ${cardSize / 2 + 60}px)`,
+            }}
+          >
+            <svg
+              className="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        )}
 
         {/* Progress Indicator */}
         {cardData.length > Math.floor(cardsPerView) && (

@@ -164,7 +164,7 @@ const getImagePath = (imageUrl: string): string => {
 export default function ContentCardsGlass({
   variant = "responsive",
   title = "Content Cards Glass",
-  subtitle = "Navigate with arrow keys or swipe on mobile",
+  subtitle = "Navigate with arrow keys",
   maxWidth = true,
   showInstructions = true,
   isLightboxMode = false,
@@ -178,6 +178,9 @@ export default function ContentCardsGlass({
   const [screenWidth, setScreenWidth] = useState(0);
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Animation state for smooth transitions
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const isStatic = variant === "static";
   const isResponsive = variant === "responsive";
@@ -321,7 +324,17 @@ export default function ContentCardsGlass({
       const cardPosition = newIndex * (cardWidth + gap);
       const newX = centerOffset - cardPosition;
 
-      x.set(newX);
+      // Add smooth animation for arrow navigation
+      setIsAnimating(true);
+      animate(x, newX, {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
+        duration: 0.3,
+      }).then(() => {
+        setIsAnimating(false);
+      });
     },
     [
       displayCards.length,
@@ -346,127 +359,6 @@ export default function ContentCardsGlass({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigateCard]);
-
-  const handleDragEnd = (
-    event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-
-    // Calculate which card to snap to based on drag
-    const currentX = x.get();
-    let targetIndex = Math.round(-currentX / (cardWidth + gap));
-
-    const targetMaxIndex = isStatic ? adjustedMaxIndex : maxIndex;
-
-    // Mobile vs Desktop behavior
-    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
-
-    if (isMobile) {
-      // Mobile: Enhanced snapping with visual feedback
-      const offsetThreshold = 30;
-      const velocityThreshold = 300;
-
-      // Better snapping logic: only change cards with intentional movement
-      // Start with current card as default
-      targetIndex = currentIndex;
-
-      // Only change cards if there's significant drag or velocity
-      if (
-        Math.abs(offset) > offsetThreshold ||
-        Math.abs(velocity) > velocityThreshold
-      ) {
-        if (offset > 0 || velocity > velocityThreshold) {
-          // Dragging/flicking right (previous card)
-          targetIndex = Math.max(0, currentIndex - 1);
-        } else if (offset < 0 || velocity < -velocityThreshold) {
-          // Dragging/flicking left (next card)
-          targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
-        }
-      } else {
-        // Small movements: check if we're more than 70% to next card
-        const currentX = x.get();
-        const currentCardPosition = -(currentIndex * (cardWidth + gap));
-        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
-        const cardThreshold = (cardWidth + gap) * 0.7; // 70% of card width
-
-        if (distanceFromCurrent > cardThreshold) {
-          // We're far enough to snap to the next logical card
-          if (currentX < currentCardPosition) {
-            // Scrolled significantly left, go to next card
-            targetIndex = Math.min(targetMaxIndex, currentIndex + 1);
-          } else {
-            // Scrolled significantly right, go to previous card
-            targetIndex = Math.max(0, currentIndex - 1);
-          }
-        }
-      }
-
-      // Ensure target index is within bounds
-      targetIndex = Math.max(0, Math.min(targetMaxIndex, targetIndex));
-
-      // Animate with visual feedback for direction using centering logic
-      setCurrentIndex(targetIndex);
-
-      // Use the same centering calculation as navigateCard
-      const containerWidth =
-        typeof window !== "undefined" ? window.innerWidth : 1200;
-      const centerOffset = calculateCenterOffset(containerWidth, cardWidth);
-      const cardPosition = targetIndex * (cardWidth + gap);
-      const newX = centerOffset - cardPosition;
-
-      // Add visual feedback animation with directional easing
-      // First, add a small bounce in the opposite direction for visual feedback
-      const direction = targetIndex > currentIndex ? -1 : 1;
-      const bounceDistance = 15; // Small bounce distance
-
-      animate(x, x.get() + direction * bounceDistance, {
-        type: "spring",
-        stiffness: 400,
-        damping: 30,
-        duration: 0.15,
-      }).then(() => {
-        // Then animate to the final position
-        animate(x, newX, {
-          type: "spring",
-          stiffness: 300,
-          damping: 25,
-          mass: 0.8,
-          duration: 0.5,
-        });
-      });
-    } else {
-      // Desktop: Centering behavior with smooth deceleration
-      // Determine target card index based on current position and momentum
-      const containerWidth =
-        typeof window !== "undefined" ? window.innerWidth : 1200;
-      const centerOffset = calculateCenterOffset(containerWidth, cardWidth);
-
-      // Calculate which card we're closest to
-      const estimatedIndex = Math.round(
-        (centerOffset - currentX) / (cardWidth + gap)
-      );
-      const finalIndex = Math.max(
-        0,
-        Math.min(displayCards.length - 1, estimatedIndex)
-      );
-
-      setCurrentIndex(finalIndex);
-
-      // Center the target card
-      const cardPosition = finalIndex * (cardWidth + gap);
-      const centeredX = centerOffset - cardPosition;
-
-      // Smooth animation to centered position
-      animate(x, centeredX, {
-        type: "spring",
-        stiffness: 300,
-        damping: 25,
-        mass: 0.8,
-      });
-    }
-  };
 
   const containerClasses = maxWidth
     ? "w-full max-w-screen-2xl mx-auto"
@@ -559,18 +451,6 @@ export default function ContentCardsGlass({
                       }px`,
                     }
               }
-              drag={isStatic ? false : "x"}
-              dragConstraints={
-                isStatic
-                  ? undefined
-                  : {
-                      left: maxScroll,
-                      right: 0,
-                    }
-              }
-              dragElastic={isStatic ? undefined : 0.05}
-              dragMomentum={isStatic ? undefined : false}
-              onDragEnd={isStatic ? undefined : handleDragEnd}
               transition={{
                 type: "spring",
                 stiffness: 400,
@@ -980,9 +860,16 @@ export default function ContentCardsGlass({
             {currentIndex > 0 && (
               <button
                 onClick={() => navigateCard(-1)}
-                className={`absolute left-0 top-1/2 transform -translate-y-1/2 ${
-                  maxWidth ? "-translate-x-4" : "translate-x-2"
-                } bg-gray-800 hover:bg-gray-700 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+                disabled={isAnimating}
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                  screenWidth < 1024 ? "p-3" : "p-4"
+                }`}
+                style={{
+                  left:
+                    screenWidth < 1024
+                      ? `max(24px, calc(50% - ${cardWidth / 2 + 30}px))`
+                      : `calc(50% - ${cardWidth / 2 + 60}px)`,
+                }}
               >
                 <svg
                   className="w-6 h-6 text-white"
@@ -1003,9 +890,18 @@ export default function ContentCardsGlass({
             {currentIndex < displayCards.length - Math.floor(cardsPerView) && (
               <button
                 onClick={() => navigateCard(1)}
-                className={`absolute right-0 top-1/2 transform -translate-y-1/2 ${
-                  maxWidth ? "translate-x-4" : "-translate-x-2"
-                } bg-gray-800 hover:bg-gray-700 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 z-10`}
+                disabled={isAnimating}
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                  screenWidth < 1024 ? "p-3" : "p-4"
+                }`}
+                style={{
+                  left:
+                    screenWidth < 1024
+                      ? `min(calc(100% - 24px), calc(50% + ${
+                          cardWidth / 2 + 30
+                        }px))`
+                      : `calc(50% + ${cardWidth / 2 + 60}px)`,
+                }}
               >
                 <svg
                   className="w-6 h-6 text-white"
@@ -1025,26 +921,6 @@ export default function ContentCardsGlass({
           </>
         )}
       </div>
-
-      {/* FIXED: Progress Indicator - Only one and only when needed */}
-      {!isStatic && displayCards.length > Math.floor(cardsPerView) && (
-        <div className="flex justify-center mt-8">
-          <div className="bg-gray-700 rounded-full h-1 w-32">
-            <motion.div
-              className="bg-white rounded-full h-1"
-              style={{
-                width: `${Math.min(
-                  100,
-                  ((currentIndex + Math.floor(cardsPerView)) /
-                    displayCards.length) *
-                    100
-                )}%`,
-              }}
-              transition={{ duration: 0.3 }}
-            />
-          </div>
-        </div>
-      )}
 
       {/* Instructions */}
       {showInstructions && (

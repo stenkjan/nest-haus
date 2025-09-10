@@ -166,7 +166,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
 
 export default function SquareTextCard({
   title = "Square Text Cards",
-  subtitle = "Text-only square cards with responsive behavior • Navigate with arrow keys or swipe",
+  subtitle = "Text-only square cards with responsive behavior • Navigate with arrow keys",
   maxWidth = true,
   showInstructions = true,
   isLightboxMode = false,
@@ -370,7 +370,17 @@ export default function SquareTextCard({
       const cardPosition = newIndex * (cardWidth + gap);
       const newX = centerOffset - cardPosition;
 
-      x.set(newX);
+      // Add smooth animation for arrow navigation
+      setIsAnimating(true);
+      animate(x, newX, {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
+        duration: 0.3,
+      }).then(() => {
+        setIsAnimating(false);
+      });
       // Note: Preserve allCardsExpanded state during navigation
     },
     [currentIndex, cardWidth, gap, x, cardData.length]
@@ -390,129 +400,10 @@ export default function SquareTextCard({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigateCard]);
 
-  const handleDragEnd = (
-    event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-
-    // Calculate which card to snap to based on drag
-    const currentX = x.get();
-    let targetIndex = Math.round(-currentX / (cardWidth + gap));
-
-    // Mobile vs Desktop behavior
-    const isMobile = screenWidth < 1024; // Changed threshold to 1024px
-
-    if (isMobile) {
-      // Mobile: Enhanced snapping with visual feedback
-      const offsetThreshold = 30;
-      const velocityThreshold = 300;
-
-      // Better snapping logic: only change cards with intentional movement
-      // Start with current card as default
-      targetIndex = currentIndex;
-
-      // Only change cards if there's significant drag or velocity
-      if (
-        Math.abs(offset) > offsetThreshold ||
-        Math.abs(velocity) > velocityThreshold
-      ) {
-        if (offset > 0 || velocity > velocityThreshold) {
-          // Dragging/flicking right (previous card)
-          targetIndex = Math.max(0, currentIndex - 1);
-        } else if (offset < 0 || velocity < -velocityThreshold) {
-          // Dragging/flicking left (next card)
-          targetIndex = Math.min(maxIndex, currentIndex + 1);
-        }
-      } else {
-        // Small movements: check if we're more than 70% to next card
-        const currentX = x.get();
-        const currentCardPosition = -(currentIndex * (cardWidth + gap));
-        const distanceFromCurrent = Math.abs(currentX - currentCardPosition);
-        const cardThreshold = (cardWidth + gap) * 0.7; // 70% of card width
-
-        if (distanceFromCurrent > cardThreshold) {
-          // We're far enough to snap to the next logical card
-          if (currentX < currentCardPosition) {
-            // Scrolled significantly left, go to next card
-            targetIndex = Math.min(maxIndex, currentIndex + 1);
-          } else {
-            // Scrolled significantly right, go to previous card
-            targetIndex = Math.max(0, currentIndex - 1);
-          }
-        }
-      }
-
-      // Ensure target index is within bounds
-      targetIndex = Math.max(0, Math.min(maxIndex, targetIndex));
-
-      // Animate with visual feedback for direction
-      setCurrentIndex(targetIndex);
-
-      // Calculate position to center the target card
-      const containerWidth =
-        typeof window !== "undefined" ? window.innerWidth : 1200;
-      const centerOffset = (containerWidth - cardWidth) / 2;
-      const cardPosition = targetIndex * (cardWidth + gap);
-      const newX = centerOffset - cardPosition;
-
-      // Note: Preserve allCardsExpanded state during drag navigation
-
-      // Add visual feedback animation with directional easing
-      // First, add a small bounce in the opposite direction for visual feedback
-      const direction = targetIndex > currentIndex ? -1 : 1;
-      const bounceDistance = 15; // Small bounce distance
-
-      animate(x, x.get() + direction * bounceDistance, {
-        type: "spring",
-        stiffness: 400,
-        damping: 30,
-        duration: 0.15,
-      }).then(() => {
-        // Then animate to the final position
-        animate(x, newX, {
-          type: "spring",
-          stiffness: 300,
-          damping: 25,
-          mass: 0.8,
-          duration: 0.5,
-        });
-      });
-    } else {
-      // Desktop: Center the closest card
-      const containerWidth =
-        typeof window !== "undefined" ? window.innerWidth : 1200;
-      const centerOffset = (containerWidth - cardWidth) / 2;
-
-      // Find the closest card to center
-      const currentCenterX = currentX - centerOffset;
-      const closestIndex = Math.round(-currentCenterX / (cardWidth + gap));
-      const finalIndex = Math.max(
-        0,
-        Math.min(cardData.length - 1, closestIndex)
-      );
-
-      setCurrentIndex(finalIndex);
-
-      // Calculate centered position for the closest card
-      const cardPosition = finalIndex * (cardWidth + gap);
-      const newX = centerOffset - cardPosition;
-
-      // Smooth animation to center
-      animate(x, newX, {
-        type: "spring",
-        stiffness: 250,
-        damping: 25,
-        mass: 1.0,
-      });
-    }
-  };
-
   const containerClasses = maxWidth ? "w-full" : "w-full";
 
-  // Track if user is currently dragging to prevent accidental clicks
-  const [isDragging, setIsDragging] = useState(false);
+  // Animation state for smooth transitions
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Toggle all cards expansion for mobile with iOS-specific fixes
   const toggleAllCardsExpansion = () => {
@@ -746,8 +637,8 @@ export default function SquareTextCard({
             </div>
           </div>
 
-          {/* Mobile: Compact Dots */}
-          <div className="md:hidden">
+          {/* Mobile: Compact Dots - Hidden */}
+          <div className="hidden">
             <div className="flex justify-center items-center space-x-2">
               {cardData.map((card, idx) => {
                 const isActive = idx === currentIndex;
@@ -826,46 +717,6 @@ export default function SquareTextCard({
               // Improve touch handling on mobile
               touchAction: screenWidth < 1024 ? "pan-y pinch-zoom" : "auto",
             }}
-            onTouchStart={(e) => {
-              // Track initial touch position for better gesture detection
-              const touch = e.touches[0];
-              if (touch) {
-                (
-                  e.currentTarget as HTMLElement & {
-                    initialTouchX?: number;
-                    initialTouchY?: number;
-                  }
-                ).initialTouchX = touch.clientX;
-                (
-                  e.currentTarget as HTMLElement & {
-                    initialTouchX?: number;
-                    initialTouchY?: number;
-                  }
-                ).initialTouchY = touch.clientY;
-              }
-            }}
-            onTouchMove={(e) => {
-              // Only prevent default if this is clearly a horizontal swipe
-              const touch = e.touches[0];
-              const target = e.currentTarget as HTMLElement & {
-                initialTouchX?: number;
-                initialTouchY?: number;
-              };
-
-              if (
-                touch &&
-                target.initialTouchX !== undefined &&
-                target.initialTouchY !== undefined
-              ) {
-                const deltaX = Math.abs(touch.clientX - target.initialTouchX);
-                const deltaY = Math.abs(touch.clientY - target.initialTouchY);
-
-                // Only prevent vertical scrolling if horizontal movement is dominant
-                if (deltaX > deltaY * 1.5 && deltaX > 10) {
-                  e.preventDefault();
-                }
-              }
-            }}
           >
             <motion.div
               className="flex gap-6"
@@ -875,42 +726,6 @@ export default function SquareTextCard({
                   screenWidth < 1024
                     ? `${(cardWidth + gap) * cardData.length}px`
                     : `${(cardWidth + gap) * cardData.length - gap}px`,
-              }}
-              drag="x"
-              dragConstraints={{
-                left:
-                  screenWidth < 1024
-                    ? -((cardData.length - 1) * (cardWidth + gap))
-                    : -((cardData.length - 1) * (cardWidth + gap)) - cardWidth,
-                right: screenWidth < 1024 ? 0 : cardWidth,
-              }}
-              dragElastic={0.05}
-              dragMomentum={false}
-              dragDirectionLock={true} // Lock to horizontal direction
-              dragPropagation={false} // Don't propagate drag to parent
-              onDragStart={(event, info) => {
-                setIsDragging(true);
-                // Only prevent vertical scrolling if this is clearly a horizontal drag
-                const deltaX = Math.abs(info.offset.x);
-                const deltaY = Math.abs(info.offset.y);
-
-                // If horizontal movement is significantly more than vertical, lock horizontal
-                if (deltaX > deltaY * 2) {
-                  document.body.style.touchAction = "pan-y"; // Allow vertical scrolling only
-                }
-              }}
-              onDragEnd={(event, info) => {
-                handleDragEnd(event, info);
-                // Re-enable all touch actions
-                document.body.style.touchAction = "";
-                // Small delay to prevent click after drag
-                setTimeout(() => setIsDragging(false), 100);
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 35,
-                mass: 0.8,
               }}
             >
               {cardData.map((card, index) => {
@@ -951,8 +766,8 @@ export default function SquareTextCard({
                       type: "tween",
                     }}
                     onClick={() => {
-                      // Prevent toggle if user was just dragging
-                      if (isDragging) return;
+                      // Prevent action during animation
+                      if (isAnimating) return;
 
                       if (isMobile) {
                         toggleAllCardsExpansion();
@@ -1069,7 +884,8 @@ export default function SquareTextCard({
         {currentIndex > 0 && (
           <button
             onClick={() => navigateCard(-1)}
-            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+            disabled={isAnimating}
+            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
               screenWidth < 1024 ? "p-3" : "p-4"
             }`}
             style={{
@@ -1098,7 +914,8 @@ export default function SquareTextCard({
         {currentIndex < cardData.length - 1 && (
           <button
             onClick={() => navigateCard(1)}
-            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+            disabled={isAnimating}
+            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
               screenWidth < 1024 ? "p-3" : "p-4"
             }`}
             style={{
@@ -1142,10 +959,8 @@ export default function SquareTextCard({
       {/* Instructions */}
       {showInstructions && (
         <div className="text-center mt-6 text-sm text-gray-500">
-          <p className="hidden md:block">
-            Use ← → arrow keys to navigate • Drag to scroll
-          </p>
-          <p className="md:hidden">Swipe left or right to navigate</p>
+          <p className="hidden md:block">Use ← → arrow keys to navigate</p>
+          <p className="md:hidden">Use arrow buttons to navigate</p>
           <p className="mt-1">
             Showing{" "}
             {Math.min(Math.ceil(cardsPerView), cardData.length - currentIndex)}{" "}
