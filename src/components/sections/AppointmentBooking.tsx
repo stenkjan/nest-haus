@@ -202,7 +202,7 @@ const AppointmentBooking = ({
     return days;
   };
 
-   if (submitSuccess) {
+  if (submitSuccess) {
     return (
       <div className="max-w-5xl mx-auto bg-white text-black px-8 py-10 rounded-[35px] text-center shadow-lg">
         <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-black">
@@ -213,11 +213,23 @@ const AppointmentBooking = ({
           um alle Details zu bestätigen.
         </p>
         <Button
-          variant="ghost"
-          className="border border-blue-500 font-medium rounded-full px-8 py-3 shadow-md bg-transparent text-blue-500 hover:bg-blue-500 hover:text-white transition-colors"
-          onClick={() => setSubmitSuccess(false)}
+          variant="landing-secondary-blue"
+          size="xs"
+          onClick={() => {
+            // Show toast: "aktuell nicht möglich"
+            const windowWithToast = window as Window & {
+              toast?: (message: string) => void;
+            };
+            if (typeof window !== "undefined" && windowWithToast.toast) {
+              windowWithToast.toast("Aktuell nicht möglich");
+            } else if (typeof window !== "undefined") {
+              // fallback: alert if no toast system
+              alert("Aktuell nicht möglich");
+            }
+          }}
+          disabled
         >
-          <span className="text-blue-500 group-hover:text-white transition-colors">Weiteren Termin buchen</span>
+          Weiteren Termin buchen
         </Button>
       </div>
     );
