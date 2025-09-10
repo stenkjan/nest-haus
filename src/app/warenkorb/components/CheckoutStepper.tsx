@@ -1250,7 +1250,7 @@ export default function CheckoutStepper({
   // No extra memoization for summary; rely on lightweight renderer
 
   return (
-    <section className="w-full py-16">
+    <section className="w-full pt-12 pb-4">
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         {renderIntro()}
         <div className="mt-6 pt-6">

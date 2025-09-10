@@ -47,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({
   const variants = {
     // Standard Buttons - all with fixed width
     primary:
-      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm",
+      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm box-border",
     secondary:
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
     // Narrow Buttons - 1/3 smaller width
@@ -74,11 +74,11 @@ const Button: React.FC<ButtonProps> = ({
 
     // Page-Specific Buttons
     "landing-primary":
-      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm",
+      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm box-border",
     "landing-secondary":
-      "bg-transparent border-1 border-white text-white hover:bg-white hover:text-black focus:ring-white",
+      "bg-transparent border border-white text-white hover:bg-white hover:text-black focus:ring-white box-border",
     "landing-secondary-blue":
-      "bg-transparent border-1 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500",
+      "bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500 box-border",
     configurator:
       "bg-amber-500 text-white hover:bg-amber-600 focus:ring-amber-500 shadow-md",
   };

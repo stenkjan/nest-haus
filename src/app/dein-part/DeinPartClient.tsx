@@ -97,13 +97,16 @@ export default function DeinPartClient() {
     usePlanungspaketePopup();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div
+      className="min-h-screen bg-black text-white"
+      style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
+    >
       {/* White background for navbar area */}
       <div
         className="fixed top-0 left-0 right-0 bg-white z-[90]"
         style={{ height: "var(--navbar-height, 3.5rem)" }}
       ></div>
-      <div style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}>
+      <div>
         <SectionRouter
           sections={sections}
           onSectionChange={setCurrentSectionId}
@@ -111,7 +114,7 @@ export default function DeinPartClient() {
           {/* Section 3 - Du individualisierst dein NEST Haus */}
           <section
             id="individualisierung"
-            className="w-full pt-20 pb-16 bg-black"
+            className="w-full pt-12 pb-4 bg-black"
           >
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">

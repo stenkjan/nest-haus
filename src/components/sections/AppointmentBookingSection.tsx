@@ -24,7 +24,7 @@ export const AppointmentBookingSection: React.FC<
     : "w-full px-[7.5%]";
 
   return (
-    <section id={id} className={`w-full py-16 ${bgClass}`}>
+    <section id={id} className={`w-full pt-12 pb-4 ${bgClass}`}>
       <div className={containerClass}>
         <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3 text-center">
           {title}
