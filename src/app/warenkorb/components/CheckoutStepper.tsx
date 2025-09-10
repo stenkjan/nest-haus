@@ -1275,14 +1275,25 @@ export default function CheckoutStepper({
                           </div>
                           <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                             {(() => {
-                              const priceValue =
+                              // For configuration items with nest, show price per m²
+                              if (
                                 "totalPrice" in item &&
                                 (item as ConfigurationCartItem).nest
-                                  ? (item as ConfigurationCartItem).nest
-                                      ?.price || 0
-                                  : "totalPrice" in item
-                                    ? (item as ConfigurationCartItem).totalPrice
-                                    : (item as CartItem).price;
+                              ) {
+                                const configItem =
+                                  item as ConfigurationCartItem;
+                                const nestModel = configItem.nest?.value || "";
+                                const priceValue = configItem.nest?.price || 0;
+                                return PriceUtils.calculatePricePerSquareMeter(
+                                  priceValue,
+                                  nestModel
+                                );
+                              }
+                              // For other items, keep monthly payment
+                              const priceValue =
+                                "totalPrice" in item
+                                  ? (item as ConfigurationCartItem).totalPrice
+                                  : (item as CartItem).price;
                               return `oder ${calculateMonthlyPayment(
                                 priceValue
                               )} für 240 Monate`;

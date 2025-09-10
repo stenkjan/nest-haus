@@ -58,16 +58,17 @@ export default function CheckoutStepCard({
               >
                 <div className="h-full flex flex-col md:flex-row">
                   {/* Top/Left side - Icon, Title, Subtitle */}
-                  <div className="w-full md:w-1/2 flex flex-col justify-between items-center px-6 sm:px-8 md:px-12 py-10 sm:py-8 md:py-8 relative text-center">
-                    {/* Icon */}
-                    <div className="flex items-center justify-center mb-3">
-                      <div className="flex items-center justify-center">
-                        {card.icon || <DefaultCheckoutStepIcon />}
-                      </div>
-                    </div>
-
-                    {/* Title and Subtitle Container */}
+                  <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 sm:px-8 md:px-12 py-10 sm:py-8 md:py-8 relative text-center">
+                    {/* Icon and Title/Subtitle Group */}
                     <div className="flex flex-col items-center">
+                      {/* Icon */}
+                      <div className="flex items-center justify-center mb-4">
+                        <div className="flex items-center justify-center">
+                          {card.icon || <DefaultCheckoutStepIcon />}
+                        </div>
+                      </div>
+
+                      {/* Title and Subtitle */}
                       {/* Title */}
                       <h2
                         className={`text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-2 ${
@@ -86,9 +87,6 @@ export default function CheckoutStepCard({
                         {card.subtitle}
                       </h3>
                     </div>
-
-                    {/* Bottom spacer - ensures adequate space on mobile, especially iOS Safari */}
-                    <div className="block md:hidden h-8"></div>
                   </div>
 
                   {/* Bottom/Right side - Description */}
