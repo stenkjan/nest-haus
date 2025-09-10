@@ -171,8 +171,8 @@ export default function SummaryPanel({
   const getPaketShortText = (paketValue: string) => {
     const paketDescriptions: Record<string, string> = {
       basis: "Grundlegende Planungsleistungen",
-      komfort: "Erweiterte Planungsleistungen",
-      premium: "Vollumfängliche Planungsleistungen",
+      plus: "Erweiterte Planungsleistungen",
+      pro: "Vollumfängliche Planungsleistungen",
     };
     return paketDescriptions[paketValue] || "Planungsleistungen";
   };

@@ -120,9 +120,9 @@ export default function CheckoutPlanungspaketeCards({
                     <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
                       {pkg.value === "basis"
                         ? "€ 00,00"
-                        : pkg.value === "komfort"
-                        ? "€ 13.900,00"
-                        : "€ 18.900,00"}
+                        : pkg.value === "plus"
+                          ? "€ 13.900,00"
+                          : "€ 18.900,00"}
                     </div>
                     <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 mt-1">
                       {pkg.value === "basis"

@@ -20,7 +20,7 @@ const mockSelections = {
     price: 0
   },
   gebaeudehuelle: {
-    category: 'gebaeudehuelle', 
+    category: 'gebaeudehuelle',
     value: 'holzlattung',
     name: 'Holzlattung Lärche',
     price: 0
@@ -51,7 +51,7 @@ describe('PriceCalculator', () => {
       const nest80Price = PriceCalculator.calculateCombinationPrice(
         'nest80',
         'holzlattung',
-        'kiefer', 
+        'kiefer',
         'parkett'
       );
 
@@ -86,7 +86,7 @@ describe('PriceCalculator', () => {
       expect(nest160Price).toBeGreaterThan(nest120Price);
     });
 
-    it('should return correct upgrade prices for base vs premium options', () => {
+    it('should return correct upgrade prices for base vs pro options', () => {
       const selections = { ...mockSelections };
 
       // Test base option (should show as included)
@@ -99,7 +99,7 @@ describe('PriceCalculator', () => {
 
       expect(trapezResult.type).toBe('included');
 
-      // Test premium option (should show upgrade price)
+      // Test pro option (should show upgrade price)
       const holzResult = PriceCalculator.getOptionDisplayPrice(
         'nest120',
         selections,
@@ -140,7 +140,7 @@ describe('PriceCalculator', () => {
   describe('Performance Optimization', () => {
     it('should cache price calculations efficiently', () => {
       const selections = { ...mockSelections };
-      
+
       // Clear cache and get initial info
       PriceCalculator.clearPriceCache();
       const initialCacheInfo = PriceCalculator.getPriceCacheInfo();
@@ -174,10 +174,10 @@ describe('PriceCalculator', () => {
 
     it('should handle cache TTL correctly', async () => {
       const selections = { ...mockSelections };
-      
+
       // Set a very short TTL for testing (we'll need to mock this)
       const originalTTL = 30000; // 30 seconds
-      
+
       // Calculate price to populate cache
       PriceCalculator.getOptionDisplayPrice(
         'nest120',
@@ -268,8 +268,8 @@ describe('PriceCalculator', () => {
         },
         paket: {
           category: 'planungspaket',
-          value: 'premium',
-          name: 'Premium Planungspaket',
+          value: 'pro',
+          name: 'Pro Planungspaket',
           price: 5000
         },
         grundstueckscheck: true
@@ -374,7 +374,7 @@ describe('PriceCalculator', () => {
 
     it('should demonstrate cache performance benefits', () => {
       const selections = { ...mockSelections };
-      
+
       // Clear cache for clean test
       PriceCalculator.clearPriceCache();
 

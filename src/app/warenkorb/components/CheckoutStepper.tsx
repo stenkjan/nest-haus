@@ -1848,15 +1848,9 @@ export default function CheckoutStepper({
                                           configItem.planungspaket.name.toLowerCase();
                                         if (name.includes("basis"))
                                           return "Planungspaket 01 Basis";
-                                        if (
-                                          name.includes("komfort") ||
-                                          name.includes("plus")
-                                        )
+                                        if (name.includes("plus"))
                                           return "Planungspaket 02 Plus";
-                                        if (
-                                          name.includes("premium") ||
-                                          name.includes("pro")
-                                        )
+                                        if (name.includes("pro"))
                                           return "Planungspaket 03 Pro";
                                         return configItem.planungspaket.name;
                                       }
@@ -1885,15 +1879,9 @@ export default function CheckoutStepper({
                                     if (configItem?.planungspaket?.name) {
                                       const name =
                                         configItem.planungspaket.name.toLowerCase();
-                                      if (
-                                        name.includes("komfort") ||
-                                        name.includes("plus")
-                                      )
+                                      if (name.includes("plus"))
                                         packageType = "plus";
-                                      else if (
-                                        name.includes("premium") ||
-                                        name.includes("pro")
-                                      )
+                                      else if (name.includes("pro"))
                                         packageType = "pro";
                                     } else if (localSelectedPlan) {
                                       packageType = localSelectedPlan;
