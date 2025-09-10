@@ -51,14 +51,14 @@ export default function CheckoutStepCard({
               <div
                 className={`relative z-10 rounded-3xl overflow-hidden mb-6 ${
                   index === 0 ? "shadow-xl" : "border border-gray-300"
-                } h-80 md:h-96 lg:h-[400px] xl:h-[440px] 2xl:h-[480px]`}
+                } h-[580px] sm:h-[600px] md:h-96 lg:h-[400px] xl:h-[440px] 2xl:h-[480px]`}
                 style={{
                   backgroundColor: index === 0 ? card.backgroundColor : "white",
                 }}
               >
-                <div className="h-full flex">
-                  {/* Left side - Icon, Title, Subtitle (50%) */}
-                  <div className="w-1/2 flex flex-col justify-center items-center px-8 md:px-12 py-8 relative text-center">
+                <div className="h-full flex flex-col md:flex-row">
+                  {/* Top/Left side - Icon, Title, Subtitle */}
+                  <div className="w-full md:w-1/2 flex flex-col justify-between items-center px-6 sm:px-8 md:px-12 py-10 sm:py-8 md:py-8 relative text-center">
                     {/* Icon */}
                     <div className="flex items-center justify-center mb-3">
                       <div className="flex items-center justify-center">
@@ -66,29 +66,35 @@ export default function CheckoutStepCard({
                       </div>
                     </div>
 
-                    {/* Title */}
-                    <h2
-                      className={`square-text-card-title ${
-                        card.textColor || "text-gray-900"
-                      } mb-2`}
-                    >
-                      {card.title}
-                    </h2>
+                    {/* Title and Subtitle Container */}
+                    <div className="flex flex-col items-center">
+                      {/* Title */}
+                      <h2
+                        className={`text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-2 ${
+                          card.textColor || "text-gray-900"
+                        }`}
+                      >
+                        {card.title}
+                      </h2>
 
-                    {/* Subtitle */}
-                    <h3
-                      className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                        card.textColor || "text-gray-600"
-                      }`}
-                    >
-                      {card.subtitle}
-                    </h3>
+                      {/* Subtitle */}
+                      <h3
+                        className={`text-base sm:text-lg md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${
+                          card.textColor || "text-gray-600"
+                        }`}
+                      >
+                        {card.subtitle}
+                      </h3>
+                    </div>
+
+                    {/* Bottom spacer - ensures adequate space on mobile, especially iOS Safari */}
+                    <div className="block md:hidden h-8"></div>
                   </div>
 
-                  {/* Right side - Description (50%) */}
-                  <div className="w-1/2 flex flex-col justify-center px-8 md:px-12 lg:pr-16 xl:pr-20 2xl:pr-24 py-8">
+                  {/* Bottom/Right side - Description */}
+                  <div className="w-full md:w-1/2 flex flex-col justify-center px-12 sm:px-16 md:px-12 lg:pr-16 xl:pr-20 2xl:pr-24 py-6 md:py-8">
                     <p
-                      className={`text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl leading-relaxed whitespace-pre-line ${
+                      className={`text-sm sm:text-base md:text-base lg:text-base xl:text-lg 2xl:text-xl leading-relaxed whitespace-pre-line text-center md:text-left ${
                         card.textColor || "text-black"
                       }`}
                     >

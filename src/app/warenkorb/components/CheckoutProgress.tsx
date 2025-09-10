@@ -24,10 +24,10 @@ export default function CheckoutProgress({
                 steps.length <= 1
                   ? "0%"
                   : stepIndex === 0
-                    ? `${100 / steps.length / 2}%` // From left edge to center of first circle (10% for 5 steps)
-                    : stepIndex === steps.length - 1
-                      ? "100%" // Full width when on last step
-                      : `${((stepIndex + 0.5) * 100) / steps.length}%`, // From left edge to center of current step circle
+                  ? `${100 / steps.length / 2}%` // From left edge to center of first circle (10% for 5 steps)
+                  : stepIndex === steps.length - 1
+                  ? "100%" // Full width when on last step
+                  : `${((stepIndex + 0.5) * 100) / steps.length}%`, // From left edge to center of current step circle
               transformOrigin: "left center",
             }}
           />
@@ -42,8 +42,8 @@ export default function CheckoutProgress({
               const circleClass = isPassed
                 ? "bg-blue-600 border-blue-600 text-white"
                 : isActive
-                  ? "bg-white border-blue-600 text-blue-600"
-                  : "bg-white border-gray-300 text-gray-400";
+                ? "bg-white border-blue-600 text-blue-600"
+                : "bg-white border-gray-300 text-gray-400";
               return (
                 <div key={idx} className="flex flex-col items-center">
                   <div
@@ -68,25 +68,31 @@ export default function CheckoutProgress({
         </div>
       </div>
 
-      {/* Mobile: Compact dots */}
+      {/* Mobile: Compact dots with current step title */}
       <div className="md:hidden">
-        <div className="flex justify-center items-center space-x-2">
-          {steps.map((label, idx) => {
-            const isActive = idx === stepIndex;
-            const isPassed = idx < stepIndex;
-            const dotClass = isActive
-              ? "bg-gray-900 scale-125"
-              : isPassed
+        <div className="flex flex-col items-center space-y-3">
+          <div className="flex justify-center items-center space-x-2">
+            {steps.map((label, idx) => {
+              const isActive = idx === stepIndex;
+              const isPassed = idx < stepIndex;
+              const dotClass = isActive
+                ? "bg-gray-900 scale-125"
+                : isPassed
                 ? "bg-gray-600"
                 : "bg-gray-300";
-            return (
-              <div
-                key={idx}
-                className={`w-3 h-3 rounded-full transition-all duration-200 ${dotClass}`}
-                aria-label={`Schritt ${idx + 1}: ${label}`}
-              />
-            );
-          })}
+              return (
+                <div
+                  key={idx}
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${dotClass}`}
+                  aria-label={`Schritt ${idx + 1}: ${label}`}
+                />
+              );
+            })}
+          </div>
+          {/* Current step title */}
+          <div className="text-xs text-center text-gray-600 font-medium">
+            {steps[stepIndex]}
+          </div>
         </div>
       </div>
     </div>

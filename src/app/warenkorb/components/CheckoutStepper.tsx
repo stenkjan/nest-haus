@@ -702,7 +702,7 @@ export default function CheckoutStepper({
           </div>
         </div>
 
-        {/* Mobile: two rows with circles and labels */}
+        {/* Mobile: Compact Dots with current step title */}
         <div className="md:hidden">
           {/* Top row with circles and labels */}
           <div className="relative mb-1">
@@ -948,8 +948,8 @@ export default function CheckoutStepper({
         </div>
         {/* Timeline directly after title/subtitle */}
         {!hideProgress && <div className="mb-6">{renderProgress()}</div>}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-          <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
+          <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24 order-2 md:order-1">
             {stepIndex === 0 ? (
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left">
                 <p>
@@ -990,7 +990,7 @@ export default function CheckoutStepper({
               </div>
             )}
           </div>
-          <div className="w-full md:w-1/2">
+          <div className="w-full md:w-1/2 order-1 md:order-2">
             <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
               <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500 mb-3">
                 <span className="text-black">Dein Preis</span>
@@ -1512,6 +1512,10 @@ export default function CheckoutStepper({
                   onClick={() => {
                     ensureGrundstueckscheckIncluded();
                     goNext();
+                    // Ensure scroll happens on mobile with a small delay
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 100);
                   }}
                 >
                   Nächster Schritt
@@ -1648,7 +1652,13 @@ export default function CheckoutStepper({
                   variant="primary"
                   size="xs"
                   className="whitespace-nowrap"
-                  onClick={goNext}
+                  onClick={() => {
+                    goNext();
+                    // Ensure scroll happens on mobile with a small delay
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 100);
+                  }}
                 >
                   Nächster Schritt
                 </Button>

@@ -29,10 +29,12 @@ interface AppointmentFormData {
 
 interface AppointmentBookingProps {
   showLeftSide?: boolean;
+  showSubmitButton?: boolean;
 }
 
 const AppointmentBooking = ({
   showLeftSide = true,
+  showSubmitButton = true,
 }: AppointmentBookingProps) => {
   const { setAppointmentDetails } = useCartStore();
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -402,15 +404,60 @@ const AppointmentBooking = ({
             </div>
           </div>
 
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              disabled={isSubmitting || !selectedDate}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
-            </button>
-          </div>
+          {showSubmitButton && (
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                disabled={isSubmitting || !selectedDate}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+              </button>
+            </div>
+          )}
+
+          {/* Contact Info Boxes for Mobile - UPDATED CONTENT */}
+          {showLeftSide && (
+            <div className="grid grid-cols-1 gap-4">
+              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+                <div className="p-6">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
+                    Kontakt <span className="text-gray-400">Melde dich!</span>
+                  </h2>
+                  <div className="text-center">
+                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                      <span className="font-medium">Telefon:</span> +43 (0) 3847
+                      75090
+                      <br />
+                      <span className="font-medium">Mobil:</span> +43 (0) 664
+                      3949604
+                      <br />
+                      <span className="font-medium">Email:</span> nest@haus.at
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+                <div className="p-6">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
+                    Adresse <span className="text-gray-400">Komm vorbei!</span>
+                  </h2>
+                  <div className="text-center">
+                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
+                      <span className="font-medium">Telefon:</span> +43 (0) 3847
+                      75090
+                      <br />
+                      <span className="font-medium">Mobil:</span> +43 (0) 664
+                      3949604
+                      <br />
+                      <span className="font-medium">Email:</span> nest@haus.at
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </form>
       </div>
 
@@ -602,15 +649,17 @@ const AppointmentBooking = ({
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <button
-                type="submit"
-                disabled={isSubmitting || !selectedDate}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
-              </button>
-            </div>
+            {showSubmitButton && (
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !selectedDate}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>

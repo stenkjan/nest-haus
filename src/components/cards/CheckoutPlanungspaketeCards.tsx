@@ -26,7 +26,19 @@ export default function CheckoutPlanungspaketeCards({
               className={`w-full md:h-full rounded-3xl overflow-hidden border bg-white cursor-pointer transition-all duration-200 hover:shadow-lg flex flex-col ${
                 isSelected ? "border-blue-600 shadow-md" : "border-gray-300"
               }`}
-              onClick={() => onPlanSelect(pkg.value)}
+              onClick={() => {
+                // Allow deselection for Plus and Pro, but always keep Basis selected
+                if (pkg.value === "basis") {
+                  onPlanSelect(pkg.value);
+                } else {
+                  // For Plus and Pro: toggle selection, fallback to Basis if deselecting
+                  if (isSelected) {
+                    onPlanSelect("basis"); // Deselect by selecting Basis
+                  } else {
+                    onPlanSelect(pkg.value); // Select this package
+                  }
+                }
+              }}
             >
               {/* Header Section - Title and Price */}
               <div className="px-6 pt-6">
@@ -101,20 +113,32 @@ export default function CheckoutPlanungspaketeCards({
                 </div>
               </div>
 
-              {/* Price Section - Desktop only (at bottom) */}
-              <div className="hidden md:block px-6 pb-6">
-                <div className="text-left pt-4">
-                  <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
-                    {pkg.value === "basis"
-                      ? "€ 00,00"
-                      : pkg.value === "plus"
+              {/* Price Section - Both mobile and desktop (at bottom) */}
+              <div className="px-6 pb-6">
+                <div className="pt-4">
+                  <div className="text-left">
+                    <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
+                      {pkg.value === "basis"
+                        ? "€ 00,00"
+                        : pkg.value === "komfort"
                         ? "€ 13.900,00"
                         : "€ 18.900,00"}
+                    </div>
+                    <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 mt-1">
+                      {pkg.value === "basis"
+                        ? "Wert im Preis inkludiert"
+                        : "Kosten nur bei Inanspruchnahme"}
+                    </div>
                   </div>
-                  <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 mt-1">
-                    {pkg.value === "basis"
-                      ? "Wert im Preis inkludiert"
-                      : "Kosten nur bei Inanspruchnahme"}
+                  {/* Click instruction - right side, positioned lower */}
+                  <div className="text-right mt-6">
+                    <div className="text-xs text-gray-500 italic">
+                      {isSelected
+                        ? isBasis
+                          ? "✓ Ausgewählt"
+                          : "✓ Ausgewählt (Klicken zum Abwählen)"
+                        : "Klicken zum Auswählen"}
+                    </div>
                   </div>
                 </div>
               </div>

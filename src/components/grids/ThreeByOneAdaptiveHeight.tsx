@@ -113,12 +113,12 @@ export default function ThreeByOneAdaptiveHeight({
       {/* Grid Container */}
       <div className={`${containerClasses} px-4 md:px-8`}>
         {isMobile ? (
-          /* Mobile Layout: Stack vertically */
+          /* Mobile Layout: Image - Text - Empty (since this component only has one image) */
           <div className="space-y-6">
-            {/* Image Section */}
+            {/* First Image */}
             <motion.div
               className="flex justify-center"
-              initial={{ y: 20, opacity: 0 }}
+              initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
@@ -138,7 +138,7 @@ export default function ThreeByOneAdaptiveHeight({
               />
             </motion.div>
 
-            {/* Text Section */}
+            {/* Text Section - Always in the middle */}
             <motion.div
               className="flex items-center justify-center"
               style={{ minHeight: "200px" }}
@@ -153,6 +153,9 @@ export default function ThreeByOneAdaptiveHeight({
                 dangerouslySetInnerHTML={{ __html: text }}
               />
             </motion.div>
+
+            {/* Placeholder for consistency (empty space where second image would be) */}
+            <div className="h-6"></div>
           </div>
         ) : (
           /* Desktop Layout: Grid without height restrictions */
