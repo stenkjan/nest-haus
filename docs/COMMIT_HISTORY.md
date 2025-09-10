@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f3ed7235c12c4afffacaf8757b36bc593f04c3bb] - Wed Sep 10 17:35:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: streamline card components by removing unused imports and renaming variables  - Removed unused  import from multiple card components to clean up the code. - Renamed variables for maximum scroll and adjusted maximum index to improve clarity and consistency across components.  These changes aim to enhance code maintainability and readability in the card components of the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/ui/Dialog.tsx
+
+
+---
+
 ## [a3429867fe77e36d7ac15ec1c56f274a538dab80] - Wed Sep 10 17:23:44 2025 +0200
 
 **Author**: stenkjan
