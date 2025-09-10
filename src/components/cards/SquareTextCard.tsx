@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo, animate } from "motion/react";
+import { motion, useMotionValue, animate } from "motion/react";
 import { Button } from "@/components/ui";
 import Link from "next/link";
 import ClientBlobFile from "@/components/files/ClientBlobFile";
