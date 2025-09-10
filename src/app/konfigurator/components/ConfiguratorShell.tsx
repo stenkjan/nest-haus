@@ -197,10 +197,8 @@ export default function ConfiguratorShell({
         // If clicking PV option when quantity is 0, set to 1 and show overlay immediately
         if (pvQuantity === 0) {
           setPvQuantity(1);
-          // Show PV overlay and hide other overlays (mutual exclusivity)
+          // Show PV overlay without hiding other compatible overlays
           setIsPvOverlayVisible(true);
-          setIsBrightnessOverlayVisible(false);
-          setIsFensterOverlayVisible(false);
 
           // Update the selection immediately with quantity 1
           if (option && category) {
@@ -256,11 +254,14 @@ export default function ConfiguratorShell({
         }
       }
 
-      // Hide PV overlay when switching to non-PV sections
+      // Only hide PV overlay when explicitly switching away from compatible views
+      // Allow PV overlay to persist with other exterior overlays (belichtungspaket)
       if (
         categoryId !== "pvanlage" &&
         isPvOverlayVisible &&
-        categoryId !== "nest"
+        categoryId !== "nest" &&
+        categoryId !== "belichtungspaket" &&
+        categoryId !== "gebaeudehuelle"
       ) {
         setIsPvOverlayVisible(false);
       }
@@ -274,12 +275,11 @@ export default function ConfiguratorShell({
           description: option.description,
         });
 
-        // Handle overlay visibility based on selection
+        // Handle overlay visibility based on selection - ALLOW MULTIPLE OVERLAYS
         if (categoryId === "belichtungspaket") {
-          // Show belichtung overlay and hide other overlays when actively selecting belichtungspaket
+          // Show belichtung overlay when actively selecting belichtungspaket
+          // Do NOT hide PV overlay - allow both to be visible simultaneously
           setIsBrightnessOverlayVisible(true);
-          setIsPvOverlayVisible(false);
-          // Don't hide fenster overlay - it should remain visible on interior view
 
           // Switch to exterior view to show the belichtungspaket overlay
           const { switchToView } = useConfiguratorStore.getState();
@@ -288,9 +288,8 @@ export default function ConfiguratorShell({
           }
         } else if (categoryId === "fenster") {
           // Show fenster overlay when fenster is selected (will show on interior view)
+          // Do NOT hide other overlays - fenster shows on interior, others on exterior
           setIsFensterOverlayVisible(true);
-          setIsBrightnessOverlayVisible(false);
-          setIsPvOverlayVisible(false);
         }
 
         // Auto-scroll to next section after selection - Commented out
@@ -338,11 +337,10 @@ export default function ConfiguratorShell({
     (newQuantity: number) => {
       setPvQuantity(newQuantity);
 
-      // Handle overlay visibility and mutual exclusivity
+      // Handle overlay visibility - ALLOW MULTIPLE OVERLAYS
       if (newQuantity > 0) {
-        // Show PV overlay and hide belichtung overlay (mutual exclusivity)
+        // Show PV overlay without hiding belichtungspaket overlay
         setIsPvOverlayVisible(true);
-        setIsBrightnessOverlayVisible(false);
       } else {
         // Hide PV overlay when quantity is 0
         setIsPvOverlayVisible(false);
