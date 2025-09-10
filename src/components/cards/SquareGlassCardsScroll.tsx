@@ -313,7 +313,7 @@ export default function SquareGlassCardsScroll({
               isClient && screenWidth < 1024
                 ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
                 : ""
-            } px-4 md:px-8 cursor-grab active:cursor-grabbing`}
+            } cursor-grab active:cursor-grabbing`}
             style={{ overflow: "visible" }}
           >
             <motion.div
@@ -321,6 +321,7 @@ export default function SquareGlassCardsScroll({
               style={{
                 x,
                 gap: `${gap}px`,
+                // gap: `0px`,
               }}
               transition={{
                 type: "spring",

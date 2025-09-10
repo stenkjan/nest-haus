@@ -72,7 +72,7 @@ export default function PlanungspaketeCardsLightbox({
         className="p-0"
       >
         <div
-          className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto ios-dialog-container"
+          className="w-full h-full flex items-center justify-center overflow-y-auto ios-dialog-container"
           style={getIOSViewportStyles(viewport)}
         >
           {/* PlanungspaketeCards with transparent background */}

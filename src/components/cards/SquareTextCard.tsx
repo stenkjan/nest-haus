@@ -723,7 +723,7 @@ export default function SquareTextCard({
             }}
           >
             <motion.div
-              className="flex gap-6"
+              className="flex gap-3"
               style={{
                 x,
                 width:
