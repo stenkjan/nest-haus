@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8fe6cfd0ce3c94c01b83b3bb18084e13257e4aa5] - Wed Sep 10 17:58:44 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: remove legacy belichtungspaket overlay logic in ConfiguratorShell  - Eliminated the special handling for the belichtungspaket overlay, which is now integrated into the main selection logic. - Updated comments to reflect the removal of outdated functionality, streamlining the component's behavior.  These changes aim to simplify the overlay management in the configurator, enhancing code clarity and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [bedf5ec89ee87fab00154f3632bc1560af2ea54e] - Wed Sep 10 17:51:25 2025 +0200
 
 **Author**: stenkjan
