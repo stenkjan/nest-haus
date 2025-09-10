@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo, animate } from "motion/react";
+import { motion, useMotionValue, animate } from "motion/react";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import "./mobile-scroll-optimizations.css";

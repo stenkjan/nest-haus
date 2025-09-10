@@ -4,6 +4,78 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8fe6cfd0ce3c94c01b83b3bb18084e13257e4aa5] - Wed Sep 10 17:58:44 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: remove legacy belichtungspaket overlay logic in ConfiguratorShell  - Eliminated the special handling for the belichtungspaket overlay, which is now integrated into the main selection logic. - Updated comments to reflect the removal of outdated functionality, streamlining the component's behavior.  These changes aim to simplify the overlay management in the configurator, enhancing code clarity and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [bedf5ec89ee87fab00154f3632bc1560af2ea54e] - Wed Sep 10 17:51:25 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f3ed7235c12c4afffacaf8757b36bc593f04c3bb] - Wed Sep 10 17:35:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: streamline card components by removing unused imports and renaming variables  - Removed unused  import from multiple card components to clean up the code. - Renamed variables for maximum scroll and adjusted maximum index to improve clarity and consistency across components.  These changes aim to enhance code maintainability and readability in the card components of the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/ui/Dialog.tsx
+
+
+---
+
+## [a3429867fe77e36d7ac15ec1c56f274a538dab80] - Wed Sep 10 17:23:44 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/files/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutStepCard.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/files/ClientBlobFile.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/ui/Dialog.tsx
+- src/hooks/useFileDownload.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [730475c4ae76cb7e2cbe61c6bd598bab01f41864] - Wed Sep 10 17:17:02 2025 +0200
 
 **Author**: stenkjan

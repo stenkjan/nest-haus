@@ -38,6 +38,9 @@ export function Dialog({
       }
     };
 
+    // Save the current scroll position to avoid stale closure
+    const currentScrollPosition = savedScrollPosition.current;
+
     if (isOpen) {
       document.addEventListener("keydown", handleEscape);
       // Prevent background scrolling
@@ -54,16 +57,16 @@ export function Dialog({
         const isMobile = window.innerWidth < 1024;
         let configuratorPanel: HTMLElement | null = null;
 
-        if (isMobile) {
-          // Mobile: Find the scrollable content div within the mobile layout
-          // In mobile, the scroll actually happens on the document/window, but we want to check if there's panel scrolling too
-          const mobileScrollableDiv = document.querySelector(
-            ".lg\\:hidden .relative.bg-white"
-          ) as HTMLElement;
-          // For mobile configurator, we use document scroll, not panel scroll
-          configuratorPanel =
-            (document.scrollingElement as HTMLElement) ||
-            document.documentElement;
+          if (isMobile) {
+            // Mobile: Find the scrollable content div within the mobile layout
+            // In mobile, the scroll actually happens on the document/window, but we want to check if there's panel scrolling too
+            const _mobileScrollableDiv = document.querySelector(
+              ".lg\\:hidden .relative.bg-white"
+            ) as HTMLElement;
+            // For mobile configurator, we use document scroll, not panel scroll
+            configuratorPanel =
+              (document.scrollingElement as HTMLElement) ||
+              document.documentElement;
         } else {
           // Desktop: Find the right panel with overflow-y-auto
           configuratorPanel = document.querySelector(
@@ -111,7 +114,7 @@ export function Dialog({
           window.location.pathname.includes("/konfigurator");
         if (
           isKonfigurator &&
-          savedScrollPosition.current.configuratorPanel !== undefined
+          currentScrollPosition.configuratorPanel !== undefined
         ) {
           // Small delay to ensure DOM is ready
           setTimeout(() => {
@@ -127,10 +130,10 @@ export function Dialog({
               ) as HTMLElement;
               if (
                 configuratorPanel &&
-                savedScrollPosition.current.configuratorPanel !== undefined
+                currentScrollPosition.configuratorPanel !== undefined
               ) {
                 configuratorPanel.scrollTop =
-                  savedScrollPosition.current.configuratorPanel;
+                  currentScrollPosition.configuratorPanel;
               }
             }
           }, 10);
@@ -141,7 +144,7 @@ export function Dialog({
           window.location.pathname.includes("/konfigurator");
         if (
           isKonfigurator &&
-          savedScrollPosition.current.configuratorPanel !== undefined
+          currentScrollPosition.configuratorPanel !== undefined
         ) {
           setTimeout(() => {
             const isMobile = window.innerWidth < 1024;
@@ -150,7 +153,7 @@ export function Dialog({
               // Mobile: Restore document scroll position
               window.scrollTo(
                 0,
-                savedScrollPosition.current.configuratorPanel || 0
+                currentScrollPosition.configuratorPanel || 0
               );
             } else {
               // Desktop: Find the right panel with overflow-y-auto and restore its scroll
@@ -159,10 +162,10 @@ export function Dialog({
               ) as HTMLElement;
               if (
                 configuratorPanel &&
-                savedScrollPosition.current.configuratorPanel !== undefined
+                currentScrollPosition.configuratorPanel !== undefined
               ) {
                 configuratorPanel.scrollTop =
-                  savedScrollPosition.current.configuratorPanel;
+                  currentScrollPosition.configuratorPanel;
               }
             }
           }, 10);

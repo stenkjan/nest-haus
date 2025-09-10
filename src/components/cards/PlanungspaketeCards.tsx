@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo, animate } from "motion/react";
+import { motion, useMotionValue, animate } from "motion/react";
 import { Dialog } from "@/components/ui/Dialog";
 import { useIOSViewport, getIOSViewportStyles } from "@/hooks/useIOSViewport";
 import "@/app/konfigurator/components/hide-scrollbar.css";
@@ -340,11 +340,11 @@ export default function PlanungspaketeCards({
   }, []);
 
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
-  const maxScroll = -(maxIndex * (cardWidth + gap));
+  const _maxScroll = -(maxIndex * (cardWidth + gap));
 
   // Show only the first 3 cards
   const displayCards = cardData.slice(0, 3);
-  const adjustedMaxIndex = Math.max(
+  const _adjustedMaxIndex = Math.max(
     0,
     displayCards.length - Math.floor(cardsPerView)
   );

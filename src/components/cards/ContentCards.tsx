@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, PanInfo, animate } from "motion/react";
+import { motion, useMotionValue, animate } from "motion/react";
 import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
 import { Button } from "@/components/ui";
@@ -310,11 +310,11 @@ export default function ContentCards({
   ]);
 
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
-  const maxScroll = -(maxIndex * (cardWidth + gap));
+  const _maxScroll = -(maxIndex * (cardWidth + gap));
 
   // For static variant, show only the first card
   const displayCards = isStatic ? cardData.slice(0, 1) : cardData;
-  const adjustedMaxIndex = Math.max(
+  const _adjustedMaxIndex = Math.max(
     0,
     displayCards.length - Math.floor(cardsPerView)
   );
