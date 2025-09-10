@@ -1131,7 +1131,7 @@ export default function ConfiguratorShell({
   // Render selection content
   const SelectionContent = () => (
     <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(2.75rem,5vh,3.75rem)]">
-      {configuratorData.map((category, index) => (
+      {configuratorData.map((category, _index) => (
         <React.Fragment key={category.id}>
           {/* Add Optionen section before planungspaket */}
           {category.id === "planungspaket" && (
