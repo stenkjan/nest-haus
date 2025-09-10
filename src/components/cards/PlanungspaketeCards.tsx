@@ -418,17 +418,22 @@ export default function PlanungspaketeCards({
   if (!isClient) {
     return (
       <div className={containerClasses}>
-        <div className="text-center mb-8">
-          {!(
-            isLightboxMode &&
-            typeof window !== "undefined" &&
-            window.innerWidth < 768
-          ) && (
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-          )}
-          {subtitle && <p className="text-gray-600">{subtitle}</p>}
-        </div>
-        <div className="flex justify-center items-center py-8">
+        {(title || subtitle) && (
+          <div className="text-center mb-8">
+            {!(
+              isLightboxMode &&
+              typeof window !== "undefined" &&
+              window.innerWidth < 768
+            ) &&
+              title && (
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  {title}
+                </h2>
+              )}
+            {subtitle && <p className="text-gray-600">{subtitle}</p>}
+          </div>
+        )}
+        <div className="flex justify-center items-center py-4 md:py-8">
           <div
             className="animate-pulse bg-gray-200 rounded-3xl"
             style={{ width: 320, height: 480 }}
@@ -551,21 +556,24 @@ export default function PlanungspaketeCards({
 
   return (
     <div className={containerClasses}>
-      <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
-        {!(
-          isLightboxMode &&
-          typeof window !== "undefined" &&
-          window.innerWidth < 768
-        ) && (
-          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
-            {title}
-          </h1>
-        )}
-        {subtitle && <p className="text-gray-600">{subtitle}</p>}
-      </div>
+      {(title || subtitle) && (
+        <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
+          {!(
+            isLightboxMode &&
+            typeof window !== "undefined" &&
+            window.innerWidth < 768
+          ) &&
+            title && (
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                {title}
+              </h1>
+            )}
+          {subtitle && <p className="text-gray-600">{subtitle}</p>}
+        </div>
+      )}
 
       {/* Cards Container */}
-      <div className={`relative ${isLightboxMode ? "py-2" : "py-8"}`}>
+      <div className={`relative ${isLightboxMode ? "py-2" : "py-4 md:py-8"}`}>
         {!isLightboxMode ? (
           /* Normal Mode - Responsive Grid Layout */
           <div
