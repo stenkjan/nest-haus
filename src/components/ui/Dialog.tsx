@@ -21,12 +21,16 @@ export function Dialog({
   className = "",
 }: DialogProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+  const savedScrollPosition = useRef<{
+    window: number;
+    configuratorPanel?: number;
+  }>({ window: 0 });
 
   // Get stable iOS viewport dimensions
   const viewport = useIOSViewport();
   const iosStyles = getIOSViewportStyles(viewport);
 
-  // Handle escape key
+  // Handle escape key and scroll position
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -39,11 +43,51 @@ export function Dialog({
       // Prevent background scrolling
       document.body.style.overflow = "hidden";
 
+      // Save current scroll positions
+      const windowScrollY = window.scrollY || window.pageYOffset || 0;
+      savedScrollPosition.current.window = windowScrollY;
+
+      // For configurator: also save the right panel scroll position
+      const isKonfigurator = window.location.pathname.includes("/konfigurator");
+      if (isKonfigurator) {
+        // Find the configurator right panel based on screen size
+        const isMobile = window.innerWidth < 1024;
+        let configuratorPanel: HTMLElement | null = null;
+
+        if (isMobile) {
+          // Mobile: Find the scrollable content div within the mobile layout
+          // In mobile, the scroll actually happens on the document/window, but we want to check if there's panel scrolling too
+          const mobileScrollableDiv = document.querySelector(
+            ".lg\\:hidden .relative.bg-white"
+          ) as HTMLElement;
+          // For mobile configurator, we use document scroll, not panel scroll
+          configuratorPanel =
+            (document.scrollingElement as HTMLElement) ||
+            document.documentElement;
+        } else {
+          // Desktop: Find the right panel with overflow-y-auto
+          configuratorPanel = document.querySelector(
+            ".configurator-right-panel.overflow-y-auto"
+          ) as HTMLElement;
+        }
+
+        if (configuratorPanel) {
+          if (isMobile) {
+            // For mobile, save document scroll position (which is already saved as windowScrollY)
+            savedScrollPosition.current.configuratorPanel = windowScrollY;
+          } else {
+            // For desktop, save panel scroll position
+            savedScrollPosition.current.configuratorPanel =
+              configuratorPanel.scrollTop;
+          }
+        }
+      }
+
       // iOS Safari: Additional scroll prevention
       if (viewport.isIOSSafari) {
         document.body.style.position = "fixed";
         document.body.style.width = "100%";
-        document.body.style.top = `-${window.scrollY}px`;
+        document.body.style.top = `-${windowScrollY}px`;
       }
     }
 
@@ -51,13 +95,77 @@ export function Dialog({
       document.removeEventListener("keydown", handleEscape);
 
       if (viewport.isIOSSafari) {
-        // Restore scroll position on iOS Safari
+        // Restore window scroll position on iOS Safari
         const scrollY = document.body.style.top;
         document.body.style.position = "";
         document.body.style.width = "";
         document.body.style.top = "";
+
         if (scrollY) {
-          window.scrollTo(0, parseInt(scrollY || "0") * -1);
+          const windowScrollPosition = parseInt(scrollY || "0") * -1;
+          window.scrollTo(0, windowScrollPosition);
+        }
+
+        // For configurator: restore the right panel scroll position
+        const isKonfigurator =
+          window.location.pathname.includes("/konfigurator");
+        if (
+          isKonfigurator &&
+          savedScrollPosition.current.configuratorPanel !== undefined
+        ) {
+          // Small delay to ensure DOM is ready
+          setTimeout(() => {
+            const isMobile = window.innerWidth < 1024;
+
+            if (isMobile) {
+              // Mobile: Scroll is already restored by window.scrollTo above
+              // No additional action needed since mobile uses document scroll
+            } else {
+              // Desktop: Find the right panel with overflow-y-auto and restore its scroll
+              const configuratorPanel = document.querySelector(
+                ".configurator-right-panel.overflow-y-auto"
+              ) as HTMLElement;
+              if (
+                configuratorPanel &&
+                savedScrollPosition.current.configuratorPanel !== undefined
+              ) {
+                configuratorPanel.scrollTop =
+                  savedScrollPosition.current.configuratorPanel;
+              }
+            }
+          }, 10);
+        }
+      } else {
+        // For non-iOS or non-Safari browsers, still restore configurator panel if needed
+        const isKonfigurator =
+          window.location.pathname.includes("/konfigurator");
+        if (
+          isKonfigurator &&
+          savedScrollPosition.current.configuratorPanel !== undefined
+        ) {
+          setTimeout(() => {
+            const isMobile = window.innerWidth < 1024;
+
+            if (isMobile) {
+              // Mobile: Restore document scroll position
+              window.scrollTo(
+                0,
+                savedScrollPosition.current.configuratorPanel || 0
+              );
+            } else {
+              // Desktop: Find the right panel with overflow-y-auto and restore its scroll
+              const configuratorPanel = document.querySelector(
+                ".configurator-right-panel.overflow-y-auto"
+              ) as HTMLElement;
+              if (
+                configuratorPanel &&
+                savedScrollPosition.current.configuratorPanel !== undefined
+              ) {
+                configuratorPanel.scrollTop =
+                  savedScrollPosition.current.configuratorPanel;
+              }
+            }
+          }, 10);
         }
       }
 
