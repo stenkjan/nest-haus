@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4c9f24f357e771e19851b6954bfa1ecd98432535] - Wed Sep 10 11:12:33 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update API endpoint for improved data retrieval  - Modified the API endpoint to optimize data fetching, reducing unnecessary calls and enhancing performance. - Implemented error handling to manage potential failures gracefully, ensuring a smoother user experience.  These changes aim to improve the efficiency and reliability of data interactions within the application.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutProgress.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/cards/CheckoutStepCard.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/sections/AppointmentBooking.tsx
+
+
+---
+
 ## [2c09094a038ee4ce25f0abaa086749693adc444f] - Tue Sep 9 20:52:42 2025 +0200
 
 **Author**: stenkjan
