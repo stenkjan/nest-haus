@@ -17,6 +17,7 @@ interface CardData {
   mobileSubtitle?: string;
   mobileDescription?: string;
   image: string;
+  overlayImage?: string;
   backgroundColor: string;
 }
 
@@ -29,6 +30,7 @@ interface StaticCardData {
   mobileSubtitle?: string;
   mobileDescription?: string;
   image: string;
+  overlayImage?: string;
   backgroundColor: string;
   buttons?: Array<{
     text: string;
@@ -473,8 +475,8 @@ export default function ContentCards({
               isStatic
                 ? ""
                 : isClient && screenWidth < 1024
-                ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
-                : ""
+                  ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
+                  : ""
             } ${maxWidth ? "px-8" : "px-4"} ${
               isStatic ? "" : "cursor-grab active:cursor-grabbing"
             }`}
@@ -533,66 +535,66 @@ export default function ContentCards({
                               : 830
                           )
                         : isClient && screenWidth >= 1280
-                        ? Math.min(
-                            692,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 692
-                          )
-                        : isClient && screenWidth >= 1024
-                        ? Math.min(
-                            577, // Proportional height: 960 * (692/1152) = 577
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 577
-                          )
-                        : Math.min(
-                            720,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 720
-                          )
+                          ? Math.min(
+                              692,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.7
+                                : 692
+                            )
+                          : isClient && screenWidth >= 1024
+                            ? Math.min(
+                                577, // Proportional height: 960 * (692/1152) = 577
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.7
+                                  : 577
+                              )
+                            : Math.min(
+                                720,
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.75
+                                  : 720
+                              )
                       : isResponsive
-                      ? isClient && screenWidth >= 1600
-                        ? Math.min(
-                            830,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 830
-                          )
-                        : isClient && screenWidth >= 1280
-                        ? Math.min(
-                            692,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 692
-                          )
-                        : isClient && screenWidth >= 1024
-                        ? Math.min(
-                            577, // Proportional height: 960 * (692/1152) = 577
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.7
-                              : 577
-                          )
-                        : Math.min(
-                            720,
-                            typeof window !== "undefined"
-                              ? window.innerHeight * 0.75
-                              : 720
-                          )
-                      : isClient && screenWidth >= 1600
-                      ? Math.min(
-                          750,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.8
-                            : 750
-                        )
-                      : Math.min(
-                          600,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.75
-                            : 600
-                        ),
+                        ? isClient && screenWidth >= 1600
+                          ? Math.min(
+                              830,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 830
+                            )
+                          : isClient && screenWidth >= 1280
+                            ? Math.min(
+                                692,
+                                typeof window !== "undefined"
+                                  ? window.innerHeight * 0.7
+                                  : 692
+                              )
+                            : isClient && screenWidth >= 1024
+                              ? Math.min(
+                                  577, // Proportional height: 960 * (692/1152) = 577
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.7
+                                    : 577
+                                )
+                              : Math.min(
+                                  720,
+                                  typeof window !== "undefined"
+                                    ? window.innerHeight * 0.75
+                                    : 720
+                                )
+                        : isClient && screenWidth >= 1600
+                          ? Math.min(
+                              750,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.8
+                                : 750
+                            )
+                          : Math.min(
+                              600,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 600
+                            ),
                     backgroundColor: card.backgroundColor,
                   }}
                   whileHover={{ scale: 1.02 }}
@@ -655,6 +657,18 @@ export default function ContentCards({
                               isInteractive={true}
                               enableCache={true}
                             />
+                            {/* Overlay image if provided */}
+                            {card.overlayImage && (
+                              <HybridBlobImage
+                                path={getImagePath(card.overlayImage)}
+                                alt={`${getCardText(card, "title")} Overlay`}
+                                fill
+                                className="object-contain object-center absolute inset-0 z-10"
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
+                              />
+                            )}
                           </motion.div>
                         </div>
                       </>
@@ -700,6 +714,18 @@ export default function ContentCards({
                               isInteractive={true}
                               enableCache={true}
                             />
+                            {/* Overlay image if provided */}
+                            {card.overlayImage && (
+                              <HybridBlobImage
+                                path={getImagePath(card.overlayImage)}
+                                alt={`${getCardText(card, "title")} Overlay`}
+                                fill
+                                className="object-contain object-center absolute inset-0 z-10"
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
+                              />
+                            )}
                           </motion.div>
                         </div>
                       </>
@@ -737,8 +763,8 @@ export default function ContentCards({
                                       button.variant === "primary"
                                         ? "primary-narrow"
                                         : button.variant === "secondary"
-                                        ? "secondary-narrow-blue"
-                                        : button.variant;
+                                          ? "secondary-narrow-blue"
+                                          : button.variant;
 
                                     return button.link ? (
                                       <Link
@@ -804,6 +830,18 @@ export default function ContentCards({
                               isInteractive={true}
                               enableCache={true}
                             />
+                            {/* Overlay image if provided */}
+                            {card.overlayImage && (
+                              <HybridBlobImage
+                                path={getImagePath(card.overlayImage)}
+                                alt={`${getCardText(card, "title")} Overlay`}
+                                fill
+                                className="object-contain object-center absolute inset-0 z-10"
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
+                              />
+                            )}
                           </motion.div>
                         </div>
                       </>
@@ -849,6 +887,18 @@ export default function ContentCards({
                               isInteractive={true}
                               enableCache={true}
                             />
+                            {/* Overlay image if provided */}
+                            {card.overlayImage && (
+                              <HybridBlobImage
+                                path={getImagePath(card.overlayImage)}
+                                alt={`${getCardText(card, "title")} Overlay`}
+                                fill
+                                className="object-contain object-center absolute inset-0 z-10"
+                                strategy="client"
+                                isInteractive={true}
+                                enableCache={true}
+                              />
+                            )}
                           </motion.div>
                         </div>
                       </>

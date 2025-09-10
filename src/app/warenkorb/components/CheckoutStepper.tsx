@@ -27,10 +27,10 @@ import { useCartStore } from "@/store/cartStore";
 import type { ViewType } from "@/app/konfigurator/types/configurator.types";
 import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
 import { Button } from "@/components/ui";
-// TODO: Use these overlay components when needed
-// import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
-// import BrightnessOverlay from "@/app/konfigurator/components/BrightnessOverlay";
-// import FensterOverlay from "@/app/konfigurator/components/FensterOverlay";
+// Overlay components for warenkorb preview
+import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
+import BelichtungsPaketOverlay from "@/app/konfigurator/components/BelichtungsPaketOverlay";
+import FensterOverlay from "@/app/konfigurator/components/FensterOverlay";
 
 interface CheckoutStepperProps {
   items: (CartItem | ConfigurationCartItem)[];
@@ -331,7 +331,7 @@ export default function CheckoutStepper({
   const getItemPrice = (
     key: string,
     selection: ConfigurationItem,
-    configuration: ConfigurationCartItem
+    cartItemConfig: ConfigurationCartItem
   ): number => {
     // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
@@ -343,10 +343,10 @@ export default function CheckoutStepper({
     }
 
     // For belichtungspaket, calculate dynamic price
-    if (key === "belichtungspaket" && configuration?.nest) {
+    if (key === "belichtungspaket" && cartItemConfig?.nest) {
       try {
         // Ensure we have valid selection data
-        if (!selection.value || !configuration.nest.value) {
+        if (!selection.value || !cartItemConfig.nest.value) {
           console.warn(
             "Invalid belichtungspaket or nest data, using base price"
           );
@@ -361,8 +361,8 @@ export default function CheckoutStepper({
         };
         return PriceCalculator.calculateBelichtungspaketPrice(
           selectionOption,
-          configuration.nest,
-          configuration.fenster ?? undefined
+          cartItemConfig.nest,
+          cartItemConfig.fenster ?? undefined
         );
       } catch (error) {
         console.error(
@@ -384,7 +384,7 @@ export default function CheckoutStepper({
         };
         return PriceCalculator.calculateStirnseitePrice(
           selectionOption,
-          configuration.fenster ?? undefined
+          cartItemConfig.fenster ?? undefined
         );
       } catch (error) {
         console.error("Error calculating stirnseite price in summary:", error);
@@ -397,11 +397,11 @@ export default function CheckoutStepper({
       (key === "gebaeudehuelle" ||
         key === "innenverkleidung" ||
         key === "fussboden") &&
-      configuration?.nest
+      cartItemConfig?.nest
     ) {
       try {
         // Calculate the price difference for this specific option
-        const currentNestValue = configuration.nest.value;
+        const currentNestValue = cartItemConfig.nest.value;
 
         // Use defaults for base calculation
         const baseGebaeudehuelle = "trapezblech";
@@ -448,10 +448,10 @@ export default function CheckoutStepper({
   const isItemIncluded = (
     key: string,
     selection: ConfigurationItem,
-    configuration: ConfigurationCartItem
+    cartItemConfig: ConfigurationCartItem
   ): boolean => {
     // Use the calculated price to determine if item is included
-    const calculatedPrice = getItemPrice(key, selection, configuration);
+    const calculatedPrice = getItemPrice(key, selection, cartItemConfig);
     return calculatedPrice === 0;
   };
 
@@ -1191,15 +1191,16 @@ export default function CheckoutStepper({
     });
   }, [getDeliveryDate]);
 
-  // Decide which configuration to use for images: use live configurator state for real-time sync
+  // Decide which configuration to use for images: prioritize cart item for consistent display
   const sourceConfig = useMemo(() => {
-    // Use live configurator state to ensure images match current preview panel
+    // For warenkorb, prioritize cart item configuration to ensure consistency
+    // between displayed configuration details and overlays
     return (
-      configuration ||
       (configItem as ConfigurationCartItem | undefined) ||
+      configuration ||
       undefined
     );
-  }, [configuration, configItem]);
+  }, [configItem, configuration]);
 
   // Determine interior availability based on actual selections in the source config
   const interiorActive = useMemo(() => {
@@ -1400,6 +1401,78 @@ export default function CheckoutStepper({
                         quality={85}
                         priority={true}
                       />
+
+                      {/* PV Module Overlay - only show on exterior view when PV is selected */}
+                      {currentView === "exterior" &&
+                        sourceConfig?.pvanlage &&
+                        sourceConfig?.pvanlage?.quantity &&
+                        sourceConfig?.pvanlage?.quantity > 0 &&
+                        sourceConfig?.nest && (
+                          <PvModuleOverlay
+                            nestSize={
+                              sourceConfig.nest.value as
+                                | "nest80"
+                                | "nest100"
+                                | "nest120"
+                                | "nest140"
+                                | "nest160"
+                            }
+                            moduleCount={sourceConfig.pvanlage.quantity}
+                            isVisible={true}
+                            className=""
+                          />
+                        )}
+
+                      {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected */}
+                      {currentView === "exterior" &&
+                        sourceConfig?.belichtungspaket &&
+                        sourceConfig?.nest && (
+                          <BelichtungsPaketOverlay
+                            nestSize={
+                              sourceConfig.nest.value as
+                                | "nest80"
+                                | "nest100"
+                                | "nest120"
+                                | "nest140"
+                                | "nest160"
+                            }
+                            brightnessLevel={
+                              sourceConfig.belichtungspaket.value as
+                                | "light"
+                                | "medium"
+                                | "bright"
+                            }
+                            fensterMaterial={
+                              sourceConfig.fenster?.value === "pvc_fenster"
+                                ? "pvc"
+                                : sourceConfig.fenster?.value ===
+                                    "aluminium_weiss"
+                                  ? "aluminium_hell"
+                                  : sourceConfig.fenster?.value ===
+                                      "aluminium_schwarz"
+                                    ? "aluminium_dunkel"
+                                    : "holz" // Default to holz (preselected)
+                            }
+                            isVisible={true}
+                            className=""
+                          />
+                        )}
+
+                      {/* Fenster Overlay - only show on interior view when fenster is selected */}
+                      {currentView === "interior" && sourceConfig?.fenster && (
+                        <FensterOverlay
+                          fensterType={
+                            sourceConfig.fenster.value as
+                              | "pvc_fenster"
+                              | "holz"
+                              | "aluminium_schwarz"
+                              | "aluminium_weiss"
+                          }
+                          isVisible={true}
+                          className=""
+                        />
+                      )}
+
                       {galleryViews.length > 1 && (
                         <>
                           <button
@@ -1540,7 +1613,15 @@ export default function CheckoutStepper({
               })()}
               <CheckoutPlanungspaketeCards
                 selectedPlan={localSelectedPlan}
-                onPlanSelect={setLocalSelectedPlan}
+                onPlanSelect={(selectedValue) => {
+                  console.log(
+                    "📦 CheckoutStepper: User selected planungspaket:",
+                    selectedValue
+                  );
+                  setLocalSelectedPlan(selectedValue);
+                  // Immediately update the configuration when user selects
+                  setPlanningPackage(selectedValue);
+                }}
                 basisDisplayPrice={basisDisplayPrice}
               />
 
@@ -1559,12 +1640,7 @@ export default function CheckoutStepper({
                   variant="primary"
                   size="xs"
                   className="whitespace-nowrap"
-                  onClick={() => {
-                    if (localSelectedPlan) {
-                      setPlanningPackage(localSelectedPlan);
-                    }
-                    goNext();
-                  }}
+                  onClick={goNext}
                 >
                   Nächster Schritt
                 </Button>

@@ -452,16 +452,8 @@ export default function SummaryPanel({
         {/* Action Buttons */}
         <div className="mt-6">
           {isClient && (
-            <div className="flex flex-col sm:flex-row sm:justify-center sm:items-center gap-1">
-              {/* Navigate to Warenkorb Button - Primary button first */}
-              <Link
-                href="/warenkorb"
-                className="bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal w-36 sm:w-40 lg:w-44 xl:w-48 2xl:w-56 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl h-[44px] min-h-[44px] px-6 whitespace-nowrap"
-              >
-                Zum Warenkorb
-              </Link>
-
-              {/* Neu konfigurieren Button - Secondary button beside on desktop, below on mobile */}
+            <div className="flex justify-center">
+              {/* Neu konfigurieren Button - Only button */}
               <Button
                 variant="tertiary"
                 size="xs"

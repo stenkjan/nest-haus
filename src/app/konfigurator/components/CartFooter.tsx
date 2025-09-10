@@ -83,7 +83,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
             href="/warenkorb"
             className="bg-[#3D6DE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation"
           >
-            Jetzt bauen
+            In den Warenkorb
           </Link>
         </div>
       </div>

@@ -324,11 +324,6 @@ export class ImageManager {
       views.push('interior');
     }
 
-    // Add fenster view when fenster is configured (for materials selection)
-    if (configuration.fenster) {
-      views.push('fenster');
-    }
-
     // Add stirnseite view last when nest or gebäudehülle is configured
     if (configuration.nest || configuration.gebaeudehuelle) {
       views.push('stirnseite');

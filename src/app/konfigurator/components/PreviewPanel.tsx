@@ -245,12 +245,11 @@ export default function PreviewPanel({
   }, [configuration]);
 
   // View labels for display and accessibility
-  const viewLabels = {
+  const viewLabels: Record<string, string> = {
     exterior: "Außenansicht",
     stirnseite: "Stirnseite",
     interior: "Innenansicht",
     pv: "PV-Anlage",
-    fenster: "Fenster & Türen",
   };
 
   // Simplified container style - consistent with right panel
@@ -303,7 +302,7 @@ export default function PreviewPanel({
             <HybridBlobImage
               key={imageKey}
               path={currentImagePath}
-              alt={`${viewLabels[activeView]} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
+              alt={`${viewLabels[activeView] || activeView} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
               fill
               className={`transition-opacity duration-300 object-contain ${
                 showPreviousImage ? "opacity-0" : "opacity-100"

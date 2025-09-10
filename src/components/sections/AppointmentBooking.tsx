@@ -202,10 +202,10 @@ const AppointmentBooking = ({
     return days;
   };
 
-  if (submitSuccess) {
+   if (submitSuccess) {
     return (
-      <div className="max-w-5xl mx-auto bg-green-50 border border-green-200 text-green-700 px-8 py-10 rounded-[35px] text-center shadow-lg">
-        <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-green-700">
+      <div className="max-w-5xl mx-auto bg-white text-black px-8 py-10 rounded-[35px] text-center shadow-lg">
+        <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-black">
           Termin erfolgreich gebucht!
         </h3>
         <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl mb-6">
@@ -213,10 +213,11 @@ const AppointmentBooking = ({
           um alle Details zu bestätigen.
         </p>
         <Button
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-8 py-3 shadow-md"
+          variant="ghost"
+          className="border border-blue-500 font-medium rounded-full px-8 py-3 shadow-md bg-transparent text-blue-500 hover:bg-blue-500 hover:text-white transition-colors"
           onClick={() => setSubmitSuccess(false)}
         >
-          Weiteren Termin buchen
+          <span className="text-blue-500 group-hover:text-white transition-colors">Weiteren Termin buchen</span>
         </Button>
       </div>
     );

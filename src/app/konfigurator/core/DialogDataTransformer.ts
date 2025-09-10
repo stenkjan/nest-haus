@@ -12,6 +12,7 @@ interface DialogCard {
     desktop: string;
   };
   imagePath: string;
+  overlayImagePath?: string;
 }
 
 interface DialogConfig {
@@ -36,6 +37,7 @@ interface ContentCard {
   mobileSubtitle?: string;
   mobileDescription?: string;
   image: string;
+  overlayImage?: string;
   backgroundColor: string;
 }
 
@@ -76,6 +78,7 @@ export function transformDialogConfig(
     description: card.description.desktop,
     mobileDescription: card.description.mobile,
     image: `/api/images?path=${encodeURIComponent(card.imagePath)}`,
+    overlayImage: card.overlayImagePath ? `/api/images?path=${encodeURIComponent(card.overlayImagePath)}` : undefined,
     backgroundColor: categoryColors[0] // Use first color for all cards
   }));
 
