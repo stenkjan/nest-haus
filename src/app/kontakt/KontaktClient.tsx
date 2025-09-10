@@ -29,7 +29,10 @@ export default function KontaktClient() {
   const { isMobile: _isMobile } = useDeviceDetect();
 
   return (
-    <div className="min-h-screen pt-16">
+    <div
+      className="min-h-screen"
+      style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
+    >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
         <AppointmentBookingSection

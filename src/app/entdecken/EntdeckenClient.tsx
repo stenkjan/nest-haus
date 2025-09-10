@@ -84,10 +84,16 @@ export default function EntdeckenClient() {
   }, []);
 
   return (
-    <div className="min-h-screen md:pt-16 bg-white">
+    <div
+      className="min-h-screen bg-white"
+      style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
+    >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero with Title and Subtitle (Desktop only) */}
-        <section id="hero" className="w-full py-12 bg-white hidden md:block">
+        <section
+          id="hero"
+          className="w-full pt-12 pb-4 bg-white hidden md:block"
+        >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
@@ -145,8 +151,8 @@ export default function EntdeckenClient() {
 
             {/* Overlay Content */}
             <div className="absolute inset-0 flex flex-col justify-end">
-              {/* Mobile Title/Subtitle Overlay - More gap from navbar */}
-              <div className="absolute top-24 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
+              {/* Mobile Title/Subtitle Overlay - Aligned with standard spacing */}
+              <div className="absolute top-12 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
                 <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
                   Design für dich gemacht
                 </h1>

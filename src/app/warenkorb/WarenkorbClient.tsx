@@ -469,7 +469,10 @@ export default function WarenkorbClient() {
   };
 
   return (
-    <div className="min-h-screen md:pt-16 bg-white">
+    <div
+      className="min-h-screen bg-white"
+      style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
+    >
       <div className="w-full">
         {items.length === 0 ? (
           /* Empty Cart */

@@ -129,7 +129,7 @@ export default function TwoByTwoImageGrid({
             <div
               key={i}
               className="animate-pulse bg-gray-200 rounded-lg"
-              style={{ aspectRatio: "1/1", minHeight: "400px" }}
+              style={{ aspectRatio: "4/5", minHeight: "400px" }}
             />
           ))}
         </div>
@@ -167,7 +167,7 @@ export default function TwoByTwoImageGrid({
             key={item.id}
             className="relative flex-shrink-0 shadow-lg overflow-hidden"
             style={{
-              aspectRatio: "1/1", // Perfect square
+              aspectRatio: "4/5", // Match actual image dimensions
               minHeight: gridMinHeight,
             }}
             transition={{ duration: 0.2 }}
