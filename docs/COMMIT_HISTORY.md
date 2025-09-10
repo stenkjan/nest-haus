@@ -4,6 +4,29 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5043fd50c49798794f41b2e9d0b3dda9ccc1915a] - Wed Sep 10 18:14:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/ui/Dialog.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [8fe6cfd0ce3c94c01b83b3bb18084e13257e4aa5] - Wed Sep 10 17:58:44 2025 +0200
 
 **Author**: stenkjan
