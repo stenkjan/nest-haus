@@ -9,6 +9,7 @@ interface GrundstueckCheckFormProps {
   maxWidth?: string | false;
   padding?: "sm" | "md" | "lg";
   className?: string;
+  excludePersonalData?: boolean; // Flag to exclude "Daten Bewerber" section
 }
 
 interface FormData {
@@ -33,6 +34,7 @@ export function GrundstueckCheckForm({
   maxWidth = false,
   padding = "lg",
   className = "",
+  excludePersonalData = false,
 }: GrundstueckCheckFormProps) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -68,46 +70,51 @@ export function GrundstueckCheckForm({
   if (maxWidth === false && padding === "sm") {
     return (
       <form onSubmit={handleSubmit} className="space-y-4">
-        <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-          Daten Bewerber
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-xl p-3"
-            placeholder="Name"
-            required
-          />
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-xl p-3"
-            placeholder="Nachname"
-            required
-          />
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-xl p-3"
-            placeholder="Telefon"
-          />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-xl p-3"
-            placeholder="Email"
-            required
-          />
-        </div>
+        {/* Conditionally render Daten Bewerber section */}
+        {!excludePersonalData && (
+          <>
+            <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
+              Daten Bewerber
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Name"
+                required
+              />
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Nachname"
+                required
+              />
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Telefon"
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Email"
+                required
+              />
+            </div>
+          </>
+        )}
 
         <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
           Informationen zum Grundstück

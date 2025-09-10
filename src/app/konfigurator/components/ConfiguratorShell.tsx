@@ -1131,158 +1131,178 @@ export default function ConfiguratorShell({
   // Render selection content
   const SelectionContent = () => (
     <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(2.75rem,5vh,3.75rem)]">
-      {configuratorData.map((category) => (
-        <CategorySection
-          key={category.id}
-          id={`section-${category.id}`} // Add ID for auto-scroll targeting
-          title={category.title}
-          subtitle={category.subtitle}
-        >
-          {(() => {
-            // No more disabled states - always allow selections with defaults
+      {configuratorData.map((category, index) => (
+        <React.Fragment key={category.id}>
+          {/* Add Optionen section before planungspaket */}
+          {category.id === "planungspaket" && (
+            <CategorySection
+              id="section-optionen"
+              title="Optionen"
+              subtitle="Zusätzliche Ausstattung"
+            >
+              <div className="space-y-4">
+                {/* Kamindurchzug Checkbox */}
+                <ConfiguratorCheckbox
+                  id="kamindurchzug-checkbox"
+                  uncheckedText="Kaminschachtvorbereitung"
+                  checkedText="Kaminschachtvorbereitung"
+                  price={2000}
+                  pricePerSqm={
+                    configuration?.nest?.value
+                      ? 2000 /
+                        (parseInt(
+                          configuration.nest.value.replace("nest", "")
+                        ) || 80)
+                      : 25
+                  }
+                  isChecked={!!configuration?.kamindurchzug}
+                  onChange={handleKamindurchzugChange}
+                />
 
-            return (
-              <>
-                <div className="space-y-2">
-                  {category.options.map((option) => {
-                    // Use static price from configuratorData for consistent display
-                    const displayPrice = getDisplayPrice(
-                      category.id,
-                      option.id
-                    );
+                {/* Fußbodenheizung Checkbox */}
+                <ConfiguratorCheckbox
+                  id="fussbodenheizung-checkbox"
+                  uncheckedText="Fußbodenheizung"
+                  checkedText="Fußbodenheizung"
+                  price={5000}
+                  pricePerSqm={
+                    configuration?.nest?.value
+                      ? 5000 /
+                        (parseInt(
+                          configuration.nest.value.replace("nest", "")
+                        ) || 80)
+                      : 62.5
+                  }
+                  isChecked={!!configuration?.fussbodenheizung}
+                  onChange={handleFussbodenheizungChange}
+                />
 
-                    // Get actual contribution price for selected options
-                    const contributionPrice = isOptionSelected(
-                      category.id,
-                      option.id
-                    )
-                      ? getActualContributionPrice(category.id, option.id)
-                      : null;
+                {/* Lightbox button for Optionen */}
+                {/* <ConfiguratorContentCardsLightbox
+                  categoryKey="fussboden"
+                  triggerText="Mehr Informationen zu den Optionen"
+                /> */}
+              </div>
+            </CategorySection>
+          )}
 
-                    return (
-                      <SelectionOption
-                        key={option.id}
-                        id={option.id}
-                        name={option.name}
-                        description={option.description}
-                        price={displayPrice}
-                        isSelected={isOptionSelected(category.id, option.id)}
-                        categoryId={category.id}
-                        nestModel={configuration?.nest?.value}
-                        contributionPrice={contributionPrice}
-                        onClick={(optionId) => {
-                          // Always allow selections with defaults in place
-                          handleSelection(category.id, optionId);
-                        }}
+          <CategorySection
+            id={`section-${category.id}`} // Add ID for auto-scroll targeting
+            title={category.title}
+            subtitle={category.subtitle}
+          >
+            {(() => {
+              // No more disabled states - always allow selections with defaults
+
+              return (
+                <>
+                  <div className="space-y-2">
+                    {category.options.map((option) => {
+                      // Use static price from configuratorData for consistent display
+                      const displayPrice = getDisplayPrice(
+                        category.id,
+                        option.id
+                      );
+
+                      // Get actual contribution price for selected options
+                      const contributionPrice = isOptionSelected(
+                        category.id,
+                        option.id
+                      )
+                        ? getActualContributionPrice(category.id, option.id)
+                        : null;
+
+                      return (
+                        <SelectionOption
+                          key={option.id}
+                          id={option.id}
+                          name={option.name}
+                          description={option.description}
+                          price={displayPrice}
+                          isSelected={isOptionSelected(category.id, option.id)}
+                          categoryId={category.id}
+                          nestModel={configuration?.nest?.value}
+                          contributionPrice={contributionPrice}
+                          onClick={(optionId) => {
+                            // Always allow selections with defaults in place
+                            handleSelection(category.id, optionId);
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+
+                  {/* PV Quantity Selector */}
+                  {category.id === "pvanlage" && configuration?.pvanlage && (
+                    <>
+                      <QuantitySelector
+                        label="Anzahl der PV-Module"
+                        value={pvQuantity}
+                        max={getMaxPvModules()}
+                        unitPrice={configuration.pvanlage.price || 0}
+                        onChange={handlePvQuantityChange}
                       />
-                    );
-                  })}
-                </div>
+                    </>
+                  )}
 
-                {/* PV Quantity Selector */}
-                {category.id === "pvanlage" && configuration?.pvanlage && (
-                  <>
-                    <QuantitySelector
-                      label="Anzahl der PV-Module"
-                      value={pvQuantity}
-                      max={getMaxPvModules()}
-                      unitPrice={configuration.pvanlage.price || 0}
-                      onChange={handlePvQuantityChange}
+                  {/* Info Box - Use new responsive cards for specific categories */}
+                  {category.infoBox && (
+                    <>
+                      {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
+                      {category.id === "gebaeudehuelle" ||
+                      category.id === "innenverkleidung" ||
+                      category.id === "fussboden" ||
+                      category.id === "belichtungspaket" ||
+                      category.id === "fenster" ||
+                      category.id === "pvanlage" ? (
+                        <ConfiguratorContentCardsLightbox
+                          categoryKey={
+                            category.id === "gebaeudehuelle"
+                              ? "materials"
+                              : category.id === "pvanlage"
+                                ? "photovoltaik"
+                                : category.id === "fussboden"
+                                  ? "fussboden"
+                                  : category.id === "belichtungspaket"
+                                    ? "belichtungspaket"
+                                    : (category.id as
+                                        | "innenverkleidung"
+                                        | "fenster")
+                          }
+                          triggerText={category.infoBox.title}
+                        />
+                      ) : (
+                        /* Use regular InfoBox for other categories */
+                        <InfoBox
+                          title={category.infoBox.title}
+                          description={category.infoBox.description}
+                          onClick={() => handleInfoClick(category.id)}
+                        />
+                      )}
+                    </>
+                  )}
+
+                  {/* Add lightbox button for planungspaket
+                  {category.id === "planungspaket" && (
+                    <ConfiguratorContentCardsLightbox
+                      categoryKey="materials"
+                      triggerText="Mehr Informationen"
                     />
-                  </>
-                )}
+                  )} */}
 
-                {/* Info Box - Use new responsive cards for specific categories */}
-                {category.infoBox && (
-                  <>
-                    {/* Use ConfiguratorContentCardsLightbox for responsive card categories */}
-                    {category.id === "gebaeudehuelle" ||
-                    category.id === "innenverkleidung" ||
-                    category.id === "fussboden" ||
-                    category.id === "belichtungspaket" ||
-                    category.id === "fenster" ||
-                    category.id === "pvanlage" ? (
-                      <ConfiguratorContentCardsLightbox
-                        categoryKey={
-                          category.id === "gebaeudehuelle"
-                            ? "materials"
-                            : category.id === "pvanlage"
-                              ? "photovoltaik"
-                              : category.id === "fussboden"
-                                ? "fussboden"
-                                : category.id === "belichtungspaket"
-                                  ? "belichtungspaket"
-                                  : (category.id as
-                                      | "innenverkleidung"
-                                      | "fenster")
-                        }
-                        triggerText={category.infoBox.title}
-                      />
-                    ) : (
-                      /* Use regular InfoBox for other categories */
-                      <InfoBox
-                        title={category.infoBox.title}
-                        description={category.infoBox.description}
-                        onClick={() => handleInfoClick(category.id)}
-                      />
-                    )}
-                  </>
-                )}
-
-                {/* Kamindurchzug Checkbox - Add before fußbodenheizung */}
-                {category.id === "fussboden" && (
-                  <ConfiguratorCheckbox
-                    id="kamindurchzug-checkbox"
-                    uncheckedText="ohne Kamindurchzug"
-                    checkedText="mit Kamindurchzug"
-                    price={2000}
-                    pricePerSqm={
-                      configuration?.nest?.value
-                        ? 2000 /
-                          (parseInt(
-                            configuration.nest.value.replace("nest", "")
-                          ) || 80)
-                        : 25
-                    }
-                    isChecked={!!configuration?.kamindurchzug}
-                    onChange={handleKamindurchzugChange}
-                    className="mt-4"
-                  />
-                )}
-
-                {/* Fußbodenheizung Checkbox - Add after kamindurchzug */}
-                {category.id === "fussboden" && (
-                  <ConfiguratorCheckbox
-                    id="fussbodenheizung-checkbox"
-                    uncheckedText="ohne Fußbodenheizung"
-                    checkedText="mit Fußbodenheizung"
-                    price={5000}
-                    pricePerSqm={
-                      configuration?.nest?.value
-                        ? 5000 /
-                          (parseInt(
-                            configuration.nest.value.replace("nest", "")
-                          ) || 80)
-                        : 62.5
-                    }
-                    isChecked={!!configuration?.fussbodenheizung}
-                    onChange={handleFussbodenheizungChange}
-                    className="mt-4"
-                  />
-                )}
-
-                {/* Facts Box */}
-                {category.facts && (
-                  <FactsBox
-                    title={category.facts.title}
-                    facts={category.facts.content}
-                    links={category.facts.links}
-                  />
-                )}
-              </>
-            );
-          })()}
-        </CategorySection>
+                  {/* Facts Box */}
+                  {category.facts && (
+                    <FactsBox
+                      title={category.facts.title}
+                      facts={category.facts.content}
+                      links={category.facts.links}
+                    />
+                  )}
+                </>
+              );
+            })()}
+          </CategorySection>
+        </React.Fragment>
       ))}
 
       {/* Grundstückscheck now handled in Warenkorb */}

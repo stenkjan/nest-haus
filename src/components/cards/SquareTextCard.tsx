@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, PanInfo, animate } from "motion/react";
 import { Button } from "@/components/ui";
 import Link from "next/link";
+import ClientBlobFile from "@/components/files/ClientBlobFile";
+import { FILES } from "@/constants/files";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 import "./mobile-scroll-optimizations.css";
 
@@ -1129,9 +1131,17 @@ export default function SquareTextCard({
 
       {/* Action Buttons */}
       <div className="flex flex-row gap-4 justify-center mt-16">
-        <Button variant="primary" size="xs">
-          Anleitung als PDF
-        </Button>
+        <ClientBlobFile
+          path={FILES.anleitung.pdf}
+          filename="Nest-Haus-Anleitung.pdf"
+          onDownloadStart={() => console.log("📄 Starting PDF download...")}
+          onDownloadComplete={() => console.log("✅ PDF download completed")}
+          onError={(error) => console.error("❌ PDF download failed:", error)}
+        >
+          <Button variant="primary" size="xs">
+            Anleitung als PDF
+          </Button>
+        </ClientBlobFile>
         <Link href="/konfigurator">
           <Button variant="landing-secondary-blue" size="xs">
             Jetzt bauen
