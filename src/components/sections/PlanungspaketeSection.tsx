@@ -8,7 +8,7 @@ import { PlanungspaketeCards } from "@/components/cards";
  * Uses proper responsive breakpoints and semantic HTML structure.
  *
  * Typography Standards:
- * - Title: text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold
+ * - Title: text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold
  * - Subtitle: text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl
  *
  * See: /docs/TYPOGRAPHY_STANDARDS.md

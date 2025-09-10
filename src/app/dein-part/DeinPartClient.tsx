@@ -115,7 +115,7 @@ export default function DeinPartClient() {
           >
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-2 md:mb-3">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
                   Dein Raum zum Träumen
                 </h1>
                 <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300 mb-8">
@@ -239,7 +239,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           <section id="planungspakete" className="w-full pt-28 pb-16 bg-white">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                   Unterstützung gefällig?
                 </h1>
                 <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">

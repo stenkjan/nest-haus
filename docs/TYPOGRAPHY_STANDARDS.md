@@ -200,9 +200,9 @@ All grid components (FullWidthTextGrid, ImageWithFourTextGrid, ThreeByOneGrid, e
 
 ```tsx
 // Standard main title/page title pattern
-"text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3";
+"text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3";
 
-// Font size progression: 24px → 30px → 36px → 48px → 60px
+// Font size progression: 30px → 36px → 48px → 60px → 72px
 ```
 
 #### P (Description Text)
@@ -242,11 +242,11 @@ All grid components (FullWidthTextGrid, ImageWithFourTextGrid, ThreeByOneGrid, e
 ### Legacy Title Classes (Main Sections)
 
 ```tsx
-// Main section titles
-"text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3";
+// Main section titles - UPDATED to new H1 standard
+"text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-3";
 
 // Special cases (like GetInContactBanner)
-"text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-medium mb-3";
+"text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium mb-3";
 ```
 
 ### Legacy Subtitle Classes (Main Sections)
@@ -279,10 +279,10 @@ All grid components (FullWidthTextGrid, ImageWithFourTextGrid, ThreeByOneGrid, e
 
 ```tsx
 // Complete responsive breakpoints
-<h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-3">
-  Section Title
-</h2>
-<h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl text-gray-600 mb-8">
+<h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-3">
+  Main Title
+</h1>
+<h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
   Section Subtitle
 </h3>
 ```
@@ -305,12 +305,12 @@ All grid components (FullWidthTextGrid, ImageWithFourTextGrid, ThreeByOneGrid, e
 
 ```tsx
 // OLD (❌)
-<h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4">
+<h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4">
 <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-6xl mx-auto">
 
 // NEW (✅)
-<h2 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-3">
-<h3 className="text-base md:text-lg lg:text-xl 2xl:text-2xl mb-8">
+<h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-3">
+<h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-8">
 ```
 
 ## Testing Requirements
@@ -321,8 +321,9 @@ Test typography on these breakpoints:
 
 - Mobile: 375px (text-3xl, text-base)
 - Tablet: 768px (md:text-4xl, md:text-lg)
-- Desktop: 1024px (lg:text-5xl, lg:text-xl)
-- Large: 1536px+ (2xl:text-6xl, 2xl:text-2xl)
+- Desktop: 1024px (lg:text-5xl, lg:text-lg)
+- Large: 1280px (xl:text-6xl, xl:text-xl)
+- Extra Large: 1536px+ (2xl:text-7xl, 2xl:text-2xl)
 
 ### Accessibility Testing
 

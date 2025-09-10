@@ -117,7 +117,7 @@ export default function UnserPartClient() {
         <section id="dein-nest-system" className="bg-black pt-12 pb-4">
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-12">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
                 Dein Nest System
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300">
@@ -195,7 +195,7 @@ export default function UnserPartClient() {
         {/* Materialien Section */}
         <section id="materialien" className="pt-20 pb-8">
           <div className="text-center mb-12">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-2 md:mb-3">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
               Gut für Dich, besser für die Zukunft
             </h1>
             <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300 mb-8">
@@ -288,7 +288,7 @@ export default function UnserPartClient() {
         <section id="planungspakete" className="w-full pt-28 pb-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
@@ -326,7 +326,7 @@ export default function UnserPartClient() {
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-medium text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium text-gray-900 mb-2 md:mb-3">
                 Kein Plan? Kein Problem!
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">

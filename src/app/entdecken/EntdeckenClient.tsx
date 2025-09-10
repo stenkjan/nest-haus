@@ -90,7 +90,7 @@ export default function EntdeckenClient() {
         <section id="hero" className="w-full py-12 bg-white hidden md:block">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Design für dich gemacht
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
@@ -147,7 +147,7 @@ export default function EntdeckenClient() {
             <div className="absolute inset-0 flex flex-col justify-end">
               {/* Mobile Title/Subtitle Overlay - More gap from navbar */}
               <div className="absolute top-24 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
+                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
                   Design für dich gemacht
                 </h1>
                 <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
@@ -223,7 +223,7 @@ export default function EntdeckenClient() {
         <section id="zuhause-zieht-um" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Dein Zuhause zieht um
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
@@ -308,7 +308,7 @@ export default function EntdeckenClient() {
         <section id="ablauf" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 So läuft es ab
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
@@ -330,7 +330,7 @@ export default function EntdeckenClient() {
         <section id="grundstueck-check" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Konfiguriere dein Zuhause
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
@@ -353,7 +353,7 @@ export default function EntdeckenClient() {
         <section id="planungspakete" className="w-full py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">

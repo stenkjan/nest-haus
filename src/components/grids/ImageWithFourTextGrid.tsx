@@ -80,7 +80,7 @@ export default function ImageWithFourTextGrid({
     return (
       <div className={`${containerClasses} ${backgroundClasses} py-8`}>
         <div className="text-center mb-24">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
             {title}
           </h1>
           {subtitle && (
@@ -110,7 +110,7 @@ export default function ImageWithFourTextGrid({
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
         <div className="text-center mb-24 px-4 md:px-8">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
             {title}
           </h1>
           {subtitle && (

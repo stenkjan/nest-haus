@@ -115,7 +115,7 @@ export default function TwoByTwoImageGrid({
     return (
       <div className={containerClasses}>
         <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
             {title}
           </h1>
           {subtitle && (
@@ -145,7 +145,7 @@ export default function TwoByTwoImageGrid({
           isClient && screenWidth < 1024 ? "px-4" : ""
         }`}
       >
-        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
           {title}
         </h1>
         {subtitle && (

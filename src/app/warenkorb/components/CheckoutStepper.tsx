@@ -906,15 +906,15 @@ export default function CheckoutStepper({
             <div className="pt-4 md:pt-6 pb-2 md:pb-3">
               <div className="flex items-start justify-between gap-4">
                 <div className="text-left">
-                  <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
                     {getAppointmentSummary()
                       ? "Garantierter Liefertermin"
                       : "Liefertermin"}
-                  </div>
+                  </h1>
                 </div>
                 <div className="text-right">
                   {getAppointmentSummary() ? (
-                    <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
                       {deliveryDateString}
                     </div>
                   ) : (
@@ -936,7 +936,7 @@ export default function CheckoutStepper({
             </div>
           ) : (
             <div className="text-center mb-8">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3 text-gray-900 whitespace-pre-line">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3 text-gray-900 whitespace-pre-line">
                 {stepIndex === 0 ? "Bereit einzuziehen?" : c.title}
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center whitespace-pre-line">
@@ -1564,7 +1564,7 @@ export default function CheckoutStepper({
             <div className="space-y-4 pt-8">
               {/* Process Steps Title Section */}
               <div className="text-center mb-16">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                   Step by Step nach Hause
                 </h1>
                 <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
@@ -1666,9 +1666,9 @@ export default function CheckoutStepper({
               {/* Grundstückscheck Form Section */}
               <div className="mt-16">
                 <div className="text-center mb-8 pt-8">
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                     Deine Daten
-                  </h2>
+                  </h1>
                   <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
                     Wir Prüfen deinen Baugrund
                   </h3>
@@ -1760,9 +1760,9 @@ export default function CheckoutStepper({
               {/* Title row replaced above - keep spacing consistent */}
               {/* Deine Auswahl Title */}
               <div className="pt-2"></div>
-              <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
                 Deine Auswahl:
-              </div>
+              </h1>
               <div className="pb-2"></div>
 
               <div className="space-y-4">
@@ -1951,9 +1951,9 @@ export default function CheckoutStepper({
 
               {/* Teilzahlungen Title */}
               <div className="border-t border-gray-200 pt-2"></div>
-              <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
                 Teilzahlungen:
-              </div>
+              </h1>
               <div className="border-b border-gray-200 pb-2"></div>
 
               {/* Instalment Breakdown */}
@@ -2074,13 +2074,13 @@ export default function CheckoutStepper({
               <div className="border-t border-gray-200 pt-2"></div>
               <div className="flex items-start justify-between gap-4 py-3">
                 <div className="text-left">
-                  <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
                     Heute zu bezahlen
-                  </div>
+                  </h1>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-gray-900">
+                  <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
                     {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
