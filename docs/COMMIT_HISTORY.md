@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [986ad4132176d306df9b95e65b77667ae94ea513] - Thu Sep 11 10:06:19 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update image grid caching and positioning for improved performance  - Modified the TwoByTwoImageGrid component to enable caching for all images. - Adjusted the object position for the first image to enhance visual presentation.  These changes aim to optimize image loading and display within the grid.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/grids/TwoByTwoImageGrid.tsx
+
+
+---
+
 ## [fb9e745906c87a53bb756596a606a79e6920594b] - Thu Sep 11 09:29:16 2025 +0200
 
 **Author**: stenkjan
