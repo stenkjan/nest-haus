@@ -226,7 +226,7 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 3 - Dein Zuhause zieht um */}
-        <section id="zuhause-zieht-um" className="w-full py-16">
+        <section id="zuhause-zieht-um" className="w-full py-8 md:py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
@@ -249,7 +249,7 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 4 - Cards */}
-        <section id="cards" className="w-full py-16 bg-white">
+        <section id="cards" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full">
             <TwoByTwoImageGrid
               title=""
@@ -311,13 +311,13 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 5 - So läuft es ab */}
-        <section id="ablauf" className="w-full py-16 bg-white">
+        <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 So läuft es ab
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 md:mb-16">
                 Der Weg zu deinem Nest Haus
               </h3>
             </div>
@@ -333,9 +333,12 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 6 - Grundstück Check */}
-        <section id="grundstueck-check" className="w-full py-16 bg-white">
+        <section
+          id="grundstueck-check"
+          className="w-full py-8 md:py-16 bg-white"
+        >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12 md:mb-16">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Konfiguriere dein Zuhause
               </h1>
@@ -356,9 +359,9 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 7 - Planungspakete */}
-        <section id="planungspakete" className="w-full py-16 bg-white">
+        <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12 md:mb-16">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
@@ -368,15 +371,17 @@ export default function EntdeckenClient() {
               </h3>
             </div>
 
-            <PlanungspaketeCards
-              title=""
-              subtitle=""
-              maxWidth={false}
-              showInstructions={false}
-            />
+            <div className="mt-4 md:mt-0">
+              <PlanungspaketeCards
+                title=""
+                subtitle=""
+                maxWidth={false}
+                showInstructions={false}
+              />
+            </div>
 
             {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-16">
+            <div className="flex gap-4 justify-center w-full mt-12 md:mt-16">
               <Button variant="primary" size="xs">
                 Die Pakete
               </Button>
@@ -388,7 +393,7 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 8 - Partners */}
-        <section id="partners" className="w-full py-16 bg-white">
+        <section id="partners" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <PartnersSection backgroundColor="white" showButtons={true} />
           </div>
