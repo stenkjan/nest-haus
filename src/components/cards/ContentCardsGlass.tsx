@@ -437,7 +437,11 @@ export default function ContentCardsGlass({
             } ${maxWidth ? "px-8" : "px-4"} ${
               isStatic ? "" : "cursor-grab active:cursor-grabbing"
             }`}
-            style={{ overflow: "visible" }}
+            style={{
+              overflow: "visible",
+              // Ensure vertical scrolling works on mobile
+              touchAction: screenWidth < 1024 ? "pan-y pinch-zoom" : "auto",
+            }}
           >
             <motion.div
               className={`flex gap-6 ${isStatic ? "justify-center" : ""}`}

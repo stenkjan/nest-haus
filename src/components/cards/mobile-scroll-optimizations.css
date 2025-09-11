@@ -34,8 +34,8 @@
 
 /* Touch gesture improvements */
 .cards-touch-optimized {
-    touch-action: pan-x;
-    /* Only allow horizontal panning */
+    touch-action: pan-y pinch-zoom;
+    /* Allow vertical panning and pinch zoom, prevent horizontal panning */
     user-select: none;
     /* Prevent text selection during dragging */
     -webkit-user-select: none;

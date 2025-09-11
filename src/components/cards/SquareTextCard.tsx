@@ -723,7 +723,7 @@ export default function SquareTextCard({
             }}
           >
             <motion.div
-              className="flex gap-3"
+              className="flex gap-6"
               style={{
                 x,
                 width:
@@ -845,6 +845,23 @@ export default function SquareTextCard({
                           {getCardText(card, "description")}
                         </motion.p>
 
+                        {/* Close instruction text for expanded cards - Now in normal flow */}
+                        <motion.div
+                          className="text-center mt-6 pointer-events-none"
+                          animate={{
+                            opacity: isMobile && allCardsExpanded ? 1 : 0,
+                            height: isMobile && allCardsExpanded ? "auto" : 0,
+                          }}
+                          transition={{
+                            duration: 0.3,
+                            delay: isMobile && allCardsExpanded ? 0.3 : 0,
+                          }}
+                        >
+                          <p className="text-xs text-gray-500">
+                            drücken zum schließen
+                          </p>
+                        </motion.div>
+
                         {/* Blur gradient overlay for mobile when collapsed */}
                         <motion.div
                           className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
@@ -859,22 +876,6 @@ export default function SquareTextCard({
                             ease: [0.25, 0.46, 0.45, 0.94],
                           }}
                         />
-
-                        {/* Close instruction text for expanded cards */}
-                        <motion.div
-                          className="absolute bottom-2 left-0 right-0 text-center pointer-events-none"
-                          animate={{
-                            opacity: isMobile && allCardsExpanded ? 1 : 0,
-                          }}
-                          transition={{
-                            duration: 0.3,
-                            delay: isMobile && allCardsExpanded ? 0.3 : 0,
-                          }}
-                        >
-                          <p className="text-xs text-gray-500">
-                            drücken zum schließen
-                          </p>
-                        </motion.div>
                       </motion.div>
                     </div>
                   </motion.div>

@@ -13,6 +13,7 @@ interface ClientBlobVideoProps {
   playbackRate?: number; // Playback speed (1.0 = normal, 0.5 = half speed, 2.0 = double speed)
   onLoad?: () => void; // Success callback
   onError?: (error: Error) => void; // Error callback
+  onStop?: () => void; // Stop callback
   quality?: number; // Video quality (not used but for consistency)
   priority?: boolean; // For consistency with image components
   fallbackSrc?: string; // Fallback video URL
@@ -151,6 +152,7 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
   playbackRate = 1.0,
   onLoad,
   onError,
+  onStop,
   fallbackSrc,
   enableCache = true,
 }) => {
@@ -229,6 +231,33 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     resolveVideoUrl();
   }, [resolveVideoUrl]);
 
+  // Method to gracefully stop video
+  const stopVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      if (onStop) {
+        onStop();
+      }
+    }
+  }, [onStop]);
+
+  // Cleanup on unmount to prevent errors
+  useEffect(() => {
+    return () => {
+      const video = videoRef.current;
+      if (video) {
+        // Pause video and clear source to prevent playback errors
+        video.pause();
+        video.removeAttribute("src");
+        video.load(); // Reset video element
+        if (onStop) {
+          onStop();
+        }
+      }
+    };
+  }, [onStop]);
+
   // Handle successful video load
   const handleVideoLoad = useCallback(() => {
     if (onLoad) {
@@ -236,31 +265,38 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     }
   }, [onLoad]);
 
-  // Handle video errors
+  // Handle video errors gracefully
   const handleVideoError = useCallback(
     (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
       const videoError = e.currentTarget.error;
       const errorMessage = videoError?.message || "Unknown error";
       const videoSrc = e.currentTarget.src;
 
-      console.error("🎥 Video error details:", {
-        message: errorMessage,
-        code: videoError?.code,
-        src: videoSrc,
-        path: path,
-        networkState: e.currentTarget.networkState,
-        readyState: e.currentTarget.readyState,
-      });
+      // Log error details for debugging (only in development)
+      if (process.env.NODE_ENV === "development") {
+        console.warn("🎥 Video error details:", {
+          message: errorMessage,
+          code: videoError?.code,
+          src: videoSrc,
+          path: path,
+          networkState: e.currentTarget.networkState,
+          readyState: e.currentTarget.readyState,
+        });
+      }
 
       // Check if this is a DEMUXER_ERROR_COULD_NOT_OPEN error
       if (errorMessage.includes("DEMUXER_ERROR_COULD_NOT_OPEN")) {
-        console.warn(
-          "🔧 DEMUXER error detected - video file may be corrupted or inaccessible"
-        );
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            "🔧 DEMUXER error detected - video file may be corrupted or inaccessible"
+          );
+        }
 
         // Try fallback if available
         if (fallbackSrc && videoSrc !== fallbackSrc) {
-          console.log("🔄 Attempting fallback video source");
+          if (process.env.NODE_ENV === "development") {
+            console.log("🔄 Attempting fallback video source");
+          }
           switchToFallback();
           return;
         }
@@ -269,37 +305,60 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
       // Check if this is an audio decoding error that we can ignore for video-only content
       if (
         errorMessage.includes("audio packet") ||
-        errorMessage.includes("PIPELINE_ERROR_DECODE")
+        errorMessage.includes("PIPELINE_ERROR_DECODE") ||
+        errorMessage.includes("CHUNK_DEMUXER_ERROR")
       ) {
-        console.warn(
-          "🔇 Audio decoding issue detected, continuing with video-only playback:",
-          errorMessage
-        );
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            "🔇 Audio/demux issue detected, silently continuing:",
+            errorMessage
+          );
+        }
 
-        // Try to continue playback without audio
+        // Try to continue playback without audio, but don't show errors
         const video = e.currentTarget;
         if (video && autoPlay) {
           setTimeout(() => {
             video.play().catch(() => {
-              // If still fails, set error
-              const error = new Error(`Video playback failed: ${errorMessage}`);
-              setError(error);
-              if (onError) onError(error);
+              // Silently fail - don't show error to user
+              if (process.env.NODE_ENV === "development") {
+                console.warn("🎥 Video playback failed silently");
+              }
             });
           }, 100);
+        }
+        return; // Don't set error state or call onError
+      }
+
+      // For network errors or loading issues, try fallback silently
+      if (
+        errorMessage.includes("NETWORK_ERROR") ||
+        errorMessage.includes("SRC_NOT_SUPPORTED") ||
+        videoError?.code === 3 || // MEDIA_ERR_DECODE
+        videoError?.code === 4 // MEDIA_ERR_SRC_NOT_SUPPORTED
+      ) {
+        if (fallbackSrc && videoSrc !== fallbackSrc) {
+          if (process.env.NODE_ENV === "development") {
+            console.log(
+              "🔄 Network/decode error: switching to fallback silently"
+            );
+          }
+          switchToFallback();
+          return;
+        }
+
+        // If no fallback, silently fail without showing error
+        if (process.env.NODE_ENV === "development") {
+          console.warn("🎥 Video failed to load, no fallback available");
         }
         return;
       }
 
-      // For any other error type, attempt fallback if provided
-      if (fallbackSrc && videoSrc !== fallbackSrc) {
-        console.log("🔄 Generic error: switching to fallback video source");
-        switchToFallback();
-        return;
-      }
-
+      // Only show errors for critical issues that need user attention
       const error = new Error(`Video playback failed: ${errorMessage}`);
-      console.error("🎥 Video error:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("🎥 Critical video error:", error);
+      }
 
       setError(error);
       if (onError) {

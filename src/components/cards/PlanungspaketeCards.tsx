@@ -976,7 +976,7 @@ export default function PlanungspaketeCards({
           className="p-0"
         >
           <div
-            className="w-full h-full flex items-center justify-center overflow-y-auto ios-dialog-container"
+            className="w-full h-full flex items-center justify-center p-2 md:p-8 overflow-y-auto ios-dialog-container"
             style={getIOSViewportStyles(viewport)}
           >
             <div className="w-full max-w-none my-4">

@@ -181,7 +181,7 @@ export default function TwoByTwoImageGrid({
                 className="object-cover object-center"
                 strategy="client"
                 isInteractive={true}
-                enableCache={true}
+                enableCache={item.id !== 1} // Disable cache for first image to test
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 quality={85}
               />
