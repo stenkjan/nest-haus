@@ -231,26 +231,15 @@ const ClientBlobVideo: React.FC<ClientBlobVideoProps> = ({
     resolveVideoUrl();
   }, [resolveVideoUrl]);
 
-  // Method to gracefully stop video
-  const stopVideo = useCallback(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.pause();
-      if (onStop) {
-        onStop();
-      }
-    }
-  }, [onStop]);
-
   // Cleanup on unmount to prevent errors
   useEffect(() => {
+    const currentVideo = videoRef.current; // Capture ref value
     return () => {
-      const video = videoRef.current;
-      if (video) {
+      if (currentVideo) {
         // Pause video and clear source to prevent playback errors
-        video.pause();
-        video.removeAttribute("src");
-        video.load(); // Reset video element
+        currentVideo.pause();
+        currentVideo.removeAttribute("src");
+        currentVideo.load(); // Reset video element
         if (onStop) {
           onStop();
         }
