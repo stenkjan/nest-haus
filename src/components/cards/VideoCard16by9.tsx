@@ -20,7 +20,7 @@ interface VideoCard16by9Props {
 
 // Fixed sizing system to ensure text area (1/3) has adequate space for content
 // Desktop: Text takes 1/3 width, video takes 2/3 width with 16:9 ratio
-// Mobile: Stacked layout with proper proportions
+// Mobile: Stacked layout with natural content height
 const getCardDimensions = (screenWidth: number) => {
   // Calculate height based on video area width (2/3 of card) + consistent padding
   // Formula: (video_width / 16 * 9) + 30px padding = card_height
@@ -46,9 +46,9 @@ const getCardDimensions = (screenWidth: number) => {
     const videoHeight = (videoWidth / 16) * 9; // 450px
     return { width: cardWidth, height: videoHeight + 30 }; // 480px
   } else if (screenWidth >= 768) {
-    return { width: 336, height: 720 }; // Tablet: Keep mobile stacked layout
+    return { width: 336, height: undefined }; // Tablet: Use natural height
   } else {
-    return { width: 312, height: 720 }; // Mobile: Keep mobile stacked layout
+    return { width: 312, height: undefined }; // Mobile: Use natural height
   }
 };
 
@@ -170,7 +170,9 @@ export default function VideoCard16by9({
                 style={{
                   backgroundColor: card.backgroundColor,
                   width: getCardDimensions(screenWidth).width,
-                  height: getCardDimensions(screenWidth).height,
+                  ...(getCardDimensions(screenWidth).height && {
+                    height: getCardDimensions(screenWidth).height,
+                  }),
                 }}
               >
                 {/* Responsive Layout */}
@@ -178,7 +180,11 @@ export default function VideoCard16by9({
                   // Desktop: Wide layout (Text left, Video right with 16:9 aspect ratio)
                   <div
                     className="flex items-stretch"
-                    style={{ height: getCardDimensions(screenWidth).height }}
+                    style={{
+                      ...(getCardDimensions(screenWidth).height && {
+                        height: getCardDimensions(screenWidth).height,
+                      }),
+                    }}
                   >
                     {/* Text Content - Same width as content cards (1/3) */}
                     <div className="w-1/3 flex flex-col justify-center items-start text-left px-8 py-6">
@@ -212,8 +218,8 @@ export default function VideoCard16by9({
                                 button.variant === "primary"
                                   ? "primary-narrow"
                                   : button.variant === "secondary"
-                                  ? "secondary-narrow-blue"
-                                  : button.variant;
+                                    ? "secondary-narrow-blue"
+                                    : button.variant;
 
                               return button.link ? (
                                 <Link
@@ -276,12 +282,9 @@ export default function VideoCard16by9({
                   </div>
                 ) : (
                   // Mobile/Tablet: Stacked layout (Text top, Video bottom with 1:1 aspect ratio)
-                  <div
-                    className="flex flex-col"
-                    style={{ height: getCardDimensions(screenWidth).height }}
-                  >
-                    {/* Text Content - Top Half */}
-                    <div className="h-1/2 flex flex-col justify-center items-center text-center p-6">
+                  <div className="flex flex-col">
+                    {/* Text Content - Natural height with padding */}
+                    <div className="flex flex-col justify-center items-center text-center p-6">
                       <motion.div
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -290,13 +293,13 @@ export default function VideoCard16by9({
                       >
                         <h2
                           className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
-                            card.subtitle ? "mb-1" : "mb-6"
+                            card.subtitle ? "mb-1" : "mb-4"
                           }`}
                         >
                           {getCardText(card, "title")}
                         </h2>
                         {card.subtitle && (
-                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-3">
                             {getCardText(card, "subtitle")}
                           </h3>
                         )}
@@ -307,8 +310,8 @@ export default function VideoCard16by9({
                       </motion.div>
                     </div>
 
-                    {/* Video Content - Bottom Half with 1:1 aspect ratio */}
-                    <div className="h-1/2 relative overflow-hidden p-[15px] flex items-center justify-center">
+                    {/* Video Content - Natural height with small padding gap */}
+                    <div className="relative overflow-hidden p-3 flex items-center justify-center">
                       <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
