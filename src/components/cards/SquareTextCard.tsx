@@ -890,7 +890,7 @@ export default function SquareTextCard({
           <button
             onClick={() => navigateCard(-1)}
             disabled={isAnimating}
-            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+            className={`absolute transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
               screenWidth < 1024 ? "p-3" : "p-4"
             }`}
             style={{
@@ -898,6 +898,11 @@ export default function SquareTextCard({
                 screenWidth < 1024
                   ? `max(24px, calc(50% - ${cardWidth / 2 + 30}px))`
                   : `calc(50% - ${cardWidth / 2 + 60}px)`,
+              top:
+                screenWidth < 1024 && allCardsExpanded
+                  ? `calc(50% - 80px)`
+                  : "50%",
+              transition: "all 0.4s ease",
             }}
           >
             <svg
@@ -920,7 +925,7 @@ export default function SquareTextCard({
           <button
             onClick={() => navigateCard(1)}
             disabled={isAnimating}
-            className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+            className={`absolute transform -translate-y-1/2 -translate-x-1/2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
               screenWidth < 1024 ? "p-3" : "p-4"
             }`}
             style={{
@@ -930,6 +935,11 @@ export default function SquareTextCard({
                       cardWidth / 2 + 30
                     }px))`
                   : `calc(50% + ${cardWidth / 2 + 60}px)`,
+              top:
+                screenWidth < 1024 && allCardsExpanded
+                  ? `calc(50% - 80px)`
+                  : "50%",
+              transition: "all 0.4s ease",
             }}
           >
             <svg
