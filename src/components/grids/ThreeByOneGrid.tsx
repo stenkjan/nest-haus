@@ -83,7 +83,7 @@ export default function ThreeByOneGrid({
   if (!isClient) {
     return (
       <div className={`${containerClasses} ${backgroundClasses} py-8`}>
-        <div className="text-center mb-24">
+        <div className="text-center mb-8 md:mb-16">
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
             {title}
           </h1>
@@ -113,7 +113,7 @@ export default function ThreeByOneGrid({
     <div className={`${backgroundClasses} py-8`}>
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
-        <div className="text-center mb-24 px-4 md:px-8">
+        <div className="text-center mb-12 md:mb-16 px-4 md:px-8">
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
             {title}
           </h1>

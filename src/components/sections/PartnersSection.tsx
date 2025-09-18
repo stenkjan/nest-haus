@@ -98,10 +98,12 @@ export function PartnersSection({
     backgroundColor === "black" ? "text-gray-300" : "text-gray-600";
 
   return (
-    <section className={`w-full py-16 ${backgroundClasses} ${className}`}>
+    <section
+      className={`w-full py-8 md:py-16 ${backgroundClasses} ${className}`}
+    >
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <h1
             className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold ${titleColor} mb-2 md:mb-3`}
           >
@@ -119,7 +121,11 @@ export function PartnersSection({
           {partners.map((partner) => (
             <div
               key={partner.id}
-              className="flex items-center justify-center w-full h-20 md:h-24 lg:h-28"
+              className={`flex items-center justify-center w-full ${
+                partner.id === "tu-graz"
+                  ? "h-20 md:h-24 lg:h-28"
+                  : "h-10 md:h-24 lg:h-28"
+              }`}
             >
               <HybridBlobImage
                 path={partner.path}

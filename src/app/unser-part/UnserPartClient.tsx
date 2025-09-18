@@ -176,7 +176,7 @@ export default function UnserPartClient() {
           />
 
           {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
-          <div className="pt-4 pb-8">
+          <div className="pt-4">
             <ThreeByOneGrid
               title=""
               subtitle=""
@@ -193,12 +193,12 @@ export default function UnserPartClient() {
         </section>
 
         {/* Materialien Section */}
-        <section id="materialien" className="pt-20 pb-8">
+        <section id="materialien" className="pt-16">
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
               Gut für Dich, besser für die Zukunft
             </h1>
-            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300 mb-8">
+            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300">
               Entdecke unsere sorgfältig ausgewählten Materialien
             </h3>
           </div>
@@ -224,7 +224,6 @@ export default function UnserPartClient() {
           />
 
           {/* ThreeByOneGrid - Left Position (Bottom Section) */}
-          <div className="pt-4 pb-8">
             <ThreeByOneGrid
               title=""
               subtitle=""
@@ -237,10 +236,8 @@ export default function UnserPartClient() {
               image1Description="Fenster und Türen Einbau Positionierung"
               image2Description="Mittelmodul Liniengrafik Fenster und Türen"
             />
-          </div>
 
           {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-          <div className="pt-4 pb-20">
             <ThreeByOneGrid
               title=""
               subtitle=""
@@ -256,11 +253,10 @@ export default function UnserPartClient() {
               primaryButtonText="Die Pakete"
               secondaryButtonText="Jetzt bauen"
             />
-          </div>
         </section>
 
         {/* FullWidthImageGrid - Raum zum Träumen (moved to individualisierung) */}
-        <section id="individualisierung" className="pt-20 pb-8">
+        <section id="individualisierung" className="md:pt-16 pb-8">
           <FullWidthImageGrid
             title="Raum zum Träumen"
             subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
@@ -270,7 +266,7 @@ export default function UnserPartClient() {
             maxWidth={false}
           />
           {/* Button Combo After Component */}
-          <div className="flex gap-4 justify-center w-full">
+          <div className="flex gap-4 md:mt-8 md:mb-8 justify-center w-full">
             <Link href="/dein-part">
               <Button variant="primary" size="xs">
                 Dein Part
@@ -285,7 +281,7 @@ export default function UnserPartClient() {
         </section>
 
         {/* Planungspakete Section */}
-        <section id="planungspakete" className="w-full pt-28 pb-16 bg-white">
+        <section id="planungspakete" className="w-full pt-16 pb-10 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
@@ -305,7 +301,7 @@ export default function UnserPartClient() {
             />
 
             {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-16 mb-8">
+            <div className="flex gap-4 justify-center w-full mt-10 mb-6">
               <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>

@@ -117,11 +117,11 @@ export default function DeinPartClient() {
             className="w-full pt-12 pb-4 bg-black"
           >
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
+              <div className="text-center mb-8 md:mb-12">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
                   Dein Raum zum Träumen
                 </h1>
-                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300 mb-8">
+                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300 md:mb-8">
                   Weil nur du weißt, wie du richtig wohnst.
                 </h3>
               </div>
@@ -151,7 +151,7 @@ export default function DeinPartClient() {
           </section>
 
           {/* Section 4 - Hier beginnt Freiheit */}
-          <section id="freiheit" className="w-full py-16 bg-black">
+          <section id="freiheit" className="w-full bg-black">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <FullWidthTextGrid
                 title="Hier beginnt Freiheit"
@@ -163,30 +163,28 @@ export default function DeinPartClient() {
               />
 
               {/* ImageGlassCard */}
-              <div className="mt-16">
-                <ImageGlassCard backgroundColor="black" maxWidth={false} />
+              <ImageGlassCard backgroundColor="black" maxWidth={false} />
 
-                {/* Additional Button Combination */}
-                <div className="flex gap-4 justify-center w-full mt-8">
-                  <Button
-                    variant="primary"
-                    size="xs"
-                    onClick={openPlanungspakete}
-                  >
-                    Die Pakete
+              {/* Additional Button Combination */}
+              <div className="flex gap-4 justify-center w-full">
+                <Button
+                  variant="primary"
+                  size="xs"
+                  onClick={openPlanungspakete}
+                >
+                  Die Pakete
+                </Button>
+                <Link href="/konfigurator">
+                  <Button variant="landing-secondary-blue" size="xs">
+                    Jetzt bauen
                   </Button>
-                  <Link href="/konfigurator">
-                    <Button variant="landing-secondary-blue" size="xs">
-                      Jetzt bauen
-                    </Button>
-                  </Link>
-                </div>
+                </Link>
               </div>
             </div>
           </section>
 
           {/* Section 5 - Die Installationsebene */}
-          <section id="installationsebene" className="w-full py-16 bg-black">
+          <section id="installationsebene" className="w-full py-8 bg-black">
             <ImageWithFourTextGrid
               title="Konzipiert für deine Ideen"
               subtitle="Leitungen verlegen muss nicht immer kompliziert sein."
@@ -207,7 +205,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Wohnfläche erweitern Section */}
-          <section id="wohnflaeche-erweitern" className="w-full py-16 bg-black">
+          <section id="wohnflaeche-erweitern" className="w-full py-4 bg-black">
             <ThreeByOneGrid
               title="Wohnfläche erweitern?"
               subtitle="Kein Problem."
@@ -223,7 +221,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Flexibilität Section */}
-          <section id="flexibilitaet" className="w-full py-16 bg-black">
+          <section id="flexibilitaet" className="w-full py-8 bg-black">
             <ThreeByOneGrid
               title="Ob Decke einziehen, oder Haus erweitern."
               subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
@@ -239,13 +237,13 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Planungspakete Section - Unterstützung gefällig? */}
-          <section id="planungspakete" className="w-full pt-28 pb-16 bg-white">
+          <section id="planungspakete" className="w-full pt-16 pb-8 bg-white">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
+              <div className="text-center mb-8">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                   Unterstützung gefällig?
                 </h1>
-                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600">
                   Entdecke unsere Planungs-Pakete, um das Beste für dich und
                   dein Nest rauszuholen.
                 </h3>
@@ -259,7 +257,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               />
 
               {/* Button Combo After Component */}
-              <div className="flex gap-4 justify-center w-full mt-16 mb-8">
+              <div className="flex gap-4 justify-center w-full mt-4 mb-8">
                 <Button
                   variant="primary"
                   size="xs"
