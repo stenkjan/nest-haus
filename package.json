@@ -8,7 +8,8 @@
     "dev:network": "node scripts/start-dev.js",
     "dev:all": "next dev --hostname 0.0.0.0",
     "build": "npx prisma generate && next build",
-    "build:windows": "taskkill /f /im node.exe 2>nul & timeout /t 2 & npx prisma generate && next build",
+    "build:analyze": "ANALYZE=true npm run build",
+    "build:analyze:windows": "set ANALYZE=true && npm run build",
     "postinstall": "npx prisma generate",
     "start": "next start",
     "lint": "next lint",
@@ -60,6 +61,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.5.3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

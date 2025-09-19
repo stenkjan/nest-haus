@@ -219,7 +219,7 @@ export class PerformanceMonitor {
 
 #### **Priority 2: Advanced Caching Strategy**
 
-```typescript
+```typescriptn
 // 6. Multi-Level Caching
 // File: src/lib/cache/CacheManager.ts
 export class CacheManager {

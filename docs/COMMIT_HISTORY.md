@@ -4,6 +4,59 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7f7a25569019a90ff20e3bdc3b672821705d0638] - Fri Sep 19 09:46:10 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branches 'main' and 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/MaterialShowcase.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/CURRENT_STATE_ANALYSIS_2025.md
+- docs/README.md
+
+
+---
+
+## [3b4cd6c9c9ad602336df81486d0f278536dcd594] - Thu Sep 18 13:16:58 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: adjust spacing and layout across multiple components for improved responsiveness  - Reduced margin and padding values in various sections to enhance visual consistency and responsiveness. - Updated class names and styles in components such as DeinPartClient, EntdeckenClient, and FullWidthTextGrid to ensure better alignment and spacing. - These changes aim to optimize the user experience across different devices and screen sizes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/MaterialShowcase.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/CURRENT_STATE_ANALYSIS_2025.md
+- docs/README.md
+
+
+---
+
 ## [43c9f940138f3187d40a7856c06bb78bf9eee399] - Mon Sep 15 13:35:48 2025 +0200
 
 **Author**: stenkjan

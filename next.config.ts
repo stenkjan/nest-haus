@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
 
+// Bundle analyzer for development
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig: NextConfig = {
   images: {
     // Enable SVG placeholders
@@ -38,15 +43,56 @@ const nextConfig: NextConfig = {
         tls: false,
         crypto: false,
       };
+
+      // CRITICAL: Bundle splitting to reduce main bundle size
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        minSize: 20000,
+        maxSize: 200000, // 200KB limit per chunk
+        cacheGroups: {
+          // Separate vendor libraries
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+            maxSize: 200000,
+          },
+          // Motion/Framer Motion in separate chunk
+          motion: {
+            test: /[\\/]node_modules[\\/](motion|framer-motion)[\\/]/,
+            name: 'motion',
+            chunks: 'all',
+            priority: 20,
+            maxSize: 150000,
+          },
+          // Prisma client separate
+          prisma: {
+            test: /[\\/]node_modules[\\/]@prisma[\\/]/,
+            name: 'prisma',
+            chunks: 'all',
+            priority: 20,
+            maxSize: 100000,
+          },
+          // Common components
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+            maxSize: 150000,
+          },
+        },
+      };
     }
-    
+
     // Ensure Prisma client is properly bundled for Vercel
     if (isServer) {
       config.externals = [...(config.externals || []), '_http_common'];
-      
+
       // Add Prisma plugin for Vercel deployment
       config.plugins = [...(config.plugins || []), new PrismaPlugin()];
-      
+
       // Ensure Prisma binaries are included in serverless functions
       config.resolve = {
         ...config.resolve,
@@ -56,12 +102,14 @@ const nextConfig: NextConfig = {
         },
       };
     }
-    
+
     return config;
   },
   experimental: {
     // Prevent webpack chunk issues
-    optimizePackageImports: ['@prisma/client'],
+    optimizePackageImports: ['@prisma/client', 'googleapis', 'motion', 'framer-motion'],
+    // Tree shake unused exports
+    optimizeServerReact: true,
   },
   // Allow cross-origin requests from local network
   async headers() {
@@ -79,4 +127,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
