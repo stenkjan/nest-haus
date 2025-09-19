@@ -232,7 +232,7 @@ export function generateSitemapData() {
 }
 
 // Helper function to generate structured data
-export function generateStructuredData(pageKey: PageKey, customData?: CustomMetadata) {
+export function generateStructuredData(pageKey: PageKey, _customData?: CustomMetadata) {
     const pageConfig = PAGE_SEO_CONFIG[pageKey];
     const baseConfig = SEO_CONFIG;
 
