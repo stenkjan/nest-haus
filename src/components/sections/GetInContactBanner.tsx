@@ -59,11 +59,11 @@ export function GetInContactBanner({
   return (
     <section
       id={id}
-      className={`w-full py-16 ${className}`}
+      className={`w-full py-12 ${className}`}
       style={{ backgroundColor }}
     >
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium text-gray-900 mb-2 md:mb-3">
             {title}
           </h1>

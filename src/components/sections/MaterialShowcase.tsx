@@ -38,7 +38,7 @@ export const MaterialShowcase = memo(function MaterialShowcase({
     return (
       <section
         id="materialien"
-        className={`w-full py-16 ${bgClass} ${className}`}
+        className={`w-full py86 ${bgClass} ${className}`}
       >
         {/* Only show header if title is provided */}
         {title && (
