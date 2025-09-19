@@ -4,6 +4,33 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [beccfe9688af0c96961726345f7ae87accc89a82] - Fri Sep 19 12:21:03 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/page.tsx
+- src/app/page.tsx
+- src/app/sitemap.ts
+- src/components/lazy/LazyComponents.ts
+- src/components/motion/MotionWrapper.tsx
+
+
+#### 🔧 Configuration Changes
+- next.config.ts
+- package.json
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/CURRENT_STATE_ANALYSIS_2025.md
+
+
+---
+
 ## [7f7a25569019a90ff20e3bdc3b672821705d0638] - Fri Sep 19 09:46:10 2025 +0200
 
 **Author**: stenkjan
