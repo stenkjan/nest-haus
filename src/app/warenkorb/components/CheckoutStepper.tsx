@@ -9,7 +9,7 @@ import {
   PLANNING_PACKAGES,
   GRUNDSTUECKSCHECK_PRICE,
 } from "@/constants/configurator";
-import { GrundstueckCheckForm } from "@/components/sections";
+import { GrundstueckCheckForm, ContactMap } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";
 import {
   planungspaketeCardData,
@@ -823,28 +823,28 @@ export default function CheckoutStepper({
         "Du hast dich für dein Nest-Haus entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
     },
     {
-      title: "Eine starke Basis",
-      subtitle: "Vorentwurf und Grundstückscheck",
+      title: "Der Ablauf",
+      subtitle: "Schritt für Schritt",
       description:
-        "Mit dem **Grundstückscheck** prüfen wir alle **relevanten Rahmenbedingungen** wie Bebauungsrichtlinien, Abstände, Zufahrten und Anschlüsse. So weißt du von Anfang an, womit du planen kannst und hast die **Sicherheit**, dass dein Projekt auf **soliden Grundlagen** steht.\n\nIm **Vorentwurf** legen wir gemeinsam die Position deiner Fenster und Türen fest. Schritt für Schritt entsteht so **ein Grundriss, der zu deinem Alltag passt**. All diese Leistungen sind Teil des **Planungspakets Basis**, das bereits **im Preis** deines Nest Hauses **enthalten ist**.",
+        "Damit aus deinem Vorentwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
     },
     {
-      title: "Unser Service",
+      title: "Die Planung",
       subtitle: "Unsere Planungspakete sind hier, um dich zu unterstützen!",
       description:
-        "Deine aktuelle **Konfiguration** enthält das **Paket Basis**. Dieses ist bereits im Preis deines Nest Hauses **inbegriffen** und bildet die Grundlage für den gesamten Prozess. \n\n Wenn sich deine Ansprüche im Laufe der Planung verändern, kannst du deine Auswahl jederzeit anpassen. Die zusätzlichen **Pakete Plus und Pro** bieten dir noch mehr Unterstützung auf dem Weg zu deinem neuen Zuhause.",
+        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Nest-Haus. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
     },
     {
-      title: "Termin vereinbaren",
-      subtitle: "Persönlich oder telefonisch – wie es dir am besten passt.",
+      title: "Dein individuelles Nest-Haus ",
+      subtitle: "Vereinbare dein Startgespräch mit dem Nest Team",
       description:
-        "Wähle **Datum und Uhrzeit** und entscheide, ob du ein **persönliches Gespräch** oder einen **Telefontermin** möchtest. Wir besprechen die Ergebnisse des **Grundstückschecks**, deine Auswahl und die nächsten Schritte. Der Termin ist kostenlos und unverbindlich.",
+        "Buche deinen **Termin** für ein persönliches **Startgespräch,** in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Vorentwurf** erarbeiten.\n\nDurch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Vorentwurf, der genau zu deinen Bedürfnissen passt.",
     },
     {
-      title: "Zusammenfassung & Anfrage",
-      subtitle: "Prüfe deine Angaben und sende deine Anfrage.",
+      title: "Bereit für Vorfreude?",
+      subtitle: "Dein Garantierter Liefertermin steht fest",
       description:
-        "Hier siehst du alle **Details deiner Auswahl** samt Preisen. Nach dem Absenden bestätigen wir alles schriftlich und klären offene Fragen. Bis zur finalen Freigabe entstehen dir **keine Bauverpflichtungen** und keine Kosten über unseren Service hinaus.",
+        "Hier findest du alle **Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um alle Angaben in Ruhe zu überprüfen. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der **Ausarbeitung deines Vorentwurfs** sowie der Überprüfung deines Grundstücks.\n\nSolltest du mit dem Vorentwurf **nicht zufrieden sein,** kannst du vom **Kauf** deines Nest-Hauses **zurücktreten.** In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf.",
     },
   ];
 
@@ -902,48 +902,14 @@ export default function CheckoutStepper({
     return (
       <div className="flex flex-col gap-6">
         <div className="w-full">
-          {stepIndex === 4 ? (
-            <div className="pt-4 md:pt-6 pb-2 md:pb-3">
-              <div className="flex items-start justify-between gap-4">
-                <div className="text-left">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
-                    {getAppointmentSummary()
-                      ? "Garantierter Liefertermin"
-                      : "Liefertermin"}
-                  </h1>
-                </div>
-                <div className="text-right">
-                  {getAppointmentSummary() ? (
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
-                      {deliveryDateString}
-                    </div>
-                  ) : (
-                    <div className="text-right">
-                      <div className="text-lg md:text-xl lg:text-2xl text-gray-600 font-medium">
-                        Zum Fortfahren bitte einen{" "}
-                        <button
-                          onClick={() => onStepChange?.(3)}
-                          className="underline hover:text-gray-700 transition-colors"
-                        >
-                          Termin vereinbaren
-                        </button>
-                        !
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3 text-gray-900 whitespace-pre-line">
-                {stepIndex === 0 ? "Bereit einzuziehen?" : c.title}
-              </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center whitespace-pre-line">
-                {stepIndex === 0 ? "Liefergarantie von 6 Monaten" : c.subtitle}
-              </h3>
-            </div>
-          )}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3 text-gray-900 whitespace-pre-line">
+              {stepIndex === 0 ? "Bereit einzuziehen?" : c.title}
+            </h1>
+            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center whitespace-pre-line">
+              {stepIndex === 0 ? "Liefergarantie von 6 Monaten" : c.subtitle}
+            </h3>
+          </div>
           <div className="w-full"></div>
         </div>
         {/* Timeline directly after title/subtitle */}
@@ -953,20 +919,34 @@ export default function CheckoutStepper({
             {stepIndex === 0 ? (
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left">
                 <p>
-                  Du hast dich für {""}
-                  <span className="text-black">dein Nest-Haus</span> {""}
-                  entschieden. In den nächsten Schritten klären wir gemeinsam,
-                  was wir von dir benötigen und was wir für dich übernehmen,
-                  damit {""}
-                  <span className="text-black">dein Zuhause genau so</span> {""}
-                  wird, wie du es dir wünschst.
+                  <span className="text-gray-500">
+                    Dein Nest-Haus beginnt mit deinem
+                  </span>{" "}
+                  <span className="text-black">
+                    Vorentwurf und der Überprüfung deines Grundstücks.
+                  </span>{" "}
+                  <span className="text-gray-500">
+                    Sobald du dich für dein Haus entschieden hast, klären wir
+                    gemeinsam die nächsten Schritte. Wir zeigen dir, welche
+                    Informationen und Unterlagen wir von dir benötigen und was
+                    wir für dich übernehmen, damit
+                  </span>{" "}
+                  <span className="text-black">dein Zuhause</span>{" "}
+                  <span className="text-gray-500">genau so entsteht,</span>{" "}
+                  <span className="text-black">wie du es dir wünschst.</span>
                 </p>
                 <p className="mt-6">
-                  <span className="text-black">Wir kümmern uns</span> um die
-                  Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst
-                  du nur für unseren Service – {""}
-                  <span className="text-black">keine Verpflichtung</span>, falls
-                  etwas nicht passt.
+                  <span className="text-gray-500">Während wir uns um alle</span>{" "}
+                  <span className="text-black">
+                    Rahmenbedingungen und rechtlichen Schritte
+                  </span>{" "}
+                  <span className="text-gray-500">
+                    kümmern, zahlst du lediglich für unseren Service. Gefällt
+                    dir unser Vorentwurf nicht, kannst du ohne Verpflichtung
+                  </span>{" "}
+                  <span className="text-black">
+                    einfach vom Kauf zurücktreten.
+                  </span>
                 </p>
               </div>
             ) : (
@@ -1667,7 +1647,7 @@ export default function CheckoutStepper({
               <div className="mt-16">
                 <div className="text-center mb-8 pt-8">
                   <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-                    Deine Daten
+                    Dein Grundstück - Unser Check
                   </h1>
                   <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
                     Wir Prüfen deinen Baugrund
@@ -1724,6 +1704,16 @@ export default function CheckoutStepper({
                 </div>
               </div>
 
+              {/* ContactMap */}
+              <div className="mt-16">
+                <ContactMap
+                  title="Wo du uns findest"
+                  subtitle="Komm vorbei um deinen Traum mit uns zu besprechen."
+                  backgroundColor="white"
+                  maxWidth={true}
+                />
+              </div>
+
               {/* Move the buttons here, directly below the Grundstückscheck section */}
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button
@@ -1755,11 +1745,277 @@ export default function CheckoutStepper({
           )}
 
           {stepIndex === 4 && (
-            <div className="space-y-4 pt-8">
-              <div className="pt-2"></div>
-              {/* Title row replaced above - keep spacing consistent */}
-              {/* Deine Auswahl Title */}
-              <div className="pt-2"></div>
+            <div className="space-y-6 pt-8">
+              {/* Configuration Overview Section - same as step 0 */}
+              <div className="flex flex-col lg:flex-row gap-8 items-start">
+                <div className="space-y-6 w-full max-w-[520px] lg:flex-none">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500">
+                    <span className="text-black">Dein Nest</span>
+                    <span className="text-gray-300"> Deine Konfiguration</span>
+                  </h2>
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="border border-gray-300 rounded-[19px] px-6 py-4"
+                    >
+                      <div className="flex items-center justify-between gap-4 py-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
+                            {getConfigurationTitle(item)}
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                            {(() => {
+                              // For configuration items with nest, show price per m²
+                              if (
+                                "totalPrice" in item &&
+                                (item as ConfigurationCartItem).nest
+                              ) {
+                                const configItem =
+                                  item as ConfigurationCartItem;
+                                const nestModel = configItem.nest?.value || "";
+                                const priceValue = configItem.nest?.price || 0;
+                                return PriceUtils.calculatePricePerSquareMeter(
+                                  priceValue,
+                                  nestModel
+                                );
+                              }
+                              // For other items, keep monthly payment
+                              const priceValue =
+                                "totalPrice" in item
+                                  ? (item as ConfigurationCartItem).totalPrice
+                                  : (item as CartItem).price;
+                              return `oder ${calculateMonthlyPayment(
+                                priceValue
+                              )} für 240 Monate`;
+                            })()}
+                          </div>
+                        </div>
+                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
+                          {PriceUtils.formatPrice(
+                            "totalPrice" in item &&
+                              (item as ConfigurationCartItem).nest
+                              ? (item as ConfigurationCartItem).nest?.price || 0
+                              : "totalPrice" in item
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        {(() => {
+                          const details = renderConfigurationDetails(item);
+                          const topAndMiddleItems = details.filter(
+                            (d) => !d.isBottomItem
+                          );
+                          const bottomItems = details.filter(
+                            (d) => d.isBottomItem
+                          );
+
+                          const renderDetailItem = (
+                            detail: {
+                              label: string;
+                              value: string;
+                              price: number;
+                              isIncluded: boolean;
+                              category: string;
+                              isBottomItem?: boolean;
+                            },
+                            idx: number
+                          ) => {
+                            if (!detail.value || detail.value === "—")
+                              return null;
+                            return (
+                              <div
+                                key={detail.category + "-" + idx}
+                                className="flex items-center justify-between gap-4 py-3"
+                              >
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
+                                    {detail.value}
+                                  </div>
+                                  <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1 break-words">
+                                    {detail.label}
+                                  </div>
+                                </div>
+                                <div className="text-right min-w-0">
+                                  {detail.isIncluded ||
+                                  (detail.price && detail.price === 0) ? (
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
+                                      inkludiert
+                                    </div>
+                                  ) : (
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                      {PriceUtils.formatPrice(
+                                        detail.price || 0
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          };
+
+                          return (
+                            <>
+                              {topAndMiddleItems.map(renderDetailItem)}
+                              {bottomItems.length > 0 && (
+                                <div>
+                                  {bottomItems.map((detail, idx) => (
+                                    <div key={detail.category + "-" + idx}>
+                                      {renderDetailItem(detail, idx)}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-6 w-full lg:flex-1 min-w-0">
+                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500">
+                    <span className="text-black">Dein Nest</span>
+                    <span className="text-gray-300">
+                      {" "}
+                      Ein Einblick in die Zukunft
+                    </span>
+                  </h2>
+                  {/* Configuration Image Gallery */}
+                  <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent">
+                    <div
+                      className="relative w-full"
+                      style={{ aspectRatio: "16/10" }}
+                    >
+                      <HybridBlobImage
+                        key={`${currentView}:${currentImagePath}`}
+                        path={currentImagePath}
+                        alt={`Konfiguration Vorschau – ${currentView}`}
+                        fill
+                        className="object-contain"
+                        strategy="client"
+                        isInteractive={true}
+                        sizes="(max-width: 1023px) 100vw, 70vw"
+                        quality={85}
+                        priority={true}
+                      />
+
+                      {/* PV Module Overlay - only show on exterior view when PV is selected */}
+                      {currentView === "exterior" &&
+                        sourceConfig?.pvanlage &&
+                        sourceConfig?.pvanlage?.quantity &&
+                        sourceConfig?.pvanlage?.quantity > 0 &&
+                        sourceConfig?.nest && (
+                          <PvModuleOverlay
+                            nestSize={
+                              sourceConfig.nest.value as
+                                | "nest80"
+                                | "nest100"
+                                | "nest120"
+                                | "nest140"
+                                | "nest160"
+                            }
+                            moduleCount={sourceConfig.pvanlage.quantity}
+                            isVisible={true}
+                            className=""
+                          />
+                        )}
+
+                      {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected */}
+                      {currentView === "exterior" &&
+                        sourceConfig?.belichtungspaket &&
+                        sourceConfig?.nest && (
+                          <BelichtungsPaketOverlay
+                            nestSize={
+                              sourceConfig.nest.value as
+                                | "nest80"
+                                | "nest100"
+                                | "nest120"
+                                | "nest140"
+                                | "nest160"
+                            }
+                            brightnessLevel={
+                              sourceConfig.belichtungspaket.value as
+                                | "light"
+                                | "medium"
+                                | "bright"
+                            }
+                            fensterMaterial={
+                              sourceConfig.fenster?.value === "pvc_fenster"
+                                ? "pvc"
+                                : sourceConfig.fenster?.value ===
+                                    "aluminium_weiss"
+                                  ? "aluminium_hell"
+                                  : sourceConfig.fenster?.value ===
+                                      "aluminium_schwarz"
+                                    ? "aluminium_dunkel"
+                                    : "holz" // Default to holz (preselected)
+                            }
+                            isVisible={true}
+                            className=""
+                          />
+                        )}
+
+                      {/* Fenster Overlay - only show on interior view when fenster is selected */}
+                      {currentView === "interior" && sourceConfig?.fenster && (
+                        <FensterOverlay
+                          fensterType={
+                            sourceConfig.fenster.value as
+                              | "pvc_fenster"
+                              | "holz"
+                              | "aluminium_schwarz"
+                              | "aluminium_weiss"
+                          }
+                          isVisible={true}
+                          className=""
+                        />
+                      )}
+
+                      {galleryViews.length > 1 && (
+                        <>
+                          <button
+                            type="button"
+                            aria-label="Vorheriges Bild"
+                            onClick={goPrevImage}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                          >
+                            ‹
+                          </button>
+                          <button
+                            type="button"
+                            aria-label="Nächstes Bild"
+                            onClick={goNextImage}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                          >
+                            ›
+                          </button>
+                        </>
+                      )}
+                    </div>
+                    {galleryViews.length > 1 && (
+                      <div className="flex items-center justify-center gap-2 py-2">
+                        {galleryViews.map((v, i) => (
+                          <button
+                            key={v + i}
+                            type="button"
+                            aria-label={`Wechsel zu Ansicht ${v}`}
+                            onClick={() => setGalleryIndex(i)}
+                            className={
+                              "w-2.5 h-2.5 rounded-full " +
+                              (i === galleryIndex
+                                ? "bg-blue-500"
+                                : "bg-gray-300")
+                            }
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
                 Deine Auswahl:
               </h1>
