@@ -118,7 +118,7 @@ export default function UnserPartClient() {
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-12">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
-                Dein Nest System
+                Das ®Nest System
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
@@ -181,7 +181,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="<span class='text-gray-400'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>Grundriss-gestaltung, Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span>"
+              text="<span class='text-gray-400'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-gray-400'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span>"
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}
@@ -224,35 +224,35 @@ export default function UnserPartClient() {
           />
 
           {/* ThreeByOneGrid - Left Position (Bottom Section) */}
-            <ThreeByOneGrid
-              title=""
-              subtitle=""
-              backgroundColor="black"
-              text="<span class='text-gray-400'>Sobald die Module geliefert sind, beginnt</span> dein Teil der Gestaltung. <span class='text-gray-400'>Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt</span> deinem Plan, <span class='text-gray-400'>jeder Schritt bringt dich</span> deinem Zuhause näher. <span class='text-gray-400'>Du bestimmst, wo</span> Licht einfällt, <span class='text-gray-400'>wo</span> Wege beginnen <span class='text-gray-400'>und wie dein</span> Raum sich öffnet. <span class='text-gray-400'>So entsteht nicht nur ein Haus, sondern</span> ein Ort, der ganz dir gehört."
-              textPosition="left"
-              maxWidth={false}
-              image1={IMAGES.function.nestHausFensterTuerenStirnseite}
-              image2={IMAGES.function.nestHausFensterTuerenAbschlussmodul}
-              image1Description="Fenster und Türen Einbau Positionierung"
-              image2Description="Mittelmodul Liniengrafik Fenster und Türen"
-            />
+          <ThreeByOneGrid
+            title=""
+            subtitle=""
+            backgroundColor="black"
+            text="<span class='text-gray-400'>Sobald die Module geliefert sind, beginnt</span> <span class='text-white font-medium'>dein Teil der Gestaltung. Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen</span> <span class='text-white font-medium'>ein.</span> <span class='text-gray-400'>Jeder Handgriff folgt deinem Plan, jeder Schritt bringt dich deinem Zuhause näher.</span> <span class='text-white font-medium'>Du bestimmst,</span> <span class='text-gray-400'>wo Licht einfällt, wo Wege beginnen und wie dein Raum sich öffnet. So entsteht nicht nur ein Haus, sondern</span> <span class='text-white font-medium'>ein Ort, der ganz dir gehört.</span>"
+            textPosition="left"
+            maxWidth={false}
+            image1={IMAGES.function.nestHausFensterTuerenStirnseite}
+            image2={IMAGES.function.nestHausFensterTuerenAbschlussmodul}
+            image1Description="Fenster und Türen Einbau Positionierung"
+            image2Description="Mittelmodul Liniengrafik Fenster und Türen"
+          />
 
           {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-            <ThreeByOneGrid
-              title=""
-              subtitle=""
-              backgroundColor="black"
-              text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>deine Vision Wirklichkeit werden zu lassen.</span>"
-              textPosition="right"
-              maxWidth={false}
-              image1={IMAGES.function.nestHausModulSeiteKonzept}
-              image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
-              image1Description="Modul Seitenansicht Holz Schema Konzept"
-              image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
-              showButtons={true}
-              primaryButtonText="Die Pakete"
-              secondaryButtonText="Jetzt bauen"
-            />
+          <ThreeByOneGrid
+            title=""
+            subtitle=""
+            backgroundColor="black"
+            text="<span class='text-gray-400'>Solltest du</span> <span class='text-white font-medium'>Unterstützung</span> <span class='text-gray-400'>bei der Planung benötigen, kannst du eines unserer</span> <span class='text-white font-medium'>Planungspakete</span> <span class='text-gray-400'>wählen. So erhältst du</span> <span class='text-white font-medium'>genau die Hilfe, die du brauchst,</span> <span class='text-gray-400'>um deine Vision Wirklichkeit werden zu lassen.</span>"
+            textPosition="right"
+            maxWidth={false}
+            image1={IMAGES.function.nestHausModulSeiteKonzept}
+            image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
+            image1Description="Modul Seitenansicht Holz Schema Konzept"
+            image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
+            showButtons={true}
+            primaryButtonText="Die Pakete"
+            secondaryButtonText="Jetzt bauen"
+          />
         </section>
 
         {/* FullWidthImageGrid - Raum zum Träumen (moved to individualisierung) */}
@@ -261,8 +261,8 @@ export default function UnserPartClient() {
             title="Raum zum Träumen"
             subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
             backgroundColor="black"
-            textBox1="<span class='text-gray-400'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> mit dem Nest System alles haben <span class='text-gray-400'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> maximale Freiheit ohne Kompromisse <span class='text-gray-400'>bietet. Durch</span> intelligente Standardisierung <span class='text-gray-400'>garantieren wir</span> höchste"
-            textBox2="Qualität, Langlebigkeit <span class='text-gray-400'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.</span>"
+            textBox1="<span class='text-gray-400'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> <span class='text-white font-medium'>mit dem Nest System alles haben</span> <span class='text-gray-400'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> <span class='text-white font-medium'>maximale Freiheit ohne Kompromisse</span> <span class='text-gray-400'>bietet. Durch</span> <span class='text-white font-medium'>intelligente Standardisierung</span> <span class='text-gray-400'>garantieren wir</span> <span class='text-white font-medium'>höchste</span>"
+            textBox2="Qualität, Langlebigkeit <span class='text-gray-400'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles.</span> <span class='text-white font-medium'>Heute bauen, morgen wohnen - Nest.</span>"
             maxWidth={false}
           />
           {/* Button Combo After Component */}

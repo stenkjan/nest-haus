@@ -53,40 +53,40 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     backgroundColor: "#F4F4F4",
     grayWord: "Basis",
     extendedDescription:
-      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
+      "Nachdem dein Vorentwurf abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
     mobileExtendedDescription:
-      "Mit dem Basispaket legst du den Grundstein für dein Nest-Haus. Rechtssicher, durchdacht und bereit für den nächsten Schritt. Wir übernehmen alle planerischen Leistungen, die für die behördliche Genehmigung notwendig sind und noch mehr. \n \n Was das für dich bedeutet? Kein Papierkram, keine Unsicherheiten, keine Stolpersteine. \n \n Wir erstellen die vollständige Einreichplanung, kümmern uns um die statischen Berechnungen, die Detailplanung und den Energieausweis. Auch die Anpassung an örtliche Bauvorschriften und klimatische Anforderungen übernehmen wir für dich. Die optimale Raumaufteilung ist dabei natürlich inklusive. \n \n Mit dem Planungspaket 01 bist du auf der sicheren Seite. Schnell, unkompliziert und professionell.",
+      "Nachdem dein Vorentwurf abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
   },
   {
     id: 2,
     title: "Planungspaket 02",
     subtitle: "Plus",
     description:
-      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau \n+Ausführungsplanung Elektrik",
+      "-Planungspaket Basis (Einreichplanung) \n +Haustechnik-Planung \n +Ausführungsplanung Innenausbau",
     mobileTitle: "Planungspaket 02",
     mobileSubtitle: "Plus",
     mobileDescription:
-      "-Alle Services aus dem Basis Paket  \n +Sanitärplanung Warm/Kalt/-Abwasser \n +Ausführungsplanung Innenausbau, Elektrik",
+      "-Planungspaket Basis (Einreichplanung) \n +Haustechnik-Planung \n +Ausführungsplanung Innenausbau",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
     price: "€15.900",
     monthlyPrice: "€97,00/Monat",
     backgroundColor: "#F4F4F4",
     grayWord: "Plus",
     extendedDescription:
-      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
     mobileExtendedDescription:
-      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur statischen und energetischen Ausarbeitung und ergänzt sie um die komplette technische Detailplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \nDas Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
   },
   {
     id: 3,
     title: "Planungspaket 03",
     subtitle: "Pro",
     description:
-      "-Alle Services aus dem Pro Paket \n +Küchenplanung \n +Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
+      "-Planungspaket Plus (HKLS Planung) \n +Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
     mobileTitle: "Planungspaket 03",
     mobileSubtitle: "Pro",
     mobileDescription:
-      "-Alle Services aus dem Pro Paket \n +Küchenplanung, Licht-/ Beleuchtungskonzept \n +Möblierungsplanung / Interiorkonzept",
+      "-Planungspaket Plus (HKLS Planung) \n +Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
     image:
       "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
     price: "€20.900",

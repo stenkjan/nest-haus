@@ -155,10 +155,10 @@ export default function DeinPartClient() {
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <FullWidthTextGrid
                 title="Hier beginnt Freiheit"
-                subtitle="Weil nur Du weißt, wie du richtig wohnst."
+                subtitle="Individuell dort, wo es zählt."
                 backgroundColor="black"
-                textBox1="<span class='text-gray-400'>Mit Nest hast du die</span> Freiheit, deinen Grundriss so zu gestalten, <span class='text-gray-400'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> Denn richtig wohnen bedeutet mehr als Fläche und Funktion. <span class='text-gray-400'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span>"
-                textBox2="<span class='text-gray-400'>Wenn du auf dem Weg dorthin</span> Unterstützung <span class='text-gray-400'>möchtest, begleiten wir dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-gray-400'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-gray-400'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee ein</span> Zuhause, das wirklich zu dir passt."
+                textBox1="<span class='text-gray-400'>Mit Nest hast du die</span> <span class='text-white font-medium'>Freiheit, deinen Grundriss so zu gestalten,</span> <span class='text-gray-400'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> <span class='text-white font-medium'>Denn richtig wohnen bedeutet mehr als Fläche und Funktion.</span> <span class='text-gray-400'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span>"
+                textBox2="<span class='text-gray-400'>Wenn du auf dem Weg dorthin</span> Unterstützung <span class='text-gray-400'>möchtest, begleiten wir dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-gray-400'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-gray-400'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee</span> <span class='text-white font-medium'>ein Zuhause, das wirklich zu dir passt.</span>"
                 maxWidth={false}
               />
 
@@ -209,7 +209,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             <ThreeByOneGrid
               title="Wohnfläche erweitern?"
               subtitle="Kein Problem."
-              text="Mehr Raum, wenn du ihn brauchst. <span class='text-gray-400'>Dein Nest Haus wächst mit. Dank durch-dachter Konstruktion kannst du</span> jederzeit eine Zwischendecke einziehen <span class='text-gray-400'>und dein Zuhause ganz einfach in ein zwei-geschoßiges Raumwunder verwandeln.</span>"
+              text="Mehr Raum, wenn du ihn brauchst. <span class='text-gray-400'>Dein Nest Haus wächst mit. Dank durchdachter Konstruktion kannst du</span> jederzeit eine Zwischendecke einziehen <span class='text-gray-400'>und dein Zuhause ganz einfach in ein zweigeschoßiges Raumwunder verwandeln.</span>"
               image1={IMAGES.function.nestHausPlattenFundament}
               image2={IMAGES.function.nestHausFundamentStreifenfundament}
               image1Description="NEST-Haus Planung Innenausbau mit Zwischendecke - Leichtbau Modul"
@@ -225,7 +225,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             <ThreeByOneGrid
               title="Ob Decke einziehen, oder Haus erweitern."
               subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
-              text="<span class='text-gray-400'>Durch intelligente</span> Standardisierung <span class='text-gray-400'>garantieren wir</span> höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für</span> Stabilität, Energieeffizienz <span class='text-gray-400'>und ein unvergleichliches Wohngefühl.</span> Dein Zuhause. Dein Stil. Deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden,</span> denn du bekommst alles."
+              text="<span class='text-gray-400'>Durch intelligente</span> Standardisierung <span class='text-gray-400'>garantieren wir</span> höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für</span> <span class='text-gray-400'>Stabilität, Energieeffizienz</span> <span class='text-gray-400'>und ein unvergleichliches Wohngefühl.</span> Dein Zuhause. Dein Stil. Deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden,</span> <span class='text-gray-400'>denn</span> du bekommst alles."
               image1={IMAGES.function.nestHausFundamentPunktfundament}
               image2={IMAGES.function.nestHausFlexibilitaetErweiterung}
               image1Description="NEST-Haus Erweiterung Modulbau vergrößern Leichtbau Modul flexibel"
