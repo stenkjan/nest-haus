@@ -61,11 +61,11 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     title: "Planungspaket 02",
     subtitle: "Plus",
     description:
-      "-Planungspaket Basis (Einreichplanung) \n +Haustechnik-Planung \n +Ausführungsplanung Innenausbau",
+      "Inkl.\nPlanungspaket Basis (Einreichplanung) \n Haustechnik-Planung \n Ausführungsplanung Innenausbau",
     mobileTitle: "Planungspaket 02",
     mobileSubtitle: "Plus",
     mobileDescription:
-      "-Planungspaket Basis (Einreichplanung) \n +Haustechnik-Planung \n +Ausführungsplanung Innenausbau",
+      "Inkl.\nPlanungspaket Basis (Einreichplanung) \n Haustechnik-Planung \n Ausführungsplanung Innenausbau",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
     price: "€16.900,00",
     backgroundColor: "#F4F4F4",
@@ -80,11 +80,11 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     title: "Planungspaket 03",
     subtitle: "Pro",
     description:
-      "-Planungspaket Plus (HKLS Planung) \n +Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
+      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
     mobileTitle: "Planungspaket 03",
     mobileSubtitle: "Pro",
     mobileDescription:
-      "-Planungspaket Plus (HKLS Planung) \n +Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
+      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
     image:
       "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
     price: "€21.900,00",
