@@ -263,22 +263,63 @@ export default function Navbar() {
             aria-label="Konfigurator"
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
+              viewBox="0 0 20 20"
               fill="none"
-              viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1.5}
+              strokeWidth={1.2}
             >
+              {/* Complete hammer icon from Adobe XD */}
               <path
+                d="M1.228.012h2.7A1.232,1.232,0,0,1,5.157,1.24v7.4a.608.608,0,0,1-.614.614H.614A.616.616,0,0,1,0,8.645V1.228A1.232,1.232,0,0,1,1.228,0Z"
+                transform="translate(13.26 16.093) rotate(-45)"
                 strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                strokeMiterlimit="10"
               />
               <path
+                d="M7.08,8.4l5.489,5.489,1.977-1.965L9.045,6.44"
+                transform="translate(1.537 1.365)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <line
+                y1="1.965"
+                x2="1.965"
+                transform="translate(8.605 7.78)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <line
+                y1="0.909"
+                x2="0.896"
+                transform="translate(3.521 7.473)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <line
+                y1="0.909"
+                x2="0.896"
+                transform="translate(5.793 9.745)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <path
+                d="M5.51,8.094a1.341,1.341,0,0,1,1.9,0"
+                transform="translate(1.179 1.651)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <path
+                d="M3.66,7.473a1.334,1.334,0,0,0,.258-1.535.7.7,0,0,1,.123-.749L6.582,2.648A8.771,8.771,0,0,1,9.91.7a8.223,8.223,0,0,1,4.114.049.365.365,0,0,1,.27.405l-.123,1.056a.365.365,0,0,1-.307.319,9.092,9.092,0,0,0-2.763.86,5.276,5.276,0,0,0-.9.651,2.788,2.788,0,0,0-.97,2.419,2.33,2.33,0,0,0,.577,1.314"
+                transform="translate(0.758 0)"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                d="M5.793,9.288l.295.295a.919.919,0,0,1,0,1.314l-1.3,1.3a.919.919,0,0,1-1.314,0L.611,9.337a.919.919,0,0,1,0-1.314l1.3-1.3a.919.919,0,0,1,1.314,0l.295.295"
+                transform="translate(0 1.366)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
               />
             </svg>
           </Link>
@@ -294,19 +335,45 @@ export default function Navbar() {
             aria-label={`Warenkorb - ${cartSummary}`}
             title={cartCount > 0 ? cartSummary : "Warenkorb leer"}
           >
-            {/* Always show shopping bag icon */}
+            {/* Packet icon */}
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
+              viewBox="0 0 20 20"
               fill="none"
-              viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1.5}
+              strokeWidth={1.2}
             >
-              <path
+              {/* Packet icon paths */}
+              <line
+                x1="9.757"
+                y2="4.203"
+                transform="translate(5.223 2.455)"
                 strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                strokeMiterlimit="10"
+              />
+              <line
+                x1="2.065"
+                y2="0.88"
+                transform="translate(13.954 9.152)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <line
+                y1="10.009"
+                transform="translate(10.107 8.754)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <path
+                d="M19.676,15.168l-9.443,4.056a.347.347,0,0,1-.252,0L.539,15.168a.322.322,0,0,1-.189-.293V4.761a.323.323,0,0,1,.189-.293L9.982.411a.347.347,0,0,1,.252,0l9.443,4.056a.322.322,0,0,1,.189.293V14.874A.323.323,0,0,1,19.676,15.168Z"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+              />
+              <path
+                d="M.76,4.54l9.2,3.951a.347.347,0,0,0,.252,0L19.478,4.53"
+                transform="translate(0.02 0.199)"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
               />
             </svg>
             {cartCount > 0 && (
@@ -382,22 +449,63 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4"
+                viewBox="0 0 20 20"
                 fill="none"
-                viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={1.2}
               >
+                {/* Complete hammer icon from Adobe XD */}
                 <path
+                  d="M1.228.012h2.7A1.232,1.232,0,0,1,5.157,1.24v7.4a.608.608,0,0,1-.614.614H.614A.616.616,0,0,1,0,8.645V1.228A1.232,1.232,0,0,1,1.228,0Z"
+                  transform="translate(13.26 16.093) rotate(-45)"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  strokeMiterlimit="10"
                 />
                 <path
+                  d="M7.08,8.4l5.489,5.489,1.977-1.965L9.045,6.44"
+                  transform="translate(1.537 1.365)"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                />
+                <line
+                  y1="1.965"
+                  x2="1.965"
+                  transform="translate(8.605 7.78)"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                />
+                <line
+                  y1="0.909"
+                  x2="0.896"
+                  transform="translate(3.521 7.473)"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                />
+                <line
+                  y1="0.909"
+                  x2="0.896"
+                  transform="translate(5.793 9.745)"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                />
+                <path
+                  d="M5.51,8.094a1.341,1.341,0,0,1,1.9,0"
+                  transform="translate(1.179 1.651)"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                />
+                <path
+                  d="M3.66,7.473a1.334,1.334,0,0,0,.258-1.535.7.7,0,0,1,.123-.749L6.582,2.648A8.771,8.771,0,0,1,9.91.7a8.223,8.223,0,0,1,4.114.049.365.365,0,0,1,.27.405l-.123,1.056a.365.365,0,0,1-.307.319,9.092,9.092,0,0,0-2.763.86,5.276,5.276,0,0,0-.9.651,2.788,2.788,0,0,0-.97,2.419,2.33,2.33,0,0,0,.577,1.314"
+                  transform="translate(0.758 0)"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  d="M5.793,9.288l.295.295a.919.919,0,0,1,0,1.314l-1.3,1.3a.919.919,0,0,1-1.314,0L.611,9.337a.919.919,0,0,1,0-1.314l1.3-1.3a.919.919,0,0,1,1.314,0l.295.295"
+                  transform="translate(0 1.366)"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
                 />
               </svg>
               Konfigurator
@@ -414,19 +522,45 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <div className="relative">
-                {/* Always show shopping bag icon */}
+                {/* Packet icon */}
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4"
+                  viewBox="0 0 20 20"
                   fill="none"
-                  viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={1.5}
+                  strokeWidth={1.2}
                 >
-                  <path
+                  {/* Packet icon paths */}
+                  <line
+                    x1="9.757"
+                    y2="4.203"
+                    transform="translate(5.223 2.455)"
                     strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    strokeMiterlimit="10"
+                  />
+                  <line
+                    x1="2.065"
+                    y2="0.88"
+                    transform="translate(13.954 9.152)"
+                    strokeLinecap="round"
+                    strokeMiterlimit="10"
+                  />
+                  <line
+                    y1="10.009"
+                    transform="translate(10.107 8.754)"
+                    strokeLinecap="round"
+                    strokeMiterlimit="10"
+                  />
+                  <path
+                    d="M19.676,15.168l-9.443,4.056a.347.347,0,0,1-.252,0L.539,15.168a.322.322,0,0,1-.189-.293V4.761a.323.323,0,0,1,.189-.293L9.982.411a.347.347,0,0,1,.252,0l9.443,4.056a.322.322,0,0,1,.189.293V14.874A.323.323,0,0,1,19.676,15.168Z"
+                    strokeLinecap="round"
+                    strokeMiterlimit="10"
+                  />
+                  <path
+                    d="M.76,4.54l9.2,3.951a.347.347,0,0,0,.252,0L19.478,4.53"
+                    transform="translate(0.02 0.199)"
+                    strokeLinecap="round"
+                    strokeMiterlimit="10"
                   />
                 </svg>
                 {cartCount > 0 && (
