@@ -123,7 +123,7 @@ export function PartnersSection({
               key={partner.id}
               className={`flex items-center justify-center w-full ${
                 partner.id === "tu-graz"
-                  ? "h-20 md:h-24 lg:h-28"
+                  ? "h-26 md:h-30 lg:h-30"
                   : "h-10 md:h-24 lg:h-28"
               }`}
             >

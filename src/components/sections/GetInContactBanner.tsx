@@ -51,7 +51,7 @@ export function GetInContactBanner({
   id,
   title = "Kein Plan? Kein Problem!",
   subtitle = "Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch",
-  buttonText = "Termin vereinbaren",
+  buttonText = "Jetzt vereinbaren",
   onButtonClick,
   backgroundColor = "#F4F4F4",
   className = "",

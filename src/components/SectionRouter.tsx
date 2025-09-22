@@ -35,18 +35,32 @@ export const SectionRouter = ({
       const hash = window.location.hash.slice(1);
       if (hash) {
         const section = sections.find((s) => s.slug === hash);
-        if (section && sectionRefs.current[section.id]) {
-          sectionRefs.current[section.id]?.scrollIntoView({
-            behavior: "smooth",
-          });
-          setCurrentSection(section.id);
-          onSectionChange?.(section.id);
+        if (section) {
+          // Try to scroll immediately if ref exists
+          if (sectionRefs.current[section.id]) {
+            sectionRefs.current[section.id]?.scrollIntoView({
+              behavior: "smooth",
+            });
+            setCurrentSection(section.id);
+            onSectionChange?.(section.id);
+          } else {
+            // If ref doesn't exist yet, retry after a short delay
+            setTimeout(() => {
+              if (sectionRefs.current[section.id]) {
+                sectionRefs.current[section.id]?.scrollIntoView({
+                  behavior: "smooth",
+                });
+                setCurrentSection(section.id);
+                onSectionChange?.(section.id);
+              }
+            }, 100);
+          }
         }
       }
     };
 
-    // Initial hash check
-    handleHashChange();
+    // Initial hash check with a small delay to ensure components are mounted
+    setTimeout(handleHashChange, 50);
 
     // Listen for hash changes
     window.addEventListener("hashchange", handleHashChange);
@@ -66,6 +80,11 @@ export const SectionRouter = ({
                 // Update URL hash without triggering scroll
                 const newHash = `#${section.slug}`;
                 if (window.location.hash !== newHash) {
+                  if (process.env.NODE_ENV === "development") {
+                    console.log(
+                      `🔗 SectionRouter: Updating hash to ${newHash} for section ${sectionId}`
+                    );
+                  }
                   window.history.replaceState(null, "", newHash);
                   setCurrentSection(sectionId);
                   onSectionChange?.(sectionId);
@@ -76,8 +95,8 @@ export const SectionRouter = ({
         });
       },
       {
-        threshold: 0.5, // Section is considered visible when 50% is in view
-        rootMargin: "-10% 0px -10% 0px", // Add some margin to prevent too frequent updates
+        threshold: 0.3, // Section is considered visible when 30% is in view (more sensitive)
+        rootMargin: "-20% 0px -20% 0px", // Reduced margin for better detection of sections with varying heights
       }
     );
 

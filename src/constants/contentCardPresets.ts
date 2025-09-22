@@ -44,10 +44,10 @@ export interface VideoCardPreset {
 // Sicherheit Video Card Preset - Used on unser-part#sicherheit and showcase
 export const SICHERHEIT_VIDEO_PRESET: VideoCardPreset = {
     id: 1,
-    title: "Sicherheit",
+    title: "Du hast die Wahl",
     subtitle: "",
     description:
-        "Häuser bauen bedeutet, sich an die Spielregeln zu halten und diese können je nach Region unterschiedlich sein. Wir kennen die gesetzlichen Vorgaben genau und unterstützen dich dabei, die Anforderungen deines Baugrunds zu verstehen. Mit unserem Grundstücks-Check prüfen wir, welche Gegebenheiten du bei deinem Wunschgrundstück beachten musst.",
+        "Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt.",
     mobileTitle: "Sicherheit & Grundstücks-Check",
     mobileSubtitle: "",
     mobileDescription:
@@ -57,10 +57,10 @@ export const SICHERHEIT_VIDEO_PRESET: VideoCardPreset = {
     playbackRate: 0.5, // Play at half speed for better visibility
     buttons: [
         {
-            text: "Dein Part",
+            text: "Unser Part",
             variant: "primary" as const,
             size: "xs" as const,
-            link: "/dein-part",
+            link: "/unser-part",
         },
         {
             text: "Jetzt bauen",
@@ -82,10 +82,10 @@ export const UNSERE_TECHNIK_VIDEO_PRESET: VideoCardPreset = {
     backgroundColor: "#F4F4F4",
     buttons: [
         {
-            text: "Dein Part",
+            text: "Unser Part",
             variant: "primary" as const,
             size: "xs" as const,
-            link: "/dein-part",
+            link: "/unser-part",
         },
         {
             text: "Jetzt bauen",

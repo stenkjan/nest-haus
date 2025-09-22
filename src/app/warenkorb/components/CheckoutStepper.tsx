@@ -919,11 +919,11 @@ export default function CheckoutStepper({
                     </div>
                   ) : (
                     <div className="text-right">
-                      <div className="text-lg md:text-xl lg:text-2xl text-red-600 font-medium">
+                      <div className="text-lg md:text-xl lg:text-2xl text-gray-600 font-medium">
                         Zum Fortfahren bitte einen{" "}
                         <button
                           onClick={() => onStepChange?.(3)}
-                          className="underline hover:text-red-700 transition-colors"
+                          className="underline hover:text-gray-700 transition-colors"
                         >
                           Termin vereinbaren
                         </button>

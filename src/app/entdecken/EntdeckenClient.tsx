@@ -10,6 +10,8 @@ import {
   PlanungspaketeCards,
   SquareTextCard,
 } from "@/components/cards";
+import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
+import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
 import { TwoByTwoImageGrid } from "@/components/grids";
 import {
   GetInContactBanner,
@@ -67,6 +69,8 @@ const sections = [
 export default function EntdeckenClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
   const [isMobile, setIsMobile] = useState(false);
+  const { isOpen, openPlanungspakete, closePlanungspakete } =
+    usePlanungspaketePopup();
 
   // Simple width-based mobile detection (same as ResponsiveHybridImage)
   useEffect(() => {
@@ -100,7 +104,7 @@ export default function EntdeckenClient() {
                 Design für dich gemacht
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
-                Dein Design im Freistil
+                Dein Design im Freistil.
               </h3>
             </div>
           </div>
@@ -157,7 +161,7 @@ export default function EntdeckenClient() {
                   Design für dich gemacht
                 </h1>
                 <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
-                  Dein Design im Freistil
+                  Dein Design im Freistil.
                 </h3>
               </div>
 
@@ -169,7 +173,7 @@ export default function EntdeckenClient() {
                     Nest 80
                   </h2>
                   <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
-                    75m² ab € 177.000
+                    75m² ab € 177.000.-
                   </h3>
                 </div>
 
@@ -179,7 +183,7 @@ export default function EntdeckenClient() {
                     Nest 120
                   </h2>
                   <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
-                    115m² ab € 245.000
+                    115m² ab € 245.000.-
                   </h3>
                 </div>
 
@@ -189,7 +193,7 @@ export default function EntdeckenClient() {
                     Nest 160
                   </h2>
                   <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
-                    155m² ab € 313.000
+                    155m² ab € 313.000.-
                   </h3>
                 </div>
               </div>
@@ -310,29 +314,7 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 5 - So läuft es ab */}
-        <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-                So läuft es ab
-              </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 md:mb-16">
-                Der Weg zu deinem Nest Haus
-              </h3>
-            </div>
-          </div>
-
-          {/* SquareTextCard outside container to use full width */}
-          <SquareTextCard
-            title=""
-            subtitle=""
-            maxWidth={false}
-            showInstructions={false}
-          />
-        </section>
-
-        {/* Section 6 - Grundstück Check */}
+        {/* Section 5 - Grundstück Check */}
         <section
           id="grundstueck-check"
           className="w-full py-8 md:py-16 bg-white"
@@ -340,11 +322,11 @@ export default function EntdeckenClient() {
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 md:mb-16">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-                Konfiguriere dein Zuhause
+                Konfiguriere dein ®Nest Haus
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
-                Wir überprüfen für dich, wie dein Nest Haus auf ein Grundstück
-                deiner Wahl passt.
+                Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
+                Effizienz schafft.
               </h3>
             </div>
 
@@ -356,6 +338,28 @@ export default function EntdeckenClient() {
               customData={[VIDEO_CARD_PRESETS.sicherheit]}
             />
           </div>
+        </section>
+
+        {/* Section 6 - So läuft es ab */}
+        <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+                So läuft es ab
+              </h1>
+              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 md:mb-16">
+                Dein Weg zum Nest-Haus
+              </h3>
+            </div>
+          </div>
+
+          {/* SquareTextCard outside container to use full width */}
+          <SquareTextCard
+            title=""
+            subtitle=""
+            maxWidth={false}
+            showInstructions={false}
+          />
         </section>
 
         {/* Section 7 - Planungspakete */}
@@ -382,12 +386,14 @@ export default function EntdeckenClient() {
 
             {/* Button Combo After Component */}
             <div className="flex gap-4 justify-center w-full mt-6 md:mt-16">
-              <Button variant="primary" size="xs">
+              <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>
-              <Button variant="landing-secondary-blue" size="xs">
-                Jetzt bauen
-              </Button>
+              <Link href="/konfigurator">
+                <Button variant="landing-secondary-blue" size="xs">
+                  Jetzt bauen
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -409,6 +415,15 @@ export default function EntdeckenClient() {
       </div>
 
       <Footer />
+
+      {/* Planungspakete Lightbox */}
+      <PlanungspaketeCardsLightbox
+        title="Planungspakete"
+        subtitle=""
+        isOpen={isOpen}
+        onClose={closePlanungspakete}
+        showTrigger={false}
+      />
     </div>
   );
 }
