@@ -41,15 +41,14 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     title: "Planungspaket 01",
     subtitle: "Basis",
     description:
-      "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
+      "Inkl.\nEinreichplanung des Gesamtprojekts\nFachberatung und Baubegleitung\nBürokratische Unterstützung",
     mobileTitle: "Planungspaket 01",
     mobileSubtitle: "Basis",
     mobileDescription:
-      "-Einreichplanung des Gesamtprojekts \n -Fachberatung und Baubegleitung \n -Bürokratische Unterstützung",
+      "Inkl.\nEinreichplanung des Gesamtprojekts\nFachberatung und Baubegleitung\nBürokratische Unterstützung",
     image:
       "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    price: "€10.900",
-    monthlyPrice: "€66,00/Monat",
+    price: "€10.900,00",
     backgroundColor: "#F4F4F4",
     grayWord: "Basis",
     extendedDescription:
@@ -68,8 +67,7 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     mobileDescription:
       "-Planungspaket Basis (Einreichplanung) \n +Haustechnik-Planung \n +Ausführungsplanung Innenausbau",
     image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    price: "€15.900",
-    monthlyPrice: "€97,00/Monat",
+    price: "€16.900,00",
     backgroundColor: "#F4F4F4",
     grayWord: "Plus",
     extendedDescription:
@@ -89,14 +87,13 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
       "-Planungspaket Plus (HKLS Planung) \n +Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
     image:
       "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    price: "€20.900",
-    monthlyPrice: "€127,50/Monat",
+    price: "€21.900,00",
     backgroundColor: "#F4F4F4",
     grayWord: "Pro",
     extendedDescription:
-      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+      "Basierend auf Modulkonstellation deiner Wahl\n\nDu willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
     mobileExtendedDescription:
-      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+      "Basierend auf Modulkonstellation deiner Wahl\n\nDu willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
   },
 ];
 
@@ -649,11 +646,11 @@ export default function PlanungspaketeCards({
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
                           <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl 2xl:text-2xl font-bold text-gray-900 mb-1">
-                            {getCardText(card, "title")}
+                            {getCardText(card, "title")}{" "}
+                            <span className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-xl font-medium text-gray-500">
+                              {getCardText(card, "subtitle") || card.grayWord}
+                            </span>
                           </h2>
-                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-xl font-medium text-gray-700">
-                            {getCardText(card, "subtitle") || card.grayWord}
-                          </h3>
                         </motion.div>
                       </div>
 
@@ -671,11 +668,6 @@ export default function PlanungspaketeCards({
                           <div className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">
                             {card.price}
                           </div>
-                          {card.monthlyPrice && (
-                            <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
-                              {card.monthlyPrice}
-                            </div>
-                          )}
                         </motion.div>
                       </div>
                     </div>
@@ -809,11 +801,11 @@ export default function PlanungspaketeCards({
                             }}
                           >
                             <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl 2xl:text-2xl font-bold text-gray-900 mb-1">
-                              {getCardText(card, "title")}
+                              {getCardText(card, "title")}{" "}
+                              <span className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-xl font-medium text-gray-500">
+                                {getCardText(card, "subtitle") || card.grayWord}
+                              </span>
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-xl font-medium text-gray-700">
-                              {getCardText(card, "subtitle") || card.grayWord}
-                            </h3>
                           </motion.div>
                         </div>
 
@@ -831,11 +823,6 @@ export default function PlanungspaketeCards({
                             <div className="text-lg md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
                               {card.price}
                             </div>
-                            {card.monthlyPrice && (
-                              <div className="text-xs md:text-sm lg:text-base text-gray-600 font-medium">
-                                {card.monthlyPrice}
-                              </div>
-                            )}
                           </motion.div>
                         </div>
                       </div>

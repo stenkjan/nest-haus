@@ -46,7 +46,7 @@ const sections = [
   },
   {
     id: "ablauf",
-    title: "So läuft es ab",
+    title: "So läuft's ab",
     slug: "ablauf",
   },
   {
@@ -262,8 +262,8 @@ export default function EntdeckenClient() {
               customData={[
                 {
                   id: 1,
-                  title: "Das Nest System",
-                  subtitle: "Das übernehmen wir",
+                  title: "Das ®Nest System",
+                  subtitle: "Effizient. Präzise. Leistbar.",
                   description: "Dein Raum. Deine Ideen.",
                   image: IMAGES.function.nestHausSystemModulbau,
                   backgroundColor: "#F8F9FA",
@@ -289,7 +289,7 @@ export default function EntdeckenClient() {
                   id: 3,
                   title: "Fenster und Türenausbau",
                   subtitle: "Wir hören zu. Du entscheidest.",
-                  description: "Dein Fenster für deine Räume.",
+                  description: "Deine Fenster für deine Räume.",
                   image: IMAGES.function.nestHausInnenausbauFenster,
                   backgroundColor: "#F8F9FA",
                   primaryAction: "Fenster & Türen",
@@ -300,13 +300,13 @@ export default function EntdeckenClient() {
                 {
                   id: 4,
                   title: "Individuell wie du",
-                  subtitle: "Deine Ideen in deinem Zuhause",
+                  subtitle: "Deine Ideen. Dein Zuhause.",
                   description: "Dein Raum. Deine Ideen.",
                   image: IMAGES.function.nestHausSystemDeinPart,
                   backgroundColor: "#F4F4F4",
-                  primaryAction: "Das Nest System",
+                  primaryAction: "Dein Part",
                   secondaryAction: "Jetzt bauen",
-                  primaryLink: "/unser-part#nest-system",
+                  primaryLink: "/dein-part",
                   secondaryLink: "/konfigurator",
                 },
               ]}
@@ -345,7 +345,7 @@ export default function EntdeckenClient() {
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-                So läuft es ab
+                So läuft&apos;s ab
               </h1>
               <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 md:mb-16">
                 Dein Weg zum Nest-Haus
