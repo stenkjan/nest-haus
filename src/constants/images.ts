@@ -374,7 +374,7 @@ export const IMAGES = {
 
     // Step icons for process cards
     stepIcons: {
-        icon1: '290-nest-haus-icon1-worentwurf',
+        icon1: '290-nest-haus-icon1-vorentwurf',
         icon2: '291-nest-haus-icon2-einreichplanung',
         icon3: '292-nest-haus-icon3-baubescheid',
         icon4: '293-nest-haus-icon4-fundament',
