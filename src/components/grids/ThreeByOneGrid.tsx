@@ -138,7 +138,7 @@ export default function ThreeByOneGrid({
         {isMobile ? (
           /* Mobile Layout: Image - Text - Image */
           <div className="space-y-6">
-            {/* First Image */}
+            {/* First Image (Second Image on Mobile) */}
             <motion.div
               className="relative overflow-hidden px-4 md:px-8"
               style={{ aspectRatio: "4/3" }}
@@ -147,8 +147,8 @@ export default function ThreeByOneGrid({
               transition={{ duration: 0.6 }}
             >
               <HybridBlobImage
-                path={image1}
-                alt={image1Description}
+                path={image2}
+                alt={image2Description}
                 fill
                 className="object-contain object-center"
                 sizes="100vw"
@@ -178,7 +178,7 @@ export default function ThreeByOneGrid({
               </motion.div>
             </div>
 
-            {/* Second Image */}
+            {/* Second Image (First Image on Mobile) */}
             <motion.div
               className="relative overflow-hidden px-4 md:px-8"
               style={{ aspectRatio: "4/3" }}
@@ -187,8 +187,8 @@ export default function ThreeByOneGrid({
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <HybridBlobImage
-                path={image2}
-                alt={image2Description}
+                path={image1}
+                alt={image1Description}
                 fill
                 className="object-contain object-center"
                 sizes="100vw"
