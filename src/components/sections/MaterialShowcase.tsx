@@ -36,10 +36,7 @@ export const MaterialShowcase = memo(function MaterialShowcase({
   // Use full width container when maxWidth is false to avoid constraints
   if (!maxWidth) {
     return (
-      <section
-        id="materialien"
-        className={`w-full py86 ${bgClass} ${className}`}
-      >
+      <section id="materialien" className={`w-full ${bgClass} ${className}`}>
         {/* Only show header if title is provided */}
         {title && (
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">

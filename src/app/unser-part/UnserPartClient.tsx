@@ -114,9 +114,9 @@ export default function UnserPartClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Video Section - Dein Nest System */}
-        <section id="dein-nest-system" className="bg-black pt-12 pb-4">
+        <section id="dein-nest-system" className="bg-black pt-12">
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 2xl:mb-24">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
                 Das ®Nest System
               </h1>
@@ -161,7 +161,7 @@ export default function UnserPartClient() {
         </section>
 
         {/* Combined ThreeByOneGrid Section - Größe */}
-        <section id="groesse" className="pt-8 pb-8">
+        <section id="groesse" className="py-8 md:py-16">
           <ThreeByOneGrid
             title="Manchmal kommt es auf die Größe an."
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
@@ -176,7 +176,7 @@ export default function UnserPartClient() {
           />
 
           {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
-          <div className="pt-4">
+          <div className="pt-16 md:pt-32">
             <ThreeByOneGrid
               title=""
               subtitle=""
@@ -193,8 +193,8 @@ export default function UnserPartClient() {
         </section>
 
         {/* Materialien Section */}
-        <section id="materialien" className="pt-16">
-          <div className="text-center mb-12">
+        <section id="materialien" className="pt-8 md:pt-16 pb-8 md:pb-16">
+          <div className="text-center mb-12 2xl:mb-24">
             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
               Gut für Dich, besser für die Zukunft
             </h1>
@@ -214,7 +214,7 @@ export default function UnserPartClient() {
         </section>
 
         {/* ThreeByOneAdaptiveHeight Grid - Fenster & Türen */}
-        <section id="fenster-tueren" className="pt-20 pb-8">
+        <section id="fenster-tueren" className="pt-8 md:pt-16 pb-8 md:pb-16">
           <ThreeByOneAdaptiveHeight
             title="Fenster & Türen"
             subtitle="Deine Fenster- und Türöffnungen werden dort platziert, wo du es möchtest."
@@ -238,25 +238,27 @@ export default function UnserPartClient() {
           />
 
           {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-          <ThreeByOneGrid
-            title=""
-            subtitle=""
-            backgroundColor="black"
-            text="<span class='text-gray-400'>Solltest du</span> <span class='text-white font-medium'>Unterstützung</span> <span class='text-gray-400'>bei der Planung benötigen, kannst du eines unserer</span> <span class='text-white font-medium'>Planungspakete</span> <span class='text-gray-400'>wählen. So erhältst du</span> <span class='text-white font-medium'>genau die Hilfe, die du brauchst,</span> <span class='text-gray-400'>um deine Vision Wirklichkeit werden zu lassen.</span>"
-            textPosition="right"
-            maxWidth={false}
-            image1={IMAGES.function.nestHausModulSeiteKonzept}
-            image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
-            image1Description="Modul Seitenansicht Holz Schema Konzept"
-            image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
-            showButtons={true}
-            primaryButtonText="Die Pakete"
-            secondaryButtonText="Jetzt bauen"
-          />
+          <div className="pt-16 md:pt-32">
+            <ThreeByOneGrid
+              title=""
+              subtitle=""
+              backgroundColor="black"
+              text="<span class='text-gray-400'>Solltest du</span> <span class='text-white font-medium'>Unterstützung</span> <span class='text-gray-400'>bei der Planung benötigen, kannst du eines unserer</span> <span class='text-white font-medium'>Planungspakete</span> <span class='text-gray-400'>wählen. So erhältst du</span> <span class='text-white font-medium'>genau die Hilfe, die du brauchst,</span> <span class='text-gray-400'>um deine Vision Wirklichkeit werden zu lassen.</span>"
+              textPosition="right"
+              maxWidth={false}
+              image1={IMAGES.function.nestHausModulSeiteKonzept}
+              image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
+              image1Description="Modul Seitenansicht Holz Schema Konzept"
+              image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
+              showButtons={true}
+              primaryButtonText="Die Pakete"
+              secondaryButtonText="Jetzt bauen"
+            />
+          </div>
         </section>
 
         {/* FullWidthImageGrid - Raum zum Träumen (moved to individualisierung) */}
-        <section id="individualisierung" className="md:pt-16 pb-8">
+        <section id="individualisierung" className="py-8 md:py-16">
           <FullWidthImageGrid
             title="Raum zum Träumen"
             subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
@@ -283,7 +285,7 @@ export default function UnserPartClient() {
         {/* Planungspakete Section */}
         <section id="planungspakete" className="w-full pt-16 pb-10 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 2xl:mb-32">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
@@ -301,7 +303,7 @@ export default function UnserPartClient() {
             />
 
             {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-10 mb-6">
+            <div className="flex gap-4 justify-center w-full mt-8 mb-8">
               <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>
@@ -317,11 +319,11 @@ export default function UnserPartClient() {
         {/* Beratung Section */}
         <section
           id="beratung"
-          className="w-full py-16"
+          className="w-full py-8 md:py-16"
           style={{ backgroundColor: "#F4F4F4" }}
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 2xl:mb-32">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium text-gray-900 mb-2 md:mb-3">
                 Kein Plan? Kein Problem!
               </h1>

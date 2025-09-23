@@ -368,7 +368,7 @@ export default function ContentCardsGlass({
   if (!isClient) {
     return (
       <div className={containerClasses}>
-        <div className="text-center mb-8">
+        <div className="text-center">
           {!(
             isLightboxMode &&
             typeof window !== "undefined" &&
@@ -376,7 +376,7 @@ export default function ContentCardsGlass({
           ) && <h2 className="text-3xl font-bold text-white mb-2">{title}</h2>}
           {subtitle && <p className="text-gray-300">{subtitle}</p>}
         </div>
-        <div className="flex justify-center items-center py-8">
+        <div className="flex justify-center items-center">
           <div
             className="animate-pulse bg-gray-800 rounded-3xl"
             style={{ width: 320, height: 480 }}
@@ -413,7 +413,7 @@ export default function ContentCardsGlass({
 
   return (
     <div className={containerClasses}>
-      <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
+      <div className={`text-center ${isLightboxMode ? "mb-4" : ""}`}>
         {!(
           isLightboxMode &&
           typeof window !== "undefined" &&
@@ -423,7 +423,7 @@ export default function ContentCardsGlass({
       </div>
 
       {/* Cards Container */}
-      <div className={`relative ${isLightboxMode ? "py-2" : "py-8"}`}>
+      <div className={`relative ${isLightboxMode ? "py-2" : ""}`}>
         {/* Horizontal Scrolling Layout */}
         <div className="overflow-x-clip">
           <div
