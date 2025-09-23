@@ -399,7 +399,7 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 8 - Partners */}
-        <section id="partners" className="w-full pt-2 pb-8 md:py-16 bg-white">
+        <section id="partners" className="w-full pb-8 md:pb-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <PartnersSection backgroundColor="white" showButtons={true} />
           </div>
