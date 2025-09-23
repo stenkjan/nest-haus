@@ -4,6 +4,66 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0c1edf239dd75923cc3153977c2ede3518efa113] - Tue Sep 23 13:42:36 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: adjust margin and padding in multiple components for improved layout consistency  - Modified margin and padding in EntdeckenClient, PlanungspaketeCards, and PartnersSection for better alignment and visual consistency. - Enhanced text structure to maintain a cohesive design across sections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
+## [ad12206162fd5e9ffd51cb6070d21ab0cd63b629] - Mon Sep 22 22:10:40 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [2303e38daca5a7b1f3df522fe93e0419154df68c] - Mon Sep 22 20:37:27 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/SquareTextCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f6ea194325e0e96568d62f767e053fe15c6c84f4] - Mon Sep 22 19:28:18 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: correct apostrophe in title of EntdeckenClient for proper rendering  - Updated the title "So läuft's ab" to "So läuft&apos;s ab" to ensure correct HTML entity representation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+
+
+---
+
 ## [c98f05f9dc317ca16890e93098dbb85129b65ae8] - Mon Sep 22 19:24:02 2025 +0200
 
 **Author**: stenkjan

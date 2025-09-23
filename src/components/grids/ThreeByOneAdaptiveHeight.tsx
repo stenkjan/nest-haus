@@ -19,7 +19,7 @@ export default function ThreeByOneAdaptiveHeight({
   title = "3x1 Grid with Adaptive Height",
   subtitle = "Standard grid layout with flexible middle cell height",
   maxWidth = false, // Default to false to avoid width constraints
-  text = "Mit deinem Nest-Haus bestimmst du selbst, wo Fenster und Türen ihren Platz finden sollen. <span class='text-gray-400'>Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die</span> ideale Platzierung festzulegen. <span class='text-gray-400'>Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit</span> passgenauen Öffnungen an. <span class='text-gray-400'>Dort platzieren wir im Anschluss deine</span> Fenster & Türen.",
+  text = "<span class='text-white font-medium'>Mit deinem Nest-Haus bestimmst du selbst,</span> <span class='text-gray-400'>wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit</span> <span class='text-white font-medium'>passgenauen Öffnungen</span> <span class='text-gray-400'>an.</span> <span class='text-white font-medium'>Dort platzieren wir</span> <span class='text-gray-400'>im Anschluss</span> <span class='text-white font-medium'>deine Fenster & Türen.</span>",
   image = IMAGES.function.nestHausFensterTuerenPosition,
   imageDescription = "NEST Haus Fenster und Türen Positionierung Konzept",
   backgroundColor = "black",

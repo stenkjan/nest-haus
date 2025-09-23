@@ -9,7 +9,7 @@ import {
   PLANNING_PACKAGES,
   GRUNDSTUECKSCHECK_PRICE,
 } from "@/constants/configurator";
-import { GrundstueckCheckForm } from "@/components/sections";
+import { GrundstueckCheckForm, ContactMap } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";
 import {
   planungspaketeCardData,
@@ -823,28 +823,28 @@ export default function CheckoutStepper({
         "Du hast dich für dein Nest-Haus entschieden. In den nächsten Schritten klären wir gemeinsam, was wir von dir benötigen und was wir für dich übernehmen, damit dein Zuhause genau so wird, wie du es dir wünschst. \n\n Wir kümmern uns um die Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst du nur für unseren Service – keine Verpflichtung, falls etwas nicht passt.",
     },
     {
-      title: "Eine starke Basis",
-      subtitle: "Vorentwurf und Grundstückscheck",
+      title: "Der Ablauf",
+      subtitle: "Schritt für Schritt",
       description:
-        "Mit dem **Grundstückscheck** prüfen wir alle **relevanten Rahmenbedingungen** wie Bebauungsrichtlinien, Abstände, Zufahrten und Anschlüsse. So weißt du von Anfang an, womit du planen kannst und hast die **Sicherheit**, dass dein Projekt auf **soliden Grundlagen** steht.\n\nIm **Vorentwurf** legen wir gemeinsam die Position deiner Fenster und Türen fest. Schritt für Schritt entsteht so **ein Grundriss, der zu deinem Alltag passt**. All diese Leistungen sind Teil des **Planungspakets Basis**, das bereits **im Preis** deines Nest Hauses **enthalten ist**.",
+        "Damit aus deinem Vorentwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
     },
     {
-      title: "Unser Service",
+      title: "Die Planung",
       subtitle: "Unsere Planungspakete sind hier, um dich zu unterstützen!",
       description:
-        "Deine aktuelle **Konfiguration** enthält das **Paket Basis**. Dieses ist bereits im Preis deines Nest Hauses **inbegriffen** und bildet die Grundlage für den gesamten Prozess. \n\n Wenn sich deine Ansprüche im Laufe der Planung verändern, kannst du deine Auswahl jederzeit anpassen. Die zusätzlichen **Pakete Plus und Pro** bieten dir noch mehr Unterstützung auf dem Weg zu deinem neuen Zuhause.",
+        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Nest-Haus. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
     },
     {
-      title: "Termin vereinbaren",
-      subtitle: "Persönlich oder telefonisch – wie es dir am besten passt.",
+      title: "Dein individuelles Nest-Haus ",
+      subtitle: "Vereinbare dein Startgespräch mit dem Nest Team",
       description:
-        "Wähle **Datum und Uhrzeit** und entscheide, ob du ein **persönliches Gespräch** oder einen **Telefontermin** möchtest. Wir besprechen die Ergebnisse des **Grundstückschecks**, deine Auswahl und die nächsten Schritte. Der Termin ist kostenlos und unverbindlich.",
+        "Buche deinen **Termin** für ein persönliches **Startgespräch,** in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Vorentwurf** erarbeiten.\n\nDurch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Vorentwurf, der genau zu deinen Bedürfnissen passt.",
     },
     {
-      title: "Zusammenfassung & Anfrage",
-      subtitle: "Prüfe deine Angaben und sende deine Anfrage.",
+      title: "Bereit für Vorfreude?",
+      subtitle: "Dein Garantierter Liefertermin steht fest",
       description:
-        "Hier siehst du alle **Details deiner Auswahl** samt Preisen. Nach dem Absenden bestätigen wir alles schriftlich und klären offene Fragen. Bis zur finalen Freigabe entstehen dir **keine Bauverpflichtungen** und keine Kosten über unseren Service hinaus.",
+        "Hier findest du alle **Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um alle Angaben in Ruhe zu überprüfen. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der **Ausarbeitung deines Vorentwurfs** sowie der Überprüfung deines Grundstücks.\n\nSolltest du mit dem Vorentwurf **nicht zufrieden sein,** kannst du vom **Kauf** deines Nest-Hauses **zurücktreten.** In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf.",
     },
   ];
 
@@ -953,20 +953,34 @@ export default function CheckoutStepper({
             {stepIndex === 0 ? (
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left">
                 <p>
-                  Du hast dich für {""}
-                  <span className="text-black">dein Nest-Haus</span> {""}
-                  entschieden. In den nächsten Schritten klären wir gemeinsam,
-                  was wir von dir benötigen und was wir für dich übernehmen,
-                  damit {""}
-                  <span className="text-black">dein Zuhause genau so</span> {""}
-                  wird, wie du es dir wünschst.
+                  <span className="text-gray-500">
+                    Dein Nest-Haus beginnt mit deinem
+                  </span>{" "}
+                  <span className="text-black">
+                    Vorentwurf und der Überprüfung deines Grundstücks.
+                  </span>{" "}
+                  <span className="text-gray-500">
+                    Sobald du dich für dein Haus entschieden hast, klären wir
+                    gemeinsam die nächsten Schritte. Wir zeigen dir, welche
+                    Informationen und Unterlagen wir von dir benötigen und was
+                    wir für dich übernehmen, damit
+                  </span>{" "}
+                  <span className="text-black">dein Zuhause</span>{" "}
+                  <span className="text-gray-500">genau so entsteht,</span>{" "}
+                  <span className="text-black">wie du es dir wünschst.</span>
                 </p>
                 <p className="mt-6">
-                  <span className="text-black">Wir kümmern uns</span> um die
-                  Rahmenbedingungen und rechtlichen Schritte. Bis dahin zahlst
-                  du nur für unseren Service – {""}
-                  <span className="text-black">keine Verpflichtung</span>, falls
-                  etwas nicht passt.
+                  <span className="text-gray-500">Während wir uns um alle</span>{" "}
+                  <span className="text-black">
+                    Rahmenbedingungen und rechtlichen Schritte
+                  </span>{" "}
+                  <span className="text-gray-500">
+                    kümmern, zahlst du lediglich für unseren Service. Gefällt
+                    dir unser Vorentwurf nicht, kannst du ohne Verpflichtung
+                  </span>{" "}
+                  <span className="text-black">
+                    einfach vom Kauf zurücktreten.
+                  </span>
                 </p>
               </div>
             ) : (
@@ -1722,6 +1736,16 @@ export default function CheckoutStepper({
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* ContactMap */}
+              <div className="mt-16">
+                <ContactMap
+                  title="Wo du uns findest"
+                  subtitle="Komm vorbei um deinen Traum mit uns zu besprechen."
+                  backgroundColor="white"
+                  maxWidth={true}
+                />
               </div>
 
               {/* Move the buttons here, directly below the Grundstückscheck section */}
