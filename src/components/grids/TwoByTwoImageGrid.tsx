@@ -115,13 +115,9 @@ export default function TwoByTwoImageGrid({
     return (
       <div className={containerClasses}>
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-            {title}
-          </h1>
+          <h1 className="h1-secondary text-gray-900">{title}</h1>
           {subtitle && (
-            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600">
-              {subtitle}
-            </h3>
+            <h3 className="h3-secondary text-gray-600">{subtitle}</h3>
           )}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[1700px] mx-auto gap-4">
@@ -206,16 +202,14 @@ export default function TwoByTwoImageGrid({
                   } text-center`}
                 >
                   <h2
-                    className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-1 ${
+                    className={`h2-title mb-1 ${
                       item.textColor || "text-white"
                     }`}
                   >
                     {item.title}
                   </h2>
                   <h3
-                    className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                      item.textColor || "text-white"
-                    }`}
+                    className={`h3-secondary ${item.textColor || "text-white"}`}
                   >
                     {item.subtitle}
                   </h3>

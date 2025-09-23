@@ -98,7 +98,7 @@ export default function CheckoutPlanungspaketeCards({
                   </div>
 
                   {/* Standard p text for main description */}
-                  <div className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl black leading-relaxed whitespace-pre-line">
+                  <div className="p-primary black leading-relaxed whitespace-pre-line">
                     {pkg.value === "basis"
                       ? "Mit dem Basispaket legst du den Grundstein für dein Nest Haus. Wir übernehmen Einreichplanung, Statik, Detailplanung und Energieausweis, passen alles an lokale Vorgaben an und optimieren die Raumaufteilung. So bist du rechtssicher, planungssicher und bereit für den nächsten Schritt."
                       : pkg.value === "plus"

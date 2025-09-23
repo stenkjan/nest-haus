@@ -760,7 +760,7 @@ export default function SquareTextCard({
                           ? expandedHeight
                           : isClient && screenWidth < 768
                             ? 360 // Mobile collapsed: compact height for title + subtitle + 6 lines of text + padding
-                            : cardWidth, // Desktop/Tablet: Square aspect ratio
+                            : cardWidth * 0.75, // Desktop/Tablet: Shorter rectangular aspect ratio (3:4)
                     }}
                     transition={{
                       duration: 0.4,
@@ -779,13 +779,7 @@ export default function SquareTextCard({
                     }}
                   >
                     {/* Text Content - Full card */}
-                    <div
-                      className={`h-full flex flex-col ${
-                        screenWidth < 768 ? "justify-center" : "justify-start"
-                      } items-center px-8 md:px-16 py-16 ${
-                        screenWidth < 768 ? "pt-16" : "pt-10 md:pt-20"
-                      }`}
-                    >
+                    <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 py-16">
                       {/* Icon, Title and Subtitle - Centered horizontally */}
                       <motion.div
                         className="text-center mb-6"
@@ -803,14 +797,14 @@ export default function SquareTextCard({
                         )}
 
                         <h2
-                          className={`square-text-card-title ${
+                          className={`h2-title ${
                             card.textColor || "text-gray-900"
                           }`}
                         >
                           {getCardText(card, "title")}
                         </h2>
                         <h3
-                          className={`text-base md:text-lg lg:text-xl 2xl:text-2xl font-medium mb-5 ${
+                          className={`h3-secondary ${
                             card.textColor || "text-gray-700"
                           }`}
                         >
@@ -818,19 +812,15 @@ export default function SquareTextCard({
                         </h3>
                       </motion.div>
 
-                      {/* Description - Left aligned on desktop, centered on mobile */}
+                      {/* Description - Centered text */}
                       <motion.div
-                        className={`${
-                          screenWidth < 768 ? "text-center" : "text-left"
-                        } relative ${
-                          screenWidth < 768 ? "" : "flex-1"
-                        } overflow-hidden`}
+                        className="text-center relative overflow-hidden"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
                       >
                         <motion.p
-                          className={`text-sm md:text-base lg:text-lg 2xl:text-xl leading-relaxed whitespace-pre-line max-w-3xl ${
+                          className={`p-primary px-4 leading-relaxed max-w-3xl mx-auto ${
                             card.textColor || "text-black"
                           } ${
                             isMobile && !allCardsExpanded ? "line-clamp-6" : ""

@@ -678,7 +678,7 @@ export default function PlanungspaketeCards({
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                     >
-                      <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line overflow-hidden">
+                      <p className="p-primary leading-relaxed overflow-hidden">
                         {getCardText(card, "description")}
                       </p>
                     </motion.div>
@@ -836,7 +836,7 @@ export default function PlanungspaketeCards({
                           duration: 0.6,
                         }}
                       >
-                        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                        <p className="p-primary leading-relaxed">
                           {getCardText(card, "description")}
                         </p>
                       </motion.div>
@@ -854,7 +854,7 @@ export default function PlanungspaketeCards({
                           }}
                           className="h-full overflow-y-auto hide-scrollbar"
                         >
-                          <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                          <p className="p-primary leading-relaxed">
                             {getCardText(card, "extendedDescription")}
                           </p>
                         </motion.div>

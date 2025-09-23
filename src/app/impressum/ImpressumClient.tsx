@@ -28,7 +28,7 @@ export default function ImpressumClient() {
             <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
               Impressum
             </h1>
-            <h2 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center">
               Angaben gemäß § 5 E-Commerce-Gesetz (ECG)
             </h2>
 
@@ -95,9 +95,7 @@ export default function ImpressumClient() {
         {/* Contact Section */}
         <section id="contact" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Kontaktdaten
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Kontaktdaten</h2>
 
             <div className="max-w-4xl mx-auto">
               <div className="grid md:grid-cols-2 gap-12 text-center text-gray-700">
@@ -164,7 +162,7 @@ export default function ImpressumClient() {
         {/* Legal Section */}
         <section id="legal" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
+            <h2 className="h2-section tracking-[-0.02em]">
               Rechtliche Hinweise
             </h2>
 
@@ -261,7 +259,7 @@ export default function ImpressumClient() {
         {/* Liability Section */}
         <section id="liability" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
+            <h2 className="h2-section tracking-[-0.02em]">
               Haftungsausschluss
             </h2>
 

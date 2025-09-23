@@ -32,7 +32,7 @@ export default function AgbClient() {
             <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
               Allgemeine Geschäftsbedingungen
             </h1>
-            <h2 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center">
               NEST-Haus GmbH - Modulare Häuser
             </h2>
 
@@ -102,9 +102,7 @@ export default function AgbClient() {
         {/* Contract Section */}
         <section id="contract" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Vertragsabschluss
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Vertragsabschluss</h2>
 
             <div className="max-w-4xl mx-auto space-y-12 text-center text-gray-700">
               <div className="space-y-6">
@@ -176,9 +174,7 @@ export default function AgbClient() {
         {/* Services Section */}
         <section id="services" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Leistungen
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Leistungen</h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
               <div className="bg-gray-50 p-8 rounded-lg">
@@ -242,9 +238,7 @@ export default function AgbClient() {
         {/* Prices Section */}
         <section id="prices" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Preise & Zahlung
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Preise & Zahlung</h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
               <div className="bg-white p-8 rounded-lg border">
@@ -337,7 +331,7 @@ export default function AgbClient() {
         {/* Delivery Section */}
         <section id="delivery" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
+            <h2 className="h2-section tracking-[-0.02em]">
               Lieferung & Montage
             </h2>
 
@@ -422,9 +416,7 @@ export default function AgbClient() {
         {/* Withdrawal Section */}
         <section id="withdrawal" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Widerrufsrecht
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Widerrufsrecht</h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
               <div className="bg-red-50 p-8 rounded-lg border border-red-200">
@@ -524,9 +516,7 @@ export default function AgbClient() {
         {/* Warranty Section */}
         <section id="warranty" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Gewährleistung
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Gewährleistung</h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
               <div className="bg-green-50 p-8 rounded-lg border border-green-200">
@@ -622,9 +612,7 @@ export default function AgbClient() {
         {/* Liability Section */}
         <section id="liability" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Haftung
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Haftung</h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
               <div className="bg-white p-8 rounded-lg border">
@@ -697,7 +685,7 @@ export default function AgbClient() {
         {/* Final Section */}
         <section id="final" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
+            <h2 className="h2-section tracking-[-0.02em]">
               Schlussbestimmungen
             </h2>
 

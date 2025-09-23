@@ -906,7 +906,7 @@ export default function CheckoutStepper({
             <div className="pt-4 md:pt-6 pb-2 md:pb-3">
               <div className="flex items-start justify-between gap-4">
                 <div className="text-left">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
+                  <h1 className="h1-secondary text-gray-900">
                     {getAppointmentSummary()
                       ? "Garantierter Liefertermin"
                       : "Liefertermin"}
@@ -914,7 +914,7 @@ export default function CheckoutStepper({
                 </div>
                 <div className="text-right">
                   {getAppointmentSummary() ? (
-                    <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
+                    <div className="h1-secondary text-gray-900">
                       {deliveryDateString}
                     </div>
                   ) : (
@@ -936,10 +936,10 @@ export default function CheckoutStepper({
             </div>
           ) : (
             <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3 text-gray-900 whitespace-pre-line">
+              <h1 className="h1-secondary mb-2 md:mb-3 text-gray-900 whitespace-pre-line">
                 {stepIndex === 0 ? "Bereit einzuziehen?" : c.title}
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center whitespace-pre-line">
+              <h3 className="h3-secondary text-gray-600 mb-8 max-w-3xl mx-auto text-center whitespace-pre-line">
                 {stepIndex === 0 ? "Liefergarantie von 6 Monaten" : c.subtitle}
               </h3>
             </div>
@@ -992,7 +992,7 @@ export default function CheckoutStepper({
           </div>
           <div className="w-full md:w-1/2 order-1 md:order-2">
             <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
-              <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500 mb-3">
+              <h2 className="h2-title text-gray-500 mb-3">
                 <span className="text-black">Dein Preis</span>
                 <span className="text-gray-300"> Überblick</span>
               </h2>
@@ -1259,7 +1259,7 @@ export default function CheckoutStepper({
               {/* Overview grid: cart on left, summary/upgrade on right */}
               <div className="flex flex-col lg:flex-row gap-8 items-start">
                 <div className="space-y-6 w-full max-w-[520px] lg:flex-none">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500">
+                  <h2 className="h2-title text-gray-500">
                     <span className="text-black">Dein Nest</span>
                     <span className="text-gray-300"> Deine Konfiguration</span>
                   </h2>
@@ -1387,7 +1387,7 @@ export default function CheckoutStepper({
                 </div>
 
                 <div className="space-y-6 w-full lg:flex-1 min-w-0">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500">
+                  <h2 className="h2-title text-gray-500">
                     <span className="text-black">Dein Nest</span>
                     <span className="text-gray-300">
                       {" "}
@@ -1564,10 +1564,10 @@ export default function CheckoutStepper({
             <div className="space-y-4 pt-8">
               {/* Process Steps Title Section */}
               <div className="text-center mb-16">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+                <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                   Step by Step nach Hause
                 </h1>
-                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+                <h3 className="h3-secondary text-gray-600 mb-8">
                   Deine Vorstellungen formen jeden Schritt am Weg zum neuen
                   Zuhause
                 </h3>
@@ -1666,16 +1666,16 @@ export default function CheckoutStepper({
               {/* Grundstückscheck Form Section */}
               <div className="mt-16">
                 <div className="text-center mb-8 pt-8">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+                  <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                     Deine Daten
                   </h1>
-                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
+                  <h3 className="h3-secondary text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
                     Wir Prüfen deinen Baugrund
                   </h3>
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
                   <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
-                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-4 mt-12">
+                    <p className="p-primary text-gray-500 leading-relaxed mb-4 mt-12">
                       Wir prüfen, ob{" "}
                       <span className="text-black">dein Grundstück</span> die
                       gesetzlichen{" "}
@@ -1690,7 +1690,7 @@ export default function CheckoutStepper({
                       steht.
                     </p>
                     <div className="h-3"></div>
-                    <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-500 leading-relaxed mb-6">
+                    <p className="p-primary text-gray-500 leading-relaxed mb-6">
                       Außerdem analysieren wir die{" "}
                       <span className="text-black">
                         Eignung des Grundstücks
@@ -1760,9 +1760,7 @@ export default function CheckoutStepper({
               {/* Title row replaced above - keep spacing consistent */}
               {/* Deine Auswahl Title */}
               <div className="pt-2"></div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
-                Deine Auswahl:
-              </h1>
+              <h1 className="h1-secondary text-gray-900">Deine Auswahl:</h1>
               <div className="pb-2"></div>
 
               <div className="space-y-4">
@@ -1951,9 +1949,7 @@ export default function CheckoutStepper({
 
               {/* Teilzahlungen Title */}
               <div className="border-t border-gray-200 pt-2"></div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
-                Teilzahlungen:
-              </h1>
+              <h1 className="h1-secondary text-gray-900">Teilzahlungen:</h1>
               <div className="border-b border-gray-200 pb-2"></div>
 
               {/* Instalment Breakdown */}
@@ -2074,13 +2070,13 @@ export default function CheckoutStepper({
               <div className="border-t border-gray-200 pt-2"></div>
               <div className="flex items-start justify-between gap-4 py-3">
                 <div className="text-left">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
+                  <h1 className="h1-secondary text-gray-900">
                     Heute zu bezahlen
                   </h1>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900">
+                  <div className="h1-secondary text-gray-900">
                     {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>

@@ -76,7 +76,7 @@ const sectionsContent = [
     h3: "Visionen brauchen Räume",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const,
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
   {
     id: 4,
@@ -106,7 +106,7 @@ const sectionsContent = [
     h3: "Neue Wege. Neue Räume.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const,
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
   {
     id: 7,
@@ -132,12 +132,20 @@ const sectionsContent = [
 
 export default function LandingPageClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("section1");
-  const { isMobile: _isMobile } = useDeviceDetect();
+  const { isMobile } = useDeviceDetect();
 
   // Landing page specific image styling - applies to all 8 images
   const landingImageStyle = {
     objectPosition: "center center",
     objectFit: "contain" as const,
+  };
+
+  // Get responsive button variant for section 3
+  const getSecondaryButtonVariant = (sectionId: number) => {
+    if (sectionId === 3) {
+      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+    }
+    return sectionsContent[sectionId - 1].secondaryButtonVariant;
   };
 
   return (
@@ -189,8 +197,12 @@ export default function LandingPageClient() {
               >
                 <div className="text-center">
                   <h1
-                    className={`font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-1 lg:mb-1.5 ${
-                      section.id === 2 ? "text-[#605047]" : "text-white"
+                    className={`h1-primary ${
+                      section.id === 2
+                        ? "text-[#605047]"
+                        : section.id === 7
+                          ? "text-[#605047] md:text-white"
+                          : "text-white"
                     } ${
                       section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"
@@ -200,8 +212,12 @@ export default function LandingPageClient() {
                     {section.h1}
                   </h1>
                   <h3
-                    className={`text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 lg:mb-5 ${
-                      section.id === 2 ? "text-[#605047]" : "text-white"
+                    className={`h3-primary ${
+                      section.id === 2
+                        ? "text-[#605047]"
+                        : section.id === 7
+                          ? "text-[#605047] md:text-white"
+                          : "text-white"
                     } ${
                       section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"
@@ -224,7 +240,7 @@ export default function LandingPageClient() {
                   </Link>
                   <Link href="/konfigurator">
                     <Button
-                      variant={section.secondaryButtonVariant}
+                      variant={getSecondaryButtonVariant(section.id)}
                       size="xs"
                       className="w-full"
                     >

@@ -367,7 +367,7 @@ export default function SquareGlassCardsScroll({
                       <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-300 mb-5">
                         {card.subtitle}
                       </h3>
-                      <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-white leading-relaxed whitespace-pre-line">
+                      <p className="p-primary text-white leading-relaxed">
                         {card.description}
                       </p>
                     </motion.div>

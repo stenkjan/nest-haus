@@ -187,7 +187,7 @@ export default function CookieEinstellungenClient() {
             <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4">
               Cookie-Einstellungen
             </h1>
-            <h2 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto">
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto">
               Verwalten Sie Ihre Datenschutz- und Cookie-Präferenzen
             </h2>
           </div>

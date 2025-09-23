@@ -16,6 +16,7 @@ export type ButtonVariant =
   | "landing-primary" // Landing page main button
   | "landing-secondary" // Landing page secondary button (white)
   | "landing-secondary-blue" // Landing page secondary button (blue)
+  | "landing-secondary-blue-white" // Landing page secondary button (blue with white background)
   | "configurator"; // Konfigurator specific button
 
 export type ButtonSize =
@@ -79,6 +80,8 @@ const Button: React.FC<ButtonProps> = ({
       "bg-transparent border border-white text-white hover:bg-white hover:text-black focus:ring-white box-border",
     "landing-secondary-blue":
       "bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500 box-border",
+    "landing-secondary-blue-white":
+      "bg-white/90 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500 box-border",
     configurator:
       "bg-amber-500 text-white hover:bg-amber-600 focus:ring-amber-500 shadow-md",
   };

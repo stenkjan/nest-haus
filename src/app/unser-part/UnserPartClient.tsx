@@ -117,10 +117,10 @@ export default function UnserPartClient() {
         <section id="dein-nest-system" className="bg-black pt-12 pb-4">
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-12">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
+              <h1 className="h1-secondary text-white mb-2 md:mb-3">
                 Dein Nest System
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300">
+              <h3 className="h3-secondary text-gray-300">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
                 Effizienz schafft.
               </h3>
@@ -195,10 +195,10 @@ export default function UnserPartClient() {
         {/* Materialien Section */}
         <section id="materialien" className="pt-16">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-2 md:mb-3">
+            <h1 className="h1-secondary text-white mb-2 md:mb-3">
               Gut für Dich, besser für die Zukunft
             </h1>
-            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-300">
+            <h3 className="h3-secondary text-gray-300">
               Entdecke unsere sorgfältig ausgewählten Materialien
             </h3>
           </div>
@@ -224,35 +224,35 @@ export default function UnserPartClient() {
           />
 
           {/* ThreeByOneGrid - Left Position (Bottom Section) */}
-            <ThreeByOneGrid
-              title=""
-              subtitle=""
-              backgroundColor="black"
-              text="<span class='text-gray-400'>Sobald die Module geliefert sind, beginnt</span> dein Teil der Gestaltung. <span class='text-gray-400'>Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt</span> deinem Plan, <span class='text-gray-400'>jeder Schritt bringt dich</span> deinem Zuhause näher. <span class='text-gray-400'>Du bestimmst, wo</span> Licht einfällt, <span class='text-gray-400'>wo</span> Wege beginnen <span class='text-gray-400'>und wie dein</span> Raum sich öffnet. <span class='text-gray-400'>So entsteht nicht nur ein Haus, sondern</span> ein Ort, der ganz dir gehört."
-              textPosition="left"
-              maxWidth={false}
-              image1={IMAGES.function.nestHausFensterTuerenStirnseite}
-              image2={IMAGES.function.nestHausFensterTuerenAbschlussmodul}
-              image1Description="Fenster und Türen Einbau Positionierung"
-              image2Description="Mittelmodul Liniengrafik Fenster und Türen"
-            />
+          <ThreeByOneGrid
+            title=""
+            subtitle=""
+            backgroundColor="black"
+            text="<span class='text-gray-400'>Sobald die Module geliefert sind, beginnt</span> dein Teil der Gestaltung. <span class='text-gray-400'>Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt</span> deinem Plan, <span class='text-gray-400'>jeder Schritt bringt dich</span> deinem Zuhause näher. <span class='text-gray-400'>Du bestimmst, wo</span> Licht einfällt, <span class='text-gray-400'>wo</span> Wege beginnen <span class='text-gray-400'>und wie dein</span> Raum sich öffnet. <span class='text-gray-400'>So entsteht nicht nur ein Haus, sondern</span> ein Ort, der ganz dir gehört."
+            textPosition="left"
+            maxWidth={false}
+            image1={IMAGES.function.nestHausFensterTuerenStirnseite}
+            image2={IMAGES.function.nestHausFensterTuerenAbschlussmodul}
+            image1Description="Fenster und Türen Einbau Positionierung"
+            image2Description="Mittelmodul Liniengrafik Fenster und Türen"
+          />
 
           {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-            <ThreeByOneGrid
-              title=""
-              subtitle=""
-              backgroundColor="black"
-              text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>deine Vision Wirklichkeit werden zu lassen.</span>"
-              textPosition="right"
-              maxWidth={false}
-              image1={IMAGES.function.nestHausModulSeiteKonzept}
-              image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
-              image1Description="Modul Seitenansicht Holz Schema Konzept"
-              image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
-              showButtons={true}
-              primaryButtonText="Die Pakete"
-              secondaryButtonText="Jetzt bauen"
-            />
+          <ThreeByOneGrid
+            title=""
+            subtitle=""
+            backgroundColor="black"
+            text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>deine Vision Wirklichkeit werden zu lassen.</span>"
+            textPosition="right"
+            maxWidth={false}
+            image1={IMAGES.function.nestHausModulSeiteKonzept}
+            image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
+            image1Description="Modul Seitenansicht Holz Schema Konzept"
+            image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
+            showButtons={true}
+            primaryButtonText="Die Pakete"
+            secondaryButtonText="Jetzt bauen"
+          />
         </section>
 
         {/* FullWidthImageGrid - Raum zum Träumen (moved to individualisierung) */}
@@ -284,10 +284,10 @@ export default function UnserPartClient() {
         <section id="planungspakete" className="w-full pt-16 pb-10 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="h3-secondary text-gray-600 mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
               </h3>
@@ -325,7 +325,7 @@ export default function UnserPartClient() {
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium text-gray-900 mb-2 md:mb-3">
                 Kein Plan? Kein Problem!
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8">
+              <h3 className="h3-secondary text-gray-600 mb-8">
                 Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz
                 bequem telefonisch
               </h3>
