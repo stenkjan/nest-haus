@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9e705df9cc5e9c5296145c3aa1a7ab5c6a513f19] - Tue Sep 23 14:24:05 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: implement step icons in SquareTextCard component for enhanced visual representation  - Introduced a new StepIcon component utilizing HybridBlobImage for dynamic icon rendering based on step number. - Updated createSquareTextCardIcon function to return step icons for cards 1-7, improving the visual consistency of the card icons. - Added step icons to defaultSquareTextCardData for cards 1 through 7, enhancing user experience with relevant imagery.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/SquareTextCard.tsx
+
+
+---
+
 ## [d08d9aa3a0db76ab7ccb9948df83c24272e8e33c] - Tue Sep 23 14:09:06 2025 +0200
 
 **Author**: stenkjan
