@@ -320,7 +320,7 @@ export default function EntdeckenClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 md:mb-16">
+            <div className="text-center md:mb-12">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Konfiguriere dein ®Nest Haus
               </h1>
@@ -365,7 +365,7 @@ export default function EntdeckenClient() {
         {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 md:mb-16">
+            <div className="text-center md:mb-16">
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>

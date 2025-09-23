@@ -570,7 +570,7 @@ export default function PlanungspaketeCards({
       )}
 
       {/* Cards Container */}
-      <div className={`relative ${isLightboxMode ? "py-2" : "py-4 md:py-8"}`}>
+      <div className={`relative ${isLightboxMode ? "py-2" : "md:py-8"}`}>
         {!isLightboxMode ? (
           /* Normal Mode - Responsive Grid Layout */
           <div
