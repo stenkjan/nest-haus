@@ -105,12 +105,12 @@ export function PartnersSection({
         {/* Header */}
         <div className="text-center mb-0">
           <h1
-            className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold ${titleColor} mb-2 md:mb-3`}
+            className={`h1-secondary mb-2 md:mb-3`}
           >
             {title}
           </h1>
           <h3
-            className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${subtitleColor} mb-8`}
+            className={`h3-secondary mb-8`}
           >
             {subtitle}
           </h3>

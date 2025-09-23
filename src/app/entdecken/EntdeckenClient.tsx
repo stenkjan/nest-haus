@@ -157,9 +157,7 @@ export default function EntdeckenClient() {
             <div className="absolute inset-0 flex flex-col justify-end">
               {/* Mobile Title/Subtitle Overlay - Aligned with standard spacing */}
               <div className="absolute top-12 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
-                <h1 className="h1-secondary">
-                  Design für dich gemacht
-                </h1>
+                <h1 className="h1-secondary">Design für dich gemacht</h1>
                 <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
                   Dein Design im Freistil.
                 </h3>
@@ -314,9 +312,10 @@ export default function EntdeckenClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 md:mb-16">
+            <div className="text-center mb-4 md:mb-16">
               <h1 className="h1-secondary mb-2 md:mb-3">
-                Konfiguriere dein ®Nest Haus
+                <span className="block md:inline">Konfiguriere dein</span>
+                <span className="block md:inline"> ®Nest Haus</span>
               </h1>
               <h3 className="h3-secondary text-black mb-8">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
@@ -335,13 +334,11 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 6 - So läuft es ab */}
-        <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
+        <section id="ablauf" className="w-full py-8 md:py-4 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h1 className="h1-secondary mb-2 md:mb-3">
-                So läuft&apos;s ab
-              </h1>
-              <h3 className="h3-secondary text-black mb-8 md:mb-16">
+              <h1 className="h1-secondary mb-2 md:mb-3">So läuft&apos;s ab</h1>
+              <h3 className="h3-secondary text-black mb-2 md:mb-4">
                 Dein Weg zum Nest-Haus
               </h3>
             </div>
@@ -358,8 +355,8 @@ export default function EntdeckenClient() {
 
         {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 md:mb-16">
+          <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-4 md:mb-8">
               <h1 className="h1-secondary mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
@@ -379,7 +376,7 @@ export default function EntdeckenClient() {
             </div>
 
             {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-6 md:mt-16">
+            <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
               <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>

@@ -6,6 +6,8 @@ import Link from "next/link";
 import { ClientBlobVideo } from "@/components/images";
 import { Button } from "@/components/ui";
 import { VideoCardPreset } from "@/constants/contentCardPresets";
+import ClientBlobFile from "@/components/files/ClientBlobFile";
+import { FILES } from "@/constants/files";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 
 interface VideoCard16by9Props {
@@ -344,6 +346,22 @@ export default function VideoCard16by9({
           ))}
         </div>
       </div>
+
+      {/* Action Buttons - Only show on mobile where buttons are not inside the card */}
+      {isClient && screenWidth < 768 && (
+        <div className="flex flex-row gap-4 justify-center mt-6">
+          <Link href="/unser-part">
+            <Button variant="primary" size="xs">
+              Unser Part
+            </Button>
+          </Link>
+          <Link href="/konfigurator">
+            <Button variant="landing-secondary-blue" size="xs">
+              Jetzt bauen
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
