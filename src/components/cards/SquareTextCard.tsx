@@ -6,6 +6,8 @@ import { Button } from "@/components/ui";
 import Link from "next/link";
 import ClientBlobFile from "@/components/files/ClientBlobFile";
 import { FILES } from "@/constants/files";
+import { IMAGES } from "@/constants/images";
+import HybridBlobImage from "@/components/images/HybridBlobImage";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 import "./mobile-scroll-optimizations.css";
 
@@ -32,7 +34,38 @@ interface SquareTextCardProps {
   customData?: SquareTextCardData[];
 }
 
-// Default icon component - easily customizable
+// Step icon component using HybridBlobImage
+const StepIcon = ({
+  stepNumber,
+  className = "w-10 h-10 md:w-14 md:h-14",
+}: {
+  stepNumber: number;
+  className?: string;
+}) => {
+  const iconKey = `icon${stepNumber}` as keyof typeof IMAGES.stepIcons;
+  const iconPath = IMAGES.stepIcons[iconKey];
+
+  if (!iconPath) {
+    return <DefaultSquareTextCardIcon className={className} />;
+  }
+
+  return (
+    <HybridBlobImage
+      path={iconPath}
+      alt={`Step ${stepNumber} icon`}
+      className={className}
+      width={64}
+      height={64}
+      style={{
+        objectFit: "contain",
+        width: "100%",
+        height: "100%",
+      }}
+    />
+  );
+};
+
+// Default icon component - fallback for when no step icon is available
 const DefaultSquareTextCardIcon = ({
   className = "w-10 h-10 md:w-14 md:h-14 text-black",
 }: {
@@ -54,19 +87,17 @@ const DefaultSquareTextCardIcon = ({
   </svg>
 );
 
-// Helper function to create icons for specific cards - makes it easy to customize later
+// Helper function to create icons for specific cards - uses step icons based on card ID
 export const createSquareTextCardIcon = (
   cardId: number,
   customIcon?: React.ReactNode
 ): React.ReactNode => {
   if (customIcon) return customIcon;
 
-  // Future: Add specific icons per card ID
-  // switch (cardId) {
-  //   case 1: return <SpecificIcon1 />;
-  //   case 2: return <SpecificIcon2 />;
-  //   default: return <DefaultSquareTextCardIcon />;
-  // }
+  // Use step icons for cards 1-7
+  if (cardId >= 1 && cardId <= 7) {
+    return <StepIcon stepNumber={cardId} />;
+  }
 
   return <DefaultSquareTextCardIcon />;
 };
@@ -84,7 +115,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     mobileDescription:
       "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
     backgroundColor: "#F9FAFB",
-    icon: <DefaultSquareTextCardIcon />,
+    icon: createSquareTextCardIcon(1),
   },
   {
     id: 2,
@@ -97,7 +128,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     mobileDescription:
       "Sobald dein Vorentwurf fertiggestellt ist, starten wir mit der rechtlich korrekten Planung für dein zuständiges Bauamt (Planungspaket Basis).\n\nDabei werden alle formellen Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Zufahrten sowie örtliche Bauvorschriften geprüft, abgestimmt und detailliert definiert, um eine reibungslose Genehmigung sicherzustellen.",
     backgroundColor: "#F9FAFB",
-    icon: <DefaultSquareTextCardIcon />,
+    icon: createSquareTextCardIcon(2),
   },
   {
     id: 3,
@@ -110,7 +141,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     mobileDescription:
       "Sobald dein Baubescheid vorliegt, starten die Vorbereitungen auf deinem Grundstück. Dazu zählen alle notwendigen Erschließungs- und Grabungsarbeiten wie Strom-, Wasser- und Kanalanschlüsse sowie die Zufahrt.\n\nDie Kosten dafür trägst du selbst. Wir begleiten dich mit erfahrenen Partnerfirmen, damit jeder Schritt reibungslos und effizient umgesetzt wird.",
     backgroundColor: "#F9FAFB",
-    icon: <DefaultSquareTextCardIcon />,
+    icon: createSquareTextCardIcon(3),
   },
   {
     id: 4,
@@ -123,7 +154,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     mobileDescription:
       "Wenn du dein Fundament selbst bauen möchtest, erhältst du von uns alle notwendigen Informationen und detaillierten Planungsunterlagen.\n\nSolltest du die Arbeiten an uns übergeben wollen, übernehmen wir Planung, Organisation und Umsetzung. Zuverlässig und fachgerecht.",
     backgroundColor: "#F9FAFB",
-    icon: <DefaultSquareTextCardIcon />,
+    icon: createSquareTextCardIcon(4),
   },
   {
     id: 5,
@@ -136,7 +167,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     mobileDescription:
       "Sobald dein Fundament fertig ist, liefern wir dein Nest-Haus direkt zu dir. Unser erfahrenes Team übernimmt die Montage vor Ort, sodass dein Zuhause in kürzester Zeit steht.\n\nDie Kosten sind transparent geregelt und werden nach Bekanntgabe deines Bauplatzes exakt festgelegt.",
     backgroundColor: "#F9FAFB",
-    icon: <DefaultSquareTextCardIcon />,
+    icon: createSquareTextCardIcon(5),
   },
   {
     id: 6,
@@ -149,7 +180,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     mobileDescription:
       "Für die Fertigstellung begleiten wir dich Schritt für Schritt und vermitteln bei Bedarf zuverlässige Partnerfirmen. Ob in Eigenregie oder mit Fachbetrieben\n\nMit dem Planungspaket Plus erhältst du einen klaren Ablaufplan und Unterstützung bis zur Schlüsselübergabe, inklusive aller Gewerke von Elektro über Sanitär bis Innenausbau.",
     backgroundColor: "#F9FAFB",
-    icon: <DefaultSquareTextCardIcon />,
+    icon: createSquareTextCardIcon(6),
   },
   {
     id: 7,
@@ -162,7 +193,7 @@ export const defaultSquareTextCardData: SquareTextCardData[] = [
     mobileDescription:
       "In der Interior Planung entsteht ein stimmiges Konzept aus Möbeln, Materialien, Farben und Licht, das Funktion und Atmosphäre vereint.\n\nMit dem Planungspaket Pro begleiten wir dich bis zur Fertigstellung, damit dein Zuhause innen wie außen perfekt harmoniert.",
     backgroundColor: "#F9FAFB",
-    icon: <DefaultSquareTextCardIcon />,
+    icon: createSquareTextCardIcon(7),
   },
 ];
 

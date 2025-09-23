@@ -100,7 +100,7 @@ export const IMAGES = {
         nest155_solar_overlay_mod_7: '219-nest-haus-konfigurator-160-modulbau-solar-energie-solarpanel-nachhaltig-energie-flexibel-7',
         nest155_solar_overlay_mod_8: '220-nest-haus-konfigurator-160-modulbau-solar-energie-solarpanel-nachhaltig-energie-flexibel-8',
 
-        
+
         // New Fenster overlay images added by sync
         nest_75_fenster_overlay_light_pvc: '221-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-light-pvc-kunststoff',
         nest_75_fenster_overlay_light_holz: '222-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-light-holz',
@@ -370,6 +370,17 @@ export const IMAGES = {
         partner4: '63-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-Labor-Bauphysik',
         partner5: '64-NEST-Haus-Partner-Kooperation-Schwarz-Partner-Patentanwaelte',
         partner6: '65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau'
+    },
+
+    // Step icons for process cards
+    stepIcons: {
+        icon1: '290-nest-haus-icon1-worentwurf',
+        icon2: '291-nest-haus-icon2-einreichplanung',
+        icon3: '292-nest-haus-icon3-baubescheid',
+        icon4: '293-nest-haus-icon4-fundament',
+        icon5: '294-nest-haus-icon5-lieferung',
+        icon6: '295-nest-haus-icon6-fertigstellung',
+        icon7: '296-nest-haus-icon7-interior'
     }
 } as const;
 
