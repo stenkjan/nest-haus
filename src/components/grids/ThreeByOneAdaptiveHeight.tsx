@@ -63,9 +63,7 @@ export default function ThreeByOneAdaptiveHeight({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-      <div
-        className={`${containerClasses} ${backgroundClasses} pb-16 md:pb-32`}
-      >
+      <div className={`${containerClasses} ${backgroundClasses} pb-0 md:pb-32`}>
         <div className="text-center mb-12 2xl:mb-24">
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
             {title}
@@ -93,7 +91,7 @@ export default function ThreeByOneAdaptiveHeight({
   }
 
   return (
-    <div className={`${backgroundClasses} pb-16 md:pb-32`}>
+    <div className={`${backgroundClasses} pb-0 md:pb-32`}>
       {/* Title and Subtitle */}
       <div className={`${containerClasses}`}>
         <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">

@@ -201,8 +201,8 @@ export default function ThreeByOneGrid({
               />
             </motion.div>
 
-            {/* Mobile: More Information Toggle */}
-            <div className="px-4 md:px-8">
+            {/* Mobile: More Information Toggle - Hidden on Mobile */}
+            <div className="hidden px-4 md:px-8">
               <motion.div
                 className="text-center mt-4"
                 initial={{ y: 20, opacity: 0 }}
