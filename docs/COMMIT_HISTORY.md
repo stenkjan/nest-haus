@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0c1edf239dd75923cc3153977c2ede3518efa113] - Tue Sep 23 13:42:36 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: adjust margin and padding in multiple components for improved layout consistency  - Modified margin and padding in EntdeckenClient, PlanungspaketeCards, and PartnersSection for better alignment and visual consistency. - Enhanced text structure to maintain a cohesive design across sections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
 ## [ad12206162fd5e9ffd51cb6070d21ab0cd63b629] - Mon Sep 22 22:10:40 2025 +0200
 
 **Author**: stenkjan
