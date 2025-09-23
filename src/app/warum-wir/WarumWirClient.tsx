@@ -27,7 +27,7 @@ export default function WarumWirClient() {
             <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center text-white">
               Unsere Vision
             </h1>
-            <h2 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center text-white">
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center text-white">
               Eine Welt, in der nachhaltiges Wohnen für jeden zugänglich ist
             </h2>
 

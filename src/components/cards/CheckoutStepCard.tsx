@@ -63,7 +63,7 @@ export default function CheckoutStepCard({
                     <div className="flex flex-col items-center">
                       {/* Icon */}
                       <div className="flex items-center justify-center mb-4">
-                        <div className="flex items-center justify-center">
+                        <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
                           {card.icon || <DefaultCheckoutStepIcon />}
                         </div>
                       </div>

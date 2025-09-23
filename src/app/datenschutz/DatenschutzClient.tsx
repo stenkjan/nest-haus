@@ -29,7 +29,7 @@ export default function DatenschutzClient() {
             <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
               Datenschutzerklärung
             </h1>
-            <h2 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center">
               Informationen zur Verarbeitung personenbezogener Daten gemäß DSGVO
             </h2>
 
@@ -56,9 +56,7 @@ export default function DatenschutzClient() {
         {/* Responsible Section */}
         <section id="responsible" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Verantwortlicher
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Verantwortlicher</h2>
 
             <div className="max-w-4xl mx-auto space-y-8 text-gray-700">
               <div className="text-center space-y-6">
@@ -87,9 +85,7 @@ export default function DatenschutzClient() {
         {/* Data Processing Section */}
         <section id="data-processing" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Datenverarbeitung
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Datenverarbeitung</h2>
 
             <div className="max-w-4xl mx-auto space-y-12 text-gray-700">
               {/* Website Usage */}
@@ -235,7 +231,7 @@ export default function DatenschutzClient() {
         {/* Cookies Section */}
         <section id="cookies" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
+            <h2 className="h2-section tracking-[-0.02em]">
               Cookies und Tracking
             </h2>
 
@@ -315,9 +311,7 @@ export default function DatenschutzClient() {
         {/* Rights Section */}
         <section id="rights" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
-              Ihre Rechte
-            </h2>
+            <h2 className="h2-section tracking-[-0.02em]">Ihre Rechte</h2>
 
             <div className="max-w-4xl mx-auto space-y-12 text-gray-700">
               <p className="text-lg leading-relaxed text-center">
@@ -395,7 +389,7 @@ export default function DatenschutzClient() {
         {/* Contact Section */}
         <section id="contact" className="w-full py-16 bg-gray-50">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-medium text-3xl md:text-4xl tracking-[-0.02em] mb-8 text-center">
+            <h2 className="h2-section tracking-[-0.02em]">
               Kontakt & Beschwerden
             </h2>
 

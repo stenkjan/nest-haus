@@ -100,10 +100,10 @@ export default function EntdeckenClient() {
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                 Design für dich gemacht
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
+              <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
                 Dein Design im Freistil.
               </h3>
             </div>
@@ -157,42 +157,34 @@ export default function EntdeckenClient() {
             <div className="absolute inset-0 flex flex-col justify-end">
               {/* Mobile Title/Subtitle Overlay - Aligned with standard spacing */}
               <div className="absolute top-12 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
-                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
-                  Design für dich gemacht
-                </h1>
-                <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
+                <h1 className="h1-secondary">Design für dich gemacht</h1>
+                <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
                   Dein Design im Freistil.
                 </h3>
               </div>
 
               {/* Text Blocks positioned closer to buttons - Hidden on tablet and mobile */}
-              <div className="absolute bottom-20 lg:bottom-20 xl:bottom-28 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-32 max-w-[1536px] mx-auto w-full hidden lg:flex">
+              <div className="absolute bottom-20 lg:bottom-32 xl:bottom-12 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40 max-w-[1536px] mx-auto w-full hidden lg:flex">
                 {/* Left Text Block */}
                 <div className="text-center">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
-                    Nest 80
-                  </h2>
-                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
+                  <h2 className="h2-title font-bold text-black">Nest 80</h2>
+                  <h3 className="h3-secondary-light text-black">
                     75m² ab € 177.000.-
                   </h3>
                 </div>
 
                 {/* Center Text Block */}
                 <div className="text-center">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
-                    Nest 120
-                  </h2>
-                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
+                  <h2 className="h2-title font-bold text-black">Nest 120</h2>
+                  <h3 className="h3-secondary-light text-black">
                     115m² ab € 245.000.-
                   </h3>
                 </div>
 
                 {/* Right Text Block */}
                 <div className="text-center">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
-                    Nest 160
-                  </h2>
-                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black">
+                  <h2 className="h2-title font-bold text-black">Nest 160</h2>
+                  <h3 className="h3-secondary-light text-black">
                     155m² ab € 313.000.-
                   </h3>
                 </div>
@@ -213,7 +205,7 @@ export default function EntdeckenClient() {
               </div>
 
               {/* Desktop Buttons - Positioned at bottom */}
-              <div className="absolute bottom-8 lg:bottom-8 xl:bottom-6 2xl:bottom-8 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
+              <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
                 <Link href="/dein-part">
                   <Button variant="primary" size="xs">
                     Dein Part
@@ -232,11 +224,11 @@ export default function EntdeckenClient() {
         {/* Section 3 - Dein Zuhause zieht um */}
         <section id="zuhause-zieht-um" className="w-full py-8 md:py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+            <div className="text-center">
+              <h1 className="h1-secondary mb-2 md:mb-3">
                 Dein Zuhause zieht um
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 max-w-3xl mx-auto text-center">
+              <h3 className="h3-secondary text-black max-w-3xl mx-auto text-center">
                 Architektur für ein bewegtes Leben.
               </h3>
             </div>
@@ -320,11 +312,12 @@ export default function EntdeckenClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center md:mb-12">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-                Konfiguriere dein ®Nest Haus
+            <div className="text-center mb-4 md:mb-16">
+              <h1 className="h1-secondary mb-2 md:mb-3">
+                <span className="block md:inline">Konfiguriere dein</span>
+                <span className="block md:inline"> ®Nest Haus</span>
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
+              <h3 className="h3-secondary text-black mb-8">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
                 Effizienz schafft.
               </h3>
@@ -341,13 +334,11 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 6 - So läuft es ab */}
-        <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
+        <section id="ablauf" className="w-full py-8 md:py-4 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-                So läuft&apos;s ab
-              </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8 md:mb-16">
+              <h1 className="h1-secondary mb-2 md:mb-3">So läuft&apos;s ab</h1>
+              <h3 className="h3-secondary text-black mb-2 md:mb-4">
                 Dein Weg zum Nest-Haus
               </h3>
             </div>
@@ -364,12 +355,12 @@ export default function EntdeckenClient() {
 
         {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center md:mb-16">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+          <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-4 md:mb-8">
+              <h1 className="h1-secondary mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
-              <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-black mb-8">
+              <h3 className="h3-secondary text-black mb-8">
                 Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
                 Nest rauszuholen.
               </h3>
@@ -385,7 +376,7 @@ export default function EntdeckenClient() {
             </div>
 
             {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-6 md:mt-16">
+            <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
               <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>

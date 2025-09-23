@@ -241,7 +241,7 @@ export function GrundstueckCheckForm({
             {/* Info Section - Left side matching description area */}
             <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
               <div>
-                <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-4 mt-12">
+                <p className="p-primary text-gray-700 leading-relaxed mb-4 mt-12">
                   Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig,
                   dass dein Grundstück alle{" "}
                   <strong>rechtlichen und baulichen Anforderungen</strong>{" "}
@@ -249,7 +249,7 @@ export function GrundstueckCheckForm({
                 </p>
                 {/* Spacer to align with Name/Nachname form fields */}
                 <div className="h-3"></div>
-                <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-6">
+                <p className="p-primary text-gray-700 leading-relaxed mb-6">
                   <strong>Für nur € 200,-</strong> übernehmen wir für dich die
                   Prüfung der relevanten Rahmenbedingungen und Baugesetze, um
                   dir <strong>Sicherheit und Klarheit</strong> zu verschaffen.
@@ -448,13 +448,13 @@ export function GrundstueckCheckForm({
         <div className="md:hidden space-y-8">
           {/* 1. Main text until "Planung deines Nest-Hauses starten kann" */}
           <div>
-            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-4">
+            <p className="p-primary text-gray-700 leading-relaxed mb-4">
               Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig, dass
               dein Grundstück alle{" "}
               <strong>rechtlichen und baulichen Anforderungen</strong> erfüllt.
               Genau hier setzen wir an!
             </p>
-            <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed mb-6">
+            <p className="p-primary text-gray-700 leading-relaxed mb-6">
               <strong>Für nur € 200,-</strong> übernehmen wir für dich die
               Prüfung der relevanten Rahmenbedingungen und Baugesetze, um dir{" "}
               <strong>Sicherheit und Klarheit</strong> zu verschaffen. Jetzt den{" "}

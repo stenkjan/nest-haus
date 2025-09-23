@@ -12,10 +12,9 @@ interface TerminVereinbarenContentProps {
  * Contains the descriptive text and contact information boxes
  * Used in CalendarDialog popup and AppointmentBookingSection
  */
-export const TerminVereinbarenContent: React.FC<TerminVereinbarenContentProps> = ({
-  className = "",
-  variant = "desktop",
-}) => {
+export const TerminVereinbarenContent: React.FC<
+  TerminVereinbarenContentProps
+> = ({ className = "", variant = "desktop" }) => {
   const isPopup = variant === "popup";
   const isMobile = variant === "mobile";
   const isDesktop = variant === "desktop";
@@ -26,24 +25,46 @@ export const TerminVereinbarenContent: React.FC<TerminVereinbarenContentProps> =
       <div className={`flex flex-col gap-4 ${className}`}>
         <div>
           <p className="text-xs sm:text-sm text-gray-700 mb-3 leading-snug">
-            Der Kauf deines Hauses ist ein großer Schritt – <span className="font-bold">und wir sind da, um dir dabei zu helfen.</span> Für mehr Sicherheit und Klarheit <span className="font-bold">stehen wir dir jederzeit persönlich zur Seite.</span> Ruf uns an, um dein <span className="font-bold">Beratungsgespräch</span> zu vereinbaren, oder buche deinen <span className="font-bold">Termin ganz einfach online.</span> Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+            Der Kauf deines Hauses ist ein großer Schritt –{" "}
+            <span className="font-bold">
+              und wir sind da, um dir dabei zu helfen.
+            </span>{" "}
+            Für mehr Sicherheit und Klarheit{" "}
+            <span className="font-bold">
+              stehen wir dir jederzeit persönlich zur Seite.
+            </span>{" "}
+            Ruf uns an, um dein{" "}
+            <span className="font-bold">Beratungsgespräch</span> zu vereinbaren,
+            oder buche deinen{" "}
+            <span className="font-bold">Termin ganz einfach online.</span> Dein
+            Weg zu deinem Traumhaus beginnt mit einem Gespräch.
           </p>
         </div>
         <div className="space-y-2">
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">Kontakt</h4>
+            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+              Kontakt
+            </h4>
             <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm text-gray-700">
-              <span>Telefon:</span><span>+43 (0) 3847 75090</span>
-              <span>Mobil:</span><span>+43 (0) 664 3949604</span>
-              <span>Email:</span><span>nest@haus.at</span>
+              <span>Telefon:</span>
+              <span>+43 (0) 3847 75090</span>
+              <span>Mobil:</span>
+              <span>+43 (0) 664 3949604</span>
+              <span>Email:</span>
+              <span>nest@haus.at</span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">Adresse</h4>
+            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+              Adresse
+            </h4>
             <div className="text-xs md:text-sm text-gray-700">
-              Am Ölberg 17<br />
-              8020, Graz<br />
-              Steiermark<br />
+              Am Ölberg 17
+              <br />
+              8020, Graz
+              <br />
+              Steiermark
+              <br />
               Österreich
             </div>
           </div>
@@ -58,14 +79,14 @@ export const TerminVereinbarenContent: React.FC<TerminVereinbarenContentProps> =
       <div className={`space-y-6 ${className}`}>
         {/* Descriptive Text for Mobile - NO BOX */}
         <div className="text-center px-4">
-          <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+          <p className="p-primary text-gray-700 leading-relaxed">
             Der Kauf deines Hauses ist ein großer Schritt – und{" "}
             <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
             Sicherheit und Klarheit{" "}
-            <strong>stehen wir dir jederzeit persönlich zur Seite</strong>.
-            Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
-            deinen <strong>Termin ganz einfach online</strong>. Dein Weg zu
-            deinem Traumhaus beginnt mit einem Gespräch.
+            <strong>stehen wir dir jederzeit persönlich zur Seite</strong>. Ruf
+            uns an, um dein Beratungsgespräch zu vereinbaren, oder buche deinen{" "}
+            <strong>Termin ganz einfach online</strong>. Dein Weg zu deinem
+            Traumhaus beginnt mit einem Gespräch.
           </p>
         </div>
 
@@ -78,9 +99,11 @@ export const TerminVereinbarenContent: React.FC<TerminVereinbarenContentProps> =
               </h2>
               <div className="text-center">
                 <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  <span className="font-medium">Telefon:</span> +43 (0) 3847 75090
+                  <span className="font-medium">Telefon:</span> +43 (0) 3847
+                  75090
                   <br />
-                  <span className="font-medium">Mobil:</span> +43 (0) 664 3949604
+                  <span className="font-medium">Mobil:</span> +43 (0) 664
+                  3949604
                   <br />
                   <span className="font-medium">Email:</span> nest@haus.at
                 </p>
@@ -95,9 +118,12 @@ export const TerminVereinbarenContent: React.FC<TerminVereinbarenContentProps> =
               </h2>
               <div className="text-center">
                 <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  Am Ölberg 17<br />
-                  8020, Graz<br />
-                  Steiermark<br />
+                  Am Ölberg 17
+                  <br />
+                  8020, Graz
+                  <br />
+                  Steiermark
+                  <br />
                   Österreich
                 </p>
               </div>
@@ -111,20 +137,22 @@ export const TerminVereinbarenContent: React.FC<TerminVereinbarenContentProps> =
   // Desktop variant
   if (isDesktop) {
     return (
-      <div className={`space-y-8 max-w-[500px] justify-self-start ${className}`}>
+      <div
+        className={`space-y-8 max-w-[500px] justify-self-start ${className}`}
+      >
         {/* Spacer to align text with calendar border start */}
         <div className="h-16"></div>
 
         {/* Descriptive Text - INCREASED LINE SPACING */}
         <div>
-          <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+          <p className="p-primary text-gray-700 leading-relaxed">
             Der Kauf deines Hauses ist ein großer Schritt – und{" "}
             <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
             Sicherheit und Klarheit{" "}
-            <strong>stehen wir dir jederzeit persönlich zur Seite</strong>.
-            Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
-            deinen <strong>Termin ganz einfach online</strong>. Dein Weg zu
-            deinem Traumhaus beginnt mit einem Gespräch.
+            <strong>stehen wir dir jederzeit persönlich zur Seite</strong>. Ruf
+            uns an, um dein Beratungsgespräch zu vereinbaren, oder buche deinen{" "}
+            <strong>Termin ganz einfach online</strong>. Dein Weg zu deinem
+            Traumhaus beginnt mit einem Gespräch.
           </p>
         </div>
 
@@ -157,9 +185,12 @@ export const TerminVereinbarenContent: React.FC<TerminVereinbarenContentProps> =
             </h2>
             <div>
               <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                Am Ölberg 17<br />
-                8020, Graz<br />
-                Steiermark<br />
+                Am Ölberg 17
+                <br />
+                8020, Graz
+                <br />
+                Steiermark
+                <br />
                 Österreich
               </p>
             </div>

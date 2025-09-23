@@ -4,6 +4,84 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2273520b9d26dfa614b91f81bc2d61044b6d9338] - Tue Sep 23 14:42:10 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f65ac6e438734d6a107b4d697212ec87dc373ffa] - Tue Sep 23 14:26:57 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [9e705df9cc5e9c5296145c3aa1a7ab5c6a513f19] - Tue Sep 23 14:24:05 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: implement step icons in SquareTextCard component for enhanced visual representation  - Introduced a new StepIcon component utilizing HybridBlobImage for dynamic icon rendering based on step number. - Updated createSquareTextCardIcon function to return step icons for cards 1-7, improving the visual consistency of the card icons. - Added step icons to defaultSquareTextCardData for cards 1 through 7, enhancing user experience with relevant imagery.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/SquareTextCard.tsx
+
+
+---
+
+## [d08d9aa3a0db76ab7ccb9948df83c24272e8e33c] - Tue Sep 23 14:09:06 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/MODULAR_CONTENT_ARCHITECTURE.md
+
+
+---
+
+## [0c1edf239dd75923cc3153977c2ede3518efa113] - Tue Sep 23 13:42:36 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: adjust margin and padding in multiple components for improved layout consistency  - Modified margin and padding in EntdeckenClient, PlanungspaketeCards, and PartnersSection for better alignment and visual consistency. - Enhanced text structure to maintain a cohesive design across sections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
 ## [ad12206162fd5e9ffd51cb6070d21ab0cd63b629] - Mon Sep 22 22:10:40 2025 +0200
 
 **Author**: stenkjan

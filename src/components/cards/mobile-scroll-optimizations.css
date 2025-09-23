@@ -56,43 +56,10 @@
     }
 }
 
-/* Custom SquareTextCard Title Styling */
-.square-text-card-title {
-    font-size: 18px;
-    /* Default mobile */
-    font-weight: 400;
-    /* Regular weight */
-    margin-bottom: 0.3rem;
-    /* 4.8px */
-}
-
-@media (min-width: 768px) {
-    .square-text-card-title {
-        font-size: 24px;
-        /* md breakpoint */
-    }
-}
-
-@media (min-width: 1024px) {
-    .square-text-card-title {
-        font-size: 30px;
-        /* lg breakpoint */
-    }
-}
-
-@media (min-width: 1280px) {
-    .square-text-card-title {
-        font-size: 38px;
-        /* xl breakpoint */
-    }
-}
-
-@media (min-width: 1536px) {
-    .square-text-card-title {
-        font-size: 50px;
-        /* 2xl breakpoint */
-    }
-}
+/* Custom SquareTextCard Title Styling - Using Tailwind responsive pattern */
+/* .square-text-card-title {
+    @apply text-lg md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-normal mb-1.5;
+} */
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {

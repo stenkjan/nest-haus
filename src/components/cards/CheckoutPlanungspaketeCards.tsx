@@ -105,9 +105,13 @@ export default function CheckoutPlanungspaketeCards({
                     {cardData?.description || pkg.description}
                   </div>
 
-                  {/* Extended description - rich text from PlanungspaketeCards */}
-                  <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-black leading-relaxed whitespace-pre-line">
-                    {cardData?.extendedDescription || ""}
+                  {/* Standard p text for main description */}
+                  <div className="p-primary black leading-relaxed whitespace-pre-line">
+                    {pkg.value === "basis"
+                      ? "Mit dem Basispaket legst du den Grundstein für dein Nest Haus. Wir übernehmen Einreichplanung, Statik, Detailplanung und Energieausweis, passen alles an lokale Vorgaben an und optimieren die Raumaufteilung. So bist du rechtssicher, planungssicher und bereit für den nächsten Schritt."
+                      : pkg.value === "plus"
+                        ? "Das Plus Paket ergänzt alle Leistungen des Basispakets um die komplette technische Detailplanung für Elektrik, Sanitär, Abwasser und Innenausbau. So wird alles frühzeitig mitgedacht, Abstimmungsprobleme werden vermieden und dein Nest Haus ist von Anfang an technisch perfekt vorbereitet."
+                        : "Das Pro Paket erweitert Basis und Plus um eine umfassende Gestaltungsebene. Wir entwickeln ein Interiorkonzept mit Möblierung, Küche, Licht, Farben und Materialien, abgestimmt auf innen und außen. So wird dein Nest Haus zu einem stimmigen Ganzen und zum Ausdruck deiner Persönlichkeit."}
                   </div>
                 </div>
 

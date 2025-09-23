@@ -6,6 +6,8 @@ import Link from "next/link";
 import { ClientBlobVideo } from "@/components/images";
 import { Button } from "@/components/ui";
 import { VideoCardPreset } from "@/constants/contentCardPresets";
+import ClientBlobFile from "@/components/files/ClientBlobFile";
+import { FILES } from "@/constants/files";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 
 interface VideoCard16by9Props {
@@ -144,9 +146,7 @@ export default function VideoCard16by9({
             maxWidth ? "max-w-7xl mx-auto px-4" : "px-4"
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {title}
-          </h2>
+          <h2 className="h2-title text-gray-900 hidden lg:block">{title}</h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
             {subtitle}
           </p>
@@ -187,25 +187,25 @@ export default function VideoCard16by9({
                     }}
                   >
                     {/* Text Content - Same width as content cards (1/3) */}
-                    <div className="w-1/3 flex flex-col justify-center items-start text-left px-8 py-6">
+                    <div className="w-1/3 flex flex-col justify-center items-start text-left px-12 py-6">
                       <motion.div
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1, duration: 0.6 }}
                       >
                         <h2
-                          className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
+                          className={`h2-title text-gray-900 ${
                             card.subtitle ? "mb-1" : "mb-6"
                           }`}
                         >
                           {getCardText(card, "title")}
                         </h2>
                         {card.subtitle && (
-                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                          <h3 className="h3-secondary font-medium text-gray-700 mb-5">
                             {getCardText(card, "subtitle")}
                           </h3>
                         )}
-                        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                        <p className="p-primary">
                           {getCardText(card, "description")}
                         </p>
 
@@ -292,18 +292,18 @@ export default function VideoCard16by9({
                         className="w-full max-w-md"
                       >
                         <h2
-                          className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 ${
+                          className={`h2-title text-gray-900 ${
                             card.subtitle ? "mb-1" : "mb-4"
                           }`}
                         >
                           {getCardText(card, "title")}
                         </h2>
                         {card.subtitle && (
-                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-3">
+                          <h3 className="h3-secondary font-medium text-gray-700 mb-3">
                             {getCardText(card, "subtitle")}
                           </h3>
                         )}
-                        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                        <p className="p-primary leading-relaxed">
                           {getCardText(card, "description")}
                         </p>
                         {/* Note: Buttons are not shown on mobile/tablet to match ContentCards behavior */}
@@ -311,7 +311,7 @@ export default function VideoCard16by9({
                     </div>
 
                     {/* Video Content - Natural height with small padding gap */}
-                    <div className="relative overflow-hidden p-3 flex items-center justify-center">
+                    <div className="relative overflow-hidden py-4 px-4 flex items-center justify-center">
                       <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -319,11 +319,10 @@ export default function VideoCard16by9({
                           delay: index * 0.1 + 0.2,
                           duration: 0.8,
                         }}
-                        className="relative rounded-3xl overflow-hidden"
+                        className="relative rounded-2xl md:rounded-3xl overflow-hidden"
                         style={{
                           aspectRatio: "1/1", // 1:1 aspect ratio for mobile video
                           width: "100%",
-                          maxWidth: "280px", // Reasonable max size for mobile
                           height: "auto",
                         }}
                       >
@@ -347,6 +346,22 @@ export default function VideoCard16by9({
           ))}
         </div>
       </div>
+
+      {/* Action Buttons - Only show on mobile where buttons are not inside the card */}
+      {isClient && screenWidth < 768 && (
+        <div className="flex flex-row gap-4 justify-center mt-6">
+          <Link href="/unser-part">
+            <Button variant="primary" size="xs">
+              Unser Part
+            </Button>
+          </Link>
+          <Link href="/konfigurator">
+            <Button variant="landing-secondary-blue" size="xs">
+              Jetzt bauen
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

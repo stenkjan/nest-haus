@@ -190,7 +190,7 @@ export default function PlanungspaketeCards({
         // Use consistent width since flex-wrap handles the layout
         setCardsPerView(3);
         // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 350px below lg breakpoint
-        setCardWidth(width >= 1024 ? 450 : 350);
+        setCardWidth(width >= 1024 ? 600 : 350);
       }
 
       // Recenter the current card after dimension changes
@@ -407,9 +407,7 @@ export default function PlanungspaketeCards({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigateCard, isLightboxMode]);
 
-  const containerClasses = maxWidth
-    ? "w-full max-w-screen-2xl mx-auto"
-    : "w-full";
+  const containerClasses = maxWidth ? "w-full max-w-none mx-auto" : "w-full";
 
   // Prevent hydration mismatch by showing loading state until client is ready
   if (!isClient) {
@@ -422,12 +420,8 @@ export default function PlanungspaketeCards({
               typeof window !== "undefined" &&
               window.innerWidth < 768
             ) &&
-              title && (
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                  {title}
-                </h2>
-              )}
-            {subtitle && <p className="text-gray-600">{subtitle}</p>}
+              title && <h3 className="h3-secondary">{title}</h3>}
+            {subtitle && <p className="p-primary">{subtitle}</p>}
           </div>
         )}
         <div className="flex justify-center items-center py-4 md:py-8">
@@ -560,12 +554,8 @@ export default function PlanungspaketeCards({
             typeof window !== "undefined" &&
             window.innerWidth < 768
           ) &&
-            title && (
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 md:mb-3">
-                {title}
-              </h1>
-            )}
-          {subtitle && <p className="text-gray-600">{subtitle}</p>}
+            title && <h1 className="h1-secondary">{title}</h1>}
+          {subtitle && <p className="p-primary">{subtitle}</p>}
         </div>
       )}
 
@@ -594,12 +584,7 @@ export default function PlanungspaketeCards({
                   className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
                   style={{
                     width: cardWidth,
-                    height:
-                      isMobile && isExpanded
-                        ? expandedHeight
-                        : isMobile
-                          ? 360
-                          : 280,
+                    minHeight: isMobile ? 280 : 200,
                     backgroundColor: card.backgroundColor,
                     // iOS-specific fixes
                     WebkitTransform: "translateZ(0)", // Force hardware acceleration
@@ -607,13 +592,7 @@ export default function PlanungspaketeCards({
                     WebkitBackfaceVisibility: "hidden",
                     backfaceVisibility: "hidden",
                   }}
-                  animate={
-                    isMobile
-                      ? {
-                          height: isExpanded ? expandedHeight : 360,
-                        }
-                      : {}
-                  }
+                  animate={{}}
                   transition={{
                     duration: 0.6,
                     ease: [0.25, 0.46, 0.45, 0.94],
@@ -631,13 +610,9 @@ export default function PlanungspaketeCards({
                   }}
                 >
                   {/* Top Section - EXPANDED HEIGHT */}
-                  <div
-                    className={`${
-                      isMobile ? "h-56 min-h-56" : ""
-                    } px-6 pt-8 pb-6 overflow-hidden`}
-                  >
+                  <div className="px-6 py-6 pt-8 overflow-hidden">
                     {/* Header Row - Title/Subtitle left, Price right */}
-                    <div className="flex mb-5">
+                    <div className="flex">
                       {/* Title/Subtitle - Left Side */}
                       <div className="flex-1">
                         <motion.div
@@ -645,43 +620,43 @@ export default function PlanungspaketeCards({
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
-                          <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl 2xl:text-2xl font-bold text-gray-900 mb-1">
+                          <h3 className="h3-secondary px-3">
                             {getCardText(card, "title")}{" "}
-                            <span className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-xl font-medium text-gray-500">
+                            <span className="h3-secondary font-medium text-gray-500">
                               {getCardText(card, "subtitle") || card.grayWord}
                             </span>
-                          </h2>
-                        </motion.div>
-                      </div>
-
-                      {/* Price - Right Side */}
-                      <div className="w-24 flex flex-col justify-start items-end text-right">
-                        <motion.div
-                          initial={{ x: 20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{
-                            delay: index * 0.1 + 0.2,
-                            duration: 0.6,
-                          }}
-                          className="text-right"
-                        >
-                          <div className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">
-                            {card.price}
-                          </div>
+                          </h3>
                         </motion.div>
                       </div>
                     </div>
 
-                    {/* Description - Full Width */}
-                    <motion.div
-                      initial={{ y: 10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
-                    >
-                      <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line overflow-hidden">
-                        {getCardText(card, "description")}
-                      </p>
-                    </motion.div>
+                    {/* Description and Price - Split Layout */}
+                    <div className="flex gap-6 px-3 items-start">
+                      {/* Description - Left Half */}
+                      <motion.div
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
+                        className="flex-1"
+                      >
+                        <p className="p-primary-small overflow-hidden">
+                          {getCardText(card, "description")}
+                        </p>
+                      </motion.div>
+
+                      {/* Price - Right Half */}
+                      <motion.div
+                        initial={{ x: 20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{
+                          delay: index * 0.1 + 0.2,
+                          duration: 0.6,
+                        }}
+                        className="flex-shrink-0 flex items-start justify-start"
+                      >
+                        <div className="p-primary-small">{card.price}</div>
+                      </motion.div>
+                    </div>
                   </div>
 
                   {/* Bottom Section - Extended Description (Mobile Only) - FLEXIBLE HEIGHT */}
@@ -836,7 +811,7 @@ export default function PlanungspaketeCards({
                           duration: 0.6,
                         }}
                       >
-                        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                        <p className="p-primary leading-relaxed">
                           {getCardText(card, "description")}
                         </p>
                       </motion.div>
@@ -854,7 +829,7 @@ export default function PlanungspaketeCards({
                           }}
                           className="h-full overflow-y-auto hide-scrollbar"
                         >
-                          <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-relaxed whitespace-pre-line">
+                          <p className="p-primary leading-relaxed">
                             {getCardText(card, "extendedDescription")}
                           </p>
                         </motion.div>

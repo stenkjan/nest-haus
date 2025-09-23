@@ -10,9 +10,9 @@ import { useCartStore } from "@/store/cartStore";
  * Usage: text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base
  *
  * This preset provides much smaller text than the standard description text preset
- * (text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl) for compact UI elements.
+ * (p-primary) for compact UI elements.
  *
- * Standard Description Text: text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl
+ * Standard Description Text: p-primary
  * Description Text Small: text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base
  *
  * Use this for most text elements in forms, labels, and general content
@@ -208,7 +208,7 @@ const AppointmentBooking = ({
         <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-black">
           Termin erfolgreich gebucht!
         </h3>
-        <p className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl mb-6">
+        <p className="p-primary mb-6">
           Vielen Dank für deine Terminanfrage. Wir melden uns in Kürze bei dir,
           um alle Details zu bestätigen.
         </p>
@@ -253,7 +253,7 @@ const AppointmentBooking = ({
             >
               &#10094;
             </button>
-            <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
+            <span className="p-primary font-medium">
               {currentMonth.toLocaleDateString("de-DE", {
                 month: "long",
                 year: "numeric",
@@ -293,7 +293,7 @@ const AppointmentBooking = ({
             >
               &#10094;
             </button>
-            <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
+            <span className="p-primary font-medium">
               {timeSlots[selectedTimeIndex]}
             </span>
             <button
@@ -337,9 +337,7 @@ const AppointmentBooking = ({
         <form onSubmit={handleSubmit} className="space-y-6 px-4">
           {/* Contact Information - WIDER FORM FIELDS */}
           <div>
-            <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-6">
-              Deine Daten
-            </h3>
+            <h3 className="p-primary font-medium mb-6">Deine Daten</h3>
             <div className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <input
@@ -395,9 +393,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
-                    Persönliches Gespräch
-                  </span>
+                  <span className="p-primary">Persönliches Gespräch</span>
                 </label>
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -409,9 +405,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
-                    Telefonische Beratung
-                  </span>
+                  <span className="p-primary">Telefonische Beratung</span>
                 </label>
               </div>
             </div>
@@ -503,7 +497,7 @@ const AppointmentBooking = ({
               >
                 &#10094;
               </button>
-              <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
+              <span className="p-primary font-medium">
                 {currentMonth.toLocaleDateString("de-DE", {
                   month: "long",
                   year: "numeric",
@@ -543,7 +537,7 @@ const AppointmentBooking = ({
               >
                 &#10094;
               </button>
-              <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">
+              <span className="p-primary font-medium">
                 {timeSlots[selectedTimeIndex]}
               </span>
               <button
@@ -584,9 +578,7 @@ const AppointmentBooking = ({
 
             {/* Contact Information - WIDER FORM FIELDS */}
             <div className="mb-8">
-              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-6">
-                Deine Daten
-              </h3>
+              <h3 className="p-primary font-medium mb-6">Deine Daten</h3>
               <div className="space-y-3 mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input
@@ -641,9 +633,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
-                    Persönliches Gespräch
-                  </span>
+                  <span className="p-primary">Persönliches Gespräch</span>
                 </label>
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -655,9 +645,7 @@ const AppointmentBooking = ({
                     className="mr-3 w-4 h-4"
                     style={{ accentColor: "#3D6CE1" }}
                   />
-                  <span className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl">
-                    Telefonische Beratung
-                  </span>
+                  <span className="p-primary">Telefonische Beratung</span>
                 </label>
               </div>
             </div>
