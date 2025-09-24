@@ -54,8 +54,8 @@ const mockConfiguratorStore = {
     planungspaket: {
       category: "planungspaket",
       value: "pro",
-      name: "Pro Planungspaket",
-      price: 0, // This should show "inkludiert"
+      name: "Planung Pro",
+      price: 21900, // Updated to new pricing
     },
     totalPrice: 175100,
     timestamp: Date.now(),
@@ -130,13 +130,13 @@ describe("SummaryPanel", () => {
     expect(screen.queryByText("—")).not.toBeInTheDocument();
   });
 
-  it("should handle planungspaket with 0 price correctly", () => {
+  it("should handle planungspaket with price correctly", () => {
     render(<SummaryPanel />);
 
-    // Premium package with 0 price should show "inkludiert"
-    expect(screen.getByText("Premium Planungspaket")).toBeInTheDocument();
+    // Pro package should show the price
+    expect(screen.getByText("Planung Pro")).toBeInTheDocument();
 
-    // Should have "inkludiert" text somewhere in the component for this item
+    // Should have "inkludiert" text for other items (gebaeudehuelle, innenverkleidung, fussboden)
     const inkludiertElements = screen.getAllByText("inkludiert");
     expect(inkludiertElements.length).toBeGreaterThanOrEqual(1);
   });

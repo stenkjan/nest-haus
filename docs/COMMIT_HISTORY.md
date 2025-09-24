@@ -4,6 +4,67 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [03fa09ab59107f96ee78db8cc65db92d097bfb45] - Wed Sep 24 14:58:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update pricing for Planungspakete and adjust related components  - Updated prices for all Planungspakete options in configuratorData, constants, and store. - Adjusted tests and components to reflect new pricing structure. - Implemented migration logic for persisted state to handle price updates for existing users.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
+## [db3876ba50543508c2452f8460e9650c1c632a26] - Wed Sep 24 13:47:45 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update image path for Fundermax material in dialogConfigs  - Changed imagePath from IMAGES.materials.fundermax to IMAGES.materials.fundermaxWeiss for accurate representation in the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/dialogConfigs.ts
+
+
+---
+
+## [673cd9bcaf1d3beb991a5d3287796725906e17e7] - Wed Sep 24 13:39:36 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/globals.css
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/layout/Navbar.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/MaterialShowcase.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [f8ce8a2cb10a5e0bb058de3d578127ea0ceef7a4] - Wed Sep 24 13:36:13 2025 +0200
 
 **Author**: stenkjan

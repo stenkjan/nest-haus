@@ -262,20 +262,19 @@ export const configuratorData: CategoryData[] = [
         id: 'basis',
         name: 'Planung Basis',
         description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
-        price: { type: 'included', amount: 0, monthly: 0 }
-        // Old price: { type: 'upgrade', amount: 8900, monthly: 57 }
+        price: { type: 'upgrade', amount: 10900, monthly: 63 }
       },
       {
         id: 'plus',
         name: 'Planung Plus',
         description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-        price: { type: 'upgrade', amount: 13900, monthly: 90 }
+        price: { type: 'upgrade', amount: 16900, monthly: 98 }
       },
       {
         id: 'pro',
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-        price: { type: 'upgrade', amount: 18900, monthly: 122 }
+        price: { type: 'upgrade', amount: 21900, monthly: 127 }
       }
     ]
   }

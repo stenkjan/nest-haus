@@ -239,22 +239,22 @@ export const PLANNING_PACKAGES = [
     value: 'basis',
     name: 'Basis',
     description: 'Grundplanung und Einreichung\nStandard-Grundriss\nBaubegleitung Basis',
-    price: 0, // Updated to match configuratorData.ts - basis is included
-    monthly: 0
+    price: 10900,
+    monthly: 63
   },
   {
     value: 'plus',
     name: 'Plus',
     description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-    price: 13900, // Updated to match configuratorData.ts
-    monthly: 90
+    price: 16900,
+    monthly: 98
   },
   {
     value: 'pro',
     name: 'Pro',
     description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-    price: 18900, // Updated to match configuratorData.ts
-    monthly: 122
+    price: 21900,
+    monthly: 127
   }
 ] as const;
 
