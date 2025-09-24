@@ -889,15 +889,15 @@ export default function CheckoutStepper({
     const getRowSubtitle = (rowStep: number): string => {
       switch (rowStep) {
         case 0:
-          return "Preis deiner Auswahl";
+          return "Deine Konfiguration";
         case 1:
-          return "Prüfung deines Grundstücks";
+          return "Wir prüfen deinen Baugrund";
         case 2:
-          return "Gewähltes Planungsniveau";
+          return "Wähle aus 3 Paketen";
         case 3:
-          return "Terminplanung";
+          return "Dein Termin bei Nest";
         default:
-          return "6 Monate nach Terminvereinbarung";
+          return "max. 6 Monate";
       }
     };
     return (
@@ -1041,7 +1041,7 @@ export default function CheckoutStepper({
                           1
                         )}`}
                       >
-                        Grundstückscheck
+                        Check und Entwurf
                       </div>
                       <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                         {getRowSubtitle(1)}
@@ -1104,7 +1104,7 @@ export default function CheckoutStepper({
                       <div
                         className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(3)}`}
                       >
-                        Termin mit dem Nest Team
+                        Terminvereinbarung
                       </div>
                       <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                         {getRowSubtitle(3)}
@@ -1134,7 +1134,7 @@ export default function CheckoutStepper({
                       <div
                         className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
                       >
-                        Garantierter Liefertermin
+                        Liefertermin
                       </div>
                       <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                         {getRowSubtitle(4)}
@@ -1166,7 +1166,7 @@ export default function CheckoutStepper({
                       Heute zu bezahlen
                     </div>
                     <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                      Grundstückscheck
+                      Starte dein Bauvorhaben
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">

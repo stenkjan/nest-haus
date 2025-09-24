@@ -228,7 +228,7 @@ export default function UnserPartClient() {
             title=""
             subtitle=""
             backgroundColor="black"
-            text="<p class='p-secondary text-white'><span class='text-nest-gray'>Sobald die Module geliefert sind, beginnt</span> dein Teil der Gestaltung. <span class='text-nest-gray'>Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt</span> deinem Plan, <span class='text-nest-gray'>jeder Schritt bringt dich</span> deinem Zuhause näher. <span class='text-nest-gray'>Du bestimmst, wo</span> Licht einfällt, <span class='text-nest-gray'>wo</span> Wege beginnen <span class='text-nest-gray'>und wie dein</span> Raum sich öffnet. <span class='text-nest-gray'>So entsteht nicht nur ein Haus, sondern</span> ein Ort, der ganz dir gehört.</p>"
+            text="<p class='p-secondary text-white'><span class='text-nest-gray'>Unser</span> <span class='text-white font-medium'>Nest System</span> <span class='text-nest-gray'>bietet dir an den</span> <span class='text-white font-medium'>Seitenwänden</span> <span class='text-nest-gray'>und an der</span> <span class='text-white font-medium'>Giebelseite</span> <span class='text-nest-gray'>volle Gestaltungsfreiheit.</span> <span class='text-nest-gray'> Hier kannst du deine</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>so platzieren, wie es zu dir und deinem Zuhause passt. Gemeinsam mit uns definierst du</span> <span class='text-white font-medium'>Größe und Position</span> <span class='text-nest-gray'>individuell nach</span> <span class='text-white font-medium'>deinen Wünschen</span> <span class='text-nest-gray'>und Anforderungen.</span></p>"
             textPosition="left"
             maxWidth={false}
             image1={IMAGES.function.nestHausFensterTuerenStirnseite}
@@ -243,7 +243,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-nest-gray'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>deine Vision Wirklichkeit werden zu lassen.</span></p>"
+              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>legst du die</span> <span class='text-white font-medium'>Gesamtfläche</span> <span class='text-nest-gray'>deiner</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>fest, angepasst an deine individuellen Bedürfnisse. Der</span> <span class='text-white font-medium'>Preis bleibt</span> <span class='text-nest-gray'>dabei jederzeit</span> <span class='text-white font-medium'>transparent.</span></p>"
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}
