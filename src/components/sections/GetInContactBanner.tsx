@@ -69,7 +69,7 @@ export function GetInContactBanner({
         </div>
 
         {/* Single Button */}
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center w-full mt-8">
           <Button variant="primary" size="xs" onClick={onButtonClick}>
             {buttonText}
           </Button>
