@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [03fa09ab59107f96ee78db8cc65db92d097bfb45] - Wed Sep 24 14:58:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update pricing for Planungspakete and adjust related components  - Updated prices for all Planungspakete options in configuratorData, constants, and store. - Adjusted tests and components to reflect new pricing structure. - Implemented migration logic for persisted state to handle price updates for existing users.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
 ## [db3876ba50543508c2452f8460e9650c1c632a26] - Wed Sep 24 13:47:45 2025 +0200
 
 **Author**: stenkjan
