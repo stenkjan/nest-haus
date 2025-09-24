@@ -19,7 +19,7 @@ export default function ThreeByOneAdaptiveHeight({
   title = "3x1 Grid with Adaptive Height",
   subtitle = "Standard grid layout with flexible middle cell height",
   maxWidth = false, // Default to false to avoid width constraints
-  text = "<span class='text-white font-medium'>Mit deinem Nest-Haus bestimmst du selbst,</span> <span class='text-gray-400'>wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit</span> <span class='text-white font-medium'>passgenauen Öffnungen</span> <span class='text-gray-400'>an.</span> <span class='text-white font-medium'>Dort platzieren wir</span> <span class='text-gray-400'>im Anschluss</span> <span class='text-white font-medium'>deine Fenster & Türen.</span>",
+  text = "<p class='p-secondary text-white'><span class='text-white font-medium'>Mit deinem Nest-Haus bestimmst du selbst,</span> <span class='text-nest-gray'>wo Fenster und Türen ihren Platz finden sollen. Nach deiner Reservierung setzen wir uns mit dir in Verbindung, um die ideale Platzierung festzulegen. Auf Basis deiner Vorgaben fertigen wir dein Zuhause mit</span> <span class='text-white font-medium'>passgenauen Öffnungen</span> <span class='text-nest-gray'>an.</span> <span class='text-white font-medium'>Dort platzieren wir</span> <span class='text-nest-gray'>im Anschluss</span> <span class='text-white font-medium'>deine Fenster & Türen.</span></p>",
   image = IMAGES.function.nestHausFensterTuerenPosition,
   imageDescription = "NEST Haus Fenster und Türen Positionierung Konzept",
   backgroundColor = "black",
@@ -71,7 +71,7 @@ export default function ThreeByOneAdaptiveHeight({
           {subtitle && (
             <h3
               className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+                backgroundColor === "black" ? "text-nest-gray" : "text-gray-600"
               }`}
             >
               {subtitle}
@@ -101,7 +101,7 @@ export default function ThreeByOneAdaptiveHeight({
           {subtitle && (
             <h3
               className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+                backgroundColor === "black" ? "text-nest-gray" : "text-gray-600"
               }`}
             >
               {subtitle}
@@ -146,8 +146,8 @@ export default function ThreeByOneAdaptiveHeight({
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center ${
+              <div
+                className={`p-secondary ${textColorClasses} text-center ${
                   screenWidth > 1700 ? "px-8" : ""
                 }`}
                 dangerouslySetInnerHTML={{ __html: text }}
@@ -203,8 +203,8 @@ export default function ThreeByOneAdaptiveHeight({
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
-              <p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left ${
+              <div
+                className={`p-secondary ${textColorClasses} text-left ${
                   screenWidth > 1700 ? "px-8" : ""
                 }`}
                 dangerouslySetInnerHTML={{ __html: text }}

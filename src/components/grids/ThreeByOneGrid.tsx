@@ -86,13 +86,11 @@ export default function ThreeByOneGrid({
     return (
       <div className={`${containerClasses} ${backgroundClasses}`}>
         <div className="text-center mb-8 md:mb-16">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
+          <h1 className="h1-secondary">{title}</h1>
           {subtitle && (
             <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+              className={`h3-secondary ${
+                backgroundColor === "black" ? "text-nest-gray" : "text-gray-600"
               }`}
             >
               {subtitle}
@@ -117,14 +115,12 @@ export default function ThreeByOneGrid({
       {(title || subtitle) && (
         <div className={`${containerClasses}`}>
           <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-              {title}
-            </h1>
+            <h1 className="h1-secondary">{title}</h1>
             {subtitle && (
               <h3
-                className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
+                className={`h3-secondary ${
                   backgroundColor === "black"
-                    ? "text-gray-300"
+                    ? "text-nest-gray"
                     : "text-gray-600"
                 }`}
               >
@@ -165,8 +161,8 @@ export default function ThreeByOneGrid({
 
             {/* Text Section - Always in the middle */}
             <div className="px-4 md:px-8 mb-12">
-              <motion.p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center ${textClassName}`}
+              <motion.div
+                className={`p-secondary ${textColorClasses} text-center ${textClassName}`}
                 dangerouslySetInnerHTML={{ __html: displayText }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -353,8 +349,8 @@ export default function ThreeByOneGrid({
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left ${
+                    <div
+                      className={`p-secondary ${textColorClasses} text-left ${
                         screenWidth > 1700 ? "px-8" : ""
                       } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
@@ -582,8 +578,8 @@ export default function ThreeByOneGrid({
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <p
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left ${
+                    <div
+                      className={`p-secondary ${textColorClasses} text-left ${
                         screenWidth > 1700 ? "px-8" : ""
                       } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}

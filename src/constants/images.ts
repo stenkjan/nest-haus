@@ -381,6 +381,13 @@ export const IMAGES = {
         icon5: '294-nest-haus-icon5-lieferung',
         icon6: '295-nest-haus-icon6-fertigstellung',
         icon7: '296-nest-haus-icon7-interior'
+    },
+
+    // Navbar icons
+    navbarIcons: {
+        hammer: '297-nest-haus-icon-konfigurator-haus-bauen-hammer',
+        boxClosed: '299-nest-haus-icon-warenkorb-box-geschlossen',
+        boxOpen: '298-nest-haus-icon-warenkorb-box-geoeffnet'
     }
 } as const;
 

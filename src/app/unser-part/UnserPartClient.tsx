@@ -120,7 +120,7 @@ export default function UnserPartClient() {
               <h1 className="h1-secondary text-white mb-2 md:mb-3">
                 Dein Nest System
               </h1>
-              <h3 className="h3-secondary text-gray-300">
+              <h3 className="h3-secondary text-nest-gray">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
                 Effizienz schafft.
               </h3>
@@ -166,7 +166,7 @@ export default function UnserPartClient() {
             title="Manchmal kommt es auf die Größe an."
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
             backgroundColor="black"
-            text="<span class='text-white font-medium'>Standardisierung</span> <span class='text-gray-400'>für</span> <span class='text-white font-medium'>Effizienz</span> <span class='text-gray-400'>und</span> <span class='text-white font-medium'>Kostenoptimierung.</span> <span class='text-gray-400'>Höchste Qualität zu einem leistbaren Preis durch</span> <span class='text-white font-medium'>intelligente</span> <span class='text-white font-medium'>Optimierung</span> <span class='text-gray-400'>– und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert:</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-white font-medium'>effiziente Fertigung</span> <span class='text-gray-400'>und bewährte</span> <span class='text-white font-medium'>Konstruktion</span> <span class='text-gray-400'>sichern</span> <span class='text-white font-medium'>höchste Qualität.</span>"
+            text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz</span> <span class='text-nest-gray'>und</span> <span class='text-white font-medium'>Kostenoptimierung.</span> <span class='text-nest-gray'>Höchste Qualität zu einem leistbaren Preis durch</span> <span class='text-white font-medium'>intelligente</span> <span class='text-white font-medium'>Optimierung</span> <span class='text-nest-gray'>– und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert:</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-white font-medium'>effiziente Fertigung</span> <span class='text-nest-gray'>und bewährte</span> <span class='text-white font-medium'>Konstruktion</span> <span class='text-nest-gray'>sichern</span> <span class='text-white font-medium'>höchste Qualität.</span></p>"
             textPosition="left"
             maxWidth={false}
             image1={IMAGES.function.nestHausModulKonzept}
@@ -181,7 +181,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="<span class='text-gray-400'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-gray-400'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span>"
+              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-nest-gray'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-nest-gray'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span></p>"
               textPosition="right"
               maxWidth={false}
               textClassName="mt-12"
@@ -199,7 +199,7 @@ export default function UnserPartClient() {
             <h1 className="h1-secondary text-white mb-2 md:mb-3">
               Gut für Dich, besser für die Zukunft
             </h1>
-            <h3 className="h3-secondary text-gray-300">
+            <h3 className="h3-secondary text-nest-gray">
               Entdecke unsere sorgfältig ausgewählten Materialien
             </h3>
           </div>
@@ -229,7 +229,7 @@ export default function UnserPartClient() {
             title=""
             subtitle=""
             backgroundColor="black"
-            text="<span class='text-gray-400'>Sobald die Module geliefert sind, beginnt</span> dein Teil der Gestaltung. <span class='text-gray-400'>Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt</span> deinem Plan, <span class='text-gray-400'>jeder Schritt bringt dich</span> deinem Zuhause näher. <span class='text-gray-400'>Du bestimmst, wo</span> Licht einfällt, <span class='text-gray-400'>wo</span> Wege beginnen <span class='text-gray-400'>und wie dein</span> Raum sich öffnet. <span class='text-gray-400'>So entsteht nicht nur ein Haus, sondern</span> ein Ort, der ganz dir gehört."
+            text="<p class='p-secondary text-white'><span class='text-nest-gray'>Sobald die Module geliefert sind, beginnt</span> dein Teil der Gestaltung. <span class='text-nest-gray'>Fenster und Türen setzt du ganz einfach in die dafür vorgesehenen Öffnungen ein. Jeder Handgriff folgt</span> deinem Plan, <span class='text-nest-gray'>jeder Schritt bringt dich</span> deinem Zuhause näher. <span class='text-nest-gray'>Du bestimmst, wo</span> Licht einfällt, <span class='text-nest-gray'>wo</span> Wege beginnen <span class='text-nest-gray'>und wie dein</span> Raum sich öffnet. <span class='text-nest-gray'>So entsteht nicht nur ein Haus, sondern</span> ein Ort, der ganz dir gehört.</p>"
             textPosition="left"
             maxWidth={false}
             image1={IMAGES.function.nestHausFensterTuerenStirnseite}
@@ -244,7 +244,7 @@ export default function UnserPartClient() {
               title=""
               subtitle=""
               backgroundColor="black"
-              text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>deine Vision Wirklichkeit werden zu lassen.</span>"
+              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-nest-gray'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>deine Vision Wirklichkeit werden zu lassen.</span></p>"
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}
@@ -264,8 +264,8 @@ export default function UnserPartClient() {
             title="Raum zum Träumen"
             subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
             backgroundColor="black"
-            textBox1="<span class='text-gray-400'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> <span class='text-white font-medium'>mit dem Nest System alles haben</span> <span class='text-gray-400'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> <span class='text-white font-medium'>maximale Freiheit ohne Kompromisse</span> <span class='text-gray-400'>bietet. Durch</span> <span class='text-white font-medium'>intelligente Standardisierung</span> <span class='text-gray-400'>garantieren wir</span> <span class='text-white font-medium'>höchste</span>"
-            textBox2="Qualität, Langlebigkeit <span class='text-gray-400'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-gray-400'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-gray-400'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles.</span> <span class='text-white font-medium'>Heute bauen, morgen wohnen - Nest.</span>"
+            textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> <span class='text-white font-medium'>mit dem Nest System alles haben</span> <span class='text-nest-gray'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> <span class='text-white font-medium'>maximale Freiheit ohne Kompromisse</span> <span class='text-nest-gray'>bietet. Durch</span> <span class='text-white font-medium'>intelligente Standardisierung</span> <span class='text-nest-gray'>garantieren wir</span> <span class='text-white font-medium'>höchste</span></p>"
+            textBox2="<p class='p-secondary text-white'>Qualität, Langlebigkeit <span class='text-nest-gray'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles.</span> <span class='text-white font-medium'>Heute bauen, morgen wohnen - Nest.</span></p>"
             maxWidth={false}
           />
           {/* Button Combo After Component */}
@@ -285,7 +285,7 @@ export default function UnserPartClient() {
 
         {/* Planungspakete Section */}
         <section id="planungspakete" className="w-full pt-16 pb-10 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16 2xl:mb-32">
               <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?

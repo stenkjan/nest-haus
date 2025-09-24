@@ -47,6 +47,7 @@ interface ContentCardsGlassProps {
   isLightboxMode?: boolean;
   onCardClick?: (cardId: number) => void;
   customData?: CardData[] | StaticCardData[];
+  backgroundColor?: "white" | "gray" | "black";
 }
 
 const contentCardData: CardData[] = [
@@ -170,6 +171,7 @@ export default function ContentCardsGlass({
   isLightboxMode = false,
   onCardClick: _onCardClick,
   customData,
+  backgroundColor = "black",
 }: ContentCardsGlassProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
@@ -181,6 +183,13 @@ export default function ContentCardsGlass({
 
   // Animation state for smooth transitions
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Determine text colors based on background
+  const textColors = {
+    title: backgroundColor === "black" ? "text-white" : "text-gray-900",
+    subtitle: backgroundColor === "black" ? "text-white" : "text-gray-600",
+    description: backgroundColor === "black" ? "text-white" : "text-gray-500",
+  };
 
   const isStatic = variant === "static";
   const isResponsive = variant === "responsive";
@@ -563,13 +572,20 @@ export default function ContentCardsGlass({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-white mb-2">
+                            <h2
+                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-300 mb-5">
+                            <h3
+                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary text-white leading-relaxed">
+                            <p
+                              // className={`p-primary ${textColors.description} leading-relaxed`}
+                              className={`p-primary-${textColors.description} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -621,13 +637,19 @@ export default function ContentCardsGlass({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-white mb-2">
+                            <h2
+                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-300 mb-5">
+                            <h3
+                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary text-white leading-relaxed">
+                            <p
+                              className={`p-primary ${textColors.description} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -669,13 +691,19 @@ export default function ContentCardsGlass({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-white mb-2">
+                            <h2
+                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-300 mb-5">
+                            <h3
+                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary text-white leading-relaxed">
+                            <p
+                              className={`p-primary ${textColors.description} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
 
@@ -770,13 +798,19 @@ export default function ContentCardsGlass({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-white mb-2">
+                            <h2
+                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-300 mb-5">
+                            <h3
+                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary text-white leading-relaxed">
+                            <p
+                              className={`p-primary ${textColors.description} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -816,13 +850,19 @@ export default function ContentCardsGlass({
                           animate={{ y: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
-                          <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-white mb-2">
+                          <h2
+                            className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
+                          >
                             {getCardText(card, "title")}
                           </h2>
-                          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-300 mb-5">
+                          <h3
+                            className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                          >
                             {getCardText(card, "subtitle")}
                           </h3>
-                          <p className="p-primary text-gray-400 leading-relaxed">
+                          <p
+                            className={`p-primary ${textColors.description} leading-relaxed`}
+                          >
                             {getCardText(card, "description")}
                           </p>
                         </motion.div>

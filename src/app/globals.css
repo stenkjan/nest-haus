@@ -158,7 +158,33 @@ h2 {
     @apply text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-snug whitespace-pre-line;
   }
 
+  .p-primary-white {
+    @apply text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-white leading-snug whitespace-pre-line;
+  }
+
+  .p-primary-black {
+    @apply text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-snug whitespace-pre-line;
+  }
+
   .p-primary-small {
     @apply text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-base text-black leading-snug whitespace-pre-line;
+  }
+
+  /* Standard paragraph styling for content sections - matches ThreeByOneGrid and FullWidthImageGrid patterns */
+  .p-secondary {
+    @apply text-lg md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium;
+  }
+
+  /* Custom nest gray color - #989898 */
+  .text-nest-gray {
+    color: #989898;
+  }
+
+  .bg-nest-gray {
+    background-color: #989898;
+  }
+
+  .border-nest-gray {
+    border-color: #989898;
   }
 }
