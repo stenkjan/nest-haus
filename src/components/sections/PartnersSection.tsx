@@ -117,7 +117,7 @@ export function PartnersSection({
         </div>
 
         {/* Partner Logos Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12 items-center justify-items-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-8 items-center justify-items-center">
           {partners.map((partner) => (
             <div
               key={partner.id}

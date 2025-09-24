@@ -63,7 +63,7 @@ export function GetInContactBanner({
       style={{ backgroundColor }}
     >
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-0">
           <h2 className="h2-title mb-4">
             {title}
           </h2>

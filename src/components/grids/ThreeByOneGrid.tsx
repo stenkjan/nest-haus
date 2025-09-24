@@ -82,7 +82,7 @@ export default function ThreeByOneGrid({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-      <div className={`${containerClasses} ${backgroundClasses} py-8`}>
+      <div className={`${containerClasses} ${backgroundClasses}`}>
         <div className="text-center mb-8 md:mb-16">
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
             {title}
@@ -110,31 +110,35 @@ export default function ThreeByOneGrid({
   }
 
   return (
-    <div className={`${backgroundClasses} py-8`}>
+    <div className={`${backgroundClasses}`}>
       {/* Title and Subtitle */}
-      <div className={`${containerClasses}`}>
-        <div className="text-center mb-12 md:mb-16 px-4 md:px-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
+      {(title || subtitle) && (
+        <div className={`${containerClasses}`}>
+          <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
+              {title}
+            </h1>
+            {subtitle && (
+              <h3
+                className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
+                  backgroundColor === "black"
+                    ? "text-gray-300"
+                    : "text-gray-600"
+                }`}
+              >
+                {subtitle}
+              </h3>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Grid Container */}
       <div>
         {isMobile ? (
           /* Mobile Layout: Image - Text - Image */
           <div className="space-y-6">
-            {/* First Image */}
+            {/* First Image (Second Image on Mobile) */}
             <motion.div
               className="relative overflow-hidden px-4 md:px-8"
               style={{ aspectRatio: "4/3" }}
@@ -143,8 +147,8 @@ export default function ThreeByOneGrid({
               transition={{ duration: 0.6 }}
             >
               <HybridBlobImage
-                path={image1}
-                alt={image1Description}
+                path={image2}
+                alt={image2Description}
                 fill
                 className="object-contain object-center"
                 sizes="100vw"
@@ -174,7 +178,7 @@ export default function ThreeByOneGrid({
               </motion.div>
             </div>
 
-            {/* Second Image */}
+            {/* Second Image (First Image on Mobile) */}
             <motion.div
               className="relative overflow-hidden px-4 md:px-8"
               style={{ aspectRatio: "4/3" }}
@@ -183,8 +187,8 @@ export default function ThreeByOneGrid({
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <HybridBlobImage
-                path={image2}
-                alt={image2Description}
+                path={image1}
+                alt={image1Description}
                 fill
                 className="object-contain object-center"
                 sizes="100vw"
@@ -197,8 +201,8 @@ export default function ThreeByOneGrid({
               />
             </motion.div>
 
-            {/* Mobile: More Information Toggle */}
-            <div className="px-4 md:px-8">
+            {/* Mobile: More Information Toggle - Hidden on Mobile */}
+            <div className="hidden px-4 md:px-8">
               <motion.div
                 className="text-center mt-4"
                 initial={{ y: 20, opacity: 0 }}

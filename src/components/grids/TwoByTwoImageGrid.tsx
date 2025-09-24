@@ -114,7 +114,7 @@ export default function TwoByTwoImageGrid({
   if (!isClient) {
     return (
       <div className={containerClasses}>
-        <div className="text-center mb-8">
+        <div className="text-center mb-0">
           <h1 className="h1-secondary text-gray-900">{title}</h1>
           {subtitle && (
             <h3 className="h3-secondary text-gray-600">{subtitle}</h3>
@@ -137,7 +137,7 @@ export default function TwoByTwoImageGrid({
     <div className={containerClasses}>
       {/* Header with padding only on mobile */}
       <div
-        className={`text-center mb-8 ${
+        className={`text-center mb-0 ${
           isClient && screenWidth < 1024 ? "px-4" : ""
         }`}
       >

@@ -614,7 +614,7 @@ export default function SquareTextCard({
 
       {/* Cards Container */}
       <div
-        className={`relative ${isLightboxMode ? "py-2" : "py-2"} ${
+        className={`relative ${isLightboxMode ? "py-2" : "pb-8 md:py-8"} ${
           screenWidth < 1024 ? "overflow-hidden w-full" : ""
         }`}
       >
