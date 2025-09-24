@@ -162,20 +162,15 @@ export default function ThreeByOneGrid({
             </motion.div>
 
             {/* Text Section - Always in the middle */}
-            <div className="px-4 md:px-8">
-              <motion.div
-                className="flex flex-col items-center justify-center space-y-6"
-                style={{ minHeight: "200px" }}
+            <div className="px-4 md:px-8 mb-12">
+              <motion.p
+                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
+                dangerouslySetInnerHTML={{ __html: displayText }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
-              >
-                <p
-                  className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
-                  dangerouslySetInnerHTML={{ __html: displayText }}
-                />
-                {/* Buttons are hidden on mobile/tablet to match VideoCard16by9 behavior */}
-              </motion.div>
+              />
+              {/* Buttons are hidden on mobile/tablet to match VideoCard16by9 behavior */}
             </div>
 
             {/* Second Image (First Image on Mobile) */}
@@ -351,7 +346,7 @@ export default function ThreeByOneGrid({
                 <>
                   {/* Main text - first column, first row */}
                   <motion.div
-                    className="flex flex-col items-start justify-center space-y-6"
+                    className="flex flex-col items-start justify-center"
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}
@@ -580,7 +575,7 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Main text - third column, first row */}
                   <motion.div
-                    className="flex flex-col items-start justify-center space-y-6"
+                    className="flex flex-col items-start justify-center"
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}

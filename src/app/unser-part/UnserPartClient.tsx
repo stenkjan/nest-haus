@@ -127,7 +127,7 @@ export default function UnserPartClient() {
             </div>
 
             <div className="flex justify-center">
-              <div className="w-4/5 max-w-5xl rounded-lg overflow-hidden bg-gray-900">
+              <div className="w-full md:w-4/5 max-w-5xl rounded-none md:rounded-lg overflow-hidden bg-gray-900">
                 <ClientBlobVideo
                   path={
                     isMobile
@@ -193,7 +193,7 @@ export default function UnserPartClient() {
         </section>
 
         {/* Materialien Section */}
-        <section id="materialien" className="pt-16">
+        <section id="materialien" className="pt-8 md:pt-16 pb-8 md:pb-16">
           <div className="text-center mb-12">
             <h1 className="h1-secondary text-white mb-2 md:mb-3">
               Gut für Dich, besser für die Zukunft
@@ -238,27 +238,12 @@ export default function UnserPartClient() {
           />
 
           {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-          <ThreeByOneGrid
-            title=""
-            subtitle=""
-            backgroundColor="black"
-            text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>deine Vision Wirklichkeit werden zu lassen.</span>"
-            textPosition="right"
-            maxWidth={false}
-            image1={IMAGES.function.nestHausModulSeiteKonzept}
-            image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
-            image1Description="Modul Seitenansicht Holz Schema Konzept"
-            image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
-            showButtons={true}
-            primaryButtonText="Die Pakete"
-            secondaryButtonText="Jetzt bauen"
-          />
           <div className="pt-16 md:pt-32">
             <ThreeByOneGrid
               title=""
               subtitle=""
               backgroundColor="black"
-              text="<span class='text-gray-400'>Solltest du</span> <span class='text-white font-medium'>Unterstützung</span> <span class='text-gray-400'>bei der Planung benötigen, kannst du eines unserer</span> <span class='text-white font-medium'>Planungspakete</span> <span class='text-gray-400'>wählen. So erhältst du</span> <span class='text-white font-medium'>genau die Hilfe, die du brauchst,</span> <span class='text-gray-400'>um deine Vision Wirklichkeit werden zu lassen.</span>"
+              text="<span class='text-gray-400'>Solltest du Unterstützung bei der Planung benötigen, kannst du</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen,</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>So erhältst du genau die Hilfe, die du brauchst, um</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>deine Vision Wirklichkeit werden zu lassen.</span>"
               textPosition="right"
               maxWidth={false}
               image1={IMAGES.function.nestHausModulSeiteKonzept}

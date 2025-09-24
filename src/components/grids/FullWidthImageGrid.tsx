@@ -136,7 +136,7 @@ export default function FullWidthImageGrid({
         </motion.div>
 
         {/* Two Text Boxes Below - Responsive Layout */}
-        <div className="px-4 md:px-8 mt-4">
+        <div className="px-4 md:px-8 mt-8">
           <div
             className={`${
               isMobile
