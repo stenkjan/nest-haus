@@ -83,14 +83,14 @@ export default function CheckoutPlanungspaketeCards({
                 <div className="md:hidden mb-6">
                   <div className="text-lg font-regular text-gray-900">
                     {pkg.value === "basis"
-                      ? "€ 00,00"
+                      ? "€ 10.900,00"
                       : pkg.value === "plus"
-                        ? "€ 13.900,00"
-                        : "€ 18.900,00"}
+                        ? "€ 16.900,00"
+                        : "€ 21.900,00"}
                   </div>
                   <div className="text-xs text-gray-600 mt-1">
                     {pkg.value === "basis"
-                      ? "Wert im Preis inkludiert"
+                      ? "Grundlegende Planungsleistungen"
                       : "Kosten nur bei Inanspruchnahme"}
                   </div>
                 </div>
@@ -130,14 +130,14 @@ export default function CheckoutPlanungspaketeCards({
                   <div className="text-left">
                     <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
                       {pkg.value === "basis"
-                        ? "€ 00,00"
+                        ? "€ 10.900,00"
                         : pkg.value === "plus"
-                          ? "€ 13.900,00"
-                          : "€ 18.900,00"}
+                          ? "€ 16.900,00"
+                          : "€ 21.900,00"}
                     </div>
                     <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 mt-1">
                       {pkg.value === "basis"
-                        ? "Wert im Preis inkludiert"
+                        ? "Grundlegende Planungsleistungen"
                         : "Kosten nur bei Inanspruchnahme"}
                     </div>
                   </div>

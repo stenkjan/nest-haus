@@ -4,6 +4,70 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7bf3f62185f2eab111877be03ef94ae4dfdfe7c0] - Wed Sep 24 15:38:57 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: remove old configurator files and dialogs  - Deleted outdated configurator module CSS, TypeScript components, and dialog files to streamline the codebase. - This cleanup enhances maintainability and prepares for future updates.  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- konfigurator_old/dialogs/README.md
+
+
+---
+
+## [56ec595f1729dabb3be9ad384f0b71449dbab2a5] - Wed Sep 24 15:33:58 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update address details in multiple components  - Changed address from "Am Ölberg 17, 8020, Graz" to "Karmeliterplatz 1, 8010, Graz" in CalendarDialog, TerminVereinbarenContent, and other relevant sections for consistency. - Updated heading styles in AppointmentBookingSection and ContactMap for improved readability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBookingSection.tsx
+- src/components/sections/ContactMap.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+---
+
+## [056a14ab21dd9e83a7000d062f4b067bb77681da] - Wed Sep 24 15:25:37 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [45f66c0e5ad4d59c7650e562c3ddd725bf0e806d] - Wed Sep 24 15:23:49 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/ContentCardsGlass.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [c394870784c1a9cdce1322e233276c9daef75d0e] - Wed Sep 24 15:10:00 2025 +0200
 
 **Author**: stenkjan
