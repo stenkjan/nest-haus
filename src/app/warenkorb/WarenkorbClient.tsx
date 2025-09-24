@@ -252,9 +252,9 @@ export default function WarenkorbClient() {
   // Get next higher planungspaket for upgrade suggestions
   const getNextPlanungspaket = (currentPackage?: string) => {
     const packageHierarchy = [
-      { id: "basis", name: "Planung Basis", price: 8900 },
-      { id: "plus", name: "Planung Plus", price: 13900 },
-      { id: "pro", name: "Planung Pro", price: 18900 },
+      { id: "basis", name: "Planung Basis", price: 10900 },
+      { id: "plus", name: "Planung Plus", price: 16900 },
+      { id: "pro", name: "Planung Pro", price: 21900 },
     ];
 
     if (!currentPackage) {

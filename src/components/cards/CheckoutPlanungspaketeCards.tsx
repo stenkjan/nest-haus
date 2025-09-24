@@ -13,7 +13,7 @@ interface CheckoutPlanungspaketeCardsProps {
 export default function CheckoutPlanungspaketeCards({
   selectedPlan,
   onPlanSelect,
-  basisDisplayPrice: _basisDisplayPrice = 8500, // Default basis price for delta calculation
+  basisDisplayPrice: _basisDisplayPrice = 10900, // Default basis price for delta calculation
 }: CheckoutPlanungspaketeCardsProps) {
   // Helper function to get the corresponding card data from PlanungspaketeCards
   const getCardData = (packageValue: string) => {

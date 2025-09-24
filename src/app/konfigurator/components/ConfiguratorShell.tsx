@@ -612,6 +612,38 @@ export default function ConfiguratorShell({
           categoryId as keyof typeof configuration
         ] as ConfigurationItem | undefined;
 
+        // Special handling for planungspaket - always calculate relative pricing
+        if (categoryId === "planungspaket") {
+          if (currentSelection) {
+            const currentPrice = currentSelection.price || 0;
+            const optionPrice = option.price.amount || 0;
+            const priceDifference = optionPrice - currentPrice;
+
+            if (priceDifference === 0) {
+              return { type: "selected" as const };
+            } else if (priceDifference > 0) {
+              return {
+                type: "upgrade" as const,
+                amount: priceDifference,
+                monthly: option.price.monthly,
+              };
+            } else {
+              return {
+                type: "discount" as const,
+                amount: Math.abs(priceDifference),
+                monthly: option.price.monthly,
+              };
+            }
+          } else {
+            // No planungspaket selected yet - show full prices
+            return {
+              type: "upgrade" as const,
+              amount: option.price.amount || 0,
+              monthly: option.price.monthly,
+            };
+          }
+        }
+
         // If this option is currently selected, show per m² price for fenster, no price for others
         if (currentSelection && currentSelection.value === optionId) {
           if (categoryId === "fenster") {
@@ -973,32 +1005,6 @@ export default function ConfiguratorShell({
           }
         }
 
-        // For planungspaket with current selection, calculate relative pricing using fixed prices
-        if (currentSelection && categoryId === "planungspaket") {
-          const currentPrice = currentSelection.price || 0;
-          const optionPrice = option.price.amount || 0;
-          const priceDifference = optionPrice - currentPrice;
-
-          if (priceDifference === 0) {
-            return {
-              type: "upgrade" as const,
-              amount: 0,
-              monthly: option.price.monthly,
-            };
-          } else if (priceDifference > 0) {
-            return {
-              type: "upgrade" as const,
-              amount: priceDifference,
-              monthly: option.price.monthly,
-            };
-          } else {
-            return {
-              type: "discount" as const,
-              amount: Math.abs(priceDifference),
-              monthly: option.price.monthly,
-            };
-          }
-        }
 
         // Calculate relative price difference using simpler direct price comparison for other categories
         if (
@@ -1044,7 +1050,7 @@ export default function ConfiguratorShell({
           fussboden: configuration.fussboden || undefined,
           belichtungspaket: configuration.belichtungspaket || undefined,
           fenster: configuration.fenster || undefined,
-
+          planungspaket: configuration.planungspaket || undefined,
           pvanlage: configuration.pvanlage || undefined,
         };
 

@@ -483,6 +483,7 @@ export default function CheckoutStepper({
       innenverkleidung: "Innenverkleidung",
       fussboden: "Fußboden",
       pvanlage: "PV-Anlage",
+      belichtungspaket: "Belichtungspaket",
       fenster: "Fenster",
       planungspaket: "Planungspaket",
       grundstueckscheck: "Grundstückscheck",
@@ -606,9 +607,9 @@ export default function CheckoutStepper({
 
   const getNextPlanungspaket = (currentPackage?: string) => {
     const packageHierarchy = [
-      { id: "basis", name: "Planung Basis", price: 8900 },
-      { id: "plus", name: "Planung Plus", price: 13900 },
-      { id: "pro", name: "Planung Pro", price: 18900 },
+      { id: "basis", name: "Planung Basis", price: 10900 },
+      { id: "plus", name: "Planung Plus", price: 16900 },
+      { id: "pro", name: "Planung Pro", price: 21900 },
     ];
     if (!currentPackage) return packageHierarchy[0];
     const currentIndex = packageHierarchy.findIndex(
@@ -1271,18 +1272,23 @@ export default function CheckoutStepper({
           {stepIndex === 0 && (
             <div className="space-y-6 pt-8">
               {/* Overview grid: cart on left, summary/upgrade on right */}
-              <div className="flex flex-col lg:flex-row gap-8 items-start">
-                <div className="space-y-6 w-full max-w-[520px] lg:flex-none">
-                  <h2 className="h2-title text-gray-500">
+              <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
+                <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
+                  <h2 className="h3-secondary text-gray-500">
                     <span className="text-black">Dein Nest</span>
                     <span className="text-gray-300"> Deine Konfiguration</span>
                   </h2>
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="border border-gray-300 rounded-[19px] px-6 py-4"
+                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full"
+                      style={{
+                        minHeight: "clamp(400px, 40vw, 520px)",
+                        aspectRatio: "1 / 1.25",
+                      }}
                     >
-                      <div className="flex items-center justify-between gap-4 py-3">
+                      {/* Header Section */}
+                      <div className="flex items-center justify-between gap-4 mb-4">
                         <div className="flex-1 min-w-0">
                           <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
                             {getConfigurationTitle(item)}
@@ -1326,7 +1332,8 @@ export default function CheckoutStepper({
                         </div>
                       </div>
 
-                      <div className="space-y-4">
+                      {/* Details Section - Now takes remaining space and distributes items evenly */}
+                      <div className="flex-1 flex flex-col justify-evenly min-h-0">
                         {(() => {
                           const details = renderConfigurationDetails(item);
                           const topAndMiddleItems = details.filter(
@@ -1352,7 +1359,7 @@ export default function CheckoutStepper({
                             return (
                               <div
                                 key={detail.category + "-" + idx}
-                                className="flex items-center justify-between gap-4 py-3"
+                                className="flex items-center justify-between gap-4 py-1"
                               >
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
@@ -1380,28 +1387,21 @@ export default function CheckoutStepper({
                             );
                           };
 
-                          return (
-                            <>
-                              {topAndMiddleItems.map(renderDetailItem)}
-                              {bottomItems.length > 0 && (
-                                <div>
-                                  {bottomItems.map((detail, idx) => (
-                                    <div key={detail.category + "-" + idx}>
-                                      {renderDetailItem(detail, idx)}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </>
-                          );
+                          // Combine all items into a single array for even distribution
+                          const allItems = [
+                            ...topAndMiddleItems,
+                            ...bottomItems,
+                          ];
+
+                          return <>{allItems.map(renderDetailItem)}</>;
                         })()}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="space-y-6 w-full lg:flex-1 min-w-0">
-                  <h2 className="h2-title text-gray-500">
+                <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
+                  <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
                     <span className="text-black">Dein Nest</span>
                     <span className="text-gray-300">
                       {" "}
@@ -1409,9 +1409,9 @@ export default function CheckoutStepper({
                     </span>
                   </h2>
                   {/* Configuration Image Gallery */}
-                  <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent">
+                  <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-1 lg:flex lg:flex-col">
                     <div
-                      className="relative w-full"
+                      className="relative w-full lg:flex-1"
                       style={{ aspectRatio: "16/10" }}
                     >
                       <HybridBlobImage
@@ -1520,7 +1520,7 @@ export default function CheckoutStepper({
                       )}
                     </div>
                     {galleryViews.length > 1 && (
-                      <div className="flex items-center justify-center gap-2 py-2">
+                      <div className="flex items-center justify-center gap-2 py-2 lg:flex-shrink-0">
                         {galleryViews.map((v, i) => (
                           <button
                             key={v + i}
@@ -1925,10 +1925,10 @@ export default function CheckoutStepper({
                                     return (
                                       <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
                                         {packageType === "basis"
-                                          ? "0,00€"
+                                          ? "10.900,00€"
                                           : packageType === "plus"
-                                            ? "13.900,00€"
-                                            : "18.900,00€"}
+                                            ? "16.900,00€"
+                                            : "21.900,00€"}
                                       </div>
                                     );
                                   })()}

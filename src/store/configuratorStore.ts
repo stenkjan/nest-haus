@@ -98,14 +98,19 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         pvanlage: null,
         fenster: null,
         stirnseite: null,
-        planungspaket: null,
+        planungspaket: {
+          category: 'planungspaket',
+          value: 'basis',
+          name: 'Planung Basis',
+          price: 10900
+        },
         kamindurchzug: null,
         fussbodenheizung: null,
-        totalPrice: 0,
+        totalPrice: 10900,
         timestamp: 0
       },
 
-      currentPrice: 0,
+      currentPrice: 10900,
       priceBreakdown: null,
       hasPart2BeenActive: false,
       hasPart3BeenActive: false,
@@ -515,8 +520,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           pvanlage: null,
           fenster: null,
           stirnseite: null,
-          planungspaket: null,
-          totalPrice: 0,
+          planungspaket: {
+            category: 'planungspaket',
+            value: 'basis',
+            name: 'Planung Basis',
+            price: 10900
+          },
+          totalPrice: 10900,
           timestamp: Date.now()
         }
 
@@ -524,7 +534,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           sessionId,
           configuration: defaultConfiguration,
 
-          currentPrice: 0,
+          currentPrice: 10900,
           priceBreakdown: null,
           hasPart2BeenActive: false,
           hasPart3BeenActive: false,
@@ -591,12 +601,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             description: 'Holzfenster Lärche'
           },
 
-          // Planung Basis (default) - included in base price
+          // Planung Basis (default) - now has a price
           {
             category: 'planungspaket',
             value: 'basis',
             name: 'Planung Basis',
-            price: 0,
+            price: 10900,
             description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung'
           }
         ];
@@ -714,8 +724,32 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
     }),
     {
       name: 'nest-configurator',
+      version: 1, // Added version for planungspaket price migration
       // Skip persistence in test only to prevent state conflicts
       skipHydration: process.env.NODE_ENV === 'test',
+      migrate: (persistedState: any, version: number) => {
+        // Migration for planungspaket price update
+        if (version === 0 && persistedState?.configuration?.planungspaket) {
+          const planungspaket = persistedState.configuration.planungspaket;
+          // Update basis planungspaket price from 0 to 10900
+          if (planungspaket.value === 'basis' && planungspaket.price === 0) {
+            planungspaket.price = 10900;
+            // Also update total price if it was just the planungspaket
+            if (persistedState.configuration.totalPrice === 0) {
+              persistedState.configuration.totalPrice = 10900;
+            } else {
+              persistedState.configuration.totalPrice += 10900;
+            }
+            // Update current price
+            if (persistedState.currentPrice === 0) {
+              persistedState.currentPrice = 10900;
+            } else {
+              persistedState.currentPrice += 10900;
+            }
+          }
+        }
+        return persistedState;
+      },
       partialize: (state) => ({
         sessionId: state.sessionId,
         configuration: state.configuration,
