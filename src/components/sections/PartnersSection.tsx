@@ -92,10 +92,6 @@ export function PartnersSection({
 }: PartnersSectionProps) {
   const backgroundClasses =
     backgroundColor === "black" ? "bg-black" : "bg-white";
-  const titleColor =
-    backgroundColor === "black" ? "text-white" : "text-gray-900";
-  const subtitleColor =
-    backgroundColor === "black" ? "text-gray-300" : "text-gray-600";
 
   return (
     <section
@@ -104,16 +100,8 @@ export function PartnersSection({
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-0">
-          <h1
-            className={`h1-secondary mb-2 md:mb-3`}
-          >
-            {title}
-          </h1>
-          <h3
-            className={`h3-secondary mb-8`}
-          >
-            {subtitle}
-          </h3>
+          <h1 className={`h1-secondary mb-2 md:mb-3`}>{title}</h1>
+          <h3 className={`h3-secondary mb-8`}>{subtitle}</h3>
         </div>
 
         {/* Partner Logos Grid */}

@@ -228,7 +228,7 @@ export default function PlanungspaketeCards({
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
-  }, [isLightboxMode, isClient, currentIndex, cardWidth, gap, x]);
+  }, [isLightboxMode, isClient, currentIndex, cardWidth, gap, x, maxWidth]);
 
   // No pre-measurement needed - cards size naturally
 
@@ -339,7 +339,6 @@ export default function PlanungspaketeCards({
 
     setExpandedCards((prev) => {
       const newSet = new Set(prev);
-      const isExpanding = !newSet.has(cardId);
 
       if (newSet.has(cardId)) {
         newSet.delete(cardId);

@@ -6,8 +6,6 @@ import Link from "next/link";
 import { ClientBlobVideo } from "@/components/images";
 import { Button } from "@/components/ui";
 import { VideoCardPreset } from "@/constants/contentCardPresets";
-import ClientBlobFile from "@/components/files/ClientBlobFile";
-import { FILES } from "@/constants/files";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 
 interface VideoCard16by9Props {
