@@ -21,6 +21,7 @@ interface ThreeByOneGridProps {
   showButtons?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
+  textClassName?: string;
 }
 
 export default function ThreeByOneGrid({
@@ -38,6 +39,7 @@ export default function ThreeByOneGrid({
   showButtons = false,
   primaryButtonText = "Primary Action",
   secondaryButtonText = "Secondary Action",
+  textClassName = "",
 }: ThreeByOneGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -164,7 +166,7 @@ export default function ThreeByOneGrid({
             {/* Text Section - Always in the middle */}
             <div className="px-4 md:px-8 mb-12">
               <motion.p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center`}
+                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-center ${textClassName}`}
                 dangerouslySetInnerHTML={{ __html: displayText }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -354,7 +356,7 @@ export default function ThreeByOneGrid({
                     <p
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left ${
                         screenWidth > 1700 ? "px-8" : ""
-                      }`}
+                      } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
@@ -583,7 +585,7 @@ export default function ThreeByOneGrid({
                     <p
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed text-left ${
                         screenWidth > 1700 ? "px-8" : ""
-                      }`}
+                      } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (

@@ -111,7 +111,7 @@ export default function ThreeByOneAdaptiveHeight({
       </div>
 
       {/* Grid Container */}
-      <div className={`${containerClasses} px-4 md:px-8 mb-12`}>
+      <div className={`${containerClasses} px-4 md:px-8 mb-8`}>
         {isMobile ? (
           /* Mobile Layout: Image - Text - Empty (since this component only has one image) */
           <div className="space-y-6">

@@ -184,6 +184,7 @@ export default function UnserPartClient() {
               text="<span class='text-gray-400'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-gray-400'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-gray-400'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-gray-400'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span>"
               textPosition="right"
               maxWidth={false}
+              textClassName="mt-12"
               image1={IMAGES.function.nestHausModulSeiteKonzept}
               image2={IMAGES.function.nestHausModulSeiteLiniengrafik}
               image1Description="Seitliche Ansicht zeigt die durchdachte Konstruktion"
@@ -194,7 +195,7 @@ export default function UnserPartClient() {
 
         {/* Materialien Section */}
         <section id="materialien" className="pt-8 md:pt-16 pb-8 md:pb-16">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 px-4">
             <h1 className="h1-secondary text-white mb-2 md:mb-3">
               Gut für Dich, besser für die Zukunft
             </h1>
