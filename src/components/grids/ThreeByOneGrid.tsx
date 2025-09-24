@@ -346,13 +346,13 @@ export default function ThreeByOneGrid({
                 <>
                   {/* Main text - first column, first row */}
                   <motion.div
-                    className="flex flex-col items-start justify-center"
+                    className="flex flex-col items-center justify-center"
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-left ${
+                      className={`p-secondary ${textColorClasses} text-center ${
                         screenWidth > 1700 ? "px-8" : ""
                       } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
@@ -378,47 +378,55 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Image 1 - second column, first row */}
                   <motion.div
-                    className="relative overflow-hidden"
-                    style={{ aspectRatio: "4/3" }}
+                    className="flex items-center justify-center"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
                   >
-                    <HybridBlobImage
-                      path={image1}
-                      alt={image1Description}
-                      fill
-                      className="object-contain object-center"
-                      sizes="(max-width: 1024px) 50vw, 33vw"
-                      quality={85}
-                      strategy="client"
-                      enableCache={true}
-                      isInteractive={false}
-                      isAboveFold={true}
-                      isCritical={true}
-                    />
+                    <div
+                      className="relative overflow-hidden"
+                      style={{ aspectRatio: "4/3", width: "100%" }}
+                    >
+                      <HybridBlobImage
+                        path={image1}
+                        alt={image1Description}
+                        fill
+                        className="object-contain object-center"
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                        quality={85}
+                        strategy="client"
+                        enableCache={true}
+                        isInteractive={false}
+                        isAboveFold={true}
+                        isCritical={true}
+                      />
+                    </div>
                   </motion.div>
                   {/* Image 2 - third column, first row */}
                   <motion.div
-                    className="relative overflow-hidden"
-                    style={{ aspectRatio: "4/3" }}
+                    className="flex items-center justify-center"
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.6 }}
                   >
-                    <HybridBlobImage
-                      path={image2}
-                      alt={image2Description}
-                      fill
-                      className="object-contain object-center"
-                      sizes="(max-width: 1024px) 50vw, 33vw"
-                      quality={85}
-                      strategy="client"
-                      enableCache={true}
-                      isInteractive={false}
-                      isAboveFold={false}
-                      isCritical={false}
-                    />
+                    <div
+                      className="relative overflow-hidden"
+                      style={{ aspectRatio: "4/3", width: "100%" }}
+                    >
+                      <HybridBlobImage
+                        path={image2}
+                        alt={image2Description}
+                        fill
+                        className="object-contain object-center"
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                        quality={85}
+                        strategy="client"
+                        enableCache={true}
+                        isInteractive={false}
+                        isAboveFold={false}
+                        isCritical={false}
+                      />
+                    </div>
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div
@@ -531,57 +539,65 @@ export default function ThreeByOneGrid({
                 <>
                   {/* Image 1 - first column, first row */}
                   <motion.div
-                    className="relative overflow-hidden"
-                    style={{ aspectRatio: "4/3" }}
+                    className="flex items-center justify-center"
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
                   >
-                    <HybridBlobImage
-                      path={image1}
-                      alt={image1Description}
-                      fill
-                      className="object-contain object-center"
-                      sizes="(max-width: 1024px) 50vw, 33vw"
-                      quality={85}
-                      strategy="client"
-                      enableCache={true}
-                      isInteractive={false}
-                      isAboveFold={true}
-                      isCritical={true}
-                    />
+                    <div
+                      className="relative overflow-hidden"
+                      style={{ aspectRatio: "4/3", width: "100%" }}
+                    >
+                      <HybridBlobImage
+                        path={image1}
+                        alt={image1Description}
+                        fill
+                        className="object-contain object-center"
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                        quality={85}
+                        strategy="client"
+                        enableCache={true}
+                        isInteractive={false}
+                        isAboveFold={true}
+                        isCritical={true}
+                      />
+                    </div>
                   </motion.div>
                   {/* Image 2 - second column, first row */}
                   <motion.div
-                    className="relative overflow-hidden"
-                    style={{ aspectRatio: "4/3" }}
+                    className="flex items-center justify-center"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.6 }}
                   >
-                    <HybridBlobImage
-                      path={image2}
-                      alt={image2Description}
-                      fill
-                      className="object-contain object-center"
-                      sizes="(max-width: 1024px) 50vw, 33vw"
-                      quality={85}
-                      strategy="client"
-                      enableCache={true}
-                      isInteractive={false}
-                      isAboveFold={false}
-                      isCritical={false}
-                    />
+                    <div
+                      className="relative overflow-hidden"
+                      style={{ aspectRatio: "4/3", width: "100%" }}
+                    >
+                      <HybridBlobImage
+                        path={image2}
+                        alt={image2Description}
+                        fill
+                        className="object-contain object-center"
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                        quality={85}
+                        strategy="client"
+                        enableCache={true}
+                        isInteractive={false}
+                        isAboveFold={false}
+                        isCritical={false}
+                      />
+                    </div>
                   </motion.div>
                   {/* Main text - third column, first row */}
                   <motion.div
-                    className="flex flex-col items-start justify-center"
+                    className="flex flex-col items-center justify-center"
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-left ${
+                      className={`p-secondary ${textColorClasses} text-center ${
                         screenWidth > 1700 ? "px-8" : ""
                       } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}

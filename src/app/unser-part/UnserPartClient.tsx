@@ -184,7 +184,6 @@ export default function UnserPartClient() {
               text="<p class='p-secondary text-white'><span class='text-nest-gray'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-nest-gray'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-nest-gray'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span></p>"
               textPosition="right"
               maxWidth={false}
-              textClassName="mt-12"
               image1={IMAGES.function.nestHausModulSeiteKonzept}
               image2={IMAGES.function.nestHausModulSeiteLiniengrafik}
               image1Description="Seitliche Ansicht zeigt die durchdachte Konstruktion"

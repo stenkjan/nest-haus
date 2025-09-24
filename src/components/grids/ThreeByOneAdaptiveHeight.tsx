@@ -171,7 +171,7 @@ export default function ThreeByOneAdaptiveHeight({
 
             {/* Second Column: Image - adaptive height */}
             <motion.div
-              className="relative flex items-start justify-center"
+              className="relative flex items-center justify-center"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
@@ -194,11 +194,7 @@ export default function ThreeByOneAdaptiveHeight({
 
             {/* Third Column: Text - full height */}
             <motion.div
-              className="rounded-lg p-6 h-full"
-              style={{
-                display: "grid",
-                placeItems: "center",
-              }}
+              className="rounded-lg p-6 h-full flex items-center justify-center"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
