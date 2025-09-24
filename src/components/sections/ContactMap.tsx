@@ -23,10 +23,8 @@ export const ContactMap: React.FC<ContactMapProps> = ({
   return (
     <section id={id} className={`w-full py-16 ${bgClass}`}>
       <div className={containerClass}>
-        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3 text-center">
-          {title}
-        </h1>
-        <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+        <h1 className="h1-secondary text-gray-900 text-center">{title}</h1>
+        <h3 className="h3-secondary text-gray-600 mb-8 max-w-3xl mx-auto text-center">
           {subtitle}
         </h3>
         <div
