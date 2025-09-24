@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [db3876ba50543508c2452f8460e9650c1c632a26] - Wed Sep 24 13:47:45 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update image path for Fundermax material in dialogConfigs  - Changed imagePath from IMAGES.materials.fundermax to IMAGES.materials.fundermaxWeiss for accurate representation in the configurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/dialogConfigs.ts
+
+
+---
+
 ## [673cd9bcaf1d3beb991a5d3287796725906e17e7] - Wed Sep 24 13:39:36 2025 +0200
 
 **Author**: stenkjan
