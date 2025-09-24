@@ -147,7 +147,7 @@ export default function ThreeByOneAdaptiveHeight({
               transition={{ delay: 0.2, duration: 0.6 }}
             >
               <div
-                className={`p-secondary ${textColorClasses} text-center ${
+                className={`p-secondary ${textColorClasses} text-center lg:text-left ${
                   screenWidth > 1700 ? "px-8" : ""
                 }`}
                 dangerouslySetInnerHTML={{ __html: text }}

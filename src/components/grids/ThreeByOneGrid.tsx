@@ -164,7 +164,7 @@ export default function ThreeByOneGrid({
             {/* Text Section - Always in the middle */}
             <div className={`px-4 md:px-8 mb-12 ${textWrapperClassName}`}>
               <motion.div
-                className={`p-secondary ${textColorClasses} text-center ${textClassName}`}
+                className={`p-secondary ${textColorClasses} text-center lg:text-left ${textClassName}`}
                 dangerouslySetInnerHTML={{ __html: displayText }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -352,7 +352,7 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-center ${
+                      className={`p-secondary ${textColorClasses} text-left ${
                         screenWidth > 1700 ? "px-8" : ""
                       } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
@@ -597,7 +597,7 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-center ${
+                      className={`p-secondary ${textColorClasses} text-left ${
                         screenWidth > 1700 ? "px-8" : ""
                       } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
