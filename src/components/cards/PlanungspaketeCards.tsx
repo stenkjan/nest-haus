@@ -186,7 +186,7 @@ export default function PlanungspaketeCards({
         // Normal mode - responsive grid layout
         // Use consistent width since flex-wrap handles the layout
         setCardsPerView(3);
-        // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 350px below lg breakpoint
+        // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 320px below lg breakpoint (reduced from 350px)
         setCardWidth(width >= 1024 ? 600 : 350);
       }
 
@@ -457,7 +457,7 @@ export default function PlanungspaketeCards({
                 >
                   {/* Top Section - EXPANDED HEIGHT */}
                   <div
-                    className={`px-6 py-2 pt-8 overflow-hidden ${!isMobile ? "pb-8" : ""}`}
+                    className={`px-6 py-2 overflow-hidden ${!isMobile ? "pb-8 pt-8" : "pt-8 pt-6"}`}
                   >
                     {/* Header Row - Title/Subtitle left, Price right */}
                     <div className="flex">
@@ -468,9 +468,13 @@ export default function PlanungspaketeCards({
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
-                          <h3 className="h3-secondary px-3">
+                          <h3
+                            className={`${isMobile ? "h3-mobile" : "h3-secondary"} px-3`}
+                          >
                             {getCardText(card, "title")}{" "}
-                            <span className="h3-secondary font-medium text-gray-500">
+                            <span
+                              className={`${isMobile ? "h3-mobile" : "h3-secondary"} font-medium text-gray-500`}
+                            >
                               {getCardText(card, "subtitle") || card.grayWord}
                             </span>
                           </h3>

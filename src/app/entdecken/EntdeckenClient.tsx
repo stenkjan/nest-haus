@@ -158,7 +158,7 @@ export default function EntdeckenClient() {
               {/* Mobile Title/Subtitle Overlay - Aligned with standard spacing */}
               <div className="absolute top-12 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
                 <h1 className="h1-secondary">Design für dich gemacht</h1>
-                <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
+                <h3 className="h3-secondary text-black mb-12 max-w-3xl mx-auto text-center">
                   Dein Design im Freistil.
                 </h3>
               </div>
@@ -224,8 +224,8 @@ export default function EntdeckenClient() {
         {/* Section 3 - Dein Zuhause zieht um */}
         <section id="zuhause-zieht-um" className="w-full py-8 md:py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="h1-secondary mb-2 md:mb-3">
+            <div className="text-center md:mb-12">
+              <h1 className="h1-secondary mb-2">
                 Dein Zuhause zieht um
               </h1>
               <h3 className="h3-secondary text-black max-w-3xl mx-auto text-center">
@@ -312,7 +312,7 @@ export default function EntdeckenClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-4 md:mb-16">
+            <div className="text-center mb-4 md:mb-12">
               <h1 className="h1-secondary mb-2 md:mb-3">
                 <span className="block md:inline">Konfiguriere dein</span>
                 <span className="block md:inline"> ®Nest Haus</span>
@@ -356,7 +356,7 @@ export default function EntdeckenClient() {
         {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-4 md:mb-8">
+            <div className="text-center mb-4 md:mb-6">
               <h1 className="h1-secondary mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
