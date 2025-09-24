@@ -130,7 +130,7 @@ export default function FullWidthTextGrid({
             transition={{ delay: 0.2, duration: 0.6 }}
           >
             <p
-              className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
+              className={`p-secondary ${textColorClasses} ${
                 isMobile ? "text-center" : "text-left"
               }`}
               dangerouslySetInnerHTML={{ __html: textBox1 }}
@@ -146,7 +146,7 @@ export default function FullWidthTextGrid({
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             <p
-              className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
+              className={`p-secondary ${textColorClasses} ${
                 isMobile ? "text-center" : "text-left"
               }`}
               dangerouslySetInnerHTML={{ __html: textBox2 }}

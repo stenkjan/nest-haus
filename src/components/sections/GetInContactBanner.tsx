@@ -62,18 +62,14 @@ export function GetInContactBanner({
       className={`w-full py-12 ${className}`}
       style={{ backgroundColor }}
     >
-      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-0">
-          <h2 className="h2-title mb-4">
-            {title}
-          </h2>
-          <h3 className="h3-secondary">
-            {subtitle}
-          </h3>
+          <h2 className="h2-title mb-4 text-gray-900">{title}</h2>
+          <h3 className="h3-secondary text-gray-600">{subtitle}</h3>
         </div>
 
         {/* Single Button */}
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center w-full mt-8">
           <Button variant="primary" size="xs" onClick={onButtonClick}>
             {buttonText}
           </Button>

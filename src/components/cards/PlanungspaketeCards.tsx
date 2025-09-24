@@ -186,8 +186,20 @@ export default function PlanungspaketeCards({
         // Normal mode - responsive grid layout
         // Use consistent width since flex-wrap handles the layout
         setCardsPerView(3);
-        // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 320px below lg breakpoint (reduced from 350px)
-        setCardWidth(width >= 1024 ? 600 : 350);
+        // Dynamic card width: smaller on desktop to fit all 3 cards, larger on mobile for better readability
+        if (width >= 1024) {
+          // Desktop: Calculate width to fit 3 cards with gaps
+          const containerPadding = maxWidth ? 64 : 32; // px-8 vs px-4
+          const containerWidth = maxWidth
+            ? Math.min(1144, width - containerPadding)
+            : width - containerPadding;
+          const gapTotal = gap * 2; // 2 gaps between 3 cards
+          const calculatedWidth = Math.floor((containerWidth - gapTotal) / 3);
+          setCardWidth(Math.max(280, Math.min(400, calculatedWidth))); // Min 280px, max 400px per card
+        } else {
+          // Mobile/Tablet: Use larger cards
+          setCardWidth(350);
+        }
       }
 
       // Recenter the current card after dimension changes
@@ -216,7 +228,7 @@ export default function PlanungspaketeCards({
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
-  }, [isLightboxMode, isClient, currentIndex, cardWidth, gap, x]);
+  }, [isLightboxMode, isClient, currentIndex, cardWidth, gap, x, maxWidth]);
 
   // No pre-measurement needed - cards size naturally
 
@@ -327,7 +339,6 @@ export default function PlanungspaketeCards({
 
     setExpandedCards((prev) => {
       const newSet = new Set(prev);
-      const isExpanding = !newSet.has(cardId);
 
       if (newSet.has(cardId)) {
         newSet.delete(cardId);
@@ -405,7 +416,7 @@ export default function PlanungspaketeCards({
         {!isLightboxMode ? (
           /* Normal Mode - Responsive Grid Layout */
           <div
-            className={`flex flex-wrap justify-center items-center gap-6 ${
+            className={`flex ${screenWidth >= 1024 ? "flex-row justify-center" : "flex-wrap justify-center"} items-start gap-6 ${
               maxWidth ? "px-8" : "px-4"
             }`}
           >
@@ -421,9 +432,9 @@ export default function PlanungspaketeCards({
                       cardRefs.current.set(card.id, el);
                     }
                   }}
-                  className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
+                  className={`${screenWidth >= 1024 ? "flex-1" : "flex-shrink-0"} rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer`}
                   style={{
-                    width: cardWidth,
+                    width: screenWidth >= 1024 ? undefined : cardWidth,
                     backgroundColor: card.backgroundColor,
                     // iOS-specific fixes
                     WebkitTransform: "translateZ(0)", // Force hardware acceleration
@@ -469,7 +480,7 @@ export default function PlanungspaketeCards({
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
                           <h3
-                            className={`${isMobile ? "h3-mobile" : "h3-secondary"} px-3`}
+                            className={`${isMobile ? "h3-mobile" : "h3-secondary"} px-3 text-gray-900`}
                           >
                             {getCardText(card, "title")}{" "}
                             <span

@@ -155,8 +155,8 @@ export default function FullWidthImageGrid({
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
+              <div
+                className={`p-secondary ${textColorClasses} ${
                   isMobile ? "text-center" : "text-left"
                 } ${screenWidth > 1700 ? "px-8" : ""}`}
                 dangerouslySetInnerHTML={{ __html: textBox1 }}
@@ -174,8 +174,8 @@ export default function FullWidthImageGrid({
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
-              <p
-                className={`text-sm md:text-base lg:text-lg 2xl:text-xl ${textColorClasses} leading-relaxed ${
+              <div
+                className={`p-secondary ${textColorClasses} ${
                   isMobile ? "text-center" : "text-left"
                 } ${screenWidth > 1700 ? "px-8" : ""}`}
                 dangerouslySetInnerHTML={{ __html: textBox2 }}

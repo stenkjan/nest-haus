@@ -41,17 +41,9 @@ export const MaterialShowcase = memo(function MaterialShowcase({
         {title && (
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-24">
-              <h1
-                className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3 ${textColor}`}
-              >
-                {title}
-              </h1>
+              <h1 className={`h1-secondary ${textColor}`}>{title}</h1>
               {subtitle && (
-                <h3
-                  className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-8 max-w-3xl mx-auto ${textColor}`}
-                >
-                  {subtitle}
-                </h3>
+                <h3 className={`h3-secondary ${textColor}`}>{subtitle}</h3>
               )}
             </div>
           </div>
@@ -65,6 +57,7 @@ export const MaterialShowcase = memo(function MaterialShowcase({
           maxWidth={false}
           showInstructions={showInstructions}
           customData={materials}
+          backgroundColor={backgroundColor}
         />
       </section>
     );
@@ -80,17 +73,9 @@ export const MaterialShowcase = memo(function MaterialShowcase({
       {/* Only show header if title is provided */}
       {title && (
         <div className="text-center mb-24">
-          <h1
-            className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-2 md:mb-3 ${textColor}`}
-          >
-            {title}
-          </h1>
+          <h1 className={`h1-secondary ${textColor}`}>{title}</h1>
           {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-8 max-w-3xl mx-auto ${textColor}`}
-            >
-              {subtitle}
-            </h3>
+            <h3 className={`h3-secondary ${textColor}`}>{subtitle}</h3>
           )}
         </div>
       )}
@@ -103,6 +88,7 @@ export const MaterialShowcase = memo(function MaterialShowcase({
         maxWidth={maxWidth}
         showInstructions={showInstructions}
         customData={materials}
+        backgroundColor={backgroundColor}
       />
     </SectionContainer>
   );

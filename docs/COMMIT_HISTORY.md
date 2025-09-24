@@ -4,6 +4,73 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f8ce8a2cb10a5e0bb058de3d578127ea0ceef7a4] - Wed Sep 24 13:36:13 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1c06646e9e9f0e5c58b142c2e624819680828e4e] - Wed Sep 24 13:27:42 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [46d653bfbca5a2c1c56edf0ae19962f3872eb160] - Wed Sep 24 13:24:44 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update layout and text styling for consistency across components  - Changed max-width in DeinPartClient and GetInContactBanner to use max-w-screen-3xl for improved responsiveness. - Enhanced text styling in GetInContactBanner for better visibility and consistency with design standards. - Ensured proper formatting in Navbar component by adding a newline at the end of the file.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/components/layout/Navbar.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
+## [c8b87d09e910502b38d47f8e7af47b7157129292] - Wed Sep 24 13:10:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b08e2c692f9276a23b3f8c55b2593ed0a63ab1b8] - Wed Sep 24 12:42:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [daf36a5b7ff69ce315dd70306d7526036bda7d16] - Wed Sep 24 11:00:31 2025 +0200
 
 **Author**: stenkjan
