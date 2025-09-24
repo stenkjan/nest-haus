@@ -48,10 +48,10 @@ export const SICHERHEIT_VIDEO_PRESET: VideoCardPreset = {
     subtitle: "",
     description:
         "Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt.",
-    mobileTitle: "Sicherheit & Grundstücks-Check",
+    mobileTitle: "Du hast die Wahl",
     mobileSubtitle: "",
     mobileDescription:
-        "Wir kennen die gesetzlichen Vorgaben genau und unterstützen dich dabei, die Anforderungen deines Baugrunds zu verstehen. Mit unserem Grundstücks-Check prüfen wir alle Gegebenheiten.",
+        "Gestalte dein Zuhause individuell. Wähle Größe, Materialien und Ausstattung im Online-Konfigurator. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.",
     video: IMAGES.variantvideo.twelve,
     backgroundColor: "#F4F4F4",
     playbackRate: 0.5, // Play at half speed for better visibility

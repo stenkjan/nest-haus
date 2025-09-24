@@ -114,9 +114,6 @@ export default function PlanungspaketeCards({
   const [screenWidth, setScreenWidth] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
-  const [cardHeights, setCardHeights] = useState<Map<number, number>>(
-    new Map()
-  );
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -189,7 +186,7 @@ export default function PlanungspaketeCards({
         // Normal mode - responsive grid layout
         // Use consistent width since flex-wrap handles the layout
         setCardsPerView(3);
-        // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 350px below lg breakpoint
+        // Match TwoByTwoImageGrid mobile breakpoint (1024px) - use 320px below lg breakpoint (reduced from 350px)
         setCardWidth(width >= 1024 ? 600 : 350);
       }
 
@@ -221,120 +218,9 @@ export default function PlanungspaketeCards({
     return () => window.removeEventListener("resize", updateDimensions);
   }, [isLightboxMode, isClient, currentIndex, cardWidth, gap, x]);
 
-  // Pre-measure card heights on mobile for smooth expansion
-  useEffect(() => {
-    if (!isClient || screenWidth >= 1024) return;
+  // No pre-measurement needed - cards size naturally
 
-    const preMeasureHeights = () => {
-      // Use requestAnimationFrame to ensure DOM is fully rendered
-      requestAnimationFrame(() => {
-        cardData.forEach((card) => {
-          const cardElement = cardRefs.current.get(card.id);
-          if (cardElement && !cardHeights.has(card.id)) {
-            // Calculate expanded height based on actual content
-            const topSection = cardElement.querySelector(
-              ".h-56"
-            ) as HTMLElement;
-            const bottomSection = cardElement.querySelector(
-              '[class*="px-6 pt-2 pb-6"]'
-            ) as HTMLElement;
-
-            let calculatedHeight = 360; // base height
-
-            if (topSection && bottomSection) {
-              // Get the extended description text element
-              const extendedTextElement = bottomSection.querySelector(
-                "p"
-              ) as HTMLElement;
-
-              if (extendedTextElement) {
-                // Temporarily remove line-clamp to measure full height
-                const originalClasses = extendedTextElement.className;
-                extendedTextElement.className = originalClasses.replace(
-                  "line-clamp-4",
-                  ""
-                );
-
-                // Measure the full content height
-                const topHeight = topSection.scrollHeight;
-                const bottomHeight = bottomSection.scrollHeight;
-                calculatedHeight = topHeight + bottomHeight + 48; // Extra padding for iOS
-
-                // Restore original classes
-                extendedTextElement.className = originalClasses;
-              } else {
-                // Fallback measurement
-                const topHeight = topSection.scrollHeight;
-                const bottomHeight = bottomSection.scrollHeight;
-                calculatedHeight = topHeight + bottomHeight + 48;
-              }
-            }
-
-            // Ensure minimum height for iOS with more generous padding
-            const finalHeight = Math.max(calculatedHeight, 520);
-            setCardHeights((prev) => new Map(prev.set(card.id, finalHeight)));
-          }
-        });
-      });
-    };
-
-    // Multiple attempts to ensure measurement
-    const timer1 = setTimeout(preMeasureHeights, 100);
-    const timer2 = setTimeout(preMeasureHeights, 300);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
-  }, [isClient, screenWidth, cardData, cardHeights]);
-
-  // Calculate and store card height when expanded
-  const _measureCardHeight = useCallback((cardId: number) => {
-    const cardElement = cardRefs.current.get(cardId);
-    if (cardElement) {
-      // Get sections for precise measurement
-      const topSection = cardElement.querySelector(".h-56") as HTMLElement;
-      const bottomSection = cardElement.querySelector(
-        '[class*="px-6 pt-2 pb-6"]'
-      ) as HTMLElement;
-
-      let calculatedHeight = 360;
-
-      if (topSection && bottomSection) {
-        // Get the extended description text element
-        const extendedTextElement = bottomSection.querySelector(
-          "p"
-        ) as HTMLElement;
-
-        if (extendedTextElement) {
-          // Temporarily remove line-clamp to measure full height
-          const originalClasses = extendedTextElement.className;
-          extendedTextElement.className = originalClasses.replace(
-            "line-clamp-4",
-            ""
-          );
-
-          // Measure the full content height
-          const topHeight = topSection.scrollHeight;
-          const bottomHeight = bottomSection.scrollHeight;
-          calculatedHeight = topHeight + bottomHeight + 48; // Extra padding
-
-          // Restore original classes
-          extendedTextElement.className = originalClasses;
-        } else {
-          // Fallback measurement
-          const topHeight = topSection.scrollHeight;
-          const bottomHeight = bottomSection.scrollHeight;
-          calculatedHeight = topHeight + bottomHeight + 48;
-        }
-      }
-
-      const finalHeight = Math.max(calculatedHeight, 520);
-      setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
-      return finalHeight;
-    }
-    return 520; // fallback height
-  }, []);
+  // Cards now size naturally - no measurement needed
 
   const maxIndex = Math.max(0, cardData.length - Math.floor(cardsPerView));
   const _maxScroll = -(maxIndex * (cardWidth + gap));
@@ -448,52 +334,7 @@ export default function PlanungspaketeCards({
       } else {
         newSet.add(cardId);
 
-        // Ensure height is measured before expansion
-        if (isMobile && isExpanding && !cardHeights.has(cardId)) {
-          const cardElement = cardRefs.current.get(cardId);
-          if (cardElement) {
-            // Immediate measurement for iOS with full content calculation
-            const topSection = cardElement.querySelector(
-              ".h-56"
-            ) as HTMLElement;
-            const bottomSection = cardElement.querySelector(
-              '[class*="px-6 pt-2 pb-6"]'
-            ) as HTMLElement;
-
-            let calculatedHeight = 360;
-            if (topSection && bottomSection) {
-              // Get the extended description text element
-              const extendedTextElement = bottomSection.querySelector(
-                "p"
-              ) as HTMLElement;
-
-              if (extendedTextElement) {
-                // Temporarily remove line-clamp to measure full height
-                const originalClasses = extendedTextElement.className;
-                extendedTextElement.className = originalClasses.replace(
-                  "line-clamp-4",
-                  ""
-                );
-
-                // Measure the full content height
-                const topHeight = topSection.scrollHeight;
-                const bottomHeight = bottomSection.scrollHeight;
-                calculatedHeight = topHeight + bottomHeight + 48; // Extra padding
-
-                // Restore original classes
-                extendedTextElement.className = originalClasses;
-              } else {
-                // Fallback measurement
-                const topHeight = topSection.scrollHeight;
-                const bottomHeight = bottomSection.scrollHeight;
-                calculatedHeight = topHeight + bottomHeight + 48;
-              }
-            }
-
-            const finalHeight = Math.max(calculatedHeight, isIOS ? 560 : 520);
-            setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
-          }
-        }
+        // No height calculation needed - let cards size naturally
       }
 
       // iOS-specific layout fixes
@@ -571,7 +412,6 @@ export default function PlanungspaketeCards({
             {displayCards.map((card, index) => {
               const isExpanded = expandedCards.has(card.id);
               const isMobile = isClient && screenWidth < 1024;
-              const expandedHeight = cardHeights.get(card.id) || 500; // fallback to reasonable height
 
               return (
                 <motion.div
@@ -584,7 +424,6 @@ export default function PlanungspaketeCards({
                   className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
                   style={{
                     width: cardWidth,
-                    minHeight: isMobile ? 280 : 200,
                     backgroundColor: card.backgroundColor,
                     // iOS-specific fixes
                     WebkitTransform: "translateZ(0)", // Force hardware acceleration
@@ -592,7 +431,11 @@ export default function PlanungspaketeCards({
                     WebkitBackfaceVisibility: "hidden",
                     backfaceVisibility: "hidden",
                   }}
-                  animate={{}}
+                  animate={
+                    {
+                      // Let all cards size naturally to their content
+                    }
+                  }
                   transition={{
                     duration: 0.6,
                     ease: [0.25, 0.46, 0.45, 0.94],
@@ -600,17 +443,22 @@ export default function PlanungspaketeCards({
                   }}
                   whileHover={{ scale: 1.02 }}
                   onClick={() => {
-                    if (isMobile) {
+                    if (isMobile && isExpanded) {
+                      // On mobile, clicking anywhere on expanded card collapses it
                       toggleCardExpansion(card.id);
-                    } else if (enableBuiltInLightbox && !isLightboxMode) {
-                      setLightboxOpen(true);
-                    } else if (onCardClick) {
-                      onCardClick(card.id);
+                    } else if (!isMobile) {
+                      if (enableBuiltInLightbox && !isLightboxMode) {
+                        setLightboxOpen(true);
+                      } else if (onCardClick) {
+                        onCardClick(card.id);
+                      }
                     }
                   }}
                 >
                   {/* Top Section - EXPANDED HEIGHT */}
-                  <div className="px-6 py-6 pt-8 overflow-hidden">
+                  <div
+                    className={`px-6 py-2 overflow-hidden ${!isMobile ? "pb-8 pt-8" : "pt-8 pt-6"}`}
+                  >
                     {/* Header Row - Title/Subtitle left, Price right */}
                     <div className="flex">
                       {/* Title/Subtitle - Left Side */}
@@ -620,9 +468,13 @@ export default function PlanungspaketeCards({
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
-                          <h3 className="h3-secondary px-3">
+                          <h3
+                            className={`${isMobile ? "h3-mobile" : "h3-secondary"} px-3`}
+                          >
                             {getCardText(card, "title")}{" "}
-                            <span className="h3-secondary font-medium text-gray-500">
+                            <span
+                              className={`${isMobile ? "h3-mobile" : "h3-secondary"} font-medium text-gray-500`}
+                            >
                               {getCardText(card, "subtitle") || card.grayWord}
                             </span>
                           </h3>
@@ -659,59 +511,59 @@ export default function PlanungspaketeCards({
                     </div>
                   </div>
 
-                  {/* Bottom Section - Extended Description (Mobile Only) - FLEXIBLE HEIGHT */}
+                  {/* Mobile: Mehr erfahren button or Extended Description */}
                   {card.extendedDescription && isMobile && (
-                    <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden relative">
-                      <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
-                        className="h-full"
-                      >
-                        <motion.p
-                          className={`text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line ${
-                            !isExpanded ? "line-clamp-4" : ""
-                          }`}
-                          animate={{
-                            opacity: isExpanded ? 1 : 1,
-                          }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          {getCardText(card, "extendedDescription")}
-                        </motion.p>
+                    <>
+                      {!isExpanded ? (
+                        /* Collapsed state: Show only "Mehr erfahren" button with minimal padding */
+                        <div className="px-8 pb-6 text-align-left">
+                          <motion.button
+                            className="p-primary-small font-bold underline hover:no-underline transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 rounded px-1"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              toggleCardExpansion(card.id);
+                            }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            Mehr erfahren
+                          </motion.button>
+                        </div>
+                      ) : (
+                        /* Expanded state: Show full extended description with tight padding */
+                        <div className="px-9 pt-2 pb-2">
+                          <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 0.8 }}
+                          >
+                            <motion.p
+                              className="p-primary mb-2"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                            >
+                              {getCardText(card, "extendedDescription")}
+                            </motion.p>
 
-                        {/* Blur gradient overlay for mobile when collapsed */}
-                        <motion.div
-                          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-                          style={{
-                            background: `linear-gradient(to top, ${card.backgroundColor} 0%, ${card.backgroundColor}f8 15%, ${card.backgroundColor}f0 25%, ${card.backgroundColor}e0 35%, ${card.backgroundColor}cc 45%, ${card.backgroundColor}b3 55%, ${card.backgroundColor}80 65%, ${card.backgroundColor}4d 75%, ${card.backgroundColor}26 85%, transparent 100%)`,
-                          }}
-                          animate={{
-                            opacity: !isExpanded ? 1 : 0,
-                          }}
-                          transition={{
-                            duration: 0.5,
-                            ease: [0.25, 0.46, 0.45, 0.94],
-                          }}
-                        />
-
-                        {/* Close instruction text for expanded cards */}
-                        <motion.div
-                          className="absolute bottom-2 left-0 right-0 text-center pointer-events-none"
-                          animate={{
-                            opacity: isExpanded ? 1 : 0,
-                          }}
-                          transition={{
-                            duration: 0.3,
-                            delay: isExpanded ? 0.3 : 0,
-                          }}
-                        >
-                          <p className="text-xs text-gray-500">
-                            drücken zum schließen
-                          </p>
-                        </motion.div>
-                      </motion.div>
-                    </div>
+                            {/* Weniger anzeigen button at end of expanded text */}
+                            <motion.button
+                              className="p-primary-small font-bold underline pb-6 hover:no-underline transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 rounded px-1"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent card click
+                                toggleCardExpansion(card.id);
+                              }}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.3, delay: 0.3 }}
+                            >
+                              Weniger anzeigen
+                            </motion.button>
+                          </motion.div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </motion.div>
               );
