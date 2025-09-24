@@ -10,6 +10,7 @@ interface ImageWithFourTextGridProps {
   subtitle?: string;
   maxWidth?: boolean;
   image?: string;
+  mobileImage?: string;
   imageDescription?: string;
   textCell1?: string;
   textCell2?: string;
@@ -27,6 +28,7 @@ export default function ImageWithFourTextGrid({
   subtitle = "Image on top with four text columns below",
   maxWidth = true,
   image = IMAGES.function.nestHausModulAnsicht,
+  mobileImage,
   imageDescription = "NEST Haus Concept Image",
   textCell1 = "First text cell with important information about the concept and features.",
   textCell2 = "Second text cell with additional details and supporting information.",
@@ -65,6 +67,9 @@ export default function ImageWithFourTextGrid({
 
   // Determine if we should use mobile layout (same breakpoint as other components)
   const isMobile = isClient && screenWidth < 1024;
+
+  // Get the appropriate image based on screen size
+  const currentImage = isMobile && mobileImage ? mobileImage : image;
 
   // Background and text color classes
   const backgroundClasses =
@@ -136,11 +141,11 @@ export default function ImageWithFourTextGrid({
         >
           <div className={`${containerClasses} px-4 md:px-8`}>
             <HybridBlobImage
-              path={image}
+              path={currentImage}
               alt={imageDescription}
               width={1395}
               height={720}
-              className="w-9/10 h-auto object-contain rounded-lg mx-auto"
+              className="w-full md:w-9/10 h-auto object-contain rounded-none md:rounded-lg md:mx-auto"
               sizes="(max-width: 1536px) 90vw, 1382px"
               quality={85}
               strategy="client"

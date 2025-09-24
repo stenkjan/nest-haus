@@ -119,7 +119,7 @@ export default function FullWidthTextGrid({
         <div
           className={`grid ${
             isMobile ? "grid-cols-1" : "grid-cols-2"
-          } gap-4 md:gap-6 max-w-4xl mx-auto`}
+          } gap-8 md:gap-6 max-w-4xl mx-auto`}
         >
           {/* Text Box 1 */}
           <motion.div

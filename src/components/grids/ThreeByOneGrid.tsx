@@ -22,6 +22,7 @@ interface ThreeByOneGridProps {
   primaryButtonText?: string;
   secondaryButtonText?: string;
   textClassName?: string;
+  textWrapperClassName?: string;
 }
 
 export default function ThreeByOneGrid({
@@ -40,6 +41,7 @@ export default function ThreeByOneGrid({
   primaryButtonText = "Primary Action",
   secondaryButtonText = "Secondary Action",
   textClassName = "",
+  textWrapperClassName = "",
 }: ThreeByOneGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -160,7 +162,7 @@ export default function ThreeByOneGrid({
             </motion.div>
 
             {/* Text Section - Always in the middle */}
-            <div className="px-4 md:px-8 mb-12">
+            <div className={`px-4 md:px-8 mb-12 ${textWrapperClassName}`}>
               <motion.div
                 className={`p-secondary ${textColorClasses} text-center ${textClassName}`}
                 dangerouslySetInnerHTML={{ __html: displayText }}
@@ -337,7 +339,7 @@ export default function ThreeByOneGrid({
           </div>
         ) : (
           /* Desktop Layout: 3 columns with 2 rows (main text only in first row) */
-          <div className="px-4 md:px-8">
+          <div className={`px-4 md:px-8 ${textWrapperClassName}`}>
             <div className="grid grid-rows-[auto_auto] grid-cols-3 gap-6">
               {/* First row: main text, image1, image2 */}
               {textPosition === "left" ? (
