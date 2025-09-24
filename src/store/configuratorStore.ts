@@ -38,6 +38,17 @@ export interface PriceBreakdown {
 
 // Configuration mode types
 
+// Type for persisted state in migration function
+interface PersistedConfiguratorState {
+  sessionId?: string | null
+  configuration?: Configuration
+  currentPrice?: number
+  priceBreakdown?: PriceBreakdown | null
+  hasPart2BeenActive?: boolean
+  hasPart3BeenActive?: boolean
+  shouldSwitchToView?: string | null
+  lastSelectionCategory?: string | null
+}
 
 interface ConfiguratorState {
   // Session & Configuration (CLIENT-SIDE ONLY)
@@ -727,28 +738,31 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       version: 1, // Added version for planungspaket price migration
       // Skip persistence in test only to prevent state conflicts
       skipHydration: process.env.NODE_ENV === 'test',
-      migrate: (persistedState: any, version: number) => {
+      migrate: (persistedState: unknown, version: number) => {
+        // Type guard to ensure persistedState is the expected type
+        const state = persistedState as PersistedConfiguratorState;
+
         // Migration for planungspaket price update
-        if (version === 0 && persistedState?.configuration?.planungspaket) {
-          const planungspaket = persistedState.configuration.planungspaket;
+        if (version === 0 && state?.configuration?.planungspaket) {
+          const planungspaket = state.configuration.planungspaket;
           // Update basis planungspaket price from 0 to 10900
           if (planungspaket.value === 'basis' && planungspaket.price === 0) {
             planungspaket.price = 10900;
             // Also update total price if it was just the planungspaket
-            if (persistedState.configuration.totalPrice === 0) {
-              persistedState.configuration.totalPrice = 10900;
+            if (state.configuration.totalPrice === 0) {
+              state.configuration.totalPrice = 10900;
             } else {
-              persistedState.configuration.totalPrice += 10900;
+              state.configuration.totalPrice += 10900;
             }
             // Update current price
-            if (persistedState.currentPrice === 0) {
-              persistedState.currentPrice = 10900;
-            } else {
-              persistedState.currentPrice += 10900;
+            if (state.currentPrice === 0) {
+              state.currentPrice = 10900;
+            } else if (state.currentPrice !== undefined) {
+              state.currentPrice += 10900;
             }
           }
         }
-        return persistedState;
+        return state;
       },
       partialize: (state) => ({
         sessionId: state.sessionId,

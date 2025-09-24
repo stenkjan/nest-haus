@@ -4,6 +4,64 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c394870784c1a9cdce1322e233276c9daef75d0e] - Wed Sep 24 15:10:00 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6236263756afe580d18f9247634932207cd8ea9c] - Wed Sep 24 15:06:27 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b4fd5ade198bc14985f8da92a5fd613340c64037] - Wed Sep 24 15:01:15 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [03fa09ab59107f96ee78db8cc65db92d097bfb45] - Wed Sep 24 14:58:35 2025 +0200
 
 **Author**: stenkjan
