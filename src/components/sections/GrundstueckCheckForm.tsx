@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui";
 import { SectionContainer } from "./SectionContainer";
 
 interface GrundstueckCheckFormProps {
@@ -36,6 +38,7 @@ export function GrundstueckCheckForm({
   className = "",
   excludePersonalData = false,
 }: GrundstueckCheckFormProps) {
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     lastName: "",
@@ -66,6 +69,32 @@ export function GrundstueckCheckForm({
     alert("Formular wurde übermittelt! Wir melden uns bald bei Ihnen.");
   };
 
+  const handleZahlenUndPruefen = () => {
+    // Store form data in sessionStorage to auto-fill warenkorb
+    const grundstueckData = {
+      name: formData.name,
+      lastName: formData.lastName,
+      phone: formData.phone,
+      email: formData.email,
+      address: formData.address,
+      addressLine2: formData.addressLine2,
+      propertyNumber: formData.propertyNumber,
+      cadastralCommunity: formData.cadastralCommunity,
+      city: formData.city,
+      state: formData.state,
+      postalCode: formData.postalCode,
+      country: formData.country,
+      notes: formData.notes,
+      service: "grundstueck-check",
+    };
+
+    sessionStorage.setItem(
+      "grundstueckCheckData",
+      JSON.stringify(grundstueckData)
+    );
+    router.push("/warenkorb#terminvereinbarung");
+  };
+
   // When used in CheckoutStepper, render only the form without container
   if (maxWidth === false && padding === "sm") {
     return (
@@ -73,9 +102,7 @@ export function GrundstueckCheckForm({
         {/* Conditionally render Daten Bewerber section */}
         {!excludePersonalData && (
           <>
-            <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-              Daten Bewerber
-            </h3>
+            <h3 className="h3-secondary mb-4">Daten Bewerber</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <input
                 type="text"
@@ -116,9 +143,7 @@ export function GrundstueckCheckForm({
           </>
         )}
 
-        <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-          Informationen zum Grundstück
-        </h3>
+        <h3 className="h3-secondary mb-4">Informationen zum Grundstück</h3>
         <div className="space-y-4 mb-6">
           <input
             type="text"
@@ -153,7 +178,7 @@ export function GrundstueckCheckForm({
               value={formData.cadastralCommunity}
               onChange={handleChange}
               className="border border-gray-300 rounded-xl p-3"
-              placeholder="Katastergemeinde"
+              placeholder="Katastralgemeinde"
             />
           </div>
 
@@ -200,9 +225,7 @@ export function GrundstueckCheckForm({
           </div>
         </div>
 
-        <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-          Anmerkungen
-        </h3>
+        <h3 className="h3-secondary mb-4">Anmerkungen</h3>
         <textarea
           name="notes"
           value={formData.notes}
@@ -225,10 +248,10 @@ export function GrundstueckCheckForm({
       className={className}
     >
       <div className="text-center mb-16">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
+        <h1 className="h1-secondary text-gray-900">
           Dein Grundstück - Unser Check
         </h1>
-        <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+        <h3 className="h3-secondary text-gray-600 mb-8 max-w-3xl mx-auto">
           Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner
           Wahl passt
         </h3>
@@ -241,38 +264,28 @@ export function GrundstueckCheckForm({
             {/* Info Section - Left side matching description area */}
             <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
               <div>
-                <p className="p-primary text-gray-700 leading-relaxed mb-4 mt-12">
-                  Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig,
-                  dass dein Grundstück alle{" "}
-                  <strong>rechtlichen und baulichen Anforderungen</strong>{" "}
-                  erfüllt. Genau hier setzen wir an!
+                <p className="p-primary text-gray-700 leading-loose mb-8 mt-16">
+                  Bevor dein <strong>Traum vom Nest-Haus</strong> Realität wird,
+                  prüfen wir, ob dein <strong>Grundstück</strong> alle
+                  rechtlichen und <strong>baulichen Anforderungen</strong>{" "}
+                  erfüllt. Für <strong>€ 3.000</strong> übernehmen wir diese
+                  Überprüfung und entwickeln gemeinsam mit dir ein individuelles{" "}
+                  <strong>Vorentwurfskonzept</strong> deines Nest-Hauses.
                 </p>
                 {/* Spacer to align with Name/Nachname form fields */}
                 <div className="h-3"></div>
-                <p className="p-primary text-gray-700 leading-relaxed mb-6">
-                  <strong>Für nur € 200,-</strong> übernehmen wir für dich die
-                  Prüfung der relevanten Rahmenbedingungen und Baugesetze, um
-                  dir <strong>Sicherheit und Klarheit</strong> zu verschaffen.
-                  Jetzt den <strong>Quick-Check</strong> machen und uns die
-                  rechtlichen und baulichen Voraussetzungen deines Grundstücks
-                  prüfen lassen, damit du{" "}
-                  <strong>
-                    entspannt und sicher in die Planung deines Nest-Hauses
-                    starten
-                  </strong>{" "}
-                  kannst.
+                <p className="p-primary text-gray-700 leading-loose mb-16">
+                  Dabei verbinden wir deine <strong>Wünsche</strong> mit den
+                  gegebenen <strong>Rahmenbedingungen</strong> und schaffen so
+                  die ideale Grundlage für dein{" "}
+                  <strong>zukünftiges Zuhause</strong>.
                 </p>
               </div>
 
-              <div className="mt-2 space-y-4">
+              <div className="mt-12 space-y-8">
                 <div>
-                  <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                    Was wir prüfen
-                  </h4>
-                  <p
-                    className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
-                    style={{ color: "#99a1af" }}
-                  >
+                  <h4 className="p-primary font-medium mb-1">Was wir prüfen</h4>
+                  <p className="p-primary-small" style={{ color: "#99a1af" }}>
                     Rechtliche Rahmenbedingungen: Wir prüfen, ob dein Grundstück
                     den Vorgaben des jeweiligen Landes-Baugesetzes, des
                     Raumordnungsgesetzes und ortsgebundener Vorschriften
@@ -281,13 +294,8 @@ export function GrundstueckCheckForm({
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                    Baugesetze
-                  </h4>
-                  <p
-                    className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
-                    style={{ color: "#99a1af" }}
-                  >
+                  <h4 className="p-primary font-medium mb-1">Baugesetze</h4>
+                  <p className="p-primary-small" style={{ color: "#99a1af" }}>
                     Alle relevanten Bauvorschriften werden detailliert
                     überprüft, um sicherzustellen, dass dein Bauvorhaben
                     genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
@@ -302,9 +310,7 @@ export function GrundstueckCheckForm({
             <div className="w-full md:w-1/2">
               <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-                    Daten Bewerber
-                  </h3>
+                  <h3 className="h3-secondary mb-4">Daten Bewerber</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <input
                       type="text"
@@ -343,7 +349,7 @@ export function GrundstueckCheckForm({
                     />
                   </div>
 
-                  <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
+                  <h3 className="h3-secondary mb-4">
                     Informationen zum Grundstück
                   </h3>
                   <div className="space-y-4 mb-6">
@@ -380,7 +386,7 @@ export function GrundstueckCheckForm({
                         value={formData.cadastralCommunity}
                         onChange={handleChange}
                         className="border border-gray-300 rounded-xl p-3"
-                        placeholder="Katastergemeinde"
+                        placeholder="Katastralgemeinde"
                       />
                     </div>
 
@@ -427,9 +433,7 @@ export function GrundstueckCheckForm({
                     </div>
                   </div>
 
-                  <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-                    Anmerkungen
-                  </h3>
+                  <h3 className="h3-secondary mb-4">Anmerkungen</h3>
                   <textarea
                     name="notes"
                     value={formData.notes}
@@ -438,6 +442,17 @@ export function GrundstueckCheckForm({
                     className="w-full border border-gray-300 rounded-xl p-3 mb-6"
                     placeholder="Zusatzinformationen - optional"
                   />
+
+                  <div className="flex justify-center">
+                    <Button
+                      onClick={handleZahlenUndPruefen}
+                      variant="landing-primary"
+                      size="xs"
+                      className="w-auto"
+                    >
+                      Zahlen und Prüfen
+                    </Button>
+                  </div>
                 </form>
               </div>
             </div>
@@ -449,31 +464,24 @@ export function GrundstueckCheckForm({
           {/* 1. Main text until "Planung deines Nest-Hauses starten kann" */}
           <div>
             <p className="p-primary text-gray-700 leading-relaxed mb-4">
-              Bevor dein Traum vom Nest-Haus Realität wird, ist es wichtig, dass
-              dein Grundstück alle{" "}
-              <strong>rechtlichen und baulichen Anforderungen</strong> erfüllt.
-              Genau hier setzen wir an!
+              Bevor dein <strong>Traum vom Nest-Haus</strong> Realität wird,
+              prüfen wir, ob dein <strong>Grundstück</strong> alle rechtlichen
+              und <strong>baulichen Anforderungen</strong> erfüllt. Für{" "}
+              <strong>€ 3.000</strong> übernehmen wir diese Überprüfung und
+              entwickeln gemeinsam mit dir ein individuelles{" "}
+              <strong>Vorentwurfskonzept</strong> deines Nest-Hauses.
             </p>
             <p className="p-primary text-gray-700 leading-relaxed mb-6">
-              <strong>Für nur € 200,-</strong> übernehmen wir für dich die
-              Prüfung der relevanten Rahmenbedingungen und Baugesetze, um dir{" "}
-              <strong>Sicherheit und Klarheit</strong> zu verschaffen. Jetzt den{" "}
-              <strong>Quick-Check</strong> machen und uns die rechtlichen und
-              baulichen Voraussetzungen deines Grundstücks prüfen lassen, damit
-              du{" "}
-              <strong>
-                entspannt und sicher in die Planung deines Nest-Hauses starten
-              </strong>{" "}
-              kannst.
+              Dabei verbinden wir deine <strong>Wünsche</strong> mit den
+              gegebenen <strong>Rahmenbedingungen</strong> und schaffen so die
+              ideale Grundlage für dein <strong>zukünftiges Zuhause</strong>.
             </p>
           </div>
 
           {/* 2. Form fields */}
           <div>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-                Daten Bewerber
-              </h3>
+              <h3 className="h3-secondary mb-4">Daten Bewerber</h3>
               <div className="grid grid-cols-1 gap-4 mb-6">
                 <input
                   type="text"
@@ -512,7 +520,7 @@ export function GrundstueckCheckForm({
                 />
               </div>
 
-              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
+              <h3 className="h3-secondary mb-4">
                 Informationen zum Grundstück
               </h3>
               <div className="space-y-4 mb-6">
@@ -547,7 +555,7 @@ export function GrundstueckCheckForm({
                   value={formData.cadastralCommunity}
                   onChange={handleChange}
                   className="w-full border border-gray-300 rounded-xl p-3"
-                  placeholder="Katastergemeinde"
+                  placeholder="Katastralgemeinde"
                 />
                 <input
                   type="text"
@@ -587,9 +595,7 @@ export function GrundstueckCheckForm({
                 />
               </div>
 
-              <h3 className="text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl font-medium mb-4">
-                Anmerkungen
-              </h3>
+              <h3 className="h3-secondary mb-4">Anmerkungen</h3>
               <textarea
                 name="notes"
                 value={formData.notes}
@@ -598,6 +604,15 @@ export function GrundstueckCheckForm({
                 className="w-full border border-gray-300 rounded-xl p-3 mb-6"
                 placeholder="Zusatzinformationen - optional"
               />
+
+              <Button
+                onClick={handleZahlenUndPruefen}
+                variant="primary"
+                size="xs"
+                className="w-full"
+              >
+                Zahlen und Prüfen
+              </Button>
             </form>
           </div>
 
@@ -605,13 +620,8 @@ export function GrundstueckCheckForm({
           <div>
             <div className="space-y-3">
               <div>
-                <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  Was wir prüfen
-                </h4>
-                <p
-                  className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
-                  style={{ color: "#99a1af" }}
-                >
+                <h4 className="p-primary font-medium mb-1">Was wir prüfen</h4>
+                <p className="p-primary-small" style={{ color: "#99a1af" }}>
                   Rechtliche Rahmenbedingungen: Wir prüfen, ob dein Grundstück
                   den Vorgaben des jeweiligen Landes-Baugesetzes, des
                   Raumordnungsgesetzes und ortsgebundener Vorschriften
@@ -620,13 +630,8 @@ export function GrundstueckCheckForm({
               </div>
 
               <div>
-                <h4 className="font-medium mb-1 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  Baugesetze
-                </h4>
-                <p
-                  className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base leading-normal"
-                  style={{ color: "#99a1af" }}
-                >
+                <h4 className="p-primary font-medium mb-1">Baugesetze</h4>
+                <p className="p-primary-small" style={{ color: "#99a1af" }}>
                   Alle relevanten Bauvorschriften werden detailliert überprüft,
                   um sicherzustellen, dass dein Bauvorhaben genehmigungsfähig
                   ist. Geeignetheit des Grundstücks: Wir stellen fest, ob dein

@@ -20,7 +20,7 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
     strasse: "",
     strasseZeile2: "",
     grundstuecksnummer: "",
-    katastergemeinde: "",
+    katastralgemeinde: "",
     stadt: "",
     bundesland: "",
     postleitzahl: "",
@@ -204,10 +204,10 @@ const GrundstueckCheckDialog: React.FC<GrundstueckCheckDialogProps> = ({
                     />
                     <input
                       type="text"
-                      name="katastergemeinde"
-                      value={formData.katastergemeinde}
+                      name="katastralgemeinde"
+                      value={formData.katastralgemeinde}
                       onChange={handleChange}
-                      placeholder="Katastergemeinde"
+                      placeholder="Katastralgemeinde"
                       className="p-1 sm:p-1.5 border rounded text-xs sm:text-sm h-7 sm:h-8"
                     />
                   </div>
