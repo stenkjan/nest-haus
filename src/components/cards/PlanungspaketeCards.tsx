@@ -448,51 +448,45 @@ export default function PlanungspaketeCards({
       } else {
         newSet.add(cardId);
 
-        // Ensure height is measured before expansion
-        if (isMobile && isExpanding && !cardHeights.has(cardId)) {
-          const cardElement = cardRefs.current.get(cardId);
-          if (cardElement) {
-            // Immediate measurement for iOS with full content calculation
-            const topSection = cardElement.querySelector(
-              ".h-56"
-            ) as HTMLElement;
-            const bottomSection = cardElement.querySelector(
-              '[class*="px-6 pt-2 pb-6"]'
-            ) as HTMLElement;
+        // Calculate proper expanded height when expanding
+        if (isMobile && isExpanding) {
+          // Use setTimeout to ensure DOM is ready for measurement
+          setTimeout(() => {
+            const cardElement = cardRefs.current.get(cardId);
+            if (cardElement) {
+              // Create a temporary element to measure the full content
+              const tempDiv = document.createElement("div");
+              tempDiv.style.position = "absolute";
+              tempDiv.style.visibility = "hidden";
+              tempDiv.style.width = `${cardWidth}px`;
+              tempDiv.style.padding = "0";
+              tempDiv.innerHTML = `
+                <div style="padding: 24px 24px 32px 24px;">
+                  <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 18px; margin-bottom: 8px;">${getCardText(cardData.find((c) => c.id === cardId)!, "title")} ${getCardText(cardData.find((c) => c.id === cardId)!, "subtitle")}</h3>
+                    <div style="display: flex; gap: 24px; align-items: start;">
+                      <p style="flex: 1; font-size: 14px; line-height: 1.5;">${getCardText(cardData.find((c) => c.id === cardId)!, "description")}</p>
+                      <div style="font-size: 14px;">${cardData.find((c) => c.id === cardId)?.price}</div>
+                    </div>
+                  </div>
+                  <div style="padding-top: 8px;">
+                    <p style="font-size: 14px; line-height: 1.6; white-space: pre-line;">${getCardText(cardData.find((c) => c.id === cardId)!, "extendedDescription")}</p>
+                  </div>
+                </div>
+              `;
 
-            let calculatedHeight = 360;
-            if (topSection && bottomSection) {
-              // Get the extended description text element
-              const extendedTextElement = bottomSection.querySelector(
-                "p"
-              ) as HTMLElement;
+              document.body.appendChild(tempDiv);
+              const measuredHeight = tempDiv.scrollHeight;
+              document.body.removeChild(tempDiv);
 
-              if (extendedTextElement) {
-                // Temporarily remove line-clamp to measure full height
-                const originalClasses = extendedTextElement.className;
-                extendedTextElement.className = originalClasses.replace(
-                  "line-clamp-4",
-                  ""
-                );
-
-                // Measure the full content height
-                const topHeight = topSection.scrollHeight;
-                const bottomHeight = bottomSection.scrollHeight;
-                calculatedHeight = topHeight + bottomHeight + 48; // Extra padding
-
-                // Restore original classes
-                extendedTextElement.className = originalClasses;
-              } else {
-                // Fallback measurement
-                const topHeight = topSection.scrollHeight;
-                const bottomHeight = bottomSection.scrollHeight;
-                calculatedHeight = topHeight + bottomHeight + 48;
-              }
+              // Add some extra padding for safety
+              const finalHeight = Math.max(
+                measuredHeight + 40,
+                isIOS ? 560 : 520
+              );
+              setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
             }
-
-            const finalHeight = Math.max(calculatedHeight, isIOS ? 560 : 520);
-            setCardHeights((prev) => new Map(prev.set(cardId, finalHeight)));
-          }
+          }, 50);
         }
       }
 
@@ -584,7 +578,6 @@ export default function PlanungspaketeCards({
                   className="flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer"
                   style={{
                     width: cardWidth,
-                    minHeight: isMobile ? 280 : 200,
                     backgroundColor: card.backgroundColor,
                     // iOS-specific fixes
                     WebkitTransform: "translateZ(0)", // Force hardware acceleration
@@ -592,7 +585,14 @@ export default function PlanungspaketeCards({
                     WebkitBackfaceVisibility: "hidden",
                     backfaceVisibility: "hidden",
                   }}
-                  animate={{}}
+                  animate={{
+                    height:
+                      isMobile && isExpanded
+                        ? expandedHeight
+                        : isMobile
+                          ? "auto" // Let collapsed card size naturally
+                          : "auto", // Auto height for desktop
+                  }}
                   transition={{
                     duration: 0.6,
                     ease: [0.25, 0.46, 0.45, 0.94],
@@ -600,17 +600,20 @@ export default function PlanungspaketeCards({
                   }}
                   whileHover={{ scale: 1.02 }}
                   onClick={() => {
-                    if (isMobile) {
+                    if (isMobile && isExpanded) {
+                      // On mobile, clicking anywhere on expanded card collapses it
                       toggleCardExpansion(card.id);
-                    } else if (enableBuiltInLightbox && !isLightboxMode) {
-                      setLightboxOpen(true);
-                    } else if (onCardClick) {
-                      onCardClick(card.id);
+                    } else if (!isMobile) {
+                      if (enableBuiltInLightbox && !isLightboxMode) {
+                        setLightboxOpen(true);
+                      } else if (onCardClick) {
+                        onCardClick(card.id);
+                      }
                     }
                   }}
                 >
                   {/* Top Section - EXPANDED HEIGHT */}
-                  <div className="px-6 py-6 pt-8 overflow-hidden">
+                  <div className="px-6 py-2 pt-8 overflow-hidden">
                     {/* Header Row - Title/Subtitle left, Price right */}
                     <div className="flex">
                       {/* Title/Subtitle - Left Side */}
@@ -659,59 +662,45 @@ export default function PlanungspaketeCards({
                     </div>
                   </div>
 
-                  {/* Bottom Section - Extended Description (Mobile Only) - FLEXIBLE HEIGHT */}
+                  {/* Mobile: Mehr erfahren button or Extended Description */}
                   {card.extendedDescription && isMobile && (
-                    <div className="px-6 pt-2 pb-6 flex-1 overflow-hidden relative">
-                      <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 + 0.4, duration: 0.8 }}
-                        className="h-full"
-                      >
-                        <motion.p
-                          className={`text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line ${
-                            !isExpanded ? "line-clamp-4" : ""
-                          }`}
-                          animate={{
-                            opacity: isExpanded ? 1 : 1,
-                          }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          {getCardText(card, "extendedDescription")}
-                        </motion.p>
-
-                        {/* Blur gradient overlay for mobile when collapsed */}
-                        <motion.div
-                          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-                          style={{
-                            background: `linear-gradient(to top, ${card.backgroundColor} 0%, ${card.backgroundColor}f8 15%, ${card.backgroundColor}f0 25%, ${card.backgroundColor}e0 35%, ${card.backgroundColor}cc 45%, ${card.backgroundColor}b3 55%, ${card.backgroundColor}80 65%, ${card.backgroundColor}4d 75%, ${card.backgroundColor}26 85%, transparent 100%)`,
-                          }}
-                          animate={{
-                            opacity: !isExpanded ? 1 : 0,
-                          }}
-                          transition={{
-                            duration: 0.5,
-                            ease: [0.25, 0.46, 0.45, 0.94],
-                          }}
-                        />
-
-                        {/* Close instruction text for expanded cards */}
-                        <motion.div
-                          className="absolute bottom-2 left-0 right-0 text-center pointer-events-none"
-                          animate={{
-                            opacity: isExpanded ? 1 : 0,
-                          }}
-                          transition={{
-                            duration: 0.3,
-                            delay: isExpanded ? 0.3 : 0,
-                          }}
-                        >
-                          <p className="text-xs text-gray-500">
-                            drücken zum schließen
-                          </p>
-                        </motion.div>
-                      </motion.div>
-                    </div>
+                    <>
+                      {!isExpanded ? (
+                        /* Collapsed state: Show only "Mehr erfahren" button with minimal padding */
+                        <div className="px-8 pb-6 text-align-left">
+                          <motion.button
+                            className="p-primary-small font-bold underline hover:no-underline transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 rounded px-1"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              toggleCardExpansion(card.id);
+                            }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            Mehr erfahren
+                          </motion.button>
+                        </div>
+                      ) : (
+                        /* Expanded state: Show full extended description with proper height */
+                        <div className="px-6 pt-2 pb-6 overflow-y-auto">
+                          <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 0.8 }}
+                          >
+                            <motion.p
+                              className="text-sm md:text-base lg:text-lg text-black leading-relaxed whitespace-pre-line"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                            >
+                              {getCardText(card, "extendedDescription")}
+                            </motion.p>
+                          </motion.div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </motion.div>
               );
