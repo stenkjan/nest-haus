@@ -572,18 +572,15 @@ export default function ContentCardsGlass({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2
-                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
-                            >
+                            <h2 className={`h2-title ${textColors.title} mb-2`}>
                               {getCardText(card, "title")}
                             </h2>
                             <h3
-                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                              className={`h3-secondary ${textColors.subtitle} mb-5`}
                             >
                               {getCardText(card, "subtitle")}
                             </h3>
                             <p
-                              // className={`p-primary ${textColors.description} leading-relaxed`}
                               className={`p-primary-${textColors.description} leading-relaxed`}
                             >
                               {getCardText(card, "description")}
@@ -637,18 +634,16 @@ export default function ContentCardsGlass({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2
-                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
-                            >
+                            <h2 className={`h2-title ${textColors.title} mb-2`}>
                               {getCardText(card, "title")}
                             </h2>
                             <h3
-                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                              className={`h3-secondary ${textColors.subtitle} mb-5`}
                             >
                               {getCardText(card, "subtitle")}
                             </h3>
                             <p
-                              className={`p-primary ${textColors.description} leading-relaxed`}
+                              className={`p-primary-${textColors.description} leading-relaxed`}
                             >
                               {getCardText(card, "description")}
                             </p>
@@ -691,18 +686,16 @@ export default function ContentCardsGlass({
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2
-                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
-                            >
+                            <h2 className={`h2-title ${textColors.title} mb-2`}>
                               {getCardText(card, "title")}
                             </h2>
                             <h3
-                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                              className={`h3-secondary ${textColors.subtitle} mb-5`}
                             >
                               {getCardText(card, "subtitle")}
                             </h3>
                             <p
-                              className={`p-primary ${textColors.description} leading-relaxed`}
+                              className={`p-primary-${textColors.description} leading-relaxed`}
                             >
                               {getCardText(card, "description")}
                             </p>
@@ -798,18 +791,16 @@ export default function ContentCardsGlass({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2
-                              className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
-                            >
+                            <h2 className={`h2-title ${textColors.title} mb-2`}>
                               {getCardText(card, "title")}
                             </h2>
                             <h3
-                              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                              className={`h3-secondary ${textColors.subtitle} mb-5`}
                             >
                               {getCardText(card, "subtitle")}
                             </h3>
                             <p
-                              className={`p-primary ${textColors.description} leading-relaxed`}
+                              className={`p-primary-${textColors.description} leading-relaxed`}
                             >
                               {getCardText(card, "description")}
                             </p>
@@ -850,18 +841,16 @@ export default function ContentCardsGlass({
                           animate={{ y: 0, opacity: 1 }}
                           transition={{ delay: index * 0.1, duration: 0.6 }}
                         >
-                          <h2
-                            className={`text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold ${textColors.title} mb-2`}
-                          >
+                          <h2 className={`h2-title ${textColors.title} mb-2`}>
                             {getCardText(card, "title")}
                           </h2>
                           <h3
-                            className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium ${textColors.subtitle} mb-5`}
+                            className={`h3-secondary ${textColors.subtitle} mb-5`}
                           >
                             {getCardText(card, "subtitle")}
                           </h3>
                           <p
-                            className={`p-primary ${textColors.description} leading-relaxed`}
+                            className={`p-primary-${textColors.description} leading-relaxed`}
                           >
                             {getCardText(card, "description")}
                           </p>
