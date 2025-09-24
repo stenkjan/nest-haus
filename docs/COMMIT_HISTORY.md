@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b3193ab80f20554bdfd7ba72fc4d5e6e4665f672] - Wed Sep 24 15:46:34 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/favicon.ico
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/sections/AppointmentBookingSection.tsx
+- src/components/sections/ContactMap.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- konfigurator_old/dialogs/README.md
+
+
+---
+
 ## [7bf3f62185f2eab111877be03ef94ae4dfdfe7c0] - Wed Sep 24 15:38:57 2025 +0200
 
 **Author**: stenkjan
