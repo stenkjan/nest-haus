@@ -2081,48 +2081,6 @@ export default function CheckoutStepper({
                         (d) => d.isBottomItem
                       );
 
-                      const renderDetailItem = (
-                        detail: {
-                          label: string;
-                          value: string;
-                          price: number;
-                          isIncluded: boolean;
-                          category: string;
-                          isBottomItem?: boolean;
-                          selectionValue?: string;
-                        },
-                        idx: number
-                      ) => {
-                        if (!detail.value || detail.value === "—") return null;
-                        return (
-                          <div
-                            key={detail.category + "-" + idx}
-                            className="flex justify-between items-start border-b border-gray-200 py-3 first:pt-0 last:pb-0 last:border-b-0 gap-4"
-                          >
-                            <div className="flex-1 min-w-0 max-w-[50%]">
-                              <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900 break-words">
-                                {detail.value}
-                              </div>
-                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-700 leading-relaxed mt-1 break-words">
-                                {detail.label}
-                              </div>
-                            </div>
-                            <div className="flex-1 text-right max-w-[50%] min-w-0">
-                              {detail.isIncluded ||
-                              (detail.price && detail.price === 0) ? (
-                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-600">
-                                  inkludiert
-                                </div>
-                              ) : (
-                                <div className="text-base md:text-lg lg:text-xl 2xl:text-2xl font-bold text-gray-900">
-                                  {PriceUtils.formatPrice(detail.price || 0)}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      };
-
                       return (
                         <>
                           {topAndMiddleItems.length > 0 && (
