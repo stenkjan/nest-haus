@@ -114,7 +114,7 @@ export default function DeinPartClient() {
           {/* Section 3 - Du individualisierst dein NEST Haus */}
           <section
             id="individualisierung"
-            className="w-full pt-12 pb-16 bg-black"
+            className="w-full pt-12 pb-8 md:pb-16 bg-black"
           >
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12 2xl:mb-24">
@@ -135,7 +135,7 @@ export default function DeinPartClient() {
                       alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
                       width={1536}
                       height={809}
-                      className="w-4/5 h-auto object-contain mx-auto"
+                      className="w-full md:w-4/5 h-auto object-contain md:mx-auto"
                       sizes="(max-width: 768px) calc(80vw - 32px), (max-width: 1024px) calc(80vw - 64px), 922px"
                       quality={85}
                       strategy="client"
@@ -151,7 +151,7 @@ export default function DeinPartClient() {
           </section>
 
           {/* Section 4 - Hier beginnt Freiheit */}
-          <section id="freiheit" className="w-full bg-black py-16">
+          <section id="freiheit" className="w-full bg-black py-8 md:py-16">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <FullWidthTextGrid
                 title="Hier beginnt Freiheit"
@@ -184,12 +184,16 @@ export default function DeinPartClient() {
           </section>
 
           {/* Section 5 - Die Installationsebene */}
-          <section id="installationsebene" className="w-full py-16 bg-black">
+          <section
+            id="installationsebene"
+            className="w-full py-8 md:py-16 bg-black"
+          >
             <ImageWithFourTextGrid
               title="Konzipiert für deine Ideen"
               subtitle="Leitungen verlegen muss nicht immer kompliziert sein."
               backgroundColor="black"
               image={IMAGES.function.nestHausModulElektrikSanitaer}
+              mobileImage={IMAGES.function.mobile.nestHausModulElektrikSanitaer}
               imageDescription="NEST-Haus Modulansicht für deinen Part"
               textCellTitle1="Die Installationsebene"
               textCell1="Alle unsere Gebäude werden mit einer Installationsebene ausgeführt und sind so konzipiert, dass ein unkompliziertes Demontieren der Interior-Platten möglich ist. Im Anschluss können sämltiche Elektro-, & Installationsarbeiten durchgeführt werden. 
@@ -205,7 +209,10 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Wohnfläche erweitern Section */}
-          <section id="wohnflaeche-erweitern" className="w-full py-16 bg-black">
+          <section
+            id="wohnflaeche-erweitern"
+            className="w-full py-8 md:py-16 bg-black"
+          >
             <ThreeByOneGrid
               title="Wohnfläche erweitern?"
               subtitle="Kein Problem."
@@ -221,7 +228,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Flexibilität Section */}
-          <section id="flexibilitaet" className="w-full py-16 bg-black">
+          <section id="flexibilitaet" className="w-full py-8 md:py-16 bg-black">
             <ThreeByOneGrid
               title="Ob Decke einziehen, oder Haus erweitern."
               subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
@@ -233,11 +240,15 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               textPosition="right"
               backgroundColor="black"
               maxWidth={false}
+              textWrapperClassName="mt-12"
             />
           </section>
 
           {/* Planungspakete Section - Unterstützung gefällig? */}
-          <section id="planungspakete" className="w-full pt-16 pb-8 bg-white">
+          <section
+            id="planungspakete"
+            className="w-full pt-8 md:pt-16 pb-8 bg-white"
+          >
             <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
                 <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">

@@ -111,13 +111,13 @@ export default function ThreeByOneAdaptiveHeight({
       </div>
 
       {/* Grid Container */}
-      <div className={`${containerClasses} px-4 md:px-8 mb-8`}>
+      <div className={`${containerClasses} px-4 md:px-8 mb-12 md:mb-0`}>
         {isMobile ? (
           /* Mobile Layout: Image - Text - Empty (since this component only has one image) */
           <div className="space-y-6">
             {/* First Image */}
             <motion.div
-              className="flex justify-center"
+              className="flex justify-center mb-12"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}

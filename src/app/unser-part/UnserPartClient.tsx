@@ -114,7 +114,7 @@ export default function UnserPartClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Video Section - Dein Nest System */}
-        <section id="dein-nest-system" className="bg-black pt-12">
+        <section id="dein-nest-system" className="bg-black pt-12 pb-8 md:pb-0">
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-12">
               <h1 className="h1-secondary text-white mb-2 md:mb-3">
