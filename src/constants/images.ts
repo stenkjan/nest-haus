@@ -323,13 +323,19 @@ export const IMAGES = {
 
     // Material detail images for dialogs
     materials: {
-        holzFichte: '58-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Fichte-natur-hell',
-        schiefer: '57-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Schiefer',
+        konstruktionFichte: '46-NEST-Haus-Materialien-Bauteilaufbau-Konstruktion-Brettschichtholz-BSH-Fichte',
+        konstruktionIsolierung: '47-NEST-Haus-Materialien-Bauteilaufbau-Konstruktion-Holzfaserplatte-Holzwolle-Holzfaserdaemmung-Isolierung',
+        eiche: '49-NEST-Haus-Materialien-Oberflaechen-Fussboden-Eichenholz-Parkett-Fischgraetparkett-Eiche',
+        eicheParkett: '50-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Eichenholz-Interior-Eiche',
+        konstruktionOSB: '51-NEST-Haus-Materialien-Bauteilaufbau-Konstruktion-OSB-Oriented-Strand-Board-Recycling-Oekologisch',
         laercheFassade: '52-NEST-Haus-Materialien-Oberflaechen-Fassade-Laerche-Bauholz-Lattung',
+        fundermaxSchwarz: '53-NEST-Haus-Materialien-Oberflaechen-Fassadenplatte-Schwarz',
+        fundermaxWeiss: '54-NEST-Haus-Materialien-Oberflaechen-Fassadenplatte-Weiss',
+        trapezblech: '55-NEST-Haus-Materialien-Oberflaechen-Fassade-Trapezblech-Blech-Schwarz',
         kalkstein: '56-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Kalkstein-Kanafar',
-        fundermax: '53-NEST-Haus-Materialien-Oberflaechen-Fassadenplatte-Schwarz',
-        eicheParkett: '49-NEST-Haus-Materialien-Oberflaechen-Fussboden-Eichenholz-Parkett-Fischgraetparkett-Eiche',
-        trapezblech: '55-NEST-Haus-Materialien-Oberflaechen-Fassade-Trapezblech-Blech-Schwarz'
+        schiefer: '57-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Schiefer',
+        holzFichte: '58-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Fichte-natur-hell',
+        holzKiefer: '59-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Kiefer-natur',
     },
 
     // Interior material images for innenverkleidung dialog
