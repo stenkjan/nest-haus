@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [46d653bfbca5a2c1c56edf0ae19962f3872eb160] - Wed Sep 24 13:24:44 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update layout and text styling for consistency across components  - Changed max-width in DeinPartClient and GetInContactBanner to use max-w-screen-3xl for improved responsiveness. - Enhanced text styling in GetInContactBanner for better visibility and consistency with design standards. - Ensured proper formatting in Navbar component by adding a newline at the end of the file.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/components/layout/Navbar.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
 ## [c8b87d09e910502b38d47f8e7af47b7157129292] - Wed Sep 24 13:10:30 2025 +0200
 
 **Author**: stenkjan
