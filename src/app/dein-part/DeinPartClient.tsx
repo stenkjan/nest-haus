@@ -238,7 +238,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
 
           {/* Planungspakete Section - Unterstützung gefällig? */}
           <section id="planungspakete" className="w-full pt-16 pb-8 bg-white">
-            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-8">
                 <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                   Unterstützung gefällig?
