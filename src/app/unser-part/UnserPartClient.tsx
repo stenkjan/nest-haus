@@ -286,7 +286,7 @@ export default function UnserPartClient() {
         {/* Planungspakete Section */}
         <section id="planungspakete" className="w-full pt-16 pb-10 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16 2xl:mb-32">
+            <div className="text-center mb-12">
               <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>

@@ -114,10 +114,10 @@ export default function DeinPartClient() {
           {/* Section 3 - Du individualisierst dein NEST Haus */}
           <section
             id="individualisierung"
-            className="w-full pt-12 pb-4 bg-black"
+            className="w-full pt-12 pb-16 bg-black"
           >
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-8 md:mb-12">
+              <div className="text-center mb-12 2xl:mb-24">
                 <h1 className="h1-secondary text-white mb-2 md:mb-3">
                   Dein Raum zum Träumen
                 </h1>
@@ -127,7 +127,7 @@ export default function DeinPartClient() {
               </div>
 
               {/* Image container with same sizing as unser-part page */}
-              <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
+              <div className="w-full max-w-screen-2xl mx-auto md:px-8">
                 <div className="flex justify-center">
                   <div className="w-full max-w-6xl overflow-hidden">
                     <HybridBlobImage
@@ -151,7 +151,7 @@ export default function DeinPartClient() {
           </section>
 
           {/* Section 4 - Hier beginnt Freiheit */}
-          <section id="freiheit" className="w-full bg-black">
+          <section id="freiheit" className="w-full bg-black py-16">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <FullWidthTextGrid
                 title="Hier beginnt Freiheit"
@@ -184,7 +184,7 @@ export default function DeinPartClient() {
           </section>
 
           {/* Section 5 - Die Installationsebene */}
-          <section id="installationsebene" className="w-full py-8 bg-black">
+          <section id="installationsebene" className="w-full py-16 bg-black">
             <ImageWithFourTextGrid
               title="Konzipiert für deine Ideen"
               subtitle="Leitungen verlegen muss nicht immer kompliziert sein."
@@ -205,7 +205,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Wohnfläche erweitern Section */}
-          <section id="wohnflaeche-erweitern" className="w-full py-4 bg-black">
+          <section id="wohnflaeche-erweitern" className="w-full py-16 bg-black">
             <ThreeByOneGrid
               title="Wohnfläche erweitern?"
               subtitle="Kein Problem."
@@ -221,7 +221,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           </section>
 
           {/* Flexibilität Section */}
-          <section id="flexibilitaet" className="w-full py-8 bg-black">
+          <section id="flexibilitaet" className="w-full py-16 bg-black">
             <ThreeByOneGrid
               title="Ob Decke einziehen, oder Haus erweitern."
               subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
@@ -239,7 +239,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           {/* Planungspakete Section - Unterstützung gefällig? */}
           <section id="planungspakete" className="w-full pt-16 pb-8 bg-white">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-8">
+              <div className="text-center mb-12">
                 <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                   Unterstützung gefällig?
                 </h1>
