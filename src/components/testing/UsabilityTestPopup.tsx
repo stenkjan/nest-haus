@@ -195,6 +195,18 @@ export default function UsabilityTestPopup({
       });
 
       if (step) {
+        // Reset lastCommentStep if we're moving to a new step
+        if (currentStep && currentStep.id !== step.id) {
+          console.log(
+            "🧪 Step changed from",
+            currentStep.id,
+            "to",
+            step.id,
+            "- resetting lastCommentStep"
+          );
+          setLastCommentStep(null);
+        }
+
         setCurrentStep(step);
 
         // Handle special cases for purchase validation (when user hasn't completed previous steps)
@@ -356,25 +368,45 @@ export default function UsabilityTestPopup({
 
   const addStepTagToComments = () => {
     // Add step tag when user takes action (Weiter or Minimize)
-    if (currentStep && comments.trim() && lastCommentStep !== currentStep.id) {
-      const stepName =
-        currentStep.id === "overview-phase"
-          ? "Schritt 1"
-          : currentStep.id === "configurator-phase"
-            ? "Schritt 2"
-            : currentStep.id === "purchase-validation"
-              ? "Schritt 3"
-              : currentStep.id === "feedback-phase"
-                ? "Schritt 4"
-                : "Schritt ?";
+    if (!currentStep || !comments.trim()) {
+      console.log("🧪 No step or no comments to tag");
+      return;
+    }
 
-      // Only add tag if there are meaningful comments and we haven't tagged this step
-      const trimmedComments = comments.trim();
-      if (trimmedComments && !trimmedComments.endsWith(`(${stepName})`)) {
-        const newComments = trimmedComments + ` (${stepName}) `;
-        setComments(newComments);
-        setLastCommentStep(currentStep.id);
-      }
+    const stepName =
+      currentStep.id === "overview-phase"
+        ? "Schritt 1"
+        : currentStep.id === "configurator-phase"
+          ? "Schritt 2"
+          : currentStep.id === "purchase-validation"
+            ? "Schritt 3"
+            : currentStep.id === "feedback-phase"
+              ? "Schritt 4"
+              : "Schritt ?";
+
+    const trimmedComments = comments.trim();
+
+    // Check if this step tag already exists in the comments
+    const stepTagPattern = new RegExp(`\\(${stepName}\\)`, "g");
+    const hasStepTag = stepTagPattern.test(trimmedComments);
+
+    console.log("🧪 Step tagging check:", {
+      currentStep: currentStep.id,
+      stepName,
+      hasComments: !!trimmedComments,
+      hasStepTag,
+      lastCommentStep,
+      commentsLength: trimmedComments.length,
+    });
+
+    // Add tag if this step hasn't been tagged yet
+    if (!hasStepTag) {
+      const newComments = trimmedComments + ` (${stepName}) `;
+      console.log("🧪 Adding step tag:", stepName, "to comments");
+      setComments(newComments);
+      setLastCommentStep(currentStep.id);
+    } else {
+      console.log("🧪 Step tag not added - already exists");
     }
   };
 
