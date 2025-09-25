@@ -25,6 +25,7 @@ interface ThreeByOneGridProps {
   secondaryButtonOnClick?: () => void;
   textClassName?: string;
   textWrapperClassName?: string;
+  image1ClassName?: string;
 }
 
 export default function ThreeByOneGrid({
@@ -46,6 +47,7 @@ export default function ThreeByOneGrid({
   secondaryButtonOnClick,
   textClassName = "",
   textWrapperClassName = "",
+  image1ClassName = "",
 }: ThreeByOneGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -144,7 +146,7 @@ export default function ThreeByOneGrid({
           <div className="space-y-6">
             {/* First Image (Second Image on Mobile) */}
             <motion.div
-              className="relative overflow-hidden px-4 md:px-8"
+              className={`relative overflow-hidden px-4 md:px-8 ${image1ClassName}`}
               style={{ aspectRatio: "4/3" }}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -384,7 +386,7 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Image 1 - second column, first row */}
                   <motion.div
-                    className="flex items-center justify-center"
+                    className={`flex items-center justify-center ${image1ClassName}`}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
@@ -545,7 +547,7 @@ export default function ThreeByOneGrid({
                 <>
                   {/* Image 1 - first column, first row */}
                   <motion.div
-                    className="flex items-center justify-center"
+                    className={`flex items-center justify-center ${image1ClassName}`}
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}

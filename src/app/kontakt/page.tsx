@@ -65,7 +65,7 @@ const localBusinessSchema = {
   telephone: "03847 75090",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Karmeliterplatz 1",
+    streetAddress: "Karmeliterplatz 8",
     addressLocality: "Graz",
     postalCode: "8010",
     addressCountry: "AT",

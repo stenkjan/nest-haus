@@ -249,7 +249,7 @@ export function GrundstueckCheckForm({
     >
       <div className="text-center mb-16">
         <h1 className="h1-secondary text-gray-900">
-          Dein Grundstück - Unser Check
+          Dein Nest-Haus Vorentwurf
         </h1>
         <h3 className="h3-secondary text-gray-600 mb-8 max-w-3xl mx-auto">
           Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner

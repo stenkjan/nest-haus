@@ -183,6 +183,7 @@ export default function UnserPartClient() {
             image2={IMAGES.function.nestHausModulLiniengrafik}
             image1Description="NEST-Haus Modul Stirnseite Ansicht Schema Konzept"
             image2Description="NEST-Haus Modul Holz Schema Konzept"
+            textWrapperClassName="mt-8 md:mt-0"
           />
 
           {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
