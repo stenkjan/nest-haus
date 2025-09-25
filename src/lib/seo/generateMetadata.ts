@@ -31,8 +31,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
         changeFrequency: "weekly" as const,
-        ogImage: "/images/nest-haus-hero.jpg",
-        twitterImage: "/images/nest-haus-hero-twitter.jpg",
+        ogImage: "/api/images?path=7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite&redirect=true",
+        twitterImage: "/api/images?path=7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite&redirect=true",
     },
     konfigurator: {
         title: "Haus Konfigurator | NEST-Haus Modulare Häuser",
