@@ -103,6 +103,16 @@ export default function UsabilityTestPopup({
   const [stepCompletionTrigger, setStepCompletionTrigger] = useState(0);
   const popupRef = useRef<HTMLDivElement>(null);
 
+  // Comments/Notes functionality
+  const [comments, setComments] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("nest-haus-test-comments");
+      return saved ? JSON.parse(saved) : "";
+    }
+    return "";
+  });
+  const [lastCommentStep, setLastCommentStep] = useState<string | null>(null);
+
   const isLastStep = currentStep?.nextAction === "complete";
   const progress = currentStep
     ? currentStep.id === "overview-phase"
@@ -131,6 +141,13 @@ export default function UsabilityTestPopup({
       );
     }
   }, [responses]);
+
+  // Save comments to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("nest-haus-test-comments", JSON.stringify(comments));
+    }
+  }, [comments]);
 
   // Console error tracking
   useEffect(() => {
@@ -192,12 +209,12 @@ export default function UsabilityTestPopup({
           }
         }
 
-        // Show back button for all steps except the first one
-        if (step.id !== "overview-phase") {
-          console.log("🧪 Showing back button for step:", step.id);
+        // Show back button only on feedback phase (Schritt 4)
+        if (step.id === "feedback-phase") {
+          console.log("🧪 Showing back button for feedback phase");
           setShowBackButton(true);
         } else {
-          console.log("🧪 Hiding back button for overview phase");
+          console.log("🧪 Hiding back button for step:", step.id);
           setShowBackButton(false);
         }
 
@@ -332,6 +349,44 @@ export default function UsabilityTestPopup({
     }));
   };
 
+  const handleCommentChange = (value: string) => {
+    // Simple update - no interruption during typing
+    setComments(value);
+  };
+
+  const addStepTagToComments = () => {
+    // Add step tag when user takes action (Weiter or Minimize)
+    if (currentStep && comments.trim() && lastCommentStep !== currentStep.id) {
+      const stepName =
+        currentStep.id === "overview-phase"
+          ? "Schritt 1"
+          : currentStep.id === "configurator-phase"
+            ? "Schritt 2"
+            : currentStep.id === "purchase-validation"
+              ? "Schritt 3"
+              : currentStep.id === "feedback-phase"
+                ? "Schritt 4"
+                : "Schritt ?";
+
+      // Only add tag if there are meaningful comments and we haven't tagged this step
+      const trimmedComments = comments.trim();
+      if (trimmedComments && !trimmedComments.endsWith(`(${stepName})`)) {
+        const newComments = trimmedComments + ` (${stepName}) `;
+        setComments(newComments);
+        setLastCommentStep(currentStep.id);
+      }
+    }
+  };
+
+  const handleMinimize = () => {
+    // Add step tag to comments before minimizing
+    addStepTagToComments();
+    // Call the original minimize function
+    if (onMinimize) {
+      onMinimize();
+    }
+  };
+
   const validateCurrentStep = () => {
     if (!currentStep || !currentStep.questions) return true;
     const requiredQuestions = currentStep.questions.filter((q) => q.required);
@@ -346,6 +401,9 @@ export default function UsabilityTestPopup({
       alert("Bitte beantworten Sie alle erforderlichen Fragen.");
       return;
     }
+
+    // Add step tag to comments before proceeding
+    addStepTagToComments();
 
     setIsSubmitting(true);
 
@@ -374,6 +432,24 @@ export default function UsabilityTestPopup({
 
         const result = await response.json();
         console.log("🧪 Response submission result:", result);
+      }
+
+      // Save comments if there are any
+      if (comments.trim()) {
+        console.log("🧪 Submitting comments for step:", currentStep.id);
+        try {
+          await fetch("/api/usability-test/comments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              testId: testSessionId,
+              comments: comments.trim(),
+              stepId: currentStep.id,
+            }),
+          });
+        } catch (error) {
+          console.warn("Failed to save comments:", error);
+        }
       }
 
       await trackInteraction("step_completed", {
@@ -531,7 +607,7 @@ export default function UsabilityTestPopup({
     return (
       <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[9999]">
         <button
-          onClick={onMinimize}
+          onClick={handleMinimize}
           className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors flex items-center justify-center opacity-70 hover:opacity-100"
         >
           {/* Mobile: Show only icon */}
@@ -540,7 +616,7 @@ export default function UsabilityTestPopup({
           {/* Desktop: Show compact text */}
           <div className="hidden sm:flex items-center space-x-2 px-3 py-2">
             <span className="text-sm">🧪</span>
-            <span className="text-sm font-medium">zum Test</span>
+            <span className="text-sm font-medium">Test fortsetzen</span>
           </div>
         </button>
       </div>
@@ -615,7 +691,7 @@ export default function UsabilityTestPopup({
 
             {onMinimize && (
               <button
-                onClick={onMinimize}
+                onClick={handleMinimize}
                 className="text-gray-400 hover:text-gray-600 transition-colors p-1 flex items-center space-x-1"
                 title="Minimieren"
               >
@@ -692,16 +768,11 @@ export default function UsabilityTestPopup({
           {currentStep.id === "purchase-validation" && (
             <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-yellow-800 mb-4">
-                <strong>Bitte schließen Sie den Kaufprozess ab</strong>
-              </p>
-              <p className="text-yellow-700 text-sm mb-4">
-                Gehen Sie durch den vollständigen Kaufprozess und klicken Sie
-                auf &apos;Zur Kassa&apos; oder &apos;Mit Apple Pay
-                bezahlen&apos;, bevor Sie zu Schritt 3 weitergehen können.
+                <strong>Hinweis</strong>
               </p>
               <p className="text-yellow-700 text-sm mb-4">
                 Falls Sie Probleme beim Abschluss des Prozesses haben, können
-                Sie hier mit Schritt 3 fortfahren:{" "}
+                Sie hier mit Schritt 4 fortfahren:{" "}
                 <button
                   onClick={async () => {
                     // Save any feedback from the purchase validation question if provided
@@ -741,7 +812,7 @@ export default function UsabilityTestPopup({
                   }}
                   className="underline hover:no-underline text-blue-700 font-medium"
                 >
-                  Schritt 3
+                  Schritt 4
                 </button>
               </p>
             </div>
@@ -846,6 +917,25 @@ export default function UsabilityTestPopup({
               </div>
             ))}
           </div>
+
+          {/* Comments/Notes Section */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-900">
+                Notizen
+              </label>
+              <p className="text-xs text-gray-600">
+                Hier kannst du jederzeit Anmerkungen aufschreiben
+              </p>
+              <textarea
+                value={comments}
+                onChange={(e) => handleCommentChange(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                rows={4}
+                placeholder="Deine Notizen und Anmerkungen..."
+              />
+            </div>
+          </div>
         </div>
 
         {/* Footer */}
@@ -874,7 +964,7 @@ export default function UsabilityTestPopup({
 
             <div className="flex items-center space-x-2">
               <button
-                onClick={onMinimize}
+                onClick={handleMinimize}
                 className="flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm sm:text-base"
               >
                 <span>−</span>

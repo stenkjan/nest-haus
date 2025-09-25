@@ -463,6 +463,14 @@ export default function AlphaTestDashboard() {
   const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(
     new Set()
   );
+  const [commentsData, setCommentsData] = useState<any[]>([]);
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const [selectedComments, setSelectedComments] = useState<{
+    testId: string;
+    participantName: string;
+    comments: string;
+    createdAt: string;
+  } | null>(null);
 
   // Helper function to extract key findings from responses
   const extractKeyFindings = (
@@ -865,7 +873,23 @@ export default function AlphaTestDashboard() {
 
   useEffect(() => {
     fetchAnalytics();
+    fetchCommentsData();
   }, [timeRange, fetchAnalytics]);
+
+  const fetchCommentsData = async () => {
+    try {
+      const response = await fetch("/api/usability-test/comments");
+      const result = await response.json();
+
+      if (result.success) {
+        setCommentsData(result.data);
+      } else {
+        console.error("Failed to fetch comments:", result.error);
+      }
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
 
   const resetTestData = async () => {
     if (
@@ -2060,6 +2084,72 @@ export default function AlphaTestDashboard() {
         </div>
       </div>
 
+      {/* Comments Section */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Anmerkungen
+        </h3>
+        {commentsData.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Test ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Teilnehmer
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Datum
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Anmerkungen
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {commentsData.map((comment) => (
+                  <tr key={comment.testId} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {comment.testId.slice(-8)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {comment.participantName || "Anonymous"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(comment.createdAt).toLocaleDateString("de-DE")}
+                    </td>
+                    <td className="px-6 py-4 text-sm no-print">
+                      <button
+                        onClick={() => {
+                          setSelectedComments({
+                            testId: comment.testId,
+                            participantName:
+                              comment.participantName || "Anonymous",
+                            comments: comment.comments,
+                            createdAt: comment.createdAt,
+                          });
+                          setShowCommentsModal(true);
+                        }}
+                        className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <span>💬</span>
+                        <span>Anzeigen</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-gray-500 text-center py-8">
+            Noch keine Anmerkungen vorhanden
+          </p>
+        )}
+      </div>
+
       {/* Error Analysis */}
       {errorAnalysis.totalErrors > 0 && (
         <div className="bg-white rounded-lg shadow p-6">
@@ -2616,6 +2706,51 @@ export default function AlphaTestDashboard() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Comments Modal */}
+      {showCommentsModal && selectedComments && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Anmerkungen: {selectedComments.participantName}
+                </h2>
+                <button
+                  onClick={() => setShowCommentsModal(false)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="mt-2 text-sm text-gray-500">
+                Test ID: {selectedComments.testId} •{" "}
+                {new Date(selectedComments.createdAt).toLocaleString("de-DE")}
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="text-sm font-medium text-gray-900 mb-3">
+                  Notizen des Teilnehmers:
+                </h3>
+                <div className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                  {selectedComments.comments}
+                </div>
+              </div>
+            </div>
+
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+              <button
+                onClick={() => setShowCommentsModal(false)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Schließen
+              </button>
             </div>
           </div>
         </div>

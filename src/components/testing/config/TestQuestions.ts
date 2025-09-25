@@ -95,12 +95,12 @@ export const TEST_STEPS: TestStep[] = [
         description: "Bitte schließ den Kaufprozess ab",
         targetPage: "/warenkorb",
         triggerCondition: "step2_completed_but_not_purchased",
-        instructions: "Bitte geh durch den vollständigen Kaufprozess und klick auf 'Zur Kassa' oder 'Mit Apple Pay bezahlen', bevor du zu Schritt 3 weitergehen kannst.",
+        instructions: "Bitte geh durch den vollständigen Kaufprozess und klick auf 'Zur Kassa' oder 'Mit Apple Pay bezahlen', bevor du zu Schritt 4 weitergehen kannst.",
         questions: [
             {
                 id: "purchase-completion-issue",
                 type: "text",
-                question: "Falls du Probleme beim Abschluss des Prozesses hast, gib uns hier dein Feedback, warum du Schritt 2 nicht beenden konntest:",
+                question: "Falls du Probleme beim Abschluss des Prozesses hast, gib uns hier dein Feedback, warum du Schritt 3 nicht beenden konntest:",
                 required: false,
                 step: "purchase-validation"
             }

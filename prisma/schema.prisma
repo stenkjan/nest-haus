@@ -219,6 +219,8 @@ model UsabilityTest {
   deviceInfo        Json?               // device, browser, viewport
   ipAddress         String?
   userAgent         String?
+  comments          String?             // User comments/notes throughout the test
+  startUrl          String?             // Starting URL for the test
   
   // Test results
   responses         UsabilityResponse[]
