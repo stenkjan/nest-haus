@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [77750444993c046f19494b70b02ad1b5f8b7b5c7] - Thu Sep 25 23:16:06 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update overlay visibility logic and enhance SummaryPanel functionality  - Modified brightness, fenster, and PV overlay visibility logic to include 'planungspaket' category. - Added onReset prop to SummaryPanel and integrated it with the reset button functionality for improved state management.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/favicon.ico
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
 ## [09df7780cde678a9fcfe5e3972e610334b8e84ea] - Thu Sep 25 22:42:49 2025 +0200
 
 **Author**: stenkjan
