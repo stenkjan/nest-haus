@@ -165,7 +165,7 @@ export default function EntdeckenClient() {
               </div>
 
               {/* Text Blocks positioned closer to buttons - Hidden on tablet and mobile */}
-              <div className="absolute bottom-20 lg:bottom-32 xl:bottom-12 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40 max-w-[1536px] mx-auto w-full hidden lg:flex">
+              <div className="absolute bottom-20 lg:bottom-32 xl:bottom-24 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40 max-w-[1536px] mx-auto w-full hidden lg:flex">
                 {/* Left Text Block */}
                 <div className="text-center">
                   <h2 className="h2-title font-bold text-black">Nest 80</h2>
