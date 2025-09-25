@@ -4,6 +4,69 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6ab1baafca08ccdfaa968356c37794803820029c] - Thu Sep 25 21:48:18 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update UsabilityTestPopup component layout and styling  - Changed the position of the minimized state button to the top-right corner for better visibility. - Adjusted padding and margin for desktop text display to enhance layout consistency. - Updated button text for improved clarity and user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/testing/UsabilityTestPopup.tsx
+
+
+---
+
+## [d71b80449772f70515b0e991aa13249133aa84d0] - Thu Sep 25 21:41:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [c563460e6d952cd572b94b7a48d5631d54744e0a] - Thu Sep 25 21:24:15 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/datenschutz/DatenschutzClient.tsx
+- src/app/kontakt/page.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/sections/ContactMap.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/DATENSCHUTZ.md
+
+
+---
+
+## [514909da17b617d3bb3d13bf265637ae88cbad66] - Thu Sep 25 21:19:12 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [fbfd1f0b2e0d8862d40d174499f42d2dcc05a87d] - Thu Sep 25 21:15:09 2025 +0200
 
 **Author**: stenkjan

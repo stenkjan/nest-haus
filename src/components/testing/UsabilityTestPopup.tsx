@@ -529,21 +529,18 @@ export default function UsabilityTestPopup({
   // Show minimized state
   if (isMinimized) {
     return (
-      <div className="fixed bottom-4 left-4 sm:bottom-6 sm:right-6 sm:left-auto z-50">
+      <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[9999]">
         <button
           onClick={onMinimize}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors flex items-center justify-center"
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors flex items-center justify-center opacity-70 hover:opacity-100"
         >
           {/* Mobile: Show only icon */}
           <span className="sm:hidden text-lg p-3">🧪</span>
 
-          {/* Desktop: Show full text */}
-          <div className="hidden sm:flex items-center space-x-2 px-4 py-2">
+          {/* Desktop: Show compact text */}
+          <div className="hidden sm:flex items-center space-x-2 px-3 py-2">
             <span className="text-sm">🧪</span>
-            <span className="text-sm font-medium">Test fortsetzen</span>
-            <span className="text-xs bg-blue-500 px-2 py-1 rounded">
-              {currentStep.title.split(":")[0]}
-            </span>
+            <span className="text-sm font-medium">zum Test</span>
           </div>
         </button>
       </div>

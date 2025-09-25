@@ -28,6 +28,7 @@ export const SectionRouter = ({
     sections[0]?.id || ""
   );
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const [observerDisabled, setObserverDisabled] = useState(false);
 
   // Handle hash changes and scroll to section
   useEffect(() => {
@@ -56,6 +57,20 @@ export const SectionRouter = ({
             }, 100);
           }
         }
+      } else {
+        // No hash - ensure we're at the top and set first section as active
+        window.scrollTo({ top: 0, behavior: "instant" });
+        const firstSection = sections[0];
+        if (firstSection) {
+          setCurrentSection(firstSection.id);
+          onSectionChange?.(firstSection.id);
+          // Update URL to reflect the first section
+          window.history.replaceState(null, "", `#${firstSection.slug}`);
+
+          // Temporarily disable observer to prevent immediate section switching
+          setObserverDisabled(true);
+          setTimeout(() => setObserverDisabled(false), 3000);
+        }
       }
     };
 
@@ -71,6 +86,9 @@ export const SectionRouter = ({
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
+        // Skip observer updates when disabled (e.g., during initial navigation)
+        if (observerDisabled) return;
+
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const sectionId = entry.target.getAttribute("data-section-id");
@@ -95,8 +113,8 @@ export const SectionRouter = ({
         });
       },
       {
-        threshold: 0.3, // Section is considered visible when 30% is in view (more sensitive)
-        rootMargin: "-20% 0px -20% 0px", // Reduced margin for better detection of sections with varying heights
+        threshold: 0.6, // Require 60% of section to be visible before switching (more conservative)
+        rootMargin: "-30% 0px -30% 0px", // Only middle 40% of viewport triggers section changes
       }
     );
 
@@ -110,7 +128,7 @@ export const SectionRouter = ({
     return () => {
       observerRef.current?.disconnect();
     };
-  }, [sections, onSectionChange]);
+  }, [sections, onSectionChange, observerDisabled]);
 
   // Add refs to sections
   const setSectionRef = (id: string, element: HTMLDivElement | null) => {

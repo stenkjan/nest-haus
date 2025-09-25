@@ -416,7 +416,7 @@ export default function PlanungspaketeCards({
         {!isLightboxMode ? (
           /* Normal Mode - Responsive Grid Layout */
           <div
-            className={`flex ${screenWidth >= 1024 ? "flex-row justify-center" : "flex-wrap justify-center"} items-start gap-6 ${
+            className={`flex ${screenWidth >= 1024 ? "flex-row justify-center items-stretch" : "flex-wrap justify-center"} gap-6 ${
               maxWidth ? "px-8" : "px-4"
             }`}
           >
@@ -468,7 +468,7 @@ export default function PlanungspaketeCards({
                 >
                   {/* Top Section - EXPANDED HEIGHT */}
                   <div
-                    className={`px-6 py-2 overflow-hidden ${!isMobile ? (card.id === 3 ? "pb-6 pt-8" : "pb-8 pt-8") : "pt-8 pt-6"}`}
+                    className={`px-6 py-2 overflow-hidden ${!isMobile ? "pb-6 pt-6" : "pt-8 pt-6"} flex-1 flex flex-col`}
                   >
                     {/* Header Row - Title/Subtitle left, Price right */}
                     <div className="flex">
@@ -502,7 +502,7 @@ export default function PlanungspaketeCards({
                         transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                         className="flex-1"
                       >
-                        <p className={`${card.id === 3 && !isMobile ? "p-primary-small-leading-tight" : "p-primary-small"} overflow-hidden`}>
+                        <p className="p-primary-small overflow-hidden">
                           {getCardText(card, "description")}
                         </p>
                       </motion.div>
@@ -520,6 +520,9 @@ export default function PlanungspaketeCards({
                         <div className="p-primary-small">{card.price}</div>
                       </motion.div>
                     </div>
+
+                    {/* Desktop: Flexible spacer to ensure consistent card height */}
+                    {!isMobile && <div className="flex-1"></div>}
                   </div>
 
                   {/* Mobile: Mehr erfahren button or Extended Description */}
