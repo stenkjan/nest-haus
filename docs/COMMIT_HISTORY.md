@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fa9d516e6b1cd063068e164cffcfca4607ca6436] - Thu Sep 25 14:07:49 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: adjust margin in GrundstueckCheckForm for improved layout  - Increased bottom margin from 16 to 24 in the paragraph to enhance spacing and visual consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
 ## [9e04e814a6c28e8270fcf887e0d475e5d4c82196] - Thu Sep 25 13:49:46 2025 +0200
 
 **Author**: stenkjan
