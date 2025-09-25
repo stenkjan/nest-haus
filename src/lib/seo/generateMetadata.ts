@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 // Base configuration for SEO
 export const SEO_CONFIG = {
-    baseUrl: "https://nest-haus.at",
+    baseUrl: "https://nest-haus.vercel.app",
     siteName: "NEST-Haus",
     defaultTitle: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
     defaultDescription: "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
