@@ -93,12 +93,13 @@ export default function EntdeckenClient() {
       style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        {/* Section 1 - Hero with Title and Subtitle (Desktop only) */}
+        {/* Section 1 - Hero with Title and Subtitle */}
         <section
           id="hero"
-          className="w-full pt-12 pb-4 bg-white hidden md:block"
+          className="w-full bg-white md:pt-12 md:pb-4 flex items-center"
         >
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Desktop Hero Content */}
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 hidden md:block">
             <div className="text-center">
               <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                 Design für dich gemacht
@@ -108,6 +109,8 @@ export default function EntdeckenClient() {
               </h3>
             </div>
           </div>
+          {/* Mobile Hero - Invisible spacer to ensure section exists for SectionRouter */}
+          <div className="md:hidden h-1 w-full"></div>
         </section>
 
         {/* Section 2 - Video with Overlay Text and Buttons */}
