@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [dc4e417cff0691bd4bfb8686f35bee82f76ee17c] - Thu Sep 25 12:04:45 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update secondary button variant color on LandingPageClient  - Changed secondaryButtonVariant from "landing-secondary" to "landing-secondary-blue" for improved visual consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/components/cards/VideoCard16by9.tsx
+
+
+---
+
 ## [d3be2c7795cf151da01e39ac3df6b2218173094b] - Thu Sep 25 11:10:21 2025 +0200
 
 **Author**: stenkjan
