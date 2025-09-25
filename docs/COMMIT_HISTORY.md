@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6ab1baafca08ccdfaa968356c37794803820029c] - Thu Sep 25 21:48:18 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update UsabilityTestPopup component layout and styling  - Changed the position of the minimized state button to the top-right corner for better visibility. - Adjusted padding and margin for desktop text display to enhance layout consistency. - Updated button text for improved clarity and user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/testing/UsabilityTestPopup.tsx
+
+
+---
+
 ## [d71b80449772f70515b0e991aa13249133aa84d0] - Thu Sep 25 21:41:14 2025 +0200
 
 **Author**: stenkjan
