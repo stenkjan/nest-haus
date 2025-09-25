@@ -179,6 +179,10 @@ h2 {
     @apply text-lg md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium;
   }
 
+  .p-secondary-black {
+    @apply text-lg md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black;
+  }
+
   /* Custom nest gray color - #989898 */
   .text-nest-gray {
     color: #989898;

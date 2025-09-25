@@ -99,7 +99,7 @@ export function PartnersSection({
     >
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-0">
           <h1 className={`h1-secondary mb-2 md:mb-3`}>{title}</h1>
           <h3 className={`h3-secondary mb-8`}>{subtitle}</h3>
         </div>
