@@ -420,16 +420,31 @@ export default function ContentCardsGlass({
     }
   };
 
+  // Check if we should show title/subtitle
+  const shouldShowTitle =
+    !(
+      isLightboxMode &&
+      typeof window !== "undefined" &&
+      window.innerWidth < 768
+    ) &&
+    title &&
+    title.trim() !== "";
+
+  const shouldShowSubtitle = subtitle && subtitle.trim() !== "";
+
+  // Only render title container if there's content to show
+  const shouldRenderTitleContainer = shouldShowTitle || shouldShowSubtitle;
+
   return (
     <div className={containerClasses}>
-      <div className={`text-center ${isLightboxMode ? "mb-4" : ""}`}>
-        {!(
-          isLightboxMode &&
-          typeof window !== "undefined" &&
-          window.innerWidth < 768
-        ) && <h2 className="text-3xl font-bold text-white mb-2">{title}</h2>}
-        {subtitle && <p className="text-gray-300">{subtitle}</p>}
-      </div>
+      {shouldRenderTitleContainer && (
+        <div className={`text-center ${isLightboxMode ? "mb-4" : ""}`}>
+          {shouldShowTitle && (
+            <h2 className="text-3xl font-bold text-white mb-2">{title}</h2>
+          )}
+          {shouldShowSubtitle && <p className="text-gray-300">{subtitle}</p>}
+        </div>
+      )}
 
       {/* Cards Container */}
       <div className={`relative ${isLightboxMode ? "py-2" : ""}`}>

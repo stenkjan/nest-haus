@@ -148,8 +148,8 @@ export default function ConfiguratorContentCardsLightbox({
           <div className="w-full max-w-none">
             <ContentCards
               variant="responsive"
-              title={dialogData.title}
-              subtitle={dialogData.subtitle}
+              title="" // Hide title in lightbox mode to allow proper centering
+              subtitle="" // Hide subtitle in lightbox mode to allow proper centering
               maxWidth={false}
               showInstructions={false}
               isLightboxMode={true}
