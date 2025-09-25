@@ -31,8 +31,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
         changeFrequency: "weekly" as const,
-        ogImage: "/api/images?path=7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite&redirect=true",
-        twitterImage: "/api/images?path=7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite&redirect=true",
+        ogImage: "https://1mkowktdsbm6ra0z.public.blob.vercel-storage.com/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-eIs8gZIrhqatByU7WN3IvQUcetI57l.jpg",
+        twitterImage: "https://1mkowktdsbm6ra0z.public.blob.vercel-storage.com/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-eIs8gZIrhqatByU7WN3IvQUcetI57l.jpg",
     },
     konfigurator: {
         title: "Haus Konfigurator | NEST-Haus Modulare Häuser",
@@ -191,6 +191,8 @@ export function generatePageMetadata(
             images: [
                 {
                     url: ogImage,
+                    // Add secureUrl to help strict scrapers like WhatsApp
+                    secureUrl: ogImage.startsWith('http') ? ogImage : `${baseConfig.baseUrl}${ogImage}`,
                     width: 1200,
                     height: 630,
                     alt: title,
