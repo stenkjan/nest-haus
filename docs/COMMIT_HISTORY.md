@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3b75934ecee41018199202ffa5ff6e8540cc2950] - Thu Sep 25 20:54:25 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: reorder image constants for Eiche and EicheParkett in images.ts  - Swapped the values of  and  to correct their references, ensuring accurate image mapping in the application.  `
+
+### Changes Analysis
+
+---
+
 ## [8d2aef964c6227d683ef87661fcc1fdbef61973c] - Thu Sep 25 17:42:39 2025 +0200
 
 **Author**: stenkjan
