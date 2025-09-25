@@ -51,7 +51,7 @@ export default function CheckoutStepCard({
               <div
                 className={`relative z-10 rounded-3xl overflow-hidden mb-6 ${
                   index === 0 ? "shadow-xl" : "border border-gray-300"
-                } h-[580px] sm:h-[600px] md:h-96 lg:h-[400px] xl:h-[440px] 2xl:h-[480px]`}
+                } h-[630px] sm:h-[650px] md:h-96 lg:h-[400px] xl:h-[440px] 2xl:h-[480px]`}
                 style={{
                   backgroundColor: index === 0 ? card.backgroundColor : "white",
                 }}
@@ -90,7 +90,7 @@ export default function CheckoutStepCard({
                   </div>
 
                   {/* Bottom/Right side - Description */}
-                  <div className="w-full md:w-1/2 flex flex-col justify-center px-12 sm:px-16 md:px-12 lg:pr-16 xl:pr-20 2xl:pr-24 py-6 md:py-8">
+                  <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-16 md:px-12 lg:pr-16 xl:pr-20 2xl:pr-24 py-6 md:py-8">
                     <p
                       className={`text-sm sm:text-base md:text-base lg:text-base xl:text-lg 2xl:text-xl leading-relaxed whitespace-pre-line text-center md:text-left ${
                         card.textColor || "text-black"

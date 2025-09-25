@@ -927,7 +927,7 @@ export default function CheckoutStepper({
         {/* Timeline directly after title/subtitle */}
         {!hideProgress && <div className="mb-6">{renderProgress()}</div>}
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
-          <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24 order-2 md:order-1">
+          <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1">
             {/* Delivery Date Component for Step 4 */}
             {stepIndex === 4 && (
               <div className="mb-8 text-center md:text-left">
@@ -1273,10 +1273,9 @@ export default function CheckoutStepper({
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full"
+                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
                       style={{
                         minHeight: "clamp(400px, 40vw, 520px)",
-                        aspectRatio: "1 / 1.25",
                       }}
                     >
                       {/* Header Section */}
@@ -1680,34 +1679,43 @@ export default function CheckoutStepper({
                   </h3>
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-                  <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
-                    <p className="p-primary text-gray-500 leading-relaxed mb-4 mt-12">
-                      Wir prüfen, ob{" "}
-                      <span className="text-black">dein Grundstück</span> die
-                      gesetzlichen{" "}
-                      <span className="text-black">Anforderungen erfüllt</span>.
-                      Dazu gehören das jeweilige{" "}
-                      <span className="text-black">Landesbaugesetz</span>, das{" "}
-                      <span className="text-black">Raumordnungsgesetz</span> und
-                      die{" "}
+                  <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24">
+                    <p className="p-secondary text-black mb-4 mt-12">
+                      <span className="text-gray-500">Wir prüfen, ob</span>{" "}
+                      <span className="text-black">dein Grundstück</span>{" "}
+                      <span className="text-gray-500">die gesetzlichen</span>{" "}
+                      <span className="text-black">Anforderungen erfüllt</span>
+                      <span className="text-gray-500">
+                        . Dazu gehören das jeweilige
+                      </span>{" "}
+                      <span className="text-black">Landesbaugesetz</span>
+                      <span className="text-gray-500">, das</span>{" "}
+                      <span className="text-black">Raumordnungsgesetz</span>{" "}
+                      <span className="text-gray-500">und die</span>{" "}
                       <span className="text-black">örtlichen Vorschriften</span>
-                      , damit dein Bauvorhaben von Beginn an auf{" "}
+                      <span className="text-gray-500">
+                        , damit dein Bauvorhaben von Beginn an auf
+                      </span>{" "}
                       <span className="text-black">sicheren Grundlagen</span>{" "}
-                      steht.
+                      <span className="text-gray-500">steht.</span>
                     </p>
                     <div className="h-3"></div>
-                    <p className="p-primary text-gray-500 leading-relaxed mb-6">
-                      Außerdem analysieren wir die{" "}
+                    <p className="p-secondary text-black mb-6">
+                      <span className="text-gray-500">
+                        Außerdem analysieren wir die
+                      </span>{" "}
                       <span className="text-black">
                         Eignung des Grundstücks
                       </span>{" "}
-                      für dein Nest Haus. Dabei geht es um alle notwendigen
-                      Voraussetzungen, die für Planung und Aufbau entscheidend
-                      sind, sodass{" "}
+                      <span className="text-gray-500">
+                        für dein Nest Haus. Dabei geht es um alle notwendigen
+                        Voraussetzungen, die für Planung und Aufbau entscheidend
+                        sind, sodass
+                      </span>{" "}
                       <span className="text-black">
                         dein Zuhause zuverlässig und ohne Hindernisse
                       </span>{" "}
-                      entstehen kann.
+                      <span className="text-gray-500">entstehen kann.</span>
                     </p>
 
                     <div className="mt-2 space-y-4">
@@ -1782,10 +1790,9 @@ export default function CheckoutStepper({
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full"
+                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
                       style={{
                         minHeight: "clamp(400px, 40vw, 520px)",
-                        aspectRatio: "1 / 1.25",
                       }}
                     >
                       {/* Header Section */}
