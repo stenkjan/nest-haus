@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d3be2c7795cf151da01e39ac3df6b2218173094b] - Thu Sep 25 11:10:21 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/steps.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [a61e7f70cd53de0916e03a050448f3df44b5ec08] - Wed Sep 24 18:28:22 2025 +0200
 
 **Author**: stenkjan
