@@ -326,8 +326,8 @@ export const IMAGES = {
     materials: {
         konstruktionFichte: '46-NEST-Haus-Materialien-Bauteilaufbau-Konstruktion-Brettschichtholz-BSH-Fichte',
         konstruktionIsolierung: '47-NEST-Haus-Materialien-Bauteilaufbau-Konstruktion-Holzfaserplatte-Holzwolle-Holzfaserdaemmung-Isolierung',
-        eiche: '49-NEST-Haus-Materialien-Oberflaechen-Fussboden-Eichenholz-Parkett-Fischgraetparkett-Eiche',
-        eicheParkett: '50-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Eichenholz-Interior-Eiche',
+        eiche: '50-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Eichenholz-Interior-Eiche',
+        eicheParkett: '49-NEST-Haus-Materialien-Oberflaechen-Fussboden-Eichenholz-Parkett-Fischgraetparkett-Eiche',
         konstruktionOSB: '51-NEST-Haus-Materialien-Bauteilaufbau-Konstruktion-OSB-Oriented-Strand-Board-Recycling-Oekologisch',
         laercheFassade: '52-NEST-Haus-Materialien-Oberflaechen-Fassade-Laerche-Bauholz-Lattung',
         fundermaxSchwarz: '53-NEST-Haus-Materialien-Oberflaechen-Fassadenplatte-Schwarz',
