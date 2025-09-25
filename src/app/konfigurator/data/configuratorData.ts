@@ -232,7 +232,7 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'holz',
         name: 'Holz',
-        description: 'Holzfenster Lärche',
+        description: 'Holzfenster Fichte',
         price: { type: 'upgrade', amount: 400, monthly: 3 }
       },
       {

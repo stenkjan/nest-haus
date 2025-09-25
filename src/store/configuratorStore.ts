@@ -609,7 +609,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             value: 'holz',
             name: 'Holz',
             price: 400,
-            description: 'Holzfenster Lärche'
+            description: 'Holzfenster Fichte'
           },
 
           // Planung Basis (default) - now has a price

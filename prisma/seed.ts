@@ -11,7 +11,7 @@ async function main() {
   await prisma.houseOption.deleteMany()
 
   // ===== HOUSE OPTIONS - EXACT PRICES FROM OLD CONFIGURATOR =====
-  
+
   // Nest Types - ORIGINAL PRICES
   await prisma.houseOption.createMany({
     data: [
@@ -202,7 +202,7 @@ async function main() {
         category: 'fenster',
         value: 'fichte',
         name: 'Fichte',
-        description: 'Holzfenster Lärche',
+        description: 'Holzfenster Fichte',
         basePrice: 600,
         sortOrder: 2,
         properties: { material: 'wood', glazing: 'double', type: 'per_sqm' }
@@ -262,7 +262,7 @@ async function main() {
   })
 
   // ===== COMBINATION PRICING RULES - EXACT FROM OLD CONFIGURATOR =====
-  
+
   const nestTypes = ['nest80', 'nest100', 'nest120', 'nest140', 'nest160']
   const gebaeudehuelle = ['trapezblech', 'holzlattung', 'fassadenplatten_schwarz', 'fassadenplatten_weiss']
   const innenverkleidung = ['kiefer', 'fichte', 'steirische_eiche']
