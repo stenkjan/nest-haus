@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [633fe0b5a3687cf6b99ac75ff7cd2f6cef79a164] - Fri Sep 26 00:53:54 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update SEO metadata image URLs for enhanced security and reliability  - Replaced dynamic API image paths with secure URLs for Open Graph and Twitter images in generateMetadata.ts to improve image handling and ensure consistent loading across platforms.  `
+
+### Changes Analysis
+
+---
+
 ## [6921dbbc1befb3624c6b06ff48aaa381ac055050] - Fri Sep 26 00:34:55 2025 +0200
 
 **Author**: stenkjan
