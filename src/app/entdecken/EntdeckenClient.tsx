@@ -50,9 +50,9 @@ const sections = [
     slug: "ablauf",
   },
   {
-    id: "grundstueck-check",
+    id: "konfigurieren",
     title: "Dein Grundstück - Unser Check",
-    slug: "grundstueck-check",
+    slug: "konfigurieren",
   },
   {
     id: "planungspakete",
@@ -225,9 +225,7 @@ export default function EntdeckenClient() {
         <section id="zuhause-zieht-um" className="w-full pt-8 md:py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center md:mb-12">
-              <h1 className="h1-secondary mb-2">
-                Dein Zuhause zieht um
-              </h1>
+              <h1 className="h1-secondary mb-2">Dein Zuhause zieht um</h1>
               <h3 className="h3-secondary text-black max-w-3xl mx-auto text-center">
                 Architektur für ein bewegtes Leben.
               </h3>
@@ -307,10 +305,7 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 5 - Grundstück Check */}
-        <section
-          id="grundstueck-check"
-          className="w-full py-8 md:py-16 bg-white"
-        >
+        <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-4 md:mb-12">
               <h1 className="h1-secondary mb-2 md:mb-3">
