@@ -4,6 +4,30 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0f2320ab582b792264cd34169d20627aab3d5a1b] - Thu Sep 25 17:29:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
+- src/app/konfigurator/core/DialogDataTransformer.ts
+- src/app/unser-part/UnserPartClient.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/dialogs/CalendarDialog.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [56e8b5581e4894fe99811d92656ff13ceab35fea] - Thu Sep 25 17:15:32 2025 +0200
 
 **Author**: stenkjan
