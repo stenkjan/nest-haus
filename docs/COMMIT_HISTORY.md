@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [857123a208363aa1868c5daf76fc96f4d8ede457] - Thu Sep 25 15:10:47 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: adjust bottom margins in EntdeckenClient and PartnersSection for improved layout  - Updated bottom margins in multiple sections of EntdeckenClient for better spacing. - Increased bottom margin in PartnersSection header for enhanced visual consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
 ## [fa9d516e6b1cd063068e164cffcfca4607ca6436] - Thu Sep 25 14:07:49 2025 +0200
 
 **Author**: stenkjan
