@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [338761e887721729ef65fa9731cbc53e404ffd0c] - Thu Sep 25 23:42:51 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update ImpressumClient details and usability test configuration  - Changed company name and address in ImpressumClient to reflect new branding. - Updated management names and contact information for accuracy. - Modified TestQuestions to make all feedback questions non-required for improved user experience during usability testing.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/impressum/ImpressumClient.tsx
+- src/components/testing/UsabilityTestPopup.tsx
+- src/components/testing/config/TestQuestions.ts
+
+
+---
+
 ## [77750444993c046f19494b70b02ad1b5f8b7b5c7] - Thu Sep 25 23:16:06 2025 +0200
 
 **Author**: stenkjan
