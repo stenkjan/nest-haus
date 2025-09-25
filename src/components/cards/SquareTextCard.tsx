@@ -830,7 +830,7 @@ export default function SquareTextCard({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-row gap-4 justify-center md:mt-12">
+      <div className="flex flex-row gap-4 justify-center md:mt-8">
         <ClientBlobFile
           path={FILES.anleitung.pdf}
           mode="open"

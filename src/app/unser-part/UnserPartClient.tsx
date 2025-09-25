@@ -143,7 +143,6 @@ export default function UnserPartClient() {
                   playsInline={true}
                   controls={false}
                   enableCache={true}
-                  playbackRate={2.5}
                   onError={(error) => {
                     console.error("🎥 Video component error:", error);
                     // Could add additional error handling here if needed
@@ -311,34 +310,6 @@ export default function UnserPartClient() {
               <Link href="/konfigurator">
                 <Button variant="landing-secondary-blue" size="xs">
                   Jetzt bauen
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Beratung Section */}
-        <section
-          id="beratung"
-          className="w-full py-8 md:py-16"
-          style={{ backgroundColor: "#F4F4F4" }}
-        >
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16 md:mb-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium text-gray-900 mb-2 md:mb-3">
-                Kein Plan? Kein Problem!
-              </h1>
-              <h3 className="h3-secondary text-gray-600 mb-8">
-                Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz
-                bequem telefonisch
-              </h3>
-            </div>
-
-            {/* Single Button */}
-            <div className="flex justify-center w-full">
-              <Link href="/kontakt">
-                <Button variant="primary" size="xs">
-                  Termin vereinbaren
                 </Button>
               </Link>
             </div>
