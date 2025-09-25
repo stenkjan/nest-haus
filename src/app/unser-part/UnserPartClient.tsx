@@ -6,7 +6,6 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
-import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,

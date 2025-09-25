@@ -12,7 +12,6 @@ import {
 } from "@/components/cards";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
-import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 import { TwoByTwoImageGrid } from "@/components/grids";
 import {
   GetInContactBanner,
