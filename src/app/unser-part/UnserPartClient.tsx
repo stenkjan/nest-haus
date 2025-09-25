@@ -164,13 +164,14 @@ export default function UnserPartClient() {
             title="Manchmal kommt es auf die Größe an."
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
             backgroundColor="black"
-            text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz</span> <span class='text-nest-gray'>und</span> <span class='text-white font-medium'>Kostenoptimierung.</span> <span class='text-nest-gray'>Höchste Qualität zu einem leistbaren Preis durch</span> <span class='text-white font-medium'>intelligente</span> <span class='text-white font-medium'>Optimierung</span> <span class='text-nest-gray'>– und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert:</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-white font-medium'>effiziente Fertigung</span> <span class='text-nest-gray'>und bewährte</span> <span class='text-white font-medium'>Konstruktion</span> <span class='text-nest-gray'>sichern</span> <span class='text-white font-medium'>höchste Qualität.</span></p>"
+            text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz.</span> <span class='text-white font-medium'>Freiheit</span> <span class='text-nest-gray'>für Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span><br /><br /><span class='text-nest-gray'>Gleichzeitig bleibt volle</span> <span class='text-white font-medium'>Gestaltungsfreiheit dort, wo sie wirklich zählt.</span></p>"
             textPosition="left"
             maxWidth={false}
             image1={IMAGES.function.nestHausModulKonzept}
             image2={IMAGES.function.nestHausModulLiniengrafik}
             image1Description="NEST-Haus Modul Stirnseite Ansicht Schema Konzept"
             image2Description="NEST-Haus Modul Holz Schema Konzept"
+            textWrapperClassName="mt-8 md:mt-0"
           />
 
           {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
