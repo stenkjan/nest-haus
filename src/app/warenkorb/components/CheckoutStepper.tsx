@@ -940,7 +940,7 @@ export default function CheckoutStepper({
               </div>
             )}
             {stepIndex === 0 ? (
-              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left">
+              <div className="p-secondary text-black text-center md:text-left">
                 <p>
                   <span className="text-gray-500">
                     Dein Nest-Haus beginnt mit deinem
@@ -973,7 +973,7 @@ export default function CheckoutStepper({
                 </p>
               </div>
             ) : (
-              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed whitespace-pre-line text-center md:text-left">
+              <div className="p-secondary text-black whitespace-pre-line text-center md:text-left">
                 {c.description.split("\n").map((paragraph, index) => (
                   <p key={index} className={index > 0 ? "mt-6" : ""}>
                     {paragraph
@@ -986,7 +986,11 @@ export default function CheckoutStepper({
                             </span>
                           );
                         }
-                        return part;
+                        return (
+                          <span key={partIndex} className="text-gray-500">
+                            {part}
+                          </span>
+                        );
                       })}
                   </p>
                 ))}
