@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1dc5ec713ceeaee159e2b6534f6b5c0bc543f547] - Thu Sep 25 22:32:43 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix checkout stepper text wrapping and alignment issues  - Fixed appointment text wrapping in summary boxes (mobile-only max-width) - Made appointment text right-aligned with proper multi-line support - Standardized date format to use numeric format (dd.mm.yyyy) consistently - Added mobile center alignment for step 3 text content - Reverted warum-wir page to black background with white text - Enhanced GrundstueckCheckSection with centerOnMobile prop - Updated typography and spacing in warum-wir page  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/sections/GrundstueckCheckSection.tsx
+
+
+---
+
 ## [94fd85f5b6310d3b49b83aae62764d065fd3a83b] - Thu Sep 25 22:30:04 2025 +0200
 
 **Author**: stenkjan
