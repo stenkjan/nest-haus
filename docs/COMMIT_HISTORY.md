@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6921dbbc1befb3624c6b06ff48aaa381ac055050] - Fri Sep 26 00:34:55 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update home page title in SEO configuration for brand consistency  - Changed the home page title to include the registered trademark symbol (®) for NEST-Haus to ensure accurate branding in SEO metadata.  `
+
+### Changes Analysis
+
+---
+
 ## [4679c5fe96c28e438493497b5717fa9d4b5aef0f] - Fri Sep 26 00:26:29 2025 +0200
 
 **Author**: stenkjan
