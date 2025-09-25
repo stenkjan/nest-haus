@@ -19,11 +19,13 @@ import Button from "@/components/ui/Button";
 
 interface SummaryPanelProps {
   onInfoClick?: (infoKey: string) => void;
+  onReset?: () => void;
   className?: string;
 }
 
 export default function SummaryPanel({
   onInfoClick,
+  onReset,
   className = "",
 }: SummaryPanelProps) {
   const { configuration, currentPrice, resetConfiguration } =
@@ -460,7 +462,12 @@ export default function SummaryPanel({
               <Button
                 variant="tertiary"
                 size="xs"
-                onClick={() => resetConfiguration()}
+                onClick={() => {
+                  resetConfiguration();
+                  if (onReset) {
+                    onReset();
+                  }
+                }}
                 className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
               >
                 Neu konfigurieren

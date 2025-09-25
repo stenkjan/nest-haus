@@ -231,31 +231,39 @@ export default function ConfiguratorShell({
 
       // REMOVED: Legacy belichtungspaket overlay logic - now handled in main selection logic below
 
-      // Hide brightness overlay when switching to other sections (except belichtungspaket)
-      if (categoryId !== "belichtungspaket" && isBrightnessOverlayVisible) {
+      // Hide brightness overlay when switching to other sections (except belichtungspaket and planungspaket)
+      if (
+        categoryId !== "belichtungspaket" &&
+        categoryId !== "planungspaket" &&
+        isBrightnessOverlayVisible
+      ) {
         setIsBrightnessOverlayVisible(false);
       }
 
       // Hide fenster overlay when switching to unrelated categories
       if (categoryId !== "fenster" && isFensterOverlayVisible) {
-        // Keep fenster overlay visible for related interior categories
+        // Keep fenster overlay visible for related interior categories and planungspaket
         if (
-          !["innenverkleidung", "fussboden", "belichtungspaket"].includes(
-            categoryId
-          )
+          ![
+            "innenverkleidung",
+            "fussboden",
+            "belichtungspaket",
+            "planungspaket",
+          ].includes(categoryId)
         ) {
           setIsFensterOverlayVisible(false);
         }
       }
 
       // Only hide PV overlay when explicitly switching away from compatible views
-      // Allow PV overlay to persist with other exterior overlays (belichtungspaket)
+      // Allow PV overlay to persist with other exterior overlays (belichtungspaket) and planungspaket
       if (
         categoryId !== "pvanlage" &&
         isPvOverlayVisible &&
         categoryId !== "nest" &&
         categoryId !== "belichtungspaket" &&
-        categoryId !== "gebaeudehuelle"
+        categoryId !== "gebaeudehuelle" &&
+        categoryId !== "planungspaket"
       ) {
         setIsPvOverlayVisible(false);
       }
@@ -1005,7 +1013,6 @@ export default function ConfiguratorShell({
           }
         }
 
-
         // Calculate relative price difference using simpler direct price comparison for other categories
         if (
           currentSelection &&
@@ -1306,7 +1313,7 @@ export default function ConfiguratorShell({
       {/* Grundstückscheck now handled in Warenkorb */}
 
       {/* Summary Panel */}
-      <SummaryPanel onInfoClick={handleInfoClick} />
+      <SummaryPanel onInfoClick={handleInfoClick} onReset={resetLocalState} />
     </div>
   );
 
