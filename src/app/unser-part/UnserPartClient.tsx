@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
@@ -82,6 +83,7 @@ export default function UnserPartClient() {
   const [isMobile, setIsMobile] = useState(false);
   const { isOpen, openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
+  const router = useRouter();
 
   // Simple width-based mobile detection (same as entdecken page)
   useEffect(() => {
@@ -105,6 +107,15 @@ export default function UnserPartClient() {
     currentSectionId,
     enabled: true,
   });
+
+  // Button click handlers
+  const handleDiePaketeClick = () => {
+    openPlanungspakete();
+  };
+
+  const handleJetztBauenClick = () => {
+    router.push("/konfigurator");
+  };
 
   return (
     <div
@@ -252,6 +263,8 @@ export default function UnserPartClient() {
               showButtons={true}
               primaryButtonText="Die Pakete"
               secondaryButtonText="Jetzt bauen"
+              primaryButtonOnClick={handleDiePaketeClick}
+              secondaryButtonOnClick={handleJetztBauenClick}
             />
           </div>
         </section>

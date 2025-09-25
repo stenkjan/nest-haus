@@ -21,6 +21,8 @@ interface ThreeByOneGridProps {
   showButtons?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
+  primaryButtonOnClick?: () => void;
+  secondaryButtonOnClick?: () => void;
   textClassName?: string;
   textWrapperClassName?: string;
 }
@@ -40,6 +42,8 @@ export default function ThreeByOneGrid({
   showButtons = false,
   primaryButtonText = "Primary Action",
   secondaryButtonText = "Secondary Action",
+  primaryButtonOnClick,
+  secondaryButtonOnClick,
   textClassName = "",
   textWrapperClassName = "",
 }: ThreeByOneGridProps) {
@@ -363,6 +367,7 @@ export default function ThreeByOneGrid({
                           variant="primary-narrow"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={primaryButtonOnClick}
                         >
                           {primaryButtonText}
                         </Button>
@@ -370,6 +375,7 @@ export default function ThreeByOneGrid({
                           variant="secondary-narrow-white"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={secondaryButtonOnClick}
                         >
                           {secondaryButtonText}
                         </Button>
@@ -608,6 +614,7 @@ export default function ThreeByOneGrid({
                           variant="primary-narrow"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={primaryButtonOnClick}
                         >
                           {primaryButtonText}
                         </Button>
@@ -615,6 +622,7 @@ export default function ThreeByOneGrid({
                           variant="secondary-narrow-white"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={secondaryButtonOnClick}
                         >
                           {secondaryButtonText}
                         </Button>
