@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [09df7780cde678a9fcfe5e3972e610334b8e84ea] - Thu Sep 25 22:42:49 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+- src/components/testing/UsabilityTestPopup.tsx
+
+
+#### ⚙️ Backend Changes
+- prisma/seed.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [1d711d56660eba500afab4a62793c4b573bf79d2] - Thu Sep 25 22:36:18 2025 +0200
 
 **Author**: stenkjan
