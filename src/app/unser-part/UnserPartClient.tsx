@@ -12,7 +12,11 @@ import {
   ThreeByOneGrid,
 } from "@/components/grids";
 import { ClientBlobVideo } from "@/components/images";
-import { MaterialShowcase, LandingImagesCarousel } from "@/components/sections";
+import {
+  MaterialShowcase,
+  LandingImagesCarousel,
+  GetInContactBanner,
+} from "@/components/sections";
 import { PlanungspaketeCards } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
 import { useContentAnalytics } from "@/hooks";
@@ -55,11 +59,6 @@ const sections: SectionDefinition[] = [
     id: "planungspakete",
     title: "Unterstützung gefällig?",
     slug: "planungspakete",
-  },
-  {
-    id: "beratung",
-    title: "KEIN PLAN? Kein Problem!",
-    slug: "beratung",
   },
   {
     id: "video-gallery",
@@ -283,9 +282,9 @@ export default function UnserPartClient() {
         </section>
 
         {/* Planungspakete Section */}
-        <section id="planungspakete" className="w-full pt-16 pb-10 bg-white">
+        <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <div className="text-center mb-4 md:mb-6">
               <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                 Unterstützung gefällig?
               </h1>
@@ -295,15 +294,17 @@ export default function UnserPartClient() {
               </h3>
             </div>
 
-            <PlanungspaketeCards
-              title=""
-              subtitle=""
-              maxWidth={false}
-              showInstructions={false}
-            />
+            <div className="mt-4 md:mt-0">
+              <PlanungspaketeCards
+                title=""
+                subtitle=""
+                maxWidth={false}
+                showInstructions={false}
+              />
+            </div>
 
             {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-8 mb-8">
+            <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
               <Button variant="primary" size="xs" onClick={openPlanungspakete}>
                 Die Pakete
               </Button>
@@ -344,6 +345,9 @@ export default function UnserPartClient() {
           </div>
         </section>
       </SectionRouter>
+
+      {/* Contact Banner - Kein Plan? Kein Problem! */}
+      <GetInContactBanner />
 
       {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
       <div className="hidden md:block">

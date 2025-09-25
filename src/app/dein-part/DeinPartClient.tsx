@@ -75,11 +75,6 @@ const sections = [
     slug: "planungspakete",
   },
   {
-    id: "beratung",
-    title: "Kein Plan? Kein Problem!",
-    slug: "beratung",
-  },
-  {
     id: "video-section",
     title: "Die Vielfalt unserer Module",
     slug: "modul-vielfalt",
@@ -247,28 +242,30 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
           {/* Planungspakete Section - Unterstützung gefällig? */}
           <section
             id="planungspakete"
-            className="w-full pt-8 md:pt-16 pb-8 bg-white"
+            className="w-full py-8 md:py-16 bg-white"
           >
             <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12">
+              <div className="text-center mb-4 md:mb-6">
                 <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                   Unterstützung gefällig?
                 </h1>
-                <h3 className="h3-secondary text-gray-600">
+                <h3 className="h3-secondary text-gray-600 mb-8">
                   Entdecke unsere Planungs-Pakete, um das Beste für dich und
                   dein Nest rauszuholen.
                 </h3>
               </div>
 
-              <PlanungspaketeCards
-                title=""
-                subtitle=""
-                maxWidth={false}
-                showInstructions={false}
-              />
+              <div className="mt-4 md:mt-0">
+                <PlanungspaketeCards
+                  title=""
+                  subtitle=""
+                  maxWidth={false}
+                  showInstructions={false}
+                />
+              </div>
 
               {/* Button Combo After Component */}
-              <div className="flex gap-4 justify-center w-full mt-4 mb-8">
+              <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
                 <Button
                   variant="primary"
                   size="xs"
@@ -276,18 +273,18 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
                 >
                   Die Pakete
                 </Button>
-                <Link href="/unser-part">
+                <Link href="/konfigurator">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Mehr Information
+                    Jetzt bauen
                   </Button>
                 </Link>
               </div>
             </div>
           </section>
-
-          {/* Beratung Section - Kein Plan? Kein Problem! */}
-          <GetInContactBanner id="beratung" />
         </SectionRouter>
+
+        {/* Contact Banner - Kein Plan? Kein Problem! */}
+        <GetInContactBanner />
 
         {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
         <div className="hidden md:block">

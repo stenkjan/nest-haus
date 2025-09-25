@@ -3,7 +3,8 @@ export const CHECKOUT_STEPS = [
     "Vorentwurfsplan",
     "Planungspakete",
     "Terminvereinbarung",
-    "Liefertermin",
+    "Finale Übersicht",
+    "Bezahlen",
 ] as const;
 
 export type CheckoutStep = typeof CHECKOUT_STEPS[number];
