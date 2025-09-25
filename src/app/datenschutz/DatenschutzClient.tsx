@@ -62,7 +62,7 @@ export default function DatenschutzClient() {
               <div className="text-center space-y-6">
                 <h3 className="text-2xl font-medium mb-6">NEST-Haus GmbH</h3>
                 <div className="space-y-3 text-lg">
-                  <p>Karmeliterplatz 1, 8010 Graz</p>
+                  <p>Karmeliterplatz 8, 8010 Graz</p>
                   <p>Telefon: </p>
                   <p>E-Mail: info@nest-haus.at</p>
                 </div>

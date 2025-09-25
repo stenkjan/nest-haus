@@ -59,7 +59,7 @@ export const TerminVereinbarenContent: React.FC<
               Adresse
             </h4>
             <div className="text-xs md:text-sm text-gray-700">
-              Karmeliterplatz 1
+              Karmeliterplatz 8
               <br />
               8010, Graz
               <br />
@@ -118,7 +118,7 @@ export const TerminVereinbarenContent: React.FC<
               </h2>
               <div className="text-center">
                 <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  Karmeliterplatz 1
+                  Karmeliterplatz 8
                   <br />
                   8010, Graz
                   <br />
@@ -185,7 +185,7 @@ export const TerminVereinbarenContent: React.FC<
             </h2>
             <div>
               <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                Karmeliterplatz 1
+                Karmeliterplatz 8
                 <br />
                 8010, Graz
                 <br />
