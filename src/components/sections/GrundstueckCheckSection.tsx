@@ -44,6 +44,11 @@ interface GrundstueckCheckSectionProps {
    * @default true
    */
   showCards?: boolean;
+  /**
+   * Center align text on mobile only
+   * @default false
+   */
+  centerOnMobile?: boolean;
 }
 
 export function GrundstueckCheckSection({
@@ -53,6 +58,7 @@ export function GrundstueckCheckSection({
   backgroundColor = "white",
   className = "",
   showCards = true,
+  centerOnMobile = false,
 }: GrundstueckCheckSectionProps) {
   const backgroundClasses =
     backgroundColor === "black" ? "bg-black" : "bg-white";
@@ -67,7 +73,9 @@ export function GrundstueckCheckSection({
       className={`w-full py-16 ${backgroundClasses} ${className}`}
     >
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div
+          className={`mb-16 ${centerOnMobile ? "text-center md:text-left" : "text-center"}`}
+        >
           <h1
             className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold ${titleColor} mb-2 md:mb-3`}
           >

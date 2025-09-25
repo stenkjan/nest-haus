@@ -26,19 +26,19 @@ export default function WarumWirClient() {
     <div className="min-h-screen pt-12" bg-white>
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Vision */}
-        <section id="vision" className="w-full py-16 bg-white text-black">
+        <section id="vision" className="w-full py-16 bg-black text-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center text-black">
-              Unsere Vision
+            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center text-white">
+              Die ®Nest Vision
             </h1>
-            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-2xl mx-auto text-center text-black">
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-6xl mx-auto text-center text-white pb-16">
               Eine Welt, in der Effizienz auf Architektur trifft. <br />
               Eine Welt, in welcher Athmosphäre, Qualität und Nachhaltigkeit im
               Mittelpunkt steht.
             </h2>
 
             <div className="text-center mb-12">
-              <p className="p-secondary text-black max-w-2xl mx-auto text-center">
+              <p className="p-secondary text-white max-w-4xl mx-auto text-center">
                 Dein Nest Haus ist mehr als ein Gebäude. Es ist ein neues
                 Verständnis von Immobilien. <br />
                 Ein Zuhause, das nicht an Ort und Boden gebunden ist. Das
@@ -60,7 +60,7 @@ export default function WarumWirClient() {
                 <br />
                 Wohnen im Freistil.
               </p>
-              <p className="text-xs md:text-xs lg:text-xs xl:text-sm max-w-2xl mx-auto 2xl:text-base text-black leading-snug whitespace-pre-line mt-16">
+              <p className="text-xs md:text-xs lg:text-xs xl:text-sm max-w-2xl mx-auto 2xl:text-base text-white leading-snug whitespace-pre-line mt-24">
                 Es gibt natürlich noch jede Menge Gründe, warum ein Nest Haus
                 dein perfektes Zuhause ist. Aber unsere Website macht gerade
                 noch ihre ersten Schritte. Bald findest du hier mehr Vorteile,
@@ -76,7 +76,7 @@ export default function WarumWirClient() {
                   </Button>
                 </Link>
                 <Link href="/dein-part">
-                  <Button variant="landing-secondary-blue" size="xs">
+                  <Button variant="landing-secondary" size="xs">
                     Dein Part
                   </Button>
                 </Link>
