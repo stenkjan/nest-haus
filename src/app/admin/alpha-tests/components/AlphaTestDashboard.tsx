@@ -463,7 +463,12 @@ export default function AlphaTestDashboard() {
   const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(
     new Set()
   );
-  const [commentsData, setCommentsData] = useState<any[]>([]);
+  const [commentsData, setCommentsData] = useState<Array<{
+    testId: string;
+    participantName: string | null;
+    comments: string;
+    createdAt: string;
+  }>>([]);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const [selectedComments, setSelectedComments] = useState<{
     testId: string;

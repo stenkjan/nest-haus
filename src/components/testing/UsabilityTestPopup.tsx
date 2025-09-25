@@ -195,19 +195,21 @@ export default function UsabilityTestPopup({
       });
 
       if (step) {
-        // Reset lastCommentStep if we're moving to a new step
-        if (currentStep && currentStep.id !== step.id) {
-          console.log(
-            "🧪 Step changed from",
-            currentStep.id,
-            "to",
-            step.id,
-            "- resetting lastCommentStep"
-          );
-          setLastCommentStep(null);
-        }
-
-        setCurrentStep(step);
+        // Use functional update to avoid dependency on currentStep
+        setCurrentStep((prevStep) => {
+          // Reset lastCommentStep if we're moving to a new step
+          if (prevStep && prevStep.id !== step.id) {
+            console.log(
+              "🧪 Step changed from",
+              prevStep.id,
+              "to",
+              step.id,
+              "- resetting lastCommentStep"
+            );
+            setLastCommentStep(null);
+          }
+          return step;
+        });
 
         // Handle special cases for purchase validation (when user hasn't completed previous steps)
         if (step.id === "purchase-validation") {
