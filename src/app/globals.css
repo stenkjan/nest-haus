@@ -169,6 +169,10 @@ h2 {
   .p-primary-small {
     @apply text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-base text-black leading-snug whitespace-pre-line;
   }
+ 
+  .p-primary-small-leading-tight {
+    @apply text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-base text-black leading-tight whitespace-pre-line;
+  }
 
   /* Standard paragraph styling for content sections - matches ThreeByOneGrid and FullWidthImageGrid patterns */
   .p-secondary {

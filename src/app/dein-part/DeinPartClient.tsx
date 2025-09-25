@@ -6,6 +6,7 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
+import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 import {
   FullWidthTextGrid,
   ImageWithFourTextGrid,
@@ -90,6 +91,7 @@ export default function DeinPartClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("freiraum");
   const { isOpen, openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
+  const { isMobile } = useDeviceDetect();
 
   return (
     <div
@@ -162,13 +164,15 @@ export default function DeinPartClient() {
 
               {/* Additional Button Combination */}
               <div className="flex gap-4 justify-center w-full">
-                <Button
-                  variant="primary"
-                  size="xs"
-                  onClick={openPlanungspakete}
-                >
-                  Die Pakete
-                </Button>
+                {!isMobile && (
+                  <Button
+                    variant="primary"
+                    size="xs"
+                    onClick={openPlanungspakete}
+                  >
+                    Die Pakete
+                  </Button>
+                )}
                 <Link href="/konfigurator">
                   <Button variant="landing-secondary-blue" size="xs">
                     Jetzt bauen
@@ -245,7 +249,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             className="w-full py-8 md:py-16 bg-white"
           >
             <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-4 md:mb-6">
+              <div className="text-center mb-12 md:mb-6">
                 <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                   Unterstützung gefällig?
                 </h1>
@@ -266,13 +270,15 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
 
               {/* Button Combo After Component */}
               <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
-                <Button
-                  variant="primary"
-                  size="xs"
-                  onClick={openPlanungspakete}
-                >
-                  Die Pakete
-                </Button>
+                {!isMobile && (
+                  <Button
+                    variant="primary"
+                    size="xs"
+                    onClick={openPlanungspakete}
+                  >
+                    Die Pakete
+                  </Button>
+                )}
                 <Link href="/konfigurator">
                   <Button variant="landing-secondary-blue" size="xs">
                     Jetzt bauen

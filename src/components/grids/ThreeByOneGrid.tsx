@@ -147,8 +147,8 @@ export default function ThreeByOneGrid({
               transition={{ duration: 0.6 }}
             >
               <HybridBlobImage
-                path={image2}
-                alt={image2Description}
+                path={image1}
+                alt={image1Description}
                 fill
                 className="object-contain object-center"
                 sizes="100vw"
@@ -182,8 +182,8 @@ export default function ThreeByOneGrid({
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <HybridBlobImage
-                path={image1}
-                alt={image1Description}
+                path={image2}
+                alt={image2Description}
                 fill
                 className="object-contain object-center"
                 sizes="100vw"
