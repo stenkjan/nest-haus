@@ -20,7 +20,7 @@ interface VideoCard16by9Props {
 
 // Fixed sizing system to ensure text area (1/3) has adequate space for content
 // Desktop: Text takes 1/3 width, video takes 2/3 width with 16:9 ratio
-// Mobile: Stacked layout with natural content height
+// Mobile: Match PlanungspaketeCards width (350px) with px-4 container padding
 const getCardDimensions = (screenWidth: number) => {
   // Calculate height based on video area width (2/3 of card) + consistent padding
   // Formula: (video_width / 16 * 9) + 30px padding = card_height
@@ -46,9 +46,9 @@ const getCardDimensions = (screenWidth: number) => {
     const videoHeight = (videoWidth / 16) * 9; // 450px
     return { width: cardWidth, height: videoHeight + 30 }; // 480px
   } else if (screenWidth >= 768) {
-    return { width: screenWidth - 64, height: undefined }; // Tablet: Use available width minus padding
+    return { width: 350, height: undefined }; // Tablet: Match PlanungspaketeCards width
   } else {
-    return { width: screenWidth - 48, height: undefined }; // Mobile: Use available width minus bigger padding
+    return { width: 350, height: undefined }; // Mobile: Match PlanungspaketeCards width (350px)
   }
 };
 
@@ -152,9 +152,7 @@ export default function VideoCard16by9({
       )}
 
       {/* Video Cards Container */}
-      <div
-        className={`${maxWidth ? "max-w-[1700px] mx-auto px-6 md:px-4" : "px-6 md:px-4"}`}
-      >
+      <div className={`${maxWidth ? "max-w-[1700px] mx-auto px-4" : "px-4"}`}>
         <div className="flex justify-center">
           {displayCards.map((card, index) => (
             <motion.div
@@ -284,7 +282,7 @@ export default function VideoCard16by9({
                   // Mobile/Tablet: Stacked layout (Text top, Video bottom with 1:1 aspect ratio)
                   <div className="flex flex-col">
                     {/* Text Content - More space with better padding */}
-                    <div className="flex flex-col justify-center items-center text-center px-6 py-8">
+                    <div className="flex flex-col justify-center items-center text-center px-6 py-6">
                       <motion.div
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -311,7 +309,7 @@ export default function VideoCard16by9({
                     </div>
 
                     {/* Video Content - Rectangle format with proper spacing */}
-                    <div className="relative overflow-hidden py-4 px-6 flex items-center justify-center">
+                    <div className="relative overflow-hidden py-4 px-4 flex items-center justify-center">
                       <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}

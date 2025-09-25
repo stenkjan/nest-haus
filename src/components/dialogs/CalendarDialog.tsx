@@ -147,7 +147,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({
       <div className="relative w-full h-full flex items-center justify-center">
         {/* Title above the dialog */}
         <div className="absolute top-[5vh] z-[100] w-full max-w-[1700px] px-6 left-0 right-0 mx-auto">
-          <h2 className="hidden md:block font-bold text-h2-mobile md:text-3xl text-center text-gray-900 mb-2">
+          <h2 className="hidden md:block font-bold text-h2-mobile md:text-3xl text-center text-gray-900 mb-0">
             Vereinbare jetzt deinen Termin
           </h2>
           <h3 className="hidden md:block text-center text-gray-600 text-lg">

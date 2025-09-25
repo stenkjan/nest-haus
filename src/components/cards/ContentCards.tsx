@@ -384,18 +384,34 @@ export default function ContentCards({
 
   // Prevent hydration mismatch by showing loading state until client is ready
   if (!isClient) {
+    // Check if we should show title/subtitle in loading state
+    const loadingShouldShowTitle =
+      !(
+        isLightboxMode &&
+        typeof window !== "undefined" &&
+        window.innerWidth < 768
+      ) &&
+      title &&
+      title.trim() !== "";
+
+    const loadingShouldShowSubtitle = subtitle && subtitle.trim() !== "";
+
+    // Only render title container if there's content to show
+    const loadingShouldRenderTitleContainer =
+      loadingShouldShowTitle || loadingShouldShowSubtitle;
+
     return (
       <div className={containerClasses}>
-        <div className="text-center mb-8">
-          {!(
-            isLightboxMode &&
-            typeof window !== "undefined" &&
-            window.innerWidth < 768
-          ) && (
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-          )}
-          {subtitle && <p className="text-gray-600">{subtitle}</p>}
-        </div>
+        {loadingShouldRenderTitleContainer && (
+          <div className="text-center mb-8">
+            {loadingShouldShowTitle && (
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+            )}
+            {loadingShouldShowSubtitle && (
+              <p className="text-gray-600">{subtitle}</p>
+            )}
+          </div>
+        )}
         <div className="flex justify-center items-center py-8">
           <div
             className="animate-pulse bg-gray-200 rounded-3xl"
@@ -431,16 +447,31 @@ export default function ContentCards({
     }
   };
 
+  // Check if we should show title/subtitle
+  const shouldShowTitle =
+    !(
+      isLightboxMode &&
+      typeof window !== "undefined" &&
+      window.innerWidth < 768
+    ) &&
+    title &&
+    title.trim() !== "";
+
+  const shouldShowSubtitle = subtitle && subtitle.trim() !== "";
+
+  // Only render title container if there's content to show
+  const shouldRenderTitleContainer = shouldShowTitle || shouldShowSubtitle;
+
   return (
     <div className={containerClasses}>
-      <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
-        {!(
-          isLightboxMode &&
-          typeof window !== "undefined" &&
-          window.innerWidth < 768
-        ) && <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>}
-        {subtitle && <p className="text-gray-600">{subtitle}</p>}
-      </div>
+      {shouldRenderTitleContainer && (
+        <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
+          {shouldShowTitle && (
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+          )}
+          {shouldShowSubtitle && <p className="text-gray-600">{subtitle}</p>}
+        </div>
+      )}
 
       {/* Cards Container */}
       <div className={`relative ${isLightboxMode ? "py-2" : "py-8"}`}>

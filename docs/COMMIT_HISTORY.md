@@ -4,6 +4,64 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [56e8b5581e4894fe99811d92656ff13ceab35fea] - Thu Sep 25 17:15:32 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [c299d3816bac888ce8b991c8ce4a0f6b0dfac20d] - Thu Sep 25 16:30:08 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [d8a74af831cd6a4ece130602cc6abd9cffd18efa] - Thu Sep 25 16:25:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b10fc6752e2d39a4734d74fd11d4c4c0489933ef] - Thu Sep 25 16:16:55 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/globals.css
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [be9f4bcb2371529d45de3b7f39ab5e85b3f45fe6] - Thu Sep 25 15:44:35 2025 +0200
 
 **Author**: stenkjan

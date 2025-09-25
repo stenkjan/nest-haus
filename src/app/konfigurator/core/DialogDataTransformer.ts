@@ -53,13 +53,13 @@ interface TransformedDialogData {
 
 // Default background colors for different categories
 const CATEGORY_COLORS = {
-  materials: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
-  innenverkleidung: ['#fefcfb', '#fef7ed', '#fed7aa', '#fdba74', '#fb923c'],
-  belichtungspaket: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
-  fenster: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
-  stirnseite: ['#e0f2fe', '#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9'],
-  fussboden: ['#fefdf2', '#fef3c7', '#fde68a', '#f59e0b', '#d97706'],
-  photovoltaik: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
+  materials: ['#f4f4f4', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
+  innenverkleidung: ['#f4f4f4', '#fef7ed', '#fed7aa', '#fdba74', '#fb923c'],
+  belichtungspaket: ['#f4f4f4', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
+  fenster: ['#f4f4f4', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
+  stirnseite: ['#f4f4f4', '#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9'],
+  fussboden: ['#f4f4f4', '#fef3c7', '#fde68a', '#f59e0b', '#d97706'],
+  photovoltaik: ['#f4f4f4', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8'],
 } as const;
 
 /**
