@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d00655110e27e242752000860a8a0000e45e0732] - Thu Sep 25 22:23:40 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance step management and tagging in UsabilityTestPopup  - Added logic to reset lastCommentStep when transitioning to a new step. - Improved step tagging functionality by checking for existing tags before adding. - Added console logs for better debugging and tracking of step changes and tagging actions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/testing/UsabilityTestPopup.tsx
+
+
+---
+
 ## [35d0b58e34fb3539377e4ee89a316487d153c2ae] - Thu Sep 25 22:13:41 2025 +0200
 
 **Author**: stenkjan
