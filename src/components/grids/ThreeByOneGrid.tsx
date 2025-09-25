@@ -31,7 +31,7 @@ export default function ThreeByOneGrid({
   title = "3x1 Grid",
   subtitle = "Responsive 3-column layout with text and images",
   maxWidth = true,
-  text = "Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch intelligente Optimierung – und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert: Präzisionsgefertigte Module, effiziente Fertigung und bewährte Konstruktion sichern höchste Qualität.",
+  text = "Standardisierung für Effizienz, Freiheit für Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird perfektioniert. Präzisionsgefertigte Module, effiziente Prozesse und bewährte Konstruktionen sichern höchste Qualität zu einem leistbaren Preis. Gleichzeitig bleibt volle Gestaltungsfreiheit dort, wo sie wirklich zählt.",
   mobileText,
   image1 = IMAGES.function.nestHausModulKonzept,
   image2 = IMAGES.function.nestHausModulSeiteKonzept,
