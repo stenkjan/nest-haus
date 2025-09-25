@@ -46,7 +46,6 @@ interface GetInContactBannerProps {
    */
   className?: string;
 }
-
 export function GetInContactBanner({
   id,
   title = "Kein Plan? Kein Problem!",
@@ -56,6 +55,15 @@ export function GetInContactBanner({
   backgroundColor = "#F4F4F4",
   className = "",
 }: GetInContactBannerProps) {
+  const handleButtonClick = () => {
+    if (onButtonClick) {
+      onButtonClick();
+    } else {
+      // Default behavior: navigate to /kontakt page
+      window.location.href = "/kontakt";
+    }
+  };
+
   return (
     <section
       id={id}
@@ -70,7 +78,7 @@ export function GetInContactBanner({
 
         {/* Single Button */}
         <div className="flex justify-center w-full mt-8">
-          <Button variant="primary" size="xs" onClick={onButtonClick}>
+          <Button variant="primary" size="xs" onClick={handleButtonClick}>
             {buttonText}
           </Button>
         </div>

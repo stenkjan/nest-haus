@@ -6,6 +6,7 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
+import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 import {
   ThreeByOneAdaptiveHeight,
   FullWidthImageGrid,
@@ -304,9 +305,15 @@ export default function UnserPartClient() {
 
             {/* Button Combo After Component */}
             <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
-              <Button variant="primary" size="xs" onClick={openPlanungspakete}>
-                Die Pakete
-              </Button>
+              {!isMobile && (
+                <Button
+                  variant="primary"
+                  size="xs"
+                  onClick={openPlanungspakete}
+                >
+                  Die Pakete
+                </Button>
+              )}
               <Link href="/konfigurator">
                 <Button variant="landing-secondary-blue" size="xs">
                   Jetzt bauen

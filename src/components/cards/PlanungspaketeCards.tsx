@@ -468,7 +468,7 @@ export default function PlanungspaketeCards({
                 >
                   {/* Top Section - EXPANDED HEIGHT */}
                   <div
-                    className={`px-6 py-2 overflow-hidden ${!isMobile ? "pb-8 pt-8" : "pt-8 pt-6"}`}
+                    className={`px-6 py-2 overflow-hidden ${!isMobile ? (card.id === 3 ? "pb-6 pt-8" : "pb-8 pt-8") : "pt-8 pt-6"}`}
                   >
                     {/* Header Row - Title/Subtitle left, Price right */}
                     <div className="flex">
@@ -502,7 +502,7 @@ export default function PlanungspaketeCards({
                         transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                         className="flex-1"
                       >
-                        <p className="p-primary-small overflow-hidden">
+                        <p className={`${card.id === 3 && !isMobile ? "p-primary-small-leading-tight" : "p-primary-small"} overflow-hidden`}>
                           {getCardText(card, "description")}
                         </p>
                       </motion.div>
