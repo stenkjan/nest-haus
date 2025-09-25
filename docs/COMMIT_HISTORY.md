@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9d7d65d9ce6ffac9b0cd8176ef47d76d6d57aa72] - Fri Sep 26 00:15:47 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update SEO metadata image paths for improved image handling  - Replaced static image paths with dynamic API calls for Open Graph and Twitter images in generateMetadata.ts to enhance image management and ensure proper image loading.  `
+
+### Changes Analysis
+
+---
+
 ## [338761e887721729ef65fa9731cbc53e404ffd0c] - Thu Sep 25 23:42:51 2025 +0200
 
 **Author**: stenkjan
