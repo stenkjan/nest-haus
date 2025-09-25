@@ -33,7 +33,7 @@ export default function ImpressumClient() {
             </h2>
 
             <div className="max-w-4xl mx-auto text-center space-y-8">
-              <h3 className="text-2xl font-medium mb-8">NEST-Haus GmbH</h3>
+              <h3 className="text-2xl font-medium mb-8">Eco Chalets GmbH</h3>
 
               <div className="grid md:grid-cols-2 gap-12 text-gray-700">
                 <div className="space-y-6">
@@ -42,8 +42,8 @@ export default function ImpressumClient() {
                       Firmenanschrift
                     </h4>
                     <div className="space-y-1">
-                      <p>[Straße und Hausnummer]</p>
-                      <p>[PLZ Ort]</p>
+                      <p>Zösenberg 51</p>
+                      <p>A-8045 Weinitzen</p>
                       <p>Österreich</p>
                     </div>
                   </div>
@@ -52,7 +52,10 @@ export default function ImpressumClient() {
                     <h4 className="font-medium text-lg mb-3">
                       Geschäftsführung
                     </h4>
-                    <p>[Name des Geschäftsführers]</p>
+                    <p>DI Markus Schmoltner</p>
+                    <p className="text-sm">Architekt & Geschäftsführer</p>
+                    <p>Bernhard Grentner</p>
+                    <p className="text-sm">Geschäftsführer</p>
                   </div>
                 </div>
 
@@ -63,26 +66,18 @@ export default function ImpressumClient() {
                     </h4>
                     <div className="space-y-1">
                       <p>
-                        <strong>Firmenbuchnummer:</strong> FN [Nummer]
+                        <strong>Firmenbuchnummer:</strong> FN 615495s
                       </p>
                       <p>
-                        <strong>Firmenbuchgericht:</strong> [Gericht]
+                        <strong>Firmenbuchgericht:</strong> Landesgericht für
+                        ZRS Graz
                       </p>
                       <p>
                         <strong>Rechtsform:</strong> Gesellschaft mit
                         beschränkter Haftung
                       </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-lg mb-3">Steuernummer</h4>
-                    <div className="space-y-1">
                       <p>
-                        <strong>UID-Nummer:</strong> ATU [Nummer]
-                      </p>
-                      <p>
-                        <strong>Steuernummer:</strong> [Steuernummer]
+                        <strong>UID-Nummer:</strong> ATU80031207
                       </p>
                     </div>
                   </div>
@@ -106,17 +101,17 @@ export default function ImpressumClient() {
                   <div className="space-y-4">
                     <div>
                       <h4 className="font-medium mb-2">Telefon</h4>
-                      <p>[Ihre Telefonnummer]</p>
+                      <p>+43 664 2531869</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">E-Mail</h4>
-                      <p>info@nest-haus.at</p>
+                      <p>markus@sustain-nest.com</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Website</h4>
-                      <p>www.nest-haus.at</p>
+                      <p>www.sustain-nest.com</p>
                     </div>
 
                     <div>
@@ -135,22 +130,22 @@ export default function ImpressumClient() {
                   <div className="space-y-4">
                     <div>
                       <h4 className="font-medium mb-2">Beratung & Planung</h4>
-                      <p>beratung@nest-haus.at</p>
+                      <p>markus@sustain-nest.com</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Kundenservice</h4>
-                      <p>service@nest-haus.at</p>
+                      <p>markus@sustain-nest.com</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Datenschutz</h4>
-                      <p>datenschutz@nest-haus.at</p>
+                      <p>markus@sustain-nest.com</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Presse & Medien</h4>
-                      <p>presse@nest-haus.at</p>
+                      <p>markus@sustain-nest.com</p>
                     </div>
                   </div>
                 </div>
@@ -171,13 +166,15 @@ export default function ImpressumClient() {
                 <h3 className="text-2xl font-medium">Gewerbeordnung</h3>
                 <div className="space-y-2">
                   <p>
-                    <strong>Gewerbeberechtigung:</strong> Baumeistergewerbe
+                    <strong>Gewerbeberechtigung:</strong> Architektur und
+                    Ingenieurkonsulentenwesen
                   </p>
                   <p>
-                    <strong>Gewerbebehörde:</strong> [Zuständige Behörde]
+                    <strong>Gewerbebehörde:</strong> Kammer der Architekten und
+                    Ingenieurkonsulenten für Steiermark und Kärnten
                   </p>
                   <p>
-                    <strong>Berufsbezeichnung:</strong> Baumeister
+                    <strong>Berufsbezeichnung:</strong> Architekt
                   </p>
                   <p>
                     <strong>Verleihungsstaat:</strong> Österreich
@@ -189,14 +186,14 @@ export default function ImpressumClient() {
                 <h3 className="text-2xl font-medium">Kammerzugehörigkeit</h3>
                 <div className="space-y-2">
                   <p>
-                    <strong>Wirtschaftskammer:</strong> Wirtschaftskammer
-                    [Bundesland]
+                    <strong>Architektenkammer:</strong> Kammer der Architekten
+                    und Ingenieurkonsulenten für Steiermark und Kärnten
                   </p>
                   <p>
-                    <strong>Fachgruppe:</strong> Baugewerbe
+                    <strong>Fachgruppe:</strong> Architektur
                   </p>
                   <p>
-                    <strong>Mitgliedsnummer:</strong> [Nummer]
+                    <strong>Mitgliedsnummer:</strong> wird nachgereicht
                   </p>
                 </div>
               </div>
@@ -217,13 +214,14 @@ export default function ImpressumClient() {
                 <h3 className="text-2xl font-medium">Aufsichtsbehörde</h3>
                 <div className="space-y-2">
                   <p>
-                    <strong>Bezirkshauptmannschaft:</strong> [Zuständige BH]
+                    <strong>Aufsichtsbehörde:</strong> Kammer der Architekten
+                    und Ingenieurkonsulenten für Steiermark und Kärnten
                   </p>
                   <p>
-                    <strong>Gewerbebehörde:</strong> [Adresse]
+                    <strong>Adresse:</strong> Schönaugürtel 8a, 8010 Graz
                   </p>
                   <p>
-                    <strong>Telefon:</strong> [Telefonnummer]
+                    <strong>Telefon:</strong> +43 316 323 200
                   </p>
                 </div>
               </div>
@@ -235,11 +233,9 @@ export default function ImpressumClient() {
                 <div className="space-y-4">
                   <p>Es gelten folgende berufsrechtliche Regelungen:</p>
                   <div className="space-y-1">
-                    <p>
-                      Gewerbeordnung (GewO) • Bauordnung des jeweiligen
-                      Bundeslandes
-                    </p>
+                    <p>Architektengesetz (ArchG) • Bauordnung für Steiermark</p>
                     <p>ÖNORMEN für das Bauwesen • EU-Bauproduktenverordnung</p>
+                    <p>Ingenieurkonsulentgesetz (IKG)</p>
                   </div>
                   <p className="pt-4">
                     <strong>Einsehbar unter:</strong>
@@ -326,7 +322,7 @@ export default function ImpressumClient() {
                 <p className="text-lg">
                   Bei Fragen zu diesem Impressum wenden Sie sich bitte an:
                 </p>
-                <p className="text-xl font-medium">info@nest-haus.at</p>
+                <p className="text-xl font-medium">markus@sustain-nest.com</p>
               </div>
             </div>
           </div>

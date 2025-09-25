@@ -115,11 +115,11 @@ export const TEST_STEPS: TestStep[] = [
      */
     {
         id: "feedback-phase",
-        title: "Schritt 3: Feedback-Fragebogen",
+        title: "Schritt 4: Feedback-Fragebogen",
         description: "Teile deine Erfahrungen mit uns",
         targetPage: "*", // Can appear on any page
         triggerCondition: "purchase_completed_or_manual",
-        instructions: "VORABINFO: Wir bitten dich darum wirklich ehrliche Antworten zu geben. Schmeichelei bringt uns nix weiter - wir suchen nach harter Kritik an den richtigen stellen, damit wir unsere Website weiter optimieren können! :-)\n\n→ Sei ehrlich und direkt! ;-)\n\nNun würden wir uns sehr freuen wenn du dir ein paar Minuten Zeit nimmst, und versuchst unsere Feedback-Fragen bestmöglichst zu beantworten. Keine Sorge, es gibt kein richtig oder falsch, uns hilft jede ehrliche Antwort.",
+        instructions: "VORABINFO: Wir bitten dich darum wirklich ehrliche Antworten zu geben. Schmeichelei bringt uns nix weiter - wir suchen nach harter Kritik an den richtigen stellen, damit wir unsere Website weiter optimieren können! :-)\n\n→ Sei ehrlich und direkt! ;-)\n\nNun würden wir uns sehr freuen wenn du dir ein paar Minuten Zeit nimmst, und versuchst unsere Feedback-Fragen bestmöglichst zu beantworten. Keine Sorge, es gibt kein richtig oder falsch, uns hilft jede ehrliche Antwort.\n\nHinweis: 1 steht für schlecht, 6 steht für gut",
         questions: [
             // ===== QUANTITATIVE QUESTIONS (1-6 Scale) =====
             // (1 = sehr schlecht / 6 = sehr gut)
@@ -127,49 +127,49 @@ export const TEST_STEPS: TestStep[] = [
                 id: "navigation-ease",
                 type: "rating",
                 question: "Wie einfach war es für dich, sich auf der Website zu orientieren und zu navigieren?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "configurator-usability",
                 type: "rating",
                 question: "Wie benutzerfreundlich fandest du den Haus-Konfigurator?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "nest-haus-understanding",
                 type: "rating",
                 question: "Hast du das Gefühl, dass du verstanden hast wie das Nest Haus funktioniert?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "purchase-process",
                 type: "rating",
                 question: "Wie bewertest du den Bestellprozess im Warenkorb?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "configurator-options",
                 type: "rating",
                 question: "Wie gut gefallen dir die Auswahlmöglichkeiten im Konfigurator?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "website-overall",
                 type: "rating",
                 question: "Wie gefällt dir unsere Nest Haus Website?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "purchase-intention",
                 type: "rating",
                 question: "Könntest du dir vorstellen einmal ein Nest Haus zu bauen?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
 
@@ -178,91 +178,91 @@ export const TEST_STEPS: TestStep[] = [
                 id: "content-display-issues",
                 type: "text",
                 question: "Waren die Inhalte und Grafiken gut erkennbar oder gab es Darstellungsprobleme, Lade-Probleme oder dergleichen?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "main-challenge",
                 type: "text",
                 question: "Gab es eine grundsätzliche Herausforderung oder ein großes Problem bei der Nutzung der Website?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "nest-haus-concept-understanding",
                 type: "text",
                 question: "Hast du nach dem Besuch der Website verstanden, wie das NEST-Haus funktioniert (z. B. Module, Aufbau, Flexibilität)?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "missing-information",
                 type: "text",
                 question: "Welche Informationen hast du vermisst oder hättest du gerne zusätzlich gesehen?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "improvement-suggestions",
                 type: "text",
                 question: "Hast du konkrete Verbesserungsvorschläge für die Website oder den Konfigurator?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "advantages-disadvantages",
                 type: "text",
                 question: "Versuche Vor- und Nachteile aus deiner Sicht gegenüber herkömmlichen Hausbaumethoden zu erklären. (Bitte bestmöglich beantworten - ist für uns eine sehr wichtige Frage)",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "purchase-to-move-in-process",
                 type: "text",
                 question: "Erkläre den Prozess von Kauf bis zum bezugsfertigen Haus in eigenen Worten.",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "window-wall-positioning",
                 type: "text",
                 question: "Wie wird die Positionierung von Fenstern und Innenwänden festgelegt?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "house-categorization",
                 type: "text",
                 question: "Wie würdest du das Nest Haus kategorisieren? (Fertigteilhaus, Tiny House, Massivhaus, Modulbauhaus, Holz-Haus, mobile-home oder eine eigene Kategorie?)",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "additional-costs",
                 type: "text",
                 question: "Welche weiteren Kosten kommen deiner Meinung nach, nach dem Kauf noch auf dich zu, bis du einziehen kannst?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "unclear-topics",
                 type: "text",
                 question: "Welches Thema ist für dich noch am unklarsten? Wo bleiben Fragezeichen?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "confusing-elements",
                 type: "text",
                 question: "Gab es irgendetwas, was dich irritiert oder verunsichert hat?",
-                required: true,
+                required: false,
                 step: "feedback"
             },
             {
                 id: "detailed-description-needs",
                 type: "text",
                 question: "Was hättest du gerne noch genauer beschrieben?",
-                required: true,
+                required: false,
                 step: "feedback"
             }
         ],
@@ -423,6 +423,7 @@ export function resetAlphaTest(): void {
     localStorage.removeItem("nest-haus-test-start-time");
     localStorage.removeItem("nest-haus-test-last-closed");
     localStorage.removeItem("alphaTestNavigationTriggered");
+    localStorage.removeItem("nest-haus-test-comments");
 
     console.log("🧪 Alpha test data cleared - fresh start");
 }

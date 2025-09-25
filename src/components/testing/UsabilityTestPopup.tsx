@@ -552,6 +552,7 @@ export default function UsabilityTestPopup({
         localStorage.removeItem("nest-haus-test-responses");
         localStorage.removeItem("nest-haus-test-session-id");
         localStorage.removeItem("nest-haus-test-start-time");
+        localStorage.removeItem("nest-haus-test-comments");
       }
 
       // Removed alert - user will be redirected to completion page
