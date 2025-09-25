@@ -46,9 +46,9 @@ const getCardDimensions = (screenWidth: number) => {
     const videoHeight = (videoWidth / 16) * 9; // 450px
     return { width: cardWidth, height: videoHeight + 30 }; // 480px
   } else if (screenWidth >= 768) {
-    return { width: 336, height: undefined }; // Tablet: Use natural height
+    return { width: screenWidth - 64, height: undefined }; // Tablet: Use available width minus padding
   } else {
-    return { width: 312, height: undefined }; // Mobile: Use natural height
+    return { width: screenWidth - 48, height: undefined }; // Mobile: Use available width minus bigger padding
   }
 };
 
@@ -152,7 +152,9 @@ export default function VideoCard16by9({
       )}
 
       {/* Video Cards Container */}
-      <div className={`${maxWidth ? "max-w-[1700px] mx-auto px-4" : "px-4"}`}>
+      <div
+        className={`${maxWidth ? "max-w-[1700px] mx-auto px-6 md:px-4" : "px-6 md:px-4"}`}
+      >
         <div className="flex justify-center">
           {displayCards.map((card, index) => (
             <motion.div
@@ -281,13 +283,13 @@ export default function VideoCard16by9({
                 ) : (
                   // Mobile/Tablet: Stacked layout (Text top, Video bottom with 1:1 aspect ratio)
                   <div className="flex flex-col">
-                    {/* Text Content - Natural height with padding */}
-                    <div className="flex flex-col justify-center items-center text-center p-6">
+                    {/* Text Content - More space with better padding */}
+                    <div className="flex flex-col justify-center items-center text-center px-6 py-8">
                       <motion.div
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1, duration: 0.6 }}
-                        className="w-full max-w-md"
+                        className="w-full max-w-none"
                       >
                         <h2
                           className={`h2-title text-gray-900 ${
@@ -308,8 +310,8 @@ export default function VideoCard16by9({
                       </motion.div>
                     </div>
 
-                    {/* Video Content - Natural height with small padding gap */}
-                    <div className="relative overflow-hidden py-4 px-4 flex items-center justify-center">
+                    {/* Video Content - Rectangle format with proper spacing */}
+                    <div className="relative overflow-hidden py-4 px-6 flex items-center justify-center">
                       <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -319,7 +321,7 @@ export default function VideoCard16by9({
                         }}
                         className="relative rounded-2xl md:rounded-3xl overflow-hidden"
                         style={{
-                          aspectRatio: "1/1", // 1:1 aspect ratio for mobile video
+                          aspectRatio: "16/10", // 16:10 aspect ratio for mobile video (more rectangular)
                           width: "100%",
                           height: "auto",
                         }}

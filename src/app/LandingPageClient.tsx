@@ -116,7 +116,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const,
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
   {
     id: 8,
