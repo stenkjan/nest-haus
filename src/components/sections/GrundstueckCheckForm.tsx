@@ -274,7 +274,7 @@ export function GrundstueckCheckForm({
                 </p>
                 {/* Spacer to align with Name/Nachname form fields */}
                 <div className="h-3"></div>
-                <p className="p-primary text-gray-700 leading-loose mb-16">
+                <p className="p-primary text-gray-700 leading-loose mb-24">
                   Dabei verbinden wir deine <strong>Wünsche</strong> mit den
                   gegebenen <strong>Rahmenbedingungen</strong> und schaffen so
                   die ideale Grundlage für dein{" "}
