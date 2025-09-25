@@ -128,7 +128,7 @@ export default function UnserPartClient() {
           <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
             <div className="text-center mb-12">
               <h1 className="h1-secondary text-white mb-2 md:mb-3">
-                Dein Nest System
+                Dein ®Nest System
               </h1>
               <h3 className="h3-secondary text-nest-gray">
                 Individualisiert, wo es Freiheit braucht. Standardisiert, wo es

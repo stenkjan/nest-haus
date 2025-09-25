@@ -1033,7 +1033,7 @@ export default function CheckoutStepper({
                           1
                         )}`}
                       >
-                        Check und Entwurf
+                        Vorentwurf & Check
                       </div>
                       <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                         {getRowSubtitle(1)}
@@ -1105,20 +1105,21 @@ export default function CheckoutStepper({
                     <div
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(3)}`}
                     >
-                      <span className="inline-flex items-center gap-2">
-                        {getAppointmentSummaryShort() ? (
-                          <>
-                            <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line">
-                              {getAppointmentSummaryShort()}
-                            </span>
-                            <span aria-hidden className="text-blue-500">
-                              ✓
-                            </span>
-                          </>
-                        ) : (
-                          "—"
-                        )}
-                      </span>
+                      {getAppointmentSummaryShort() ? (
+                        <div className="flex items-start gap-2 justify-end">
+                          <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line text-right max-w-[120px] md:max-w-none">
+                            {getAppointmentSummaryShort()}
+                          </span>
+                          <span
+                            aria-hidden
+                            className="text-blue-500 flex-shrink-0"
+                          >
+                            ✓
+                          </span>
+                        </div>
+                      ) : (
+                        "—"
+                      )}
                     </div>
                   </div>
                   <div className={rowWrapperClass}>
@@ -1136,14 +1137,17 @@ export default function CheckoutStepper({
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
                     >
                       {getAppointmentSummary() ? (
-                        <span className="inline-flex items-center gap-2">
-                          <span className="text-xs md:text-sm text-gray-600">
+                        <div className="flex items-start gap-2 justify-end">
+                          <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
                             {deliveryDateString}
                           </span>
-                          <span aria-hidden className="text-blue-500">
+                          <span
+                            aria-hidden
+                            className="text-blue-500 flex-shrink-0"
+                          >
                             ✓
                           </span>
-                        </span>
+                        </div>
                       ) : (
                         "—"
                       )}
@@ -1672,14 +1676,15 @@ export default function CheckoutStepper({
               <div className="mt-16">
                 <div className="text-center mb-8 pt-8">
                   <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
-                    Deine Daten
+                    Dein Nest-Haus Vorentwurf
                   </h1>
                   <h3 className="h3-secondary text-gray-600 mb-8 pb-4 max-w-3xl mx-auto">
-                    Wir Prüfen deinen Baugrund
+                    Wir überprüfen für dich wie dein Nest-Haus auf ein
+                    Grundstück deiner Wahl passt
                   </h3>
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-                  <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24">
+                  <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
                     <p className="p-secondary text-black mb-4 mt-12">
                       <span className="text-gray-500">Wir prüfen, ob</span>{" "}
                       <span className="text-black">dein Grundstück</span>{" "}
@@ -2222,7 +2227,15 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                  {getAppointmentSummary() || "—"}
+                                  {getAppointmentSummary() ? (
+                                    <div className="flex items-start justify-end">
+                                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
+                                        {getAppointmentSummaryShort()}
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    "—"
+                                  )}
                                 </div>
                               </div>
                             </div>
