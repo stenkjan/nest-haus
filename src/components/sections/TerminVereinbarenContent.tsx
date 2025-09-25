@@ -47,9 +47,9 @@ export const TerminVereinbarenContent: React.FC<
             </h4>
             <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm text-gray-700">
               <span>Telefon:</span>
-              <span>+43 (0) 3847 75090</span>
+              <span>+43 (0) 664 5403399</span>
               <span>Mobil:</span>
-              <span>+43 (0) 664 3949604</span>
+              <span>+43 (0) 664 2531869</span>
               <span>Email:</span>
               <span>nest@haus.at</span>
             </div>
@@ -99,11 +99,9 @@ export const TerminVereinbarenContent: React.FC<
               </h2>
               <div className="text-center">
                 <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  <span className="font-medium">Telefon:</span> +43 (0) 3847
-                  75090
+                  <span className="font-medium">Telefon:</span> +43 (0) 664 5403399
                   <br />
-                  <span className="font-medium">Mobil:</span> +43 (0) 664
-                  3949604
+                  <span className="font-medium">Mobil:</span> +43 (0) 664 2531869
                   <br />
                   <span className="font-medium">Email:</span> nest@haus.at
                 </p>
@@ -167,9 +165,9 @@ export const TerminVereinbarenContent: React.FC<
             </h2>
             <div>
               <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                <span className="font-medium">Telefon:</span> +43 (0) 3847 75090
+                <span className="font-medium">Telefon:</span> +43 (0) 664 5403399
                 <br />
-                <span className="font-medium">Mobil:</span> +43 (0) 664 3949604
+                <span className="font-medium">Mobil:</span> +43 (0) 664 2531869
                 <br />
                 <span className="font-medium">Email:</span> nest@haus.at
               </p>

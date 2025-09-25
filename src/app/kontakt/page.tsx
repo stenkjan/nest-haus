@@ -62,7 +62,7 @@ const localBusinessSchema = {
   name: "NEST-Haus",
   image: "https://nest-haus.at/images/nest-haus-buero.jpg",
   email: "hello@nest.at",
-  telephone: "03847 75090",
+  telephone: "0043 664 5403399",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Karmeliterplatz 8",
