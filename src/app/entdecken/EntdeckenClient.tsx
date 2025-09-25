@@ -224,7 +224,7 @@ export default function EntdeckenClient() {
         {/* Section 3 - Dein Zuhause zieht um */}
         <section id="zuhause-zieht-um" className="w-full pt-8 md:py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center md:mb-12">
+            <div className="text-center md:mb-12 mb-12">
               <h1 className="h1-secondary mb-2">Dein Zuhause zieht um</h1>
               <h3 className="h3-secondary text-black max-w-3xl mx-auto text-center">
                 Architektur für ein bewegtes Leben.
@@ -307,7 +307,7 @@ export default function EntdeckenClient() {
         {/* Section 5 - Grundstück Check */}
         <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-4 md:mb-12">
+            <div className="text-center mb-12">
               <h1 className="h1-secondary mb-2 md:mb-3">
                 <span className="block md:inline">Konfiguriere dein</span>
                 <span className="block md:inline"> ®Nest Haus</span>
@@ -331,7 +331,7 @@ export default function EntdeckenClient() {
         {/* Section 6 - So läuft es ab */}
         <section id="ablauf" className="w-full py-8 md:py-4 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
+            <div className="text-center mb-12">
               <h1 className="h1-secondary mb-2 md:mb-3">So läuft&apos;s ab</h1>
               <h3 className="h3-secondary text-black mb-2 md:mb-4">
                 Dein Weg zum Nest-Haus
