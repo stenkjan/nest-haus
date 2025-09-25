@@ -639,7 +639,12 @@ export default function UsabilityTestPopup({
   // Show minimized state
   if (isMinimized) {
     return (
-      <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[9999]">
+      <div
+        className="fixed right-4 sm:right-6 z-[9999]"
+        style={{
+          top: "calc(var(--navbar-height, 3.5rem) + 0.5rem)",
+        }}
+      >
         <button
           onClick={handleMinimize}
           className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors flex items-center justify-center opacity-70 hover:opacity-100"
