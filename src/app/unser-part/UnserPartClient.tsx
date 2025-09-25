@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
@@ -82,6 +83,7 @@ export default function UnserPartClient() {
   const [isMobile, setIsMobile] = useState(false);
   const { isOpen, openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
+  const router = useRouter();
 
   // Simple width-based mobile detection (same as entdecken page)
   useEffect(() => {
@@ -105,6 +107,15 @@ export default function UnserPartClient() {
     currentSectionId,
     enabled: true,
   });
+
+  // Button click handlers
+  const handleDiePaketeClick = () => {
+    openPlanungspakete();
+  };
+
+  const handleJetztBauenClick = () => {
+    router.push("/konfigurator");
+  };
 
   return (
     <div
@@ -142,6 +153,7 @@ export default function UnserPartClient() {
                   muted={true}
                   playsInline={true}
                   controls={false}
+                  playbackRate={2.5}
                   enableCache={true}
                   onError={(error) => {
                     console.error("🎥 Video component error:", error);
@@ -164,7 +176,7 @@ export default function UnserPartClient() {
             title="Manchmal kommt es auf die Größe an."
             subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
             backgroundColor="black"
-            text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz.</span> <span class='text-white font-medium'>Freiheit</span> <span class='text-nest-gray'>für Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span><br /><br /><span class='text-nest-gray'>Gleichzeitig bleibt volle</span> <span class='text-white font-medium'>Gestaltungsfreiheit dort, wo sie wirklich zählt.</span></p>"
+            text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span><br/><br/><span class='text-nest-gray'>Gleichzeitig bleibt volle</span> <span class='text-white font-medium'>Gestaltungsfreiheit</span> <span class='text-nest-gray'>dort, wo sie wirklich zählt.</span></p>"
             textPosition="left"
             maxWidth={false}
             image1={IMAGES.function.nestHausModulKonzept}
@@ -252,6 +264,8 @@ export default function UnserPartClient() {
               showButtons={true}
               primaryButtonText="Die Pakete"
               secondaryButtonText="Jetzt bauen"
+              primaryButtonOnClick={handleDiePaketeClick}
+              secondaryButtonOnClick={handleJetztBauenClick}
             />
           </div>
         </section>

@@ -21,6 +21,8 @@ interface ThreeByOneGridProps {
   showButtons?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
+  primaryButtonOnClick?: () => void;
+  secondaryButtonOnClick?: () => void;
   textClassName?: string;
   textWrapperClassName?: string;
   image1ClassName?: string;
@@ -30,7 +32,7 @@ export default function ThreeByOneGrid({
   title = "3x1 Grid",
   subtitle = "Responsive 3-column layout with text and images",
   maxWidth = true,
-  text = "Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch intelligente Optimierung – und volle gestalterische Freiheit dort, wo sie wirklich zählt. Alles, was sinnvoll standardisierbar ist, wird perfektioniert: Präzisionsgefertigte Module, effiziente Fertigung und bewährte Konstruktion sichern höchste Qualität.",
+  text = "Standardisierung für Effizienz, Freiheit für Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird perfektioniert. Präzisionsgefertigte Module, effiziente Prozesse und bewährte Konstruktionen sichern höchste Qualität zu einem leistbaren Preis. Gleichzeitig bleibt volle Gestaltungsfreiheit dort, wo sie wirklich zählt.",
   mobileText,
   image1 = IMAGES.function.nestHausModulKonzept,
   image2 = IMAGES.function.nestHausModulSeiteKonzept,
@@ -41,6 +43,8 @@ export default function ThreeByOneGrid({
   showButtons = false,
   primaryButtonText = "Primary Action",
   secondaryButtonText = "Secondary Action",
+  primaryButtonOnClick,
+  secondaryButtonOnClick,
   textClassName = "",
   textWrapperClassName = "",
   image1ClassName = "",
@@ -365,6 +369,7 @@ export default function ThreeByOneGrid({
                           variant="primary-narrow"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={primaryButtonOnClick}
                         >
                           {primaryButtonText}
                         </Button>
@@ -372,6 +377,7 @@ export default function ThreeByOneGrid({
                           variant="secondary-narrow-white"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={secondaryButtonOnClick}
                         >
                           {secondaryButtonText}
                         </Button>
@@ -610,6 +616,7 @@ export default function ThreeByOneGrid({
                           variant="primary-narrow"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={primaryButtonOnClick}
                         >
                           {primaryButtonText}
                         </Button>
@@ -617,6 +624,7 @@ export default function ThreeByOneGrid({
                           variant="secondary-narrow-white"
                           size="xs"
                           className="flex-shrink-0"
+                          onClick={secondaryButtonOnClick}
                         >
                           {secondaryButtonText}
                         </Button>

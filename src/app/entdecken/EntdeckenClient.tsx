@@ -123,6 +123,7 @@ export default function EntdeckenClient() {
                   muted={true}
                   controls={false}
                   loop={true}
+                  playbackRate={1}
                   className="w-full h-auto object-cover"
                 />
               </div>
@@ -147,6 +148,7 @@ export default function EntdeckenClient() {
                     muted={true}
                     controls={false}
                     loop={true}
+                    playbackRate={1}
                     className="w-full h-full object-cover"
                   />
                 </div>
