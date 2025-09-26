@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4c32fa6685120387cecf5eda59f19042b8f39a68] - Fri Sep 26 13:44:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update image paths in constants for consistency and accuracy  - Swapped image identifiers for nestHaus1 and nestHaus2 in images.ts to ensure correct mapping. - Adjusted mobile image identifiers for nestHaus1 and nestHaus2 to match the updated paths for better consistency across platforms.  `
+
+### Changes Analysis
+
+---
+
 ## [80b7f5020daadcc0de7d7205d6d1a990f909f357] - Fri Sep 26 01:03:30 2025 +0200
 
 **Author**: stenkjan
