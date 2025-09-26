@@ -130,26 +130,34 @@ export default function ResponsiveHybridImage({
   // Only render ONE image based on actual device detection
   // CRITICAL FIX: For non-critical images, ensure we don't use mobile path during initial render
   const shouldUseMobilePath = isMobile && (isClient || isCritical || isAboveFold);
-  const imagePath = shouldUseMobilePath ? mobilePath : desktopPath;
+  let imagePath = shouldUseMobilePath ? mobilePath : desktopPath;
   const deviceType = shouldUseMobilePath ? "Mobile" : "Desktop";
+
+  // Remove cache-busting for now - it was causing invalid paths
 
   // Enhanced alt text with device context for debugging
   const enhancedAlt = `${alt} - ${deviceType} optimized`;
 
   // Debug logging in development to verify correct path selection
   if (process.env.NODE_ENV === "development") {
-    console.log(
-      `🖼️ ResponsiveHybridImage: ${deviceType} detected (width: ${typeof window !== "undefined" ? window.innerWidth : "SSR"
-      })`
-    );
+    const debugId = `${alt?.slice(0, 20)}...` || 'Unknown';
+    console.group(`🖼️ ResponsiveHybridImage: ${debugId}`);
+    console.log(`🖥️ Device: ${deviceType} (width: ${typeof window !== "undefined" ? window.innerWidth : "SSR"})`);
     console.log(`📱 Mobile path: ${mobilePath}`);
     console.log(`💻 Desktop path: ${desktopPath}`);
     console.log(`✅ Selected path: ${imagePath}`);
     console.log(`🔧 Strategy: ${strategy}, Critical: ${isCritical}, AboveFold: ${isAboveFold}`);
     console.log(`🖥️ isClient: ${isClient}, isMobile: ${isMobile}, shouldUseMobilePath: ${shouldUseMobilePath}`);
-    console.log(
-      `📐 Aspect ratio: ${shouldUseMobilePath ? mobileAspectRatio : desktopAspectRatio}`
-    );
+    console.log(`📐 Aspect ratio: ${shouldUseMobilePath ? mobileAspectRatio : desktopAspectRatio}`);
+
+    // Additional debug info for nestHaus8
+    if (typeof window !== "undefined" && desktopPath?.includes('1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS')) {
+      console.log(`🔍 NESTHAUS8 DEBUG: This is the problematic image`);
+      console.log(`🔍 User Agent: ${navigator.userAgent}`);
+      console.log(`🔍 Window dimensions: ${window.innerWidth}x${window.innerHeight}`);
+    }
+
+    console.groupEnd();
   }
 
   // Handle different rendering approaches for mobile vs desktop
