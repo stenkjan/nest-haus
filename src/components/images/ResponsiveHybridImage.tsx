@@ -130,10 +130,8 @@ export default function ResponsiveHybridImage({
   // Only render ONE image based on actual device detection
   // CRITICAL FIX: For non-critical images, ensure we don't use mobile path during initial render
   const shouldUseMobilePath = isMobile && (isClient || isCritical || isAboveFold);
-  let imagePath = shouldUseMobilePath ? mobilePath : desktopPath;
+  const imagePath = shouldUseMobilePath ? mobilePath : desktopPath;
   const deviceType = shouldUseMobilePath ? "Mobile" : "Desktop";
-
-  // Remove cache-busting for now - it was causing invalid paths
 
   // Enhanced alt text with device context for debugging
   const enhancedAlt = `${alt} - ${deviceType} optimized`;
