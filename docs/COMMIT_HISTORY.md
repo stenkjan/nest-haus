@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6fce94438e9de84d7255e3750183b3c76b100933] - Fri Sep 26 15:56:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: enhance mobile detection and rendering logic in ResponsiveHybridImage  - Improved initial mobile state determination for critical images during SSR to prevent hydration mismatches. - Enhanced mobile detection by combining viewport size and user agent checks. - Updated rendering logic to ensure non-critical images use the desktop path during initial render. - Added detailed debug logging for better path selection verification.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ResponsiveHybridImage.tsx
+
+
+---
+
 ## [65bcaed41e40d01f29e5404a91628be29dd9a9b6] - Fri Sep 26 13:53:13 2025 +0200
 
 **Author**: stenkjan
