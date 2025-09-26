@@ -476,6 +476,12 @@ export default function AlphaTestDashboard() {
     comments: string;
     createdAt: string;
   } | null>(null);
+  const [deletingTests, setDeletingTests] = useState<Set<string>>(new Set());
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<{
+    testId: string;
+    participantName: string;
+  } | null>(null);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   // Helper function to extract key findings from responses
   const extractKeyFindings = (
@@ -1047,6 +1053,83 @@ export default function AlphaTestDashboard() {
       console.error("Error exporting to PDF:", error);
       alert("Failed to export PDF. Please try again.");
     }
+  };
+
+  const deleteTest = async (testId: string) => {
+    try {
+      setDeletingTests(prev => new Set(prev).add(testId));
+      console.log("🗑️ Deleting test:", testId);
+
+      const response = await fetch(`/api/admin/usability-tests/delete?testId=${encodeURIComponent(testId)}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("✅ Test deleted successfully:", result);
+        // Refresh analytics to update the UI
+        await fetchAnalytics();
+        setResetSuccess(`Test ${testId.substring(0, 8)}... deleted successfully`);
+        setTimeout(() => setResetSuccess(null), 3000);
+      } else {
+        console.error("❌ Failed to delete test:", result.error);
+        alert(`Failed to delete test: ${result.error}`);
+      }
+    } catch (error) {
+      console.error("❌ Delete test failed:", error);
+      alert("Failed to delete test. Please try again.");
+    } finally {
+      setDeletingTests(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(testId);
+        return newSet;
+      });
+      setShowDeleteConfirm(null);
+    }
+  };
+
+  const bulkDeleteOldTests = async () => {
+    try {
+      setBulkDeleting(true);
+      console.log("🗑️ Bulk deleting tests older than 7 days...");
+
+      // Calculate date 7 days ago (September 20, 2025)
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      
+      const response = await fetch('/api/admin/usability-tests/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          beforeDate: sevenDaysAgo.toISOString()
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("✅ Bulk delete completed:", result);
+        // Refresh analytics to update the UI
+        await fetchAnalytics();
+        setResetSuccess(`Deleted ${result.deletedCounts.tests} old tests (before ${sevenDaysAgo.toLocaleDateString()})`);
+        setTimeout(() => setResetSuccess(null), 5000);
+      } else {
+        console.error("❌ Failed to bulk delete tests:", result.error);
+        alert(`Failed to bulk delete tests: ${result.error}`);
+      }
+    } catch (error) {
+      console.error("❌ Bulk delete failed:", error);
+      alert("Failed to bulk delete tests. Please try again.");
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
+  const confirmDeleteTest = (testId: string, participantName: string) => {
+    setShowDeleteConfirm({ testId, participantName });
   };
 
   if (loading) {
@@ -1979,9 +2062,24 @@ export default function AlphaTestDashboard() {
 
       {/* Recent Tests */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Recent Tests
-        </h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Recent Tests
+          </h3>
+          <button
+            onClick={bulkDeleteOldTests}
+            disabled={bulkDeleting}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              bulkDeleting
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800'
+            }`}
+            title="Delete all tests older than 7 days (before September 20, 2025)"
+          >
+            <span>{bulkDeleting ? '⏳' : '🗑️'}</span>
+            <span>{bulkDeleting ? 'Deleting old tests...' : 'Delete Tests >7 Days Old'}</span>
+          </button>
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -2074,13 +2172,29 @@ export default function AlphaTestDashboard() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm no-print">
-                    <button
-                      onClick={() => viewTestDetails(test.testId)}
-                      className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                      <span>👁️</span>
-                      <span>View</span>
-                    </button>
+                    <div className="flex items-center space-x-3">
+                      <button
+                        onClick={() => viewTestDetails(test.testId)}
+                        className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
+                        title="View test details"
+                      >
+                        <span>👁️</span>
+                        <span>View</span>
+                      </button>
+                      <button
+                        onClick={() => confirmDeleteTest(test.testId, test.participantName || 'Unknown')}
+                        disabled={deletingTests.has(test.testId)}
+                        className={`flex items-center space-x-1 transition-colors ${
+                          deletingTests.has(test.testId)
+                            ? 'text-gray-400 cursor-not-allowed'
+                            : 'text-red-600 hover:text-red-800'
+                        }`}
+                        title="Delete this test"
+                      >
+                        <span>{deletingTests.has(test.testId) ? '⏳' : '🗑️'}</span>
+                        <span>{deletingTests.has(test.testId) ? 'Deleting...' : 'Delete'}</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -2710,6 +2824,53 @@ export default function AlphaTestDashboard() {
                     })()}
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <span className="text-3xl">⚠️</span>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Confirm Test Deletion
+                </h2>
+              </div>
+              
+              <p className="text-gray-600 mb-4">
+                Are you sure you want to delete this test? This action cannot be undone.
+              </p>
+              
+              <div className="bg-gray-50 rounded-lg p-3 mb-6">
+                <div className="text-sm">
+                  <div><strong>Test ID:</strong> {showDeleteConfirm.testId.substring(0, 12)}...</div>
+                  <div><strong>Participant:</strong> {showDeleteConfirm.participantName}</div>
+                </div>
+              </div>
+              
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(null)}
+                  className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => deleteTest(showDeleteConfirm.testId)}
+                  disabled={deletingTests.has(showDeleteConfirm.testId)}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    deletingTests.has(showDeleteConfirm.testId)
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-red-600 text-white hover:bg-red-700'
+                  }`}
+                >
+                  {deletingTests.has(showDeleteConfirm.testId) ? 'Deleting...' : 'Delete Test'}
+                </button>
               </div>
             </div>
           </div>
