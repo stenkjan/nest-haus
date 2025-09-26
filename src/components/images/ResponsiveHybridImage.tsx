@@ -150,12 +150,7 @@ export default function ResponsiveHybridImage({
     console.log(`🖥️ isClient: ${isClient}, isMobile: ${isMobile}, shouldUseMobilePath: ${shouldUseMobilePath}`);
     console.log(`📐 Aspect ratio: ${shouldUseMobilePath ? mobileAspectRatio : desktopAspectRatio}`);
 
-    // Additional debug info for nestHaus8
-    if (typeof window !== "undefined" && desktopPath?.includes('1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS')) {
-      console.log(`🔍 NESTHAUS8 DEBUG: This is the problematic image`);
-      console.log(`🔍 User Agent: ${navigator.userAgent}`);
-      console.log(`🔍 Window dimensions: ${window.innerWidth}x${window.innerHeight}`);
-    }
+    // Clean up - no longer need specific nestHaus8 debug since issue is resolved
 
     console.groupEnd();
   }
