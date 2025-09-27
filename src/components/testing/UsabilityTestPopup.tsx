@@ -432,7 +432,7 @@ export default function UsabilityTestPopup({
 
     // Validate required questions
     if (currentStep.questions.length > 0 && !validateCurrentStep()) {
-      alert("Bitte beantworten Sie alle erforderlichen Fragen.");
+      alert("Bitte beantworte alle erforderlichen Fragen.");
       return;
     }
 
@@ -562,7 +562,7 @@ export default function UsabilityTestPopup({
     } catch (error) {
       console.error("Failed to complete test:", error);
       alert(
-        "Es gab einen Fehler beim Abschließen des Tests. Ihre Antworten wurden trotzdem gespeichert."
+        "Es gab einen Fehler beim Abschließen des Tests. Deine Antworten wurden trotzdem gespeichert."
       );
     }
   };
@@ -610,7 +610,7 @@ export default function UsabilityTestPopup({
   const handleReset = () => {
     if (
       confirm(
-        "Möchten Sie den Test wirklich zurücksetzen? Alle bisherigen Antworten gehen verloren."
+        "Möchtest du den Test wirklich zurücksetzen? Alle bisherigen Antworten gehen verloren."
       )
     ) {
       resetAlphaTest();
@@ -780,7 +780,7 @@ export default function UsabilityTestPopup({
                   {currentStep.targetPage !== window.location.pathname &&
                     currentStep.id !== "feedback-phase" && (
                       <div className="mt-3 p-2 bg-yellow-100/80 rounded text-xs text-yellow-800">
-                        <strong>Hinweis:</strong> Sie können frei auf der
+                        <strong>Hinweis:</strong> Du kannst frei auf der
                         Website navigieren. Das Test-Popup passt sich
                         automatisch an die aktuelle Seite an.
                         {currentStep.targetPage && (
@@ -811,8 +811,8 @@ export default function UsabilityTestPopup({
                 <strong>Hinweis</strong>
               </p>
               <p className="text-yellow-700 text-sm mb-4">
-                Falls Sie Probleme beim Abschluss des Prozesses haben, können
-                Sie hier mit Schritt 4 fortfahren:{" "}
+                Falls du Probleme beim Abschluss des Prozesses hast, kannst
+                du hier mit dem Feedback fortfahren:{" "}
                 <button
                   onClick={async () => {
                     // Save any feedback from the purchase validation question if provided
@@ -831,7 +831,7 @@ export default function UsabilityTestPopup({
                                 questionId: "purchase-completion-issue",
                                 questionType: "text",
                                 questionText:
-                                  "Falls Sie Probleme beim Abschluss des Prozesses haben, geben Sie uns hier Ihr Feedback, warum Sie Schritt 3 nicht beenden konnten:",
+                                  "Falls du Probleme beim Abschluss des Prozesses hast, gib uns hier dein Feedback, warum du den Prozess nicht beenden konntest:",
                                 response: feedbackResponse,
                                 responseTime: 0,
                               },
@@ -852,7 +852,7 @@ export default function UsabilityTestPopup({
                   }}
                   className="underline hover:no-underline text-blue-700 font-medium"
                 >
-                  Schritt 4
+                  Feedback
                 </button>
               </p>
             </div>
@@ -878,8 +878,8 @@ export default function UsabilityTestPopup({
                           handleResponseChange(question.id, rating)
                         }
                         className={`w-10 h-10 rounded-full border-2 text-sm font-medium transition-colors ${responses[question.id]?.value === rating
-                            ? "bg-blue-600 text-white border-blue-600"
-                            : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"
                           }`}
                       >
                         {rating}
@@ -896,7 +896,7 @@ export default function UsabilityTestPopup({
                     }
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     rows={3}
-                    placeholder="Ihre Antwort..."
+                    placeholder="Deine Antwort..."
                   />
                 )}
 
@@ -997,7 +997,7 @@ export default function UsabilityTestPopup({
           <div className="flex items-center space-x-3">
             {!validateCurrentStep() && currentStep?.id !== "feedback-phase" && (
               <span className="text-sm text-red-600">
-                Bitte beantworten Sie alle erforderlichen Fragen
+                Bitte beantworte alle erforderlichen Fragen
               </span>
             )}
 
