@@ -66,7 +66,7 @@ const sectionsContent = [
     h3: "Wo Effizienz auf Architektur trifft.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 3,
@@ -198,9 +198,11 @@ export default function LandingPageClient() {
                 <div className="text-center">
                   <h1
                     className={`h1-primary ${section.id === 2
-                      ? "text-[#605047]"
+                      ? "text-white"
+                      // ? "text-[#605047]"
                       : section.id === 7
-                        ? "text-[#605047] md:text-white"
+                        ? "text-white md:text-white"
+                        // ? "text-[#605047] md:text-white"
                         : "text-white"
                       } ${section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"

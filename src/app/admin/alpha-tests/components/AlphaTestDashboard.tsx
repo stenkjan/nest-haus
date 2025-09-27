@@ -482,6 +482,7 @@ export default function AlphaTestDashboard() {
     participantName: string;
   } | null>(null);
   const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [exportingAllPDFs, setExportingAllPDFs] = useState(false);
 
   // Helper function to extract key findings from responses
   const extractKeyFindings = (
@@ -1072,6 +1073,39 @@ export default function AlphaTestDashboard() {
     } catch (error) {
       console.error("Error exporting test to PDF:", error);
       alert("Failed to export test PDF. Please try again.");
+    }
+  };
+
+  const exportAllTestsToPDF = async () => {
+    try {
+      setExportingAllPDFs(true);
+      console.log("📄 Exporting all tests to bundled PDF...");
+
+      // Check if there are any tests to export
+      if (!analytics?.recentTests || analytics.recentTests.length === 0) {
+        alert("No test results found to export.");
+        return;
+      }
+
+      // Open bundled PDF generation page in new window
+      const pdfUrl = `/api/admin/usability-tests/pdf/all?timeRange=${timeRange}`;
+      const printWindow = window.open(pdfUrl, '_blank', 'width=800,height=600');
+      
+      if (!printWindow) {
+        alert("Please allow popups to generate PDF reports.");
+        return;
+      }
+      
+      console.log(`✅ Bundled PDF generation window opened for ${analytics.recentTests.length} tests`);
+      
+      // Reset the loading state after a short delay
+      setTimeout(() => {
+        setExportingAllPDFs(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Error exporting all tests to PDF:", error);
+      alert("Failed to export bundled PDF. Please try again.");
+      setExportingAllPDFs(false);
     }
   };
 
@@ -2081,18 +2115,33 @@ export default function AlphaTestDashboard() {
           <h3 className="text-lg font-semibold text-gray-900">
             Recent Tests
           </h3>
-          <button
-            onClick={bulkDeleteOldTests}
-            disabled={bulkDeleting}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${bulkDeleting
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800'
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={exportAllTestsToPDF}
+              disabled={exportingAllPDFs}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                exportingAllPDFs
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-green-100 text-green-700 hover:bg-green-200 hover:text-green-800'
               }`}
-            title="Delete all tests older than 7 days (before September 20, 2025)"
-          >
-            <span>{bulkDeleting ? '⏳' : '🗑️'}</span>
-            <span>{bulkDeleting ? 'Deleting old tests...' : 'Delete Tests >7 Days Old'}</span>
-          </button>
+              title="Export all test results as a single bundled PDF"
+            >
+              <span>{exportingAllPDFs ? '⏳' : '📄'}</span>
+              <span>{exportingAllPDFs ? 'Generating PDF...' : 'Export All PDFs'}</span>
+            </button>
+            <button
+              onClick={bulkDeleteOldTests}
+              disabled={bulkDeleting}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${bulkDeleting
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800'
+                }`}
+              title="Delete all tests older than 7 days (before September 20, 2025)"
+            >
+              <span>{bulkDeleting ? '⏳' : '🗑️'}</span>
+              <span>{bulkDeleting ? 'Deleting old tests...' : 'Delete Tests >7 Days Old'}</span>
+            </button>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
