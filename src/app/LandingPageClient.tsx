@@ -56,7 +56,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
     id: 2,
@@ -140,8 +140,14 @@ export default function LandingPageClient() {
     objectFit: "contain" as const,
   };
 
-  // Get responsive button variant for section 3
+  // Get responsive button variant for sections 1, 2, and 3
   const getSecondaryButtonVariant = (sectionId: number) => {
+    if (sectionId === 1) {
+      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+    }
+    if (sectionId === 2) {
+      return isMobile ? "landing-secondary" : "landing-secondary";
+    }
     if (sectionId === 3) {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
     }
@@ -213,7 +219,7 @@ export default function LandingPageClient() {
                   </h1>
                   <h3
                     className={`h3-primary ${section.id === 2
-                      ? "text-[#605047]"
+                      ? "text-white"
                       : section.id === 7
                         ? "text-[#605047] md:text-white"
                         : "text-white"
