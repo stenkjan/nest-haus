@@ -59,7 +59,7 @@ export default function UsabilityTestPopup({
   const [_currentStepIndex, _setCurrentStepIndex] = useState(0);
 
   const [responses, setResponses] = useState<
-    Record<string, { value: unknown; [key: string]: unknown }>
+    Record<string, { value: unknown;[key: string]: unknown }>
   >(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("nest-haus-test-responses");
@@ -500,8 +500,8 @@ export default function UsabilityTestPopup({
       setStepCompletionTrigger((prev) => prev + 1);
 
       // Handle step completion
-      if (currentStep.nextAction === "complete") {
-        console.log("🧪 Completing test");
+      if (currentStep.nextAction === "complete" || currentStep.id === "feedback-phase") {
+        console.log("🧪 Completing test (feedback questionnaire completed)");
         await completeTest();
       } else {
         console.log("🧪 Step completed, checking for next step");
@@ -877,11 +877,10 @@ export default function UsabilityTestPopup({
                         onClick={() =>
                           handleResponseChange(question.id, rating)
                         }
-                        className={`w-10 h-10 rounded-full border-2 text-sm font-medium transition-colors ${
-                          responses[question.id]?.value === rating
+                        className={`w-10 h-10 rounded-full border-2 text-sm font-medium transition-colors ${responses[question.id]?.value === rating
                             ? "bg-blue-600 text-white border-blue-600"
                             : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"
-                        }`}
+                          }`}
                       >
                         {rating}
                       </button>

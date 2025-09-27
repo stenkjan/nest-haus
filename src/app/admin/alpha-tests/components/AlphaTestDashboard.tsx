@@ -567,7 +567,7 @@ export default function AlphaTestDashboard() {
     const commonThemes = extractKeyFindings(responses);
     const avgLength = Math.round(
       validResponses.reduce((sum, text) => sum + text.length, 0) /
-        validResponses.length
+      validResponses.length
     );
 
     return `${validResponses.length} Antworten mit durchschnittlich ${avgLength} Zeichen. Häufige Themen: ${commonThemes.slice(0, 3).join(", ")}.`;
@@ -1055,6 +1055,26 @@ export default function AlphaTestDashboard() {
     }
   };
 
+  const exportTestToPDF = async (testId: string, participantName?: string) => {
+    try {
+      console.log("📄 Exporting individual test to PDF:", testId);
+
+      // Open PDF generation page in new window
+      const pdfUrl = `/api/admin/usability-tests/pdf?testId=${testId}`;
+      const printWindow = window.open(pdfUrl, '_blank', 'width=800,height=600');
+
+      if (!printWindow) {
+        alert("Please allow popups to generate PDF reports.");
+        return;
+      }
+
+      console.log("✅ PDF generation window opened");
+    } catch (error) {
+      console.error("Error exporting test to PDF:", error);
+      alert("Failed to export test PDF. Please try again.");
+    }
+  };
+
   const deleteTest = async (testId: string) => {
     try {
       setDeletingTests(prev => new Set(prev).add(testId));
@@ -1097,7 +1117,7 @@ export default function AlphaTestDashboard() {
       // Calculate date 7 days ago (September 20, 2025)
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      
+
       const response = await fetch('/api/admin/usability-tests/delete', {
         method: 'POST',
         headers: {
@@ -1199,11 +1219,10 @@ export default function AlphaTestDashboard() {
             <button
               key={range}
               onClick={() => setTimeRange(range)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                timeRange === range
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${timeRange === range
                   ? "bg-blue-600 text-white"
                   : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-              }`}
+                }`}
             >
               {range === "7d"
                 ? "Last 7 days"
@@ -1396,7 +1415,7 @@ export default function AlphaTestDashboard() {
         </h3>
 
         {analytics.sessionTracking &&
-        analytics.sessionTracking.sessionsWithTracking > 0 ? (
+          analytics.sessionTracking.sessionsWithTracking > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="bg-blue-50 rounded-lg p-6">
               <div className="text-3xl font-bold text-blue-600 mb-2">
@@ -1566,13 +1585,12 @@ export default function AlphaTestDashboard() {
                     <div key={question.questionId} className="text-center">
                       <div className="relative h-32 bg-gray-100 rounded-t-lg mb-2 flex items-end">
                         <div
-                          className={`w-full rounded-t-lg transition-all duration-500 ${
-                            questionAverage <= 2
+                          className={`w-full rounded-t-lg transition-all duration-500 ${questionAverage <= 2
                               ? "bg-red-400"
                               : questionAverage <= 4
                                 ? "bg-yellow-400"
                                 : "bg-green-400"
-                          }`}
+                            }`}
                           style={{
                             height: `${questionAverage > 0 ? (questionAverage / 6) * 100 : 0}%`,
                           }}
@@ -1739,13 +1757,12 @@ export default function AlphaTestDashboard() {
                                   <div className="flex-1 relative">
                                     <div className="h-6 bg-gray-200 rounded-full overflow-hidden">
                                       <div
-                                        className={`h-full transition-all duration-500 ${
-                                          parseInt(rating) <= 2
+                                        className={`h-full transition-all duration-500 ${parseInt(rating) <= 2
                                             ? "bg-red-400"
                                             : parseInt(rating) <= 4
                                               ? "bg-yellow-400"
                                               : "bg-green-400"
-                                        }`}
+                                          }`}
                                         style={{ width: `${width}%` }}
                                       ></div>
                                     </div>
@@ -1789,13 +1806,12 @@ export default function AlphaTestDashboard() {
                       className="flex items-center space-x-3"
                     >
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                          index === 0
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${index === 0
                             ? "bg-yellow-500"
                             : index === 1
                               ? "bg-gray-400"
                               : "bg-orange-400"
-                        }`}
+                          }`}
                       >
                         {index + 1}
                       </div>
@@ -1972,15 +1988,14 @@ export default function AlphaTestDashboard() {
                                 onClick={() => {
                                   /* TODO: Show tendency explanation */
                                 }}
-                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium cursor-pointer hover:opacity-80 ${
-                                  tendencyData.tendency === "Positiv"
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium cursor-pointer hover:opacity-80 ${tendencyData.tendency === "Positiv"
                                     ? "bg-green-100 text-green-800"
                                     : tendencyData.tendency === "Negativ"
                                       ? "bg-red-100 text-red-800"
                                       : tendencyData.tendency === "Gemischt"
                                         ? "bg-yellow-100 text-yellow-800"
                                         : "bg-gray-100 text-gray-800"
-                                }`}
+                                  }`}
                                 title={tendencyData.explanation}
                               >
                                 {tendencyData.tendency}
@@ -2069,11 +2084,10 @@ export default function AlphaTestDashboard() {
           <button
             onClick={bulkDeleteOldTests}
             disabled={bulkDeleting}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              bulkDeleting
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${bulkDeleting
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800'
-            }`}
+              }`}
             title="Delete all tests older than 7 days (before September 20, 2025)"
           >
             <span>{bulkDeleting ? '⏳' : '🗑️'}</span>
@@ -2124,13 +2138,12 @@ export default function AlphaTestDashboard() {
                   </td>
                   <td className="px-6 py-4 text-sm">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        test.status === "COMPLETED"
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${test.status === "COMPLETED"
                           ? "bg-green-100 text-green-800"
                           : test.status === "ABANDONED"
                             ? "bg-red-100 text-red-800"
                             : "bg-yellow-100 text-yellow-800"
-                      }`}
+                        }`}
                     >
                       {test.status}
                     </span>
@@ -2182,13 +2195,20 @@ export default function AlphaTestDashboard() {
                         <span>View</span>
                       </button>
                       <button
+                        onClick={() => exportTestToPDF(test.testId, test.participantName)}
+                        className="flex items-center space-x-1 text-green-600 hover:text-green-800 transition-colors"
+                        title="Export test as PDF"
+                      >
+                        <span>📄</span>
+                        <span>PDF</span>
+                      </button>
+                      <button
                         onClick={() => confirmDeleteTest(test.testId, test.participantName || 'Unknown')}
                         disabled={deletingTests.has(test.testId)}
-                        className={`flex items-center space-x-1 transition-colors ${
-                          deletingTests.has(test.testId)
+                        className={`flex items-center space-x-1 transition-colors ${deletingTests.has(test.testId)
                             ? 'text-gray-400 cursor-not-allowed'
                             : 'text-red-600 hover:text-red-800'
-                        }`}
+                          }`}
                         title="Delete this test"
                       >
                         <span>{deletingTests.has(test.testId) ? '⏳' : '🗑️'}</span>
@@ -2457,7 +2477,7 @@ export default function AlphaTestDashboard() {
                                 {String(interaction.eventType)}
                               </span>
                               {typeof interaction.stepId === "string" &&
-                              interaction.stepId ? (
+                                interaction.stepId ? (
                                 <span className="text-gray-500">
                                   {" "}
                                   on {interaction.stepId}
@@ -2585,8 +2605,8 @@ export default function AlphaTestDashboard() {
                                     <span className="text-sm font-medium text-gray-800">
                                       {String(
                                         data.buttonText ||
-                                          click.elementText ||
-                                          "Unknown Button"
+                                        click.elementText ||
+                                        "Unknown Button"
                                       )}
                                     </span>
                                     <div className="text-xs text-gray-500">
@@ -2724,8 +2744,8 @@ export default function AlphaTestDashboard() {
                                       <div className="text-sm text-gray-600 mt-1">
                                         {String(
                                           data.name ||
-                                            data.value ||
-                                            "Unknown Selection"
+                                          data.value ||
+                                          "Unknown Selection"
                                         )}
                                       </div>
                                       <div className="text-xs text-gray-500 mt-1">
@@ -2841,18 +2861,18 @@ export default function AlphaTestDashboard() {
                   Confirm Test Deletion
                 </h2>
               </div>
-              
+
               <p className="text-gray-600 mb-4">
                 Are you sure you want to delete this test? This action cannot be undone.
               </p>
-              
+
               <div className="bg-gray-50 rounded-lg p-3 mb-6">
                 <div className="text-sm">
                   <div><strong>Test ID:</strong> {showDeleteConfirm.testId.substring(0, 12)}...</div>
                   <div><strong>Participant:</strong> {showDeleteConfirm.participantName}</div>
                 </div>
               </div>
-              
+
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setShowDeleteConfirm(null)}
@@ -2863,11 +2883,10 @@ export default function AlphaTestDashboard() {
                 <button
                   onClick={() => deleteTest(showDeleteConfirm.testId)}
                   disabled={deletingTests.has(showDeleteConfirm.testId)}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
-                    deletingTests.has(showDeleteConfirm.testId)
+                  className={`px-4 py-2 rounded-lg transition-colors ${deletingTests.has(showDeleteConfirm.testId)
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : 'bg-red-600 text-white hover:bg-red-700'
-                  }`}
+                    }`}
                 >
                   {deletingTests.has(showDeleteConfirm.testId) ? 'Deleting...' : 'Delete Test'}
                 </button>

@@ -17,18 +17,65 @@ export async function GET(request: NextRequest) {
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
 
-        // Update abandoned tests (24 hours timeout)
+        // Improved test status management (same as main route)
+        const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
         const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        await prisma.usabilityTest.updateMany({
+
+        const inProgressTests = await prisma.usabilityTest.findMany({
             where: {
                 status: 'IN_PROGRESS',
-                startedAt: { lt: twentyFourHoursAgo }
+                startedAt: { lt: twoHoursAgo }
             },
-            data: {
-                status: 'ABANDONED',
-                updatedAt: new Date()
+            include: {
+                responses: true,
+                interactions: true
             }
         });
+
+        for (const test of inProgressTests) {
+            const hasFeedbackResponses = test.responses.some(r => {
+                const responseData = r.response as Record<string, unknown>;
+                return responseData?.stepId === 'feedback-phase';
+            });
+
+            const hasProgressedBeyondInitial = test.responses.length > 0 ||
+                test.interactions.some(i => i.stepId !== 'test_start');
+
+            if (hasFeedbackResponses && test.startedAt < twoHoursAgo) {
+                const ratingResponses = test.responses.filter(r =>
+                    r.questionType === 'RATING' &&
+                    typeof r.response === 'object' &&
+                    r.response &&
+                    'value' in r.response
+                );
+
+                const overallRating = ratingResponses.length > 0
+                    ? ratingResponses.reduce((sum, r) => {
+                        const responseObj = r.response as { value: number };
+                        return sum + responseObj.value;
+                    }, 0) / ratingResponses.length
+                    : null;
+
+                await prisma.usabilityTest.update({
+                    where: { id: test.id },
+                    data: {
+                        status: 'COMPLETED',
+                        completedAt: new Date(),
+                        overallRating,
+                        completionRate: 100,
+                        updatedAt: new Date()
+                    }
+                });
+            } else if (!hasProgressedBeyondInitial && test.startedAt < twentyFourHoursAgo) {
+                await prisma.usabilityTest.update({
+                    where: { id: test.id },
+                    data: {
+                        status: 'ABANDONED',
+                        updatedAt: new Date()
+                    }
+                });
+            }
+        }
 
         // Get all tests with full details
         const tests = await prisma.usabilityTest.findMany({
