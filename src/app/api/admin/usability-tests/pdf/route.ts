@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 /**
  * Export individual usability test as PDF
@@ -90,7 +91,7 @@ interface SingleTestData {
     overallRating?: number | null;
     totalDuration?: number | null;
     completionRate?: number | null;
-    deviceInfo?: Record<string, unknown> | null;
+    deviceInfo: JsonValue;
     responses: Array<Record<string, unknown>>;
 }
 

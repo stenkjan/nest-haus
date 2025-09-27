@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 /**
  * Export all usability tests as a single bundled PDF
@@ -71,7 +72,7 @@ interface TestData {
     completedAt?: Date | null;
     overallRating?: number | null;
     totalDuration?: number | null;
-    deviceInfo?: Record<string, unknown> | null;
+    deviceInfo: JsonValue;
     responses: Array<{
         id: string;
         timestamp: Date;
@@ -79,7 +80,7 @@ interface TestData {
         questionId: string;
         questionType: string;
         questionText: string;
-        response: Record<string, unknown>;
+        response: JsonValue;
         responseTime: number | null;
     }>;
     interactions: Array<Record<string, unknown>>;
@@ -91,8 +92,9 @@ function generateBundledPDFHTML(
     startDate: Date
 ): string {
     const completedTests = tests.filter(t => t.status === 'COMPLETED').length;
-    const averageRating = tests.filter(t => t.overallRating).length > 0
-        ? tests.filter(t => t.overallRating).reduce((sum, t) => sum + t.overallRating, 0) / tests.filter(t => t.overallRating).length
+    const testsWithRating = tests.filter(t => t.overallRating !== null && t.overallRating !== undefined);
+    const averageRating = testsWithRating.length > 0
+        ? testsWithRating.reduce((sum, t) => sum + (t.overallRating || 0), 0) / testsWithRating.length
         : 0;
 
     return `
@@ -365,8 +367,8 @@ function generateBundledPDFHTML(
             questionText: string;
             questionType: string;
             response: unknown;
-            responseTime?: number;
-            timestamp: string;
+            responseTime: number | null;
+            timestamp: Date;
         }
 
         const responsesByStep = test.responses.reduce((acc: Record<string, ProcessedResponse[]>, response) => {
