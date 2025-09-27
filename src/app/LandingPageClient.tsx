@@ -140,7 +140,7 @@ export default function LandingPageClient() {
     objectFit: "contain" as const,
   };
 
-  // Get responsive button variant for sections 1, 2, and 3
+  // Get responsive button variant for sections 1, 2, 3, and 6
   const getSecondaryButtonVariant = (sectionId: number) => {
     if (sectionId === 1) {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
@@ -149,6 +149,9 @@ export default function LandingPageClient() {
       return isMobile ? "landing-secondary" : "landing-secondary";
     }
     if (sectionId === 3) {
+      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+    }
+    if (sectionId === 6) {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
     }
     return sectionsContent[sectionId - 1].secondaryButtonVariant;
