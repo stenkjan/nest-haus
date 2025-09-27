@@ -1056,7 +1056,7 @@ export default function AlphaTestDashboard() {
     }
   };
 
-  const exportTestToPDF = async (testId: string, participantName?: string) => {
+  const exportTestToPDF = async (testId: string, _participantName?: string) => {
     try {
       console.log("📄 Exporting individual test to PDF:", testId);
 
@@ -1090,14 +1090,14 @@ export default function AlphaTestDashboard() {
       // Open bundled PDF generation page in new window
       const pdfUrl = `/api/admin/usability-tests/pdf/all?timeRange=${timeRange}`;
       const printWindow = window.open(pdfUrl, '_blank', 'width=800,height=600');
-      
+
       if (!printWindow) {
         alert("Please allow popups to generate PDF reports.");
         return;
       }
-      
+
       console.log(`✅ Bundled PDF generation window opened for ${analytics.recentTests.length} tests`);
-      
+
       // Reset the loading state after a short delay
       setTimeout(() => {
         setExportingAllPDFs(false);
@@ -1254,8 +1254,8 @@ export default function AlphaTestDashboard() {
               key={range}
               onClick={() => setTimeRange(range)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${timeRange === range
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
                 }`}
             >
               {range === "7d"
@@ -1620,10 +1620,10 @@ export default function AlphaTestDashboard() {
                       <div className="relative h-32 bg-gray-100 rounded-t-lg mb-2 flex items-end">
                         <div
                           className={`w-full rounded-t-lg transition-all duration-500 ${questionAverage <= 2
-                              ? "bg-red-400"
-                              : questionAverage <= 4
-                                ? "bg-yellow-400"
-                                : "bg-green-400"
+                            ? "bg-red-400"
+                            : questionAverage <= 4
+                              ? "bg-yellow-400"
+                              : "bg-green-400"
                             }`}
                           style={{
                             height: `${questionAverage > 0 ? (questionAverage / 6) * 100 : 0}%`,
@@ -1792,10 +1792,10 @@ export default function AlphaTestDashboard() {
                                     <div className="h-6 bg-gray-200 rounded-full overflow-hidden">
                                       <div
                                         className={`h-full transition-all duration-500 ${parseInt(rating) <= 2
-                                            ? "bg-red-400"
-                                            : parseInt(rating) <= 4
-                                              ? "bg-yellow-400"
-                                              : "bg-green-400"
+                                          ? "bg-red-400"
+                                          : parseInt(rating) <= 4
+                                            ? "bg-yellow-400"
+                                            : "bg-green-400"
                                           }`}
                                         style={{ width: `${width}%` }}
                                       ></div>
@@ -1841,10 +1841,10 @@ export default function AlphaTestDashboard() {
                     >
                       <div
                         className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${index === 0
-                            ? "bg-yellow-500"
-                            : index === 1
-                              ? "bg-gray-400"
-                              : "bg-orange-400"
+                          ? "bg-yellow-500"
+                          : index === 1
+                            ? "bg-gray-400"
+                            : "bg-orange-400"
                           }`}
                       >
                         {index + 1}
@@ -2023,12 +2023,12 @@ export default function AlphaTestDashboard() {
                                   /* TODO: Show tendency explanation */
                                 }}
                                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium cursor-pointer hover:opacity-80 ${tendencyData.tendency === "Positiv"
-                                    ? "bg-green-100 text-green-800"
-                                    : tendencyData.tendency === "Negativ"
-                                      ? "bg-red-100 text-red-800"
-                                      : tendencyData.tendency === "Gemischt"
-                                        ? "bg-yellow-100 text-yellow-800"
-                                        : "bg-gray-100 text-gray-800"
+                                  ? "bg-green-100 text-green-800"
+                                  : tendencyData.tendency === "Negativ"
+                                    ? "bg-red-100 text-red-800"
+                                    : tendencyData.tendency === "Gemischt"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : "bg-gray-100 text-gray-800"
                                   }`}
                                 title={tendencyData.explanation}
                               >
@@ -2119,11 +2119,10 @@ export default function AlphaTestDashboard() {
             <button
               onClick={exportAllTestsToPDF}
               disabled={exportingAllPDFs}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                exportingAllPDFs
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${exportingAllPDFs
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-green-100 text-green-700 hover:bg-green-200 hover:text-green-800'
-              }`}
+                }`}
               title="Export all test results as a single bundled PDF"
             >
               <span>{exportingAllPDFs ? '⏳' : '📄'}</span>
@@ -2133,8 +2132,8 @@ export default function AlphaTestDashboard() {
               onClick={bulkDeleteOldTests}
               disabled={bulkDeleting}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${bulkDeleting
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800'
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800'
                 }`}
               title="Delete all tests older than 7 days (before September 20, 2025)"
             >
@@ -2188,10 +2187,10 @@ export default function AlphaTestDashboard() {
                   <td className="px-6 py-4 text-sm">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${test.status === "COMPLETED"
-                          ? "bg-green-100 text-green-800"
-                          : test.status === "ABANDONED"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-yellow-100 text-yellow-800"
+                        ? "bg-green-100 text-green-800"
+                        : test.status === "ABANDONED"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-yellow-100 text-yellow-800"
                         }`}
                     >
                       {test.status}
@@ -2255,8 +2254,8 @@ export default function AlphaTestDashboard() {
                         onClick={() => confirmDeleteTest(test.testId, test.participantName || 'Unknown')}
                         disabled={deletingTests.has(test.testId)}
                         className={`flex items-center space-x-1 transition-colors ${deletingTests.has(test.testId)
-                            ? 'text-gray-400 cursor-not-allowed'
-                            : 'text-red-600 hover:text-red-800'
+                          ? 'text-gray-400 cursor-not-allowed'
+                          : 'text-red-600 hover:text-red-800'
                           }`}
                         title="Delete this test"
                       >
@@ -2933,8 +2932,8 @@ export default function AlphaTestDashboard() {
                   onClick={() => deleteTest(showDeleteConfirm.testId)}
                   disabled={deletingTests.has(showDeleteConfirm.testId)}
                   className={`px-4 py-2 rounded-lg transition-colors ${deletingTests.has(showDeleteConfirm.testId)
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-red-600 text-white hover:bg-red-700'
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-red-600 text-white hover:bg-red-700'
                     }`}
                 >
                   {deletingTests.has(showDeleteConfirm.testId) ? 'Deleting...' : 'Delete Test'}

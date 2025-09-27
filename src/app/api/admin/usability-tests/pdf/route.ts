@@ -80,8 +80,22 @@ export async function GET(request: NextRequest) {
     }
 }
 
+interface SingleTestData {
+    id: string;
+    testId: string;
+    status: string;
+    participantName?: string;
+    startedAt: string;
+    completedAt?: string;
+    overallRating?: number;
+    totalDuration?: number;
+    completionRate?: number;
+    deviceInfo?: Record<string, unknown>;
+    responses: Array<Record<string, unknown>>;
+}
+
 function generateTestPDFHTML(
-    test: any,
+    test: SingleTestData,
     responsesByStep: Record<string, Array<Record<string, unknown>>>
 ): string {
     const deviceInfo = test.deviceInfo as Record<string, unknown> || {};
@@ -354,7 +368,7 @@ function generateTestPDFHTML(
             ${Object.entries(responsesByStep).map(([stepId, responses]) => `
                 <div class="step-section">
                     <div class="step-title">📝 ${stepId.replace('-', ' ').replace('_', ' ').toUpperCase()}</div>
-                    ${responses.map((response: any) => `
+                    ${responses.map((response: Record<string, unknown>) => `
                         <div class="response-item">
                             <div class="response-question">${response.questionText}</div>
                             <div class="response-answer ${response.questionType === 'RATING' ? 'rating' : ''}">

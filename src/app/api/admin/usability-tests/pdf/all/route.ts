@@ -62,8 +62,29 @@ export async function GET(request: NextRequest) {
     }
 }
 
+interface TestData {
+    id: string;
+    testId: string;
+    status: string;
+    participantName?: string;
+    startedAt: string;
+    completedAt?: string;
+    overallRating?: number;
+    totalDuration?: number;
+    deviceInfo?: Record<string, unknown>;
+    responses: Array<{
+        questionId: string;
+        questionText: string;
+        questionType: string;
+        response: Record<string, unknown>;
+        responseTime?: number;
+        timestamp: string;
+    }>;
+    interactions: Array<Record<string, unknown>>;
+}
+
 function generateBundledPDFHTML(
-    tests: any[],
+    tests: TestData[],
     timeRange: string,
     startDate: Date
 ): string {
@@ -337,7 +358,16 @@ function generateBundledPDFHTML(
 
     ${tests.map((test, index) => {
         // Process responses by step for better organization
-        const responsesByStep = test.responses.reduce((acc: any, response: any) => {
+        interface ProcessedResponse {
+            questionId: string;
+            questionText: string;
+            questionType: string;
+            response: unknown;
+            responseTime?: number;
+            timestamp: string;
+        }
+
+        const responsesByStep = test.responses.reduce((acc: Record<string, ProcessedResponse[]>, response) => {
             const responseData = response.response as Record<string, unknown>;
             const stepId = String(responseData?.stepId || 'unknown');
 
@@ -355,7 +385,7 @@ function generateBundledPDFHTML(
             });
 
             return acc;
-        }, {});
+        }, {} as Record<string, ProcessedResponse[]>);
 
         const deviceInfo = test.deviceInfo as Record<string, unknown> || {};
 
@@ -396,19 +426,19 @@ function generateBundledPDFHTML(
             <div class="responses-section">
                 <div class="responses-title">💬 User Responses (${test.responses.length} total)</div>
                 ${Object.keys(responsesByStep).length > 0 ? `
-                    ${Object.entries(responsesByStep).map(([stepId, responses]: [string, any]) => `
+                    ${Object.entries(responsesByStep).map(([stepId, responses]: [string, ProcessedResponse[]]) => `
                         <div style="margin-bottom: 20px;">
                             <div style="font-weight: 600; margin-bottom: 10px; color: #4f46e5; font-size: 14px;">
                                 📝 ${stepId.replace('-', ' ').replace('_', ' ').toUpperCase()}
                             </div>
-                            ${responses.map((response: any) => `
+                            ${responses.map((response: ProcessedResponse) => `
                                 <div class="response-item">
                                     <div class="response-question">${response.questionText}</div>
                                     <div class="response-answer ${response.questionType === 'RATING' ? 'rating' : ''}">
-                                        ${response.questionType === 'RATING' 
-                                            ? `⭐ Rating: ${response.response || 'No rating'}/6`
-                                            : (response.response || 'No response provided')
-                                        }
+                                        ${response.questionType === 'RATING'
+                ? `⭐ Rating: ${response.response || 'No rating'}/6`
+                : (response.response || 'No response provided')
+            }
                                     </div>
                                 </div>
                             `).join('')}
