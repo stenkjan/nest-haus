@@ -84,13 +84,13 @@ interface SingleTestData {
     id: string;
     testId: string;
     status: string;
-    participantName?: string;
-    startedAt: string;
-    completedAt?: string;
-    overallRating?: number;
-    totalDuration?: number;
-    completionRate?: number;
-    deviceInfo?: Record<string, unknown>;
+    participantName: string | null;
+    startedAt: Date;
+    completedAt?: Date | null;
+    overallRating?: number | null;
+    totalDuration?: number | null;
+    completionRate?: number | null;
+    deviceInfo?: Record<string, unknown> | null;
     responses: Array<Record<string, unknown>>;
 }
 

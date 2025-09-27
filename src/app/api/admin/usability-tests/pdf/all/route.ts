@@ -66,19 +66,21 @@ interface TestData {
     id: string;
     testId: string;
     status: string;
-    participantName?: string;
-    startedAt: string;
-    completedAt?: string;
-    overallRating?: number;
-    totalDuration?: number;
-    deviceInfo?: Record<string, unknown>;
+    participantName: string | null;
+    startedAt: Date;
+    completedAt?: Date | null;
+    overallRating?: number | null;
+    totalDuration?: number | null;
+    deviceInfo?: Record<string, unknown> | null;
     responses: Array<{
+        id: string;
+        timestamp: Date;
+        testId: string;
         questionId: string;
-        questionText: string;
         questionType: string;
+        questionText: string;
         response: Record<string, unknown>;
-        responseTime?: number;
-        timestamp: string;
+        responseTime: number | null;
     }>;
     interactions: Array<Record<string, unknown>>;
 }
