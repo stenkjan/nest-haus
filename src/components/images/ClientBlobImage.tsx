@@ -24,6 +24,7 @@ class ImageCache {
   private static pending = new Map<string, Promise<string>>();
   private static loadingStates = new Map<string, boolean>();
   private static requestCounts = new Map<string, number>();
+  private static sessionLoaded = false; // Prevent multiple session loads
 
   static get(path: string): string | null {
     const cached = this.cache.get(path);
@@ -68,8 +69,7 @@ class ImageCache {
     // Warn about excessive requests in development
     if (process.env.NODE_ENV === "development" && currentCount > 2) {
       console.warn(
-        `🚨 PERFORMANCE WARNING: Image "${path}" requested ${
-          currentCount + 1
+        `🚨 PERFORMANCE WARNING: Image "${path}" requested ${currentCount + 1
         } times! Possible render loop or missing memoization.`
       );
     }
@@ -284,9 +284,17 @@ class ImageCache {
   static loadFromSession(): void {
     if (typeof window === "undefined") return;
 
+    // Only load session once globally to prevent redundant calls
+    if (this.sessionLoaded) {
+      return;
+    }
+    this.sessionLoaded = true;
+
     try {
       const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
       const now = Date.now();
+      const restoredPaths: string[] = [];
+      let expiredCount = 0;
 
       for (let i = 0; i < sessionStorage.length; i++) {
         const key = sessionStorage.key(i);
@@ -301,17 +309,22 @@ class ImageCache {
               // Only use cached URLs that are less than 1 hour old
               if (now - timestamp < oneHour) {
                 this.cache.set(path, url);
-                if (process.env.NODE_ENV === "development") {
-                  console.debug(`💾 Restored from session: ${path}`);
-                }
+                restoredPaths.push(path);
               } else {
                 sessionStorage.removeItem(key);
+                expiredCount++;
               }
             } catch {
               sessionStorage.removeItem(key);
+              expiredCount++;
             }
           }
         }
+      }
+
+      // Single consolidated log message
+      if (process.env.NODE_ENV === "development" && restoredPaths.length > 0) {
+        console.debug(`💾 Restored ${restoredPaths.length} images from session cache${expiredCount > 0 ? ` (${expiredCount} expired)` : ''}`);
       }
     } catch {
       // Handle gracefully
@@ -727,8 +740,8 @@ export default function ClientBlobImage({
         {...(fill
           ? { fill }
           : (width === 0 && height === 0) || (!width && !height)
-          ? { width: 1200, height: 800 }
-          : { width, height })}
+            ? { width: 1200, height: 800 }
+            : { width, height })}
         sizes={sizes}
         className={className}
         style={style}

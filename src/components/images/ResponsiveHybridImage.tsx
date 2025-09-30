@@ -47,8 +47,9 @@ export default function ResponsiveHybridImage({
   // Initialize with intelligent guess based on user agent and viewport
   const getInitialMobileState = (): boolean => {
     if (typeof window === "undefined") {
-      // SSR: Use conservative mobile-first approach
-      return true;
+      // SSR: Use conservative mobile-first approach for critical images only
+      // For non-critical images, default to desktop to prevent hydration mismatch
+      return isCritical || isAboveFold;
     }
 
     // Client-side: Immediate detection
@@ -70,8 +71,18 @@ export default function ResponsiveHybridImage({
     setIsClient(true);
 
     const checkDevice = () => {
-      const newIsMobile = window.innerWidth < breakpoint;
-      setIsMobile(newIsMobile);
+      // Enhanced mobile detection combining viewport size and user agent
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileUserAgent =
+        /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+          userAgent
+        );
+      const isSmallViewport = window.innerWidth < breakpoint;
+
+      const newIsMobile = isMobileUserAgent || isSmallViewport;
+
+      // Only update if the state actually changes to prevent unnecessary re-renders
+      setIsMobile(current => current !== newIsMobile ? newIsMobile : current);
     };
 
     // Immediate check on mount
@@ -101,39 +112,49 @@ export default function ResponsiveHybridImage({
       );
     }
 
+    // For non-critical images, use desktop path during SSR to prevent hydration mismatch
     return (
-      <div
-        className="animate-pulse bg-gray-200 w-full"
-        style={{ aspectRatio: "16/9" }}
-        aria-label="Loading image..."
+      <HybridBlobImage
+        path={desktopPath} // Desktop-first for non-critical images
+        alt={`${alt} - Loading`}
+        strategy="ssr"
+        isAboveFold={false}
+        isCritical={false}
+        enableCache={enableCache}
+        fallbackSrc={fallbackSrc}
+        {...props}
       />
     );
   }
 
   // Only render ONE image based on actual device detection
-  const imagePath = isMobile ? mobilePath : desktopPath;
-  const deviceType = isMobile ? "Mobile" : "Desktop";
+  // CRITICAL FIX: For non-critical images, ensure we don't use mobile path during initial render
+  const shouldUseMobilePath = isMobile && (isClient || isCritical || isAboveFold);
+  const imagePath = shouldUseMobilePath ? mobilePath : desktopPath;
+  const deviceType = shouldUseMobilePath ? "Mobile" : "Desktop";
 
   // Enhanced alt text with device context for debugging
   const enhancedAlt = `${alt} - ${deviceType} optimized`;
 
   // Debug logging in development to verify correct path selection
   if (process.env.NODE_ENV === "development") {
-    console.log(
-      `🖼️ ResponsiveHybridImage: ${deviceType} detected (width: ${
-        typeof window !== "undefined" ? window.innerWidth : "SSR"
-      })`
-    );
+    const debugId = `${alt?.slice(0, 20)}...` || 'Unknown';
+    console.group(`🖼️ ResponsiveHybridImage: ${debugId}`);
+    console.log(`🖥️ Device: ${deviceType} (width: ${typeof window !== "undefined" ? window.innerWidth : "SSR"})`);
     console.log(`📱 Mobile path: ${mobilePath}`);
     console.log(`💻 Desktop path: ${desktopPath}`);
     console.log(`✅ Selected path: ${imagePath}`);
-    console.log(
-      `📐 Aspect ratio: ${isMobile ? mobileAspectRatio : desktopAspectRatio}`
-    );
+    console.log(`🔧 Strategy: ${strategy}, Critical: ${isCritical}, AboveFold: ${isAboveFold}`);
+    console.log(`🖥️ isClient: ${isClient}, isMobile: ${isMobile}, shouldUseMobilePath: ${shouldUseMobilePath}`);
+    console.log(`📐 Aspect ratio: ${shouldUseMobilePath ? mobileAspectRatio : desktopAspectRatio}`);
+
+    // Clean up - no longer need specific nestHaus8 debug since issue is resolved
+
+    console.groupEnd();
   }
 
   // Handle different rendering approaches for mobile vs desktop
-  if (isMobile && useMobileNaturalRatio) {
+  if (shouldUseMobilePath && useMobileNaturalRatio) {
     // Mobile: Use natural aspect ratio for vertical images
     return (
       <div className="relative w-full">

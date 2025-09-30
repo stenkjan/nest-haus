@@ -75,7 +75,7 @@ export default function AlphaTestButton({
       setIsVisible(false);
     }
 
-    return () => {}; // Return empty cleanup function when not enabled
+    return () => { }; // Return empty cleanup function when not enabled
   }, [isEnabled, hasSeenButton, isTestActive, hasExistingTest]);
 
   // Handle auto-open when navigation was triggered by popup
@@ -186,12 +186,11 @@ export default function AlphaTestButton({
       {/* Floating Test Button - Hidden when popup is minimized */}
       {!isMinimized && (
         <div
-          className={`fixed right-4 sm:right-6 z-50 ${
-            typeof window !== "undefined" &&
-            window.location.pathname === "/konfigurator"
+          className={`fixed right-4 sm:right-6 z-50 ${typeof window !== "undefined" &&
+              window.location.pathname === "/konfigurator"
               ? "bottom-32 sm:bottom-40" // Higher position in configurator, adjusted for mobile
               : "bottom-4 sm:bottom-6" // Lower position on mobile for better reach
-          }`}
+            }`}
         >
           <div className="relative">
             {/* Pulse animation for new users */}
@@ -211,7 +210,7 @@ export default function AlphaTestButton({
                       Alpha Test
                     </h3>
                     <p className="text-xs text-gray-600 mt-1">
-                      Helfen Sie uns, NEST-Haus zu verbessern! Dieser Test
+                      Hilf uns, NEST-Haus zu verbessern! Dieser Test
                       dauert nur 15-20 Minuten.
                     </p>
                     <button
@@ -245,8 +244,8 @@ export default function AlphaTestButton({
                       Schritt 1: Website erkunden
                     </h3>
                     <p className="text-xs text-gray-600 mt-1">
-                      Haben Sie sich bereits einen Überblick verschafft? Dann
-                      können Sie hier den Test starten.
+                      Hast du dir bereits einen Überblick verschafft? Dann
+                      kannst du hier den Test starten.
                     </p>
                   </div>
                   <button
@@ -264,21 +263,19 @@ export default function AlphaTestButton({
             {/* Main button */}
             <button
               onClick={handleStartTest}
-              className={`relative text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 group ${
-                typeof window !== "undefined" &&
-                window.location.pathname === "/konfigurator"
+              className={`relative text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 group ${typeof window !== "undefined" &&
+                  window.location.pathname === "/konfigurator"
                   ? "p-5 sm:p-6" // 10% smaller, responsive
                   : "p-6 sm:p-7" // 10% smaller, responsive
-              } bg-blue-600 hover:bg-blue-700`}
+                } bg-blue-600 hover:bg-blue-700`}
               title={hasExistingTest ? "Test fortsetzen" : "Alpha Test starten"}
             >
               <span
-                className={`${
-                  typeof window !== "undefined" &&
-                  window.location.pathname === "/konfigurator"
+                className={`${typeof window !== "undefined" &&
+                    window.location.pathname === "/konfigurator"
                     ? "text-3xl sm:text-4xl" // 10% smaller, responsive
                     : "text-4xl sm:text-5xl" // 10% smaller, responsive
-                }`}
+                  }`}
               >
                 🧪
               </span>

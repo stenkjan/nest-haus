@@ -479,15 +479,13 @@ export default function ContentCards({
         <div className="overflow-x-clip">
           <div
             ref={containerRef}
-            className={`overflow-x-hidden cards-scroll-container ${
-              isStatic
+            className={`overflow-x-hidden cards-scroll-container ${isStatic
                 ? ""
                 : isClient && screenWidth < 1024
                   ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
                   : ""
-            } ${maxWidth ? "px-8" : "px-4"} ${
-              isStatic ? "" : "cursor-grab active:cursor-grabbing"
-            }`}
+              } ${maxWidth ? "px-8" : "px-4"} ${isStatic ? "" : "cursor-grab active:cursor-grabbing"
+              }`}
             style={{ overflow: "visible" }}
           >
             <motion.div
@@ -496,11 +494,10 @@ export default function ContentCards({
                 isStatic
                   ? {}
                   : {
-                      x,
-                      width: `${
-                        (cardWidth + gap) * displayCards.length - gap
+                    x,
+                    width: `${(cardWidth + gap) * displayCards.length - gap
                       }px`,
-                    }
+                  }
               }
               transition={{
                 type: "spring",
@@ -512,85 +509,83 @@ export default function ContentCards({
               {displayCards.map((card, index) => (
                 <motion.div
                   key={card.id}
-                  className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${
-                    (isStatic && isClient && screenWidth >= 1024) ||
-                    (isResponsive && isClient && screenWidth >= 1024)
+                  className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${(isStatic && isClient && screenWidth >= 1024) ||
+                      (isResponsive && isClient && screenWidth >= 1024)
                       ? "flex"
                       : ""
-                  } ${
-                    isStatic ? "" : "cards-scroll-snap-item"
-                  } cards-mobile-smooth`}
+                    } ${isStatic ? "" : "cards-scroll-snap-item"
+                    } cards-mobile-smooth`}
                   style={{
                     width: cardWidth,
                     height: isStatic
                       ? isClient && screenWidth >= 1600
                         ? Math.min(
+                          830,
+                          typeof window !== "undefined"
+                            ? window.innerHeight * 0.75
+                            : 830
+                        )
+                        : isClient && screenWidth >= 1280
+                          ? Math.min(
+                            692,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.7
+                              : 692
+                          )
+                          : isClient && screenWidth >= 1024
+                            ? Math.min(
+                              577, // Proportional height: 960 * (692/1152) = 577
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.7
+                                : 577
+                            )
+                            : Math.min(
+                              720,
+                              typeof window !== "undefined"
+                                ? window.innerHeight * 0.75
+                                : 720
+                            )
+                      : isResponsive
+                        ? isClient && screenWidth >= 1600
+                          ? Math.min(
                             830,
                             typeof window !== "undefined"
                               ? window.innerHeight * 0.75
                               : 830
                           )
-                        : isClient && screenWidth >= 1280
-                          ? Math.min(
+                          : isClient && screenWidth >= 1280
+                            ? Math.min(
                               692,
                               typeof window !== "undefined"
                                 ? window.innerHeight * 0.7
                                 : 692
                             )
-                          : isClient && screenWidth >= 1024
-                            ? Math.min(
+                            : isClient && screenWidth >= 1024
+                              ? Math.min(
                                 577, // Proportional height: 960 * (692/1152) = 577
                                 typeof window !== "undefined"
                                   ? window.innerHeight * 0.7
                                   : 577
                               )
-                            : Math.min(
+                              : Math.min(
                                 720,
                                 typeof window !== "undefined"
                                   ? window.innerHeight * 0.75
                                   : 720
                               )
-                      : isResponsive
-                        ? isClient && screenWidth >= 1600
-                          ? Math.min(
-                              830,
-                              typeof window !== "undefined"
-                                ? window.innerHeight * 0.75
-                                : 830
-                            )
-                          : isClient && screenWidth >= 1280
-                            ? Math.min(
-                                692,
-                                typeof window !== "undefined"
-                                  ? window.innerHeight * 0.7
-                                  : 692
-                              )
-                            : isClient && screenWidth >= 1024
-                              ? Math.min(
-                                  577, // Proportional height: 960 * (692/1152) = 577
-                                  typeof window !== "undefined"
-                                    ? window.innerHeight * 0.7
-                                    : 577
-                                )
-                              : Math.min(
-                                  720,
-                                  typeof window !== "undefined"
-                                    ? window.innerHeight * 0.75
-                                    : 720
-                                )
                         : isClient && screenWidth >= 1600
                           ? Math.min(
-                              750,
-                              typeof window !== "undefined"
-                                ? window.innerHeight * 0.8
-                                : 750
-                            )
+                            750,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.8
+                              : 750
+                          )
                           : Math.min(
-                              600,
-                              typeof window !== "undefined"
-                                ? window.innerHeight * 0.75
-                                : 600
-                            ),
+                            600,
+                            typeof window !== "undefined"
+                              ? window.innerHeight * 0.75
+                              : 600
+                          ),
                     backgroundColor: card.backgroundColor,
                   }}
                   whileHover={{ scale: 1.02 }}
@@ -958,9 +953,8 @@ export default function ContentCards({
               <button
                 onClick={() => navigateCard(-1)}
                 disabled={isAnimating}
-                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
-                  screenWidth < 1024 ? "p-3" : "p-4"
-                }`}
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${screenWidth < 1024 ? "p-3" : "p-4"
+                  }`}
                 style={{
                   left:
                     screenWidth < 1024
@@ -988,15 +982,13 @@ export default function ContentCards({
               <button
                 onClick={() => navigateCard(1)}
                 disabled={isAnimating}
-                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
-                  screenWidth < 1024 ? "p-3" : "p-4"
-                }`}
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${screenWidth < 1024 ? "p-3" : "p-4"
+                  }`}
                 style={{
                   left:
                     screenWidth < 1024
-                      ? `min(calc(100% - 24px), calc(50% + ${
-                          cardWidth / 2 + 30
-                        }px))`
+                      ? `min(calc(100% - 24px), calc(50% + ${cardWidth / 2 + 30
+                      }px))`
                       : `calc(50% + ${cardWidth / 2 + 60}px)`,
                 }}
               >

@@ -1,4 +1,5 @@
 ---
+description: ssr/server
 alwaysApply: false
 ---
 # Performance & Rendering Rules

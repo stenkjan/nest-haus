@@ -4,6 +4,265 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2916ed90f32fe69c3bb6e03e57db461b66586c45] - Sat Sep 27 09:45:05 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6a6d042127f7850aa26e2e22953bc4e9a97016df] - Sat Sep 27 09:41:51 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [8623e07a70548f56aa5751e06dba1635fbfcd72a] - Sat Sep 27 09:22:19 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [773ce4487e8dcf6e22b828eebf2739f7949e2abe] - Sat Sep 27 09:17:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [21eb53c2e0e708f40dce15857897845494a44fb0] - Sat Sep 27 09:10:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [05eef89da9c58130c95216862db6af34f61322bd] - Sat Sep 27 09:05:23 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [dacfe3ab12175cb5ccb6ecb801f4e0ca5320b481] - Sat Sep 27 09:01:47 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [0043ec84d0bec737328c6a63c7303110f9632f6a] - Sat Sep 27 08:57:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [2a9aa14262d41bdb3bfe0612319f76e4bda090aa] - Sat Sep 27 08:53:31 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [89093019acdd8ec4c5515c1d6421853ac6ed48d6] - Fri Sep 26 16:19:05 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [aa9f619a6ad8ab387774b68ed971b39c5d241625] - Fri Sep 26 16:11:24 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [d574a450f07dc76199d65b3c1d676fa5fbbd8f1c] - Fri Sep 26 16:05:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6fce94438e9de84d7255e3750183b3c76b100933] - Fri Sep 26 15:56:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: enhance mobile detection and rendering logic in ResponsiveHybridImage  - Improved initial mobile state determination for critical images during SSR to prevent hydration mismatches. - Enhanced mobile detection by combining viewport size and user agent checks. - Updated rendering logic to ensure non-critical images use the desktop path during initial render. - Added detailed debug logging for better path selection verification.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ResponsiveHybridImage.tsx
+
+
+---
+
+## [65bcaed41e40d01f29e5404a91628be29dd9a9b6] - Fri Sep 26 13:53:13 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4c32fa6685120387cecf5eda59f19042b8f39a68] - Fri Sep 26 13:44:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update image paths in constants for consistency and accuracy  - Swapped image identifiers for nestHaus1 and nestHaus2 in images.ts to ensure correct mapping. - Adjusted mobile image identifiers for nestHaus1 and nestHaus2 to match the updated paths for better consistency across platforms.  `
+
+### Changes Analysis
+
+---
+
+## [80b7f5020daadcc0de7d7205d6d1a990f909f357] - Fri Sep 26 01:03:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [633fe0b5a3687cf6b99ac75ff7cd2f6cef79a164] - Fri Sep 26 00:53:54 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update SEO metadata image URLs for enhanced security and reliability  - Replaced dynamic API image paths with secure URLs for Open Graph and Twitter images in generateMetadata.ts to improve image handling and ensure consistent loading across platforms.  `
+
+### Changes Analysis
+
+---
+
+## [6921dbbc1befb3624c6b06ff48aaa381ac055050] - Fri Sep 26 00:34:55 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update home page title in SEO configuration for brand consistency  - Changed the home page title to include the registered trademark symbol (®) for NEST-Haus to ensure accurate branding in SEO metadata.  `
+
+### Changes Analysis
+
+---
+
+## [4679c5fe96c28e438493497b5717fa9d4b5aef0f] - Fri Sep 26 00:26:29 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [9d7d65d9ce6ffac9b0cd8176ef47d76d6d57aa72] - Fri Sep 26 00:15:47 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update SEO metadata image paths for improved image handling  - Replaced static image paths with dynamic API calls for Open Graph and Twitter images in generateMetadata.ts to enhance image management and ensure proper image loading.  `
+
+### Changes Analysis
+
+---
+
+## [338761e887721729ef65fa9731cbc53e404ffd0c] - Thu Sep 25 23:42:51 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update ImpressumClient details and usability test configuration  - Changed company name and address in ImpressumClient to reflect new branding. - Updated management names and contact information for accuracy. - Modified TestQuestions to make all feedback questions non-required for improved user experience during usability testing.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/impressum/ImpressumClient.tsx
+- src/components/testing/UsabilityTestPopup.tsx
+- src/components/testing/config/TestQuestions.ts
+
+
+---
+
 ## [77750444993c046f19494b70b02ad1b5f8b7b5c7] - Thu Sep 25 23:16:06 2025 +0200
 
 **Author**: stenkjan

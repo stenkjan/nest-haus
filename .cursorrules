@@ -91,11 +91,67 @@ curl -s "http://localhost:3000/api/endpoint" | python -m json.tool
 
 ## Critical Patterns
 
-### TypeScript Safety
+### TypeScript Safety & Linting Rules
 
-- **NEVER use `any` type** - always specify proper types
+- **NEVER use `any` type** - always specify proper types or interfaces
 - Use `unknown` over `any` when type is truly unknown
 - Implement proper type guards and assertions
+- **ALWAYS prefix unused parameters with underscore** (`_paramName`) to indicate intentional non-use
+- **ALWAYS define explicit interfaces** for complex data structures instead of using `any`
+- **ALWAYS type function parameters** - never leave them as implicit `any`
+- **ALWAYS type reduce/map/filter callbacks** with proper type annotations
+- **ALWAYS run `npm run lint` before committing** to catch TypeScript violations
+- **NEVER ignore ESLint warnings** - fix them or add proper eslint-disable comments with justification
+
+#### Specific Anti-Patterns to Avoid:
+```typescript
+// ❌ NEVER DO THIS:
+function process(data: any) { ... }
+const items = data.map((item: any) => ...)
+function unused(param: string) { ... } // unused param without _
+
+// ✅ ALWAYS DO THIS:
+interface DataItem { id: string; name: string; }
+function process(data: DataItem[]) { ... }
+const items = data.map((item: DataItem) => ...)
+function unused(_param: string) { ... } // unused param with _
+```
+
+#### Interface Definition Requirements:
+- Create interfaces for all API response types
+- Create interfaces for all component prop types
+- Create interfaces for all database query results
+- Use proper typing for template literals and complex objects
+
+#### Additional ESLint Compliance Rules:
+- **Unused variables**: Remove or prefix with `_` if intentionally unused
+- **Unused imports**: Remove unused imports immediately
+- **Console statements**: Use proper logging or remove before production
+- **Async/await**: Prefer async/await over Promise chains for readability
+- **Error handling**: Always wrap async operations in try-catch blocks
+- **Return types**: Explicitly type function return values when not obvious
+- **React hooks**: Follow hooks rules (only call at top level, proper dependencies)
+
+#### Code Quality Enforcement:
+```typescript
+// ✅ GOOD: Proper error handling and typing
+async function fetchUserData(userId: string): Promise<UserData | null> {
+  try {
+    const response = await fetch(`/api/users/${userId}`);
+    if (!response.ok) return null;
+    return await response.json() as UserData;
+  } catch (error) {
+    console.error('Failed to fetch user:', error);
+    return null;
+  }
+}
+
+// ❌ BAD: No error handling, any types
+async function fetchUserData(userId) {
+  const response = await fetch(`/api/users/${userId}`);
+  return response.json();
+}
+```
 
 ### Component Architecture
 

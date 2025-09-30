@@ -203,7 +203,7 @@ export default function AlphaTestCompletion() {
 
             <div className="text-center pt-4">
               <p className="text-sm text-gray-500">
-                Ihre Daten werden anonymisiert ausgewertet und helfen uns, die
+                Deine Daten werden anonymisiert ausgewertet und helfen uns, die
                 NEST-Haus Website kontinuierlich zu verbessern.
               </p>
             </div>

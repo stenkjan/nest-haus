@@ -56,7 +56,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const,
+    secondaryButtonVariant: "landing-secondary" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
     id: 2,
@@ -66,7 +66,7 @@ const sectionsContent = [
     h3: "Wo Effizienz auf Architektur trifft.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 3,
@@ -116,7 +116,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 8,
@@ -140,9 +140,18 @@ export default function LandingPageClient() {
     objectFit: "contain" as const,
   };
 
-  // Get responsive button variant for section 3
+  // Get responsive button variant for sections 1, 2, 3, and 6
   const getSecondaryButtonVariant = (sectionId: number) => {
+    if (sectionId === 1) {
+      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+    }
+    if (sectionId === 2) {
+      return isMobile ? "landing-secondary" : "landing-secondary";
+    }
     if (sectionId === 3) {
+      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+    }
+    if (sectionId === 6) {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
     }
     return sectionsContent[sectionId - 1].secondaryButtonVariant;
@@ -193,36 +202,34 @@ export default function LandingPageClient() {
                     : section.id === 3 || section.id === 6 || section.id === 7
                       ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,6,7: bottom on mobile only
                       : "justify-start pt-[5vh]" // Other sections: always top
-                } ${section.id === 2 ? "px-0" : "px-8"}`}
+                  } ${section.id === 2 ? "px-0" : "px-8"}`}
               >
                 <div className="text-center">
                   <h1
-                    className={`h1-primary ${
-                      section.id === 2
-                        ? "text-[#605047]"
-                        : section.id === 7
-                          ? "text-[#605047] md:text-white"
-                          : "text-white"
-                    } ${
-                      section.id === 3 || section.id === 6 || section.id === 7
+                    className={`h1-primary ${section.id === 2
+                      ? "text-white"
+                      // ? "text-[#605047]"
+                      : section.id === 7
+                        ? "text-white md:text-white"
+                        // ? "text-[#605047] md:text-white"
+                        : "text-white"
+                      } ${section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"
                         : ""
-                    }`}
+                      }`}
                   >
                     {section.h1}
                   </h1>
                   <h3
-                    className={`h3-primary ${
-                      section.id === 2
-                        ? "text-[#605047]"
-                        : section.id === 7
-                          ? "text-[#605047] md:text-white"
-                          : "text-white"
-                    } ${
-                      section.id === 3 || section.id === 6 || section.id === 7
+                    className={`h3-primary ${section.id === 2
+                      ? "text-white"
+                      : section.id === 7
+                        ? "text-[#605047] md:text-white"
+                        : "text-white"
+                      } ${section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"
                         : ""
-                    }`}
+                      }`}
                   >
                     {section.h3}
                   </h3>

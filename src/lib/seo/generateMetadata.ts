@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 
 // Base configuration for SEO
 export const SEO_CONFIG = {
-    baseUrl: "https://nest-haus.at",
+    baseUrl: "https://nest-haus.vercel.app",
     siteName: "NEST-Haus",
-    defaultTitle: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
+    defaultTitle: "Nest-Haus | Modulare Häuser & Nachhaltiges Bauen",
     defaultDescription: "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     defaultKeywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator",
     locale: "de_DE",
@@ -26,13 +26,13 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO_CONFIG = {
     home: {
-        title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Österreich",
+        title: "®Nest-Haus | Modulare Häuser & Nachhaltiges Bauen in Österreich",
         description: "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
         changeFrequency: "weekly" as const,
-        ogImage: "/images/nest-haus-hero.jpg",
-        twitterImage: "/images/nest-haus-hero-twitter.jpg",
+        ogImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
+        twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
     },
     konfigurator: {
         title: "Haus Konfigurator | NEST-Haus Modulare Häuser",
@@ -191,9 +191,12 @@ export function generatePageMetadata(
             images: [
                 {
                     url: ogImage,
+                    // Add secureUrl to help strict scrapers like WhatsApp
+                    secureUrl: ogImage.startsWith('http') ? ogImage : `${baseConfig.baseUrl}${ogImage}`,
                     width: 1200,
                     height: 630,
                     alt: title,
+                    type: 'image/jpeg',
                 },
             ],
         },

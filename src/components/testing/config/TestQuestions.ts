@@ -100,7 +100,7 @@ export const TEST_STEPS: TestStep[] = [
             {
                 id: "purchase-completion-issue",
                 type: "text",
-                question: "Falls du Probleme beim Abschluss des Prozesses hast, gib uns hier dein Feedback, warum du Schritt 3 nicht beenden konntest:",
+                question: "Falls du Probleme beim Abschluss des Prozesses hast, gib uns hier dein Feedback, warum du den Prozess nicht beenden konntest:",
                 required: false,
                 step: "purchase-validation"
             }

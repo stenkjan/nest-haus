@@ -411,25 +411,85 @@ export async function GET(request: NextRequest) {
         console.log(`📊 Generating usability test analytics for ${timeRange}`);
         console.log(`📊 Date range: ${startDate.toISOString()} to ${new Date().toISOString()}`);
 
-        // Update abandoned tests (24 hours timeout)
+        // Improved test status management
         try {
+            const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
             const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-            const abandonedCount = await prisma.usabilityTest.updateMany({
+
+            // Get tests that might need status updates
+            const inProgressTests = await prisma.usabilityTest.findMany({
                 where: {
                     status: 'IN_PROGRESS',
-                    startedAt: { lt: twentyFourHoursAgo }
+                    startedAt: { lt: twoHoursAgo }
                 },
-                data: {
-                    status: 'ABANDONED',
-                    updatedAt: new Date()
+                include: {
+                    responses: true,
+                    interactions: true
                 }
             });
 
-            if (abandonedCount.count > 0) {
-                console.log(`📊 Marked ${abandonedCount.count} tests as ABANDONED (24+ hours inactive)`);
+            let autoCompletedCount = 0;
+            let abandonedCount = 0;
+
+            for (const test of inProgressTests) {
+                // Check if user has completed feedback questionnaire responses
+                const hasFeedbackResponses = test.responses.some(r => {
+                    const responseData = r.response as Record<string, unknown>;
+                    return responseData?.stepId === 'feedback-phase';
+                });
+
+                // Check if user has progressed beyond initial steps
+                const hasProgressedBeyondInitial = test.responses.length > 0 ||
+                    test.interactions.some(i => i.stepId !== 'test_start');
+
+                if (hasFeedbackResponses && test.startedAt < twoHoursAgo) {
+                    // Auto-complete tests that have feedback responses and are older than 2 hours
+                    const ratingResponses = test.responses.filter(r =>
+                        r.questionType === 'RATING' &&
+                        typeof r.response === 'object' &&
+                        r.response &&
+                        'value' in r.response
+                    );
+
+                    const overallRating = ratingResponses.length > 0
+                        ? ratingResponses.reduce((sum, r) => {
+                            const responseObj = r.response as { value: number };
+                            return sum + responseObj.value;
+                        }, 0) / ratingResponses.length
+                        : null;
+
+                    await prisma.usabilityTest.update({
+                        where: { id: test.id },
+                        data: {
+                            status: 'COMPLETED',
+                            completedAt: new Date(),
+                            overallRating,
+                            completionRate: 100,
+                            updatedAt: new Date()
+                        }
+                    });
+                    autoCompletedCount++;
+                } else if (!hasProgressedBeyondInitial && test.startedAt < twentyFourHoursAgo) {
+                    // Only abandon tests that haven't progressed beyond initial steps
+                    await prisma.usabilityTest.update({
+                        where: { id: test.id },
+                        data: {
+                            status: 'ABANDONED',
+                            updatedAt: new Date()
+                        }
+                    });
+                    abandonedCount++;
+                }
             }
-        } catch (abandonedUpdateError) {
-            console.warn('⚠️ Failed to update abandoned tests:', abandonedUpdateError);
+
+            if (autoCompletedCount > 0) {
+                console.log(`📊 Auto-completed ${autoCompletedCount} tests with feedback responses (2+ hours inactive)`);
+            }
+            if (abandonedCount > 0) {
+                console.log(`📊 Marked ${abandonedCount} tests as ABANDONED (24+ hours inactive, no progress)`);
+            }
+        } catch (statusUpdateError) {
+            console.warn('⚠️ Failed to update test statuses:', statusUpdateError);
             // Continue with the rest of the function
         }
 
@@ -687,7 +747,7 @@ export async function GET(request: NextRequest) {
             sessionsWithPages: 0
         });
 
-        // Recent tests for quick overview (show all tests, not just first 10)
+        // Recent tests for quick overview
         const recentTests = tests.map(test => ({
             id: test.id,
             testId: test.testId,
