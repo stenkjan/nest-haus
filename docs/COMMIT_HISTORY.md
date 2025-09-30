@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [407a534339919a32a9eabb6ca337f25f04d2c664] - Tue Sep 30 08:44:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update parameter handling in DELETE route for usability tests  - Changed the type of  in the DELETE function to a Promise, ensuring proper async handling of . - Awaited the  to retrieve , improving the reliability of the API response.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/individual/[testId]/route.ts
+
+
+---
+
 ## [f5863f03dfe76882ebdec38b7b93f1523ab1e001] - Tue Sep 30 08:28:01 2025 +0200
 
 **Author**: stenkjan
