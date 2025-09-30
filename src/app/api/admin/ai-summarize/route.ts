@@ -91,7 +91,7 @@ function extractKeyFindings(responses: string[], elaborate: boolean): string {
             if (i < words.length - 2) {
                 const phrase3 = words.slice(i, i + 3).join(' ');
                 if (phrase3.length > 10) {
-                    phrases.set(phrase3, (phrases.set(phrase3, 0) || 0) + 1);
+                    phrases.set(phrase3, (phrases.get(phrase3) || 0) + 1);
                 }
             }
         }
