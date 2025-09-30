@@ -89,7 +89,7 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
                 const key = `${category}-${value}`;
                 testSelections.add(key); // Only add once per test
-                
+
                 if (!configSelections.has(key)) {
                     configSelections.set(key, { category, value, name, count: 0, tests: new Set() });
                 }
@@ -104,7 +104,7 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
         // Process page visits for time analytics
         const pageVisits = interactions.filter((i: Record<string, unknown>) => i.eventType === 'page_visit');
-        
+
         // Debug: Log what we're processing for this test
         if (pageVisits.length > 0) {
             console.log(`📊 Test ${testId}: Found ${pageVisits.length} page visits, ${interactions.length} total interactions`);
@@ -147,7 +147,7 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                 // For the last page visit or single visits, add a visit count
                 // Estimate time based on average session duration if available
                 const estimatedTime = 30000; // 30 seconds default for single page visits
-                
+
                 if (pageTimeData.has(path)) {
                     const existing = pageTimeData.get(path)!;
                     existing.visits++;
@@ -169,17 +169,17 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
         });
 
         // Process button clicks for navigation analytics
-        const clickableInteractions = interactions.filter((i: Record<string, unknown>) => 
-            i.eventType === 'button_click' || 
-            i.eventType === 'navigation' || 
+        const clickableInteractions = interactions.filter((i: Record<string, unknown>) =>
+            i.eventType === 'button_click' ||
+            i.eventType === 'navigation' ||
             i.eventType === 'page_visit'
         );
-        
+
         // Debug: Log clickable interactions for this test
         if (clickableInteractions.length > 0) {
             console.log(`📊 Test ${testId}: Found ${clickableInteractions.length} clickable interactions`);
         }
-        
+
         clickableInteractions
             .forEach((click: Record<string, unknown>) => {
                 const additionalData = click.additionalData as Record<string, unknown> || {};
@@ -207,8 +207,8 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
         // Process section routes (hash-based navigation and configurator sections)
         interactions
-            .filter((i: Record<string, unknown>) => 
-                i.eventType === 'page_visit' || 
+            .filter((i: Record<string, unknown>) =>
+                i.eventType === 'page_visit' ||
                 i.eventType === 'section_navigation' ||
                 i.eventType === 'configurator_selection'
             )
@@ -239,7 +239,7 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
                     if (path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests') || path.includes('/admin/')) {
                         return; // Skip this interaction
                     }
-                    
+
                     // Create section from page path
                     const pathParts = path.split('/').filter(p => p);
                     if (pathParts.length > 0) {
@@ -250,11 +250,11 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
                 if (section && sectionKey) {
                     // Calculate time spent on section
-                    const allInteractions = interactions.filter(i => 
+                    const allInteractions = interactions.filter(i =>
                         new Date(i.timestamp as string).getTime() > timestamp
                     );
                     const nextInteraction = allInteractions[0];
-                    
+
                     if (nextInteraction) {
                         const nextTimestamp = new Date(nextInteraction.timestamp as string | number | Date).getTime();
                         const timeSpent = nextTimestamp - timestamp;
@@ -331,22 +331,22 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
     }
     console.log(`   - Page Time Data: ${pageTimeArray.length} pages`);
     if (pageTimeArray.length > 0) {
-        console.log(`   - Page time sample:`, pageTimeArray.slice(0, 3).map(p => `${p.title}: ${Math.round(p.avgTime/1000)}s (${p.visits} visits)`));
+        console.log(`   - Page time sample:`, pageTimeArray.slice(0, 3).map(p => `${p.title}: ${Math.round(p.avgTime / 1000)}s (${p.visits} visits)`));
     }
     console.log(`   - Clicked Pages: ${clickedPagesArray.length} pages`);
     if (clickedPagesArray.length > 0) {
         console.log(`   - Clicked pages sample:`, clickedPagesArray.slice(0, 3).map(p => `${p.title}: ${p.visits} clicks`));
     }
     console.log(`   - Section Time Data: ${sectionTimeArray.length} sections`);
-    
+
     if (pageTimeArray.length > 0) {
-        console.log(`   - Top page by time: ${pageTimeArray[0].title} (${Math.round(pageTimeArray[0].avgTime/1000)}s)`);
+        console.log(`   - Top page by time: ${pageTimeArray[0].title} (${Math.round(pageTimeArray[0].avgTime / 1000)}s)`);
     }
     if (clickedPagesArray.length > 0) {
         console.log(`   - Most clicked page: ${clickedPagesArray[0].title} (${clickedPagesArray[0].visits} visits)`);
     }
     if (sectionTimeArray.length > 0) {
-        console.log(`   - Top section by time: ${sectionTimeArray[0].section} (${Math.round(sectionTimeArray[0].avgTime/1000)}s)`);
+        console.log(`   - Top section by time: ${sectionTimeArray[0].section} (${Math.round(sectionTimeArray[0].avgTime / 1000)}s)`);
     }
 
     // Debug: Log sample interactions to understand data structure
@@ -359,7 +359,7 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
             const data = additionalData.data as Record<string, unknown> || {};
             const path = String(data.path || interaction.stepId || '/');
             const isFiltered = path.includes('alpha-test') || path.includes('/test/') || path.includes('alpha-tests') || path.includes('/admin/');
-            
+
             console.log(`   ${i + 1}. Event: ${interaction.eventType}, Step: ${interaction.stepId}, Path: ${path} ${isFiltered ? '(FILTERED)' : '(COUNTED)'}`);
             if (interaction.additionalData) {
                 console.log(`      Data: buttonText=${data.buttonText}, elementType=${data.elementType}`);
@@ -436,7 +436,7 @@ export async function GET(request: NextRequest) {
         // Get all tests in range - with error handling for Prisma deployment issues
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let tests: Array<any> = [];
-        
+
         try {
             tests = await prisma.usabilityTest.findMany({
                 where: {
@@ -687,8 +687,8 @@ export async function GET(request: NextRequest) {
             sessionsWithPages: 0
         });
 
-        // Recent tests for quick overview
-        const recentTests = tests.slice(0, 10).map(test => ({
+        // Recent tests for quick overview (show all tests, not just first 10)
+        const recentTests = tests.map(test => ({
             id: test.id,
             testId: test.testId,
             status: test.status,

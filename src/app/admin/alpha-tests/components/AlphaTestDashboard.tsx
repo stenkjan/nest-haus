@@ -452,7 +452,7 @@ export default function AlphaTestDashboard() {
   const [analytics, setAnalytics] = useState<TestAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [timeRange, setTimeRange] = useState("7d");
+  const [timeRange, setTimeRange] = useState("30d");
   const [isResetting, setIsResetting] = useState(false);
   const [resetSuccess, setResetSuccess] = useState<string | null>(null);
   const [_selectedTest, setSelectedTest] = useState<string | null>(null);
@@ -463,12 +463,26 @@ export default function AlphaTestDashboard() {
   const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(
     new Set()
   );
-  const [commentsData, setCommentsData] = useState<Array<{
-    testId: string;
-    participantName: string | null;
-    comments: string;
-    createdAt: string;
-  }>>([]);
+  const [aiSummaries, setAiSummaries] = useState<Map<string, string>>(
+    new Map()
+  );
+  const [loadingSummaries, setLoadingSummaries] = useState<Set<string>>(
+    new Set()
+  );
+  const [showDetailedSummary, setShowDetailedSummary] = useState<string | null>(
+    null
+  );
+  const [detailedSummaryData, setDetailedSummaryData] = useState<string>("");
+  const [isCleaningDurations, setIsCleaningDurations] = useState(false);
+  const [cleanupSuccess, setCleanupSuccess] = useState<string | null>(null);
+  const [commentsData, setCommentsData] = useState<
+    Array<{
+      testId: string;
+      participantName: string | null;
+      comments: string;
+      createdAt: string;
+    }>
+  >([]);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const [selectedComments, setSelectedComments] = useState<{
     testId: string;
@@ -943,6 +957,213 @@ export default function AlphaTestDashboard() {
     }
   };
 
+  const generateAISummary = async (
+    questionId: string,
+    questionText: string,
+    responses: Array<Record<string, unknown>>
+  ) => {
+    if (loadingSummaries.has(questionId)) return;
+
+    setLoadingSummaries((prev) => new Set([...prev, questionId]));
+
+    try {
+      const responseTexts = responses
+        .map((r) => String(r.value || ""))
+        .filter((text) => text.trim().length > 0);
+
+      if (responseTexts.length === 0) {
+        setAiSummaries(
+          (prev) => new Map(prev.set(questionId, "Keine Antworten verfügbar"))
+        );
+        return;
+      }
+
+      const response = await fetch("/api/admin/ai-summarize", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          questionText,
+          responses: responseTexts,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        setAiSummaries((prev) => new Map(prev.set(questionId, result.summary)));
+      } else {
+        throw new Error(result.error || "Failed to generate summary");
+      }
+    } catch (error) {
+      console.error("Failed to generate AI summary:", error);
+      setAiSummaries(
+        (prev) =>
+          new Map(
+            prev.set(questionId, "Fehler beim Generieren der Zusammenfassung")
+          )
+      );
+    } finally {
+      setLoadingSummaries((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(questionId);
+        return newSet;
+      });
+    }
+  };
+
+  const generateDetailedSummary = async (
+    questionId: string,
+    questionText: string,
+    responses: Array<Record<string, unknown>>
+  ) => {
+    if (loadingSummaries.has(questionId)) return;
+
+    setLoadingSummaries((prev) => new Set([...prev, questionId]));
+
+    try {
+      const responseTexts = responses
+        .map((r) => String(r.value || ""))
+        .filter((text) => text.trim().length > 0);
+
+      if (responseTexts.length === 0) {
+        setDetailedSummaryData("Keine Antworten verfügbar");
+        setShowDetailedSummary(questionId);
+        return;
+      }
+
+      const response = await fetch("/api/admin/ai-summarize", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          questionText,
+          responses: responseTexts,
+          elaborate: true,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        setDetailedSummaryData(result.summary);
+        setShowDetailedSummary(questionId);
+      } else {
+        throw new Error(result.error || "Failed to generate detailed summary");
+      }
+    } catch (error) {
+      console.error("Failed to generate detailed AI summary:", error);
+      setDetailedSummaryData(
+        "Fehler beim Generieren der detaillierten Zusammenfassung"
+      );
+      setShowDetailedSummary(questionId);
+    } finally {
+      setLoadingSummaries((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(questionId);
+        return newSet;
+      });
+    }
+  };
+
+  const cleanupLongDurations = async () => {
+    if (
+      !confirm(
+        "⚠️ Möchtest du die Dauer von allen Tests über 200 Minuten entfernen? Diese Tests wurden wahrscheinlich manuell als 'abgeschlossen' markiert und ihre Zeiten verfälschen die Statistiken."
+      )
+    ) {
+      return;
+    }
+
+    setIsCleaningDurations(true);
+    setCleanupSuccess(null);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/admin/cleanup-long-durations", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to cleanup long durations");
+      }
+
+      setCleanupSuccess(
+        `Erfolgreich! Dauer von ${result.affectedTests} Tests über 200 Minuten entfernt.`
+      );
+
+      // Refresh analytics after cleanup
+      await fetchAnalytics();
+
+      // Clear success message after 10 seconds
+      setTimeout(() => setCleanupSuccess(null), 10000);
+    } catch (err) {
+      console.error("Failed to cleanup long durations:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to cleanup long durations"
+      );
+    } finally {
+      setIsCleaningDurations(false);
+    }
+  };
+
+  const deleteIndividualTest = async (testId: string) => {
+    if (
+      !confirm(
+        `⚠️ Are you sure you want to delete test ${testId.substring(0, 12)}...? This action cannot be undone!`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `/api/admin/usability-tests/individual/${testId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to delete test");
+      }
+
+      // Refresh analytics after deletion
+      await fetchAnalytics();
+
+      alert(
+        `Test ${testId.substring(0, 12)}... has been deleted successfully.`
+      );
+    } catch (err) {
+      console.error("Failed to delete test:", err);
+      alert(
+        `Failed to delete test: ${err instanceof Error ? err.message : "Unknown error"}`
+      );
+    }
+  };
+
   const viewTestDetails = async (testId: string) => {
     try {
       setSelectedTest(testId);
@@ -1099,12 +1320,7 @@ export default function AlphaTestDashboard() {
           NEST-Haus Alpha Test Dashboard
         </h1>
         <p className="text-gray-600">
-          Report Period:{" "}
-          {timeRange === "7d"
-            ? "Last 7 days"
-            : timeRange === "30d"
-              ? "Last 30 days"
-              : "Last 90 days"}{" "}
+          Report Period: {timeRange === "30d" ? "Last 30 days" : "Last 90 days"}{" "}
           | Generated: {new Date().toLocaleDateString()}
         </p>
       </div>
@@ -1112,7 +1328,7 @@ export default function AlphaTestDashboard() {
       {/* Time Range Selector */}
       <div className="flex items-center justify-between no-print">
         <div className="flex space-x-4">
-          {["7d", "30d", "90d"].map((range) => (
+          {["30d", "90d"].map((range) => (
             <button
               key={range}
               onClick={() => setTimeRange(range)}
@@ -1122,11 +1338,7 @@ export default function AlphaTestDashboard() {
                   : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
               }`}
             >
-              {range === "7d"
-                ? "Last 7 days"
-                : range === "30d"
-                  ? "Last 30 days"
-                  : "Last 90 days"}
+              {range === "30d" ? "Last 30 days" : "Last 90 days"}
             </button>
           ))}
         </div>
@@ -1152,6 +1364,15 @@ export default function AlphaTestDashboard() {
             >
               {isResetting ? "🗑️ Resetting..." : "🗑️ Reset All Data"}
             </button>
+            <button
+              onClick={cleanupLongDurations}
+              disabled={isCleaningDurations}
+              className="px-4 py-2 bg-orange-600 text-white rounded-lg text-sm font-medium hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {isCleaningDurations
+                ? "🧹 Cleaning..."
+                : "🧹 Clean Long Durations"}
+            </button>
           </div>
           <div className="text-sm text-gray-500">
             Generated: {new Date(analytics.generatedAt).toLocaleString()}
@@ -1167,6 +1388,18 @@ export default function AlphaTestDashboard() {
             <span className="text-green-800 font-medium">Reset Successful</span>
           </div>
           <p className="text-green-700 mt-1 text-sm">{resetSuccess}</p>
+        </div>
+      )}
+
+      {cleanupSuccess && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-center space-x-2">
+            <span className="text-green-600">🧹</span>
+            <span className="text-green-800 font-medium">
+              Cleanup Successful
+            </span>
+          </div>
+          <p className="text-green-700 mt-1 text-sm">{cleanupSuccess}</p>
         </div>
       )}
 
@@ -1834,6 +2067,9 @@ export default function AlphaTestDashboard() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
                     </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Antworten zusammenfassen
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -1919,10 +2155,68 @@ export default function AlphaTestDashboard() {
                               {isExpanded ? "Ausblenden" : "Alle Antworten"}
                             </button>
                           </td>
+                          <td className="px-6 py-4 text-sm">
+                            <div className="max-w-sm">
+                              {aiSummaries.has(question.questionId) ? (
+                                <div className="text-gray-900 text-sm leading-relaxed">
+                                  {aiSummaries.get(question.questionId)}
+                                  <div className="mt-2 flex space-x-3">
+                                    <button
+                                      onClick={() => {
+                                        setAiSummaries((prev) => {
+                                          const newMap = new Map(prev);
+                                          newMap.delete(question.questionId);
+                                          return newMap;
+                                        });
+                                      }}
+                                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                    >
+                                      Verstecken
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        generateDetailedSummary(
+                                          question.questionId,
+                                          question.questionText,
+                                          question.responses
+                                        )
+                                      }
+                                      disabled={loadingSummaries.has(
+                                        question.questionId
+                                      )}
+                                      className="text-blue-600 hover:text-blue-800 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                      {loadingSummaries.has(question.questionId)
+                                        ? "Generiere..."
+                                        : "Mehr anzeigen"}
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    generateAISummary(
+                                      question.questionId,
+                                      question.questionText,
+                                      question.responses
+                                    )
+                                  }
+                                  disabled={loadingSummaries.has(
+                                    question.questionId
+                                  )}
+                                  className="text-blue-600 hover:text-blue-800 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                  {loadingSummaries.has(question.questionId)
+                                    ? "Generiere..."
+                                    : "KI Zusammenfassung"}
+                                </button>
+                              )}
+                            </div>
+                          </td>
                         </tr>
                         {isExpanded && (
                           <tr>
-                            <td colSpan={6} className="px-6 py-4 bg-gray-50">
+                            <td colSpan={7} className="px-6 py-4 bg-gray-50">
                               <div className="space-y-3">
                                 <h5 className="font-medium text-gray-900 mb-3">
                                   Alle Antworten zu: &quot;
@@ -1982,7 +2276,7 @@ export default function AlphaTestDashboard() {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           Recent Tests
         </h3>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-h-96 overflow-y-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -2074,13 +2368,23 @@ export default function AlphaTestDashboard() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm no-print">
-                    <button
-                      onClick={() => viewTestDetails(test.testId)}
-                      className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                      <span>👁️</span>
-                      <span>View</span>
-                    </button>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => viewTestDetails(test.testId)}
+                        className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <span>👁️</span>
+                        <span>View</span>
+                      </button>
+                      <button
+                        onClick={() => deleteIndividualTest(test.testId)}
+                        className="flex items-center space-x-1 text-red-600 hover:text-red-800 transition-colors"
+                        title="Delete this test"
+                      >
+                        <span>🗑️</span>
+                        <span>Delete</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -2763,6 +3067,76 @@ export default function AlphaTestDashboard() {
 
       {/* Configuration Analytics Section */}
       <ConfigurationAnalytics analytics={analytics} />
+
+      {/* Detailed AI Summary Modal */}
+      {showDetailedSummary && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-900">
+                  🤖 Detaillierte KI-Analyse
+                </h2>
+                <button
+                  onClick={() => setShowDetailedSummary(null)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="max-h-96 overflow-y-auto">
+                <div className="prose prose-sm max-w-none">
+                  {detailedSummaryData.split("\n").map((line, index) => {
+                    if (line.startsWith("# ")) {
+                      return (
+                        <h1
+                          key={index}
+                          className="text-2xl font-bold mt-6 mb-4"
+                        >
+                          {line.substring(2)}
+                        </h1>
+                      );
+                    } else if (line.startsWith("## ")) {
+                      return (
+                        <h2
+                          key={index}
+                          className="text-xl font-semibold mt-5 mb-3"
+                        >
+                          {line.substring(3)}
+                        </h2>
+                      );
+                    } else if (line.startsWith("**") && line.endsWith("**")) {
+                      return (
+                        <p key={index} className="font-semibold mt-2 mb-2">
+                          {line.slice(2, -2)}
+                        </p>
+                      );
+                    } else if (line.startsWith("---")) {
+                      return <hr key={index} className="my-4" />;
+                    } else if (line.trim() === "") {
+                      return <div key={index} className="h-2"></div>;
+                    } else {
+                      return (
+                        <p key={index} className="mb-2 leading-relaxed">
+                          {line}
+                        </p>
+                      );
+                    }
+                  })}
+                </div>
+              </div>
+              <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200 mt-6">
+                <button
+                  onClick={() => setShowDetailedSummary(null)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Schließen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
