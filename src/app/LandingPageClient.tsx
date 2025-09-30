@@ -224,7 +224,7 @@ export default function LandingPageClient() {
                     className={`h3-primary ${section.id === 2
                       ? "text-white"
                       : section.id === 7
-                        ? "text-[#605047] md:text-white"
+                        ? "text-white md:text-white"
                         : "text-white"
                       } ${section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"
