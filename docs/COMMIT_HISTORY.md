@@ -4,6 +4,38 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9bb3ab5c0009b8b38f9538105db8dab90ceff4a5] - Tue Sep 30 08:18:00 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
+- src/app/alpha-test-complete/page.tsx
+- src/app/api/admin/usability-tests/delete/route.ts
+- src/app/api/admin/usability-tests/export/route.ts
+- src/app/api/admin/usability-tests/migrate-progress/route.ts
+- src/app/api/admin/usability-tests/pdf/all/route.ts
+- src/app/api/admin/usability-tests/pdf/route.ts
+- src/app/api/admin/usability-tests/route.ts
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/images/ClientBlobImage.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+- src/components/testing/AlphaTestButton.tsx
+- src/components/testing/UsabilityTestPopup.tsx
+- src/components/testing/config/TestQuestions.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [2916ed90f32fe69c3bb6e03e57db461b66586c45] - Sat Sep 27 09:45:05 2025 +0200
 
 **Author**: stenkjan
