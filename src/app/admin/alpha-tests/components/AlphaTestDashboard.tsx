@@ -473,8 +473,6 @@ export default function AlphaTestDashboard() {
     null
   );
   const [detailedSummaryData, setDetailedSummaryData] = useState<string>("");
-  const [isCleaningDurations, setIsCleaningDurations] = useState(false);
-  const [cleanupSuccess, setCleanupSuccess] = useState<string | null>(null);
   const [commentsData, setCommentsData] = useState<
     Array<{
       testId: string;
@@ -495,7 +493,6 @@ export default function AlphaTestDashboard() {
     testId: string;
     participantName: string;
   } | null>(null);
-  const [bulkDeleting, setBulkDeleting] = useState(false);
   const [exportingAllPDFs, setExportingAllPDFs] = useState(false);
 
   // Helper function to extract key findings from responses
@@ -1083,94 +1080,6 @@ export default function AlphaTestDashboard() {
     }
   };
 
-  const cleanupLongDurations = async () => {
-    if (
-      !confirm(
-        "⚠️ Möchtest du die Dauer von allen Tests über 200 Minuten entfernen? Diese Tests wurden wahrscheinlich manuell als 'abgeschlossen' markiert und ihre Zeiten verfälschen die Statistiken."
-      )
-    ) {
-      return;
-    }
-
-    setIsCleaningDurations(true);
-    setCleanupSuccess(null);
-    setError(null);
-
-    try {
-      const response = await fetch("/api/admin/cleanup-long-durations", {
-        method: "POST",
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error || "Failed to cleanup long durations");
-      }
-
-      setCleanupSuccess(
-        `Erfolgreich! Dauer von ${result.affectedTests} Tests über 200 Minuten entfernt.`
-      );
-
-      // Refresh analytics after cleanup
-      await fetchAnalytics();
-
-      // Clear success message after 10 seconds
-      setTimeout(() => setCleanupSuccess(null), 10000);
-    } catch (err) {
-      console.error("Failed to cleanup long durations:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to cleanup long durations"
-      );
-    } finally {
-      setIsCleaningDurations(false);
-    }
-  };
-
-  const deleteIndividualTest = async (testId: string) => {
-    if (
-      !confirm(
-        `⚠️ Are you sure you want to delete test ${testId.substring(0, 12)}...? This action cannot be undone!`
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `/api/admin/usability-tests/individual/${testId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error || "Failed to delete test");
-      }
-
-      // Refresh analytics after deletion
-      await fetchAnalytics();
-
-      alert(
-        `Test ${testId.substring(0, 12)}... has been deleted successfully.`
-      );
-    } catch (err) {
-      console.error("Failed to delete test:", err);
-      alert(
-        `Failed to delete test: ${err instanceof Error ? err.message : "Unknown error"}`
-      );
-    }
-  };
-
   const viewTestDetails = async (testId: string) => {
     try {
       setSelectedTest(testId);
@@ -1371,47 +1280,6 @@ export default function AlphaTestDashboard() {
     }
   };
 
-  const bulkDeleteOldTests = async () => {
-    try {
-      setBulkDeleting(true);
-      console.log("🗑️ Bulk deleting tests older than 7 days...");
-
-      // Calculate date 7 days ago (September 20, 2025)
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-      const response = await fetch("/api/admin/usability-tests/delete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          beforeDate: sevenDaysAgo.toISOString(),
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        console.log("✅ Bulk delete completed:", result);
-        // Refresh analytics to update the UI
-        await fetchAnalytics();
-        setResetSuccess(
-          `Deleted ${result.deletedCounts.tests} old tests (before ${sevenDaysAgo.toLocaleDateString()})`
-        );
-        setTimeout(() => setResetSuccess(null), 5000);
-      } else {
-        console.error("❌ Failed to bulk delete tests:", result.error);
-        alert(`Failed to bulk delete tests: ${result.error}`);
-      }
-    } catch (error) {
-      console.error("❌ Bulk delete failed:", error);
-      alert("Failed to bulk delete tests. Please try again.");
-    } finally {
-      setBulkDeleting(false);
-    }
-  };
-
   const confirmDeleteTest = (testId: string, participantName: string) => {
     setShowDeleteConfirm({ testId, participantName });
   };
@@ -1510,15 +1378,6 @@ export default function AlphaTestDashboard() {
             >
               {isResetting ? "🗑️ Resetting..." : "🗑️ Reset All Data"}
             </button>
-            <button
-              onClick={cleanupLongDurations}
-              disabled={isCleaningDurations}
-              className="px-4 py-2 bg-orange-600 text-white rounded-lg text-sm font-medium hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {isCleaningDurations
-                ? "🧹 Cleaning..."
-                : "🧹 Clean Long Durations"}
-            </button>
           </div>
           <div className="text-sm text-gray-500">
             Generated: {new Date(analytics.generatedAt).toLocaleString()}
@@ -1534,18 +1393,6 @@ export default function AlphaTestDashboard() {
             <span className="text-green-800 font-medium">Reset Successful</span>
           </div>
           <p className="text-green-700 mt-1 text-sm">{resetSuccess}</p>
-        </div>
-      )}
-
-      {cleanupSuccess && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-green-600">🧹</span>
-            <span className="text-green-800 font-medium">
-              Cleanup Successful
-            </span>
-          </div>
-          <p className="text-green-700 mt-1 text-sm">{cleanupSuccess}</p>
         </div>
       )}
 
@@ -2435,23 +2282,6 @@ export default function AlphaTestDashboard() {
               <span>{exportingAllPDFs ? "⏳" : "📄"}</span>
               <span>
                 {exportingAllPDFs ? "Generating PDF..." : "Export All PDFs"}
-              </span>
-            </button>
-            <button
-              onClick={bulkDeleteOldTests}
-              disabled={bulkDeleting}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                bulkDeleting
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800"
-              }`}
-              title="Delete all tests older than 7 days (before September 20, 2025)"
-            >
-              <span>{bulkDeleting ? "⏳" : "🗑️"}</span>
-              <span>
-                {bulkDeleting
-                  ? "Deleting old tests..."
-                  : "Delete Tests >7 Days Old"}
               </span>
             </button>
           </div>

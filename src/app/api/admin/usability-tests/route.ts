@@ -430,6 +430,7 @@ export async function GET(request: NextRequest) {
 
             let autoCompletedCount = 0;
             let abandonedCount = 0;
+            let autoCompleted24hCount = 0;
 
             for (const test of inProgressTests) {
                 // Check if user has completed feedback questionnaire responses
@@ -442,7 +443,38 @@ export async function GET(request: NextRequest) {
                 const hasProgressedBeyondInitial = test.responses.length > 0 ||
                     test.interactions.some(i => i.stepId !== 'test_start');
 
-                if (hasFeedbackResponses && test.startedAt < twoHoursAgo) {
+                // Auto-complete tests that are older than 24 hours regardless of progress
+                if (test.startedAt < twentyFourHoursAgo) {
+                    const ratingResponses = test.responses.filter(r =>
+                        r.questionType === 'RATING' &&
+                        typeof r.response === 'object' &&
+                        r.response &&
+                        'value' in r.response
+                    );
+
+                    const overallRating = ratingResponses.length > 0
+                        ? ratingResponses.reduce((sum, r) => {
+                            const responseObj = r.response as { value: number };
+                            return sum + responseObj.value;
+                        }, 0) / ratingResponses.length
+                        : null;
+
+                    // Calculate duration from start to now (24+ hours)
+                    const totalDuration = Date.now() - test.startedAt.getTime();
+
+                    await prisma.usabilityTest.update({
+                        where: { id: test.id },
+                        data: {
+                            status: 'COMPLETED',
+                            completedAt: new Date(),
+                            overallRating,
+                            totalDuration,
+                            completionRate: hasProgressedBeyondInitial ? 100 : 0,
+                            updatedAt: new Date()
+                        }
+                    });
+                    autoCompleted24hCount++;
+                } else if (hasFeedbackResponses && test.startedAt < twoHoursAgo) {
                     // Auto-complete tests that have feedback responses and are older than 2 hours
                     const ratingResponses = test.responses.filter(r =>
                         r.questionType === 'RATING' &&
@@ -470,7 +502,7 @@ export async function GET(request: NextRequest) {
                     });
                     autoCompletedCount++;
                 } else if (!hasProgressedBeyondInitial && test.startedAt < twentyFourHoursAgo) {
-                    // Only abandon tests that haven't progressed beyond initial steps
+                    // Only abandon tests that haven't progressed beyond initial steps (fallback for edge cases)
                     await prisma.usabilityTest.update({
                         where: { id: test.id },
                         data: {
@@ -482,6 +514,9 @@ export async function GET(request: NextRequest) {
                 }
             }
 
+            if (autoCompleted24hCount > 0) {
+                console.log(`📊 Auto-completed ${autoCompleted24hCount} tests after 24+ hours (regardless of progress)`);
+            }
             if (autoCompletedCount > 0) {
                 console.log(`📊 Auto-completed ${autoCompletedCount} tests with feedback responses (2+ hours inactive)`);
             }

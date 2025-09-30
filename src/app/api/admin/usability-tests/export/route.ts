@@ -41,7 +41,37 @@ export async function GET(request: NextRequest) {
             const hasProgressedBeyondInitial = test.responses.length > 0 ||
                 test.interactions.some(i => i.stepId !== 'test_start');
 
-            if (hasFeedbackResponses && test.startedAt < twoHoursAgo) {
+            // Auto-complete tests that are older than 24 hours regardless of progress
+            if (test.startedAt < twentyFourHoursAgo) {
+                const ratingResponses = test.responses.filter(r =>
+                    r.questionType === 'RATING' &&
+                    typeof r.response === 'object' &&
+                    r.response &&
+                    'value' in r.response
+                );
+
+                const overallRating = ratingResponses.length > 0
+                    ? ratingResponses.reduce((sum, r) => {
+                        const responseObj = r.response as { value: number };
+                        return sum + responseObj.value;
+                    }, 0) / ratingResponses.length
+                    : null;
+
+                // Calculate duration from start to now (24+ hours)
+                const totalDuration = Date.now() - test.startedAt.getTime();
+
+                await prisma.usabilityTest.update({
+                    where: { id: test.id },
+                    data: {
+                        status: 'COMPLETED',
+                        completedAt: new Date(),
+                        overallRating,
+                        totalDuration,
+                        completionRate: hasProgressedBeyondInitial ? 100 : 0,
+                        updatedAt: new Date()
+                    }
+                });
+            } else if (hasFeedbackResponses && test.startedAt < twoHoursAgo) {
                 const ratingResponses = test.responses.filter(r =>
                     r.questionType === 'RATING' &&
                     typeof r.response === 'object' &&
