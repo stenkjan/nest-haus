@@ -238,12 +238,7 @@ export default function WarenkorbClient() {
       );
       addConfigurationToCart(cartConfig);
     } else {
-      // Update existing configuration instead of skipping
-      console.log(
-        "🛒 Updating existing configuration in cart with new changes"
-      );
-
-      // Find and update the existing cart item
+      // Check if configuration has actually changed before updating
       const existingItem = items.find((item) => {
         if ("sessionId" in item && item.isFromConfigurator) {
           if (cartConfig.sessionId && item.sessionId) {
@@ -253,10 +248,38 @@ export default function WarenkorbClient() {
         return false;
       });
 
-      if (existingItem && "sessionId" in existingItem) {
-        // Remove the old item and add the updated one
-        removeFromCart(existingItem.id);
-        addConfigurationToCart(cartConfig);
+      if (
+        existingItem &&
+        "sessionId" in existingItem &&
+        "nest" in existingItem
+      ) {
+        // Compare configurations to see if update is needed
+        const configChanged =
+          existingItem.gebaeudehuelle?.value !==
+            cartConfig.gebaeudehuelle?.value ||
+          existingItem.innenverkleidung?.value !==
+            cartConfig.innenverkleidung?.value ||
+          existingItem.fussboden?.value !== cartConfig.fussboden?.value ||
+          existingItem.belichtungspaket?.value !==
+            cartConfig.belichtungspaket?.value ||
+          existingItem.pvanlage?.value !== cartConfig.pvanlage?.value ||
+          existingItem.pvanlage?.quantity !== cartConfig.pvanlage?.quantity ||
+          existingItem.fenster?.value !== cartConfig.fenster?.value ||
+          existingItem.stirnseite?.value !== cartConfig.stirnseite?.value ||
+          existingItem.planungspaket?.value !== cartConfig.planungspaket?.value;
+
+        if (configChanged) {
+          console.log("🛒 Configuration changed, updating cart item");
+          // Use setTimeout to prevent race conditions
+          setTimeout(() => {
+            removeFromCart(existingItem.id);
+            setTimeout(() => {
+              addConfigurationToCart(cartConfig);
+            }, 50);
+          }, 10);
+        } else {
+          console.log("🛒 Configuration unchanged, skipping update");
+        }
       }
     }
   }, [

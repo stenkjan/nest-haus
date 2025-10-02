@@ -1280,10 +1280,11 @@ export default function CheckoutStepper({
 
   const currentView: ViewType =
     galleryViews[Math.min(galleryIndex, galleryViews.length - 1)] || "exterior";
-  const currentImagePath = ImageManager.getPreviewImage(
-    sourceConfig || null,
-    currentView
-  );
+
+  // Safety check to prevent crashes during cart updates
+  const currentImagePath = sourceConfig
+    ? ImageManager.getPreviewImage(sourceConfig, currentView)
+    : ImageManager.getPreviewImage(null, currentView);
 
   const goPrevImage = () =>
     setGalleryIndex((i) => (i - 1 + galleryViews.length) % galleryViews.length);
@@ -1445,18 +1446,20 @@ export default function CheckoutStepper({
                       className="relative w-full lg:flex-1"
                       style={{ aspectRatio: "16/10" }}
                     >
-                      <HybridBlobImage
-                        key={`${currentView}:${currentImagePath}`}
-                        path={currentImagePath}
-                        alt={`Konfiguration Vorschau – ${currentView}`}
-                        fill
-                        className="object-contain"
-                        strategy="client"
-                        isInteractive={true}
-                        sizes="(max-width: 1023px) 100vw, 70vw"
-                        quality={85}
-                        priority={true}
-                      />
+                      {currentImagePath && (
+                        <HybridBlobImage
+                          key={`${currentView}:${currentImagePath}`}
+                          path={currentImagePath}
+                          alt={`Konfiguration Vorschau – ${currentView}`}
+                          fill
+                          className="object-contain"
+                          strategy="client"
+                          isInteractive={true}
+                          sizes="(max-width: 1023px) 100vw, 70vw"
+                          quality={85}
+                          priority={true}
+                        />
+                      )}
 
                       {/* PV Module Overlay - only show on exterior view when PV is selected */}
                       {currentView === "exterior" &&
@@ -1963,18 +1966,20 @@ export default function CheckoutStepper({
                       className="relative w-full lg:flex-1"
                       style={{ aspectRatio: "16/10" }}
                     >
-                      <HybridBlobImage
-                        key={`${currentView}:${currentImagePath}`}
-                        path={currentImagePath}
-                        alt={`Konfiguration Vorschau – ${currentView}`}
-                        fill
-                        className="object-contain"
-                        strategy="client"
-                        isInteractive={true}
-                        sizes="(max-width: 1023px) 100vw, 70vw"
-                        quality={85}
-                        priority={true}
-                      />
+                      {currentImagePath && (
+                        <HybridBlobImage
+                          key={`${currentView}:${currentImagePath}`}
+                          path={currentImagePath}
+                          alt={`Konfiguration Vorschau – ${currentView}`}
+                          fill
+                          className="object-contain"
+                          strategy="client"
+                          isInteractive={true}
+                          sizes="(max-width: 1023px) 100vw, 70vw"
+                          quality={85}
+                          priority={true}
+                        />
+                      )}
 
                       {/* PV Module Overlay - only show on exterior view when PV is selected */}
                       {currentView === "exterior" &&
