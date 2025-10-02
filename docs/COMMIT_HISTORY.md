@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a453be1fc28bdcf58a0bcbb28724b20ec441840f] - Thu Oct 2 12:10:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: enhance image loading state management in PreviewPanel component  - Introduced a new state to track if any image has loaded, improving overlay visibility logic. - Updated conditions for displaying overlays to include scenarios where at least one image has been loaded, enhancing user experience during image transitions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/PreviewPanel.tsx
+
+
+---
+
 ## [5bbd982486d295773013c9ec7b11949ed7bf6c97] - Thu Oct 2 11:58:48 2025 +0200
 
 **Author**: stenkjan
