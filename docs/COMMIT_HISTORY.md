@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e0a9eb346d9cc8158ccc27fd9ade80b707b8c63e] - Thu Oct 2 16:04:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: implement "ohne nest" mode functionality in cart and summary components  - Added "Ohne Nest fortfahren" button in SummaryPanel for navigation to the cart in ohne-nest mode. - Updated WarenkorbClient to check URL parameters for ohne-nest mode and manage state accordingly. - Enhanced CheckoutStepper to conditionally render content based on the isOhneNestMode state, modifying displayed titles and configuration sections. - Introduced new actions in cartStore to manage the ohne-nest mode state effectively.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [100e69eaced83fcf6a4cf8521ae5322d73b8f588] - Thu Oct 2 15:41:02 2025 +0200
 
 **Author**: stenkjan
