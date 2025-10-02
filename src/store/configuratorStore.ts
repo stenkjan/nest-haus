@@ -140,14 +140,26 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         // Check if this is a completely new session (no sessionId and no selections)
         const isNewSession = !state.sessionId && !state.configuration.nest;
 
+        // DEBUG: Log session initialization
+        console.log("🔧 DEBUG: initializeSession called", {
+          hasSessionId: !!state.sessionId,
+          hasNest: !!state.configuration.nest,
+          isNewSession,
+          currentConfig: state.configuration
+        });
+
         // Generate sessionId if missing
         if (!state.sessionId) {
+          console.log("🔧 DEBUG: Generating new sessionId");
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
 
         // Set default preselections only for completely new sessions
         if (isNewSession) {
+          console.log("🔧 DEBUG: Setting default selections for new session");
           get().setDefaultSelections()
+        } else {
+          console.log("🔧 DEBUG: Skipping default selections - existing session");
         }
 
         // Calculate price immediately

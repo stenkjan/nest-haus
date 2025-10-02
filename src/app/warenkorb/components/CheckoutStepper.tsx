@@ -84,9 +84,20 @@ export default function CheckoutStepper({
   } = useConfiguratorStore();
 
   const configItem = useMemo(() => {
-    return items.find((it) => "nest" in it && it.nest) as
+    const found = items.find((it) => "nest" in it && it.nest) as
       | ConfigurationCartItem
       | undefined;
+
+    // DEBUG: Log what configuration item was found in cart
+    console.log("🛒 DEBUG: Cart configItem found:", found);
+    if (found?.gebaeudehuelle) {
+      console.log(
+        "🛒 DEBUG: Cart configItem gebäudehülle:",
+        found.gebaeudehuelle
+      );
+    }
+
+    return found;
   }, [items]);
 
   const [localSelectedPlan, setLocalSelectedPlan] = useState<string | null>(
@@ -1210,13 +1221,32 @@ export default function CheckoutStepper({
 
   // Decide which configuration to use for images: prioritize cart item for consistent display
   const sourceConfig = useMemo(() => {
+    // DEBUG: Log both configurations to see which one is being used
+    console.log("🛒 DEBUG: Current configurator state:", configuration);
+    console.log("🛒 DEBUG: Cart configItem:", configItem);
+    if (configuration?.gebaeudehuelle) {
+      console.log(
+        "🛒 DEBUG: Configurator gebäudehülle:",
+        configuration.gebaeudehuelle
+      );
+    }
+
     // For warenkorb, prioritize cart item configuration to ensure consistency
     // between displayed configuration details and overlays
-    return (
+    const result =
       (configItem as ConfigurationCartItem | undefined) ||
       configuration ||
-      undefined
-    );
+      undefined;
+
+    console.log("🛒 DEBUG: Final sourceConfig being used:", result);
+    if (result?.gebaeudehuelle) {
+      console.log(
+        "🛒 DEBUG: Final sourceConfig gebäudehülle:",
+        result.gebaeudehülle
+      );
+    }
+
+    return result;
   }, [configItem, configuration]);
 
   // Determine interior availability based on actual selections in the source config
