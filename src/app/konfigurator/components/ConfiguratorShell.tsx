@@ -1134,6 +1134,51 @@ export default function ConfiguratorShell({
     }
   }, [getMaxPvModules, pvQuantity, configuration?.pvanlage, updateSelection]);
 
+  // Sync local PV quantity with store on mount/configuration change
+  useEffect(() => {
+    if (configuration?.pvanlage?.quantity !== undefined) {
+      const storeQuantity = configuration.pvanlage.quantity;
+      if (storeQuantity !== pvQuantity) {
+        console.log("🔧 DEBUG: Syncing PV quantity from store:", storeQuantity);
+        setPvQuantity(storeQuantity);
+        // Also sync overlay visibility
+        if (storeQuantity > 0) {
+          setIsPvOverlayVisible(true);
+        }
+      }
+    }
+  }, [configuration?.pvanlage?.quantity, pvQuantity]);
+
+  // Restore overlay visibility based on configuration state (for returning from warenkorb)
+  useEffect(() => {
+    // Restore belichtungspaket overlay if belichtungspaket is selected (non-default or explicitly chosen)
+    if (configuration?.belichtungspaket && !isBrightnessOverlayVisible) {
+      // Only show if it's not the default "light" or if user has made other selections indicating active use
+      const hasActiveSelections =
+        configuration?.gebaeudehuelle ||
+        configuration?.innenverkleidung ||
+        configuration?.fussboden;
+      if (
+        configuration.belichtungspaket.value !== "light" ||
+        hasActiveSelections
+      ) {
+        console.log("🔧 DEBUG: Restoring belichtungspaket overlay visibility");
+        setIsBrightnessOverlayVisible(true);
+      }
+    }
+
+    // Restore fenster overlay if fenster is selected and we're in interior view
+    if (configuration?.fenster && !isFensterOverlayVisible) {
+      // Check if we have interior-related selections that would indicate active use
+      const hasInteriorSelections =
+        configuration?.innenverkleidung || configuration?.fussboden;
+      if (hasInteriorSelections) {
+        console.log("🔧 DEBUG: Restoring fenster overlay visibility");
+        setIsFensterOverlayVisible(true);
+      }
+    }
+  }, [configuration, isBrightnessOverlayVisible, isFensterOverlayVisible]);
+
   // Reset local quantities when selections are removed
   useEffect(() => {
     if (!configuration?.pvanlage && pvQuantity > 0) {

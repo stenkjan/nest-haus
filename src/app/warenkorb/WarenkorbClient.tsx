@@ -238,12 +238,32 @@ export default function WarenkorbClient() {
       );
       addConfigurationToCart(cartConfig);
     } else {
-      console.log("🛒 Configuration already in cart, skipping duplicate");
+      // Update existing configuration instead of skipping
+      console.log(
+        "🛒 Updating existing configuration in cart with new changes"
+      );
+
+      // Find and update the existing cart item
+      const existingItem = items.find((item) => {
+        if ("sessionId" in item && item.isFromConfigurator) {
+          if (cartConfig.sessionId && item.sessionId) {
+            return item.sessionId === cartConfig.sessionId;
+          }
+        }
+        return false;
+      });
+
+      if (existingItem && "sessionId" in existingItem) {
+        // Remove the old item and add the updated one
+        removeFromCart(existingItem.id);
+        addConfigurationToCart(cartConfig);
+      }
     }
   }, [
     configuration,
     getConfigurationForCart,
     addConfigurationToCart,
+    removeFromCart,
     items,
     hasManuallyCleared,
   ]);
