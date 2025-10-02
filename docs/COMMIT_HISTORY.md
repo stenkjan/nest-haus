@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b876e5e8d3e4db53a5e1246ba419554361561f2c] - Thu Oct 2 15:02:31 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: enhance debug logging in CheckoutStepper and configuratorStore  - Added detailed debug logging in CheckoutStepper to track the configuration item found in the cart and the source configuration being used. - Implemented logging in configuratorStore to monitor session initialization and default selection settings, improving traceability during development.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [1e0077f2f1f2fdcb0dcb0bcc773fbba00646a985] - Thu Oct 2 13:37:09 2025 +0200
 
 **Author**: stenkjan
