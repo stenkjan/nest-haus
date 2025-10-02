@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b065f20bae21dd370158e0e9b54d0799cd5690b2] - Tue Sep 30 12:53:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: correct phrase counting logic in AI summarization  - Updated the phrase counting logic in the extractKeyFindings function to use the correct method for retrieving existing counts from the phrases map. - Ensured accurate phrase frequency tracking for improved AI summary generation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/ai-summarize/route.ts
+
+
+---
+
 ## [1b2f926413e3228527d636450efaa9801511b449] - Tue Sep 30 11:38:35 2025 +0200
 
 **Author**: stenkjan
