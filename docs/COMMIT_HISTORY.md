@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [99612e610587d7e36bac4eb07950eb7daee90060] - Thu Oct 2 15:26:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: synchronize and restore overlay visibility in ConfiguratorShell and update cart configuration handling in WarenkorbClient  - Added synchronization of local PV quantity with the store on mount and configuration change in ConfiguratorShell. - Implemented restoration of overlay visibility based on configuration state for belichtungspaket and fenster selections. - Updated WarenkorbClient to modify existing cart configurations instead of skipping duplicates, enhancing cart management logic.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [f062431e644a562c69da8e5c12261293f844928f] - Thu Oct 2 15:08:34 2025 +0200
 
 **Author**: stenkjan
