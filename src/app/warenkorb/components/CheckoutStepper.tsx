@@ -508,6 +508,12 @@ export default function CheckoutStepper({
   const renderConfigurationDetails = (
     item: CartItem | ConfigurationCartItem
   ) => {
+    // DEBUG: Log the configuration being displayed
+    console.log("🛒 DEBUG: Rendering configuration details for item:", item);
+    if ("gebaeudehuelle" in item) {
+      console.log("🛒 DEBUG: Gebäudehülle in cart item:", item.gebaeudehuelle);
+    }
+
     const details: Array<{
       label: string;
       value: string;

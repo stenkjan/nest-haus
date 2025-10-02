@@ -158,6 +158,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       updateSelection: (item: ConfigurationItem) => {
         const state = get()
 
+        // DEBUG: Log the selection being updated
+        console.log("🔧 DEBUG: Updating selection:", item);
+        if (item.category === 'gebaeudehuelle') {
+          console.log("🔧 DEBUG: Gebäudehülle selection:", item);
+        }
+
         // Generate sessionId only if not already set
         let sessionId = state.sessionId
         if (!sessionId) {

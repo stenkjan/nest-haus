@@ -166,6 +166,15 @@ export default function WarenkorbClient() {
     const cartConfig = getConfigurationForCart();
     if (!cartConfig) return;
 
+    // DEBUG: Log the configuration being added to cart
+    console.log("🛒 DEBUG: Adding configuration to cart:", cartConfig);
+    if (cartConfig.gebaeudehuelle) {
+      console.log(
+        "🛒 DEBUG: Gebäudehülle being added:",
+        cartConfig.gebaeudehuelle
+      );
+    }
+
     // Check if this exact configuration is already in the cart
     const hasExistingConfig = items.some((item) => {
       if ("sessionId" in item && item.isFromConfigurator) {
