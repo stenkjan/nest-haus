@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f062431e644a562c69da8e5c12261293f844928f] - Thu Oct 2 15:08:34 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: correct spelling in debug logging for CheckoutStepper  - Updated the spelling of 'gebaeudehülle' to 'gebaeudehuelle' in debug logging to ensure consistency and accuracy in logged output.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [b876e5e8d3e4db53a5e1246ba419554361561f2c] - Thu Oct 2 15:02:31 2025 +0200
 
 **Author**: stenkjan
