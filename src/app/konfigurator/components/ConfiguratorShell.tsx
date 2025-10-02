@@ -161,7 +161,7 @@ export default function ConfiguratorShell({
   const resetLocalState = useCallback(() => {
     console.log("🔄 ConfiguratorShell: Resetting local state");
     setPvQuantity(0);
-    setIsPvOverlayVisible(true);
+    setIsPvOverlayVisible(false); // Hide PV overlay when resetting since quantity is 0
     setIsBrightnessOverlayVisible(false);
     setIsFensterOverlayVisible(false); // Hidden by default, only show when actively selecting fenster
   }, []);
@@ -189,6 +189,7 @@ export default function ConfiguratorShell({
           // If quantity is > 0, unselect (set to 0)
           if (pvQuantity > 0) {
             setPvQuantity(0);
+            setIsPvOverlayVisible(false); // Hide overlay when deselecting PV
             removeSelection(categoryId);
             return;
           }
@@ -217,10 +218,9 @@ export default function ConfiguratorShell({
 
       // Special handling for Fenster & Türen selection
       if (categoryId === "fenster") {
-        // Show fenster overlay and hide other overlays
+        // Show fenster overlay - DO NOT hide other overlays as they show on different views
         setIsFensterOverlayVisible(true);
-        setIsPvOverlayVisible(false);
-        setIsBrightnessOverlayVisible(false);
+        // Keep PV and brightness overlays as they show on exterior view, fenster shows on interior
 
         // Switch to fenster view to show materials selection with overlay
         const { switchToView } = useConfiguratorStore.getState();
@@ -229,12 +229,16 @@ export default function ConfiguratorShell({
         }
       }
 
-      // REMOVED: Legacy belichtungspaket overlay logic - now handled in main selection logic below
+      // OVERLAY PERSISTENCE FIX: Only hide overlays when switching to truly incompatible categories
+      // Keep overlays persistent across related selections
 
-      // Hide brightness overlay when switching to other sections (except belichtungspaket and planungspaket)
+      // Hide brightness overlay only when switching to categories that are completely unrelated
       if (
         categoryId !== "belichtungspaket" &&
         categoryId !== "planungspaket" &&
+        categoryId !== "nest" && // Allow nest changes to keep overlays
+        categoryId !== "gebaeudehuelle" && // Allow gebäudehülle changes to keep overlays
+        categoryId !== "pvanlage" && // Allow PV changes to keep brightness overlay
         isBrightnessOverlayVisible
       ) {
         setIsBrightnessOverlayVisible(false);
@@ -255,14 +259,14 @@ export default function ConfiguratorShell({
         }
       }
 
-      // Only hide PV overlay when explicitly switching away from compatible views
-      // Allow PV overlay to persist with other exterior overlays (belichtungspaket) and planungspaket
+      // Hide PV overlay only when switching to truly incompatible categories
+      // Allow PV overlay to persist with belichtungspaket, gebäudehülle, and nest changes
       if (
         categoryId !== "pvanlage" &&
         isPvOverlayVisible &&
-        categoryId !== "nest" &&
-        categoryId !== "belichtungspaket" &&
-        categoryId !== "gebaeudehuelle" &&
+        categoryId !== "nest" && // Allow nest changes to keep PV overlay
+        categoryId !== "belichtungspaket" && // Allow belichtungspaket changes to keep PV overlay
+        categoryId !== "gebaeudehuelle" && // Allow gebäudehülle changes to keep PV overlay
         categoryId !== "planungspaket"
       ) {
         setIsPvOverlayVisible(false);
@@ -277,11 +281,12 @@ export default function ConfiguratorShell({
           description: option.description,
         });
 
-        // Handle overlay visibility based on selection - ALLOW MULTIPLE OVERLAYS
+        // Handle overlay visibility based on selection - PRESERVE EXISTING OVERLAYS
         if (categoryId === "belichtungspaket") {
           // Show belichtung overlay when actively selecting belichtungspaket
-          // Do NOT hide PV overlay - allow both to be visible simultaneously
+          // PRESERVE PV overlay - allow both to be visible simultaneously on exterior view
           setIsBrightnessOverlayVisible(true);
+          // DO NOT hide PV overlay - they can coexist on exterior view
 
           // Switch to exterior view to show the belichtungspaket overlay
           const { switchToView } = useConfiguratorStore.getState();
@@ -290,8 +295,9 @@ export default function ConfiguratorShell({
           }
         } else if (categoryId === "fenster") {
           // Show fenster overlay when fenster is selected (will show on interior view)
-          // Do NOT hide other overlays - fenster shows on interior, others on exterior
+          // PRESERVE other overlays - fenster shows on interior, others on exterior
           setIsFensterOverlayVisible(true);
+          // DO NOT hide PV or brightness overlays - they show on different views
         }
 
         // Auto-scroll to next section after selection - Commented out
@@ -339,13 +345,15 @@ export default function ConfiguratorShell({
     (newQuantity: number) => {
       setPvQuantity(newQuantity);
 
-      // Handle overlay visibility - ALLOW MULTIPLE OVERLAYS
+      // Handle overlay visibility - PRESERVE OTHER OVERLAYS
       if (newQuantity > 0) {
-        // Show PV overlay without hiding belichtungspaket overlay
+        // Show PV overlay without affecting belichtungspaket or fenster overlays
         setIsPvOverlayVisible(true);
+        // DO NOT hide brightness or fenster overlays - they can coexist
       } else {
-        // Hide PV overlay when quantity is 0
+        // Hide PV overlay when quantity is 0, but keep other overlays
         setIsPvOverlayVisible(false);
+        // DO NOT hide brightness or fenster overlays
       }
 
       if (newQuantity === 0) {
@@ -1130,6 +1138,7 @@ export default function ConfiguratorShell({
   useEffect(() => {
     if (!configuration?.pvanlage && pvQuantity > 0) {
       setPvQuantity(0);
+      setIsPvOverlayVisible(false); // Hide overlay when PV selection is removed from store
     }
   }, [configuration?.pvanlage, pvQuantity]);
 
