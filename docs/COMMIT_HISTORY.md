@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [100e69eaced83fcf6a4cf8521ae5322d73b8f588] - Thu Oct 2 15:41:02 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: improve cart configuration update logic and enhance image handling in CheckoutStepper  - Updated WarenkorbClient to check for actual configuration changes before updating the cart, preventing unnecessary updates and improving performance. - Added safety checks in CheckoutStepper to prevent crashes during cart updates by ensuring valid sourceConfig before accessing image paths. - Enhanced conditional rendering of images to avoid rendering issues when sourceConfig is null.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [99612e610587d7e36bac4eb07950eb7daee90060] - Thu Oct 2 15:26:48 2025 +0200
 
 **Author**: stenkjan
