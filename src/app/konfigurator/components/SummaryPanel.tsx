@@ -457,21 +457,38 @@ export default function SummaryPanel({
         {/* Action Buttons */}
         <div className="mt-6">
           {isClient && (
-            <div className="flex justify-center">
-              {/* Neu konfigurieren Button - Only button */}
-              <Button
-                variant="tertiary"
-                size="xs"
-                onClick={() => {
-                  resetConfiguration();
-                  if (onReset) {
-                    onReset();
-                  }
-                }}
-                className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
-              >
-                Neu konfigurieren
-              </Button>
+            <div className="flex flex-col gap-3">
+              {/* Neu konfigurieren Button */}
+              <div className="flex justify-center">
+                <Button
+                  variant="tertiary"
+                  size="xs"
+                  onClick={() => {
+                    resetConfiguration();
+                    if (onReset) {
+                      onReset();
+                    }
+                  }}
+                  className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
+                >
+                  Neu konfigurieren
+                </Button>
+              </div>
+
+              {/* Ohne Nest fortfahren Button */}
+              <div className="flex justify-center">
+                <Button
+                  variant="secondary"
+                  size="xs"
+                  onClick={() => {
+                    // Navigate to warenkorb with ohne-nest flag
+                    window.location.href = "/warenkorb?mode=ohne-nest";
+                  }}
+                  className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
+                >
+                  Ohne Nest fortfahren
+                </Button>
+              </div>
             </div>
           )}
         </div>

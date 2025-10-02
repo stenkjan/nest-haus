@@ -54,6 +54,9 @@ interface CartState {
   // Cart items
   items: (CartItem | ConfigurationCartItem)[]
 
+  // Ohne Nest mode state
+  isOhneNestMode: boolean
+
   // Appointment state
   appointmentDetails: AppointmentDetails | null
 
@@ -74,6 +77,10 @@ interface CartState {
   updateQuantity: (itemId: string, quantity: number) => void
   clearCart: () => void
   getItemById: (itemId: string) => CartItem | ConfigurationCartItem | undefined
+
+  // Ohne Nest mode actions
+  setOhneNestMode: (isOhneNest: boolean) => void
+  getIsOhneNestMode: () => boolean
 
   // Appointment actions
   setAppointmentDetails: (details: AppointmentDetails) => void
@@ -104,6 +111,7 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       // Initial state
       items: [],
+      isOhneNestMode: false,
       appointmentDetails: null,
       orderDetails: null,
       isProcessingOrder: false,
@@ -227,6 +235,7 @@ export const useCartStore = create<CartState>()(
         // Force complete state reset with explicit empty array
         set(() => ({
           items: [],
+          isOhneNestMode: false,
           appointmentDetails: null,
           orderDetails: null,
           isProcessingOrder: false,
@@ -242,11 +251,23 @@ export const useCartStore = create<CartState>()(
           set(() => ({
             ...currentState,
             items: [], // Ensure items are definitely empty
+            isOhneNestMode: false,
             total: 0,
             itemCount: 0
           }))
           console.log("🛒 CartStore: items after forced update:", get().items.length)
         }, 50)
+      },
+
+      // Set ohne nest mode
+      setOhneNestMode: (isOhneNest: boolean) => {
+        console.log("🏠 CartStore: Setting ohne nest mode:", isOhneNest)
+        set({ isOhneNestMode: isOhneNest })
+      },
+
+      // Get ohne nest mode
+      getIsOhneNestMode: () => {
+        return get().isOhneNestMode
       },
 
       // Set appointment details
@@ -503,6 +524,7 @@ export const useCartStore = create<CartState>()(
       skipHydration: process.env.NODE_ENV === 'test',
       partialize: (state) => ({
         items: state.items,
+        isOhneNestMode: state.isOhneNestMode,
         appointmentDetails: state.appointmentDetails,
         orderDetails: state.orderDetails
       })

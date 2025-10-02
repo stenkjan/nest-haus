@@ -41,6 +41,7 @@ interface CheckoutStepperProps {
   stepIndex?: number;
   onStepChange?: (nextIndex: number) => void;
   hideProgress?: boolean;
+  isOhneNestMode?: boolean;
 }
 
 export default function CheckoutStepper({
@@ -52,6 +53,7 @@ export default function CheckoutStepper({
   stepIndex: controlledStepIndex,
   onStepChange,
   hideProgress = false,
+  isOhneNestMode = false,
 }: CheckoutStepperProps) {
   const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate } =
     useCartStore();
@@ -1022,27 +1024,55 @@ export default function CheckoutStepper({
               </h2>
               <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                 <div>
-                  <div className={rowWrapperClass}>
-                    <div className="flex-1 min-w-0">
+                  {/* Show house configuration only if not in ohne nest mode */}
+                  {!isOhneNestMode && (
+                    <div className={rowWrapperClass}>
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                            0
+                          )}`}
+                        >
+                          Dein Nest Haus
+                        </div>
+                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                          {getRowSubtitle(0)}
+                        </div>
+                      </div>
                       <div
                         className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
                           0
                         )}`}
                       >
-                        Dein Nest Haus
-                      </div>
-                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                        {getRowSubtitle(0)}
+                        {PriceUtils.formatPrice(total)}
                       </div>
                     </div>
-                    <div
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
-                        0
-                      )}`}
-                    >
-                      {PriceUtils.formatPrice(total)}
+                  )}
+                  
+                  {/* In ohne nest mode, show modified title */}
+                  {isOhneNestMode && (
+                    <div className={rowWrapperClass}>
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                            0
+                          )}`}
+                        >
+                          Dein Nest Haus
+                        </div>
+                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                          Konfiguriere dein Nest mit uns
+                        </div>
+                      </div>
+                      <div
+                        className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(
+                          0
+                        )}`}
+                      >
+                        -
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div
@@ -1169,8 +1199,9 @@ export default function CheckoutStepper({
                         "—"
                       )}
                     </div>
+                    )}
                   </div>
-                </div>
+                )}
               </div>
               <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
                 <div className={rowWrapperClass}>
@@ -1306,12 +1337,14 @@ export default function CheckoutStepper({
             <div className="space-y-6 pt-8">
               {/* Overview grid: cart on left, summary/upgrade on right */}
               <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
-                <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
-                  <h2 className="h3-secondary text-gray-500">
-                    <span className="text-black">Dein Nest</span>
-                    <span className="text-gray-300"> Deine Konfiguration</span>
-                  </h2>
-                  {items.map((item) => (
+                {/* Show house configuration section only if not in ohne nest mode */}
+                {!isOhneNestMode && (
+                  <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
+                    <h2 className="h3-secondary text-gray-500">
+                      <span className="text-black">Dein Nest</span>
+                      <span className="text-gray-300"> Deine Konfiguration</span>
+                    </h2>
+                    {items.map((item) => (
                     <div
                       key={item.id}
                       className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
@@ -2127,7 +2160,7 @@ export default function CheckoutStepper({
               <h2 className="h2-title text-black mb-3">Deine Auswahl</h2>
 
               <div className="space-y-4 mb-8">
-                {configItem ? (
+                {configItem && !isOhneNestMode ? (
                   <>
                     {(() => {
                       const details = renderConfigurationDetails(configItem);
@@ -2287,7 +2320,9 @@ export default function CheckoutStepper({
                   </>
                 ) : (
                   <div className="text-sm text-gray-600">
-                    Keine Konfiguration im Warenkorb.
+                    {isOhneNestMode 
+                      ? "Dein Nest-Haus wird gemeinsam mit uns konfiguriert."
+                      : "Keine Konfiguration im Warenkorb."}
                   </div>
                 )}
               </div>

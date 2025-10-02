@@ -22,6 +22,8 @@ export default function WarenkorbClient() {
     processOrder,
     getCartTotal,
     canProceedToCheckout: _canProceedToCheckout,
+    setOhneNestMode,
+    getIsOhneNestMode,
   } = useCartStore();
 
   const { configuration, getConfigurationForCart } = useConfiguratorStore();
@@ -72,10 +74,25 @@ export default function WarenkorbClient() {
 
   // Set default hash after component mounts to avoid setState during render
   useEffect(() => {
-    if (typeof window !== "undefined" && !window.location.hash) {
-      window.history.replaceState(null, "", "#übersicht");
+    if (typeof window !== "undefined") {
+      // Check for ohne-nest mode from URL params
+      const urlParams = new URLSearchParams(window.location.search);
+      const mode = urlParams.get("mode");
+
+      if (mode === "ohne-nest") {
+        setOhneNestMode(true);
+        // Remove the mode parameter from URL to clean it up
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete("mode");
+        window.history.replaceState({}, "", newUrl.toString());
+      }
+
+      // Set default hash if none exists
+      if (!window.location.hash) {
+        window.history.replaceState(null, "", "#übersicht");
+      }
     }
-  }, []);
+  }, [setOhneNestMode]);
 
   // Handle step changes and update URL hash
   const handleStepChange = (nextIndex: number) => {
@@ -556,6 +573,7 @@ export default function WarenkorbClient() {
             onScrollToContact={scrollToContactForm}
             stepIndex={stepIndex}
             onStepChange={handleStepChange}
+            isOhneNestMode={getIsOhneNestMode()}
           />
         )}
       </div>
