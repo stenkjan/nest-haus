@@ -54,6 +54,8 @@ export default function PreviewPanel({
 
   // Image loading states to prevent blank spaces and control overlay visibility
   const [isMainImageLoaded, setIsMainImageLoaded] = useState<boolean>(false);
+  const [hasLoadedFirstImage, setHasLoadedFirstImage] =
+    useState<boolean>(false); // Track if any image has ever loaded
   const [previousImagePath, setPreviousImagePath] = useState<string>("");
   const [showPreviousImage, setShowPreviousImage] = useState<boolean>(false);
 
@@ -162,12 +164,14 @@ export default function PreviewPanel({
   // Handle main image load completion
   const handleMainImageLoad = useCallback(() => {
     setIsMainImageLoaded(true);
+    setHasLoadedFirstImage(true); // Mark that we've loaded at least one image
     setShowPreviousImage(false); // Hide previous image once new one is loaded
   }, []);
 
   // Handle main image load error
   const handleMainImageError = useCallback(() => {
     setIsMainImageLoaded(true); // Still hide previous image even on error
+    setHasLoadedFirstImage(true); // Mark that we've attempted to load an image
     setShowPreviousImage(false);
   }, []);
 
@@ -319,13 +323,13 @@ export default function PreviewPanel({
               onError={handleMainImageError}
             />
 
-            {/* PV Module Overlay - only show on exterior view when PV is selected AND main image is loaded */}
+            {/* PV Module Overlay - only show on exterior view when PV is selected AND (main image is loaded OR we've loaded at least one image before) */}
             {activeView === "exterior" &&
               configuration?.pvanlage &&
               configuration?.pvanlage?.quantity &&
               configuration?.pvanlage?.quantity > 0 &&
               configuration?.nest &&
-              isMainImageLoaded && (
+              (isMainImageLoaded || hasLoadedFirstImage) && (
                 <PvModuleOverlay
                   nestSize={
                     configuration.nest.value as
@@ -341,11 +345,11 @@ export default function PreviewPanel({
                 />
               )}
 
-            {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected AND main image is loaded */}
+            {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected AND (main image is loaded OR we've loaded at least one image before) */}
             {activeView === "exterior" &&
               configuration?.belichtungspaket &&
               configuration?.nest &&
-              isMainImageLoaded && (
+              (isMainImageLoaded || hasLoadedFirstImage) && (
                 <BelichtungsPaketOverlay
                   nestSize={
                     configuration.nest.value as
@@ -377,12 +381,12 @@ export default function PreviewPanel({
                 />
               )}
 
-            {/* Fenster Overlay - only show on interior view when fenster is selected AND main image is loaded */}
+            {/* Fenster Overlay - only show on interior view when fenster is selected AND (main image is loaded OR we've loaded at least one image before) */}
             {(() => {
               const shouldRender =
                 activeView === "interior" &&
                 configuration?.fenster &&
-                isMainImageLoaded;
+                (isMainImageLoaded || hasLoadedFirstImage);
               const overlayVisible =
                 isFensterOverlayVisible && activeView === "interior";
               console.log("🪟 Fenster Overlay render check:", {
