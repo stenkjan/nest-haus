@@ -1242,7 +1242,7 @@ export default function CheckoutStepper({
     if (result?.gebaeudehuelle) {
       console.log(
         "🛒 DEBUG: Final sourceConfig gebäudehülle:",
-        result.gebaeudehülle
+        result.gebaeudehuelle
       );
     }
 
