@@ -90,15 +90,6 @@ export default function CheckoutStepper({
       | ConfigurationCartItem
       | undefined;
 
-    // DEBUG: Log what configuration item was found in cart
-    console.log("🛒 DEBUG: Cart configItem found:", found);
-    if (found?.gebaeudehuelle) {
-      console.log(
-        "🛒 DEBUG: Cart configItem gebäudehülle:",
-        found.gebaeudehuelle
-      );
-    }
-
     return found;
   }, [items]);
 
@@ -521,12 +512,6 @@ export default function CheckoutStepper({
   const renderConfigurationDetails = (
     item: CartItem | ConfigurationCartItem
   ) => {
-    // DEBUG: Log the configuration being displayed
-    console.log("🛒 DEBUG: Rendering configuration details for item:", item);
-    if ("gebaeudehuelle" in item) {
-      console.log("🛒 DEBUG: Gebäudehülle in cart item:", item.gebaeudehuelle);
-    }
-
     const details: Array<{
       label: string;
       value: string;
@@ -1200,7 +1185,7 @@ export default function CheckoutStepper({
                       )}
                     </div>
                   </div>
-                )}
+                </div>
               </div>
               <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
                 <div className={rowWrapperClass}>
@@ -1251,32 +1236,13 @@ export default function CheckoutStepper({
 
   // Decide which configuration to use for images: prioritize cart item for consistent display
   const sourceConfig = useMemo(() => {
-    // DEBUG: Log both configurations to see which one is being used
-    console.log("🛒 DEBUG: Current configurator state:", configuration);
-    console.log("🛒 DEBUG: Cart configItem:", configItem);
-    if (configuration?.gebaeudehuelle) {
-      console.log(
-        "🛒 DEBUG: Configurator gebäudehülle:",
-        configuration.gebaeudehuelle
-      );
-    }
-
     // For warenkorb, prioritize cart item configuration to ensure consistency
     // between displayed configuration details and overlays
-    const result =
+    return (
       (configItem as ConfigurationCartItem | undefined) ||
       configuration ||
-      undefined;
-
-    console.log("🛒 DEBUG: Final sourceConfig being used:", result);
-    if (result?.gebaeudehuelle) {
-      console.log(
-        "🛒 DEBUG: Final sourceConfig gebäudehülle:",
-        result.gebaeudehuelle
-      );
-    }
-
-    return result;
+      undefined
+    );
   }, [configItem, configuration]);
 
   // Determine interior availability based on actual selections in the source config
@@ -1344,8 +1310,8 @@ export default function CheckoutStepper({
                       <span className="text-gray-300"> Deine Konfiguration</span>
                     </h2>
                     {items.map((item) => (
-                    <div
-                      key={item.id}
+                      <div
+                        key={item.id}
                       className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
                       style={{
                         minHeight: "clamp(400px, 40vw, 520px)",
@@ -1606,6 +1572,7 @@ export default function CheckoutStepper({
                   </div>
                 </div>
               </div>
+                )}
 
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button

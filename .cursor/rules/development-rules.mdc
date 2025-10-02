@@ -1,6 +1,8 @@
 ---
+description: development & technical rules
 alwaysApply: false
 ---
+
 # Development & Technical Rules
 
 ## Code Quality & Documentation
@@ -25,6 +27,7 @@ alwaysApply: false
 - **NEVER ignore ESLint warnings** - fix them or add proper eslint-disable comments with justification
 
 ### Specific Anti-Patterns to Avoid:
+
 ```typescript
 // ❌ NEVER DO THIS:
 function process(data: any) { ... }
@@ -39,12 +42,14 @@ function unused(_param: string) { ... } // unused param with _
 ```
 
 ### Interface Definition Requirements:
+
 - Create interfaces for all API response types
 - Create interfaces for all component prop types
 - Create interfaces for all database query results
 - Use proper typing for template literals and complex objects
 
 ### Additional ESLint Compliance Rules:
+
 - **Unused variables**: Remove or prefix with `_` if intentionally unused
 - **Unused imports**: Remove unused imports immediately
 - **Console statements**: Use proper logging or remove before production
@@ -54,15 +59,16 @@ function unused(_param: string) { ... } // unused param with _
 - **React hooks**: Follow hooks rules (only call at top level, proper dependencies)
 
 ### Code Quality Enforcement:
+
 ```typescript
 // ✅ GOOD: Proper error handling and typing
 async function fetchUserData(userId: string): Promise<UserData | null> {
   try {
     const response = await fetch(`/api/users/${userId}`);
     if (!response.ok) return null;
-    return await response.json() as UserData;
+    return (await response.json()) as UserData;
   } catch (error) {
-    console.error('Failed to fetch user:', error);
+    console.error("Failed to fetch user:", error);
     return null;
   }
 }
