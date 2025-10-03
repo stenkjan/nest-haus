@@ -1305,8 +1305,8 @@ export default function CheckoutStepper({
             <div className="space-y-6 pt-8">
               {/* Overview grid: cart on left, summary/upgrade on right */}
               <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
-                {/* Show house configuration section only if not in ohne nest mode */}
-                {!isOhneNestMode && (
+                {/* Show house configuration section unless in ohne nest mode without configuration */}
+                {!(isOhneNestMode && !configItem) && (
                   <div className="contents">
                     <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                       <h2 className="h3-secondary text-gray-500">
@@ -1837,7 +1837,7 @@ export default function CheckoutStepper({
           {stepIndex === 4 && (
             <div className="space-y-6 pt-8">
               {/* Overview grid: cart on left, summary/upgrade on right */}
-              {!isOhneNestMode && (
+              {!(isOhneNestMode && !configItem) && (
                 <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500">
