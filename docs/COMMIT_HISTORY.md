@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b80f15b1d5aa9a0a9700cc4855dbb222ace7a7e4] - Fri Oct 3 11:14:56 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: optimize layout and rendering in CheckoutStepper  - Enhanced the layout of the CheckoutStepper component by refining the structure of configuration items and payment details. - Improved conditional rendering logic for the "Teilzahlungen" title and payment breakdown based on the isOhneNestMode state, ensuring a clearer user experience. - Streamlined rendering for price display and configuration details to maintain consistency across different modes.  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
+
+
+---
+
 ## [9d378317745c323109fb347c04e37ccdb2a54070] - Fri Oct 3 10:43:35 2025 +0200
 
 **Author**: stenkjan
