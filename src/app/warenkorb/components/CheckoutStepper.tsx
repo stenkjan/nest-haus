@@ -90,8 +90,16 @@ export default function CheckoutStepper({
       | ConfigurationCartItem
       | undefined;
 
+    console.log("🛒 ConfigItem found:", !!found, found?.nest?.value);
     return found;
   }, [items]);
+
+  // Debug logging after configItem is defined
+  console.log("🔍 CheckoutStepper render:", {
+    isOhneNestMode,
+    itemsCount: items.length,
+    hasConfigItem: !!configItem,
+  });
 
   const [localSelectedPlan, setLocalSelectedPlan] = useState<string | null>(
     ((): string | null => {
@@ -1009,8 +1017,8 @@ export default function CheckoutStepper({
               </h2>
               <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                 <div>
-                  {/* Show house configuration with price if there's a configuration */}
-                  {configItem ? (
+                  {/* Show house configuration only if NOT in ohne nest mode */}
+                  {!isOhneNestMode && (
                     <div className={rowWrapperClass}>
                       <div className="flex-1 min-w-0">
                         <div
@@ -1032,8 +1040,10 @@ export default function CheckoutStepper({
                         {PriceUtils.formatPrice(total)}
                       </div>
                     </div>
-                  ) : (
-                    /* Show "ohne nest" version only when no configuration exists */
+                  )}
+
+                  {/* In ohne nest mode, show modified title */}
+                  {isOhneNestMode && (
                     <div className={rowWrapperClass}>
                       <div className="flex-1 min-w-0">
                         <div
@@ -1152,8 +1162,8 @@ export default function CheckoutStepper({
                       )}
                     </div>
                   </div>
-                  {/* Only hide delivery date if in ohne nest mode AND no configuration exists */}
-                  {!(isOhneNestMode && !configItem) && (
+                  {/* Show delivery date only if NOT in ohne nest mode */}
+                  {!isOhneNestMode && (
                     <div className={rowWrapperClass}>
                       <div className="flex-1 min-w-0">
                         <div
@@ -1303,8 +1313,8 @@ export default function CheckoutStepper({
             <div className="space-y-6 pt-8">
               {/* Overview grid: cart on left, summary/upgrade on right */}
               <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
-                {/* Show house configuration sections only when there's a configuration AND not in ohne nest mode */}
-                {configItem && !isOhneNestMode && (
+                {/* Show house configuration section only if not in ohne nest mode */}
+                {!isOhneNestMode && (
                   <div className="contents">
                     <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                       <h2 className="h3-secondary text-gray-500">
@@ -1834,8 +1844,8 @@ export default function CheckoutStepper({
 
           {stepIndex === 4 && (
             <div className="space-y-6 pt-8">
-              {/* Show overview sections only when there's a configuration AND not in ohne nest mode */}
-              {configItem && !isOhneNestMode && (
+              {/* Overview grid: cart on left, summary/upgrade on right */}
+              {!isOhneNestMode && (
                 <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500">
@@ -2313,8 +2323,8 @@ export default function CheckoutStepper({
                 )}
               </div>
 
-              {/* Teilzahlungen Title - only show when there's a configuration OR not in ohne nest mode */}
-              {(configItem || !isOhneNestMode) && (
+              {/* Teilzahlungen Title - only show when NOT in ohne nest mode */}
+              {!isOhneNestMode && (
                 <h2 className="h2-title text-black mb-3">Teilzahlungen</h2>
               )}
 
@@ -2419,7 +2429,7 @@ export default function CheckoutStepper({
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                    {isOhneNestMode && !configItem
+                    {isOhneNestMode
                       ? PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)
                       : PriceUtils.formatPrice(getCartTotal())}
                   </div>

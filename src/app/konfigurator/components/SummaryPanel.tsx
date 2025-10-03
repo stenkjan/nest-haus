@@ -473,7 +473,7 @@ export default function SummaryPanel({
                 >
                   Neu konfigurieren
                 </Button>
-                
+
                 <Button
                   variant="secondary"
                   size="xs"

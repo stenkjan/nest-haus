@@ -80,11 +80,18 @@ export default function WarenkorbClient() {
       const mode = urlParams.get("mode");
 
       if (mode === "ohne-nest") {
+        console.log("🏠 URL has ohne-nest mode, setting to TRUE");
         setOhneNestMode(true);
         // Remove the mode parameter from URL to clean it up
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
+      } else {
+        // CRITICAL: If no mode parameter, we're in normal warenkorb mode
+        console.log(
+          "🏠 Normal warenkorb access, RESETTING ohne nest mode to FALSE"
+        );
+        setOhneNestMode(false);
       }
 
       // Set default hash if none exists
