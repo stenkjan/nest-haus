@@ -1118,7 +1118,7 @@ export default function CheckoutStepper({
                           <>
                             <span className="text-gray-600">
                               (
-                              {selectedPlanPrice === 0
+                              {selectedPlanValue === "basis"
                                 ? "inkludiert"
                                 : PriceUtils.formatPrice(selectedPlanPrice)}
                               )
@@ -2156,7 +2156,7 @@ export default function CheckoutStepper({
               <h2 className="h2-title text-black mb-3">Deine Auswahl</h2>
 
               <div className="space-y-4 mb-8">
-                {configItem ? (
+                {configItem && !isOhneNestMode ? (
                   <>
                     {(() => {
                       const details = renderConfigurationDetails(configItem);
@@ -2204,24 +2204,7 @@ export default function CheckoutStepper({
                           )}
                           <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                             <div>
-                              {/* Grundstückscheck row */}
-                              {configItem?.grundstueckscheck && (
-                                <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                      Vorentwurf
-                                    </div>
-                                    <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                      Grundstückscheck und erster Entwurf
-                                    </div>
-                                  </div>
-                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                    {PriceUtils.formatPrice(
-                                      GRUNDSTUECKSCHECK_PRICE
-                                    )}
-                                  </div>
-                                </div>
-                              )}
+                              {/* Grundstückscheck row - removed "Vorentwurf" since it's shown below */}
                               {/* Planungspaket row - show if exists in cart OR if locally selected */}
                               {(configItem?.planungspaket ||
                                 localSelectedPlan) && (
@@ -2363,6 +2346,64 @@ export default function CheckoutStepper({
                           {PriceUtils.formatPrice(firstPayment)}
                         </div>
                       </div>
+
+                      {/* Planungspaket row */}
+                      {(configItem?.planungspaket || localSelectedPlan) && (
+                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7 border-t border-gray-200">
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              Planungspaket
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                              {(() => {
+                                // Get name from cart item first, but use new naming
+                                if (configItem?.planungspaket?.name) {
+                                  const name =
+                                    configItem.planungspaket.name.toLowerCase();
+                                  if (name.includes("basis"))
+                                    return "Planungspaket 01 Basis";
+                                  if (name.includes("plus"))
+                                    return "Planungspaket 02 Plus";
+                                  if (name.includes("pro"))
+                                    return "Planungspaket 03 Pro";
+                                  return configItem.planungspaket.name;
+                                }
+                                // Otherwise get from localSelectedPlan
+                                if (localSelectedPlan) {
+                                  if (localSelectedPlan === "basis")
+                                    return "Planungspaket 01 Basis";
+                                  if (localSelectedPlan === "plus")
+                                    return "Planungspaket 02 Plus";
+                                  if (localSelectedPlan === "pro")
+                                    return "Planungspaket 03 Pro";
+                                }
+                                return "—";
+                              })()}
+                            </div>
+                          </div>
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                            {(() => {
+                              const planPrice =
+                                configItem?.planungspaket?.price ||
+                                (localSelectedPlan
+                                  ? PLANNING_PACKAGES.find(
+                                      (p) => p.value === localSelectedPlan
+                                    )?.price || 0
+                                  : 0);
+
+                              // Check if it's basis planungspaket (should show as inkludiert)
+                              const planValue =
+                                configItem?.planungspaket?.value ||
+                                localSelectedPlan;
+                              if (planValue === "basis") {
+                                return "inkludiert";
+                              } else {
+                                return PriceUtils.formatPrice(planPrice);
+                              }
+                            })()}
+                          </div>
+                        </div>
+                      )}
                       {!isOhneNestMode && (
                         <>
                           <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
