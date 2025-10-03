@@ -933,7 +933,7 @@ export default function CheckoutStepper({
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
           <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1">
             {/* Delivery Date Component for Step 4 */}
-            {stepIndex === 4 && (
+            {stepIndex === 4 && !isOhneNestMode && (
               <div className="mb-8 text-center md:text-left">
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed text-center md:text-left mb-1">
                   Dein Liefertermin
@@ -1154,37 +1154,39 @@ export default function CheckoutStepper({
                       )}
                     </div>
                   </div>
-                  <div className={rowWrapperClass}>
-                    <div className="flex-1 min-w-0">
+                  {!isOhneNestMode && (
+                    <div className={rowWrapperClass}>
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
+                        >
+                          Liefertermin
+                        </div>
+                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                          {getRowSubtitle(4)}
+                        </div>
+                      </div>
                       <div
                         className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
                       >
-                        Liefertermin
-                      </div>
-                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                        {getRowSubtitle(4)}
+                        {getAppointmentSummary() ? (
+                          <div className="flex items-start gap-2 justify-end">
+                            <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
+                              {deliveryDateString}
+                            </span>
+                            <span
+                              aria-hidden
+                              className="text-blue-500 flex-shrink-0"
+                            >
+                              ✓
+                            </span>
+                          </div>
+                        ) : (
+                          "—"
+                        )}
                       </div>
                     </div>
-                    <div
-                      className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
-                    >
-                      {getAppointmentSummary() ? (
-                        <div className="flex items-start gap-2 justify-end">
-                          <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
-                            {deliveryDateString}
-                          </span>
-                          <span
-                            aria-hidden
-                            className="text-blue-500 flex-shrink-0"
-                          >
-                            ✓
-                          </span>
-                        </div>
-                      ) : (
-                        "—"
-                      )}
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
               <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
@@ -1834,8 +1836,9 @@ export default function CheckoutStepper({
           {stepIndex === 4 && (
             <div className="space-y-6 pt-8">
               {/* Overview grid: cart on left, summary/upgrade on right */}
-              <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
-                <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
+              {!isOhneNestMode && (
+                <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
+                  <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                   <h2 className="h3-secondary text-gray-500">
                     <span className="text-black">Dein Nest</span>
                     <span className="text-gray-300"> Deine Konfiguration</span>
@@ -2102,7 +2105,8 @@ export default function CheckoutStepper({
                     )}
                   </div>
                 </div>
-              </div>
+                </div>
+              )}
 
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button

@@ -458,8 +458,8 @@ export default function SummaryPanel({
         <div className="mt-6">
           {isClient && (
             <div className="flex flex-col gap-3">
-              {/* Neu konfigurieren Button */}
-              <div className="flex justify-center">
+              {/* Buttons positioned horizontally next to each other */}
+              <div className="flex justify-center gap-3">
                 <Button
                   variant="tertiary"
                   size="xs"
@@ -473,10 +473,7 @@ export default function SummaryPanel({
                 >
                   Neu konfigurieren
                 </Button>
-              </div>
-
-              {/* Ohne Nest fortfahren Button */}
-              <div className="flex justify-center">
+                
                 <Button
                   variant="secondary"
                   size="xs"
