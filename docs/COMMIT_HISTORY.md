@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7dae3026e8f0e9b672864636c2714b7f3b2b48c8] - Fri Oct 3 11:20:24 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: simplify conditional rendering in CheckoutStepper  - Removed unnecessary checks for isOhneNestMode in the delivery date and configuration sections to streamline the rendering logic. - Enhanced clarity in the display of configuration items and payment details by adjusting conditional statements. - Improved overall readability and maintainability of the CheckoutStepper component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [b80f15b1d5aa9a0a9700cc4855dbb222ace7a7e4] - Fri Oct 3 11:14:56 2025 +0200
 
 **Author**: stenkjan
