@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [04ad86d11af9bde9e10cf14e2e0888463fa625eb] - Fri Oct 3 18:36:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: improve logging and conditional rendering in Warenkorb components  - Added debug logging to track mode changes in WarenkorbClient for better visibility during development. - Enhanced conditional rendering in CheckoutStepper to ensure house configuration and delivery date are displayed only when not in ohne nest mode. - Improved overall clarity and maintainability of the components for a better user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [5fee3d98feae9122e36afc6adff6bc3b0117ce04] - Fri Oct 3 17:24:44 2025 +0200
 
 **Author**: stenkjan
