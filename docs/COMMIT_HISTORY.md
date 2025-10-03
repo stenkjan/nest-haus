@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [efdafa913acb0b37ba736e4234a0f4252b27fe7f] - Fri Oct 3 11:28:58 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: refine conditional rendering in CheckoutStepper  - Updated conditional rendering logic to show the house configuration section only when not in ohne nest mode without configuration. - Enhanced clarity in the display of configuration items, ensuring a more intuitive user experience. - Maintained overall readability and consistency in the CheckoutStepper component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [7dae3026e8f0e9b672864636c2714b7f3b2b48c8] - Fri Oct 3 11:20:24 2025 +0200
 
 **Author**: stenkjan
