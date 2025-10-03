@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [58993f47d05773ae6578e35ad93232f8f651ba7b] - Fri Oct 3 10:13:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: improve structure of CheckoutStepper component  - Replaced a div with class "space-y-6" inside the conditional rendering for better semantic structure. - Wrapped the content in a "contents" div to enhance layout flexibility while maintaining existing styles.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [53268ee65f28d758ebe1797f64ece09786b7007c] - Thu Oct 2 16:29:40 2025 +0200
 
 **Author**: stenkjan
