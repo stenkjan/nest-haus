@@ -1009,8 +1009,8 @@ export default function CheckoutStepper({
               </h2>
               <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                 <div>
-                  {/* Show house configuration unless in ohne nest mode without configuration */}
-                  {!(isOhneNestMode && !configItem) && (
+                  {/* Show house configuration with price if there's a configuration */}
+                  {configItem ? (
                     <div className={rowWrapperClass}>
                       <div className="flex-1 min-w-0">
                         <div
@@ -1032,10 +1032,8 @@ export default function CheckoutStepper({
                         {PriceUtils.formatPrice(total)}
                       </div>
                     </div>
-                  )}
-
-                  {/* In ohne nest mode, show modified title */}
-                  {isOhneNestMode && (
+                  ) : (
+                    /* Show "ohne nest" version only when no configuration exists */
                     <div className={rowWrapperClass}>
                       <div className="flex-1 min-w-0">
                         <div
