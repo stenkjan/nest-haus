@@ -1839,272 +1839,279 @@ export default function CheckoutStepper({
               {!isOhneNestMode && (
                 <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
-                  <h2 className="h3-secondary text-gray-500">
-                    <span className="text-black">Dein Nest</span>
-                    <span className="text-gray-300"> Deine Konfiguration</span>
-                  </h2>
-                  {items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
-                      style={{
-                        minHeight: "clamp(400px, 40vw, 520px)",
-                      }}
-                    >
-                      {/* Header Section */}
-                      <div className="flex items-center justify-between gap-4 mb-4">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
-                            {getConfigurationTitle(item)}
+                    <h2 className="h3-secondary text-gray-500">
+                      <span className="text-black">Dein Nest</span>
+                      <span className="text-gray-300">
+                        {" "}
+                        Deine Konfiguration
+                      </span>
+                    </h2>
+                    {items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
+                        style={{
+                          minHeight: "clamp(400px, 40vw, 520px)",
+                        }}
+                      >
+                        {/* Header Section */}
+                        <div className="flex items-center justify-between gap-4 mb-4">
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
+                              {getConfigurationTitle(item)}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                              {(() => {
+                                // For configuration items with nest, show price per m²
+                                if (
+                                  "totalPrice" in item &&
+                                  (item as ConfigurationCartItem).nest
+                                ) {
+                                  const configItem =
+                                    item as ConfigurationCartItem;
+                                  const nestModel =
+                                    configItem.nest?.value || "";
+                                  const priceValue =
+                                    configItem.nest?.price || 0;
+                                  return PriceUtils.calculatePricePerSquareMeter(
+                                    priceValue,
+                                    nestModel
+                                  );
+                                }
+                                // For other items, keep monthly payment
+                                const priceValue =
+                                  "totalPrice" in item
+                                    ? (item as ConfigurationCartItem).totalPrice
+                                    : (item as CartItem).price;
+                                return `oder ${calculateMonthlyPayment(
+                                  priceValue
+                                )} für 240 Monate`;
+                              })()}
+                            </div>
                           </div>
-                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                            {(() => {
-                              // For configuration items with nest, show price per m²
-                              if (
-                                "totalPrice" in item &&
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
+                            {PriceUtils.formatPrice(
+                              "totalPrice" in item &&
                                 (item as ConfigurationCartItem).nest
-                              ) {
-                                const configItem =
-                                  item as ConfigurationCartItem;
-                                const nestModel = configItem.nest?.value || "";
-                                const priceValue = configItem.nest?.price || 0;
-                                return PriceUtils.calculatePricePerSquareMeter(
-                                  priceValue,
-                                  nestModel
-                                );
-                              }
-                              // For other items, keep monthly payment
-                              const priceValue =
-                                "totalPrice" in item
+                                ? (item as ConfigurationCartItem).nest?.price ||
+                                    0
+                                : "totalPrice" in item
                                   ? (item as ConfigurationCartItem).totalPrice
-                                  : (item as CartItem).price;
-                              return `oder ${calculateMonthlyPayment(
-                                priceValue
-                              )} für 240 Monate`;
-                            })()}
+                                  : (item as CartItem).price
+                            )}
                           </div>
                         </div>
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
-                          {PriceUtils.formatPrice(
-                            "totalPrice" in item &&
-                              (item as ConfigurationCartItem).nest
-                              ? (item as ConfigurationCartItem).nest?.price || 0
-                              : "totalPrice" in item
-                                ? (item as ConfigurationCartItem).totalPrice
-                                : (item as CartItem).price
-                          )}
+
+                        {/* Details Section - Now takes remaining space and distributes items evenly */}
+                        <div className="flex-1 flex flex-col justify-evenly min-h-0">
+                          {(() => {
+                            const details = renderConfigurationDetails(item);
+                            const topAndMiddleItems = details.filter(
+                              (d) => !d.isBottomItem
+                            );
+                            const bottomItems = details.filter(
+                              (d) => d.isBottomItem
+                            );
+
+                            const renderDetailItem = (
+                              detail: {
+                                label: string;
+                                value: string;
+                                price: number;
+                                isIncluded: boolean;
+                                category: string;
+                                isBottomItem?: boolean;
+                              },
+                              idx: number
+                            ) => {
+                              if (!detail.value || detail.value === "—")
+                                return null;
+                              return (
+                                <div
+                                  key={detail.category + "-" + idx}
+                                  className="flex items-center justify-between gap-4 py-1"
+                                >
+                                  <div className="flex-1 min-w-0">
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
+                                      {detail.value}
+                                    </div>
+                                    <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1 break-words">
+                                      {detail.label}
+                                    </div>
+                                  </div>
+                                  <div className="text-right min-w-0">
+                                    {detail.isIncluded ||
+                                    (detail.price && detail.price === 0) ? (
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
+                                        inkludiert
+                                      </div>
+                                    ) : (
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                        {PriceUtils.formatPrice(
+                                          detail.price || 0
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            };
+
+                            // Combine all items into a single array for even distribution
+                            const allItems = [
+                              ...topAndMiddleItems,
+                              ...bottomItems,
+                            ];
+
+                            return <>{allItems.map(renderDetailItem)}</>;
+                          })()}
                         </div>
                       </div>
-
-                      {/* Details Section - Now takes remaining space and distributes items evenly */}
-                      <div className="flex-1 flex flex-col justify-evenly min-h-0">
-                        {(() => {
-                          const details = renderConfigurationDetails(item);
-                          const topAndMiddleItems = details.filter(
-                            (d) => !d.isBottomItem
-                          );
-                          const bottomItems = details.filter(
-                            (d) => d.isBottomItem
-                          );
-
-                          const renderDetailItem = (
-                            detail: {
-                              label: string;
-                              value: string;
-                              price: number;
-                              isIncluded: boolean;
-                              category: string;
-                              isBottomItem?: boolean;
-                            },
-                            idx: number
-                          ) => {
-                            if (!detail.value || detail.value === "—")
-                              return null;
-                            return (
-                              <div
-                                key={detail.category + "-" + idx}
-                                className="flex items-center justify-between gap-4 py-1"
-                              >
-                                <div className="flex-1 min-w-0">
-                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
-                                    {detail.value}
-                                  </div>
-                                  <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1 break-words">
-                                    {detail.label}
-                                  </div>
-                                </div>
-                                <div className="text-right min-w-0">
-                                  {detail.isIncluded ||
-                                  (detail.price && detail.price === 0) ? (
-                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
-                                      inkludiert
-                                    </div>
-                                  ) : (
-                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                      {PriceUtils.formatPrice(
-                                        detail.price || 0
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          };
-
-                          // Combine all items into a single array for even distribution
-                          const allItems = [
-                            ...topAndMiddleItems,
-                            ...bottomItems,
-                          ];
-
-                          return <>{allItems.map(renderDetailItem)}</>;
-                        })()}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
-                  <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
-                    <span className="text-black">Dein Nest</span>
-                    <span className="text-gray-300">
-                      {" "}
-                      Ein Einblick in die Zukunft
-                    </span>
-                  </h2>
-                  {/* Configuration Image Gallery */}
-                  <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-1 lg:flex lg:flex-col">
-                    <div
-                      className="relative w-full lg:flex-1"
-                      style={{ aspectRatio: "16/10" }}
-                    >
-                      {currentImagePath && (
-                        <HybridBlobImage
-                          key={`${currentView}:${currentImagePath}`}
-                          path={currentImagePath}
-                          alt={`Konfiguration Vorschau – ${currentView}`}
-                          fill
-                          className="object-contain"
-                          strategy="client"
-                          isInteractive={true}
-                          sizes="(max-width: 1023px) 100vw, 70vw"
-                          quality={85}
-                          priority={true}
-                        />
-                      )}
-
-                      {/* PV Module Overlay - only show on exterior view when PV is selected */}
-                      {currentView === "exterior" &&
-                        sourceConfig?.pvanlage &&
-                        sourceConfig?.pvanlage?.quantity &&
-                        sourceConfig?.pvanlage?.quantity > 0 &&
-                        sourceConfig?.nest && (
-                          <PvModuleOverlay
-                            nestSize={
-                              sourceConfig.nest.value as
-                                | "nest80"
-                                | "nest100"
-                                | "nest120"
-                                | "nest140"
-                                | "nest160"
-                            }
-                            moduleCount={sourceConfig.pvanlage.quantity}
-                            isVisible={true}
-                            className=""
-                          />
-                        )}
-
-                      {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected */}
-                      {currentView === "exterior" &&
-                        sourceConfig?.belichtungspaket &&
-                        sourceConfig?.nest && (
-                          <BelichtungsPaketOverlay
-                            nestSize={
-                              sourceConfig.nest.value as
-                                | "nest80"
-                                | "nest100"
-                                | "nest120"
-                                | "nest140"
-                                | "nest160"
-                            }
-                            brightnessLevel={
-                              sourceConfig.belichtungspaket.value as
-                                | "light"
-                                | "medium"
-                                | "bright"
-                            }
-                            fensterMaterial={
-                              sourceConfig.fenster?.value === "pvc_fenster"
-                                ? "pvc"
-                                : sourceConfig.fenster?.value ===
-                                    "aluminium_weiss"
-                                  ? "aluminium_hell"
-                                  : sourceConfig.fenster?.value ===
-                                      "aluminium_schwarz"
-                                    ? "aluminium_dunkel"
-                                    : "holz" // Default to holz (preselected)
-                            }
-                            isVisible={true}
-                            className=""
-                          />
-                        )}
-
-                      {/* Fenster Overlay - only show on interior view when fenster is selected */}
-                      {currentView === "interior" && sourceConfig?.fenster && (
-                        <FensterOverlay
-                          fensterType={
-                            sourceConfig.fenster.value as
-                              | "pvc_fenster"
-                              | "holz"
-                              | "aluminium_schwarz"
-                              | "aluminium_weiss"
-                          }
-                          isVisible={true}
-                          className=""
-                        />
-                      )}
-
-                      {galleryViews.length > 1 && (
-                        <>
-                          <button
-                            type="button"
-                            aria-label="Vorheriges Bild"
-                            onClick={goPrevImage}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
-                          >
-                            ‹
-                          </button>
-                          <button
-                            type="button"
-                            aria-label="Nächstes Bild"
-                            onClick={goNextImage}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
-                          >
-                            ›
-                          </button>
-                        </>
-                      )}
-                    </div>
-                    {galleryViews.length > 1 && (
-                      <div className="flex items-center justify-center gap-2 py-2 lg:flex-shrink-0">
-                        {galleryViews.map((v, i) => (
-                          <button
-                            key={v + i}
-                            type="button"
-                            aria-label={`Wechsel zu Ansicht ${v}`}
-                            onClick={() => setGalleryIndex(i)}
-                            className={
-                              "w-2.5 h-2.5 rounded-full " +
-                              (i === galleryIndex
-                                ? "bg-blue-500"
-                                : "bg-gray-300")
-                            }
-                          />
-                        ))}
-                      </div>
-                    )}
+                    ))}
                   </div>
-                </div>
+
+                  <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
+                    <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
+                      <span className="text-black">Dein Nest</span>
+                      <span className="text-gray-300">
+                        {" "}
+                        Ein Einblick in die Zukunft
+                      </span>
+                    </h2>
+                    {/* Configuration Image Gallery */}
+                    <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-1 lg:flex lg:flex-col">
+                      <div
+                        className="relative w-full lg:flex-1"
+                        style={{ aspectRatio: "16/10" }}
+                      >
+                        {currentImagePath && (
+                          <HybridBlobImage
+                            key={`${currentView}:${currentImagePath}`}
+                            path={currentImagePath}
+                            alt={`Konfiguration Vorschau – ${currentView}`}
+                            fill
+                            className="object-contain"
+                            strategy="client"
+                            isInteractive={true}
+                            sizes="(max-width: 1023px) 100vw, 70vw"
+                            quality={85}
+                            priority={true}
+                          />
+                        )}
+
+                        {/* PV Module Overlay - only show on exterior view when PV is selected */}
+                        {currentView === "exterior" &&
+                          sourceConfig?.pvanlage &&
+                          sourceConfig?.pvanlage?.quantity &&
+                          sourceConfig?.pvanlage?.quantity > 0 &&
+                          sourceConfig?.nest && (
+                            <PvModuleOverlay
+                              nestSize={
+                                sourceConfig.nest.value as
+                                  | "nest80"
+                                  | "nest100"
+                                  | "nest120"
+                                  | "nest140"
+                                  | "nest160"
+                              }
+                              moduleCount={sourceConfig.pvanlage.quantity}
+                              isVisible={true}
+                              className=""
+                            />
+                          )}
+
+                        {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected */}
+                        {currentView === "exterior" &&
+                          sourceConfig?.belichtungspaket &&
+                          sourceConfig?.nest && (
+                            <BelichtungsPaketOverlay
+                              nestSize={
+                                sourceConfig.nest.value as
+                                  | "nest80"
+                                  | "nest100"
+                                  | "nest120"
+                                  | "nest140"
+                                  | "nest160"
+                              }
+                              brightnessLevel={
+                                sourceConfig.belichtungspaket.value as
+                                  | "light"
+                                  | "medium"
+                                  | "bright"
+                              }
+                              fensterMaterial={
+                                sourceConfig.fenster?.value === "pvc_fenster"
+                                  ? "pvc"
+                                  : sourceConfig.fenster?.value ===
+                                      "aluminium_weiss"
+                                    ? "aluminium_hell"
+                                    : sourceConfig.fenster?.value ===
+                                        "aluminium_schwarz"
+                                      ? "aluminium_dunkel"
+                                      : "holz" // Default to holz (preselected)
+                              }
+                              isVisible={true}
+                              className=""
+                            />
+                          )}
+
+                        {/* Fenster Overlay - only show on interior view when fenster is selected */}
+                        {currentView === "interior" &&
+                          sourceConfig?.fenster && (
+                            <FensterOverlay
+                              fensterType={
+                                sourceConfig.fenster.value as
+                                  | "pvc_fenster"
+                                  | "holz"
+                                  | "aluminium_schwarz"
+                                  | "aluminium_weiss"
+                              }
+                              isVisible={true}
+                              className=""
+                            />
+                          )}
+
+                        {galleryViews.length > 1 && (
+                          <>
+                            <button
+                              type="button"
+                              aria-label="Vorheriges Bild"
+                              onClick={goPrevImage}
+                              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                            >
+                              ‹
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Nächstes Bild"
+                              onClick={goNextImage}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                            >
+                              ›
+                            </button>
+                          </>
+                        )}
+                      </div>
+                      {galleryViews.length > 1 && (
+                        <div className="flex items-center justify-center gap-2 py-2 lg:flex-shrink-0">
+                          {galleryViews.map((v, i) => (
+                            <button
+                              key={v + i}
+                              type="button"
+                              aria-label={`Wechsel zu Ansicht ${v}`}
+                              onClick={() => setGalleryIndex(i)}
+                              className={
+                                "w-2.5 h-2.5 rounded-full " +
+                                (i === galleryIndex
+                                  ? "bg-blue-500"
+                                  : "bg-gray-300")
+                              }
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -2307,8 +2314,10 @@ export default function CheckoutStepper({
                 )}
               </div>
 
-              {/* Teilzahlungen Title */}
-              <h2 className="h2-title text-black mb-3">Teilzahlungen</h2>
+              {/* Teilzahlungen Title - only show when not in ohne nest mode */}
+              {!isOhneNestMode && (
+                <h2 className="h2-title text-black mb-3">Teilzahlungen</h2>
+              )}
 
               {/* Instalment Breakdown */}
               {(() => {
@@ -2345,52 +2354,59 @@ export default function CheckoutStepper({
                           {PriceUtils.formatPrice(firstPayment)}
                         </div>
                       </div>
-                      <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            1. Teilzahlung
+                      {!isOhneNestMode && (
+                        <>
+                          <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                1. Teilzahlung
+                              </div>
+                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                30% vom Gesamtpreis
+                                <br />
+                                Abzüglch Grundstückscheck: (
+                                {PriceUtils.formatPrice(
+                                  grundstueckscheckCredit
+                                )}
+                                ) -
+                                <br />
+                                Liefergarantie 6 Monate ab Teilzahlung.
+                              </div>
+                            </div>
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              {PriceUtils.formatPrice(secondPayment)}
+                            </div>
                           </div>
-                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                            30% vom Gesamtpreis
-                            <br />
-                            Abzüglch Grundstückscheck: (
-                            {PriceUtils.formatPrice(grundstueckscheckCredit)}) -
-                            <br />
-                            Liefergarantie 6 Monate ab Teilzahlung.
+                          <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                2. Teilzahlung
+                              </div>
+                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                50% vom Gesamtpreis <br />
+                                Fällig nach Fertigstellung in der Produktion
+                              </div>
+                            </div>
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              {PriceUtils.formatPrice(thirdPayment)}
+                            </div>
                           </div>
-                        </div>
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          {PriceUtils.formatPrice(secondPayment)}
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            2. Teilzahlung
+                          <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                3. Teilzahlung
+                              </div>
+                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                20% vom Gesamtpreis <br />
+                                Fällig nach Errichtung am Grundstück
+                              </div>
+                            </div>
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              {PriceUtils.formatPrice(fourthPayment)}
+                            </div>
                           </div>
-                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                            50% vom Gesamtpreis <br />
-                            Fällig nach Fertigstellung in der Produktion
-                          </div>
-                        </div>
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          {PriceUtils.formatPrice(thirdPayment)}
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            3. Teilzahlung
-                          </div>
-                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                            20% vom Gesamtpreis <br />
-                            Fällig nach Errichtung am Grundstück
-                          </div>
-                        </div>
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          {PriceUtils.formatPrice(fourthPayment)}
-                        </div>
-                      </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 );
@@ -2404,7 +2420,9 @@ export default function CheckoutStepper({
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                    {PriceUtils.formatPrice(getCartTotal())}
+                    {isOhneNestMode
+                      ? PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)
+                      : PriceUtils.formatPrice(getCartTotal())}
                   </div>
                 </div>
               </div>
