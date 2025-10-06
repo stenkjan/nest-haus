@@ -34,7 +34,7 @@ export interface AvailabilityRequest {
 }
 
 export class GoogleCalendarService {
-    private static calendar: any = null;
+    private static calendar: unknown = null;
     private static readonly CALENDAR_ID = 'primary'; // Use primary calendar
     private static readonly TIME_ZONE = 'Europe/Vienna'; // Austrian timezone
 
@@ -150,8 +150,8 @@ export class GoogleCalendarService {
         try {
             console.log(`📅 Getting available time slots for ${request.date}`);
 
-            const calendar = await this.initializeCalendar();
-            const timeZone = request.timeZone || this.TIME_ZONE;
+      const calendar = await this.initializeCalendar();
+      const _timeZone = request.timeZone || this.TIME_ZONE;
 
             // Parse the requested date
             const requestDate = new Date(request.date);
@@ -247,7 +247,7 @@ export class GoogleCalendarService {
 
             const calendar = await this.initializeCalendar();
 
-            const updateData: any = {};
+            const updateData: Record<string, unknown> = {};
 
             if (eventData.summary) updateData.summary = eventData.summary;
             if (eventData.description) updateData.description = eventData.description;
@@ -299,7 +299,7 @@ export class GoogleCalendarService {
     /**
      * Generate calendar event data from customer inquiry
      */
-    static generateEventFromInquiry(inquiry: any): CalendarEvent {
+    static generateEventFromInquiry(inquiry: Record<string, unknown>): CalendarEvent {
         const appointmentDate = new Date(inquiry.appointmentDateTime || inquiry.followUpDate);
         const endDate = new Date(appointmentDate);
         endDate.setMinutes(appointmentDate.getMinutes() + this.BUSINESS_HOURS.duration);
@@ -332,7 +332,7 @@ export class GoogleCalendarService {
     /**
      * Generate detailed event description
      */
-    private static generateEventDescription(inquiry: any): string {
+    private static generateEventDescription(inquiry: Record<string, unknown>): string {
         let description = `NEST-Haus Beratungstermin\n\n`;
         description += `Kunde: ${inquiry.name}\n`;
         description += `E-Mail: ${inquiry.email}\n`;

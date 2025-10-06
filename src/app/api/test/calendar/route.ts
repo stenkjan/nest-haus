@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleCalendarService } from '@/lib/GoogleCalendarService';
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
     try {
         console.log('🧪 Testing Google Calendar integration...');
 

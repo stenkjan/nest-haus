@@ -12,7 +12,7 @@ export interface CustomerInquiryData {
     requestType: 'contact' | 'appointment';
     preferredContact: 'EMAIL' | 'PHONE' | 'WHATSAPP';
     appointmentDateTime?: string;
-    configurationData?: any;
+    configurationData?: Record<string, unknown>;
     totalPrice?: number;
 }
 
@@ -312,7 +312,7 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
     /**
      * Generate configuration summary for email
      */
-    private static generateConfigurationSummary(configData: any): string {
+    private static generateConfigurationSummary(configData: Record<string, unknown>): string {
         if (!configData) return '';
 
         const items = [];
