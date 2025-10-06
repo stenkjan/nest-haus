@@ -54,14 +54,19 @@ const AppointmentBooking = ({
   >([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
-  // Static time slots as fallback
+  // Static time slots as fallback - Business hours: 8-12 and 13-19
   const fallbackTimeSlots = [
+    "08:00-09:00",
     "09:00-10:00",
     "10:00-11:00",
     "11:00-12:00",
+    // Lunch break 12:00-13:00 - no appointments
+    "13:00-14:00",
     "14:00-15:00",
     "15:00-16:00",
     "16:00-17:00",
+    "17:00-18:00",
+    "18:00-19:00",
   ];
 
   // Month navigation
@@ -460,13 +465,13 @@ const AppointmentBooking = ({
                 Öffnungszeiten
               </div>
               <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                Mo-Fr: 08:00-14:00
+                Mo-Fr: 08:00-12:00
               </div>
               <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                15:30-19:00
+                13:00-19:00
               </div>
               <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                Sa: 08:00-14:00
+                Mittagspause: 12:00-13:00
               </div>
             </div>
           </div>

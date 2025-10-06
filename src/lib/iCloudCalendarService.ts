@@ -24,10 +24,12 @@ export class iCloudCalendarService {
     private static readonly ICAL_URL = process.env.ICLOUD_CALENDAR_URL || 'https://caldav.icloud.com/published/2/NDYwNTcxMTc4NDYwNTcxMTAjdgQKqgaw1FkYs83tvGOWWDJQ3U7DBxsbtAhlhGD19NbQ84s14Pj9OAvbWpz6jbnnMgCmKJoic2qptGU5Pn0';
     private static readonly TIME_ZONE = 'Europe/Vienna';
 
-    // Business hours configuration
+    // Business hours configuration: 8-12 and 13-19 (lunch break 12-13)
     private static readonly BUSINESS_HOURS = {
-        start: 9, // 9 AM
-        end: 17,  // 5 PM
+        morningStart: 8,  // 8 AM
+        morningEnd: 12,   // 12 PM
+        afternoonStart: 13, // 1 PM  
+        afternoonEnd: 19,   // 7 PM
         duration: 60, // 60 minutes per appointment
     };
 
@@ -90,13 +92,27 @@ export class iCloudCalendarService {
                 return [];
             }
 
-            // Generate time slots for the day
+            // Generate time slots for the day - Morning: 8-12, Afternoon: 13-19
             const timeSlots: TimeSlot[] = [];
-            const startHour = this.BUSINESS_HOURS.start;
-            const endHour = this.BUSINESS_HOURS.end;
             const duration = this.BUSINESS_HOURS.duration;
 
-            for (let hour = startHour; hour < endHour; hour++) {
+            // Morning slots: 8 AM - 12 PM
+            for (let hour = this.BUSINESS_HOURS.morningStart; hour < this.BUSINESS_HOURS.morningEnd; hour++) {
+                const startTime = new Date(requestDate);
+                startTime.setHours(hour, 0, 0, 0);
+
+                const endTime = new Date(startTime);
+                endTime.setMinutes(duration);
+
+                timeSlots.push({
+                    start: startTime.toISOString(),
+                    end: endTime.toISOString(),
+                    available: true, // Will be updated based on existing events
+                });
+            }
+
+            // Afternoon slots: 1 PM - 7 PM (skip lunch break 12-13)
+            for (let hour = this.BUSINESS_HOURS.afternoonStart; hour < this.BUSINESS_HOURS.afternoonEnd; hour++) {
                 const startTime = new Date(requestDate);
                 startTime.setHours(hour, 0, 0, 0);
 
@@ -219,11 +235,11 @@ export class iCloudCalendarService {
         }
     }
 
-  /**
-   * Generate appointment request email content
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static generateAppointmentRequestEmail(inquiry: any, requestedDateTime: string): {
+    /**
+     * Generate appointment request email content
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    static generateAppointmentRequestEmail(inquiry: any, requestedDateTime: string): {
         subject: string;
         html: string;
         text: string;
