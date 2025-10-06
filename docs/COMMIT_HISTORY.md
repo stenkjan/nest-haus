@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [61da5b08a719ca650fa832deb6174d49e520e99a] - Mon Oct 6 19:26:33 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance type handling for route parameters in PMG API  - Updated the parameter type definition in both PUT and DELETE handlers to use a Promise for the uid=1001(runner) gid=1001(runner) groups=1001(runner),4(adm),100(users),118(docker),999(systemd-journal), ensuring proper asynchronous handling. - This change improves type safety and aligns with the asynchronous nature of the request processing, reducing potential runtime errors.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/pmg/[id]/route.ts
+
+
+---
+
 ## [2c79f116f3355f265c2a91f976d15aa7aba0a8eb] - Mon Oct 6 19:15:01 2025 +0200
 
 **Author**: stenkjan
