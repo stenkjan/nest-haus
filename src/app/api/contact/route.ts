@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { EmailService } from '@/lib/EmailService';
-import { GoogleCalendarService } from '@/lib/GoogleCalendarService';
+import { iCloudCalendarService } from '@/lib/iCloudCalendarService';
 
 // Validation schema for contact form data
 const contactFormSchema = z.object({
@@ -167,34 +167,43 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if email fails - inquiry is already saved
     }
 
-    // Create calendar appointment if this is an appointment request with specific date/time
-    let calendarEventId: string | null = null;
+    // Check calendar availability and send appointment request if this is an appointment request
+    let isTimeSlotAvailable = false;
     if (data.requestType === 'appointment' && data.appointmentDateTime) {
       try {
-        console.log('📅 Creating calendar appointment...');
+        console.log('📅 Checking iCloud calendar availability...');
 
-        const eventData = GoogleCalendarService.generateEventFromInquiry({
-          ...inquiry,
-          appointmentDateTime: data.appointmentDateTime,
-        });
+        // Check if the requested time slot is available
+        isTimeSlotAvailable = await iCloudCalendarService.isTimeSlotAvailable(
+          data.appointmentDateTime,
+          60 // 60 minutes duration
+        );
 
-        calendarEventId = await GoogleCalendarService.createAppointment(eventData);
+        if (isTimeSlotAvailable) {
+          console.log('✅ Time slot is available');
 
-        if (calendarEventId) {
-          // Update inquiry with calendar event ID
+          // Update inquiry with availability confirmation
           await prisma.customerInquiry.update({
             where: { id: inquiry.id },
             data: {
-              adminNotes: `${inquiry.adminNotes || ''}\nKalender-Event-ID: ${calendarEventId}`,
+              adminNotes: `${inquiry.adminNotes || ''}\nTermin verfügbar: ${new Date(data.appointmentDateTime).toLocaleString('de-DE')} - Bestätigung ausstehend`,
             },
           });
-          console.log('✅ Calendar appointment created successfully');
         } else {
-          console.warn('⚠️ Calendar appointment creation failed');
+          console.log('⚠️ Time slot is not available');
+
+          // Update inquiry with conflict notice
+          await prisma.customerInquiry.update({
+            where: { id: inquiry.id },
+            data: {
+              adminNotes: `${inquiry.adminNotes || ''}\nTerminkonflikt: ${new Date(data.appointmentDateTime).toLocaleString('de-DE')} - Alternative Zeiten vorschlagen`,
+            },
+          });
         }
       } catch (calendarError) {
-        console.error('❌ Calendar appointment creation failed:', calendarError);
-        // Don't fail the request if calendar fails - inquiry is already saved
+        console.error('❌ Calendar availability check failed:', calendarError);
+        // Don't fail the request if calendar check fails
+        isTimeSlotAvailable = true; // Assume available on error
       }
     }
 
@@ -202,12 +211,16 @@ export async function POST(request: NextRequest) {
     const responseData = {
       success: true,
       inquiryId: inquiry.id,
-      calendarEventId,
+      timeSlotAvailable: isTimeSlotAvailable,
       message: data.requestType === 'appointment'
-        ? (calendarEventId ? 'Termin erfolgreich gebucht!' : 'Terminanfrage erfolgreich gesendet!')
+        ? (isTimeSlotAvailable
+          ? 'Terminanfrage erfolgreich gesendet! Der gewünschte Zeitslot ist verfügbar.'
+          : 'Terminanfrage erfolgreich gesendet! Wir prüfen alternative Zeiten.')
         : 'Nachricht erfolgreich gesendet!',
       estimatedResponse: data.requestType === 'appointment'
-        ? (calendarEventId ? 'Sie erhalten eine Kalendereinladung per E-Mail.' : 'Wir melden uns innerhalb von 24 Stunden bei Ihnen.')
+        ? (isTimeSlotAvailable
+          ? 'Wir bestätigen Ihren Termin innerhalb von 4 Stunden per E-Mail.'
+          : 'Wir schlagen Ihnen alternative Termine innerhalb von 24 Stunden vor.')
         : 'Wir melden uns innerhalb von 2 Werktagen bei Ihnen.',
     };
 
