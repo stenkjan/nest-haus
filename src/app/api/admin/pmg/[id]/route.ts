@@ -43,7 +43,18 @@ export async function PUT(
             return NextResponse.json({ error: 'Task ID is required' }, { status: 400 });
         }
 
-        const updateData: any = {};
+        const updateData: {
+            taskId?: string;
+            task?: string;
+            responsible?: string;
+            startDate?: Date;
+            endDate?: Date;
+            duration?: number;
+            milestone?: boolean;
+            priority?: string;
+            notes?: string;
+            status?: string;
+        } = {};
         if (taskId !== undefined) updateData.taskId = taskId;
         if (task !== undefined) updateData.task = task;
         if (responsible !== undefined) updateData.responsible = responsible;
