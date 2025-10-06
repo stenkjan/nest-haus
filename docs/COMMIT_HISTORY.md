@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [80177d68d4bfa6e9aa8df4202d36c02a618cf0dd] - Mon Oct 6 11:51:00 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: streamline tooltip callbacks in GanttChart component  - Refactored tooltip callbacks in the GanttChart component for improved readability and maintainability. - Retained existing functionality while ensuring compliance with TypeScript linting rules. - No changes to overall component structure or behavior.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/GanttChart.tsx
+
+
+---
+
 ## [51c909db995d7bd608d248fb4bee1e39db1f3b48] - Mon Oct 6 11:47:35 2025 +0200
 
 **Author**: stenkjan
