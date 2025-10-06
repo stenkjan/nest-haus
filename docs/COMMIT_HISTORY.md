@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [66939fe8eec13e565aa85dd9e586e5e982fa6f17] - Mon Oct 6 14:06:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance GanttChart and ProjectManagementDashboard components  - Increased label length handling in GanttChart for better visibility. - Added overflow-x-auto to the chart container for improved responsiveness. - Updated ProjectManagementDashboard layout to use xl and 2xl grid classes for better adaptability. - Introduced TeamOverview component to the dashboard for enhanced task management. - Refined task filtering logic to exclude "ALLE" from unique responsibles. - Standardized date formatting to German locale across TaskDetails and TaskList components.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/GanttChart.tsx
+- src/app/admin/pmg/components/ProjectManagementDashboard.tsx
+- src/app/admin/pmg/components/StatsCards.tsx
+- src/app/admin/pmg/components/TaskDetails.tsx
+- src/app/admin/pmg/components/TaskList.tsx
+- src/app/admin/pmg/components/TeamOverview.tsx
+- src/app/api/admin/pmg/seed/route.ts
+
+
+---
+
 ## [775caafe7e468fd8a0692b22eb3af43628739121] - Mon Oct 6 13:46:39 2025 +0200
 
 **Author**: stenkjan
