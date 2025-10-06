@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fbf7076fb7021e37c516c57e72673f560c7bc7c6] - Mon Oct 6 18:32:40 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: remove lunch break indication from AppointmentBooking component  - Removed the lunch break display from the appointment booking section to streamline the user interface. - Updated the component to reflect the changes in business hours without the lunch break information.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBooking.tsx
+
+
+---
+
 ## [2e39c21ec0947b0ae4376996eeb89cb73375112c] - Mon Oct 6 18:01:40 2025 +0200
 
 **Author**: stenkjan
