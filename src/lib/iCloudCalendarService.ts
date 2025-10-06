@@ -219,10 +219,11 @@ export class iCloudCalendarService {
         }
     }
 
-    /**
-     * Generate appointment request email content
-     */
-    static generateAppointmentRequestEmail(inquiry: any, requestedDateTime: string): {
+  /**
+   * Generate appointment request email content
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static generateAppointmentRequestEmail(inquiry: any, requestedDateTime: string): {
         subject: string;
         html: string;
         text: string;
