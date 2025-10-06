@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b11784665f810277f7f4ae8885587b6b02bd3a62] - Mon Oct 6 17:36:51 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance AppointmentBooking component with dynamic time slot handling  - Introduced useEffect to fetch available time slots from the calendar API based on the selected date. - Implemented fallback time slots for cases where no slots are available. - Updated appointment submission logic to include selected time slot details and improved error handling. - Enhanced user feedback during loading states for time slot availability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBooking.tsx
+
+
+---
+
 ## [4a940ccc3b469828f37328c2b5024a3567df1bb0] - Mon Oct 6 14:30:08 2025 +0200
 
 **Author**: stenkjan
