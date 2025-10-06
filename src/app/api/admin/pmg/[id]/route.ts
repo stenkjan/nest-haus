@@ -27,7 +27,7 @@ async function authenticateRequest(authHeader: string | null): Promise<boolean> 
  */
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const authHeader = request.headers.get('authorization');
@@ -35,7 +35,7 @@ export async function PUT(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { id } = params;
+        const { id } = await params;
         const data = await request.json();
         const { taskId, task, responsible, startDate, endDate, duration, milestone, priority, notes, status } = data;
 
@@ -83,7 +83,7 @@ export async function PUT(
  */
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const authHeader = request.headers.get('authorization');
@@ -91,7 +91,7 @@ export async function DELETE(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { id } = params;
+        const { id } = await params;
 
         if (!id) {
             return NextResponse.json({ error: 'Task ID is required' }, { status: 400 });
