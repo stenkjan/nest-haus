@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, TaskPriority, TaskStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -51,9 +51,9 @@ export async function PUT(
             endDate?: Date;
             duration?: number;
             milestone?: boolean;
-            priority?: string;
+            priority?: TaskPriority;
             notes?: string;
-            status?: string;
+            status?: TaskStatus;
         } = {};
         if (taskId !== undefined) updateData.taskId = taskId;
         if (task !== undefined) updateData.task = task;
@@ -62,9 +62,9 @@ export async function PUT(
         if (endDate !== undefined) updateData.endDate = new Date(endDate);
         if (duration !== undefined) updateData.duration = duration;
         if (milestone !== undefined) updateData.milestone = milestone;
-        if (priority !== undefined) updateData.priority = priority;
+        if (priority !== undefined) updateData.priority = priority as TaskPriority;
         if (notes !== undefined) updateData.notes = notes;
-        if (status !== undefined) updateData.status = status;
+        if (status !== undefined) updateData.status = status as TaskStatus;
 
         const updatedTask = await prisma.projectTask.update({
             where: { id },
