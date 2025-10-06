@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [775caafe7e468fd8a0692b22eb3af43628739121] - Mon Oct 6 13:46:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: remove Google Calendar test API route  - Deleted the calendar test route in the API, which was used for testing Google Calendar integration. - Cleaned up the EmailService class by ensuring consistent formatting and type safety. - Updated type definitions to improve clarity and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/calendar/route.ts
+
+
+---
+
 ## [11e6256dde8d411b093f40bdb4fa9d8704de8223] - Mon Oct 6 12:49:49 2025 +0200
 
 **Author**: stenkjan
