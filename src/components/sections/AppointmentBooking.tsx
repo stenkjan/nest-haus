@@ -143,7 +143,8 @@ const AppointmentBooking = ({
 
       if (data.success && data.timeSlots) {
         const availableSlots = data.timeSlots.filter(
-          (slot: any) => slot.available
+          (slot: { start: string; end: string; available: boolean }) =>
+            slot.available
         );
         setAvailableTimeSlots(data.timeSlots);
         setSelectedTimeIndex(0); // Reset to first available slot
@@ -350,8 +351,8 @@ const AppointmentBooking = ({
         </h3>
         <p className="p-primary mb-6">
           Vielen Dank für deine Terminanfrage. Wir haben deine Verfügbarkeit
-          geprüft und melden uns innerhalb von 4 Stunden innerhalb der
-          Geschäftszeiten per E-Mail bei dir, um den Termin zu bestätigen.
+          geprüft und melden uns innerhalb der nächsten 24 Stunden per E-Mail
+          bei dir, um den Termin zu bestätigen.
         </p>
         <Button
           variant="landing-secondary-blue"

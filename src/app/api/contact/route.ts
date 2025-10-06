@@ -219,7 +219,7 @@ export async function POST(request: NextRequest) {
         : 'Nachricht erfolgreich gesendet!',
       estimatedResponse: data.requestType === 'appointment'
         ? (isTimeSlotAvailable
-          ? 'Wir bestätigen Ihren Termin innerhalb von 4 Stunden per E-Mail.'
+          ? 'Wir bestätigen Ihren Termin innerhalb der nächsten 24 Stunden per E-Mail.'
           : 'Wir schlagen Ihnen alternative Termine innerhalb von 24 Stunden vor.')
         : 'Wir melden uns innerhalb von 2 Werktagen bei Ihnen.',
     };
