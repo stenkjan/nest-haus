@@ -2,33 +2,35 @@
 
 import { useEffect, useRef } from "react";
 import { ProjectTask } from "@prisma/client";
+import type { Chart } from "chart.js";
 
 interface GanttChartProps {
   tasks: ProjectTask[];
   onTaskClick: (task: ProjectTask) => void;
 }
 
+// Color constants moved outside component to avoid dependency issues
+const responsibleColors: Record<string, string> = {
+  JST: "rgba(59, 130, 246, 0.7)",
+  JWS: "rgba(16, 185, 129, 0.7)",
+  iNEST: "rgba(239, 68, 68, 0.7)",
+  "JWS, JST": "rgba(249, 115, 22, 0.7)",
+  "iNEST, JWS": "rgba(139, 92, 246, 0.7)",
+  ALLE: "rgba(107, 114, 128, 0.7)",
+};
+
+const responsibleBorderColors: Record<string, string> = {
+  JST: "rgba(59, 130, 246, 1)",
+  JWS: "rgba(16, 185, 129, 1)",
+  iNEST: "rgba(239, 68, 68, 1)",
+  "JWS, JST": "rgba(249, 115, 22, 1)",
+  "iNEST, JWS": "rgba(139, 92, 246, 1)",
+  ALLE: "rgba(107, 114, 128, 1)",
+};
+
 export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chartRef = useRef<any>(null);
-
-  const responsibleColors: Record<string, string> = {
-    JST: "rgba(59, 130, 246, 0.7)",
-    JWS: "rgba(16, 185, 129, 0.7)",
-    iNEST: "rgba(239, 68, 68, 0.7)",
-    "JWS, JST": "rgba(249, 115, 22, 0.7)",
-    "iNEST, JWS": "rgba(139, 92, 246, 0.7)",
-    ALLE: "rgba(107, 114, 128, 0.7)",
-  };
-
-  const responsibleBorderColors: Record<string, string> = {
-    JST: "rgba(59, 130, 246, 1)",
-    JWS: "rgba(16, 185, 129, 1)",
-    iNEST: "rgba(239, 68, 68, 1)",
-    "JWS, JST": "rgba(249, 115, 22, 1)",
-    "iNEST, JWS": "rgba(139, 92, 246, 1)",
-    ALLE: "rgba(107, 114, 128, 1)",
-  };
+  const chartRef = useRef<Chart | null>(null);
 
   useEffect(() => {
     const loadChartJS = async () => {
@@ -108,7 +110,7 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
               y: {
                 ticks: {
                   autoSkip: false,
-                  callback: function (value: any, index: number) {
+                  callback: function (value: string | number) {
                     const label = this.getLabelForValue(value);
                     return label.length > 35
                       ? label.substring(0, 32) + "..."
@@ -126,10 +128,10 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
               },
               tooltip: {
                 callbacks: {
-                  title: function (context: any) {
+                  title: function (context: Array<{ label: string }>) {
                     return context[0].label;
                   },
-                  label: function (context: any) {
+                  label: function (context: { raw: [Date, Date] }) {
                     const dataPoint = context.raw;
                     const start = new Date(dataPoint[0]).toLocaleDateString(
                       "de-DE"
@@ -142,7 +144,7 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
                 },
               },
             },
-            onClick: (_event: any, elements: any[]) => {
+            onClick: (_event: Event, elements: Array<{ index: number }>) => {
               if (elements.length > 0) {
                 const elementIndex = elements[0].index;
                 const task = tasks[elementIndex];

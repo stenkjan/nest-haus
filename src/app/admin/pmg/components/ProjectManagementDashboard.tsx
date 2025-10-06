@@ -1,16 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ProjectTask, TaskPriority, TaskStatus } from "@prisma/client";
+import { ProjectTask } from "@prisma/client";
 import GanttChart from "./GanttChart";
 import TaskFilters from "./TaskFilters";
 import TaskDetails from "./TaskDetails";
 import TaskList from "./TaskList";
 import StatsCards from "./StatsCards";
 
-interface ProjectManagementDashboardProps {}
-
-export default function ProjectManagementDashboard({}: ProjectManagementDashboardProps) {
+export default function ProjectManagementDashboard() {
   const [tasks, setTasks] = useState<ProjectTask[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
