@@ -82,27 +82,27 @@ export async function POST(request: NextRequest) {
             },
         });
 
-        // Send confirmation emails with calendar invite
-        try {
-            const emailData = {
-                inquiryId: inquiry.id,
-                name: inquiry.name || 'Kunde',
-                email: inquiry.email,
-                phone: inquiry.phone,
-                message: inquiry.message,
-                requestType: 'appointment' as const,
-                preferredContact: inquiry.preferredContact,
-                appointmentDateTime,
-                configurationData: inquiry.configurationData,
-                totalPrice: inquiry.totalPrice,
-            };
+      // Send confirmation emails with calendar invite
+      try {
+        const emailData = {
+          inquiryId: inquiry.id,
+          name: inquiry.name || 'Kunde',
+          email: inquiry.email,
+          phone: inquiry.phone || undefined,
+          message: inquiry.message || undefined,
+          requestType: 'appointment' as const,
+          preferredContact: inquiry.preferredContact,
+          appointmentDateTime,
+          configurationData: inquiry.configurationData || undefined,
+          totalPrice: inquiry.totalPrice || undefined,
+        };
 
-            const adminEmailData = {
-                ...emailData,
-                sessionId: inquiry.sessionId,
-                clientIP: 'calendar-booking',
-                userAgent: 'calendar-api',
-            };
+        const adminEmailData = {
+          ...emailData,
+          sessionId: inquiry.sessionId || undefined,
+          clientIP: 'calendar-booking',
+          userAgent: 'calendar-api',
+        };
 
             // Send emails with calendar information
             await Promise.all([
