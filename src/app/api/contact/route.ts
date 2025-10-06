@@ -133,7 +133,9 @@ export async function POST(request: NextRequest) {
         requestType: data.requestType,
         preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
         appointmentDateTime: data.appointmentDateTime,
-        configurationData: data.configurationData,
+        configurationData: data.configurationData && typeof data.configurationData === 'object'
+          ? data.configurationData as Record<string, unknown>
+          : undefined,
         totalPrice,
       };
 

@@ -93,7 +93,9 @@ export async function POST(request: NextRequest) {
           requestType: 'appointment' as const,
           preferredContact: inquiry.preferredContact,
           appointmentDateTime,
-          configurationData: inquiry.configurationData || undefined,
+          configurationData: inquiry.configurationData && typeof inquiry.configurationData === 'object' 
+            ? inquiry.configurationData as Record<string, unknown>
+            : undefined,
           totalPrice: inquiry.totalPrice || undefined,
         };
 
