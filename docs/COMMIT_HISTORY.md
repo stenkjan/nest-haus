@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [335c1b413c16b605b795351ea8b58038f7ce1953] - Mon Oct 6 12:28:20 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance email data handling in calendar booking API  - Updated the emailData and adminEmailData objects to use optional chaining for properties that may be undefined, improving robustness. - Ensured compliance with TypeScript standards by explicitly handling potential undefined values for phone, message, configurationData, and totalPrice.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/calendar/book/route.ts
+
+
+---
+
 ## [a634f257dab4e090d472e305d757058fca3cf110] - Mon Oct 6 12:12:36 2025 +0200
 
 **Author**: stenkjan
