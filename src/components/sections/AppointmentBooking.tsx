@@ -85,26 +85,40 @@ const AppointmentBooking = ({
   // Time slots navigation
   const prevTime = () => {
     if (selectedTimeIndex > 0) {
-      setSelectedTimeIndex((prev) => prev - 1);
+      setSelectedTimeIndex((prev) => Math.max(prev - 1, 0));
     }
+
+    const currentTimeSlots = getCurrentTimeSlots();
+    console.log(
+      `🕐 Time navigation: ${selectedTimeIndex}/${currentTimeSlots.length} slots`
+    );
   };
 
   // Get current time slots (either from calendar API or fallback)
   const getCurrentTimeSlots = () => {
-    return availableTimeSlots.length > 0
-      ? availableTimeSlots.filter((slot) => slot.available)
-      : fallbackTimeSlots.map((slot) => ({
-          start: slot,
-          end: slot,
-          available: true,
-        }));
+    if (availableTimeSlots.length > 0) {
+      return availableTimeSlots.filter((slot) => slot.available);
+    } else {
+      // Use fallback slots only if no calendar data is available
+      return fallbackTimeSlots.map((slot) => ({
+        start: slot,
+        end: slot,
+        available: true,
+      }));
+    }
   };
 
   const nextTime = () => {
     const currentTimeSlots = getCurrentTimeSlots();
-    if (selectedTimeIndex < currentTimeSlots.length - 1) {
-      setSelectedTimeIndex((prev) => prev + 1);
+    const maxIndex = currentTimeSlots.length - 1;
+
+    if (selectedTimeIndex < maxIndex) {
+      setSelectedTimeIndex((prev) => Math.min(prev + 1, maxIndex));
     }
+
+    console.log(
+      `🕐 Time navigation: ${selectedTimeIndex + 1}/${currentTimeSlots.length} slots`
+    );
   };
 
   // Fetch available time slots when date changes
@@ -128,10 +142,13 @@ const AppointmentBooking = ({
       const data = await response.json();
 
       if (data.success && data.timeSlots) {
+        const availableSlots = data.timeSlots.filter(
+          (slot: any) => slot.available
+        );
         setAvailableTimeSlots(data.timeSlots);
         setSelectedTimeIndex(0); // Reset to first available slot
         console.log(
-          `📅 Loaded ${data.availableCount} available slots for ${dateString}`
+          `📅 Loaded ${data.availableCount} available slots for ${dateString} (${availableSlots.length} actually available)`
         );
       } else {
         console.warn("Failed to load time slots, using fallback");
@@ -169,6 +186,12 @@ const AppointmentBooking = ({
       return;
     }
 
+    // Validate required fields
+    if (!formData.name.trim() || !formData.email.trim()) {
+      alert("Bitte fülle Name und E-Mail aus.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -193,8 +216,10 @@ const AppointmentBooking = ({
           })();
 
       // Prepare contact form data
+      const fullName =
+        `${formData.name.trim()} ${formData.lastName.trim()}`.trim();
       const contactData = {
-        name: `${formData.name} ${formData.lastName}`.trim(),
+        name: fullName || formData.name.trim(), // Fallback to just first name if last name is empty
         email: formData.email,
         phone: formData.phone || undefined,
         message: `Terminart: ${formData.appointmentType === "personal" ? "Persönliches Gespräch" : "Telefonische Beratung"}`,
