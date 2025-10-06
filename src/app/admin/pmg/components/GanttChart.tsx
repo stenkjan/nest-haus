@@ -127,25 +127,25 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
               legend: {
                 display: false,
               },
-                 tooltip: {
-                   callbacks: {
-                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                     title: function (context: any) {
-                       return context[0].label;
-                     },
-                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                     label: function (context: any) {
-                       const dataPoint = context.raw;
-                       const start = new Date(dataPoint[0]).toLocaleDateString(
-                         "de-DE"
-                       );
-                       const end = new Date(
-                         dataPoint[1] - 24 * 60 * 60 * 1000
-                       ).toLocaleDateString("de-DE");
-                       return `Zeitraum: ${start} - ${end}`;
-                     },
-                   },
-                 },
+              tooltip: {
+                callbacks: {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  title: function (context: any) {
+                    return context[0].label;
+                  },
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  label: function (context: any) {
+                    const dataPoint = context.raw;
+                    const start = new Date(dataPoint[0]).toLocaleDateString(
+                      "de-DE"
+                    );
+                    const end = new Date(
+                      dataPoint[1] - 24 * 60 * 60 * 1000
+                    ).toLocaleDateString("de-DE");
+                    return `Zeitraum: ${start} - ${end}`;
+                  },
+                },
+              },
             },
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onClick: (_event: any, elements: any[]) => {
