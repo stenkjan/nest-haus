@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { EmailService } from '@/lib/EmailService';
+import { GoogleCalendarService } from '@/lib/GoogleCalendarService';
 
 // Validation schema for contact form data
 const contactFormSchema = z.object({
@@ -30,18 +32,18 @@ interface InquiryWhereClause {
 export async function POST(request: NextRequest) {
   try {
     console.log('📧 Processing contact form submission...');
-    
+
     const body = await request.json();
-    
+
     // Validate the request data
     const validationResult = contactFormSchema.safeParse(body);
-    
+
     if (!validationResult.success) {
       console.error('❌ Validation failed:', validationResult.error.issues);
       return NextResponse.json(
-        { 
-          error: 'Ungültige Daten', 
-          details: validationResult.error.issues 
+        {
+          error: 'Ungültige Daten',
+          details: validationResult.error.issues
         },
         { status: 400 }
       );
@@ -50,11 +52,11 @@ export async function POST(request: NextRequest) {
     const data: ContactFormData = validationResult.data;
 
     // Extract client information (for future use in analytics/security)
-    const _clientIP = request.headers.get('x-forwarded-for')?.split(',')[0] || 
-                     request.headers.get('x-real-ip') || 
-                     'unknown';
-    
-    const _userAgent = request.headers.get('user-agent') || 'unknown';
+    const clientIP = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
+
+    const userAgent = request.headers.get('user-agent') || 'unknown';
     const sessionId = request.headers.get('x-session-id') || null;
 
     // Calculate total price if configuration data exists
@@ -75,7 +77,7 @@ export async function POST(request: NextRequest) {
       status: 'NEW' as const,
       preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
       bestTimeToCall: data.bestTimeToCall || null,
-      adminNotes: data.requestType === 'appointment' 
+      adminNotes: data.requestType === 'appointment'
         ? `Terminwunsch: ${data.appointmentDateTime ? new Date(data.appointmentDateTime).toLocaleString('de-DE') : 'Nicht angegeben'}`
         : null,
       followUpDate: data.requestType === 'appointment' && data.appointmentDateTime
@@ -117,30 +119,107 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // TODO: Send email notifications (to be implemented in next step)
-    console.log('📬 Email notifications will be sent (TODO: implement email service)');
+    // Send email notifications
+    console.log('📬 Sending email notifications...');
+
+    try {
+      // Prepare email data
+      const emailData = {
+        inquiryId: inquiry.id,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        message: data.message,
+        requestType: data.requestType,
+        preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
+        appointmentDateTime: data.appointmentDateTime,
+        configurationData: data.configurationData,
+        totalPrice,
+      };
+
+      const adminEmailData = {
+        ...emailData,
+        sessionId,
+        clientIP,
+        userAgent,
+      };
+
+      // Send emails in parallel
+      const [customerEmailSent, adminEmailSent] = await Promise.all([
+        EmailService.sendCustomerConfirmation(emailData),
+        EmailService.sendAdminNotification(adminEmailData),
+      ]);
+
+      if (customerEmailSent) {
+        console.log('✅ Customer confirmation email sent');
+      } else {
+        console.warn('⚠️ Customer confirmation email failed');
+      }
+
+      if (adminEmailSent) {
+        console.log('✅ Admin notification email sent');
+      } else {
+        console.warn('⚠️ Admin notification email failed');
+      }
+
+    } catch (emailError) {
+      console.error('❌ Email sending failed:', emailError);
+      // Don't fail the request if email fails - inquiry is already saved
+    }
+
+    // Create calendar appointment if this is an appointment request with specific date/time
+    let calendarEventId: string | null = null;
+    if (data.requestType === 'appointment' && data.appointmentDateTime) {
+      try {
+        console.log('📅 Creating calendar appointment...');
+
+        const eventData = GoogleCalendarService.generateEventFromInquiry({
+          ...inquiry,
+          appointmentDateTime: data.appointmentDateTime,
+        });
+
+        calendarEventId = await GoogleCalendarService.createAppointment(eventData);
+
+        if (calendarEventId) {
+          // Update inquiry with calendar event ID
+          await prisma.customerInquiry.update({
+            where: { id: inquiry.id },
+            data: {
+              adminNotes: `${inquiry.adminNotes || ''}\nKalender-Event-ID: ${calendarEventId}`,
+            },
+          });
+          console.log('✅ Calendar appointment created successfully');
+        } else {
+          console.warn('⚠️ Calendar appointment creation failed');
+        }
+      } catch (calendarError) {
+        console.error('❌ Calendar appointment creation failed:', calendarError);
+        // Don't fail the request if calendar fails - inquiry is already saved
+      }
+    }
 
     // Prepare response data
     const responseData = {
       success: true,
       inquiryId: inquiry.id,
-      message: data.requestType === 'appointment' 
-        ? 'Terminanfrage erfolgreich gesendet!' 
+      calendarEventId,
+      message: data.requestType === 'appointment'
+        ? (calendarEventId ? 'Termin erfolgreich gebucht!' : 'Terminanfrage erfolgreich gesendet!')
         : 'Nachricht erfolgreich gesendet!',
       estimatedResponse: data.requestType === 'appointment'
-        ? 'Wir melden uns innerhalb von 24 Stunden bei Ihnen.'
+        ? (calendarEventId ? 'Sie erhalten eine Kalendereinladung per E-Mail.' : 'Wir melden uns innerhalb von 24 Stunden bei Ihnen.')
         : 'Wir melden uns innerhalb von 2 Werktagen bei Ihnen.',
     };
 
     console.log('✅ Contact form processed successfully');
-    
+
     return NextResponse.json(responseData, { status: 201 });
 
   } catch (error) {
     console.error('❌ Error processing contact form:', error);
-    
+
     return NextResponse.json(
-      { 
+      {
         error: 'Interner Serverfehler',
         message: 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.',
       },
@@ -160,17 +239,17 @@ export async function GET(request: NextRequest) {
 
     // Build where clause
     const where: InquiryWhereClause = {};
-    
+
     if (status && status !== 'ALL') {
       // Validate that status is a valid enum value
-      const validStatuses: Array<'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED'> = 
+      const validStatuses: Array<'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED'> =
         ['NEW', 'CONTACTED', 'IN_PROGRESS', 'QUOTED', 'CONVERTED', 'CLOSED'];
-      
+
       if (validStatuses.includes(status as 'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED')) {
         where.status = status as 'NEW' | 'CONTACTED' | 'IN_PROGRESS' | 'QUOTED' | 'CONVERTED' | 'CLOSED';
       }
     }
-    
+
     if (search) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },

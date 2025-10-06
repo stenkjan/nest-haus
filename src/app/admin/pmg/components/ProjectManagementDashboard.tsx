@@ -211,7 +211,7 @@ export default function ProjectManagementDashboard() {
       style={{ fontFamily: "Inter, sans-serif" }}
     >
       <header className="mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-800">
+        <h1 className="text-3xl md:text-4xl mt-6 font-bold text-slate-800">
           Projektplan: Launch-Vorbereitung NEST-Haus
         </h1>
         <p className="text-slate-600 mt-2">
