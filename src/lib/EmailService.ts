@@ -4,16 +4,16 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export interface CustomerInquiryData {
-    inquiryId: string;
-    name: string;
-    email: string;
-    phone?: string;
-    message?: string;
-    requestType: 'contact' | 'appointment';
-    preferredContact: 'EMAIL' | 'PHONE' | 'WHATSAPP';
-    appointmentDateTime?: string;
-    configurationData?: Record<string, unknown>;
-    totalPrice?: number;
+  inquiryId: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message?: string;
+  requestType: 'contact' | 'appointment';
+  preferredContact: 'EMAIL' | 'PHONE' | 'WHATSAPP';
+  appointmentDateTime?: string;
+  configurationData?: unknown;
+  totalPrice?: number;
 }
 
 export interface AdminNotificationData extends CustomerInquiryData {
@@ -312,26 +312,27 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
     /**
      * Generate configuration summary for email
      */
-    private static generateConfigurationSummary(configData: Record<string, unknown>): string {
-        if (!configData) return '';
+  private static generateConfigurationSummary(configData: unknown): string {
+    if (!configData || typeof configData !== 'object') return '';
 
-        const items = [];
+    const config = configData as Record<string, any>;
+    const items = [];
+    
+    // Extract configuration items
+    if (config.nest?.name) items.push(`Nest-Modell: ${config.nest.name}`);
+    if (config.gebaeudehuelle?.name) items.push(`Gebäudehülle: ${config.gebaeudehuelle.name}`);
+    if (config.innenverkleidung?.name) items.push(`Innenverkleidung: ${config.innenverkleidung.name}`);
+    if (config.fussboden?.name) items.push(`Fußboden: ${config.fussboden.name}`);
+    if (config.pvanlage?.name) items.push(`PV-Anlage: ${config.pvanlage.name}`);
+    if (config.fenster?.name) items.push(`Fenster: ${config.fenster.name}`);
+    if (config.planungspaket?.name) items.push(`Planungspaket: ${config.planungspaket.name}`);
+    if (config.grundstueckscheck?.name) items.push(`Grundstückscheck: ${config.grundstueckscheck.name}`);
 
-        // Extract configuration items
-        if (configData.nest?.name) items.push(`Nest-Modell: ${configData.nest.name}`);
-        if (configData.gebaeudehuelle?.name) items.push(`Gebäudehülle: ${configData.gebaeudehuelle.name}`);
-        if (configData.innenverkleidung?.name) items.push(`Innenverkleidung: ${configData.innenverkleidung.name}`);
-        if (configData.fussboden?.name) items.push(`Fußboden: ${configData.fussboden.name}`);
-        if (configData.pvanlage?.name) items.push(`PV-Anlage: ${configData.pvanlage.name}`);
-        if (configData.fenster?.name) items.push(`Fenster: ${configData.fenster.name}`);
-        if (configData.planungspaket?.name) items.push(`Planungspaket: ${configData.planungspaket.name}`);
-        if (configData.grundstueckscheck?.name) items.push(`Grundstückscheck: ${configData.grundstueckscheck.name}`);
+    if (items.length === 0) return '';
 
-        if (items.length === 0) return '';
+    const totalPrice = config.totalPrice ? `<p><strong>Gesamtpreis:</strong> €${(Number(config.totalPrice) / 100).toLocaleString('de-DE')}</p>` : '';
 
-        const totalPrice = configData.totalPrice ? `<p><strong>Gesamtpreis:</strong> €${(configData.totalPrice / 100).toLocaleString('de-DE')}</p>` : '';
-
-        return `
+    return `
     <div class="highlight">
       <h3>🏠 Konfiguration:</h3>
       <ul>
@@ -339,7 +340,7 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
       </ul>
       ${totalPrice}
     </div>`;
-    }
+  }
 
     /**
      * Convert contact method enum to readable text

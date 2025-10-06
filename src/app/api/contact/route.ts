@@ -128,20 +128,18 @@ export async function POST(request: NextRequest) {
         inquiryId: inquiry.id,
         name: data.name,
         email: data.email,
-        phone: data.phone,
-        message: data.message,
+        phone: data.phone || undefined,
+        message: data.message || undefined,
         requestType: data.requestType,
         preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
-        appointmentDateTime: data.appointmentDateTime,
-        configurationData: data.configurationData && typeof data.configurationData === 'object'
-          ? data.configurationData as Record<string, unknown>
-          : undefined,
-        totalPrice,
+        appointmentDateTime: data.appointmentDateTime || undefined,
+        configurationData: data.configurationData,
+        totalPrice: totalPrice || undefined,
       };
 
       const adminEmailData = {
         ...emailData,
-        sessionId,
+        sessionId: sessionId || undefined,
         clientIP,
         userAgent,
       };

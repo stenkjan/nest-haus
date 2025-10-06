@@ -299,7 +299,7 @@ export class GoogleCalendarService {
     /**
      * Generate calendar event data from customer inquiry
      */
-    static generateEventFromInquiry(inquiry: Record<string, unknown>): CalendarEvent {
+    static generateEventFromInquiry(inquiry: any): CalendarEvent {
         const appointmentDate = new Date(inquiry.appointmentDateTime || inquiry.followUpDate);
         const endDate = new Date(appointmentDate);
         endDate.setMinutes(appointmentDate.getMinutes() + this.BUSINESS_HOURS.duration);
@@ -332,7 +332,7 @@ export class GoogleCalendarService {
     /**
      * Generate detailed event description
      */
-    private static generateEventDescription(inquiry: Record<string, unknown>): string {
+    private static generateEventDescription(inquiry: any): string {
         let description = `NEST-Haus Beratungstermin\n\n`;
         description += `Kunde: ${inquiry.name}\n`;
         description += `E-Mail: ${inquiry.email}\n`;
