@@ -112,7 +112,7 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
                 ticks: {
                   autoSkip: false,
                   callback: function (value: string | number) {
-                    const label = this.getLabelForValue(value);
+                    const label = this.getLabelForValue(value as number);
                     return label.length > 35
                       ? label.substring(0, 32) + "..."
                       : label;
@@ -127,25 +127,28 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
               legend: {
                 display: false,
               },
-              tooltip: {
-                callbacks: {
-                  title: function (context: Array<{ label: string }>) {
-                    return context[0].label;
-                  },
-                  label: function (context: { raw: [Date, Date] }) {
-                    const dataPoint = context.raw;
-                    const start = new Date(dataPoint[0]).toLocaleDateString(
-                      "de-DE"
-                    );
-                    const end = new Date(
-                      dataPoint[1] - 24 * 60 * 60 * 1000
-                    ).toLocaleDateString("de-DE");
-                    return `Zeitraum: ${start} - ${end}`;
-                  },
-                },
-              },
+                 tooltip: {
+                   callbacks: {
+                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                     title: function (context: any) {
+                       return context[0].label;
+                     },
+                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                     label: function (context: any) {
+                       const dataPoint = context.raw;
+                       const start = new Date(dataPoint[0]).toLocaleDateString(
+                         "de-DE"
+                       );
+                       const end = new Date(
+                         dataPoint[1] - 24 * 60 * 60 * 1000
+                       ).toLocaleDateString("de-DE");
+                       return `Zeitraum: ${start} - ${end}`;
+                     },
+                   },
+                 },
             },
-            onClick: (_event: Event, elements: Array<{ index: number }>) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onClick: (_event: any, elements: any[]) => {
               if (elements.length > 0) {
                 const elementIndex = elements[0].index;
                 const task = tasks[elementIndex];
