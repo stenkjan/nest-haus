@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6cccfc54e3c9d91da513c85f2a3867568a87af43] - Mon Oct 6 12:37:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: streamline email data handling in calendar booking API  - Refactored the emailData and adminEmailData objects to improve readability and maintainability. - Ensured compliance with TypeScript standards by maintaining type safety and handling potential undefined values consistently.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/calendar/book/route.ts
+
+
+---
+
 ## [335c1b413c16b605b795351ea8b58038f7ce1953] - Mon Oct 6 12:28:20 2025 +0200
 
 **Author**: stenkjan
