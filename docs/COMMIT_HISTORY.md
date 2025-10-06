@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [06ab2e7b592c91f7f61033a1303b3d98f267d9b6] - Mon Oct 6 14:22:45 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: migrate from Google Calendar to iCloud Calendar integration  - Updated environment configuration to include iCloud Calendar settings. - Replaced GoogleCalendarService with iCloudCalendarService in calendar availability and booking routes. - Adjusted contact form handling to check iCloud calendar availability for appointment requests. - Removed Google Calendar related code and services to streamline calendar functionality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/calendar/availability/route.ts
+- src/app/api/calendar/book/route.ts
+- src/app/api/contact/route.ts
+
+
+#### 🔧 Configuration Changes
+- .env.local
+- package.json
+
+
+---
+
 ## [66939fe8eec13e565aa85dd9e586e5e982fa6f17] - Mon Oct 6 14:06:22 2025 +0200
 
 **Author**: stenkjan
