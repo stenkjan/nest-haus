@@ -67,7 +67,8 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
             datasets: [
               {
                 label: "Aufgaben-Dauer",
-                data: chartData.map((d) => d.x),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                data: chartData.map((d) => d.x) as any,
                 backgroundColor: chartData.map((d) => {
                   const mainResponsible = d.responsible.split(", ")[0];
                   return (
