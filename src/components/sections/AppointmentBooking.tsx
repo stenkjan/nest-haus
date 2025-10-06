@@ -498,9 +498,6 @@ const AppointmentBooking = ({
               <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
                 13:00-19:00
               </div>
-              <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                Mittagspause: 12:00-13:00
-              </div>
             </div>
           </div>
         </div>
@@ -772,9 +769,6 @@ const AppointmentBooking = ({
                 </div>
                 <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
                   13:00-19:00
-                </div>
-                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  Mittagspause: 12:00-13:00
                 </div>
               </div>
             </div>
