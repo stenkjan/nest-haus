@@ -216,7 +216,7 @@ const AppointmentBooking = ({
 
       const result = await response.json();
 
-      if (result.success) {
+      if (response.ok && result.success) {
         console.log("✅ Appointment request sent successfully");
 
         // Save appointment to cart store for reference
@@ -253,7 +253,10 @@ const AppointmentBooking = ({
           appointmentType: "personal",
         });
       } else {
-        throw new Error(result.message || "Appointment booking failed");
+        console.error("❌ Appointment booking failed:", result);
+        throw new Error(
+          result.error || result.message || "Appointment booking failed"
+        );
       }
     } catch (error) {
       console.error("Error booking appointment:", error);
@@ -740,13 +743,13 @@ const AppointmentBooking = ({
                   Öffnungszeiten
                 </div>
                 <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  Mo-Fr: 08:00-14:00
+                  Mo-Fr: 08:00-12:00
                 </div>
                 <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  15:30-19:00
+                  13:00-19:00
                 </div>
                 <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  Sa: 08:00-14:00
+                  Mittagspause: 12:00-13:00
                 </div>
               </div>
             </div>
