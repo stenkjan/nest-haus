@@ -75,13 +75,13 @@ export default function ProjectManagementDashboard() {
     try {
       const credentials = btoa("admin:MAINJAJANest");
 
-      const response = await fetch("/api/admin/pmg", {
+      const response = await fetch(`/api/admin/pmg/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Basic ${credentials}`,
         },
-        body: JSON.stringify({ id: taskId, ...updates }),
+        body: JSON.stringify(updates),
       });
 
       if (!response.ok) {
@@ -147,6 +147,45 @@ export default function ProjectManagementDashboard() {
       showSaveMessage("Task deleted successfully!");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to delete task");
+    }
+  };
+
+  const reorderTasks = async (reorderedTasks: ProjectTask[]) => {
+    try {
+      const credentials = btoa("admin:MAINJAJANest");
+
+      // Update each task with its new position/taskId
+      const updatePromises = reorderedTasks.map((task) =>
+        fetch(`/api/admin/pmg/${task.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${credentials}`,
+          },
+          body: JSON.stringify({
+            taskId: task.taskId,
+          }),
+        })
+      );
+
+      await Promise.all(updatePromises);
+
+      // Update local state
+      setTasks((prev) => {
+        const newTasks = [...prev];
+        reorderedTasks.forEach((reorderedTask) => {
+          const index = newTasks.findIndex((t) => t.id === reorderedTask.id);
+          if (index !== -1) {
+            newTasks[index] = reorderedTask;
+          }
+        });
+        return newTasks;
+      });
+
+      showSaveMessage("Tasks reordered successfully!");
+    } catch (error) {
+      console.error("Error reordering tasks:", error);
+      setError("Failed to reorder tasks");
     }
   };
 
@@ -261,6 +300,7 @@ export default function ProjectManagementDashboard() {
             onTaskDelete={deleteTask}
             onTaskAdd={addTask}
             onTaskSelect={setSelectedTask}
+            onTaskReorder={reorderTasks}
           />
         </div>
       </main>
