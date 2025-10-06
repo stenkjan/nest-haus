@@ -7,6 +7,7 @@ import TaskFilters from "./TaskFilters";
 import TaskDetails from "./TaskDetails";
 import TaskList from "./TaskList";
 import StatsCards from "./StatsCards";
+import TeamOverview from "./TeamOverview";
 
 export default function ProjectManagementDashboard() {
   const [tasks, setTasks] = useState<ProjectTask[]>([]);
@@ -169,7 +170,7 @@ export default function ProjectManagementDashboard() {
   const getUniqueResponsibles = () => {
     const responsibles = tasks
       .flatMap((task) => task.responsible.split(", ").map((r) => r.trim()))
-      .filter((r) => r);
+      .filter((r) => r && r !== "ALLE");
     return ["ALLE", ...new Set(responsibles)];
   };
 
@@ -217,9 +218,6 @@ export default function ProjectManagementDashboard() {
         <p className="text-slate-600 mt-2">
           Ziel: Website-Launch bis zum 15.11.2025, um Kunden erfolgreich zum
           Beratungsgespräch zu führen.
-          <span className="font-bold text-green-500 ml-2">
-            (DATABASE CONNECTED!)
-          </span>
         </p>
       </header>
 
@@ -232,15 +230,15 @@ export default function ProjectManagementDashboard() {
       <StatsCards tasks={tasks} />
 
       <main className="bg-white p-6 rounded-2xl shadow-lg">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-8">
+        <div className="xl:grid xl:grid-cols-12 xl:gap-8">
+          <div className="xl:col-span-9 2xl:col-span-10">
             <h2 className="text-xl font-bold mb-4">
               Projekt-Zeitstrahl (Gantt-Diagramm)
             </h2>
             <GanttChart tasks={filteredTasks} onTaskClick={setSelectedTask} />
           </div>
 
-          <aside className="lg:col-span-4 mt-8 lg:mt-0">
+          <aside className="xl:col-span-3 2xl:col-span-2 mt-8 xl:mt-0">
             <div className="sticky top-8">
               <TaskFilters
                 responsibles={getUniqueResponsibles()}
@@ -266,6 +264,8 @@ export default function ProjectManagementDashboard() {
           />
         </div>
       </main>
+
+      <TeamOverview tasks={tasks} />
     </div>
   );
 }

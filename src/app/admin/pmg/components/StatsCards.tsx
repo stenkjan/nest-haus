@@ -62,9 +62,7 @@ export default function StatsCards({ tasks }: StatsCardsProps) {
         >
           <div className="text-3xl mr-4">{stat.icon}</div>
           <div>
-            <div className={`text-2xl font-bold ${stat.color}`}>
-              {stat.value}
-            </div>
+            <div className="text-2xl font-bold text-black">{stat.value}</div>
             <div className="text-sm text-slate-500">{stat.label}</div>
           </div>
         </div>

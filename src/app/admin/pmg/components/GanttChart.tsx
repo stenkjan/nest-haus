@@ -113,8 +113,8 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
                   autoSkip: false,
                   callback: function (value: string | number) {
                     const label = this.getLabelForValue(value as number);
-                    return label.length > 35
-                      ? label.substring(0, 32) + "..."
+                    return label.length > 70
+                      ? label.substring(0, 67) + "..."
                       : label;
                   },
                 },
@@ -172,7 +172,7 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
   }, [tasks, onTaskClick]);
 
   return (
-    <div className="chart-container relative w-full h-96 lg:h-[60vh] max-h-[800px]">
+    <div className="chart-container relative w-full h-96 lg:h-[60vh] max-h-[800px] overflow-x-auto">
       <canvas ref={canvasRef} />
     </div>
   );

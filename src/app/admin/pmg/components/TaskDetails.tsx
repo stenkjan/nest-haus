@@ -7,7 +7,7 @@ interface TaskDetailsProps {
 }
 
 export default function TaskDetails({ task }: TaskDetailsProps) {
-  const formatDate = (date: Date) => {
+  const formatDateGerman = (date: Date) => {
     return new Date(date).toLocaleDateString("de-DE");
   };
 
@@ -23,8 +23,8 @@ export default function TaskDetails({ task }: TaskDetailsProps) {
             <strong>Verantwortlich:</strong> {task.responsible}
           </li>
           <li>
-            <strong>Zeitraum:</strong> {formatDate(task.startDate)} -{" "}
-            {formatDate(task.endDate)} ({task.duration} Tage)
+            <strong>Zeitraum:</strong> {formatDateGerman(task.startDate)} -{" "}
+            {formatDateGerman(task.endDate)} ({task.duration} Tage)
           </li>
           <li>
             <strong>Priorität:</strong> {task.priority}

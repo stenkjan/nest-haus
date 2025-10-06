@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { ProjectTask, TaskPriority, TaskStatus } from "@prisma/client";
 
+// Color constants matching GanttChart
+const responsibleColors: Record<string, string> = {
+  JST: "rgba(59, 130, 246, 0.7)",
+  JWS: "rgba(16, 185, 129, 0.7)",
+  iNEST: "rgba(239, 68, 68, 0.7)",
+};
+
 interface TaskListProps {
   tasks: ProjectTask[];
   onTaskUpdate: (taskId: string, updates: Partial<ProjectTask>) => void;
@@ -28,6 +35,15 @@ export default function TaskList({
 
   const formatDate = (date: Date) => {
     return new Date(date).toISOString().split("T")[0];
+  };
+
+  const formatDateGerman = (date: Date) => {
+    return new Date(date).toLocaleDateString("de-DE");
+  };
+
+  const getResponsibleColor = (responsible: string) => {
+    const mainResponsible = responsible.split(", ")[0];
+    return responsibleColors[mainResponsible] || "rgba(107, 114, 128, 0.7)";
   };
 
   const getPriorityClass = (priority: TaskPriority) => {
@@ -227,8 +243,12 @@ export default function TaskList({
           <tbody className="bg-white divide-y divide-gray-200">
             {tasks.map((task) => (
               <tr key={task.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {task.taskId}
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span
+                    className={task.milestone ? "font-bold" : "font-medium"}
+                  >
+                    {task.taskId}
+                  </span>
                 </td>
                 <td
                   className="px-6 py-4 text-sm text-gray-900 cursor-pointer hover:bg-gray-100"
@@ -270,7 +290,10 @@ export default function TaskList({
                     />
                   ) : (
                     <div
-                      className="cursor-pointer hover:bg-gray-100 p-1 rounded"
+                      className="cursor-pointer hover:bg-gray-100 p-1 rounded text-white font-medium"
+                      style={{
+                        backgroundColor: getResponsibleColor(task.responsible),
+                      }}
                       onClick={() => handleCellClick(task, "responsible")}
                     >
                       {task.responsible}
@@ -294,7 +317,7 @@ export default function TaskList({
                       className="cursor-pointer hover:bg-gray-100 p-1 rounded"
                       onClick={() => handleCellClick(task, "startDate")}
                     >
-                      {formatDate(task.startDate)}
+                      {formatDateGerman(task.startDate)}
                     </div>
                   )}
                 </td>
@@ -315,7 +338,7 @@ export default function TaskList({
                       className="cursor-pointer hover:bg-gray-100 p-1 rounded"
                       onClick={() => handleCellClick(task, "endDate")}
                     >
-                      {formatDate(task.endDate)}
+                      {formatDateGerman(task.endDate)}
                     </div>
                   )}
                 </td>
