@@ -34,6 +34,7 @@ export interface AvailabilityRequest {
 }
 
 export class GoogleCalendarService {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private static calendar: any = null;
     private static readonly CALENDAR_ID = 'primary'; // Use primary calendar
     private static readonly TIME_ZONE = 'Europe/Vienna'; // Austrian timezone
@@ -127,6 +128,7 @@ export class GoogleCalendarService {
                 guestsCanSeeOtherGuests: false,
             };
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const response = await (calendar as any).events.insert({
                 calendarId: this.CALENDAR_ID,
                 resource: event,
@@ -150,8 +152,8 @@ export class GoogleCalendarService {
         try {
             console.log(`📅 Getting available time slots for ${request.date}`);
 
-      const calendar = await this.initializeCalendar();
-      const _timeZone = request.timeZone || this.TIME_ZONE;
+            const calendar = await this.initializeCalendar();
+            const _timeZone = request.timeZone || this.TIME_ZONE;
 
             // Parse the requested date
             const requestDate = new Date(request.date);
@@ -190,6 +192,7 @@ export class GoogleCalendarService {
             const dayEnd = new Date(requestDate);
             dayEnd.setHours(23, 59, 59, 999);
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const existingEvents = await (calendar as any).events.list({
                 calendarId: this.CALENDAR_ID,
                 timeMin: dayStart.toISOString(),
@@ -256,6 +259,7 @@ export class GoogleCalendarService {
             if (eventData.attendees) updateData.attendees = eventData.attendees;
             if (eventData.location) updateData.location = eventData.location;
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             await (calendar as any).events.patch({
                 calendarId: this.CALENDAR_ID,
                 eventId: eventId,
@@ -281,6 +285,7 @@ export class GoogleCalendarService {
 
             const calendar = await this.initializeCalendar();
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             await (calendar as any).events.delete({
                 calendarId: this.CALENDAR_ID,
                 eventId: eventId,
@@ -299,6 +304,7 @@ export class GoogleCalendarService {
     /**
      * Generate calendar event data from customer inquiry
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static generateEventFromInquiry(inquiry: any): CalendarEvent {
         const appointmentDate = new Date(inquiry.appointmentDateTime || inquiry.followUpDate);
         const endDate = new Date(appointmentDate);
@@ -332,6 +338,7 @@ export class GoogleCalendarService {
     /**
      * Generate detailed event description
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private static generateEventDescription(inquiry: any): string {
         let description = `NEST-Haus Beratungstermin\n\n`;
         description += `Kunde: ${inquiry.name}\n`;

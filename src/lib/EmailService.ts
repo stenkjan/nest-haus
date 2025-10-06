@@ -17,94 +17,94 @@ export interface CustomerInquiryData {
 }
 
 export interface AdminNotificationData extends CustomerInquiryData {
-    sessionId?: string;
-    clientIP?: string;
-    userAgent?: string;
+  sessionId?: string;
+  clientIP?: string;
+  userAgent?: string;
 }
 
 export class EmailService {
-    private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-    private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nest-haus.at';
-    private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'sales@nest-haus.at';
+  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nest-haus.at';
+  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'sales@nest-haus.at';
 
-    /**
-     * Send confirmation email to customer
-     */
-    static async sendCustomerConfirmation(data: CustomerInquiryData): Promise<boolean> {
-        try {
-            console.log(`📧 Sending customer confirmation email to ${data.email}`);
+  /**
+   * Send confirmation email to customer
+   */
+  static async sendCustomerConfirmation(data: CustomerInquiryData): Promise<boolean> {
+    try {
+      console.log(`📧 Sending customer confirmation email to ${data.email}`);
 
-            const subject = data.requestType === 'appointment'
-                ? 'Terminanfrage bei NEST-Haus erhalten'
-                : 'Ihre Anfrage bei NEST-Haus';
+      const subject = data.requestType === 'appointment'
+        ? 'Terminanfrage bei NEST-Haus erhalten'
+        : 'Ihre Anfrage bei NEST-Haus';
 
-            const htmlContent = this.generateCustomerEmailHTML(data);
-            const textContent = this.generateCustomerEmailText(data);
+      const htmlContent = this.generateCustomerEmailHTML(data);
+      const textContent = this.generateCustomerEmailText(data);
 
-            const result = await resend.emails.send({
-                from: this.FROM_EMAIL,
-                to: data.email,
-                subject,
-                html: htmlContent,
-                text: textContent,
-            });
+      const result = await resend.emails.send({
+        from: this.FROM_EMAIL,
+        to: data.email,
+        subject,
+        html: htmlContent,
+        text: textContent,
+      });
 
-            console.log('✅ Customer email sent successfully:', result.data?.id);
-            return true;
+      console.log('✅ Customer email sent successfully:', result.data?.id);
+      return true;
 
-        } catch (error) {
-            console.error('❌ Failed to send customer email:', error);
-            return false;
-        }
+    } catch (error) {
+      console.error('❌ Failed to send customer email:', error);
+      return false;
     }
+  }
 
-    /**
-     * Send notification email to admin
-     */
-    static async sendAdminNotification(data: AdminNotificationData): Promise<boolean> {
-        try {
-            console.log(`📧 Sending admin notification for inquiry ${data.inquiryId}`);
+  /**
+   * Send notification email to admin
+   */
+  static async sendAdminNotification(data: AdminNotificationData): Promise<boolean> {
+    try {
+      console.log(`📧 Sending admin notification for inquiry ${data.inquiryId}`);
 
-            const subject = data.requestType === 'appointment'
-                ? `🗓️ Neue Terminanfrage von ${data.name}`
-                : `📧 Neue Kontaktanfrage von ${data.name}`;
+      const subject = data.requestType === 'appointment'
+        ? `🗓️ Neue Terminanfrage von ${data.name}`
+        : `📧 Neue Kontaktanfrage von ${data.name}`;
 
-            const htmlContent = this.generateAdminEmailHTML(data);
-            const textContent = this.generateAdminEmailText(data);
+      const htmlContent = this.generateAdminEmailHTML(data);
+      const textContent = this.generateAdminEmailText(data);
 
-            // Send to both admin and sales email
-            const recipients = [this.ADMIN_EMAIL];
-            if (this.SALES_EMAIL !== this.ADMIN_EMAIL) {
-                recipients.push(this.SALES_EMAIL);
-            }
+      // Send to both admin and sales email
+      const recipients = [this.ADMIN_EMAIL];
+      if (this.SALES_EMAIL !== this.ADMIN_EMAIL) {
+        recipients.push(this.SALES_EMAIL);
+      }
 
-            const result = await resend.emails.send({
-                from: this.FROM_EMAIL,
-                to: recipients,
-                subject,
-                html: htmlContent,
-                text: textContent,
-            });
+      const result = await resend.emails.send({
+        from: this.FROM_EMAIL,
+        to: recipients,
+        subject,
+        html: htmlContent,
+        text: textContent,
+      });
 
-            console.log('✅ Admin email sent successfully:', result.data?.id);
-            return true;
+      console.log('✅ Admin email sent successfully:', result.data?.id);
+      return true;
 
-        } catch (error) {
-            console.error('❌ Failed to send admin email:', error);
-            return false;
-        }
+    } catch (error) {
+      console.error('❌ Failed to send admin email:', error);
+      return false;
     }
+  }
 
-    /**
-     * Generate HTML email content for customer
-     */
-    private static generateCustomerEmailHTML(data: CustomerInquiryData): string {
-        const configurationSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
-        const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
-            ? `<p><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
-            : '';
+  /**
+   * Generate HTML email content for customer
+   */
+  private static generateCustomerEmailHTML(data: CustomerInquiryData): string {
+    const configurationSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
+    const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
+      ? `<p><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
+      : '';
 
-        return `
+    return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -150,8 +150,8 @@ export class EmailService {
       <h3>Nächste Schritte:</h3>
       <ul>
         <li>${data.requestType === 'appointment'
-                ? 'Wir melden uns innerhalb von 24 Stunden für die Terminbestätigung'
-                : 'Wir melden uns innerhalb von 2 Werktagen bei Ihnen'}</li>
+        ? 'Wir melden uns innerhalb von 24 Stunden für die Terminbestätigung'
+        : 'Wir melden uns innerhalb von 2 Werktagen bei Ihnen'}</li>
         <li>Persönliche Beratung zu Ihrem Traumhaus</li>
         <li>Detaillierte Kostenaufstellung</li>
         <li>Planungsservice und Baubegleitung</li>
@@ -171,17 +171,17 @@ export class EmailService {
   </div>
 </body>
 </html>`;
-    }
+  }
 
-    /**
-     * Generate text email content for customer
-     */
-    private static generateCustomerEmailText(data: CustomerInquiryData): string {
-        const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
-            ? `Gewünschter Termin: ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}\n\n`
-            : '';
+  /**
+   * Generate text email content for customer
+   */
+  private static generateCustomerEmailText(data: CustomerInquiryData): string {
+    const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
+      ? `Gewünschter Termin: ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}\n\n`
+      : '';
 
-        return `
+    return `
 NEST-Haus - ${data.requestType === 'appointment' ? 'Terminanfrage' : 'Anfrage'} Bestätigung
 
 Liebe/r ${data.name},
@@ -195,8 +195,8 @@ ${data.phone ? `- Telefon: ${data.phone}\n` : ''}- Bevorzugter Kontakt: ${this.g
 ${data.message ? `- Nachricht: ${data.message}\n` : ''}
 Nächste Schritte:
 - ${data.requestType === 'appointment'
-                ? 'Wir melden uns innerhalb von 24 Stunden für die Terminbestätigung'
-                : 'Wir melden uns innerhalb von 2 Werktagen bei Ihnen'}
+        ? 'Wir melden uns innerhalb von 24 Stunden für die Terminbestätigung'
+        : 'Wir melden uns innerhalb von 2 Werktagen bei Ihnen'}
 - Persönliche Beratung zu Ihrem Traumhaus
 - Detaillierte Kostenaufstellung
 - Planungsservice und Baubegleitung
@@ -210,18 +210,18 @@ Besuchen Sie uns: https://nest-haus.at
 © 2025 NEST-Haus | SustainNest GmbH
 Karmeliterplatz 8, 8010 Graz, Österreich
 `;
-    }
+  }
 
-    /**
-     * Generate HTML email content for admin
-     */
-    private static generateAdminEmailHTML(data: AdminNotificationData): string {
-        const configurationSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
-        const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
-            ? `<p><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
-            : '';
+  /**
+   * Generate HTML email content for admin
+   */
+  private static generateAdminEmailHTML(data: AdminNotificationData): string {
+    const configurationSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
+    const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
+      ? `<p><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
+      : '';
 
-        return `
+    return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -246,9 +246,9 @@ Karmeliterplatz 8, 8010 Graz, Österreich
   
   <div class="content">
     ${data.requestType === 'appointment' ?
-                '<div class="priority"><h3>⏰ TERMINANFRAGE - Hohe Priorität</h3><p>Kunde möchte einen Termin vereinbaren. Bitte innerhalb von 24 Stunden antworten!</p></div>' :
-                '<div class="priority"><h3>📧 Neue Kontaktanfrage</h3><p>Antwort innerhalb von 2 Werktagen empfohlen.</p></div>'
-            }
+        '<div class="priority"><h3>⏰ TERMINANFRAGE - Hohe Priorität</h3><p>Kunde möchte einen Termin vereinbaren. Bitte innerhalb von 24 Stunden antworten!</p></div>' :
+        '<div class="priority"><h3>📧 Neue Kontaktanfrage</h3><p>Antwort innerhalb von 2 Werktagen empfohlen.</p></div>'
+      }
     
     <div class="customer-info">
       <h3>👤 Kundendaten:</h3>
@@ -279,17 +279,17 @@ Karmeliterplatz 8, 8010 Graz, Österreich
   </div>
 </body>
 </html>`;
-    }
+  }
 
-    /**
-     * Generate text email content for admin
-     */
-    private static generateAdminEmailText(data: AdminNotificationData): string {
-        const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
-            ? `Gewünschter Termin: ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}\n`
-            : '';
+  /**
+   * Generate text email content for admin
+   */
+  private static generateAdminEmailText(data: AdminNotificationData): string {
+    const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
+      ? `Gewünschter Termin: ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}\n`
+      : '';
 
-        return `
+    return `
 NEST-Haus - Neue Kundenanfrage
 
 ${data.requestType === 'appointment' ? '⏰ TERMINANFRAGE - Hohe Priorität' : '📧 Neue Kontaktanfrage'}
@@ -307,26 +307,35 @@ ${data.sessionId ? `- Session-ID: ${data.sessionId}\n` : ''}- Zeitstempel: ${new
 Admin-Panel: https://nest-haus.at/admin/customer-inquiries/${data.inquiryId}
 E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
 `;
-    }
+  }
 
-    /**
-     * Generate configuration summary for email
-     */
+  /**
+   * Generate configuration summary for email
+   */
   private static generateConfigurationSummary(configData: unknown): string {
     if (!configData || typeof configData !== 'object') return '';
 
-    const config = configData as Record<string, any>;
+    const config = configData as Record<string, unknown>;
     const items = [];
-    
+
     // Extract configuration items
-    if (config.nest?.name) items.push(`Nest-Modell: ${config.nest.name}`);
-    if (config.gebaeudehuelle?.name) items.push(`Gebäudehülle: ${config.gebaeudehuelle.name}`);
-    if (config.innenverkleidung?.name) items.push(`Innenverkleidung: ${config.innenverkleidung.name}`);
-    if (config.fussboden?.name) items.push(`Fußboden: ${config.fussboden.name}`);
-    if (config.pvanlage?.name) items.push(`PV-Anlage: ${config.pvanlage.name}`);
-    if (config.fenster?.name) items.push(`Fenster: ${config.fenster.name}`);
-    if (config.planungspaket?.name) items.push(`Planungspaket: ${config.planungspaket.name}`);
-    if (config.grundstueckscheck?.name) items.push(`Grundstückscheck: ${config.grundstueckscheck.name}`);
+    const nest = config.nest as { name?: string } | undefined;
+    const gebaeudehuelle = config.gebaeudehuelle as { name?: string } | undefined;
+    const innenverkleidung = config.innenverkleidung as { name?: string } | undefined;
+    const fussboden = config.fussboden as { name?: string } | undefined;
+    const pvanlage = config.pvanlage as { name?: string } | undefined;
+    const fenster = config.fenster as { name?: string } | undefined;
+    const planungspaket = config.planungspaket as { name?: string } | undefined;
+    const grundstueckscheck = config.grundstueckscheck as { name?: string } | undefined;
+
+    if (nest?.name) items.push(`Nest-Modell: ${nest.name}`);
+    if (gebaeudehuelle?.name) items.push(`Gebäudehülle: ${gebaeudehuelle.name}`);
+    if (innenverkleidung?.name) items.push(`Innenverkleidung: ${innenverkleidung.name}`);
+    if (fussboden?.name) items.push(`Fußboden: ${fussboden.name}`);
+    if (pvanlage?.name) items.push(`PV-Anlage: ${pvanlage.name}`);
+    if (fenster?.name) items.push(`Fenster: ${fenster.name}`);
+    if (planungspaket?.name) items.push(`Planungspaket: ${planungspaket.name}`);
+    if (grundstueckscheck?.name) items.push(`Grundstückscheck: ${grundstueckscheck.name}`);
 
     if (items.length === 0) return '';
 
@@ -342,15 +351,15 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
     </div>`;
   }
 
-    /**
-     * Convert contact method enum to readable text
-     */
-    private static getContactMethodText(method: string): string {
-        switch (method) {
-            case 'EMAIL': return 'E-Mail';
-            case 'PHONE': return 'Telefon';
-            case 'WHATSAPP': return 'WhatsApp';
-            default: return method;
-        }
+  /**
+   * Convert contact method enum to readable text
+   */
+  private static getContactMethodText(method: string): string {
+    switch (method) {
+      case 'EMAIL': return 'E-Mail';
+      case 'PHONE': return 'Telefon';
+      case 'WHATSAPP': return 'WhatsApp';
+      default: return method;
     }
+  }
 }
