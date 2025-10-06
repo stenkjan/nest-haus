@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fb0949f9963e2ce5bcff54d96e28b3c36a483a2e] - Mon Oct 6 11:40:07 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance GanttChart component and ProjectManagementDashboard structure  - Moved color constants outside the GanttChart component to avoid dependency issues and improve performance. - Updated type definitions for chart references to ensure better type safety. - Simplified the ProjectManagementDashboard component by removing unnecessary props interface, enhancing clarity and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/GanttChart.tsx
+- src/app/admin/pmg/components/ProjectManagementDashboard.tsx
+
+
+---
+
 ## [34236a7b2604d50b07df5b15c4a6f084d3e33dc3] - Mon Oct 6 11:34:49 2025 +0200
 
 **Author**: stenkjan
