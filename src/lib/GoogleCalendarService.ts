@@ -34,7 +34,7 @@ export interface AvailabilityRequest {
 }
 
 export class GoogleCalendarService {
-    private static calendar: unknown = null;
+    private static calendar: any = null;
     private static readonly CALENDAR_ID = 'primary'; // Use primary calendar
     private static readonly TIME_ZONE = 'Europe/Vienna'; // Austrian timezone
 
@@ -127,7 +127,7 @@ export class GoogleCalendarService {
                 guestsCanSeeOtherGuests: false,
             };
 
-            const response = await calendar.events.insert({
+            const response = await (calendar as any).events.insert({
                 calendarId: this.CALENDAR_ID,
                 resource: event,
                 conferenceDataVersion: 1,
@@ -190,7 +190,7 @@ export class GoogleCalendarService {
             const dayEnd = new Date(requestDate);
             dayEnd.setHours(23, 59, 59, 999);
 
-            const existingEvents = await calendar.events.list({
+            const existingEvents = await (calendar as any).events.list({
                 calendarId: this.CALENDAR_ID,
                 timeMin: dayStart.toISOString(),
                 timeMax: dayEnd.toISOString(),
@@ -256,7 +256,7 @@ export class GoogleCalendarService {
             if (eventData.attendees) updateData.attendees = eventData.attendees;
             if (eventData.location) updateData.location = eventData.location;
 
-            await calendar.events.patch({
+            await (calendar as any).events.patch({
                 calendarId: this.CALENDAR_ID,
                 eventId: eventId,
                 resource: updateData,
@@ -281,7 +281,7 @@ export class GoogleCalendarService {
 
             const calendar = await this.initializeCalendar();
 
-            await calendar.events.delete({
+            await (calendar as any).events.delete({
                 calendarId: this.CALENDAR_ID,
                 eventId: eventId,
                 sendUpdates: 'all',
