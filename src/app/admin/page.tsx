@@ -182,6 +182,30 @@ export default function AdminDashboard() {
               <div className="text-4xl">🧪</div>
             </div>
           </Link>
+
+          <Link
+            href="/admin/pmg"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  Project Management
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  Interactive dashboard for tracking launch preparation tasks,
+                  team responsibilities, and project timeline.
+                </p>
+                <div className="mt-4 text-sm text-gray-500">
+                  • Gantt chart visualization
+                  <br />
+                  • Task management
+                  <br />• Team collaboration
+                </div>
+              </div>
+              <div className="text-4xl">📋</div>
+            </div>
+          </Link>
         </div>
 
         {/* System Management */}

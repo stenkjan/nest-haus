@@ -284,3 +284,35 @@ enum QuestionType {
   MULTIPLE_CHOICE
   YES_NO
 }
+
+model ProjectTask {
+  id           String       @id @default(cuid())
+  taskId       String       @unique // e.g., "P1", "1.1", "M1", etc.
+  task         String       // Task description
+  responsible  String       // Team member(s) responsible
+  startDate    DateTime     // Start date
+  endDate      DateTime     // End date
+  duration     Int          // Duration in days
+  milestone    Boolean      @default(false) // Is this a milestone?
+  priority     TaskPriority @default(MITTEL)
+  notes        String?      // Additional notes
+  status       TaskStatus   @default(PENDING)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("project_tasks")
+}
+
+enum TaskPriority {
+  HÖCHST
+  HOCH
+  MITTEL
+  NIEDRIG
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
