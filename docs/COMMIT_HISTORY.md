@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5f106b71c0debd6e10a12b63ad0527e8a14a2466] - Mon Oct 6 19:30:52 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance type safety for task properties in PMG API  - Updated the type definitions for  and  in the PUT handler to use specific enums ( and ), improving type safety and clarity. - This change ensures that only valid values are assigned to these properties, reducing the risk of runtime errors and enhancing maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/pmg/[id]/route.ts
+
+
+---
+
 ## [61da5b08a719ca650fa832deb6174d49e520e99a] - Mon Oct 6 19:26:33 2025 +0200
 
 **Author**: stenkjan
