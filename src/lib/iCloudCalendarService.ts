@@ -27,9 +27,9 @@ export class iCloudCalendarService {
     // Business hours configuration: 8-12 and 13-19 (lunch break 12-13)
     private static readonly BUSINESS_HOURS = {
         morningStart: 8,  // 8 AM
-        morningEnd: 12,   // 12 PM
+        morningEnd: 12,   // 12 PM (noon)
         afternoonStart: 13, // 1 PM  
-        afternoonEnd: 19,   // 7 PM
+        afternoonEnd: 19,   // 7 PM (19:00) - LAST SLOT STARTS AT 18:00
         duration: 60, // 60 minutes per appointment
     };
 
@@ -112,12 +112,25 @@ export class iCloudCalendarService {
             }
 
             // Afternoon slots: 1 PM - 7 PM (skip lunch break 12-13)
+            // This creates slots: 13:00-14:00, 14:00-15:00, 15:00-16:00, 16:00-17:00, 17:00-18:00, 18:00-19:00
             for (let hour = this.BUSINESS_HOURS.afternoonStart; hour < this.BUSINESS_HOURS.afternoonEnd; hour++) {
+                // Additional safety check: don't create slots starting at or after 19:00
+                if (hour >= 19) {
+                    console.warn(`⚠️ Skipping slot starting at hour ${hour} (after 19:00)`);
+                    break;
+                }
+
                 const startTime = new Date(requestDate);
                 startTime.setHours(hour, 0, 0, 0);
 
                 const endTime = new Date(startTime);
                 endTime.setMinutes(duration);
+
+                // Double-check: ensure end time doesn't exceed 19:00
+                if (endTime.getHours() > 19) {
+                    console.warn(`⚠️ Skipping slot ${hour}:00-${endTime.getHours()}:00 (ends after 19:00)`);
+                    break;
+                }
 
                 timeSlots.push({
                     start: startTime.toISOString(),
@@ -125,6 +138,14 @@ export class iCloudCalendarService {
                     available: true, // Will be updated based on existing events
                 });
             }
+
+            console.log(`📅 Generated ${timeSlots.length} time slots for ${request.date}:`,
+                timeSlots.map(slot => {
+                    const start = new Date(slot.start);
+                    const end = new Date(slot.end);
+                    return `${start.getHours().toString().padStart(2, '0')}:${start.getMinutes().toString().padStart(2, '0')}-${end.getHours().toString().padStart(2, '0')}:${end.getMinutes().toString().padStart(2, '0')}`;
+                }).join(', ')
+            );
 
             // Fetch existing events from iCloud
             const existingEvents = await this.fetchCalendarEvents();
@@ -155,14 +176,29 @@ export class iCloudCalendarService {
                 });
             }
 
-            // Filter out past time slots for today
+            // Filter out past time slots for today and enforce business hours
             const now = new Date();
             const availableSlots = timeSlots.filter(slot => {
                 const slotStart = new Date(slot.start);
-                return slotStart > now;
+                const slotEnd = new Date(slot.end);
+
+                // Must be in the future
+                const isFuture = slotStart > now;
+
+                // Must not start at or after 19:00 (7 PM)
+                const withinBusinessHours = slotStart.getHours() < 19;
+
+                // Must not end after 19:00 (7 PM)
+                const endsWithinBusinessHours = slotEnd.getHours() <= 19;
+
+                if (!withinBusinessHours || !endsWithinBusinessHours) {
+                    console.warn(`⚠️ Filtering out slot outside business hours: ${slotStart.getHours()}:${slotStart.getMinutes().toString().padStart(2, '0')}-${slotEnd.getHours()}:${slotEnd.getMinutes().toString().padStart(2, '0')}`);
+                }
+
+                return isFuture && withinBusinessHours && endsWithinBusinessHours;
             });
 
-            console.log(`✅ Found ${availableSlots.filter(s => s.available).length} available slots out of ${availableSlots.length} total slots`);
+            console.log(`✅ Found ${availableSlots.filter(s => s.available).length} available slots out of ${availableSlots.length} total slots (after business hours filtering)`);
             return availableSlots;
 
         } catch (error) {

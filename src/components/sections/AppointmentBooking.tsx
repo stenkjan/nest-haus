@@ -97,7 +97,28 @@ const AppointmentBooking = ({
   // Get current time slots (either from calendar API or fallback)
   const getCurrentTimeSlots = () => {
     if (availableTimeSlots.length > 0) {
-      return availableTimeSlots.filter((slot) => slot.available);
+      // Filter API slots to ensure no slots after 19:00
+      return availableTimeSlots.filter((slot) => {
+        if (!slot.available) return false;
+
+        // Additional safety check: parse the start time and ensure it's before 19:00
+        try {
+          const startTime = new Date(slot.start);
+          const startHour = startTime.getHours();
+
+          if (startHour >= 19) {
+            console.warn(
+              `⚠️ Frontend: Filtering out slot starting at ${startHour}:00 (after 19:00)`
+            );
+            return false;
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Error parsing slot time:", error);
+          return slot.available;
+        }
+      });
     } else {
       // Use fallback slots only if no calendar data is available
       return fallbackTimeSlots.map((slot) => ({

@@ -26,7 +26,7 @@ export class EmailService {
   private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
   private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nest-haus.at';
   private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'sales@nest-haus.at';
-  
+
   // From name for better email presentation
   private static readonly FROM_NAME = 'NEST-Haus Team';
 
