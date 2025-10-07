@@ -734,7 +734,7 @@ export default function TaskList({
       const newTasks = arrayMove(localTasks, oldIndex, newIndex);
 
       // Update IDs for tasks with same start date when reordered
-      const updatedTasks = newTasks.map((task, index) => {
+      const updatedTasks = newTasks.map((task, _index) => {
         if ("isNew" in task && task.isNew) return task;
 
         const projectTask = task as ProjectTask;
@@ -752,7 +752,7 @@ export default function TaskList({
           if (dateStr === taskDate) {
             // Find other tasks with the same date in the new order
             const sameDateTasks = newTasks
-              .filter((t, i) => {
+              .filter((t, _i) => {
                 if ("isNew" in t && t.isNew) return false;
                 const pt = t as ProjectTask;
                 const ptDate = new Date(pt.startDate)
@@ -763,7 +763,7 @@ export default function TaskList({
                   ptDate === taskDate && pt.taskId.match(/^(\d{8})-(\d+)$/)
                 );
               })
-              .map((t, i) => ({
+              .map((t, _i) => ({
                 task: t as ProjectTask,
                 newIndex: newTasks.indexOf(t),
               }))
