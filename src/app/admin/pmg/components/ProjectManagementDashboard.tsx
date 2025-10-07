@@ -146,6 +146,7 @@ export default function ProjectManagementDashboard() {
       showSaveMessage("✓ Task added");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to add task");
+      throw err; // Re-throw so TaskList can handle it
     } finally {
       setIsUpdating(false);
     }

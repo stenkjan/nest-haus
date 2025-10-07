@@ -68,6 +68,7 @@ function SortableTaskRow({
   handleKeyPress,
   onTaskSelect,
   onTaskDelete,
+  onConfirmAdd,
   formatDateGerman,
   getResponsibleColor,
   getPriorityClass,
@@ -84,6 +85,7 @@ function SortableTaskRow({
   handleKeyPress: (e: React.KeyboardEvent) => void;
   onTaskSelect: (task: ProjectTask) => void;
   onTaskDelete: (taskId: string) => void;
+  onConfirmAdd: (task: NewTask) => void;
   formatDateGerman: (date: Date) => string;
   getResponsibleColor: (responsible: string) => string;
   getPriorityClass: (priority: TaskPriority) => string;
@@ -314,7 +316,14 @@ function SortableTaskRow({
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         {isNewTask ? (
-          <span className="text-xs text-gray-500 italic">Neue Aufgabe</span>
+          <button
+            onClick={() => onConfirmAdd(task as NewTask)}
+            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium"
+            disabled={!task.task}
+            title={!task.task ? "Bitte Aufgabe eingeben" : "Aufgabe hinzufügen"}
+          >
+            +
+          </button>
         ) : (
           <button
             onClick={() => onTaskDelete(task.id)}
@@ -352,9 +361,22 @@ export default function TaskList({
     })
   );
 
-  // Sync local tasks with props
+  // Sync local tasks with props, but preserve new tasks
   useEffect(() => {
-    setLocalTasks(tasks);
+    setLocalTasks((prevLocalTasks) => {
+      // Keep all new tasks - don't filter them out here
+      const newTasks = prevLocalTasks.filter((t) => "isNew" in t && t.isNew);
+
+      // Combine with tasks from props (sorted by date)
+      const sortedTasks = [...tasks].sort((a, b) => {
+        const dateA = new Date(a.startDate).getTime();
+        const dateB = new Date(b.startDate).getTime();
+        if (dateA !== dateB) return dateA - dateB;
+        return a.taskId.localeCompare(b.taskId);
+      });
+
+      return [...newTasks, ...sortedTasks];
+    });
   }, [tasks]);
 
   const formatDate = (date: Date) => {
@@ -408,18 +430,141 @@ export default function TaskList({
   };
 
   const generateTaskId = (startDate: Date, existingTasks: TaskOrNewTask[]) => {
-    // Generate date-based ID for regular tasks
+    // Get all real tasks (not new tasks) and sort by date, then by taskId
+    const realTasks = existingTasks
+      .filter((t) => !("isNew" in t))
+      .map((t) => t as ProjectTask)
+      .sort((a, b) => {
+        const dateA = new Date(a.startDate).getTime();
+        const dateB = new Date(b.startDate).getTime();
+        if (dateA !== dateB) return dateA - dateB;
+        return a.taskId.localeCompare(b.taskId);
+      });
+
+    const newTaskTime = startDate.getTime();
+
+    // Find where this task would be inserted in the sorted list
+    let insertIndex = realTasks.findIndex((task) => {
+      return new Date(task.startDate).getTime() > newTaskTime;
+    });
+
+    // If not found, insert at the end
+    if (insertIndex === -1) {
+      insertIndex = realTasks.length;
+    }
+
+    // Get the tasks before and after the insertion point
+    const taskBefore = insertIndex > 0 ? realTasks[insertIndex - 1] : null;
+    const taskAfter =
+      insertIndex < realTasks.length ? realTasks[insertIndex] : null;
+
+    // Check if this task should be part of a milestone sequence
+    // Look for the most recent milestone that this task could belong to
+    let relevantMilestone = null;
+
+    // Find all milestones that come before or at the same time as this task
+    for (let i = insertIndex - 1; i >= 0; i--) {
+      const task = realTasks[i];
+      const taskDate = new Date(task.startDate).getTime();
+
+      // If we find a milestone pattern and the task date is close to our new task date
+      if (isMilestone(task.taskId)) {
+        const milestoneMatch = task.taskId.match(/^(\d+)\./);
+        if (
+          milestoneMatch &&
+          Math.abs(taskDate - newTaskTime) <= 7 * 24 * 60 * 60 * 1000
+        ) {
+          // Within 7 days
+          relevantMilestone = milestoneMatch[1];
+          break;
+        }
+      }
+
+      // Also check if we have subtasks (1.1, 1.2, etc.) that indicate a milestone sequence
+      const subtaskMatch = task.taskId.match(/^(\d+)\.(\d+)$/);
+      if (
+        subtaskMatch &&
+        Math.abs(taskDate - newTaskTime) <= 7 * 24 * 60 * 60 * 1000
+      ) {
+        // Within 7 days
+        relevantMilestone = subtaskMatch[1];
+        break;
+      }
+    }
+
+    // If we found a relevant milestone, create a subtask
+    if (relevantMilestone) {
+      // Find existing subtasks for this milestone
+      const existingSubtasks = realTasks
+        .filter((t) => t.taskId.startsWith(`${relevantMilestone}.`))
+        .map((t) => {
+          const match = t.taskId.match(
+            new RegExp(`^${relevantMilestone}\\.(\\d+)$`)
+          );
+          return match ? parseInt(match[1]) : 0;
+        })
+        .filter((num) => num > 0);
+
+      const nextSubtask =
+        existingSubtasks.length > 0 ? Math.max(...existingSubtasks) + 1 : 1;
+      return `${relevantMilestone}.${nextSubtask}`;
+    }
+
+    // If we have a task before, try to follow its pattern
+    if (taskBefore) {
+      const beforeId = taskBefore.taskId;
+
+      // If it's a date-based ID, increment the sequence
+      const dateMatch = beforeId.match(/^(\d{8})-(\d+)$/);
+      if (dateMatch) {
+        const [, dateStr, seqStr] = dateMatch;
+        const sequence = parseInt(seqStr);
+
+        // Check if the task after has the same date pattern
+        if (taskAfter) {
+          const afterDateMatch = taskAfter.taskId.match(/^(\d{8})-(\d+)$/);
+          if (afterDateMatch && afterDateMatch[1] === dateStr) {
+            // We're inserting between two tasks with the same date
+            const afterSequence = parseInt(afterDateMatch[2]);
+            if (afterSequence > sequence + 1) {
+              // There's a gap, use the next sequence
+              return `${dateStr}-${(sequence + 1).toString().padStart(2, "0")}`;
+            }
+          }
+        }
+
+        // Use the same date pattern with incremented sequence
+        return `${dateStr}-${(sequence + 1).toString().padStart(2, "0")}`;
+      }
+    }
+
+    // If we have a task after, try to create an ID that comes before it
+    if (taskAfter) {
+      const afterId = taskAfter.taskId;
+      const dateMatch = afterId.match(/^(\d{8})-(\d+)$/);
+      if (dateMatch) {
+        const [, dateStr, seqStr] = dateMatch;
+        const sequence = parseInt(seqStr);
+        if (sequence > 1) {
+          return `${dateStr}-${(sequence - 1).toString().padStart(2, "0")}`;
+        }
+      }
+    }
+
+    // Default: create a date-based ID
     const dateStr = startDate.toISOString().split("T")[0].replace(/-/g, "");
 
     // Find existing tasks with same date
-    const sameDateTasks = existingTasks
-      .filter((t) => !("isNew" in t) && t.taskId.startsWith(dateStr))
+    const sameDateTasks = realTasks
+      .filter((t) => t.taskId.startsWith(dateStr))
       .map((t) => {
         const match = t.taskId.match(new RegExp(`^${dateStr}-(\\d+)$`));
         return match ? parseInt(match[1]) : 0;
-      });
+      })
+      .filter((num) => num > 0);
 
-    const nextSequence = Math.max(0, ...sameDateTasks) + 1;
+    const nextSequence =
+      sameDateTasks.length > 0 ? Math.max(...sameDateTasks) + 1 : 1;
     return `${dateStr}-${nextSequence.toString().padStart(2, "0")}`;
   };
 
@@ -513,12 +658,7 @@ export default function TaskList({
       newTasks[taskIndex] = updatedTask;
       setLocalTasks(newTasks);
 
-      // Auto-save if task has minimum required data (just task name)
-      if (updatedTask.task) {
-        setTimeout(() => {
-          handleAutoSaveNewTask(updatedTask);
-        }, 500); // Small delay to allow user to continue editing
-      }
+      // No auto-save - user must click the + button to confirm
     } else {
       // Update existing task
       const updates: Partial<ProjectTask> = {};
@@ -593,8 +733,60 @@ export default function TaskList({
 
       const newTasks = arrayMove(localTasks, oldIndex, newIndex);
 
-      // Keep tasks as-is after drag and drop (no auto-ID updates)
-      const updatedTasks = newTasks;
+      // Update IDs for tasks with same start date when reordered
+      const updatedTasks = newTasks.map((task, index) => {
+        if ("isNew" in task && task.isNew) return task;
+
+        const projectTask = task as ProjectTask;
+
+        // Only update IDs for date-based tasks that are being reordered with same-date tasks
+        const dateMatch = projectTask.taskId.match(/^(\d{8})-(\d+)$/);
+        if (dateMatch) {
+          const [, dateStr] = dateMatch;
+          const taskDate = new Date(projectTask.startDate)
+            .toISOString()
+            .split("T")[0]
+            .replace(/-/g, "");
+
+          // If the task's date matches its ID date, check for reordering
+          if (dateStr === taskDate) {
+            // Find other tasks with the same date in the new order
+            const sameDateTasks = newTasks
+              .filter((t, i) => {
+                if ("isNew" in t && t.isNew) return false;
+                const pt = t as ProjectTask;
+                const ptDate = new Date(pt.startDate)
+                  .toISOString()
+                  .split("T")[0]
+                  .replace(/-/g, "");
+                return (
+                  ptDate === taskDate && pt.taskId.match(/^(\d{8})-(\d+)$/)
+                );
+              })
+              .map((t, i) => ({
+                task: t as ProjectTask,
+                newIndex: newTasks.indexOf(t),
+              }))
+              .sort((a, b) => a.newIndex - b.newIndex);
+
+            // If there are multiple tasks with the same date, reassign sequence numbers
+            if (sameDateTasks.length > 1) {
+              const taskPosition = sameDateTasks.findIndex(
+                (item) => item.task.id === projectTask.id
+              );
+              if (taskPosition !== -1) {
+                const newSequence = taskPosition + 1;
+                return {
+                  ...projectTask,
+                  taskId: `${dateStr}-${newSequence.toString().padStart(2, "0")}`,
+                };
+              }
+            }
+          }
+        }
+
+        return projectTask;
+      });
 
       setLocalTasks(updatedTasks);
 
@@ -628,11 +820,8 @@ export default function TaskList({
     setNewTaskCounter((prev) => prev + 1);
   };
 
-  const handleAutoSaveNewTask = (newTask: NewTask) => {
-    if (!newTask.task) return; // Only require task name
-
-    // Check if this task is still in editing state - if so, don't auto-save yet
-    if (editingCell?.taskId === newTask.id) return;
+  const handleConfirmAdd = async (newTask: NewTask) => {
+    if (!newTask.task) return; // Require task name
 
     // Generate ID based on start date for non-milestone tasks
     const finalTaskId =
@@ -656,12 +845,18 @@ export default function TaskList({
       status: newTask.status,
     };
 
-    // Remove the new task from local state
-    setLocalTasks((prev) => prev.filter((t) => t.id !== newTask.id));
+    try {
+      // Add to database first
+      await onTaskAdd(taskData);
 
-    // Add to database with subtle update
-    onTaskAdd(taskData);
-    onSubtleUpdate?.("Task saved automatically");
+      // Remove the new task from local state after successful save
+      setLocalTasks((prev) => prev.filter((t) => t.id !== newTask.id));
+
+      onSubtleUpdate?.("Task added successfully");
+    } catch (error) {
+      console.error("Failed to save task:", error);
+      onSubtleUpdate?.("Failed to add task");
+    }
   };
 
   if (localTasks.length === 0) {
@@ -744,6 +939,7 @@ export default function TaskList({
                     handleKeyPress={handleKeyPress}
                     onTaskSelect={onTaskSelect}
                     onTaskDelete={onTaskDelete}
+                    onConfirmAdd={handleConfirmAdd}
                     formatDateGerman={formatDateGerman}
                     getResponsibleColor={getResponsibleColor}
                     getPriorityClass={getPriorityClass}
