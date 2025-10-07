@@ -1206,14 +1206,6 @@ export default function ConfiguratorShell({
                   uncheckedText="Kaminschachtvorbereitung"
                   checkedText="Kaminschachtvorbereitung"
                   price={2000}
-                  pricePerSqm={
-                    configuration?.nest?.value
-                      ? 2000 /
-                        (parseInt(
-                          configuration.nest.value.replace("nest", "")
-                        ) || 80)
-                      : 25
-                  }
                   isChecked={!!configuration?.kamindurchzug}
                   onChange={handleKamindurchzugChange}
                 />
