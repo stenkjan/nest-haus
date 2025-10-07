@@ -111,15 +111,15 @@ export default function ImpressumClient() {
 
                     <div>
                       <h4 className="font-medium mb-2">Website</h4>
-                      <p>www.sustain-nest.com</p>
+                      <p>www.nest-haus.at</p>
                     </div>
 
                     <div>
                       <h4 className="font-medium mb-2">Geschäftszeiten</h4>
                       <div className="space-y-1">
                         <p>Montag - Freitag: 8:00 - 18:00 Uhr</p>
-                        <p>Samstag: 9:00 - 16:00 Uhr</p>
-                        <p>Sonntag: Nach Vereinbarung</p>
+                        {/* <p>Samstag: 9:00 - 16:00 Uhr</p> */}
+                        {/* <p>Sonntag: Nach Vereinbarung</p> */}
                       </div>
                     </div>
                   </div>
@@ -218,10 +218,10 @@ export default function ImpressumClient() {
                     und Ingenieurkonsulenten für Steiermark und Kärnten
                   </p>
                   <p>
-                    <strong>Adresse:</strong> Schönaugürtel 8a, 8010 Graz
+                    <strong>Adresse:</strong> Schönaugasse 7/1, 8010 Graz
                   </p>
                   <p>
-                    <strong>Telefon:</strong> +43 316 323 200
+                    <strong>Telefon:</strong> +43 316 826344 0
                   </p>
                 </div>
               </div>

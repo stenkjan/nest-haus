@@ -31,7 +31,7 @@ Ihre Rechte: Sie haben u. a. das Recht, jederzeit unentgeltlich Auskunft über
 Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:
 SustainNest GmbH
 Karmeliterplatz 8, 8010 Graz
-Telefon: 0384775090
+Telefon: +43 (0) 664 5403399
 E-Mail: hello@nest.at
 Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten entscheidet.
 
