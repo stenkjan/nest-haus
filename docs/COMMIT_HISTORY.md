@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [07fe1cb8102495f82a8fe67150bb66d117a0c7a7] - Tue Oct 7 15:16:53 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: update contact information in EmailService  - Changed the email address to markus@sustain-nest.com for improved communication. - Updated the phone number to +43 664 2531869 to reflect current contact details.  `
+
+### Changes Analysis
+
+---
+
 ## [8c9b9a8f069c5cdc56731a7a71abc180fb0e2c57] - Tue Oct 7 15:09:34 2025 +0200
 
 **Author**: stenkjan
