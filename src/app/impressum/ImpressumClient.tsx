@@ -198,7 +198,7 @@ export default function ImpressumClient() {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              {/* <div className="space-y-4">
                 <h3 className="text-2xl font-medium">Versicherung</h3>
                 <div className="space-y-2">
                   <p>
@@ -208,7 +208,7 @@ export default function ImpressumClient() {
                   <p>Versicherungssumme: € [Betrag]</p>
                   <p>Geltungsbereich: Österreich/EU</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-4">
                 <h3 className="text-2xl font-medium">Aufsichtsbehörde</h3>
