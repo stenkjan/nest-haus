@@ -19,6 +19,7 @@ export default function ProjectManagementDashboard() {
   const [activePriorityFilter, setActivePriorityFilter] =
     useState<string>("ALLE");
   const [saveMessage, setSaveMessage] = useState<string>("");
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   useEffect(() => {
     loadTasks();
@@ -73,6 +74,15 @@ export default function ProjectManagementDashboard() {
 
   const updateTask = async (taskId: string, updates: Partial<ProjectTask>) => {
     try {
+      setIsUpdating(true);
+
+      // Optimistically update local state first
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === taskId ? { ...task, ...updates } : task
+        )
+      );
+
       const credentials = btoa("admin:MAINJAJANest");
 
       const response = await fetch(`/api/admin/pmg/${taskId}`, {
@@ -86,12 +96,17 @@ export default function ProjectManagementDashboard() {
 
       if (!response.ok) {
         throw new Error("Failed to update task");
+        // Revert optimistic update on error
+        await loadTasks();
       }
 
-      await loadTasks();
-      showSaveMessage("Task updated successfully!");
+      showSaveMessage("✓ Saved");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update task");
+      // Revert optimistic update on error
+      await loadTasks();
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -99,6 +114,7 @@ export default function ProjectManagementDashboard() {
     taskData: Omit<ProjectTask, "id" | "createdAt" | "updatedAt">
   ) => {
     try {
+      setIsUpdating(true);
       const credentials = btoa("admin:MAINJAJANest");
 
       const response = await fetch("/api/admin/pmg", {
@@ -114,10 +130,15 @@ export default function ProjectManagementDashboard() {
         throw new Error("Failed to add task");
       }
 
-      await loadTasks();
-      showSaveMessage("Task added successfully!");
+      const result = await response.json();
+
+      // Add the new task to local state instead of full reload
+      setTasks((prev) => [...prev, result.task]);
+      showSaveMessage("✓ Task added");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to add task");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -191,7 +212,11 @@ export default function ProjectManagementDashboard() {
 
   const showSaveMessage = (message: string) => {
     setSaveMessage(message);
-    setTimeout(() => setSaveMessage(""), 3000);
+    setTimeout(() => setSaveMessage(""), 2000);
+  };
+
+  const handleSubtleUpdate = (message: string) => {
+    showSaveMessage(message);
   };
 
   const getFilteredTasks = () => {
@@ -261,8 +286,19 @@ export default function ProjectManagementDashboard() {
       </header>
 
       {saveMessage && (
-        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
-          {saveMessage}
+        <div
+          className={`fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 ${
+            isUpdating
+              ? "bg-blue-100 border border-blue-400 text-blue-700"
+              : "bg-green-100 border border-green-400 text-green-700"
+          }`}
+        >
+          <div className="flex items-center space-x-2">
+            {isUpdating && (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            )}
+            <span className="text-sm">{saveMessage}</span>
+          </div>
         </div>
       )}
 
@@ -301,6 +337,7 @@ export default function ProjectManagementDashboard() {
             onTaskAdd={addTask}
             onTaskSelect={setSelectedTask}
             onTaskReorder={reorderTasks}
+            onSubtleUpdate={handleSubtleUpdate}
           />
         </div>
       </main>

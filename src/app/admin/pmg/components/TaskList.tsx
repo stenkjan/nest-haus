@@ -54,6 +54,7 @@ interface TaskListProps {
   ) => void;
   onTaskSelect: (task: ProjectTask) => void;
   onTaskReorder: (reorderedTasks: ProjectTask[]) => void;
+  onSubtleUpdate?: (message: string) => void;
 }
 
 // Sortable Task Row Component
@@ -67,7 +68,6 @@ function SortableTaskRow({
   handleKeyPress,
   onTaskSelect,
   onTaskDelete,
-  onConfirmAdd,
   formatDateGerman,
   getResponsibleColor,
   getPriorityClass,
@@ -83,7 +83,6 @@ function SortableTaskRow({
   handleKeyPress: (e: React.KeyboardEvent) => void;
   onTaskSelect: (task: ProjectTask) => void;
   onTaskDelete: (taskId: string) => void;
-  onConfirmAdd: (task: NewTask) => void;
   formatDateGerman: (date: Date) => string;
   getResponsibleColor: (responsible: string) => string;
   getPriorityClass: (priority: TaskPriority) => string;
@@ -306,13 +305,7 @@ function SortableTaskRow({
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         {isNewTask ? (
-          <button
-            onClick={() => onConfirmAdd(task as NewTask)}
-            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs mr-2"
-            disabled={!task.taskId || !task.task}
-          >
-            Hinzufügen
-          </button>
+          <span className="text-xs text-gray-500 italic">Neue Aufgabe</span>
         ) : (
           <button
             onClick={() => onTaskDelete(task.id)}
@@ -333,6 +326,7 @@ export default function TaskList({
   onTaskAdd,
   onTaskSelect,
   onTaskReorder,
+  onSubtleUpdate,
 }: TaskListProps) {
   const [editingCell, setEditingCell] = useState<{
     taskId: string;
@@ -524,6 +518,13 @@ export default function TaskList({
       const newTasks = [...localTasks];
       newTasks[taskIndex] = updatedTask;
       setLocalTasks(newTasks);
+
+      // Auto-save if task has minimum required data
+      if (updatedTask.taskId && updatedTask.task) {
+        setTimeout(() => {
+          handleAutoSaveNewTask(updatedTask);
+        }, 500); // Small delay to allow user to continue editing
+      }
     } else {
       // Update existing task
       const updates: Partial<ProjectTask> = {};
@@ -643,8 +644,11 @@ export default function TaskList({
     setNewTaskCounter((prev) => prev + 1);
   };
 
-  const handleConfirmAdd = (newTask: NewTask) => {
+  const handleAutoSaveNewTask = (newTask: NewTask) => {
     if (!newTask.taskId || !newTask.task) return;
+
+    // Check if this task is still in editing state - if so, don't auto-save yet
+    if (editingCell?.taskId === newTask.id) return;
 
     // Generate ID if empty
     const finalTaskId = newTask.taskId || generateTaskId(0, localTasks);
@@ -668,8 +672,9 @@ export default function TaskList({
     // Remove the new task from local state
     setLocalTasks((prev) => prev.filter((t) => t.id !== newTask.id));
 
-    // Add to database
+    // Add to database with subtle update
     onTaskAdd(taskData);
+    onSubtleUpdate?.("Task saved automatically");
   };
 
   if (localTasks.length === 0) {
@@ -752,7 +757,6 @@ export default function TaskList({
                     handleKeyPress={handleKeyPress}
                     onTaskSelect={onTaskSelect}
                     onTaskDelete={onTaskDelete}
-                    onConfirmAdd={handleConfirmAdd}
                     formatDateGerman={formatDateGerman}
                     getResponsibleColor={getResponsibleColor}
                     getPriorityClass={getPriorityClass}
