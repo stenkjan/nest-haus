@@ -101,7 +101,7 @@ export class EmailService {
   private static generateCustomerEmailHTML(data: CustomerInquiryData): string {
     const configurationSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
     const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
-      ? `<p><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
+      ? `<p class="appointment-info"><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
       : '';
 
     return `
@@ -112,31 +112,236 @@ export class EmailService {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NEST-Haus Bestätigung</title>
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: #2c5530; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
-    .highlight { background: #e8f5e8; padding: 15px; border-radius: 5px; margin: 15px 0; }
-    .footer { text-align: center; margin-top: 30px; font-size: 0.9em; color: #666; }
-    .button { display: inline-block; background: #2c5530; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; margin: 10px 0; }
+    /* Base styles matching website design system */
+    * {
+      letter-spacing: -0.015em;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6; 
+      color: #171717; 
+      margin: 0; 
+      padding: 0;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+    
+    /* Header styling matching website header */
+    .header { 
+      background: #3B82F6; 
+      color: white; 
+      padding: 32px 24px; 
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.02em;
+    }
+    
+    .header p {
+      font-size: 16px;
+      margin: 0;
+      opacity: 0.9;
+    }
+    
+    /* Content area styling */
+    .content { 
+      background: #ffffff; 
+      padding: 40px 32px;
+    }
+    
+    /* Typography classes matching website */
+    .h2-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #171717;
+      margin: 0 0 24px 0;
+      letter-spacing: -0.02em;
+    }
+    
+    .p-primary {
+      font-size: 16px;
+      color: #171717;
+      line-height: 1.5;
+      margin: 16px 0;
+    }
+    
+    .h3-secondary {
+      font-size: 18px;
+      font-weight: 600;
+      color: #171717;
+      margin: 24px 0 12px 0;
+      letter-spacing: -0.015em;
+    }
+    
+    /* Info boxes matching website card styling */
+    .info-box { 
+      background: #F4F4F4; 
+      padding: 24px; 
+      border-radius: 16px; 
+      margin: 24px 0;
+      border: 1px solid #E5E7EB;
+    }
+    
+    .info-box h3 {
+      color: #171717;
+      margin-top: 0;
+    }
+    
+    .info-box p {
+      margin: 8px 0;
+    }
+    
+    .info-box ul {
+      margin: 12px 0;
+      padding-left: 20px;
+    }
+    
+    .info-box li {
+      margin: 8px 0;
+      color: #171717;
+    }
+    
+    /* Configuration summary styling */
+    .config-summary {
+      background: #EFF6FF;
+      border: 1px solid #DBEAFE;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    
+    .config-summary h3 {
+      color: #1E40AF;
+      margin-top: 0;
+    }
+    
+    .config-summary ul {
+      margin: 12px 0;
+      padding-left: 20px;
+    }
+    
+    .config-summary li {
+      margin: 6px 0;
+      color: #1E40AF;
+    }
+    
+    .config-price {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1E40AF;
+      margin-top: 16px;
+    }
+    
+    /* Button styling matching website buttons */
+    .button { 
+      display: inline-block; 
+      background: #3B82F6; 
+      color: white; 
+      padding: 12px 24px; 
+      text-decoration: none; 
+      border-radius: 9999px;
+      font-weight: 500;
+      font-size: 16px;
+      margin: 24px 0;
+      transition: background-color 0.3s ease;
+      letter-spacing: -0.015em;
+    }
+    
+    .button:hover {
+      background: #2563EB;
+    }
+    
+    .button-container {
+      text-align: center;
+      margin: 32px 0;
+    }
+    
+    /* Contact info styling */
+    .contact-info {
+      background: #F9FAFB;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 24px 0;
+      border-left: 4px solid #3B82F6;
+    }
+    
+    .appointment-info {
+      background: #FEF3C7;
+      padding: 16px;
+      border-radius: 12px;
+      border-left: 4px solid #F59E0B;
+      margin: 16px 0;
+    }
+    
+    .appointment-info strong {
+      color: #92400E;
+    }
+    
+    /* Footer styling */
+    .footer { 
+      text-align: center; 
+      padding: 32px 24px;
+      background: #F9FAFB;
+      border-top: 1px solid #E5E7EB;
+      font-size: 14px; 
+      color: #6B7280;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .content {
+        padding: 24px 20px;
+      }
+      
+      .header {
+        padding: 24px 20px;
+      }
+      
+      .header h1 {
+        font-size: 24px;
+      }
+      
+      .h2-title {
+        font-size: 24px;
+      }
+      
+      .info-box, .config-summary {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="email-container">
   <div class="header">
     <h1>NEST-Haus</h1>
     <p>Modulare Häuser für nachhaltiges Wohnen</p>
   </div>
   
   <div class="content">
-    <h2>Vielen Dank für Ihre ${data.requestType === 'appointment' ? 'Terminanfrage' : 'Anfrage'}!</h2>
+      <h2 class="h2-title">Vielen Dank für Ihre ${data.requestType === 'appointment' ? 'Terminanfrage' : 'Anfrage'}!</h2>
     
-    <p>Liebe/r ${data.name},</p>
+      <p class="p-primary">Liebe/r ${data.name},</p>
     
-    <p>wir haben Ihre ${data.requestType === 'appointment' ? 'Terminanfrage' : 'Anfrage'} erfolgreich erhalten und werden uns schnellstmöglich bei Ihnen melden.</p>
+      <p class="p-primary">wir haben Ihre ${data.requestType === 'appointment' ? 'Terminanfrage' : 'Anfrage'} erfolgreich erhalten und werden uns schnellstmöglich bei Ihnen melden.</p>
     
     ${appointmentInfo}
     
-    <div class="highlight">
-      <h3>Ihre Kontaktdaten:</h3>
+      <div class="info-box">
+        <h3 class="h3-secondary">Ihre Kontaktdaten:</h3>
       <p><strong>Name:</strong> ${data.name}</p>
       <p><strong>E-Mail:</strong> ${data.email}</p>
       ${data.phone ? `<p><strong>Telefon:</strong> ${data.phone}</p>` : ''}
@@ -146,8 +351,8 @@ export class EmailService {
     
     ${configurationSummary}
     
-    <div class="highlight">
-      <h3>Nächste Schritte:</h3>
+      <div class="info-box">
+        <h3 class="h3-secondary">Nächste Schritte:</h3>
       <ul>
         <li>${data.requestType === 'appointment'
         ? 'Wir melden uns innerhalb von 24 Stunden für die Terminbestätigung'
@@ -158,16 +363,21 @@ export class EmailService {
       </ul>
     </div>
     
-    <p>Bei Fragen können Sie uns jederzeit kontaktieren:</p>
-    <p>📧 E-Mail: hello@nest-haus.at<br>
-    📞 Telefon: +43 384 775 090</p>
-    
+      <div class="contact-info">
+        <p class="p-primary">Bei Fragen können Sie uns jederzeit kontaktieren:</p>
+        <p><strong>📧 E-Mail:</strong> hello@nest-haus.at<br>
+        <strong>📞 Telefon:</strong> +43 384 775 090</p>
+      </div>
+      
+      <div class="button-container">
     <a href="https://nest-haus.at/konfigurator" class="button">Konfiguration fortsetzen</a>
+      </div>
   </div>
   
   <div class="footer">
     <p>© 2025 NEST-Haus | SustainNest GmbH<br>
     Karmeliterplatz 8, 8010 Graz, Österreich</p>
+    </div>
   </div>
 </body>
 </html>`;
@@ -218,7 +428,7 @@ Karmeliterplatz 8, 8010 Graz, Österreich
   private static generateAdminEmailHTML(data: AdminNotificationData): string {
     const configurationSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
     const appointmentInfo = data.requestType === 'appointment' && data.appointmentDateTime
-      ? `<p><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
+      ? `<p class="appointment-info"><strong>Gewünschter Termin:</strong> ${new Date(data.appointmentDateTime).toLocaleString('de-DE')}</p>`
       : '';
 
     return `
@@ -229,29 +439,272 @@ Karmeliterplatz 8, 8010 Graz, Österreich
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neue Kundenanfrage - NEST-Haus</title>
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 700px; margin: 0 auto; padding: 20px; }
-    .header { background: #d32f2f; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
-    .priority { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 15px 0; }
-    .customer-info { background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 15px 0; }
-    .technical-info { background: #f3e5f5; padding: 15px; border-radius: 5px; margin: 15px 0; }
-    .button { display: inline-block; background: #d32f2f; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; margin: 10px 5px; }
+    /* Base styles matching website design system */
+    * {
+      letter-spacing: -0.015em;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6; 
+      color: #171717; 
+      margin: 0; 
+      padding: 0;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .email-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+    
+    /* Admin header styling - urgent red theme */
+    .header { 
+      background: #DC2626; 
+      color: white; 
+      padding: 32px 24px; 
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.02em;
+    }
+    
+    .header p {
+      font-size: 16px;
+      margin: 0;
+      opacity: 0.9;
+    }
+    
+    /* Content area styling */
+    .content { 
+      background: #ffffff; 
+      padding: 40px 32px;
+    }
+    
+    /* Typography classes matching website */
+    .h2-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #171717;
+      margin: 0 0 24px 0;
+      letter-spacing: -0.02em;
+    }
+    
+    .p-primary {
+      font-size: 16px;
+      color: #171717;
+      line-height: 1.5;
+      margin: 16px 0;
+    }
+    
+    .h3-secondary {
+      font-size: 18px;
+      font-weight: 600;
+      color: #171717;
+      margin: 24px 0 12px 0;
+      letter-spacing: -0.015em;
+    }
+    
+    /* Priority alert styling */
+    .priority-alert { 
+      background: ${data.requestType === 'appointment' ? '#FEF3C7' : '#EFF6FF'}; 
+      border: 1px solid ${data.requestType === 'appointment' ? '#FCD34D' : '#DBEAFE'};
+      border-left: 4px solid ${data.requestType === 'appointment' ? '#F59E0B' : '#3B82F6'};
+      padding: 24px; 
+      border-radius: 16px; 
+      margin: 24px 0;
+    }
+    
+    .priority-alert h3 {
+      color: ${data.requestType === 'appointment' ? '#92400E' : '#1E40AF'};
+      margin-top: 0;
+    }
+    
+    .priority-alert p {
+      color: ${data.requestType === 'appointment' ? '#92400E' : '#1E40AF'};
+      margin: 8px 0;
+    }
+    
+    /* Customer info box */
+    .customer-info { 
+      background: #EFF6FF; 
+      border: 1px solid #DBEAFE;
+      padding: 24px; 
+      border-radius: 16px; 
+      margin: 24px 0;
+    }
+    
+    .customer-info h3 {
+      color: #1E40AF;
+      margin-top: 0;
+    }
+    
+    .customer-info p {
+      margin: 8px 0;
+    }
+    
+    .customer-info a {
+      color: #3B82F6;
+      text-decoration: none;
+    }
+    
+    .customer-info a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Technical info box */
+    .technical-info { 
+      background: #F3E8FF; 
+      border: 1px solid #E9D5FF;
+      padding: 24px; 
+      border-radius: 16px; 
+      margin: 24px 0;
+    }
+    
+    .technical-info h3 {
+      color: #7C3AED;
+      margin-top: 0;
+    }
+    
+    .technical-info p {
+      margin: 8px 0;
+      color: #6B46C1;
+    }
+    
+    /* Configuration summary styling */
+    .config-summary {
+      background: #ECFDF5;
+      border: 1px solid #BBF7D0;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    
+    .config-summary h3 {
+      color: #059669;
+      margin-top: 0;
+    }
+    
+    .config-summary ul {
+      margin: 12px 0;
+      padding-left: 20px;
+    }
+    
+    .config-summary li {
+      margin: 6px 0;
+      color: #047857;
+    }
+    
+    .config-price {
+      font-size: 18px;
+      font-weight: 600;
+      color: #059669;
+      margin-top: 16px;
+    }
+    
+    /* Button styling matching website buttons */
+    .button { 
+      display: inline-block; 
+      background: #DC2626; 
+      color: white; 
+      padding: 12px 24px; 
+      text-decoration: none; 
+      border-radius: 9999px;
+      font-weight: 500;
+      font-size: 16px;
+      margin: 8px 4px;
+      transition: background-color 0.3s ease;
+      letter-spacing: -0.015em;
+    }
+    
+    .button:hover {
+      background: #B91C1C;
+    }
+    
+    .button-secondary {
+      background: #3B82F6;
+    }
+    
+    .button-secondary:hover {
+      background: #2563EB;
+    }
+    
+    .button-container {
+      text-align: center;
+      margin: 32px 0;
+    }
+    
+    .appointment-info {
+      background: #FEF3C7;
+      padding: 16px;
+      border-radius: 12px;
+      border-left: 4px solid #F59E0B;
+      margin: 16px 0;
+    }
+    
+    .appointment-info strong {
+      color: #92400E;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .content {
+        padding: 24px 20px;
+      }
+      
+      .header {
+        padding: 24px 20px;
+      }
+      
+      .header h1 {
+        font-size: 24px;
+      }
+      
+      .h2-title {
+        font-size: 24px;
+      }
+      
+      .priority-alert, .customer-info, .technical-info, .config-summary {
+        padding: 20px;
+      }
+      
+      .button-container {
+        text-align: left;
+      }
+      
+      .button {
+        display: block;
+        margin: 8px 0;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="email-container">
   <div class="header">
     <h1>🚨 Neue Kundenanfrage</h1>
     <p>NEST-Haus Admin Dashboard</p>
   </div>
   
   <div class="content">
-    ${data.requestType === 'appointment' ?
-        '<div class="priority"><h3>⏰ TERMINANFRAGE - Hohe Priorität</h3><p>Kunde möchte einen Termin vereinbaren. Bitte innerhalb von 24 Stunden antworten!</p></div>' :
-        '<div class="priority"><h3>📧 Neue Kontaktanfrage</h3><p>Antwort innerhalb von 2 Werktagen empfohlen.</p></div>'
-      }
+      <div class="priority-alert">
+        <h3>${data.requestType === 'appointment' ? '⏰ TERMINANFRAGE - Hohe Priorität' : '📧 Neue Kontaktanfrage'}</h3>
+        <p>${data.requestType === 'appointment'
+        ? 'Kunde möchte einen Termin vereinbaren. Bitte innerhalb von 24 Stunden antworten!'
+        : 'Antwort innerhalb von 2 Werktagen empfohlen.'}</p>
+      </div>
     
     <div class="customer-info">
-      <h3>👤 Kundendaten:</h3>
+        <h3 class="h3-secondary">👤 Kundendaten:</h3>
       <p><strong>Name:</strong> ${data.name}</p>
       <p><strong>E-Mail:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
       ${data.phone ? `<p><strong>Telefon:</strong> <a href="tel:${data.phone}">${data.phone}</a></p>` : ''}
@@ -263,7 +716,7 @@ Karmeliterplatz 8, 8010 Graz, Österreich
     ${configurationSummary}
     
     <div class="technical-info">
-      <h3>🔧 Technische Informationen:</h3>
+        <h3 class="h3-secondary">🔧 Technische Informationen:</h3>
       <p><strong>Anfrage-ID:</strong> ${data.inquiryId}</p>
       ${data.sessionId ? `<p><strong>Session-ID:</strong> ${data.sessionId}</p>` : ''}
       <p><strong>Zeitstempel:</strong> ${new Date().toLocaleString('de-DE')}</p>
@@ -271,10 +724,11 @@ Karmeliterplatz 8, 8010 Graz, Österreich
       ${data.userAgent ? `<p><strong>Browser:</strong> ${data.userAgent}</p>` : ''}
     </div>
     
-    <div style="text-align: center; margin-top: 30px;">
+      <div class="button-container">
       <a href="https://nest-haus.at/admin/customer-inquiries/${data.inquiryId}" class="button">Anfrage bearbeiten</a>
-      <a href="mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus" class="button">E-Mail antworten</a>
-      ${data.phone ? `<a href="tel:${data.phone}" class="button">Anrufen</a>` : ''}
+        <a href="mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus" class="button button-secondary">E-Mail antworten</a>
+        ${data.phone ? `<a href="tel:${data.phone}" class="button button-secondary">Anrufen</a>` : ''}
+      </div>
     </div>
   </div>
 </body>
@@ -339,11 +793,11 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
 
     if (items.length === 0) return '';
 
-    const totalPrice = config.totalPrice ? `<p><strong>Gesamtpreis:</strong> €${(Number(config.totalPrice) / 100).toLocaleString('de-DE')}</p>` : '';
+    const totalPrice = config.totalPrice ? `<p class="config-price"><strong>Gesamtpreis:</strong> €${(Number(config.totalPrice) / 100).toLocaleString('de-DE')}</p>` : '';
 
     return `
-    <div class="highlight">
-      <h3>🏠 Konfiguration:</h3>
+    <div class="config-summary">
+      <h3 class="h3-secondary">🏠 Konfiguration:</h3>
       <ul>
         ${items.map(item => `<li>${item}</li>`).join('')}
       </ul>
