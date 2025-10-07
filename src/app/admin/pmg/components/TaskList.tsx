@@ -73,6 +73,7 @@ function SortableTaskRow({
   getPriorityClass,
   getStatusClass,
   isMilestone,
+  isEditableId,
 }: {
   task: TaskOrNewTask;
   editingCell: { taskId: string; field: string } | null;
@@ -88,6 +89,7 @@ function SortableTaskRow({
   getPriorityClass: (priority: TaskPriority) => string;
   getStatusClass: (status: TaskStatus) => string;
   isMilestone: (taskId: string) => boolean;
+  isEditableId: (taskId: string) => boolean;
 }) {
   const {
     attributes,
@@ -124,7 +126,8 @@ function SortableTaskRow({
             ⋮⋮
           </div>
           {editingCell?.taskId === task.id &&
-          editingCell?.field === "taskId" ? (
+          editingCell?.field === "taskId" &&
+          isEditableId(task.taskId) ? (
             <input
               type="text"
               value={editValue}
@@ -136,10 +139,16 @@ function SortableTaskRow({
             />
           ) : (
             <span
-              className={`cursor-pointer hover:bg-gray-100 p-1 rounded ${
+              className={`p-1 rounded ${
                 isMilestone(task.taskId) ? "font-bold" : "font-medium"
+              } ${
+                isEditableId(task.taskId)
+                  ? "cursor-pointer hover:bg-gray-100"
+                  : "cursor-default"
               }`}
-              onClick={() => handleCellClick(task, "taskId")}
+              onClick={() =>
+                isEditableId(task.taskId) && handleCellClick(task, "taskId")
+              }
             >
               {task.taskId || (isEmptyNewTask ? "Auto-ID" : task.taskId)}
             </span>
@@ -389,44 +398,29 @@ export default function TaskList({
   };
 
   const isMilestone = (taskId: string) => {
-    // Detect milestone patterns like "1.", "2.", "M1", etc.
-    return /^(\d+\.|M\d+|Milestone|MILESTONE)/.test(taskId);
+    // Detect milestone patterns like "1.", "2.", "M1", "P1", etc.
+    return /^(\d+\.|M\d+|P\d+|Milestone|MILESTONE|Phase|PHASE)/.test(taskId);
   };
 
-  const generateTaskId = (position: number, existingTasks: TaskOrNewTask[]) => {
-    // Find the context around the position to determine appropriate ID
-    const beforeTask = existingTasks[position - 1];
-    const afterTask = existingTasks[position + 1];
+  const isEditableId = (taskId: string) => {
+    // Only allow editing IDs for milestones/phases or empty IDs
+    return !taskId || isMilestone(taskId);
+  };
 
-    if (beforeTask && !("isNew" in beforeTask)) {
-      const beforeId = beforeTask.taskId;
-      if (afterTask && !("isNew" in afterTask)) {
-        const afterId = afterTask.taskId;
+  const generateTaskId = (startDate: Date, existingTasks: TaskOrNewTask[]) => {
+    // Generate date-based ID for regular tasks
+    const dateStr = startDate.toISOString().split("T")[0].replace(/-/g, "");
 
-        // If between milestone tasks, create subtask
-        if (isMilestone(beforeId) && !isMilestone(afterId)) {
-          const milestoneNum = beforeId.match(/^(\d+)/)?.[1];
-          if (milestoneNum) {
-            // Find next available subtask number
-            const existingSubtasks = existingTasks
-              .filter(
-                (t) =>
-                  !("isNew" in t) && t.taskId.startsWith(`${milestoneNum}.`)
-              )
-              .map((t) => parseInt(t.taskId.split(".")[1]) || 0);
-            const nextSubtask = Math.max(0, ...existingSubtasks) + 1;
-            return `${milestoneNum}.${nextSubtask}`;
-          }
-        }
-      }
-    }
+    // Find existing tasks with same date
+    const sameDateTasks = existingTasks
+      .filter((t) => !("isNew" in t) && t.taskId.startsWith(dateStr))
+      .map((t) => {
+        const match = t.taskId.match(new RegExp(`^${dateStr}-(\\d+)$`));
+        return match ? parseInt(match[1]) : 0;
+      });
 
-    // Default: find next available A-series ID
-    const existingAIds = existingTasks
-      .filter((t) => !("isNew" in t) && t.taskId.startsWith("A"))
-      .map((t) => parseInt(t.taskId.substring(1)) || 0);
-    const nextAId = Math.max(0, ...existingAIds) + 1;
-    return `A${nextAId}`;
+    const nextSequence = Math.max(0, ...sameDateTasks) + 1;
+    return `${dateStr}-${nextSequence.toString().padStart(2, "0")}`;
   };
 
   const handleCellClick = (task: TaskOrNewTask, field: string) => {
@@ -519,8 +513,8 @@ export default function TaskList({
       newTasks[taskIndex] = updatedTask;
       setLocalTasks(newTasks);
 
-      // Auto-save if task has minimum required data
-      if (updatedTask.taskId && updatedTask.task) {
+      // Auto-save if task has minimum required data (just task name)
+      if (updatedTask.task) {
         setTimeout(() => {
           handleAutoSaveNewTask(updatedTask);
         }, 500); // Small delay to allow user to continue editing
@@ -599,18 +593,8 @@ export default function TaskList({
 
       const newTasks = arrayMove(localTasks, oldIndex, newIndex);
 
-      // Update task IDs based on new positions for non-new tasks
-      const updatedTasks = newTasks.map((task, index) => {
-        if ("isNew" in task && task.isNew) return task;
-
-        const projectTask = task as ProjectTask;
-        // Only auto-update IDs for A-series tasks, preserve milestone IDs
-        if (projectTask.taskId.startsWith("A")) {
-          const newId = generateTaskId(index, newTasks);
-          return { ...projectTask, taskId: newId };
-        }
-        return projectTask;
-      });
+      // Keep tasks as-is after drag and drop (no auto-ID updates)
+      const updatedTasks = newTasks;
 
       setLocalTasks(updatedTasks);
 
@@ -645,13 +629,16 @@ export default function TaskList({
   };
 
   const handleAutoSaveNewTask = (newTask: NewTask) => {
-    if (!newTask.taskId || !newTask.task) return;
+    if (!newTask.task) return; // Only require task name
 
     // Check if this task is still in editing state - if so, don't auto-save yet
     if (editingCell?.taskId === newTask.id) return;
 
-    // Generate ID if empty
-    const finalTaskId = newTask.taskId || generateTaskId(0, localTasks);
+    // Generate ID based on start date for non-milestone tasks
+    const finalTaskId =
+      newTask.taskId && isEditableId(newTask.taskId)
+        ? newTask.taskId
+        : generateTaskId(newTask.startDate, localTasks);
 
     const taskData = {
       taskId: finalTaskId,
@@ -762,6 +749,7 @@ export default function TaskList({
                     getPriorityClass={getPriorityClass}
                     getStatusClass={getStatusClass}
                     isMilestone={isMilestone}
+                    isEditableId={isEditableId}
                   />
                 ))}
               </tbody>

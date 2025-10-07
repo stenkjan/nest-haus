@@ -132,8 +132,17 @@ export default function ProjectManagementDashboard() {
 
       const result = await response.json();
 
-      // Add the new task to local state instead of full reload
-      setTasks((prev) => [...prev, result.task]);
+      // Add the new task to local state and sort by date
+      setTasks((prev) => {
+        const newTasks = [...prev, result.task];
+        return newTasks.sort((a, b) => {
+          const dateA = new Date(a.startDate).getTime();
+          const dateB = new Date(b.startDate).getTime();
+          if (dateA !== dateB) return dateA - dateB;
+          // If same start date, sort by taskId
+          return a.taskId.localeCompare(b.taskId);
+        });
+      });
       showSaveMessage("✓ Task added");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to add task");
