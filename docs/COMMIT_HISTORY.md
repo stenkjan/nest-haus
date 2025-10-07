@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [aea86b309b70d919786f398c509e374f2cb816ad] - Tue Oct 7 15:06:53 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance email sender presentation with sender name  - Added a FROM_NAME property to the EmailService class for improved email presentation. - Updated the email sending logic to include the sender's name in the "from" field, enhancing the professionalism of customer and admin emails.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/email/route.ts
+
+
+---
+
 ## [416d01673d49bcc0452745e7ef882398063f43d6] - Tue Oct 7 14:54:26 2025 +0200
 
 **Author**: stenkjan
