@@ -104,10 +104,10 @@ export default function DatenschutzClient() {
                 personenbezogenen Daten zu erhalten. Ihnen stehen außerdem
                 weitere Rechte zu, wie das Recht auf Berichtigung, Löschung oder
                 Einschränkung der Verarbeitung dieser Daten, die wir Ihnen in
-                dieser Datenschutzerklärung unter "Rechte der betroffenen
-                Person" näher erläutern. Des Weiteren haben Sie das Recht, eine
-                erteilte Einwilligung jederzeit für die Zukunft zu widerrufen,
-                sowie das Recht auf Beschwerde bei der zuständigen
+                dieser Datenschutzerklärung unter &ldquo;Rechte der betroffenen
+                Person&rdquo; näher erläutern. Des Weiteren haben Sie das Recht,
+                eine erteilte Einwilligung jederzeit für die Zukunft zu
+                widerrufen, sowie das Recht auf Beschwerde bei der zuständigen
                 Aufsichtsbehörde.
               </p>
             </div>
@@ -337,9 +337,9 @@ export default function DatenschutzClient() {
                 Google Analytics: Diese Website nutzt Funktionen des
                 Webanalysedienstes Google Analytics. Anbieter ist die Google
                 Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland
-                ("Google"). Google Analytics ermöglicht es uns, das Verhalten
-                der Websitebesucher zu analysieren. Dabei werden Cookies
-                eingesetzt, die eine Analyse Ihrer Benutzung der Website
+                (&ldquo;Google&rdquo;). Google Analytics ermöglicht es uns, das
+                Verhalten der Websitebesucher zu analysieren. Dabei werden
+                Cookies eingesetzt, die eine Analyse Ihrer Benutzung der Website
                 ermöglichen. Die hierdurch erzeugten Informationen über Ihre
                 Benutzung dieser Website (einschließlich Ihrer gekürzten
                 IP-Adresse) werden in der Regel an einen Server von Google
@@ -437,12 +437,13 @@ export default function DatenschutzClient() {
               <p className="p-primary">
                 Unsere Website bindet Videos der Plattform YouTube ein. Anbieter
                 ist Google Ireland Limited, Dublin, Irland. Wir nutzen YouTube
-                im "erweiterten Datenschutzmodus". Dieser Modus bewirkt laut
-                YouTube, dass YouTube keine Informationen über die Besucher auf
-                dieser Website speichert, bevor diese das Video ansehen. Dennoch
-                wird beim Starten eines YouTube-Videos eine Verbindung zu den
-                YouTube-Servern hergestellt. Dabei wird dem YouTube-Server
-                mitgeteilt, welche unserer Seiten Sie besucht haben.
+                im &ldquo;erweiterten Datenschutzmodus&rdquo;. Dieser Modus
+                bewirkt laut YouTube, dass YouTube keine Informationen über die
+                Besucher auf dieser Website speichert, bevor diese das Video
+                ansehen. Dennoch wird beim Starten eines YouTube-Videos eine
+                Verbindung zu den YouTube-Servern hergestellt. Dabei wird dem
+                YouTube-Server mitgeteilt, welche unserer Seiten Sie besucht
+                haben.
               </p>
 
               <p className="p-primary">
