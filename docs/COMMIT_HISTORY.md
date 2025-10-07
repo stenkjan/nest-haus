@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e642de64259cef42dde24a137a4c7d4fb8492d33] - Tue Oct 7 14:39:24 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: comment out insurance section in ImpressumClient component  - Commented out the insurance section in the ImpressumClient component to improve clarity and maintainability. - This change aligns with the project's goal of keeping the code slim and efficient.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/impressum/ImpressumClient.tsx
+
+
+---
+
 ## [78a6a0b67d49facc617f7a7e13fc45ff92eab508] - Tue Oct 7 14:01:16 2025 +0200
 
 **Author**: stenkjan
