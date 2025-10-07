@@ -125,6 +125,7 @@ export default function ImpressumClient() {
                   </div>
                 </div>
 
+                {/* 
                 <div className="space-y-6">
                   <h3 className="text-xl font-medium mb-6">Fachbereiche</h3>
                   <div className="space-y-4">
@@ -149,6 +150,7 @@ export default function ImpressumClient() {
                     </div>
                   </div>
                 </div>
+                */}
               </div>
             </div>
           </div>
