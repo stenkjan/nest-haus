@@ -26,6 +26,9 @@ export class EmailService {
   private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
   private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nest-haus.at';
   private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'sales@nest-haus.at';
+  
+  // From name for better email presentation
+  private static readonly FROM_NAME = 'NEST-Haus Team';
 
   /**
    * Send confirmation email to customer
@@ -42,7 +45,7 @@ export class EmailService {
       const textContent = this.generateCustomerEmailText(data);
 
       const result = await resend.emails.send({
-        from: this.FROM_EMAIL,
+        from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
         to: data.email,
         subject,
         html: htmlContent,
@@ -79,7 +82,7 @@ export class EmailService {
       }
 
       const result = await resend.emails.send({
-        from: this.FROM_EMAIL,
+        from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
         to: recipients,
         subject,
         html: htmlContent,
