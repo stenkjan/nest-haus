@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1e3a623af8b6eb1002824f948d4ef6f3b9f4d9f5] - Tue Oct 7 12:45:21 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update Datenschutz documentation and contact information  - Revised the Datenschutz documentation to include new sections and updated content, enhancing clarity and compliance with data protection regulations. - Updated the contact information for the responsible entity, including a new phone number and email address. - Improved the structure of the DatenschutzClient component to reflect the changes in the documentation and ensure a better user experience. - Adjusted the ImpressumClient component to reflect the new website URL and updated contact details.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/datenschutz/DatenschutzClient.tsx
+- src/app/impressum/ImpressumClient.tsx
+
+
+#### 📚 Documentation Changes
+- docs/DATENSCHUTZ.md
+- docs/Datenschutz.pdf
+- docs/Info.pdf
+
+
+---
+
 ## [120ab62ce02280f51123b748d1bc1a3545dd3395] - Tue Oct 7 11:44:26 2025 +0200
 
 **Author**: stenkjan
