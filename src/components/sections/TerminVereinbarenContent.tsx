@@ -4,7 +4,7 @@ import React from "react";
 
 interface TerminVereinbarenContentProps {
   className?: string;
-  variant?: "mobile" | "desktop" | "popup";
+  variant?: "mobile" | "desktop" | "popup" | "dialog";
 }
 
 /**
@@ -18,6 +18,7 @@ export const TerminVereinbarenContent: React.FC<
   const isPopup = variant === "popup";
   const isMobile = variant === "mobile";
   const isDesktop = variant === "desktop";
+  const isDialog = variant === "dialog";
 
   // Popup variant - compact layout
   if (isPopup) {
@@ -99,9 +100,11 @@ export const TerminVereinbarenContent: React.FC<
               </h2>
               <div className="text-center">
                 <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  <span className="font-medium">Telefon:</span> +43 (0) 664 5403399
+                  <span className="font-medium">Telefon:</span> +43 (0) 664
+                  5403399
                   <br />
-                  <span className="font-medium">Mobil:</span> +43 (0) 664 2531869
+                  <span className="font-medium">Mobil:</span> +43 (0) 664
+                  2531869
                   <br />
                   <span className="font-medium">Email:</span> nest@haus.at
                 </p>
@@ -165,7 +168,8 @@ export const TerminVereinbarenContent: React.FC<
             </h2>
             <div>
               <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                <span className="font-medium">Telefon:</span> +43 (0) 664 5403399
+                <span className="font-medium">Telefon:</span> +43 (0) 664
+                5403399
                 <br />
                 <span className="font-medium">Mobil:</span> +43 (0) 664 2531869
                 <br />
@@ -191,6 +195,60 @@ export const TerminVereinbarenContent: React.FC<
                 <br />
                 Österreich
               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Dialog variant - compact like other dialogs
+  if (isDialog) {
+    return (
+      <div className={`flex flex-col gap-4 ${className}`}>
+        <div>
+          <p className="text-xs sm:text-sm text-gray-700 mb-3 leading-snug">
+            Der Kauf deines Hauses ist ein großer Schritt –{" "}
+            <span className="font-bold">
+              und wir sind da, um dir dabei zu helfen.
+            </span>{" "}
+            Für mehr Sicherheit und Klarheit{" "}
+            <span className="font-bold">
+              stehen wir dir jederzeit persönlich zur Seite.
+            </span>{" "}
+            Ruf uns an, um dein{" "}
+            <span className="font-bold">Beratungsgespräch</span> zu vereinbaren,
+            oder buche deinen{" "}
+            <span className="font-bold">Termin ganz einfach online.</span> Dein
+            Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+          </p>
+        </div>
+        <div className="space-y-2">
+          <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
+            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+              Kontakt
+            </h4>
+            <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm text-gray-700">
+              <span>Telefon:</span>
+              <span>+43 (0) 3847 75090</span>
+              <span>Mobil:</span>
+              <span>+43 (0) 664 3949604</span>
+              <span>Email:</span>
+              <span>nest@haus.at</span>
+            </div>
+          </div>
+          <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
+            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+              Adresse
+            </h4>
+            <div className="text-xs md:text-sm text-gray-700">
+              Karmeliterplatz 8
+              <br />
+              8010, Graz
+              <br />
+              Steiermark
+              <br />
+              Österreich
             </div>
           </div>
         </div>

@@ -1296,6 +1296,15 @@ export default function ConfiguratorShell({
                     </>
                   )}
 
+                  {/* Noch Fragen offen? InfoBox - Only for nest category */}
+                  {category.id === "nest" && (
+                    <InfoBox
+                      title="Noch Fragen offen?"
+                      description="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch."
+                      onClick={() => setIsCalendarDialogOpen(true)}
+                    />
+                  )}
+
                   {/* Info Box - Use new responsive cards for specific categories */}
                   {category.infoBox && (
                     <>

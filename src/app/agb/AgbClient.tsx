@@ -453,10 +453,10 @@ export default function AgbClient() {
                   </p>
                   <div className="bg-gray-100 p-4 rounded">
                     <p>
-                      <strong>NEST-Haus GmbH</strong>
+                      <strong>Eco Chalets GmbH</strong>
                     </p>
                     <p>[Adresse]</p>
-                    <p>E-Mail: widerruf@nest-haus.at</p>
+                    <p>E-Mail: markus@sustain-nest.com</p>
                   </div>
                 </div>
               </div>
