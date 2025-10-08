@@ -5,7 +5,7 @@ import LandingPageClient from "./LandingPageClient";
 import { generatePageMetadata } from "@/lib/seo/generateMetadata";
 
 // Dynamic SEO metadata for the landing page
-export const metadata: Metadata = generatePageMetadata('home');
+export const metadata: Metadata = generatePageMetadata("home");
 
 // Structured Data for Website/HomePage
 const websiteSchema = {
@@ -49,20 +49,20 @@ const productSchema = {
 export default async function Home() {
   // Server-side authentication check
   const correctPassword = process.env.SITE_PASSWORD;
-  
+
   if (correctPassword) {
     const cookieStore = await cookies();
-    const authCookie = cookieStore.get('nest-haus-auth');
-    
-    console.log('[SERVER] Password protection enabled');
-    console.log('[SERVER] Auth cookie exists:', !!authCookie);
-    
+    const authCookie = cookieStore.get("nest-haus-auth");
+
+    console.log("[SERVER] Password protection enabled");
+    console.log("[SERVER] Auth cookie exists:", !!authCookie);
+
     if (!authCookie || authCookie.value !== correctPassword) {
-      console.log('[SERVER] Redirecting to auth page');
-      redirect('/auth?redirect=' + encodeURIComponent('/'));
+      console.log("[SERVER] Redirecting to auth page");
+      redirect("/auth?redirect=" + encodeURIComponent("/"));
     }
-    
-    console.log('[SERVER] User authenticated, rendering page');
+
+    console.log("[SERVER] User authenticated, rendering page");
   }
 
   return (
