@@ -93,11 +93,11 @@ export default function ImpressumClient() {
             <h2 className="h2-section tracking-[-0.02em]">Kontaktdaten</h2>
 
             <div className="max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-12 text-center text-gray-700">
+              <div className="flex justify-center text-center text-gray-700">
                 <div className="space-y-6">
-                  <h3 className="text-xl font-medium mb-6">
+                  {/* <h3 className="text-xl font-medium mb-6">
                     Allgemeine Kontaktdaten
-                  </h3>
+                  </h3> */}
                   <div className="space-y-4">
                     <div>
                       <h4 className="font-medium mb-2">Telefon</h4>
@@ -124,34 +124,34 @@ export default function ImpressumClient() {
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* 
-                <div className="space-y-6">
-                  <h3 className="text-xl font-medium mb-6">Fachbereiche</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-medium mb-2">Beratung & Planung</h4>
-                      <p>markus@sustain-nest.com</p>
-                    </div>
+              {/* 
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium mb-6">Fachbereiche</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Beratung & Planung</h4>
+                    <p>markus@sustain-nest.com</p>
+                  </div>
 
-                    <div>
-                      <h4 className="font-medium mb-2">Kundenservice</h4>
-                      <p>markus@sustain-nest.com</p>
-                    </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Kundenservice</h4>
+                    <p>markus@sustain-nest.com</p>
+                  </div>
 
-                    <div>
-                      <h4 className="font-medium mb-2">Datenschutz</h4>
-                      <p>markus@sustain-nest.com</p>
-                    </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Datenschutz</h4>
+                    <p>markus@sustain-nest.com</p>
+                  </div>
 
-                    <div>
-                      <h4 className="font-medium mb-2">Presse & Medien</h4>
-                      <p>markus@sustain-nest.com</p>
-                    </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Presse & Medien</h4>
+                    <p>markus@sustain-nest.com</p>
                   </div>
                 </div>
-                */}
               </div>
+              */}
             </div>
           </div>
         </section>
