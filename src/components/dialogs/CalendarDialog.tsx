@@ -12,7 +12,6 @@ interface CalendarDialogProps {
 const CalendarDialog: React.FC<CalendarDialogProps> = ({ isOpen, onClose }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [visibleTimeIndex, setVisibleTimeIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -88,7 +87,7 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({ isOpen, onClose }) => {
       // In a real application, you would send this data to your API
       const appointmentData = {
         date: selectedDate.toISOString(),
-        time: timeSlots[selectedTimeIndex],
+        time: timeSlots[visibleTimeIndex],
         ...formData,
       };
 
