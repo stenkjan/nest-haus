@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
 import { ResponsiveHybridImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
@@ -133,6 +134,42 @@ const sectionsContent = [
 export default function LandingPageClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("section1");
   const { isMobile } = useDeviceDetect();
+  const router = useRouter();
+
+  // Client-side password protection fallback
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        // Check if we have auth cookie
+        const authCookie = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("nest-haus-auth="));
+
+        if (authCookie) {
+          return; // Already authenticated
+        }
+
+        // Check if password protection is enabled
+        const response = await fetch("/api/test/env");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.hasSitePassword) {
+            // Redirect to auth page
+            router.push(
+              "/auth?redirect=" +
+                encodeURIComponent(
+                  window.location.pathname + window.location.hash
+                )
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   // Landing page specific image styling - applies to all 8 images
   const landingImageStyle = {
