@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [aba9428ff10ce8ee96cb9734c4863f0b8c218c23] - Wed Oct 8 13:09:32 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: add admin controls for database seeding and task reorganization in ProjectManagementDashboard  - Introduced buttons for seeding the database and reorganizing task IDs in the Project Management Dashboard. - Enhanced the task reorganization logic in the API route to separate milestones from regular tasks and update IDs accordingly, ensuring safe updates using transactions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/ProjectManagementDashboard.tsx
+- src/app/api/admin/pmg/reorganize/route.ts
+
+
+---
+
 ## [6837ffb2b5da1c6acda1f31a9fb535651e2564ce] - Wed Oct 8 12:51:33 2025 +0200
 
 **Author**: stenkjan
