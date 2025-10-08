@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [32aaa6605608c4b86627c5f8137127efc9164d43] - Wed Oct 8 10:22:56 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: update contact information and enhance appointment dialog  - Changed company name from NEST-Haus GmbH to Eco Chalets GmbH in AgbClient component. - Updated email address to markus@sustain-nest.com for improved communication. - Added an InfoBox in ConfiguratorShell for the "nest" category to prompt users for consultation. - Refactored CalendarDialog component for improved layout and user experience, including new compact styles and enhanced form handling. - Introduced a new "dialog" variant in TerminVereinbarenContent for better integration with the CalendarDialog. - Adjusted various class names and styles for consistency and responsiveness.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/agb/AgbClient.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/components/dialogs/CalendarDialog.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+---
+
 ## [54403d0729a9c93ba1e21e40038149afec08cee6] - Wed Oct 8 09:00:56 2025 +0200
 
 **Author**: stenkjan
