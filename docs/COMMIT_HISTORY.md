@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [48284b38087c70cd3888b21e33a98a373cc6c2ad] - Wed Oct 8 17:02:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix TypeScript errors: await cookies() calls in Next.js 13+  - Made server components async to properly await cookies() - Fixed auth-status API route - Fixed AuthWrapper component - Fixed page.tsx server component  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/auth-status/route.ts
+- src/app/page.tsx
+- src/components/auth/AuthWrapper.tsx
+
+
+---
+
 ## [c78abceff075b72204084af7b37880c6c947e7b6] - Wed Oct 8 16:58:07 2025 +0200
 
 **Author**: stenkjan
