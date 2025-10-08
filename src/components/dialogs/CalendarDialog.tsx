@@ -166,15 +166,15 @@ const CalendarDialog: React.FC<CalendarDialogProps> = ({ isOpen, onClose }) => {
       className="p-0"
     >
       <div className="relative w-full h-full flex items-center justify-center">
-        {/* Title above the dialog */}
-        <div className="absolute top-[5vh] z-[100] w-full max-w-[1700px] px-6 left-0 right-0 mx-auto">
+        {/* Title above the dialog - Responsive positioning */}
+        <div className="absolute top-[5vh] 2xl:top-[8vh] z-[100] w-full max-w-[1700px] px-6 left-0 right-0 mx-auto">
           <h2 className="hidden md:block h2-title text-center text-gray-900 mb-0">
             Vereinbare jetzt deinen Termin
           </h2>
         </div>
 
         <div
-          className="relative w-[95vw] h-ios-90 md:h-ios-85 overflow-y-auto pt-1 pb-1 md:pt-2 md:pb-2 px-1 md:px-1 flex justify-center items-start mt-ios-10 md:mt-ios-5 ios-dialog-container"
+          className="relative w-[95vw] h-ios-90 md:h-ios-85 2xl:h-[70vh] overflow-y-auto pt-1 pb-1 md:pt-2 md:pb-2 px-1 md:px-1 flex justify-center items-start mt-ios-10 md:mt-ios-5 2xl:mt-0 2xl:items-center ios-dialog-container"
           style={{ minHeight: "300px" }}
         >
           <div className="max-w-[1700px] mx-auto bg-[#F4F4F4] rounded-[32px] md:rounded-[32px] px-1 md:px-5 pb-3 flex flex-col items-center shadow-md">

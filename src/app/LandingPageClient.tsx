@@ -206,30 +206,36 @@ export default function LandingPageClient() {
               >
                 <div className="text-center">
                   <h1
-                    className={`h1-primary ${section.id === 2
-                      ? "text-white"
-                      // ? "text-[#605047]"
-                      : section.id === 7
+                    className={`h1-primary ${
+                      section.id === 2
+                        ? "text-white"
+                        : section.id === 7
                         ? "text-white md:text-white"
-                        // ? "text-[#605047] md:text-white"
+                        : section.id === 8 && isMobile
+                        ? "text-[#605047] md:text-white"
                         : "text-white"
-                      } ${section.id === 3 || section.id === 6 || section.id === 7
+                    } ${
+                      section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"
                         : ""
-                      }`}
+                    }`}
                   >
                     {section.h1}
                   </h1>
                   <h3
-                    className={`h3-primary ${section.id === 2
-                      ? "text-white"
-                      : section.id === 7
+                    className={`h3-primary ${
+                      section.id === 2
+                        ? "text-white"
+                        : section.id === 7
                         ? "text-white md:text-white"
+                        : section.id === 8 && isMobile
+                        ? "text-[#605047] md:text-white"
                         : "text-white"
-                      } ${section.id === 3 || section.id === 6 || section.id === 7
+                    } ${
+                      section.id === 3 || section.id === 6 || section.id === 7
                         ? "drop-shadow-lg"
                         : ""
-                      }`}
+                    }`}
                   >
                     {section.h3}
                   </h3>
