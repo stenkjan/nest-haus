@@ -72,6 +72,35 @@ export default function ProjectManagementDashboard() {
     }
   };
 
+  const reorganizeTasks = async () => {
+    try {
+      const credentials = btoa("admin:MAINJAJANest");
+
+      const response = await fetch("/api/admin/pmg/reorganize", {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${credentials}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to reorganize tasks");
+      }
+
+      const result = await response.json();
+      console.log("Reorganization result:", result);
+
+      await loadTasks();
+      showSaveMessage(
+        `Tasks reorganized! ${result.changes?.length || 0} tasks updated.`
+      );
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to reorganize tasks"
+      );
+    }
+  };
+
   const updateTask = async (taskId: string, updates: Partial<ProjectTask>) => {
     try {
       setIsUpdating(true);
@@ -268,12 +297,20 @@ export default function ProjectManagementDashboard() {
         >
           Retry
         </button>
-        <button
-          onClick={seedDatabase}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Seed Database
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={seedDatabase}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Seed Database
+          </button>
+          <button
+            onClick={reorganizeTasks}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Reorganize IDs
+          </button>
+        </div>
       </div>
     );
   }

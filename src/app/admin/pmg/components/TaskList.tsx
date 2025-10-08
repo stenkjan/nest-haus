@@ -453,66 +453,67 @@ export default function TaskList({
       insertIndex = realTasks.length;
     }
 
-    // Get the tasks before and after the insertion point
-    const taskBefore = insertIndex > 0 ? realTasks[insertIndex - 1] : null;
-    const taskAfter =
-      insertIndex < realTasks.length ? realTasks[insertIndex] : null;
+    // Look at the chronological context around the insertion point
+    // Find the closest non-milestone task before and after
+    let taskBefore = null;
+    let taskAfter = null;
 
-    // Check if this task should be part of a milestone sequence
-    // Look for the most recent milestone that this task could belong to
-    let relevantMilestone = null;
-
-    // Find all milestones that come before or at the same time as this task
+    // Look backwards for the closest non-milestone task
     for (let i = insertIndex - 1; i >= 0; i--) {
       const task = realTasks[i];
-      const taskDate = new Date(task.startDate).getTime();
-
-      // If we find a milestone pattern and the task date is close to our new task date
-      if (isMilestone(task.taskId)) {
-        const milestoneMatch = task.taskId.match(/^(\d+)\./);
-        if (
-          milestoneMatch &&
-          Math.abs(taskDate - newTaskTime) <= 7 * 24 * 60 * 60 * 1000
-        ) {
-          // Within 7 days
-          relevantMilestone = milestoneMatch[1];
-          break;
-        }
-      }
-
-      // Also check if we have subtasks (1.1, 1.2, etc.) that indicate a milestone sequence
-      const subtaskMatch = task.taskId.match(/^(\d+)\.(\d+)$/);
+      // Skip pure milestones (P1, M1, etc.) but include subtasks (1.1, 1.2, etc.)
       if (
-        subtaskMatch &&
-        Math.abs(taskDate - newTaskTime) <= 7 * 24 * 60 * 60 * 1000
+        !task.taskId.match(/^[PM]\d+$/) &&
+        !task.taskId.match(/^\d+\.$/) &&
+        !task.taskId.match(/^(ZIEL|Milestone|MILESTONE)$/i)
       ) {
-        // Within 7 days
-        relevantMilestone = subtaskMatch[1];
+        taskBefore = task;
         break;
       }
     }
 
-    // If we found a relevant milestone, create a subtask
-    if (relevantMilestone) {
-      // Find existing subtasks for this milestone
-      const existingSubtasks = realTasks
-        .filter((t) => t.taskId.startsWith(`${relevantMilestone}.`))
-        .map((t) => {
-          const match = t.taskId.match(
-            new RegExp(`^${relevantMilestone}\\.(\\d+)$`)
-          );
-          return match ? parseInt(match[1]) : 0;
-        })
-        .filter((num) => num > 0);
-
-      const nextSubtask =
-        existingSubtasks.length > 0 ? Math.max(...existingSubtasks) + 1 : 1;
-      return `${relevantMilestone}.${nextSubtask}`;
+    // Look forwards for the closest non-milestone task
+    for (let i = insertIndex; i < realTasks.length; i++) {
+      const task = realTasks[i];
+      // Skip pure milestones (P1, M1, etc.) but include subtasks (1.1, 1.2, etc.)
+      if (
+        !task.taskId.match(/^[PM]\d+$/) &&
+        !task.taskId.match(/^\d+\.$/) &&
+        !task.taskId.match(/^(ZIEL|Milestone|MILESTONE)$/i)
+      ) {
+        taskAfter = task;
+        break;
+      }
     }
 
     // If we have a task before, try to follow its pattern
     if (taskBefore) {
       const beforeId = taskBefore.taskId;
+
+      // If it's a subtask pattern (1.1, 1.2, etc.), continue the sequence
+      const subtaskMatch = beforeId.match(/^(\d+)\.(\d+)$/);
+      if (subtaskMatch) {
+        const [, milestoneNum, subtaskNum] = subtaskMatch;
+
+        // Check if the task after is also part of the same milestone sequence
+        if (taskAfter) {
+          const afterSubtaskMatch = taskAfter.taskId.match(/^(\d+)\.(\d+)$/);
+          if (afterSubtaskMatch && afterSubtaskMatch[1] === milestoneNum) {
+            // We're inserting between two subtasks of the same milestone
+            const beforeSubtask = parseInt(subtaskNum);
+            const afterSubtask = parseInt(afterSubtaskMatch[2]);
+
+            // If there's a gap, fill it
+            if (afterSubtask > beforeSubtask + 1) {
+              return `${milestoneNum}.${beforeSubtask + 1}`;
+            }
+          }
+        }
+
+        // Continue the sequence from the before task
+        const nextSubtask = parseInt(subtaskNum) + 1;
+        return `${milestoneNum}.${nextSubtask}`;
+      }
 
       // If it's a date-based ID, increment the sequence
       const dateMatch = beforeId.match(/^(\d{8})-(\d+)$/);
@@ -538,7 +539,32 @@ export default function TaskList({
       }
     }
 
-    // If we have a task after, try to create an ID that comes before it
+    // If we have a task after but no task before, try to create an ID that comes before it
+    if (taskAfter && !taskBefore) {
+      const afterId = taskAfter.taskId;
+
+      // If it's a subtask, create the first subtask of that milestone
+      const subtaskMatch = afterId.match(/^(\d+)\.(\d+)$/);
+      if (subtaskMatch) {
+        const [, milestoneNum, subtaskNum] = subtaskMatch;
+        const afterSubtask = parseInt(subtaskNum);
+        if (afterSubtask > 1) {
+          return `${milestoneNum}.${afterSubtask - 1}`;
+        }
+      }
+
+      // If it's a date-based ID, create a preceding one
+      const dateMatch = afterId.match(/^(\d{8})-(\d+)$/);
+      if (dateMatch) {
+        const [, dateStr, seqStr] = dateMatch;
+        const sequence = parseInt(seqStr);
+        if (sequence > 1) {
+          return `${dateStr}-${(sequence - 1).toString().padStart(2, "0")}`;
+        }
+      }
+    }
+
+    // Legacy: If we have a task after, try to create an ID that comes before it
     if (taskAfter) {
       const afterId = taskAfter.taskId;
       const dateMatch = afterId.match(/^(\d{8})-(\d+)$/);

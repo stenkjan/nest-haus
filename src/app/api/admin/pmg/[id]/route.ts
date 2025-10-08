@@ -74,7 +74,16 @@ export async function PUT(
         return NextResponse.json({ task: updatedTask });
     } catch (error) {
         console.error('Error updating project task:', error);
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+
+        // Check for unique constraint violation
+        if (error instanceof Error && error.message.includes('Unique constraint')) {
+            return NextResponse.json({ error: 'Task ID already exists. Please choose a different ID.' }, { status: 400 });
+        }
+
+        return NextResponse.json({
+            error: 'Internal server error',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
     }
 }
 
