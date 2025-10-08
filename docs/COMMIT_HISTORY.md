@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b96cce289c74b8f36149e89ad01d68e48cfd9371] - Wed Oct 8 14:10:15 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enable password protection for production deployment  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- README.md
+
+
+---
+
 ## [aba9428ff10ce8ee96cb9734c4863f0b8c218c23] - Wed Oct 8 13:09:32 2025 +0200
 
 **Author**: stenkjan
