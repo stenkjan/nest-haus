@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-    // Only apply password protection on Vercel production
-    const isProduction = process.env.VERCEL_ENV === 'production';
-
-    if (!isProduction) {
-        return NextResponse.next();
-    }
-
     // Skip password check for API routes
     if (request.nextUrl.pathname.startsWith('/api')) {
         return NextResponse.next();
@@ -21,6 +14,15 @@ export function middleware(request: NextRequest) {
     if (!correctPassword) {
         return NextResponse.next();
     }
+
+    // Only apply password protection when SITE_PASSWORD is set
+    const isProduction = process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production';
+    
+    // If password is set, apply protection regardless of environment (for testing)
+    // But you can uncomment the next lines to restrict to production only
+    // if (!isProduction) {
+    //     return NextResponse.next();
+    // }
 
     // If authenticated, allow access
     if (authCookie?.value === correctPassword) {
