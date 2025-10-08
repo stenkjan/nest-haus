@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1d14dc2754d2ad9c2c74f68e5e61de10d2dcacae] - Wed Oct 8 16:34:23 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Fix middleware matcher to include root path for password protection  `
+
+### Changes Analysis
+
+---
+
 ## [f08604e5066a39fbc4624118b247e53b6fbe77ac] - Wed Oct 8 16:27:17 2025 +0200
 
 **Author**: stenkjan
