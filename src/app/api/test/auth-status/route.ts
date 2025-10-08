@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
         const nodeEnv = process.env.NODE_ENV;
         
         // Cookie checks
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const authCookie = cookieStore.get('nest-haus-auth');
         
         // Request info

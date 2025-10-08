@@ -11,7 +11,7 @@ interface AuthWrapperProps {
  * Server-side authentication wrapper component
  * Checks for password protection and redirects if not authenticated
  */
-export default function AuthWrapper({ 
+export default async function AuthWrapper({ 
   children, 
   redirectPath = "/" 
 }: AuthWrapperProps) {
@@ -19,7 +19,7 @@ export default function AuthWrapper({
   const correctPassword = process.env.SITE_PASSWORD;
   
   if (correctPassword) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authCookie = cookieStore.get('nest-haus-auth');
     
     console.log('[AUTH_WRAPPER] Password protection enabled for:', redirectPath);

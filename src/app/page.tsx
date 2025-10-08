@@ -46,12 +46,12 @@ const productSchema = {
 };
 
 // Server Component - Can handle SEO, metadata, and structured data
-export default function Home() {
+export default async function Home() {
   // Server-side authentication check
   const correctPassword = process.env.SITE_PASSWORD;
   
   if (correctPassword) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authCookie = cookieStore.get('nest-haus-auth');
     
     console.log('[SERVER] Password protection enabled');
