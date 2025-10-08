@@ -142,30 +142,32 @@ export default function LandingPageClient() {
   useLayoutEffect(() => {
     const checkAuth = async () => {
       try {
-        console.log('[CLIENT] Starting auth check...');
-        
+        console.log("[CLIENT] Starting auth check...");
+
         // Check if we have auth cookie
         const authCookie = document.cookie
           .split("; ")
           .find((row) => row.startsWith("nest-haus-auth="));
 
         if (authCookie) {
-          console.log('[CLIENT] Auth cookie found, user authenticated');
+          console.log("[CLIENT] Auth cookie found, user authenticated");
           setIsAuthenticated(true);
           setIsAuthChecking(false);
           return;
         }
 
-        console.log('[CLIENT] No auth cookie, checking if protection is enabled');
+        console.log(
+          "[CLIENT] No auth cookie, checking if protection is enabled"
+        );
 
         // Check if password protection is enabled
         const response = await fetch("/api/test/env");
         if (response.ok) {
           const data = await response.json();
-          console.log('[CLIENT] Protection status:', data.hasSitePassword);
-          
+          console.log("[CLIENT] Protection status:", data.hasSitePassword);
+
           if (data.hasSitePassword) {
-            console.log('[CLIENT] Redirecting to auth page');
+            console.log("[CLIENT] Redirecting to auth page");
             // Redirect to auth page
             router.push(
               "/auth?redirect=" +
@@ -178,7 +180,7 @@ export default function LandingPageClient() {
         }
 
         // No protection enabled or check failed
-        console.log('[CLIENT] No protection or check failed, allowing access');
+        console.log("[CLIENT] No protection or check failed, allowing access");
         setIsAuthenticated(true);
         setIsAuthChecking(false);
       } catch (error) {
