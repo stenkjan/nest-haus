@@ -330,6 +330,22 @@ export default function ProjectManagementDashboard() {
           Ziel: Website-Launch bis zum 15.11.2025, um Kunden erfolgreich zum
           Beratungsgespräch zu führen.
         </p>
+
+        {/* Admin Controls */}
+        <div className="flex justify-center space-x-2 mt-4">
+          <button
+            onClick={seedDatabase}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm"
+          >
+            Seed Database
+          </button>
+          <button
+            onClick={reorganizeTasks}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded text-sm"
+          >
+            Reorganize IDs
+          </button>
+        </div>
       </header>
 
       {saveMessage && (

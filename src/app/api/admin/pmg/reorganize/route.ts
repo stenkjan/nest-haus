@@ -14,8 +14,8 @@ async function authenticateRequest(authHeader: string | null): Promise<boolean> 
         const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
         const [username, password] = credentials.split(':');
 
-        return username === process.env.ADMIN_USERNAME &&
-            password === process.env.ADMIN_PASSWORD;
+        // Use hardcoded credentials for now - same as other endpoints
+        return username === 'admin' && password === 'MAINJAJANest';
     } catch (error) {
         console.error('❌ Authentication error:', error);
         return false;
@@ -42,72 +42,105 @@ export async function POST(request: NextRequest) {
 
         console.log('Current tasks:', tasks.map(t => ({ id: t.taskId, task: t.task, date: t.startDate })));
 
-        // Group tasks by milestone phases based on date ranges
+        // Separate milestones from regular tasks
+        const milestones = tasks.filter(t =>
+            t.taskId.match(/^[PM]\d+$/) ||
+            t.taskId.match(/^(M\d+|ZIEL|Milestone)$/i) ||
+            t.taskId.match(/^\d+\.$/)
+        );
+
+        const regularTasks = tasks.filter(t =>
+            !t.taskId.match(/^[PM]\d+$/) &&
+            !t.taskId.match(/^(M\d+|ZIEL|Milestone)$/i) &&
+            !t.taskId.match(/^\d+\.$/)
+        );
+
+        console.log('Milestones:', milestones.map(t => t.taskId));
+        console.log('Regular tasks:', regularTasks.map(t => ({ id: t.taskId, date: t.startDate })));
+
+        // Reorganize regular tasks based on date
         const reorganizedTasks = [];
-        let currentMilestone = 1;
-        let currentSubtask = 1;
 
-        for (const task of tasks) {
+        // Keep milestones as they are
+        milestones.forEach(milestone => {
+            reorganizedTasks.push({
+                ...milestone,
+                newTaskId: milestone.taskId
+            });
+        });
+
+        // Reorganize regular tasks by date and assign proper IDs
+        let phase1Count = 1;
+        let phase2Count = 1;
+        let phase3Count = 1;
+        let phase4Count = 1;
+        let phase5Count = 1;
+
+        regularTasks.forEach(task => {
             const taskDate = new Date(task.startDate);
+            let newTaskId;
 
-            // Skip if it's already a properly formatted milestone or phase marker
-            if (task.taskId.match(/^[PM]\d+$/) || task.taskId.match(/^(M\d+|ZIEL|Milestone)$/i)) {
-                reorganizedTasks.push({
-                    ...task,
-                    newTaskId: task.taskId // Keep milestone IDs as they are
-                });
-                continue;
-            }
-
-            // Determine milestone based on date ranges (from your seed data)
             if (taskDate <= new Date('2025-10-09')) {
-                // Phase 1 tasks (up to Oct 9)
-                currentMilestone = 1;
+                // Phase 1 tasks
+                newTaskId = `1.${phase1Count}`;
+                phase1Count++;
             } else if (taskDate <= new Date('2025-10-17')) {
-                // Phase 2 tasks (Oct 10-17)
-                currentMilestone = 2;
+                // Phase 2 tasks  
+                newTaskId = `2.${phase2Count}`;
+                phase2Count++;
             } else if (taskDate <= new Date('2025-10-24')) {
-                // Phase 3 tasks (Oct 20-24)
-                currentMilestone = 3;
+                // Phase 3 tasks
+                newTaskId = `3.${phase3Count}`;
+                phase3Count++;
             } else if (taskDate <= new Date('2025-11-06')) {
-                // Phase 4 tasks (Oct 27 - Nov 6)
-                currentMilestone = 4;
+                // Phase 4 tasks
+                newTaskId = `4.${phase4Count}`;
+                phase4Count++;
             } else {
-                // Phase 5 and beyond
-                currentMilestone = 5;
+                // Phase 5+ tasks
+                newTaskId = `5.${phase5Count}`;
+                phase5Count++;
             }
-
-            // Find the next available subtask number for this milestone
-            const existingSubtasks = reorganizedTasks
-                .filter(t => t.newTaskId.startsWith(`${currentMilestone}.`))
-                .map(t => {
-                    const match = t.newTaskId.match(/^(\d+)\.(\d+)$/);
-                    return match ? parseInt(match[2]) : 0;
-                });
-
-            const nextSubtask = existingSubtasks.length > 0 ? Math.max(...existingSubtasks) + 1 : 1;
 
             reorganizedTasks.push({
                 ...task,
-                newTaskId: `${currentMilestone}.${nextSubtask}`
+                newTaskId
             });
-        }
+        });
 
         console.log('Reorganized tasks:', reorganizedTasks.map(t => ({ old: t.taskId, new: t.newTaskId, task: t.task, date: t.startDate })));
 
-        // Update tasks in database
-        const updatePromises = reorganizedTasks.map(async (task) => {
-            if (task.taskId !== task.newTaskId) {
+        // Update tasks in database using transaction to avoid conflicts
+        const tasksToUpdate = reorganizedTasks.filter(t => t.taskId !== t.newTaskId);
+
+        if (tasksToUpdate.length === 0) {
+            return NextResponse.json({
+                message: 'No tasks need reorganization',
+                changes: []
+            });
+        }
+
+        console.log(`Updating ${tasksToUpdate.length} tasks...`);
+
+        // Use transaction to update all tasks safely
+        await prisma.$transaction(async (tx) => {
+            // First, temporarily rename all tasks to avoid unique constraint conflicts
+            for (const task of tasksToUpdate) {
+                await tx.projectTask.update({
+                    where: { id: task.id },
+                    data: { taskId: `TEMP_${task.id}` }
+                });
+            }
+
+            // Then update to final IDs
+            for (const task of tasksToUpdate) {
                 console.log(`Updating ${task.taskId} -> ${task.newTaskId}: ${task.task}`);
-                return prisma.projectTask.update({
+                await tx.projectTask.update({
                     where: { id: task.id },
                     data: { taskId: task.newTaskId }
                 });
             }
-            return task;
         });
-
-        await Promise.all(updatePromises);
 
         return NextResponse.json({
             message: 'Tasks reorganized successfully',
