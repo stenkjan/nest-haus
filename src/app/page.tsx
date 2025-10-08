@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import LandingPageClient from "./LandingPageClient";
 import { generatePageMetadata } from "@/lib/seo/generateMetadata";
 
@@ -45,6 +47,24 @@ const productSchema = {
 
 // Server Component - Can handle SEO, metadata, and structured data
 export default function Home() {
+  // Server-side authentication check
+  const correctPassword = process.env.SITE_PASSWORD;
+  
+  if (correctPassword) {
+    const cookieStore = cookies();
+    const authCookie = cookieStore.get('nest-haus-auth');
+    
+    console.log('[SERVER] Password protection enabled');
+    console.log('[SERVER] Auth cookie exists:', !!authCookie);
+    
+    if (!authCookie || authCookie.value !== correctPassword) {
+      console.log('[SERVER] Redirecting to auth page');
+      redirect('/auth?redirect=' + encodeURIComponent('/'));
+    }
+    
+    console.log('[SERVER] User authenticated, rendering page');
+  }
+
   return (
     <>
       <script
