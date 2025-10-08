@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
 
         // Reorganize regular tasks based on date
         const reorganizedTasks: Array<{
+            id: string;
             taskId: string;
             task: string;
             startDate: Date;
