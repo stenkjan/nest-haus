@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import AuthForm from "./AuthForm";
 
+// Password protection activated
+
 export default function AuthPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
