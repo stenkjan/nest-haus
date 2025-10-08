@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
 
     // Only apply password protection when SITE_PASSWORD is set
     const isProduction = process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production';
-    
+
     // If password is set, apply protection regardless of environment (for testing)
     // But you can uncomment the next lines to restrict to production only
     // if (!isProduction) {
