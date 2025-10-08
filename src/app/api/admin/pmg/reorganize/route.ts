@@ -59,7 +59,14 @@ export async function POST(request: NextRequest) {
         console.log('Regular tasks:', regularTasks.map(t => ({ id: t.taskId, date: t.startDate })));
 
         // Reorganize regular tasks based on date
-        const reorganizedTasks = [];
+        const reorganizedTasks: Array<{
+            taskId: string;
+            task: string;
+            startDate: Date;
+            endDate: Date;
+            newTaskId: string;
+            [key: string]: unknown;
+        }> = [];
 
         // Keep milestones as they are
         milestones.forEach(milestone => {
