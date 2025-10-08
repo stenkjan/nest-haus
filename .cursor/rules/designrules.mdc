@@ -4,4 +4,4 @@ globs:
 alwaysApply: true
 ---
 keep the code slim and efficient, dont use fixed dimensions and static sizes, never change any design properties or specifications without asking if they are not in direct relation to the prompt.
-Make sure to not make unneccessary api calls, always ask yourself what the minimu amount of reasonable call to an api for a specific request is. run lint checks after completing a task.
+Make sure to not make unneccessary api calls, always ask yourself what the minimu amount of reasonable call to an api for a specific request is. run lint checks after completing a task, make sure we dont have unused variables to avoid @typescript-eslint/no-unused-vars errors
