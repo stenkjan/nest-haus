@@ -29,9 +29,8 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
-    // Check if this is a password submission
-    if (request.method === 'POST' && request.nextUrl.pathname === '/auth') {
-        // This will be handled by the auth API route
+    // Skip redirect if already on auth page
+    if (request.nextUrl.pathname === '/auth') {
         return NextResponse.next();
     }
 
@@ -53,5 +52,6 @@ export const config = {
          * - auth (password page)
          */
         '/((?!api|_next/static|_next/image|favicon.ico|auth).*)',
+        '/', // Explicitly include the root path
     ],
 };
