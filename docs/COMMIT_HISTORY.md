@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [147228af94651eea57e7d74d1039fa23f5b6a07a] - Wed Oct 8 15:26:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: enhance task reorganization logic in API route  - Updated the type definition for reorganized tasks to improve type safety and clarity. - Ensured that the structure of reorganized tasks includes necessary fields for better handling in subsequent operations.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/pmg/reorganize/route.ts
+
+
+---
+
 ## [b96cce289c74b8f36149e89ad01d68e48cfd9371] - Wed Oct 8 14:10:15 2025 +0200
 
 **Author**: stenkjan
