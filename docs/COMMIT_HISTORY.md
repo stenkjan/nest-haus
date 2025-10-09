@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [55e45869557d4f2937fddf72f85df39fb496ced1] - Thu Oct 9 09:31:56 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Add password protection to /alpha-test route  - Split alpha-test page into server component with auth check - Created AlphaTestClient component for client-side functionality - Added same server-side authentication as main page - /alpha-test now redirects to /auth if not authenticated  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/alpha-test/AlphaTestClient.tsx
+- src/app/alpha-test/page.tsx
+
+
+---
+
 ## [1a4576de916eb1ca1667aec767c0eb7587a084df] - Wed Oct 8 17:04:34 2025 +0200
 
 **Author**: stenkjan
