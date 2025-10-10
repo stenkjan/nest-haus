@@ -9,6 +9,7 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     globals: true,
     include: [
+      // Focus on current website functionality
       'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
       'src/test/**/*.test.{ts,tsx}'
     ],
@@ -17,14 +18,24 @@ export default defineConfig({
       'dist/**',
       '.{idea,git,cache,output,temp}/**',
       '{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
-      // Exclude showcase tests as requested
+      // Exclude showcase and old components
       'src/app/showcase/**/*.test.{ts,tsx}',
       'src/app/showcase/**/*.spec.{ts,tsx}',
-      // Exclude konfigurator_old
       'konfigurator_old/**'
     ],
-    // Add timeout for integration tests
-    testTimeout: 10000,
+    // Organize tests by functionality
+    testTimeout: 15000, // Increased for integration tests
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/**',
+        'src/test/setup.ts',
+        '**/*.d.ts',
+        'src/app/showcase/**',
+        'konfigurator_old/**'
+      ]
+    }
   },
   resolve: {
     alias: {

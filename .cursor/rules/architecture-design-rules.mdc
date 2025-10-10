@@ -1,12 +1,184 @@
 ---
+description: design specific rules for text and sizes
 alwaysApply: false
 ---
-  // ... other SEO metadata
-};
 
-export default function Page() {
-  return <PageClient />;
+# Architecture & Design Rules
+
+## SEO-Conform Typography Standards (Updated 2025)
+
+### **CRITICAL: Typography Color System**
+
+Based on the comprehensive cleanup and heading optimization analysis, follow these rules:
+
+#### **Heading Structure for SEO**
+
+```tsx
+// ✅ CORRECT: Semantic HTML with separate color classes
+<h1 className="h1-primary text-gray-900 mb-3">Main Title</h1>
+<h2 className="h2-title text-gray-900 mb-2">Section Title</h2>
+<h3 className="h3-secondary text-gray-600 mb-8">Subtitle</h3>
+
+// ❌ WRONG: Mixed concerns or hardcoded colors in base classes
+<h1 className="h1-primary-dark">Title</h1> // Don't create color variants
+```
+
+#### **Typography Base Classes (No Colors)**
+
+```css
+/* Base classes define sizing, spacing, font-weight - NO COLORS */
+.h1-primary {
+  @apply font-bold text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-1 lg:mb-1.5;
 }
+
+.h2-title {
+  @apply font-medium text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl;
+}
+
+.h3-secondary {
+  @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4;
+}
+
+.p-primary {
+  @apply text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl leading-snug whitespace-pre-line;
+}
+```
+
+#### **Color Application Strategy**
+
+```tsx
+// ✅ Background-based color selection
+const getHeadingColors = (backgroundColor: 'white' | 'black' | 'gray') => ({
+  title: backgroundColor === 'black' ? 'text-white' : 'text-gray-900',
+  subtitle: backgroundColor === 'black' ? 'text-gray-300' : 'text-gray-600',
+});
+
+// Usage in components
+<h1 className={`h1-primary ${titleColor} mb-3`}>Title</h1>
+<h3 className={`h3-secondary ${subtitleColor} mb-8`}>Subtitle</h3>
+```
+
+### **Responsive Breakpoint System**
+
+**CRITICAL**: Always use complete responsive breakpoint coverage:
+
+```tsx
+// ✅ CORRECT: Full responsive scale
+"text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl";
+
+// ❌ WRONG: Incomplete breakpoints
+"text-4xl md:text-[60px]"; // Missing lg, xl, 2xl
+"text-3xl md:text-5xl"; // Missing lg, xl, 2xl
+```
+
+### **Standard Responsive Patterns**
+
+#### **H1 (Main Title/Page Title)**
+
+```tsx
+"text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl font-bold mb-2 md:mb-3";
+// Font size progression: 30px → 36px → 48px → 60px → 72px
+```
+
+#### **H2 (Section Heading)**
+
+```tsx
+"text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl";
+// Font size progression: 18px → 20px → 24px → 30px → 36px
+```
+
+#### **H3 (Subtitle/Subheading)**
+
+```tsx
+"text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl";
+// Font size progression: 16px → 18px → 18px (stays same) → 20px → 24px
+```
+
+#### **P (Body Text)**
+
+```tsx
+"text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl";
+// Font size progression: 14px → 16px → 16px (stays same) → 18px → 20px
+```
+
+## Modular Component Architecture
+
+### **CRITICAL: Modular Widget Development**
+
+All new components and widgets must follow the modular, interchangeable approach:
+
+#### **Component Structure Requirements**
+
+```tsx
+// ✅ CORRECT: Modular component with clear interfaces
+interface ComponentProps {
+  title?: string;
+  subtitle?: string;
+  backgroundColor?: "white" | "black" | "gray";
+  showCards?: boolean;
+  id?: string;
+}
+
+export function ModularComponent({
+  title = "Default Title",
+  subtitle = "Default Subtitle",
+  backgroundColor = "white",
+  showCards = true,
+  id = "component-id",
+}: ComponentProps) {
+  const colors = getHeadingColors(backgroundColor);
+
+  return (
+    <section id={id} className={`w-full py-16 bg-${backgroundColor}`}>
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className={`h1-primary ${colors.title} mb-3 text-center`}>
+          {title}
+        </h2>
+        <h3 className={`h3-secondary ${colors.subtitle} mb-8 text-center`}>
+          {subtitle}
+        </h3>
+        {showCards && <ComponentContent />}
+      </div>
+    </section>
+  );
+}
+```
+
+#### **Reusability Requirements**
+
+- **Props Interface**: Always define clear TypeScript interfaces
+- **Default Values**: Provide sensible defaults for all optional props
+- **Background Adaptation**: Support white/black/gray backgrounds automatically
+- **Content Flexibility**: Allow content to be toggled or customized
+- **ID Support**: Always support custom IDs for navigation and testing
+
+### **Grid Component Standards**
+
+Follow the established grid component patterns:
+
+```tsx
+// ✅ Use existing grid components
+<FullWidthTextGrid
+  title="Section Title"
+  subtitle="Section Subtitle"
+  backgroundColor="black"
+  content={gridContent}
+/>
+
+<ThreeByOneGrid
+  title="Three Column Section"
+  subtitle="Responsive grid layout"
+  backgroundColor="white"
+  cards={cardData}
+/>
+
+<ImageWithFourTextGrid
+  title="Image + Text Grid"
+  subtitle="Combined image and text content"
+  backgroundColor="gray"
+  imageData={imageConfig}
+  textData={textContent}
+/>
 ```
 
 ### **SectionRouter Configuration Rules**

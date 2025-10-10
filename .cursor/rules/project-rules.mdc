@@ -1,6 +1,45 @@
 ---
-description: 
-globs: 
+description: Global project rules that always apply to all development
+globs:
 alwaysApply: true
 ---
-global project rules
+
+# Global Project Rules
+
+## Core Development Principles
+
+### **CRITICAL: Always Apply Rules**
+
+- **Keep code slim and efficient**: Don't use fixed dimensions and static sizes
+- **Never change design properties** without explicit request or direct relation to the prompt
+- **Minimize API calls**: Always ask what the minimum reasonable calls are for a specific request
+- **Run lint checks** after completing tasks to avoid @typescript-eslint/no-unused-vars errors
+- **Follow the beta roadmap**: Use `docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md` as the primary guide
+
+### **Build Optimization Mandate**
+
+- **Target build time**: <2 minutes (reduced from 3 minutes)
+- **Bundle size targets**: Main chunks <120KB (current: 170KB)
+- **Dependency management**: Remove unused packages immediately
+- **Test structure**: Use modern website-focused testing in `src/test/website/`
+
+### **Modular Architecture Requirements**
+
+- **Component design**: Always build modular, interchangeable components
+- **Typography**: Use SEO-conform typography with separate color classes
+- **Responsive design**: Complete breakpoint coverage (sm, md, lg, xl, 2xl)
+- **Performance**: Sub-100ms price calculations, <500ms image loading
+
+### **Security & Content Protection**
+
+- **TypeScript compliance**: NEVER use `any` type - always specify proper types
+- **Content protection**: Implement client-side protection for IP and sensitive content
+- **Rate limiting**: Respect established rate limits and session management
+- **Error handling**: Comprehensive error boundaries with graceful recovery
+
+### **Quality Assurance Standards**
+
+- **Test coverage**: 90%+ components, 95%+ API routes, 100% security features
+- **Performance monitoring**: Track Core Web Vitals, bundle sizes, API response times
+- **SEO compliance**: Proper semantic HTML, meta tags, structured data
+- **Accessibility**: WCAG compliance, keyboard navigation, screen reader support

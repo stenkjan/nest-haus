@@ -1,7 +1,44 @@
 ---
-description: 
-globs: 
+description: Design rules that always apply to maintain consistency and performance
+globs:
 alwaysApply: true
 ---
-keep the code slim and efficient, dont use fixed dimensions and static sizes, never change any design properties or specifications without asking if they are not in direct relation to the prompt.
-Make sure to not make unneccessary api calls, always ask yourself what the minimu amount of reasonable call to an api for a specific request is. run lint checks after completing a task, make sure we dont have unused variables to avoid @typescript-eslint/no-unused-vars errors
+
+# Design Rules (Always Applied)
+
+## Core Design Principles
+
+### **CRITICAL: Always Apply Design Rules**
+
+- **Keep code slim and efficient**: Don't use fixed dimensions and static sizes
+- **Never change design properties** without explicit request or direct relation to the prompt
+- **Minimize API calls**: Always ask what the minimum reasonable calls are for a specific request
+- **Run lint checks** after completing tasks to avoid @typescript-eslint/no-unused-vars errors
+
+### **Typography & SEO Compliance**
+
+- **Use semantic HTML**: Proper h1, h2, h3 hierarchy for SEO
+- **Separate color classes**: Never hardcode colors in base typography classes
+- **Complete responsive breakpoints**: Always include sm, md, lg, xl, 2xl coverage
+- **Background-based colors**: Adapt text colors based on background (white/black/gray)
+
+### **Modular Component Design**
+
+- **Interchangeable components**: Build widgets that can be easily swapped and reused
+- **Clear interfaces**: Always define TypeScript interfaces for component props
+- **Default values**: Provide sensible defaults for all optional props
+- **Background adaptation**: Support white/black/gray backgrounds automatically
+
+### **Performance & Optimization**
+
+- **Image optimization**: Use HybridBlobImage for all new image implementations
+- **Bundle size awareness**: Keep components under performance budgets
+- **Lazy loading**: Implement for non-critical components
+- **Caching strategies**: Use established multi-level caching patterns
+
+### **Responsive Design Standards**
+
+- **1536px max width**: Use `max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8` for content
+- **Mobile-first approach**: Design for mobile, enhance for desktop
+- **Touch targets**: Minimum 44x44px for interactive elements
+- **Fluid typography**: Use responsive text scaling patterns

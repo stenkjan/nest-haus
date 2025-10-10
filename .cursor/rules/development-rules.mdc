@@ -10,8 +10,10 @@ alwaysApply: false
 - Make sure to include the indexed documentations of the languages and tools we use when needed: React, Next.js, Prisma, Redis, PostgreSQL
 - Always try to keep the codebase slim and the code you generate concise
 - Don't change any content or design properties that are not directly related to a prompt, if unsure, always ask
-- Documentation in /docs must be updated after every commit, using the predefined .md files and continuing them as needed
-- Use GitHub Actions or equivalent CI to continuously generate and update documentation
+- **CRITICAL**: Follow the comprehensive roadmap in `docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md` for all development decisions
+- **Modular Approach**: Always build components and widgets in a modular, interchangeable way following established patterns
+- **Build Optimization**: Keep build times optimized - current target is <2 minutes (down from 3 minutes)
+- **Dependency Management**: Only use dependencies that are actively used - remove unused packages immediately
 
 ## TypeScript & Type Safety Rules
 
@@ -204,11 +206,23 @@ cd preiskalkulation && python read_prices.py
 
 ## Testing & CI
 
+### **Modern Test Structure (Updated 2025)**
+
+- **Test Organization**: Use the new website-focused test structure in `src/test/website/`
+- **Test Categories**: landing-page, configurator, contact-system, e-commerce, security
+- **Coverage Goals**: 90%+ components, 95%+ API routes, 100% security features
+- **Test Framework**: Vitest with jsdom environment and comprehensive coverage reporting
+- **Integration Tests**: Focus on user-facing functionality and business logic
+- **Performance Tests**: Monitor bundle sizes, Core Web Vitals, and load times
+- **Security Tests**: Comprehensive content protection and threat detection testing
+
+### **Test Execution Rules**
+
 - All integration tests must be automated and run as part of the CI pipeline
-- Integration tests should be cleaned up after execution to avoid redundant or stale test artifacts
-- Test files, data, and temporary resources created during tests must be removed or reset after each test run
+- Test files should be organized by functionality, not by technical implementation
 - Periodically review and remove obsolete or redundant tests to keep the test suite lean
 - Ensure that test coverage is maintained without accumulating unnecessary or duplicate tests
+- **CRITICAL**: Run `npm run lint` and `npm run typecheck` before committing
 
 ## Error Handling & Debugging Guidelines
 
