@@ -26,6 +26,9 @@ export interface Configuration {
   planungspaket?: ConfigurationItem | null
   kamindurchzug?: ConfigurationItem | null
   fussbodenheizung?: ConfigurationItem | null
+  bodenaufbau?: ConfigurationItem | null
+  geschossdecke?: ConfigurationItem | null
+  fundament?: ConfigurationItem | null
   totalPrice: number
   timestamp: number
 }
@@ -71,7 +74,7 @@ interface ConfiguratorState {
   initializeSession: () => void
   updateSelection: (item: ConfigurationItem) => void
   removeSelection: (category: string) => void
-  updateCheckboxOption: (category: 'kamindurchzug' | 'fussbodenheizung', isChecked: boolean) => void
+  updateCheckboxOption: (category: 'kamindurchzug' | 'fussbodenheizung' | 'fundament', isChecked: boolean) => void
   calculatePrice: () => void
   saveConfiguration: (userDetails?: Record<string, unknown>) => Promise<boolean>
   resetConfiguration: () => void
@@ -395,8 +398,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         get().calculatePrice()
       },
 
-      // Update checkbox options (kamindurchzug, fussbodenheizung)
-      updateCheckboxOption: (category: 'kamindurchzug' | 'fussbodenheizung', isChecked: boolean) => {
+      // Update checkbox options (kamindurchzug, fussbodenheizung, fundament)
+      updateCheckboxOption: (category: 'kamindurchzug' | 'fussbodenheizung' | 'fundament', isChecked: boolean) => {
         const state = get()
 
         const updatedConfig: Configuration = {
@@ -416,6 +419,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
               name: 'Fußbodenheizung',
               price: 5000,
               description: 'Elektrische Fußbodenheizung'
+            },
+            fundament: {
+              name: 'Fundament',
+              price: 5000, // Base price, will be calculated dynamically in PriceCalculator
+              description: 'Fundamentvorbereitung'
             }
           }
 
@@ -451,7 +459,10 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
           planungspaket: state.configuration.planungspaket || undefined,
           kamindurchzug: state.configuration.kamindurchzug || undefined,
-          fussbodenheizung: state.configuration.fussbodenheizung || undefined
+          fussbodenheizung: state.configuration.fussbodenheizung || undefined,
+          bodenaufbau: state.configuration.bodenaufbau || undefined,
+          geschossdecke: state.configuration.geschossdecke || undefined,
+          fundament: state.configuration.fundament || undefined
         }
 
         const totalPrice = PriceCalculator.calculateTotalPrice(selections)
@@ -589,13 +600,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: 155500,
             description: '75m² Nutzfläche'
           },
-          // Holzlattung Lärche
+          // Trapezblech (new default)
           {
             category: 'gebaeudehuelle',
-            value: 'holzlattung',
-            name: 'Holzlattung Lärche Natur',
-            price: 9600,
-            description: 'PEFC-Zertifiziert 5,0 x 4,0 cm\nNatürlich. Ökologisch.'
+            value: 'trapezblech',
+            name: 'Trapezblech',
+            price: -9600,
+            description: 'RAL 9005 - 3000 x 1142 mm'
           },
           // Kiefer
           {
@@ -605,13 +616,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: -1400,
             description: 'PEFC - Zertifiziert - Sicht 1,5 cm'
           },
-          // Parkett Eiche
+          // Ohne Parkett (new default)
           {
             category: 'fussboden',
-            value: 'parkett',
-            name: 'Parkett Eiche',
+            value: 'ohne_parkett',
+            name: 'Ohne Parkett',
             price: 0,
-            description: 'Schwimmend verlegt'
+            description: 'Kein Bodenbelag'
           },
           // Light Belichtungspaket
           {
@@ -628,6 +639,15 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             name: 'Holz',
             price: 400,
             description: 'Holzfenster Fichte'
+          },
+
+          // Ohne Heizung (new default for bodenaufbau)
+          {
+            category: 'bodenaufbau',
+            value: 'ohne_heizung',
+            name: 'Ohne Heizung',
+            price: 0,
+            description: 'Kein Heizungssystem im Boden'
           },
 
           // Planung Basis (default) - now has a price
@@ -652,7 +672,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           fussboden: defaultSelections[3] as ConfigurationItem,
           belichtungspaket: defaultSelections[4] as ConfigurationItem,
           fenster: defaultSelections[5] as ConfigurationItem,
-          planungspaket: defaultSelections[6] as ConfigurationItem,
+          bodenaufbau: defaultSelections[6] as ConfigurationItem,
+          planungspaket: defaultSelections[7] as ConfigurationItem,
           stirnseite: null, // No default stirnseite
           timestamp: Date.now()
         };

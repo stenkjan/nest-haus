@@ -313,7 +313,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
           mobile: "Das Light-Paket bietet eine solide Grundbeleuchtung mit 12% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
           desktop: "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 12% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche, in denen gezieltes, warmes Licht gewünscht ist. Die bewusst reduzierte Verglasung sorgt für optimale Energieeffizienz bei gleichzeitig ausreichend natürlichem Lichteinfall."
         },
-        imagePath: IMAGES.hero.nestHaus8,
+        imagePath: IMAGES.hero.nestHaus7,
         overlayImagePath: IMAGES.pvModule.nest_75_fenster_overlay_light_holz
       },
       {
@@ -324,7 +324,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
           mobile: "Das Medium-Paket bietet ausgewogene Helligkeit mit 16% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
           desktop: "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 16% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die sowohl Gemütlichkeit als auch ausreichend Tageslicht benötigen. Die durchdachte Verteilung der Öffnungen sorgt für optimale Raumausleuchtung."
         },
-        imagePath: IMAGES.hero.nestHaus7
+        imagePath: IMAGES.hero.nestHaus1
       },
       {
         id: 3,
@@ -334,7 +334,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
           mobile: "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
           desktop: "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und eine starke Verbindung zur Natur schaffen möchten. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke und ein Gefühl von Grenzenlosigkeit."
         },
-        imagePath: IMAGES.hero.nestHaus2
+        imagePath: IMAGES.hero.nestHaus3
       }
     ]
   },

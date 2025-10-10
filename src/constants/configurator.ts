@@ -194,39 +194,51 @@ export const NEST_OPTIONS = [
 export const MODULAR_PRICING = {
   // Each combination has base price + per-module price
   combinations: {
+    'trapezblech_kiefer_ohne_parkett': { base: 151700, perModule: 32400 }, // Base - 3800
     'trapezblech_kiefer_parkett': { base: 155500, perModule: 33600 },
     'trapezblech_kiefer_kalkstein_kanafar': { base: 161200, perModule: 35000 },
     'trapezblech_kiefer_schiefer_massiv': { base: 161200, perModule: 35000 },
+    'trapezblech_fichte_ohne_parkett': { base: 153100, perModule: 32600 }, // Base - 3800
     'trapezblech_fichte_parkett': { base: 156900, perModule: 33800 },
     'trapezblech_fichte_kalkstein_kanafar': { base: 162600, perModule: 35300 },
     'trapezblech_fichte_schiefer_massiv': { base: 162600, perModule: 35300 },
+    'trapezblech_steirische_eiche_ohne_parkett': { base: 161900, perModule: 34200 }, // Base - 3800
     'trapezblech_steirische_eiche_parkett': { base: 165700, perModule: 35400 },
     'trapezblech_steirische_eiche_kalkstein_kanafar': { base: 171400, perModule: 36900 },
     'trapezblech_steirische_eiche_schiefer_massiv': { base: 171400, perModule: 36900 },
+    'holzlattung_kiefer_ohne_parkett': { base: 161300, perModule: 34400 }, // Base - 3800
     'holzlattung_kiefer_parkett': { base: 165100, perModule: 35600 },
     'holzlattung_kiefer_kalkstein_kanafar': { base: 170800, perModule: 37000 },
     'holzlattung_kiefer_schiefer_massiv': { base: 170800, perModule: 37000 },
+    'holzlattung_fichte_ohne_parkett': { base: 162600, perModule: 34600 }, // Base - 3800
     'holzlattung_fichte_parkett': { base: 166400, perModule: 35800 },
     'holzlattung_fichte_kalkstein_kanafar': { base: 172100, perModule: 37300 },
     'holzlattung_fichte_schiefer_massiv': { base: 172100, perModule: 37300 },
+    'holzlattung_steirische_eiche_ohne_parkett': { base: 171500, perModule: 36200 }, // Base - 3800
     'holzlattung_steirische_eiche_parkett': { base: 175300, perModule: 37400 },
     'holzlattung_steirische_eiche_kalkstein_kanafar': { base: 181000, perModule: 38900 },
     'holzlattung_steirische_eiche_schiefer_massiv': { base: 181000, perModule: 38900 },
+    'fassadenplatten_schwarz_kiefer_ohne_parkett': { base: 188100, perModule: 39100 }, // Base - 3800
     'fassadenplatten_schwarz_kiefer_parkett': { base: 191900, perModule: 40300 },
     'fassadenplatten_schwarz_kiefer_kalkstein_kanafar': { base: 197600, perModule: 41700 },
     'fassadenplatten_schwarz_kiefer_schiefer_massiv': { base: 197600, perModule: 41700 },
+    'fassadenplatten_schwarz_fichte_ohne_parkett': { base: 189400, perModule: 39400 }, // Base - 3800
     'fassadenplatten_schwarz_fichte_parkett': { base: 193200, perModule: 40600 },
     'fassadenplatten_schwarz_fichte_kalkstein_kanafar': { base: 198900, perModule: 42000 },
     'fassadenplatten_schwarz_fichte_schiefer_massiv': { base: 198900, perModule: 42000 },
+    'fassadenplatten_schwarz_steirische_eiche_ohne_parkett': { base: 198300, perModule: 41000 }, // Base - 3800
     'fassadenplatten_schwarz_steirische_eiche_parkett': { base: 202100, perModule: 42200 },
     'fassadenplatten_schwarz_steirische_eiche_kalkstein_kanafar': { base: 207800, perModule: 43600 },
     'fassadenplatten_schwarz_steirische_eiche_schiefer_massiv': { base: 207800, perModule: 43600 },
+    'fassadenplatten_weiss_kiefer_ohne_parkett': { base: 188100, perModule: 39100 }, // Base - 3800
     'fassadenplatten_weiss_kiefer_parkett': { base: 191900, perModule: 40300 },
     'fassadenplatten_weiss_kiefer_kalkstein_kanafar': { base: 197600, perModule: 41700 },
     'fassadenplatten_weiss_kiefer_schiefer_massiv': { base: 197600, perModule: 41700 },
+    'fassadenplatten_weiss_fichte_ohne_parkett': { base: 189400, perModule: 39400 }, // Base - 3800
     'fassadenplatten_weiss_fichte_parkett': { base: 193200, perModule: 40600 },
     'fassadenplatten_weiss_fichte_kalkstein_kanafar': { base: 198900, perModule: 42000 },
     'fassadenplatten_weiss_fichte_schiefer_massiv': { base: 198900, perModule: 42000 },
+    'fassadenplatten_weiss_steirische_eiche_ohne_parkett': { base: 198300, perModule: 41000 }, // Base - 3800
     'fassadenplatten_weiss_steirische_eiche_parkett': { base: 202100, perModule: 42200 },
     'fassadenplatten_weiss_steirische_eiche_kalkstein_kanafar': { base: 207800, perModule: 43600 },
     'fassadenplatten_weiss_steirische_eiche_schiefer_massiv': { base: 207800, perModule: 43600 }
@@ -300,4 +312,66 @@ export function calculateModularPrice(
   const totalPrice = combinationData.base + (additionalModules * combinationData.perModule);
 
   return totalPrice;
-} 
+}
+
+/**
+ * Calculate dynamic pricing for size-dependent options
+ * Base pricing for nest80, scales by 25% per additional 20m² module
+ */
+
+// Base prices for nest80 (80m²)
+export const SIZE_DEPENDENT_BASE_PRICES = {
+  elektrische_fussbodenheizung: 5000,
+  wassergefuehrte_fussbodenheizung: 7500,
+  fundament: 5000,
+  geschossdecke: 5000 // per unit
+} as const;
+
+/**
+ * Calculate price for size-dependent options based on nest module size
+ * @param nestType - The nest type (nest80, nest100, etc.)
+ * @param optionType - The option type (elektrische_fussbodenheizung, etc.)
+ * @param quantity - For geschossdecke, the number of units (default 1)
+ * @returns Calculated price for the option
+ */
+export function calculateSizeDependentPrice(
+  nestType: string,
+  optionType: keyof typeof SIZE_DEPENDENT_BASE_PRICES,
+  quantity: number = 1
+): number {
+  const basePrice = SIZE_DEPENDENT_BASE_PRICES[optionType];
+
+  // Get nest module count
+  const nestOption = NEST_OPTIONS.find(option => option.id === nestType);
+  if (!nestOption) {
+    console.warn(`💰 Unknown nest type: ${nestType}, defaulting to nest80 pricing`);
+    return basePrice * quantity;
+  }
+
+  // Calculate additional modules (nest80 = 1 module = 0 additional modules)
+  const additionalModules = nestOption.modules - 1;
+
+  // Calculate price: base + (additional modules × 25% of base)
+  const pricePerModule = basePrice + (additionalModules * (basePrice * 0.25));
+
+  return pricePerModule * quantity;
+}
+
+/**
+ * Get maximum geschossdecken based on nest size
+ * Each nest module can have one geschossdecke
+ * @param nestType - The nest type (nest80, nest100, etc.)
+ * @returns Maximum number of geschossdecken allowed
+ */
+export function getMaxGeschossdecken(nestType: string): number {
+  // Each nest size corresponds to number of 20m² modules
+  const moduleMapping: Record<string, number> = {
+    nest80: 4,  // 80m² = 4 × 20m² modules
+    nest100: 5, // 100m² = 5 × 20m² modules  
+    nest120: 6, // 120m² = 6 × 20m² modules
+    nest140: 7, // 140m² = 7 × 20m² modules
+    nest160: 8  // 160m² = 8 × 20m² modules
+  };
+
+  return moduleMapping[nestType] || 4; // Default to nest80
+}

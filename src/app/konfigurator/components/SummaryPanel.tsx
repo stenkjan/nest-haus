@@ -14,6 +14,7 @@ import {
 } from "@/store/configuratorStore";
 import { PriceCalculator } from "../core/PriceCalculator"; // Re-added for dynamic price calculations
 import { PriceUtils } from "../core/PriceUtils";
+import { calculateSizeDependentPrice } from "@/constants/configurator";
 import InfoBox from "./InfoBox";
 import Button from "@/components/ui/Button";
 
@@ -113,7 +114,7 @@ export default function SummaryPanel({
         // Use defaults for base calculation
         const baseGebaeudehuelle = "trapezblech";
         const baseInnenverkleidung = "kiefer";
-        const baseFussboden = "parkett";
+        const baseFussboden = "ohne_parkett";
 
         // Calculate base combination price (all defaults)
         const basePrice = PriceCalculator.calculateCombinationPrice(
@@ -146,6 +147,40 @@ export default function SummaryPanel({
         console.error(`Error calculating ${key} price in summary:`, error);
         return selection.price || 0;
       }
+    }
+
+    // For bodenaufbau, calculate dynamic price using dedicated method
+    if (key === "bodenaufbau" && configuration?.nest) {
+      const selectionOption = {
+        category: key,
+        value: selection.value,
+        name: selection.name,
+        price: selection.price || 0,
+      };
+      return PriceCalculator.calculateBodenaufbauPrice(
+        selectionOption,
+        configuration.nest
+      );
+    }
+
+    // For geschossdecke, calculate dynamic price using dedicated method
+    if (key === "geschossdecke" && configuration?.nest) {
+      const selectionOption = {
+        category: key,
+        value: selection.value,
+        name: selection.name,
+        price: selection.price || 0,
+        quantity: selection.quantity,
+      };
+      return PriceCalculator.calculateGeschossdeckePrice(
+        selectionOption,
+        configuration.nest
+      );
+    }
+
+    // For fundament, calculate dynamic price
+    if (key === "fundament" && configuration?.nest) {
+      return calculateSizeDependentPrice(configuration.nest.value, "fundament");
     }
 
     // For all other items, use the base price
@@ -461,6 +496,18 @@ export default function SummaryPanel({
               {/* Buttons positioned horizontally next to each other */}
               <div className="flex justify-center gap-3">
                 <Button
+                  variant="secondary"
+                  size="xs"
+                  onClick={() => {
+                    // Navigate to warenkorb with ohne-nest flag
+                    window.location.href = "/warenkorb?mode=ohne-nest";
+                  }}
+                  className="h-[44px] min-h-[44px] px-4 xl:px-6 flex items-center justify-center whitespace-nowrap text-[clamp(0.75rem,1.2vw,0.875rem)]"
+                >
+                  Direkt zum Vorentwurf
+                </Button>
+
+                <Button
                   variant="tertiary"
                   size="xs"
                   onClick={() => {
@@ -469,21 +516,9 @@ export default function SummaryPanel({
                       onReset();
                     }
                   }}
-                  className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
+                  className="h-[44px] min-h-[44px] px-4 xl:px-6 flex items-center justify-center whitespace-nowrap text-[clamp(0.75rem,1.2vw,0.875rem)]"
                 >
                   Neu konfigurieren
-                </Button>
-
-                <Button
-                  variant="secondary"
-                  size="xs"
-                  onClick={() => {
-                    // Navigate to warenkorb with ohne-nest flag
-                    window.location.href = "/warenkorb?mode=ohne-nest";
-                  }}
-                  className="h-[44px] min-h-[44px] px-6 flex items-center justify-center whitespace-nowrap"
-                >
-                  Ohne Nest fortfahren
                 </Button>
               </div>
             </div>

@@ -83,7 +83,7 @@ export class PriceUtils {
    * Determine if a category should show price per m² based on overhaul requirements
    */
   static shouldShowPricePerSquareMeter(categoryId: string): boolean {
-    const eligibleCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'planungspaket'];
+    const eligibleCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'planungspaket', 'bodenaufbau'];
     return eligibleCategories.includes(categoryId);
   }
 

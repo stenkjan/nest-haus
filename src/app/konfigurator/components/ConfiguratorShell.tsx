@@ -19,6 +19,7 @@ import type { SelectionOption as SelectionOptionType } from "../types/configurat
 import { ImageManager } from "../core/ImageManager";
 import { PriceCalculator } from "../core/PriceCalculator";
 import { configuratorData } from "../data/configuratorData";
+import { calculateSizeDependentPrice } from "@/constants/configurator";
 import CategorySection from "./CategorySection";
 import SelectionOption from "./SelectionOption";
 import QuantitySelector from "./QuantitySelector";
@@ -64,7 +65,10 @@ export default function ConfiguratorShell({
 
   // Local state for quantities and special selections
   const [pvQuantity, setPvQuantity] = useState<number>(0);
+  const [geschossdeckeQuantity, setGeschossdeckeQuantity] = useState<number>(0);
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
+  const [isGeschossdeckeOverlayVisible, setIsGeschossdeckeOverlayVisible] =
+    useState<boolean>(false);
   const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
     useState<boolean>(false); // Hidden by default, only show when actively selecting
   const [isFensterOverlayVisible, setIsFensterOverlayVisible] =
@@ -161,7 +165,9 @@ export default function ConfiguratorShell({
   const resetLocalState = useCallback(() => {
     console.log("🔄 ConfiguratorShell: Resetting local state");
     setPvQuantity(0);
+    setGeschossdeckeQuantity(0);
     setIsPvOverlayVisible(false); // Hide PV overlay when resetting since quantity is 0
+    setIsGeschossdeckeOverlayVisible(false);
     setIsBrightnessOverlayVisible(false);
     setIsFensterOverlayVisible(false); // Hidden by default, only show when actively selecting fenster
   }, []);
@@ -173,6 +179,53 @@ export default function ConfiguratorShell({
     (categoryId: string, optionId: string) => {
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
+
+      // Special handling for Geschossdecke selection
+      if (categoryId === "geschossdecke") {
+        const currentSelection =
+          configuration?.[categoryId as keyof typeof configuration];
+
+        // If clicking the same option that's already selected
+        if (
+          currentSelection &&
+          typeof currentSelection === "object" &&
+          "value" in currentSelection &&
+          currentSelection.value === optionId
+        ) {
+          // If quantity is > 0, unselect (set to 0)
+          if (geschossdeckeQuantity > 0) {
+            setGeschossdeckeQuantity(0);
+            setIsGeschossdeckeOverlayVisible(false);
+            removeSelection(categoryId);
+            return;
+          }
+        }
+
+        // If clicking Geschossdecke option when quantity is 0, set to 1 and show overlay
+        if (geschossdeckeQuantity === 0) {
+          setGeschossdeckeQuantity(1);
+          setIsGeschossdeckeOverlayVisible(true);
+
+          // Switch to exterior view to show the geschossdecke overlay (material combination)
+          const { switchToView } = useConfiguratorStore.getState();
+          if (switchToView) {
+            switchToView("exterior");
+          }
+
+          // Update the selection immediately with quantity 1
+          if (option && category) {
+            updateSelection({
+              category: categoryId,
+              value: optionId,
+              name: option.name,
+              price: option.price.amount || 0,
+              description: option.description,
+              quantity: 1,
+            });
+          }
+          return; // Exit early to avoid duplicate updateSelection call
+        }
+      }
 
       // Special handling for PV-Anlage selection
       if (categoryId === "pvanlage") {
@@ -279,6 +332,7 @@ export default function ConfiguratorShell({
           name: option.name,
           price: option.price.amount || 0,
           description: option.description,
+          ...(categoryId === "geschossdecke" && { quantity: 1 }), // Add quantity for geschossdecke
         });
 
         // Handle overlay visibility based on selection - PRESERVE EXISTING OVERLAYS
@@ -398,11 +452,40 @@ export default function ConfiguratorShell({
     [updateCheckboxOption]
   );
 
-  const handleFussbodenheizungChange = useCallback(
+  const handleFundamentChange = useCallback(
     (isChecked: boolean) => {
-      updateCheckboxOption("fussbodenheizung", isChecked);
+      updateCheckboxOption("fundament", isChecked);
     },
     [updateCheckboxOption]
+  );
+
+  const handleGeschossdeckeQuantityChange = useCallback(
+    (newQuantity: number) => {
+      setGeschossdeckeQuantity(newQuantity);
+
+      // Handle overlay visibility
+      if (newQuantity > 0) {
+        setIsGeschossdeckeOverlayVisible(true);
+      } else {
+        setIsGeschossdeckeOverlayVisible(false);
+      }
+
+      if (newQuantity === 0) {
+        // Remove Geschossdecke selection entirely when set to 0
+        removeSelection("geschossdecke");
+      } else if (configuration?.geschossdecke) {
+        // Update the selection with new quantity
+        updateSelection({
+          category: configuration.geschossdecke.category,
+          value: configuration.geschossdecke.value,
+          name: configuration.geschossdecke.name,
+          price: configuration.geschossdecke.price,
+          description: configuration.geschossdecke.description,
+          quantity: newQuantity,
+        });
+      }
+    },
+    [configuration?.geschossdecke, updateSelection, removeSelection]
   );
 
   // Fixed selection detection logic - more robust checking
@@ -445,6 +528,19 @@ export default function ConfiguratorShell({
     return moduleCount * 2;
   }, [configuration?.nest?.value, getModuleCount]);
 
+  // Helper function to calculate maximum Geschossdecken based on nest size
+  const getMaxGeschossdecken = useCallback((): number => {
+    if (!configuration?.nest?.value) return 4; // Default for nest80
+    const moduleMapping: Record<string, number> = {
+      nest80: 4, // 80m² = 4 × 20m² modules
+      nest100: 5, // 100m² = 5 × 20m² modules
+      nest120: 6, // 120m² = 6 × 20m² modules
+      nest140: 7, // 140m² = 7 × 20m² modules
+      nest160: 8, // 160m² = 8 × 20m² modules
+    };
+    return moduleMapping[configuration.nest.value] || 4;
+  }, [configuration?.nest?.value]);
+
   // RELATIVE price display - show price differences relative to currently selected option
   // Get actual price contribution of a selected option for visual indicator
   const getActualContributionPrice = useCallback(
@@ -478,7 +574,7 @@ export default function ConfiguratorShell({
           // Use defaults for base calculation
           let testGebaeudehuelle = "trapezblech";
           let testInnenverkleidung = "kiefer";
-          let testFussboden = "parkett";
+          let testFussboden = "ohne_parkett";
 
           if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
           if (categoryId === "innenverkleidung")
@@ -496,7 +592,7 @@ export default function ConfiguratorShell({
             currentNestValue,
             "trapezblech",
             "kiefer",
-            "parkett"
+            "ohne_parkett"
           );
 
           const contribution = optionTotal - baseTotal;
@@ -549,6 +645,74 @@ export default function ConfiguratorShell({
           return (
             (configuration.pvanlage.quantity || 0) *
             (option?.price?.amount || 0)
+          );
+        }
+
+        // For bodenaufbau, calculate dynamic price
+        if (categoryId === "bodenaufbau" && configuration?.nest) {
+          if (optionId === "ohne_heizung") {
+            return 0;
+          }
+          return calculateSizeDependentPrice(
+            configuration.nest.value,
+            optionId as
+              | "elektrische_fussbodenheizung"
+              | "wassergefuehrte_fussbodenheizung"
+          );
+        }
+
+        // For geschossdecke, calculate dynamic price with quantity
+        if (
+          categoryId === "geschossdecke" &&
+          configuration?.nest &&
+          configuration.geschossdecke?.quantity
+        ) {
+          return calculateSizeDependentPrice(
+            configuration.nest.value,
+            "geschossdecke",
+            configuration.geschossdecke.quantity
+          );
+        }
+
+        // For fundament, calculate dynamic price
+        if (categoryId === "fundament" && configuration?.nest) {
+          return calculateSizeDependentPrice(
+            configuration.nest.value,
+            "fundament"
+          );
+        }
+
+        // For bodenaufbau, calculate dynamic price
+        if (categoryId === "bodenaufbau" && configuration?.nest) {
+          if (optionId === "ohne_heizung") {
+            return 0;
+          }
+          return calculateSizeDependentPrice(
+            configuration.nest.value,
+            optionId as
+              | "elektrische_fussbodenheizung"
+              | "wassergefuehrte_fussbodenheizung"
+          );
+        }
+
+        // For geschossdecke, calculate dynamic price with quantity
+        if (
+          categoryId === "geschossdecke" &&
+          configuration?.nest &&
+          configuration.geschossdecke?.quantity
+        ) {
+          return calculateSizeDependentPrice(
+            configuration.nest.value,
+            "geschossdecke",
+            configuration.geschossdecke.quantity
+          );
+        }
+
+        // For fundament, calculate dynamic price
+        if (categoryId === "fundament" && configuration?.nest) {
+          return calculateSizeDependentPrice(
+            configuration.nest.value,
+            "fundament"
           );
         }
 
@@ -660,7 +824,7 @@ export default function ConfiguratorShell({
           }
         }
 
-        // If this option is currently selected, show per m² price for fenster, no price for others
+        // If this option is currently selected, show per m² price for fenster, actual price for parkett, no price for others
         if (currentSelection && currentSelection.value === optionId) {
           if (categoryId === "fenster") {
             // Show per m² price for selected fenster option
@@ -668,6 +832,28 @@ export default function ConfiguratorShell({
               type: "standard" as const,
               amount: option.price.amount || 0,
               monthly: option.price.monthly,
+            };
+          }
+          if (categoryId === "fussboden" && optionId === "parkett") {
+            // Show actual price for selected parkett eiche
+            const currentNestValue = configuration.nest?.value || "nest80";
+            const basePrice = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              "trapezblech",
+              "kiefer",
+              "ohne_parkett"
+            );
+            const parkettPrice = PriceCalculator.calculateCombinationPrice(
+              currentNestValue,
+              "trapezblech",
+              "kiefer",
+              "parkett"
+            );
+            const actualPrice = parkettPrice - basePrice;
+            return {
+              type: "standard" as const,
+              amount: actualPrice,
+              monthly: Math.round(actualPrice / 240),
             };
           }
           return { type: "selected" as const };
@@ -1149,6 +1335,24 @@ export default function ConfiguratorShell({
     }
   }, [configuration?.pvanlage?.quantity, pvQuantity]);
 
+  // Sync local Geschossdecke quantity with store on mount/configuration change
+  useEffect(() => {
+    if (configuration?.geschossdecke?.quantity !== undefined) {
+      const storeQuantity = configuration.geschossdecke.quantity;
+      if (storeQuantity !== geschossdeckeQuantity) {
+        console.log(
+          "🔧 DEBUG: Syncing Geschossdecke quantity from store:",
+          storeQuantity
+        );
+        setGeschossdeckeQuantity(storeQuantity);
+        // Also sync overlay visibility
+        if (storeQuantity > 0) {
+          setIsGeschossdeckeOverlayVisible(true);
+        }
+      }
+    }
+  }, [configuration?.geschossdecke?.quantity, geschossdeckeQuantity]);
+
   // Restore overlay visibility based on configuration state (for returning from warenkorb)
   useEffect(() => {
     // Restore belichtungspaket overlay if belichtungspaket is selected (non-default or explicitly chosen)
@@ -1187,6 +1391,14 @@ export default function ConfiguratorShell({
     }
   }, [configuration?.pvanlage, pvQuantity]);
 
+  // Reset local geschossdecke quantities when selections are removed
+  useEffect(() => {
+    if (!configuration?.geschossdecke && geschossdeckeQuantity > 0) {
+      setGeschossdeckeQuantity(0);
+      setIsGeschossdeckeOverlayVisible(false); // Hide overlay when Geschossdecke selection is removed from store
+    }
+  }, [configuration?.geschossdecke, geschossdeckeQuantity]);
+
   // Render selection content
   const SelectionContent = () => (
     <div className="p-[clamp(1rem,3vw,2rem)] space-y-[clamp(2.75rem,5vh,3.75rem)]">
@@ -1210,22 +1422,32 @@ export default function ConfiguratorShell({
                   onChange={handleKamindurchzugChange}
                 />
 
-                {/* Fußbodenheizung Checkbox */}
+                {/* Fundament Checkbox */}
                 <ConfiguratorCheckbox
-                  id="fussbodenheizung-checkbox"
-                  uncheckedText="Fußbodenheizung"
-                  checkedText="Fußbodenheizung"
-                  price={5000}
+                  id="fundament-checkbox"
+                  uncheckedText="Fundament"
+                  checkedText="Fundament"
+                  price={
+                    configuration?.nest?.value
+                      ? calculateSizeDependentPrice(
+                          configuration.nest.value,
+                          "fundament"
+                        )
+                      : 5000
+                  }
                   pricePerSqm={
                     configuration?.nest?.value
-                      ? 5000 /
+                      ? calculateSizeDependentPrice(
+                          configuration.nest.value,
+                          "fundament"
+                        ) /
                         (parseInt(
                           configuration.nest.value.replace("nest", "")
                         ) || 80)
                       : 62.5
                   }
-                  isChecked={!!configuration?.fussbodenheizung}
-                  onChange={handleFussbodenheizungChange}
+                  isChecked={!!configuration?.fundament}
+                  onChange={handleFundamentChange}
                 />
 
                 {/* Lightbox button for Optionen */}
@@ -1295,6 +1517,20 @@ export default function ConfiguratorShell({
                       />
                     </>
                   )}
+
+                  {/* Geschossdecke Quantity Selector */}
+                  {category.id === "geschossdecke" &&
+                    configuration?.geschossdecke && (
+                      <>
+                        <QuantitySelector
+                          label="Anzahl der Geschossdecken"
+                          value={geschossdeckeQuantity}
+                          max={getMaxGeschossdecken()}
+                          unitPrice={configuration.geschossdecke.price || 0}
+                          onChange={handleGeschossdeckeQuantityChange}
+                        />
+                      </>
+                    )}
 
                   {/* Noch Fragen offen? InfoBox - Only for nest category */}
                   {category.id === "nest" && (
@@ -1388,6 +1624,7 @@ export default function ConfiguratorShell({
             isPvOverlayVisible={isPvOverlayVisible}
             isBrightnessOverlayVisible={isBrightnessOverlayVisible}
             isFensterOverlayVisible={isFensterOverlayVisible}
+            isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>
 
@@ -1421,6 +1658,7 @@ export default function ConfiguratorShell({
             isPvOverlayVisible={isPvOverlayVisible}
             isBrightnessOverlayVisible={isBrightnessOverlayVisible}
             isFensterOverlayVisible={isFensterOverlayVisible}
+            isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>
 

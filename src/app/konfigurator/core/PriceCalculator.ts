@@ -8,6 +8,7 @@
 
 import {
   calculateModularPrice,
+  calculateSizeDependentPrice,
   GRUNDSTUECKSCHECK_PRICE,
   MODULAR_PRICING,
   NEST_OPTIONS,
@@ -39,6 +40,9 @@ interface Selections {
   grundstueckscheck?: boolean
   kamindurchzug?: SelectionOption
   fussbodenheizung?: SelectionOption
+  bodenaufbau?: SelectionOption
+  geschossdecke?: SelectionOption
+  fundament?: SelectionOption
 }
 
 export class PriceCalculator {
@@ -73,7 +77,7 @@ export class PriceCalculator {
     const defaultSelections = {
       gebaeudehuelle: 'trapezblech',
       innenverkleidung: 'kiefer',
-      fussboden: 'parkett'
+      fussboden: 'ohne_parkett'
     };
 
     // Current combination price
@@ -151,7 +155,7 @@ export class PriceCalculator {
         // This ensures consistent pricing regardless of selection order
         const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
         const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
-        const fussboden = selections.fussboden?.value || 'parkett';
+        const fussboden = selections.fussboden?.value || 'ohne_parkett';
 
         // Calculate combination price using modular pricing system
         totalPrice = this.calculateCombinationPrice(
@@ -181,6 +185,24 @@ export class PriceCalculator {
         additionalPrice += belichtungspaketPrice;
       }
 
+      // Add bodenaufbau price (calculated based on nest size)
+      if (selections.bodenaufbau && selections.nest) {
+        const bodenaufbauPrice = this.calculateBodenaufbauPrice(
+          selections.bodenaufbau,
+          selections.nest
+        );
+        additionalPrice += bodenaufbauPrice;
+      }
+
+      // Add geschossdecke price (calculated based on nest size and quantity)
+      if (selections.geschossdecke && selections.nest) {
+        const geschossdeckePrice = this.calculateGeschossdeckePrice(
+          selections.geschossdecke,
+          selections.nest
+        );
+        additionalPrice += geschossdeckePrice;
+      }
+
       // Add stirnseite verglasung price (calculated based on fenster material)
       if (selections.stirnseite && selections.stirnseite.value !== 'keine_verglasung') {
         const stirnseitePrice = this.calculateStirnseitePrice(
@@ -197,13 +219,21 @@ export class PriceCalculator {
         additionalPrice += selections.planungspaket.price || 0;
       }
 
-      // Add checkbox options (kamindurchzug, fussbodenheizung)
+      // Add checkbox options (kamindurchzug, fussbodenheizung, fundament)
       if (selections.kamindurchzug) {
         additionalPrice += selections.kamindurchzug.price || 0;
       }
 
       if (selections.fussbodenheizung) {
         additionalPrice += selections.fussbodenheizung.price || 0;
+      }
+
+      if (selections.fundament && selections.nest) {
+        const fundamentPrice = calculateSizeDependentPrice(
+          selections.nest.value,
+          'fundament'
+        );
+        additionalPrice += fundamentPrice;
       }
 
       // Planning package and Grundstückscheck removed - handled in separate cart logic
@@ -266,6 +296,50 @@ export class PriceCalculator {
   }
 
   /**
+   * Calculate bodenaufbau price based on nest size
+   * Formula: calculateSizeDependentPrice for heating options, 0 for ohne_heizung
+   */
+  static calculateBodenaufbauPrice(
+    bodenaufbau: SelectionOption,
+    nest: SelectionOption
+  ): number {
+    try {
+      if (bodenaufbau.value === 'ohne_heizung') {
+        return 0;
+      }
+
+      return calculateSizeDependentPrice(
+        nest.value,
+        bodenaufbau.value as 'elektrische_fussbodenheizung' | 'wassergefuehrte_fussbodenheizung'
+      );
+    } catch (error) {
+      console.error('🔥 Error calculating bodenaufbau price:', error);
+      return 0;
+    }
+  }
+
+  /**
+   * Calculate geschossdecke price based on nest size and quantity
+   * Formula: calculateSizeDependentPrice × quantity
+   */
+  static calculateGeschossdeckePrice(
+    geschossdecke: SelectionOption,
+    nest: SelectionOption
+  ): number {
+    try {
+      const quantity = geschossdecke.quantity || 1;
+      return calculateSizeDependentPrice(
+        nest.value,
+        'geschossdecke',
+        quantity
+      );
+    } catch (error) {
+      console.error('🏢 Error calculating geschossdecke price:', error);
+      return 0;
+    }
+  }
+
+  /**
    * Calculate stirnseite verglasung price based on fenster material
    * Formula: verglasung_area * fenster_material_price_per_sqm
    * Areas: oben=8m², einfache_schiebetuer=8.5m², doppelte_schiebetuer=17m², vollverglasung=25m²
@@ -306,12 +380,12 @@ export class PriceCalculator {
    * Get base price for a nest option (calculated with default selections)
    */
   static getBasePrice(nestType: string): number {
-    // Default selections (Trapezblech + Kiefer + Parkett)
+    // Default selections (Trapezblech + Kiefer + Ohne Parkett)
     return this.calculateCombinationPrice(
       nestType,
       'trapezblech',  // default
       'kiefer',       // default
-      'parkett'       // default
+      'ohne_parkett'  // default (updated)
     )
   }
 
@@ -399,7 +473,7 @@ export class PriceCalculator {
         // Determine combination for breakdown
         const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
         const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
-        const fussboden = selections.fussboden?.value || 'parkett';
+        const fussboden = selections.fussboden?.value || 'ohne_parkett';
 
         breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
 
@@ -497,6 +571,44 @@ export class PriceCalculator {
         breakdown.options.fussbodenheizung = {
           name: selections.fussbodenheizung.name,
           price: selections.fussbodenheizung.price
+        }
+      }
+
+      // Add new dynamic pricing options using dedicated methods
+      if (selections.bodenaufbau && selections.nest) {
+        const bodenaufbauPrice = this.calculateBodenaufbauPrice(
+          selections.bodenaufbau,
+          selections.nest
+        );
+        if (bodenaufbauPrice > 0) {
+          breakdown.options.bodenaufbau = {
+            name: selections.bodenaufbau.name,
+            price: bodenaufbauPrice
+          }
+        }
+      }
+
+      if (selections.geschossdecke && selections.nest) {
+        const geschossdeckePrice = this.calculateGeschossdeckePrice(
+          selections.geschossdecke,
+          selections.nest
+        );
+        if (geschossdeckePrice > 0) {
+          breakdown.options.geschossdecke = {
+            name: `${selections.geschossdecke.name} (${selections.geschossdecke.quantity || 1}x)`,
+            price: geschossdeckePrice
+          }
+        }
+      }
+
+      if (selections.fundament && selections.nest) {
+        const fundamentPrice = calculateSizeDependentPrice(
+          selections.nest.value,
+          'fundament'
+        );
+        breakdown.options.fundament = {
+          name: selections.fundament.name,
+          price: fundamentPrice
         }
       }
 

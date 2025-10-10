@@ -157,24 +157,30 @@ export const configuratorData: CategoryData[] = [
   },
   {
     id: 'fussboden',
-    title: 'Der Fußboden',
+    title: 'Bodenbelag',
     subtitle: 'Oberflächen',
     options: [
+      {
+        id: 'ohne_parkett',
+        name: 'Ohne Parkett',
+        description: 'Kein Bodenbelag',
+        price: { type: 'included', amount: 0 }
+      },
       {
         id: 'parkett',
         name: 'Parkett Eiche',
         description: 'Schwimmend verlegt',
-        price: { type: 'included' }
+        price: { type: 'upgrade', amount: 3800, monthly: 20 }
       },
       {
         id: 'kalkstein_kanafar',
-        name: 'Kalkstein Kanafar',
+        name: 'Steinbelag Hell',
         description: 'Schieferplatten Kalkstein\n800 x 800 x 10 cm',
         price: { type: 'upgrade', amount: 4500, monthly: 24 }
       },
       {
         id: 'schiefer_massiv', // granit paths but display as schiefer
-        name: 'Schiefer Massiv',
+        name: 'Steinbelag Dunkel',
         description: 'Feinsteinzeug Schieferoptik\n800 x 800 x 5,5cm',
         price: { type: 'upgrade', amount: 5500, monthly: 29 }
       }
@@ -275,6 +281,44 @@ export const configuratorData: CategoryData[] = [
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
         price: { type: 'upgrade', amount: 21900, monthly: 127 }
+      }
+    ]
+  },
+  {
+    id: 'bodenaufbau',
+    title: 'Bodenaufbau',
+    subtitle: 'Heizungssystem',
+    options: [
+      {
+        id: 'ohne_heizung',
+        name: 'Ohne Heizung',
+        description: 'Kein Heizungssystem im Boden',
+        price: { type: 'included', amount: 0 }
+      },
+      {
+        id: 'elektrische_fussbodenheizung',
+        name: 'Elektrische Fußbodenheizung',
+        description: 'Elektrisches Heizungssystem\nDynamische Preisgestaltung nach Größe',
+        price: { type: 'upgrade', amount: 5000, monthly: 26 } // Base price for nest80
+      },
+      {
+        id: 'wassergefuehrte_fussbodenheizung',
+        name: 'Wassergeführte Fußbodenheizung',
+        description: 'Wasserbasiertes Heizungssystem\nDynamische Preisgestaltung nach Größe',
+        price: { type: 'upgrade', amount: 7500, monthly: 39 } // Base price for nest80
+      }
+    ]
+  },
+  {
+    id: 'geschossdecke',
+    title: 'Geschossdecke',
+    subtitle: 'Zusätzliche Ebenen',
+    options: [
+      {
+        id: 'geschossdecke_module',
+        name: 'Geschossdecke',
+        description: 'Zusätzliche Geschossdecke\n5.000€ pro Einheit',
+        price: { type: 'upgrade', amount: 5000, monthly: 26 }
       }
     ]
   }
