@@ -4,6 +4,42 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9208a132375101ca82da9ebecc72e92b75f44ebb] - Fri Oct 10 17:02:59 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Update dependencies and refactor motion imports across components  - Upgraded framer-motion version and replaced motion/react imports with framer-motion in multiple components for consistency. - Cleaned up package.json and package-lock.json by removing obsolete dependencies and ensuring proper versioning. - Enhanced code readability by standardizing import statements and formatting across various files.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/showcase/page.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCards.tsx.backup
+- src/components/cards/ContentCardsGlass.tsx
+- src/components/cards/ImageGlassCard.tsx
+- src/components/cards/PlanungspaketeCards.tsx
+- src/components/cards/SquareGlassCard.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/FullWidthVideoGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/StaticGlassCard.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+- src/components/motion/MotionWrapper.tsx
+- src/components/ui/Dialog.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
 ## [9615aebc75735b1ed8bbfc1cf3eba4066e005a03] - Fri Oct 10 16:50:17 2025 +0200
 
 **Author**: stenkjan
