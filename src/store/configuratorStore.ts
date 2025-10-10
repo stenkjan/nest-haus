@@ -175,6 +175,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // DEBUG: Log the selection being updated
         console.log("🔧 DEBUG: Updating selection:", item);
+        console.log("🔧 DEBUG: Current config before update:", state.configuration[item.category]);
         if (item.category === 'gebaeudehuelle') {
           console.log("🔧 DEBUG: Gebäudehülle selection:", item);
         }
@@ -465,8 +466,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           fundament: state.configuration.fundament || undefined
         }
 
+        console.log('🔧 DEBUG: Store selections for price calc:', selections);
+        console.log('🔧 DEBUG: Bodenaufbau in store:', state.configuration.bodenaufbau);
+        console.log('🔧 DEBUG: Geschossdecke in store:', state.configuration.geschossdecke);
         const totalPrice = PriceCalculator.calculateTotalPrice(selections)
         const priceBreakdown = PriceCalculator.getPriceBreakdown(selections)
+        console.log('💰 DEBUG: Total price result:', totalPrice);
 
         set({
           currentPrice: totalPrice,

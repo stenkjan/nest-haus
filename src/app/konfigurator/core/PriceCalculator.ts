@@ -186,20 +186,24 @@ export class PriceCalculator {
       }
 
       // Add bodenaufbau price (calculated based on nest size)
+      console.log('🔧 DEBUG: Bodenaufbau check:', selections.bodenaufbau);
       if (selections.bodenaufbau && selections.nest) {
         const bodenaufbauPrice = this.calculateBodenaufbauPrice(
           selections.bodenaufbau,
           selections.nest
         );
+        console.log('🔥 Bodenaufbau price calculated:', bodenaufbauPrice);
         additionalPrice += bodenaufbauPrice;
       }
 
       // Add geschossdecke price (calculated based on nest size and quantity)
+      console.log('🔧 DEBUG: Geschossdecke check:', selections.geschossdecke);
       if (selections.geschossdecke && selections.nest) {
         const geschossdeckePrice = this.calculateGeschossdeckePrice(
           selections.geschossdecke,
           selections.nest
         );
+        console.log('🏢 Geschossdecke price calculated:', geschossdeckePrice);
         additionalPrice += geschossdeckePrice;
       }
 
@@ -286,7 +290,6 @@ export class PriceCalculator {
       // Calculate total price
       const totalPrice = beleuchtungsSquareMeters * fensterPricePerSqm;
 
-      console.log(`💡 Belichtungspaket calculation: ${nestSize}m² * ${percentage * 100}% = ${beleuchtungsSquareMeters}m² * ${fensterPricePerSqm}€ = ${totalPrice}€`);
 
       return totalPrice;
     } catch (error) {

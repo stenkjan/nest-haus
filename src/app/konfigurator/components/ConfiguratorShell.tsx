@@ -180,53 +180,6 @@ export default function ConfiguratorShell({
       const category = configuratorData.find((cat) => cat.id === categoryId);
       const option = category?.options.find((opt) => opt.id === optionId);
 
-      // Special handling for Geschossdecke selection
-      if (categoryId === "geschossdecke") {
-        const currentSelection =
-          configuration?.[categoryId as keyof typeof configuration];
-
-        // If clicking the same option that's already selected
-        if (
-          currentSelection &&
-          typeof currentSelection === "object" &&
-          "value" in currentSelection &&
-          currentSelection.value === optionId
-        ) {
-          // If quantity is > 0, unselect (set to 0)
-          if (geschossdeckeQuantity > 0) {
-            setGeschossdeckeQuantity(0);
-            setIsGeschossdeckeOverlayVisible(false);
-            removeSelection(categoryId);
-            return;
-          }
-        }
-
-        // If clicking Geschossdecke option when quantity is 0, set to 1 and show overlay
-        if (geschossdeckeQuantity === 0) {
-          setGeschossdeckeQuantity(1);
-          setIsGeschossdeckeOverlayVisible(true);
-
-          // Switch to exterior view to show the geschossdecke overlay (material combination)
-          const { switchToView } = useConfiguratorStore.getState();
-          if (switchToView) {
-            switchToView("exterior");
-          }
-
-          // Update the selection immediately with quantity 1
-          if (option && category) {
-            updateSelection({
-              category: categoryId,
-              value: optionId,
-              name: option.name,
-              price: option.price.amount || 0,
-              description: option.description,
-              quantity: 1,
-            });
-          }
-          return; // Exit early to avoid duplicate updateSelection call
-        }
-      }
-
       // Special handling for PV-Anlage selection
       if (categoryId === "pvanlage") {
         const currentSelection =
@@ -352,6 +305,30 @@ export default function ConfiguratorShell({
           // PRESERVE other overlays - fenster shows on interior, others on exterior
           setIsFensterOverlayVisible(true);
           // DO NOT hide PV or brightness overlays - they show on different views
+        } else if (categoryId === "geschossdecke") {
+          // Handle geschossdecke overlay and quantity - check if already selected
+          const currentSelection =
+            configuration?.[categoryId as keyof typeof configuration];
+
+          if (currentSelection && currentSelection.value === optionId) {
+            // If clicking the same selected option, unselect it
+            if (geschossdeckeQuantity > 0) {
+              setGeschossdeckeQuantity(0);
+              setIsGeschossdeckeOverlayVisible(false);
+              removeSelection(categoryId);
+              return; // Don't continue to updateSelection
+            }
+          } else {
+            // New selection - set quantity to 1 and show overlay
+            setGeschossdeckeQuantity(1);
+            setIsGeschossdeckeOverlayVisible(true);
+
+            // Switch to exterior view to show the geschossdecke overlay (material combination)
+            const { switchToView } = useConfiguratorStore.getState();
+            if (switchToView) {
+              switchToView("exterior");
+            }
+          }
         }
 
         // Auto-scroll to next section after selection - Commented out
@@ -777,7 +754,7 @@ export default function ConfiguratorShell({
         return originalPrice;
       }
 
-      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, planungspaket)
+      // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, planungspaket, bodenaufbau, geschossdecke)
       if (
         [
           "gebaeudehuelle",
@@ -786,6 +763,8 @@ export default function ConfiguratorShell({
           "belichtungspaket",
           "fenster",
           "planungspaket",
+          "bodenaufbau",
+          "geschossdecke",
         ].includes(categoryId)
       ) {
         // Get currently selected option in this category
@@ -821,6 +800,111 @@ export default function ConfiguratorShell({
               type: "upgrade" as const,
               amount: option.price.amount || 0,
               monthly: option.price.monthly,
+            };
+          }
+        }
+
+        // Special handling for bodenaufbau - calculate relative pricing like planungspaket
+        if (categoryId === "bodenaufbau") {
+          if (currentSelection) {
+            if (currentSelection.value === optionId) {
+              // Show actual price for selected option in gray
+              if (optionId === "ohne_heizung") {
+                return { type: "selected" as const };
+              }
+              const actualPrice = calculateSizeDependentPrice(
+                configuration.nest?.value || "nest80",
+                optionId as
+                  | "elektrische_fussbodenheizung"
+                  | "wassergefuehrte_fussbodenheizung"
+              );
+              return {
+                type: "standard" as const,
+                amount: actualPrice,
+                monthly: Math.round(actualPrice / 240),
+              };
+            } else {
+              // Show relative price for other options
+              const currentPrice =
+                currentSelection.value === "ohne_heizung"
+                  ? 0
+                  : calculateSizeDependentPrice(
+                      configuration.nest?.value || "nest80",
+                      currentSelection.value as
+                        | "elektrische_fussbodenheizung"
+                        | "wassergefuehrte_fussbodenheizung"
+                    );
+              const optionPrice =
+                optionId === "ohne_heizung"
+                  ? 0
+                  : calculateSizeDependentPrice(
+                      configuration.nest?.value || "nest80",
+                      optionId as
+                        | "elektrische_fussbodenheizung"
+                        | "wassergefuehrte_fussbodenheizung"
+                    );
+              const priceDifference = optionPrice - currentPrice;
+
+              if (priceDifference === 0) {
+                return { type: "selected" as const };
+              } else if (priceDifference > 0) {
+                return {
+                  type: "upgrade" as const,
+                  amount: priceDifference,
+                  monthly: option.price.monthly,
+                };
+              } else {
+                return {
+                  type: "discount" as const,
+                  amount: Math.abs(priceDifference),
+                  monthly: option.price.monthly,
+                };
+              }
+            }
+          } else {
+            // No bodenaufbau selected yet - show full prices
+            if (optionId === "ohne_heizung") {
+              return { type: "included" as const };
+            }
+            const actualPrice = calculateSizeDependentPrice(
+              configuration.nest?.value || "nest80",
+              optionId as
+                | "elektrische_fussbodenheizung"
+                | "wassergefuehrte_fussbodenheizung"
+            );
+            return {
+              type: "upgrade" as const,
+              amount: actualPrice,
+              monthly: Math.round(actualPrice / 240),
+            };
+          }
+        }
+
+        // Special handling for geschossdecke - calculate relative pricing like planungspaket
+        if (categoryId === "geschossdecke") {
+          if (currentSelection && currentSelection.value === optionId) {
+            // Show unit price for selected geschossdecke in gray
+            const unitPrice = calculateSizeDependentPrice(
+              configuration.nest?.value || "nest80",
+              "geschossdecke",
+              1
+            );
+            return {
+              type: "standard" as const,
+              amount: unitPrice,
+              monthly: Math.round(unitPrice / 240),
+            };
+          } else {
+            // Show unit price for geschossdecke
+            const unitPrice = calculateSizeDependentPrice(
+              configuration.nest?.value || "nest80",
+              "geschossdecke",
+              1
+            );
+            return {
+              type: "upgrade" as const,
+              amount: unitPrice,
+              monthly: Math.round(unitPrice / 240),
             };
           }
         }
