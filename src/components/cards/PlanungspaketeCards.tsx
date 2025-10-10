@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, animate } from "motion/react";
+import { motion, useMotionValue, animate } from "framer-motion";
 import { Dialog } from "@/components/ui/Dialog";
 import { useIOSViewport, getIOSViewportStyles } from "@/hooks/useIOSViewport";
 import "@/app/konfigurator/components/hide-scrollbar.css";

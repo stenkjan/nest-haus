@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
