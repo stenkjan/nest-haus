@@ -386,6 +386,7 @@ export default function ConfiguratorShell({
       removeSelection,
       configuration,
       pvQuantity,
+      geschossdeckeQuantity,
       setIsPvOverlayVisible,
       setIsBrightnessOverlayVisible,
       setIsFensterOverlayVisible,
@@ -1624,7 +1625,7 @@ export default function ConfiguratorShell({
             isPvOverlayVisible={isPvOverlayVisible}
             isBrightnessOverlayVisible={isBrightnessOverlayVisible}
             isFensterOverlayVisible={isFensterOverlayVisible}
-            isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
+            _isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>
 
@@ -1658,7 +1659,7 @@ export default function ConfiguratorShell({
             isPvOverlayVisible={isPvOverlayVisible}
             isBrightnessOverlayVisible={isBrightnessOverlayVisible}
             isFensterOverlayVisible={isFensterOverlayVisible}
-            isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
+            _isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>
 

@@ -29,7 +29,7 @@ interface PreviewPanelProps {
   isPvOverlayVisible?: boolean;
   isBrightnessOverlayVisible?: boolean;
   isFensterOverlayVisible?: boolean;
-  isGeschossdeckeOverlayVisible?: boolean;
+  _isGeschossdeckeOverlayVisible?: boolean;
 }
 
 export default function PreviewPanel({
@@ -38,7 +38,7 @@ export default function PreviewPanel({
   isPvOverlayVisible = true,
   isBrightnessOverlayVisible = true,
   isFensterOverlayVisible = false,
-  isGeschossdeckeOverlayVisible = false,
+  _isGeschossdeckeOverlayVisible = false,
 }: PreviewPanelProps) {
   const {
     configuration,
