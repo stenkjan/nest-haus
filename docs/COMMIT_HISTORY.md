@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [75068502d4d6f3eaca82cf2118cd089bcd7fef08] - Sat Oct 11 14:55:20 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Refactor CheckoutStepper to utilize calculateSizeDependentPrice  - Removed redundant import of calculateSizeDependentPrice from the CheckoutStepper component. - Integrated calculateSizeDependentPrice directly from constants for improved clarity and efficiency in price calculations related to the fundament.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [7511e485a8444969b61d070f6421b78aba99e06c] - Sat Oct 11 14:51:03 2025 +0200
 
 **Author**: stenkjan
