@@ -351,6 +351,10 @@ export default function CheckoutStepper({
     if (key === "pvanlage") {
       return (selection.quantity || 1) * (selection.price || 0);
     }
+    if (key === "geschossdecke") {
+      // Always calculate quantity-based price for geschossdecke
+      return (selection.quantity || 1) * (selection.price || 0);
+    }
     if (key === "fenster") {
       // Fenster price is already included in belichtungspaket calculation, so return 0
       return 0;
@@ -402,6 +406,42 @@ export default function CheckoutStepper({
         );
       } catch (error) {
         console.error("Error calculating stirnseite price in summary:", error);
+        return selection.price || 0;
+      }
+    }
+
+    // For bodenaufbau and fundament, calculate dynamic price based on nest size
+    if (
+      (key === "bodenaufbau" || key === "fundament") &&
+      cartItemConfig?.nest
+    ) {
+      try {
+        const selectionOption = {
+          category: key,
+          value: selection.value,
+          name: selection.name,
+          price: selection.price || 0,
+        };
+
+        if (key === "bodenaufbau") {
+          return PriceCalculator.calculateBodenaufbauPrice(
+            selectionOption,
+            cartItemConfig.nest
+          );
+        }
+
+        if (key === "fundament") {
+          // Use calculateSizeDependentPrice for fundament
+          const {
+            calculateSizeDependentPrice,
+          } = require("../../../constants/configurator");
+          return calculateSizeDependentPrice(
+            cartItemConfig.nest.value,
+            "fundament"
+          );
+        }
+      } catch (error) {
+        console.error(`Error calculating ${key} price in summary:`, error);
         return selection.price || 0;
       }
     }
@@ -495,7 +535,10 @@ export default function CheckoutStepper({
       nest: "Nest",
       gebaeudehuelle: "Gebäudehülle",
       innenverkleidung: "Innenverkleidung",
-      fussboden: "Fußboden",
+      fussboden: "Bodenbelag",
+      bodenaufbau: "Bodenaufbau",
+      geschossdecke: "Geschossdecke",
+      fundament: "Fundament",
       pvanlage: "PV-Anlage",
       belichtungspaket: "Belichtungspaket",
       fenster: "Fenster",
@@ -554,6 +597,8 @@ export default function CheckoutStepper({
             "pvanlage",
             "belichtungspaket",
             "stirnseite",
+            "bodenaufbau",
+            "geschossdecke",
           ].includes(key)
         ) {
           // Exclude fenster from cart display since its price is incorporated into belichtungspaket and stirnseite

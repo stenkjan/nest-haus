@@ -97,14 +97,14 @@ export default function PreviewPanel({
       hasPart2BeenActive,
       hasPart3BeenActive
     );
-    console.log(
-      "🪟 Available views:",
-      views,
-      "Current:",
-      activeView,
-      "Fenster config:",
-      !!configuration?.fenster
-    );
+    // console.log(
+    //   "🪟 Available views:",
+    //   views,
+    //   "Current:",
+    //   activeView,
+    //   "Fenster config:",
+    //   !!configuration?.fenster
+    // );
     return views;
   }, [configuration, hasPart2BeenActive, hasPart3BeenActive, activeView]);
 
@@ -391,13 +391,13 @@ export default function PreviewPanel({
                 (isMainImageLoaded || hasLoadedFirstImage);
               const overlayVisible =
                 isFensterOverlayVisible && activeView === "interior";
-              console.log("🪟 Fenster Overlay render check:", {
-                activeView,
-                shouldRender,
-                overlayVisible,
-                fensterConfig: !!configuration?.fenster,
-                isMainImageLoaded,
-              });
+              // console.log("🪟 Fenster Overlay render check:", {
+              //   activeView,
+              //   shouldRender,
+              //   overlayVisible,
+              //   fensterConfig: !!configuration?.fenster,
+              //   isMainImageLoaded,
+              // });
 
               return (
                 shouldRender && (

@@ -1451,7 +1451,7 @@ export default function ConfiguratorShell({
         configuration.belichtungspaket.value !== "light" ||
         hasActiveSelections
       ) {
-        console.log("🔧 DEBUG: Restoring belichtungspaket overlay visibility");
+        // console.log("🔧 DEBUG: Restoring belichtungspaket overlay visibility");
         setIsBrightnessOverlayVisible(true);
       }
     }
@@ -1462,7 +1462,7 @@ export default function ConfiguratorShell({
       const hasInteriorSelections =
         configuration?.innenverkleidung || configuration?.fussboden;
       if (hasInteriorSelections) {
-        console.log("🔧 DEBUG: Restoring fenster overlay visibility");
+        // console.log("🔧 DEBUG: Restoring fenster overlay visibility");
         setIsFensterOverlayVisible(true);
       }
     }

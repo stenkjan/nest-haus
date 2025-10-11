@@ -49,14 +49,14 @@ export default function BelichtungsPaketOverlay({
     // Build the image key: nest_{size}_fenster_overlay_{brightness}_{material}
     const imageKey = `nest_${sizeCode}_fenster_overlay_${brightnessLevel}_${materialCode}`;
 
-    console.log("🌟 BelichtungsPaket overlay image key:", {
-      nestSize,
-      sizeCode,
-      brightnessLevel,
-      fensterMaterial,
-      materialCode,
-      imageKey,
-    });
+    // console.log("🌟 BelichtungsPaket overlay image key:", {
+    //   nestSize,
+    //   sizeCode,
+    //   brightnessLevel,
+    //   fensterMaterial,
+    //   materialCode,
+    //   imageKey,
+    // });
 
     // Get image path from IMAGES.pvModule (where the overlay images are stored)
     const imagePath = IMAGES.pvModule[imageKey as keyof typeof IMAGES.pvModule];

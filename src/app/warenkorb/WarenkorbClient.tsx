@@ -232,6 +232,13 @@ export default function WarenkorbClient() {
             item.kamindurchzug?.value === cartConfig.kamindurchzug?.value;
           const sameFussbodenheizung =
             item.fussbodenheizung?.value === cartConfig.fussbodenheizung?.value;
+          const sameBodenaufbau =
+            item.bodenaufbau?.value === cartConfig.bodenaufbau?.value;
+          const sameGeschossdecke =
+            item.geschossdecke?.value === cartConfig.geschossdecke?.value &&
+            item.geschossdecke?.quantity === cartConfig.geschossdecke?.quantity;
+          const sameFundament =
+            item.fundament?.value === cartConfig.fundament?.value;
           // Handle grundstueckscheck comparison - cartConfig from configurator never has grundstueckscheck
           // So we only need to check if the cart item has it (if it does, they're different)
           const sameGrundstueckscheck = !item.grundstueckscheck;
@@ -248,6 +255,9 @@ export default function WarenkorbClient() {
             samePlanungspaket &&
             sameKamindurchzug &&
             sameFussbodenheizung &&
+            sameBodenaufbau &&
+            sameGeschossdecke &&
+            sameFundament &&
             sameGrundstueckscheck
           );
         }
@@ -284,6 +294,12 @@ export default function WarenkorbClient() {
           existingItem.innenverkleidung?.value !==
             cartConfig.innenverkleidung?.value ||
           existingItem.fussboden?.value !== cartConfig.fussboden?.value ||
+          existingItem.bodenaufbau?.value !== cartConfig.bodenaufbau?.value ||
+          existingItem.geschossdecke?.value !==
+            cartConfig.geschossdecke?.value ||
+          existingItem.geschossdecke?.quantity !==
+            cartConfig.geschossdecke?.quantity ||
+          existingItem.fundament?.value !== cartConfig.fundament?.value ||
           existingItem.belichtungspaket?.value !==
             cartConfig.belichtungspaket?.value ||
           existingItem.pvanlage?.value !== cartConfig.pvanlage?.value ||
@@ -418,7 +434,10 @@ export default function WarenkorbClient() {
       nest: "Nest",
       gebaeudehuelle: "Gebäudehülle",
       innenverkleidung: "Innenverkleidung",
-      fussboden: "Fußboden",
+      fussboden: "Bodenbelag",
+      bodenaufbau: "Bodenaufbau",
+      geschossdecke: "Geschossdecke",
+      fundament: "Fundament",
       pvanlage: "PV-Anlage",
       fenster: "Fenster",
       planungspaket: "Planungspaket",
@@ -494,6 +513,8 @@ export default function WarenkorbClient() {
             "innenverkleidung",
             "fussboden",
             "pvanlage",
+            "bodenaufbau",
+            "geschossdecke",
           ].includes(key)
         ) {
           // Exclude fenster from cart display since its price is incorporated into belichtungspaket
@@ -506,6 +527,13 @@ export default function WarenkorbClient() {
             selection.quantity > 1
           ) {
             displayName = selection.name + " (" + selection.quantity + "x)";
+            displayPrice = (selection.quantity || 1) * (selection.price || 0);
+          }
+
+          if (key === "geschossdecke" && selection.quantity) {
+            if (selection.quantity > 1) {
+              displayName = selection.name + " (" + selection.quantity + "x)";
+            }
             displayPrice = (selection.quantity || 1) * (selection.price || 0);
           }
 

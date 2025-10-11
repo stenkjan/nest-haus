@@ -260,10 +260,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           shouldSwitchToView,
           lastSelectionCategory: item.category
         })
+        console.log("🔧 DEBUG: Configuration updated, new bodenaufbau:", updatedConfiguration.bodenaufbau);
 
         // SIMPLIFIED: Calculate price immediately and synchronously (avoid unnecessary Effects)
         // Following React docs: "Avoid unnecessary Effects that update state"
-        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite', 'planungspaket'];
+        const priceAffectingCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite', 'planungspaket', 'bodenaufbau', 'geschossdecke'];
         if (priceAffectingCategories.includes(item.category)) {
           // Calculate immediately in the same update cycle
           const newState = get();
@@ -276,7 +277,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             pvanlage: newState.configuration.pvanlage || undefined,
             fenster: newState.configuration.fenster || undefined,
             stirnseite: newState.configuration.stirnseite || undefined,
-            planungspaket: newState.configuration.planungspaket || undefined
+            planungspaket: newState.configuration.planungspaket || undefined,
+            kamindurchzug: newState.configuration.kamindurchzug || undefined,
+            fussbodenheizung: newState.configuration.fussbodenheizung || undefined,
+            bodenaufbau: newState.configuration.bodenaufbau || undefined,
+            geschossdecke: newState.configuration.geschossdecke || undefined,
+            fundament: newState.configuration.fundament || undefined
           };
 
           const totalPrice = PriceCalculator.calculateTotalPrice(selections as unknown as Record<string, unknown>);
@@ -396,6 +402,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           configuration: updatedConfig,
           shouldSwitchToView
         })
+        console.log("🔧 DEBUG: Configuration updated, new bodenaufbau:", updatedConfig.bodenaufbau);
         get().calculatePrice()
       },
 
