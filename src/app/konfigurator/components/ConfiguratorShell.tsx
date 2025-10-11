@@ -310,7 +310,7 @@ export default function ConfiguratorShell({
           const currentSelection =
             configuration?.[categoryId as keyof typeof configuration];
 
-          if (currentSelection && currentSelection.value === optionId) {
+          if (currentSelection && typeof currentSelection === 'object' && 'value' in currentSelection && currentSelection.value === optionId) {
             // If clicking the same selected option, unselect it
             if (geschossdeckeQuantity > 0) {
               setGeschossdeckeQuantity(0);
