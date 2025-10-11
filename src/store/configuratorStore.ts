@@ -175,7 +175,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // DEBUG: Log the selection being updated
         console.log("🔧 DEBUG: Updating selection:", item);
-        console.log("🔧 DEBUG: Current config before update:", state.configuration[item.category]);
+        console.log("🔧 DEBUG: Current config before update:", state.configuration[item.category as keyof Configuration]);
         if (item.category === 'gebaeudehuelle') {
           console.log("🔧 DEBUG: Gebäudehülle selection:", item);
         }
