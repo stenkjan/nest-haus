@@ -106,7 +106,7 @@ export default function PreviewPanel({
     //   !!configuration?.fenster
     // );
     return views;
-  }, [configuration, hasPart2BeenActive, hasPart3BeenActive, activeView]);
+  }, [configuration, hasPart2BeenActive, hasPart3BeenActive]);
 
   // Get current image path with preloading optimization
   const currentImagePath = useMemo(() => {

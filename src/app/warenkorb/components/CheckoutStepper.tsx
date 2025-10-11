@@ -8,6 +8,7 @@ import type { ConfigurationItem } from "@/store/configuratorStore";
 import {
   PLANNING_PACKAGES,
   GRUNDSTUECKSCHECK_PRICE,
+  calculateSizeDependentPrice,
 } from "@/constants/configurator";
 import { GrundstueckCheckForm, ContactMap } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";
@@ -432,9 +433,6 @@ export default function CheckoutStepper({
 
         if (key === "fundament") {
           // Use calculateSizeDependentPrice for fundament
-          const {
-            calculateSizeDependentPrice,
-          } = require("../../../constants/configurator");
           return calculateSizeDependentPrice(
             cartItemConfig.nest.value,
             "fundament"
