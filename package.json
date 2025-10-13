@@ -11,6 +11,7 @@
     "build:full": "npx prisma generate && next build",
     "build:fast": "node scripts/optimize-cache.js && npm run build",
     "build:analyze": "ANALYZE=true npm run build",
+    "vercel-build": "npx prisma generate && next build",
     "postinstall": "npx prisma generate",
     "start": "next start",
     "lint": "next lint",

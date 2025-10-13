@@ -1,0 +1,85 @@
+# Development files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tsbuildinfo
+.tsbuildinfo
+
+# Testing
+/coverage
+/.nyc_output
+/test-results/
+/playwright-report/
+src/test/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache directories
+.next/cache/
+node_modules/.cache/
+.npm
+.eslintcache
+.parcel-cache
+
+# Build artifacts
+.DS_Store
+
+# Documentation (exclude ALL docs)
+/docs/
+README.md
+CHANGELOG.md
+*.md
+!/package.json
+
+# Development scripts (exclude ALL scripts except needed ones)
+/scripts/
+!/scripts/optimize-cache.js
+
+# Performance files (EXCLUDE - these are 26MB!)
+performance_desktop.pdf
+performance_mobile.pdf
+hero-og-compressed.jpg
+temp-hero-image.jpg
+
+# Temporary files
+temp-*
+*.tmp
+*.temp
+
+# Development tools
+.vscode/
+.cursor/
+*.code-workspace
+eslint.config.mjs
+postcss.config.mjs
+tailwind.config.ts
+vitest.config.ts
+
+# Prisma development files (keep schema, exclude migrations)
+/prisma/migrations/
+prisma/seed.ts
+
+# Bundle analysis
+.next/analyze/
+
+# Large unused assets (EXCLUDE - these are 0.6MB)
+/preiskalkulation/
+service-account-key.json
+
+# Node modules cache
+node_modules/.cache/
+node_modules/.bin/
+
+# Large images (use optimized versions)
+# Keep original images but exclude from deployment cache analysis
+# Vercel will optimize these automatically

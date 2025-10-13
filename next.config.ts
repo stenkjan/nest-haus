@@ -125,6 +125,16 @@ const nextConfig: NextConfig = {
       // Add Prisma plugin for Vercel deployment
       config.plugins = [...(config.plugins || []), new PrismaPlugin()];
 
+      // Externalize heavy server-only dependencies
+      config.externals.push({
+        'googleapis': 'commonjs googleapis',
+        'node-cron': 'commonjs node-cron',
+        'ical': 'commonjs ical',
+        'node-ical': 'commonjs node-ical',
+        'jsdom': 'commonjs jsdom',
+        'isomorphic-dompurify': 'commonjs isomorphic-dompurify'
+      });
+
       // Ensure Prisma binaries are included in serverless functions
       config.resolve = {
         ...config.resolve,

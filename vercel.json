@@ -12,5 +12,17 @@
     "src/app/api/admin/usability-tests/route.ts": {
       "maxDuration": 60
     }
-  }
-} 
+  },
+  "build": {
+    "env": {
+      "SKIP_ENV_VALIDATION": "1",
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "NODE_OPTIONS": "--max-old-space-size=2048",
+      "PRISMA_GENERATE_SKIP_AUTOINSTALL": "true",
+      "PRISMA_CLI_BINARY_TARGETS": "linux-musl"
+    }
+  },
+  "installCommand": "npm ci --prefer-offline --no-audit --no-fund",
+  "buildCommand": "npx prisma generate --no-engine && npm run build",
+  "outputDirectory": ".next"
+}
