@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9f02feb655c58c860c2d5e7a9d4122a130aeae26] - Mon Oct 13 13:46:38 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Refactor LandingPageClient to remove authentication checks  - Removed the authentication checking logic from LandingPageClient, simplifying the component. - Updated the rendering logic to allow content to be displayed directly without authentication checks. - Cleaned up unused state variables and imports for improved code clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
 ## [0c72905bd58726539c7f93910d9a38d9e7b25882] - Mon Oct 13 13:38:21 2025 +0200
 
 **Author**: stenkjan
