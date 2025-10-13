@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7e0ed378548bea03e16b3c246b6a4fd432ae3edb] - Mon Oct 13 13:22:27 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Update DevTools detection settings to reduce false positives  - Disabled DevTools detection by default and adjusted configuration parameters for improved accuracy. - Increased threshold and check interval to minimize unnecessary alerts. - Enhanced detection logic to better differentiate between normal and DevTools usage, reducing false positives.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+
+
+---
+
 ## [f339cb3e22a1bf20542951a81167de02521938eb] - Mon Oct 13 12:52:29 2025 +0200
 
 **Author**: stenkjan
