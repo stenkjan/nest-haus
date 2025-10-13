@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [edfac7cab113e0ccb0745c7d0dca8cbc69faf290] - Mon Oct 13 11:06:24 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Refactor Next.js configuration for simplified bundle splitting and improved performance  - Streamlined bundle splitting configuration to avoid complex setups that may cause hanging. - Updated Vercel configuration to specify deployment regions. - Adjusted performance metrics in the security roadmap documentation.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- next.config.ts
+
+
+#### 📚 Documentation Changes
+- docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
+
+
+---
+
 ## [48a1a7306584a9f5e454e5539de910b272385eed] - Mon Oct 13 10:36:32 2025 +0200
 
 **Author**: stenkjan
