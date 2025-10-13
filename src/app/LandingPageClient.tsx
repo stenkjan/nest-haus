@@ -8,7 +8,6 @@ import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import Footer from "@/components/Footer";
-import ProtectedContent from "@/components/security/ProtectedContent";
 
 // Define sections for landing page
 const sections = [
@@ -193,35 +192,43 @@ export default function LandingPageClient() {
             }}
           >
             {/* PERFORMANCE FIX: Single responsive image container with proper overlay positioning */}
-            <div className="relative w-full">
-              <ProtectedContent
-                className="w-full h-full absolute inset-0"
-                level="standard"
-                enableWatermark={true}
-                watermarkText="© NEST-Haus"
-                preventRightClick={true}
-                preventSelection={true}
-                preventDragDrop={true}
-              >
-                <ResponsiveHybridImage
-                  desktopPath={section.imagePath}
-                  mobilePath={getMobileImagePath(section)}
-                  alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
-                  style={landingImageStyle}
-                  strategy={section.id <= 2 ? "ssr" : "client"}
-                  isAboveFold={section.id <= 3}
-                  isCritical={section.id <= 2}
-                  priority={section.id <= 3}
-                  sizes="100vw"
-                  quality={90}
-                  className="protected"
-                  unoptimized={true}
-                  breakpoint={768}
-                  // Aspect ratio configuration
-                  desktopAspectRatio="16/9" // Desktop: landscape 16:9
-                  useMobileNaturalRatio={true} // Mobile: natural vertical ratio
-                />
-              </ProtectedContent>
+            <div
+              className="relative w-full select-none"
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              style={{
+                WebkitUserSelect: "none",
+                MozUserSelect: "none",
+                msUserSelect: "none",
+                userSelect: "none",
+                WebkitTouchCallout: "none",
+                WebkitTapHighlightColor: "transparent",
+              }}
+            >
+              <ResponsiveHybridImage
+                desktopPath={section.imagePath}
+                mobilePath={getMobileImagePath(section)}
+                alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
+                style={{
+                  ...landingImageStyle,
+                  pointerEvents: "none", // Prevents direct interaction with image
+                  WebkitUserDrag: "none",
+                  userDrag: "none",
+                }}
+                strategy={section.id <= 2 ? "ssr" : "client"}
+                isAboveFold={section.id <= 3}
+                isCritical={section.id <= 2}
+                priority={section.id <= 3}
+                sizes="100vw"
+                quality={90}
+                unoptimized={true}
+                breakpoint={768}
+                // Aspect ratio configuration
+                desktopAspectRatio="16/9" // Desktop: landscape 16:9
+                useMobileNaturalRatio={true} // Mobile: natural vertical ratio
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
+              />
 
               {/* Content Overlay - responsive for both mobile and desktop */}
               <div
