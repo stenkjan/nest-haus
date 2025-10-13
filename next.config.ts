@@ -44,27 +44,42 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
 
-      // CRITICAL: Bundle splitting to reduce main bundle size
+      // Exclude server-only modules from client bundle
+      config.externals = {
+        ...config.externals,
+        googleapis: 'googleapis',
+        'service-account-key.json': 'service-account-key.json',
+      };
+
+      // CRITICAL: Aggressive bundle splitting to reduce main bundle size
       config.optimization.splitChunks = {
         chunks: 'all',
         minSize: 20000,
-        maxSize: 200000, // 200KB limit per chunk
+        maxSize: 150000, // Reduced from 200KB to 150KB
         cacheGroups: {
-          // Separate vendor libraries
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-            maxSize: 200000,
+          // Google APIs in separate chunk (largest dependency)
+          googleapis: {
+            test: /[\\/]node_modules[\\/]googleapis[\\/]/,
+            name: 'googleapis',
+            chunks: 'async', // Only load when needed
+            priority: 30,
+            maxSize: 100000,
+          },
+          // Chart.js in separate chunk
+          charts: {
+            test: /[\\/]node_modules[\\/](chart\.js|chartjs-adapter-date-fns)[\\/]/,
+            name: 'charts',
+            chunks: 'async', // Only load when needed
+            priority: 25,
+            maxSize: 100000,
           },
           // Motion/Framer Motion in separate chunk
           motion: {
             test: /[\\/]node_modules[\\/](motion|framer-motion)[\\/]/,
             name: 'motion',
-            chunks: 'all',
+            chunks: 'async', // Only load when needed
             priority: 20,
-            maxSize: 150000,
+            maxSize: 100000,
           },
           // Prisma client separate
           prisma: {
@@ -72,7 +87,15 @@ const nextConfig: NextConfig = {
             name: 'prisma',
             chunks: 'all',
             priority: 20,
-            maxSize: 100000,
+            maxSize: 80000,
+          },
+          // Separate vendor libraries (smaller chunks)
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+            maxSize: 120000, // Reduced from 200KB
           },
           // Common components
           common: {
@@ -80,7 +103,7 @@ const nextConfig: NextConfig = {
             minChunks: 2,
             chunks: 'all',
             priority: 5,
-            maxSize: 150000,
+            maxSize: 100000, // Reduced from 150KB
           },
         },
       };
@@ -110,6 +133,18 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@prisma/client', 'googleapis', 'motion', 'framer-motion'],
     // Tree shake unused exports
     optimizeServerReact: true,
+    // Enable build cache optimization
+    turbotrace: {
+      logLevel: 'error',
+      logAll: false,
+    },
+  },
+  // Enable build cache cleaning
+  onDemandEntries: {
+    // Period (in ms) where the server will keep pages in the buffer
+    maxInactiveAge: 25 * 1000,
+    // Number of pages that should be kept simultaneously without being disposed
+    pagesBufferLength: 2,
   },
   // Allow cross-origin requests from local network
   async headers() {
