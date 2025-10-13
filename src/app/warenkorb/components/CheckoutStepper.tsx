@@ -1392,8 +1392,8 @@ export default function CheckoutStepper({
                                       item as ConfigurationCartItem;
                                     const nestModel =
                                       configItem.nest?.value || "";
-                                    const priceValue =
-                                      configItem.totalPrice || 0;
+                                    // Use current price from configurator store, not stored cart price
+                                    const priceValue = getCartTotal();
                                     const geschossdeckeQuantity =
                                       configItem.geschossdecke?.quantity || 0;
                                     return PriceUtils.calculatePricePerSquareMeter(
@@ -1926,7 +1926,8 @@ export default function CheckoutStepper({
                                     item as ConfigurationCartItem;
                                   const nestModel =
                                     configItem.nest?.value || "";
-                                  const priceValue = configItem.totalPrice || 0;
+                                  // Use current price from configurator store, not stored cart price
+                                  const priceValue = getCartTotal();
                                   const geschossdeckeQuantity =
                                     configItem.geschossdecke?.quantity || 0;
                                   return PriceUtils.calculatePricePerSquareMeter(
