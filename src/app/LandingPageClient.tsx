@@ -268,33 +268,35 @@ export default function LandingPageClient() {
             }}
           >
             {/* PERFORMANCE FIX: Single responsive image container with proper overlay positioning */}
-            <ProtectedContent
-              className="relative w-full"
-              level="standard"
-              enableWatermark={true}
-              watermarkText="© NEST-Haus"
-              preventRightClick={true}
-              preventSelection={true}
-              preventDragDrop={true}
-            >
-              <ResponsiveHybridImage
-                desktopPath={section.imagePath}
-                mobilePath={getMobileImagePath(section)}
-                alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
-                style={landingImageStyle}
-                strategy={section.id <= 2 ? "ssr" : "client"}
-                isAboveFold={section.id <= 3}
-                isCritical={section.id <= 2}
-                priority={section.id <= 3}
-                sizes="100vw"
-                quality={90}
-                className="protected"
-                unoptimized={true}
-                breakpoint={768}
-                // Aspect ratio configuration
-                desktopAspectRatio="16/9" // Desktop: landscape 16:9
-                useMobileNaturalRatio={true} // Mobile: natural vertical ratio
-              />
+            <div className="relative w-full">
+              <ProtectedContent
+                className="w-full h-full absolute inset-0"
+                level="standard"
+                enableWatermark={true}
+                watermarkText="© NEST-Haus"
+                preventRightClick={true}
+                preventSelection={true}
+                preventDragDrop={true}
+              >
+                <ResponsiveHybridImage
+                  desktopPath={section.imagePath}
+                  mobilePath={getMobileImagePath(section)}
+                  alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
+                  style={landingImageStyle}
+                  strategy={section.id <= 2 ? "ssr" : "client"}
+                  isAboveFold={section.id <= 3}
+                  isCritical={section.id <= 2}
+                  priority={section.id <= 3}
+                  sizes="100vw"
+                  quality={90}
+                  className="protected"
+                  unoptimized={true}
+                  breakpoint={768}
+                  // Aspect ratio configuration
+                  desktopAspectRatio="16/9" // Desktop: landscape 16:9
+                  useMobileNaturalRatio={true} // Mobile: natural vertical ratio
+                />
+              </ProtectedContent>
 
               {/* Content Overlay - responsive for both mobile and desktop */}
               <div
@@ -350,7 +352,7 @@ export default function LandingPageClient() {
                   </Link>
                 </div>
               </div>
-            </ProtectedContent>
+            </div>
           </section>
         ))}
       </SectionRouter>
