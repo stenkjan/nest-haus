@@ -143,26 +143,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         // Check if this is a completely new session (no sessionId and no selections)
         const isNewSession = !state.sessionId && !state.configuration.nest;
 
-        // DEBUG: Log session initialization
-        console.log("🔧 DEBUG: initializeSession called", {
-          hasSessionId: !!state.sessionId,
-          hasNest: !!state.configuration.nest,
-          isNewSession,
-          currentConfig: state.configuration
-        });
-
         // Generate sessionId if missing
         if (!state.sessionId) {
-          console.log("🔧 DEBUG: Generating new sessionId");
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
         }
 
         // Set default preselections only for completely new sessions
         if (isNewSession) {
-          console.log("🔧 DEBUG: Setting default selections for new session");
           get().setDefaultSelections()
-        } else {
-          console.log("🔧 DEBUG: Skipping default selections - existing session");
         }
 
         // Calculate price immediately
@@ -172,13 +160,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       // Update selection with intelligent view switching and price calculation
       updateSelection: (item: ConfigurationItem) => {
         const state = get()
-
-        // DEBUG: Log the selection being updated
-        console.log("🔧 DEBUG: Updating selection:", item);
-        console.log("🔧 DEBUG: Current config before update:", state.configuration[item.category as keyof Configuration]);
-        if (item.category === 'gebaeudehuelle') {
-          console.log("🔧 DEBUG: Gebäudehülle selection:", item);
-        }
 
         // Generate sessionId only if not already set
         let sessionId = state.sessionId
@@ -260,7 +241,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           shouldSwitchToView,
           lastSelectionCategory: item.category
         })
-        console.log("🔧 DEBUG: Configuration updated, new bodenaufbau:", updatedConfiguration.bodenaufbau);
 
         // SIMPLIFIED: Calculate price immediately and synchronously (avoid unnecessary Effects)
         // Following React docs: "Avoid unnecessary Effects that update state"
@@ -402,7 +382,6 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           configuration: updatedConfig,
           shouldSwitchToView
         })
-        console.log("🔧 DEBUG: Configuration updated, new bodenaufbau:", updatedConfig.bodenaufbau);
         get().calculatePrice()
       },
 
@@ -473,12 +452,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           fundament: state.configuration.fundament || undefined
         }
 
-        console.log('🔧 DEBUG: Store selections for price calc:', selections);
-        console.log('🔧 DEBUG: Bodenaufbau in store:', state.configuration.bodenaufbau);
-        console.log('🔧 DEBUG: Geschossdecke in store:', state.configuration.geschossdecke);
         const totalPrice = PriceCalculator.calculateTotalPrice(selections)
         const priceBreakdown = PriceCalculator.getPriceBreakdown(selections)
-        console.log('💰 DEBUG: Total price result:', totalPrice);
 
         set({
           currentPrice: totalPrice,

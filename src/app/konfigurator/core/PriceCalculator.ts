@@ -186,35 +186,21 @@ export class PriceCalculator {
       }
 
       // Add bodenaufbau price (calculated based on nest size)
-      console.log('🔧 DEBUG: Bodenaufbau check:', selections.bodenaufbau);
-      console.log('🔧 DEBUG: Nest for bodenaufbau:', selections.nest);
       if (selections.bodenaufbau && selections.nest) {
         const bodenaufbauPrice = this.calculateBodenaufbauPrice(
           selections.bodenaufbau,
           selections.nest
         );
-        console.log('🔥 Bodenaufbau price calculated:', bodenaufbauPrice);
-        console.log('🔧 DEBUG: Additional price before bodenaufbau:', additionalPrice);
         additionalPrice += bodenaufbauPrice;
-        console.log('🔧 DEBUG: Additional price after bodenaufbau:', additionalPrice);
-      } else {
-        console.log('🔧 DEBUG: Bodenaufbau skipped - missing bodenaufbau or nest');
       }
 
       // Add geschossdecke price (calculated based on nest size and quantity)
-      console.log('🔧 DEBUG: Geschossdecke check:', selections.geschossdecke);
-      console.log('🔧 DEBUG: Nest for geschossdecke:', selections.nest);
       if (selections.geschossdecke && selections.nest) {
         const geschossdeckePrice = this.calculateGeschossdeckePrice(
           selections.geschossdecke,
           selections.nest
         );
-        console.log('🏢 Geschossdecke price calculated:', geschossdeckePrice);
-        console.log('🔧 DEBUG: Additional price before geschossdecke:', additionalPrice);
         additionalPrice += geschossdeckePrice;
-        console.log('🔧 DEBUG: Additional price after geschossdecke:', additionalPrice);
-      } else {
-        console.log('🔧 DEBUG: Geschossdecke skipped - missing geschossdecke or nest');
       }
 
       // Add stirnseite verglasung price (calculated based on fenster material)
@@ -317,9 +303,6 @@ export class PriceCalculator {
     nest: SelectionOption
   ): number {
     try {
-      console.log('🔥 DEBUG: Bodenaufbau calculation - bodenaufbau.value:', bodenaufbau.value);
-      console.log('🔥 DEBUG: Bodenaufbau calculation - nest.value:', nest.value);
-
       if (bodenaufbau.value === 'ohne_heizung') {
         return 0;
       }
@@ -328,7 +311,6 @@ export class PriceCalculator {
         nest.value,
         bodenaufbau.value as 'elektrische_fussbodenheizung' | 'wassergefuehrte_fussbodenheizung'
       );
-      console.log('🔥 DEBUG: calculateSizeDependentPrice returned:', price);
       return price;
     } catch (error) {
       console.error('🔥 Error calculating bodenaufbau price:', error);
