@@ -108,6 +108,7 @@ export default function ProtectedContent({
           e.preventDefault();
           return false;
         }
+        return true;
       };
       element.addEventListener("copy", copyHandler);
       element.addEventListener("keydown", keydownHandler);
@@ -256,4 +257,3 @@ function createWatermarkSVG(text: string): string {
     </svg>
   `;
 }
-
