@@ -44,38 +44,25 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
 
-      // Simplified bundle splitting - avoid complex configurations that can cause hanging
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
+      // MINIMAL: Very basic bundle splitting to avoid hanging
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
           },
         },
       };
     }
 
-    // Ensure Prisma client is properly bundled for Vercel
+    // SAFE: Basic Prisma configuration only
     if (isServer) {
       config.externals = [...(config.externals || []), '_http_common'];
 
       // Add Prisma plugin for Vercel deployment
       config.plugins = [...(config.plugins || []), new PrismaPlugin()];
-
-      // Externalize heavy server-only dependencies
-      config.externals.push({
-        'googleapis': 'commonjs googleapis',
-        'node-cron': 'commonjs node-cron',
-        'ical': 'commonjs ical',
-        'node-ical': 'commonjs node-ical',
-        'jsdom': 'commonjs jsdom',
-        'isomorphic-dompurify': 'commonjs isomorphic-dompurify'
-      });
 
       // Ensure Prisma binaries are included in serverless functions
       config.resolve = {
@@ -90,9 +77,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   experimental: {
-    // Prevent webpack chunk issues
-    optimizePackageImports: ['@prisma/client'],
-    // Tree shake unused exports
+    // MINIMAL: Only essential optimizations
     optimizeServerReact: true,
   },
   // Allow cross-origin requests from local network
