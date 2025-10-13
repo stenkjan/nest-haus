@@ -144,8 +144,6 @@ const nextConfig: NextConfig = {
     optimizeServerReact: true,
     // Faster builds
     webpackBuildWorker: true,
-    // Reduce cache overhead
-    memoryBasedWorkersCount: 2,
     // Faster TypeScript checking
     typedRoutes: false,
   },
