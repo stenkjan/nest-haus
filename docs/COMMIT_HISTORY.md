@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0c72905bd58726539c7f93910d9a38d9e7b25882] - Mon Oct 13 13:38:21 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Refactor LandingPageClient to improve image container structure  - Updated the layout of the image container in LandingPageClient for better responsiveness and overlay positioning. - Wrapped ProtectedContent in a div to ensure proper absolute positioning and full coverage of the image.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
 ## [7e0ed378548bea03e16b3c246b6a4fd432ae3edb] - Mon Oct 13 13:22:27 2025 +0200
 
 **Author**: stenkjan
