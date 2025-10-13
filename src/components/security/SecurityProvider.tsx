@@ -116,6 +116,8 @@ export default function SecurityProvider({
         e.preventDefault();
         return false;
       }
+
+      return true;
     };
 
     document.addEventListener("keydown", handleKeyDown);
@@ -134,4 +136,3 @@ export default function SecurityProvider({
   // This component doesn't render anything visible
   return null;
 }
-

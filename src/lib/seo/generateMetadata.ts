@@ -325,14 +325,19 @@ export function generateStructuredData(pageKey: PageKey, _customData?: CustomMet
 // Generate breadcrumb structured data
 export function generateBreadcrumbSchema(pageKey: PageKey, customPath?: string[]): object {
     const baseConfig = SEO_CONFIG;
-    const breadcrumbItems = [
-        {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: baseConfig.baseUrl,
-        },
-    ];
+    const breadcrumbItems: Array<{
+        "@type": string;
+        position: number;
+        name: string;
+        item: string;
+    }> = [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: baseConfig.baseUrl,
+            },
+        ];
 
     if (customPath) {
         customPath.forEach((pathItem, index) => {

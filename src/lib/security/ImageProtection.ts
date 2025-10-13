@@ -3,9 +3,13 @@
  * Provides watermarking, canvas-based protection, and download prevention
  */
 
-// Extended CSS style declaration to include deprecated properties
-interface ExtendedCSSStyleDeclaration extends CSSStyleDeclaration {
+// Extended CSS style declaration to include deprecated and webkit properties
+interface ExtendedCSSStyleDeclaration {
+    userSelect?: string;
+    webkitUserSelect?: string;
     msUserSelect?: string;
+    webkitTouchCallout?: string;
+    webkitTapHighlightColor?: string;
 }
 
 export interface WatermarkOptions {
@@ -43,7 +47,7 @@ export class ImageProtection {
      */
     static async addWatermark(
         imageUrl: string,
-        options: WatermarkOptions = {}
+        options: Partial<WatermarkOptions> = {}
     ): Promise<string> {
         const config = { ...this.defaultWatermarkOptions, ...options };
 
@@ -249,12 +253,14 @@ export class ImageProtection {
      * Prevent text/image selection
      */
     static preventSelection(element: HTMLElement): void {
-        element.style.userSelect = 'none';
-        element.style.webkitUserSelect = 'none';
-        // Use type assertion for deprecated msUserSelect property
-        (element.style as ExtendedCSSStyleDeclaration).msUserSelect = 'none';
-        element.style.webkitTouchCallout = 'none';
-        element.style.webkitTapHighlightColor = 'transparent';
+        // Use extended interface for all webkit and deprecated properties
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const extendedStyle = element.style as any as ExtendedCSSStyleDeclaration;
+        extendedStyle.userSelect = 'none';
+        extendedStyle.webkitUserSelect = 'none';
+        extendedStyle.msUserSelect = 'none';
+        extendedStyle.webkitTouchCallout = 'none';
+        extendedStyle.webkitTapHighlightColor = 'transparent';
 
         element.addEventListener('selectstart', (e) => {
             e.preventDefault();

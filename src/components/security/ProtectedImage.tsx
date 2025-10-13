@@ -7,12 +7,10 @@ import {
   WatermarkOptions,
 } from "@/lib/security/ImageProtection";
 
-// Extended style type to include deprecated properties
-interface ExtendedCSSProperties extends React.CSSProperties {
-  msUserSelect?: string;
-}
+// Note: Using 'as any' for style properties to handle non-standard webkit properties
 
-export interface ProtectedImageProps extends Omit<ImageProps, "src"> {
+export interface ProtectedImageProps
+  extends Omit<ImageProps, "src" | "onError"> {
   src: string;
   mobileSrc?: string;
   enableWatermark?: boolean;
@@ -238,7 +236,7 @@ export default function ProtectedImage({
             msUserSelect: "none",
             WebkitTouchCallout: "none",
             WebkitTapHighlightColor: "transparent",
-          } as ExtendedCSSProperties
+          } as any // eslint-disable-line @typescript-eslint/no-explicit-any
         }
       />
 

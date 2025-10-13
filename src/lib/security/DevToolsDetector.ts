@@ -267,6 +267,8 @@ export class DevToolsDetector {
                 this.handleDevToolsDetected('Cmd+Option+J pressed');
                 return false;
             }
+
+            return true;
         });
     }
 
@@ -382,7 +384,7 @@ export class DevToolsDetector {
         // Redirect if URL provided
         if (this.config.redirectUrl) {
             setTimeout(() => {
-                window.location.href = this.config.redirectUrl;
+                window.location.href = this.config.redirectUrl!;
             }, 1000);
         }
     }

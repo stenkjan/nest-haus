@@ -3,9 +3,13 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { ImageProtection } from "@/lib/security/ImageProtection";
 
-// Extended CSS style declaration to include deprecated properties
-interface ExtendedCSSStyleDeclaration extends CSSStyleDeclaration {
+// Extended CSS style declaration to include deprecated and webkit properties
+interface ExtendedCSSStyleDeclaration {
+  userSelect?: string;
+  webkitUserSelect?: string;
   msUserSelect?: string;
+  webkitTouchCallout?: string;
+  webkitTapHighlightColor?: string;
 }
 
 export interface ProtectedContentProps {
@@ -135,16 +139,16 @@ export default function ProtectedContent({
       );
     }
 
-    // Apply CSS-based protections
-    element.style.userSelect = finalConfig.preventSelection ? "none" : "";
-    element.style.webkitUserSelect = finalConfig.preventSelection ? "none" : "";
-    // Use type assertion for deprecated msUserSelect property
-    (element.style as ExtendedCSSStyleDeclaration).msUserSelect =
-      finalConfig.preventSelection ? "none" : "";
-    element.style.webkitTouchCallout = finalConfig.preventSelection
+    // Apply CSS-based protections using extended interface
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const extendedStyle = element.style as any as ExtendedCSSStyleDeclaration;
+    extendedStyle.userSelect = finalConfig.preventSelection ? "none" : "";
+    extendedStyle.webkitUserSelect = finalConfig.preventSelection ? "none" : "";
+    extendedStyle.msUserSelect = finalConfig.preventSelection ? "none" : "";
+    extendedStyle.webkitTouchCallout = finalConfig.preventSelection
       ? "none"
       : "";
-    element.style.webkitTapHighlightColor = finalConfig.preventSelection
+    extendedStyle.webkitTapHighlightColor = finalConfig.preventSelection
       ? "transparent"
       : "";
 
