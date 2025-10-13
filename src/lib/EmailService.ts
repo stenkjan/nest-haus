@@ -1,24 +1,7 @@
 import { Resend } from 'resend';
 
-// Initialize Resend with API key - handle missing key gracefully during build
-const getResendClient = () => {
-  const apiKey = process.env.RESEND_API_KEY;
-  
-  // Handle build-time placeholder key
-  if (apiKey === 're_build_placeholder_key_123') {
-    console.warn('⚠️  Using build placeholder - emails will be skipped');
-    return null;
-  }
-  
-  if (!apiKey) {
-    console.warn('⚠️  RESEND_API_KEY not found - emails will be skipped');
-    return null;
-  }
-  
-  return new Resend(apiKey);
-};
-
-const resend = getResendClient();
+// Initialize Resend with API key
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export interface CustomerInquiryData {
   inquiryId: string;
@@ -52,12 +35,6 @@ export class EmailService {
    */
   static async sendCustomerConfirmation(data: CustomerInquiryData): Promise<boolean> {
     try {
-      // Handle build-time when resend is null
-      if (!resend) {
-        console.warn('⚠️  Resend client not available - skipping email');
-        return false;
-      }
-
       console.log(`📧 Sending customer confirmation email to ${data.email}`);
 
       const subject = data.requestType === 'appointment'
@@ -89,12 +66,6 @@ export class EmailService {
    */
   static async sendAdminNotification(data: AdminNotificationData): Promise<boolean> {
     try {
-      // Handle build-time when resend is null
-      if (!resend) {
-        console.warn('⚠️  Resend client not available - skipping admin notification');
-        return false;
-      }
-
       console.log(`📧 Sending admin notification for inquiry ${data.inquiryId}`);
 
       const subject = data.requestType === 'appointment'

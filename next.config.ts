@@ -44,20 +44,49 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
 
-      // MINIMAL: Very basic bundle splitting to avoid hanging
+      // CRITICAL: Bundle splitting to reduce main bundle size
       config.optimization.splitChunks = {
         chunks: 'all',
+        minSize: 20000,
+        maxSize: 200000, // 200KB limit per chunk
         cacheGroups: {
+          // Separate vendor libraries
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
+            priority: 10,
+            maxSize: 200000,
+          },
+          // Motion/Framer Motion in separate chunk
+          motion: {
+            test: /[\\/]node_modules[\\/](motion|framer-motion)[\\/]/,
+            name: 'motion',
+            chunks: 'all',
+            priority: 20,
+            maxSize: 150000,
+          },
+          // Prisma client separate
+          prisma: {
+            test: /[\\/]node_modules[\\/]@prisma[\\/]/,
+            name: 'prisma',
+            chunks: 'all',
+            priority: 20,
+            maxSize: 100000,
+          },
+          // Common components
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+            maxSize: 150000,
           },
         },
       };
     }
 
-    // SAFE: Basic Prisma configuration only
+    // Ensure Prisma client is properly bundled for Vercel
     if (isServer) {
       config.externals = [...(config.externals || []), '_http_common'];
 
@@ -77,7 +106,9 @@ const nextConfig: NextConfig = {
     return config;
   },
   experimental: {
-    // MINIMAL: Only essential optimizations
+    // Prevent webpack chunk issues
+    optimizePackageImports: ['@prisma/client', 'googleapis', 'motion', 'framer-motion'],
+    // Tree shake unused exports
     optimizeServerReact: true,
   },
   // Allow cross-origin requests from local network
