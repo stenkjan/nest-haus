@@ -5,6 +5,7 @@ import { PriceUtils } from "@/app/konfigurator/core/PriceUtils";
 import { PriceCalculator } from "@/app/konfigurator/core/PriceCalculator";
 import type { CartItem, ConfigurationCartItem } from "@/store/cartStore";
 import type { ConfigurationItem } from "@/store/configuratorStore";
+import { useConfiguratorStore } from "@/store/configuratorStore";
 import {
   PLANNING_PACKAGES,
   GRUNDSTUECKSCHECK_PRICE,
@@ -23,7 +24,6 @@ import {
 } from "@/components/cards";
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 import { HybridBlobImage } from "@/components/images";
-import { useConfiguratorStore } from "@/store/configuratorStore";
 import { useCartStore } from "@/store/cartStore";
 import type { ViewType } from "@/app/konfigurator/types/configurator.types";
 import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
@@ -58,6 +58,8 @@ export default function CheckoutStepper({
 }: CheckoutStepperProps) {
   const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate } =
     useCartStore();
+  const { currentPrice, configuration: currentConfiguration } =
+    useConfiguratorStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
@@ -1392,10 +1394,36 @@ export default function CheckoutStepper({
                                       item as ConfigurationCartItem;
                                     const nestModel =
                                       configItem.nest?.value || "";
-                                    // Use current price from configurator store, not stored cart price
-                                    const priceValue = getCartTotal();
+                                    // Use current price from configurator store for consistency
+                                    const priceValue = currentPrice;
+                                    // Get current geschossdecke quantity from configurator store
                                     const geschossdeckeQuantity =
-                                      configItem.geschossdecke?.quantity || 0;
+                                      currentConfiguration.geschossdecke
+                                        ?.quantity || 0;
+                                    console.log(
+                                      "🛒 CART FOOTER m² calculation (1st):",
+                                      {
+                                        price: priceValue,
+                                        nestModel,
+                                        geschossdeckeQuantity,
+                                        baseArea:
+                                          PriceUtils.getAdjustedNutzflaeche(
+                                            nestModel,
+                                            0
+                                          ),
+                                        adjustedArea:
+                                          PriceUtils.getAdjustedNutzflaeche(
+                                            nestModel,
+                                            geschossdeckeQuantity
+                                          ),
+                                        result:
+                                          PriceUtils.calculatePricePerSquareMeter(
+                                            priceValue,
+                                            nestModel,
+                                            geschossdeckeQuantity
+                                          ),
+                                      }
+                                    );
                                     return PriceUtils.calculatePricePerSquareMeter(
                                       priceValue,
                                       nestModel,
@@ -1926,10 +1954,36 @@ export default function CheckoutStepper({
                                     item as ConfigurationCartItem;
                                   const nestModel =
                                     configItem.nest?.value || "";
-                                  // Use current price from configurator store, not stored cart price
-                                  const priceValue = getCartTotal();
+                                  // Use current price from configurator store for consistency
+                                  const priceValue = currentPrice;
+                                  // Get current geschossdecke quantity from configurator store
                                   const geschossdeckeQuantity =
-                                    configItem.geschossdecke?.quantity || 0;
+                                    currentConfiguration.geschossdecke
+                                      ?.quantity || 0;
+                                  console.log(
+                                    "🛒 CART FOOTER m² calculation (2nd):",
+                                    {
+                                      price: priceValue,
+                                      nestModel,
+                                      geschossdeckeQuantity,
+                                      baseArea:
+                                        PriceUtils.getAdjustedNutzflaeche(
+                                          nestModel,
+                                          0
+                                        ),
+                                      adjustedArea:
+                                        PriceUtils.getAdjustedNutzflaeche(
+                                          nestModel,
+                                          geschossdeckeQuantity
+                                        ),
+                                      result:
+                                        PriceUtils.calculatePricePerSquareMeter(
+                                          priceValue,
+                                          nestModel,
+                                          geschossdeckeQuantity
+                                        ),
+                                    }
+                                  );
                                   return PriceUtils.calculatePricePerSquareMeter(
                                     priceValue,
                                     nestModel,

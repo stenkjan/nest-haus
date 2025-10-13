@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import KonfiguratorClient from "./components/KonfiguratorClient";
-import { generatePageMetadata, generateStructuredData } from "@/lib/seo/generateMetadata";
+import {
+  generatePageMetadata,
+  generateStructuredData,
+} from "@/lib/seo/generateMetadata";
+import { generateConfiguratorSchema } from "@/lib/seo/priceSchema";
 
 // Dynamic SEO metadata for the configurator page
-export const metadata: Metadata = generatePageMetadata('konfigurator');
+export const metadata: Metadata = generatePageMetadata("konfigurator");
 
 // Dynamic structured data for the configurator
-const configuratorSchema = generateStructuredData('konfigurator');
+const configuratorSchema = generateStructuredData("konfigurator");
+const enhancedConfiguratorSchema = generateConfiguratorSchema();
 
 // Enable static generation for optimal SEO and performance
 export const dynamic = "force-static";
@@ -25,6 +30,12 @@ export default function KonfiguratorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(configuratorSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(enhancedConfiguratorSchema),
         }}
       />
       <KonfiguratorClient />

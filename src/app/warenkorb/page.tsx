@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import WarenkorbClient from "../warenkorb/WarenkorbClient";
+import { generateShoppingCartSchema as _generateShoppingCartSchema } from "@/lib/seo/priceSchema";
 
 // Enhanced SEO metadata for the shopping cart page
 export const metadata: Metadata = {

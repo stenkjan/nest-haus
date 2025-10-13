@@ -471,11 +471,32 @@ export default function SummaryPanel({
             </h3>
             <p className="text-[clamp(12px,2.5vw,12px)] text-gray-600 mt-2 leading-[1.3]">
               {configuration?.nest
-                ? PriceUtils.calculatePricePerSquareMeter(
-                    currentPrice,
-                    configuration.nest.value,
-                    configuration.geschossdecke?.quantity || 0
-                  )
+                ? (() => {
+                    const price = currentPrice;
+                    const nestModel = configuration.nest.value;
+                    const geschossdeckeQty =
+                      configuration.geschossdecke?.quantity || 0;
+                    console.log("🏠 CONFIGURATOR PANEL m² calculation:", {
+                      price,
+                      nestModel,
+                      geschossdeckeQty,
+                      baseArea: PriceUtils.getAdjustedNutzflaeche(nestModel, 0),
+                      adjustedArea: PriceUtils.getAdjustedNutzflaeche(
+                        nestModel,
+                        geschossdeckeQty
+                      ),
+                      result: PriceUtils.calculatePricePerSquareMeter(
+                        price,
+                        nestModel,
+                        geschossdeckeQty
+                      ),
+                    });
+                    return PriceUtils.calculatePricePerSquareMeter(
+                      price,
+                      nestModel,
+                      geschossdeckeQty
+                    );
+                  })()
                 : ""}
             </p>
           </div>

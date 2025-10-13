@@ -70,10 +70,38 @@ export default function CartFooter({ onReset }: CartFooterProps) {
             </p>
             <p className="text-[clamp(0.625rem,1vw,0.75rem)] text-gray-500 leading-tight">
               {configuration?.nest
-                ? PriceUtils.calculatePricePerSquareMeter(
-                    currentPrice,
-                    configuration.nest.value
-                  )
+                ? (() => {
+                    const price = currentPrice;
+                    const nestModel = configuration.nest.value;
+                    const geschossdeckeQty =
+                      configuration.geschossdecke?.quantity || 0;
+                    console.log(
+                      "🛒 CART FOOTER (in konfigurator) m² calculation:",
+                      {
+                        price,
+                        nestModel,
+                        geschossdeckeQty,
+                        baseArea: PriceUtils.getAdjustedNutzflaeche(
+                          nestModel,
+                          0
+                        ),
+                        adjustedArea: PriceUtils.getAdjustedNutzflaeche(
+                          nestModel,
+                          geschossdeckeQty
+                        ),
+                        result: PriceUtils.calculatePricePerSquareMeter(
+                          price,
+                          nestModel,
+                          geschossdeckeQty
+                        ),
+                      }
+                    );
+                    return PriceUtils.calculatePricePerSquareMeter(
+                      price,
+                      nestModel,
+                      geschossdeckeQty
+                    );
+                  })()
                 : ""}
             </p>
           </div>

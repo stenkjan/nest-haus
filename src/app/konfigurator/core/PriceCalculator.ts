@@ -46,10 +46,49 @@ interface Selections {
 }
 
 export class PriceCalculator {
+  // Simple in-memory cache for price calculations
+  private static cache = new Map<string, { result: number; timestamp: number }>();
+  private static readonly CACHE_TTL = 5000; // 5 seconds
+
+  /**
+   * Clear expired cache entries
+   */
+  private static cleanCache(): void {
+    const now = Date.now();
+    for (const [key, value] of this.cache.entries()) {
+      if (now - value.timestamp > this.CACHE_TTL) {
+        this.cache.delete(key);
+      }
+    }
+  }
+
+  /**
+   * Get cached result or calculate new one
+   */
+  private static getCachedResult<T>(
+    cacheKey: string,
+    calculator: () => T
+  ): T {
+    this.cleanCache();
+
+    const cached = this.cache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.result as T;
+    }
+
+    const result = calculator();
+    this.cache.set(cacheKey, {
+      result: result as number,
+      timestamp: Date.now(),
+    });
+
+    return result;
+  }
+
   /**
    * Calculate the EXACT modular price using Excel data
    * Formula: Base Price (Nest 80) + (Additional Modules × Price Per Module)
-   * CLIENT-SIDE calculation for efficiency
+   * CLIENT-SIDE calculation for efficiency with memoization
    */
   static calculateCombinationPrice(
     nestType: string,
@@ -143,106 +182,111 @@ export class PriceCalculator {
   /**
    * Calculate total price - PROGRESSIVE pricing with immediate feedback
    * Uses MODULAR PRICING for accurate scaling with nest size
-   * CLIENT-SIDE calculation to avoid unnecessary API calls
+   * CLIENT-SIDE calculation to avoid unnecessary API calls with memoization
    */
   static calculateTotalPrice(selections: Selections): number {
-    try {
-      let totalPrice = 0;
+    // Create cache key from selections
+    const cacheKey = `total_${JSON.stringify(selections)}`;
 
-      // Calculate nest module combination price if selected
-      if (selections.nest) {
-        // ALWAYS use combination pricing with defaults for missing core selections
-        // This ensures consistent pricing regardless of selection order
-        const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-        const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
-        const fussboden = selections.fussboden?.value || 'ohne_parkett';
+    return this.getCachedResult(cacheKey, () => {
+      try {
+        let totalPrice = 0;
 
-        // Calculate combination price using modular pricing system
-        totalPrice = this.calculateCombinationPrice(
-          selections.nest.value,
-          gebaeudehuelle,
-          innenverkleidung,
-          fussboden
-        );
+        // Calculate nest module combination price if selected
+        if (selections.nest) {
+          // ALWAYS use combination pricing with defaults for missing core selections
+          // This ensures consistent pricing regardless of selection order
+          const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
+          const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+          const fussboden = selections.fussboden?.value || 'ohne_parkett';
+
+          // Calculate combination price using modular pricing system
+          totalPrice = this.calculateCombinationPrice(
+            selections.nest.value,
+            gebaeudehuelle,
+            innenverkleidung,
+            fussboden
+          );
+        }
+
+        // Add additional components (these work regardless of nest selection)
+        let additionalPrice = 0;
+
+        // Add PV price
+        if (selections.pvanlage && selections.pvanlage.quantity) {
+          const pvPrice = selections.pvanlage.quantity * (selections.pvanlage.price || 0);
+          additionalPrice += pvPrice;
+        }
+
+        // Add belichtungspaket price (calculated based on nest size and fenster material)
+        if (selections.belichtungspaket && selections.nest) {
+          const belichtungspaketPrice = this.calculateBelichtungspaketPrice(
+            selections.belichtungspaket,
+            selections.nest,
+            selections.fenster
+          );
+          additionalPrice += belichtungspaketPrice;
+        }
+
+        // Add bodenaufbau price (calculated based on nest size)
+        if (selections.bodenaufbau && selections.nest) {
+          const bodenaufbauPrice = this.calculateBodenaufbauPrice(
+            selections.bodenaufbau,
+            selections.nest
+          );
+          additionalPrice += bodenaufbauPrice;
+        }
+
+        // Add geschossdecke price (calculated based on nest size and quantity)
+        if (selections.geschossdecke && selections.nest) {
+          const geschossdeckePrice = this.calculateGeschossdeckePrice(
+            selections.geschossdecke,
+            selections.nest
+          );
+          additionalPrice += geschossdeckePrice;
+        }
+
+        // Add stirnseite verglasung price (calculated based on fenster material)
+        if (selections.stirnseite && selections.stirnseite.value !== 'keine_verglasung') {
+          const stirnseitePrice = this.calculateStirnseitePrice(
+            selections.stirnseite,
+            selections.fenster
+          );
+          additionalPrice += stirnseitePrice;
+        }
+
+        // Fenster price is already included in belichtungspaket calculation, so don't add it separately
+
+        // Add planungspaket price (fixed price independent of nest module)
+        if (selections.planungspaket) {
+          additionalPrice += selections.planungspaket.price || 0;
+        }
+
+        // Add checkbox options (kamindurchzug, fussbodenheizung, fundament)
+        if (selections.kamindurchzug) {
+          additionalPrice += selections.kamindurchzug.price || 0;
+        }
+
+        if (selections.fussbodenheizung) {
+          additionalPrice += selections.fussbodenheizung.price || 0;
+        }
+
+        if (selections.fundament && selections.nest) {
+          const fundamentPrice = calculateSizeDependentPrice(
+            selections.nest.value,
+            'fundament'
+          );
+          additionalPrice += fundamentPrice;
+        }
+
+        // Planning package and Grundstückscheck removed - handled in separate cart logic
+
+        return totalPrice + additionalPrice;
+      } catch (error) {
+        console.error('💰 PriceCalculator: Error calculating price:', error);
+        return 0;
       }
-
-      // Add additional components (these work regardless of nest selection)
-      let additionalPrice = 0;
-
-      // Add PV price
-      if (selections.pvanlage && selections.pvanlage.quantity) {
-        const pvPrice = selections.pvanlage.quantity * (selections.pvanlage.price || 0);
-        additionalPrice += pvPrice;
-      }
-
-      // Add belichtungspaket price (calculated based on nest size and fenster material)
-      if (selections.belichtungspaket && selections.nest) {
-        const belichtungspaketPrice = this.calculateBelichtungspaketPrice(
-          selections.belichtungspaket,
-          selections.nest,
-          selections.fenster
-        );
-        additionalPrice += belichtungspaketPrice;
-      }
-
-      // Add bodenaufbau price (calculated based on nest size)
-      if (selections.bodenaufbau && selections.nest) {
-        const bodenaufbauPrice = this.calculateBodenaufbauPrice(
-          selections.bodenaufbau,
-          selections.nest
-        );
-        additionalPrice += bodenaufbauPrice;
-      }
-
-      // Add geschossdecke price (calculated based on nest size and quantity)
-      if (selections.geschossdecke && selections.nest) {
-        const geschossdeckePrice = this.calculateGeschossdeckePrice(
-          selections.geschossdecke,
-          selections.nest
-        );
-        additionalPrice += geschossdeckePrice;
-      }
-
-      // Add stirnseite verglasung price (calculated based on fenster material)
-      if (selections.stirnseite && selections.stirnseite.value !== 'keine_verglasung') {
-        const stirnseitePrice = this.calculateStirnseitePrice(
-          selections.stirnseite,
-          selections.fenster
-        );
-        additionalPrice += stirnseitePrice;
-      }
-
-      // Fenster price is already included in belichtungspaket calculation, so don't add it separately
-
-      // Add planungspaket price (fixed price independent of nest module)
-      if (selections.planungspaket) {
-        additionalPrice += selections.planungspaket.price || 0;
-      }
-
-      // Add checkbox options (kamindurchzug, fussbodenheizung, fundament)
-      if (selections.kamindurchzug) {
-        additionalPrice += selections.kamindurchzug.price || 0;
-      }
-
-      if (selections.fussbodenheizung) {
-        additionalPrice += selections.fussbodenheizung.price || 0;
-      }
-
-      if (selections.fundament && selections.nest) {
-        const fundamentPrice = calculateSizeDependentPrice(
-          selections.nest.value,
-          'fundament'
-        );
-        additionalPrice += fundamentPrice;
-      }
-
-      // Planning package and Grundstückscheck removed - handled in separate cart logic
-
-      return totalPrice + additionalPrice;
-    } catch (error) {
-      console.error('💰 PriceCalculator: Error calculating price:', error);
-      return 0;
-    }
+    });
   }
 
   /**

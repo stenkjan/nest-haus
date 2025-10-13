@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator'
+import { SessionManager } from '@/lib/session/SessionManager'
 
 // Configuration types matching our backend
 export interface ConfigurationItem {
@@ -278,6 +279,17 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
               timestamp: Date.now()
             }
           });
+
+          // Sync session to server (debounced, non-blocking)
+          if (typeof window !== 'undefined') {
+            const finalState = get();
+            SessionManager.debouncedSync({
+              sessionId: finalState.sessionId || '',
+              configuration: finalState.configuration,
+              currentPrice: finalState.currentPrice,
+              timestamp: Date.now(),
+            });
+          }
         }
 
         // Optional: Track selection in background (non-blocking, fail-safe)
