@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3af62f706621fa1efb8845b716b5fdb9091a8974] - Mon Oct 13 12:43:41 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enhance ProtectedContent and ProtectedImage components to support deprecated CSS properties  - Introduced ExtendedCSSStyleDeclaration and ExtendedCSSProperties interfaces to handle deprecated msUserSelect property. - Updated style application in ProtectedContent and ProtectedImage components to use type assertions for better compatibility with legacy CSS properties.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/security/ProtectedContent.tsx
+- src/components/security/ProtectedImage.tsx
+
+
+---
+
 ## [ef7a405416eff31023125333fca19ec230a776dc] - Mon Oct 13 12:31:58 2025 +0200
 
 **Author**: stenkjan
