@@ -118,13 +118,13 @@ export default function RootLayout({
       >
         <CookieConsentProvider>
           <SecurityProvider
-            enableDevToolsDetection={true}
+            enableDevToolsDetection={false} // Disabled to prevent false positives
             enableImageProtection={true}
             devToolsConfig={{
-              threshold: 160,
-              checkInterval: 500,
-              showWarning: true,
-              blockAccess: false, // Don't completely block in production
+              threshold: 200, // Higher threshold to reduce false positives
+              checkInterval: 2000, // Less frequent checks
+              showWarning: false, // Don't show warnings
+              blockAccess: false, // Don't block access
             }}
             imageProtectionConfig={{
               enableWatermark: true,

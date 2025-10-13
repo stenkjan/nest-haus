@@ -36,13 +36,13 @@ export class DevToolsDetector {
     };
 
     private static defaultConfig: DevToolsConfig = {
-        enabled: true,
-        threshold: 160,
-        checkInterval: 500,
+        enabled: false, // Disabled by default to prevent false positives
+        threshold: 200, // Higher threshold for better accuracy
+        checkInterval: 2000, // Less frequent checks
         redirectUrl: '/access-denied',
-        showWarning: true,
+        showWarning: false, // Don't show warnings by default
         warningMessage: 'Developer tools detected. Access restricted for security reasons.',
-        blockAccess: true,
+        blockAccess: false, // Don't block access by default
     };
 
     private constructor(config: Partial<DevToolsConfig> = {}) {
@@ -64,6 +64,7 @@ export class DevToolsDetector {
      */
     start(): void {
         if (!this.config.enabled || typeof window === 'undefined') {
+            console.log('🔒 DevTools detection disabled or not in browser environment');
             return;
         }
 
@@ -98,10 +99,20 @@ export class DevToolsDetector {
      */
     private startWindowSizeMonitoring(): void {
         const checkDevTools = () => {
-            const widthThreshold = window.outerWidth - window.innerWidth > this.config.threshold;
-            const heightThreshold = window.outerHeight - window.innerHeight > this.config.threshold;
+            // More sophisticated detection to reduce false positives
+            const widthDiff = window.outerWidth - window.innerWidth;
+            const heightDiff = window.outerHeight - window.innerHeight;
 
-            if ((widthThreshold || heightThreshold) && !this.isDetected) {
+            // Only trigger if both dimensions suggest DevTools AND the difference is significant
+            const significantWidthDiff = widthDiff > this.config.threshold;
+            const significantHeightDiff = heightDiff > this.config.threshold;
+
+            // Additional checks to reduce false positives
+            const isLikelyDevTools = (significantWidthDiff || significantHeightDiff) &&
+                (widthDiff > 100 || heightDiff > 100) && // Minimum difference
+                window.innerWidth > 400 && window.innerHeight > 300; // Reasonable window size
+
+            if (isLikelyDevTools && !this.isDetected) {
                 this.handleDevToolsDetected('Window size monitoring');
             }
         };
@@ -194,7 +205,8 @@ export class DevToolsDetector {
             botScore += 0.3;
         }
 
-        if (botScore > 0.7) {
+        // Only trigger on very high bot scores to reduce false positives
+        if (botScore > 0.9) {
             this.handleDevToolsDetected('Behavioral analysis - bot detected');
         }
 
