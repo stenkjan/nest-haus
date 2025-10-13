@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d588565ea1d585b241605383751884aaffe245a6] - Mon Oct 13 10:09:42 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Optimize Next.js configuration for improved performance and build efficiency  - Reduced chunk sizes for various libraries to enhance loading times. - Introduced new caching strategies and build optimizations in the package.json. - Added separate build commands for faster builds and cache optimization.  `
+
+### Changes Analysis
+
+#### ⚙️ Backend Changes
+- scripts/optimize-cache.js
+
+
+#### 🔧 Configuration Changes
+- next.config.ts
+- package.json
+
+
+---
+
 ## [5e3a167b4271a54ead0a428f6e56fa90677b9046] - Sat Oct 11 15:26:17 2025 +0200
 
 **Author**: stenkjan
