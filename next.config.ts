@@ -133,11 +133,6 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@prisma/client', 'googleapis', 'motion', 'framer-motion'],
     // Tree shake unused exports
     optimizeServerReact: true,
-    // Enable build cache optimization
-    turbotrace: {
-      logLevel: 'error',
-      logAll: false,
-    },
   },
   // Enable build cache cleaning
   onDemandEntries: {
