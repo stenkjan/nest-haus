@@ -209,12 +209,12 @@ export default function LandingPageClient() {
                 desktopPath={section.imagePath}
                 mobilePath={getMobileImagePath(section)}
                 alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
-                style={{
-                  ...landingImageStyle,
-                  pointerEvents: "none", // Prevents direct interaction with image
-                  WebkitUserDrag: "none",
-                  userDrag: "none",
-                }}
+                style={
+                  {
+                    ...landingImageStyle,
+                    pointerEvents: "none", // Prevents direct interaction with image
+                  } as any
+                }
                 strategy={section.id <= 2 ? "ssr" : "client"}
                 isAboveFold={section.id <= 3}
                 isCritical={section.id <= 2}
