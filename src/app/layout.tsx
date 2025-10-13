@@ -9,6 +9,8 @@ import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
 import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
 import CookieBanner from "@/components/CookieBanner";
 import CookieSettingsHandler from "@/components/CookieSettingsHandler";
+// Security components - content protection and DevTools detection
+import SecurityProvider from "@/components/security/SecurityProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -70,30 +72,16 @@ export const metadata: Metadata = {
   },
 };
 
-// Structured Data for Organization
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "NEST-Haus",
-  description: "Modulare Häuser und nachhaltiges Bauen",
-  url: "https://nest-haus.com",
-  logo: "https://nest-haus.com/logo.png",
-  contactPoint: {
-    "@type": "ContactPoint",
-    contactType: "customer service",
-    availableLanguage: "German",
-  },
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "DE",
-  },
-  sameAs: [
-    // Add your social media URLs here
-    // "https://www.facebook.com/nest-haus",
-    // "https://www.instagram.com/nest-haus",
-    // "https://www.linkedin.com/company/nest-haus"
-  ],
-};
+// Enhanced Structured Data
+import {
+  generateLocalBusinessSchema,
+  generateProductSchema,
+  generateFAQSchema,
+} from "@/lib/seo/generateMetadata";
+
+const organizationSchema = generateLocalBusinessSchema();
+const productSchema = generateProductSchema();
+const faqSchema = generateFAQSchema();
 
 export default function RootLayout({
   children,
@@ -103,10 +91,25 @@ export default function RootLayout({
   return (
     <html lang="de">
       <head>
+        {/* Organization Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        {/* Product Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(productSchema),
+          }}
+        />
+        {/* FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema),
           }}
         />
       </head>
@@ -114,6 +117,21 @@ export default function RootLayout({
         className={`${inter.className} antialiased bg-white min-h-screen flex flex-col`}
       >
         <CookieConsentProvider>
+          <SecurityProvider
+            enableDevToolsDetection={true}
+            enableImageProtection={true}
+            devToolsConfig={{
+              threshold: 160,
+              checkInterval: 500,
+              showWarning: true,
+              blockAccess: false, // Don't completely block in production
+            }}
+            imageProtectionConfig={{
+              enableWatermark: true,
+              watermarkText: "© NEST-Haus",
+              protectionLevel: "standard",
+            }}
+          />
           <Navbar />
           <main className="flex-1">{children}</main>
 

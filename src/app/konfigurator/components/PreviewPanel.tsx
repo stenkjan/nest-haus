@@ -22,6 +22,7 @@ import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
 import BelichtungsPaketOverlay from "./BelichtungsPaketOverlay";
 import FensterOverlay from "./FensterOverlay";
+import ProtectedContent from "@/components/security/ProtectedContent";
 
 interface PreviewPanelProps {
   isMobile?: boolean;
@@ -286,7 +287,16 @@ export default function PreviewPanel({
         style={{ backgroundColor: "white" }}
       >
         {/* Image filling the entire container */}
-        <div className="relative w-full h-full">
+        <ProtectedContent
+          className="relative w-full h-full"
+          level="strict"
+          enableWatermark={true}
+          watermarkText="© NEST-Haus"
+          preventRightClick={true}
+          preventSelection={true}
+          preventDragDrop={true}
+          preventCopy={true}
+        >
           <div className="relative w-full h-full">
             {/* Previous image - shown during loading to prevent blank space */}
             {showPreviousImage && previousImagePath && (
@@ -295,7 +305,7 @@ export default function PreviewPanel({
                 path={previousImagePath}
                 alt="Previous image"
                 fill
-                className="object-contain"
+                className="object-contain protected"
                 strategy="client"
                 isInteractive={true}
                 enableCache={true}
@@ -310,7 +320,7 @@ export default function PreviewPanel({
               path={currentImagePath}
               alt={`${viewLabels[activeView] || activeView} - ${configuration?.nest?.name || "Nest Konfigurator"}`}
               fill
-              className={`transition-opacity duration-300 object-contain ${
+              className={`transition-opacity duration-300 object-contain protected ${
                 showPreviousImage ? "opacity-0" : "opacity-100"
               }`}
               // Strategy optimized for interactive configurator
@@ -416,7 +426,7 @@ export default function PreviewPanel({
               );
             })()}
           </div>
-        </div>
+        </ProtectedContent>
 
         {/* Navigation Arrows - Only show if multiple views available */}
         {availableViews.length > 1 && (

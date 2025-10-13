@@ -9,6 +9,7 @@ import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import Footer from "@/components/Footer";
+import ProtectedContent from "@/components/security/ProtectedContent";
 
 // Define sections for landing page
 const sections = [
@@ -267,7 +268,15 @@ export default function LandingPageClient() {
             }}
           >
             {/* PERFORMANCE FIX: Single responsive image container with proper overlay positioning */}
-            <div className="relative w-full">
+            <ProtectedContent
+              className="relative w-full"
+              level="standard"
+              enableWatermark={true}
+              watermarkText="© NEST-Haus"
+              preventRightClick={true}
+              preventSelection={true}
+              preventDragDrop={true}
+            >
               <ResponsiveHybridImage
                 desktopPath={section.imagePath}
                 mobilePath={getMobileImagePath(section)}
@@ -279,6 +288,7 @@ export default function LandingPageClient() {
                 priority={section.id <= 3}
                 sizes="100vw"
                 quality={90}
+                className="protected"
                 unoptimized={true}
                 breakpoint={768}
                 // Aspect ratio configuration
@@ -340,7 +350,7 @@ export default function LandingPageClient() {
                   </Link>
                 </div>
               </div>
-            </div>
+            </ProtectedContent>
           </section>
         ))}
       </SectionRouter>

@@ -290,7 +290,184 @@ export function generateStructuredData(pageKey: PageKey, _customData?: CustomMet
                 },
             };
 
+        case 'entdecken':
+            return {
+                ...baseSchema,
+                "@type": "AboutPage",
+                mainEntity: {
+                    "@type": "Organization",
+                    name: baseConfig.organization.name,
+                    description: baseConfig.organization.description,
+                    url: baseConfig.baseUrl,
+                    foundingDate: "2023",
+                    industry: "Construction",
+                    speciality: "Modular Housing",
+                },
+            };
+
+        case 'showcase':
+            return {
+                ...baseSchema,
+                "@type": "CollectionPage",
+                mainEntity: {
+                    "@type": "ItemList",
+                    name: "NEST-Haus Showcase",
+                    description: "Gallery of modular house designs and configurations",
+                    numberOfItems: 8,
+                },
+            };
+
         default:
             return baseSchema;
     }
+}
+
+// Generate breadcrumb structured data
+export function generateBreadcrumbSchema(pageKey: PageKey, customPath?: string[]): object {
+    const baseConfig = SEO_CONFIG;
+    const breadcrumbItems = [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: baseConfig.baseUrl,
+        },
+    ];
+
+    if (customPath) {
+        customPath.forEach((pathItem, index) => {
+            breadcrumbItems.push({
+                "@type": "ListItem",
+                position: index + 2,
+                name: pathItem,
+                item: `${baseConfig.baseUrl}/${pageKey}`,
+            });
+        });
+    } else {
+        const pageConfig = PAGE_SEO_CONFIG[pageKey];
+        if (pageKey !== 'home') {
+            breadcrumbItems.push({
+                "@type": "ListItem",
+                position: 2,
+                name: pageConfig.title.split(' | ')[0], // Extract main title
+                item: `${baseConfig.baseUrl}/${pageKey}`,
+            });
+        }
+    }
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbItems,
+    };
+}
+
+// Generate product schema for modular houses
+export function generateProductSchema(): object {
+    const baseConfig = SEO_CONFIG;
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "NEST-Haus Modulares Bausystem",
+        description: "Nachhaltiges, energieeffizientes modulares Bausystem für individuelles Wohnen",
+        brand: {
+            "@type": "Brand",
+            name: "NEST-Haus",
+        },
+        manufacturer: {
+            "@type": "Organization",
+            name: baseConfig.organization.name,
+            url: baseConfig.baseUrl,
+        },
+        category: "Modular Housing",
+        offers: {
+            "@type": "AggregateOffer",
+            priceCurrency: "EUR",
+            availability: "https://schema.org/InStock",
+            seller: {
+                "@type": "Organization",
+                name: baseConfig.organization.name,
+            },
+        },
+        additionalProperty: [
+            {
+                "@type": "PropertyValue",
+                name: "Energy Efficiency",
+                value: "A+",
+            },
+            {
+                "@type": "PropertyValue",
+                name: "Construction Type",
+                value: "Modular",
+            },
+            {
+                "@type": "PropertyValue",
+                name: "Sustainability",
+                value: "Eco-Friendly",
+            },
+        ],
+    };
+}
+
+// Generate FAQ schema for common questions
+export function generateFAQSchema(): object {
+    return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+            {
+                "@type": "Question",
+                name: "Was ist ein modulares Haus?",
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Ein modulares Haus ist ein Gebäude, das aus vorgefertigten Modulen zusammengesetzt wird. Diese Module werden in einer kontrollierten Umgebung hergestellt und dann vor Ort montiert.",
+                },
+            },
+            {
+                "@type": "Question",
+                name: "Wie nachhaltig sind NEST-Häuser?",
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "NEST-Häuser sind hochgradig nachhaltig durch energieeffiziente Bauweise, umweltfreundliche Materialien und modulare Konstruktion, die Abfall minimiert.",
+                },
+            },
+            {
+                "@type": "Question",
+                name: "Kann ich mein NEST-Haus konfigurieren?",
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Ja, mit unserem interaktiven Konfigurator können Sie Ihr NEST-Haus individuell nach Ihren Wünschen und Bedürfnissen gestalten.",
+                },
+            },
+        ],
+    };
+}
+
+// Generate local business schema
+export function generateLocalBusinessSchema(): object {
+    const baseConfig = SEO_CONFIG;
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        name: baseConfig.organization.name,
+        description: baseConfig.organization.description,
+        url: baseConfig.baseUrl,
+        address: {
+            "@type": "PostalAddress",
+            addressCountry: baseConfig.organization.address.addressCountry,
+        },
+        contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer service",
+            availableLanguage: "German",
+        },
+        openingHours: "Mo-Fr 09:00-18:00",
+        priceRange: "€€€",
+        areaServed: {
+            "@type": "Country",
+            name: "Austria",
+        },
+    };
 }
