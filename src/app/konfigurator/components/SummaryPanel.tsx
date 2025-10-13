@@ -473,7 +473,8 @@ export default function SummaryPanel({
               {configuration?.nest
                 ? PriceUtils.calculatePricePerSquareMeter(
                     currentPrice,
-                    configuration.nest.value
+                    configuration.nest.value,
+                    configuration.geschossdecke?.quantity || 0
                   )
                 : ""}
             </p>

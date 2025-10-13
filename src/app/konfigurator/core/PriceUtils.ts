@@ -55,8 +55,10 @@ export class PriceUtils {
 
   /**
    * Get adjusted nutzfläche for Nest models (matches configuratorData.ts descriptions)
+   * @param nestModel - The nest model (nest80, nest100, etc.)
+   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
    */
-  static getAdjustedNutzflaeche(nestModel: string): number {
+  static getAdjustedNutzflaeche(nestModel: string, geschossdeckeQuantity?: number): number {
     const nutzflaecheMap: Record<string, number> = {
       'nest80': 75,   // 75m² Nutzfläche (adjusted)
       'nest100': 95,  // 95m² Nutzfläche (adjusted)
@@ -65,14 +67,20 @@ export class PriceUtils {
       'nest160': 155  // 155m² Nutzfläche (adjusted)
     };
 
-    return nutzflaecheMap[nestModel] || 0;
+    const baseArea = nutzflaecheMap[nestModel] || 0;
+    const geschossdeckeArea = (geschossdeckeQuantity || 0) * 7.5;
+
+    return baseArea + geschossdeckeArea;
   }
 
   /**
    * Calculate and format price per square meter
+   * @param totalPrice - Total price to calculate per m²
+   * @param nestModel - The nest model (nest80, nest100, etc.)
+   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
    */
-  static calculatePricePerSquareMeter(totalPrice: number, nestModel: string): string {
-    const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel);
+  static calculatePricePerSquareMeter(totalPrice: number, nestModel: string, geschossdeckeQuantity?: number): string {
+    const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
     if (adjustedNutzflaeche === 0) return '€0 /m²';
 
     const pricePerSqm = Math.round(totalPrice / adjustedNutzflaeche);
@@ -91,8 +99,13 @@ export class PriceUtils {
 * Calculate and format price per m² for individual options
 * For NEST modules: uses the option's own FULL price and area (not dynamic price difference)
 * For other options: calculates dynamically based on current module size
+* @param price - The price of the option
+* @param nestModel - The nest model (nest80, nest100, etc.)
+* @param categoryId - The category of the option
+* @param optionId - The option ID
+* @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
 */
-  static calculateOptionPricePerSquareMeter(price: number, nestModel: string, categoryId?: string, optionId?: string): string {
+  static calculateOptionPricePerSquareMeter(price: number, nestModel: string, categoryId?: string, optionId?: string, geschossdeckeQuantity?: number): string {
     // For NEST modules themselves, ALWAYS use the full module price from constants
     if (categoryId === 'nest' && optionId) {
       // Find the specific nest option to get its full price
@@ -103,7 +116,7 @@ export class PriceUtils {
 
       // Use the full nest price (not the dynamic price difference)
       const fullNestPrice = nestOption.price;
-      const adjustedNutzflaeche = this.getAdjustedNutzflaeche(optionId);
+      const adjustedNutzflaeche = this.getAdjustedNutzflaeche(optionId, geschossdeckeQuantity);
       if (adjustedNutzflaeche === 0) return '';
 
       const pricePerSqm = Math.round(fullNestPrice / adjustedNutzflaeche);
@@ -111,7 +124,7 @@ export class PriceUtils {
     }
 
     // For all other options, calculate based on current module size (unchanged)
-    const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel);
+    const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
     if (adjustedNutzflaeche === 0 || price === 0) return '';
 
     const pricePerSqm = Math.round(price / adjustedNutzflaeche);

@@ -1393,10 +1393,13 @@ export default function CheckoutStepper({
                                     const nestModel =
                                       configItem.nest?.value || "";
                                     const priceValue =
-                                      configItem.nest?.price || 0;
+                                      configItem.totalPrice || 0;
+                                    const geschossdeckeQuantity =
+                                      configItem.geschossdecke?.quantity || 0;
                                     return PriceUtils.calculatePricePerSquareMeter(
                                       priceValue,
-                                      nestModel
+                                      nestModel,
+                                      geschossdeckeQuantity
                                     );
                                   }
                                   // For other items, keep monthly payment
@@ -1923,11 +1926,13 @@ export default function CheckoutStepper({
                                     item as ConfigurationCartItem;
                                   const nestModel =
                                     configItem.nest?.value || "";
-                                  const priceValue =
-                                    configItem.nest?.price || 0;
+                                  const priceValue = configItem.totalPrice || 0;
+                                  const geschossdeckeQuantity =
+                                    configItem.geschossdecke?.quantity || 0;
                                   return PriceUtils.calculatePricePerSquareMeter(
                                     priceValue,
-                                    nestModel
+                                    nestModel,
+                                    geschossdeckeQuantity
                                   );
                                 }
                                 // For other items, keep monthly payment
