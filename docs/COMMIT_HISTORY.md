@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6b07f9b5161988c30d2791e0f1a1cf4650df903c] - Mon Oct 13 10:15:59 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Remove memory-based workers count from Next.js configuration to streamline build performance and reduce cache overhead.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- next.config.ts
+
+
+---
+
 ## [d588565ea1d585b241605383751884aaffe245a6] - Mon Oct 13 10:09:42 2025 +0200
 
 **Author**: stenkjan
