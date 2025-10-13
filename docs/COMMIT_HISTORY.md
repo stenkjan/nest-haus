@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [784b4463ad2a9e6f0b59c610216d6dee8c2914e5] - Mon Oct 13 11:30:50 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Refactor Next.js configuration for minimal bundle splitting and basic Prisma setup  - Simplified bundle splitting configuration to prevent hanging issues. - Updated Prisma configuration for Vercel deployment with essential settings only. - Removed unnecessary external dependencies to streamline the build process.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- next.config.ts
+
+
+---
+
 ## [edfac7cab113e0ccb0745c7d0dca8cbc69faf290] - Mon Oct 13 11:06:24 2025 +0200
 
 **Author**: stenkjan
