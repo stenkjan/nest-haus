@@ -7,6 +7,11 @@ import {
   WatermarkOptions,
 } from "@/lib/security/ImageProtection";
 
+// Extended style type to include deprecated properties
+interface ExtendedCSSProperties extends React.CSSProperties {
+  msUserSelect?: string;
+}
+
 export interface ProtectedImageProps extends Omit<ImageProps, "src"> {
   src: string;
   mobileSrc?: string;
@@ -225,14 +230,16 @@ export default function ProtectedImage({
         draggable={false}
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
-        style={{
-          ...imageProps.style,
-          userSelect: "none",
-          WebkitUserSelect: "none",
-          msUserSelect: "none",
-          WebkitTouchCallout: "none",
-          WebkitTapHighlightColor: "transparent",
-        }}
+        style={
+          {
+            ...imageProps.style,
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            msUserSelect: "none",
+            WebkitTouchCallout: "none",
+            WebkitTapHighlightColor: "transparent",
+          } as ExtendedCSSProperties
+        }
       />
 
       {/* Hidden canvas for strict protection mode */}

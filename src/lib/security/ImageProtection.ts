@@ -3,6 +3,11 @@
  * Provides watermarking, canvas-based protection, and download prevention
  */
 
+// Extended CSS style declaration to include deprecated properties
+interface ExtendedCSSStyleDeclaration extends CSSStyleDeclaration {
+    msUserSelect?: string;
+}
+
 export interface WatermarkOptions {
     text: string;
     fontSize?: number;
@@ -246,7 +251,8 @@ export class ImageProtection {
     static preventSelection(element: HTMLElement): void {
         element.style.userSelect = 'none';
         element.style.webkitUserSelect = 'none';
-        element.style.msUserSelect = 'none';
+        // Use type assertion for deprecated msUserSelect property
+        (element.style as ExtendedCSSStyleDeclaration).msUserSelect = 'none';
         element.style.webkitTouchCallout = 'none';
         element.style.webkitTapHighlightColor = 'transparent';
 

@@ -3,6 +3,11 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { ImageProtection } from "@/lib/security/ImageProtection";
 
+// Extended CSS style declaration to include deprecated properties
+interface ExtendedCSSStyleDeclaration extends CSSStyleDeclaration {
+  msUserSelect?: string;
+}
+
 export interface ProtectedContentProps {
   children: ReactNode;
   className?: string;
@@ -133,7 +138,9 @@ export default function ProtectedContent({
     // Apply CSS-based protections
     element.style.userSelect = finalConfig.preventSelection ? "none" : "";
     element.style.webkitUserSelect = finalConfig.preventSelection ? "none" : "";
-    element.style.msUserSelect = finalConfig.preventSelection ? "none" : "";
+    // Use type assertion for deprecated msUserSelect property
+    (element.style as ExtendedCSSStyleDeclaration).msUserSelect =
+      finalConfig.preventSelection ? "none" : "";
     element.style.webkitTouchCallout = finalConfig.preventSelection
       ? "none"
       : "";
