@@ -213,7 +213,7 @@ export default function LandingPageClient() {
                   {
                     ...landingImageStyle,
                     pointerEvents: "none", // Prevents direct interaction with image
-                  } as any
+                  } as any // eslint-disable-line @typescript-eslint/no-explicit-any
                 }
                 strategy={section.id <= 2 ? "ssr" : "client"}
                 isAboveFold={section.id <= 3}
