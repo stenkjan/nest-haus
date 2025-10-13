@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [338dbeb6093e2106241fe023387e4ebfdbd6e610] - Mon Oct 13 11:49:47 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enhance Next.js configuration for improved build performance and bundle optimization  - Excluded server-only modules from the client bundle to reduce size. - Implemented aggressive bundle splitting with updated chunk sizes for various libraries, including Google APIs and Chart.js. - Introduced build cache optimization and cleaning scripts to streamline the build process. - Updated build command to include a clean option for better cache management.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- next.config.ts
+- package.json
+
+
+---
+
 ## [cf0864a4f863093fec144b3d05942ae8b4595a2f] - Mon Oct 13 11:35:32 2025 +0200
 
 **Author**: stenkjan
