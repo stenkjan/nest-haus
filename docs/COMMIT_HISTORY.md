@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ae31bb5bc810e1cba78f8709f61f9a3897db970f] - Mon Oct 13 14:56:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Enhance price calculation logic in SummaryPanel and PriceUtils  - Updated PriceUtils to include optional geschossdeckeQuantity parameter in price calculations. - Modified SummaryPanel to pass geschossdecke quantity when calculating price per square meter. - Adjusted CheckoutStepper to utilize totalPrice and geschossdecke quantity for accurate pricing.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [3cc416831205dd9bc974118f80d9805c43b6eaf9] - Mon Oct 13 14:29:32 2025 +0200
 
 **Author**: stenkjan
