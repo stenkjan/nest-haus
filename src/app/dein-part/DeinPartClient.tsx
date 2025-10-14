@@ -1,30 +1,62 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
-import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 import {
   FullWidthTextGrid,
   ImageWithFourTextGrid,
   ThreeByOneGrid,
+  ThreeByOneAdaptiveHeight,
+  FullWidthImageGrid,
 } from "@/components/grids";
 import {
   GetInContactBanner,
   LandingImagesCarousel,
+  MaterialShowcase,
 } from "@/components/sections";
-import { HybridBlobImage } from "@/components/images";
+import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
 import { PlanungspaketeCards } from "@/components/cards";
+import { useContentAnalytics } from "@/hooks";
+import type { SectionDefinition } from "@/types";
 
 import { IMAGES } from "@/constants/images";
 import Footer from "@/components/Footer";
 
-// Define sections with proper structure for dein-part page
-const sections = [
+// Define sections with proper structure for dein-part page (now includes unser-part content)
+const sections: SectionDefinition[] = [
+  // Moved from unser-part
+  {
+    id: "dein-nest-system",
+    title: "Dein Nest System",
+    slug: "nest-system",
+  },
+  {
+    id: "groesse",
+    title: "Manchmal kommt es auf die Größe an",
+    slug: "groesse",
+  },
+  {
+    id: "materialien",
+    title: "Gut für Dich, besser für die Zukunft",
+    slug: "materialien",
+  },
+  {
+    id: "fenster-tueren",
+    title: "Fenster & Türen",
+    slug: "fenster-tueren",
+  },
+  {
+    id: "unser-part-individualisierung",
+    title: "Raum zum Träumen",
+    slug: "unser-part-individualisierung",
+  },
+  // Original dein-part content
   {
     id: "freiraum",
     title: "Dein kreativer Freiraum",
@@ -87,11 +119,54 @@ const sections = [
   },
 ];
 
+// Helper function to get mobile video path
+const getMobileVideoPath = (desktopPath: string): string => {
+  // Map desktop video path to mobile version using constants
+  if (desktopPath === IMAGES.function.nestHausModulSchemaIntro) {
+    return IMAGES.function.mobile.nestHausModulSchemaIntro;
+  }
+  return desktopPath;
+};
+
 export default function DeinPartClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("freiraum");
+  const [currentSectionId, setCurrentSectionId] =
+    useState<string>("dein-nest-system");
+  const [isMobile, setIsMobile] = useState(false);
   const { isOpen, openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
-  const { isMobile } = useDeviceDetect();
+  const router = useRouter();
+
+  // Simple width-based mobile detection (same as entdecken page)
+  useEffect(() => {
+    const checkDevice = () => {
+      const newIsMobile = window.innerWidth < 768; // Same breakpoint as entdecken page
+      setIsMobile(newIsMobile);
+    };
+
+    // Initial check
+    checkDevice();
+
+    // Listen for resize events
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
+
+  // Analytics tracking for content engagement
+  const { trackButtonClick: _trackButtonClick } = useContentAnalytics({
+    pageType: "content",
+    sections,
+    currentSectionId,
+    enabled: true,
+  });
+
+  // Button click handlers
+  const handleDiePaketeClick = () => {
+    openPlanungspakete();
+  };
+
+  const handleJetztBauenClick = () => {
+    router.push("/konfigurator");
+  };
 
   return (
     <div
@@ -108,6 +183,184 @@ export default function DeinPartClient() {
           sections={sections}
           onSectionChange={setCurrentSectionId}
         >
+          {/* Moved from unser-part: Video Section - Dein Nest System */}
+          <section
+            id="dein-nest-system"
+            className="bg-black pt-12 pb-8 md:pb-0"
+          >
+            <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
+              <div className="text-center mb-12">
+                <h1 className="h1-secondary text-white mb-2 md:mb-3">
+                  Dein ®Nest System
+                </h1>
+                <h3 className="h3-secondary text-nest-gray">
+                  Individualisiert, wo es Freiheit braucht. Standardisiert, wo
+                  es Effizienz schafft.
+                </h3>
+              </div>
+
+              <div className="flex justify-center">
+                <div className="w-full md:w-4/5 max-w-5xl rounded-none md:rounded-lg overflow-hidden bg-gray-900">
+                  <ClientBlobVideo
+                    path={
+                      isMobile
+                        ? getMobileVideoPath(
+                            IMAGES.function.mobile.nestHausModulSchemaIntro
+                          )
+                        : IMAGES.function.nestHausModulSchemaIntro
+                    }
+                    fallbackSrc={
+                      IMAGES.function.mobile.nestHausModulSchemaIntro
+                    } // Fallback to mobile version
+                    className="w-full h-auto object-contain"
+                    autoPlay={true}
+                    loop={false}
+                    muted={true}
+                    playsInline={true}
+                    controls={false}
+                    playbackRate={2.5}
+                    enableCache={true}
+                    onError={(error) => {
+                      console.error("🎥 Video component error:", error);
+                      // Could add additional error handling here if needed
+                    }}
+                  />
+                  {/* Accessibility description for screen readers */}
+                  <span className="sr-only">
+                    Video demonstration of NEST-Haus modular construction system
+                    showing architectural components and assembly process
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Moved from unser-part: Combined ThreeByOneGrid Section - Größe */}
+          <section id="groesse" className="py-8 md:py-16">
+            <ThreeByOneGrid
+              title="Manchmal kommt es auf die Größe an."
+              subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
+              backgroundColor="black"
+              text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span><br/><br/><span class='text-nest-gray'>Gleichzeitig bleibt volle</span> <span class='text-white font-medium'>Gestaltungsfreiheit</span> <span class='text-nest-gray'>dort, wo sie wirklich zählt.</span></p>"
+              textPosition="left"
+              maxWidth={false}
+              image1={IMAGES.function.nestHausModulKonzept}
+              image2={IMAGES.function.nestHausModulLiniengrafik}
+              image1Description="NEST-Haus Modul Stirnseite Ansicht Schema Konzept"
+              image2Description="NEST-Haus Modul Holz Schema Konzept"
+              textWrapperClassName="mt-8 md:mt-0"
+            />
+
+            {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
+            <div className="pt-16 md:pt-32">
+              <ThreeByOneGrid
+                title=""
+                subtitle=""
+                backgroundColor="black"
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-nest-gray'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-nest-gray'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span></p>"
+                textPosition="right"
+                maxWidth={false}
+                image1={IMAGES.function.nestHausModulSeiteKonzept}
+                image2={IMAGES.function.nestHausModulSeiteLiniengrafik}
+                image1Description="Seitliche Ansicht zeigt die durchdachte Konstruktion"
+                image2Description="Liniengrafik verdeutlicht die optimierte Statik"
+              />
+            </div>
+          </section>
+
+          {/* Moved from unser-part: Materialien Section */}
+          <section id="materialien" className="pt-8 md:pt-16 pb-8 md:pb-16">
+            <div className="text-center mb-12 px-4">
+              <h1 className="h1-secondary text-white mb-2 md:mb-3">
+                Gut für Dich, besser für die Zukunft
+              </h1>
+              <h3 className="h3-secondary text-nest-gray">
+                Entdecke unsere sorgfältig ausgewählten Materialien
+              </h3>
+            </div>
+
+            {/* MaterialShowcase Section - Optimized */}
+            <MaterialShowcase
+              title=""
+              subtitle=""
+              backgroundColor="black"
+              maxWidth={false}
+              showInstructions={true}
+            />
+          </section>
+
+          {/* Moved from unser-part: ThreeByOneAdaptiveHeight Grid - Fenster & Türen */}
+          <section id="fenster-tueren" className="pt-8 md:pt-16 pb-8 md:pb-16">
+            <ThreeByOneAdaptiveHeight
+              title="Fenster & Türen"
+              subtitle="Deine Fenster- und Türöffnungen werden dort platziert, wo du es möchtest."
+              backgroundColor="black"
+              imageDescription="NEST-Haus Expertise und professionelle Beratung"
+              maxWidth={false}
+            />
+
+            {/* ThreeByOneGrid - Left Position (Bottom Section) */}
+            <ThreeByOneGrid
+              title=""
+              subtitle=""
+              backgroundColor="black"
+              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Unser</span> <span class='text-white font-medium'>Nest System</span> <span class='text-nest-gray'>bietet dir an den</span> <span class='text-white font-medium'>Seitenwänden</span> <span class='text-nest-gray'>und an der</span> <span class='text-white font-medium'>Giebelseite</span> <span class='text-nest-gray'>volle Gestaltungsfreiheit.</span> <span class='text-nest-gray'> Hier kannst du deine</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>so platzieren, wie es zu dir und deinem Zuhause passt. Gemeinsam mit uns definierst du</span> <span class='text-white font-medium'>Größe und Position</span> <span class='text-nest-gray'>individuell nach</span> <span class='text-white font-medium'>deinen Wünschen</span> <span class='text-nest-gray'>und Anforderungen.</span></p>"
+              textPosition="left"
+              maxWidth={false}
+              image1={IMAGES.function.nestHausFensterTuerenStirnseite}
+              image2={IMAGES.function.nestHausFensterTuerenAbschlussmodul}
+              image1Description="Fenster und Türen Einbau Positionierung"
+              image2Description="Mittelmodul Liniengrafik Fenster und Türen"
+            />
+
+            {/* ThreeByOneGrid - Right Position (Bottom Section) */}
+            <div className="pt-16 md:pt-32">
+              <ThreeByOneGrid
+                title=""
+                subtitle=""
+                backgroundColor="black"
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>legst du die</span> <span class='text-white font-medium'>Gesamtfläche</span> <span class='text-nest-gray'>deiner</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>fest, angepasst an deine individuellen Bedürfnisse. Der</span> <span class='text-white font-medium'>Preis bleibt</span> <span class='text-nest-gray'>dabei jederzeit</span> <span class='text-white font-medium'>transparent.</span></p>"
+                textPosition="right"
+                maxWidth={false}
+                image1={IMAGES.function.nestHausModulSeiteKonzept}
+                image2={IMAGES.function.nestHausFensterTuerenMittelmodul}
+                image1Description="Modul Seitenansicht Holz Schema Konzept"
+                image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
+                showButtons={true}
+                primaryButtonText="Die Pakete"
+                secondaryButtonText="Jetzt bauen"
+                primaryButtonOnClick={handleDiePaketeClick}
+                secondaryButtonOnClick={handleJetztBauenClick}
+              />
+            </div>
+          </section>
+
+          {/* Moved from unser-part: FullWidthImageGrid - Raum zum Träumen */}
+          <section id="unser-part-individualisierung" className="py-8 md:py-16">
+            <FullWidthImageGrid
+              title="Raum zum Träumen"
+              subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
+              backgroundColor="black"
+              textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> <span class='text-white font-medium'>mit dem Nest System alles haben</span> <span class='text-nest-gray'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> <span class='text-white font-medium'>maximale Freiheit ohne Kompromisse</span> <span class='text-nest-gray'>bietet. Durch</span> <span class='text-white font-medium'>intelligente Standardisierung</span> <span class='text-nest-gray'>garantieren wir</span> <span class='text-white font-medium'>höchste</span></p>"
+              textBox2="<p class='p-secondary text-white'>Qualität, Langlebigkeit <span class='text-nest-gray'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles.</span> <span class='text-white font-medium'>Heute bauen, morgen wohnen - Nest.</span></p>"
+              maxWidth={false}
+            />
+            {/* Button Combo After Component */}
+            <div className="flex gap-4 md:mt-8 md:mb-8 justify-center w-full">
+              <Link href="/dein-part">
+                <Button variant="primary" size="xs">
+                  Dein Part
+                </Button>
+              </Link>
+              <Link href="/konfigurator">
+                <Button variant="landing-secondary" size="xs">
+                  Jetzt bauen
+                </Button>
+              </Link>
+            </div>
+          </section>
+
+          {/* Original dein-part content starts here */}
           {/* Section 3 - Du individualisierst dein NEST Haus */}
           <section
             id="individualisierung"

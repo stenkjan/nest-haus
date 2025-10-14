@@ -94,8 +94,8 @@ export const PAGE_SEO_CONFIG = {
         keywords: "unser part, service, expertise, hausbau service, professionelle begleitung, modulhaus service",
         priority: 0.5,
         changeFrequency: "monthly" as const,
-        ogImage: "/images/unser-part-og.jpg",
-        twitterImage: "/images/unser-part-twitter.jpg",
+        ogImage: "/images/entwurf-og.jpg",
+        twitterImage: "/images/entwurf-twitter.jpg",
     },
     showcase: {
         title: "Showcase | NEST-Haus Projekte & Referenzen",
