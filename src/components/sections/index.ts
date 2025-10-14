@@ -1,5 +1,6 @@
 export { ButtonGroup } from "./ButtonGroup";
 export { SectionContainer } from "./SectionContainer";
+export { SectionHeader } from "./SectionHeader";
 export { MaterialShowcase } from "./MaterialShowcase";
 export { GetInContactBanner } from "./GetInContactBanner";
 export { PartnersSection } from "./PartnersSection";

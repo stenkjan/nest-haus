@@ -256,14 +256,104 @@ All grid components (FullWidthTextGrid, ImageWithFourTextGrid, ThreeByOneGrid, e
 
 ### SectionHeader Component
 
+**RECOMMENDED**: Use the `SectionHeader` component for all section title/subtitle combinations.
+
 ```tsx
+import { SectionHeader } from "@/components/sections";
+
+// Basic usage - Standard 1 Pattern (Centered)
+<SectionHeader
+  title="Dein Zuhause zieht um"
+  subtitle="Architektur für ein bewegtes Leben."
+/>
+
+// With custom colors (light background)
+<SectionHeader
+  title="Design für dich gemacht"
+  subtitle="Dein Design im Freistil."
+  titleClassName="text-gray-900"
+  subtitleClassName="text-gray-600"
+/>
+
+// With custom colors (dark background)
 <SectionHeader
   title="Section Title"
   subtitle="Section Subtitle"
-  titleClassName="text-gray-900 font-bold" // Specify font-weight explicitly
-  subtitleClassName="text-gray-600"
+  titleClassName="text-white"
+  subtitleClassName="text-gray-300"
+/>
+
+// Left-aligned variant
+<SectionHeader
+  title="Section Title"
+  subtitle="Section Subtitle"
+  centered={false}
+/>
+
+// With custom spacing
+<SectionHeader
+  title="Section Title"
+  subtitle="Section Subtitle"
+  wrapperMargin="md:mb-12 mb-12"
+  maxWidth="max-w-4xl"
 />
 ```
+
+**Props:**
+
+- `title` (required): Main title text
+- `subtitle` (optional): Subtitle text
+- `titleTag` (default: 'h1'): HTML tag for title ('h1' | 'h2')
+- `titleClassName` (default: ''): Additional classes for title
+- `subtitleClassName` (default: 'text-black'): Additional classes for subtitle
+- `maxWidth` (default: 'max-w-3xl'): Max width constraint for subtitle
+- `containerMaxWidth` (default: 'max-w-[1536px]'): Container max width
+- `wrapperMargin` (default: 'mb-12'): Margin bottom for wrapper
+- `centered` (default: true): Center-align text
+- `className` (optional): Additional wrapper classes
+
+**When to Use:**
+
+- ✅ **USE** for standalone section headers (title + subtitle)
+- ✅ **USE** when you need consistent spacing and responsive behavior
+- ✅ **USE** for new sections to maintain standards
+- ❌ **DON'T USE** if the title/subtitle are part of a card or complex layout
+- ❌ **DON'T USE** if you need highly custom layouts beyond the standard pattern
+
+**Standard Pattern Structure:**
+
+The SectionHeader component encapsulates this pattern:
+
+```tsx
+// BEFORE (inline pattern - avoid)
+<div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+  <div className="text-center mb-12">
+    <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
+      Dein Zuhause zieht um
+    </h1>
+    <h3 className="h3-secondary text-black max-w-3xl mx-auto text-center">
+      Architektur für ein bewegtes Leben.
+    </h3>
+  </div>
+</div>
+
+// AFTER (SectionHeader component - preferred)
+<SectionHeader
+  title="Dein Zuhause zieht um"
+  subtitle="Architektur für ein bewegtes Leben."
+  titleClassName="text-gray-900"
+/>
+```
+
+**Responsive Behavior:**
+
+The component automatically handles all breakpoints:
+
+- **Container padding**: `px-4 sm:px-6 lg:px-8` (responsive horizontal padding)
+- **Title margins**: `mb-2 md:mb-3` (responsive bottom margin)
+- **Title sizing**: Via `h1-secondary` class (text-3xl → 2xl:text-7xl)
+- **Subtitle sizing**: Via `h3-secondary` class (text-base → 2xl:text-2xl)
+- **Max width**: Constrains subtitle width for readability (default: max-w-3xl)
 
 ### GetInContactBanner Component
 
@@ -482,6 +572,478 @@ Test typography on these breakpoints:
 - Avoid inline styles for typography
 - Leverage Tailwind's responsive utilities
 - Monitor bundle size impact of typography classes
+
+## SectionHeader Refactoring Examples
+
+### Example 1: EntdeckenClient Section 3 (Dein Zuhause zieht um)
+
+**BEFORE** (inline pattern):
+
+```tsx
+<section id="zuhause-zieht-um" className="w-full pt-8 md:py-16">
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center md:mb-12 mb-12">
+      <h1 className="h1-secondary mb-2">Dein Zuhause zieht um</h1>
+      <h3 className="h3-secondary text-black max-w-3xl mx-auto text-center">
+        Architektur für ein bewegtes Leben.
+      </h3>
+    </div>
+
+    <VideoCard16by9
+      title=""
+      subtitle=""
+      maxWidth={false}
+      showInstructions={false}
+      customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+    />
+  </div>
+</section>
+```
+
+**AFTER** (using SectionHeader):
+
+```tsx
+import { SectionHeader } from "@/components/sections";
+
+<section id="zuhause-zieht-um" className="w-full pt-8 md:py-16">
+  <SectionHeader
+    title="Dein Zuhause zieht um"
+    subtitle="Architektur für ein bewegtes Leben."
+    wrapperMargin="md:mb-12 mb-12"
+  />
+
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <VideoCard16by9
+      title=""
+      subtitle=""
+      maxWidth={false}
+      showInstructions={false}
+      customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+    />
+  </div>
+</section>;
+```
+
+**Benefits:**
+
+- Reduced code duplication (17 lines → 6 lines)
+- Consistent spacing across all sections
+- Easier to maintain and update
+- Clear props make customization explicit
+
+### Example 2: EntdeckenClient Section 5 (Konfigurieren)
+
+**BEFORE** (inline pattern):
+
+```tsx
+<section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <h1 className="h1-secondary mb-2 md:mb-3">
+        <span className="block md:inline">Konfiguriere dein</span>
+        <span className="block md:inline"> ®Nest Haus</span>
+      </h1>
+      <h3 className="h3-secondary text-black mb-8">
+        Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
+        Effizienz schafft.
+      </h3>
+    </div>
+
+    <VideoCard16by9 {...props} />
+  </div>
+</section>
+```
+
+**AFTER** (using SectionHeader):
+
+```tsx
+import { SectionHeader } from "@/components/sections";
+
+<section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
+  <SectionHeader
+    title={
+      <>
+        <span className="block md:inline">Konfiguriere dein</span>
+        <span className="block md:inline"> ®Nest Haus</span>
+      </>
+    }
+    subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
+    subtitleClassName="text-black mb-8"
+  />
+
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <VideoCard16by9 {...props} />
+  </div>
+</section>;
+```
+
+**Note:** The `title` prop accepts React nodes, so you can still use complex structures like multi-line titles with responsive display.
+
+### Example 3: Section with Custom Colors (Dark Background)
+
+**BEFORE:**
+
+```tsx
+<section className="w-full py-16 bg-black">
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <h1 className="h1-secondary text-white mb-2 md:mb-3">Section Title</h1>
+      <h3 className="h3-secondary text-gray-300 max-w-3xl mx-auto text-center">
+        Section subtitle on dark background.
+      </h3>
+    </div>
+    {/* Content */}
+  </div>
+</section>
+```
+
+**AFTER:**
+
+```tsx
+import { SectionHeader } from "@/components/sections";
+
+<section className="w-full py-16 bg-black">
+  <SectionHeader
+    title="Section Title"
+    subtitle="Section subtitle on dark background."
+    titleClassName="text-white"
+    subtitleClassName="text-gray-300"
+  />
+  {/* Content - wrap in container if needed */}
+</section>;
+```
+
+## Section Standard
+
+**CRITICAL**: All `<section>` elements should follow the standardized padding and structure patterns defined here.
+
+### **Standard Section Pattern**
+
+This is the **default pattern** for most content sections across the application.
+
+**Padding Standard:**
+
+- **Mobile**: `py-8` (32px top/bottom)
+- **Desktop (md+)**: `py-16` (64px top/bottom)
+- **Class**: `py-8 md:py-16`
+
+**Full Structure:**
+
+```tsx
+<section id="section-id" className="w-full py-8 md:py-16 bg-white">
+  <SectionHeader title="Section Title" subtitle="Section subtitle" />
+
+  {/* Section content */}
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Your content components */}
+  </div>
+</section>
+```
+
+**Key Components:**
+
+1. **Full width**: `w-full` - Section spans full viewport width
+2. **Responsive padding**: `py-8 md:py-16` - Consistent vertical spacing at all breakpoints
+3. **Background**: `bg-white`, `bg-gray-50`, or `bg-black` - Semantic background colors
+4. **Section ID**: Required for SectionRouter navigation and scroll targeting
+
+**When to Use:**
+
+- ✅ Standard content sections with title/subtitle
+- ✅ Sections with cards, grids, or other content components
+- ✅ Any section that needs consistent spacing
+- ✅ Most sections on your page (90%+ of cases)
+
+### **Special Section Patterns**
+
+#### **Hero Sections**
+
+Hero sections often require custom padding for visual impact and layout flexibility.
+
+**Pattern:**
+
+```tsx
+<section
+  id="hero"
+  className="w-full bg-white md:pt-12 md:pb-4 flex items-center"
+>
+  {/* Hero content with custom layout */}
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 className="h1-secondary">Hero Title</h1>
+    <h3 className="h3-secondary">Hero subtitle</h3>
+  </div>
+</section>
+```
+
+**Characteristics:**
+
+- Custom asymmetric padding (e.g., `md:pt-12 md:pb-4`)
+- Often includes `flex items-center` for vertical centering
+- First section on page
+- May have different mobile/desktop layouts
+
+**When to Use:**
+
+- ✅ First section on landing pages
+- ✅ Sections with video/image overlays
+- ✅ Sections requiring custom vertical alignment
+
+#### **Media Sections (Video/Image)**
+
+Full-width media sections let content dictate spacing.
+
+**Pattern:**
+
+```tsx
+<section id="video" className="w-full relative bg-white">
+  {/* Full-width video or image content - no padding */}
+  <div className="relative w-full">
+    <ClientBlobVideo path={videoPath} />
+
+    {/* Optional overlay content */}
+    <div className="absolute inset-0 flex flex-col justify-end">
+      {/* Overlay text/buttons */}
+    </div>
+  </div>
+</section>
+```
+
+**Characteristics:**
+
+- No padding: Let media be full-width
+- Use `relative` for overlay positioning
+- Content determines section height
+
+**When to Use:**
+
+- ✅ Full-width video sections
+- ✅ Hero image sections
+- ✅ Sections where media should touch edges
+
+#### **Last Section (Before Footer)**
+
+Optional reduced bottom padding for sections directly above footer.
+
+**Pattern:**
+
+```tsx
+<section id="partners" className="w-full pt-8 md:pt-16 pb-4 md:pb-8 bg-white">
+  <SectionHeader title="Our Partners" />
+  {/* Section content */}
+</section>
+```
+
+**Characteristics:**
+
+- Reduced bottom padding: `pb-4 md:pb-8` (half of standard)
+- Standard top padding: `pt-8 md:pt-16`
+- Creates tighter spacing before footer
+
+**When to Use:**
+
+- ⚠️ Optional - Only if section is directly before Footer component
+- ⚠️ Skip if Footer already has adequate top margin
+
+### **Section Pattern Comparison**
+
+| Pattern          | Mobile Padding | Desktop Padding             | Use Case                | Frequency |
+| ---------------- | -------------- | --------------------------- | ----------------------- | --------- |
+| **Standard**     | `py-8` (32px)  | `py-16` (64px)              | Most content sections   | 90%       |
+| **Hero**         | Custom         | Custom (e.g., `pt-12 pb-4`) | First section, overlays | 5%        |
+| **Media**        | None           | None                        | Full-width video/images | 3%        |
+| **Last Section** | `pt-8 pb-4`    | `pt-16 pb-8`                | Before footer           | 2%        |
+
+### **Complete Section Examples**
+
+#### Example 1: Standard Content Section with SectionHeader
+
+```tsx
+import { SectionHeader } from "@/components/sections";
+import { VideoCard16by9 } from "@/components/cards";
+
+<section id="features" className="w-full py-8 md:py-16 bg-white">
+  <SectionHeader
+    title="Dein Zuhause zieht um"
+    subtitle="Architektur für ein bewegtes Leben."
+  />
+
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    <VideoCard16by9 customData={[VIDEO_CARD_PRESETS.unsereTechnik]} />
+  </div>
+</section>;
+```
+
+**Use Standard Pattern When:**
+
+- Section has title/subtitle header
+- Section contains cards, grids, or content components
+- Section needs consistent spacing with other sections
+
+#### Example 2: Hero Section (Custom Padding)
+
+```tsx
+<section
+  id="hero"
+  className="w-full bg-white md:pt-12 md:pb-4 flex items-center"
+>
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 hidden md:block">
+    <div className="text-center">
+      <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
+        Design für dich gemacht
+      </h1>
+      <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto">
+        Dein Design im Freistil.
+      </h3>
+    </div>
+  </div>
+</section>
+```
+
+**Use Hero Pattern When:**
+
+- First section on page
+- Need custom vertical alignment
+- Different mobile/desktop layouts
+- Video/image background with overlay
+
+#### Example 3: Media Section (No Padding)
+
+```tsx
+<section id="video" className="w-full relative bg-white">
+  <div className="relative w-full">
+    <ClientBlobVideo
+      path={IMAGES.variantvideo.ten}
+      autoPlay={true}
+      muted={true}
+      loop={true}
+    />
+
+    <div className="absolute inset-0 flex flex-col justify-end">
+      <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center">
+        <Button variant="primary">CTA Button</Button>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+**Use Media Pattern When:**
+
+- Full-width video content
+- Full-width image galleries
+- Media should touch screen edges
+
+#### Example 4: Dark Background Section
+
+```tsx
+<section id="materials" className="w-full py-8 md:py-16 bg-black">
+  <SectionHeader
+    title="Gut für Dich, besser für die Zukunft"
+    subtitle="Dein Zuhause aus nachhaltigen Materialien"
+    titleClassName="text-white"
+    subtitleClassName="text-gray-300"
+  />
+
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Content components */}
+  </div>
+</section>
+```
+
+**Use Dark Background When:**
+
+- Content requires visual separation
+- Creating visual rhythm (alternate white/black)
+- Highlighting important content
+
+### **Migration Guide: Fixing Inconsistent Patterns**
+
+Current patterns found in EntdeckenClient.tsx and how to standardize them:
+
+#### ✅ Already Standard (Keep As-Is)
+
+```tsx
+// Sections 4-7: Already using standard pattern
+<section className="w-full py-8 md:py-16 bg-white">
+```
+
+#### ⚠️ Needs Update (Non-Standard)
+
+```tsx
+// Section 3: Top-only padding
+// BEFORE
+<section className="w-full pt-8 md:py-16">
+
+// AFTER - Use standard pattern
+<section className="w-full py-8 md:py-16 bg-white">
+```
+
+```tsx
+// Section 8: Bottom-only padding
+// BEFORE
+<section className="w-full pb-8 md:pb-16 bg-white">
+
+// AFTER - Standard pattern OR reduced bottom if before footer
+<section className="w-full py-8 md:py-16 bg-white">
+// OR
+<section className="w-full pt-8 md:pt-16 pb-4 md:pb-8 bg-white">
+```
+
+#### ✅ Special Cases (Document but Keep)
+
+```tsx
+// Hero section: Custom padding is intentional
+<section className="w-full bg-white md:pt-12 md:pb-4 flex items-center">
+
+// Media section: No padding is intentional
+<section className="w-full relative bg-white">
+```
+
+### **Background Color Guidelines**
+
+**Standard Backgrounds:**
+
+- `bg-white` - Default for most sections (light content)
+- `bg-gray-50` - Subtle variation for alternating sections
+- `bg-black` - Dark sections for contrast/emphasis
+
+**Background Alternation Pattern:**
+
+```tsx
+// Good visual rhythm
+<section className="w-full py-8 md:py-16 bg-white">
+<section className="w-full py-8 md:py-16 bg-black">
+<section className="w-full py-8 md:py-16 bg-white">
+<section className="w-full py-8 md:py-16 bg-gray-50">
+```
+
+**Rules:**
+
+- Use `bg-white` as default
+- Alternate with `bg-black` for emphasis
+- Use `bg-gray-50` sparingly for subtle separation
+- Always specify background color explicitly
+
+### **Section Standard Checklist**
+
+When creating new sections, verify:
+
+- [ ] Uses standard padding: `py-8 md:py-16` (unless special case)
+- [ ] Has unique `id` for navigation
+- [ ] Uses `w-full` for full width
+- [ ] Specifies background color (`bg-white`, `bg-black`, etc.)
+- [ ] Uses `SectionHeader` component for title/subtitle (when applicable)
+- [ ] Content wrapped in proper container with responsive padding
+- [ ] Special patterns (Hero, Media) are documented and intentional
+
+### **Benefits of Section Standard**
+
+1. **Visual Consistency**: Uniform spacing creates rhythm
+2. **Responsive Design**: Works perfectly on all devices
+3. **Maintainable**: Easy to update globally
+4. **Predictable**: Developers know what to expect
+5. **Accessible**: Proper spacing aids readability
+6. **Performance**: Consistent classes = better CSS caching
 
 ## **2025 Typography System Summary**
 

@@ -34,7 +34,7 @@ export interface VideoCardPreset {
     playbackRate?: number; // Optional playback speed (1.0 = normal, 0.5 = half speed, 2.0 = double speed)
     buttons?: Array<{
         text: string;
-        variant: "primary" | "secondary" | "landing-secondary-blue";
+        variant: "primary" | "secondary" | "landing-secondary-blue" | "primary-narrow" | "secondary-narrow-blue";
         size: "xs" | "sm" | "md" | "lg";
         link?: string;
         onClick?: () => void;
