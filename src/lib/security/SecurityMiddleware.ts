@@ -417,15 +417,6 @@ export class SecurityMiddleware {
         return contentType.includes('application/json');
     }
 
-    private static getClientIP(req: NextRequest): string {
-        return (
-            req.headers.get('x-forwarded-for')?.split(',')[0] ||
-            req.headers.get('x-real-ip') ||
-            req.headers.get('cf-connecting-ip') ||
-            'unknown'
-        );
-    }
-
     private static createErrorResponse(
         message: string,
         status: number,

@@ -545,7 +545,7 @@ export class RealTimeMonitor {
         // Check critical events threshold
         if (metrics.eventsBySeverity.critical >= this.config.alertThresholds.criticalEvents) {
             this.createAlert(
-                'critical_events_threshold',
+                'suspicious_activity',
                 'critical',
                 'Critical Events Threshold Exceeded',
                 `${metrics.eventsBySeverity.critical} critical events detected in the last minute`,
@@ -556,7 +556,7 @@ export class RealTimeMonitor {
         // Check bot detection rate
         if (metrics.botDetectionRate >= this.config.alertThresholds.botDetectionRate) {
             this.createAlert(
-                'high_bot_detection',
+                'bot_detection',
                 'high',
                 'High Bot Detection Rate',
                 `Bot detection rate: ${metrics.botDetectionRate.toFixed(1)}%`,
@@ -567,7 +567,7 @@ export class RealTimeMonitor {
         // Check response time
         if (metrics.responseTime >= this.config.alertThresholds.responseTime) {
             this.createAlert(
-                'slow_response_time',
+                'performance_anomaly',
                 'medium',
                 'Slow Response Time',
                 `Average response time: ${metrics.responseTime}ms`,
