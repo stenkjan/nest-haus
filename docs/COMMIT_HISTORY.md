@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [10bc5e81cf685b12da2aecca0b0929c0f83533a9] - Tue Oct 14 11:29:55 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/showcase/cards/page.tsx
+- src/components/sections/TransportabilitaetVideo.tsx
+- src/components/sections/index.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
 ## [2d5abadacbf6393971f27c8910918eb32a74546b] - Tue Oct 14 11:14:32 2025 +0200
 
 **Author**: stenkjan
