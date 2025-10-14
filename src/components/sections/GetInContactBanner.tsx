@@ -47,6 +47,10 @@ interface GetInContactBannerProps {
    * Additional CSS classes
    */
   className?: string;
+  /**
+   * Bottom text below the banner box
+   */
+  bottomText?: string;
 }
 export function GetInContactBanner({
   id,
@@ -56,6 +60,7 @@ export function GetInContactBanner({
   onButtonClick,
   backgroundColor = "white",
   className = "",
+  bottomText,
 }: GetInContactBannerProps) {
   const handleButtonClick = () => {
     if (onButtonClick) {
