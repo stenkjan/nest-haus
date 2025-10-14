@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fd71bde868b98b113dc4cc4c21bdf7dc5df2c443] - Tue Oct 14 16:56:14 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: Enhance image caching mechanism in ImageManager  - Implemented cache clearing for specific configurations in  to ensure fresh image loading. - Added debug logging to track image retrieval and cache operations, improving traceability during development. - Updated  to clear cache when configuration changes, optimizing image loading performance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
 ## [34750f80eaf39e6ce1e2cad97f9a53c5d1a05336] - Tue Oct 14 16:34:58 2025 +0200
 
 **Author**: stenkjan
