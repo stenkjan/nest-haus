@@ -80,11 +80,11 @@ export const planungspaketeCardData: PlanungspaketeCardData[] = [
     title: "Planungspaket 03",
     subtitle: "Pro",
     description:
-      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
+      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belichtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
     mobileTitle: "Planungspaket 03",
     mobileSubtitle: "Pro",
     mobileDescription:
-      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
+      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belichtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
     image:
       "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
     price: "€21.900,00",

@@ -87,9 +87,9 @@ export function GetInContactBanner({
                 <ClientBlobImage
                   path={IMAGES.contactIcons.appointment}
                   alt="Termin Icon"
-                  width={48}
-                  height={48}
-                  className="h-12 w-12"
+                  width={240}
+                  height={240}
+                  className="h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 xl:h-52 xl:w-52 2xl:h-64 2xl:w-64"
                   enableCache={true}
                   enableMobileDetection={false}
                   showLoadingSpinner={false}
