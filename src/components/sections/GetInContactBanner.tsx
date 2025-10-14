@@ -115,7 +115,7 @@ export function GetInContactBanner({
         {/* Bottom Text */}
         {bottomText && (
           <div className="text-center pt-6">
-            <h3 className="h3-tertiary-no-m text-gray-700 max-w-full mx-auto">
+            <h3 className="h3-tertiary-no-m text-gray-700 max-w-full mx-auto mb-2">
               {bottomText}
             </h3>
           </div>

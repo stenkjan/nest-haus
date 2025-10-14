@@ -316,3 +316,164 @@ enum TaskStatus {
   COMPLETED
   CANCELLED
 }
+
+// Security Event Tracking Models
+model SecurityEvent {
+  id              String            @id @default(cuid())
+  sessionId       String?
+  timestamp       DateTime          @default(now())
+  eventType       SecurityEventType
+  severity        EventSeverity
+  source          String            @default("system")
+  description     String
+  metadata        Json?
+  resolved        Boolean           @default(false)
+  responseActions Json?             // Array of automated response actions taken
+  ipAddress       String?
+  userAgent       String?
+  endpoint        String?
+  
+  @@index([sessionId])
+  @@index([eventType])
+  @@index([severity])
+  @@index([timestamp])
+  @@map("security_events")
+}
+
+model ThreatAlert {
+  id                  String            @id @default(cuid())
+  timestamp           DateTime          @default(now())
+  eventType           SecurityEventType
+  severity            EventSeverity
+  title               String
+  description         String
+  affectedSessions    Json?             // Array of session IDs
+  recommendedActions  Json?             // Array of recommended actions
+  autoResolved        Boolean           @default(false)
+  resolvedAt          DateTime?
+  resolvedBy          String?
+  
+  @@index([eventType])
+  @@index([severity])
+  @@index([autoResolved])
+  @@index([timestamp])
+  @@map("threat_alerts")
+}
+
+model BehaviorAnalysis {
+  id                String    @id @default(cuid())
+  sessionId         String
+  timestamp         DateTime  @default(now())
+  suspicionScore    Float     // 0-1
+  botProbability    Float     // 0-1
+  humanLikelihood   Float     // 0-1
+  anomalies         Json?     // Array of detected anomalies
+  confidence        Float     // 0-1
+  riskLevel         RiskLevel
+  
+  // Behavioral metrics
+  mouseMovements    Int       @default(0)
+  keystrokes        Int       @default(0)
+  clicks            Int       @default(0)
+  scrollEvents      Int       @default(0)
+  sessionDuration   Int?      // milliseconds
+  
+  @@index([sessionId])
+  @@index([riskLevel])
+  @@index([timestamp])
+  @@map("behavior_analyses")
+}
+
+model BotDetection {
+  id                String          @id @default(cuid())
+  sessionId         String
+  timestamp         DateTime        @default(now())
+  isBot             Boolean
+  confidence        Float           // 0-1
+  detectionMethods  Json?           // Array of detection methods used
+  riskLevel         RiskLevel
+  allowAccess       Boolean
+  reasons           Json?           // Array of detection reasons
+  userAgent         String?
+  ipAddress         String?
+  
+  // Browser fingerprint data
+  fingerprint       Json?
+  
+  @@index([sessionId])
+  @@index([isBot])
+  @@index([riskLevel])
+  @@index([timestamp])
+  @@map("bot_detections")
+}
+
+model SecurityMetrics {
+  id                    String    @id @default(cuid())
+  timestamp             DateTime  @default(now())
+  activeSessions        Int       @default(0)
+  totalEvents           Int       @default(0)
+  threatLevel           ThreatLevel @default(NORMAL)
+  eventsByType          Json?     // Object with event type counts
+  eventsBySeverity      Json?     // Object with severity counts
+  averageRiskScore      Float     @default(0)
+  botDetectionRate      Float     @default(0)
+  falsePositiveRate     Float     @default(0)
+  responseTime          Float     @default(0) // Average response time in ms
+  
+  @@index([timestamp])
+  @@index([threatLevel])
+  @@map("security_metrics")
+}
+
+model ContentProtectionViolation {
+  id            String    @id @default(cuid())
+  sessionId     String?
+  timestamp     DateTime  @default(now())
+  violationType String    // right_click, text_selection, copy_attempt, etc.
+  elementId     String?
+  elementType   String?
+  userAgent     String?
+  ipAddress     String?
+  blocked       Boolean   @default(false)
+  
+  @@index([sessionId])
+  @@index([violationType])
+  @@index([timestamp])
+  @@map("content_protection_violations")
+}
+
+// Enums for security tracking
+enum SecurityEventType {
+  BOT_DETECTION
+  BEHAVIORAL_ANOMALY
+  RATE_LIMIT_EXCEEDED
+  SUSPICIOUS_ACTIVITY
+  CONTENT_PROTECTION_VIOLATION
+  DEVTOOLS_DETECTION
+  INJECTION_ATTEMPT
+  BRUTE_FORCE_ATTEMPT
+  DATA_BREACH_ATTEMPT
+  UNAUTHORIZED_ACCESS
+  PERFORMANCE_ANOMALY
+}
+
+enum EventSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ThreatLevel {
+  NORMAL
+  ELEVATED
+  HIGH
+  CRITICAL
+}
