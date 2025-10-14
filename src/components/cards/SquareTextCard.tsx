@@ -5,7 +5,6 @@ import { motion, useMotionValue, animate } from "framer-motion";
 import { Button } from "@/components/ui";
 import Link from "next/link";
 import ClientBlobFile from "@/components/files/ClientBlobFile";
-import { FILES } from "@/constants/files";
 import { IMAGES } from "@/constants/images";
 import HybridBlobImage from "@/components/images/HybridBlobImage";
 import { ABLAUF_STEPS_PRESET } from "@/constants/contentCardPresets";
@@ -155,7 +154,7 @@ export const addIconsToPreset = (
 };
 
 // Default data uses the preset system - all content is now centralized in contentCardPresets.ts
-const defaultSquareTextCardData: SquareTextCardData[] = addIconsToPreset(
+export const defaultSquareTextCardData: SquareTextCardData[] = addIconsToPreset(
   ABLAUF_STEPS_PRESET.cards
 );
 

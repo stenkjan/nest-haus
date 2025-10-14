@@ -9,7 +9,7 @@
  * - Network pattern analysis
  */
 
-import { BehavioralAnalyzer, type BehaviorAnalysis } from './BehavioralAnalyzer';
+import { BehavioralAnalyzer } from './BehavioralAnalyzer';
 
 export interface BotDetectionConfig {
     enabled: boolean;
@@ -521,19 +521,19 @@ export class BotDetector {
         return privateRanges.some(range => range.test(ip));
     }
 
-    /**
-     * Check if IP is in known bot ranges (placeholder)
-     */
-    private isKnownBotIP(ip: string): boolean {
+  /**
+   * Check if IP is in known bot ranges (placeholder)
+   */
+  private isKnownBotIP(_ip: string): boolean {
         // This would typically check against external bot IP databases
         // For now, just return false
         return false;
     }
 
-    /**
-     * Get recent request count for IP (placeholder)
-     */
-    private async getRecentRequestCount(ipAddress: string): Promise<number> {
+  /**
+   * Get recent request count for IP (placeholder)
+   */
+  private async getRecentRequestCount(_ipAddress: string): Promise<number> {
         // This would typically check Redis or database for recent requests
         // For now, return 0
         return 0;
@@ -658,10 +658,10 @@ export class BotDetector {
         };
     }
 
-    /**
-     * Clean up old detection history
-     */
-    cleanupOldDetections(maxAge: number = 24 * 60 * 60 * 1000): void {
+  /**
+   * Clean up old detection history
+   */
+  cleanupOldDetections(_maxAge: number = 24 * 60 * 60 * 1000): void {
         // This would clean up old detection records
         // For now, just log
         console.log('🤖 Cleaning up old bot detection records');

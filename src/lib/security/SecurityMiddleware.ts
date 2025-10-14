@@ -15,9 +15,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import DOMPurify from 'isomorphic-dompurify';
-import { realTimeMonitor } from './RealTimeMonitor';
-import { behavioralAnalyzer } from './BehavioralAnalyzer';
-import { botDetector } from './BotDetector';
 
 // Rate limiting storage (in-memory for demo, use Redis in production)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();

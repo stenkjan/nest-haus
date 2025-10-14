@@ -9,7 +9,7 @@ import { realTimeMonitor } from '@/lib/security/RealTimeMonitor';
 import { behavioralAnalyzer } from '@/lib/security/BehavioralAnalyzer';
 import { botDetector } from '@/lib/security/BotDetector';
 
-async function handleGetDashboard(request: NextRequest): Promise<NextResponse> {
+async function handleGetDashboard(_request: NextRequest): Promise<NextResponse> {
     try {
         const dashboardData = realTimeMonitor.getDashboardData();
         const behaviorStats = behavioralAnalyzer.getRealTimeStats();

@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { SecurityMiddleware } from '@/lib/security/SecurityMiddleware';
-import { realTimeMonitor } from '@/lib/security/RealTimeMonitor';
+import { realTimeMonitor, type SecurityEventType } from '@/lib/security/RealTimeMonitor';
 import { z } from 'zod';
 
 const eventQuerySchema = z.object({
@@ -47,7 +47,7 @@ async function handleGetEvents(request: NextRequest): Promise<NextResponse> {
         }
 
         const { limit, type, severity, sessionId } = validation.data;
-        let events = realTimeMonitor.getRecentEvents(limit, type as any);
+        let events = realTimeMonitor.getRecentEvents(limit, type as SecurityEventType);
 
         // Apply additional filters
         if (severity) {

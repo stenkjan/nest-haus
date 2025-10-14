@@ -1,10 +1,7 @@
 "use client";
 
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { ImageProtection } from "@/lib/security/ImageProtection";
-import { realTimeMonitor } from "@/lib/security/RealTimeMonitor";
-import { behavioralAnalyzer } from "@/lib/security/BehavioralAnalyzer";
-import { botDetector } from "@/lib/security/BotDetector";
 
 // Extended CSS style declaration to include deprecated and webkit properties
 interface ExtendedCSSStyleDeclaration {
@@ -26,10 +23,6 @@ export interface ProtectedContentProps {
   enableWatermark?: boolean;
   watermarkText?: string;
   level?: "basic" | "standard" | "strict";
-  sessionId?: string; // For behavioral tracking
-  enableBehaviorTracking?: boolean;
-  enableViolationLogging?: boolean;
-  onViolationDetected?: (violationType: string, elementId?: string) => void;
 }
 
 /**
@@ -48,14 +41,8 @@ export default function ProtectedContent({
   enableWatermark = true,
   watermarkText = "© NEST-Haus",
   level = "standard",
-  sessionId,
-  enableBehaviorTracking = true,
-  enableViolationLogging = true,
-  onViolationDetected,
 }: ProtectedContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [violationCount, setViolationCount] = useState(0);
-  const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
     const element = contentRef.current;

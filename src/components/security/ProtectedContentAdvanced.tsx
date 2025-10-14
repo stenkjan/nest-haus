@@ -268,7 +268,7 @@ export default function ProtectedContent({
     }
 
     // Apply CSS-based protections using extended interface
-    const extendedStyle = element.style as any as ExtendedCSSStyleDeclaration;
+    const extendedStyle = element.style as ExtendedCSSStyleDeclaration;
     extendedStyle.userSelect = finalConfig.preventSelection ? "none" : "";
     extendedStyle.webkitUserSelect = finalConfig.preventSelection ? "none" : "";
     extendedStyle.msUserSelect = finalConfig.preventSelection ? "none" : "";

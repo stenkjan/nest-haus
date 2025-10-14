@@ -24,7 +24,7 @@ export interface SecurityEvent {
     severity: 'low' | 'medium' | 'high' | 'critical';
     source: string;
     description: string;
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
     resolved: boolean;
     responseActions: string[];
 }
@@ -175,8 +175,8 @@ export class RealTimeMonitor {
         type: SecurityEventType,
         severity: 'low' | 'medium' | 'high' | 'critical',
         description: string,
-        metadata: Record<string, any> = {}
-    ): SecurityEvent {
+    metadata: Record<string, unknown> = {}
+  ): SecurityEvent {
         const event: SecurityEvent = {
             id: this.generateEventId(),
             sessionId,
@@ -533,7 +533,7 @@ export class RealTimeMonitor {
         return 'normal';
     }
 
-    private calculateAverageResponseTime(events: SecurityEvent[]): number {
+    private calculateAverageResponseTime(_events: SecurityEvent[]): number {
         // This would calculate actual response times based on event handling
         // For now, return a placeholder
         return 250; // 250ms average response time
@@ -541,7 +541,6 @@ export class RealTimeMonitor {
 
     private checkAlertThresholds(): void {
         const metrics = this.getCurrentMetrics();
-        const now = Date.now();
 
         // Check critical events threshold
         if (metrics.eventsBySeverity.critical >= this.config.alertThresholds.criticalEvents) {

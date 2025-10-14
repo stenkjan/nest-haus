@@ -270,3 +270,8 @@ export const PLANUNGSPAKETE_PRESET = {
 
 // Export all presets for easy access
 export const CONTENT_CARD_PRESETS = {};
+
+// Video card presets (placeholder for compatibility)
+export const VIDEO_CARD_PRESETS = {
+    // Add video card presets here when needed
+};
