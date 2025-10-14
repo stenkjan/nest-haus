@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [73a151f83a58fb682dddf2175034a6750bd65f59] - Tue Oct 14 15:41:27 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: Add bottomText prop to GetInContactBanner for enhanced customization  - Introduced a new optional  prop to the  component, allowing for additional text below the banner box. - Updated the component's TypeScript interface to include the new prop for better type safety and documentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
 ## [1506a5c3b7c37a812ff4fb4550dc588e03e20237] - Tue Oct 14 15:26:08 2025 +0200
 
 **Author**: stenkjan
