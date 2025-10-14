@@ -33,13 +33,6 @@ export class ImageManager {
    * IMPROVED: Uses constants, better validation, fixed encoding issues
    */
   static getPreviewImage(configuration: Configuration | null, view: ViewType): string {
-    console.log('🎯 ImageManager.getPreviewImage called:', {
-      view,
-      hasConfiguration: !!configuration,
-      gebaeudehuelle: configuration?.gebaeudehuelle?.value,
-      nest: configuration?.nest?.value
-    });
-
     // Validate inputs for security
     if (!this.isValidViewType(view)) {
       console.warn(`⚠️ Invalid view type: ${view}, defaulting to exterior`);
@@ -56,9 +49,7 @@ export class ImageManager {
 
     // Return cached result if available
     if (imagePathCache.has(cacheKey)) {
-      const cachedResult = imagePathCache.get(cacheKey)!;
-      console.log('🎯 Using cached image:', { cacheKey, cachedResult });
-      return cachedResult;
+      return imagePathCache.get(cacheKey)!;
     }
 
     let imagePath: string;
@@ -155,14 +146,6 @@ export class ImageManager {
     // Use default gebaeudehuelle if not selected yet
     const gebaeudehuelle = configuration.gebaeudehuelle?.value || 'trapezblech';
 
-    console.log('🖼️ ImageManager.getExteriorImage DEBUG:', {
-      nestType,
-      gebaeudehuelle,
-      selectedValue: configuration.gebaeudehuelle?.value,
-      usingDefault: !configuration.gebaeudehuelle?.value,
-      fullConfiguration: configuration
-    });
-
     const nestSize = NEST_SIZE_MAPPING[nestType];
     const exteriorType = GEBAEUDE_EXTERIOR_MAPPING[gebaeudehuelle];
 
@@ -213,32 +196,13 @@ export class ImageManager {
     const innenverkleidung = configuration?.innenverkleidung?.value || 'kiefer';
     const fussboden = configuration?.fussboden?.value || 'parkett';
 
-    console.log('🏠 ImageManager.getInteriorImage DEBUG:', {
-      gebaeudehuelle,
-      innenverkleidung,
-      fussboden,
-      selectedGebaeude: configuration?.gebaeudehuelle?.value,
-      usingDefaultGebaeude: !configuration?.gebaeudehuelle?.value
-    });
-
     // Create combination key for exact matching
     const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
-
-    console.log('🏠 Interior image mapping:', {
-      combinationKey,
-      hasExactMapping: !!INTERIOR_EXACT_MAPPINGS[combinationKey],
-      exactMappingValue: INTERIOR_EXACT_MAPPINGS[combinationKey]
-    });
 
     // Check exact mappings first (for trapezblech combinations)
     const exactMapping = INTERIOR_EXACT_MAPPINGS[combinationKey];
     if (exactMapping) {
       const imagePath = IMAGES.configurations[exactMapping as keyof typeof IMAGES.configurations];
-      console.log('🏠 Exact mapping found:', {
-        exactMapping,
-        imagePath,
-        hasImagePath: !!imagePath
-      });
       if (imagePath) {
         return imagePath;
       }
@@ -290,12 +254,6 @@ export class ImageManager {
     if (!validExactMappings.includes(combinationKey)) {
       console.warn(`🔒 [ImageManager] Using fallback for combination: ${combinationKey}`);
     }
-
-    console.log('🏠 FALLBACK: Using interior fallback image:', {
-      combinationKey,
-      fallbackImage: IMAGE_FALLBACKS.interior,
-      reason: 'No exact mapping or dynamic mapping found'
-    });
 
     return IMAGE_FALLBACKS.interior;
   }
@@ -599,7 +557,6 @@ export class ImageManager {
   }
 
   static clearImageCache(): void {
-    console.log('🗑️ Clearing image cache, had', imagePathCache.size, 'entries');
     imagePathCache.clear();
   }
 
@@ -615,19 +572,13 @@ export class ImageManager {
    */
   static clearCacheForConfiguration(configuration: Configuration): void {
     const viewTypes: ViewType[] = ['exterior', 'interior', 'stirnseite', 'pv', 'fenster'];
-    let clearedCount = 0;
-
+    
     viewTypes.forEach(view => {
       const cacheKey = this.createCacheKey(configuration, view);
       if (imagePathCache.has(cacheKey)) {
         imagePathCache.delete(cacheKey);
-        clearedCount++;
       }
     });
-
-    if (clearedCount > 0) {
-      console.log('🗑️ Cleared', clearedCount, 'cache entries for configuration change');
-    }
   }
 
   static async preloadForSelection(_selection: unknown, _context?: unknown): Promise<void> {
