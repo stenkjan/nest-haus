@@ -144,7 +144,7 @@ export class ImageManager {
     // Map nest value to image size
     const nestType = configuration.nest.value;
     // Use default gebaeudehuelle if not selected yet
-    const gebaeudehuelle = configuration.gebaeudehuelle?.value || 'holzlattung';
+    const gebaeudehuelle = configuration.gebaeudehuelle?.value || 'trapezblech';
 
     const nestSize = NEST_SIZE_MAPPING[nestType];
     const exteriorType = GEBAEUDE_EXTERIOR_MAPPING[gebaeudehuelle];
@@ -172,7 +172,7 @@ export class ImageManager {
    */
   static getStirnseiteImage(configuration: Configuration): string {
     // Use default gebaeudehuelle if not selected yet
-    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'holzlattung';
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
     const stirnseiteKey = STIRNSEITE_MAPPING[gebaeudehuelle];
 
     if (!stirnseiteKey) {
@@ -192,7 +192,7 @@ export class ImageManager {
    */
   static getInteriorImage(configuration: Configuration): string {
     // Use selected values or defaults matching new pricing structure
-    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'holzlattung';
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
     const innenverkleidung = configuration?.innenverkleidung?.value || 'kiefer';
     const fussboden = configuration?.fussboden?.value || 'parkett';
 
@@ -264,7 +264,7 @@ export class ImageManager {
    */
   static getPVImage(configuration: Configuration): string {
     // Use default gebaeudehuelle if not selected yet
-    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'holzlattung';
+    const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
     const pvKey = PV_IMAGE_MAPPING[gebaeudehuelle];
 
     if (!pvKey) {

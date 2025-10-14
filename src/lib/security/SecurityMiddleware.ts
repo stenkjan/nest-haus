@@ -8,6 +8,9 @@
  * - Request size limits
  * - Malicious request detection
  * - Security headers enforcement
+ * - Behavioral analysis integration
+ * - Bot detection integration
+ * - Real-time monitoring integration
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -28,6 +31,10 @@ interface SecurityConfig {
     maxBodySize: number; // in bytes
     allowedOrigins: string[];
     securityHeaders: boolean;
+    behaviorAnalysis: boolean;
+    botDetection: boolean;
+    realTimeMonitoring: boolean;
+    strictMode: boolean;
 }
 
 const defaultConfig: SecurityConfig = {
@@ -46,6 +53,10 @@ const defaultConfig: SecurityConfig = {
         'http://127.0.0.1:3000', // Development alternative
     ],
     securityHeaders: true,
+    behaviorAnalysis: true,
+    botDetection: true,
+    realTimeMonitoring: true,
+    strictMode: false,
 };
 
 export class SecurityMiddleware {
@@ -145,7 +156,29 @@ export class SecurityMiddleware {
     }
 
     /**
-     * Rate limiting check
+     * Extract session ID from request (from headers, cookies, or query params)
+     */
+    private static extractSessionId(req: NextRequest): string | null {
+        // Try to get session ID from various sources
+        const sessionFromHeader = req.headers.get('x-session-id');
+        const sessionFromCookie = req.cookies.get('session-id')?.value;
+        const sessionFromQuery = req.nextUrl.searchParams.get('sessionId');
+
+        return sessionFromHeader || sessionFromCookie || sessionFromQuery || null;
+    }
+
+    /**
+     * Get client IP address from request
+     */
+    private static getClientIP(req: NextRequest): string {
+        return req.headers.get('x-forwarded-for') ||
+            req.headers.get('x-real-ip') ||
+            req.headers.get('cf-connecting-ip') ||
+            'unknown';
+    }
+
+    /**
+     * Enhanced rate limiting check with better tracking
      */
     private static async checkRateLimit(
         req: NextRequest,
@@ -382,15 +415,6 @@ export class SecurityMiddleware {
     private static hasJsonContent(req: NextRequest): boolean {
         const contentType = req.headers.get('content-type') || '';
         return contentType.includes('application/json');
-    }
-
-    private static getClientIP(req: NextRequest): string {
-        return (
-            req.headers.get('x-forwarded-for')?.split(',')[0] ||
-            req.headers.get('x-real-ip') ||
-            req.headers.get('cf-connecting-ip') ||
-            'unknown'
-        );
     }
 
     private static createErrorResponse(

@@ -4,6 +4,84 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c782f3333daebabcd010abbb7e2d06d094d133cc] - Tue Oct 14 16:31:25 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6d2e422a5555393aa4ab4338deead35c863ffad9] - Tue Oct 14 16:12:28 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [9b142ee34b5c13abdbef35d3a8efa8c51ddec91d] - Tue Oct 14 15:59:39 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [efb71de1f190e1b5a8deead103b544fa822dbc08] - Tue Oct 14 15:49:19 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [73a151f83a58fb682dddf2175034a6750bd65f59] - Tue Oct 14 15:41:27 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: Add bottomText prop to GetInContactBanner for enhanced customization  - Introduced a new optional  prop to the  component, allowing for additional text below the banner box. - Updated the component's TypeScript interface to include the new prop for better type safety and documentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
+## [1506a5c3b7c37a812ff4fb4550dc588e03e20237] - Tue Oct 14 15:26:08 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [a099ed25747ec62de1ba459be3e01d9d0e41f3d3] - Tue Oct 14 15:02:16 2025 +0200
 
 **Author**: stenkjan

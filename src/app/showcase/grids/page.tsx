@@ -32,10 +32,54 @@ export default function GridsShowcasePage() {
 
         {/* Image Grid Section - 2x2 Interactive Grid */}
         <section className="overflow-visible">
+          <div className="mb-8 text-center">
+            <h2 className="h2-secondary text-gray-900 mb-4">Interactive 2x2 Image Grid</h2>
+            <p className="text-gray-600">2x2 grid with individual card lightboxes • Click any card to open detailed view</p>
+          </div>
           <TwoByTwoImageGrid
-            title="Interactive 2x2 Image Grid"
-            subtitle="2x2 grid with individual card lightboxes • Click any card to open detailed view"
             maxWidth={false}
+            customData={[
+              {
+                id: 1,
+                title: "Grid Item 1",
+                subtitle: "Sample subtitle",
+                description: "Sample description for grid item 1",
+                image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+                backgroundColor: "bg-gray-900",
+                primaryAction: "Learn More",
+                secondaryAction: "View Details"
+              },
+              {
+                id: 2,
+                title: "Grid Item 2", 
+                subtitle: "Sample subtitle",
+                description: "Sample description for grid item 2",
+                image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
+                backgroundColor: "bg-gray-800",
+                primaryAction: "Learn More",
+                secondaryAction: "View Details"
+              },
+              {
+                id: 3,
+                title: "Grid Item 3",
+                subtitle: "Sample subtitle", 
+                description: "Sample description for grid item 3",
+                image: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
+                backgroundColor: "bg-gray-700",
+                primaryAction: "Learn More",
+                secondaryAction: "View Details"
+              },
+              {
+                id: 4,
+                title: "Grid Item 4",
+                subtitle: "Sample subtitle",
+                description: "Sample description for grid item 4", 
+                image: "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
+                backgroundColor: "bg-gray-600",
+                primaryAction: "Learn More",
+                secondaryAction: "View Details"
+              }
+            ]}
           />
         </section>
 
