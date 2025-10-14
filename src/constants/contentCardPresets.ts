@@ -71,8 +71,8 @@ export const SICHERHEIT_VIDEO_PRESET: VideoCardPreset = {
     ],
 };
 
-// Unsere Technik Video Card Preset - Transport animation with technology description
-export const UNSERE_TECHNIK_VIDEO_PRESET: VideoCardPreset = {
+// Transportabilitaet Video Card Preset - Transport animation with technology description
+export const TRANSPORTABILITAET_VIDEO_PRESET: VideoCardPreset = {
     id: 2,
     title: "Unsere Technik",
     subtitle: "",
@@ -102,5 +102,5 @@ export const CONTENT_CARD_PRESETS = {
 
 export const VIDEO_CARD_PRESETS = {
     sicherheit: SICHERHEIT_VIDEO_PRESET,
-    unsereTechnik: UNSERE_TECHNIK_VIDEO_PRESET,
+    transportabilitaet: TRANSPORTABILITAET_VIDEO_PRESET,
 };

@@ -18,6 +18,7 @@ import {
   PartnersSection,
   LandingImagesCarousel,
   SectionHeader,
+  TransportabilitaetVideo,
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
 import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
@@ -226,27 +227,7 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 3 - Dein Zuhause zieht um */}
-        <section
-          id="zuhause-zieht-um"
-          className="w-full py-8 md:py-16 bg-white"
-        >
-          <SectionHeader
-            title="Dein Zuhause zieht um"
-            subtitle="Architektur für ein bewegtes Leben."
-            wrapperMargin="md:mb-12 mb-12"
-          />
-
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            {/* VideoCard16by9 Component */}
-            <VideoCard16by9
-              title=""
-              subtitle=""
-              maxWidth={false}
-              showInstructions={false}
-              customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
-            />
-          </div>
-        </section>
+        <TransportabilitaetVideo />
 
         {/* Section 4 - Cards */}
         <section id="cards" className="w-full py-8 md:py-16 bg-white">
@@ -325,8 +306,6 @@ export default function EntdeckenClient() {
             </div>
 
             <VideoCard16by9
-              title=""
-              subtitle=""
               maxWidth={false}
               showInstructions={false}
               customData={[VIDEO_CARD_PRESETS.sicherheit]}
