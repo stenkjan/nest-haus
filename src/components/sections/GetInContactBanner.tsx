@@ -89,7 +89,7 @@ export function GetInContactBanner({
                   alt="Termin Icon"
                   width={240}
                   height={240}
-                  className="h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 xl:h-52 xl:w-52 2xl:h-64 2xl:w-64"
+                  className="h-10 w-20 sm:h-12 sm:w-24 md:h-16 md:w-32 lg:h-20 lg:w-40 xl:h-26 xl:w-52 2xl:h-32 2xl:w-64 mb-4 md:mb-8"
                   enableCache={true}
                   enableMobileDetection={false}
                   showLoadingSpinner={false}
@@ -100,12 +100,12 @@ export function GetInContactBanner({
               <h1 className="h1-secondary text-gray-900 mb-3">{title}</h1>
 
               {/* Subtitle */}
-              <h3 className="h3-secondary text-gray-700 leading-relaxed mb-6">
+              <h3 className="h3-secondary text-gray-700 leading-relaxed">
                 {subtitle}
               </h3>
 
               {/* Button */}
-              <Button variant="primary" size="xs" onClick={handleButtonClick}>
+              <Button variant="primary" className="mt-4 md:mt-6" size="xs" onClick={handleButtonClick}>
                 {buttonText}
               </Button>
             </div>
