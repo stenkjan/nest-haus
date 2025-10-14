@@ -175,8 +175,8 @@ export class RealTimeMonitor {
         type: SecurityEventType,
         severity: 'low' | 'medium' | 'high' | 'critical',
         description: string,
-    metadata: Record<string, unknown> = {}
-  ): SecurityEvent {
+        metadata: Record<string, unknown> = {}
+    ): SecurityEvent {
         const event: SecurityEvent = {
             id: this.generateEventId(),
             sessionId,
