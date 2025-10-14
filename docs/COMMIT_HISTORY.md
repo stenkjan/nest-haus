@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4202b6081b3647b4f9b081cf13347a3171232de6] - Tue Oct 14 10:55:17 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Standardize section layout and typography across components  - Updated architecture design rules to enforce consistent section padding and background colors. - Introduced the  component for uniformity in section titles and subtitles. - Refactored  to utilize the  for improved readability and maintainability. - Enhanced  with detailed usage guidelines for the  component. - Expanded content card presets to include new button variants for better design flexibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/test-sections/page.tsx
+- src/components/sections/SectionHeader.tsx
+- src/components/sections/index.ts
+
+
+#### 📚 Documentation Changes
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
 ## [55a51d6b3e92a04f89ea3fa5bae5c58504dd364f] - Mon Oct 13 16:40:47 2025 +0200
 
 **Author**: stenkjan
