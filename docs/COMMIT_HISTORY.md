@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [25b5e09e1922f97d21b2053d05b6222d7a068cad] - Tue Oct 14 14:19:45 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Refine LandingImagesCarousel styles for consistency  - Removed unnecessary rounded corners from the image class for a cleaner look. - Maintained the gradient overlay styling for the description while ensuring layout integrity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
 ## [13b0a010f883d92210944ded979c4ace0947d505] - Tue Oct 14 14:03:06 2025 +0200
 
 **Author**: stenkjan
