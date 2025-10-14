@@ -33,6 +33,13 @@ export class ImageManager {
    * IMPROVED: Uses constants, better validation, fixed encoding issues
    */
   static getPreviewImage(configuration: Configuration | null, view: ViewType): string {
+    console.log('🎯 ImageManager.getPreviewImage called:', {
+      view,
+      hasConfiguration: !!configuration,
+      gebaeudehuelle: configuration?.gebaeudehuelle?.value,
+      nest: configuration?.nest?.value
+    });
+
     // Validate inputs for security
     if (!this.isValidViewType(view)) {
       console.warn(`⚠️ Invalid view type: ${view}, defaulting to exterior`);
@@ -49,7 +56,9 @@ export class ImageManager {
 
     // Return cached result if available
     if (imagePathCache.has(cacheKey)) {
-      return imagePathCache.get(cacheKey)!;
+      const cachedResult = imagePathCache.get(cacheKey)!;
+      console.log('🎯 Using cached image:', { cacheKey, cachedResult });
+      return cachedResult;
     }
 
     let imagePath: string;
@@ -146,6 +155,14 @@ export class ImageManager {
     // Use default gebaeudehuelle if not selected yet
     const gebaeudehuelle = configuration.gebaeudehuelle?.value || 'trapezblech';
 
+    console.log('🖼️ ImageManager.getExteriorImage DEBUG:', {
+      nestType,
+      gebaeudehuelle,
+      selectedValue: configuration.gebaeudehuelle?.value,
+      usingDefault: !configuration.gebaeudehuelle?.value,
+      fullConfiguration: configuration
+    });
+
     const nestSize = NEST_SIZE_MAPPING[nestType];
     const exteriorType = GEBAEUDE_EXTERIOR_MAPPING[gebaeudehuelle];
 
@@ -195,6 +212,14 @@ export class ImageManager {
     const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
     const innenverkleidung = configuration?.innenverkleidung?.value || 'kiefer';
     const fussboden = configuration?.fussboden?.value || 'parkett';
+
+    console.log('🏠 ImageManager.getInteriorImage DEBUG:', {
+      gebaeudehuelle,
+      innenverkleidung,
+      fussboden,
+      selectedGebaeude: configuration?.gebaeudehuelle?.value,
+      usingDefaultGebaeude: !configuration?.gebaeudehuelle?.value
+    });
 
     // Create combination key for exact matching
     const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
@@ -557,6 +582,7 @@ export class ImageManager {
   }
 
   static clearImageCache(): void {
+    console.log('🗑️ Clearing image cache, had', imagePathCache.size, 'entries');
     imagePathCache.clear();
   }
 
@@ -565,6 +591,26 @@ export class ImageManager {
       size: imagePathCache.size,
       keys: Array.from(imagePathCache.keys())
     };
+  }
+
+  /**
+   * Clear cache for specific configuration to force refresh
+   */
+  static clearCacheForConfiguration(configuration: Configuration): void {
+    const viewTypes: ViewType[] = ['exterior', 'interior', 'stirnseite', 'pv', 'fenster'];
+    let clearedCount = 0;
+    
+    viewTypes.forEach(view => {
+      const cacheKey = this.createCacheKey(configuration, view);
+      if (imagePathCache.has(cacheKey)) {
+        imagePathCache.delete(cacheKey);
+        clearedCount++;
+      }
+    });
+    
+    if (clearedCount > 0) {
+      console.log('🗑️ Cleared', clearedCount, 'cache entries for configuration change');
+    }
   }
 
   static async preloadForSelection(_selection: unknown, _context?: unknown): Promise<void> {

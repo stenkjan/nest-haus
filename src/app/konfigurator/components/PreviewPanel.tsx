@@ -111,6 +111,11 @@ export default function PreviewPanel({
 
   // Get current image path with preloading optimization
   const currentImagePath = useMemo(() => {
+    // Clear cache for this configuration to ensure fresh images
+    if (configuration) {
+      ImageManager.clearCacheForConfiguration(configuration);
+    }
+    
     const imagePath = ImageManager.getPreviewImage(configuration, activeView);
 
     // PERFORMANCE: Connection-aware preload of next likely image

@@ -136,6 +136,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       initializeSession: () => {
         const state = get()
 
+        console.log('🚀 ConfiguratorStore.initializeSession called:', {
+          hasSessionId: !!state.sessionId,
+          hasNest: !!state.configuration.nest,
+          hasGebaeudehuelle: !!state.configuration.gebaeudehuelle,
+          currentGebaeudehuelle: state.configuration.gebaeudehuelle?.value
+        });
+
         // Skip auto-reset in test environment to allow explicit testing
         if (process.env.NODE_ENV === 'test') {
           return;
@@ -144,6 +151,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         // Check if this is a completely new session (no sessionId and no selections)
         const isNewSession = !state.sessionId && !state.configuration.nest;
 
+        console.log('🚀 Is new session?', isNewSession);
+
         // Generate sessionId if missing
         if (!state.sessionId) {
           set({ sessionId: `client_${Date.now()}_${Math.random().toString(36).substring(2)}` })
@@ -151,6 +160,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // Set default preselections only for completely new sessions
         if (isNewSession) {
+          console.log('🚀 Setting default selections...');
           get().setDefaultSelections()
         }
 
@@ -589,6 +599,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
       // Set default preselections - DISABLED (no preselections wanted)
       setDefaultSelections: () => {
+        console.log('🎯 ConfiguratorStore.setDefaultSelections called');
+        
         // Set default selections as requested
         const defaultSelections = [
           // Nest 80
@@ -683,6 +695,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           shouldSwitchToView: 'exterior', // Show exterior view with defaults
           hasPart2BeenActive: true, // Enable interior view
           hasPart3BeenActive: false // Don't enable part 3 yet
+        });
+
+        console.log('🎯 Default selections applied:', {
+          nest: newConfiguration.nest?.value,
+          gebaeudehuelle: newConfiguration.gebaeudehuelle?.value,
+          innenverkleidung: newConfiguration.innenverkleidung?.value,
+          fussboden: newConfiguration.fussboden?.value
         });
 
         // Calculate price with all defaults
