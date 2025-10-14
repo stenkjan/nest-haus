@@ -246,12 +246,12 @@ export default function ProtectedContent({
       };
 
       // Throttle mouse movement tracking to avoid performance issues
-      let mouseMoveThrottle: NodeJS.Timeout;
+      let mouseMoveThrottle: NodeJS.Timeout | null = null;
       const throttledMouseMove = (e: MouseEvent) => {
         if (mouseMoveThrottle) return;
         mouseMoveThrottle = setTimeout(() => {
           mouseMoveHandler(e);
-          mouseMoveThrottle = null as any;
+          mouseMoveThrottle = null;
         }, 100);
       };
 

@@ -107,10 +107,7 @@ export default function TestSectionsPage() {
       id: "partners-section",
       name: "Partners Section",
       renderComponent: (_bgColor) => (
-        <PartnersSection
-          title="Unsere Partner"
-          subtitle="Gemeinsam für dein Traumhaus"
-        />
+        <PartnersSection />
       ),
     },
     {

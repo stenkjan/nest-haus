@@ -486,11 +486,11 @@ export class RealTimeMonitor {
             eventsBySeverity[event.severity]++;
 
             // Calculate risk score from metadata
-            if (event.metadata.suspicionScore) {
+            if (event.metadata.suspicionScore && typeof event.metadata.suspicionScore === 'number') {
                 totalRiskScore += event.metadata.suspicionScore;
                 riskScoreCount++;
             }
-            if (event.metadata.confidence) {
+            if (event.metadata.confidence && typeof event.metadata.confidence === 'number') {
                 totalRiskScore += event.metadata.confidence;
                 riskScoreCount++;
             }
