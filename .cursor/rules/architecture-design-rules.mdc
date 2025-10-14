@@ -192,10 +192,13 @@ Follow the established grid component patterns:
 
 #### Section Layout Standards:
 
-- ✅ **Consistent spacing**: Use `py-16` for vertical section padding
-- ✅ **Background alternation**: Alternate between `bg-white` and `bg-gray-50`
-- ✅ **1536px max width**: Use `max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8`
-- ✅ **Responsive padding**: Use responsive padding classes for mobile/desktop
+**CRITICAL**: Follow the Section Standard defined in `/docs/TYPOGRAPHY_STANDARDS.md`
+
+- ✅ **Standard padding**: Use `py-8 md:py-16` for vertical section padding (Mobile: 32px, Desktop: 64px)
+- ✅ **Background colors**: Use `bg-white`, `bg-gray-50`, or `bg-black` explicitly
+- ✅ **1536px max width**: Use `max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8` for content containers
+- ✅ **Full width sections**: Always use `w-full` on section elements
+- ✅ **Special patterns**: Hero sections, Media sections have documented exceptions (see Section Standard)
 
 #### Navigation Behavior:
 
@@ -208,27 +211,37 @@ Follow the established grid component patterns:
 
 #### Section Header Pattern:
 
-```tsx
-<section id="section-id" className="w-full py-16 [bg-class]">
-  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
-      Section Title
-    </h2>
-    <h3 className="text-xl md:text-2xl font-medium tracking-[-0.015em] leading-8 mb-8 max-w-3xl mx-auto text-center">
-      Section subtitle or description
-    </h3>
+**RECOMMENDED**: Use the `SectionHeader` component for all section headers. See `/docs/TYPOGRAPHY_STANDARDS.md` for complete documentation.
 
-    {/* Section content */}
+```tsx
+import { SectionHeader } from "@/components/sections";
+
+<section id="section-id" className="w-full py-8 md:py-16 bg-white">
+  <SectionHeader
+    title="Section Title"
+    subtitle="Section subtitle or description"
+  />
+
+  {/* Section content */}
+  <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Your content components */}
   </div>
-</section>
+</section>;
 ```
+
+**Standard Section Patterns:**
+
+- **Standard Content Section**: `py-8 md:py-16` with SectionHeader (90% of sections)
+- **Hero Section**: Custom padding (e.g., `md:pt-12 md:pb-4`) with custom layout
+- **Media Section**: No padding (`w-full relative`) for full-width video/images
+- **See Section Standard** in TYPOGRAPHY_STANDARDS.md for complete examples
 
 #### Typography Consistency:
 
-- ✅ **Main headers**: `text-4xl md:text-[60px]` with tracking adjustments
-- ✅ **Subheaders**: `text-xl md:text-2xl` with proper line height
-- ✅ **Body text**: Follow responsive text scaling patterns
-- ✅ **Font weights**: Use `font-medium` for headers, `font-normal` for body
+- ✅ **Use SectionHeader component**: Ensures consistent responsive typography
+- ✅ **Follow Section Standard**: See TYPOGRAPHY_STANDARDS.md for all patterns
+- ✅ **Semantic HTML**: Proper h1 → h2 → h3 hierarchy
+- ✅ **Complete breakpoints**: All typography uses full responsive scale
 
 ### **Implementation Checklist**
 

@@ -17,6 +17,7 @@ import {
   GetInContactBanner,
   PartnersSection,
   LandingImagesCarousel,
+  SectionHeader,
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
 import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
@@ -96,18 +97,16 @@ export default function EntdeckenClient() {
         {/* Section 1 - Hero with Title and Subtitle */}
         <section
           id="hero"
-          className="w-full bg-white md:pt-12 md:pb-4 flex items-center"
+          className="w-full bg-white md:pt-12 flex items-center"
         >
           {/* Desktop Hero Content */}
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 hidden md:block">
-            <div className="text-center">
-              <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
-                Design für dich gemacht
-              </h1>
-              <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
-                Dein Design im Freistil.
-              </h3>
-            </div>
+          <div className="hidden md:block w-full">
+            <SectionHeader
+              title="Design für dich gemacht"
+              subtitle="Dein Design im Freistil."
+              titleClassName="text-gray-900"
+              wrapperMargin="mb-8"
+            />
           </div>
           {/* Mobile Hero - Invisible spacer to ensure section exists for SectionRouter */}
           <div className="md:hidden h-1 w-full"></div>
@@ -227,15 +226,17 @@ export default function EntdeckenClient() {
         </section>
 
         {/* Section 3 - Dein Zuhause zieht um */}
-        <section id="zuhause-zieht-um" className="w-full pt-8 md:py-16">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center md:mb-12 mb-12">
-              <h1 className="h1-secondary mb-2">Dein Zuhause zieht um</h1>
-              <h3 className="h3-secondary text-black max-w-3xl mx-auto text-center">
-                Architektur für ein bewegtes Leben.
-              </h3>
-            </div>
+        <section
+          id="zuhause-zieht-um"
+          className="w-full py-8 md:py-16 bg-white"
+        >
+          <SectionHeader
+            title="Dein Zuhause zieht um"
+            subtitle="Architektur für ein bewegtes Leben."
+            wrapperMargin="md:mb-12 mb-12"
+          />
 
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             {/* VideoCard16by9 Component */}
             <VideoCard16by9
               title=""
