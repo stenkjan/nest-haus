@@ -83,7 +83,7 @@ export function GetInContactBanner({
           <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform w-[90%]">
             <div className="p-12 text-center">
               {/* Icon */}
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center">
                 <ClientBlobImage
                   path={IMAGES.contactIcons.appointment}
                   alt="Termin Icon"
