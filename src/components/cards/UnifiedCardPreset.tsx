@@ -2,7 +2,6 @@
 
 import React from "react";
 import ContentCards from "./ContentCards";
-import ContentCardsGlass from "./ContentCardsGlass";
 import { PresetConfig, applyPresetConfig, PresetName } from "./presetSystem";
 
 interface UnifiedCardPresetProps extends Omit<PresetConfig, "preset"> {
@@ -53,32 +52,17 @@ export default function UnifiedCardPreset({
     showInstructions,
   });
 
-  // Render appropriate component based on style
-  if (style === "glass") {
-    // Filter out "pricing" variant for ContentCardsGlass (only supports "responsive" | "static")
-    const glassConfig = {
-      ...config,
-      variant: config.variant === "pricing" ? "responsive" : config.variant,
-    };
-
-    return (
-      <ContentCardsGlass
-        {...glassConfig}
-        isLightboxMode={isLightboxMode}
-        onCardClick={onCardClick}
-      />
-    );
-  }
-
-  // Filter out "pricing" variant for ContentCards (only supports "responsive" | "static")
-  const defaultConfig = {
+  // Filter out "pricing" variant (only supports "responsive" | "static")
+  const finalConfig = {
     ...config,
     variant: config.variant === "pricing" ? "responsive" : config.variant,
   };
 
+  // Render ContentCards with appropriate style
   return (
     <ContentCards
-      {...defaultConfig}
+      {...finalConfig}
+      style={style}
       isLightboxMode={isLightboxMode}
       onCardClick={onCardClick}
     />

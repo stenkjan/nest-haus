@@ -1,6 +1,6 @@
 # Unified Card System
 
-This system provides a consistent way to use card presets across both ContentCards and ContentCardsGlass components.
+This system provides a consistent way to use card components with different visual styles using a single component.
 
 ## Quick Usage
 
@@ -22,15 +22,15 @@ import { IMAGES } from "@/constants/images";
 />;
 ```
 
-### Using the Unified Component
+### Using the Unified Preset Component
 
 ```tsx
 import { UnifiedCardPreset } from "@/components/cards";
 
-// Default Sicherheit preset
+// Default style preset
 <UnifiedCardPreset preset="sicherheit" />
 
-// Glass version
+// Glass style version
 <UnifiedCardPreset preset="sicherheit" style="glass" />
 
 // With custom configuration
@@ -43,41 +43,71 @@ import { UnifiedCardPreset } from "@/components/cards";
 />
 ```
 
-### Using Individual Components with Presets
+### Using ContentCards Directly
 
 ```tsx
-import { ContentCards, ContentCardsGlass, createPresetCustomData } from "@/components/cards";
+import { ContentCards, createPresetCustomData } from "@/components/cards";
 
-// ContentCards with Sicherheit preset
+// ContentCards with default style
 <ContentCards
   variant="static"
   title="Sicherheit Card Preset"
   customData={createPresetCustomData("sicherheit")}
 />
 
-// ContentCardsGlass with same preset
-<ContentCardsGlass
+// ContentCards with glass style
+<ContentCards
   variant="static"
+  style="glass"
+  backgroundColor="black"
   title="Sicherheit Card Preset - Glass"
   customData={createPresetCustomData("sicherheit")}
+/>
+
+// Materials showcase with glass styling
+<ContentCards
+  variant="responsive"
+  style="glass"
+  backgroundColor="black"
+  customData={MATERIAL_CARDS}
+  maxWidth={false}
 />
 ```
 
 ## Features
 
-✅ **Identical Scaling**: Both components now have the same responsive behavior
-✅ **Button Support**: ContentCardsGlass now supports buttons like ContentCards
-✅ **Aspect Ratio Fix**: Both components maintain proper proportions at all screen sizes
-✅ **Unified Presets**: Easy way to apply the same preset to either component style
+✅ **Unified Component**: Single ContentCards component handles both default and glass styles
+✅ **Simple Style Switching**: Just use `style="glass"` prop to switch visual styles
+✅ **Button Support**: Full button support for static cards
+✅ **Aspect Ratio Fix**: Maintains proper proportions at all screen sizes
+✅ **Unified Presets**: Easy way to apply presets with any style
 ✅ **Type Safety**: Full TypeScript support with proper type checking
+✅ **Background Control**: Control background color for glass mode
 
 ## Available Presets
 
 - `sicherheit` - Security/Grundstücks-Check card with buttons
 
-## Component Consistency
+## Style Variants
 
-Both ContentCards and ContentCardsGlass now have:
+The ContentCards component supports two visual styles:
+
+### Default Style (`style="default"`)
+
+- Light background colors (white/gray based on card data)
+- Dark text (gray-900, gray-700)
+- White navigation arrows with gray icons
+- Standard card appearance
+
+### Glass Style (`style="glass"`)
+
+- Dark glass background (`#121212`)
+- White/light text colors
+- Glass morphism effects with inset shadows
+- Dark gray navigation arrows with white icons
+- Perfect for dark backgrounds and material showcases
+
+Both styles share:
 
 - Identical responsive breakpoints and scaling logic
 - Same button rendering and responsive width behavior

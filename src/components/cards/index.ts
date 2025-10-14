@@ -1,8 +1,6 @@
 // Main card components
 export { default as ContentCards } from "./ContentCards";
-export { default as ContentCardsGlass } from "./ContentCardsGlass";
 export { default as ContentCardsLightbox } from "./ContentCardsLightbox";
-export { default as ContentCardsGlassLightbox } from "./ContentCardsGlassLightbox";
 export { default as PlanungspaketeCards } from "./PlanungspaketeCards";
 export { default as PlanungspaketeCardsLightbox } from "./PlanungspaketeCardsLightbox";
 export { default as ImageGlassCard } from "./ImageGlassCard";

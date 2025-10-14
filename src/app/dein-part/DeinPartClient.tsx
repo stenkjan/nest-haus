@@ -18,6 +18,7 @@ import {
   GetInContactBanner,
   LandingImagesCarousel,
   MaterialShowcase,
+  SectionHeader,
 } from "@/components/sections";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { ImageGlassCard } from "@/components/cards";
@@ -186,18 +187,16 @@ export default function DeinPartClient() {
           {/* Moved from unser-part: Video Section - Dein Nest System */}
           <section
             id="dein-nest-system"
-            className="bg-black pt-12 pb-8 md:pb-0"
+            className="bg-black pt-12 pb-8 md:pb-16"
           >
             <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-              <div className="text-center mb-12">
-                <h1 className="h1-secondary text-white mb-2 md:mb-3">
-                  Dein ®Nest System
-                </h1>
-                <h3 className="h3-secondary text-nest-gray">
-                  Individualisiert, wo es Freiheit braucht. Standardisiert, wo
-                  es Effizienz schafft.
-                </h3>
-              </div>
+              <SectionHeader
+                title="Dein ®Nest System"
+                subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
+                titleClassName="text-white"
+                subtitleClassName="text-white"
+                wrapperMargin="mb-12"
+              />
 
               <div className="flex justify-center">
                 <div className="w-full md:w-4/5 max-w-5xl rounded-none md:rounded-lg overflow-hidden bg-gray-900">
@@ -225,10 +224,10 @@ export default function DeinPartClient() {
                       // Could add additional error handling here if needed
                     }}
                   />
-                  {/* Accessibility description for screen readers */}
+                  {/* Barrierefreiheit - Beschreibung für Screenreader */}
                   <span className="sr-only">
-                    Video demonstration of NEST-Haus modular construction system
-                    showing architectural components and assembly process
+                    Video-Demonstration des NEST-Haus modularen Bausystems zeigt
+                    architektonische Komponenten und Montageprozess
                   </span>
                 </div>
               </div>
@@ -237,9 +236,14 @@ export default function DeinPartClient() {
 
           {/* Moved from unser-part: Combined ThreeByOneGrid Section - Größe */}
           <section id="groesse" className="py-8 md:py-16">
-            <ThreeByOneGrid
+            <SectionHeader
               title="Manchmal kommt es auf die Größe an."
               subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+              wrapperMargin="mb-12 2xl:mb-24"
+            />
+            <ThreeByOneGrid
               backgroundColor="black"
               text="<p class='p-secondary text-white'><span class='text-white font-medium'>Standardisierung</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Effizienz, Freiheit</span> <span class='text-nest-gray'>für</span> <span class='text-white font-medium'>Gestaltung.</span> <span class='text-nest-gray'>Alles, was sinnvoll standardisiert werden kann, wird perfektioniert.</span> <span class='text-white font-medium'>Präzisionsgefertigte Module,</span> <span class='text-nest-gray'>effiziente Prozesse und bewährte Konstruktionen sichern</span> <span class='text-white font-medium'>höchste Qualität</span> <span class='text-nest-gray'>zu einem</span> <span class='text-white font-medium'>leistbaren Preis.</span><br/><br/><span class='text-nest-gray'>Gleichzeitig bleibt volle</span> <span class='text-white font-medium'>Gestaltungsfreiheit</span> <span class='text-nest-gray'>dort, wo sie wirklich zählt.</span></p>"
               textPosition="left"
@@ -252,10 +256,8 @@ export default function DeinPartClient() {
             />
 
             {/* ThreeByOneGrid - Right Position (No Title/Subtitle) */}
-            <div className="pt-16 md:pt-32">
+            <div className="pt-16 md:pt-16">
               <ThreeByOneGrid
-                title=""
-                subtitle=""
                 backgroundColor="black"
                 text="<p class='p-secondary text-white'><span class='text-nest-gray'>Das bedeutet:</span> <span class='text-white font-medium'>schnelle Bauzeiten,</span> <span class='text-white font-medium'>zuverlässige Strukturen</span> <span class='text-nest-gray'>und ein</span> <span class='text-white font-medium'>unschlagbares Preis-Leistungs-Verhältnis.</span> <span class='text-nest-gray'>Individualisierung für persönliche Gestaltung. Jedes Zuhause ist einzigartig und genau da, wo es wichtig ist, bieten wir</span> <span class='text-white font-medium'>maximale Freiheit:</span> <span class='text-nest-gray'>Grundriss-gestaltung,Technische Ausstattung, Materialien und Oberflächen, Flexible Wohnflächen.</span></p>"
                 textPosition="right"
@@ -270,14 +272,13 @@ export default function DeinPartClient() {
 
           {/* Moved from unser-part: Materialien Section */}
           <section id="materialien" className="pt-8 md:pt-16 pb-8 md:pb-16">
-            <div className="text-center mb-12 px-4">
-              <h1 className="h1-secondary text-white mb-2 md:mb-3">
-                Gut für Dich, besser für die Zukunft
-              </h1>
-              <h3 className="h3-secondary text-nest-gray">
-                Entdecke unsere sorgfältig ausgewählten Materialien
-              </h3>
-            </div>
+            <SectionHeader
+              title="Gut für Dich, besser für die Zukunft"
+              subtitle="Entdecke unsere sorgfältig ausgewählten Materialien"
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+              wrapperMargin="mb-12"
+            />
 
             {/* MaterialShowcase Section - Optimized */}
             <MaterialShowcase
@@ -301,8 +302,6 @@ export default function DeinPartClient() {
 
             {/* ThreeByOneGrid - Left Position (Bottom Section) */}
             <ThreeByOneGrid
-              title=""
-              subtitle=""
               backgroundColor="black"
               text="<p class='p-secondary text-white'><span class='text-nest-gray'>Unser</span> <span class='text-white font-medium'>Nest System</span> <span class='text-nest-gray'>bietet dir an den</span> <span class='text-white font-medium'>Seitenwänden</span> <span class='text-nest-gray'>und an der</span> <span class='text-white font-medium'>Giebelseite</span> <span class='text-nest-gray'>volle Gestaltungsfreiheit.</span> <span class='text-nest-gray'> Hier kannst du deine</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>so platzieren, wie es zu dir und deinem Zuhause passt. Gemeinsam mit uns definierst du</span> <span class='text-white font-medium'>Größe und Position</span> <span class='text-nest-gray'>individuell nach</span> <span class='text-white font-medium'>deinen Wünschen</span> <span class='text-nest-gray'>und Anforderungen.</span></p>"
               textPosition="left"
@@ -316,8 +315,6 @@ export default function DeinPartClient() {
             {/* ThreeByOneGrid - Right Position (Bottom Section) */}
             <div className="pt-16 md:pt-32">
               <ThreeByOneGrid
-                title=""
-                subtitle=""
                 backgroundColor="black"
                 text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>legst du die</span> <span class='text-white font-medium'>Gesamtfläche</span> <span class='text-nest-gray'>deiner</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>fest, angepasst an deine individuellen Bedürfnisse. Der</span> <span class='text-white font-medium'>Preis bleibt</span> <span class='text-nest-gray'>dabei jederzeit</span> <span class='text-white font-medium'>transparent.</span></p>"
                 textPosition="right"
@@ -465,9 +462,14 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             id="wohnflaeche-erweitern"
             className="w-full py-8 md:py-16 bg-black"
           >
-            <ThreeByOneGrid
+            <SectionHeader
               title="Wohnfläche erweitern?"
               subtitle="Kein Problem."
+              titleClassName="text-white"
+              subtitleClassName="text-nest-gray"
+              wrapperMargin="mb-12 2xl:mb-24"
+            />
+            <ThreeByOneGrid
               text="<p class='p-secondary text-white'>Mehr Raum, wenn du ihn brauchst. <span class='text-nest-gray'>Dein Nest Haus wächst mit. Dank durchdachter Konstruktion kannst du</span> jederzeit eine Zwischendecke einziehen <span class='text-nest-gray'>und dein Zuhause ganz einfach in ein zweigeschoßiges Raumwunder verwandeln.</span></p>"
               image1={IMAGES.function.nestHausPlattenFundament}
               image2={IMAGES.function.nestHausFundamentStreifenfundament}
@@ -481,9 +483,14 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
 
           {/* Flexibilität Section */}
           <section id="flexibilitaet" className="w-full py-8 md:py-16 bg-black">
-            <ThreeByOneGrid
+            <SectionHeader
               title="Ob Decke einziehen, oder Haus erweitern."
               subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
+              titleClassName="text-white"
+              subtitleClassName="text-nest-gray"
+              wrapperMargin="mb-12 2xl:mb-24"
+            />
+            <ThreeByOneGrid
               text="<p class='p-secondary text-white'><span class='text-nest-gray'>Durch intelligente</span> Standardisierung <span class='text-nest-gray'>garantieren wir</span> höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für</span> <span class='text-nest-gray'>Stabilität, Energieeffizienz</span> <span class='text-nest-gray'>und ein unvergleichliches Wohngefühl.</span> Dein Zuhause. Dein Stil. Deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden,</span> <span class='text-nest-gray'>denn</span> du bekommst alles.</p>"
               image1={IMAGES.function.nestHausFundamentPunktfundament}
               image2={IMAGES.function.nestHausFlexibilitaetErweiterung}

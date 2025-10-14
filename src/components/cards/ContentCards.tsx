@@ -50,6 +50,8 @@ interface ContentCardsProps {
   isLightboxMode?: boolean;
   onCardClick?: (cardId: number) => void;
   customData?: CardData[] | StaticCardData[];
+  style?: "default" | "glass";
+  backgroundColor?: "white" | "gray" | "black";
 }
 
 const contentCardData: CardData[] = [
@@ -173,6 +175,8 @@ export default function ContentCards({
   isLightboxMode = false,
   onCardClick: _onCardClick,
   customData,
+  style = "default",
+  backgroundColor = "black",
 }: ContentCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
@@ -187,6 +191,14 @@ export default function ContentCards({
 
   const isStatic = variant === "static";
   const isResponsive = variant === "responsive";
+  const isGlass = style === "glass";
+
+  // Determine text colors based on background (for glass mode)
+  const textColors = {
+    title: backgroundColor === "black" ? "text-white" : "text-gray-900",
+    subtitle: backgroundColor === "black" ? "text-white" : "text-gray-600",
+    description: backgroundColor === "black" ? "text-white" : "text-gray-500",
+  };
 
   // Use appropriate data source based on variant or custom data
   const cardData = customData || (isStatic ? staticCardData : contentCardData);
@@ -405,16 +417,22 @@ export default function ContentCards({
         {loadingShouldRenderTitleContainer && (
           <div className="text-center mb-8">
             {loadingShouldShowTitle && (
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+              <h2
+                className={`text-3xl font-bold mb-2 ${isGlass ? textColors.title : "text-gray-900"}`}
+              >
+                {title}
+              </h2>
             )}
             {loadingShouldShowSubtitle && (
-              <p className="text-gray-600">{subtitle}</p>
+              <p className={isGlass ? textColors.subtitle : "text-gray-600"}>
+                {subtitle}
+              </p>
             )}
           </div>
         )}
         <div className="flex justify-center items-center py-8">
           <div
-            className="animate-pulse bg-gray-200 rounded-3xl"
+            className={`animate-pulse rounded-3xl ${isGlass ? "bg-gray-800" : "bg-gray-200"}`}
             style={{ width: 320, height: 480 }}
           />
         </div>
@@ -467,9 +485,17 @@ export default function ContentCards({
       {shouldRenderTitleContainer && (
         <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
           {shouldShowTitle && (
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+            <h2
+              className={`text-3xl font-bold mb-2 ${isGlass ? textColors.title : "text-gray-900"}`}
+            >
+              {title}
+            </h2>
           )}
-          {shouldShowSubtitle && <p className="text-gray-600">{subtitle}</p>}
+          {shouldShowSubtitle && (
+            <p className={isGlass ? textColors.subtitle : "text-gray-600"}>
+              {subtitle}
+            </p>
+          )}
         </div>
       )}
 
@@ -591,7 +617,10 @@ export default function ContentCards({
                                 ? window.innerHeight * 0.75
                                 : 600
                             ),
-                    backgroundColor: card.backgroundColor,
+                    backgroundColor: isGlass ? "#121212" : card.backgroundColor,
+                    boxShadow: isGlass
+                      ? "inset 0 6px 12px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3)"
+                      : undefined,
                   }}
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.2 }}
@@ -602,19 +631,25 @@ export default function ContentCards({
                       // Desktop: Wide layout (Text left 1/3, Image right 2/3)
                       <>
                         {/* Text Content - Left Third */}
-                        <div className="w-1/3 flex flex-col justify-center items-start text-left px-8 py-6">
+                        <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
                           <motion.div
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2
+                              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${isGlass ? textColors.title : "text-gray-900"} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3
+                              className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${isGlass ? textColors.subtitle : "text-gray-700"} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary leading-relaxed">
+                            <p
+                              className={`${isGlass ? `p-primary-${textColors.description}` : "p-primary"} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -678,13 +713,19 @@ export default function ContentCards({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2
+                              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${isGlass ? textColors.title : "text-gray-900"} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3
+                              className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${isGlass ? textColors.subtitle : "text-gray-700"} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary leading-relaxed">
+                            <p
+                              className={`${isGlass ? `p-primary-${textColors.description}` : "p-primary"} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -732,19 +773,25 @@ export default function ContentCards({
                       // Desktop: Wide layout (Text left 1/3, Image right 2/3)
                       <>
                         {/* Text Content - Left Third */}
-                        <div className="w-1/3 flex flex-col justify-center items-start text-left px-8 py-6">
+                        <div className="w-1/3 flex flex-col justify-center items-start text-left pt-6 pr-6 pb-6 pl-12">
                           <motion.div
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2
+                              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${isGlass ? textColors.title : "text-gray-900"} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3
+                              className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${isGlass ? textColors.subtitle : "text-gray-700"} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary leading-relaxed">
+                            <p
+                              className={`${isGlass ? `p-primary-${textColors.description}` : "p-primary"} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
 
@@ -851,13 +898,19 @@ export default function ContentCards({
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: index * 0.1, duration: 0.6 }}
                           >
-                            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-gray-900 mb-1">
+                            <h2
+                              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${isGlass ? textColors.title : "text-gray-900"} mb-2`}
+                            >
                               {getCardText(card, "title")}
                             </h2>
-                            <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-gray-700 mb-5">
+                            <h3
+                              className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${isGlass ? textColors.subtitle : "text-gray-700"} mb-5`}
+                            >
                               {getCardText(card, "subtitle")}
                             </h3>
-                            <p className="p-primary leading-relaxed">
+                            <p
+                              className={`${isGlass ? `p-primary-${textColors.description}` : "p-primary"} leading-relaxed`}
+                            >
                               {getCardText(card, "description")}
                             </p>
                           </motion.div>
@@ -958,7 +1011,11 @@ export default function ContentCards({
               <button
                 onClick={() => navigateCard(-1)}
                 disabled={isAnimating}
-                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 ${
+                  isGlass
+                    ? "bg-gray-800 hover:bg-gray-700"
+                    : "bg-white hover:bg-gray-50"
+                } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
                   screenWidth < 1024 ? "p-3" : "p-4"
                 }`}
                 style={{
@@ -969,7 +1026,7 @@ export default function ContentCards({
                 }}
               >
                 <svg
-                  className="w-6 h-6 text-gray-700"
+                  className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -988,7 +1045,11 @@ export default function ContentCards({
               <button
                 onClick={() => navigateCard(1)}
                 disabled={isAnimating}
-                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 ${
+                  isGlass
+                    ? "bg-gray-800 hover:bg-gray-700"
+                    : "bg-white hover:bg-gray-50"
+                } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
                   screenWidth < 1024 ? "p-3" : "p-4"
                 }`}
                 style={{
@@ -1001,7 +1062,7 @@ export default function ContentCards({
                 }}
               >
                 <svg
-                  className="w-6 h-6 text-gray-700"
+                  className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1021,11 +1082,13 @@ export default function ContentCards({
 
       {/* Instructions */}
       {showInstructions && (
-        <div className="text-center mt-6 text-sm text-gray-500">
+        <div
+          className={`text-center mt-6 text-sm ${isGlass ? "text-gray-400" : "text-gray-500"}`}
+        >
           {isStatic ? (
             <p>
-              Single responsive card • Wide layout on desktop, mobile layout on
-              tablets/phones
+              Single responsive {isGlass ? "glass" : ""} card • Wide layout on
+              desktop, mobile layout on tablets/phones
             </p>
           ) : (
             <>

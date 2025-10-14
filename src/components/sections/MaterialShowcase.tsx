@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { ContentCardsGlass } from "@/components/cards";
+import { ContentCards } from "@/components/cards";
 import { MATERIAL_CARDS, type MaterialCardData } from "@/constants/materials";
 import { SectionContainer } from "@/components/sections";
 
@@ -49,14 +49,15 @@ export const MaterialShowcase = memo(function MaterialShowcase({
           </div>
         )}
 
-        {/* ContentCardsGlass with optimized material data - full width */}
-        <ContentCardsGlass
+        {/* ContentCards with glass styling and optimized material data - full width */}
+        <ContentCards
           variant="responsive"
           title=""
           subtitle=""
           maxWidth={false}
           showInstructions={showInstructions}
           customData={materials}
+          style="glass"
           backgroundColor={backgroundColor}
         />
       </section>
@@ -80,14 +81,15 @@ export const MaterialShowcase = memo(function MaterialShowcase({
         </div>
       )}
 
-      {/* ContentCardsGlass with optimized material data */}
-      <ContentCardsGlass
+      {/* ContentCards with glass styling and optimized material data */}
+      <ContentCards
         variant="responsive"
         title=""
         subtitle=""
         maxWidth={maxWidth}
         showInstructions={showInstructions}
         customData={materials}
+        style="glass"
         backgroundColor={backgroundColor}
       />
     </SectionContainer>

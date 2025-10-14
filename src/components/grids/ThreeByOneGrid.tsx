@@ -7,8 +7,6 @@ import { Button } from "@/components/ui";
 import { IMAGES } from "@/constants/images";
 
 interface ThreeByOneGridProps {
-  title?: string;
-  subtitle?: string;
   maxWidth?: boolean;
   text?: string;
   mobileText?: string;
@@ -29,8 +27,6 @@ interface ThreeByOneGridProps {
 }
 
 export default function ThreeByOneGrid({
-  title = "3x1 Grid",
-  subtitle = "Responsive 3-column layout with text and images",
   maxWidth = true,
   text = "Standardisierung für Effizienz, Freiheit für Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird perfektioniert. Präzisionsgefertigte Module, effiziente Prozesse und bewährte Konstruktionen sichern höchste Qualität zu einem leistbaren Preis. Gleichzeitig bleibt volle Gestaltungsfreiheit dort, wo sie wirklich zählt.",
   mobileText,
@@ -93,18 +89,6 @@ export default function ThreeByOneGrid({
   if (!isClient) {
     return (
       <div className={`${containerClasses} ${backgroundClasses}`}>
-        <div className="text-center mb-8 md:mb-16">
-          <h1 className="h1-secondary">{title}</h1>
-          {subtitle && (
-            <h3
-              className={`h3-secondary ${
-                backgroundColor === "black" ? "text-nest-gray" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
         <div className="flex justify-center items-center py-8">
           <div
             className={`animate-pulse ${
@@ -119,26 +103,6 @@ export default function ThreeByOneGrid({
 
   return (
     <div className={`${backgroundClasses}`}>
-      {/* Title and Subtitle */}
-      {(title || subtitle) && (
-        <div className={`${containerClasses}`}>
-          <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">
-            <h1 className="h1-secondary">{title}</h1>
-            {subtitle && (
-              <h3
-                className={`h3-secondary ${
-                  backgroundColor === "black"
-                    ? "text-nest-gray"
-                    : "text-gray-600"
-                }`}
-              >
-                {subtitle}
-              </h3>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Grid Container */}
       <div>
         {isMobile ? (
