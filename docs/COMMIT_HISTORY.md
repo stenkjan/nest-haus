@@ -4,6 +4,64 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1506a5c3b7c37a812ff4fb4550dc588e03e20237] - Tue Oct 14 15:26:08 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [a099ed25747ec62de1ba459be3e01d9d0e41f3d3] - Tue Oct 14 15:02:16 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/route.ts
+- src/app/api/content/analytics/route.ts
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/entwurf/page.tsx
+- src/app/globals.css
+- src/app/kontakt/KontaktClient.tsx
+- src/app/konzept/KonzeptClient.tsx
+- src/app/konzept/page.tsx
+- src/app/test-sections/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/Footer.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/layout/Navbar.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
+## [25b5e09e1922f97d21b2053d05b6222d7a068cad] - Tue Oct 14 14:19:45 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Refine LandingImagesCarousel styles for consistency  - Removed unnecessary rounded corners from the image class for a cleaner look. - Maintained the gradient overlay styling for the description while ensuring layout integrity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
 ## [13b0a010f883d92210944ded979c4ace0947d505] - Tue Oct 14 14:03:06 2025 +0200
 
 **Author**: stenkjan

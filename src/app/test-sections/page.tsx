@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import {
   GetInContactBanner,
-  PlanungspaketeSection,
   GrundstueckCheckSection,
   PartnersSection,
   MaterialShowcase,
@@ -91,18 +90,6 @@ export default function TestSectionsPage() {
           subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
           buttonText="Jetzt Termin sichern"
           backgroundColor={bgColor === "black" ? "#1a1a1a" : "white"}
-        />
-      ),
-    },
-    {
-      id: "planungspakete-section",
-      name: "Planungspakete Section",
-      renderComponent: (bgColor) => (
-        <PlanungspaketeSection
-          title="Unterstützung gefällig?"
-          subtitle="Entdecke unsere Planungs-Pakete, um das Beste für dich und dein Nest rauszuholen."
-          backgroundColor={bgColor}
-          showCards={true}
         />
       ),
     },

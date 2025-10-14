@@ -9,6 +9,8 @@ import {
   VideoCard16by9,
   PlanungspaketeCards,
   SquareTextCard,
+  addIconsToPreset,
+  PLANUNGSPAKETE_PRESET,
 } from "@/components/cards";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
@@ -18,10 +20,9 @@ import {
   PartnersSection,
   LandingImagesCarousel,
   SectionHeader,
-  TransportabilitaetVideo,
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
-import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
+import { ABLAUF_STEPS_PRESET } from "@/constants/contentCardPresets";
 import Footer from "@/components/Footer";
 
 // Define sections with proper structure for entdecken page
@@ -37,14 +38,14 @@ const sections = [
     slug: "video",
   },
   {
-    id: "zuhause-zieht-um",
-    title: "Dein Zuhause zieht um",
-    slug: "zuhause-zieht-um",
+    id: "transportabilitaet",
+    title: "Transportabilitaet",
+    slug: "transportabilitaet",
   },
   {
-    id: "cards",
-    title: "Cards",
-    slug: "cards",
+    id: "moeglichkeiten",
+    title: "Möglichkeiten Entdecken",
+    slug: "moeglichkeiten",
   },
   {
     id: "ablauf",
@@ -226,15 +227,55 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 3 - Dein Zuhause zieht um */}
-        <TransportabilitaetVideo />
+        {/* Section 3 - Transportabilitaet Video */}
+        {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Transportabilitaet" */}
+        <section
+          id="transportabilitaet"
+          className="w-full py-8 md:py-16 bg-white"
+        >
+          <SectionHeader
+            title="Dein Zuhause zieht um"
+            subtitle="Architektur für ein bewegtes Leben."
+            wrapperMargin="md:mb-12 mb-12"
+          />
 
-        {/* Section 4 - Cards */}
-        <section id="cards" className="w-full py-8 md:py-16 bg-white">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <VideoCard16by9
+              maxWidth={false}
+              showInstructions={false}
+              cardTitle="Unsere Technik"
+              cardDescription="Aufbauen. Mitnehmen. Weitergeben.\nGanz wie du willst. Dank hochpräziser Konstruktion entsteht dein Zuhause in kürzester Zeit, an nahezu jedem Ort. Und wenn du weiterziehst? Dann ziehst du nicht nur um, sondern nimmst dein Zuhause einfach mit. Oder du bleibst flexibel und verkaufst es weiter, so wie ein gut gepflegtes Auto."
+              videoPath={IMAGES.videos.nestHausTransport}
+              backgroundColor="#F4F4F4"
+              buttons={[
+                {
+                  text: "Unser Part",
+                  variant: "primary",
+                  size: "xs",
+                  link: "/entwurf",
+                },
+                {
+                  text: "Jetzt bauen",
+                  variant: "landing-secondary-blue",
+                  size: "xs",
+                  link: "/konfigurator",
+                },
+              ]}
+            />
+          </div>
+        </section>
+
+        {/* Section 4 - Möglichkeiten Entdecken */}
+        {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Moeglichkeiten-Entdecken" */}
+        <section id="moeglichkeiten" className="w-full py-8 md:py-16 bg-white">
+          <SectionHeader
+            title="Was macht dein Nest aus?"
+            subtitle="Entdecke die Möglichkeiten deines zukünftigen Zuhauses."
+            wrapperMargin="mb-12"
+          />
+
           <div className="w-full">
             <TwoByTwoImageGrid
-              title=""
-              subtitle=""
               maxWidth={false}
               customData={[
                 {
@@ -244,8 +285,11 @@ export default function EntdeckenClient() {
                   description: "Dein Raum. Deine Ideen.",
                   image: IMAGES.function.nestHausSystemModulbau,
                   backgroundColor: "#F8F9FA",
+                  textColor: "white",
                   primaryAction: "Das Nest System",
                   secondaryAction: "Jetzt bauen",
+                  primaryButtonVariant: "landing-primary",
+                  secondaryButtonVariant: "landing-secondary",
                   primaryLink: "/dein-part#nest-system",
                   secondaryLink: "/konfigurator",
                 },
@@ -256,9 +300,11 @@ export default function EntdeckenClient() {
                   description: "Qualität aus Österreich.",
                   image: IMAGES.function.nestHausMaterialienSchema,
                   backgroundColor: "#F4F4F4",
+                  textColor: "black",
                   primaryAction: "Die Materialien",
                   secondaryAction: "Jetzt bauen",
-                  textColor: "text-black",
+                  primaryButtonVariant: "landing-primary",
+                  secondaryButtonVariant: "landing-secondary-blue",
                   primaryLink: "/dein-part#materialien",
                   secondaryLink: "/konfigurator",
                 },
@@ -269,8 +315,11 @@ export default function EntdeckenClient() {
                   description: "Deine Fenster für deine Räume.",
                   image: IMAGES.function.nestHausInnenausbauFenster,
                   backgroundColor: "#F8F9FA",
+                  textColor: "white",
                   primaryAction: "Fenster & Türen",
                   secondaryAction: "Jetzt bauen",
+                  primaryButtonVariant: "landing-primary",
+                  secondaryButtonVariant: "landing-secondary",
                   primaryLink: "/dein-part#fenster-tueren",
                   secondaryLink: "/konfigurator",
                 },
@@ -281,8 +330,11 @@ export default function EntdeckenClient() {
                   description: "Dein Raum. Deine Ideen.",
                   image: IMAGES.function.nestHausSystemDeinPart,
                   backgroundColor: "#F4F4F4",
+                  textColor: "white",
                   primaryAction: "Dein Part",
                   secondaryAction: "Jetzt bauen",
+                  primaryButtonVariant: "landing-primary",
+                  secondaryButtonVariant: "landing-secondary",
                   primaryLink: "/dein-part",
                   secondaryLink: "/konfigurator",
                 },
@@ -291,94 +343,82 @@ export default function EntdeckenClient() {
           </div>
         </section>
 
-        {/* Section 5 - Grundstück Check */}
+        {/* Section 5 - Konfigurationen */}
+        {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Konfigurationen" */}
         <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h1 className="h1-secondary mb-2 md:mb-3">
-                <span className="block md:inline">Konfiguriere dein</span>
-                <span className="block md:inline"> ®Nest Haus</span>
-              </h1>
-              <h3 className="h3-secondary text-black mb-8">
-                Individualisiert, wo es Freiheit braucht. Standardisiert, wo es
-                Effizienz schafft.
-              </h3>
-            </div>
+          <SectionHeader
+            title="Konfiguriere dein ®Nest Haus"
+            subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
+            wrapperMargin="mb-12"
+          />
 
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <VideoCard16by9
               maxWidth={false}
               showInstructions={false}
-              customData={[VIDEO_CARD_PRESETS.sicherheit]}
+              cardTitle="Du hast die Wahl"
+              cardDescription="Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt."
+              videoPath={IMAGES.variantvideo.twelve}
+              backgroundColor="#F4F4F4"
+              playbackRate={0.5}
+              buttons={[
+                {
+                  text: "Unser Part",
+                  variant: "primary",
+                  size: "xs",
+                  link: "/unser-part",
+                },
+                {
+                  text: "Jetzt bauen",
+                  variant: "secondary",
+                  size: "xs",
+                  link: "/konfigurator",
+                },
+              ]}
             />
           </div>
         </section>
 
         {/* Section 6 - So läuft es ab */}
-        <section id="ablauf" className="w-full py-8 md:py-4 bg-white">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h1 className="h1-secondary mb-2 md:mb-3">So läuft&apos;s ab</h1>
-              <h3 className="h3-secondary text-black mb-2 md:mb-4">
-                Dein Weg zum Nest-Haus
-              </h3>
-            </div>
-          </div>
+        <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
+          <SectionHeader
+            title="So läuft's ab"
+            subtitle="Dein Weg zum Nest-Haus"
+            wrapperMargin="mb-12"
+          />
 
-          {/* SquareTextCard outside container to use full width */}
+          {/* SquareTextCard with preset data and buttons */}
           <SquareTextCard
-            title=""
-            subtitle=""
             maxWidth={false}
             showInstructions={false}
+            customData={addIconsToPreset(ABLAUF_STEPS_PRESET.cards)}
+            buttons={ABLAUF_STEPS_PRESET.buttons}
           />
         </section>
 
         {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 md:mb-6">
-              <h1 className="h1-secondary mb-2 md:mb-3">
-                Unterstützung gefällig?
-              </h1>
-              <h3 className="h3-secondary text-black mb-8">
-                Entdecke unsere Planungs-Pakete, um das Beste für dich und dein
-                Nest rauszuholen.
-              </h3>
-            </div>
+            <SectionHeader
+              title="Unterstützung gefällig?"
+              subtitle="Entdecke unsere Planungs-Pakete, um das Beste für dich und dein Nest rauszuholen."
+              wrapperMargin="mb-12"
+            />
 
-            <div className="mt-4 md:mt-0">
-              <PlanungspaketeCards
-                title=""
-                subtitle=""
-                maxWidth={false}
-                showInstructions={false}
-              />
-            </div>
-
-            {/* Button Combo After Component */}
-            <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
-              {!isMobile && (
-                <Button
-                  variant="primary"
-                  size="xs"
-                  onClick={openPlanungspakete}
-                >
-                  Die Pakete
-                </Button>
-              )}
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary-blue" size="xs">
-                  Jetzt bauen
-                </Button>
-              </Link>
-            </div>
+            <PlanungspaketeCards
+              maxWidth={false}
+              showInstructions={false}
+              customData={PLANUNGSPAKETE_PRESET.cards}
+              buttons={PLANUNGSPAKETE_PRESET.buttons}
+              onOpenLightbox={openPlanungspakete}
+            />
           </div>
         </section>
 
         {/* Section 8 - Partners */}
-        <section id="partners" className="w-full pb-8 md:pb-16 bg-white">
+        <section id="partners" className="w-full pb-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <PartnersSection backgroundColor="white" showButtons={true} />
+            <PartnersSection />
           </div>
         </section>
       </SectionRouter>

@@ -15,69 +15,57 @@ interface GridItem {
   backgroundColor: string;
   primaryAction: string;
   secondaryAction: string;
-  textColor?: string; // Optional custom text color, defaults to white
+  textColor?: "white" | "black"; // Optional text color per item
+  primaryButtonVariant?:
+    | "primary"
+    | "secondary"
+    | "primary-narrow"
+    | "secondary-narrow"
+    | "secondary-narrow-white"
+    | "secondary-narrow-blue"
+    | "tertiary"
+    | "outline"
+    | "ghost"
+    | "danger"
+    | "success"
+    | "info"
+    | "landing-primary"
+    | "landing-secondary"
+    | "landing-secondary-blue"
+    | "landing-secondary-blue-white"
+    | "configurator"; // Optional primary button variant (defaults to "landing-primary")
+  secondaryButtonVariant?:
+    | "primary"
+    | "secondary"
+    | "primary-narrow"
+    | "secondary-narrow"
+    | "secondary-narrow-white"
+    | "secondary-narrow-blue"
+    | "tertiary"
+    | "outline"
+    | "ghost"
+    | "danger"
+    | "success"
+    | "info"
+    | "landing-primary"
+    | "landing-secondary"
+    | "landing-secondary-blue"
+    | "landing-secondary-blue-white"
+    | "configurator"; // Optional secondary button variant (defaults to "landing-secondary")
   primaryLink?: string; // Optional link for primary action
   secondaryLink?: string; // Optional link for secondary action
 }
 
 interface TwoByTwoImageGridProps {
-  title?: string;
-  subtitle?: string;
   maxWidth?: boolean;
-  customData?: GridItem[];
+  customData: GridItem[]; // Required since we don't have default data
+  textColor?: "white" | "black"; // Default text color (can be overridden per item)
 }
 
-const gridData: GridItem[] = [
-  {
-    id: 1,
-    title: "Alpine Vision",
-    subtitle: "Mountain Design",
-    description: "Swiss architecture style",
-    image:
-      "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    backgroundColor: "#F8F9FA",
-    primaryAction: "View Details",
-    secondaryAction: "Configure",
-  },
-  {
-    id: 2,
-    title: "Modern Living",
-    subtitle: "Contemporary",
-    description: "Clean modern aesthetic",
-    image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    backgroundColor: "#F1F3F4",
-    primaryAction: "Explore",
-    secondaryAction: "Customize",
-  },
-  {
-    id: 3,
-    title: "Forest Retreat",
-    subtitle: "Natural Harmony",
-    description: "Blend with nature",
-    image:
-      "/images/5-NEST-Haus-6-Module-Wald-Ansicht-Schwarze-Fassadenplatten.png",
-    backgroundColor: "#F4F4F4",
-    primaryAction: "Discover",
-    secondaryAction: "Plan",
-  },
-  {
-    id: 4,
-    title: "Mediterranean",
-    subtitle: "Coastal Style",
-    description: "Ocean view elegance",
-    image:
-      "/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.png",
-    backgroundColor: "#F6F8FA",
-    primaryAction: "See More",
-    secondaryAction: "Design",
-  },
-];
-
 export default function TwoByTwoImageGrid({
-  title = "2x2 Image Grid Gallery",
-  subtitle = "Interactive 2x2 layout with hover effects",
   maxWidth = true,
   customData,
+  textColor = "white",
 }: TwoByTwoImageGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -103,9 +91,6 @@ export default function TwoByTwoImageGrid({
     ? "w-full max-w-[1700px] mx-auto"
     : "w-full";
 
-  // Use custom data if provided, otherwise use default gridData
-  const displayData = customData || gridData;
-
   // Calculate responsive sizing for ultra-wide screens
   const isUltraWide = isClient && screenWidth >= 1600;
   const gridMinHeight = isUltraWide ? "500px" : "400px";
@@ -114,16 +99,10 @@ export default function TwoByTwoImageGrid({
   if (!isClient) {
     return (
       <div className={containerClasses}>
-        <div className="text-center mb-0">
-          <h1 className="h1-secondary text-gray-900">{title}</h1>
-          {subtitle && (
-            <h3 className="h3-secondary text-gray-600">{subtitle}</h3>
-          )}
-        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[1700px] mx-auto gap-4">
-          {[1, 2, 3, 4].map((i) => (
+          {customData.map((item) => (
             <div
-              key={i}
+              key={item.id}
               className="animate-pulse bg-gray-200 rounded-lg"
               style={{ aspectRatio: "4/5", minHeight: "400px" }}
             />
@@ -135,22 +114,6 @@ export default function TwoByTwoImageGrid({
 
   return (
     <div className={containerClasses}>
-      {/* Header with padding only on mobile */}
-      <div
-        className={`text-center mb-0 ${
-          isClient && screenWidth < 1024 ? "px-4" : ""
-        }`}
-      >
-        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 mb-2 md:mb-3">
-          {title}
-        </h1>
-        {subtitle && (
-          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-gray-600">
-            {subtitle}
-          </h3>
-        )}
-      </div>
-
       {/* 2x2 Grid Container - No padding on mobile */}
       <div
         className={`grid grid-cols-1 lg:grid-cols-2 ${
@@ -158,7 +121,7 @@ export default function TwoByTwoImageGrid({
         }`}
         style={{ gap: isClient && screenWidth < 1024 ? "8px" : "15px" }}
       >
-        {displayData.map((item, index) => (
+        {customData.map((item, index) => (
           <motion.div
             key={item.id}
             className="relative flex-shrink-0 shadow-lg overflow-hidden"
@@ -203,13 +166,19 @@ export default function TwoByTwoImageGrid({
                 >
                   <h2
                     className={`h2-title mb-1 ${
-                      item.textColor || "text-white"
+                      (item.textColor || textColor) === "white"
+                        ? "text-white"
+                        : "text-black"
                     }`}
                   >
                     {item.title}
                   </h2>
                   <h3
-                    className={`h3-secondary ${item.textColor || "text-white"}`}
+                    className={`h3-secondary ${
+                      (item.textColor || textColor) === "white"
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                   >
                     {item.subtitle}
                   </h3>
@@ -234,8 +203,10 @@ export default function TwoByTwoImageGrid({
                 >
                   {/* Description Text */}
                   <p
-                    className={`text-sm md:text-base lg:text-lg 2xl:text-xl mb-4 text-center ${
-                      item.textColor || "text-white"
+                    className={`p-primary mb-4 text-center ${
+                      (item.textColor || textColor) === "white"
+                        ? "text-white"
+                        : "text-black"
                     }`}
                   >
                     {item.description}
@@ -247,7 +218,9 @@ export default function TwoByTwoImageGrid({
                     {item.primaryLink ? (
                       <Link href={item.primaryLink}>
                         <Button
-                          variant="landing-primary"
+                          variant={
+                            item.primaryButtonVariant || "landing-primary"
+                          }
                           size={isUltraWide ? "sm" : "xs"}
                         >
                           {item.primaryAction}
@@ -255,7 +228,7 @@ export default function TwoByTwoImageGrid({
                       </Link>
                     ) : (
                       <Button
-                        variant="landing-primary"
+                        variant={item.primaryButtonVariant || "landing-primary"}
                         size={isUltraWide ? "sm" : "xs"}
                       >
                         {item.primaryAction}
@@ -267,9 +240,7 @@ export default function TwoByTwoImageGrid({
                       <Link href={item.secondaryLink}>
                         <Button
                           variant={
-                            item.id === 2
-                              ? "landing-secondary-blue"
-                              : "landing-secondary"
+                            item.secondaryButtonVariant || "landing-secondary"
                           }
                           size={isUltraWide ? "sm" : "xs"}
                         >
@@ -279,9 +250,7 @@ export default function TwoByTwoImageGrid({
                     ) : (
                       <Button
                         variant={
-                          item.id === 2
-                            ? "landing-secondary-blue"
-                            : "landing-secondary"
+                          item.secondaryButtonVariant || "landing-secondary"
                         }
                         size={isUltraWide ? "sm" : "xs"}
                       >

@@ -8,6 +8,7 @@ import ClientBlobFile from "@/components/files/ClientBlobFile";
 import { FILES } from "@/constants/files";
 import { IMAGES } from "@/constants/images";
 import HybridBlobImage from "@/components/images/HybridBlobImage";
+import { ABLAUF_STEPS_PRESET } from "@/constants/contentCardPresets";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 import "./mobile-scroll-optimizations.css";
 
@@ -21,7 +22,8 @@ export interface SquareTextCardData {
   mobileDescription?: string;
   backgroundColor: string;
   textColor?: string; // Optional custom text color, defaults to gray-900
-  icon?: React.ReactNode; // Optional icon to display above title
+  icon?: React.ReactNode; // Optional custom icon component to display above title
+  iconNumber?: number; // Or specify a step icon by number (1-7)
 }
 
 interface SquareTextCardProps {
@@ -32,6 +34,32 @@ interface SquareTextCardProps {
   isLightboxMode?: boolean;
   onCardClick?: (cardId: number) => void;
   customData?: SquareTextCardData[];
+  buttons?: Array<{
+    text: string;
+    variant:
+      | "primary"
+      | "secondary"
+      | "primary-narrow"
+      | "secondary-narrow"
+      | "secondary-narrow-white"
+      | "secondary-narrow-blue"
+      | "tertiary"
+      | "outline"
+      | "ghost"
+      | "danger"
+      | "success"
+      | "info"
+      | "landing-primary"
+      | "landing-secondary"
+      | "landing-secondary-blue"
+      | "landing-secondary-blue-white"
+      | "configurator";
+    size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
+    link?: string;
+    file?: string;
+    fileMode?: "open" | "download";
+    onClick?: () => void;
+  }>;
 }
 
 // Step icon component using HybridBlobImage
@@ -102,109 +130,44 @@ export const createSquareTextCardIcon = (
   return <DefaultSquareTextCardIcon />;
 };
 
-// Default data for demonstration
-export const defaultSquareTextCardData: SquareTextCardData[] = [
-  {
-    id: 1,
-    title: "1. Vorentwurf",
-    subtitle: "Erster Schritt.",
-    description:
-      "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
-    mobileTitle: "1. Vorentwurf",
-    mobileSubtitle: "Erster Schritt.",
-    mobileDescription:
-      "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
-    backgroundColor: "#f4f4f4",
-    icon: createSquareTextCardIcon(1),
-  },
-  {
-    id: 2,
-    title: "2. Einreichplan",
-    subtitle: "Formalitäten Abklären.",
-    description:
-      "Sobald dein Vorentwurf fertiggestellt ist, starten wir mit der rechtlich korrekten Planung für dein zuständiges Bauamt (Planungspaket Basis).\n\nDabei werden alle formellen Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Zufahrten sowie örtliche Bauvorschriften geprüft, abgestimmt und detailliert definiert, um eine reibungslose Genehmigung sicherzustellen.",
-    mobileTitle: "2. Einreichplan",
-    mobileSubtitle: "Formalitäten Abklären.",
-    mobileDescription:
-      "Sobald dein Vorentwurf fertiggestellt ist, starten wir mit der rechtlich korrekten Planung für dein zuständiges Bauamt (Planungspaket Basis).\n\nDabei werden alle formellen Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Zufahrten sowie örtliche Bauvorschriften geprüft, abgestimmt und detailliert definiert, um eine reibungslose Genehmigung sicherzustellen.",
-    backgroundColor: "#f4f4f4",
-    icon: createSquareTextCardIcon(2),
-  },
-  {
-    id: 3,
-    title: "3. Baubescheid",
-    subtitle: "Grundstücksvorbereitung",
-    description:
-      "Sobald dein Baubescheid vorliegt, starten die Vorbereitungen auf deinem Grundstück. Dazu zählen alle notwendigen Erschließungs- und Grabungsarbeiten wie Strom-, Wasser- und Kanalanschlüsse sowie die Zufahrt.\n\nDie Kosten dafür trägst du selbst. Wir begleiten dich mit erfahrenen Partnerfirmen, damit jeder Schritt reibungslos und effizient umgesetzt wird.",
-    mobileTitle: "3. Baubescheid",
-    mobileSubtitle: "Grundstücksvorbereitung",
-    mobileDescription:
-      "Sobald dein Baubescheid vorliegt, starten die Vorbereitungen auf deinem Grundstück. Dazu zählen alle notwendigen Erschließungs- und Grabungsarbeiten wie Strom-, Wasser- und Kanalanschlüsse sowie die Zufahrt.\n\nDie Kosten dafür trägst du selbst. Wir begleiten dich mit erfahrenen Partnerfirmen, damit jeder Schritt reibungslos und effizient umgesetzt wird.",
-    backgroundColor: "#f4f4f4",
-    icon: createSquareTextCardIcon(3),
-  },
-  {
-    id: 4,
-    title: "4. Fundament",
-    subtitle: "Eine solide Basis",
-    description:
-      "Wenn du dein Fundament selbst bauen möchtest, erhältst du von uns alle notwendigen Informationen und detaillierten Planungsunterlagen.\n\nSolltest du die Arbeiten an uns übergeben wollen, übernehmen wir Planung, Organisation und Umsetzung. Zuverlässig und fachgerecht.",
-    mobileTitle: "4. Fundament",
-    mobileSubtitle: "Eine solide Basis",
-    mobileDescription:
-      "Wenn du dein Fundament selbst bauen möchtest, erhältst du von uns alle notwendigen Informationen und detaillierten Planungsunterlagen.\n\nSolltest du die Arbeiten an uns übergeben wollen, übernehmen wir Planung, Organisation und Umsetzung. Zuverlässig und fachgerecht.",
-    backgroundColor: "#f4f4f4",
-    icon: createSquareTextCardIcon(4),
-  },
-  {
-    id: 5,
-    title: "5. Lieferung + Aufbau",
-    subtitle: "Immer transparent",
-    description:
-      "Sobald dein Fundament fertig ist, liefern wir dein Nest-Haus direkt zu dir. Unser erfahrenes Team übernimmt die Montage vor Ort, sodass dein Zuhause in kürzester Zeit steht.\n\nDie Kosten sind transparent geregelt und werden nach Bekanntgabe deines Bauplatzes exakt festgelegt.",
-    mobileTitle: "5. Lieferung + Aufbau",
-    mobileSubtitle: "Immer transparent",
-    mobileDescription:
-      "Sobald dein Fundament fertig ist, liefern wir dein Nest-Haus direkt zu dir. Unser erfahrenes Team übernimmt die Montage vor Ort, sodass dein Zuhause in kürzester Zeit steht.\n\nDie Kosten sind transparent geregelt und werden nach Bekanntgabe deines Bauplatzes exakt festgelegt.",
-    backgroundColor: "#f4f4f4",
-    icon: createSquareTextCardIcon(5),
-  },
-  {
-    id: 6,
-    title: "6. Fertigstellung",
-    subtitle: "Planungspaket Plus",
-    description:
-      "Für die Fertigstellung begleiten wir dich Schritt für Schritt und vermitteln bei Bedarf zuverlässige Partnerfirmen. Ob in Eigenregie oder mit Fachbetrieben\n\nMit dem Planungspaket Plus erhältst du einen klaren Ablaufplan und Unterstützung bis zur Schlüsselübergabe, inklusive aller Gewerke von Elektro über Sanitär bis Innenausbau.",
-    mobileTitle: "6. Fertigstellung",
-    mobileSubtitle: "Planungspaket Plus",
-    mobileDescription:
-      "Für die Fertigstellung begleiten wir dich Schritt für Schritt und vermitteln bei Bedarf zuverlässige Partnerfirmen. Ob in Eigenregie oder mit Fachbetrieben\n\nMit dem Planungspaket Plus erhältst du einen klaren Ablaufplan und Unterstützung bis zur Schlüsselübergabe, inklusive aller Gewerke von Elektro über Sanitär bis Innenausbau.",
-    backgroundColor: "#f4f4f4",
-    icon: createSquareTextCardIcon(6),
-  },
-  {
-    id: 7,
-    title: "7. Interior Design",
-    subtitle: "Planungspaket Pro",
-    description:
-      "In der Interior Planung entsteht ein stimmiges Konzept aus Möbeln, Materialien, Farben und Licht, das Funktion und Atmosphäre vereint.\n\nMit dem Planungspaket Pro begleiten wir dich bis zur Fertigstellung, damit dein Zuhause innen wie außen perfekt harmoniert.",
-    mobileTitle: "7. Interior Design",
-    mobileSubtitle: "Planungspaket Pro",
-    mobileDescription:
-      "In der Interior Planung entsteht ein stimmiges Konzept aus Möbeln, Materialien, Farben und Licht, das Funktion und Atmosphäre vereint.\n\nMit dem Planungspaket Pro begleiten wir dich bis zur Fertigstellung, damit dein Zuhause innen wie außen perfekt harmoniert.",
-    backgroundColor: "#f4f4f4",
-    icon: createSquareTextCardIcon(7),
-  },
-];
+// Helper function to add icons to preset data
+export const addIconsToPreset = (
+  preset: Array<
+    Omit<SquareTextCardData, "icon"> & {
+      icon?: React.ReactNode;
+      iconNumber?: number;
+    }
+  >
+): SquareTextCardData[] => {
+  return preset.map((card) => {
+    // Priority: custom icon > iconNumber > card id
+    const iconToUse = card.icon
+      ? card.icon
+      : card.iconNumber !== undefined
+        ? createSquareTextCardIcon(card.iconNumber)
+        : createSquareTextCardIcon(card.id);
+
+    return {
+      ...card,
+      icon: iconToUse,
+    };
+  });
+};
+
+// Default data uses the preset system - all content is now centralized in contentCardPresets.ts
+const defaultSquareTextCardData: SquareTextCardData[] = addIconsToPreset(
+  ABLAUF_STEPS_PRESET.cards
+);
 
 export default function SquareTextCard({
-  title = "Square Text Cards",
-  subtitle = "Text-only square cards with responsive behavior • Navigate with arrow keys",
+  title,
+  subtitle,
   maxWidth = true,
   showInstructions = true,
   isLightboxMode = false,
   onCardClick,
   customData,
+  buttons,
 }: SquareTextCardProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
@@ -829,25 +792,61 @@ export default function SquareTextCard({
         )}
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-row gap-4 justify-center md:mt-8">
-        <ClientBlobFile
-          path={FILES.anleitung.pdf}
-          mode="open"
-          onDownloadStart={() => console.log("📄 Opening PDF in new window...")}
-          onDownloadComplete={() => console.log("✅ PDF opened successfully")}
-          onError={(error) => console.error("❌ PDF open failed:", error)}
-        >
-          <Button variant="primary" size="xs">
-            Anleitung als PDF
-          </Button>
-        </ClientBlobFile>
-        <Link href="/konfigurator">
-          <Button variant="landing-secondary-blue" size="xs">
-            Jetzt bauen
-          </Button>
-        </Link>
-      </div>
+      {/* Action Buttons - Rendered from preset configuration */}
+      {buttons && buttons.length > 0 && (
+        <div className="flex flex-row gap-4 justify-center md:mt-8">
+          {buttons.map((button, index) => {
+            // Button with file (download/open)
+            if (button.file) {
+              return (
+                <ClientBlobFile
+                  key={index}
+                  path={button.file}
+                  mode={button.fileMode || "open"}
+                  onDownloadStart={() =>
+                    console.log(
+                      `📄 ${button.fileMode === "download" ? "Downloading" : "Opening"} file...`
+                    )
+                  }
+                  onDownloadComplete={() =>
+                    console.log("✅ File action completed")
+                  }
+                  onError={(error) =>
+                    console.error("❌ File action failed:", error)
+                  }
+                >
+                  <Button variant={button.variant} size={button.size || "xs"}>
+                    {button.text}
+                  </Button>
+                </ClientBlobFile>
+              );
+            }
+
+            // Button with link
+            if (button.link) {
+              return (
+                <Link key={index} href={button.link}>
+                  <Button variant={button.variant} size={button.size || "xs"}>
+                    {button.text}
+                  </Button>
+                </Link>
+              );
+            }
+
+            // Button with onClick
+            return (
+              <Button
+                key={index}
+                variant={button.variant}
+                size={button.size || "xs"}
+                onClick={button.onClick}
+              >
+                {button.text}
+              </Button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Instructions */}
       {showInstructions && (

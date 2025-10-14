@@ -16,6 +16,37 @@ interface VideoCard16by9Props {
   isLightboxMode?: boolean;
   onCardClick?: (cardId: number) => void;
   customData?: VideoCardPreset[];
+  // Direct customization props (alternative to customData)
+  cardTitle?: string;
+  cardSubtitle?: string;
+  cardDescription?: string;
+  videoPath?: string;
+  backgroundColor?: string;
+  playbackRate?: number;
+  buttons?: Array<{
+    text: string;
+    variant:
+      | "primary"
+      | "secondary"
+      | "primary-narrow"
+      | "secondary-narrow"
+      | "secondary-narrow-white"
+      | "secondary-narrow-blue"
+      | "tertiary"
+      | "outline"
+      | "ghost"
+      | "danger"
+      | "success"
+      | "info"
+      | "landing-primary"
+      | "landing-secondary"
+      | "landing-secondary-blue"
+      | "landing-secondary-blue-white"
+      | "configurator";
+    size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
+    link?: string;
+    onClick?: () => void;
+  }>;
 }
 
 // Fixed sizing system to ensure text area (1/3) has adequate space for content
@@ -60,6 +91,13 @@ export default function VideoCard16by9({
   isLightboxMode: _isLightboxMode = false,
   onCardClick,
   customData,
+  cardTitle,
+  cardSubtitle,
+  cardDescription,
+  videoPath,
+  backgroundColor,
+  playbackRate = 1,
+  buttons,
 }: VideoCard16by9Props) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0); // Start with 0 to prevent SSR mismatch
@@ -83,8 +121,23 @@ export default function VideoCard16by9({
     return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
 
-  // Use custom data if provided, otherwise use default
-  const displayCards = customData || [];
+  // Use custom data if provided, otherwise create from direct props
+  const displayCards: VideoCardPreset[] =
+    customData ||
+    (cardTitle && videoPath
+      ? [
+          {
+            id: 1,
+            title: cardTitle,
+            subtitle: cardSubtitle || "",
+            description: cardDescription || "",
+            video: videoPath,
+            backgroundColor: backgroundColor || "#FFFFFF",
+            playbackRate: playbackRate,
+            buttons: buttons || [],
+          } as VideoCardPreset,
+        ]
+      : []);
 
   const getCardText = (card: VideoCardPreset, field: keyof VideoCardPreset) => {
     if (!isClient) return card[field] as string;

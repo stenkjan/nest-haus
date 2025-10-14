@@ -47,6 +47,6 @@ export const applyPresetConfig = (config: PresetConfig) => {
 
 // Predefined configurations for common use cases
 export const PRESET_CONFIGS: Record<string, PresetConfig> = {
-    // Note: Sicherheit preset has been moved to VIDEO_CARD_PRESETS
-    // Use VideoCard16by9 with VIDEO_CARD_PRESETS.sicherheit instead
+    // Note: Video card presets have been removed in favor of direct props
+    // Use VideoCard16by9 with direct props (cardTitle, videoPath, etc.) instead
 };

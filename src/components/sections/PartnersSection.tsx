@@ -1,48 +1,18 @@
 import React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui";
 import { HybridBlobImage } from "@/components/images";
-import Link from "next/link";
-import { IMAGES } from "@/constants/images";
+import { SectionHeader } from "./SectionHeader";
 
 /**
  * PartnersSection Component
  *
- * Displays partner logos with consistent typography standards.
- * Uses proper responsive breakpoints and semantic HTML structure.
+ * Displays partner logos in a responsive grid with action buttons.
+ * This is a fully self-contained component with title, subtitle, partners and buttons.
  *
- * Typography Standards:
- * - Title: text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold
- * - Subtitle: text-base md:text-lg lg:text-xl 2xl:text-2xl
- *
- * See: /docs/TYPOGRAPHY_STANDARDS.md
+ * Usage:
+ * - Just render <PartnersSection /> - everything is included
  */
-
-interface PartnersSectionProps {
-  /**
-   * Additional CSS classes
-   */
-  className?: string;
-  /**
-   * Background color
-   * @default "white"
-   */
-  backgroundColor?: "white" | "black";
-  /**
-   * Custom title
-   * @default "Gemeinsam mit starken Partnern."
-   */
-  title?: string;
-  /**
-   * Custom subtitle
-   * @default "Wir setzen auf ein Netzwerk aus erfahrenen Experten"
-   */
-  subtitle?: string;
-  /**
-   * Show action buttons
-   * @default true
-   */
-  showButtons?: boolean;
-}
 
 interface Partner {
   id: string;
@@ -54,97 +24,90 @@ const partners: Partner[] = [
   {
     id: "tu-graz",
     name: "TU Graz",
-    path: IMAGES.partners.partner1,
+    path: "60-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz",
   },
   {
     id: "engelsmann-peters",
     name: "Engelsmann Peters",
-    path: IMAGES.partners.partner2,
+    path: "61-NEST-Haus-Partner-Kooperation-Engelsmann-Peters-Professor-TU-Graz-Stefan-Peters",
   },
   {
     id: "tu-iam",
     name: "TU-IAM",
-    path: IMAGES.partners.partner3,
+    path: "62-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-IAM-Institut",
   },
   {
     id: "tu-bauphysik",
     name: "Tu-Bauphysik",
-    path: IMAGES.partners.partner4,
+    path: "63-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-Labor-Bauphysik",
   },
   {
     id: "schwarz",
     name: "Schwarz",
-    path: IMAGES.partners.partner5,
+    path: "64-NEST-Haus-Partner-Kooperation-Schwarz-Partner-Patentanwaelte",
   },
   {
     id: "sobitsch",
     name: "Sobitsch",
-    path: IMAGES.partners.partner6,
+    path: "65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau",
   },
 ];
 
-export function PartnersSection({
-  className = "",
-  backgroundColor = "white",
-  title = "Gemeinsam mit starken Partnern.",
-  subtitle = "Wir setzen auf ein Netzwerk aus erfahrenen Experten",
-  showButtons = true,
-}: PartnersSectionProps) {
-  const backgroundClasses =
-    backgroundColor === "black" ? "bg-black" : "bg-white";
+interface PartnersSectionProps {
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
+}
 
+export function PartnersSection({ className = "" }: PartnersSectionProps) {
   return (
-    <section
-      className={`w-full py-8 md:py-16 ${backgroundClasses} ${className}`}
-    >
-      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-0">
-          <h1 className={`h1-secondary mb-2 md:mb-3`}>{title}</h1>
-          <h3 className={`h3-secondary mb-8`}>{subtitle}</h3>
-        </div>
+    <div className={className}>
+      {/* Section Header */}
+      <SectionHeader
+        title="Gemeinsam mit starken Partnern."
+        subtitle="Wir setzen auf ein Netzwerk aus erfahrenen Experten"
+        wrapperMargin="mb-12"
+      />
 
-        {/* Partner Logos Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-8 items-center justify-items-center">
-          {partners.map((partner) => (
-            <div
-              key={partner.id}
-              className={`flex items-center justify-center w-full ${
-                partner.id === "tu-graz"
-                  ? "h-26 md:h-30 lg:h-30"
-                  : "h-10 md:h-24 lg:h-28"
-              }`}
-            >
-              <HybridBlobImage
-                path={partner.path}
-                alt={partner.name}
-                strategy="auto"
-                isAboveFold={false}
-                isCritical={false}
-                className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
-                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                quality={85}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Action Buttons */}
-        {showButtons && (
-          <div className="flex flex-row gap-4 justify-center">
-            <Link href="/warum-wir">
-              <Button variant="primary" size="xs">
-                Warum NEST?
-              </Button>
-            </Link>
-            <Link href="/konfigurator">
-              <Button variant="landing-secondary-blue" size="xs">
-                Jetzt bauen
-              </Button>
-            </Link>
+      {/* Partner Logos Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-8 items-center justify-items-center">
+        {partners.map((partner) => (
+          <div
+            key={partner.id}
+            className={`flex items-center justify-center w-full ${
+              partner.id === "tu-graz"
+                ? "h-26 md:h-30 lg:h-30"
+                : "h-10 md:h-24 lg:h-28"
+            }`}
+          >
+            <HybridBlobImage
+              path={partner.path}
+              alt={partner.name}
+              strategy="auto"
+              isAboveFold={false}
+              isCritical={false}
+              className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
+              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+              quality={85}
+            />
           </div>
-        )}
+        ))}
       </div>
-    </section>
+
+      {/* Action Buttons */}
+      <div className="flex flex-row gap-4 justify-center">
+        <Link href="/warum-wir">
+          <Button variant="primary" size="xs">
+            Warum NEST?
+          </Button>
+        </Link>
+        <Link href="/konfigurator">
+          <Button variant="landing-secondary-blue" size="xs">
+            Jetzt bauen
+          </Button>
+        </Link>
+      </div>
+    </div>
   );
 }
