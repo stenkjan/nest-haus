@@ -4,6 +4,41 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [34750f80eaf39e6ce1e2cad97f9a53c5d1a05336] - Tue Oct 14 16:34:58 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/security/dashboard/route.ts
+- src/app/api/security/events/route.ts
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/showcase/grids/page.tsx
+- src/app/test-sections/page.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/security/ProtectedContent.tsx
+- src/components/security/ProtectedContentAdvanced.tsx
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+- scripts/test-security.ps1
+- scripts/test-security.sh
+
+
+#### 📚 Documentation Changes
+- SECURITY_IMPLEMENTATION_COMPLETE.md
+- SECURITY_SUCCESS_SUMMARY.md
+- SECURITY_TESTING_COMPLETE.md
+- SECURITY_TESTING_GUIDE.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [c782f3333daebabcd010abbb7e2d06d094d133cc] - Tue Oct 14 16:31:25 2025 +0200
 
 **Author**: stenkjan
