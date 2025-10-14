@@ -8,7 +8,7 @@ export { default as PlanungspaketeCardsLightbox } from "./PlanungspaketeCardsLig
 export { default as ImageGlassCard } from "./ImageGlassCard";
 export { default as SquareGlassCard } from "./SquareGlassCard";
 export { default as SquareGlassCardsScroll } from "./SquareGlassCardsScroll";
-export { default as SquareTextCard } from "./SquareTextCard";
+export { default as SquareTextCard, addIconsToPreset } from "./SquareTextCard";
 export { default as CheckoutStepCard } from "./CheckoutStepCard";
 export { default as CheckoutPlanungspaketeCards } from "./CheckoutPlanungspaketeCards";
 export { default as VideoCard16by9 } from "./VideoCard16by9";
@@ -30,5 +30,5 @@ export {
 } from "./presetSystem";
 
 // Re-export preset constants for convenience
-export { CONTENT_CARD_PRESETS, VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
-export type { ContentCardPreset, VideoCardPreset } from "@/constants/contentCardPresets";
+export { CONTENT_CARD_PRESETS, VIDEO_CARD_PRESETS, ABLAUF_STEPS_PRESET, ABLAUF_STEPS_CARDS, ABLAUF_STEPS_BUTTONS, PLANUNGSPAKETE_CARDS, PLANUNGSPAKETE_BUTTONS, PLANUNGSPAKETE_PRESET } from "@/constants/contentCardPresets";
+export type { ContentCardPreset, VideoCardPreset, SquareTextCardPreset } from "@/constants/contentCardPresets";

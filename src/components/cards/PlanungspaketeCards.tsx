@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import Link from "next/link";
 import { motion, useMotionValue, animate } from "framer-motion";
 import { Dialog } from "@/components/ui/Dialog";
+import { Button } from "@/components/ui";
 import { useIOSViewport, getIOSViewportStyles } from "@/hooks/useIOSViewport";
+import { PLANUNGSPAKETE_CARDS } from "@/constants/contentCardPresets";
 import "@/app/konfigurator/components/hide-scrollbar.css";
 import "./mobile-scroll-optimizations.css";
 
@@ -33,79 +36,50 @@ interface PlanungspaketeCardsProps {
   enableBuiltInLightbox?: boolean; // New prop for built-in lightbox
   onCardClick?: (cardId: number) => void;
   customData?: PlanungspaketeCardData[];
+  buttons?: Array<{
+    text: string;
+    variant:
+      | "primary"
+      | "secondary"
+      | "primary-narrow"
+      | "secondary-narrow"
+      | "secondary-narrow-white"
+      | "secondary-narrow-blue"
+      | "tertiary"
+      | "outline"
+      | "ghost"
+      | "danger"
+      | "success"
+      | "info"
+      | "landing-primary"
+      | "landing-secondary"
+      | "landing-secondary-blue"
+      | "landing-secondary-blue-white"
+      | "configurator";
+    size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
+    link?: string;
+    showOnlyOnDesktop?: boolean;
+    onClick?: () => void;
+  }>;
+  onOpenLightbox?: () => void; // Callback for opening lightbox (used by "Die Pakete" button)
 }
 
-export const planungspaketeCardData: PlanungspaketeCardData[] = [
-  {
-    id: 1,
-    title: "Planungspaket 01",
-    subtitle: "Basis",
-    description:
-      "Inkl.\nEinreichplanung des Gesamtprojekts\nFachberatung und Baubegleitung\nBürokratische Unterstützung",
-    mobileTitle: "Planungspaket 01",
-    mobileSubtitle: "Basis",
-    mobileDescription:
-      "Inkl.\nEinreichplanung des Gesamtprojekts\nFachberatung und Baubegleitung\nBürokratische Unterstützung",
-    image:
-      "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-    price: "€10.900,00",
-    backgroundColor: "#F4F4F4",
-    grayWord: "Basis",
-    extendedDescription:
-      "Nachdem dein Vorentwurf abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
-    mobileExtendedDescription:
-      "Nachdem dein Vorentwurf abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
-  },
-  {
-    id: 2,
-    title: "Planungspaket 02",
-    subtitle: "Plus",
-    description:
-      "Inkl.\nPlanungspaket Basis (Einreichplanung) \n Haustechnik-Planung \n Ausführungsplanung Innenausbau",
-    mobileTitle: "Planungspaket 02",
-    mobileSubtitle: "Plus",
-    mobileDescription:
-      "Inkl.\nPlanungspaket Basis (Einreichplanung) \n Haustechnik-Planung \n Ausführungsplanung Innenausbau",
-    image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
-    price: "€16.900,00",
-    backgroundColor: "#F4F4F4",
-    grayWord: "Plus",
-    extendedDescription:
-      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
-    mobileExtendedDescription:
-      "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
-  },
-  {
-    id: 3,
-    title: "Planungspaket 03",
-    subtitle: "Pro",
-    description:
-      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
-    mobileTitle: "Planungspaket 03",
-    mobileSubtitle: "Pro",
-    mobileDescription:
-      "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
-    image:
-      "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
-    price: "€21.900,00",
-    backgroundColor: "#F4F4F4",
-    grayWord: "Pro",
-    extendedDescription:
-      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
-    mobileExtendedDescription:
-      "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
-  },
-];
+// Default data uses the preset system - all content is now centralized in contentCardPresets.ts
+// Exported for backwards compatibility
+export const planungspaketeCardData: PlanungspaketeCardData[] =
+  PLANUNGSPAKETE_CARDS as PlanungspaketeCardData[];
 
 export default function PlanungspaketeCards({
-  title = "Planungspakete Cards",
-  subtitle = "Click on any card to see detailed information",
+  title,
+  subtitle,
   maxWidth = true,
-  showInstructions = true,
+  showInstructions = false,
   isLightboxMode = false,
   enableBuiltInLightbox = true, // Default to true for built-in lightbox
   onCardClick,
   customData,
+  buttons,
+  onOpenLightbox,
 }: PlanungspaketeCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
@@ -412,7 +386,7 @@ export default function PlanungspaketeCards({
       )}
 
       {/* Cards Container */}
-      <div className={`relative ${isLightboxMode ? "py-2" : "md:py-8"}`}>
+      <div className={`relative ${isLightboxMode ? "py-2" : "md:pb-8"}`}>
         {!isLightboxMode ? (
           /* Normal Mode - Responsive Grid Layout */
           <div
@@ -800,6 +774,49 @@ export default function PlanungspaketeCards({
       {showInstructions && (
         <div className="text-center mt-6 text-sm text-gray-500">
           <p>Click on any card to see detailed information</p>
+        </div>
+      )}
+
+      {/* Action Buttons - Rendered from preset configuration */}
+      {buttons && buttons.length > 0 && !isLightboxMode && (
+        <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
+          {buttons.map((button, index) => {
+            const isMobile = isClient && screenWidth < 768;
+
+            // Skip desktop-only buttons on mobile
+            if (button.showOnlyOnDesktop && isMobile) {
+              return null;
+            }
+
+            // Button with link
+            if (button.link) {
+              return (
+                <Link key={index} href={button.link}>
+                  <Button variant={button.variant} size={button.size || "xs"}>
+                    {button.text}
+                  </Button>
+                </Link>
+              );
+            }
+
+            // Button with onClick or opens lightbox
+            const handleClick =
+              button.onClick ||
+              (button.text === "Die Pakete" && onOpenLightbox
+                ? onOpenLightbox
+                : undefined);
+
+            return (
+              <Button
+                key={index}
+                variant={button.variant}
+                size={button.size || "xs"}
+                onClick={handleClick}
+              >
+                {button.text}
+              </Button>
+            );
+          })}
         </div>
       )}
 

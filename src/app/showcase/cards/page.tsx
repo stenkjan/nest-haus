@@ -14,7 +14,7 @@ import {
   SquareTextCard,
   VideoCard16by9,
 } from "@/components/cards";
-import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
+import { IMAGES } from "@/constants/images";
 
 export default function CardsShowcasePage() {
   return (
@@ -98,13 +98,31 @@ export default function CardsShowcasePage() {
           </div>
         </section>
 
-        {/* Sicherheit Card Preset Section */}
+        {/* Konfigurationen Card Section */}
         <section className="overflow-visible">
           <VideoCard16by9
-            title="Sicherheit Video Preset"
-            subtitle="Reusable video preset used across the site • Wide layout on desktop, mobile layout on tablets/phones"
+            title="Konfigurationen Video Card"
+            subtitle="Video card with direct props • Wide layout on desktop, mobile layout on tablets/phones"
             maxWidth={false}
-            customData={[VIDEO_CARD_PRESETS.sicherheit]}
+            cardTitle="Du hast die Wahl"
+            cardDescription="Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt."
+            videoPath={IMAGES.variantvideo.twelve}
+            backgroundColor="#F4F4F4"
+            playbackRate={0.5}
+            buttons={[
+              {
+                text: "Unser Part",
+                variant: "primary",
+                size: "xs",
+                link: "/unser-part",
+              },
+              {
+                text: "Jetzt bauen",
+                variant: "secondary",
+                size: "xs",
+                link: "/konfigurator",
+              },
+            ]}
           />
 
           {/* Note: VideoCard16by9 doesn't have a lightbox variant, so this section is removed */}
@@ -113,10 +131,27 @@ export default function CardsShowcasePage() {
         {/* Video Card 16by9 Section */}
         <section className="overflow-visible">
           <VideoCard16by9
-            title="Video Card 16:9 Preset"
+            title="Transportabilitaet Video Card"
             subtitle="Video content with 16:9 aspect ratio on desktop, 1:1 on mobile • Same text space as content cards"
             maxWidth={false}
-            customData={[VIDEO_CARD_PRESETS.transportabilitaet]}
+            cardTitle="Unsere Technik"
+            cardDescription="Aufbauen. Mitnehmen. Weitergeben.\nGanz wie du willst. Dank hochpräziser Konstruktion entsteht dein Zuhause in kürzester Zeit, an nahezu jedem Ort. Und wenn du weiterziehst? Dann ziehst du nicht nur um, sondern nimmst dein Zuhause einfach mit. Oder du bleibst flexibel und verkaufst es weiter, so wie ein gut gepflegtes Auto."
+            videoPath={IMAGES.videos.nestHausTransport}
+            backgroundColor="#F4F4F4"
+            buttons={[
+              {
+                text: "Unser Part",
+                variant: "primary",
+                size: "xs",
+                link: "/entwurf",
+              },
+              {
+                text: "Jetzt bauen",
+                variant: "landing-secondary-blue",
+                size: "xs",
+                link: "/konfigurator",
+              },
+            ]}
           />
         </section>
 

@@ -8,10 +8,18 @@ This system provides a consistent way to use card presets across both ContentCar
 
 ```tsx
 import { VideoCard16by9 } from "@/components/cards";
-import { VIDEO_CARD_PRESETS } from "@/constants/contentCardPresets";
+import { IMAGES } from "@/constants/images";
 
-// Use VideoCard16by9 with sicherheit preset
-<VideoCard16by9 customData={[VIDEO_CARD_PRESETS.sicherheit]} />
+// Use VideoCard16by9 with direct props
+<VideoCard16by9
+  cardTitle="Your Title"
+  cardDescription="Your description here..."
+  videoPath={IMAGES.videos.yourVideo}
+  backgroundColor="#F4F4F4"
+  buttons={[
+    { text: "Button 1", variant: "primary", size: "xs", link: "/link" },
+  ]}
+/>;
 ```
 
 ### Using the Unified Component

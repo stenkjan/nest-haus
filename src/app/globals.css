@@ -236,7 +236,7 @@ h2 {
 
   /* Primary P styling - responsive text sizes with proper spacing */
   .p-primary {
-    @apply text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl text-black leading-snug whitespace-pre-line;
+    @apply text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl leading-snug whitespace-pre-line;
   }
 
   .p-primary-white {
