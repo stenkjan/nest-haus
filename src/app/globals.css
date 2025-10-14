@@ -210,6 +210,11 @@ h2 {
     @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4;
   }
 
+  /* H3 tertiary styling - same as h3-secondary but without margin */
+  .h3-tertiary-no-m {
+    @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl;
+  }
+
   /* Mobile H3 styling - Based on h3-secondary properties for mobile displays */
   .h3-mobile {
     @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4;

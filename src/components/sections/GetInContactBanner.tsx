@@ -75,13 +75,13 @@ export function GetInContactBanner({
   return (
     <section
       id={id}
-      className={`w-full py-[5vh] ${className}`}
+      className={`w-full ${className}`}
       style={{ backgroundColor }}
     >
       <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
-          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform w-[80%]">
-            <div className="p-6 text-center">
+          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform w-[90%]">
+            <div className="p-12 text-center">
               {/* Icon */}
               <div className="flex justify-center mb-4">
                 <ClientBlobImage
@@ -114,8 +114,8 @@ export function GetInContactBanner({
 
         {/* Bottom Text */}
         {bottomText && (
-          <div className="text-center py-6">
-            <h3 className="h3-secondary text-gray-700 max-w-full mx-auto">
+          <div className="text-center pt-6">
+            <h3 className="h3-tertiary-no-m text-gray-700 max-w-full mx-auto">
               {bottomText}
             </h3>
           </div>
