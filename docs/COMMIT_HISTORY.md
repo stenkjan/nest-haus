@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b97b9d87f73365607c1db3bf8c7864d6a99e9947] - Tue Oct 14 17:01:37 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Clean up whitespace in clearCacheForConfiguration method  - Removed unnecessary whitespace in the  method of . - This change improves code readability without affecting functionality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
 ## [fd71bde868b98b113dc4cc4c21bdf7dc5df2c443] - Tue Oct 14 16:56:14 2025 +0200
 
 **Author**: stenkjan
