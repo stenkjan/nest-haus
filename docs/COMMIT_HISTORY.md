@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [13b0a010f883d92210944ded979c4ace0947d505] - Tue Oct 14 14:03:06 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Update GetInContactBanner styles for improved responsiveness  - Adjusted icon dimensions and margins for better layout consistency across different screen sizes. - Removed bottom margin from the subtitle for a cleaner appearance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
 ## [bd17a183d603dc1d26f8d4b80a3ff2a34d6415a4] - Tue Oct 14 13:41:18 2025 +0200
 
 **Author**: stenkjan
