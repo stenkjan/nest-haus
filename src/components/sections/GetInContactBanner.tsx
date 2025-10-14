@@ -44,11 +44,6 @@ interface GetInContactBannerProps {
    */
   backgroundColor?: string;
   /**
-   * Additional text below the banner
-   * @default "Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen Konfigurationen"
-   */
-  bottomText?: string;
-  /**
    * Additional CSS classes
    */
   className?: string;
@@ -60,7 +55,6 @@ export function GetInContactBanner({
   buttonText = "Jetzt Termin sichern",
   onButtonClick,
   backgroundColor = "white",
-  bottomText = "Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen Konfigurationen",
   className = "",
 }: GetInContactBannerProps) {
   const handleButtonClick = () => {
@@ -78,7 +72,7 @@ export function GetInContactBanner({
       className={`w-full ${className}`}
       style={{ backgroundColor }}
     >
-      <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-screen-3xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex justify-center">
           <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform w-[90%]">
             <div className="p-12 text-center">
@@ -105,21 +99,17 @@ export function GetInContactBanner({
               </h3>
 
               {/* Button */}
-              <Button variant="primary" className="mt-4 md:mt-6" size="xs" onClick={handleButtonClick}>
+              <Button
+                variant="primary"
+                className="mt-4 md:mt-6"
+                size="xs"
+                onClick={handleButtonClick}
+              >
                 {buttonText}
               </Button>
             </div>
           </div>
         </div>
-
-        {/* Bottom Text */}
-        {bottomText && (
-          <div className="text-center pt-6">
-            <h3 className="h3-tertiary-no-m text-gray-700 max-w-full mx-auto">
-              {bottomText}
-            </h3>
-          </div>
-        )}
       </div>
     </section>
   );

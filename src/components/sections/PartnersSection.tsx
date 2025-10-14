@@ -1,73 +1,75 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui";
 import { HybridBlobImage } from "@/components/images";
-import { PARTNERS_DATA } from "@/constants/contentCardPresets";
+import { SectionHeader } from "./SectionHeader";
 
 /**
  * PartnersSection Component
  *
- * Displays partner logos in a responsive grid with optional action buttons.
- * Content is managed via preset system in contentCardPresets.ts
+ * Displays partner logos in a responsive grid with action buttons.
+ * This is a fully self-contained component with title, subtitle, partners and buttons.
  *
  * Usage:
- * - Use SectionHeader component for title/subtitle in parent
- * - Pass partners and buttons via PARTNERS_PRESET
+ * - Just render <PartnersSection /> - everything is included
  */
 
-export interface PartnerData {
+interface Partner {
   id: string;
   name: string;
   path: string;
 }
 
+const partners: Partner[] = [
+  {
+    id: "tu-graz",
+    name: "TU Graz",
+    path: "60-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz",
+  },
+  {
+    id: "engelsmann-peters",
+    name: "Engelsmann Peters",
+    path: "61-NEST-Haus-Partner-Kooperation-Engelsmann-Peters-Professor-TU-Graz-Stefan-Peters",
+  },
+  {
+    id: "tu-iam",
+    name: "TU-IAM",
+    path: "62-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-IAM-Institut",
+  },
+  {
+    id: "tu-bauphysik",
+    name: "Tu-Bauphysik",
+    path: "63-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-Labor-Bauphysik",
+  },
+  {
+    id: "schwarz",
+    name: "Schwarz",
+    path: "64-NEST-Haus-Partner-Kooperation-Schwarz-Partner-Patentanwaelte",
+  },
+  {
+    id: "sobitsch",
+    name: "Sobitsch",
+    path: "65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau",
+  },
+];
+
 interface PartnersSectionProps {
-  /**
-   * Partner data array
-   */
-  partners?: PartnerData[];
-  /**
-   * Action buttons configuration
-   */
-  buttons?: Array<{
-    text: string;
-    variant:
-      | "primary"
-      | "secondary"
-      | "primary-narrow"
-      | "secondary-narrow"
-      | "secondary-narrow-white"
-      | "secondary-narrow-blue"
-      | "tertiary"
-      | "outline"
-      | "ghost"
-      | "danger"
-      | "success"
-      | "info"
-      | "landing-primary"
-      | "landing-secondary"
-      | "landing-secondary-blue"
-      | "landing-secondary-blue-white"
-      | "configurator";
-    size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
-    link?: string;
-    onClick?: () => void;
-  }>;
   /**
    * Additional CSS classes
    */
   className?: string;
 }
 
-export function PartnersSection({
-  partners = PARTNERS_DATA,
-  buttons,
-  className = "",
-}: PartnersSectionProps) {
+export function PartnersSection({ className = "" }: PartnersSectionProps) {
   return (
     <div className={className}>
+      {/* Section Header */}
+      <SectionHeader
+        title="Gemeinsam mit starken Partnern."
+        subtitle="Wir setzen auf ein Netzwerk aus erfahrenen Experten"
+        wrapperMargin="mb-12"
+      />
+
       {/* Partner Logos Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-8 items-center justify-items-center">
         {partners.map((partner) => (
@@ -93,35 +95,19 @@ export function PartnersSection({
         ))}
       </div>
 
-      {/* Action Buttons - Rendered from preset configuration */}
-      {buttons && buttons.length > 0 && (
-        <div className="flex flex-row gap-4 justify-center">
-          {buttons.map((button, index) => {
-            // Button with link
-            if (button.link) {
-              return (
-                <Link key={index} href={button.link}>
-                  <Button variant={button.variant} size={button.size || "xs"}>
-                    {button.text}
-                  </Button>
-                </Link>
-              );
-            }
-
-            // Button with onClick
-            return (
-              <Button
-                key={index}
-                variant={button.variant}
-                size={button.size || "xs"}
-                onClick={button.onClick}
-              >
-                {button.text}
-              </Button>
-            );
-          })}
-        </div>
-      )}
+      {/* Action Buttons */}
+      <div className="flex flex-row gap-4 justify-center">
+        <Link href="/warum-wir">
+          <Button variant="primary" size="xs">
+            Warum NEST?
+          </Button>
+        </Link>
+        <Link href="/konfigurator">
+          <Button variant="landing-secondary-blue" size="xs">
+            Jetzt bauen
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

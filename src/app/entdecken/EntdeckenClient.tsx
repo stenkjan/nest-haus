@@ -20,7 +20,6 @@ import {
   PartnersSection,
   LandingImagesCarousel,
   SectionHeader,
-  PARTNERS_PRESET,
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
 import { ABLAUF_STEPS_PRESET } from "@/constants/contentCardPresets";
@@ -419,15 +418,7 @@ export default function EntdeckenClient() {
         {/* Section 8 - Partners */}
         <section id="partners" className="w-full pb-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader
-              title="Gemeinsam mit starken Partnern."
-              subtitle="Wir setzen auf ein Netzwerk aus erfahrenen Experten"
-              wrapperMargin="mb-12"
-            />
-            <PartnersSection
-              partners={PARTNERS_PRESET.partners}
-              buttons={PARTNERS_PRESET.buttons}
-            />
+            <PartnersSection />
           </div>
         </section>
       </SectionRouter>
