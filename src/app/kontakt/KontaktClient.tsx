@@ -56,8 +56,8 @@ export default function KontaktClient() {
           id="call-to-action"
           title="Kein Plan? Kein Problem!"
           subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
-          buttonText="Jetzt vereinbaren"
-          backgroundColor="#F4F4F4"
+          buttonText="Jetzt Termin sichern"
+          backgroundColor="white"
           onButtonClick={() => {
             // Scroll to calendar section for appointment booking
             const calendarSection = document.getElementById("calendar");

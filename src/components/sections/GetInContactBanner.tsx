@@ -1,5 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui";
+import { ClientBlobImage } from "@/components/images";
+import { IMAGES } from "@/constants/images";
 
 /**
  * GetInContactBanner Component
@@ -29,7 +31,7 @@ interface GetInContactBannerProps {
   subtitle?: string;
   /**
    * Button text
-   * @default "Termin vereinbaren"
+   * @default "Jetzt Termin sichern"
    */
   buttonText?: string;
   /**
@@ -38,9 +40,14 @@ interface GetInContactBannerProps {
   onButtonClick?: () => void;
   /**
    * Background color
-   * @default "#F4F4F4"
+   * @default "white"
    */
   backgroundColor?: string;
+  /**
+   * Additional text below the banner
+   * @default "Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen Konfigurationen"
+   */
+  bottomText?: string;
   /**
    * Additional CSS classes
    */
@@ -50,9 +57,10 @@ export function GetInContactBanner({
   id,
   title = "Kein Plan? Kein Problem!",
   subtitle = "Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch",
-  buttonText = "Jetzt vereinbaren",
+  buttonText = "Jetzt Termin sichern",
   onButtonClick,
-  backgroundColor = "#F4F4F4",
+  backgroundColor = "white",
+  bottomText = "Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen Konfigurationen",
   className = "",
 }: GetInContactBannerProps) {
   const handleButtonClick = () => {
@@ -67,21 +75,51 @@ export function GetInContactBanner({
   return (
     <section
       id={id}
-      className={`w-full py-12 ${className}`}
+      className={`w-full py-[5vh] ${className}`}
       style={{ backgroundColor }}
     >
       <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-0">
-          <h2 className="h2-title mb-4 text-gray-900">{title}</h2>
-          <h3 className="h3-secondary text-gray-600">{subtitle}</h3>
+        <div className="flex justify-center">
+          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform w-[80%]">
+            <div className="p-6 text-center">
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                <ClientBlobImage
+                  path={IMAGES.contactIcons.appointment}
+                  alt="Termin Icon"
+                  width={48}
+                  height={48}
+                  className="h-12 w-12"
+                  enableCache={true}
+                  enableMobileDetection={false}
+                  showLoadingSpinner={false}
+                />
+              </div>
+
+              {/* Title */}
+              <h1 className="h1-secondary text-gray-900 mb-3">{title}</h1>
+
+              {/* Subtitle */}
+              <h3 className="h3-secondary text-gray-700 leading-relaxed mb-6">
+                {subtitle}
+              </h3>
+
+              {/* Button */}
+              <Button variant="primary" size="xs" onClick={handleButtonClick}>
+                {buttonText}
+              </Button>
+            </div>
+          </div>
         </div>
 
-        {/* Single Button */}
-        <div className="flex justify-center w-full mt-8">
-          <Button variant="primary" size="xs" onClick={handleButtonClick}>
-            {buttonText}
-          </Button>
-        </div>
+        {/* Bottom Text */}
+        {bottomText && (
+          <div className="text-center py-6">
+            <h3 className="h3-secondary text-gray-700 max-w-full mx-auto">
+              {bottomText}
+            </h3>
+          </div>
+        )}
       </div>
     </section>
   );

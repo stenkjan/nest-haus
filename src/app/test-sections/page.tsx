@@ -89,8 +89,8 @@ export default function TestSectionsPage() {
         <GetInContactBanner
           title="Kein Plan? Kein Problem!"
           subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
-          buttonText="Jetzt vereinbaren"
-          backgroundColor={bgColor === "black" ? "#1a1a1a" : "#F4F4F4"}
+          buttonText="Jetzt Termin sichern"
+          backgroundColor={bgColor === "black" ? "#1a1a1a" : "white"}
         />
       ),
     },

@@ -436,6 +436,11 @@ export const IMAGES = {
         hammer: '297-nest-haus-icon-konfigurator-haus-bauen-hammer',
         boxClosed: '299-nest-haus-icon-warenkorb-box-geschlossen',
         boxOpen: '298-nest-haus-icon-warenkorb-box-geoeffnet'
+    },
+
+    // Contact icons
+    contactIcons: {
+        appointment: '300-nest-haus-icon-kontakt-termin'
     }
 } as const;
 
