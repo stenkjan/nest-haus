@@ -202,9 +202,9 @@ export default function EntdeckenClient() {
                     Dein Part
                   </Button>
                 </Link>
-                <Link href="/unser-part">
+                <Link href="/entwurf">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Unser Part
+                    Entwurf
                   </Button>
                 </Link>
               </div>
@@ -216,9 +216,9 @@ export default function EntdeckenClient() {
                     Dein Part
                   </Button>
                 </Link>
-                <Link href="/unser-part">
+                <Link href="/entwurf">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Unser Part
+                    Entwurf
                   </Button>
                 </Link>
               </div>
@@ -246,7 +246,7 @@ export default function EntdeckenClient() {
                   backgroundColor: "#F8F9FA",
                   primaryAction: "Das Nest System",
                   secondaryAction: "Jetzt bauen",
-                  primaryLink: "/unser-part#nest-system",
+                  primaryLink: "/dein-part#nest-system",
                   secondaryLink: "/konfigurator",
                 },
                 {
@@ -259,7 +259,7 @@ export default function EntdeckenClient() {
                   primaryAction: "Die Materialien",
                   secondaryAction: "Jetzt bauen",
                   textColor: "text-black",
-                  primaryLink: "/unser-part#materialien",
+                  primaryLink: "/dein-part#materialien",
                   secondaryLink: "/konfigurator",
                 },
                 {
@@ -271,7 +271,7 @@ export default function EntdeckenClient() {
                   backgroundColor: "#F8F9FA",
                   primaryAction: "Fenster & Türen",
                   secondaryAction: "Jetzt bauen",
-                  primaryLink: "/unser-part#fenster-tueren",
+                  primaryLink: "/dein-part#fenster-tueren",
                   secondaryLink: "/konfigurator",
                 },
                 {

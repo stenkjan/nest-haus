@@ -41,7 +41,7 @@ export interface VideoCardPreset {
     }>;
 }
 
-// Sicherheit Video Card Preset - Used on unser-part#sicherheit and showcase
+// Sicherheit Video Card Preset - Used on entwurf#sicherheit and showcase
 export const SICHERHEIT_VIDEO_PRESET: VideoCardPreset = {
     id: 1,
     title: "Du hast die Wahl",
@@ -60,7 +60,7 @@ export const SICHERHEIT_VIDEO_PRESET: VideoCardPreset = {
             text: "Unser Part",
             variant: "primary" as const,
             size: "xs" as const,
-            link: "/unser-part",
+            link: "/entwurf",
         },
         {
             text: "Jetzt bauen",
@@ -85,7 +85,7 @@ export const TRANSPORTABILITAET_VIDEO_PRESET: VideoCardPreset = {
             text: "Unser Part",
             variant: "primary" as const,
             size: "xs" as const,
-            link: "/unser-part",
+            link: "/entwurf",
         },
         {
             text: "Jetzt bauen",
