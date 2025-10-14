@@ -401,9 +401,9 @@ export default function VideoCard16by9({
       {/* Action Buttons - Only show on mobile where buttons are not inside the card */}
       {isClient && screenWidth < 768 && (
         <div className="flex flex-row gap-4 justify-center mt-6">
-          <Link href="/entwurf">
+          <Link href="/konzept">
             <Button variant="primary" size="xs">
-              Entwurf
+              Konzept
             </Button>
           </Link>
           <Link href="/konfigurator">

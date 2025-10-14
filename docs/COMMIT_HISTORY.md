@@ -4,6 +4,134 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [25b5e09e1922f97d21b2053d05b6222d7a068cad] - Tue Oct 14 14:19:45 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Refine LandingImagesCarousel styles for consistency  - Removed unnecessary rounded corners from the image class for a cleaner look. - Maintained the gradient overlay styling for the description while ensuring layout integrity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
+## [13b0a010f883d92210944ded979c4ace0947d505] - Tue Oct 14 14:03:06 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Update GetInContactBanner styles for improved responsiveness  - Adjusted icon dimensions and margins for better layout consistency across different screen sizes. - Removed bottom margin from the subtitle for a cleaner appearance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
+## [bd17a183d603dc1d26f8d4b80a3ff2a34d6415a4] - Tue Oct 14 13:41:18 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [2ea8bce859b084bb3b1899228c7f832336fa1b83] - Tue Oct 14 11:56:51 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [35ece64bd3e7135d32567f8f4d7dac1a30ea32ca] - Tue Oct 14 11:50:35 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [652c525f91cab85c63829191659b62d4d161d2f8] - Tue Oct 14 11:47:16 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [10bc5e81cf685b12da2aecca0b0929c0f83533a9] - Tue Oct 14 11:29:55 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/showcase/cards/page.tsx
+- src/components/sections/TransportabilitaetVideo.tsx
+- src/components/sections/index.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/TYPOGRAPHY_STANDARDS.md
+
+
+---
+
+## [2d5abadacbf6393971f27c8910918eb32a74546b] - Tue Oct 14 11:14:32 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/usability-tests/route.ts
+- src/app/api/content/analytics/route.ts
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/entwurf/EntwurfClient.tsx
+- src/app/entwurf/page.tsx
+- src/app/unser-part/.gitkeep
+- src/app/unser-part/UnserPartClient.tsx
+- src/app/unser-part/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/Footer.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/layout/Navbar.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [888235ce60f36784a60e4493dc5b24eabd4f3b56] - Tue Oct 14 10:59:53 2025 +0200
 
 **Author**: stenkjan

@@ -210,6 +210,11 @@ h2 {
     @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4;
   }
 
+  /* H3 tertiary styling - same as h3-secondary but without margin */
+  .h3-tertiary-no-m {
+    @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl;
+  }
+
   /* Mobile H3 styling - Based on h3-secondary properties for mobile displays */
   .h3-mobile {
     @apply text-base font-medium sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4;
@@ -263,6 +268,12 @@ h2 {
   .p-secondary-black {
     @apply text-lg md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-black;
   }
+
+  /* Small version of p-secondary for condensed secondary paragraphs */
+  .p-secondary-small {
+    @apply text-sm md:text-xs lg:text-sm xl:text-base 2xl:text-lg font-medium;
+  }
+
 
   /* Custom nest gray color - #989898 */
   .text-nest-gray {

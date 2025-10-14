@@ -197,7 +197,7 @@ export default function Navbar() {
   const navItems = [
     { name: "Dein Nest Haus", path: "/entdecken" },
     // { name: "Entdecken", path: "/entdecken" },
-    { name: "Entwurf", path: "/entwurf" },
+    { name: "Konzept", path: "/konzept" },
     { name: "Dein Part", path: "/dein-part" },
     { name: "Warum wir?", path: "/warum-wir" },
     { name: "Kontakt", path: "/kontakt" },

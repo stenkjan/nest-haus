@@ -204,9 +204,9 @@ export default function EntdeckenClient() {
                     Dein Part
                   </Button>
                 </Link>
-                <Link href="/entwurf">
+                <Link href="/konzept">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Entwurf
+                    Konzept
                   </Button>
                 </Link>
               </div>
@@ -218,9 +218,9 @@ export default function EntdeckenClient() {
                     Dein Part
                   </Button>
                 </Link>
-                <Link href="/entwurf">
+                <Link href="/konzept">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Entwurf
+                    Konzept
                   </Button>
                 </Link>
               </div>

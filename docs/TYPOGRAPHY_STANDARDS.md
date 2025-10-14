@@ -362,7 +362,7 @@ The component automatically handles all breakpoints:
   id="section-id"
   title="Custom Title" // Optional
   subtitle="Custom Subtitle" // Optional
-  backgroundColor="#F4F4F4" // Optional
+  backgroundColor="white" // Optional
 />
 ```
 

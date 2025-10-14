@@ -377,7 +377,7 @@ function processConfigurationAnalytics(tests: Array<{ testId: string; interactio
 
 function getPageTitle(path: string): string {
     const titleMap: Record<string, string> = {
-        '/entwurf': 'Entwurf',
+        '/konzept': 'Konzept',
         '/dein-part': 'Dein Part',
         '/kontakt': 'Kontakt',
         '/warum-wir': 'Warum Wir',

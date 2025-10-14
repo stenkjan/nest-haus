@@ -29,10 +29,10 @@ export default function Footer() {
     {
       title: "Unsere Services",
       items: [
-        { text: "Die Pakete", href: "/entwurf" },
-        { text: "Beratungen", href: "/entwurf" },
-        { text: "Finanzierung", href: "/entwurf" },
-        { text: "Support", href: "/entwurf" },
+        { text: "Die Pakete", href: "/konzept" },
+        { text: "Beratungen", href: "/konzept" },
+        { text: "Finanzierung", href: "/konzept" },
+        { text: "Support", href: "/konzept" },
       ],
     },
     {
