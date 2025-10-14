@@ -258,13 +258,13 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                       enableCache={true}
                       width={imageWidth}
                       height={Math.round(imageWidth * 0.5625)} // Maintain 16:9 aspect ratio
-                      className="object-cover rounded-lg"
+                      className="object-cover"
                       sizes={`${imageWidth}px`}
                       priority={idx === 0}
                     />
 
                     {/* Description Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6 rounded-b-lg">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
                       {/* Flex container for positioning */}
                       <div className="flex justify-between items-end">
                         {/* Left side - Title and Subtitle */}
