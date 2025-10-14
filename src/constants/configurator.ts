@@ -118,7 +118,28 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   'fassadenplatten_weiss_fichte_schiefer_massiv': 'plattenweiss_holzweiss_schiefer',
   'fassadenplatten_weiss_steirische_eiche_parkett': 'plattenweiss_eiche_parkett',
   'fassadenplatten_weiss_steirische_eiche_kalkstein_kanafar': 'plattenweiss_eiche_kalkstein',
-  'fassadenplatten_weiss_steirische_eiche_schiefer_massiv': 'plattenweiss_eiche_schiefer'
+  'fassadenplatten_weiss_steirische_eiche_schiefer_massiv': 'plattenweiss_eiche_schiefer',
+
+  // MISSING: ohne_parkett combinations - use same images as parkett
+  // Trapezblech ohne_parkett combinations
+  'trapezblech_kiefer_ohne_parkett': 'trapezblech_holznatur_parkett',
+  'trapezblech_fichte_ohne_parkett': 'trapezblech_holzweiss_parkett',
+  'trapezblech_steirische_eiche_ohne_parkett': 'trapezblech_eiche_parkett',
+
+  // Holzlattung ohne_parkett combinations
+  'holzlattung_kiefer_ohne_parkett': 'holzlattung_holznatur_parkett',
+  'holzlattung_fichte_ohne_parkett': 'holzlattung_holzweiss_parkett',
+  'holzlattung_steirische_eiche_ohne_parkett': 'holzlattung_eiche_parkett',
+
+  // Fassadenplatten schwarz ohne_parkett combinations
+  'fassadenplatten_schwarz_kiefer_ohne_parkett': 'plattenschwarz_holznatur_parkett',
+  'fassadenplatten_schwarz_fichte_ohne_parkett': 'plattenschwarz_holzweiss_parkett',
+  'fassadenplatten_schwarz_steirische_eiche_ohne_parkett': 'plattenschwarz_eiche_parkett',
+
+  // Fassadenplatten weiss ohne_parkett combinations
+  'fassadenplatten_weiss_kiefer_ohne_parkett': 'plattenweiss_holznatur_parkett',
+  'fassadenplatten_weiss_fichte_ohne_parkett': 'plattenweiss_holzweiss_parkett',
+  'fassadenplatten_weiss_steirische_eiche_ohne_parkett': 'plattenweiss_eiche_parkett'
 } as const;
 
 // Valid view types

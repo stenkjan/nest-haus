@@ -224,10 +224,21 @@ export class ImageManager {
     // Create combination key for exact matching
     const combinationKey = `${gebaeudehuelle}_${innenverkleidung}_${fussboden}`;
 
+    console.log('🏠 Interior image mapping:', {
+      combinationKey,
+      hasExactMapping: !!INTERIOR_EXACT_MAPPINGS[combinationKey],
+      exactMappingValue: INTERIOR_EXACT_MAPPINGS[combinationKey]
+    });
+
     // Check exact mappings first (for trapezblech combinations)
     const exactMapping = INTERIOR_EXACT_MAPPINGS[combinationKey];
     if (exactMapping) {
       const imagePath = IMAGES.configurations[exactMapping as keyof typeof IMAGES.configurations];
+      console.log('🏠 Exact mapping found:', {
+        exactMapping,
+        imagePath,
+        hasImagePath: !!imagePath
+      });
       if (imagePath) {
         return imagePath;
       }
@@ -279,6 +290,12 @@ export class ImageManager {
     if (!validExactMappings.includes(combinationKey)) {
       console.warn(`🔒 [ImageManager] Using fallback for combination: ${combinationKey}`);
     }
+
+    console.log('🏠 FALLBACK: Using interior fallback image:', {
+      combinationKey,
+      fallbackImage: IMAGE_FALLBACKS.interior,
+      reason: 'No exact mapping or dynamic mapping found'
+    });
 
     return IMAGE_FALLBACKS.interior;
   }
@@ -599,7 +616,7 @@ export class ImageManager {
   static clearCacheForConfiguration(configuration: Configuration): void {
     const viewTypes: ViewType[] = ['exterior', 'interior', 'stirnseite', 'pv', 'fenster'];
     let clearedCount = 0;
-    
+
     viewTypes.forEach(view => {
       const cacheKey = this.createCacheKey(configuration, view);
       if (imagePathCache.has(cacheKey)) {
@@ -607,7 +624,7 @@ export class ImageManager {
         clearedCount++;
       }
     });
-    
+
     if (clearedCount > 0) {
       console.log('🗑️ Cleared', clearedCount, 'cache entries for configuration change');
     }
