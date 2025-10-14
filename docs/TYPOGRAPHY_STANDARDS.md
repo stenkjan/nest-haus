@@ -594,7 +594,7 @@ Test typography on these breakpoints:
       subtitle=""
       maxWidth={false}
       showInstructions={false}
-      customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+      customData={[VIDEO_CARD_PRESETS.transportabilitaet]}
     />
   </div>
 </section>
@@ -618,7 +618,7 @@ import { SectionHeader } from "@/components/sections";
       subtitle=""
       maxWidth={false}
       showInstructions={false}
-      customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+      customData={[VIDEO_CARD_PRESETS.transportabilitaet]}
     />
   </div>
 </section>;
@@ -868,7 +868,7 @@ import { VideoCard16by9 } from "@/components/cards";
   />
 
   <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-    <VideoCard16by9 customData={[VIDEO_CARD_PRESETS.unsereTechnik]} />
+    <VideoCard16by9 customData={[VIDEO_CARD_PRESETS.transportabilitaet]} />
   </div>
 </section>;
 ```

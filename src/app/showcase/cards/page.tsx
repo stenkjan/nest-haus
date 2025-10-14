@@ -116,7 +116,7 @@ export default function CardsShowcasePage() {
             title="Video Card 16:9 Preset"
             subtitle="Video content with 16:9 aspect ratio on desktop, 1:1 on mobile • Same text space as content cards"
             maxWidth={false}
-            customData={[VIDEO_CARD_PRESETS.unsereTechnik]}
+            customData={[VIDEO_CARD_PRESETS.transportabilitaet]}
           />
         </section>
 
