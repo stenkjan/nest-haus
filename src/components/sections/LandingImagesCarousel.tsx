@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
@@ -10,6 +11,12 @@ interface LandingImagesCarouselProps {
   backgroundColor?: "white" | "gray" | "black";
   maxWidth?: boolean;
   intervalMs?: number;
+}
+
+interface _ImageDescription {
+  title: string;
+  subtitle: string;
+  sectionSlug: string;
 }
 
 const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
@@ -24,14 +31,78 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
 }) => {
   const images = useMemo(
     () => [
-      { path: IMAGES.hero.nestHaus1, alt: "NEST-Haus Bild 1" },
-      { path: IMAGES.hero.nestHaus2, alt: "NEST-Haus Bild 2" },
-      { path: IMAGES.hero.nestHaus3, alt: "NEST-Haus Bild 3" },
-      { path: IMAGES.hero.nestHaus4, alt: "NEST-Haus Bild 4" },
-      { path: IMAGES.hero.nestHaus5, alt: "NEST-Haus Bild 5" },
-      { path: IMAGES.hero.nestHaus6, alt: "NEST-Haus Bild 6" },
-      { path: IMAGES.hero.nestHaus7, alt: "NEST-Haus Bild 7" },
-      { path: IMAGES.hero.nestHaus8, alt: "NEST-Haus Bild 8" },
+      {
+        path: IMAGES.hero.nestHaus1,
+        alt: "NEST-Haus Bild 1",
+        description: {
+          title: "Nest 140",
+          subtitle: "Fundamentplatten Weiss",
+          sectionSlug: "dein-nest-haus", // Use slug instead of sectionId
+        },
+      },
+      {
+        path: IMAGES.hero.nestHaus2,
+        alt: "NEST-Haus Bild 2",
+        description: {
+          title: "Nest 100",
+          subtitle: "Mediterane Ansicht",
+          sectionSlug: "wohnen-ohne-grenzen",
+        },
+      },
+      {
+        path: IMAGES.hero.nestHaus3,
+        alt: "NEST-Haus Bild 3",
+        description: {
+          title: "Nest Interior",
+          subtitle: "Kalkstein Verglasung",
+          sectionSlug: "zuhause-fuer-ideen",
+        },
+      },
+      {
+        path: IMAGES.hero.nestHaus4,
+        alt: "NEST-Haus Bild 4",
+        description: {
+          title: "Nest 140",
+          subtitle: "Vogelperspektive Holzlattung",
+          sectionSlug: "wohnen-neu-gedacht",
+        },
+      },
+      {
+        path: IMAGES.hero.nestHaus5,
+        alt: "NEST-Haus Bild 5",
+        description: {
+          title: "Nest 100",
+          subtitle: "Stirnseite Trapezblech",
+          sectionSlug: "mehr-als-vier-waende",
+        },
+      },
+      {
+        path: IMAGES.hero.nestHaus6,
+        alt: "NEST-Haus Bild 6",
+        description: {
+          title: "Nest Interior",
+          subtitle: "Schwarze Steinplatten",
+          sectionSlug: "gestaltung-fuer-visionen",
+        },
+      },
+      {
+        path: IMAGES.hero.nestHaus7,
+        alt: "NEST-Haus Bild 7",
+        description: {
+          title: "Nest 120",
+          subtitle: "Wald Ansicht Schwarz",
+          sectionSlug: "raum-fuer-ideen",
+        },
+      },
+      {
+        path: IMAGES.hero.nestHaus8,
+        alt: "NEST-Haus Bild 8",
+        description: {
+          title: "Nest 160",
+          subtitle: "Berg Vision Holzlattung",
+          sectionSlug: "design-im-freistil",
+        },
+      },
     ],
     []
   );
@@ -51,8 +122,8 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
     backgroundColor === "gray"
       ? "bg-gray-50"
       : backgroundColor === "black"
-      ? "bg-black"
-      : "bg-white";
+        ? "bg-black"
+        : "bg-white";
 
   const containerClass = maxWidth
     ? "w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8"
@@ -88,13 +159,37 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
   const next = () => goTo(currentIndex + 1);
   const prev = () => goTo(currentIndex - 1);
 
-  // Responsive items per view (desktop only) - based on fixed image width
+  // Responsive items per view and image sizing
+  const [imageWidth, setImageWidth] = useState<number>(400);
+
   useEffect(() => {
     const updateItems = () => {
       const width = window.innerWidth;
-      // Each image is ~400px wide (including padding), so calculate how many fit
-      const imageWidth = 400;
-      const maxItems = Math.floor(width / imageWidth);
+
+      // Dynamic image sizing based on screen size
+      let dynamicImageWidth = 400; // Base size
+      if (width >= 1920) {
+        // Largest screens: 30% bigger (was 20%, now 30%)
+        dynamicImageWidth = 620;
+      } else if (width >= 1536) {
+        // 2xl screens: 20% bigger (increased from 15%)
+        dynamicImageWidth = 580;
+      } else if (width >= 1280) {
+        // xl screens: 15% bigger (increased from 10%)
+        dynamicImageWidth = 540;
+      } else if (width >= 1024) {
+        // lg screens: 10% bigger (increased from 5%)
+        dynamicImageWidth = 500;
+      } else if (width >= 768) {
+        // md screens: base size
+        dynamicImageWidth = 460;
+      } else {
+        // sm screens: smaller
+        dynamicImageWidth = 420;
+      }
+
+      setImageWidth(dynamicImageWidth);
+      const maxItems = Math.floor(width / dynamicImageWidth);
       setItemsPerView(Math.max(1, Math.min(maxItems, images.length)));
     };
     updateItems();
@@ -104,10 +199,13 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
 
   // Auto-advance with seamless looping
   useEffect(() => {
-    const timer = setInterval(() => {
-      // Always move forward, the goTo function handles the looping
-      next();
-    }, Math.max(2000, intervalMs));
+    const timer = setInterval(
+      () => {
+        // Always move forward, the goTo function handles the looping
+        next();
+      },
+      Math.max(2000, intervalMs)
+    );
     return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, intervalMs]);
@@ -128,10 +226,10 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  // Track width based on infinite images
+  // Track width based on infinite images and dynamic sizing
   const trackStyle: React.CSSProperties = {
-    width: `${infiniteImages.length * 400}px`,
-    transform: `translateX(-${currentIndex * 400}px)`,
+    width: `${infiniteImages.length * imageWidth}px`,
+    transform: `translateX(-${currentIndex * imageWidth}px)`,
     transition: "transform 600ms ease-in-out",
   };
 
@@ -149,7 +247,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                 <div
                   key={idx}
                   className="flex-shrink-0 px-2"
-                  style={{ width: "400px" }}
+                  style={{ width: `${imageWidth}px` }}
                 >
                   <div className="relative w-full transition-transform duration-300 hover:scale-105 hover:z-10">
                     <HybridBlobImage
@@ -158,12 +256,51 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                       strategy="client"
                       isInteractive={true}
                       enableCache={true}
-                      width={400}
-                      height={225}
-                      className="object-cover"
-                      sizes="400px"
+                      width={imageWidth}
+                      height={Math.round(imageWidth * 0.5625)} // Maintain 16:9 aspect ratio
+                      className="object-cover rounded-lg"
+                      sizes={`${imageWidth}px`}
                       priority={idx === 0}
                     />
+
+                    {/* Description Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6 rounded-b-lg">
+                      {/* Flex container for positioning */}
+                      <div className="flex justify-between items-end">
+                        {/* Left side - Title and Subtitle */}
+                        <div className="text-white flex-1 pr-4">
+                          <h3 className="h3-tertiary-no-m text-white">
+                            {img.description.title}
+                          </h3>
+                          <p className="p-secondary-small text-gray-200">
+                            {img.description.subtitle}
+                          </p>
+                        </div>
+
+                        {/* Right side - Link */}
+                        <div className="flex-shrink-0">
+                          <Link
+                            href={`/#${img.description.sectionSlug}`}
+                            className="inline-flex items-center p-secondary-small text-white hover:text-gray-200 transition-colors duration-200 group whitespace-nowrap"
+                          >
+                            Weitere Beispiele entdecken
+                            <svg
+                              className="ml-2 w-4 h-4 transform transition-transform group-hover:translate-x-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}

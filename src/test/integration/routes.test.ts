@@ -95,10 +95,10 @@ describe('🚀 Route Integration Tests', () => {
       console.log('✅ Warum-wir page endpoint exists')
     })
 
-    it('should render entwurf page', async () => {
-      console.log('🔍 Testing entwurf page...')
+    it('should render konzept page', async () => {
+      console.log('🔍 Testing konzept page...')
 
-      const response = await fetch(`${BASE_URL}/entwurf`, {
+      const response = await fetch(`${BASE_URL}/konzept`, {
         method: 'GET',
         headers: {
           'Accept': 'text/html',
@@ -107,7 +107,7 @@ describe('🚀 Route Integration Tests', () => {
 
       // Accept either success or redirect for static pages
       expect([200, 301, 302, 404]).toContain(response.status)
-      console.log('✅ Entwurf page endpoint exists')
+      console.log('✅ Konzept page endpoint exists')
     })
 
     it('should render dein-part page', async () => {
