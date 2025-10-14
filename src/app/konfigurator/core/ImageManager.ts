@@ -572,7 +572,7 @@ export class ImageManager {
    */
   static clearCacheForConfiguration(configuration: Configuration): void {
     const viewTypes: ViewType[] = ['exterior', 'interior', 'stirnseite', 'pv', 'fenster'];
-    
+
     viewTypes.forEach(view => {
       const cacheKey = this.createCacheKey(configuration, view);
       if (imagePathCache.has(cacheKey)) {
