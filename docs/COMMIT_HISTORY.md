@@ -4,6 +4,38 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9832514064f03751bebf0080f918ddfe3cb14dc7] - Wed Oct 15 13:27:05 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Transition to UnifiedContentCard component across various sections  - Replaced instances of deprecated card components (ImageGlassCard, VideoCard16by9, ContentCards) with UnifiedContentCard for consistency and improved functionality. - Updated card layouts and properties to align with the new unified structure, enhancing maintainability and visual coherence. - Removed obsolete card components to streamline the codebase and reduce complexity. - Adjusted related sections (DeinPartClient, EntdeckenClient, MaterialShowcase, etc.) to utilize the new UnifiedContentCard, ensuring a cohesive user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutStepCard.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsLightbox.tsx
+- src/components/cards/ImageGlassCard.tsx
+- src/components/cards/SquareGlassCard.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/cards/UnifiedCardPreset.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/cards/cardTypes.ts
+- src/components/cards/index.ts
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/MaterialShowcase.tsx
+
+
+---
+
 ## [b97b9d87f73365607c1db3bf8c7864d6a99e9947] - Tue Oct 14 17:01:37 2025 +0200
 
 **Author**: stenkjan
