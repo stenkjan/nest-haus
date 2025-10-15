@@ -12,6 +12,21 @@ export interface BaseCardData {
     backgroundColor: string;
 }
 
+// SquareTextCard data type (for text-only square cards with icons)
+export interface SquareTextCardData {
+    id: number;
+    title: string;
+    subtitle: string;
+    description: string;
+    mobileTitle?: string;
+    mobileSubtitle?: string;
+    mobileDescription?: string;
+    backgroundColor: string;
+    textColor?: string;
+    icon?: React.ReactNode;
+    iconNumber?: number;
+}
+
 export interface StaticCardData extends BaseCardData {
     buttons?: Array<{
         text: string;

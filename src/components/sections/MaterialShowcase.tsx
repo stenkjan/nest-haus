@@ -1,14 +1,14 @@
 import React, { memo } from "react";
-import { ContentCards } from "@/components/cards";
-import { MATERIAL_CARDS, type MaterialCardData } from "@/constants/materials";
+import UnifiedContentCard from "@/components/cards/UnifiedContentCard";
 import { SectionContainer } from "@/components/sections";
+import { MATERIALIEN_CONTENT } from "@/constants/cardContent";
+import type { ContentCardData } from "@/constants/cardContent";
 
 interface MaterialShowcaseProps {
   title?: string;
   subtitle?: string;
   backgroundColor?: "white" | "gray" | "black";
   maxWidth?: boolean;
-  customMaterials?: MaterialCardData[];
   showInstructions?: boolean;
   className?: string;
 }
@@ -19,11 +19,9 @@ export const MaterialShowcase = memo(function MaterialShowcase({
   subtitle = "Entdecke unsere sorgfältig ausgewählten Materialien",
   backgroundColor = "black",
   maxWidth = false,
-  customMaterials,
   showInstructions = true,
   className = "",
 }: MaterialShowcaseProps) {
-  const materials = customMaterials || MATERIAL_CARDS;
   const textColor =
     backgroundColor === "black" ? "text-white" : "text-gray-900";
 
@@ -49,15 +47,16 @@ export const MaterialShowcase = memo(function MaterialShowcase({
           </div>
         )}
 
-        {/* ContentCards with glass styling and optimized material data - full width */}
-        <ContentCards
+        {/* UnifiedContentCard with glass styling and material content */}
+        <UnifiedContentCard
+          category="materialien"
+          layout="horizontal"
           variant="responsive"
+          style="glass"
           title=""
           subtitle=""
           maxWidth={false}
           showInstructions={showInstructions}
-          customData={materials}
-          style="glass"
           backgroundColor={backgroundColor}
         />
       </section>
@@ -81,15 +80,16 @@ export const MaterialShowcase = memo(function MaterialShowcase({
         </div>
       )}
 
-      {/* ContentCards with glass styling and optimized material data */}
-      <ContentCards
+      {/* UnifiedContentCard with glass styling and material content */}
+      <UnifiedContentCard
+        category="materialien"
+        layout="horizontal"
         variant="responsive"
+        style="glass"
         title=""
         subtitle=""
         maxWidth={maxWidth}
         showInstructions={showInstructions}
-        customData={materials}
-        style="glass"
         backgroundColor={backgroundColor}
       />
     </SectionContainer>
@@ -97,18 +97,24 @@ export const MaterialShowcase = memo(function MaterialShowcase({
 });
 
 // Export individual material categories for specific use cases
-export const getNatursteinMaterials = () =>
-  MATERIAL_CARDS.filter((material) => material.title.includes("Naturstein"));
+// Note: Now using centralized content system from @/constants/cardContent
+export const getNatursteinMaterials = (): ContentCardData[] => {
+  return MATERIALIEN_CONTENT.filter((material) =>
+    material.title.includes("Naturstein")
+  );
+};
 
-export const getHolzMaterials = () =>
-  MATERIAL_CARDS.filter(
+export const getHolzMaterials = (): ContentCardData[] => {
+  return MATERIALIEN_CONTENT.filter(
     (material) =>
       material.title.includes("Lärchen") || material.title.includes("Eichen")
   );
+};
 
-export const getMetallMaterials = () =>
-  MATERIAL_CARDS.filter(
+export const getMetallMaterials = (): ContentCardData[] => {
+  return MATERIALIEN_CONTENT.filter(
     (material) =>
       material.title.includes("Fundermax") ||
       material.title.includes("Trapezblech")
   );
+};

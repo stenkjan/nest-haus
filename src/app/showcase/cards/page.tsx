@@ -2,17 +2,9 @@
 
 import { ButtonShowcase } from "@/components/ui";
 import {
-  ContentCards,
-  ContentCardsLightbox,
-  ContentCardsGlass,
-  ContentCardsGlassLightbox,
+  UnifiedContentCard,
   PlanungspaketeCards,
   PlanungspaketeCardsLightbox,
-  ImageGlassCard,
-  SquareGlassCard,
-  SquareGlassCardsScroll,
-  SquareTextCard,
-  VideoCard16by9,
 } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
 
@@ -38,23 +30,16 @@ export default function CardsShowcasePage() {
 
         {/* Content Cards Section - Responsive */}
         <section className="overflow-visible">
-          <ContentCards
+          <UnifiedContentCard
+            layout="horizontal"
+            style="standard"
             variant="responsive"
+            category="materialien"
             title="Content Cards Responsive"
             subtitle="Automatically adapts: Wide layout on desktop, mobile layout on tablets/phones • Navigate with arrow keys or swipe"
             maxWidth={false}
+            enableLightbox={true}
           />
-
-          {/* Lightbox Button for Responsive Cards */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsLightbox
-              variant="responsive"
-              title="Content Cards Responsive - Lightbox View"
-              subtitle="Automatically adapts to screen size • Navigate with arrow keys or swipe • Click outside or press ESC to close"
-              triggerText="Open Responsive Cards in Lightbox"
-              triggerClassName="mx-2"
-            />
-          </div>
         </section>
 
         {/* Planungspakete Cards Section - Clickable Cards with Lightbox */}
@@ -79,77 +64,88 @@ export default function CardsShowcasePage() {
 
         {/* Content Cards Static Section - Single Responsive Card */}
         <section className="overflow-visible">
-          <ContentCards
+          <UnifiedContentCard
+            layout="horizontal"
+            style="standard"
             variant="static"
+            category="materialien"
             title="Content Cards Static"
             subtitle="Single responsive card: Wide layout on desktop, mobile layout on tablets/phones"
             maxWidth={false}
+            enableLightbox={true}
           />
-
-          {/* Lightbox Button for Static Cards */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsLightbox
-              variant="static"
-              title="Content Cards Static - Lightbox View"
-              subtitle="Responsive single card • Adapts layout based on screen size • Click outside or press ESC to close"
-              triggerText="Open Static Card in Lightbox"
-              triggerClassName="mx-2"
-            />
-          </div>
         </section>
 
         {/* Konfigurationen Card Section */}
         <section className="overflow-visible">
-          <VideoCard16by9
+          <UnifiedContentCard
+            layout="video"
+            variant="static"
             title="Konfigurationen Video Card"
             subtitle="Video card with direct props • Wide layout on desktop, mobile layout on tablets/phones"
             maxWidth={false}
-            cardTitle="Du hast die Wahl"
-            cardDescription="Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt."
-            videoPath={IMAGES.variantvideo.twelve}
-            backgroundColor="#F4F4F4"
-            playbackRate={0.5}
-            buttons={[
+            customData={[
               {
-                text: "Unser Part",
-                variant: "primary",
-                size: "xs",
-                link: "/unser-part",
-              },
-              {
-                text: "Jetzt bauen",
-                variant: "secondary",
-                size: "xs",
-                link: "/konfigurator",
+                id: 1,
+                title: "Du hast die Wahl",
+                subtitle: "",
+                description:
+                  "Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt.",
+                video: IMAGES.variantvideo.twelve,
+                backgroundColor: "#F4F4F4",
+                playbackRate: 0.5,
+                buttons: [
+                  {
+                    text: "Unser Part",
+                    variant: "primary",
+                    size: "xs",
+                    link: "/unser-part",
+                  },
+                  {
+                    text: "Jetzt bauen",
+                    variant: "secondary",
+                    size: "xs",
+                    link: "/konfigurator",
+                  },
+                ],
               },
             ]}
           />
 
-          {/* Note: VideoCard16by9 doesn't have a lightbox variant, so this section is removed */}
+          {/* Note: Video layout in UnifiedContentCard doesn't have a lightbox variant yet */}
         </section>
 
         {/* Video Card 16by9 Section */}
         <section className="overflow-visible">
-          <VideoCard16by9
+          <UnifiedContentCard
+            layout="video"
+            variant="static"
             title="Transportabilitaet Video Card"
-            subtitle="Video content with 16:9 aspect ratio on desktop, 1:1 on mobile • Same text space as content cards"
+            subtitle="Video content with 16:9 aspect ratio on desktop, 16:10 on mobile • Same text space as content cards"
             maxWidth={false}
-            cardTitle="Unsere Technik"
-            cardDescription="Aufbauen. Mitnehmen. Weitergeben.\nGanz wie du willst. Dank hochpräziser Konstruktion entsteht dein Zuhause in kürzester Zeit, an nahezu jedem Ort. Und wenn du weiterziehst? Dann ziehst du nicht nur um, sondern nimmst dein Zuhause einfach mit. Oder du bleibst flexibel und verkaufst es weiter, so wie ein gut gepflegtes Auto."
-            videoPath={IMAGES.videos.nestHausTransport}
-            backgroundColor="#F4F4F4"
-            buttons={[
+            customData={[
               {
-                text: "Unser Part",
-                variant: "primary",
-                size: "xs",
-                link: "/entwurf",
-              },
-              {
-                text: "Jetzt bauen",
-                variant: "landing-secondary-blue",
-                size: "xs",
-                link: "/konfigurator",
+                id: 1,
+                title: "Unsere Technik",
+                subtitle: "",
+                description:
+                  "Aufbauen. Mitnehmen. Weitergeben.\nGanz wie du willst. Dank hochpräziser Konstruktion entsteht dein Zuhause in kürzester Zeit, an nahezu jedem Ort. Und wenn du weiterziehst? Dann ziehst du nicht nur um, sondern nimmst dein Zuhause einfach mit. Oder du bleibst flexibel und verkaufst es weiter, so wie ein gut gepflegtes Auto.",
+                video: IMAGES.videos.nestHausTransport,
+                backgroundColor: "#F4F4F4",
+                buttons: [
+                  {
+                    text: "Unser Part",
+                    variant: "primary",
+                    size: "xs",
+                    link: "/entwurf",
+                  },
+                  {
+                    text: "Jetzt bauen",
+                    variant: "landing-secondary-blue",
+                    size: "xs",
+                    link: "/konfigurator",
+                  },
+                ],
               },
             ]}
           />
@@ -157,9 +153,12 @@ export default function CardsShowcasePage() {
 
         {/* Square Text Card Section */}
         <section className="overflow-visible">
-          <SquareTextCard
-            title="Square Text Cards"
-            subtitle="Text-only square cards with responsive behavior • Navigate with arrow keys or swipe • Includes narrow buttons"
+          <UnifiedContentCard
+            layout="text-icon"
+            style="standard"
+            variant="responsive"
+            title="Square Text Cards (Text-Icon Layout)"
+            subtitle="Square cards with text and optional icons • Navigate with arrow keys or swipe"
             maxWidth={false}
             customData={[
               {
@@ -169,21 +168,7 @@ export default function CardsShowcasePage() {
                 description:
                   "Bevor wir starten, prüfen wir gemeinsam die Machbarkeit deines Projekts auf deinem Grundstück. \n\n Im Vorentwurfsplan legen wir Fenster, Türen und Innenwände nach deinen Wünschen fest und stimmen diese Planung mit der zuständigen Gemeinde ab.",
                 backgroundColor: "#F9FAFB",
-                icon: (
-                  <svg
-                    className="w-8 h-8 md:w-12 md:h-12 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                ),
+                iconNumber: 1,
               },
               {
                 id: 2,
@@ -192,21 +177,7 @@ export default function CardsShowcasePage() {
                 description:
                   "Nach dem Vorentwurf erstellen wir die komplette Einreichplanung und reichen diese bei der zuständigen Gemeinde ein. Ab hier hast du die Wahl, wie du mit der Bestellung deines Nest Hauses fortfährst.",
                 backgroundColor: "#F9FAFB",
-                icon: (
-                  <svg
-                    className="w-8 h-8 md:w-12 md:h-12 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                    />
-                  </svg>
-                ),
+                iconNumber: 2,
               },
               {
                 id: 3,
@@ -215,115 +186,120 @@ export default function CardsShowcasePage() {
                 description:
                   "Sobald dein Baubescheid vorliegt, startet die Vorbereitung deines Grundstücks. Dazu gehören alle notwendigen Erschließungsarbeiten wie Strom- und Wasseranschluss, Kanal sowie die Zufahrt.",
                 backgroundColor: "#F9FAFB",
-                icon: (
-                  <svg
-                    className="w-8 h-8 md:w-12 md:h-12 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                    />
-                  </svg>
-                ),
+                iconNumber: 3,
               },
             ]}
+            enableLightbox={false}
           />
         </section>
 
         {/* Content Cards Glass Section - Responsive */}
         <section className="overflow-visible bg-black py-16 -mx-4 px-4">
-          <ContentCardsGlass
+          <UnifiedContentCard
+            layout="horizontal"
+            style="glass"
             variant="responsive"
+            category="materialien"
             title="Content Cards Responsive Glass"
             subtitle="Automatically adapts: Wide layout on desktop, mobile layout on tablets/phones • Navigate with arrow keys or swipe"
             maxWidth={false}
+            backgroundColor="black"
+            enableLightbox={true}
           />
-
-          {/* Lightbox Button for Responsive Glass Cards */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsGlassLightbox
-              variant="responsive"
-              title="Content Cards Responsive Glass - Lightbox View"
-              subtitle="Automatically adapts to screen size • Navigate with arrow keys or swipe • Click outside or press ESC to close"
-              triggerText="Open Responsive Glass Cards in Lightbox"
-              triggerClassName="mx-2"
-            />
-          </div>
         </section>
 
         {/* Content Cards Glass Static Section - Single Responsive Card */}
         <section className="overflow-visible bg-black py-16 -mx-4 px-4">
-          <ContentCardsGlass
+          <UnifiedContentCard
+            layout="horizontal"
+            style="glass"
             variant="static"
+            category="materialien"
             title="Content Cards Static Glass"
             subtitle="Single responsive glass card: Wide layout on desktop, mobile layout on tablets/phones"
             maxWidth={false}
+            backgroundColor="black"
+            enableLightbox={true}
           />
-
-          {/* Lightbox Button for Static Glass Cards */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsGlassLightbox
-              variant="static"
-              title="Content Cards Static Glass - Lightbox View"
-              subtitle="Responsive single glass card • Adapts layout based on screen size • Click outside or press ESC to close"
-              triggerText="Open Static Glass Card in Lightbox"
-              triggerClassName="mx-2"
-            />
-          </div>
         </section>
 
         {/* Image Glass Card Section */}
         <section className="overflow-visible bg-black py-16 -mx-4 px-4">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-white mb-2">
-              Image Glass Card
+              Image Glass Card (Image-Only Layout)
             </h2>
             <p className="text-gray-300">
-              Single image card with glass morphism effect and action buttons
+              Single image card with glass morphism effect
             </p>
           </div>
-          <ImageGlassCard backgroundColor="black" maxWidth={false} />
+          <UnifiedContentCard
+            layout="image-only"
+            style="glass"
+            variant="static"
+            backgroundColor="black"
+            maxWidth={false}
+            showInstructions={false}
+            customData={[
+              {
+                id: 1,
+                title: "NEST-Haus Hand Drawing",
+                subtitle: "",
+                description: "",
+                image: IMAGES.function.nestHausHandDrawing,
+                backgroundColor: "#121212",
+              },
+            ]}
+            enableLightbox={false}
+          />
         </section>
 
         {/* Square Glass Card Section */}
         <section className="overflow-visible bg-black py-16 -mx-4 px-4">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-white mb-2">
-              Square Glass Card
+              Square Glass Card (Square Layout)
             </h2>
             <p className="text-gray-300">
-              Square card with title/subtitle/description (top 50%) and image
-              with 2:3 aspect ratio (bottom 50%)
+              Square card with title/subtitle/description (top) and image with
+              2:3 aspect ratio (bottom)
             </p>
           </div>
-          <SquareGlassCard
+          <UnifiedContentCard
+            layout="square"
+            style="glass"
+            variant="static"
             backgroundColor="black"
-            size="medium"
             maxWidth={false}
-            cardData={{
-              id: 1,
-              title: "NEST-Haus Design",
-              subtitle: "Modern Alpine Architecture",
-              description:
-                "Innovative modular design combining traditional alpine aesthetics with contemporary sustainability.",
-              image:
-                "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
-            }}
+            showInstructions={false}
+            customData={[
+              {
+                id: 1,
+                title: "NEST-Haus Design",
+                subtitle: "Modern Alpine Architecture",
+                description:
+                  "Innovative modular design combining traditional alpine aesthetics with contemporary sustainability.",
+                image:
+                  "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+                backgroundColor: "#121212",
+              },
+            ]}
+            enableLightbox={false}
           />
         </section>
 
         {/* Square Glass Cards Scroll Section */}
         <section className="overflow-visible bg-black py-16 -mx-4 px-4">
-          <SquareGlassCardsScroll
+          <UnifiedContentCard
+            layout="square"
+            style="glass"
+            variant="responsive"
+            category="materialien"
             backgroundColor="black"
             title="Square Glass Cards Scroll"
-            subtitle="Each card: title/subtitle/description (top 50%) + image with 2:3 ratio (bottom 50%) • Navigate with arrow keys or swipe"
+            subtitle="Each card: title/subtitle/description (top) + image with 2:3 ratio (bottom) • Navigate with arrow keys or swipe"
             maxWidth={false}
+            enableLightbox={false}
             onCardClick={(cardId) => console.log(`Clicked card ${cardId}`)}
           />
         </section>

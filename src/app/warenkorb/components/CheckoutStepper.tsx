@@ -17,7 +17,7 @@ import {
   planungspaketeCardData,
   type PlanungspaketeCardData,
 } from "@/components/cards/PlanungspaketeCards";
-import { defaultSquareTextCardData } from "@/components/cards/SquareTextCard";
+import { ABLAUF_STEPS_CARDS } from "@/constants/contentCardPresets";
 import {
   CheckoutStepCard,
   CheckoutPlanungspaketeCards,
@@ -1715,10 +1715,7 @@ export default function CheckoutStepper({
                 </h3>
               </div>
 
-              <CheckoutStepCard
-                cards={defaultSquareTextCardData}
-                maxWidth={true}
-              />
+              <CheckoutStepCard cards={ABLAUF_STEPS_CARDS} maxWidth={true} />
 
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button

@@ -21,7 +21,7 @@ import {
   SectionHeader,
 } from "@/components/sections";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
-import { ImageGlassCard } from "@/components/cards";
+import { UnifiedContentCard } from "@/components/cards";
 import { PlanungspaketeCards } from "@/components/cards";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
@@ -409,8 +409,27 @@ export default function DeinPartClient() {
                 maxWidth={false}
               />
 
-              {/* ImageGlassCard */}
-              <ImageGlassCard backgroundColor="black" maxWidth={false} />
+              {/* UnifiedContentCard with image-only layout */}
+              <UnifiedContentCard
+                layout="image-only"
+                style="glass"
+                variant="static"
+                backgroundColor="black"
+                maxWidth={false}
+                showInstructions={false}
+                customData={[
+                  {
+                    id: 1,
+                    title: "NEST-Haus Hand Drawing",
+                    subtitle: "",
+                    description: "",
+                    image:
+                      "/images/26-NEST-Haus-Planung-Innenausbau-Zeichnen-Grundriss.png",
+                    backgroundColor: "#121212",
+                  },
+                ]}
+                enableLightbox={false}
+              />
 
               {/* Additional Button Combination */}
               <div className="flex gap-4 justify-center w-full">

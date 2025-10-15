@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { SquareTextCardData } from "./SquareTextCard";
+import type { SquareTextCardData } from "./cardTypes";
 
 interface CheckoutStepCardProps {
   cards: SquareTextCardData[];

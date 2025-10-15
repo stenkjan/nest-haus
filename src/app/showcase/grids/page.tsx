@@ -6,7 +6,7 @@ import {
   FullWidthTextGrid,
   ImageWithFourTextGrid,
 } from "@/components/grids";
-import { ImageGlassCard } from "@/components/cards";
+import { UnifiedContentCard } from "@/components/cards";
 import { IMAGES } from "@/constants/images";
 
 export default function GridsShowcasePage() {
@@ -33,8 +33,13 @@ export default function GridsShowcasePage() {
         {/* Image Grid Section - 2x2 Interactive Grid */}
         <section className="overflow-visible">
           <div className="mb-8 text-center">
-            <h2 className="h2-secondary text-gray-900 mb-4">Interactive 2x2 Image Grid</h2>
-            <p className="text-gray-600">2x2 grid with individual card lightboxes • Click any card to open detailed view</p>
+            <h2 className="h2-secondary text-gray-900 mb-4">
+              Interactive 2x2 Image Grid
+            </h2>
+            <p className="text-gray-600">
+              2x2 grid with individual card lightboxes • Click any card to open
+              detailed view
+            </p>
           </div>
           <TwoByTwoImageGrid
             maxWidth={false}
@@ -44,41 +49,45 @@ export default function GridsShowcasePage() {
                 title: "Grid Item 1",
                 subtitle: "Sample subtitle",
                 description: "Sample description for grid item 1",
-                image: "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
+                image:
+                  "/images/1-NEST-Haus-Berg-Vision-AUSTRIA-SWISS-Holzlattung-Laerche.png",
                 backgroundColor: "bg-gray-900",
                 primaryAction: "Learn More",
-                secondaryAction: "View Details"
+                secondaryAction: "View Details",
               },
               {
                 id: 2,
-                title: "Grid Item 2", 
+                title: "Grid Item 2",
                 subtitle: "Sample subtitle",
                 description: "Sample description for grid item 2",
-                image: "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
+                image:
+                  "/images/2-NEST-Haus-7-Module-Ansicht-Weisse-Fassadenplatten.png",
                 backgroundColor: "bg-gray-800",
                 primaryAction: "Learn More",
-                secondaryAction: "View Details"
+                secondaryAction: "View Details",
               },
               {
                 id: 3,
                 title: "Grid Item 3",
-                subtitle: "Sample subtitle", 
+                subtitle: "Sample subtitle",
                 description: "Sample description for grid item 3",
-                image: "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
+                image:
+                  "/images/3-NEST-Haus-3-Gebaeude-Vogelperspektive-Holzlattung-Laerche.png",
                 backgroundColor: "bg-gray-700",
                 primaryAction: "Learn More",
-                secondaryAction: "View Details"
+                secondaryAction: "View Details",
               },
               {
                 id: 4,
                 title: "Grid Item 4",
                 subtitle: "Sample subtitle",
-                description: "Sample description for grid item 4", 
-                image: "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
+                description: "Sample description for grid item 4",
+                image:
+                  "/images/4-NEST-Haus-2-Gebaeude-Schnee-Stirnseite-Schwarze-Trapezblech-Fassade.png",
                 backgroundColor: "bg-gray-600",
                 primaryAction: "Learn More",
-                secondaryAction: "View Details"
-              }
+                secondaryAction: "View Details",
+              },
             ]}
           />
         </section>
@@ -173,8 +182,27 @@ export default function GridsShowcasePage() {
         </section>
 
         {/* Image Glass Card Section */}
-        <section className="overflow-visible">
-          <ImageGlassCard backgroundColor="black" maxWidth={true} />
+        <section className="overflow-visible bg-black py-16">
+          <UnifiedContentCard
+            layout="image-only"
+            style="glass"
+            variant="static"
+            backgroundColor="black"
+            maxWidth={true}
+            showInstructions={false}
+            customData={[
+              {
+                id: 1,
+                title: "NEST-Haus Hand Drawing",
+                subtitle: "",
+                description: "",
+                image:
+                  "/images/26-NEST-Haus-Planung-Innenausbau-Zeichnen-Grundriss.png",
+                backgroundColor: "#121212",
+              },
+            ]}
+            enableLightbox={false}
+          />
         </section>
       </div>
     </div>
