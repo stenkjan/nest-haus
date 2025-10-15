@@ -7,6 +7,8 @@ import { Button } from "@/components/ui";
 import { IMAGES } from "@/constants/images";
 
 interface ThreeByOneGridProps {
+  title?: string;
+  subtitle?: string;
   maxWidth?: boolean;
   text?: string;
   mobileText?: string;
@@ -27,6 +29,8 @@ interface ThreeByOneGridProps {
 }
 
 export default function ThreeByOneGrid({
+  title,
+  subtitle,
   maxWidth = true,
   text = "Standardisierung für Effizienz, Freiheit für Gestaltung. Alles, was sinnvoll standardisiert werden kann, wird perfektioniert. Präzisionsgefertigte Module, effiziente Prozesse und bewährte Konstruktionen sichern höchste Qualität zu einem leistbaren Preis. Gleichzeitig bleibt volle Gestaltungsfreiheit dort, wo sie wirklich zählt.",
   mobileText,
@@ -91,9 +95,8 @@ export default function ThreeByOneGrid({
       <div className={`${containerClasses} ${backgroundClasses}`}>
         <div className="flex justify-center items-center py-8">
           <div
-            className={`animate-pulse ${
-              backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
-            } rounded-3xl`}
+            className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
+              } rounded-3xl`}
             style={{ width: "100%", height: 400 }}
           />
         </div>
@@ -103,6 +106,24 @@ export default function ThreeByOneGrid({
 
   return (
     <div className={`${backgroundClasses}`}>
+      {/* Title and Subtitle Section */}
+      {(title || subtitle) && (
+        <div className="text-center py-8 px-4 md:px-8">
+          {title && (
+            <h2 className={`h2-secondary mb-4 ${backgroundColor === "black" ? "text-white" : "text-gray-900"
+              }`}>
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p className={`text-lg ${backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+              }`}>
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Grid Container */}
       <div>
         {isMobile ? (
@@ -176,11 +197,10 @@ export default function ThreeByOneGrid({
               >
                 <button
                   onClick={() => setShowMoreInfo(!showMoreInfo)}
-                  className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                    backgroundColor === "black"
+                  className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${backgroundColor === "black"
                       ? "focus:ring-white"
                       : "focus:ring-gray-500"
-                  } rounded-lg px-4 py-2`}
+                    } rounded-lg px-4 py-2`}
                 >
                   Mehr Informationen
                   <motion.span
@@ -214,11 +234,10 @@ export default function ThreeByOneGrid({
                 >
                   {/* Horizontal divider */}
                   <div
-                    className={`h-px w-full ${
-                      backgroundColor === "black"
+                    className={`h-px w-full ${backgroundColor === "black"
                         ? "bg-gray-700"
                         : "bg-gray-300"
-                    } mb-6`}
+                      } mb-6`}
                   ></div>
 
                   {/* Technical specifications for mobile */}
@@ -322,9 +341,8 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-left ${
-                        screenWidth > 1700 ? "px-8" : ""
-                      } ${textClassName}`}
+                      className={`p-secondary ${textColorClasses} text-left ${screenWidth > 1700 ? "px-8" : ""
+                        } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
@@ -402,11 +420,10 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div
-                    className={`col-span-3 h-px w-full ${
-                      backgroundColor === "black"
+                    className={`col-span-3 h-px w-full ${backgroundColor === "black"
                         ? "bg-gray-700"
                         : "bg-gray-300"
-                    } my-2`}
+                      } my-2`}
                   ></div>
                   {/* Second row: empty cell under text, description1, description2 */}
                   <div></div>
@@ -569,9 +586,8 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-left ${
-                        screenWidth > 1700 ? "px-8" : ""
-                      } ${textClassName}`}
+                      className={`p-secondary ${textColorClasses} text-left ${screenWidth > 1700 ? "px-8" : ""
+                        } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
@@ -597,11 +613,10 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div
-                    className={`col-span-3 h-px w-full ${
-                      backgroundColor === "black"
+                    className={`col-span-3 h-px w-full ${backgroundColor === "black"
                         ? "bg-gray-700"
                         : "bg-gray-300"
-                    } my-2`}
+                      } my-2`}
                   ></div>
                   {/* Second row: description1, description2, empty cell under text */}
                   <motion.div

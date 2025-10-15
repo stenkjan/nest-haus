@@ -107,16 +107,13 @@ export default function GridsShowcasePage() {
 
         {/* Text Image Grid Section - Left Position with Black Background */}
         <section className="overflow-visible">
-          <ThreeByOneGrid
+          <ThreeByOneAdaptiveHeight
             title="3x1 Grid - Left Position"
             subtitle="3-column layout: text left, images center and right • Black background variant"
             maxWidth={false}
-            textPosition="left"
             backgroundColor="black"
-            image1="21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept"
-            image2="22-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept-Liniengrafik"
-            image1Description="Modulkonzept zeigt die durchdachte Konstruktion und optimierte Fertigung"
-            image2Description="Seitenansicht verdeutlicht die präzise Statik und Passgenauigkeit"
+            image="21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept"
+            imageDescription="Modulkonzept zeigt die durchdachte Konstruktion und optimierte Fertigung"
           />
         </section>
 
