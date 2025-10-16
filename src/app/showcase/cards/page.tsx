@@ -4,8 +4,6 @@ import { ButtonShowcase } from "@/components/ui";
 import {
   ContentCards,
   ContentCardsLightbox,
-  ContentCardsGlass,
-  ContentCardsGlassLightbox,
   PlanungspaketeCards,
   PlanungspaketeCardsLightbox,
   ImageGlassCard,
@@ -233,48 +231,6 @@ export default function CardsShowcasePage() {
               },
             ]}
           />
-        </section>
-
-        {/* Content Cards Glass Section - Responsive */}
-        <section className="overflow-visible bg-black py-16 -mx-4 px-4">
-          <ContentCardsGlass
-            variant="responsive"
-            title="Content Cards Responsive Glass"
-            subtitle="Automatically adapts: Wide layout on desktop, mobile layout on tablets/phones • Navigate with arrow keys or swipe"
-            maxWidth={false}
-          />
-
-          {/* Lightbox Button for Responsive Glass Cards */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsGlassLightbox
-              variant="responsive"
-              title="Content Cards Responsive Glass - Lightbox View"
-              subtitle="Automatically adapts to screen size • Navigate with arrow keys or swipe • Click outside or press ESC to close"
-              triggerText="Open Responsive Glass Cards in Lightbox"
-              triggerClassName="mx-2"
-            />
-          </div>
-        </section>
-
-        {/* Content Cards Glass Static Section - Single Responsive Card */}
-        <section className="overflow-visible bg-black py-16 -mx-4 px-4">
-          <ContentCardsGlass
-            variant="static"
-            title="Content Cards Static Glass"
-            subtitle="Single responsive glass card: Wide layout on desktop, mobile layout on tablets/phones"
-            maxWidth={false}
-          />
-
-          {/* Lightbox Button for Static Glass Cards */}
-          <div className="flex justify-center mt-8">
-            <ContentCardsGlassLightbox
-              variant="static"
-              title="Content Cards Static Glass - Lightbox View"
-              subtitle="Responsive single glass card • Adapts layout based on screen size • Click outside or press ESC to close"
-              triggerText="Open Static Glass Card in Lightbox"
-              triggerClassName="mx-2"
-            />
-          </div>
         </section>
 
         {/* Image Glass Card Section */}
