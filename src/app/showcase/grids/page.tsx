@@ -95,8 +95,6 @@ export default function GridsShowcasePage() {
         {/* Image Text Boxes Section - Full Width Image Grid */}
         <section className="overflow-visible">
           <FullWidthImageGrid
-            title="Full Width Image Grid"
-            subtitle="Large image at top with two text boxes below • Responsive design adapts layout for mobile and desktop"
             maxWidth={true}
             image={IMAGES.function.nestHausModulAnsicht}
             textBox1="Standardisierung für Effizienz und Kostenoptimierung. Höchste Qualität zu einem leistbaren Preis durch intelligente Optimierung – und volle gestalterische Freiheit dort, wo sie wirklich zählt."
@@ -108,8 +106,6 @@ export default function GridsShowcasePage() {
         {/* Text Image Grid Section - Left Position with Black Background */}
         <section className="overflow-visible">
           <ThreeByOneAdaptiveHeight
-            title="3x1 Grid - Left Position"
-            subtitle="3-column layout: text left, images center and right • Black background variant"
             maxWidth={false}
             backgroundColor="black"
             image="21-NEST-Haus-Modul-Ansicht-Modul-Holz-Schema-Konzept"
@@ -134,8 +130,6 @@ export default function GridsShowcasePage() {
         {/* Adaptive Height Grid Section */}
         <section className="overflow-visible">
           <ThreeByOneAdaptiveHeight
-            title="3x1 Grid - Adaptive Height (No Width Constraints)"
-            subtitle="Standard grid layout: side cells 4/3 ratio, middle adapts to image • Full width • Fenster & Türen Planung"
             maxWidth={false}
             backgroundColor="black"
             image={IMAGES.function.nestHausFensterTuerenPosition}
@@ -147,8 +141,6 @@ export default function GridsShowcasePage() {
         {/* Full Width Text Grid Section */}
         <section className="overflow-visible">
           <FullWidthTextGrid
-            title="Full Width Text Grid"
-            subtitle="Two text columns side by side without media content • Pure text layout for content-focused sections"
             maxWidth={true}
             backgroundColor="black"
             textBox1="This grid component focuses purely on text content with two responsive columns. Perfect for detailed explanations, feature descriptions, or content that doesn't require visual media. The layout automatically adapts to mobile devices by stacking the columns vertically."

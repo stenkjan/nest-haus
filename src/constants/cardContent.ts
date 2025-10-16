@@ -558,7 +558,8 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
  * Used in: Dein-Part page, Planungspakete lightbox
  */
 export interface PlanungspaketCardData extends ContentCardData {
-    price?: string;
+    image: string; // Override to make image required for Planungspakete
+    price: string; // Override to make price required for Planungspakete
     grayWord?: string;
     extendedDescription?: string;
     mobileExtendedDescription?: string;
