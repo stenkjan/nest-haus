@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1a8665686b80a1bd91ba6018ccc99b0ce4ce7bb7] - Thu Oct 16 15:09:59 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Clean up grid components by removing unused titles and subtitles  - Removed unnecessary title and subtitle props from , , and  sections in  to enhance clarity and maintainability. - Updated  interface in  to make  and  properties required, ensuring consistency in data structure. - Streamlined exports in  by removing redundant export statements, contributing to a cleaner codebase.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/showcase/grids/page.tsx
+
+
+---
+
 ## [06949a2a1189e2f52f9f687709af3d6f05732589] - Thu Oct 16 14:57:30 2025 +0200
 
 **Author**: stenkjan
