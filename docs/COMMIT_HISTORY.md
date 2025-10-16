@@ -4,6 +4,58 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [06949a2a1189e2f52f9f687709af3d6f05732589] - Thu Oct 16 14:57:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutStepCard.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsLightbox.tsx
+- src/components/cards/ImageGlassCard.tsx
+- src/components/cards/MOBILE_SCROLL_IMPROVEMENTS.md
+- src/components/cards/README.md
+- src/components/cards/SquareGlassCard.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/cards/UnifiedCardPreset.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/cards/cardTypes.ts
+- src/components/cards/cardUtils.ts
+- src/components/cards/index.ts
+- src/components/cards/presetSystem.ts
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/lazy/LazyComponents.ts
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/MaterialShowcase.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+#### 📚 Documentation Changes
+- CARD_CLEANUP_PHASE2_SUMMARY.md
+- CARD_SYSTEM_CLEANUP_SUMMARY.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [d2b7da711012b9c1cec03a186d39681280efcc52] - Thu Oct 16 14:44:22 2025 +0200
 
 **Author**: stenkjan
