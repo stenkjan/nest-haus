@@ -27,6 +27,7 @@ import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
 
 import { IMAGES } from "@/constants/images";
+import { getContentById } from "@/constants/cardContent";
 import Footer from "@/components/Footer";
 
 // Define sections with proper structure for dein-part page (now includes unser-part content)
@@ -292,9 +293,14 @@ export default function DeinPartClient() {
 
           {/* Moved from unser-part: ThreeByOneAdaptiveHeight Grid - Fenster & Türen */}
           <section id="fenster-tueren" className="pt-8 md:pt-16 pb-8 md:pb-16">
-            <ThreeByOneAdaptiveHeight
+            <SectionHeader
               title="Fenster & Türen"
               subtitle="Deine Fenster- und Türöffnungen werden dort platziert, wo du es möchtest."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+              wrapperMargin="mb-12"
+            />
+            <ThreeByOneAdaptiveHeight
               backgroundColor="black"
               imageDescription="NEST-Haus Expertise und professionelle Beratung"
               maxWidth={false}
@@ -313,7 +319,7 @@ export default function DeinPartClient() {
             />
 
             {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-            <div className="pt-16 md:pt-32">
+            <div className="pt-16 md:pt-16">
               <ThreeByOneGrid
                 backgroundColor="black"
                 text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>legst du die</span> <span class='text-white font-medium'>Gesamtfläche</span> <span class='text-nest-gray'>deiner</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>fest, angepasst an deine individuellen Bedürfnisse. Der</span> <span class='text-white font-medium'>Preis bleibt</span> <span class='text-nest-gray'>dabei jederzeit</span> <span class='text-white font-medium'>transparent.</span></p>"
@@ -334,44 +340,48 @@ export default function DeinPartClient() {
 
           {/* Moved from unser-part: FullWidthImageGrid - Raum zum Träumen */}
           <section id="unser-part-individualisierung" className="py-8 md:py-16">
-            <FullWidthImageGrid
+            <SectionHeader
               title="Raum zum Träumen"
               subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+              wrapperMargin="mb-12"
+            />
+            <FullWidthImageGrid
               backgroundColor="black"
               textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> <span class='text-white font-medium'>mit dem Nest System alles haben</span> <span class='text-nest-gray'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> <span class='text-white font-medium'>maximale Freiheit ohne Kompromisse</span> <span class='text-nest-gray'>bietet. Durch</span> <span class='text-white font-medium'>intelligente Standardisierung</span> <span class='text-nest-gray'>garantieren wir</span> <span class='text-white font-medium'>höchste</span></p>"
               textBox2="<p class='p-secondary text-white'>Qualität, Langlebigkeit <span class='text-nest-gray'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles.</span> <span class='text-white font-medium'>Heute bauen, morgen wohnen - Nest.</span></p>"
               maxWidth={false}
+              showButtons={true}
+              primaryButton={{
+                text: "Dein Part",
+                href: "/dein-part",
+                variant: "primary",
+                size: "xs",
+              }}
+              secondaryButton={{
+                text: "Jetzt bauen",
+                href: "/konfigurator",
+                variant: "landing-secondary",
+                size: "xs",
+              }}
             />
-            {/* Button Combo After Component */}
-            <div className="flex gap-4 md:mt-8 md:mb-8 justify-center w-full">
-              <Link href="/dein-part">
-                <Button variant="primary" size="xs">
-                  Dein Part
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary" size="xs">
-                  Jetzt bauen
-                </Button>
-              </Link>
-            </div>
           </section>
 
           {/* Original dein-part content starts here */}
           {/* Section 3 - Du individualisierst dein NEST Haus */}
           <section
             id="individualisierung"
-            className="w-full pt-12 pb-8 md:pb-16 bg-black"
+            className="w-full pt-16 pb-8 md:pb-16 bg-black"
           >
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12 2xl:mb-24">
-                <h1 className="h1-secondary text-white mb-2 md:mb-3">
-                  Dein Raum zum Träumen
-                </h1>
-                <h3 className="h3-secondary text-gray-300 md:mb-8">
-                  Weil nur du weißt, wie du richtig wohnst.
-                </h3>
-              </div>
+              <SectionHeader
+                title="Dein Raum zum Träumen"
+                subtitle="Weil nur du weißt, wie du richtig wohnst."
+                titleClassName="text-white"
+                subtitleClassName="text-white"
+                wrapperMargin="mb-12"
+              />
 
               {/* Image container with same sizing as unser-part page */}
               <div className="w-full max-w-screen-2xl mx-auto md:px-8">
@@ -400,9 +410,14 @@ export default function DeinPartClient() {
           {/* Section 4 - Hier beginnt Freiheit */}
           <section id="freiheit" className="w-full bg-black py-8 md:py-16">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <FullWidthTextGrid
+              <SectionHeader
                 title="Hier beginnt Freiheit"
                 subtitle="Individuell dort, wo es zählt."
+                titleClassName="text-white"
+                subtitleClassName="text-white"
+                wrapperMargin="mb-12"
+              />
+              <FullWidthTextGrid
                 backgroundColor="black"
                 textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit Nest hast du die</span> <span class='text-white font-medium'>Freiheit, deinen Grundriss so zu gestalten,</span> <span class='text-nest-gray'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> <span class='text-white font-medium'>Denn richtig wohnen bedeutet mehr als Fläche und Funktion.</span> <span class='text-nest-gray'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span></p>"
                 textBox2="<p class='p-secondary text-white'><span class='text-nest-gray'>Wenn du auf dem Weg dorthin</span> Unterstützung <span class='text-nest-gray'>möchtest, begleiten wir dich Schritt für Schritt. Unsere</span> Planungspakete <span class='text-nest-gray'>führen dich</span> von der Einreichplanung bis zur Gestaltung des Innenraums. <span class='text-nest-gray'>Individuell, durchdacht und auf deine Vorstellungen abgestimmt. So entsteht aus einer Idee</span> <span class='text-white font-medium'>ein Zuhause, das wirklich zu dir passt.</span></p>"
@@ -417,17 +432,12 @@ export default function DeinPartClient() {
                 backgroundColor="black"
                 maxWidth={false}
                 showInstructions={false}
-                customData={[
-                  {
-                    id: 1,
-                    title: "NEST-Haus Hand Drawing",
-                    subtitle: "",
-                    description: "",
-                    image:
-                      "/images/26-NEST-Haus-Planung-Innenausbau-Zeichnen-Grundriss.png",
-                    backgroundColor: "#121212",
-                  },
-                ]}
+                category="fullImageCards"
+                customData={
+                  getContentById("fullImageCards", 1)
+                    ? [getContentById("fullImageCards", 1)!]
+                    : []
+                }
                 enableLightbox={false}
               />
 
@@ -456,9 +466,13 @@ export default function DeinPartClient() {
             id="installationsebene"
             className="w-full py-8 md:py-16 bg-black"
           >
-            <ImageWithFourTextGrid
+            <SectionHeader
               title="Konzipiert für deine Ideen"
               subtitle="Leitungen verlegen muss nicht immer kompliziert sein."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+            />
+            <ImageWithFourTextGrid
               backgroundColor="black"
               image={IMAGES.function.nestHausModulElektrikSanitaer}
               mobileImage={IMAGES.function.mobile.nestHausModulElektrikSanitaer}
@@ -485,7 +499,7 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               title="Wohnfläche erweitern?"
               subtitle="Kein Problem."
               titleClassName="text-white"
-              subtitleClassName="text-nest-gray"
+              subtitleClassName="text-white"
               wrapperMargin="mb-12 2xl:mb-24"
             />
             <ThreeByOneGrid

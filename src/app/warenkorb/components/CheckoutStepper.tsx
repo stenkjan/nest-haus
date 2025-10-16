@@ -17,9 +17,8 @@ import {
   planungspaketeCardData,
   type PlanungspaketeCardData,
 } from "@/components/cards/PlanungspaketeCards";
-import { ABLAUF_STEPS_CARDS } from "@/constants/contentCardPresets";
 import {
-  CheckoutStepCard,
+  UnifiedContentCard,
   CheckoutPlanungspaketeCards,
 } from "@/components/cards";
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
@@ -1715,7 +1714,15 @@ export default function CheckoutStepper({
                 </h3>
               </div>
 
-              <CheckoutStepCard cards={ABLAUF_STEPS_CARDS} maxWidth={true} />
+              <UnifiedContentCard
+                category="ablaufSteps"
+                layout="process-detail"
+                style="standard"
+                variant="responsive"
+                maxWidth={true}
+                showInstructions={false}
+                backgroundColor="white"
+              />
 
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button

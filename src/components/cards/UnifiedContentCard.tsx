@@ -57,7 +57,8 @@ export type CardLayout =
   | "square" // Square card with text top, image bottom
   | "image-only" // Only image, no text overlay
   | "video" // Video card (16:9 ratio)
-  | "text-icon"; // Square card with text and optional icon, no image
+  | "text-icon" // Square card with text and optional icon, no image
+  | "process-detail"; // Large horizontal card on top + 5 square cards below for checkout steps
 
 /**
  * Style Types for UnifiedContentCard
@@ -328,7 +329,14 @@ export default function UnifiedContentCard({
     x,
   ]);
 
-  const displayCards = isStatic ? cardData.slice(0, 1) : cardData;
+  // Process-detail layout needs all cards (first card + 5 detail cards)
+  // Static variant shows only first card for carousel layouts
+  const displayCards =
+    layout === "process-detail"
+      ? cardData
+      : isStatic
+        ? cardData.slice(0, 1)
+        : cardData;
 
   // Navigation logic
   const navigateCard = useCallback(
@@ -883,6 +891,135 @@ export default function UnifiedContentCard({
     );
   };
 
+  // Render process-detail layout (large horizontal card + 5 square cards)
+  const renderProcessDetailLayout = () => {
+    // First card is the large horizontal card at the top
+    const mainCard = displayCards[0];
+    // Next 5 cards are the small square cards below
+    const detailCards = displayCards.slice(1, 6);
+
+    // Calculate aspect ratio for upper card to be exactly 2x height of square cards
+    // The calculation needs to account for gaps between grid items
+    // Formula: If we have N columns with gaps, and want height = 2 * (one square card height),
+    // then aspect_ratio = (N + (N-1)*gap_fraction) : 2
+    // Simplified for visual balance: N : 1.33 gives roughly 2x height
+    const getUpperCardAspectRatio = () => {
+      if (screenWidth >= 1024) {
+        return "15 / 4"; // 5 columns = 15:4 aspect ratio (3.75:1)
+      } else if (screenWidth >= 768) {
+        return "9 / 4"; // 3 columns = 9:4 aspect ratio (2.25:1)
+      } else {
+        return "3 / 2"; // 2 columns = 3:2 aspect ratio (1.5:1)
+      }
+    };
+
+    return (
+      <div className="w-full space-y-6">
+        {/* Main Large Horizontal Card */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="w-full rounded-3xl shadow-lg overflow-hidden"
+          style={{
+            backgroundColor: "#F4F4F4",
+            aspectRatio: getUpperCardAspectRatio(),
+          }}
+        >
+          <div className="flex flex-col lg:flex-row items-stretch h-full">
+            {/* Left Section: Icon, Title, Subtitle */}
+            <div
+              className="flex flex-col justify-center items-center text-center p-8 lg:p-12 lg:w-1/2"
+              style={{ backgroundColor: "#F4F4F4" }}
+            >
+              {/* Icon */}
+              {mainCard.iconNumber && (
+                <div className="flex justify-center mb-6">
+                  <StepIcon
+                    stepNumber={mainCard.iconNumber}
+                    className="w-16 h-16 md:w-20 md:h-20"
+                  />
+                </div>
+              )}
+              {mainCard.icon && (
+                <div className="flex justify-center mb-6 w-16 h-16 md:w-20 md:h-20">
+                  {mainCard.icon}
+                </div>
+              )}
+
+              {/* Title */}
+              <h2 className="h2-title text-gray-900 mb-2">
+                {getCardText(mainCard, "title")}
+              </h2>
+
+              {/* Subtitle */}
+              {mainCard.subtitle && (
+                <h3 className="h3-secondary text-gray-700 mb-0">
+                  {getCardText(mainCard, "subtitle")}
+                </h3>
+              )}
+            </div>
+
+            {/* Right Section: Description */}
+            <div
+              className="flex flex-col justify-center p-8 lg:p-12 lg:w-1/2"
+              style={{ backgroundColor: "#F4F4F4" }}
+            >
+              <p className="p-primary text-gray-600 leading-relaxed whitespace-pre-line">
+                {getCardText(mainCard, "description")}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 5 Small Square Cards Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+          {detailCards.map((card, index) => (
+            <motion.div
+              key={card.id}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+              className="rounded-3xl shadow-lg overflow-hidden flex flex-col justify-center items-center text-center p-6 hover:shadow-xl transition-shadow duration-300"
+              style={{
+                backgroundColor: "#F4F4F4",
+                aspectRatio: "1 / 1",
+                width: "100%",
+              }}
+            >
+              {/* Icon */}
+              {card.iconNumber && (
+                <div className="flex justify-center mb-4">
+                  <StepIcon
+                    stepNumber={card.iconNumber}
+                    className="w-12 h-12 md:w-14 md:h-14"
+                  />
+                </div>
+              )}
+              {card.icon && (
+                <div className="flex justify-center mb-4 w-12 h-12 md:w-14 md:h-14">
+                  {card.icon}
+                </div>
+              )}
+
+              {/* Title */}
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-1">
+                {getCardText(card, "title")}
+              </h3>
+
+              {/* Subtitle */}
+              {card.subtitle && (
+                <p className="text-sm md:text-base text-gray-600">
+                  {getCardText(card, "subtitle")}
+                </p>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // Render horizontal layout (text-left, image-right)
   const renderHorizontalLayout = (card: ContentCardData, index: number) => {
     const isMobile = isClient && screenWidth < 1024;
@@ -1111,217 +1248,226 @@ export default function UnifiedContentCard({
           </div>
         )}
 
-        {/* Cards Container */}
-        <div className={`relative ${isLightboxMode ? "py-1 xl:py-2" : "py-8"}`}>
-          {/* Horizontal Scrolling Layout */}
-          <div className="overflow-x-clip">
-            <div
-              ref={containerRef}
-              className={`overflow-x-hidden cards-scroll-container ${
-                isStatic
-                  ? ""
-                  : isClient && screenWidth < 1024
-                    ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
-                    : ""
-              } ${
-                layout === "video" ? "px-4" : maxWidth ? "px-8" : "px-4"
-              } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
-              style={{ overflow: "visible" }}
-            >
-              <motion.div
-                className={`flex gap-6 ${isStatic ? "justify-center" : ""}`}
-                style={
+        {/* Process Detail Layout - Static, Full Width */}
+        {layout === "process-detail" ? (
+          <div className="py-8">{renderProcessDetailLayout()}</div>
+        ) : (
+          /* Cards Container - Carousel Layouts */
+          <div
+            className={`relative ${isLightboxMode ? "py-1 xl:py-2" : "py-8"}`}
+          >
+            {/* Horizontal Scrolling Layout */}
+            <div className="overflow-x-clip">
+              <div
+                ref={containerRef}
+                className={`overflow-x-hidden cards-scroll-container ${
                   isStatic
-                    ? {}
-                    : {
-                        x,
-                        width: `${(cardWidth + gap) * displayCards.length - gap}px`,
-                      }
-                }
-                transition={{
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 35,
-                  mass: 0.8,
-                }}
+                    ? ""
+                    : isClient && screenWidth < 1024
+                      ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
+                      : ""
+                } ${
+                  layout === "video" ? "px-4" : maxWidth ? "px-8" : "px-4"
+                } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
+                style={{ overflow: "visible" }}
               >
-                {displayCards.map((card, index) => (
-                  <motion.div
-                    key={card.id}
-                    className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${
-                      layout === "square" ||
-                      layout === "image-only" ||
-                      layout === "text-icon"
-                        ? "flex flex-col"
-                        : layout === "video"
-                          ? isClient && screenWidth >= 1024
-                            ? "flex" // Desktop: horizontal layout
-                            : "flex flex-col" // Mobile: vertical stack
-                          : (isStatic && isClient && screenWidth >= 1024) ||
-                              (isResponsive && isClient && screenWidth >= 1024)
-                            ? "flex"
-                            : ""
-                    } ${isStatic ? "" : "cards-scroll-snap-item"} cards-mobile-smooth`}
-                    style={{
-                      width: cardWidth,
-                      height:
-                        layout === "video"
-                          ? isClient && screenWidth >= 1024
-                            ? // Desktop: Calculate height based on video area with 16:9 ratio + padding
-                              isClient && screenWidth >= 1600
-                              ? ((1600 * 2) / 3 / 16) * 9 + 30 // 630px (2/3 split)
-                              : isClient && screenWidth >= 1400
-                                ? ((1380 * 2) / 3 / 16) * 9 + 30 // 548px (2/3 split)
-                                : isClient && screenWidth >= 1280
-                                  ? ((1280 * 2) / 3 / 16) * 9 + 30 // 510px (2/3 split)
-                                  : (992 * 1) / 2 + 30 // 526px at 1024px (1/2 split, 1:1 aspect ratio)
-                            : undefined // Mobile: auto height
-                          : layout === "text-icon"
-                            ? isClient && screenWidth >= 768
-                              ? cardWidth // Square on tablet/desktop: height = width (already calculated from viewport)
-                              : 480 // Fixed height on mobile to fit content nicely
-                            : isStatic || isResponsive
-                              ? isClient && screenWidth >= 1600
-                                ? Math.min(
-                                    830,
-                                    typeof window !== "undefined"
-                                      ? window.innerHeight * 0.75
-                                      : 830
-                                  )
-                                : isClient && screenWidth >= 1280
+                <motion.div
+                  className={`flex gap-6 ${isStatic ? "justify-center" : ""}`}
+                  style={
+                    isStatic
+                      ? {}
+                      : {
+                          x,
+                          width: `${(cardWidth + gap) * displayCards.length - gap}px`,
+                        }
+                  }
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 35,
+                    mass: 0.8,
+                  }}
+                >
+                  {displayCards.map((card, index) => (
+                    <motion.div
+                      key={card.id}
+                      className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${
+                        layout === "square" ||
+                        layout === "image-only" ||
+                        layout === "text-icon"
+                          ? "flex flex-col"
+                          : layout === "video"
+                            ? isClient && screenWidth >= 1024
+                              ? "flex" // Desktop: horizontal layout
+                              : "flex flex-col" // Mobile: vertical stack
+                            : (isStatic && isClient && screenWidth >= 1024) ||
+                                (isResponsive &&
+                                  isClient &&
+                                  screenWidth >= 1024)
+                              ? "flex"
+                              : ""
+                      } ${isStatic ? "" : "cards-scroll-snap-item"} cards-mobile-smooth`}
+                      style={{
+                        width: cardWidth,
+                        height:
+                          layout === "video"
+                            ? isClient && screenWidth >= 1024
+                              ? // Desktop: Calculate height based on video area with 16:9 ratio + padding
+                                isClient && screenWidth >= 1600
+                                ? ((1600 * 2) / 3 / 16) * 9 + 30 // 630px (2/3 split)
+                                : isClient && screenWidth >= 1400
+                                  ? ((1380 * 2) / 3 / 16) * 9 + 30 // 548px (2/3 split)
+                                  : isClient && screenWidth >= 1280
+                                    ? ((1280 * 2) / 3 / 16) * 9 + 30 // 510px (2/3 split)
+                                    : (992 * 1) / 2 + 30 // 526px at 1024px (1/2 split, 1:1 aspect ratio)
+                              : undefined // Mobile: auto height
+                            : layout === "text-icon"
+                              ? isClient && screenWidth >= 768
+                                ? cardWidth // Square on tablet/desktop: height = width (already calculated from viewport)
+                                : 480 // Fixed height on mobile to fit content nicely
+                              : isStatic || isResponsive
+                                ? isClient && screenWidth >= 1600
                                   ? Math.min(
-                                      692,
+                                      830,
                                       typeof window !== "undefined"
-                                        ? window.innerHeight * 0.7
-                                        : 692
+                                        ? window.innerHeight * 0.75
+                                        : 830
                                     )
-                                  : isClient && screenWidth >= 1024
+                                  : isClient && screenWidth >= 1280
                                     ? Math.min(
-                                        577,
+                                        692,
                                         typeof window !== "undefined"
                                           ? window.innerHeight * 0.7
-                                          : 577
+                                          : 692
                                       )
-                                    : Math.min(
-                                        720,
-                                        typeof window !== "undefined"
-                                          ? window.innerHeight * 0.75
-                                          : 720
-                                      )
-                              : Math.min(
-                                  600,
-                                  typeof window !== "undefined"
-                                    ? window.innerHeight * 0.75
-                                    : 600
-                                ),
-                      backgroundColor: isGlass
-                        ? "#121212"
-                        : card.backgroundColor,
-                      boxShadow: isGlass
-                        ? "inset 0 6px 12px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3)"
-                        : undefined,
-                    }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    onClick={() => {
-                      if (!isStatic && enableLightbox && !isLightboxMode) {
-                        setLightboxOpen(true);
-                      } else if (onCardClick) {
-                        onCardClick(card.id);
-                      }
-                    }}
-                  >
-                    {/* Render layout based on layout prop */}
-                    {layout === "video" && renderVideoLayout(card, index)}
-                    {layout === "horizontal" &&
-                      renderHorizontalLayout(card, index)}
-                    {layout === "square" && renderSquareLayout(card, index)}
-                    {layout === "text-icon" &&
-                      renderTextIconLayout(card, index)}
-                    {layout === "image-only" &&
-                      renderImageOnlyLayout(card, index)}
-                  </motion.div>
-                ))}
-              </motion.div>
+                                    : isClient && screenWidth >= 1024
+                                      ? Math.min(
+                                          577,
+                                          typeof window !== "undefined"
+                                            ? window.innerHeight * 0.7
+                                            : 577
+                                        )
+                                      : Math.min(
+                                          720,
+                                          typeof window !== "undefined"
+                                            ? window.innerHeight * 0.75
+                                            : 720
+                                        )
+                                : Math.min(
+                                    600,
+                                    typeof window !== "undefined"
+                                      ? window.innerHeight * 0.75
+                                      : 600
+                                  ),
+                        backgroundColor: isGlass
+                          ? "#121212"
+                          : card.backgroundColor,
+                        boxShadow: isGlass
+                          ? "inset 0 6px 12px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3)"
+                          : undefined,
+                      }}
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
+                      onClick={() => {
+                        if (!isStatic && enableLightbox && !isLightboxMode) {
+                          setLightboxOpen(true);
+                        } else if (onCardClick) {
+                          onCardClick(card.id);
+                        }
+                      }}
+                    >
+                      {/* Render layout based on layout prop */}
+                      {layout === "video" && renderVideoLayout(card, index)}
+                      {layout === "horizontal" &&
+                        renderHorizontalLayout(card, index)}
+                      {layout === "square" && renderSquareLayout(card, index)}
+                      {layout === "text-icon" &&
+                        renderTextIconLayout(card, index)}
+                      {layout === "image-only" &&
+                        renderImageOnlyLayout(card, index)}
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
             </div>
+
+            {/* Navigation Arrows */}
+            {!isStatic && (
+              <>
+                {currentIndex > 0 && (
+                  <button
+                    onClick={() => navigateCard(-1)}
+                    disabled={isAnimating}
+                    className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 ${
+                      isGlass
+                        ? "bg-gray-800 hover:bg-gray-700"
+                        : "bg-white hover:bg-gray-50"
+                    } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                      screenWidth < 1024 ? "p-3" : "p-4"
+                    }`}
+                    style={{
+                      left:
+                        screenWidth < 1024
+                          ? `max(24px, calc(50% - ${cardWidth / 2 + 30}px))`
+                          : `calc(50% - ${cardWidth / 2 + 60}px)`,
+                    }}
+                  >
+                    <svg
+                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {currentIndex < displayCards.length - 1 && (
+                  <button
+                    onClick={() => navigateCard(1)}
+                    disabled={isAnimating}
+                    className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 ${
+                      isGlass
+                        ? "bg-gray-800 hover:bg-gray-700"
+                        : "bg-white hover:bg-gray-50"
+                    } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                      screenWidth < 1024 ? "p-3" : "p-4"
+                    }`}
+                    style={{
+                      left:
+                        screenWidth < 1024
+                          ? `min(calc(100% - 24px), calc(50% + ${cardWidth / 2 + 30}px))`
+                          : `calc(50% + ${cardWidth / 2 + 60}px)`,
+                    }}
+                  >
+                    <svg
+                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </>
+            )}
           </div>
-
-          {/* Navigation Arrows */}
-          {!isStatic && (
-            <>
-              {currentIndex > 0 && (
-                <button
-                  onClick={() => navigateCard(-1)}
-                  disabled={isAnimating}
-                  className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 ${
-                    isGlass
-                      ? "bg-gray-800 hover:bg-gray-700"
-                      : "bg-white hover:bg-gray-50"
-                  } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
-                    screenWidth < 1024 ? "p-3" : "p-4"
-                  }`}
-                  style={{
-                    left:
-                      screenWidth < 1024
-                        ? `max(24px, calc(50% - ${cardWidth / 2 + 30}px))`
-                        : `calc(50% - ${cardWidth / 2 + 60}px)`,
-                  }}
-                >
-                  <svg
-                    className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-              )}
-
-              {currentIndex < displayCards.length - 1 && (
-                <button
-                  onClick={() => navigateCard(1)}
-                  disabled={isAnimating}
-                  className={`absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 ${
-                    isGlass
-                      ? "bg-gray-800 hover:bg-gray-700"
-                      : "bg-white hover:bg-gray-50"
-                  } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
-                    screenWidth < 1024 ? "p-3" : "p-4"
-                  }`}
-                  style={{
-                    left:
-                      screenWidth < 1024
-                        ? `min(calc(100% - 24px), calc(50% + ${cardWidth / 2 + 30}px))`
-                        : `calc(50% + ${cardWidth / 2 + 60}px)`,
-                  }}
-                >
-                  <svg
-                    className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              )}
-            </>
-          )}
-        </div>
+        )}
 
         {/* Instructions */}
-        {showInstructions && (
+        {showInstructions && layout !== "process-detail" && (
           <div
             className={`text-center mt-6 text-sm ${isGlass ? "text-gray-400" : "text-gray-500"}`}
           >

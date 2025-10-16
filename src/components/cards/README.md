@@ -1,116 +1,392 @@
-# Unified Card System
+# Card System Documentation
 
-This system provides a consistent way to use card components with different visual styles using a single component.
+## Overview
 
-## Quick Usage
+The card system is built around **`UnifiedContentCard`** as the primary component, with specialized components for specific use cases. All card content is centralized in `@/constants/cardContent` for easy management.
 
-### Using Specific Preset Components
+---
+
+## 🎯 Main Component: UnifiedContentCard
+
+The `UnifiedContentCard` is a flexible, multi-layout card component that handles most card use cases.
+
+### Supported Layouts
+
+- **`horizontal`** - Text left, image/video right (default)
+- **`vertical`** - Text top, image bottom (stacked)
+- **`square`** - Square card with text top, image bottom
+- **`video`** - Video card with responsive aspect ratios
+- **`text-icon`** - Text-only card with optional icon (no image)
+- **`image-only`** - Image only, no text overlay
+
+### Supported Styles
+
+- **`standard`** - Light background, dark text (default)
+- **`glass`** - Dark glass background with light text
+
+### Basic Usage
 
 ```tsx
-import { VideoCard16by9 } from "@/components/cards";
-import { IMAGES } from "@/constants/images";
+import { UnifiedContentCard } from "@/components/cards";
 
-// Use VideoCard16by9 with direct props
-<VideoCard16by9
-  cardTitle="Your Title"
-  cardDescription="Your description here..."
-  videoPath={IMAGES.videos.yourVideo}
-  backgroundColor="#F4F4F4"
+// Using with a content category
+<UnifiedContentCard
+  category="materialien"
+  layout="horizontal"
+  style="glass"
+/>
+
+// Using with custom data
+<UnifiedContentCard
+  customData={myCardData}
+  layout="square"
+  style="standard"
+/>
+```
+
+### Available Content Categories
+
+Use these category strings with the `category` prop:
+
+- `"materialien"` - Construction materials (13 cards)
+- `"photovoltaik"` - Solar panel options (4 cards)
+- `"belichtungspaket"` - Lighting packages (3 cards)
+- `"fensterTueren"` - Windows and doors materials (4 cards)
+- `"stirnseite"` - Front glazing options (4 cards)
+- `"ablaufSteps"` - Process steps (7 cards)
+- `"planungspakete"` - Planning packages (3 cards)
+- `"fullImageCards"` - Full-width image cards
+
+### Advanced Example
+
+```tsx
+import { UnifiedContentCard } from "@/components/cards";
+
+<UnifiedContentCard
+  // Content source
+  category="materialien"
+  // Layout configuration
+  layout="horizontal"
+  style="glass"
+  variant="responsive"
+  // Display options
+  title="Unsere Materialien"
+  subtitle="Hochwertige Auswahl für dein Nest-Haus"
+  backgroundColor="black"
+  maxWidth={true}
+  showInstructions={true}
+  // Lightbox
+  enableLightbox={true}
+  // External buttons (below carousel)
   buttons={[
-    { text: "Button 1", variant: "primary", size: "xs", link: "/link" },
+    {
+      text: "Mehr erfahren",
+      variant: "primary",
+      size: "xs",
+      link: "/materialien",
+    },
+    {
+      text: "Jetzt konfigurieren",
+      variant: "secondary",
+      size: "xs",
+      link: "/konfigurator",
+    },
   ]}
 />;
 ```
 
-### Using the Unified Preset Component
+---
+
+## 🎴 Specialized Components
+
+### PlanungspaketeCards
+
+Specialized component for displaying the 3 planning packages (Basis, Plus, Pro) with pricing and detailed descriptions.
 
 ```tsx
-import { UnifiedCardPreset } from "@/components/cards";
+import { PlanungspaketeCards, PLANUNGSPAKETE_PRESET } from "@/components/cards";
 
-// Default style preset
-<UnifiedCardPreset preset="sicherheit" />
-
-// Glass style version
-<UnifiedCardPreset preset="sicherheit" style="glass" />
-
-// With custom configuration
-<UnifiedCardPreset
-  preset="sicherheit"
-  style="glass"
-  title="Custom Title"
-  variant="static"
+<PlanungspaketeCards
+  title="Deine Planungspakete"
+  subtitle="Wähle das passende Paket"
   maxWidth={true}
-/>
+  buttons={PLANUNGSPAKETE_PRESET.buttons}
+/>;
 ```
 
-### Using ContentCards Directly
+### Process Steps (Checkout)
+
+Use UnifiedContentCard with `layout="text-icon"` for process steps:
 
 ```tsx
-import { ContentCards, createPresetCustomData } from "@/components/cards";
+import { UnifiedContentCard } from "@/components/cards";
 
-// ContentCards with default style
-<ContentCards
-  variant="static"
-  title="Sicherheit Card Preset"
-  customData={createPresetCustomData("sicherheit")}
+<UnifiedContentCard
+  category="ablaufSteps"
+  layout="text-icon"
+  style="standard"
+  maxWidth={true}
+  showInstructions={false}
+/>;
+```
+
+---
+
+## 📚 Content System
+
+### Using Content Categories
+
+The easiest way to use card content is through categories:
+
+```tsx
+import { UnifiedContentCard } from "@/components/cards";
+
+// Materials showcase
+<UnifiedContentCard category="materialien" style="glass" />
+
+// Process steps
+<UnifiedContentCard category="ablaufSteps" layout="text-icon" />
+
+// Planning packages
+<UnifiedContentCard category="planungspakete" />
+```
+
+### Using Preset Configurations
+
+For common card setups, use the preset configurations:
+
+```tsx
+import {
+  UnifiedContentCard,
+  ABLAUF_STEPS_PRESET,
+  PLANUNGSPAKETE_PRESET
+} from "@/components/cards";
+
+// Process steps with buttons
+<UnifiedContentCard
+  category="ablaufSteps"
+  layout="text-icon"
+  title="So läuft's ab"
+  subtitle="In 7 Schritten zu deinem Nest-Haus"
+  buttons={ABLAUF_STEPS_PRESET.buttons}
 />
 
-// ContentCards with glass style
-<ContentCards
-  variant="static"
-  style="glass"
-  backgroundColor="black"
-  title="Sicherheit Card Preset - Glass"
-  customData={createPresetCustomData("sicherheit")}
-/>
-
-// Materials showcase with glass styling
-<ContentCards
-  variant="responsive"
-  style="glass"
-  backgroundColor="black"
-  customData={MATERIAL_CARDS}
-  maxWidth={false}
+// Planning packages with buttons
+<PlanungspaketeCards
+  title="Deine Planungspakete"
+  buttons={PLANUNGSPAKETE_PRESET.buttons}
 />
 ```
 
-## Features
+### Creating Custom Card Data
 
-✅ **Unified Component**: Single ContentCards component handles both default and glass styles
-✅ **Simple Style Switching**: Just use `style="glass"` prop to switch visual styles
-✅ **Button Support**: Full button support for static cards
-✅ **Aspect Ratio Fix**: Maintains proper proportions at all screen sizes
-✅ **Unified Presets**: Easy way to apply presets with any style
-✅ **Type Safety**: Full TypeScript support with proper type checking
-✅ **Background Control**: Control background color for glass mode
+For one-off custom cards:
 
-## Available Presets
+```tsx
+import { UnifiedContentCard, ContentCardData } from "@/components/cards";
+import { IMAGES } from "@/constants/images";
 
-- `sicherheit` - Security/Grundstücks-Check card with buttons
+const customCards: ContentCardData[] = [
+  {
+    id: 1,
+    title: "Custom Card",
+    subtitle: "Subtitle here",
+    description: "Description text...",
+    image: IMAGES.hero.nestHaus1,
+    backgroundColor: "#F4F4F4",
+    buttons: [
+      { text: "Learn More", variant: "primary", size: "xs", link: "/info" },
+    ],
+  },
+];
 
-## Style Variants
+<UnifiedContentCard customData={customCards} />;
+```
 
-The ContentCards component supports two visual styles:
+---
 
-### Default Style (`style="default"`)
+## 🎨 Layout Examples
 
-- Light background colors (white/gray based on card data)
-- Dark text (gray-900, gray-700)
-- White navigation arrows with gray icons
-- Standard card appearance
+### Horizontal Layout (Text-Left, Image-Right)
 
-### Glass Style (`style="glass"`)
+```tsx
+<UnifiedContentCard category="materialien" layout="horizontal" style="glass" />
+```
 
-- Dark glass background (`#121212`)
-- White/light text colors
-- Glass morphism effects with inset shadows
-- Dark gray navigation arrows with white icons
-- Perfect for dark backgrounds and material showcases
+- Desktop: Text on left (1/3), image on right (2/3)
+- Mobile: Stacked (text top, image bottom)
+- Best for: Material showcases, product cards
 
-Both styles share:
+### Video Layout (16:9 Responsive)
 
-- Identical responsive breakpoints and scaling logic
-- Same button rendering and responsive width behavior
-- Consistent aspect ratio maintenance across all screen sizes
-- Same text sizing and typography behavior
-- Unified preset system for easy reuse
+```tsx
+<UnifiedContentCard category="photovoltaik" layout="video" />
+```
+
+- Desktop: Text left (1/3), video right (2/3) in 16:9
+- 1024px: Text left (1/2), video right (1/2) in 1:1
+- Mobile: Stacked with 16:10 video ratio
+- Best for: Video demonstrations
+
+### Text-Icon Layout (Square Cards)
+
+```tsx
+<UnifiedContentCard category="ablaufSteps" layout="text-icon" />
+```
+
+- Square cards with icon, title, subtitle, and description
+- No images - pure text content
+- Best for: Process steps, feature lists
+
+---
+
+## 📁 File Structure
+
+```
+src/components/cards/
+├── UnifiedContentCard.tsx              # Main component ⭐
+├── PlanungspaketeCards.tsx             # Planning packages component
+├── CheckoutPlanungspaketeCards.tsx     # Checkout with selection
+├── cardTypes.ts                        # Type definitions
+├── index.ts                            # Exports
+└── README.md                           # This file
+
+src/constants/
+├── cardContent.ts            # All card content data ⭐
+└── contentCardPresets.ts     # Preset configurations
+```
+
+### Core Files
+
+- **`UnifiedContentCard.tsx`** - The main card component with all layouts
+- **`cardContent.ts`** - Centralized content data organized by category
+- **`contentCardPresets.ts`** - Button configurations and presets
+- **`cardTypes.ts`** - Type definitions for specialized components
+- **`index.ts`** - Organized exports for easy imports
+
+---
+
+## 🔧 Type Definitions
+
+### ContentCardData
+
+Main data structure for card content:
+
+```typescript
+interface ContentCardData {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  mobileTitle?: string;
+  mobileSubtitle?: string;
+  mobileDescription?: string;
+  image?: string;
+  video?: string;
+  overlayImage?: string;
+  backgroundColor: string;
+  textColor?: string;
+  icon?: React.ReactNode;
+  iconNumber?: number;
+  playbackRate?: number;
+  buttons?: ButtonConfig[];
+}
+```
+
+### ButtonConfig
+
+Button configuration for cards:
+
+```typescript
+interface ButtonConfig {
+  text: string;
+  variant: "primary" | "secondary" | "primary-narrow" | "secondary-narrow" | ...;
+  size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
+  link?: string;
+  file?: string;
+  fileMode?: "open" | "download";
+  onClick?: () => void;
+}
+```
+
+---
+
+## 💡 Best Practices
+
+1. **Use categories first** - Check if content exists in `cardContent.ts` before creating custom data
+2. **Prefer UnifiedContentCard** - Use specialized components only when needed
+3. **Use presets for buttons** - Import button configs from `ABLAUF_STEPS_PRESET` or `PLANUNGSPAKETE_PRESET`
+4. **Consistent styling** - Use `style="glass"` for dark backgrounds, `style="standard"` for light
+5. **Mobile-first responsive** - Provide mobile text variants for better readability
+6. **Semantic layouts** - Choose layout based on content type (video for videos, text-icon for process steps, etc.)
+
+---
+
+## 🚀 Quick Reference
+
+### Most Common Use Cases
+
+```tsx
+// Material showcase
+<UnifiedContentCard category="materialien" style="glass" />
+
+// Process steps with buttons
+<UnifiedContentCard
+  category="ablaufSteps"
+  layout="text-icon"
+  buttons={ABLAUF_STEPS_PRESET.buttons}
+/>
+
+// Planning packages
+<PlanungspaketeCards
+  buttons={PLANUNGSPAKETE_PRESET.buttons}
+/>
+
+// Video demonstration
+<UnifiedContentCard
+  category="photovoltaik"
+  layout="video"
+/>
+```
+
+### Import Cheat Sheet
+
+```tsx
+import {
+  UnifiedContentCard, // Main component
+  PlanungspaketeCards, // Planning packages
+  CheckoutPlanungspaketeCards, // Checkout with selection
+  ABLAUF_STEPS_PRESET, // Process steps preset
+  PLANUNGSPAKETE_PRESET, // Planning packages preset
+  getContentByCategory, // Get content by category
+  ContentCardData, // Type definition
+  ButtonConfig, // Button type
+} from "@/components/cards";
+```
+
+---
+
+## ❓ FAQ
+
+**Q: Should I use UnifiedContentCard or create a specialized component?**  
+A: Use UnifiedContentCard for 95% of cases. Only create specialized components if you need unique behavior not covered by layouts/styles.
+
+**Q: Where do I add new card content?**  
+A: Add it to `src/constants/cardContent.ts` in the appropriate category array.
+
+**Q: How do I create a new content category?**  
+A: 1) Add content array to `cardContent.ts`, 2) Add category to `ContentCategory` type, 3) Add to `CARD_CONTENT_BY_CATEGORY` lookup.
+
+**Q: Can I mix layouts in a single carousel?**  
+A: No, all cards in a carousel use the same layout. Use multiple UnifiedContentCard components for different layouts.
+
+**Q: How do I customize button styles?**  
+A: Use the `variant` and `size` props on button configs. See `ButtonConfig` type for available options.
+
+---
+
+For more details, check:
+
+- Main component: `src/components/cards/UnifiedContentCard.tsx`
+- Content data: `src/constants/cardContent.ts`
+- Preset configs: `src/constants/contentCardPresets.ts`

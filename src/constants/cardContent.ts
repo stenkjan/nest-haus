@@ -482,6 +482,166 @@ export const KONTAKTFORMULAR_CONTENT: ContentCardData[] = [
 ];
 
 /**
+ * ABLAUF STEPS CONTENT
+ * Process steps showing how to build with Nest-Haus
+ * Used in: Entdecken page
+ */
+export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
+    {
+        id: 1,
+        title: "1. Vorentwurf",
+        subtitle: "Erster Schritt.",
+        description:
+            "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
+        backgroundColor: "#f4f4f4",
+        iconNumber: 1,
+    },
+    {
+        id: 2,
+        title: "2. Einreichplan",
+        subtitle: "Formalitäten Abklären.",
+        description:
+            "Sobald dein Vorentwurf fertiggestellt ist, starten wir mit der rechtlich korrekten Planung für dein zuständiges Bauamt (Planungspaket Basis).\n\nDabei werden alle formellen Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Zufahrten sowie örtliche Bauvorschriften geprüft, abgestimmt und detailliert definiert, um eine reibungslose Genehmigung sicherzustellen.",
+        backgroundColor: "#f4f4f4",
+        iconNumber: 2,
+    },
+    {
+        id: 3,
+        title: "3. Baubescheid",
+        subtitle: "Grundstücksvorbereitung",
+        description:
+            "Sobald dein Baubescheid vorliegt, starten die Vorbereitungen auf deinem Grundstück. Dazu zählen alle notwendigen Erschließungs- und Grabungsarbeiten wie Strom-, Wasser- und Kanalanschlüsse sowie die Zufahrt.\n\nDie Kosten dafür trägst du selbst. Wir begleiten dich mit erfahrenen Partnerfirmen, damit jeder Schritt reibungslos und effizient umgesetzt wird.",
+        backgroundColor: "#f4f4f4",
+        iconNumber: 3,
+    },
+    {
+        id: 4,
+        title: "4. Fundament",
+        subtitle: "Eine solide Basis",
+        description:
+            "Wenn du dein Fundament selbst bauen möchtest, erhältst du von uns alle notwendigen Informationen und detaillierten Planungsunterlagen.\n\nSolltest du die Arbeiten an uns übergeben wollen, übernehmen wir Planung, Organisation und Umsetzung. Zuverlässig und fachgerecht.",
+        backgroundColor: "#f4f4f4",
+        iconNumber: 4,
+    },
+    {
+        id: 5,
+        title: "5. Lieferung + Aufbau",
+        subtitle: "Immer transparent",
+        description:
+            "Sobald dein Fundament fertig ist, liefern wir dein Nest-Haus direkt zu dir. Unser erfahrenes Team übernimmt die Montage vor Ort, sodass dein Zuhause in kürzester Zeit steht.\n\nDie Kosten sind transparent geregelt und werden nach Bekanntgabe deines Bauplatzes exakt festgelegt.",
+        backgroundColor: "#f4f4f4",
+        iconNumber: 5,
+    },
+    {
+        id: 6,
+        title: "6. Fertigstellung",
+        subtitle: "Planungspaket Plus",
+        description:
+            "Für die Fertigstellung begleiten wir dich Schritt für Schritt und vermitteln bei Bedarf zuverlässige Partnerfirmen. Ob in Eigenregie oder mit Fachbetrieben\n\nMit dem Planungspaket Plus erhältst du einen klaren Ablaufplan und Unterstützung bis zur Schlüsselübergabe, inklusive aller Gewerke von Elektro über Sanitär bis Innenausbau.",
+        backgroundColor: "#f4f4f4",
+        iconNumber: 6,
+    },
+    {
+        id: 7,
+        title: "7. Interior Design",
+        subtitle: "Planungspaket Pro",
+        description:
+            "In der Interior Planung entsteht ein stimmiges Konzept aus Möbeln, Materialien, Farben und Licht, das Funktion und Atmosphäre vereint.\n\nMit dem Planungspaket Pro begleiten wir dich bis zur Fertigstellung, damit dein Zuhause innen wie außen perfekt harmoniert.",
+        backgroundColor: "#f4f4f4",
+        iconNumber: 7,
+    },
+];
+
+/**
+ * PLANUNGSPAKETE CONTENT
+ * Planning packages with pricing and extended descriptions
+ * Used in: Dein-Part page, Planungspakete lightbox
+ */
+export interface PlanungspaketCardData extends ContentCardData {
+    price?: string;
+    grayWord?: string;
+    extendedDescription?: string;
+    mobileExtendedDescription?: string;
+}
+
+export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
+    {
+        id: 1,
+        title: "Planungspaket 01",
+        subtitle: "Basis",
+        description:
+            "Inkl.\nEinreichplanung des Gesamtprojekts\nFachberatung und Baubegleitung\nBürokratische Unterstützung",
+        mobileTitle: "Planungspaket 01",
+        mobileSubtitle: "Basis",
+        mobileDescription:
+            "Inkl.\nEinreichplanung des Gesamtprojekts\nFachberatung und Baubegleitung\nBürokratische Unterstützung",
+        image: IMAGES.hero.nestHaus8,
+        price: "€10.900,00",
+        backgroundColor: "#F4F4F4",
+        grayWord: "Basis",
+        extendedDescription:
+            "Nachdem dein Vorentwurf abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
+        mobileExtendedDescription:
+            "Nachdem dein Vorentwurf abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
+    },
+    {
+        id: 2,
+        title: "Planungspaket 02",
+        subtitle: "Plus",
+        description:
+            "Inkl.\nPlanungspaket Basis (Einreichplanung) \n Haustechnik-Planung \n Ausführungsplanung Innenausbau",
+        mobileTitle: "Planungspaket 02",
+        mobileSubtitle: "Plus",
+        mobileDescription:
+            "Inkl.\nPlanungspaket Basis (Einreichplanung) \n Haustechnik-Planung \n Ausführungsplanung Innenausbau",
+        image: IMAGES.hero.nestHaus1,
+        price: "€16.900,00",
+        backgroundColor: "#F4F4F4",
+        grayWord: "Plus",
+        extendedDescription:
+            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+        mobileExtendedDescription:
+            "Du möchtest Unterstützung bei der technischen Innenausbauplanung? Dann ist unser Plus-Paket genau das Richtige für dich. Es umfasst alle Leistungen des Basispakets, von der Einreichplanung bis zur Detailplanung und ergänzt sie um die komplette Haustechnikplanung: Elektrik, Sanitär, Abwasser und Innenausbau. \n \n Warum das sinnvoll ist? Weil du damit alle Leitungen, Anschlüsse und Einbauten frühzeitig mitplanst. Das spart Zeit, vermeidet Abstimmungsprobleme auf der Baustelle und sorgt dafür, dass dein Haus technisch von Anfang an durchdacht ist. \n \n Aber klar, wenn du die technische Planung lieber selbst übernehmen oder mit einem Partner deines Vertrauens umsetzen möchtest, ist das genauso möglich. Unser Nest-System ist so konzipiert, dass du flexibel bleibst und auch diesen Weg einfach gehen kannst. \n \n Das Plus-Paket ist unsere Lösung für dich, wenn du maximale Planungssicherheit willst. Alles aus einer Hand, alles bestens vorbereitet.",
+    },
+    {
+        id: 3,
+        title: "Planungspaket 03",
+        subtitle: "Pro",
+        description:
+            "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
+        mobileTitle: "Planungspaket 03",
+        mobileSubtitle: "Pro",
+        mobileDescription:
+            "Inkl.\nPlanungspaket Plus (HKLS Planung) \n Belauchtungskonzept, Möblierungsplanung, Farb- und Materialkonzept",
+        image: IMAGES.hero.nestHaus4,
+        price: "€21.900,00",
+        backgroundColor: "#F4F4F4",
+        grayWord: "Pro",
+        extendedDescription:
+            "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+        mobileExtendedDescription:
+            "Du willst nicht nur planen, du willst gestalten. Mit Gefühl für Raum, Stil und Atmosphäre. \n \n Das Pro-Paket ergänzt die technischen und baurechtlichen Grundlagen der ersten beiden Pakete um eine umfassende gestalterische Ebene. Gemeinsam entwickeln wir ein Interiorkonzept, das deine Wünsche in Raumgefühl, Möblierung und Stil widerspiegelt. Die Küche wird funktional durchdacht und gestalterisch in das Gesamtkonzept eingebettet – alle Anschlüsse und Geräte exakt geplant. Ein stimmungsvolles Licht- und Beleuchtungskonzept bringt Leben in deine Räume, während harmonisch abgestimmte Farben und Materialien innen wie außen für ein rundes Gesamtbild sorgen. Auch der Garten und die Außenräume werden in die Planung miteinbezogen, sodass dein neues Zuhause nicht nur innen, sondern auch im Außenbereich überzeugt. \n \nMit dem Pro-Paket wird dein Nest-Haus zum Ausdruck deiner Persönlichkeit. Durchdacht, gestaltet und bereit zum Leben.",
+    },
+];
+
+/**
+ * FULL IMAGE CARDS CONTENT
+ * Single full-width image cards for various uses
+ * Used in: Various sections as static single images or image galleries
+ */
+export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
+    {
+        id: 1,
+        title: "Hand Drawing - Planning Sketch",
+        subtitle: "",
+        description: "",
+        image: IMAGES.function.nestHausHandDrawing,
+        backgroundColor: "#121212",
+    },
+    // Add more full image cards here as needed
+];
+
+/**
  * CATEGORY TYPE
  * Type-safe category keys
  */
@@ -491,7 +651,10 @@ export type ContentCategory =
     | "belichtungspaket"
     | "fensterTueren"
     | "stirnseite"
-    | "kontaktformular";
+    | "kontaktformular"
+    | "ablaufSteps"
+    | "planungspakete"
+    | "fullImageCards";
 
 /**
  * MASTER CONTENT LOOKUP
@@ -503,7 +666,7 @@ export type ContentCategory =
  */
 export const CARD_CONTENT_BY_CATEGORY: Record<
     ContentCategory,
-    ContentCardData[]
+    ContentCardData[] | PlanungspaketCardData[]
 > = {
     materialien: MATERIALIEN_CONTENT,
     photovoltaik: PHOTOVOLTAIK_CONTENT,
@@ -511,6 +674,9 @@ export const CARD_CONTENT_BY_CATEGORY: Record<
     fensterTueren: FENSTER_TUEREN_CONTENT,
     stirnseite: STIRNSEITE_CONTENT,
     kontaktformular: KONTAKTFORMULAR_CONTENT,
+    ablaufSteps: ABLAUF_STEPS_CONTENT,
+    planungspakete: PLANUNGSPAKETE_CONTENT,
+    fullImageCards: FULL_IMAGE_CARDS_CONTENT,
 };
 
 /**

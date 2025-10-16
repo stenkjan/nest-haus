@@ -1,4 +1,20 @@
-// NEW: Unified Card System (Main Component)
+/**
+ * Card Components Export Index
+ * 
+ * This file exports all card-related components, types, and content.
+ * The system is built around UnifiedContentCard as the main component,
+ * with specialized components for specific use cases.
+ */
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+/**
+ * UnifiedContentCard - Primary card component
+ * Supports multiple layouts: horizontal, vertical, square, video, text-icon, image-only
+ * Supports multiple styles: standard, glass
+ */
 export { default as UnifiedContentCard } from "./UnifiedContentCard";
 export type {
     CardLayout,
@@ -7,31 +23,61 @@ export type {
     UnifiedContentCardProps,
 } from "./UnifiedContentCard";
 
-// Specialized card components (kept for specific use cases)
+// ============================================================================
+// SPECIALIZED COMPONENTS
+// ============================================================================
+
+/**
+ * PlanungspaketeCards - Planning packages with pricing
+ * Used for displaying the 3 planning packages (Basis, Plus, Pro)
+ */
 export { default as PlanungspaketeCards } from "./PlanungspaketeCards";
 export { default as PlanungspaketeCardsLightbox } from "./PlanungspaketeCardsLightbox";
-export { default as CheckoutStepCard } from "./CheckoutStepCard";
+
+/**
+ * CheckoutPlanungspaketeCards - Checkout planning packages with selection
+ * Used in the checkout/cart flow for selecting planning packages
+ */
 export { default as CheckoutPlanungspaketeCards } from "./CheckoutPlanungspaketeCards";
 
-// Utilities and types
-export * from "./cardTypes";
-export * from "./cardUtils";
+// ============================================================================
+// TYPES
+// ============================================================================
+
+/**
+ * SquareTextCardData - Type for text-only cards with icons
+ * Legacy type kept for backwards compatibility
+ */
 export type { SquareTextCardData } from "./cardTypes";
-export type { PresetName, PresetConfig } from "./presetSystem";
+
+// ============================================================================
+// CONTENT & PRESETS
+// ============================================================================
+
+/**
+ * Preset configurations for common card setups
+ * - ABLAUF_STEPS: Process steps for "So läuft's ab" section
+ * - PLANUNGSPAKETE: Planning packages configuration
+ */
 export {
-    getPresetData,
-    createPresetCustomData,
-    getAvailablePresets,
-    isValidPreset as isValidPresetName,
-    applyPresetConfig,
-    PRESET_CONFIGS
-} from "./presetSystem";
+    ABLAUF_STEPS_PRESET,
+    ABLAUF_STEPS_CARDS,
+    ABLAUF_STEPS_BUTTONS,
+    PLANUNGSPAKETE_CARDS,
+    PLANUNGSPAKETE_BUTTONS,
+    PLANUNGSPAKETE_PRESET
+} from "@/constants/contentCardPresets";
 
-// Re-export preset constants for convenience
-export { CONTENT_CARD_PRESETS, VIDEO_CARD_PRESETS, ABLAUF_STEPS_PRESET, ABLAUF_STEPS_CARDS, ABLAUF_STEPS_BUTTONS, PLANUNGSPAKETE_CARDS, PLANUNGSPAKETE_BUTTONS, PLANUNGSPAKETE_PRESET } from "@/constants/contentCardPresets";
-export type { ContentCardPreset, VideoCardPreset, SquareTextCardPreset } from "@/constants/contentCardPresets";
+export type {
+    ContentCardPreset,
+    VideoCardPreset,
+    SquareTextCardPreset
+} from "@/constants/contentCardPresets";
 
-// NEW: Centralized content system
+/**
+ * Centralized content system - all card content organized by category
+ * Use getContentByCategory() to access content arrays by category name
+ */
 export {
     MATERIALIEN_CONTENT,
     PHOTOVOLTAIK_CONTENT,
@@ -45,4 +91,9 @@ export {
     getAvailableCategories,
     isValidCategory,
 } from "@/constants/cardContent";
-export type { ContentCategory, ContentCardData, ButtonConfig } from "@/constants/cardContent";
+
+export type {
+    ContentCategory,
+    ContentCardData,
+    ButtonConfig
+} from "@/constants/cardContent";

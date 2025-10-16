@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface FullWidthTextGridProps {
-  title?: string;
-  subtitle?: string;
   maxWidth?: boolean;
   textBox1?: string;
   textBox2?: string;
@@ -13,8 +11,6 @@ interface FullWidthTextGridProps {
 }
 
 export default function FullWidthTextGrid({
-  title = "Full Width Text Grid",
-  subtitle = "Two text columns side by side",
   maxWidth = true,
   textBox1 = "First text column with descriptive content and key information about the topic.",
   textBox2 = "Second text column with additional information and supporting details about the subject matter.",
@@ -60,20 +56,6 @@ export default function FullWidthTextGrid({
   if (!isClient) {
     return (
       <div className={`${containerClasses} ${backgroundClasses} pb-8`}>
-        <div className="text-center mb-12 2xl:mb-24">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
         <div className="px-4 md:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
             <div
@@ -96,24 +78,6 @@ export default function FullWidthTextGrid({
 
   return (
     <div className={`${backgroundClasses} pb-8`}>
-      {/* Title and Subtitle */}
-      <div className={`${containerClasses}`}>
-        <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
-      </div>
-
       {/* Two Text Columns */}
       <div className="px-4 md:px-8">
         <div

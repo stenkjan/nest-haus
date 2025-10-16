@@ -161,8 +161,6 @@ export default function GridsShowcasePage() {
         {/* Image with Four Text Grid Section */}
         <section className="overflow-visible">
           <ImageWithFourTextGrid
-            title="Image with Four Text Grid"
-            subtitle="Image on top with horizontal line and four text columns below • Responsive 'Mehr Informationen' layout on mobile"
             maxWidth={false}
             image={IMAGES.function.nestHausModulElektrikSanitaer}
             imageDescription="NEST Haus Planung Elektrik Sanitär Einbau Gebäudetechnik HKLS Modul"

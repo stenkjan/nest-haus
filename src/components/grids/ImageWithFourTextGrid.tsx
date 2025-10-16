@@ -6,8 +6,6 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 interface ImageWithFourTextGridProps {
-  title?: string;
-  subtitle?: string;
   maxWidth?: boolean;
   image?: string;
   mobileImage?: string;
@@ -24,8 +22,6 @@ interface ImageWithFourTextGridProps {
 }
 
 export default function ImageWithFourTextGrid({
-  title = "Image with Four Text Grid",
-  subtitle = "Image on top with four text columns below",
   maxWidth = true,
   image = IMAGES.function.nestHausModulAnsicht,
   mobileImage,
@@ -84,20 +80,6 @@ export default function ImageWithFourTextGrid({
   if (!isClient) {
     return (
       <div className={`${containerClasses} ${backgroundClasses}`}>
-        <div className="text-center mb-24">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
         <div className="flex justify-center items-center py-8">
           <div
             className={`animate-pulse ${
@@ -112,24 +94,6 @@ export default function ImageWithFourTextGrid({
 
   return (
     <div className={`${backgroundClasses}`}>
-      {/* Title and Subtitle */}
-      <div className={`${containerClasses}`}>
-        <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
-      </div>
-
       {/* Main Container */}
       <div>
         {/* Image at Top - Standard Max Width */}
