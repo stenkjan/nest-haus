@@ -33,7 +33,7 @@ export default function FensterOverlay({
       aluminium_schwarz: IMAGES.fensterOverlays.aluminium_schwarz,
     };
 
-    return overlayMappings[type] || IMAGES.fensterOverlays.holz; // Default to holz
+    return overlayMappings[type] || IMAGES.fensterOverlays.pvc_fenster; // Default to pvc_fenster
   };
 
   const overlayImagePath = getOverlayImage(fensterType);

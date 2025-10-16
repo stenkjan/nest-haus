@@ -15,7 +15,7 @@ interface BelichtungsPaketOverlayProps {
 export default function BelichtungsPaketOverlay({
   nestSize,
   brightnessLevel,
-  fensterMaterial = "holz", // Default to holz (preselected)
+  fensterMaterial = "pvc", // Default to pvc (preselected)
   isVisible = true,
   className = "",
 }: BelichtungsPaketOverlayProps) {

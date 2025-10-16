@@ -384,7 +384,7 @@ export default function PreviewPanel({
                         ? "aluminium_hell"
                         : configuration.fenster?.value === "aluminium_schwarz"
                           ? "aluminium_dunkel"
-                          : "holz" // Default to holz (preselected)
+                          : "pvc" // Default to pvc (preselected)
                   }
                   isVisible={
                     isBrightnessOverlayVisible && activeView === "exterior"
