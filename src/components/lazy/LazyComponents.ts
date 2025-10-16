@@ -13,19 +13,6 @@ export const LazySummaryPanel = lazy(
     () => import("@/app/konfigurator/components/SummaryPanel")
 );
 
-// Lazy load motion-heavy components
-export const LazyContentCards = lazy(
-    () => import("@/components/cards/ContentCards")
-);
-
-export const LazyPlanungspaketeCards = lazy(
-    () => import("@/components/cards/PlanungspaketeCards")
-);
-
-export const LazySquareGlassCardsScroll = lazy(
-    () => import("@/components/cards/SquareGlassCardsScroll")
-);
-
 // Lazy load grid components with motion
 export const LazyFullWidthImageGrid = lazy(
     () => import("@/components/grids/FullWidthImageGrid")

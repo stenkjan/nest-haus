@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import { Dialog } from "@/components/ui";
-import { ContentCards } from "@/components/cards";
+import UnifiedContentCard from "@/components/cards/UnifiedContentCard";
 import {
   getConfiguratorDialogData,
   type TransformedDialogData,
@@ -144,15 +144,18 @@ export default function ConfiguratorContentCardsLightbox({
         className="p-0"
       >
         <div className="w-full h-full flex flex-col items-center justify-center p-1 md:p-4 overflow-y-auto">
-          {/* ContentCards with responsive variant and custom data - Compact spacing for lightbox */}
+          {/* UnifiedContentCard with responsive variant and custom data - Compact spacing for lightbox */}
           <div className="w-full max-w-none">
-            <ContentCards
+            <UnifiedContentCard
+              layout="horizontal"
+              style="standard"
               variant="responsive"
               title="" // Hide title in lightbox mode to allow proper centering
               subtitle="" // Hide subtitle in lightbox mode to allow proper centering
               maxWidth={false}
               showInstructions={false}
               isLightboxMode={true}
+              enableLightbox={false}
               customData={cardData}
             />
           </div>

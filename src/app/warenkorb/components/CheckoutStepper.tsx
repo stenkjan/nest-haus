@@ -17,9 +17,8 @@ import {
   planungspaketeCardData,
   type PlanungspaketeCardData,
 } from "@/components/cards/PlanungspaketeCards";
-import { defaultSquareTextCardData } from "@/components/cards/SquareTextCard";
 import {
-  CheckoutStepCard,
+  UnifiedContentCard,
   CheckoutPlanungspaketeCards,
 } from "@/components/cards";
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
@@ -1715,9 +1714,14 @@ export default function CheckoutStepper({
                 </h3>
               </div>
 
-              <CheckoutStepCard
-                cards={defaultSquareTextCardData}
+              <UnifiedContentCard
+                category="ablaufSteps"
+                layout="process-detail"
+                style="standard"
+                variant="responsive"
                 maxWidth={true}
+                showInstructions={false}
+                backgroundColor="white"
               />
 
               <div className="flex justify-center mt-16 md:mt-20">

@@ -4,6 +4,102 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d2b7da711012b9c1cec03a186d39681280efcc52] - Thu Oct 16 14:44:22 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Update DeinPartClient and card components for improved structure and functionality  - Introduced SectionHeader component in DeinPartClient for better title and subtitle management. - Enhanced FullWidthImageGrid to support optional buttons for improved user interaction. - Updated ThreeByOneAdaptiveHeight and other grid components to remove deprecated title and subtitle props, streamlining the code. - Centralized card content management by integrating getContentById for dynamic data retrieval. - Removed obsolete card types and utilities to simplify the codebase and enhance maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutStepCard.tsx
+- src/components/cards/MOBILE_SCROLL_IMPROVEMENTS.md
+- src/components/cards/README.md
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/cards/cardTypes.ts
+- src/components/cards/cardUtils.ts
+- src/components/cards/index.ts
+- src/components/cards/presetSystem.ts
+- src/components/grids/FullWidthImageGrid.tsx
+- src/components/grids/FullWidthTextGrid.tsx
+- src/components/grids/ImageWithFourTextGrid.tsx
+- src/components/grids/ThreeByOneAdaptiveHeight.tsx
+
+
+#### 📚 Documentation Changes
+- CARD_CLEANUP_PHASE2_SUMMARY.md
+- CARD_SYSTEM_CLEANUP_SUMMARY.md
+
+
+---
+
+## [63cad8254a926001a0459419deacc22cc32db75e] - Wed Oct 15 16:36:54 2025 +0200
+
+**Author**: stenkjan
+**Message**: `chore: Update chart.js to version 4.5.1 and refactor ThreeByOneGrid component  - Updated chart.js dependency from version 4.5.0 to 4.5.1 in package.json and package-lock.json for improved functionality. - Refactored ThreeByOneGrid component to use ThreeByOneAdaptiveHeight for better responsiveness. - Simplified props by consolidating image and description properties, enhancing code clarity and maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/showcase/grids/page.tsx
+- src/components/grids/ThreeByOneGrid.tsx
+- src/components/lazy/LazyComponents.ts
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
+## [9832514064f03751bebf0080f918ddfe3cb14dc7] - Wed Oct 15 13:27:05 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Transition to UnifiedContentCard component across various sections  - Replaced instances of deprecated card components (ImageGlassCard, VideoCard16by9, ContentCards) with UnifiedContentCard for consistency and improved functionality. - Updated card layouts and properties to align with the new unified structure, enhancing maintainability and visual coherence. - Removed obsolete card components to streamline the codebase and reduce complexity. - Adjusted related sections (DeinPartClient, EntdeckenClient, MaterialShowcase, etc.) to utilize the new UnifiedContentCard, ensuring a cohesive user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-part/DeinPartClient.tsx
+- src/app/entdecken/EntdeckenClient.tsx
+- src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
+- src/app/showcase/cards/page.tsx
+- src/app/showcase/grids/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutStepCard.tsx
+- src/components/cards/ContentCards.tsx
+- src/components/cards/ContentCardsLightbox.tsx
+- src/components/cards/ImageGlassCard.tsx
+- src/components/cards/SquareGlassCard.tsx
+- src/components/cards/SquareGlassCardsScroll.tsx
+- src/components/cards/SquareTextCard.tsx
+- src/components/cards/UnifiedCardPreset.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/cards/VideoCard16by9.tsx
+- src/components/cards/cardTypes.ts
+- src/components/cards/index.ts
+- src/components/sections/GrundstueckCheckSection.tsx
+- src/components/sections/MaterialShowcase.tsx
+
+
+---
+
+## [b97b9d87f73365607c1db3bf8c7864d6a99e9947] - Tue Oct 14 17:01:37 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Clean up whitespace in clearCacheForConfiguration method  - Removed unnecessary whitespace in the  method of . - This change improves code readability without affecting functionality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
 ## [fd71bde868b98b113dc4cc4c21bdf7dc5df2c443] - Tue Oct 14 16:56:14 2025 +0200
 
 **Author**: stenkjan

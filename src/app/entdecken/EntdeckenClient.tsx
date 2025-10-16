@@ -6,10 +6,8 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import { ClientBlobVideo } from "@/components/images";
 import {
-  VideoCard16by9,
   PlanungspaketeCards,
-  SquareTextCard,
-  addIconsToPreset,
+  UnifiedContentCard,
   PLANUNGSPAKETE_PRESET,
 } from "@/components/cards";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
@@ -239,30 +237,37 @@ export default function EntdeckenClient() {
             wrapperMargin="md:mb-12 mb-12"
           />
 
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <VideoCard16by9
-              maxWidth={false}
-              showInstructions={false}
-              cardTitle="Unsere Technik"
-              cardDescription="Aufbauen. Mitnehmen. Weitergeben.\nGanz wie du willst. Dank hochpräziser Konstruktion entsteht dein Zuhause in kürzester Zeit, an nahezu jedem Ort. Und wenn du weiterziehst? Dann ziehst du nicht nur um, sondern nimmst dein Zuhause einfach mit. Oder du bleibst flexibel und verkaufst es weiter, so wie ein gut gepflegtes Auto."
-              videoPath={IMAGES.videos.nestHausTransport}
-              backgroundColor="#F4F4F4"
-              buttons={[
-                {
-                  text: "Unser Part",
-                  variant: "primary",
-                  size: "xs",
-                  link: "/entwurf",
-                },
-                {
-                  text: "Jetzt bauen",
-                  variant: "landing-secondary-blue",
-                  size: "xs",
-                  link: "/konfigurator",
-                },
-              ]}
-            />
-          </div>
+          <UnifiedContentCard
+            layout="video"
+            variant="static"
+            maxWidth={true}
+            showInstructions={false}
+            customData={[
+              {
+                id: 1,
+                title: "Unsere Technik",
+                subtitle: "",
+                description:
+                  "Aufbauen. Mitnehmen. Weitergeben.\nGanz wie du willst. Dank hochpräziser Konstruktion entsteht dein Zuhause in kürzester Zeit, an nahezu jedem Ort. Und wenn du weiterziehst? Dann ziehst du nicht nur um, sondern nimmst dein Zuhause einfach mit. Oder du bleibst flexibel und verkaufst es weiter, so wie ein gut gepflegtes Auto.",
+                video: IMAGES.videos.nestHausTransport,
+                backgroundColor: "#F4F4F4",
+                buttons: [
+                  {
+                    text: "Unser Part",
+                    variant: "primary",
+                    size: "xs",
+                    link: "/entwurf",
+                  },
+                  {
+                    text: "Jetzt bauen",
+                    variant: "landing-secondary-blue",
+                    size: "xs",
+                    link: "/konfigurator",
+                  },
+                ],
+              },
+            ]}
+          />
         </section>
 
         {/* Section 4 - Möglichkeiten Entdecken */}
@@ -352,31 +357,38 @@ export default function EntdeckenClient() {
             wrapperMargin="mb-12"
           />
 
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <VideoCard16by9
-              maxWidth={false}
-              showInstructions={false}
-              cardTitle="Du hast die Wahl"
-              cardDescription="Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt."
-              videoPath={IMAGES.variantvideo.twelve}
-              backgroundColor="#F4F4F4"
-              playbackRate={0.5}
-              buttons={[
-                {
-                  text: "Unser Part",
-                  variant: "primary",
-                  size: "xs",
-                  link: "/unser-part",
-                },
-                {
-                  text: "Jetzt bauen",
-                  variant: "secondary",
-                  size: "xs",
-                  link: "/konfigurator",
-                },
-              ]}
-            />
-          </div>
+          <UnifiedContentCard
+            layout="video"
+            variant="static"
+            maxWidth={true}
+            showInstructions={false}
+            customData={[
+              {
+                id: 1,
+                title: "Du hast die Wahl",
+                subtitle: "",
+                description:
+                  "Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt.",
+                video: IMAGES.variantvideo.twelve,
+                backgroundColor: "#F4F4F4",
+                playbackRate: 0.5,
+                buttons: [
+                  {
+                    text: "Unser Part",
+                    variant: "primary",
+                    size: "xs",
+                    link: "/unser-part",
+                  },
+                  {
+                    text: "Jetzt bauen",
+                    variant: "secondary",
+                    size: "xs",
+                    link: "/konfigurator",
+                  },
+                ],
+              },
+            ]}
+          />
         </section>
 
         {/* Section 6 - So läuft es ab */}
@@ -387,12 +399,16 @@ export default function EntdeckenClient() {
             wrapperMargin="mb-12"
           />
 
-          {/* SquareTextCard with preset data and buttons */}
-          <SquareTextCard
+          {/* UnifiedContentCard with text-icon layout, preset data and buttons */}
+          <UnifiedContentCard
+            layout="text-icon"
+            style="standard"
+            variant="responsive"
             maxWidth={false}
             showInstructions={false}
-            customData={addIconsToPreset(ABLAUF_STEPS_PRESET.cards)}
+            customData={ABLAUF_STEPS_PRESET.cards}
             buttons={ABLAUF_STEPS_PRESET.buttons}
+            enableLightbox={false}
           />
         </section>
 

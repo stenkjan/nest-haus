@@ -4,25 +4,37 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
+import { Button } from "@/components/ui";
+import type { ButtonVariant, ButtonSize } from "@/components/ui";
+import Link from "next/link";
+
+interface ButtonConfig {
+  text: string;
+  href: string;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+}
 
 interface FullWidthImageGridProps {
-  title?: string;
-  subtitle?: string;
   maxWidth?: boolean;
   image?: string;
   textBox1?: string;
   textBox2?: string;
   backgroundColor?: "white" | "black";
+  showButtons?: boolean;
+  primaryButton?: ButtonConfig;
+  secondaryButton?: ButtonConfig;
 }
 
 export default function FullWidthImageGrid({
-  title = "Full Width Image Grid",
-  subtitle = "Large image with two text boxes below",
   maxWidth = true,
   image = IMAGES.function.nestHausModulAnsicht,
   textBox1 = "Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du mit dem Nest System alles haben kannst?  Unsere Architekten und Ingenieure haben ein Haus entwickelt, das maximale Freiheit ohne Kompromisse bietet. Durch intelligente Standardisierung garantieren wir höchste",
   textBox2 = "Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl. Dein Zuhause, dein Stil, deine Freiheit. Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles. Heute bauen, morgen wohnen - Nest.",
   backgroundColor = "white",
+  showButtons = false,
+  primaryButton,
+  secondaryButton,
 }: FullWidthImageGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -63,21 +75,7 @@ export default function FullWidthImageGrid({
   // Prevent hydration mismatch
   if (!isClient) {
     return (
-      <div className={`${containerClasses} ${backgroundClasses} py-8`}>
-        <div className="text-center mb-24">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
+      <div className={`${containerClasses} ${backgroundClasses}`}>
         <div className="flex justify-center items-center py-8">
           <div
             className={`animate-pulse ${
@@ -91,25 +89,7 @@ export default function FullWidthImageGrid({
   }
 
   return (
-    <div className={`${backgroundClasses} pb-8`}>
-      {/* Title and Subtitle */}
-      <div className={`${containerClasses}`}>
-        <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
-      </div>
-
+    <div className={`${backgroundClasses} `}>
       {/* Main Container */}
       <div>
         {/* Large Image at Top - Full Width */}
@@ -183,6 +163,37 @@ export default function FullWidthImageGrid({
             </motion.div>
           </div>
         </div>
+
+        {/* Optional Buttons */}
+        {showButtons && (primaryButton || secondaryButton) && (
+          <motion.div
+            className="flex gap-4 mt-12 justify-center w-full"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            {primaryButton && (
+              <Link href={primaryButton.href}>
+                <Button
+                  variant={primaryButton.variant || "primary"}
+                  size={primaryButton.size || "xs"}
+                >
+                  {primaryButton.text}
+                </Button>
+              </Link>
+            )}
+            {secondaryButton && (
+              <Link href={secondaryButton.href}>
+                <Button
+                  variant={secondaryButton.variant || "landing-secondary"}
+                  size={secondaryButton.size || "xs"}
+                >
+                  {secondaryButton.text}
+                </Button>
+              </Link>
+            )}
+          </motion.div>
+        )}
       </div>
     </div>
   );

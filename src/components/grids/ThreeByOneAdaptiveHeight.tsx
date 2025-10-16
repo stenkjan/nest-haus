@@ -6,8 +6,6 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 interface ThreeByOneAdaptiveHeightProps {
-  title?: string;
-  subtitle?: string;
   maxWidth?: boolean;
   text?: string;
   image?: string;
@@ -16,8 +14,6 @@ interface ThreeByOneAdaptiveHeightProps {
 }
 
 export default function ThreeByOneAdaptiveHeight({
-  title = "3x1 Grid with Adaptive Height",
-  subtitle = "Standard grid layout with flexible middle cell height",
   maxWidth = false, // Default to false to avoid width constraints
   text = "<p class='p-secondary text-white'><span class='text-nest-gray'>Mit deinem Nest-Haus entscheidest du selbst, wo</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>ihren Platz finden.</span><br /><br /><span class='text-nest-gray'>Nach deiner Reservierung erstellen wir deinen</span> <span class='text-white font-medium'>individuellen Vorentwurf,</span> <span class='text-nest-gray'>in dem die ideale</span> <span class='text-white font-medium'>Anordnung</span> <span class='text-nest-gray'>festgelegt wird. Auch das </span> <span class='text-white font-medium'>Material</span> <span class='text-nest-gray'>wählst du passend zu deiner Konfiguration.</span><span class='text-white font-medium'> Individuell. Effizient.</span></p>",
   image = IMAGES.function.nestHausFensterTuerenPosition,
@@ -64,20 +60,6 @@ export default function ThreeByOneAdaptiveHeight({
   if (!isClient) {
     return (
       <div className={`${containerClasses} ${backgroundClasses} pb-0 md:pb-32`}>
-        <div className="text-center mb-12 2xl:mb-24">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-nest-gray" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
         <div className="flex justify-center items-center py-8">
           <div
             className={`animate-pulse ${
@@ -92,24 +74,6 @@ export default function ThreeByOneAdaptiveHeight({
 
   return (
     <div className={`${backgroundClasses} pb-0 md:pb-32`}>
-      {/* Title and Subtitle */}
-      <div className={`${containerClasses}`}>
-        <div className="text-center mb-12 2xl:mb-24 px-4 md:px-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-2 md:mb-3">
-            {title}
-          </h1>
-          {subtitle && (
-            <h3
-              className={`text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl ${
-                backgroundColor === "black" ? "text-nest-gray" : "text-gray-600"
-              }`}
-            >
-              {subtitle}
-            </h3>
-          )}
-        </div>
-      </div>
-
       {/* Grid Container */}
       <div className={`${containerClasses} px-4 md:px-8 mb-12 md:mb-0`}>
         {isMobile ? (
