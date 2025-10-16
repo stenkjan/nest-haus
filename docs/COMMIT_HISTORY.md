@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0dd9ed7a87584cea167928fa95fd0d646fef2dc9] - Thu Oct 16 15:26:34 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: Set PVC Fenster as default window selection  � FEATURE: PVC Fenster Default Selection  Changes Made: - Updated default fenster selection from 'holz' to 'pvc_fenster' in configuratorStore.ts - Changed price from 400€ (Holz) to 280€ (PVC Fenster) - Updated description to 'RAL 9016 - Kunststoff'  Component Updates: - BelichtungsPaketOverlay: Default fensterMaterial changed from 'holz' to 'pvc' - FensterOverlay: Default fallback changed from holz to pvc_fenster - PreviewPanel: Default fensterMaterial in BelichtungsPaketOverlay changed to 'pvc'  Impact: ✅ PVC Fenster now selected by default on configurator startup ✅ PVC Fenster selected when 'Neu konfigurieren' is pressed ✅ Correct PVC overlay images displayed in Belichtungspaket ✅ Consistent PVC defaults across all fenster-related components ✅ Lower default price (280€ vs 400€) for better user experience  This ensures PVC Fenster (RAL 9016 - Kunststoff) is the standard preselected window option in the Fenster & Türen section.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/BelichtungsPaketOverlay.tsx
+- src/app/konfigurator/components/FensterOverlay.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+
+
+---
+
 ## [1a8665686b80a1bd91ba6018ccc99b0ce4ce7bb7] - Thu Oct 16 15:09:59 2025 +0200
 
 **Author**: stenkjan
