@@ -36,43 +36,44 @@ export async function GET(_request: NextRequest) {
         console.log(`Active Alerts: ${dashboardData.activeAlerts.length}`);
         console.log(`Recent Events: ${dashboardData.recentEvents.length}`);
 
-        return NextResponse.json({
-            success: true,
-            data: {
-                threatLevel: dashboardData.threatLevel,
-                metrics: {
-                    totalEvents: dashboardData.metrics.totalEvents,
-                    criticalEvents: dashboardData.metrics.criticalEvents,
-                    botDetections: dashboardData.metrics.botDetections,
-                    blockedRequests: dashboardData.metrics.blockedRequests,
-                    averageResponseTime: dashboardData.metrics.responseTime,
-                },
-                statistics: dashboardData.statistics,
-                recentEvents: dashboardData.recentEvents.map(event => ({
-                    id: event.id,
-                    type: event.type,
-                    severity: event.severity,
-                    timestamp: event.timestamp,
-                    description: event.description,
-                    resolved: event.resolved,
-                })),
-                activeAlerts: dashboardData.activeAlerts.map(alert => ({
-                    id: alert.id,
-                    severity: alert.severity,
-                    message: alert.message,
-                    timestamp: alert.timestamp,
-                    type: alert.type,
-                })),
-            },
-            performance: {
-                processingTime,
-                efficiency: processingTime < 500 ? 'excellent' : 'acceptable',
-            },
-            metadata: {
-                timestamp: new Date().toISOString(),
-                version: '1.0.0',
-            },
-        });
+    return NextResponse.json({
+      success: true,
+      data: {
+        threatLevel: dashboardData.threatLevel,
+        metrics: {
+          totalEvents: dashboardData.metrics.totalEvents,
+          activeSessions: dashboardData.metrics.activeSessions,
+          averageRiskScore: dashboardData.metrics.averageRiskScore,
+          botDetectionRate: dashboardData.metrics.botDetectionRate,
+          averageResponseTime: dashboardData.metrics.responseTime,
+          eventsBySeverity: dashboardData.metrics.eventsBySeverity,
+        },
+        statistics: dashboardData.statistics,
+        recentEvents: dashboardData.recentEvents.map(event => ({
+          id: event.id,
+          type: event.type,
+          severity: event.severity,
+          timestamp: event.timestamp,
+          description: event.description,
+          resolved: event.resolved,
+        })),
+        activeAlerts: dashboardData.activeAlerts.map(alert => ({
+          id: alert.id,
+          severity: alert.severity,
+          message: alert.description,
+          timestamp: alert.timestamp,
+          type: alert.type,
+        })),
+      },
+      performance: {
+        processingTime,
+        efficiency: processingTime < 500 ? 'excellent' : 'acceptable',
+      },
+      metadata: {
+        timestamp: new Date().toISOString(),
+        version: '1.0.0',
+      },
+    });
     } catch (error) {
         const processingTime = Date.now() - startTime;
         console.error('❌ Security monitoring failed:', error);

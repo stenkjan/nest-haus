@@ -36,10 +36,11 @@ interface SecurityData {
   threatLevel: string;
   metrics: {
     totalEvents: number;
-    criticalEvents: number;
-    botDetections: number;
-    blockedRequests: number;
+    activeSessions: number;
+    averageRiskScore: number;
+    botDetectionRate: number;
     averageResponseTime: number;
+    eventsBySeverity: Record<string, number>;
   };
   statistics: {
     eventsLast24h: number;
