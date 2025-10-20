@@ -4,6 +4,33 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7d3c1f570a15d7e18942c789df7683affd536225] - Mon Oct 20 13:19:21 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: Add Web Vitals tracking and update dependencies  - Integrated Web Vitals component for enhanced analytics and performance monitoring in the application layout. - Updated package dependencies to include "web-vitals" version 5.1.0 for improved performance metrics. - Refactored scroll event listeners across multiple components to use passive event listeners, optimizing scroll performance.  These changes aim to improve user experience by providing better performance insights and reducing potential scroll event blocking.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/layout.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/analytics/WebVitals.tsx
+- src/components/layout/Navbar.tsx
+- src/hooks/useIOSViewport.ts
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+#### 📚 Documentation Changes
+- WEEK_1_IMPLEMENTATION_SUMMARY.md
+- WEEK_1_TESTING_GUIDE.md
+
+
+---
+
 ## [0dd9ed7a87584cea167928fa95fd0d646fef2dc9] - Thu Oct 16 15:26:34 2025 +0200
 
 **Author**: stenkjan
