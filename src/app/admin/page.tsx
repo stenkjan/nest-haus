@@ -206,6 +206,30 @@ export default function AdminDashboard() {
               <div className="text-4xl">📋</div>
             </div>
           </Link>
+
+          <Link
+            href="/admin/usage"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  Usage Monitoring
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  Real-time monitoring of service capacity limits with visual
+                  gauges and automatic alerts for all infrastructure components.
+                </p>
+                <div className="mt-4 text-sm text-gray-500">
+                  • Service capacity gauges
+                  <br />
+                  • Automatic alerts at 70%/90%
+                  <br />• Real-time metrics
+                </div>
+              </div>
+              <div className="text-4xl">📊</div>
+            </div>
+          </Link>
         </div>
 
         {/* System Management */}

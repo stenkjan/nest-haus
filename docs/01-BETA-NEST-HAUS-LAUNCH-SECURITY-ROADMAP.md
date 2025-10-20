@@ -114,6 +114,55 @@
 
 ---
 
+## 📊 **Service Capacity & Monitoring**
+
+### **Current Service Limits (Beta-Optimized for 100 Users):**
+
+| Service      | Free Tier | Paid Tier   | Beta Usage | Status |
+| ------------ | --------- | ----------- | ---------- | ------ |
+| PostgreSQL   | 512MB     | 8GB (€5/mo) | ~50MB      | ✅ 10% |
+| Redis        | 10k/day   | 100k/day    | ~1.6k/day  | ✅ 16% |
+| Rate Limits  | 300/15min | N/A         | ~50/15min  | ✅ 17% |
+| Email        | 100/day   | Unlimited   | ~13/day    | ✅ 13% |
+| Blob Storage | -         | 100GB       | 1GB        | ✅ 1%  |
+
+### **Monitoring Dashboard:**
+
+- **Location**: `/admin/usage`
+- **Real-time tracking** of all service limits with visual gauges
+- **Automatic alerts** when usage exceeds 80% (warning) or 90% (critical)
+- **Historical trends** for capacity planning
+- **Auto-refresh** every 60 seconds for live monitoring
+
+### **Safety Margins for 100-User Beta:**
+
+- ✅ All services operating at < 20% capacity
+- ✅ 5x headroom for traffic spikes
+- ✅ Real-time monitoring prevents overages
+- ✅ Automatic alerts for proactive scaling
+- ✅ No unexpected service interruptions expected
+
+### **Capacity Estimates:**
+
+**Expected Monthly Usage:**
+
+- **Sessions**: ~3,000 (100 users × 30 days)
+- **SelectionEvents**: ~15,000 (5 per session average)
+- **InteractionEvents**: ~30,000 (10 per session average)
+- **Total Database Storage**: ~50MB (well within 512MB limit)
+- **Redis Commands**: ~1,600/day (16% of 10k limit)
+- **Emails**: ~390/month (13% of 3k limit)
+
+**Monitoring System Features:**
+
+- Visual capacity gauges (0-100%)
+- Color-coded status indicators: 🟢 <70% | 🟡 70-90% | 🔴 >90%
+- Real-time reset timers for rate limits
+- Detailed record breakdowns (sessions, events, interactions)
+- Service-specific recommendations when approaching capacity
+
+---
+
 ## 🚨 **Critical Issues Severity Ranking**
 
 ### **CRITICAL SEVERITY (Immediate Action Required)**
