@@ -92,7 +92,7 @@ export default function Navbar() {
         lastScrollTop = currentScrollY;
       };
 
-      window.addEventListener("scroll", onScroll);
+      window.addEventListener("scroll", onScroll, { passive: true });
 
       return () => {
         window.removeEventListener("scroll", onScroll);

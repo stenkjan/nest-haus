@@ -97,6 +97,15 @@ export const PAGE_SEO_CONFIG = {
         ogImage: "/images/konzept-og.jpg",
         twitterImage: "/images/konzept-twitter.jpg",
     },
+    konzept: {
+        title: "Konzept | NEST-Haus Dein Hauskonzept beginnt hier",
+        description: "Dein NEST-Haus Konzept: Entdecke unsere Beratung, Planungsunterstützung und den Weg zu deinem individuellen modularen Hauskonzept.",
+        keywords: "konzept, nest haus konzept, modulhaus planung, hauskonzept, nest haus design, professioneller hauskonzept, modulhaus konzept",
+        priority: 0.7,
+        changeFrequency: "monthly" as const,
+        ogImage: "/images/konzept-og.jpg",
+        twitterImage: "/images/konzept-twitter.jpg",
+    },
     showcase: {
         title: "Showcase | NEST-Haus Projekte & Referenzen",
         description: "Entdecken Sie unsere realisierten Projekte und Referenzen. Modulare Häuser, die inspiriert und begeistert.",
@@ -234,6 +243,49 @@ export function generateSitemapData() {
     }));
 }
 
+// Helper function to generate breadcrumb schema
+export function generateBreadcrumbSchema(pageKey: PageKey, customPath?: string[]): object {
+    const baseConfig = SEO_CONFIG;
+    const breadcrumbItems: Array<{
+        "@type": string;
+        position: number;
+        name: string;
+        item: string;
+    }> = [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: baseConfig.baseUrl,
+            },
+        ];
+
+    if (customPath && customPath.length > 0) {
+        customPath.forEach((pathName, index) => {
+            breadcrumbItems.push({
+                "@type": "ListItem",
+                position: index + 2,
+                name: pathName,
+                item: `${baseConfig.baseUrl}/${pathName.toLowerCase().replace(/\s+/g, '-')}`,
+            });
+        });
+    } else if (pageKey !== 'home') {
+        const pageConfig = PAGE_SEO_CONFIG[pageKey];
+        breadcrumbItems.push({
+            "@type": "ListItem",
+            position: 2,
+            name: pageConfig.title.split('|')[0].trim(),
+            item: `${baseConfig.baseUrl}/${pageKey}`,
+        });
+    }
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbItems,
+    };
+}
+
 // Helper function to generate structured data
 export function generateStructuredData(pageKey: PageKey, _customData?: CustomMetadata) {
     const pageConfig = PAGE_SEO_CONFIG[pageKey];
@@ -320,51 +372,6 @@ export function generateStructuredData(pageKey: PageKey, _customData?: CustomMet
         default:
             return baseSchema;
     }
-}
-
-// Generate breadcrumb structured data
-export function generateBreadcrumbSchema(pageKey: PageKey, customPath?: string[]): object {
-    const baseConfig = SEO_CONFIG;
-    const breadcrumbItems: Array<{
-        "@type": string;
-        position: number;
-        name: string;
-        item: string;
-    }> = [
-            {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: baseConfig.baseUrl,
-            },
-        ];
-
-    if (customPath) {
-        customPath.forEach((pathItem, index) => {
-            breadcrumbItems.push({
-                "@type": "ListItem",
-                position: index + 2,
-                name: pathItem,
-                item: `${baseConfig.baseUrl}/${pageKey}`,
-            });
-        });
-    } else {
-        const pageConfig = PAGE_SEO_CONFIG[pageKey];
-        if (pageKey !== 'home') {
-            breadcrumbItems.push({
-                "@type": "ListItem",
-                position: 2,
-                name: pageConfig.title.split(' | ')[0], // Extract main title
-                item: `${baseConfig.baseUrl}/${pageKey}`,
-            });
-        }
-    }
-
-    return {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: breadcrumbItems,
-    };
 }
 
 // Generate product schema for modular houses

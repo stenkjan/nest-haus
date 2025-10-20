@@ -125,7 +125,7 @@ export default function ConfiguratorShell({
     };
 
     // Add window scroll listener
-    window.addEventListener("scroll", handleWindowScroll);
+    window.addEventListener("scroll", handleWindowScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleWindowScroll);

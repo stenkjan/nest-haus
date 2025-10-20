@@ -11,6 +11,8 @@ import CookieBanner from "@/components/CookieBanner";
 import CookieSettingsHandler from "@/components/CookieSettingsHandler";
 // Security components - content protection and DevTools detection
 import SecurityProvider from "@/components/security/SecurityProvider";
+// Analytics components - Web Vitals tracking
+import WebVitals from "@/components/analytics/WebVitals";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -140,6 +142,9 @@ export default function RootLayout({
           <CookieSettingsHandler />
           <AlphaTestProvider />
           <AlphaSessionTracker />
+
+          {/* Analytics & Performance Monitoring */}
+          <WebVitals />
         </CookieConsentProvider>
       </body>
     </html>

@@ -54,8 +54,8 @@ export function useIOSViewport(): ViewportDimensions {
 
     // For iOS Safari with Visual Viewport API
     if (isIOSSafari && window.visualViewport) {
-      window.visualViewport.addEventListener('resize', updateDimensions);
-      window.visualViewport.addEventListener('scroll', updateDimensions);
+      window.visualViewport.addEventListener('resize', updateDimensions, { passive: true });
+      window.visualViewport.addEventListener('scroll', updateDimensions, { passive: true });
     } else {
       // Fallback for other devices/browsers
       window.addEventListener('resize', updateDimensions);
