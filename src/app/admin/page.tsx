@@ -230,6 +230,30 @@ export default function AdminDashboard() {
               <div className="text-4xl">📊</div>
             </div>
           </Link>
+
+          <Link
+            href="/admin/security"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  Security Monitoring
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  Real-time threat detection, security event tracking, bot
+                  detection, and behavioral analysis with live alerts.
+                </p>
+                <div className="mt-4 text-sm text-gray-500">
+                  • Threat level indicators
+                  <br />
+                  • Bot detection & blocking
+                  <br />• Security event logs
+                </div>
+              </div>
+              <div className="text-4xl">🔒</div>
+            </div>
+          </Link>
         </div>
 
         {/* System Management */}
