@@ -4,6 +4,36 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [56e88d4b4204ba6b140344fbe5c754d32d8af5dc] - Tue Oct 21 15:53:17 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [237ca7983e2e506e9f53aa54e7685b8c53913e99] - Tue Oct 21 15:47:48 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [fcb4d1bfc9c7a06ca240cbf87b6ce602ba0ef384] - Tue Oct 21 15:40:06 2025 +0200
 
 **Author**: stenkjan
