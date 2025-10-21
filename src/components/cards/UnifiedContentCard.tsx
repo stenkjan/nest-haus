@@ -71,6 +71,11 @@ export type CardStyle = "standard" | "glass";
 export type CardVariant = "responsive" | "static";
 
 /**
+ * Height Mode Types
+ */
+export type HeightMode = "standard" | "tall";
+
+/**
  * Props for UnifiedContentCard
  */
 export interface UnifiedContentCardProps {
@@ -78,6 +83,7 @@ export interface UnifiedContentCardProps {
   layout?: CardLayout;
   style?: CardStyle;
   variant?: CardVariant;
+  heightMode?: HeightMode;
 
   // Content source (category or custom data)
   category?: ContentCategory;
@@ -127,6 +133,7 @@ export default function UnifiedContentCard({
   layout = "horizontal",
   style = "standard",
   variant = "responsive",
+  heightMode = "standard",
   category,
   customData,
   title = "",
@@ -160,15 +167,13 @@ export default function UnifiedContentCard({
   const isStatic = variant === "static";
   const isResponsive = variant === "responsive";
   const isGlass = style === "glass";
+  const heightMultiplier = heightMode === "tall" ? 1.25 : 1;
 
-  // Determine text colors based on background and style
+  // Determine text colors based on style: glass = white text, standard = black text
   const textColors = {
-    title:
-      isGlass || backgroundColor === "black" ? "text-white" : "text-gray-900",
-    subtitle:
-      isGlass || backgroundColor === "black" ? "text-white" : "text-gray-600",
-    description:
-      isGlass || backgroundColor === "black" ? "text-white" : "text-gray-500",
+    title: isGlass ? "text-white" : "text-black",
+    subtitle: isGlass ? "text-white" : "text-black",
+    description: isGlass ? "text-white" : "text-black",
   };
 
   // Initialize client-side state
@@ -721,18 +726,22 @@ export default function UnifiedContentCard({
             className="w-full max-w-none"
           >
             <h2
-              className={`h2-title text-gray-900 ${
+              className={`h2-title ${textColors.title} ${
                 card.subtitle ? "mb-1" : "mb-4"
               }`}
             >
               {getCardText(card, "title")}
             </h2>
             {card.subtitle && (
-              <h3 className="h3-secondary font-medium text-gray-700 mb-3">
+              <h3
+                className={`h3-secondary font-medium ${textColors.subtitle} mb-3`}
+              >
                 {getCardText(card, "subtitle")}
               </h3>
             )}
-            <p className="p-primary leading-relaxed">
+            <p
+              className={`p-primary ${textColors.description} leading-relaxed`}
+            >
               {getCardText(card, "description")}
             </p>
             {/* Note: Buttons are not shown on mobile/tablet to match VideoCard16by9 behavior */}
@@ -794,18 +803,22 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1, duration: 0.6 }}
           >
             <h2
-              className={`h2-title text-gray-900 ${
+              className={`h2-title ${textColors.title} ${
                 card.subtitle ? "mb-1" : "mb-6"
               }`}
             >
               {getCardText(card, "title")}
             </h2>
             {card.subtitle && (
-              <h3 className="h3-secondary font-medium text-gray-700 mb-5">
+              <h3
+                className={`h3-secondary font-medium ${textColors.subtitle} mb-5`}
+              >
                 {getCardText(card, "subtitle")}
               </h3>
             )}
-            <p className="p-primary">{getCardText(card, "description")}</p>
+            <p className={`p-primary ${textColors.description}`}>
+              {getCardText(card, "description")}
+            </p>
 
             {/* Buttons for Video Cards - Desktop Layout */}
             {card.buttons && card.buttons.length > 0 && (
@@ -1315,50 +1328,63 @@ export default function UnifiedContentCard({
                             ? isClient && screenWidth >= 1024
                               ? // Desktop: Calculate height based on video area with 16:9 ratio + padding
                                 isClient && screenWidth >= 1600
-                                ? ((1600 * 2) / 3 / 16) * 9 + 30 // 630px (2/3 split)
+                                ? (((1600 * 2) / 3 / 16) * 9 + 30) *
+                                  heightMultiplier // 630px standard, 787.5px tall (2/3 split)
                                 : isClient && screenWidth >= 1400
-                                  ? ((1380 * 2) / 3 / 16) * 9 + 30 // 548px (2/3 split)
+                                  ? (((1380 * 2) / 3 / 16) * 9 + 30) *
+                                    heightMultiplier // 548px standard, 685px tall (2/3 split)
                                   : isClient && screenWidth >= 1280
-                                    ? ((1280 * 2) / 3 / 16) * 9 + 30 // 510px (2/3 split)
-                                    : (992 * 1) / 2 + 30 // 526px at 1024px (1/2 split, 1:1 aspect ratio)
+                                    ? (((1280 * 2) / 3 / 16) * 9 + 30) *
+                                      heightMultiplier // 510px standard, 637.5px tall (2/3 split)
+                                    : ((992 * 1) / 2 + 30) * heightMultiplier // 526px standard, 657.5px tall at 1024px (1/2 split, 1:1 aspect ratio)
                               : undefined // Mobile: auto height
                             : layout === "text-icon"
                               ? isClient && screenWidth >= 768
                                 ? cardWidth // Square on tablet/desktop: height = width (already calculated from viewport)
-                                : 480 // Fixed height on mobile to fit content nicely
+                                : 480 * heightMultiplier // 480px standard, 600px tall on mobile to fit content nicely
                               : isStatic || isResponsive
                                 ? isClient && screenWidth >= 1600
                                   ? Math.min(
-                                      830,
+                                      830 * heightMultiplier, // 830px standard, 1037.5px tall
                                       typeof window !== "undefined"
-                                        ? window.innerHeight * 0.75
-                                        : 830
+                                        ? window.innerHeight *
+                                            0.75 *
+                                            heightMultiplier
+                                        : 830 * heightMultiplier
                                     )
                                   : isClient && screenWidth >= 1280
                                     ? Math.min(
-                                        692,
+                                        692 * heightMultiplier, // 692px standard, 865px tall
                                         typeof window !== "undefined"
-                                          ? window.innerHeight * 0.7
-                                          : 692
+                                          ? window.innerHeight *
+                                              0.7 *
+                                              heightMultiplier
+                                          : 692 * heightMultiplier
                                       )
                                     : isClient && screenWidth >= 1024
                                       ? Math.min(
-                                          577,
+                                          577 * heightMultiplier, // 577px standard, 721.25px tall
                                           typeof window !== "undefined"
-                                            ? window.innerHeight * 0.7
-                                            : 577
+                                            ? window.innerHeight *
+                                                0.7 *
+                                                heightMultiplier
+                                            : 577 * heightMultiplier
                                         )
                                       : Math.min(
-                                          720,
+                                          720 * heightMultiplier, // 720px standard, 900px tall
                                           typeof window !== "undefined"
-                                            ? window.innerHeight * 0.75
-                                            : 720
+                                            ? window.innerHeight *
+                                                0.75 *
+                                                heightMultiplier
+                                            : 720 * heightMultiplier
                                         )
                                 : Math.min(
-                                    600,
+                                    600 * heightMultiplier, // 600px standard, 750px tall
                                     typeof window !== "undefined"
-                                      ? window.innerHeight * 0.75
-                                      : 600
+                                      ? window.innerHeight *
+                                          0.75 *
+                                          heightMultiplier
+                                      : 600 * heightMultiplier
                                   ),
                         backgroundColor: isGlass
                           ? "#121212"
@@ -1631,6 +1657,7 @@ export default function UnifiedContentCard({
                   layout,
                   style,
                   variant,
+                  heightMode,
                   category,
                   customData,
                   title,

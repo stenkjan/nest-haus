@@ -12,7 +12,8 @@ import CookieSettingsHandler from "@/components/CookieSettingsHandler";
 // Security components - content protection and DevTools detection
 import SecurityProvider from "@/components/security/SecurityProvider";
 // Analytics components - Web Vitals tracking
-import WebVitals from "@/components/analytics/WebVitals";
+// TEMPORARILY DISABLED - troubleshooting module resolution
+// import WebVitals from "@/components/analytics/WebVitals";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -144,7 +145,7 @@ export default function RootLayout({
           <AlphaSessionTracker />
 
           {/* Analytics & Performance Monitoring */}
-          <WebVitals />
+          {/* <WebVitals /> */}
         </CookieConsentProvider>
       </body>
     </html>
