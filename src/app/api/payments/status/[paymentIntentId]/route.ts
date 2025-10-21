@@ -6,15 +6,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2025-09-30.clover',
 });
 
-interface RouteParams {
-    params: {
+interface RouteContext {
+    params: Promise<{
         paymentIntentId: string;
-    };
+    }>;
 }
 
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(request: NextRequest, context: RouteContext) {
     try {
-        const { paymentIntentId } = params;
+        const { paymentIntentId } = await context.params;
 
         if (!paymentIntentId) {
             return NextResponse.json(
