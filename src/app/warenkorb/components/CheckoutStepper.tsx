@@ -29,8 +29,6 @@ import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
 import { Button } from "@/components/ui";
 // Overlay components for warenkorb preview
 import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
-import BelichtungsPaketOverlay from "@/app/konfigurator/components/BelichtungsPaketOverlay";
-import FensterOverlay from "@/app/konfigurator/components/FensterOverlay";
 
 interface CheckoutStepperProps {
   items: (CartItem | ConfigurationCartItem)[];
@@ -1607,22 +1605,6 @@ export default function CheckoutStepper({
                               />
                             )}
 
-                          {/* Fenster Overlay - only show on interior view when fenster is selected */}
-                          {currentView === "interior" &&
-                            sourceConfig?.fenster && (
-                              <FensterOverlay
-                                fensterType={
-                                  sourceConfig.fenster.value as
-                                    | "pvc_fenster"
-                                    | "holz"
-                                    | "aluminium_schwarz"
-                                    | "aluminium_weiss"
-                                }
-                                isVisible={true}
-                                className=""
-                              />
-                            )}
-
                           {galleryViews.length > 1 && (
                             <>
                               <button
@@ -2131,41 +2113,6 @@ export default function CheckoutStepper({
                                   | "nest160"
                               }
                               moduleCount={sourceConfig.pvanlage.quantity}
-                              isVisible={true}
-                              className=""
-                            />
-                          )}
-
-                        {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected */}
-                        {currentView === "exterior" &&
-                          sourceConfig?.belichtungspaket &&
-                          sourceConfig?.nest && (
-                            <BelichtungsPaketOverlay
-                              nestSize={
-                                sourceConfig.nest.value as
-                                  | "nest80"
-                                  | "nest100"
-                                  | "nest120"
-                                  | "nest140"
-                                  | "nest160"
-                              }
-                              brightnessLevel={
-                                sourceConfig.belichtungspaket.value as
-                                  | "light"
-                                  | "medium"
-                                  | "bright"
-                              }
-                              fensterMaterial={
-                                sourceConfig.fenster?.value === "pvc_fenster"
-                                  ? "pvc"
-                                  : sourceConfig.fenster?.value ===
-                                      "aluminium_weiss"
-                                    ? "aluminium_hell"
-                                    : sourceConfig.fenster?.value ===
-                                        "aluminium_schwarz"
-                                      ? "aluminium_dunkel"
-                                      : "holz" // Default to holz (preselected)
-                              }
                               isVisible={true}
                               className=""
                             />

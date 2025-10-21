@@ -195,10 +195,9 @@ export default function Navbar() {
 
   // Navigation items - updated based on image
   const navItems = [
-    { name: "Dein Nest Haus", path: "/entdecken" },
-    // { name: "Entdecken", path: "/entdecken" },
-    { name: "Konzept", path: "/konzept" },
-    { name: "Dein Part", path: "/dein-part" },
+    { name: "Dein Nest", path: "/dein-nest" },
+    { name: "Entwurf", path: "/entwurf" },
+    { name: "Nest System", path: "/nest-system" },
     { name: "Warum wir?", path: "/warum-wir" },
     { name: "Kontakt", path: "/kontakt" },
   ];

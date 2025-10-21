@@ -70,14 +70,14 @@ export default function WarumWirClient() {
 
               {/* Button Combination */}
               <div className="flex gap-4 justify-center w-full mt-8">
-                <Link href="/konzept">
+                <Link href="/entwurf">
                   <Button variant="primary" size="xs">
-                    Konzept
+                    Entwurf
                   </Button>
                 </Link>
-                <Link href="/dein-part">
+                <Link href="/nest-system">
                   <Button variant="landing-secondary" size="xs">
-                    Dein Part
+                    Nest System
                   </Button>
                 </Link>
               </div>

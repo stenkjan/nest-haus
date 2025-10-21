@@ -130,7 +130,7 @@ const getMobileVideoPath = (desktopPath: string): string => {
   return desktopPath;
 };
 
-export default function DeinPartClient() {
+export default function NestSystemClient() {
   const [currentSectionId, setCurrentSectionId] =
     useState<string>("dein-nest-system");
   const [isMobile, setIsMobile] = useState(false);

@@ -49,13 +49,6 @@ export const IMAGES = {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
     },
 
-    // Fenster & Türen overlay images
-    fensterOverlays: {
-        holz: '189-nest-haus-oeffnungen-fenster-tuer-material-holz-nachhaltig-zeitlos',
-        pvc_fenster: '190-nest-haus-oeffnungen-fenster-tuer-material-kunststoff-plastik-preiswert-guenstig',
-        aluminium_weiss: '188-nest-haus-oeffnungen-fenster-tuer-material-aluminium-hell-elegant',
-        aluminium_schwarz: '187-nest-haus-oeffnungen-fenster-tuer-material-aluminium-dunkel-modern'
-    },
 
     pvModule: {
         pvOverlay: '179-nest-solar-solarenergie-solarpanel-nachhaltig-sonne-icon-strom-energie',
@@ -101,71 +94,6 @@ export const IMAGES = {
         nest155_solar_overlay_mod_8: '220-nest-haus-konfigurator-160-modulbau-solar-energie-solarpanel-nachhaltig-energie-flexibel-8',
 
 
-        // New Fenster overlay images added by sync
-        nest_75_fenster_overlay_light_pvc: '221-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-light-pvc-kunststoff',
-        nest_75_fenster_overlay_light_holz: '222-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-light-holz',
-        nest_75_fenster_overlay_light_aluminium_dunkel: '223-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-light-aluminium-dunkel',
-        nest_75_fenster_overlay_light_aluminium_hell: '224-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-light-aluminium-hell',
-        nest_75_fenster_overlay_medium_pvc: '225-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-medium-pvc-kunststoff',
-        nest_75_fenster_overlay_medium_holz: '226-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-medium-holz',
-        nest_75_fenster_overlay_medium_aluminium_dunkel: '227-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-medium-aluminium-dunkel',
-        nest_75_fenster_overlay_medium_aluminium_hell: '228-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-medium-aluminium-hell',
-        nest_75_fenster_overlay_bright_pvc: '229-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-bright-pvc-kunststoff',
-        nest_75_fenster_overlay_bright_holz: '230-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-bright-holz',
-        nest_75_fenster_overlay_bright_aluminium_dunkel: '231-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-bright-aluminium-dunkel',
-        nest_75_fenster_overlay_bright_aluminium_hell: '232-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-80-bright-aluminium-hell',
-
-        nest_95_fenster_overlay_light_pvc: '235-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-light-pvc-kunststoff',
-        nest_95_fenster_overlay_light_holz: '236-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-light-holz',
-        nest_95_fenster_overlay_light_aluminium_dunkel: '237-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-light-aluminium-dunkel',
-        nest_95_fenster_overlay_light_aluminium_hell: '238-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-light-aluminium-hell',
-        nest_95_fenster_overlay_medium_pvc: '239-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-medium-pvc-kunststoff',
-        nest_95_fenster_overlay_medium_holz: '240-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-medium-holz',
-        nest_95_fenster_overlay_medium_aluminium_dunkel: '241-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-medium-aluminium-dunkel',
-        nest_95_fenster_overlay_medium_aluminium_hell: '242-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-medium-aluminium-hell',
-        nest_95_fenster_overlay_bright_pvc: '243-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-bright-pvc-kunststoff',
-        nest_95_fenster_overlay_bright_holz: '244-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-bright-holz',
-        nest_95_fenster_overlay_bright_aluminium_dunkel: '245-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-bright-aluminium-dunkel',
-        nest_95_fenster_overlay_bright_aluminium_hell: '246-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-100-bright-aluminium-hell',
-
-        nest_115_fenster_overlay_light_pvc: '249-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-light-pvc-kunststoff',
-        nest_115_fenster_overlay_light_holz: '250-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-light-holz',
-        nest_115_fenster_overlay_light_aluminium_dunkel: '251-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-light-aluminium-dunkel',
-        nest_115_fenster_overlay_light_aluminium_hell: '252-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-light-aluminium-hell',
-        nest_115_fenster_overlay_medium_pvc: '253-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-medium-pvc-kunststoff',
-        nest_115_fenster_overlay_medium_holz: '254-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-medium-holz',
-        nest_115_fenster_overlay_medium_aluminium_dunkel: '255-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-medium-aluminium-dunkel',
-        nest_115_fenster_overlay_medium_aluminium_hell: '256-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-medium-aluminium-hell',
-        nest_115_fenster_overlay_bright_pvc: '257-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-bright-pvc-kunststoff',
-        nest_115_fenster_overlay_bright_holz: '258-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-bright-holz',
-        nest_115_fenster_overlay_bright_aluminium_dunkel: '259-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-bright-aluminium-dunkel',
-        nest_115_fenster_overlay_bright_aluminium_hell: '260-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-120-bright-aluminium-hell',
-
-        nest_135_fenster_overlay_light_pvc: '263-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-light-pvc-kunststoff',
-        nest_135_fenster_overlay_light_holz: '264-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-light-holz',
-        nest_135_fenster_overlay_light_aluminium_dunkel: '265-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-light-aluminium-dunkel',
-        nest_135_fenster_overlay_light_aluminium_hell: '266-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-light-aluminium-hell',
-        nest_135_fenster_overlay_medium_pvc: '267-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-medium-pvc-kunststoff',
-        nest_135_fenster_overlay_medium_holz: '268-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-medium-holz',
-        nest_135_fenster_overlay_medium_aluminium_dunkel: '269-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-medium-aluminium-dunkel',
-        nest_135_fenster_overlay_medium_aluminium_hell: '270-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-medium-aluminium-hell',
-        nest_135_fenster_overlay_bright_pvc: '271-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-bright-pvc-kunststoff',
-        nest_135_fenster_overlay_bright_holz: '272-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-bright-holz',
-        nest_135_fenster_overlay_bright_aluminium_dunkel: '273-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-bright-aluminium-dunkel',
-        nest_135_fenster_overlay_bright_aluminium_hell: '274-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-140-bright-aluminium-hell',
-
-        nest_155_fenster_overlay_light_pvc: '277-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-light-pvc-kunststoff',
-        nest_155_fenster_overlay_light_holz: '278-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-light-holz',
-        nest_155_fenster_overlay_light_aluminium_dunkel: '279-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-light-aluminium-dunkel',
-        nest_155_fenster_overlay_light_aluminium_hell: '280-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-light-aluminium-hell',
-        nest_155_fenster_overlay_medium_pvc: '281-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-medium-pvc-kunststoff',
-        nest_155_fenster_overlay_medium_holz: '282-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-medium-holz',
-        nest_155_fenster_overlay_medium_aluminium_dunkel: '283-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-medium-aluminium-dunkel',
-        nest_155_fenster_overlay_medium_aluminium_hell: '284-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-medium-aluminium-hell',
-        nest_155_fenster_overlay_bright_pvc: '285-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-bright-pvc-kunststoff',
-        nest_155_fenster_overlay_bright_holz: '286-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-bright-holz',
-        nest_155_fenster_overlay_bright_aluminium_dunkel: '287-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-bright-aluminium-dunkel',
-        nest_155_fenster_overlay_bright_aluminium_hell: '288-nest-haus-konfigurator-fenster-oeffnungen-helligkeit-belichtungsgrad-licht-160-bright-aluminium-hell',
 
         // Geschossdecke overlay images - Placeholders for all nest sizes
         // Nest75 (nest80) Geschossdecke overlay images - 4 modules max
@@ -213,11 +141,6 @@ export const IMAGES = {
 
 
 
-    brightnessLevel: {
-        light: '66-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-leicht-light',
-        medium: '67-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-mittel-medium',
-        bright: '68-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-hell-bright'
-    },
     // Function/Process images
     function: {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',

@@ -20,19 +20,19 @@ export default function Footer() {
     {
       title: "Warum Wir",
       items: [
-        { text: "Deine Vorteile", href: "/entdecken" },
-        { text: "Funktionsweise", href: "/entdecken" },
-        { text: "Nachhaltigkeit", href: "/entdecken" },
-        { text: "Qualität", href: "/entdecken" },
+        { text: "Deine Vorteile", href: "/dein-nest" },
+        { text: "Funktionsweise", href: "/dein-nest" },
+        { text: "Nachhaltigkeit", href: "/dein-nest" },
+        { text: "Qualität", href: "/dein-nest" },
       ],
     },
     {
       title: "Unsere Services",
       items: [
-        { text: "Die Pakete", href: "/konzept" },
-        { text: "Beratungen", href: "/konzept" },
-        { text: "Finanzierung", href: "/konzept" },
-        { text: "Support", href: "/konzept" },
+        { text: "Die Pakete", href: "/entwurf" },
+        { text: "Beratungen", href: "/entwurf" },
+        { text: "Finanzierung", href: "/entwurf" },
+        { text: "Support", href: "/entwurf" },
       ],
     },
     {

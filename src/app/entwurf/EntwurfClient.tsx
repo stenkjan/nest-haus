@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui";
 import Footer from "@/components/Footer";
 
-export default function KonzeptClient() {
+export default function EntwurfClient() {
   return (
     <div
       className="min-h-screen bg-black text-white"
@@ -20,14 +20,14 @@ export default function KonzeptClient() {
       {/* Simple content structure */}
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
         <div className="text-center">
-          <h1 className="h1-secondary text-white mb-6">Konzept</h1>
+          <h1 className="h1-secondary text-white mb-6">Entwurf</h1>
           <h3 className="h3-secondary text-nest-gray mb-12">
-            Dein Hauskonzept beginnt hier.
+            Dein Hausentwurf beginnt hier.
           </h3>
 
           {/* Simple navigation buttons */}
           <div className="flex gap-4 justify-center">
-            <Link href="/dein-part">
+            <Link href="/nest-system">
               <Button variant="primary" size="md">
                 Zum nächsten Schritt
               </Button>

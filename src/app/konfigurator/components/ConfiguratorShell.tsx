@@ -69,10 +69,7 @@ export default function ConfiguratorShell({
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
   const [isGeschossdeckeOverlayVisible, setIsGeschossdeckeOverlayVisible] =
     useState<boolean>(false);
-  const [isBrightnessOverlayVisible, setIsBrightnessOverlayVisible] =
-    useState<boolean>(false); // Hidden by default, only show when actively selecting
-  const [isFensterOverlayVisible, setIsFensterOverlayVisible] =
-    useState<boolean>(false); // Hidden by default, only show when actively selecting fenster
+  // Hidden by default, only show when actively selecting fenster
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -168,8 +165,6 @@ export default function ConfiguratorShell({
     setGeschossdeckeQuantity(0);
     setIsPvOverlayVisible(false); // Hide PV overlay when resetting since quantity is 0
     setIsGeschossdeckeOverlayVisible(false);
-    setIsBrightnessOverlayVisible(false);
-    setIsFensterOverlayVisible(false); // Hidden by default, only show when actively selecting fenster
   }, []);
 
   // Confirmation handlers for PV and Fenster sections - REMOVED
@@ -224,11 +219,7 @@ export default function ConfiguratorShell({
 
       // Special handling for Fenster & Türen selection
       if (categoryId === "fenster") {
-        // Show fenster overlay - DO NOT hide other overlays as they show on different views
-        setIsFensterOverlayVisible(true);
-        // Keep PV and brightness overlays as they show on exterior view, fenster shows on interior
-
-        // Switch to fenster view to show materials selection with overlay
+        // Switch to fenster view to show materials selection
         const { switchToView } = useConfiguratorStore.getState();
         if (switchToView) {
           switchToView("fenster");
@@ -237,33 +228,6 @@ export default function ConfiguratorShell({
 
       // OVERLAY PERSISTENCE FIX: Only hide overlays when switching to truly incompatible categories
       // Keep overlays persistent across related selections
-
-      // Hide brightness overlay only when switching to categories that are completely unrelated
-      if (
-        categoryId !== "belichtungspaket" &&
-        categoryId !== "planungspaket" &&
-        categoryId !== "nest" && // Allow nest changes to keep overlays
-        categoryId !== "gebaeudehuelle" && // Allow gebäudehülle changes to keep overlays
-        categoryId !== "pvanlage" && // Allow PV changes to keep brightness overlay
-        isBrightnessOverlayVisible
-      ) {
-        setIsBrightnessOverlayVisible(false);
-      }
-
-      // Hide fenster overlay when switching to unrelated categories
-      if (categoryId !== "fenster" && isFensterOverlayVisible) {
-        // Keep fenster overlay visible for related interior categories and planungspaket
-        if (
-          ![
-            "innenverkleidung",
-            "fussboden",
-            "belichtungspaket",
-            "planungspaket",
-          ].includes(categoryId)
-        ) {
-          setIsFensterOverlayVisible(false);
-        }
-      }
 
       // Hide PV overlay only when switching to truly incompatible categories
       // Allow PV overlay to persist with belichtungspaket, gebäudehülle, and nest changes
@@ -290,9 +254,7 @@ export default function ConfiguratorShell({
 
         // Handle overlay visibility based on selection - PRESERVE EXISTING OVERLAYS
         if (categoryId === "belichtungspaket") {
-          // Show belichtung overlay when actively selecting belichtungspaket
           // PRESERVE PV overlay - allow both to be visible simultaneously on exterior view
-          setIsBrightnessOverlayVisible(true);
           // DO NOT hide PV overlay - they can coexist on exterior view
 
           // Switch to exterior view to show the belichtungspaket overlay
@@ -301,9 +263,6 @@ export default function ConfiguratorShell({
             switchToView("exterior");
           }
         } else if (categoryId === "fenster") {
-          // Show fenster overlay when fenster is selected (will show on interior view)
-          // PRESERVE other overlays - fenster shows on interior, others on exterior
-          setIsFensterOverlayVisible(true);
           // DO NOT hide PV or brightness overlays - they show on different views
         } else if (categoryId === "geschossdecke") {
           // Handle geschossdecke overlay and quantity - check if already selected
@@ -370,11 +329,7 @@ export default function ConfiguratorShell({
       pvQuantity,
       geschossdeckeQuantity,
       setIsPvOverlayVisible,
-      setIsBrightnessOverlayVisible,
-      setIsFensterOverlayVisible,
       isPvOverlayVisible,
-      isBrightnessOverlayVisible,
-      isFensterOverlayVisible,
     ]
   );
 
@@ -1443,36 +1398,6 @@ export default function ConfiguratorShell({
     }
   }, [configuration?.geschossdecke?.quantity, geschossdeckeQuantity]);
 
-  // Restore overlay visibility based on configuration state (for returning from warenkorb)
-  useEffect(() => {
-    // Restore belichtungspaket overlay if belichtungspaket is selected (non-default or explicitly chosen)
-    if (configuration?.belichtungspaket && !isBrightnessOverlayVisible) {
-      // Only show if it's not the default "light" or if user has made other selections indicating active use
-      const hasActiveSelections =
-        configuration?.gebaeudehuelle ||
-        configuration?.innenverkleidung ||
-        configuration?.fussboden;
-      if (
-        configuration.belichtungspaket.value !== "light" ||
-        hasActiveSelections
-      ) {
-        // console.log("🔧 DEBUG: Restoring belichtungspaket overlay visibility");
-        setIsBrightnessOverlayVisible(true);
-      }
-    }
-
-    // Restore fenster overlay if fenster is selected and we're in interior view
-    if (configuration?.fenster && !isFensterOverlayVisible) {
-      // Check if we have interior-related selections that would indicate active use
-      const hasInteriorSelections =
-        configuration?.innenverkleidung || configuration?.fussboden;
-      if (hasInteriorSelections) {
-        // console.log("🔧 DEBUG: Restoring fenster overlay visibility");
-        setIsFensterOverlayVisible(true);
-      }
-    }
-  }, [configuration, isBrightnessOverlayVisible, isFensterOverlayVisible]);
-
   // Reset local quantities when selections are removed
   useEffect(() => {
     if (!configuration?.pvanlage && pvQuantity > 0) {
@@ -1712,8 +1637,6 @@ export default function ConfiguratorShell({
           <PreviewPanel
             isMobile={true}
             isPvOverlayVisible={isPvOverlayVisible}
-            isBrightnessOverlayVisible={isBrightnessOverlayVisible}
-            isFensterOverlayVisible={isFensterOverlayVisible}
             _isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>
@@ -1746,8 +1669,6 @@ export default function ConfiguratorShell({
           <PreviewPanel
             isMobile={false}
             isPvOverlayVisible={isPvOverlayVisible}
-            isBrightnessOverlayVisible={isBrightnessOverlayVisible}
-            isFensterOverlayVisible={isFensterOverlayVisible}
             _isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>

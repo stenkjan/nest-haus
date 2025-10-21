@@ -20,16 +20,12 @@ import { useConfiguratorStore } from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
-import BelichtungsPaketOverlay from "./BelichtungsPaketOverlay";
-import FensterOverlay from "./FensterOverlay";
 import ProtectedContent from "@/components/security/ProtectedContent";
 
 interface PreviewPanelProps {
   isMobile?: boolean;
   className?: string;
   isPvOverlayVisible?: boolean;
-  isBrightnessOverlayVisible?: boolean;
-  isFensterOverlayVisible?: boolean;
   _isGeschossdeckeOverlayVisible?: boolean;
 }
 
@@ -37,8 +33,6 @@ export default function PreviewPanel({
   isMobile = false,
   className = "",
   isPvOverlayVisible = true,
-  isBrightnessOverlayVisible = true,
-  isFensterOverlayVisible = false,
   _isGeschossdeckeOverlayVisible = false,
 }: PreviewPanelProps) {
   const {
@@ -356,75 +350,6 @@ export default function PreviewPanel({
                   className=""
                 />
               )}
-
-            {/* Belichtungspaket Overlay - only show on exterior view when belichtungspaket is selected AND (main image is loaded OR we've loaded at least one image before) */}
-            {activeView === "exterior" &&
-              configuration?.belichtungspaket &&
-              configuration?.nest &&
-              (isMainImageLoaded || hasLoadedFirstImage) && (
-                <BelichtungsPaketOverlay
-                  nestSize={
-                    configuration.nest.value as
-                      | "nest80"
-                      | "nest100"
-                      | "nest120"
-                      | "nest140"
-                      | "nest160"
-                  }
-                  brightnessLevel={
-                    configuration.belichtungspaket.value as
-                      | "light"
-                      | "medium"
-                      | "bright"
-                  }
-                  fensterMaterial={
-                    configuration.fenster?.value === "pvc_fenster"
-                      ? "pvc"
-                      : configuration.fenster?.value === "aluminium_weiss"
-                        ? "aluminium_hell"
-                        : configuration.fenster?.value === "aluminium_schwarz"
-                          ? "aluminium_dunkel"
-                          : "pvc" // Default to pvc (preselected)
-                  }
-                  isVisible={
-                    isBrightnessOverlayVisible && activeView === "exterior"
-                  }
-                  className=""
-                />
-              )}
-
-            {/* Fenster Overlay - only show on interior view when fenster is selected AND (main image is loaded OR we've loaded at least one image before) */}
-            {(() => {
-              const shouldRender =
-                activeView === "interior" &&
-                configuration?.fenster &&
-                (isMainImageLoaded || hasLoadedFirstImage);
-              const overlayVisible =
-                isFensterOverlayVisible && activeView === "interior";
-              // console.log("🪟 Fenster Overlay render check:", {
-              //   activeView,
-              //   shouldRender,
-              //   overlayVisible,
-              //   fensterConfig: !!configuration?.fenster,
-              //   isMainImageLoaded,
-              // });
-
-              return (
-                shouldRender && (
-                  <FensterOverlay
-                    fensterType={
-                      configuration.fenster?.value as
-                        | "pvc_fenster"
-                        | "holz"
-                        | "aluminium_schwarz"
-                        | "aluminium_weiss"
-                    }
-                    isVisible={overlayVisible}
-                    className=""
-                  />
-                )
-              );
-            })()}
           </div>
         </ProtectedContent>
 

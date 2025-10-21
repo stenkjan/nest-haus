@@ -95,10 +95,10 @@ describe('🚀 Route Integration Tests', () => {
       console.log('✅ Warum-wir page endpoint exists')
     })
 
-    it('should render konzept page', async () => {
-      console.log('🔍 Testing konzept page...')
+    it('should render dein-nest page', async () => {
+      console.log('🔍 Testing dein-nest page...')
 
-      const response = await fetch(`${BASE_URL}/konzept`, {
+      const response = await fetch(`${BASE_URL}/dein-nest`, {
         method: 'GET',
         headers: {
           'Accept': 'text/html',
@@ -107,7 +107,37 @@ describe('🚀 Route Integration Tests', () => {
 
       // Accept either success or redirect for static pages
       expect([200, 301, 302, 404]).toContain(response.status)
-      console.log('✅ Konzept page endpoint exists')
+      console.log('✅ Dein-nest page endpoint exists')
+    })
+
+    it('should render entwurf page', async () => {
+      console.log('🔍 Testing entwurf page...')
+
+      const response = await fetch(`${BASE_URL}/entwurf`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+        },
+      })
+
+      // Accept either success or redirect for static pages
+      expect([200, 301, 302, 404]).toContain(response.status)
+      console.log('✅ Entwurf page endpoint exists')
+    })
+
+    it('should render nest-system page', async () => {
+      console.log('🔍 Testing nest-system page...')
+
+      const response = await fetch(`${BASE_URL}/nest-system`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+        },
+      })
+
+      // Accept either success or redirect for static pages
+      expect([200, 301, 302, 404]).toContain(response.status)
+      console.log('✅ Nest-system page endpoint exists')
     })
 
     it('should render dein-part page', async () => {

@@ -67,7 +67,7 @@ const sections = [
   },
 ];
 
-export default function EntdeckenClient() {
+export default function DeinNestClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
   const [isMobile, setIsMobile] = useState(false);
   const { isOpen, openPlanungspakete, closePlanungspakete } =
@@ -196,28 +196,28 @@ export default function EntdeckenClient() {
 
               {/* Mobile Buttons - Positioned in the middle */}
               <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
-                <Link href="/dein-part">
+                <Link href="/nest-system">
                   <Button variant="primary" size="xs">
-                    Dein Part
+                    Nest System
                   </Button>
                 </Link>
-                <Link href="/konzept">
+                <Link href="/entwurf">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Konzept
+                    Entwurf
                   </Button>
                 </Link>
               </div>
 
               {/* Desktop Buttons - Positioned at bottom */}
               <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
-                <Link href="/dein-part">
+                <Link href="/nest-system">
                   <Button variant="primary" size="xs">
-                    Dein Part
+                    Nest System
                   </Button>
                 </Link>
-                <Link href="/konzept">
+                <Link href="/entwurf">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Konzept
+                    Entwurf
                   </Button>
                 </Link>
               </div>
@@ -295,7 +295,7 @@ export default function EntdeckenClient() {
                   secondaryAction: "Jetzt bauen",
                   primaryButtonVariant: "landing-primary",
                   secondaryButtonVariant: "landing-secondary",
-                  primaryLink: "/dein-part#nest-system",
+                  primaryLink: "/nest-system#nest-system",
                   secondaryLink: "/konfigurator",
                 },
                 {
@@ -310,7 +310,7 @@ export default function EntdeckenClient() {
                   secondaryAction: "Jetzt bauen",
                   primaryButtonVariant: "landing-primary",
                   secondaryButtonVariant: "landing-secondary-blue",
-                  primaryLink: "/dein-part#materialien",
+                  primaryLink: "/nest-system#materialien",
                   secondaryLink: "/konfigurator",
                 },
                 {
@@ -325,7 +325,7 @@ export default function EntdeckenClient() {
                   secondaryAction: "Jetzt bauen",
                   primaryButtonVariant: "landing-primary",
                   secondaryButtonVariant: "landing-secondary",
-                  primaryLink: "/dein-part#fenster-tueren",
+                  primaryLink: "/nest-system#fenster-tueren",
                   secondaryLink: "/konfigurator",
                 },
                 {
@@ -336,11 +336,11 @@ export default function EntdeckenClient() {
                   image: IMAGES.function.nestHausSystemDeinPart,
                   backgroundColor: "#F4F4F4",
                   textColor: "white",
-                  primaryAction: "Dein Part",
+                  primaryAction: "Nest System",
                   secondaryAction: "Jetzt bauen",
                   primaryButtonVariant: "landing-primary",
                   secondaryButtonVariant: "landing-secondary",
-                  primaryLink: "/dein-part",
+                  primaryLink: "/nest-system",
                   secondaryLink: "/konfigurator",
                 },
               ]}
