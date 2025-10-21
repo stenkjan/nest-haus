@@ -759,10 +759,15 @@ export default function UnifiedContentCard({
             }}
             className="relative rounded-2xl md:rounded-3xl overflow-hidden"
             style={{
-              aspectRatio: "16/10", // 16:10 aspect ratio for mobile video (more rectangular)
+              // 16:10 aspect ratio for mobile video (more rectangular)
+              // For tall cards, remove aspect ratio and fill available space
               width: "100%",
-              height: "auto",
-              ...(heightMode === "tall" && { height: "100%" }),
+              ...(heightMode === "tall"
+                ? { height: "100%" }
+                : {
+                    aspectRatio: "16/10",
+                    height: "auto",
+                  }),
             }}
           >
             {card.video ? (
@@ -891,12 +896,16 @@ export default function UnifiedContentCard({
             style={{
               // 1:1 at 1024px for better height visibility with 50/50 split
               // 16:9 at 1280px+ for standard widescreen with 1/3-2/3 split
-              aspectRatio:
-                isClient && screenWidth >= 1024 && screenWidth < 1280
-                  ? "1/1"
-                  : "16/9",
-              maxWidth: "100%",
-              ...(heightMode === "tall" && { height: "100%" }),
+              // For tall cards at 1280px+, remove aspect ratio and fill available space
+              ...(heightMode === "tall" && isClient && screenWidth >= 1280
+                ? { height: "100%" }
+                : {
+                    aspectRatio:
+                      isClient && screenWidth >= 1024 && screenWidth < 1280
+                        ? "1/1"
+                        : "16/9",
+                    maxWidth: "100%",
+                  }),
             }}
           >
             {card.video ? (
