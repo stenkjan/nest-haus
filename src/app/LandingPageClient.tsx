@@ -231,6 +231,9 @@ export default function LandingPageClient() {
     if (sectionId === 6) {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
     }
+    if (sectionId === 7) {
+      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+    }
     if (sectionId === 8) {
       return isMobile ? "landing-secondary-blue" : "landing-secondary-blue";
     }
