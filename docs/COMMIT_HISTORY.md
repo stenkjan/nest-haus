@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9d7ef5af9b09b773eefd3929717b3e83c6c76c5b] - Tue Oct 21 11:28:01 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Improve error handling and chart rendering in GanttChart component  - Enhanced error handling during Chart.js dynamic import to prevent application crashes. - Refactored chart rendering logic to ensure proper registration of Chart.js components and improved data mapping for task visualization. - Updated tooltip callbacks for better user experience when interacting with chart elements.  These changes enhance the reliability and usability of the GanttChart component in the project management interface.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/GanttChart.tsx
+
+
+---
+
 ## [9b6934422a06c4baf9f9f21982bbab49314fdc5e] - Tue Oct 21 10:57:22 2025 +0200
 
 **Author**: stenkjan
