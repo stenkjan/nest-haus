@@ -73,6 +73,14 @@ const nextConfig: NextConfig = {
             priority: 25,
             maxSize: 100000,
           },
+          // DnD Kit in separate chunk
+          dndkit: {
+            test: /[\\/]node_modules[\\/]@dnd-kit[\\/]/,
+            name: 'dndkit',
+            chunks: 'all',
+            priority: 22,
+            maxSize: 100000,
+          },
           // Motion/Framer Motion in separate chunk
           motion: {
             test: /[\\/]node_modules[\\/](motion|framer-motion)[\\/]/,
@@ -130,7 +138,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     // Prevent webpack chunk issues
-    optimizePackageImports: ['@prisma/client', 'googleapis', 'motion', 'framer-motion'],
+    optimizePackageImports: ['@prisma/client', 'googleapis', 'motion', 'framer-motion', '@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
     // Tree shake unused exports
     optimizeServerReact: true,
   },

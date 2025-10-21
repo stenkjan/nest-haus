@@ -1,6 +1,7 @@
 "use client";
 
 import { ProjectTask } from "@prisma/client";
+import Link from "next/link";
 
 interface StatsCardsProps {
   tasks: ProjectTask[];
@@ -55,18 +56,39 @@ export default function StatsCards({ tasks }: StatsCardsProps) {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      {stats.map((stat, index) => (
-        <div
-          key={index}
-          className="bg-white p-4 rounded-lg shadow-sm flex items-center"
-        >
-          <div className="text-3xl mr-4">{stat.icon}</div>
-          <div>
-            <div className="text-2xl font-bold text-black">{stat.value}</div>
-            <div className="text-sm text-slate-500">{stat.label}</div>
+      {stats.map((stat, index) => {
+        const isMilestones = stat.label === "Wichtige Meilensteine";
+        const CardContent = (
+          <>
+            <div className="text-3xl mr-4">{stat.icon}</div>
+            <div>
+              <div className="text-2xl font-bold text-black">{stat.value}</div>
+              <div className="text-sm text-slate-500">{stat.label}</div>
+            </div>
+          </>
+        );
+
+        if (isMilestones) {
+          return (
+            <Link
+              key={index}
+              href="/admin/pmg/milestones"
+              className="bg-white p-4 rounded-lg shadow-sm flex items-center hover:shadow-md hover:bg-blue-50 transition-all cursor-pointer border-2 border-transparent hover:border-blue-200"
+            >
+              {CardContent}
+            </Link>
+          );
+        }
+
+        return (
+          <div
+            key={index}
+            className="bg-white p-4 rounded-lg shadow-sm flex items-center"
+          >
+            {CardContent}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -57,13 +57,26 @@ export async function POST(request: NextRequest) {
         }
 
         const data = await request.json();
+        console.log('Received task data:', data);
+
         const { taskId, task, responsible, startDate, endDate, duration, milestone, priority, notes, status } = data;
 
         // Validate required fields
         if (!taskId || !task || !responsible || !startDate || !endDate) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+            const missingFields = [];
+            if (!taskId) missingFields.push('taskId');
+            if (!task) missingFields.push('task');
+            if (!responsible) missingFields.push('responsible');
+            if (!startDate) missingFields.push('startDate');
+            if (!endDate) missingFields.push('endDate');
+
+            console.error('Missing required fields:', missingFields);
+            return NextResponse.json({
+                error: `Missing required fields: ${missingFields.join(', ')}`
+            }, { status: 400 });
         }
 
+        console.log('Creating task in database...');
         const newTask = await prisma.projectTask.create({
             data: {
                 taskId,
@@ -79,10 +92,25 @@ export async function POST(request: NextRequest) {
             }
         });
 
+        console.log('Task created successfully:', newTask.id);
         return NextResponse.json({ task: newTask });
     } catch (error) {
         console.error('Error creating project task:', error);
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+        console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');
+        console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+
+        // Check for unique constraint violation (Prisma error code P2002)
+        if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
+            return NextResponse.json({
+                error: 'Task ID already exists',
+                details: 'A task with this ID already exists in the database. Please use a different task ID.'
+            }, { status: 409 });
+        }
+
+        return NextResponse.json({
+            error: 'Internal server error',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
     }
 }
 

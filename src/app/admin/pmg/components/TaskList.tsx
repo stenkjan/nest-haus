@@ -441,6 +441,9 @@ export default function TaskList({
         return a.taskId.localeCompare(b.taskId);
       });
 
+    // Get all existing task IDs for uniqueness check
+    const existingTaskIds = new Set(realTasks.map((t) => t.taskId));
+
     const newTaskTime = startDate.getTime();
 
     // Find where this task would be inserted in the sorted list
@@ -452,6 +455,9 @@ export default function TaskList({
     if (insertIndex === -1) {
       insertIndex = realTasks.length;
     }
+
+    // Helper function to check if an ID is available
+    const isIdAvailable = (id: string) => !existingTaskIds.has(id);
 
     // Look at the chronological context around the insertion point
     // Find the closest non-milestone task before and after
@@ -503,23 +509,33 @@ export default function TaskList({
             const beforeSubtask = parseInt(subtaskNum);
             const afterSubtask = parseInt(afterSubtaskMatch[2]);
 
-            // If there's a gap, fill it
-            if (afterSubtask > beforeSubtask + 1) {
-              return `${milestoneNum}.${beforeSubtask + 1}`;
+            // Try to find an available ID between them
+            for (let seq = beforeSubtask + 1; seq < afterSubtask; seq++) {
+              const candidateId = `${milestoneNum}.${seq}`;
+              if (isIdAvailable(candidateId)) {
+                return candidateId;
+              }
             }
           }
         }
 
-        // Continue the sequence from the before task
-        const nextSubtask = parseInt(subtaskNum) + 1;
-        return `${milestoneNum}.${nextSubtask}`;
+        // Try to continue the sequence from the before task
+        let nextSubtask = parseInt(subtaskNum) + 1;
+        let candidateId = `${milestoneNum}.${nextSubtask}`;
+
+        // Keep incrementing until we find an available ID
+        while (existingTaskIds.has(candidateId)) {
+          nextSubtask++;
+          candidateId = `${milestoneNum}.${nextSubtask}`;
+        }
+        return candidateId;
       }
 
       // If it's a date-based ID, increment the sequence
       const dateMatch = beforeId.match(/^(\d{8})-(\d+)$/);
       if (dateMatch) {
         const [, dateStr, seqStr] = dateMatch;
-        const sequence = parseInt(seqStr);
+        let sequence = parseInt(seqStr);
 
         // Check if the task after has the same date pattern
         if (taskAfter) {
@@ -527,15 +543,27 @@ export default function TaskList({
           if (afterDateMatch && afterDateMatch[1] === dateStr) {
             // We're inserting between two tasks with the same date
             const afterSequence = parseInt(afterDateMatch[2]);
-            if (afterSequence > sequence + 1) {
-              // There's a gap, use the next sequence
-              return `${dateStr}-${(sequence + 1).toString().padStart(2, "0")}`;
+
+            // Try to find an available ID between them
+            for (let seq = sequence + 1; seq < afterSequence; seq++) {
+              const candidateId = `${dateStr}-${seq.toString().padStart(2, "0")}`;
+              if (isIdAvailable(candidateId)) {
+                return candidateId;
+              }
             }
           }
         }
 
         // Use the same date pattern with incremented sequence
-        return `${dateStr}-${(sequence + 1).toString().padStart(2, "0")}`;
+        sequence++;
+        let candidateId = `${dateStr}-${sequence.toString().padStart(2, "0")}`;
+
+        // Keep incrementing until we find an available ID
+        while (existingTaskIds.has(candidateId)) {
+          sequence++;
+          candidateId = `${dateStr}-${sequence.toString().padStart(2, "0")}`;
+        }
+        return candidateId;
       }
     }
 
@@ -548,8 +576,13 @@ export default function TaskList({
       if (subtaskMatch) {
         const [, milestoneNum, subtaskNum] = subtaskMatch;
         const afterSubtask = parseInt(subtaskNum);
-        if (afterSubtask > 1) {
-          return `${milestoneNum}.${afterSubtask - 1}`;
+
+        // Try to find an available ID before the after task
+        for (let seq = 1; seq < afterSubtask; seq++) {
+          const candidateId = `${milestoneNum}.${seq}`;
+          if (isIdAvailable(candidateId)) {
+            return candidateId;
+          }
         }
       }
 
@@ -558,21 +591,13 @@ export default function TaskList({
       if (dateMatch) {
         const [, dateStr, seqStr] = dateMatch;
         const sequence = parseInt(seqStr);
-        if (sequence > 1) {
-          return `${dateStr}-${(sequence - 1).toString().padStart(2, "0")}`;
-        }
-      }
-    }
 
-    // Legacy: If we have a task after, try to create an ID that comes before it
-    if (taskAfter) {
-      const afterId = taskAfter.taskId;
-      const dateMatch = afterId.match(/^(\d{8})-(\d+)$/);
-      if (dateMatch) {
-        const [, dateStr, seqStr] = dateMatch;
-        const sequence = parseInt(seqStr);
-        if (sequence > 1) {
-          return `${dateStr}-${(sequence - 1).toString().padStart(2, "0")}`;
+        // Try to find an available ID before the after task
+        for (let seq = 1; seq < sequence; seq++) {
+          const candidateId = `${dateStr}-${seq.toString().padStart(2, "0")}`;
+          if (isIdAvailable(candidateId)) {
+            return candidateId;
+          }
         }
       }
     }
@@ -580,7 +605,7 @@ export default function TaskList({
     // Default: create a date-based ID
     const dateStr = startDate.toISOString().split("T")[0].replace(/-/g, "");
 
-    // Find existing tasks with same date
+    // Find existing tasks with same date and get the highest sequence number
     const sameDateTasks = realTasks
       .filter((t) => t.taskId.startsWith(dateStr))
       .map((t) => {
@@ -589,9 +614,17 @@ export default function TaskList({
       })
       .filter((num) => num > 0);
 
-    const nextSequence =
+    let nextSequence =
       sameDateTasks.length > 0 ? Math.max(...sameDateTasks) + 1 : 1;
-    return `${dateStr}-${nextSequence.toString().padStart(2, "0")}`;
+    let candidateId = `${dateStr}-${nextSequence.toString().padStart(2, "0")}`;
+
+    // Keep incrementing until we find an available ID
+    while (existingTaskIds.has(candidateId)) {
+      nextSequence++;
+      candidateId = `${dateStr}-${nextSequence.toString().padStart(2, "0")}`;
+    }
+
+    return candidateId;
   };
 
   const handleCellClick = (task: TaskOrNewTask, field: string) => {
@@ -872,6 +905,7 @@ export default function TaskList({
     };
 
     try {
+      console.log("Adding task with data:", taskData);
       // Add to database first
       await onTaskAdd(taskData);
 
@@ -881,6 +915,9 @@ export default function TaskList({
       onSubtleUpdate?.("Task added successfully");
     } catch (error) {
       console.error("Failed to save task:", error);
+      alert(
+        `Error: Failed to add task\n${error instanceof Error ? error.message : "Unknown error"}`
+      );
       onSubtleUpdate?.("Failed to add task");
     }
   };

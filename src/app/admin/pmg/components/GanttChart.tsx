@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { ProjectTask } from "@prisma/client";
 import type { Chart } from "chart.js";
+import { useRouter } from "next/navigation";
 
 interface GanttChartProps {
   tasks: ProjectTask[];
@@ -31,6 +32,7 @@ const responsibleBorderColors: Record<string, string> = {
 export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<Chart | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const loadChartJS = async () => {
@@ -113,9 +115,29 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
                   autoSkip: false,
                   callback: function (value: string | number) {
                     const label = this.getLabelForValue(value as number);
-                    return label.length > 70
-                      ? label.substring(0, 67) + "..."
-                      : label;
+
+                    // Truncate long labels
+                    const truncatedLabel =
+                      label.length > 70
+                        ? label.substring(0, 67) + "..."
+                        : label;
+
+                    return truncatedLabel;
+                  },
+                  font: function (context) {
+                    const taskIndex = context.index;
+                    const task = tasks[taskIndex];
+                    // Make milestone labels bold
+                    return {
+                      weight: task?.milestone ? "bold" : "normal",
+                      size: task?.milestone ? 13 : 12,
+                    };
+                  },
+                  color: function (context) {
+                    const taskIndex = context.index;
+                    const task = tasks[taskIndex];
+                    // Make milestone labels more prominent
+                    return task?.milestone ? "#1e40af" : "#1f2937";
                   },
                 },
                 grid: {
@@ -144,7 +166,29 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
                     ).toLocaleDateString("de-DE");
                     return `Zeitraum: ${start} - ${end}`;
                   },
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  afterLabel: function (context: any) {
+                    const taskIndex = context.dataIndex;
+                    const task = tasks[taskIndex];
+
+                    if (task?.milestone && task.notes) {
+                      return [
+                        "",
+                        "📝 Notizen:",
+                        ...task.notes.split("\n").slice(0, 3), // Show first 3 lines
+                        task.notes.split("\n").length > 3 ? "..." : "",
+                      ];
+                    }
+
+                    if (task?.milestone) {
+                      return ["", "⭐ Meilenstein - Klicken für Details"];
+                    }
+
+                    return [];
+                  },
                 },
+                boxPadding: 8,
+                padding: 12,
               },
             },
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -153,7 +197,27 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
                 const elementIndex = elements[0].index;
                 const task = tasks[elementIndex];
                 if (task) {
-                  onTaskClick(task);
+                  // If it's a milestone, navigate to milestones page
+                  if (task.milestone) {
+                    router.push("/admin/pmg/milestones");
+                  } else {
+                    // For regular tasks, use the existing click handler
+                    onTaskClick(task);
+                  }
+                }
+              }
+            },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onHover: (event: any, elements: any[]) => {
+              if (elements.length > 0) {
+                const elementIndex = elements[0].index;
+                const task = tasks[elementIndex];
+
+                // Change cursor for milestones
+                if (event.native && task?.milestone) {
+                  event.native.target.style.cursor = "pointer";
+                } else if (event.native) {
+                  event.native.target.style.cursor = "default";
                 }
               }
             },
@@ -169,7 +233,7 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
         chartRef.current.destroy();
       }
     };
-  }, [tasks, onTaskClick]);
+  }, [tasks, onTaskClick, router]);
 
   return (
     <div className="chart-container relative w-full h-96 lg:h-[60vh] max-h-[800px] overflow-x-auto">
