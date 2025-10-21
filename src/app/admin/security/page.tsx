@@ -180,7 +180,7 @@ export default function SecurityMonitoringPage() {
         <div className="mb-8">
           <Link
             href="/admin"
-            className="text-blue-600 hover:text-blue-800 mb-4 inline-block"
+            className="text-blue-600 hover:text-blue-800 mb-4 mt-6 inline-block"
           >
             ← Back to Admin Dashboard
           </Link>
