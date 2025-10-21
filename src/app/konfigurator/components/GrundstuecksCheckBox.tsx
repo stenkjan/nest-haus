@@ -36,8 +36,8 @@ export default function GrundstuecksCheckBox({
     <div
       className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] ${
         isSelected
-          ? "selected border-[#3D6DE1] shadow-[0_0_0_1px_#3D6DE1] bg-blue-50/50"
-          : "border-gray-300 hover:border-[#3D6DE1] hover:shadow-sm"
+          ? "selected border-[#3D6CE1] shadow-[0_0_0_1px_#3D6CE1] bg-blue-50/50"
+          : "border-gray-300 hover:border-[#3D6CE1] hover:shadow-sm"
       }`}
       onClick={onClick}
     >

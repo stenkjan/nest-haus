@@ -232,7 +232,7 @@ export default function PvModuleOverlay({
         <>
           {/* Desktop: Lower position within the image area (above 770px) */}
           <div
-            className="absolute bg-[#3D6DE1] text-white rounded-full flex items-center justify-center font-bold shadow-lg
+            className="absolute bg-[#3D6CE1] text-white rounded-full flex items-center justify-center font-bold shadow-lg
                        hidden min-[770px]:flex z-20"
             style={{
               left: "50%",
@@ -251,7 +251,7 @@ export default function PvModuleOverlay({
 
           {/* Mobile: Positioned more to the right and slightly higher (below 770px) */}
           <div
-            className="absolute bg-[#3D6DE1] text-white rounded-full flex items-center justify-center font-bold shadow-lg
+            className="absolute bg-[#3D6CE1] text-white rounded-full flex items-center justify-center font-bold shadow-lg
                        max-[769px]:flex min-[770px]:hidden z-20"
             style={{
               left: "50%", // 30% right of center (50% + 30%)
