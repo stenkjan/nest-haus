@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [30f42a62c2621256a95e8aecb2cc6320c0c5cfaa] - Tue Oct 21 15:37:17 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Enhance milestone management logic in MilestonesManager  - Updated milestone ID generation to only consider M-numbered milestones, improving accuracy in chronological ordering. - Implemented renumbering of subsequent milestones when a new milestone is inserted, ensuring proper task ID synchronization. - Refactored API response handling to accommodate changes in the returned data structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
+
+
+---
+
 ## [8416e0ceb81995a955a7e0ca2ce360199732d006] - Tue Oct 21 15:17:33 2025 +0200
 
 **Author**: stenkjan
