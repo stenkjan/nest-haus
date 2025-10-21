@@ -167,7 +167,7 @@ export const IMAGES = {
         nestHausFundamentPunktfundament: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung',
         nestHausFlexibilitaetErweiterung: '40-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
-        nestHausEntwurfVorentwurf: '305-nest-haus-entwurf-vorentwurf-planung-erstentwurf-hausbau',
+        nestHausEntwurfVorentwurf: '305-nest-haus-entwurf-vorentwurf-planung-erstentwurf-hausbau', // CONFIRMED: Path works WITHOUT .png extension
         // Desktop versions of images 13-16
         nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
         nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz-mobile',
