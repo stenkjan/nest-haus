@@ -461,16 +461,12 @@ export default function UnifiedContentCard({
         {shouldRenderTitleContainer && (
           <div className="text-center mb-8">
             {shouldShowTitle && (
-              <h2
-                className={`text-3xl font-bold mb-2 ${isGlass ? textColors.title : "text-gray-900"}`}
-              >
+              <h2 className={`text-3xl font-bold mb-2 ${textColors.title}`}>
                 {title}
               </h2>
             )}
             {shouldShowSubtitle && (
-              <p className={isGlass ? textColors.subtitle : "text-gray-600"}>
-                {subtitle}
-              </p>
+              <p className={textColors.subtitle}>{subtitle}</p>
             )}
           </div>
         )}
@@ -515,14 +511,14 @@ export default function UnifiedContentCard({
           )}
 
           {/* Title */}
-          <h2 className={`h2-title ${card.textColor || "text-gray-900"} mb-2`}>
+          <h2 className={`h2-title ${card.textColor || textColors.title} mb-2`}>
             {getCardText(card, "title")}
           </h2>
 
           {/* Subtitle */}
           {card.subtitle && (
             <h3
-              className={`h3-secondary ${card.textColor || "text-gray-700"} mb-0`}
+              className={`h3-secondary ${card.textColor || textColors.subtitle} mb-0`}
             >
               {getCardText(card, "subtitle")}
             </h3>
@@ -537,7 +533,7 @@ export default function UnifiedContentCard({
           transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
         >
           <p
-            className={`p-primary ${card.textColor || "text-gray-600"} leading-relaxed max-w-3xl mx-auto`}
+            className={`p-primary ${card.textColor || textColors.description} leading-relaxed max-w-3xl mx-auto`}
           >
             {getCardText(card, "description")}
           </p>
@@ -587,13 +583,13 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1, duration: 0.6 }}
           >
             <h2
-              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${isGlass ? textColors.title : "text-gray-900"} mb-2`}
+              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${textColors.title} mb-2`}
             >
               {getCardText(card, "title")}
             </h2>
             {card.subtitle && (
               <h3
-                className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${isGlass ? textColors.subtitle : "text-gray-700"} mb-5`}
+                className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${textColors.subtitle} mb-5`}
               >
                 {getCardText(card, "subtitle")}
               </h3>
@@ -749,7 +745,11 @@ export default function UnifiedContentCard({
         </div>
 
         {/* Video Content - Rectangle format with proper spacing */}
-        <div className="relative overflow-hidden py-4 px-4 flex items-center justify-center">
+        <div
+          className={`relative overflow-hidden py-4 px-4 flex ${
+            heightMode === "tall" ? "items-stretch" : "items-center"
+          } justify-center`}
+        >
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -762,6 +762,7 @@ export default function UnifiedContentCard({
               aspectRatio: "16/10", // 16:10 aspect ratio for mobile video (more rectangular)
               width: "100%",
               height: "auto",
+              ...(heightMode === "tall" && { height: "100%" }),
             }}
           >
             {card.video ? (
@@ -775,6 +776,16 @@ export default function UnifiedContentCard({
                 controls={false}
                 enableCache={true}
                 playbackRate={card.playbackRate}
+              />
+            ) : card.image ? (
+              <HybridBlobImage
+                path={getImagePath(card.image)}
+                alt={getCardText(card, "title")}
+                fill
+                className="object-cover object-center"
+                strategy="client"
+                isInteractive={true}
+                enableCache={true}
               />
             ) : null}
           </motion.div>
@@ -865,7 +876,9 @@ export default function UnifiedContentCard({
             isClient && screenWidth >= 1024 && screenWidth < 1280
               ? "w-1/2" // 50% at 1024px
               : "w-2/3" // 67% at 1280px+
-          } relative overflow-hidden py-[15px] pr-[15px] flex items-center justify-end`}
+          } relative overflow-hidden py-[15px] pr-[15px] flex ${
+            heightMode === "tall" ? "items-stretch" : "items-center"
+          } justify-end`}
         >
           <motion.div
             initial={{ x: 20, opacity: 0 }}
@@ -883,6 +896,7 @@ export default function UnifiedContentCard({
                   ? "1/1"
                   : "16/9",
               maxWidth: "100%",
+              ...(heightMode === "tall" && { height: "100%" }),
             }}
           >
             {card.video ? (
@@ -896,6 +910,16 @@ export default function UnifiedContentCard({
                 controls={false}
                 enableCache={true}
                 playbackRate={card.playbackRate}
+              />
+            ) : card.image ? (
+              <HybridBlobImage
+                path={getImagePath(card.image)}
+                alt={getCardText(card, "title")}
+                fill
+                className="object-cover object-center"
+                strategy="client"
+                isInteractive={true}
+                enableCache={true}
               />
             ) : null}
           </motion.div>
@@ -962,13 +986,13 @@ export default function UnifiedContentCard({
               )}
 
               {/* Title */}
-              <h2 className="h2-title text-gray-900 mb-2">
+              <h2 className={`h2-title ${textColors.title} mb-2`}>
                 {getCardText(mainCard, "title")}
               </h2>
 
               {/* Subtitle */}
               {mainCard.subtitle && (
-                <h3 className="h3-secondary text-gray-700 mb-0">
+                <h3 className={`h3-secondary ${textColors.subtitle} mb-0`}>
                   {getCardText(mainCard, "subtitle")}
                 </h3>
               )}
@@ -1049,13 +1073,13 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1, duration: 0.6 }}
           >
             <h2
-              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${isGlass ? textColors.title : "text-gray-900"} mb-2`}
+              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${textColors.title} mb-2`}
             >
               {getCardText(card, "title")}
             </h2>
             {card.subtitle && (
               <h3
-                className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${isGlass ? textColors.subtitle : "text-gray-700"} mb-5`}
+                className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${textColors.subtitle} mb-5`}
               >
                 {getCardText(card, "subtitle")}
               </h3>
@@ -1128,13 +1152,13 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1, duration: 0.6 }}
           >
             <h2
-              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${isGlass ? textColors.title : "text-gray-900"} mb-2`}
+              className={`${isGlass ? "h2-title" : "text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold"} ${textColors.title} mb-2`}
             >
               {getCardText(card, "title")}
             </h2>
             {card.subtitle && (
               <h3
-                className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${isGlass ? textColors.subtitle : "text-gray-700"} mb-5`}
+                className={`${isGlass ? "h3-secondary" : "text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium"} ${textColors.subtitle} mb-5`}
               >
                 {getCardText(card, "subtitle")}
               </h3>
@@ -1248,16 +1272,12 @@ export default function UnifiedContentCard({
         {shouldRenderTitleContainer && (
           <div className={`text-center ${isLightboxMode ? "mb-4" : "mb-8"}`}>
             {shouldShowTitle && (
-              <h2
-                className={`text-3xl font-bold mb-2 ${isGlass ? textColors.title : "text-gray-900"}`}
-              >
+              <h2 className={`text-3xl font-bold mb-2 ${textColors.title}`}>
                 {title}
               </h2>
             )}
             {shouldShowSubtitle && (
-              <p className={isGlass ? textColors.subtitle : "text-gray-600"}>
-                {subtitle}
-              </p>
+              <p className={textColors.subtitle}>{subtitle}</p>
             )}
           </div>
         )}
@@ -1440,7 +1460,7 @@ export default function UnifiedContentCard({
                     }}
                   >
                     <svg
-                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
+                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-black"}`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1474,7 +1494,7 @@ export default function UnifiedContentCard({
                     }}
                   >
                     <svg
-                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-gray-700"}`}
+                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-black"}`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1496,7 +1516,7 @@ export default function UnifiedContentCard({
         {/* Instructions */}
         {showInstructions && layout !== "process-detail" && (
           <div
-            className={`text-center mt-6 text-sm ${isGlass ? "text-gray-400" : "text-gray-500"}`}
+            className={`text-center mt-6 text-sm ${isGlass ? "text-white" : "text-black"}`}
           >
             {isStatic ? (
               <p>

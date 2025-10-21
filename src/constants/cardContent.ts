@@ -654,19 +654,19 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         description:
             "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Vorentwurf, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Vorentwurf.",
         image: IMAGES.function.nestHausEntwurfVorentwurf,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F4F4F4",
         buttons: [
             {
                 text: "Vorentwurf kaufen",
                 variant: "primary",
-                size: "md",
-                link: "/kontakt", // Update to appropriate link
+                size: "xs",
+                link: "/kontakt",
             },
             {
                 text: "Unsere Technik",
                 variant: "landing-secondary-blue",
-                size: "md",
-                link: "/nest-system", // Update to appropriate link
+                size: "xs",
+                link: "/nest-system",
             },
         ],
     },

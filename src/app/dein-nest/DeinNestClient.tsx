@@ -239,6 +239,7 @@ export default function DeinNestClient() {
 
           <UnifiedContentCard
             layout="video"
+            style="standard"
             variant="static"
             maxWidth={true}
             showInstructions={false}
@@ -359,6 +360,7 @@ export default function DeinNestClient() {
 
           <UnifiedContentCard
             layout="video"
+            style="standard"
             variant="static"
             maxWidth={true}
             showInstructions={false}
