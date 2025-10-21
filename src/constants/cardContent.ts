@@ -680,13 +680,13 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
         buttons: [
             {
-                text: "Vorentwurf kaufen",
+                text: "Unsere Philosophie",
                 variant: "primary",
                 size: "xs",
                 link: "/kontakt",
             },
             {
-                text: "Unsere Technik",
+                text: "Wie funktioniert's?",
                 variant: "landing-secondary-blue",
                 size: "xs",
                 link: "/nest-system",
