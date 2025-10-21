@@ -4,6 +4,45 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fcb4d1bfc9c7a06ca240cbf87b6ce602ba0ef384] - Tue Oct 21 15:40:06 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/GanttChart.tsx
+- src/app/admin/pmg/components/TaskList.tsx
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
+- src/app/api/orders/route.ts
+- src/app/api/payments/confirm-payment/route.ts
+- src/app/api/payments/create-payment-intent/route.ts
+- src/app/api/payments/status/[paymentIntentId]/route.ts
+- src/app/api/payments/webhook/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/payments/PaymentErrorBoundary.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/payments/StripeCheckoutForm.tsx
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+- package.json
+
+
+#### 📚 Documentation Changes
+- STRIPE_INTEGRATION_SUMMARY.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [30f42a62c2621256a95e8aecb2cc6320c0c5cfaa] - Tue Oct 21 15:37:17 2025 +0200
 
 **Author**: stenkjan
