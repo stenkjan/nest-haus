@@ -36,193 +36,201 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
 
   useEffect(() => {
     const loadChartJS = async () => {
-      // Dynamically import Chart.js to avoid SSR issues
-      const { Chart, registerables } = await import("chart.js");
-      await import("chartjs-adapter-date-fns");
+      try {
+        // Dynamically import Chart.js to avoid SSR issues
+        const ChartModule = await import("chart.js");
+        const { Chart, registerables } = ChartModule;
 
-      Chart.register(...registerables);
+        await import("chartjs-adapter-date-fns");
 
-      if (canvasRef.current) {
-        const ctx = canvasRef.current.getContext("2d");
-        if (!ctx) return;
-
-        // Destroy existing chart
-        if (chartRef.current) {
-          chartRef.current.destroy();
+        if (registerables) {
+          Chart.register(...registerables);
         }
 
-        const chartData = tasks.map((task) => ({
-          x: [
-            new Date(task.startDate),
-            new Date(new Date(task.endDate).getTime() + 24 * 60 * 60 * 1000),
-          ],
-          y: `${task.taskId}: ${task.task}`,
-          responsible: task.responsible,
-          taskId: task.taskId,
-          task: task,
-        }));
+        if (canvasRef.current) {
+          const ctx = canvasRef.current.getContext("2d");
+          if (!ctx) return;
 
-        chartRef.current = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: chartData.map((d) => d.y),
-            datasets: [
-              {
-                label: "Aufgaben-Dauer",
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                data: chartData.map((d) => d.x) as any,
-                backgroundColor: chartData.map((d) => {
-                  const mainResponsible = d.responsible.split(", ")[0];
-                  return (
-                    responsibleColors[mainResponsible] ||
-                    responsibleColors["ALLE"]
-                  );
-                }),
-                borderColor: chartData.map((d) => {
-                  const mainResponsible = d.responsible.split(", ")[0];
-                  return (
-                    responsibleBorderColors[mainResponsible] ||
-                    responsibleBorderColors["ALLE"]
-                  );
-                }),
-                borderWidth: 1,
-                barPercentage: 0.6,
-                categoryPercentage: 0.8,
-                borderSkipped: false,
-              },
+          // Destroy existing chart
+          if (chartRef.current) {
+            chartRef.current.destroy();
+          }
+
+          const chartData = tasks.map((task) => ({
+            x: [
+              new Date(task.startDate),
+              new Date(new Date(task.endDate).getTime() + 24 * 60 * 60 * 1000),
             ],
-          },
-          options: {
-            indexAxis: "y",
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                type: "time",
-                time: {
-                  unit: "week",
-                  tooltipFormat: "dd.MM.yyyy",
+            y: `${task.taskId}: ${task.task}`,
+            responsible: task.responsible,
+            taskId: task.taskId,
+            task: task,
+          }));
+
+          chartRef.current = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: chartData.map((d) => d.y),
+              datasets: [
+                {
+                  label: "Aufgaben-Dauer",
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  data: chartData.map((d) => d.x) as any,
+                  backgroundColor: chartData.map((d) => {
+                    const mainResponsible = d.responsible.split(", ")[0];
+                    return (
+                      responsibleColors[mainResponsible] ||
+                      responsibleColors["ALLE"]
+                    );
+                  }),
+                  borderColor: chartData.map((d) => {
+                    const mainResponsible = d.responsible.split(", ")[0];
+                    return (
+                      responsibleBorderColors[mainResponsible] ||
+                      responsibleBorderColors["ALLE"]
+                    );
+                  }),
+                  borderWidth: 1,
+                  barPercentage: 0.6,
+                  categoryPercentage: 0.8,
+                  borderSkipped: false,
                 },
-                min: "2025-10-06",
-                max: "2025-11-16",
-                position: "top",
-                grid: {
-                  color: "rgba(0,0,0,0.05)",
+              ],
+            },
+            options: {
+              indexAxis: "y",
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  type: "time",
+                  time: {
+                    unit: "week",
+                    tooltipFormat: "dd.MM.yyyy",
+                  },
+                  min: "2025-10-06",
+                  max: "2025-11-16",
+                  position: "top",
+                  grid: {
+                    color: "rgba(0,0,0,0.05)",
+                  },
+                },
+                y: {
+                  ticks: {
+                    autoSkip: false,
+                    callback: function (value: string | number) {
+                      const label = this.getLabelForValue(value as number);
+
+                      // Truncate long labels
+                      const truncatedLabel =
+                        label.length > 70
+                          ? label.substring(0, 67) + "..."
+                          : label;
+
+                      return truncatedLabel;
+                    },
+                    font: function (context) {
+                      const taskIndex = context.index;
+                      const task = tasks[taskIndex];
+                      // Make milestone labels bold
+                      return {
+                        weight: task?.milestone ? "bold" : "normal",
+                        size: task?.milestone ? 13 : 12,
+                      };
+                    },
+                    color: function (context) {
+                      const taskIndex = context.index;
+                      const task = tasks[taskIndex];
+                      // Make milestone labels more prominent
+                      return task?.milestone ? "#1e40af" : "#1f2937";
+                    },
+                  },
+                  grid: {
+                    display: false,
+                  },
                 },
               },
-              y: {
-                ticks: {
-                  autoSkip: false,
-                  callback: function (value: string | number) {
-                    const label = this.getLabelForValue(value as number);
-
-                    // Truncate long labels
-                    const truncatedLabel =
-                      label.length > 70
-                        ? label.substring(0, 67) + "..."
-                        : label;
-
-                    return truncatedLabel;
-                  },
-                  font: function (context) {
-                    const taskIndex = context.index;
-                    const task = tasks[taskIndex];
-                    // Make milestone labels bold
-                    return {
-                      weight: task?.milestone ? "bold" : "normal",
-                      size: task?.milestone ? 13 : 12,
-                    };
-                  },
-                  color: function (context) {
-                    const taskIndex = context.index;
-                    const task = tasks[taskIndex];
-                    // Make milestone labels more prominent
-                    return task?.milestone ? "#1e40af" : "#1f2937";
-                  },
-                },
-                grid: {
+              plugins: {
+                legend: {
                   display: false,
                 },
-              },
-            },
-            plugins: {
-              legend: {
-                display: false,
-              },
-              tooltip: {
-                callbacks: {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  title: function (context: any) {
-                    return context[0].label;
-                  },
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  label: function (context: any) {
-                    const dataPoint = context.raw;
-                    const start = new Date(dataPoint[0]).toLocaleDateString(
-                      "de-DE"
-                    );
-                    const end = new Date(
-                      dataPoint[1] - 24 * 60 * 60 * 1000
-                    ).toLocaleDateString("de-DE");
-                    return `Zeitraum: ${start} - ${end}`;
-                  },
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  afterLabel: function (context: any) {
-                    const taskIndex = context.dataIndex;
-                    const task = tasks[taskIndex];
+                tooltip: {
+                  callbacks: {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    title: function (context: any) {
+                      return context[0].label;
+                    },
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    label: function (context: any) {
+                      const dataPoint = context.raw;
+                      const start = new Date(dataPoint[0]).toLocaleDateString(
+                        "de-DE"
+                      );
+                      const end = new Date(
+                        dataPoint[1] - 24 * 60 * 60 * 1000
+                      ).toLocaleDateString("de-DE");
+                      return `Zeitraum: ${start} - ${end}`;
+                    },
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    afterLabel: function (context: any) {
+                      const taskIndex = context.dataIndex;
+                      const task = tasks[taskIndex];
 
-                    if (task?.milestone && task.notes) {
-                      return [
-                        "",
-                        "📝 Notizen:",
-                        ...task.notes.split("\n").slice(0, 3), // Show first 3 lines
-                        task.notes.split("\n").length > 3 ? "..." : "",
-                      ];
-                    }
+                      if (task?.milestone && task.notes) {
+                        return [
+                          "",
+                          "📝 Notizen:",
+                          ...task.notes.split("\n").slice(0, 3), // Show first 3 lines
+                          task.notes.split("\n").length > 3 ? "..." : "",
+                        ];
+                      }
 
-                    if (task?.milestone) {
-                      return ["", "⭐ Meilenstein - Klicken für Details"];
-                    }
+                      if (task?.milestone) {
+                        return ["", "⭐ Meilenstein - Klicken für Details"];
+                      }
 
-                    return [];
+                      return [];
+                    },
                   },
+                  boxPadding: 8,
+                  padding: 12,
                 },
-                boxPadding: 8,
-                padding: 12,
               },
-            },
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onClick: (_event: any, elements: any[]) => {
-              if (elements.length > 0) {
-                const elementIndex = elements[0].index;
-                const task = tasks[elementIndex];
-                if (task) {
-                  // If it's a milestone, navigate to milestones page
-                  if (task.milestone) {
-                    router.push("/admin/pmg/milestones");
-                  } else {
-                    // For regular tasks, use the existing click handler
-                    onTaskClick(task);
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              onClick: (_event: any, elements: any[]) => {
+                if (elements.length > 0) {
+                  const elementIndex = elements[0].index;
+                  const task = tasks[elementIndex];
+                  if (task) {
+                    // If it's a milestone, navigate to milestones page
+                    if (task.milestone) {
+                      router.push("/admin/pmg/milestones");
+                    } else {
+                      // For regular tasks, use the existing click handler
+                      onTaskClick(task);
+                    }
                   }
                 }
-              }
-            },
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onHover: (event: any, elements: any[]) => {
-              if (elements.length > 0) {
-                const elementIndex = elements[0].index;
-                const task = tasks[elementIndex];
+              },
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              onHover: (event: any, elements: any[]) => {
+                if (elements.length > 0) {
+                  const elementIndex = elements[0].index;
+                  const task = tasks[elementIndex];
 
-                // Change cursor for milestones
-                if (event.native && task?.milestone) {
-                  event.native.target.style.cursor = "pointer";
-                } else if (event.native) {
-                  event.native.target.style.cursor = "default";
+                  // Change cursor for milestones
+                  if (event.native && task?.milestone) {
+                    event.native.target.style.cursor = "pointer";
+                  } else if (event.native) {
+                    event.native.target.style.cursor = "default";
+                  }
                 }
-              }
+              },
             },
-          },
-        });
+          });
+        }
+      } catch (error) {
+        console.error("Error loading Chart.js:", error);
       }
     };
 
