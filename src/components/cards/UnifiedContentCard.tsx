@@ -169,14 +169,11 @@ export default function UnifiedContentCard({
   const isGlass = style === "glass";
   const heightMultiplier = heightMode === "tall" ? 1.25 : 1;
 
-  // Determine text colors based on background and style
+  // Determine text colors based on style: glass = white text, standard = black text
   const textColors = {
-    title:
-      isGlass || backgroundColor === "black" ? "text-white" : "text-gray-900",
-    subtitle:
-      isGlass || backgroundColor === "black" ? "text-white" : "text-gray-600",
-    description:
-      isGlass || backgroundColor === "black" ? "text-white" : "text-gray-500",
+    title: isGlass ? "text-white" : "text-black",
+    subtitle: isGlass ? "text-white" : "text-black",
+    description: isGlass ? "text-white" : "text-black",
   };
 
   // Initialize client-side state
@@ -729,18 +726,22 @@ export default function UnifiedContentCard({
             className="w-full max-w-none"
           >
             <h2
-              className={`h2-title text-gray-900 ${
+              className={`h2-title ${textColors.title} ${
                 card.subtitle ? "mb-1" : "mb-4"
               }`}
             >
               {getCardText(card, "title")}
             </h2>
             {card.subtitle && (
-              <h3 className="h3-secondary font-medium text-gray-700 mb-3">
+              <h3
+                className={`h3-secondary font-medium ${textColors.subtitle} mb-3`}
+              >
                 {getCardText(card, "subtitle")}
               </h3>
             )}
-            <p className="p-primary leading-relaxed">
+            <p
+              className={`p-primary ${textColors.description} leading-relaxed`}
+            >
               {getCardText(card, "description")}
             </p>
             {/* Note: Buttons are not shown on mobile/tablet to match VideoCard16by9 behavior */}
@@ -802,18 +803,22 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1, duration: 0.6 }}
           >
             <h2
-              className={`h2-title text-gray-900 ${
+              className={`h2-title ${textColors.title} ${
                 card.subtitle ? "mb-1" : "mb-6"
               }`}
             >
               {getCardText(card, "title")}
             </h2>
             {card.subtitle && (
-              <h3 className="h3-secondary font-medium text-gray-700 mb-5">
+              <h3
+                className={`h3-secondary font-medium ${textColors.subtitle} mb-5`}
+              >
                 {getCardText(card, "subtitle")}
               </h3>
             )}
-            <p className="p-primary">{getCardText(card, "description")}</p>
+            <p className={`p-primary ${textColors.description}`}>
+              {getCardText(card, "description")}
+            </p>
 
             {/* Buttons for Video Cards - Desktop Layout */}
             {card.buttons && card.buttons.length > 0 && (
