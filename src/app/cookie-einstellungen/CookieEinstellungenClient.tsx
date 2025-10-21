@@ -207,7 +207,7 @@ export default function CookieEinstellungenClient() {
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={handleAcceptAll}
-                className="flex-1 px-6 py-3 bg-[#3D6DE1] text-white rounded-full font-medium hover:bg-[#2855d6] transition-colors"
+                className="flex-1 px-6 py-3 bg-[#3D6CE1] text-white rounded-full font-medium hover:bg-[#2855d6] transition-colors"
               >
                 Alle Cookies akzeptieren
               </button>
@@ -249,7 +249,7 @@ export default function CookieEinstellungenClient() {
                         <div
                           className={`w-11 h-6 rounded-full transition-colors ${
                             localPreferences[category.id]
-                              ? "bg-[#3D6DE1]"
+                              ? "bg-[#3D6CE1]"
                               : "bg-gray-300"
                           } ${category.required ? "opacity-50" : ""}`}
                         >
@@ -311,7 +311,7 @@ export default function CookieEinstellungenClient() {
             <div className="mt-12 text-center">
               <button
                 onClick={handleSave}
-                className="px-8 py-4 bg-[#3D6DE1] text-white rounded-full font-medium text-lg hover:bg-[#2855d6] transition-colors"
+                className="px-8 py-4 bg-[#3D6CE1] text-white rounded-full font-medium text-lg hover:bg-[#2855d6] transition-colors"
               >
                 Einstellungen speichern
               </button>
@@ -330,7 +330,7 @@ export default function CookieEinstellungenClient() {
                 Weitere Informationen zum Datenschutz finden Sie in unserer{" "}
                 <a
                   href="/datenschutz"
-                  className="text-[#3D6DE1] hover:text-[#2855d6] underline"
+                  className="text-[#3D6CE1] hover:text-[#2855d6] underline"
                 >
                   Datenschutzerklärung
                 </a>
@@ -341,7 +341,7 @@ export default function CookieEinstellungenClient() {
                 unter:{" "}
                 <a
                   href="mailto:datenschutz@nest-haus.at"
-                  className="text-[#3D6DE1] hover:text-[#2855d6] underline"
+                  className="text-[#3D6CE1] hover:text-[#2855d6] underline"
                 >
                   datenschutz@nest-haus.at
                 </a>

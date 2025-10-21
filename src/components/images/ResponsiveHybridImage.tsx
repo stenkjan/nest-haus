@@ -82,7 +82,9 @@ export default function ResponsiveHybridImage({
       const newIsMobile = isMobileUserAgent || isSmallViewport;
 
       // Only update if the state actually changes to prevent unnecessary re-renders
-      setIsMobile(current => current !== newIsMobile ? newIsMobile : current);
+      setIsMobile((current) =>
+        current !== newIsMobile ? newIsMobile : current
+      );
     };
 
     // Immediate check on mount
@@ -96,30 +98,15 @@ export default function ResponsiveHybridImage({
 
   // Show loading state only during SSR to prevent hydration mismatch
   if (!isClient) {
-    // During SSR, show placeholder with mobile-first image if critical
-    if (isCritical || isAboveFold) {
-      return (
-        <HybridBlobImage
-          path={mobilePath} // Mobile-first for SSR performance
-          alt={`${alt} - Loading`}
-          strategy="ssr"
-          isAboveFold={isAboveFold}
-          isCritical={isCritical}
-          enableCache={enableCache}
-          fallbackSrc={fallbackSrc}
-          {...props}
-        />
-      );
-    }
-
-    // For non-critical images, use desktop path during SSR to prevent hydration mismatch
+    // During SSR, default to desktop images to prevent mobile images showing on desktop
+    // In production, the client-side detection will quickly switch to mobile if needed
     return (
       <HybridBlobImage
-        path={desktopPath} // Desktop-first for non-critical images
+        path={desktopPath} // Desktop-first for SSR to prevent mobile images on desktop
         alt={`${alt} - Loading`}
         strategy="ssr"
-        isAboveFold={false}
-        isCritical={false}
+        isAboveFold={isAboveFold}
+        isCritical={isCritical}
         enableCache={enableCache}
         fallbackSrc={fallbackSrc}
         {...props}
@@ -129,7 +116,8 @@ export default function ResponsiveHybridImage({
 
   // Only render ONE image based on actual device detection
   // CRITICAL FIX: For non-critical images, ensure we don't use mobile path during initial render
-  const shouldUseMobilePath = isMobile && (isClient || isCritical || isAboveFold);
+  const shouldUseMobilePath =
+    isMobile && (isClient || isCritical || isAboveFold);
   const imagePath = shouldUseMobilePath ? mobilePath : desktopPath;
   const deviceType = shouldUseMobilePath ? "Mobile" : "Desktop";
 
@@ -138,15 +126,23 @@ export default function ResponsiveHybridImage({
 
   // Debug logging in development to verify correct path selection
   if (process.env.NODE_ENV === "development") {
-    const debugId = `${alt?.slice(0, 20)}...` || 'Unknown';
+    const debugId = `${alt?.slice(0, 20)}...` || "Unknown";
     console.group(`🖼️ ResponsiveHybridImage: ${debugId}`);
-    console.log(`🖥️ Device: ${deviceType} (width: ${typeof window !== "undefined" ? window.innerWidth : "SSR"})`);
+    console.log(
+      `🖥️ Device: ${deviceType} (width: ${typeof window !== "undefined" ? window.innerWidth : "SSR"})`
+    );
     console.log(`📱 Mobile path: ${mobilePath}`);
     console.log(`💻 Desktop path: ${desktopPath}`);
     console.log(`✅ Selected path: ${imagePath}`);
-    console.log(`🔧 Strategy: ${strategy}, Critical: ${isCritical}, AboveFold: ${isAboveFold}`);
-    console.log(`🖥️ isClient: ${isClient}, isMobile: ${isMobile}, shouldUseMobilePath: ${shouldUseMobilePath}`);
-    console.log(`📐 Aspect ratio: ${shouldUseMobilePath ? mobileAspectRatio : desktopAspectRatio}`);
+    console.log(
+      `🔧 Strategy: ${strategy}, Critical: ${isCritical}, AboveFold: ${isAboveFold}`
+    );
+    console.log(
+      `🖥️ isClient: ${isClient}, isMobile: ${isMobile}, shouldUseMobilePath: ${shouldUseMobilePath}`
+    );
+    console.log(
+      `📐 Aspect ratio: ${shouldUseMobilePath ? mobileAspectRatio : desktopAspectRatio}`
+    );
 
     // Clean up - no longer need specific nestHaus8 debug since issue is resolved
 

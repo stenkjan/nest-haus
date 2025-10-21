@@ -41,20 +41,20 @@ const Button: React.FC<ButtonProps> = ({
   const variants = {
     // Standard Buttons - all with fixed width
     primary:
-      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm box-border",
+      "bg-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border",
     secondary:
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
     // Narrow Buttons - 1/3 smaller width
     "primary-narrow":
-      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm",
+      "bg-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm",
     "secondary-narrow":
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
     "secondary-narrow-white":
       "bg-transparent border-1 border-white text-white hover:bg-white hover:text-black focus:ring-white",
     "secondary-narrow-blue":
-      "bg-transparent border-1 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500",
+      "bg-transparent border-1 border-[#3D6CE1] text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1]",
     tertiary:
-      "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500",
+      "bg-transparent border-2 border-[#3D6CE1] text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1]",
     outline:
       "border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500",
     ghost: "text-gray-600 hover:bg-gray-100 focus:ring-gray-500",
@@ -68,13 +68,13 @@ const Button: React.FC<ButtonProps> = ({
 
     // Page-Specific Buttons
     "landing-primary":
-      "bg-blue-500 text-white hover:bg-blue-500 focus:ring-blue-500 shadow-sm box-border",
+      "bg-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border",
     "landing-secondary":
       "bg-transparent border border-white text-white hover:bg-white hover:text-black focus:ring-white box-border",
     "landing-secondary-blue":
-      "bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500 box-border",
+      "bg-transparent border border-[#3D6CE1] text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1] box-border",
     "landing-secondary-blue-white":
-      "bg-white/90 text-blue-500 hover:bg-blue-500 hover:text-white focus:ring-blue-500 box-border",
+      "bg-white/90 text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1] box-border",
     configurator:
       "bg-amber-500 text-white hover:bg-amber-600 focus:ring-amber-500 shadow-md",
   };
