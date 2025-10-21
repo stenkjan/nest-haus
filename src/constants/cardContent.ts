@@ -309,7 +309,6 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Das Light-Paket bietet eine solide Grundbeleuchtung mit 12% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
         image: IMAGES.hero.nestHaus7,
-        overlayImage: IMAGES.pvModule.nest_75_fenster_overlay_light_holz,
         backgroundColor: "#121212",
     },
     {
