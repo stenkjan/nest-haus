@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [daec1425c8615213d8a13b6426cf15ee406ee838] - Tue Oct 21 09:20:16 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Adjust margin on Security Monitoring link in Admin Dashboard  - Updated the margin on the Security Monitoring link to improve layout consistency. - This change enhances the user experience by ensuring proper spacing in the admin interface.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/security/page.tsx
+
+
+---
+
 ## [e8b4c2e79f800f16c8917c8d5ff85531db12c4b6] - Mon Oct 20 15:19:04 2025 +0200
 
 **Author**: stenkjan
