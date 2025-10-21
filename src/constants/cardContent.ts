@@ -642,6 +642,38 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 ];
 
 /**
+ * PROCESS CARDS CONTENT
+ * General process/section cards for single-use on various pages
+ * Used in: Various pages (Entwurf, etc.)
+ */
+export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
+    {
+        id: 1,
+        title: "Der Auftakt",
+        subtitle: "",
+        description:
+            "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Vorentwurf, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Vorentwurf.",
+        image: IMAGES.function.nestHausEntwurfVorentwurf,
+        backgroundColor: "#FFFFFF",
+        buttons: [
+            {
+                text: "Vorentwurf kaufen",
+                variant: "primary",
+                size: "md",
+                link: "/kontakt", // Update to appropriate link
+            },
+            {
+                text: "Unsere Technik",
+                variant: "landing-secondary-blue",
+                size: "md",
+                link: "/nest-system", // Update to appropriate link
+            },
+        ],
+    },
+    // Add more process cards here as needed
+];
+
+/**
  * CATEGORY TYPE
  * Type-safe category keys
  */
@@ -654,7 +686,8 @@ export type ContentCategory =
     | "kontaktformular"
     | "ablaufSteps"
     | "planungspakete"
-    | "fullImageCards";
+    | "fullImageCards"
+    | "processCards";
 
 /**
  * MASTER CONTENT LOOKUP
@@ -677,6 +710,7 @@ export const CARD_CONTENT_BY_CATEGORY: Record<
     ablaufSteps: ABLAUF_STEPS_CONTENT,
     planungspakete: PLANUNGSPAKETE_CONTENT,
     fullImageCards: FULL_IMAGE_CARDS_CONTENT,
+    processCards: PROCESS_CARDS_CONTENT,
 };
 
 /**

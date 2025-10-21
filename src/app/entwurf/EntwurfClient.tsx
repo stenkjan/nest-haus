@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui";
 import Footer from "@/components/Footer";
+import { UnifiedContentCard } from "@/components/cards";
+import { IMAGES } from "@/constants/images";
 
 export default function EntwurfClient() {
   return (
@@ -17,29 +17,41 @@ export default function EntwurfClient() {
         style={{ height: "var(--navbar-height, 3.5rem)" }}
       ></div>
 
-      {/* Simple content structure */}
-      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
-        <div className="text-center">
-          <h1 className="h1-secondary text-white mb-6">Entwurf</h1>
-          <h3 className="h3-secondary text-nest-gray mb-12">
-            Dein Hausentwurf beginnt hier.
-          </h3>
-
-          {/* Simple navigation buttons */}
-          <div className="flex gap-4 justify-center">
-            <Link href="/nest-system">
-              <Button variant="primary" size="md">
-                Zum nächsten Schritt
-              </Button>
-            </Link>
-            <Link href="/konfigurator">
-              <Button variant="landing-secondary" size="md">
-                Jetzt konfigurieren
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
+      {/* Content Section */}
+      <section className="w-full py-8 md:py-16 bg-white">
+        <UnifiedContentCard
+          layout="video"
+          variant="static"
+          heightMode="tall"
+          maxWidth={true}
+          showInstructions={false}
+          customData={[
+            {
+              id: 1,
+              title: "Der Auftakt",
+              subtitle: "",
+              description:
+                "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Vorentwurf, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Vorentwurf.",
+              image: IMAGES.function.nestHausEntwurfVorentwurf,
+              backgroundColor: "#F4F4F4",
+              buttons: [
+                {
+                  text: "Vorentwurf kaufen",
+                  variant: "primary",
+                  size: "xs",
+                  link: "/kontakt",
+                },
+                {
+                  text: "Unsere Technik",
+                  variant: "landing-secondary-blue",
+                  size: "xs",
+                  link: "/nest-system",
+                },
+              ],
+            },
+          ]}
+        />
+      </section>
 
       <Footer />
     </div>
