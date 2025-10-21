@@ -22,6 +22,21 @@ export interface AdminNotificationData extends CustomerInquiryData {
   userAgent?: string;
 }
 
+export interface PaymentConfirmationData {
+  inquiryId: string;
+  name: string;
+  email: string;
+  paymentAmount: number;
+  paymentCurrency: string;
+  paymentMethod: string;
+  configurationData?: unknown;
+}
+
+export interface AdminPaymentNotificationData extends PaymentConfirmationData {
+  paymentIntentId: string;
+  stripeCustomerId: string;
+}
+
 export class EmailService {
   private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
   private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nest-haus.at';
@@ -806,6 +821,327 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
       </ul>
       ${totalPrice}
     </div>`;
+  }
+
+  /**
+   * Send payment confirmation email to customer
+   */
+  static async sendPaymentConfirmation(data: PaymentConfirmationData): Promise<boolean> {
+    try {
+      console.log(`💳 Sending payment confirmation email to ${data.email}`);
+
+      const subject = 'Zahlungsbestätigung - NEST-Haus Konfiguration';
+      const htmlContent = this.generatePaymentConfirmationHTML(data);
+      const textContent = this.generatePaymentConfirmationText(data);
+
+      const result = await resend.emails.send({
+        from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        to: data.email,
+        subject,
+        html: htmlContent,
+        text: textContent,
+      });
+
+      if (result.error) {
+        console.error('❌ Payment confirmation email failed:', result.error);
+        return false;
+      }
+
+      console.log('✅ Payment confirmation email sent successfully:', result.data?.id);
+      return true;
+
+    } catch (error) {
+      console.error('❌ Error sending payment confirmation email:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Send payment notification to admin
+   */
+  static async sendAdminPaymentNotification(data: AdminPaymentNotificationData): Promise<boolean> {
+    try {
+      console.log(`💳 Sending admin payment notification for inquiry ${data.inquiryId}`);
+
+      const subject = `💰 Zahlung erhalten - NEST-Haus Anfrage ${data.inquiryId}`;
+      const htmlContent = this.generateAdminPaymentNotificationHTML(data);
+      const textContent = this.generateAdminPaymentNotificationText(data);
+
+      const result = await resend.emails.send({
+        from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        to: [this.ADMIN_EMAIL, this.SALES_EMAIL],
+        subject,
+        html: htmlContent,
+        text: textContent,
+      });
+
+      if (result.error) {
+        console.error('❌ Admin payment notification failed:', result.error);
+        return false;
+      }
+
+      console.log('✅ Admin payment notification sent successfully:', result.data?.id);
+      return true;
+
+    } catch (error) {
+      console.error('❌ Error sending admin payment notification:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Generate payment confirmation HTML for customer
+   */
+  private static generatePaymentConfirmationHTML(data: PaymentConfirmationData): string {
+    const formattedAmount = this.formatPrice(data.paymentAmount);
+    const paymentMethodText = this.getPaymentMethodText(data.paymentMethod);
+    const configSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
+
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Zahlungsbestätigung - NEST-Haus</title>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .email-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .content { margin-bottom: 30px; }
+        .payment-details, .customer-details { margin-bottom: 20px; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .label { font-weight: bold; }
+        .value { text-align: right; }
+        .next-steps, .action-required { background: #f8f9fa; padding: 15px; border-radius: 5px; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="email-container">
+        <div class="header">
+          <h1>✅ Zahlung erfolgreich</h1>
+          <p class="subtitle">Vielen Dank für Ihre Zahlung, ${data.name}!</p>
+        </div>
+
+        <div class="content">
+          <div class="payment-details">
+            <h2>💳 Zahlungsdetails</h2>
+            <div class="detail-row">
+              <span class="label">Betrag:</span>
+              <span class="value">${formattedAmount}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Zahlungsmethode:</span>
+              <span class="value">${paymentMethodText}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Anfrage-ID:</span>
+              <span class="value">${data.inquiryId}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Datum:</span>
+              <span class="value">${new Date().toLocaleDateString('de-DE')}</span>
+            </div>
+          </div>
+
+          ${configSummary}
+
+          <div class="next-steps">
+            <h3>🚀 Wie geht es weiter?</h3>
+            <p>Wir haben Ihre Zahlung erhalten und werden uns innerhalb der nächsten 24 Stunden bei Ihnen melden, um die nächsten Schritte zu besprechen.</p>
+            <p>Bei Fragen können Sie uns jederzeit kontaktieren:</p>
+            <ul>
+              <li>📧 E-Mail: ${this.SALES_EMAIL}</li>
+              <li>📞 Telefon: +43 123 456 789</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p>Mit freundlichen Grüßen,<br>Ihr NEST-Haus Team</p>
+          <p class="small">Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht direkt auf diese E-Mail.</p>
+        </div>
+      </div>
+    </body>
+    </html>`;
+  }
+
+  /**
+   * Generate payment confirmation text for customer
+   */
+  private static generatePaymentConfirmationText(data: PaymentConfirmationData): string {
+    const formattedAmount = this.formatPrice(data.paymentAmount);
+    const paymentMethodText = this.getPaymentMethodText(data.paymentMethod);
+
+    return `
+ZAHLUNGSBESTÄTIGUNG - NEST-HAUS
+
+Vielen Dank für Ihre Zahlung, ${data.name}!
+
+ZAHLUNGSDETAILS:
+- Betrag: ${formattedAmount}
+- Zahlungsmethode: ${paymentMethodText}
+- Anfrage-ID: ${data.inquiryId}
+- Datum: ${new Date().toLocaleDateString('de-DE')}
+
+WIE GEHT ES WEITER?
+Wir haben Ihre Zahlung erhalten und werden uns innerhalb der nächsten 24 Stunden bei Ihnen melden, um die nächsten Schritte zu besprechen.
+
+Bei Fragen können Sie uns jederzeit kontaktieren:
+- E-Mail: ${this.SALES_EMAIL}
+- Telefon: +43 123 456 789
+
+Mit freundlichen Grüßen,
+Ihr NEST-Haus Team
+
+Diese E-Mail wurde automatisch generiert.`;
+  }
+
+  /**
+   * Generate admin payment notification HTML
+   */
+  private static generateAdminPaymentNotificationHTML(data: AdminPaymentNotificationData): string {
+    const formattedAmount = this.formatPrice(data.paymentAmount);
+    const paymentMethodText = this.getPaymentMethodText(data.paymentMethod);
+    const configSummary = data.configurationData ? this.generateConfigurationSummary(data.configurationData) : '';
+
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Zahlung erhalten - NEST-Haus Admin</title>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .email-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .content { margin-bottom: 30px; }
+        .payment-details, .customer-details { margin-bottom: 20px; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .label { font-weight: bold; }
+        .value { text-align: right; }
+        .next-steps, .action-required { background: #f8f9fa; padding: 15px; border-radius: 5px; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="email-container">
+        <div class="header">
+          <h1>💰 Zahlung erhalten</h1>
+          <p class="subtitle">Neue Zahlung für NEST-Haus Konfiguration</p>
+        </div>
+
+        <div class="content">
+          <div class="customer-details">
+            <h2>👤 Kundendetails</h2>
+            <div class="detail-row">
+              <span class="label">Name:</span>
+              <span class="value">${data.name}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">E-Mail:</span>
+              <span class="value">${data.email}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Anfrage-ID:</span>
+              <span class="value">${data.inquiryId}</span>
+            </div>
+          </div>
+
+          <div class="payment-details">
+            <h2>💳 Zahlungsdetails</h2>
+            <div class="detail-row">
+              <span class="label">Betrag:</span>
+              <span class="value">${formattedAmount}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Zahlungsmethode:</span>
+              <span class="value">${paymentMethodText}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Stripe Payment Intent:</span>
+              <span class="value">${data.paymentIntentId}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Stripe Customer:</span>
+              <span class="value">${data.stripeCustomerId}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Datum:</span>
+              <span class="value">${new Date().toLocaleDateString('de-DE')}</span>
+            </div>
+          </div>
+
+          ${configSummary}
+
+          <div class="action-required">
+            <h3>⚡ Nächste Schritte</h3>
+            <p>Bitte kontaktieren Sie den Kunden innerhalb von 24 Stunden, um die nächsten Schritte zu besprechen.</p>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p class="small">Automatische Benachrichtigung vom NEST-Haus System</p>
+        </div>
+      </div>
+    </body>
+    </html>`;
+  }
+
+  /**
+   * Generate admin payment notification text
+   */
+  private static generateAdminPaymentNotificationText(data: AdminPaymentNotificationData): string {
+    const formattedAmount = this.formatPrice(data.paymentAmount);
+    const paymentMethodText = this.getPaymentMethodText(data.paymentMethod);
+
+    return `
+ZAHLUNG ERHALTEN - NEST-HAUS ADMIN
+
+Neue Zahlung für NEST-Haus Konfiguration
+
+KUNDENDETAILS:
+- Name: ${data.name}
+- E-Mail: ${data.email}
+- Anfrage-ID: ${data.inquiryId}
+
+ZAHLUNGSDETAILS:
+- Betrag: ${formattedAmount}
+- Zahlungsmethode: ${paymentMethodText}
+- Stripe Payment Intent: ${data.paymentIntentId}
+- Stripe Customer: ${data.stripeCustomerId}
+- Datum: ${new Date().toLocaleDateString('de-DE')}
+
+NÄCHSTE SCHRITTE:
+Bitte kontaktieren Sie den Kunden innerhalb von 24 Stunden, um die nächsten Schritte zu besprechen.
+
+Automatische Benachrichtigung vom NEST-Haus System`;
+  }
+
+  /**
+   * Format price for display
+   */
+  private static formatPrice(amount: number): string {
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(amount / 100); // Convert from cents
+  }
+
+  /**
+   * Convert payment method to readable text
+   */
+  private static getPaymentMethodText(method: string): string {
+    switch (method) {
+      case 'card': return 'Kreditkarte';
+      case 'sepa_debit': return 'SEPA-Lastschrift';
+      case 'sofort': return 'Sofort';
+      case 'giropay': return 'Giropay';
+      case 'eps': return 'EPS';
+      case 'bancontact': return 'Bancontact';
+      case 'ideal': return 'iDEAL';
+      default: return method;
+    }
   }
 
   /**

@@ -29,6 +29,11 @@ const responsibleBorderColors: Record<string, string> = {
   ALLE: "rgba(107, 114, 128, 1)",
 };
 
+// Helper function to detect true milestones (M, P, ZIEL, #.)
+const isMilestone = (taskId: string): boolean => {
+  return /^([Mm]\d+|[Pp]\d+|[Mm]x|[Pp]x|\d+\.|ZIEL)$/.test(taskId);
+};
+
 export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<Chart | null>(null);
@@ -132,17 +137,19 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
                     font: function (context) {
                       const taskIndex = context.index;
                       const task = tasks[taskIndex];
-                      // Make milestone labels bold
+                      // Only make milestone IDs bold (M, P, ZIEL, #.)
+                      const shouldBeBold = task && isMilestone(task.taskId);
                       return {
-                        weight: task?.milestone ? "bold" : "normal",
-                        size: task?.milestone ? 13 : 12,
+                        weight: shouldBeBold ? "bold" : "normal",
+                        size: 12,
                       };
                     },
                     color: function (context) {
                       const taskIndex = context.index;
                       const task = tasks[taskIndex];
                       // Make milestone labels more prominent
-                      return task?.milestone ? "#1e40af" : "#1f2937";
+                      const shouldBeBold = task && isMilestone(task.taskId);
+                      return shouldBeBold ? "#1e40af" : "#1f2937";
                     },
                   },
                   grid: {
@@ -244,7 +251,7 @@ export default function GanttChart({ tasks, onTaskClick }: GanttChartProps) {
   }, [tasks, onTaskClick, router]);
 
   return (
-    <div className="chart-container relative w-full h-96 lg:h-[60vh] max-h-[800px] overflow-x-auto">
+    <div className="chart-container relative w-full h-[70vh] lg:h-[75vh] min-h-[600px] max-h-[1000px] overflow-x-auto">
       <canvas ref={canvasRef} />
     </div>
   );

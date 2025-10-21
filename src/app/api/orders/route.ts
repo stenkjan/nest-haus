@@ -5,7 +5,7 @@ import { prisma } from '../../../lib/prisma'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { items, orderDetails, totalPrice } = body
+    const { items, orderDetails, totalPrice, paymentIntentId } = body
 
     if (!items || items.length === 0) {
       return NextResponse.json(
@@ -20,6 +20,10 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
+
+    // Determine payment status based on whether payment was made
+    const paymentStatus = paymentIntentId ? 'PAID' : 'PENDING';
+    const inquiryStatus = paymentIntentId ? 'CONVERTED' : 'NEW';
 
     // Create customer inquiry for the order
     const inquiry = await prisma.customerInquiry.create({
@@ -37,8 +41,14 @@ export async function POST(request: Request) {
           }
         },
         totalPrice,
-        status: 'NEW',
-        preferredContact: 'EMAIL'
+        status: inquiryStatus,
+        preferredContact: 'EMAIL',
+        // Payment-related fields
+        paymentIntentId: paymentIntentId || null,
+        paymentStatus,
+        paymentAmount: paymentIntentId ? totalPrice : null,
+        paymentCurrency: paymentIntentId ? 'eur' : null,
+        paidAt: paymentIntentId ? new Date() : null,
       }
     })
 
@@ -73,8 +83,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Failed to create order:', error)
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: 'Failed to create order',
         timestamp: Date.now()
       },

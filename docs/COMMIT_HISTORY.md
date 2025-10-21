@@ -4,6 +4,51 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [30f42a62c2621256a95e8aecb2cc6320c0c5cfaa] - Tue Oct 21 15:37:17 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Enhance milestone management logic in MilestonesManager  - Updated milestone ID generation to only consider M-numbered milestones, improving accuracy in chronological ordering. - Implemented renumbering of subsequent milestones when a new milestone is inserted, ensuring proper task ID synchronization. - Refactored API response handling to accommodate changes in the returned data structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
+
+
+---
+
+## [8416e0ceb81995a955a7e0ca2ce360199732d006] - Tue Oct 21 15:17:33 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+- src/app/layout.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [16475adb00a960ff093431c524d4391bf65c34b6] - Tue Oct 21 14:58:06 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [5435cd9e1ae7e57a5b0e0e39a6538cb58ffd4b55] - Tue Oct 21 14:45:36 2025 +0200
 
 **Author**: stenkjan
