@@ -923,7 +923,8 @@ export default function UnifiedContentCard({
           className="w-full rounded-3xl shadow-lg overflow-hidden"
           style={{
             backgroundColor: "#F4F4F4",
-            aspectRatio: getUpperCardAspectRatio(),
+            aspectRatio:
+              screenWidth >= 1024 ? getUpperCardAspectRatio() : "auto",
           }}
         >
           <div className="flex flex-col lg:flex-row items-stretch h-full">
@@ -962,10 +963,10 @@ export default function UnifiedContentCard({
 
             {/* Right Section: Description */}
             <div
-              className="flex flex-col justify-center p-8 lg:p-12 lg:w-1/2"
+              className="flex flex-col justify-center pb-8 px-8 lg:p-12 lg:w-1/2"
               style={{ backgroundColor: "#F4F4F4" }}
             >
-              <p className="p-primary text-gray-600 leading-relaxed whitespace-pre-line">
+              <p className="p-primary textblack leading-relaxed whitespace-pre-line">
                 {getCardText(mainCard, "description")}
               </p>
             </div>
@@ -989,27 +990,27 @@ export default function UnifiedContentCard({
             >
               {/* Icon */}
               {card.iconNumber && (
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-3 md:mb-4">
                   <StepIcon
                     stepNumber={card.iconNumber}
-                    className="w-12 h-12 md:w-14 md:h-14"
+                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-14 lg:h-14 xl:w-20 xl:h-20"
                   />
                 </div>
               )}
               {card.icon && (
-                <div className="flex justify-center mb-4 w-12 h-12 md:w-14 md:h-14">
+                <div className="flex justify-center mb-3 md:mb-4 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-14 lg:h-14 xl:w-20 xl:h-20">
                   {card.icon}
                 </div>
               )}
 
               {/* Title */}
-              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-1">
+              <h3 className="p-primary text-black font-bold mb-1">
                 {getCardText(card, "title")}
               </h3>
 
               {/* Subtitle */}
               {card.subtitle && (
-                <p className="text-sm md:text-base text-gray-600">
+                <p className="text-xs md:text-sm text-black max-lg:hidden">
                   {getCardText(card, "subtitle")}
                 </p>
               )}
