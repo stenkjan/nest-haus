@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f121a092299b63cb5699a30e3db24b609081d8e5] - Tue Oct 21 11:59:11 2025 +0200
+
+**Author**: stenkjan
+**Message**: `fix: Adjust aspect ratio and styling in UnifiedContentCard component  - Updated aspect ratio logic to set to "auto" for screen widths below 1024px, enhancing responsiveness. - Modified padding and margin for description and icon sections to improve layout consistency. - Changed text color for better visibility and alignment with design specifications.  These changes enhance the user experience and maintainability of the UnifiedContentCard component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [9d7ef5af9b09b773eefd3929717b3e83c6c76c5b] - Tue Oct 21 11:28:01 2025 +0200
 
 **Author**: stenkjan
