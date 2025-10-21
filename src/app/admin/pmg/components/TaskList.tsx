@@ -420,8 +420,9 @@ export default function TaskList({
   };
 
   const isMilestone = (taskId: string) => {
-    // Detect milestone patterns like "1.", "2.", "M1", "P1", etc.
-    return /^(\d+\.|M\d+|P\d+|Milestone|MILESTONE|Phase|PHASE)/.test(taskId);
+    // Detect milestone patterns: "M1", "Mx", "P1", "Px", "ZIEL", "1.", "2."
+    // But NOT subtasks like "1.1", "1.2", etc.
+    return /^([Mm]\d+|[Pp]\d+|[Mm]x|[Pp]x|\d+\.|ZIEL)$/.test(taskId);
   };
 
   const isEditableId = (taskId: string) => {

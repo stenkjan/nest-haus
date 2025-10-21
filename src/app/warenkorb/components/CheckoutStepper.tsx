@@ -29,6 +29,8 @@ import { CHECKOUT_STEPS } from "@/app/warenkorb/steps";
 import { Button } from "@/components/ui";
 // Overlay components for warenkorb preview
 import PvModuleOverlay from "@/app/konfigurator/components/PvModuleOverlay";
+// Payment components
+import PaymentModal from "@/components/payments/PaymentModal";
 
 interface CheckoutStepperProps {
   items: (CartItem | ConfigurationCartItem)[];
@@ -115,6 +117,10 @@ export default function CheckoutStepper({
       return selectedPlan;
     })()
   );
+
+  // Payment modal state
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [_paymentError, setPaymentError] = useState<string | null>(null);
 
   useEffect(() => {
     // Sync with configurator's planungspaket when it changes, otherwise use cart item
@@ -2495,17 +2501,19 @@ export default function CheckoutStepper({
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
+              <div className="flex justify-center mt-6">
                 <button
                   type="button"
                   onClick={() => {
-                    // Trigger alpha test Step 3 (feedback phase)
+                    // Check if this is an alpha test
                     const isAlphaTest =
                       new URLSearchParams(window.location.search).get(
                         "alpha-test"
                       ) === "true" ||
                       localStorage.getItem("nest-haus-test-session-id");
+
                     if (isAlphaTest) {
+                      // Trigger alpha test Step 3 (feedback phase)
                       localStorage.setItem(
                         "nest-haus-test-purchase-completed",
                         "true"
@@ -2513,34 +2521,15 @@ export default function CheckoutStepper({
                       window.dispatchEvent(
                         new CustomEvent("alpha-test-purchase-completed")
                       );
-                    }
-                    // TODO: Add actual Apple Pay integration here
-                  }}
-                  className="bg-black text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-gray-800 transition-colors"
-                >
-                  Mit Apple Pay bezahlen
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    // Trigger alpha test Step 3 (feedback phase)
-                    const isAlphaTest =
-                      new URLSearchParams(window.location.search).get(
-                        "alpha-test"
-                      ) === "true" ||
-                      localStorage.getItem("nest-haus-test-session-id");
-                    if (isAlphaTest) {
-                      localStorage.setItem(
-                        "nest-haus-test-purchase-completed",
-                        "true"
-                      );
-                      window.dispatchEvent(
-                        new CustomEvent("alpha-test-purchase-completed")
-                      );
-                    }
-                    // Call the original scroll to contact function
-                    if (onScrollToContact) {
-                      onScrollToContact();
+
+                      // Call the original scroll to contact function for alpha test
+                      if (onScrollToContact) {
+                        onScrollToContact();
+                      }
+                    } else {
+                      // Production flow: Open Stripe payment modal
+                      setIsPaymentModalOpen(true);
+                      setPaymentError(null);
                     }
                   }}
                   className="bg-[#3D6CE1] text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
@@ -2574,6 +2563,65 @@ export default function CheckoutStepper({
           )}
         </div>
       </div>
+
+      {/* Payment Modal */}
+      {isPaymentModalOpen && (
+        <PaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          amount={getPaymentAmount()}
+          currency="eur"
+          customerEmail={getCustomerEmail()}
+          customerName={getCustomerName()}
+          inquiryId={undefined} // Will be created during payment process
+          onSuccess={handlePaymentSuccess}
+          onError={handlePaymentError}
+        />
+      )}
     </section>
   );
+
+  // Helper functions for payment
+  function getPaymentAmount(): number {
+    const paymentMode = process.env.PAYMENT_MODE || "deposit";
+    const depositAmount = parseInt(process.env.DEPOSIT_AMOUNT || "50000"); // 500 EUR in cents
+
+    if (paymentMode === "full") {
+      return getCartTotal() * 100; // Convert to cents
+    } else {
+      return depositAmount; // Already in cents
+    }
+  }
+
+  function getCustomerEmail(): string {
+    // Try to get email from existing inquiry or use placeholder
+    const configItem = items.find((it) => "nest" in it && it.nest) as
+      | ConfigurationCartItem
+      | undefined;
+    return configItem?.sessionId ? "kunde@nest-haus.at" : "kunde@nest-haus.at"; // TODO: Get from form
+  }
+
+  function getCustomerName(): string {
+    return "NEST-Haus Kunde"; // TODO: Get from form
+  }
+
+  function handlePaymentSuccess(paymentIntentId: string) {
+    console.log("✅ Payment successful:", paymentIntentId);
+    setIsPaymentModalOpen(false);
+    setPaymentError(null);
+
+    // Trigger alpha test completion event for consistency
+    window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));
+
+    // Scroll to contact form or show success message
+    if (onScrollToContact) {
+      onScrollToContact();
+    }
+  }
+
+  function handlePaymentError(error: string) {
+    console.error("❌ Payment failed:", error);
+    setPaymentError(error);
+    // Modal stays open to show error state
+  }
 }

@@ -53,12 +53,11 @@ export default function MilestonesManager() {
 
       const data = await response.json();
       // Filter only milestone tasks - require milestone field to be true
-      // AND taskId to match milestone patterns (M1, M2, P1, P2, ZIEL, 1., 2., etc. but NOT subtasks like 1.1, 1.2)
+      // AND taskId to match milestone patterns (M1, M2, Mx, P1, P2, Px, ZIEL, 1., 2., etc. but NOT subtasks like 1.1, 1.2)
       const milestoneTasks = (data.tasks || []).filter(
         (task: ProjectTask) =>
           task.milestone === true &&
-          (/^(M\d+|P\d+|\d+\.)$/.test(task.taskId.trim()) ||
-            task.taskId.trim() === "ZIEL")
+          /^([Mm]\d+|[Pp]\d+|[Mm]x|[Pp]x|\d+\.|ZIEL)$/.test(task.taskId.trim())
       );
       setMilestones(milestoneTasks);
     } catch (err) {

@@ -130,6 +130,16 @@ model CustomerInquiry {
   adminNotes        String?
   followUpDate      DateTime?
   assignedTo        String?
+  
+  // Payment-related fields
+  paymentIntentId   String?       // Stripe Payment Intent ID
+  paymentStatus     PaymentStatus @default(PENDING)
+  paymentMethod     String?       // card, bank_transfer, etc.
+  stripeSessionId   String?       // Stripe Checkout Session ID
+  paymentAmount     Int?          // Amount actually paid (may differ from totalPrice)
+  paymentCurrency   String?       @default("eur")
+  paidAt            DateTime?     // When payment was completed
+  
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
 
@@ -204,6 +214,15 @@ enum ContactMethod {
   EMAIL
   PHONE
   WHATSAPP
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
 }
 
 model UsabilityTest {
