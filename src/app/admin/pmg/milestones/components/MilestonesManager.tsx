@@ -237,7 +237,7 @@ export default function MilestonesManager() {
 
       const result = await response.json();
       // The API returns { task: {...} }, not the task directly
-      const createdMilestone = result.task || result;
+      const _createdMilestone = result.task || result;
 
       // Check if we need to renumber subsequent milestones
       // If the new milestone was inserted in the middle, renumber all subsequent M-milestones
