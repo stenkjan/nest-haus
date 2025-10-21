@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [39898c48a70554798a935ef23c04bd167d7b768b] - Tue Oct 21 13:45:30 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: Remove BrightnessOverlay component to streamline codebase  - Deleted the BrightnessOverlay component to reduce complexity and improve maintainability. - This change aligns with the ongoing effort to eliminate unused components and enhance overall performance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/BrightnessOverlay.tsx
+
+
+---
+
 ## [20a5acb6d51798e2b049e8134dd28e2c8c8aa7fa] - Tue Oct 21 13:20:54 2025 +0200
 
 **Author**: stenkjan
