@@ -51,12 +51,18 @@ const paymentElementOptions = {
   layout: {
     type: "tabs" as const, // Show payment methods as tabs for better visibility
     defaultCollapsed: false,
+    radios: false, // Use tabs instead of radio buttons for better UX
+    spacedAccordionItems: true, // Better spacing for multiple methods
   },
   fields: {
     billingDetails: {
       name: "auto" as const,
       email: "auto" as const,
     },
+  },
+  wallets: {
+    applePay: "auto" as const,
+    googlePay: "auto" as const,
   },
 };
 
@@ -419,8 +425,8 @@ export default function StripeCheckoutForm({
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="w-full">
+      <div className="bg-white rounded-lg p-6">
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Sichere Zahlung
