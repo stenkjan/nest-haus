@@ -10,7 +10,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 // Initialize Stripe with error handling
-let stripePromise: Promise<any> | null = null;
+let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null = null;
 
 const getStripePromise = () => {
   if (!stripePromise) {
@@ -62,9 +62,9 @@ const paymentElementOptions = {
 
 // Payment form component (inside Elements provider)
 function PaymentForm({
-  clientSecret,
-  customerEmail,
-  customerName,
+  clientSecret: _clientSecret,
+  customerEmail: _customerEmail,
+  customerName: _customerName,
   amount,
   currency,
   onSuccess,

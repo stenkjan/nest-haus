@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { EmailService } from '@/lib/EmailService';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2024-06-20.acacia',
+    apiVersion: '2025-09-30.clover',
 });
 
 // Validation schema for payment confirmation

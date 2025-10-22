@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2024-06-20.acacia', // Use stable API version instead of preview
+    apiVersion: '2025-09-30.clover', // Keep current API version for compatibility
 });
 
 // Validation schema for payment intent creation
@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        let { amount, currency, customerEmail, customerName, inquiryId, metadata } = validation.data;
+        let { amount } = validation.data;
+        const { currency, customerEmail, customerName, inquiryId, metadata } = validation.data;
 
         // Override amount with server-side configuration for testing
         const paymentMode = process.env.PAYMENT_MODE || "deposit";
@@ -79,16 +80,10 @@ export async function POST(request: NextRequest) {
                 enabled: true,
                 allow_redirects: 'always', // Allow bank redirects like EPS, Sofort
             },
-            // Add both shipping and billing addresses for better country detection
+            // Add shipping address for better country detection
             shipping: {
                 address: {
                     country: 'AT', // Austria - helps Stripe show EPS, Sofort, etc.
-                },
-                name: customerName || 'NEST-Haus Customer',
-            },
-            billing: {
-                address: {
-                    country: 'AT', // Reinforces Austrian location for payment method filtering
                 },
                 name: customerName || 'NEST-Haus Customer',
             },
