@@ -642,6 +642,142 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 ];
 
 /**
+ * VIDEO BACKGROUND CARDS CONTENT
+ * Overlay-text cards with video backgrounds - minimal text
+ * Used in: Various pages with video-driven content
+ */
+export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
+    {
+        id: 1,
+        title: "Moderne Architektur trifft Natur",
+        subtitle: "",
+        description: "Zeitloses Design fürs Leben",
+        video: IMAGES.videos.videoCard01,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 2,
+        title: "Flexibel wohnen nach Maß",
+        subtitle: "",
+        description: "Dein Zuhause wächst mit",
+        video: IMAGES.videos.videoCard02,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 3,
+        title: "Nachhaltigkeit trifft Innovation",
+        subtitle: "",
+        description: "Grünes Bauen für morgen",
+        video: IMAGES.videos.videoCard03,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 4,
+        title: "Transparenz durch großzügige Verglasung",
+        subtitle: "",
+        description: "Licht durchflutet jeden Raum",
+        video: IMAGES.videos.videoCard04,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 5,
+        title: "Natürliche Materialien erleben",
+        subtitle: "",
+        description: "Holz schafft warme Atmosphäre",
+        video: IMAGES.videos.videoCard05,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 6,
+        title: "Intelligente Raumkonzepte entdecken",
+        subtitle: "",
+        description: "Jeder Quadratmeter zählt hier",
+        video: IMAGES.videos.videoCard06,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 7,
+        title: "Effizienz im modernen Wohnbau",
+        subtitle: "",
+        description: "Schnell gebaut trotz Qualität",
+        video: IMAGES.videos.videoCard07,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 8,
+        title: "Energieautark in die Zukunft",
+        subtitle: "",
+        description: "Photovoltaik macht dich unabhängig",
+        video: IMAGES.videos.videoCard08,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 9,
+        title: "Minimalistisch und funktional leben",
+        subtitle: "",
+        description: "Weniger ist oft deutlich mehr",
+        video: IMAGES.videos.videoCard09,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 10,
+        title: "Natur als ständiger Begleiter",
+        subtitle: "",
+        description: "Draußen und drinnen verschmelzen",
+        video: IMAGES.videos.videoCard10,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 11,
+        title: "Modulares Bauen neu gedacht",
+        subtitle: "",
+        description: "Flexibel wie dein Lebensstil",
+        video: IMAGES.videos.videoCard11,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 12,
+        title: "Präzision durch seriellen Bau",
+        subtitle: "",
+        description: "Qualität kommt aus Perfektion",
+        video: IMAGES.videos.videoCard12,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 13,
+        title: "Wohnraum für jede Lebenslage",
+        subtitle: "",
+        description: "Anpassbar wie du es brauchst",
+        video: IMAGES.videos.videoCard13,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 14,
+        title: "Hochwertige Details im Fokus",
+        subtitle: "",
+        description: "Verarbeitung auf höchstem Niveau",
+        video: IMAGES.videos.videoCard14,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 15,
+        title: "Zeitlose Eleganz vereint Komfort",
+        subtitle: "",
+        description: "Stil bleibt über Jahrzehnte",
+        video: IMAGES.videos.videoCard15,
+        backgroundColor: "#121212",
+    },
+    {
+        id: 16,
+        title: "Zukunftssicher und wertbeständig",
+        subtitle: "",
+        description: "Investition in kommende Generationen",
+        video: IMAGES.videos.videoCard16,
+        backgroundColor: "#121212",
+    },
+];
+
+/**
  * PROCESS CARDS CONTENT
  * General process/section cards for single-use on various pages
  * Used in: Various pages (Entwurf, etc.)
@@ -686,7 +822,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
                 link: "/kontakt",
             },
             {
-                text: "Wie funktioniert's?",
+                text: "Wie funktionierts?",
                 variant: "landing-secondary-blue",
                 size: "xs",
                 link: "/nest-system",
@@ -733,6 +869,7 @@ export type ContentCategory =
     | "ablaufSteps"
     | "planungspakete"
     | "fullImageCards"
+    | "videoBackgroundCards"
     | "processCards";
 
 /**
@@ -756,6 +893,7 @@ export const CARD_CONTENT_BY_CATEGORY: Record<
     ablaufSteps: ABLAUF_STEPS_CONTENT,
     planungspakete: PLANUNGSPAKETE_CONTENT,
     fullImageCards: FULL_IMAGE_CARDS_CONTENT,
+    videoBackgroundCards: VIDEO_BACKGROUND_CARDS_CONTENT,
     processCards: PROCESS_CARDS_CONTENT,
 };
 

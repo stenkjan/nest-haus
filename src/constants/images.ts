@@ -47,6 +47,24 @@ export const IMAGES = {
     videos: {
         nestHausTransport: '11-NEST-Haus-Module-Transport-Animation-Schema',
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
+
+        // Video background cards (16 videos)
+        videoCard01: '350-nest-haus-video-cards-01',
+        videoCard02: '351-nest-haus-video-cards-02',
+        videoCard03: '352-nest-haus-video-cards-03',
+        videoCard04: '353-nest-haus-video-cards-04',
+        videoCard05: '354-nest-haus-video-cards-05',
+        videoCard06: '355-nest-haus-video-cards-06',
+        videoCard07: '356-nest-haus-video-cards-07',
+        videoCard08: '357-nest-haus-video-cards-08',
+        videoCard09: '358-nest-haus-video-cards-09',
+        videoCard10: '359-nest-haus-video-cards-10',
+        videoCard11: '360-nest-haus-video-cards-11',
+        videoCard12: '361-nest-haus-video-cards-12',
+        videoCard13: '362-nest-haus-video-cards-13',
+        videoCard14: '363-nest-haus-video-cards-14',
+        videoCard15: '364-nest-haus-video-cards-15',
+        videoCard16: '365-nest-haus-video-cards-16',
     },
 
 

@@ -58,7 +58,8 @@ export type CardLayout =
   | "image-only" // Only image, no text overlay
   | "video" // Video card (16:9 ratio)
   | "text-icon" // Square card with text and optional icon, no image
-  | "process-detail"; // Large horizontal card on top + 5 square cards below for checkout steps
+  | "process-detail" // Large horizontal card on top + 5 square cards below for checkout steps
+  | "overlay-text"; // Full image background with left-aligned text overlay and optional button
 
 /**
  * Style Types for UnifiedContentCard
@@ -82,6 +83,11 @@ export type HeightMode = "standard" | "tall";
 export type ImagePaddingMode = "none" | "standard";
 
 /**
+ * Aspect Ratio Types for overlay-text layout
+ */
+export type AspectRatio = "2x1" | "1x1";
+
+/**
  * Props for UnifiedContentCard
  */
 export interface UnifiedContentCardProps {
@@ -91,6 +97,7 @@ export interface UnifiedContentCardProps {
   variant?: CardVariant;
   heightMode?: HeightMode;
   imagePadding?: ImagePaddingMode; // Controls image padding for tall cards
+  aspectRatio?: AspectRatio; // Controls aspect ratio for overlay-text layout (2x1 or 1x1)
 
   // Content source (category or custom data)
   category?: ContentCategory;
@@ -142,6 +149,7 @@ export default function UnifiedContentCard({
   variant = "responsive",
   heightMode = "standard",
   imagePadding = "none", // Default: no padding (edge-to-edge)
+  aspectRatio = "2x1", // Default: 2x1 aspect ratio for overlay-text
   category,
   customData,
   title = "",
@@ -267,6 +275,50 @@ export default function UnifiedContentCard({
           // Mobile: fixed width, taller height
           setCardsPerView(1.1);
           setCardWidth(312);
+        }
+      } else if (layout === "overlay-text") {
+        // Overlay-text layout: same HEIGHT as other cards, width varies by aspect ratio
+        // Height is consistent across all cards, aspect ratio controls WIDTH
+        if (width >= 1600) {
+          // Height: 830px (or 75% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(
+            830,
+            typeof window !== "undefined" ? window.innerHeight * 0.75 : 830
+          );
+          setCardsPerView(aspectRatio === "2x1" ? 3.5 : 2.2);
+          setCardWidth(aspectRatio === "2x1" ? cardHeight / 2 : cardHeight);
+        } else if (width >= 1280) {
+          // Height: 692px (or 70% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(
+            692,
+            typeof window !== "undefined" ? window.innerHeight * 0.7 : 692
+          );
+          setCardsPerView(aspectRatio === "2x1" ? 3 : 2);
+          setCardWidth(aspectRatio === "2x1" ? cardHeight / 2 : cardHeight);
+        } else if (width >= 1024) {
+          // Height: 577px (or 70% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(
+            577,
+            typeof window !== "undefined" ? window.innerHeight * 0.7 : 577
+          );
+          setCardsPerView(aspectRatio === "2x1" ? 2.5 : 1.8);
+          setCardWidth(aspectRatio === "2x1" ? cardHeight / 2 : cardHeight);
+        } else if (width >= 768) {
+          // Height: 720px (or 75% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(
+            720,
+            typeof window !== "undefined" ? window.innerHeight * 0.75 : 720
+          );
+          setCardsPerView(aspectRatio === "2x1" ? 2.5 : 1.5);
+          setCardWidth(aspectRatio === "2x1" ? cardHeight / 2 : cardHeight);
+        } else {
+          // Mobile: Height: 600px (or 75% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(
+            600,
+            typeof window !== "undefined" ? window.innerHeight * 0.75 : 600
+          );
+          setCardsPerView(aspectRatio === "2x1" ? 2 : 1.1);
+          setCardWidth(aspectRatio === "2x1" ? cardHeight / 2 : cardHeight);
         }
       } else if (isStatic) {
         // Static variant: single responsive card
@@ -962,6 +1014,95 @@ export default function UnifiedContentCard({
     );
   };
 
+  // Render overlay-text layout (full image background with text overlay and optional button)
+  const renderOverlayTextLayout = (card: ContentCardData, index: number) => {
+    return (
+      <div className="relative w-full h-full overflow-hidden">
+        {/* Background Image (full card) */}
+        <div className="absolute inset-0 z-0">
+          {card.video ? (
+            <ClientBlobVideo
+              path={getImagePath(card.video)}
+              className="w-full h-full object-cover"
+              autoPlay={true}
+              loop={true}
+              muted={true}
+              playsInline={true}
+              controls={false}
+              enableCache={true}
+              playbackRate={card.playbackRate}
+            />
+          ) : card.image ? (
+            <HybridBlobImage
+              path={getImagePath(card.image)}
+              alt={getCardText(card, "title")}
+              fill
+              className="object-cover object-center"
+              strategy="client"
+              isInteractive={true}
+              enableCache={true}
+            />
+          ) : null}
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+
+        {/* Text Content Overlay - Left Aligned */}
+        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-8 lg:p-10">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1, duration: 0.6 }}
+            className="text-left"
+          >
+            {/* First line: p-primary (standard paragraph) */}
+            <p className="p-primary text-white mb-2 md:mb-3">
+              {getCardText(card, "description")}
+            </p>
+            {/* Second line: h3-secondary (standard H3) */}
+            <h3 className="h3-secondary text-white font-bold">
+              {getCardText(card, "title")}
+            </h3>
+          </motion.div>
+
+          {/* Optional Button at Bottom */}
+          {card.buttons && card.buttons.length > 0 && (
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+              className="flex justify-start"
+            >
+              {card.buttons.map((button, btnIndex) => {
+                return button.link ? (
+                  <Link
+                    key={btnIndex}
+                    href={button.link}
+                    className="flex-shrink-0"
+                  >
+                    <Button variant={button.variant} size={button.size}>
+                      {button.text}
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    key={btnIndex}
+                    variant={button.variant}
+                    size={button.size}
+                    onClick={button.onClick}
+                    className="flex-shrink-0"
+                  >
+                    {button.text}
+                  </Button>
+                );
+              })}
+            </motion.div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   // Render process-detail layout (large horizontal card + 5 square cards)
   const renderProcessDetailLayout = () => {
     // First card is the large horizontal card at the top
@@ -1397,10 +1538,11 @@ export default function UnifiedContentCard({
                               ? isClient && screenWidth >= 768
                                 ? cardWidth // Square on tablet/desktop: height = width (already calculated from viewport)
                                 : 480 * heightMultiplier // 480px standard, 600px tall on mobile to fit content nicely
-                              : isStatic || isResponsive
-                                ? isClient && screenWidth >= 1600
+                              : layout === "overlay-text"
+                                ? // Overlay-text: Use SAME standard heights as other cards
+                                  isClient && screenWidth >= 1600
                                   ? Math.min(
-                                      830 * heightMultiplier, // 830px standard, 1037.5px tall
+                                      830 * heightMultiplier,
                                       typeof window !== "undefined"
                                         ? window.innerHeight *
                                             0.75 *
@@ -1409,7 +1551,7 @@ export default function UnifiedContentCard({
                                     )
                                   : isClient && screenWidth >= 1280
                                     ? Math.min(
-                                        692 * heightMultiplier, // 692px standard, 865px tall
+                                        692 * heightMultiplier,
                                         typeof window !== "undefined"
                                           ? window.innerHeight *
                                               0.7 *
@@ -1418,29 +1560,74 @@ export default function UnifiedContentCard({
                                       )
                                     : isClient && screenWidth >= 1024
                                       ? Math.min(
-                                          577 * heightMultiplier, // 577px standard, 721.25px tall
+                                          577 * heightMultiplier,
                                           typeof window !== "undefined"
                                             ? window.innerHeight *
                                                 0.7 *
                                                 heightMultiplier
                                             : 577 * heightMultiplier
                                         )
-                                      : Math.min(
-                                          720 * heightMultiplier, // 720px standard, 900px tall
+                                      : isClient && screenWidth >= 768
+                                        ? Math.min(
+                                            720 * heightMultiplier,
+                                            typeof window !== "undefined"
+                                              ? window.innerHeight *
+                                                  0.75 *
+                                                  heightMultiplier
+                                              : 720 * heightMultiplier
+                                          )
+                                        : Math.min(
+                                            600 * heightMultiplier,
+                                            typeof window !== "undefined"
+                                              ? window.innerHeight *
+                                                  0.75 *
+                                                  heightMultiplier
+                                              : 600 * heightMultiplier
+                                          )
+                                : isStatic || isResponsive
+                                  ? isClient && screenWidth >= 1600
+                                    ? Math.min(
+                                        830 * heightMultiplier, // 830px standard, 1037.5px tall
+                                        typeof window !== "undefined"
+                                          ? window.innerHeight *
+                                              0.75 *
+                                              heightMultiplier
+                                          : 830 * heightMultiplier
+                                      )
+                                    : isClient && screenWidth >= 1280
+                                      ? Math.min(
+                                          692 * heightMultiplier, // 692px standard, 865px tall
                                           typeof window !== "undefined"
                                             ? window.innerHeight *
-                                                0.75 *
+                                                0.7 *
                                                 heightMultiplier
-                                            : 720 * heightMultiplier
+                                            : 692 * heightMultiplier
                                         )
-                                : Math.min(
-                                    600 * heightMultiplier, // 600px standard, 750px tall
-                                    typeof window !== "undefined"
-                                      ? window.innerHeight *
-                                          0.75 *
-                                          heightMultiplier
-                                      : 600 * heightMultiplier
-                                  ),
+                                      : isClient && screenWidth >= 1024
+                                        ? Math.min(
+                                            577 * heightMultiplier, // 577px standard, 721.25px tall
+                                            typeof window !== "undefined"
+                                              ? window.innerHeight *
+                                                  0.7 *
+                                                  heightMultiplier
+                                              : 577 * heightMultiplier
+                                          )
+                                        : Math.min(
+                                            720 * heightMultiplier, // 720px standard, 900px tall
+                                            typeof window !== "undefined"
+                                              ? window.innerHeight *
+                                                  0.75 *
+                                                  heightMultiplier
+                                              : 720 * heightMultiplier
+                                          )
+                                  : Math.min(
+                                      600 * heightMultiplier, // 600px standard, 750px tall
+                                      typeof window !== "undefined"
+                                        ? window.innerHeight *
+                                            0.75 *
+                                            heightMultiplier
+                                        : 600 * heightMultiplier
+                                    ),
                         backgroundColor: isGlass
                           ? "#121212"
                           : card.backgroundColor,
@@ -1467,6 +1654,8 @@ export default function UnifiedContentCard({
                         renderTextIconLayout(card, index)}
                       {layout === "image-only" &&
                         renderImageOnlyLayout(card, index)}
+                      {layout === "overlay-text" &&
+                        renderOverlayTextLayout(card, index)}
                     </motion.div>
                   ))}
                 </motion.div>
