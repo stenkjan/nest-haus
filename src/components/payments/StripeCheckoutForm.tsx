@@ -10,7 +10,8 @@ import {
 } from "@stripe/react-stripe-js";
 
 // Initialize Stripe
-let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null = null;
+let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null =
+  null;
 
 const getStripePromise = () => {
   if (!stripePromise) {

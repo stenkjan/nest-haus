@@ -74,12 +74,12 @@ export default function QuantitySelector({
       </p>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleDecrease}
             disabled={value <= 0}
-            className="bg-gray-200 hover:bg-gray-300 rounded-l min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+            className="bg-gray-200 hover:bg-gray-300 rounded-lg min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ export default function QuantitySelector({
             </svg>
           </button>
 
-          <span className="bg-gray-100 px-[clamp(0.75rem,1.5vw,1rem)] py-[clamp(0.5rem,1vw,0.75rem)] min-w-[3rem] text-center font-medium text-black text-[clamp(0.875rem,1.4vw,1rem)]">
+          <span className="bg-gray-100 border border-gray-300 rounded-lg px-[clamp(0.75rem,1.5vw,1rem)] py-[clamp(0.5rem,1vw,0.75rem)] min-w-[3rem] text-center font-medium text-black text-[clamp(0.875rem,1.4vw,1rem)]">
             {value}
           </span>
 
@@ -105,7 +105,7 @@ export default function QuantitySelector({
             type="button"
             onClick={handleIncrease}
             disabled={value >= max}
-            className="bg-gray-200 hover:bg-gray-300 rounded-r min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+            className="bg-gray-200 hover:bg-gray-300 rounded-lg min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
