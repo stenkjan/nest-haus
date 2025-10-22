@@ -670,6 +670,52 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
             },
         ],
     },
+    {
+        id: 2,
+        title: "Die Basis",
+        subtitle: "",
+        description:
+            "Mit dem Grundstückscheck, der Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfang an mit Sicherheit planen.",
+        image: IMAGES.function.nestHausEntwurfVorentwurf,
+        backgroundColor: "#F4F4F4",
+        buttons: [
+            {
+                text: "Unsere Philosophie",
+                variant: "primary",
+                size: "xs",
+                link: "/kontakt",
+            },
+            {
+                text: "Wie funktioniert's?",
+                variant: "landing-secondary-blue",
+                size: "xs",
+                link: "/nest-system",
+            },
+        ],
+    },
+    {
+        id: 2,
+        title: "Mit Padding-Beispiel",
+        subtitle: "",
+        description:
+            "Dies ist ein Beispiel für eine Tall Card mit Standard-Padding (15px Abstand um das Bild). Der Inhalt bleibt identisch, nur die Bilddarstellung unterscheidet sich durch den Rahmen. Perfekt für Konsistenz mit anderen Card-Komponenten.\n\nDu kannst beide Varianten verwenden – wähle einfach TALL_CARD_PROPS oder TALL_CARD_PROPS_WITH_PADDING beim Import.",
+        image: IMAGES.function.nestHausEntwurfVorentwurf,
+        backgroundColor: "#F4F4F4",
+        buttons: [
+            {
+                text: "Vorentwurf kaufen",
+                variant: "primary",
+                size: "xs",
+                link: "/kontakt",
+            },
+            {
+                text: "Unsere Technik",
+                variant: "landing-secondary-blue",
+                size: "xs",
+                link: "/nest-system",
+            },
+        ],
+    },
     // Add more process cards here as needed
 ];
 
@@ -735,6 +781,84 @@ export const getContentById = (
 // Get all available categories
 export const getAvailableCategories = (): ContentCategory[] => {
     return Object.keys(CARD_CONTENT_BY_CATEGORY) as ContentCategory[];
+};
+
+/**
+ * TALL CARD HELPER
+ * Quick access to process cards (commonly used for tall cards)
+ * 
+ * Usage:
+ * ```tsx
+ * import { getTallCard } from "@/constants/cardContent";
+ * 
+ * const myCard = getTallCard(1); // Gets "Der Auftakt"
+ * 
+ * <UnifiedContentCard
+ *   layout="video"
+ *   style="standard"
+ *   variant="static"
+ *   heightMode="tall"
+ *   maxWidth={true}
+ *   showInstructions={false}
+ *   customData={[myCard]}
+ * />
+ * ```
+ */
+export const getTallCard = (id: number): ContentCardData | undefined => {
+    return getContentById("processCards", id);
+};
+
+/**
+ * TALL CARD PROPS TEMPLATE
+ * Standard configuration for tall video cards
+ * 
+ * Usage:
+ * ```tsx
+ * import { TALL_CARD_PROPS, getTallCard } from "@/constants/cardContent";
+ * 
+ * const myCard = getTallCard(1);
+ * 
+ * <UnifiedContentCard
+ *   {...TALL_CARD_PROPS}
+ *   customData={[myCard]}
+ * />
+ * ```
+ */
+export const TALL_CARD_PROPS = {
+    layout: "video" as const,
+    style: "standard" as const,
+    variant: "static" as const,
+    heightMode: "tall" as const,
+    imagePadding: "none" as const, // No padding, image fills to edges
+    maxWidth: true,
+    showInstructions: false,
+};
+
+/**
+ * TALL CARD PROPS WITH PADDING
+ * Alternative configuration with standard padding around the image
+ * Same as TALL_CARD_PROPS but with 15px padding around image
+ * 
+ * Usage:
+ * ```tsx
+ * import { TALL_CARD_PROPS_WITH_PADDING, getTallCard } from "@/constants/cardContent";
+ * 
+ * const myCard = getTallCard(1);
+ * 
+ * <UnifiedContentCard
+ *   {...TALL_CARD_PROPS_WITH_PADDING}
+ *   customData={[myCard]}
+ * />
+ * ```
+ */
+export const TALL_CARD_PROPS_WITH_PADDING = {
+    layout: "video" as const,
+    style: "standard" as const,
+    variant: "static" as const,
+    heightMode: "tall" as const,
+    imagePadding: "standard" as const, // 15px padding (py-[15px] pr-[15px])
+    maxWidth: true,
+    showInstructions: false,
 };
 
 // Validate category name

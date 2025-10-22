@@ -3,11 +3,16 @@
 import React from "react";
 import Footer from "@/components/Footer";
 import { UnifiedContentCard } from "@/components/cards";
-import { getContentById } from "@/constants/cardContent";
+import {
+  getTallCard,
+  TALL_CARD_PROPS,
+  TALL_CARD_PROPS_WITH_PADDING,
+} from "@/constants/cardContent";
 
 export default function EntwurfClient() {
-  // Get the "Der Auftakt" card from processCards category
-  const derAuftaktCard = getContentById("processCards", 1);
+  // Get tall cards
+  const derAuftaktCard = getTallCard(1); // No padding (edge-to-edge)
+  const paddingExampleCard = getTallCard(2); // With padding
 
   return (
     <div
@@ -20,17 +25,22 @@ export default function EntwurfClient() {
         style={{ height: "var(--navbar-height, 3.5rem)" }}
       ></div>
 
-      {/* Content Section */}
+      {/* Content Section - Card 1: No Padding */}
       <section className="w-full py-8 md:py-16 bg-white">
         {derAuftaktCard && (
           <UnifiedContentCard
-            layout="video"
-            style="standard"
-            variant="static"
-            heightMode="tall"
-            maxWidth={true}
-            showInstructions={false}
+            {...TALL_CARD_PROPS}
             customData={[derAuftaktCard]}
+          />
+        )}
+      </section>
+
+      {/* Content Section - Card 2: With Padding */}
+      <section className="w-full py-8 md:py-16 bg-white">
+        {paddingExampleCard && (
+          <UnifiedContentCard
+            {...TALL_CARD_PROPS_WITH_PADDING}
+            customData={[paddingExampleCard]}
           />
         )}
       </section>

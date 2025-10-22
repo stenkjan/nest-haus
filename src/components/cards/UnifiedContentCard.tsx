@@ -76,6 +76,12 @@ export type CardVariant = "responsive" | "static";
 export type HeightMode = "standard" | "tall";
 
 /**
+ * Image Padding Mode Types
+ * Controls whether tall cards have padding around the image
+ */
+export type ImagePaddingMode = "none" | "standard";
+
+/**
  * Props for UnifiedContentCard
  */
 export interface UnifiedContentCardProps {
@@ -84,6 +90,7 @@ export interface UnifiedContentCardProps {
   style?: CardStyle;
   variant?: CardVariant;
   heightMode?: HeightMode;
+  imagePadding?: ImagePaddingMode; // Controls image padding for tall cards
 
   // Content source (category or custom data)
   category?: ContentCategory;
@@ -134,6 +141,7 @@ export default function UnifiedContentCard({
   style = "standard",
   variant = "responsive",
   heightMode = "standard",
+  imagePadding = "none", // Default: no padding (edge-to-edge)
   category,
   customData,
   title = "",
@@ -746,7 +754,12 @@ export default function UnifiedContentCard({
 
         {/* Video Content - Rectangle format with proper spacing */}
         <div
-          className={`relative overflow-hidden py-4 px-4 flex ${
+          className={`relative overflow-hidden ${
+            // Padding logic for mobile - SAME as desktop:
+            // - imagePadding="standard": py-4 px-4
+            // - imagePadding="none": no padding (only for tall cards)
+            heightMode === "tall" && imagePadding === "none" ? "" : "py-4 px-4"
+          } flex ${
             heightMode === "tall" ? "items-stretch" : "items-center"
           } justify-center`}
         >
@@ -760,14 +773,9 @@ export default function UnifiedContentCard({
             className="relative rounded-2xl md:rounded-3xl overflow-hidden"
             style={{
               // 16:10 aspect ratio for mobile video (more rectangular)
-              // For tall cards, remove aspect ratio and fill available space
               width: "100%",
-              ...(heightMode === "tall"
-                ? { height: "100%" }
-                : {
-                    aspectRatio: "16/10",
-                    height: "auto",
-                  }),
+              aspectRatio: "16/10",
+              height: "auto",
             }}
           >
             {card.video ? (
@@ -798,18 +806,22 @@ export default function UnifiedContentCard({
       </div>
     ) : (
       // Desktop: Wide layout
-      // - 1024px: 50/50 split (Text 1/2, Video 1/2) for better content fit
+      // - 1024px: For tall cards use 1/3-2/3 split, standard cards use 50/50
       // - 1280px+: 1/3-2/3 split (Text 1/3, Video 2/3) for standard layout
       <div className="flex items-stretch h-full">
         {/* Text Content - Responsive width based on screen size */}
         <div
           className={`${
             isClient && screenWidth >= 1024 && screenWidth < 1280
-              ? "w-1/2" // 50% at 1024px for more text space
-              : "w-1/3" // 33% at 1280px+ for standard layout
+              ? heightMode === "tall"
+                ? "w-1/3" // 1/3 for tall cards at 1024px to fit 1:1 image
+                : "w-1/2" // 50% for standard cards at 1024px
+              : "w-1/3" // 33% at 1280px+ for all cards
           } flex flex-col justify-center items-start text-left ${
             isClient && screenWidth >= 1024 && screenWidth < 1280
-              ? "px-8" // Less padding at 1024px
+              ? heightMode === "tall"
+                ? "px-12" // Standard padding for tall cards
+                : "px-8" // Less padding for standard cards at 1024px
               : "px-12" // Standard padding at 1280px+
           } py-6`}
         >
@@ -879,9 +891,18 @@ export default function UnifiedContentCard({
         <div
           className={`${
             isClient && screenWidth >= 1024 && screenWidth < 1280
-              ? "w-1/2" // 50% at 1024px
-              : "w-2/3" // 67% at 1280px+
-          } relative overflow-hidden py-[15px] pr-[15px] flex ${
+              ? heightMode === "tall"
+                ? "w-2/3" // 2/3 for tall cards at 1024px to fit 1:1 image
+                : "w-1/2" // 50% for standard cards at 1024px
+              : "w-2/3" // 67% at 1280px+ for all cards
+          } relative overflow-hidden ${
+            // Padding logic - SAME for all cards regardless of heightMode:
+            // - imagePadding="standard": py-[15px] pr-[15px]
+            // - imagePadding="none": no padding (only for tall cards)
+            heightMode === "tall" && imagePadding === "none"
+              ? ""
+              : "py-[15px] pr-[15px]"
+          } flex ${
             heightMode === "tall" ? "items-stretch" : "items-center"
           } justify-end`}
         >
@@ -925,7 +946,11 @@ export default function UnifiedContentCard({
                 path={getImagePath(card.image)}
                 alt={getCardText(card, "title")}
                 fill
-                className="object-cover object-center"
+                className={`object-cover ${
+                  heightMode === "tall"
+                    ? "object-left" // Left-aligned (image starts from left edge)
+                    : "object-center"
+                }`}
                 strategy="client"
                 isInteractive={true}
                 enableCache={true}
@@ -1355,14 +1380,15 @@ export default function UnifiedContentCard({
                         height:
                           layout === "video"
                             ? isClient && screenWidth >= 1024
-                              ? // Desktop: Calculate height based on video area with 16:9 ratio + padding
-                                isClient && screenWidth >= 1600
+                              ? // Desktop: Calculate height based on video area with aspect ratio + padding
+                                // Use cardWidth to ensure height scales properly with viewport
+                                cardWidth >= 1600
                                 ? (((1600 * 2) / 3 / 16) * 9 + 30) *
                                   heightMultiplier // 630px standard, 787.5px tall (2/3 split)
-                                : isClient && screenWidth >= 1400
+                                : cardWidth >= 1380
                                   ? (((1380 * 2) / 3 / 16) * 9 + 30) *
                                     heightMultiplier // 548px standard, 685px tall (2/3 split)
-                                  : isClient && screenWidth >= 1280
+                                  : cardWidth >= 1280
                                     ? (((1280 * 2) / 3 / 16) * 9 + 30) *
                                       heightMultiplier // 510px standard, 637.5px tall (2/3 split)
                                     : ((992 * 1) / 2 + 30) * heightMultiplier // 526px standard, 657.5px tall at 1024px (1/2 split, 1:1 aspect ratio)
