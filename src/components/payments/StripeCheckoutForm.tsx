@@ -55,14 +55,7 @@ const paymentElementOptions = {
     spacedAccordionItems: true, // Better spacing for multiple methods
   },
   fields: {
-    billingDetails: {
-      name: "auto" as const,
-      email: "auto" as const,
-      address: {
-        country: "AT" as const, // Default to Austria
-        postalCode: "auto" as const, // Collect postal code for better payment method selection
-      },
-    },
+    billingDetails: "auto" as const, // Collect billing details automatically
   },
   wallets: {
     applePay: "auto" as const,
