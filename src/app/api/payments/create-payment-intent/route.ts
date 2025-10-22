@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
                         paymentCurrency: currency.toLowerCase(),
                     },
                 });
-            } catch (dbError) {
+            } catch {
                 // Don't fail the payment intent creation if DB update fails
             }
         }

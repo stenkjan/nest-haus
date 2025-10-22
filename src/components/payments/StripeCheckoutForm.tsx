@@ -130,11 +130,11 @@ function PaymentForm({
                 "Zahlung erfolgreich, aber Bestätigung fehlgeschlagen."
             );
           }
-        } catch (backendError) {
+        } catch {
           onError("Zahlung erfolgreich, aber Bestätigung fehlgeschlagen.");
         }
       }
-    } catch (paymentError) {
+    } catch {
       onError("Fehler bei der Zahlungsverarbeitung.");
     } finally {
       setIsProcessing(false);
@@ -272,7 +272,7 @@ export default function StripeCheckoutForm({
         } else {
           onError(data.message || "Fehler beim Erstellen der Zahlung.");
         }
-      } catch (error) {
+      } catch {
         onError("Verbindungsfehler. Bitte versuchen Sie es erneut.");
       } finally {
         setIsLoading(false);
