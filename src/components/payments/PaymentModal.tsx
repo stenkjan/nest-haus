@@ -4,7 +4,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import StripeCheckoutForm from "./StripeCheckoutForm";
 import PaymentErrorBoundary from "./PaymentErrorBoundary";
-import StripeTest from "./StripeTest";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -297,8 +296,6 @@ export default function PaymentModal({
                     sicheren Zahlung ab.
                   </p>
                 </div>
-
-                <StripeTest />
 
                 <PaymentErrorBoundary
                   onError={(error) => handlePaymentError(error.message)}
