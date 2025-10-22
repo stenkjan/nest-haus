@@ -4,13 +4,14 @@ import React, { useState, useEffect } from "react";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import {
   Elements,
-  CardElement,
+  PaymentElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
 
 // Initialize Stripe with error handling
-let stripePromise: Promise<any> | null = null;
+let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null =
+  null;
 
 const getStripePromise = () => {
   if (!stripePromise) {
@@ -46,30 +47,28 @@ interface StripeCheckoutFormProps {
   onCancel: () => void;
 }
 
-// Card element styling
-const cardElementOptions = {
-  style: {
-    base: {
-      fontSize: "16px",
-      color: "#424770",
-      "::placeholder": {
-        color: "#aab7c4",
-      },
-      fontFamily: "system-ui, -apple-system, sans-serif",
-      fontSmoothing: "antialiased",
-    },
-    invalid: {
-      color: "#9e2146",
-    },
+// Payment element options for better payment method display
+const paymentElementOptions = {
+  layout: {
+    type: "tabs" as const, // Show payment methods as tabs for better visibility
+    defaultCollapsed: false,
+    radios: false, // Use tabs instead of radio buttons for better UX
+    spacedAccordionItems: true, // Better spacing for multiple methods
   },
-  hidePostalCode: false,
+  fields: {
+    billingDetails: "auto" as const, // Collect billing details automatically
+  },
+  wallets: {
+    applePay: "auto" as const,
+    googlePay: "auto" as const,
+  },
 };
 
 // Payment form component (inside Elements provider)
 function PaymentForm({
-  clientSecret,
-  customerEmail,
-  customerName,
+  clientSecret: _clientSecret,
+  customerEmail: _customerEmail,
+  customerName: _customerName,
   amount,
   currency,
   onSuccess,
@@ -91,30 +90,19 @@ function PaymentForm({
       return;
     }
 
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) {
-      onError("Kartenformular nicht gefunden.");
-      return;
-    }
-
     setIsProcessing(true);
     setErrorMessage(null);
     onLoading(true);
 
     try {
-      // Confirm payment with Stripe
-      const { error, paymentIntent } = await stripe.confirmCardPayment(
-        clientSecret,
-        {
-          payment_method: {
-            card: cardElement,
-            billing_details: {
-              name: customerName,
-              email: customerEmail,
-            },
-          },
-        }
-      );
+      // Confirm payment with Stripe using the modern confirmPayment method
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/warenkorb?payment=success`,
+        },
+        redirect: "if_required", // Only redirect if necessary (e.g., for 3D Secure)
+      });
 
       if (error) {
         console.error("❌ Payment confirmation error:", error);
@@ -167,10 +155,10 @@ function PaymentForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Kartendaten
+          Zahlungsmethode wählen
         </label>
         <div className="border border-gray-300 rounded-lg p-4 bg-white">
-          <CardElement options={cardElementOptions} />
+          <PaymentElement options={paymentElementOptions} />
         </div>
       </div>
 
@@ -308,7 +296,7 @@ export default function StripeCheckoutForm({
     createPaymentIntent();
   }, [amount, currency, customerEmail, customerName, inquiryId, onError]);
 
-  // Stripe Elements options
+  // Stripe Elements options optimized for PaymentElement
   const elementsOptions: StripeElementsOptions = {
     clientSecret: clientSecret || undefined,
     appearance: {
@@ -322,7 +310,20 @@ export default function StripeCheckoutForm({
         spacingUnit: "4px",
         borderRadius: "8px",
       },
+      rules: {
+        ".Tab": {
+          border: "1px solid #e5e7eb",
+          borderRadius: "8px",
+          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+        },
+        ".Tab--selected": {
+          borderColor: "#3b82f6",
+          backgroundColor: "#eff6ff",
+        },
+      },
     },
+    // Ensure EUR currency and Austrian locale for better payment method selection
+    locale: "de",
   };
 
   if (isLoading) {
@@ -422,8 +423,8 @@ export default function StripeCheckoutForm({
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="w-full">
+      <div className="bg-white rounded-lg p-6">
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Sichere Zahlung

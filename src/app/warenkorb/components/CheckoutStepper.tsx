@@ -2583,14 +2583,9 @@ export default function CheckoutStepper({
 
   // Helper functions for payment
   function getPaymentAmount(): number {
-    const paymentMode = process.env.PAYMENT_MODE || "deposit";
-    const depositAmount = parseInt(process.env.DEPOSIT_AMOUNT || "50000"); // 500 EUR in cents
-
-    if (paymentMode === "full") {
-      return getCartTotal() * 100; // Convert to cents
-    } else {
-      return depositAmount; // Already in cents
-    }
+    // For now, hardcode €35 for testing (3500 cents) to enable more payment methods
+    // This will be calculated on the server side in the API
+    return 3500; // 35 EUR in cents
   }
 
   function getCustomerEmail(): string {

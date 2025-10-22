@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2025-09-30.clover',
+    apiVersion: '2025-09-30.clover', // Keep current API version for compatibility
 });
 
 // Validation schema for payment intent creation
@@ -35,7 +35,18 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const { amount, currency, customerEmail, customerName, inquiryId, metadata } = validation.data;
+        let { amount } = validation.data;
+        const { currency, customerEmail, customerName, inquiryId, metadata } = validation.data;
+
+        // Override amount with server-side configuration for testing
+        const paymentMode = process.env.PAYMENT_MODE || "deposit";
+        const depositAmount = parseInt(process.env.DEPOSIT_AMOUNT || "100"); // 1 EUR in cents
+
+        console.log('💰 Server payment config:', { paymentMode, depositAmount, originalAmount: amount });
+
+        if (paymentMode === "deposit") {
+            amount = depositAmount;
+        }
 
         // Create or retrieve customer in Stripe
         let customer: Stripe.Customer;
@@ -59,24 +70,30 @@ export async function POST(request: NextRequest) {
             console.log('✅ Created new Stripe customer:', customer.id);
         }
 
-        // Create payment intent
+        // Create payment intent with automatic payment methods (recommended approach)
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(amount), // Stripe expects amount in cents
             currency: currency.toLowerCase(),
             customer: customer.id,
+            // Use automatic payment methods - Stripe will show relevant methods based on country/currency
             automatic_payment_methods: {
                 enabled: true,
+                allow_redirects: 'always', // Allow bank redirects like EPS, Sofort
             },
             metadata: {
                 customerEmail,
                 inquiryId: inquiryId || '',
                 source: 'nest-haus-configurator',
+                country: 'AT', // Explicit country for payment method selection
                 ...metadata,
             },
             description: `NEST-Haus Konfiguration${inquiryId ? ` (Anfrage: ${inquiryId})` : ''}`,
         });
 
         console.log('✅ Payment intent created:', paymentIntent.id);
+        console.log('💳 Payment methods requested:', paymentIntent.payment_method_types);
+        console.log('🌍 Country configured:', 'AT');
+        console.log('💰 Amount:', paymentIntent.amount, 'cents (€' + (paymentIntent.amount / 100) + ')');
 
         // Update inquiry with payment intent ID if provided
         if (inquiryId) {
