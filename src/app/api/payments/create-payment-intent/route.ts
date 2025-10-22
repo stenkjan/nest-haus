@@ -80,13 +80,6 @@ export async function POST(request: NextRequest) {
                 enabled: true,
                 allow_redirects: 'always', // Allow bank redirects like EPS, Sofort
             },
-            // Add shipping address for better country detection
-            shipping: {
-                address: {
-                    country: 'AT', // Austria - helps Stripe show EPS, Sofort, etc.
-                },
-                name: customerName || 'NEST-Haus Customer',
-            },
             metadata: {
                 customerEmail,
                 inquiryId: inquiryId || '',

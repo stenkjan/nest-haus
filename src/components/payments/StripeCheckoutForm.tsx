@@ -58,6 +58,10 @@ const paymentElementOptions = {
     billingDetails: {
       name: "auto" as const,
       email: "auto" as const,
+      address: {
+        country: "AT" as const, // Default to Austria
+        postalCode: "auto" as const, // Collect postal code for better payment method selection
+      },
     },
   },
   wallets: {
@@ -326,6 +330,14 @@ export default function StripeCheckoutForm({
     },
     // Ensure EUR currency and Austrian locale for better payment method selection
     locale: "de",
+    // Provide default billing details for Austrian customers
+    defaultValues: {
+      billingDetails: {
+        address: {
+          country: "AT",
+        },
+      },
+    },
   };
 
   if (isLoading) {
