@@ -9,15 +9,13 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-// Initialize Stripe with error handling
-let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null =
-  null;
+// Initialize Stripe
+let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null = null;
 
 const getStripePromise = () => {
   if (!stripePromise) {
     const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
     if (!publishableKey) {
-      console.error("❌ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not defined");
       return null;
     }
     stripePromise = loadStripe(publishableKey);
@@ -47,16 +45,16 @@ interface StripeCheckoutFormProps {
   onCancel: () => void;
 }
 
-// Payment element options for better payment method display
+// Payment element configuration
 const paymentElementOptions = {
   layout: {
-    type: "tabs" as const, // Show payment methods as tabs for better visibility
+    type: "tabs" as const,
     defaultCollapsed: false,
-    radios: false, // Use tabs instead of radio buttons for better UX
-    spacedAccordionItems: true, // Better spacing for multiple methods
+    radios: false,
+    spacedAccordionItems: true,
   },
   fields: {
-    billingDetails: "auto" as const, // Collect billing details automatically
+    billingDetails: "auto" as const,
   },
   wallets: {
     applePay: "auto" as const,
@@ -95,24 +93,20 @@ function PaymentForm({
     onLoading(true);
 
     try {
-      // Confirm payment with Stripe using the modern confirmPayment method
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/warenkorb?payment=success`,
         },
-        redirect: "if_required", // Only redirect if necessary (e.g., for 3D Secure)
+        redirect: "if_required",
       });
 
       if (error) {
-        console.error("❌ Payment confirmation error:", error);
         const errorMsg =
           error.message || "Ein unbekannter Fehler ist aufgetreten.";
         setErrorMessage(errorMsg);
         onError(errorMsg);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
-        console.log("✅ Payment succeeded:", paymentIntent.id);
-
         // Confirm payment on our backend
         try {
           const response = await fetch("/api/payments/confirm-payment", {
@@ -128,22 +122,18 @@ function PaymentForm({
           const result = await response.json();
 
           if (response.ok && result.success) {
-            console.log("✅ Payment confirmed on backend");
             onSuccess(paymentIntent.id);
           } else {
-            console.error("❌ Backend confirmation failed:", result);
             onError(
               result.message ||
                 "Zahlung erfolgreich, aber Bestätigung fehlgeschlagen."
             );
           }
         } catch (backendError) {
-          console.error("❌ Backend confirmation error:", backendError);
           onError("Zahlung erfolgreich, aber Bestätigung fehlgeschlagen.");
         }
       }
     } catch (paymentError) {
-      console.error("❌ Payment processing error:", paymentError);
       onError("Fehler bei der Zahlungsverarbeitung.");
     } finally {
       setIsProcessing(false);
@@ -257,8 +247,6 @@ export default function StripeCheckoutForm({
   useEffect(() => {
     const createPaymentIntent = async () => {
       try {
-        console.log("💳 Creating payment intent for amount:", amount);
-
         const response = await fetch("/api/payments/create-payment-intent", {
           method: "POST",
           headers: {
@@ -280,13 +268,10 @@ export default function StripeCheckoutForm({
 
         if (response.ok && data.clientSecret) {
           setClientSecret(data.clientSecret);
-          console.log("✅ Payment intent created successfully");
         } else {
-          console.error("❌ Failed to create payment intent:", data);
           onError(data.message || "Fehler beim Erstellen der Zahlung.");
         }
       } catch (error) {
-        console.error("❌ Error creating payment intent:", error);
         onError("Verbindungsfehler. Bitte versuchen Sie es erneut.");
       } finally {
         setIsLoading(false);
@@ -296,7 +281,7 @@ export default function StripeCheckoutForm({
     createPaymentIntent();
   }, [amount, currency, customerEmail, customerName, inquiryId, onError]);
 
-  // Stripe Elements options optimized for PaymentElement
+  // Stripe Elements configuration
   const elementsOptions: StripeElementsOptions = {
     clientSecret: clientSecret || undefined,
     appearance: {
@@ -322,7 +307,6 @@ export default function StripeCheckoutForm({
         },
       },
     },
-    // Ensure EUR currency and Austrian locale for better payment method selection
     locale: "de",
   };
 
