@@ -209,6 +209,15 @@ export default function PaymentModal({
     onClose();
   }, [onClose]);
 
+  // Add entrance animation
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsAnimating(true);
+    }
+  }, [isOpen]);
+
   // Handle escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -235,15 +244,23 @@ export default function PaymentModal({
 
   const modalContent = (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* Backdrop */}
+      {/* Backdrop with blur effect */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        className={`fixed inset-0 bg-black/10 backdrop-blur-md transition-all duration-300 ${
+          isAnimating ? "opacity-100" : "opacity-0"
+        }`}
         onClick={paymentState === "form" ? handleClose : undefined}
       />
 
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div
+          className={`relative bg-white rounded-xl shadow-2xl border border-gray-200/50 max-w-lg w-full max-h-[90vh] overflow-y-auto transform transition-all duration-300 ${
+            isAnimating
+              ? "scale-100 opacity-100 translate-y-0"
+              : "scale-95 opacity-0 translate-y-4"
+          }`}
+        >
           {/* Close button - only show for form state */}
           {paymentState === "form" && (
             <button

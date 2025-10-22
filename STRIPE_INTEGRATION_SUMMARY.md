@@ -173,3 +173,4 @@ CURRENCY=eur
 4. **Customer Support**: Train team on payment-related inquiries
 
 The integration is now complete and ready for testing and deployment! 🚀
+
