@@ -9,10 +9,20 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-// Initialize Stripe
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+// Initialize Stripe with error handling
+let stripePromise: Promise<any> | null = null;
+
+const getStripePromise = () => {
+  if (!stripePromise) {
+    const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+    if (!publishableKey) {
+      console.error("❌ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not defined");
+      return null;
+    }
+    stripePromise = loadStripe(publishableKey);
+  }
+  return stripePromise;
+};
 
 interface PaymentFormProps {
   clientSecret: string;
@@ -347,6 +357,39 @@ export default function StripeCheckoutForm({
     );
   }
 
+  const currentStripePromise = getStripePromise();
+
+  if (!currentStripePromise) {
+    return (
+      <div className="text-center py-12">
+        <div className="text-red-600 mb-4">
+          <svg
+            className="mx-auto h-12 w-12"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+            />
+          </svg>
+        </div>
+        <p className="text-gray-600 mb-4">
+          Stripe-Konfiguration fehlt. Bitte kontaktieren Sie den Support.
+        </p>
+        <button
+          onClick={onCancel}
+          className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+        >
+          Zurück
+        </button>
+      </div>
+    );
+  }
+
   if (!clientSecret) {
     return (
       <div className="text-center py-12">
@@ -391,7 +434,7 @@ export default function StripeCheckoutForm({
           </p>
         </div>
 
-        <Elements stripe={stripePromise} options={elementsOptions}>
+        <Elements stripe={currentStripePromise} options={elementsOptions}>
           <PaymentForm
             clientSecret={clientSecret}
             customerEmail={customerEmail}
@@ -423,4 +466,3 @@ export default function StripeCheckoutForm({
     </div>
   );
 }
-
