@@ -186,6 +186,8 @@ export const IMAGES = {
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung',
         nestHausFlexibilitaetErweiterung: '40-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         nestHausEntwurfVorentwurf: '305-nest-haus-entwurf-vorentwurf-planung-erstentwurf-hausbau', // CONFIRMED: Path works WITHOUT .png extension
+        nestHausInteriorKueche: '306-nest-haus-interior-entwurf-modern-design-innenarchitektur-kueche-mit-ausblick',
+        nestHausInteriorSteinplatten: '301-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
         // Desktop versions of images 13-16
         nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
         nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz-mobile',

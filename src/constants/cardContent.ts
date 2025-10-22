@@ -53,6 +53,8 @@ export interface ContentCardData {
     iconNumber?: number; // Or specify a step icon by number (1-7)
     playbackRate?: number; // For video cards (1.0 = normal speed)
     buttons?: ButtonConfig[];
+    aspectRatio?: "2x1" | "1x1" | "2x2"; // Optional aspect ratio for overlay-text cards - "2x1" = portrait, "1x1" = square, "2x2" = extra wide
+    imageFit?: "cover" | "contain-width"; // Optional image fit behavior: "cover" (default - fills container), "contain-width" (fits width, crops top/bottom)
 }
 
 /**
@@ -72,7 +74,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Kalkstein mit warmen Beige- bis Grautönen. Elegante, widerstandsfähige Oberfläche für Innen- und Außenbereiche.",
         image: IMAGES.materials.kalkstein,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 2,
@@ -85,7 +87,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Zeitloses Eichenparkett: warm, strapazierfähig und langlebig – ideal für Wohnräume und stark genutzte Bereiche.",
         image: IMAGES.materials.eicheParkett,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 3,
@@ -98,7 +100,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Robustes Feinsteinzeug in Schieferoptik: trittfest, feuchtigkeitsbeständig und edel in Anthrazit bis Tiefgrau.",
         image: IMAGES.materials.schiefer,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 4,
@@ -111,7 +113,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Lärchenlattung: warm, witterungsbeständig, entwickelt edle Patina. Zeitlose, nachhaltige Fassadengestaltung.",
         image: IMAGES.materials.laercheFassade,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 5,
@@ -124,7 +126,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "HPL-Verbundplatten: wetterfest, UV-stabil, kratz- und schlagfest. Pflegeleicht und langlebig für moderne Fassaden.",
         image: IMAGES.materials.fundermaxSchwarz,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 6,
@@ -137,7 +139,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "HPL-Verbundplatten in Weiß: wetterfest, UV-stabil und kratzfest. Pflegeleicht, langlebig und ideal für klare, moderne Fassaden.",
         image: IMAGES.materials.fundermaxWeiss,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 7,
@@ -150,7 +152,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Robustes Trapezblech: hohe Tragfähigkeit, geringes Gewicht, wetterfest und langlebig – ideal für Dach und Fassade.",
         image: IMAGES.materials.trapezblech,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 8,
@@ -163,7 +165,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Echte Eiche für warme, natürliche Räume. Widerstandsfähig, pflegeleicht und ideal für den täglichen Gebrauch.",
         image: IMAGES.materials.eiche,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 9,
@@ -176,7 +178,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Kiefernholz mit lebendiger Maserung und warmen Tönen. Gemütlich, leicht zu verarbeiten und raumklimafreundlich.",
         image: IMAGES.materials.holzKiefer,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 10,
@@ -189,7 +191,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Helle Fichte für freundliche, weite Räume. Natürlich, feuchtigkeitsregulierend und vielseitig im Innenraum einsetzbar.",
         image: IMAGES.materials.holzFichte,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 11,
@@ -202,7 +204,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "BSH-Fichte: formstabil, tragfähig, rissarm. Nachhaltig produziert, präzise gefertigt, wiederverwendbar und recyclingfähig.",
         image: IMAGES.materials.konstruktionFichte,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 12,
@@ -215,7 +217,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Holzfaser-Dämmplatten: starker Wärme- und Hitzeschutz, diffusionsoffen, klimaregulierend, nachhaltig und recycelbar.",
         image: IMAGES.materials.konstruktionIsolierung,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 13,
@@ -228,7 +230,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "OSB‑Platten: druck- und biegefest, formstabil, ressourcenschonend. Langlebig, wiederverwendbar und gut recyclebar.",
         image: IMAGES.materials.konstruktionOSB,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
 ];
 
@@ -249,7 +251,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
         image: IMAGES.configurations.pv_holzfassade,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 2,
@@ -262,7 +264,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
         image: IMAGES.configurations.pv_trapezblech,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 3,
@@ -275,7 +277,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
         image: IMAGES.configurations.pv_plattenschwarz,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 4,
@@ -288,7 +290,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
         image: IMAGES.configurations.pv_plattenweiss,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
 ];
 
@@ -309,7 +311,7 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Das Light-Paket bietet eine solide Grundbeleuchtung mit 12% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
         image: IMAGES.hero.nestHaus7,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 2,
@@ -322,7 +324,7 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Das Medium-Paket bietet ausgewogene Helligkeit mit 16% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
         image: IMAGES.hero.nestHaus1,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 3,
@@ -335,7 +337,7 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
         image: IMAGES.hero.nestHaus3,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
 ];
 
@@ -356,7 +358,7 @@ export const FENSTER_TUEREN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "PVC-Fenster bieten hervorragende Wärmedämmung und Langlebigkeit. Sie sind pflegeleicht, witterungsbeständig und in verschiedenen Farben und Designs erhältlich.",
         image: IMAGES.windows.pvc,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 2,
@@ -369,7 +371,7 @@ export const FENSTER_TUEREN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Fichte-Holzfenster stehen für natürliche Schönheit und nachhaltiges Bauen. Das helle, warme Holz schafft eine gemütliche Atmosphäre und reguliert das Raumklima.",
         image: IMAGES.windows.fichte,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 3,
@@ -382,7 +384,7 @@ export const FENSTER_TUEREN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Aluminium-Fenster überzeugen durch ihre moderne Optik und hohe Stabilität. Sie sind korrosionsbeständig, wartungsarm und ermöglichen große Glasflächen.",
         image: IMAGES.windows.aluminium,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 4,
@@ -395,7 +397,7 @@ export const FENSTER_TUEREN_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Eichen-Holzfenster stehen für höchste Qualität und zeitlose Eleganz. Das robuste Hartholz überzeugt durch seine charaktervolle Maserung und außergewöhnliche Langlebigkeit.",
         image: IMAGES.windows.eiche,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
 ];
 
@@ -416,7 +418,7 @@ export const STIRNSEITE_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Die geschlossene Stirnseite bietet maximale Privatsphäre und Energieeffizienz. Ideal für ruhige Bereiche ohne zusätzliche Fensteröffnungen.",
         image: IMAGES.configurations.nest75_holzlattung,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 2,
@@ -429,7 +431,7 @@ export const STIRNSEITE_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Die obere Verglasung schafft interessante Lichteffekte und ermöglicht Ausblicke nach oben. 8m² strategisch positionierte Fensterfläche für natürliches Licht.",
         image: IMAGES.configurations.stirnseiteHolzfassade,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 3,
@@ -442,7 +444,7 @@ export const STIRNSEITE_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Die untere Verglasung bietet direkten Ausblick und Zugang. 17m² Fensterfläche im Erdgeschossbereich für optimale Raumverbindung.",
         image: IMAGES.configurations.stirnseitePlattenSchwarz,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 4,
@@ -455,7 +457,7 @@ export const STIRNSEITE_CONTENT: ContentCardData[] = [
         mobileDescription:
             "Die komplette Stirnseite verglast bietet maximales Licht und spektakuläre Ausblicke. 25m² durchgehende Verglasung für ein Gefühl von Grenzenlosigkeit.",
         image: IMAGES.configurations.stirnseiteTrapezblech,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
 ];
 
@@ -636,7 +638,7 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "",
         image: IMAGES.function.nestHausHandDrawing,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     // Add more full image cards here as needed
 ];
@@ -653,7 +655,16 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Zeitloses Design fürs Leben",
         video: IMAGES.videos.videoCard01,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Tall portrait format
+        buttons: [
+            {
+                text: "Vorentwurf kaufen",
+                variant: "primary",
+                size: "xs",
+                link: "/kontakt",
+            },
+        ],
     },
     {
         id: 2,
@@ -661,7 +672,8 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Dein Zuhause wächst mit",
         video: IMAGES.videos.videoCard02,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "1x1", // Square format
     },
     {
         id: 3,
@@ -669,7 +681,8 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Grünes Bauen für morgen",
         video: IMAGES.videos.videoCard03,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Tall portrait format
     },
     {
         id: 4,
@@ -677,7 +690,8 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Licht durchflutet jeden Raum",
         video: IMAGES.videos.videoCard04,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "1x1", // Square format
     },
     {
         id: 5,
@@ -685,7 +699,8 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Holz schafft warme Atmosphäre",
         video: IMAGES.videos.videoCard05,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Tall portrait format
     },
     {
         id: 6,
@@ -693,7 +708,8 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Jeder Quadratmeter zählt hier",
         video: IMAGES.videos.videoCard06,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "1x1", // Square format
     },
     {
         id: 7,
@@ -701,7 +717,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Schnell gebaut trotz Qualität",
         video: IMAGES.videos.videoCard07,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 8,
@@ -709,7 +725,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Photovoltaik macht dich unabhängig",
         video: IMAGES.videos.videoCard08,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 9,
@@ -717,7 +733,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Weniger ist oft deutlich mehr",
         video: IMAGES.videos.videoCard09,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 10,
@@ -725,7 +741,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Draußen und drinnen verschmelzen",
         video: IMAGES.videos.videoCard10,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 11,
@@ -733,7 +749,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Flexibel wie dein Lebensstil",
         video: IMAGES.videos.videoCard11,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 12,
@@ -741,7 +757,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Qualität kommt aus Perfektion",
         video: IMAGES.videos.videoCard12,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 13,
@@ -749,7 +765,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Anpassbar wie du es brauchst",
         video: IMAGES.videos.videoCard13,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 14,
@@ -757,7 +773,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Verarbeitung auf höchstem Niveau",
         video: IMAGES.videos.videoCard14,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 15,
@@ -765,7 +781,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Stil bleibt über Jahrzehnte",
         video: IMAGES.videos.videoCard15,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
     },
     {
         id: 16,
@@ -773,7 +789,75 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description: "Investition in kommende Generationen",
         video: IMAGES.videos.videoCard16,
-        backgroundColor: "#121212",
+        backgroundColor: "#F4F4F4",
+    },
+];
+
+/**
+ * ENTWURF VIDEO CARDS CONTENT
+ * Mixed media cards for the Entwurf page with images and videos
+ * Used in: Entwurf page
+ */
+export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
+    {
+        id: 1,
+        title: "Architektur fühlen, statt nur sehen",
+        subtitle: "",
+        description: "Gemeinsam entwerfen wir ein Zuhause, das dich wiederspiegelt",
+        image: IMAGES.function.nestHausHandDrawing,
+        backgroundColor: "#f4f4f4",
+        aspectRatio: "2x2", // Portrait format
+        imageFit: "contain-width", // Fit full width, crop top/bottom
+        textColor: "text-black", // Black text instead of white
+        buttons: [
+            {
+                text: "Jetzt Vorentwurf sichern",
+                variant: "primary",
+                size: "xs",
+                link: "/kontakt",
+            },
+            {
+                text: "Warum mit Nest",
+                variant: "secondary-narrow-blue",
+                size: "xs",
+                link: "/kontakt",
+            },
+        ],
+    },
+    {
+        id: 2,
+        title: "So fühlt sich Wohnen im Nest Haus an",
+        subtitle: "",
+        description: "Momente schaffen",
+        image: IMAGES.function.nestHausInteriorKueche,
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Portrait format
+    },
+    {
+        id: 3,
+        title: "Wohenn wie du willst, Nur mit Nest",
+        subtitle: "",
+        description: "So funktioniert die Zukunft",
+        image: IMAGES.function.nestHausInteriorSteinplatten,
+        backgroundColor: "#f4f4f4",
+        aspectRatio: "2x1", // Portrait format
+    },
+    {
+        id: 4,
+        title: "Erzähle uns von deiner Idee",
+        subtitle: "",
+        description: "Wir machen's möglich",
+        video: IMAGES.videos.videoCard07,
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Portrait format
+        buttons: [
+            {
+                text: "Termin vereinbaren",
+                variant: "primary",
+                size: "xs",
+                link: "/konfigurator",
+            },
+        ],
     },
 ];
 
@@ -870,6 +954,7 @@ export type ContentCategory =
     | "planungspakete"
     | "fullImageCards"
     | "videoBackgroundCards"
+    | "entwurfVideoCards"
     | "processCards";
 
 /**
@@ -894,6 +979,7 @@ export const CARD_CONTENT_BY_CATEGORY: Record<
     planungspakete: PLANUNGSPAKETE_CONTENT,
     fullImageCards: FULL_IMAGE_CARDS_CONTENT,
     videoBackgroundCards: VIDEO_BACKGROUND_CARDS_CONTENT,
+    entwurfVideoCards: ENTWURF_VIDEO_CARDS_CONTENT,
     processCards: PROCESS_CARDS_CONTENT,
 };
 

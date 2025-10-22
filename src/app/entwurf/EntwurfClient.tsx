@@ -21,6 +21,9 @@ export default function EntwurfClient() {
   // Get video background cards
   const videoBackgroundCards = getContentByCategory("videoBackgroundCards");
 
+  // Get entwurf video cards (new mixed media cards)
+  const entwurfVideoCards = getContentByCategory("entwurfVideoCards");
+
   return (
     <div
       className="min-h-screen bg-black text-white"
@@ -67,7 +70,7 @@ export default function EntwurfClient() {
           style="standard"
           variant="responsive"
           aspectRatio="2x1"
-          maxWidth={true}
+          maxWidth={false}
           showInstructions={true}
           customData={materialienContent}
         />
@@ -94,45 +97,45 @@ export default function EntwurfClient() {
         />
       </section>
 
-      {/* NEW: Video Background Cards with 2x1 Aspect Ratio */}
+      {/* NEW: Video Background Cards with Mixed Aspect Ratios (1x1 & 2x1) */}
       <section className="w-full py-8 md:py-16 bg-gray-100">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
           <h2 className="text-3xl font-bold text-black mb-4 text-center">
-            Video Background Cards - 2x1 Portrait (16 Videos)
+            Video Background Cards - Mixed Aspect Ratios (Seamless Carousel)
           </h2>
           <p className="text-black text-center mb-2">
-            Dynamic video backgrounds with minimal text overlay
+            Cards 1, 3, 5 are 2x1 (portrait) • Cards 2, 4, 6 are 1x1 (square) -
+            all flowing seamlessly together
           </p>
         </div>
         <UnifiedContentCard
           layout="overlay-text"
           style="standard"
           variant="responsive"
-          aspectRatio="2x1"
           maxWidth={true}
           showInstructions={true}
           customData={videoBackgroundCards}
         />
       </section>
 
-      {/* NEW: Video Background Cards with 1x1 Aspect Ratio */}
+      {/* NEW: Entwurf Video Cards - Mixed Media Section */}
       <section className="w-full py-8 md:py-16 bg-white">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
           <h2 className="text-3xl font-bold text-black mb-4 text-center">
-            Video Background Cards - 1x1 Square (16 Videos)
+            Entwurf Video Cards - Mixed Media (Images + Videos)
           </h2>
           <p className="text-black text-center mb-2">
-            Same videos, different aspect ratio - square format
+            Combination of images and videos with centered buttons - All using
+            2x1 aspect ratio
           </p>
         </div>
         <UnifiedContentCard
           layout="overlay-text"
           style="standard"
           variant="responsive"
-          aspectRatio="1x1"
           maxWidth={true}
           showInstructions={true}
-          customData={videoBackgroundCards}
+          customData={entwurfVideoCards}
         />
       </section>
 

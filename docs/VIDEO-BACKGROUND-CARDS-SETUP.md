@@ -1,5 +1,53 @@
 # Video Background Cards Setup Complete
 
+## ✨ UPDATE: Enhanced Navigation for Variable-Width Cards
+
+The navigation system has been improved to handle cards with different widths seamlessly!
+
+**What's Fixed:**
+
+- ✅ Arrows now positioned at fixed page edges (16px mobile, 24px desktop)
+- ✅ Navigation correctly calculates cumulative positions for mixed aspect ratios
+- ✅ Smooth centering when navigating between narrow (2x1) and wide (1x1) cards
+- ✅ Responsive resize handling maintains proper card positioning
+
+**Arrow Positioning:**
+
+- Left arrow: `left: 16px` (mobile) or `24px` (desktop)
+- Right arrow: `right: 16px` (mobile) or `24px` (desktop)
+- No more complex calculations based on card width
+- Consistent positioning across all card types and sizes
+
+---
+
+## ✨ NEW: Per-Card Aspect Ratio Support
+
+Each video background card can now specify its **own aspect ratio** (2x1 or 1x1), allowing you to **mix different aspect ratios seamlessly in the same carousel**!
+
+**Aspect Ratio Details:**
+
+- **"2x1"**: Creates a **2.2:1 aspect ratio** (width is 2.2x the height) - Extra Wide format
+- **"1x1"**: Creates a **1.2:1 aspect ratio** (width is 1.2x the height) - Wide format
+
+**Both cards are now WIDER than before!**
+
+**Example:**
+
+```typescript
+{
+  id: 1,
+  title: "My Card",
+  description: "Card description",
+  video: IMAGES.videos.videoCard01,
+  backgroundColor: "#121212",
+  aspectRatio: "2x1", // This card is extra wide (2.2:1)!
+}
+```
+
+**📖 See `docs/PER-CARD-ASPECT-RATIO-GUIDE.md` for detailed documentation.**
+
+---
+
 ## ✅ What Was Added
 
 ### 1. Videos in `images.ts`
@@ -111,30 +159,35 @@ const cards = getContentByCategory("videoBackgroundCards").slice(0, 5); // First
 
 ## 📋 All Video Cards Content
 
-| ID  | Title                                   | Description                          | Video       |
-| --- | --------------------------------------- | ------------------------------------ | ----------- |
-| 1   | Moderne Architektur trifft Natur        | Zeitloses Design fürs Leben          | videoCard01 |
-| 2   | Flexibel wohnen nach Maß                | Dein Zuhause wächst mit              | videoCard02 |
-| 3   | Nachhaltigkeit trifft Innovation        | Grünes Bauen für morgen              | videoCard03 |
-| 4   | Transparenz durch großzügige Verglasung | Licht durchflutet jeden Raum         | videoCard04 |
-| 5   | Natürliche Materialien erleben          | Holz schafft warme Atmosphäre        | videoCard05 |
-| 6   | Intelligente Raumkonzepte entdecken     | Jeder Quadratmeter zählt hier        | videoCard06 |
-| 7   | Effizienz im modernen Wohnbau           | Schnell gebaut trotz Qualität        | videoCard07 |
-| 8   | Energieautark in die Zukunft            | Photovoltaik macht dich unabhängig   | videoCard08 |
-| 9   | Minimalistisch und funktional leben     | Weniger ist oft deutlich mehr        | videoCard09 |
-| 10  | Natur als ständiger Begleiter           | Draußen und drinnen verschmelzen     | videoCard10 |
-| 11  | Modulares Bauen neu gedacht             | Flexibel wie dein Lebensstil         | videoCard11 |
-| 12  | Präzision durch seriellen Bau           | Qualität kommt aus Perfektion        | videoCard12 |
-| 13  | Wohnraum für jede Lebenslage            | Anpassbar wie du es brauchst         | videoCard13 |
-| 14  | Hochwertige Details im Fokus            | Verarbeitung auf höchstem Niveau     | videoCard14 |
-| 15  | Zeitlose Eleganz vereint Komfort        | Stil bleibt über Jahrzehnte          | videoCard15 |
-| 16  | Zukunftssicher und wertbeständig        | Investition in kommende Generationen | videoCard16 |
+Cards **1, 3, 5** are **2x1 (portrait)** • Cards **2, 4, 6** are **1x1 (square)** - creating a mixed aspect ratio demo!
+
+| ID  | Title                                   | Description                          | Video       | Aspect Ratio |
+| --- | --------------------------------------- | ------------------------------------ | ----------- | ------------ |
+| 1   | Moderne Architektur trifft Natur        | Zeitloses Design fürs Leben          | videoCard01 | **2x1**      |
+| 2   | Flexibel wohnen nach Maß                | Dein Zuhause wächst mit              | videoCard02 | **1x1**      |
+| 3   | Nachhaltigkeit trifft Innovation        | Grünes Bauen für morgen              | videoCard03 | **2x1**      |
+| 4   | Transparenz durch großzügige Verglasung | Licht durchflutet jeden Raum         | videoCard04 | **1x1**      |
+| 5   | Natürliche Materialien erleben          | Holz schafft warme Atmosphäre        | videoCard05 | **2x1**      |
+| 6   | Intelligente Raumkonzepte entdecken     | Jeder Quadratmeter zählt hier        | videoCard06 | **1x1**      |
+| 7   | Effizienz im modernen Wohnbau           | Schnell gebaut trotz Qualität        | videoCard07 | -            |
+| 8   | Energieautark in die Zukunft            | Photovoltaik macht dich unabhängig   | videoCard08 | -            |
+| 9   | Minimalistisch und funktional leben     | Weniger ist oft deutlich mehr        | videoCard09 | -            |
+| 10  | Natur als ständiger Begleiter           | Draußen und drinnen verschmelzen     | videoCard10 | -            |
+| 11  | Modulares Bauen neu gedacht             | Flexibel wie dein Lebensstil         | videoCard11 | -            |
+| 12  | Präzision durch seriellen Bau           | Qualität kommt aus Perfektion        | videoCard12 | -            |
+| 13  | Wohnraum für jede Lebenslage            | Anpassbar wie du es brauchst         | videoCard13 | -            |
+| 14  | Hochwertige Details im Fokus            | Verarbeitung auf höchstem Niveau     | videoCard14 | -            |
+| 15  | Zeitlose Eleganz vereint Komfort        | Stil bleibt über Jahrzehnte          | videoCard15 | -            |
+| 16  | Zukunftssicher und wertbeständig        | Investition in kommende Generationen | videoCard16 | -            |
+
+_Cards 7-16 use default/fallback aspect ratio (can be set via component prop)_
 
 ## ✨ Features
 
 - ✅ 16 unique video backgrounds
 - ✅ Minimal text (5 words + title)
 - ✅ Works with both aspect ratios (2x1, 1x1)
+- ✅ **NEW: Per-card aspect ratio control** - mix 2x1 and 1x1 in same carousel!
 - ✅ Auto-playing, looping videos
 - ✅ Dark overlay for text readability
 - ✅ Responsive carousel
