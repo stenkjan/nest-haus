@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c5a13c8aba14e2aa54e86ed5aa43f6f8fa9b358e] - Wed Oct 22 11:04:36 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- src/constants/TALL_CARD_PADDING_COMPARISON.md
+- src/constants/TALL_CARD_QUICK_START.md
+- src/constants/TALL_CARD_TEMPLATE.md
+
+
+---
+
 ## [da4b61f78a6748bbd2c8d9c1bb81c5419b01f5e4] - Tue Oct 21 16:55:41 2025 +0200
 
 **Author**: stenkjan
