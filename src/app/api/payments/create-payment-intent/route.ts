@@ -19,13 +19,11 @@ const createPaymentIntentSchema = z.object({
 
 export async function POST(request: NextRequest) {
     try {
-        console.log('💳 Creating Stripe payment intent...');
 
         const body = await request.json();
         const validation = createPaymentIntentSchema.safeParse(body);
 
         if (!validation.success) {
-            console.error('❌ Payment intent validation failed:', validation.error.issues);
             return NextResponse.json(
                 {
                     error: 'Invalid payment data',
@@ -42,7 +40,6 @@ export async function POST(request: NextRequest) {
         const paymentMode = process.env.PAYMENT_MODE || "deposit";
         const depositAmount = parseInt(process.env.DEPOSIT_AMOUNT || "100"); // 1 EUR in cents
 
-        console.log('💰 Server payment config:', { paymentMode, depositAmount, originalAmount: amount });
 
         if (paymentMode === "deposit") {
             amount = depositAmount;
@@ -57,7 +54,6 @@ export async function POST(request: NextRequest) {
 
         if (existingCustomers.data.length > 0) {
             customer = existingCustomers.data[0];
-            console.log('✅ Found existing Stripe customer:', customer.id);
         } else {
             customer = await stripe.customers.create({
                 email: customerEmail,
@@ -67,7 +63,6 @@ export async function POST(request: NextRequest) {
                     inquiryId: inquiryId || '',
                 },
             });
-            console.log('✅ Created new Stripe customer:', customer.id);
         }
 
         // Create payment intent with automatic payment methods (recommended approach)
@@ -90,10 +85,6 @@ export async function POST(request: NextRequest) {
             description: `NEST-Haus Konfiguration${inquiryId ? ` (Anfrage: ${inquiryId})` : ''}`,
         });
 
-        console.log('✅ Payment intent created:', paymentIntent.id);
-        console.log('💳 Payment methods requested:', paymentIntent.payment_method_types);
-        console.log('🌍 Country configured:', 'AT');
-        console.log('💰 Amount:', paymentIntent.amount, 'cents (€' + (paymentIntent.amount / 100) + ')');
 
         // Update inquiry with payment intent ID if provided
         if (inquiryId) {
@@ -107,9 +98,7 @@ export async function POST(request: NextRequest) {
                         paymentCurrency: currency.toLowerCase(),
                     },
                 });
-                console.log('✅ Updated inquiry with payment intent ID');
-            } catch (dbError) {
-                console.warn('⚠️ Failed to update inquiry with payment intent:', dbError);
+            } catch {
                 // Don't fail the payment intent creation if DB update fails
             }
         }
@@ -123,7 +112,6 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('❌ Error creating payment intent:', error);
 
         if (error instanceof Stripe.errors.StripeError) {
             return NextResponse.json(

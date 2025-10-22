@@ -34,14 +34,14 @@ export default function GrundstuecksCheckBox({
 }: GrundstuecksCheckBoxProps) {
   return (
     <div
-      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.75rem,1.5vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] ${
+      className={`box_selection flex justify-between items-center min-h-[6rem] lg:min-h-[5.5rem] border rounded-[1.2rem] px-[clamp(0.625rem,1.35vw,1.35rem)] py-[clamp(0.75rem,1.5vw,1rem)] cursor-pointer transition-all duration-200 min-w-0 min-h-[44px] ${
         isSelected
           ? "selected border-[#3D6CE1] shadow-[0_0_0_1px_#3D6CE1] bg-blue-50/50"
           : "border-gray-300 hover:border-[#3D6CE1] hover:shadow-sm"
       }`}
       onClick={onClick}
     >
-      <div className="box_selection_name flex-1 min-w-0 pr-[clamp(0.75rem,2vw,1.25rem)]">
+      <div className="box_selection_name flex-1 min-w-0 pr-[clamp(0.625rem,1.75vw,1.125rem)]">
         <p className="font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight mb-[0.5em] text-black">
           {GRUNDSTUECKSCHECK_OPTION.name}
         </p>

@@ -35,32 +35,32 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'nest80',
-        name: 'Nest. 80',
-        description: '75m² Nutzfläche',
+        name: 'Nest 80',
+        description: '4 Module für\n75m² Nutzfläche',
         price: { type: 'base', amount: 155500, monthly: 816 }
       },
       {
         id: 'nest100',
-        name: 'Nest. 100',
-        description: '95m² Nutzfläche',
+        name: 'Nest 100',
+        description: '5 Module für\n95m² Nutzfläche',
         price: { type: 'base', amount: 189100, monthly: 993 }
       },
       {
         id: 'nest120',
-        name: 'Nest. 120',
-        description: '115m² Nutzfläche',
+        name: 'Nest 120',
+        description: '6 Module für\n115m² Nutzfläche',
         price: { type: 'base', amount: 222700, monthly: 1169 }
       },
       {
         id: 'nest140',
-        name: 'Nest. 140',
-        description: '135m² Nutzfläche',
+        name: 'Nest 140',
+        description: '7 Module für\n135m² Nutzfläche',
         price: { type: 'base', amount: 256300, monthly: 1346 }
       },
       {
         id: 'nest160',
-        name: 'Nest. 160',
-        description: '155m² Nutzfläche',
+        name: 'Nest 160',
+        description: '8 Module für\n155m² Nutzfläche',
         price: { type: 'base', amount: 289900, monthly: 1522 }
       }
     ],
@@ -85,7 +85,7 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'trapezblech',
         name: 'Trapezblech',
-        description: 'RAL 9005 - 3000 x 1142 mm',
+        description: 'RAL 9005\n3000 x 1142 mm',
         price: { type: 'discount', amount: -9600, monthly: -50 } // Cheaper option vs standard
       },
       {
@@ -108,7 +108,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Mehr Informationen zu den Materialien'
+      title: 'Daraus besteht dein Nest - Außenhülle'
     }
   },
   {
@@ -119,12 +119,12 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'pv_modules',
         name: 'Photovoltaik-Module',
-        description: '3 x 0,4 kWpeak Panele pro Modul',
+        description: '0,4 kWpeak pro Panel\n3 Panels pro PV-Modul',
         price: { type: 'upgrade', amount: 1170, monthly: 6 }
       }
     ],
     infoBox: {
-      title: 'Mehr Informationen zu Photovoltaik'
+      title: 'Mehr zur grünen Energie für dein Nest'
     }
   },
   {
@@ -135,19 +135,19 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'kiefer',
         name: 'Kiefer',
-        description: 'PEFC - Zertifiziert - Sicht 1,5 cm',
+        description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
         price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
       },
       {
         id: 'fichte',
         name: 'Fichte',
-        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
+        description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
         price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
       },
       {
         id: 'steirische_eiche',
         name: 'Steirische Eiche',
-        description: 'PEFC - Zertifiziert - Sicht 1,9 cm',
+        description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
         price: { type: 'upgrade', amount: 8800, monthly: 47 } // 10200 - 1400 = 8800 vs standard
       }
     ],
@@ -163,13 +163,13 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'ohne_parkett',
         name: 'Ohne Parkett',
-        description: 'Kein Bodenbelag',
+        description: 'Kein Bodenbelag\n\n',
         price: { type: 'included', amount: 0 }
       },
       {
         id: 'parkett',
         name: 'Parkett Eiche',
-        description: 'Schwimmend verlegt',
+        description: 'Eichenparkett\nSchwimmend verlegt\n',
         price: { type: 'upgrade', amount: 3800, monthly: 20 }
       },
       {
@@ -186,7 +186,7 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Mehr Informationen zum Fußboden'
+      title: 'Daraus besteht dein Nest - Fußboden'
     }
   },
   {
@@ -214,14 +214,8 @@ export const configuratorData: CategoryData[] = [
       }
     ],
     infoBox: {
-      title: 'Belichtungspaket',
+      title: 'So platzierst du deine Öffnungen',
       description: 'Wähle die Menge an Fenstern und Türen basierend auf deinen Lichtbedürfnissen.'
-    },
-    facts: {
-      title: 'Informationen zu den Fenstern',
-      content: [
-        'Die Größe und Platzierung deiner Fenster in deinem Nest-Haus werden hier nur schematisch angezeigt.'
-      ]
     }
   },
   {
@@ -231,31 +225,31 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'pvc_fenster',
-        name: 'PVC Fenster',
-        description: 'RAL 9016 - Kunststoff',
+        name: 'PVC',
+        description: 'RAL 9016\nKunststoff',
         price: { type: 'upgrade', amount: 280, monthly: 2 }
       },
       {
         id: 'holz',
-        name: 'Holz',
-        description: 'Holzfenster Fichte',
+        name: 'Fichte',
+        description: 'Farbtöne können variieren\nHolz',
         price: { type: 'upgrade', amount: 400, monthly: 3 }
       },
       {
         id: 'aluminium_schwarz',
-        name: 'Aluminium Schwarz',
-        description: 'RAL 9005 - Tiefschwarz\nbis 6000 x 3200 mm',
+        name: 'Aluminium dunkel',
+        description: 'RAL 9005 - Tiefschwarz\nBis zu 6,0 x 3,2 m',
         price: { type: 'upgrade', amount: 700, monthly: 4 }
       },
       {
         id: 'aluminium_weiss',
-        name: 'Aluminium Weiß',
-        description: 'RAL 9016 - Weiß\nbis 6000 x 3200 mm',
+        name: 'Aluminium Hell',
+        description: 'RAL 9016 - Reinweiß\nBis zu 6,0 x 3,2 m',
         price: { type: 'upgrade', amount: 700, monthly: 4 }
       }
     ],
     infoBox: {
-      title: 'Fenster & Türen',
+      title: 'Die Materialien deiner Öffnungen',
       // description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
     }
   },

@@ -4,6 +4,60 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [167613ed7070bca5e2defee3b84db272de3ad453] - Wed Oct 22 16:33:05 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [e9f76d3c4074ee19109f352a85f16e42a49bcf04] - Wed Oct 22 13:14:17 2025 +0200
+
+**Author**: stenkjan
+**Message**: `refactor: clean up payment code for production  - Remove debug console.log statements and emoji logging - Simplify error handling without verbose debug output - Clean up comments to be more concise and professional - Remove test/debug artifacts while maintaining functionality - Optimize code structure for production deployment - Keep essential error handling and user feedback intact  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/payments/create-payment-intent/route.ts
+- src/components/payments/StripeCheckoutForm.tsx
+
+
+---
+
+## [42f5c6380a06dae37031cd3bc28de4ed614e34f1] - Wed Oct 22 12:57:19 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/payments/create-payment-intent/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/payments/StripeCheckoutForm.tsx
+- src/components/payments/StripeTest.tsx
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+#### 📚 Documentation Changes
+- STRIPE_DASHBOARD_SETUP.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [8e7f78f7ba9e340abd5bb7c1ac8b92eb50d5a2b1] - Wed Oct 22 12:53:32 2025 +0200
 
 **Author**: stenkjan
