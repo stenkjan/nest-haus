@@ -10,7 +10,8 @@ import {
 } from "@stripe/react-stripe-js";
 
 // Initialize Stripe with error handling
-let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null = null;
+let stripePromise: Promise<import("@stripe/stripe-js").Stripe | null> | null =
+  null;
 
 const getStripePromise = () => {
   if (!stripePromise) {
@@ -323,14 +324,6 @@ export default function StripeCheckoutForm({
     },
     // Ensure EUR currency and Austrian locale for better payment method selection
     locale: "de",
-    // Provide default billing details for Austrian customers
-    defaultValues: {
-      billingDetails: {
-        address: {
-          country: "AT",
-        },
-      },
-    },
   };
 
   if (isLoading) {
