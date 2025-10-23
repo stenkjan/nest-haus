@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui";
@@ -18,7 +18,6 @@ import {
 import { SectionHeader } from "@/components/sections";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
-import CheckoutProgress from "@/app/warenkorb/components/CheckoutProgress";
 
 export default function EntwurfClient() {
   // Get materialien content for testing the new overlay-text layout
@@ -29,12 +28,6 @@ export default function EntwurfClient() {
 
   // Get entwurf video cards using PRESET (recommended approach)
   const entwurfVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
-
-  // State for ablauf steps progress
-  const [currentAblaufStep, setCurrentAblaufStep] = useState(0);
-
-  // Extract step titles from ABLAUF_STEPS_PRESET
-  const ablaufStepTitles = ABLAUF_STEPS_PRESET.cards.map((card) => card.title);
 
   return (
     <div
@@ -55,8 +48,8 @@ export default function EntwurfClient() {
           {/* Text Overlay */}
           <div className="absolute inset-0 flex items-start justify-center pt-12">
             <SectionHeader
-              title="Dein Entwurf"
-              subtitle="Architektur fühlen, statt nur sehen."
+              title="Ein Schritt, zwei Ergebnisse"
+              subtitle="Starte heute und erhalte deinen persönlichen Vorentwurf sowie rechtliche Klarheit."
               titleClassName="text-white"
               subtitleClassName="text-white"
             />
@@ -96,8 +89,8 @@ export default function EntwurfClient() {
       <section className="w-full py-8 md:py-16 bg-white">
         <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
           <SectionHeader
-            title="Dein ®Nest System"
-            subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
+            title="Aller Anfang ist schwer?"
+            subtitle="Nicht mit Nest! Entdecke wie du noch heute in dein Bauvorhaben startest"
             titleClassName="text-black"
             subtitleClassName="text-black"
             wrapperMargin="mb-12"
@@ -133,28 +126,17 @@ export default function EntwurfClient() {
             },
           ]}
         />
-      </section>
-
-      {/* NEW: Entwurf Video Cards - Mixed Media Section */}
-      <section className="w-full py-8 md:py-16 bg-white">
-        <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-          <SectionHeader
-            title="Dein ®Nest System"
-            subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
-            titleClassName="text-black"
-            subtitleClassName="text-black"
-            wrapperMargin="mb-12"
+        <div className="pt-16">
+          <UnifiedContentCard
+            layout="overlay-text"
+            style="standard"
+            variant="responsive"
+            maxWidth={true}
+            showInstructions={true}
+            noPadding={true}
+            customData={entwurfVideoCards}
           />
         </div>
-        <UnifiedContentCard
-          layout="overlay-text"
-          style="standard"
-          variant="responsive"
-          maxWidth={true}
-          showInstructions={true}
-          noPadding={true}
-          customData={entwurfVideoCards}
-        />
       </section>
 
       {/* Grundstück Card - With Padding (TALL CARD) */}
@@ -177,21 +159,15 @@ export default function EntwurfClient() {
               title: "Die Basis",
               subtitle: "",
               description:
-                "Mit dem Grundstückscheck, der Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfang an mit Sicherheit planen.",
-              image: IMAGES.function.nestHausEntwurfVorentwurf,
+                "Mit dem Grundstückscheck, der Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfan an mit Sicherheit planen.",
+              image: IMAGES.function.nestHausGrundstueckCheck,
               backgroundColor: "#F4F4F4",
               buttons: [
                 {
-                  text: "Unsere Philosophie",
+                  text: "Entwurf und Check erwerben",
                   variant: "primary",
                   size: "xs",
                   link: "/kontakt",
-                },
-                {
-                  text: "Wie funktionierts?",
-                  variant: "landing-secondary-blue",
-                  size: "xs",
-                  link: "/nest-system",
                 },
               ],
             },
@@ -203,28 +179,20 @@ export default function EntwurfClient() {
         <SectionHeader
           title="So läuft's ab"
           subtitle="Dein Weg zum Nest-Haus"
-          wrapperMargin="mb-8"
+          wrapperMargin="mb-12"
         />
 
-        {/* Progress Bar */}
-        <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 mb-12">
-          <CheckoutProgress
-            steps={ablaufStepTitles}
-            stepIndex={currentAblaufStep}
-          />
-        </div>
-
-        {/* UnifiedContentCard with text-icon layout, preset data and buttons */}
+        {/* UnifiedContentCard with text-icon layout and integrated progress bar */}
         <UnifiedContentCard
           layout="text-icon"
           style="standard"
           variant="responsive"
           maxWidth={false}
           showInstructions={false}
+          showProgress={true}
           customData={ABLAUF_STEPS_PRESET.cards}
           buttons={ABLAUF_STEPS_PRESET.buttons}
           enableLightbox={false}
-          onCardClick={(index) => setCurrentAblaufStep(index)}
         />
       </section>
 

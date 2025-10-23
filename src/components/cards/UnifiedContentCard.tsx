@@ -99,6 +99,7 @@ export interface UnifiedContentCardProps {
   imagePadding?: ImagePaddingMode; // Controls image padding for tall cards
   aspectRatio?: AspectRatio; // Controls aspect ratio for overlay-text layout (2x1 or 1x1)
   noPadding?: boolean; // Remove py-8 container padding
+  showProgress?: boolean; // Show integrated progress bar above cards
 
   // Content source (category or custom data)
   category?: ContentCategory;
@@ -152,6 +153,7 @@ export default function UnifiedContentCard({
   imagePadding = "none", // Default: no padding (edge-to-edge)
   aspectRatio = "2x1", // Default: 2x1 aspect ratio for overlay-text
   noPadding = false, // Default: include py-8 padding
+  showProgress = false, // Default: don't show integrated progress bar
   category,
   customData,
   title = "",
@@ -172,6 +174,7 @@ export default function UnifiedContentCard({
   const [screenWidth, setScreenWidth] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [stableViewportHeight, setStableViewportHeight] = useState(0);
 
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -186,6 +189,14 @@ export default function UnifiedContentCard({
   const isResponsive = variant === "responsive";
   const isGlass = style === "glass";
   const heightMultiplier = heightMode === "tall" ? 1.25 : 1;
+
+  // Helper function to get stable viewport height (prevents iOS Safari scaling issues)
+  const getViewportHeight = useCallback(() => {
+    if (stableViewportHeight > 0) {
+      return stableViewportHeight;
+    }
+    return typeof window !== "undefined" ? window.innerHeight : 0;
+  }, [stableViewportHeight]);
 
   // Determine text colors based on style: glass = white text, standard = black text
   const textColors = {
@@ -224,13 +235,18 @@ export default function UnifiedContentCard({
                   ? 720 * heightMultiplier
                   : 600 * heightMultiplier;
 
+        // Use stable viewport height to prevent iOS Safari scaling issues
+        const viewportHeight =
+          stableViewportHeight > 0
+            ? stableViewportHeight
+            : typeof window !== "undefined"
+              ? window.innerHeight
+              : 0;
         const cardHeight = Math.min(
           width,
-          typeof window !== "undefined"
-            ? window.innerHeight *
-                (currentScreenWidth >= 1280 ? 0.7 : 0.75) *
-                heightMultiplier
-            : width
+          viewportHeight *
+            (currentScreenWidth >= 1280 ? 0.7 : 0.75) *
+            heightMultiplier
         );
 
         return effectiveAspectRatio === "2x1"
@@ -241,13 +257,30 @@ export default function UnifiedContentCard({
       // For all other layouts, use the standard cardWidth
       return cardWidth;
     },
-    [layout, aspectRatio, heightMultiplier, cardWidth]
+    [layout, aspectRatio, heightMultiplier, cardWidth, stableViewportHeight]
   );
 
   // Initialize client-side state
   useEffect(() => {
     setIsClient(true);
     setScreenWidth(window.innerWidth);
+
+    // Set stable viewport height for iOS Safari (use the largest viewport height to avoid scaling on browser bar show/hide)
+    // visualViewport gives us the visible area excluding browser UI
+    const getStableHeight = () => {
+      if (typeof window !== "undefined") {
+        // For iOS Safari, use the maximum available height to prevent scaling
+        // when the browser bar appears/disappears
+        const vh = window.visualViewport
+          ? window.visualViewport.height
+          : window.innerHeight;
+        const calculatedHeight = Math.max(vh, window.innerHeight);
+        return calculatedHeight;
+      }
+      return 0;
+    };
+
+    setStableViewportHeight(getStableHeight());
 
     // Center the first card initially
     const containerWidth = window.innerWidth;
@@ -340,52 +373,45 @@ export default function UnifiedContentCard({
         // MOBILE OVERRIDE: Force 2x1 aspect ratio on mobile (<768px) for better UX
         const effectiveAspectRatio = width < 768 ? "2x1" : aspectRatio;
 
+        // Use stable viewport height to prevent iOS Safari scaling issues
+        const viewportHeight =
+          stableViewportHeight > 0
+            ? stableViewportHeight
+            : typeof window !== "undefined"
+              ? window.innerHeight
+              : 0;
+
         if (width >= 1600) {
           // Height: 830px (or 75% viewport), Width varies by aspect ratio
-          const cardHeight = Math.min(
-            830,
-            typeof window !== "undefined" ? window.innerHeight * 0.75 : 830
-          );
+          const cardHeight = Math.min(830, viewportHeight * 0.75);
           setCardsPerView(effectiveAspectRatio === "2x1" ? 3.8 : 1.9);
           setCardWidth(
             effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else if (width >= 1280) {
           // Height: 692px (or 70% viewport), Width varies by aspect ratio
-          const cardHeight = Math.min(
-            692,
-            typeof window !== "undefined" ? window.innerHeight * 0.7 : 692
-          );
+          const cardHeight = Math.min(692, viewportHeight * 0.7);
           setCardsPerView(effectiveAspectRatio === "2x1" ? 3.2 : 1.7);
           setCardWidth(
             effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else if (width >= 1024) {
           // Height: 577px (or 70% viewport), Width varies by aspect ratio
-          const cardHeight = Math.min(
-            577,
-            typeof window !== "undefined" ? window.innerHeight * 0.7 : 577
-          );
+          const cardHeight = Math.min(577, viewportHeight * 0.7);
           setCardsPerView(effectiveAspectRatio === "2x1" ? 2.6 : 1.5);
           setCardWidth(
             effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else if (width >= 768) {
           // Height: 720px (or 75% viewport), Width varies by aspect ratio
-          const cardHeight = Math.min(
-            720,
-            typeof window !== "undefined" ? window.innerHeight * 0.75 : 720
-          );
+          const cardHeight = Math.min(720, viewportHeight * 0.75);
           setCardsPerView(effectiveAspectRatio === "2x1" ? 2.6 : 1.5);
           setCardWidth(
             effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else {
           // Mobile: Height: 600px (or 75% viewport), Width forced to 2x1 (portrait)
-          const cardHeight = Math.min(
-            600,
-            typeof window !== "undefined" ? window.innerHeight * 0.75 : 600
-          );
+          const cardHeight = Math.min(600, viewportHeight * 0.75);
           setCardsPerView(2); // Always 2 cards per view on mobile (portrait)
           setCardWidth(cardHeight * 0.6); // Always use 2x1 ratio on mobile
         }
@@ -478,6 +504,7 @@ export default function UnifiedContentCard({
     heightMultiplier,
     displayCards,
     getCardWidthForIndex,
+    stableViewportHeight,
   ]);
 
   // Helper function to calculate individual card width based on aspect ratio
@@ -1623,6 +1650,104 @@ export default function UnifiedContentCard({
           <div
             className={`relative ${isLightboxMode ? "py-1 xl:py-2" : noPadding ? "" : "py-8"}`}
           >
+            {/* Integrated Progress Bar - Shown above cards when enabled */}
+            {showProgress && displayCards.length > 1 && (
+              <div className="mb-8 px-4 md:px-8">
+                {/* Desktop: Horizontal Progress Steps */}
+                <div className="hidden md:block">
+                  <div className="relative max-w-4xl mx-auto">
+                    {/* Background Line */}
+                    <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
+                    {/* Progress Line */}
+                    <div
+                      className="absolute left-0 top-3 h-0.5 bg-blue-500 transition-all duration-300"
+                      style={{
+                        width:
+                          currentIndex === 0
+                            ? `${(1 / (displayCards.length * 2)) * 100}%`
+                            : displayCards.length === 1
+                              ? "100%"
+                              : currentIndex === displayCards.length - 1
+                                ? "100%"
+                                : `${(1 / (displayCards.length * 2)) * 100 + (currentIndex / (displayCards.length - 1)) * (100 - 100 / displayCards.length)}%`,
+                        transformOrigin: "left center",
+                      }}
+                    />
+                    {/* Step Dots */}
+                    <div
+                      className="grid gap-0"
+                      style={{
+                        gridTemplateColumns: `repeat(${displayCards.length}, 1fr)`,
+                      }}
+                    >
+                      {displayCards.map((card, idx) => {
+                        const isActive = idx === currentIndex;
+                        const isPassed = idx < currentIndex;
+                        const circleClass = isPassed
+                          ? "bg-blue-500 border-blue-500 text-white"
+                          : isActive
+                            ? "bg-white border-blue-500 text-blue-500"
+                            : "bg-white border-gray-300 text-gray-400";
+
+                        return (
+                          <div
+                            key={card.id}
+                            className="flex flex-col items-center"
+                          >
+                            <button
+                              onClick={() => navigateCard(idx - currentIndex)}
+                              className={`relative z-10 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-200 hover:scale-110 ${circleClass}`}
+                              aria-label={`Zu Schritt ${idx + 1}: ${card.title}`}
+                            >
+                              <span className="text-xs font-medium">
+                                {idx + 1}
+                              </span>
+                            </button>
+                            <div className="mt-3 text-xs text-center transition-opacity duration-200 max-w-24 leading-tight px-1 break-words">
+                              <span
+                                className={
+                                  isActive
+                                    ? "text-gray-900"
+                                    : "text-gray-600 opacity-80"
+                                }
+                              >
+                                {card.title}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mobile: Compact Dots */}
+                <div className="md:hidden">
+                  <div className="flex justify-center items-center space-x-2">
+                    {displayCards.map((card, idx) => {
+                      const isActive = idx === currentIndex;
+                      const isPassed = idx < currentIndex;
+
+                      return (
+                        <button
+                          key={card.id}
+                          onClick={() => navigateCard(idx - currentIndex)}
+                          className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                            isActive
+                              ? "bg-gray-900 scale-125"
+                              : isPassed
+                                ? "bg-gray-600"
+                                : "bg-gray-300"
+                          }`}
+                          aria-label={`Zu Schritt ${idx + 1}: ${card.title}`}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Horizontal Scrolling Layout */}
             <div className="overflow-x-clip">
               <div
@@ -1665,12 +1790,18 @@ export default function UnifiedContentCard({
                     // Calculate width for overlay-text cards based on individual aspect ratio
                     let cardSpecificWidth = cardWidth;
                     if (layout === "overlay-text" && effectiveAspectRatio) {
+                      // Use stable viewport height to prevent iOS Safari scaling issues
+                      const viewportHeight =
+                        stableViewportHeight > 0
+                          ? stableViewportHeight
+                          : typeof window !== "undefined"
+                            ? window.innerHeight
+                            : 0;
+
                       if (isClient && screenWidth >= 1600) {
                         const cardHeight = Math.min(
                           830 * heightMultiplier,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.75 * heightMultiplier
-                            : 830 * heightMultiplier
+                          viewportHeight * 0.75 * heightMultiplier
                         );
                         cardSpecificWidth =
                           effectiveAspectRatio === "2x1"
@@ -1679,9 +1810,7 @@ export default function UnifiedContentCard({
                       } else if (isClient && screenWidth >= 1280) {
                         const cardHeight = Math.min(
                           692 * heightMultiplier,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.7 * heightMultiplier
-                            : 692 * heightMultiplier
+                          viewportHeight * 0.7 * heightMultiplier
                         );
                         cardSpecificWidth =
                           effectiveAspectRatio === "2x1"
@@ -1690,9 +1819,7 @@ export default function UnifiedContentCard({
                       } else if (isClient && screenWidth >= 1024) {
                         const cardHeight = Math.min(
                           577 * heightMultiplier,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.7 * heightMultiplier
-                            : 577 * heightMultiplier
+                          viewportHeight * 0.7 * heightMultiplier
                         );
                         cardSpecificWidth =
                           effectiveAspectRatio === "2x1"
@@ -1701,9 +1828,7 @@ export default function UnifiedContentCard({
                       } else if (isClient && screenWidth >= 768) {
                         const cardHeight = Math.min(
                           720 * heightMultiplier,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.75 * heightMultiplier
-                            : 720 * heightMultiplier
+                          viewportHeight * 0.75 * heightMultiplier
                         );
                         cardSpecificWidth =
                           effectiveAspectRatio === "2x1"
@@ -1713,9 +1838,7 @@ export default function UnifiedContentCard({
                         // Mobile: Force all cards to 2x1 (portrait) for better UX
                         const cardHeight = Math.min(
                           600 * heightMultiplier,
-                          typeof window !== "undefined"
-                            ? window.innerHeight * 0.75 * heightMultiplier
-                            : 600 * heightMultiplier
+                          viewportHeight * 0.75 * heightMultiplier
                         );
                         cardSpecificWidth = cardHeight * 0.6; // Always 2x1 ratio on mobile
                       }
@@ -1764,50 +1887,49 @@ export default function UnifiedContentCard({
                                   : 480 * heightMultiplier // 480px standard, 600px tall on mobile to fit content nicely
                                 : layout === "overlay-text"
                                   ? // Overlay-text: Use SAME standard heights as other cards
-                                    isClient && screenWidth >= 1600
-                                    ? Math.min(
-                                        830 * heightMultiplier,
-                                        typeof window !== "undefined"
-                                          ? window.innerHeight *
+                                    // Use stable viewport height to prevent iOS Safari scaling issues
+                                    (() => {
+                                      const viewportHeight =
+                                        stableViewportHeight > 0
+                                          ? stableViewportHeight
+                                          : typeof window !== "undefined"
+                                            ? window.innerHeight
+                                            : 0;
+                                      return isClient && screenWidth >= 1600
+                                        ? Math.min(
+                                            830 * heightMultiplier,
+                                            viewportHeight *
                                               0.75 *
                                               heightMultiplier
-                                          : 830 * heightMultiplier
-                                      )
-                                    : isClient && screenWidth >= 1280
-                                      ? Math.min(
-                                          692 * heightMultiplier,
-                                          typeof window !== "undefined"
-                                            ? window.innerHeight *
+                                          )
+                                        : isClient && screenWidth >= 1280
+                                          ? Math.min(
+                                              692 * heightMultiplier,
+                                              viewportHeight *
                                                 0.7 *
                                                 heightMultiplier
-                                            : 692 * heightMultiplier
-                                        )
-                                      : isClient && screenWidth >= 1024
-                                        ? Math.min(
-                                            577 * heightMultiplier,
-                                            typeof window !== "undefined"
-                                              ? window.innerHeight *
+                                            )
+                                          : isClient && screenWidth >= 1024
+                                            ? Math.min(
+                                                577 * heightMultiplier,
+                                                viewportHeight *
                                                   0.7 *
                                                   heightMultiplier
-                                              : 577 * heightMultiplier
-                                          )
-                                        : isClient && screenWidth >= 768
-                                          ? Math.min(
-                                              720 * heightMultiplier,
-                                              typeof window !== "undefined"
-                                                ? window.innerHeight *
+                                              )
+                                            : isClient && screenWidth >= 768
+                                              ? Math.min(
+                                                  720 * heightMultiplier,
+                                                  viewportHeight *
                                                     0.75 *
                                                     heightMultiplier
-                                                : 720 * heightMultiplier
-                                            )
-                                          : Math.min(
-                                              600 * heightMultiplier,
-                                              typeof window !== "undefined"
-                                                ? window.innerHeight *
+                                                )
+                                              : Math.min(
+                                                  600 * heightMultiplier,
+                                                  viewportHeight *
                                                     0.75 *
                                                     heightMultiplier
-                                                : 600 * heightMultiplier
-                                            )
+                                                );
+                                    })()
                                   : isStatic || isResponsive
                                     ? isClient && screenWidth >= 1600
                                       ? Math.min(
