@@ -285,9 +285,9 @@ class UserJourneyService {
                 const stepData = dropOffByStep.get(lastStep)!;
                 stepData.count++;
 
-                // Sum time spent
+                // Sum time spent (convert BigInt to Number)
                 const timeSpent = session.interactionEvents.reduce((sum, event) =>
-                    sum + (event.timeSpent || 0), 0
+                    sum + Number(event.timeSpent || 0), 0
                 );
                 stepData.totalTime += timeSpent;
             });
