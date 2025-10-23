@@ -191,7 +191,7 @@ export default function UnifiedContentCard({
   const heightMultiplier = heightMode === "tall" ? 1.25 : 1;
 
   // Helper function to get stable viewport height (prevents iOS Safari scaling issues)
-  const getViewportHeight = useCallback(() => {
+  const _getViewportHeight = useCallback(() => {
     if (stableViewportHeight > 0) {
       return stableViewportHeight;
     }

@@ -22,10 +22,10 @@ import { IMAGES } from "@/constants/images";
 
 export default function EntwurfClient() {
   // Get materialien content for testing the new overlay-text layout
-  const materialienContent = getContentByCategory("materialien");
+  const _materialienContent = getContentByCategory("materialien");
 
   // Get video background cards using PRESET (recommended approach)
-  const videoBackgroundCards = VIDEO_BACKGROUND_CARDS_PRESET.cards;
+  const _videoBackgroundCards = VIDEO_BACKGROUND_CARDS_PRESET.cards;
 
   // Get entwurf video cards using PRESET (recommended approach)
   const entwurfVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
