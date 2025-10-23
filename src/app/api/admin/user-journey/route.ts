@@ -214,7 +214,8 @@ class UserJourneyService {
                     timeByCategory.set(interaction.category, []);
                 }
 
-                timeByCategory.get(interaction.category)!.push(interaction.timeSpent);
+                // Convert BigInt to Number
+                timeByCategory.get(interaction.category)!.push(Number(interaction.timeSpent));
             });
 
             // Calculate stats for each category
