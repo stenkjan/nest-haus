@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { EmailService } from '@/lib/EmailService';
@@ -51,13 +52,35 @@ export async function POST(request: NextRequest) {
 
     const data: ContactFormData = validationResult.data;
 
+    // Get or create sessionId from cookies
+    const cookieStore = await cookies();
+    let sessionId = cookieStore.get('sessionId')?.value;
+
+    // If no sessionId exists, check header (legacy support) or create new one
+    if (!sessionId) {
+      sessionId = request.headers.get('x-session-id') ||
+        `contact_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+
+      // Store sessionId in cookie for future requests
+      cookieStore.set('sessionId', sessionId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: '/',
+      });
+
+      console.log(`[SessionId] Created new sessionId: ${sessionId}`);
+    } else {
+      console.log(`[SessionId] Using existing sessionId: ${sessionId}`);
+    }
+
     // Extract client information (for future use in analytics/security)
     const clientIP = request.headers.get('x-forwarded-for')?.split(',')[0] ||
       request.headers.get('x-real-ip') ||
       'unknown';
 
     const userAgent = request.headers.get('user-agent') || 'unknown';
-    const sessionId = request.headers.get('x-session-id') || null;
 
     // Calculate total price if configuration data exists
     let totalPrice: number | null = null;

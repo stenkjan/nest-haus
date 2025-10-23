@@ -135,8 +135,8 @@ function PaymentSuccess({
               />
             </svg>
             <span>
-              <strong>Bestätigungsmail gesendet</strong> - Prüfen Sie Ihr
-              E-Mail-Postfach
+              <strong>Vorentwurf bestätigt</strong> - Ihre Anzahlung wurde
+              erfolgreich verarbeitet
             </span>
           </div>
           <div className="flex items-start">
@@ -152,8 +152,8 @@ function PaymentSuccess({
               />
             </svg>
             <span>
-              <strong>Kontaktaufnahme innerhalb 24h</strong> - Unser Team meldet
-              sich bei Ihnen
+              <strong>Wir melden uns zeitnah</strong> - Unser Team kontaktiert
+              Sie zum vereinbarten Termin
             </span>
           </div>
           <div className="flex items-start">

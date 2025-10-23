@@ -121,6 +121,7 @@ export default function CheckoutStepper({
   // Payment modal state
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [_paymentError, setPaymentError] = useState<string | null>(null);
+  const [contactWarning, setContactWarning] = useState<string | null>(null);
 
   useEffect(() => {
     // Sync with configurator's planungspaket when it changes, otherwise use cart item
@@ -2501,10 +2502,40 @@ export default function CheckoutStepper({
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
                 </div>
               </div>
+
+              {/* Contact form warning */}
+              {contactWarning && (
+                <div className="flex justify-center mt-4">
+                  <div className="bg-yellow-50 border-2 border-yellow-400 rounded-xl px-6 py-4 max-w-2xl">
+                    <div className="flex items-start">
+                      <svg
+                        className="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-0.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <p className="text-yellow-800 font-medium text-base">
+                        {contactWarning}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex justify-center mt-6">
                 <button
                   type="button"
                   onClick={() => {
+                    // Check if contact form has been submitted
+                    const contactSubmitted = localStorage.getItem(
+                      "nest-haus-contact-submitted"
+                    );
+
                     // Check if this is an alpha test
                     const isAlphaTest =
                       new URLSearchParams(window.location.search).get(
@@ -2526,8 +2557,18 @@ export default function CheckoutStepper({
                       if (onScrollToContact) {
                         onScrollToContact();
                       }
+                    } else if (!contactSubmitted) {
+                      // Production flow: Check if contact form was filled
+                      setContactWarning(
+                        "Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir dich kontaktieren können."
+                      );
+                      // Scroll to contact section (step 2)
+                      setStepIndex(1); // Navigate to Terminvereinbarung section
+                      // Clear warning after 8 seconds
+                      setTimeout(() => setContactWarning(null), 8000);
                     } else {
                       // Production flow: Open Stripe payment modal
+                      setContactWarning(null);
                       setIsPaymentModalOpen(true);
                       setPaymentError(null);
                     }
@@ -2583,9 +2624,9 @@ export default function CheckoutStepper({
 
   // Helper functions for payment
   function getPaymentAmount(): number {
-    // For now, hardcode €35 for testing (3500 cents) to enable more payment methods
-    // This will be calculated on the server side in the API
-    return 3500; // 35 EUR in cents
+    // Vorentwurf deposit: €500 (50000 cents)
+    // Configured in environment variables (DEPOSIT_AMOUNT)
+    return 50000; // 500 EUR in cents
   }
 
   function getCustomerEmail(): string {
@@ -2602,16 +2643,16 @@ export default function CheckoutStepper({
 
   function handlePaymentSuccess(paymentIntentId: string) {
     console.log("✅ Payment successful:", paymentIntentId);
-    setIsPaymentModalOpen(false);
     setPaymentError(null);
+
+    // DON'T close the modal yet - let the user see the success message
+    // The PaymentModal will show the success screen
+    // User can close it manually by clicking the close button
 
     // Trigger alpha test completion event for consistency
     window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));
 
-    // Scroll to contact form or show success message
-    if (onScrollToContact) {
-      onScrollToContact();
-    }
+    // Note: onScrollToContact will be triggered when user closes the success modal
   }
 
   function handlePaymentError(error: string) {
