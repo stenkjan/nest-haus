@@ -254,6 +254,7 @@ class ConversionsService {
             });
 
             // Get revenue per source (this is a simplified version - would need to join with customer inquiries)
+            // Get paid inquiries with their sessionIds
             const paidInquiries = await prisma.customerInquiry.findMany({
                 where: {
                     paymentStatus: 'PAID',
@@ -263,16 +264,35 @@ class ConversionsService {
                 },
                 select: {
                     paymentAmount: true,
-                    session: {
-                        select: {
-                            referrer: true
-                        }
-                    }
+                    sessionId: true
                 }
             });
 
+            // Get sessions with referrer info for those sessionIds
+            const sessionIds = paidInquiries
+                .map(i => i.sessionId)
+                .filter((id): id is string => id !== null);
+            
+            const sessions = await prisma.userSession.findMany({
+                where: {
+                    sessionId: {
+                        in: sessionIds
+                    }
+                },
+                select: {
+                    sessionId: true,
+                    referrer: true
+                }
+            });
+
+            // Create a map of sessionId to referrer
+            const sessionMap = new Map(
+                sessions.map(s => [s.sessionId, s.referrer])
+            );
+
             paidInquiries.forEach(inquiry => {
-                const source = inquiry.session?.referrer || 'Direct';
+                const referrer = sessionMap.get(inquiry.sessionId!) || 'Direct';
+                const source = referrer;
                 const data = sourceData.get(source);
                 if (data) {
                     data.revenue += inquiry.paymentAmount || 0;
