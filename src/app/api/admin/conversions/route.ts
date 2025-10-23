@@ -7,6 +7,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
 interface ConversionsData {
     funnelSteps: Array<{
@@ -92,7 +93,7 @@ class ConversionsService {
                     count: await prisma.userSession.count({
                         where: {
                             configurationData: {
-                                not: null
+                                not: Prisma.JsonNull
                             },
                             totalPrice: {
                                 not: null,
