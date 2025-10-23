@@ -25,32 +25,93 @@ export async function POST(request: Request) {
     const paymentStatus = paymentIntentId ? 'PAID' : 'PENDING';
     const inquiryStatus = paymentIntentId ? 'CONVERTED' : 'NEW';
 
-    // Create customer inquiry for the order
-    const inquiry = await prisma.customerInquiry.create({
-      data: {
-        email: orderDetails.customerInfo.email,
-        name: orderDetails.customerInfo.name || null,
-        phone: orderDetails.customerInfo.phone || null,
-        message: `Bestellung mit ${items.length} Konfiguration(en). ${orderDetails.notes || ''}`.trim(),
-        configurationData: {
-          items,
-          orderSummary: {
-            totalItems: items.length,
-            totalPrice,
-            timestamp: Date.now()
-          }
+    // Check for existing inquiry to prevent duplicates
+    // Strategy: Check by sessionId OR (email + created within last 24 hours)
+    const sessionIds = items.map((item: { sessionId?: string }) => item.sessionId).filter(Boolean);
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+    const existingInquiry = await prisma.customerInquiry.findFirst({
+      where: {
+        OR: [
+          // Match by sessionId if available
+          sessionIds.length > 0 ? { sessionId: { in: sessionIds } } : {},
+          // Match by email + recent timeframe
+          {
+            AND: [
+              { email: orderDetails.customerInfo.email },
+              { createdAt: { gte: twentyFourHoursAgo } },
+            ],
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    let inquiry;
+
+    if (existingInquiry) {
+      // Update existing inquiry with payment info and order details
+      console.log(`[Deduplication] Updating existing inquiry ${existingInquiry.id} for ${orderDetails.customerInfo.email}`);
+
+      inquiry = await prisma.customerInquiry.update({
+        where: { id: existingInquiry.id },
+        data: {
+          // Update with new order details
+          name: orderDetails.customerInfo.name || existingInquiry.name,
+          phone: orderDetails.customerInfo.phone || existingInquiry.phone,
+          message: `Bestellung mit ${items.length} Konfiguration(en). ${orderDetails.notes || ''}`.trim(),
+          configurationData: {
+            items,
+            orderSummary: {
+              totalItems: items.length,
+              totalPrice,
+              timestamp: Date.now(),
+            },
+          },
+          totalPrice,
+          status: inquiryStatus,
+          // Update payment information
+          paymentIntentId: paymentIntentId || existingInquiry.paymentIntentId,
+          paymentStatus,
+          paymentAmount: paymentIntentId ? totalPrice : existingInquiry.paymentAmount,
+          paymentCurrency: paymentIntentId ? 'eur' : existingInquiry.paymentCurrency,
+          paidAt: paymentIntentId ? new Date() : existingInquiry.paidAt,
         },
-        totalPrice,
-        status: inquiryStatus,
-        preferredContact: 'EMAIL',
-        // Payment-related fields
-        paymentIntentId: paymentIntentId || null,
-        paymentStatus,
-        paymentAmount: paymentIntentId ? totalPrice : null,
-        paymentCurrency: paymentIntentId ? 'eur' : null,
-        paidAt: paymentIntentId ? new Date() : null,
-      }
-    })
+      });
+    } else {
+      // Create new customer inquiry for the order
+      console.log(`[New Inquiry] Creating inquiry for ${orderDetails.customerInfo.email}`);
+
+      inquiry = await prisma.customerInquiry.create({
+        data: {
+          email: orderDetails.customerInfo.email,
+          name: orderDetails.customerInfo.name || null,
+          phone: orderDetails.customerInfo.phone || null,
+          message: `Bestellung mit ${items.length} Konfiguration(en). ${orderDetails.notes || ''}`.trim(),
+          configurationData: {
+            items,
+            orderSummary: {
+              totalItems: items.length,
+              totalPrice,
+              timestamp: Date.now(),
+            },
+          },
+          totalPrice,
+          status: inquiryStatus,
+          preferredContact: 'EMAIL',
+          // Link to session if available
+          sessionId: sessionIds[0] || null,
+          // Payment-related fields
+          paymentIntentId: paymentIntentId || null,
+          paymentStatus,
+          paymentAmount: paymentIntentId ? totalPrice : null,
+          paymentCurrency: paymentIntentId ? 'eur' : null,
+          paidAt: paymentIntentId ? new Date() : null,
+        },
+      });
+    }
 
     // Log each configuration as separate selection events
     for (const item of items) {

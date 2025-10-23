@@ -289,6 +289,16 @@ const AppointmentBooking = ({
         setAppointmentDetails(appointmentDetails);
         setSubmitSuccess(true);
 
+        // Store contact info in localStorage for checkout validation
+        localStorage.setItem(
+          "nest-haus-contact-submitted",
+          JSON.stringify({
+            email: result.email,
+            name: appointmentDetails.customerInfo.name,
+            timestamp: Date.now(),
+          })
+        );
+
         // Reset form
         setSelectedDate(null);
         setAvailableTimeSlots([]);
