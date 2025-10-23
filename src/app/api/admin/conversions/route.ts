@@ -273,7 +273,7 @@ class ConversionsService {
                 .map(i => i.sessionId)
                 .filter((id): id is string => id !== null);
             
-            const sessions = await prisma.userSession.findMany({
+            const paidSessions = await prisma.userSession.findMany({
                 where: {
                     sessionId: {
                         in: sessionIds
@@ -287,7 +287,7 @@ class ConversionsService {
 
             // Create a map of sessionId to referrer
             const sessionMap = new Map(
-                sessions.map(s => [s.sessionId, s.referrer])
+                paidSessions.map(s => [s.sessionId, s.referrer])
             );
 
             paidInquiries.forEach(inquiry => {
@@ -323,7 +323,7 @@ class ConversionsService {
             const fourWeeksAgo = new Date();
             fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
 
-            const sessions = await prisma.userSession.findMany({
+            const trendSessions = await prisma.userSession.findMany({
                 where: {
                     startTime: {
                         gte: fourWeeksAgo
@@ -338,7 +338,7 @@ class ConversionsService {
             // Weekly trends
             const weeklyData = new Map<string, { visitors: number; conversions: number; revenue: number }>();
 
-            sessions.forEach(session => {
+            trendSessions.forEach(session => {
                 const weekStart = new Date(session.startTime);
                 weekStart.setDate(weekStart.getDate() - weekStart.getDay());
                 const weekKey = `KW ${Math.ceil((weekStart.getTime() - new Date(weekStart.getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000))}`;
