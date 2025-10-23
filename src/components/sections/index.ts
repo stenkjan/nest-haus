@@ -11,3 +11,4 @@ export { AppointmentBookingSection } from "./AppointmentBookingSection";
 export { default as AppointmentBooking } from "./AppointmentBooking";
 export { default as LandingImagesCarousel } from "./LandingImagesCarousel";
 export { TerminVereinbarenContent } from "./TerminVereinbarenContent";
+export { default as FAQSection } from "./FAQSection";

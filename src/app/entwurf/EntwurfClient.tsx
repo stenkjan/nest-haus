@@ -15,7 +15,8 @@ import {
   VIDEO_BACKGROUND_CARDS_PRESET,
   ABLAUF_STEPS_PRESET,
 } from "@/constants/contentCardPresets";
-import { SectionHeader } from "@/components/sections";
+import { SectionHeader, GetInContactBanner } from "@/components/sections";
+import FAQSection from "@/components/sections/FAQSection";
 import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
@@ -131,8 +132,8 @@ export default function EntwurfClient() {
             layout="overlay-text"
             style="standard"
             variant="responsive"
-            maxWidth={true}
-            showInstructions={true}
+            maxWidth={false}
+            showInstructions={false}
             noPadding={true}
             customData={entwurfVideoCards}
           />
@@ -195,6 +196,11 @@ export default function EntwurfClient() {
           enableLightbox={false}
         />
       </section>
+
+      {/* FAQ Section */}
+      <FAQSection />
+
+      <GetInContactBanner />
 
       <Footer />
     </div>
