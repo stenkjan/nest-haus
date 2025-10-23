@@ -55,6 +55,8 @@ export interface ContentCardData {
     buttons?: ButtonConfig[];
     aspectRatio?: "2x1" | "1x1" | "2x2"; // Optional aspect ratio for overlay-text cards - "2x1" = portrait, "1x1" = square, "2x2" = extra wide
     imageFit?: "cover" | "contain-width"; // Optional image fit behavior: "cover" (default - fills container), "contain-width" (fits width, crops top/bottom)
+    reverseTextOrder?: boolean; // Optional: reverse text order in overlay-text layout (title first, then description)
+    headingLevel?: "h2" | "h3"; // Optional: control heading level for title in overlay-text layout (default: h3)
 }
 
 /**
@@ -801,7 +803,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
 export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "Architektur fühlen, statt nur sehen",
+        title: "Architektur fühlen,\nstatt nur sehen",
         subtitle: "",
         description: "Gemeinsam entwerfen wir ein Zuhause, das dich wiederspiegelt",
         image: IMAGES.function.nestHausHandDrawing,
@@ -809,6 +811,8 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         aspectRatio: "2x2", // Portrait format
         imageFit: "contain-width", // Fit full width, crop top/bottom
         textColor: "text-black", // Black text instead of white
+        reverseTextOrder: true, // Title first, then description
+        headingLevel: "h2", // Use h2 instead of default h3
         buttons: [
             {
                 text: "Jetzt Vorentwurf sichern",

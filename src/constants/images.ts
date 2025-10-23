@@ -185,6 +185,7 @@ export const IMAGES = {
         nestHausFundamentPunktfundament: '38-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
         nestHausAblaufPlanung: '39-NEST-Haus-Ablauf-Prozess-Planung',
         nestHausFlexibilitaetErweiterung: '40-NEST-Haus-erweiterung-Modulbau-vergroessern-Leichtbau-Modul-flexibel',
+        nestHausLinienplanDreier: '304-nest-haus-entwurf-grundstueckscheck-baurecht-vorentwurf-erster-schritt',
         nestHausEntwurfVorentwurf: '305-nest-haus-entwurf-vorentwurf-planung-erstentwurf-hausbau', // CONFIRMED: Path works WITHOUT .png extension
         nestHausInteriorKueche: '306-nest-haus-interior-entwurf-modern-design-innenarchitektur-kueche-mit-ausblick',
         nestHausInteriorSteinplatten: '301-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',

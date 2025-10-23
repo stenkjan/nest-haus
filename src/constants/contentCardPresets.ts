@@ -1,5 +1,10 @@
 import React from "react";
-import { ABLAUF_STEPS_CONTENT, PLANUNGSPAKETE_CONTENT } from "./cardContent";
+import {
+    ABLAUF_STEPS_CONTENT,
+    PLANUNGSPAKETE_CONTENT,
+    ENTWURF_VIDEO_CARDS_CONTENT,
+    VIDEO_BACKGROUND_CARDS_CONTENT,
+} from "./cardContent";
 
 // Content Card Presets for reuse across the application
 export interface ContentCardPreset {
@@ -169,6 +174,126 @@ export const PLANUNGSPAKETE_BUTTONS = [
 export const PLANUNGSPAKETE_PRESET = {
     cards: PLANUNGSPAKETE_CARDS,
     buttons: PLANUNGSPAKETE_BUTTONS,
+};
+
+/**
+ * ==================================================================================
+ * ENTWURF VIDEO CARDS PRESET
+ * ==================================================================================
+ * 
+ * Mixed media cards (images + videos) for the Entwurf page with overlay text.
+ * Features card ID 1 with reversed text order (title first, then description).
+ * 
+ * CARD FEATURES:
+ * ---------------
+ * - Layout: "overlay-text" - Full background image/video with text overlay
+ * - Aspect Ratios: Mix of 2x2 (extra wide) and 2x1 (portrait) on desktop
+ * - Mobile Override: All cards forced to 2x1 (portrait) on mobile (<768px)
+ * - Card ID 1 Special: Uses h2-title instead of h3, reversed text order, title has line break
+ * - Buttons: Multiple buttons supported, 2nd+ buttons hidden on mobile
+ * - Text Color: Customizable per card (e.g., black text on light backgrounds)
+ * - Image Fit: Supports "contain-width" for full-width images with cropping
+ * 
+ * USAGE EXAMPLE:
+ * ---------------
+ * ```tsx
+ * import { ENTWURF_VIDEO_CARDS_PRESET } from "@/constants/contentCardPresets";
+ * 
+ * <UnifiedContentCard
+ *   layout="overlay-text"
+ *   style="standard"
+ *   variant="responsive"
+ *   maxWidth={true}
+ *   showInstructions={true}
+ *   customData={ENTWURF_VIDEO_CARDS_PRESET.cards}
+ * />
+ * ```
+ * 
+ * CARD STRUCTURE:
+ * ----------------
+ * Card 1: "Architektur fühlen,\nstatt nur sehen" (2x2, h2, reversed order, 2 buttons)
+ * Card 2: "So fühlt sich Wohnen im Nest Haus an" (2x1)
+ * Card 3: "Wohnen wie du willst, Nur mit Nest" (2x1)
+ * Card 4+: Additional entwurf-specific cards
+ * 
+ * MOBILE BEHAVIOR:
+ * -----------------
+ * - All cards display as 2x1 (portrait) regardless of desktop aspect ratio
+ * - Only first button visible on mobile
+ * - Text scales responsively using h2-title/h3-secondary/p-primary classes
+ * 
+ * ==================================================================================
+ */
+export const ENTWURF_VIDEO_CARDS_PRESET = {
+    cards: ENTWURF_VIDEO_CARDS_CONTENT,
+    // Optional: Add buttons that appear below the carousel (none for now)
+    buttons: [],
+};
+
+/**
+ * ==================================================================================
+ * VIDEO BACKGROUND CARDS PRESET
+ * ==================================================================================
+ * 
+ * Video background cards with overlay text in mixed aspect ratios.
+ * Designed for seamless carousel experience with alternating card widths.
+ * 
+ * CARD FEATURES:
+ * ---------------
+ * - Layout: "overlay-text" - Full video background with text overlay
+ * - Aspect Ratios: Alternating 2x1 (portrait) and 1x1 (square) on desktop
+ *   - Cards 1, 3, 5: 2x1 (portrait - narrower)
+ *   - Cards 2, 4, 6: 1x1 (square - wider)
+ * - Mobile Override: All cards forced to 2x1 (portrait) on mobile (<768px)
+ * - Autoplay Videos: All videos loop continuously with optional playback rate control
+ * - Text: White text overlay by default (customizable per card)
+ * 
+ * USAGE EXAMPLE:
+ * ---------------
+ * ```tsx
+ * import { VIDEO_BACKGROUND_CARDS_PRESET } from "@/constants/contentCardPresets";
+ * 
+ * <UnifiedContentCard
+ *   layout="overlay-text"
+ *   style="standard"
+ *   variant="responsive"
+ *   maxWidth={true}
+ *   showInstructions={true}
+ *   customData={VIDEO_BACKGROUND_CARDS_PRESET.cards}
+ * />
+ * ```
+ * 
+ * ASPECT RATIO PATTERN:
+ * ----------------------
+ * Desktop (≥768px):
+ * - Odd cards (1,3,5): 2x1 portrait → narrower, more cards visible
+ * - Even cards (2,4,6): 1x1 square → wider, fewer cards visible
+ * - Creates visual rhythm in carousel
+ * 
+ * Mobile (<768px):
+ * - All cards: 2x1 portrait → consistent scrolling experience
+ * 
+ * VIDEO HANDLING:
+ * ----------------
+ * - Autoplay: Videos start automatically when card is visible
+ * - Loop: Videos loop continuously
+ * - Muted: All videos muted by default (browser requirement for autoplay)
+ * - Playback Rate: Optional speed control (e.g., 0.8 for slower motion)
+ * - Caching: Videos cached for better performance
+ * 
+ * TEXT OVERLAY:
+ * --------------
+ * - Default order: Description first (p-primary), Title second (h3-secondary)
+ * - Position: Left-aligned with padding
+ * - Color: White by default (text-white), customizable per card
+ * - Responsive: Text scales with breakpoints using standard typography classes
+ * 
+ * ==================================================================================
+ */
+export const VIDEO_BACKGROUND_CARDS_PRESET = {
+    cards: VIDEO_BACKGROUND_CARDS_CONTENT,
+    // Optional: Add buttons that appear below the carousel (none for now)
+    buttons: [],
 };
 
 /**

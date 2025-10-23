@@ -4,6 +4,46 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ed8fd57e445ed818b00595de730bc7b10ccd2c35] - Thu Oct 23 15:29:19 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f170253e7065fcf9596256882e9ff2388f7cdc59] - Thu Oct 23 13:17:57 2025 +0200
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [614155848a7a814134d0df70a6f6d1917a3bc9f9] - Thu Oct 23 12:33:52 2025 +0200
+
+**Author**: stenkjan
+**Message**: `feat: Revamp EntwurfClient with new content structure and responsive design  - Integrated new video and background card presets for enhanced visual presentation. - Replaced original card fetching with preset data for video background and entwurf video cards. - Implemented state management for ablauf steps progress, improving user navigation. - Updated UnifiedContentCard to support no-padding option and dynamic text order for better layout flexibility. - Enhanced mobile responsiveness by enforcing 2x1 aspect ratio for all cards on smaller screens.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [62a0af51c963c9e31ecad00f0031a8545d7a6c16] - Wed Oct 22 16:41:44 2025 +0200
 
 **Author**: stenkjan
