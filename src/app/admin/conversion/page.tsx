@@ -549,7 +549,7 @@ export default function ConversionPage() {
                         Focus on High-Converting Traffic
                       </h4>
                       <p className="text-sm text-blue-700">
-                        Your best traffic source is "{data.trafficSources[0].source}" 
+                        Your best traffic source is &ldquo;{data.trafficSources[0].source}&rdquo; 
                         with {data.trafficSources[0].rate.toFixed(2)}% conversion rate.
                         Consider increasing investment in this channel.
                       </p>
@@ -562,7 +562,7 @@ export default function ConversionPage() {
                         Revenue Performance
                       </h4>
                       <p className="text-sm text-green-700">
-                        You've generated {formatCurrency(data.metadata.totalRevenue)} from{" "}
+                        You&apos;ve generated {formatCurrency(data.metadata.totalRevenue)} from{" "}
                         {data.metadata.totalConversions} conversions. Average order value
                         is {formatCurrency(data.metadata.averageOrderValue)}.
                       </p>
