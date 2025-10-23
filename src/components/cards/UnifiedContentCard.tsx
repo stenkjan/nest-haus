@@ -98,6 +98,7 @@ export interface UnifiedContentCardProps {
   heightMode?: HeightMode;
   imagePadding?: ImagePaddingMode; // Controls image padding for tall cards
   aspectRatio?: AspectRatio; // Controls aspect ratio for overlay-text layout (2x1 or 1x1)
+  noPadding?: boolean; // Remove py-8 container padding
 
   // Content source (category or custom data)
   category?: ContentCategory;
@@ -150,6 +151,7 @@ export default function UnifiedContentCard({
   heightMode = "standard",
   imagePadding = "none", // Default: no padding (edge-to-edge)
   aspectRatio = "2x1", // Default: 2x1 aspect ratio for overlay-text
+  noPadding = false, // Default: include py-8 padding
   category,
   customData,
   title = "",
@@ -207,6 +209,10 @@ export default function UnifiedContentCard({
       // For overlay-text layout, calculate width based on card's aspect ratio
       if (layout === "overlay-text") {
         const cardAspectRatio = card.aspectRatio || aspectRatio;
+        // MOBILE OVERRIDE: Force all cards to 2x1 (portrait) on mobile for better UX
+        const effectiveAspectRatio =
+          currentScreenWidth < 768 ? "2x1" : cardAspectRatio;
+
         const width =
           currentScreenWidth >= 1600
             ? 830 * heightMultiplier
@@ -227,7 +233,9 @@ export default function UnifiedContentCard({
             : width
         );
 
-        return cardAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2;
+        return effectiveAspectRatio === "2x1"
+          ? cardHeight * 0.6
+          : cardHeight * 1.2;
       }
 
       // For all other layouts, use the standard cardWidth
@@ -329,15 +337,18 @@ export default function UnifiedContentCard({
         // Overlay-text layout: same HEIGHT as other cards, width varies by aspect ratio
         // Height is consistent across all cards, aspect ratio controls WIDTH
         // "2x1" = 1.2:2 ratio (portrait - 1.2cm width × 2cm height), "1x1" = 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
+        // MOBILE OVERRIDE: Force 2x1 aspect ratio on mobile (<768px) for better UX
+        const effectiveAspectRatio = width < 768 ? "2x1" : aspectRatio;
+
         if (width >= 1600) {
           // Height: 830px (or 75% viewport), Width varies by aspect ratio
           const cardHeight = Math.min(
             830,
             typeof window !== "undefined" ? window.innerHeight * 0.75 : 830
           );
-          setCardsPerView(aspectRatio === "2x1" ? 3.8 : 1.9);
+          setCardsPerView(effectiveAspectRatio === "2x1" ? 3.8 : 1.9);
           setCardWidth(
-            aspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
+            effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else if (width >= 1280) {
           // Height: 692px (or 70% viewport), Width varies by aspect ratio
@@ -345,9 +356,9 @@ export default function UnifiedContentCard({
             692,
             typeof window !== "undefined" ? window.innerHeight * 0.7 : 692
           );
-          setCardsPerView(aspectRatio === "2x1" ? 3.2 : 1.7);
+          setCardsPerView(effectiveAspectRatio === "2x1" ? 3.2 : 1.7);
           setCardWidth(
-            aspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
+            effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else if (width >= 1024) {
           // Height: 577px (or 70% viewport), Width varies by aspect ratio
@@ -355,9 +366,9 @@ export default function UnifiedContentCard({
             577,
             typeof window !== "undefined" ? window.innerHeight * 0.7 : 577
           );
-          setCardsPerView(aspectRatio === "2x1" ? 2.6 : 1.5);
+          setCardsPerView(effectiveAspectRatio === "2x1" ? 2.6 : 1.5);
           setCardWidth(
-            aspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
+            effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else if (width >= 768) {
           // Height: 720px (or 75% viewport), Width varies by aspect ratio
@@ -365,20 +376,18 @@ export default function UnifiedContentCard({
             720,
             typeof window !== "undefined" ? window.innerHeight * 0.75 : 720
           );
-          setCardsPerView(aspectRatio === "2x1" ? 2.6 : 1.5);
+          setCardsPerView(effectiveAspectRatio === "2x1" ? 2.6 : 1.5);
           setCardWidth(
-            aspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
+            effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else {
-          // Mobile: Height: 600px (or 75% viewport), Width varies by aspect ratio
+          // Mobile: Height: 600px (or 75% viewport), Width forced to 2x1 (portrait)
           const cardHeight = Math.min(
             600,
             typeof window !== "undefined" ? window.innerHeight * 0.75 : 600
           );
-          setCardsPerView(aspectRatio === "2x1" ? 2 : 1.15);
-          setCardWidth(
-            aspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
-          );
+          setCardsPerView(2); // Always 2 cards per view on mobile (portrait)
+          setCardWidth(cardHeight * 0.6); // Always use 2x1 ratio on mobile
         }
       } else if (isStatic) {
         // Static variant: single responsive card
@@ -1119,6 +1128,13 @@ export default function UnifiedContentCard({
     // Determine text color (default to white, allow override)
     const overlayTextColor = card.textColor || "text-white";
 
+    // Determine heading level (default to h3)
+    const headingLevel = card.headingLevel || "h3";
+    const headingClass = headingLevel === "h2" ? "h2-title" : "h3-secondary";
+
+    // Determine text order (default: description first, title second)
+    const reverseOrder = card.reverseTextOrder || false;
+
     return (
       <div className="relative w-full h-full overflow-hidden">
         {/* Background Image (full card) */}
@@ -1158,14 +1174,49 @@ export default function UnifiedContentCard({
             transition={{ delay: index * 0.1, duration: 0.6 }}
             className="text-left"
           >
-            {/* First line: p-primary (standard paragraph) */}
-            <p className={`p-primary ${overlayTextColor} mb-2 md:mb-3`}>
-              {getCardText(card, "description")}
-            </p>
-            {/* Second line: h3-secondary (standard H3) */}
-            <h3 className={`h3-secondary ${overlayTextColor} font-bold`}>
-              {getCardText(card, "title")}
-            </h3>
+            {reverseOrder ? (
+              <>
+                {/* Title first (h2 or h3) */}
+                {headingLevel === "h2" ? (
+                  <h2
+                    className={`${headingClass} ${overlayTextColor} font-bold mb-2 md:mb-3 whitespace-pre-line`}
+                  >
+                    {getCardText(card, "title")}
+                  </h2>
+                ) : (
+                  <h3
+                    className={`${headingClass} ${overlayTextColor} font-bold mb-2 md:mb-3 whitespace-pre-line`}
+                  >
+                    {getCardText(card, "title")}
+                  </h3>
+                )}
+                {/* Description second */}
+                <p className={`p-primary ${overlayTextColor}`}>
+                  {getCardText(card, "description")}
+                </p>
+              </>
+            ) : (
+              <>
+                {/* Default order: Description first */}
+                <p className={`p-primary ${overlayTextColor} mb-2 md:mb-3`}>
+                  {getCardText(card, "description")}
+                </p>
+                {/* Title second (h2 or h3) */}
+                {headingLevel === "h2" ? (
+                  <h2
+                    className={`${headingClass} ${overlayTextColor} font-bold whitespace-pre-line`}
+                  >
+                    {getCardText(card, "title")}
+                  </h2>
+                ) : (
+                  <h3
+                    className={`${headingClass} ${overlayTextColor} font-bold whitespace-pre-line`}
+                  >
+                    {getCardText(card, "title")}
+                  </h3>
+                )}
+              </>
+            )}
           </motion.div>
 
           {/* Optional Button at Bottom - Centered */}
@@ -1177,11 +1228,15 @@ export default function UnifiedContentCard({
               className="flex justify-center gap-4"
             >
               {card.buttons.map((button, btnIndex) => {
+                // Hide second button on mobile (<768px) - only show first button
+                const hideOnMobile =
+                  btnIndex > 0 && isClient && screenWidth < 768;
+
                 return button.link ? (
                   <Link
                     key={btnIndex}
                     href={button.link}
-                    className="flex-shrink-0"
+                    className={`flex-shrink-0 ${hideOnMobile ? "hidden md:block" : ""}`}
                   >
                     <Button variant={button.variant} size={button.size}>
                       {button.text}
@@ -1193,7 +1248,7 @@ export default function UnifiedContentCard({
                     variant={button.variant}
                     size={button.size}
                     onClick={button.onClick}
-                    className="flex-shrink-0"
+                    className={`flex-shrink-0 ${hideOnMobile ? "hidden md:block" : ""}`}
                   >
                     {button.text}
                   </Button>
@@ -1566,7 +1621,7 @@ export default function UnifiedContentCard({
         ) : (
           /* Cards Container - Carousel Layouts */
           <div
-            className={`relative ${isLightboxMode ? "py-1 xl:py-2" : "py-8"}`}
+            className={`relative ${isLightboxMode ? "py-1 xl:py-2" : noPadding ? "" : "py-8"}`}
           >
             {/* Horizontal Scrolling Layout */}
             <div className="overflow-x-clip">
@@ -1603,10 +1658,13 @@ export default function UnifiedContentCard({
                   {displayCards.map((card, index) => {
                     // Use card-specific aspect ratio if available, otherwise fall back to component-level aspectRatio
                     const cardAspectRatio = card.aspectRatio || aspectRatio;
+                    // MOBILE OVERRIDE: Force all cards to 2x1 (portrait) on mobile for better UX
+                    const effectiveAspectRatio =
+                      isClient && screenWidth < 768 ? "2x1" : cardAspectRatio;
 
                     // Calculate width for overlay-text cards based on individual aspect ratio
                     let cardSpecificWidth = cardWidth;
-                    if (layout === "overlay-text" && cardAspectRatio) {
+                    if (layout === "overlay-text" && effectiveAspectRatio) {
                       if (isClient && screenWidth >= 1600) {
                         const cardHeight = Math.min(
                           830 * heightMultiplier,
@@ -1615,7 +1673,7 @@ export default function UnifiedContentCard({
                             : 830 * heightMultiplier
                         );
                         cardSpecificWidth =
-                          cardAspectRatio === "2x1"
+                          effectiveAspectRatio === "2x1"
                             ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
                             : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
                       } else if (isClient && screenWidth >= 1280) {
@@ -1626,7 +1684,7 @@ export default function UnifiedContentCard({
                             : 692 * heightMultiplier
                         );
                         cardSpecificWidth =
-                          cardAspectRatio === "2x1"
+                          effectiveAspectRatio === "2x1"
                             ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
                             : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
                       } else if (isClient && screenWidth >= 1024) {
@@ -1637,7 +1695,7 @@ export default function UnifiedContentCard({
                             : 577 * heightMultiplier
                         );
                         cardSpecificWidth =
-                          cardAspectRatio === "2x1"
+                          effectiveAspectRatio === "2x1"
                             ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
                             : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
                       } else if (isClient && screenWidth >= 768) {
@@ -1648,20 +1706,18 @@ export default function UnifiedContentCard({
                             : 720 * heightMultiplier
                         );
                         cardSpecificWidth =
-                          cardAspectRatio === "2x1"
+                          effectiveAspectRatio === "2x1"
                             ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
                             : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
                       } else {
+                        // Mobile: Force all cards to 2x1 (portrait) for better UX
                         const cardHeight = Math.min(
                           600 * heightMultiplier,
                           typeof window !== "undefined"
                             ? window.innerHeight * 0.75 * heightMultiplier
                             : 600 * heightMultiplier
                         );
-                        cardSpecificWidth =
-                          cardAspectRatio === "2x1"
-                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
-                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
+                        cardSpecificWidth = cardHeight * 0.6; // Always 2x1 ratio on mobile
                       }
                     }
 
