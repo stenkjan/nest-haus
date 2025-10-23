@@ -12,7 +12,7 @@ import {
 } from "@/components/cards";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
-import { TwoByTwoImageGrid } from "@/components/grids";
+import { TwoByTwoImageGrid, FullWidthTextGrid } from "@/components/grids";
 import {
   GetInContactBanner,
   PartnersSection,
@@ -269,6 +269,487 @@ export default function DeinNestClient() {
               },
             ]}
           />
+        </section>
+
+        {/* Video-only Card Section */}
+        <section className="w-full py-8 md:py-16 bg-white">
+          <SectionHeader
+            title="Ein System, das Freiheit baut"
+            subtitle="Nest ist die klarer, standardisierter Raum, den du mit deinen Ideen füllst."
+            wrapperMargin="md:mb-12 mb-12"
+          />
+
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Full-width video card with padding */}
+            <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
+              <div className="relative w-full overflow-hidden rounded-2xl">
+                <ClientBlobVideo
+                  path={IMAGES.variantvideo.ten}
+                  className="w-full h-auto"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Text Grid and Buttons Container */}
+          <div className="pt-8">
+            <FullWidthTextGrid
+              maxWidth={true}
+              textBox1="Wir liefern den Anfang deines Zuhauses. Unser Modul steht für Möglichkeiten, für Raum, den du mit deinen Ideen füllst. In einem gemeinsamen Vorentwurf begleiten wir dich von der ersten Idee bis zu einem konkreten Vorentwurf deines Hauses."
+              textBox2="Schritt für Schritt entsteht so ein klares Bild davon, wie dein Nest aussehen kann. Du bestimmst, wie weit du diesen Weg mit uns gehst. Wir begleiten dich so lange, wie du möchtest, und schaffen dabei ein Zuhause, das zu deinem Leben passt."
+              backgroundColor="white"
+            />
+
+            {/* Button combination */}
+            <div className="flex flex-wrap gap-4 justify-center pb-8">
+              <Link href="/entwurf">
+                <Button variant="primary" size="xs">
+                  Vorentwurf verstehen
+                </Button>
+              </Link>
+              <Link href="/konfigurator">
+                <Button variant="landing-secondary-blue" size="xs">
+                  Unsere Technik
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Three Boxes Section - Similar to FAQ */}
+        <section className="w-full py-8 md:py-16 bg-[#f4f4f4]">
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Mobile/Tablet Layout (< 1024px) - Stacked */}
+            <div className="lg:hidden">
+              {/* Header Section */}
+              <div className="mb-8 md:mb-12 text-center">
+                <h2 className="h2-title text-black mb-3 md:mb-4">
+                  Deine Optionen
+                </h2>
+                <p className="p-primary text-gray-700">
+                  Wähle den Weg, der zu dir passt
+                </p>
+              </div>
+
+              {/* Three Boxes Stacked */}
+              <div className="max-w-4xl mx-auto space-y-3">
+                {/* Box 1 */}
+                <div className="bg-white rounded-2xl p-6">
+                  <p className="p-primary-small text-gray-600 mb-2">Option 1</p>
+                  <h3 className="h2-title text-black mb-4">Grundstück Check</h3>
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Rechtliche Prüfung deines Grundstücks
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Baurechtsanalyse
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Technische Voraussetzungen
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Box 2 */}
+                <div className="bg-white rounded-2xl p-6">
+                  <p className="p-primary-small text-gray-600 mb-2">Option 2</p>
+                  <h3 className="h2-title text-black mb-4">Vorentwurf</h3>
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Individueller Entwurf
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Grundstückscheck inklusive
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Persönliche Beratung
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Box 3 with Button */}
+                <div className="bg-white rounded-2xl p-6">
+                  <p className="p-primary-small text-gray-600 mb-2">Option 3</p>
+                  <h3 className="h2-title text-black mb-4">Konfigurator</h3>
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Online gestalten
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Sofortige Kostenübersicht
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Volle Gestaltungsfreiheit
+                      </span>
+                    </li>
+                  </ul>
+                  <div className="flex justify-center mt-4">
+                    <Link href="/konfigurator">
+                      <Button variant="primary" size="xs">
+                        Jetzt starten
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Layout (>= 1024px) - Side by Side */}
+            <div className="hidden lg:flex lg:gap-12 xl:gap-16">
+              {/* Left Column - Title and Text */}
+              <div className="lg:w-1/3 xl:w-1/4 flex flex-col">
+                <div className="max-w-[300px] pr-8">
+                  <h2 className="h2-title text-black mb-3 md:mb-4">
+                    Deine Optionen
+                  </h2>
+                  <p className="p-primary text-gray-700">
+                    Wähle den Weg, der zu dir passt. Jede Option bringt dich
+                    deinem Zuhause näher.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column - Three Boxes */}
+              <div className="lg:flex-1 grid grid-cols-3 gap-3">
+                {/* Box 1 */}
+                <div className="bg-white rounded-2xl p-6 flex flex-col">
+                  <p className="p-primary-small text-gray-600 mb-2">Option 1</p>
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-bold text-black mb-4">
+                    Grundstück Check
+                  </h3>
+                  <ul className="space-y-3 flex-1">
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Rechtliche Prüfung deines Grundstücks
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Baurechtsanalyse
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Technische Voraussetzungen
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Box 2 */}
+                <div className="bg-white rounded-2xl p-6 flex flex-col">
+                  <p className="p-primary-small text-gray-600 mb-2">Option 2</p>
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-bold text-black mb-4">
+                    Vorentwurf
+                  </h3>
+                  <ul className="space-y-3 flex-1">
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Individueller Entwurf
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Grundstückscheck inklusive
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Persönliche Beratung
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Box 3 with Button */}
+                <div className="bg-white rounded-2xl p-6 flex flex-col">
+                  <p className="p-primary-small text-gray-600 mb-2">Option 3</p>
+                  <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-bold text-black mb-4">
+                    Konfigurator
+                  </h3>
+                  <ul className="space-y-3 flex-1">
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Online gestalten
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Sofortige Kostenübersicht
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <svg
+                        className="w-5 h-5 text-green-600 flex-shrink-0 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="p-primary-small text-gray-700">
+                        Volle Gestaltungsfreiheit
+                      </span>
+                    </li>
+                  </ul>
+                  <div className="flex justify-center mt-4">
+                    <Link href="/konfigurator">
+                      <Button variant="primary" size="xs">
+                        Jetzt starten
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Section 4 - Möglichkeiten Entdecken */}
