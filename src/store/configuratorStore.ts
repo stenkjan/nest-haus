@@ -294,67 +294,73 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // Optional: Track selection in background (non-blocking, fail-safe)
         if (typeof window !== 'undefined') {
-          // Legacy session tracking
-          fetch('/api/sessions/track', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              sessionId: state.sessionId,
-              category: item.category,
-              selection: item.value,
-              totalPrice: get().currentPrice
-            })
-          }).catch(() => {
-            // Silently fail - tracking is optional, don't break user experience
-          })
+          const finalSessionId = get().sessionId;
 
-          // Alpha test session tracking
-          const testSessionId = localStorage.getItem("nest-haus-test-session-id");
-          if (testSessionId) {
-            const trackingData = {
-              category: item.category,
-              value: item.value,
-              name: item.name,
-              price: item.price,
-              totalPrice: get().currentPrice,
-              path: window.location.pathname,
-              timestamp: Date.now()
-            };
-
-            console.log("⚙️ Configurator: Tracking selection:", {
-              testId: testSessionId,
-              category: item.category,
-              value: item.value,
-              name: item.name
-            });
-
-            // Send directly to API (can't use hooks in store)
-            fetch('/api/usability-test/track-session', {
+          // Only track if we have a valid sessionId
+          if (finalSessionId) {
+            // Legacy session tracking to /api/sessions/track for SelectionEvents
+            fetch('/api/sessions/track', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                testId: testSessionId,
-                eventType: 'configurator_selection',
-                data: trackingData,
-                timestamp: Date.now()
+                sessionId: finalSessionId,
+                category: item.category,
+                selection: item.value,
+                totalPrice: get().currentPrice
               })
+            }).catch((error) => {
+              // Silently fail - tracking is optional, don't break user experience
+              console.warn('⚠️ Selection tracking failed:', error);
             })
-              .then(response => {
-                console.log("⚙️ Configurator tracking API response:", {
-                  status: response.status,
-                  ok: response.ok,
-                  category: item.category
-                });
-                return response.json();
-              })
-              .then(result => {
-                console.log("⚙️ Configurator tracking API result:", result);
-              })
-              .catch(error => {
-                console.error("⚙️ Configurator tracking API error:", error);
+
+            // Alpha test session tracking
+            const testSessionId = localStorage.getItem("nest-haus-test-session-id");
+            if (testSessionId) {
+              const trackingData = {
+                category: item.category,
+                value: item.value,
+                name: item.name,
+                price: item.price,
+                totalPrice: get().currentPrice,
+                path: window.location.pathname,
+                timestamp: Date.now()
+              };
+
+              console.log("⚙️ Configurator: Tracking selection:", {
+                testId: testSessionId,
+                category: item.category,
+                value: item.value,
+                name: item.name
               });
+
+              // Send directly to API (can't use hooks in store)
+              fetch('/api/usability-test/track-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  testId: testSessionId,
+                  eventType: 'configurator_selection',
+                  data: trackingData,
+                  timestamp: Date.now()
+                })
+              })
+                .then(response => {
+                  console.log("⚙️ Configurator tracking API response:", {
+                    status: response.status,
+                    ok: response.ok,
+                    category: item.category
+                  });
+                  return response.json();
+                })
+                .then(result => {
+                  console.log("⚙️ Configurator tracking API result:", result);
+                })
+                .catch(error => {
+                  console.warn("⚙️ Configurator tracking API error:", error);
+                });
+            }
           } else {
-            console.log("⚙️ Configurator: No test session ID found for tracking");
+            console.warn('⚠️ No sessionId available for tracking selection');
           }
         }
       },

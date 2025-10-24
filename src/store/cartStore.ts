@@ -142,6 +142,36 @@ export const useCartStore = create<CartState>()(
         })
         // Update computed values after state change
         get()._updateComputedValues()
+
+        // Track cart addition (non-blocking)
+        if (typeof window !== 'undefined') {
+          if (!config.sessionId) {
+            console.warn('⚠️ No sessionId found for cart tracking. Config:', {
+              hasNest: !!config.nest,
+              hasSessionId: !!config.sessionId,
+              sessionIdValue: config.sessionId
+            });
+          } else {
+            console.log('🛒 Tracking cart add for session:', config.sessionId);
+            fetch('/api/sessions/track-cart-add', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                sessionId: config.sessionId,
+                configuration: config,
+                totalPrice: config.totalPrice || 0
+              })
+            }).then(response => {
+              if (response.ok) {
+                console.log('✅ Cart add tracked successfully');
+              } else {
+                console.error('❌ Cart add tracking failed with status:', response.status);
+              }
+            }).catch(error => {
+              console.warn('⚠️ Cart add tracking failed:', error);
+            });
+          }
+        }
       },
 
       // Add item to cart (for test compatibility)

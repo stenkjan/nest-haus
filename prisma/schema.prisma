@@ -196,8 +196,10 @@ model PerformanceMetric {
 
 enum SessionStatus {
   ACTIVE
+  IN_CART
   ABANDONED
   COMPLETED
+  CONVERTED
   EXPIRED
 }
 

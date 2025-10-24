@@ -230,6 +230,25 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Update UserSession status to COMPLETED if sessionId exists
+    if (sessionId) {
+      try {
+        await prisma.userSession.updateMany({
+          where: { sessionId },
+          data: {
+            status: 'COMPLETED',
+            endTime: new Date(),
+            configurationData: data.configurationData || undefined,
+            totalPrice: totalPrice || undefined
+          }
+        });
+        console.log(`✅ Updated UserSession ${sessionId} status to COMPLETED`);
+      } catch (sessionUpdateError) {
+        console.warn(`⚠️ Failed to update session status for ${sessionId}:`, sessionUpdateError);
+        // Don't fail the request if session update fails
+      }
+    }
+
     // Prepare response data
     const responseData = {
       success: true,

@@ -75,23 +75,35 @@ interface SessionWithConfig {
 }
 
 class PopularConfigurationsService {
-  
+
   /**
    * Helper function to safely parse configuration data
    */
   private static parseConfigurationData(data: unknown): ConfigurationData | null {
     try {
       if (!data || typeof data !== 'object') return null;
-      
+
       const config = data as Record<string, unknown>;
+
+      // Helper to extract value from either direct string or nested object with value property
+      const extractValue = (field: unknown): string | undefined => {
+        if (typeof field === 'string') return field;
+        if (field && typeof field === 'object' && 'value' in field) {
+          const valueField = field as { value?: unknown };
+          return typeof valueField.value === 'string' ? valueField.value : undefined;
+        }
+        return undefined;
+      };
+
       return {
-        nestType: typeof config.nestType === 'string' ? config.nestType : undefined,
-        gebaeudehuelle: typeof config.gebaeudehuelle === 'string' ? config.gebaeudehuelle : undefined,
-        innenverkleidung: typeof config.innenverkleidung === 'string' ? config.innenverkleidung : undefined,
-        fussboden: typeof config.fussboden === 'string' ? config.fussboden : undefined,
-        pvanlage: typeof config.pvanlage === 'string' ? config.pvanlage : undefined,
-        fenster: typeof config.fenster === 'string' ? config.fenster : undefined,
-        planungspaket: typeof config.planungspaket === 'string' ? config.planungspaket : undefined,
+        // Handle both 'nestType' and 'nest' field names for backward compatibility
+        nestType: extractValue(config.nestType) || extractValue(config.nest),
+        gebaeudehuelle: extractValue(config.gebaeudehuelle),
+        innenverkleidung: extractValue(config.innenverkleidung),
+        fussboden: extractValue(config.fussboden),
+        pvanlage: extractValue(config.pvanlage),
+        fenster: extractValue(config.fenster),
+        planungspaket: extractValue(config.planungspaket),
       };
     } catch (error) {
       console.error('Failed to parse configuration data:', error);
@@ -104,8 +116,8 @@ class PopularConfigurationsService {
    */
   static async getTopConfigurations(): Promise<PopularConfigurationData['topConfigurations']> {
     try {
-              // Get all sessions with completed configurations - Get all and filter after
-        const sessions = await prisma.userSession.findMany({
+      // Get all sessions with completed configurations - Get all and filter after
+      const sessions = await prisma.userSession.findMany({
         select: {
           configurationData: true,
           totalPrice: true,
@@ -119,9 +131,9 @@ class PopularConfigurationsService {
       });
 
       // Filter sessions that have configuration data
-      const sessionsWithConfig = sessions.filter((session: { configurationData: unknown }) => 
-        session.configurationData && 
-        typeof session.configurationData === 'object' && 
+      const sessionsWithConfig = sessions.filter((session: { configurationData: unknown }) =>
+        session.configurationData &&
+        typeof session.configurationData === 'object' &&
         session.configurationData !== null
       );
 
@@ -146,7 +158,7 @@ class PopularConfigurationsService {
 
         // Create a unique key for this configuration type
         const key = `${config.nestType}-${config.gebaeudehuelle || 'Unknown'}-${config.innenverkleidung || 'Unknown'}`;
-        
+
         if (!configurationGroups.has(key)) {
           configurationGroups.set(key, {
             configurations: [],
@@ -161,11 +173,11 @@ class PopularConfigurationsService {
         const group = configurationGroups.get(key)!;
         group.configurations.push(session);
         group.totalSelections++;
-        
+
         if (session.status === 'COMPLETED') {
           group.conversions++;
         }
-        
+
         if (session.totalPrice && session.totalPrice > 0) {
           group.prices.push(session.totalPrice);
         }
@@ -260,9 +272,9 @@ class PopularConfigurationsService {
       });
 
       // Filter sessions that have configuration data
-      const sessions = allSessions.filter((session: { configurationData: unknown }) => 
-        session.configurationData && 
-        typeof session.configurationData === 'object' && 
+      const sessions = allSessions.filter((session: { configurationData: unknown }) =>
+        session.configurationData &&
+        typeof session.configurationData === 'object' &&
         session.configurationData !== null
       );
 
@@ -297,8 +309,8 @@ class PopularConfigurationsService {
       });
 
       const total = sessions.length;
-      
-      const convertToArray = (map: Map<string, number>) => 
+
+      const convertToArray = (map: Map<string, number>) =>
         Array.from(map.entries())
           .map(([name, count]) => ({
             name,
@@ -350,9 +362,9 @@ class PopularConfigurationsService {
       });
 
       // Filter sessions that have configuration data
-      const sessions = allSessions.filter((session: { configurationData: unknown }) => 
-        session.configurationData && 
-        typeof session.configurationData === 'object' && 
+      const sessions = allSessions.filter((session: { configurationData: unknown }) =>
+        session.configurationData &&
+        typeof session.configurationData === 'object' &&
         session.configurationData !== null
       );
 
@@ -424,10 +436,10 @@ class PopularConfigurationsService {
           configurationData: true
         }
       });
-      
-      const totalConfigurations = allConfigs.filter((session: { configurationData: unknown }) => 
-        session.configurationData && 
-        typeof session.configurationData === 'object' && 
+
+      const totalConfigurations = allConfigs.filter((session: { configurationData: unknown }) =>
+        session.configurationData &&
+        typeof session.configurationData === 'object' &&
         session.configurationData !== null
       ).length;
 
@@ -459,15 +471,15 @@ class PopularConfigurationsService {
 
 export async function GET() {
   const startTime = Date.now();
-  
+
   try {
     console.log('📊 Fetching popular configurations data...');
-    
+
     const data = await PopularConfigurationsService.generatePopularConfigurationsData();
-    
+
     const processingTime = Date.now() - startTime;
     console.log(`✅ Popular configurations data generated in ${processingTime}ms`);
-    
+
     return NextResponse.json({
       success: true,
       data,
@@ -481,11 +493,11 @@ export async function GET() {
         dataSource: 'postgresql'
       }
     });
-    
+
   } catch (error) {
     const processingTime = Date.now() - startTime;
     console.error(`❌ Popular configurations API error (${processingTime}ms):`, error);
-    
+
     return NextResponse.json({
       success: false,
       error: 'Failed to fetch popular configurations data',

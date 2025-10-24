@@ -2562,8 +2562,8 @@ export default function CheckoutStepper({
                       setContactWarning(
                         "Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir dich kontaktieren können."
                       );
-                      // Scroll to contact section (step 2)
-                      setStepIndex(1); // Navigate to Terminvereinbarung section
+                      // Scroll to contact section (step 3: Terminvereinbarung)
+                      setStepIndex(3); // Navigate to Terminvereinbarung section (index 3)
                       // Clear warning after 8 seconds
                       setTimeout(() => setContactWarning(null), 8000);
                     } else {
@@ -2648,6 +2648,22 @@ export default function CheckoutStepper({
     // DON'T close the modal yet - let the user see the success message
     // The PaymentModal will show the success screen
     // User can close it manually by clicking the close button
+
+    // Track conversion (non-blocking)
+    const sessionId = configItem?.sessionId || configuration?.sessionId;
+    if (sessionId) {
+      fetch("/api/sessions/track-conversion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          paymentIntentId,
+          totalPrice: configItem?.totalPrice || configuration?.totalPrice || 0,
+        }),
+      }).catch((error) => {
+        console.warn("⚠️ Conversion tracking failed:", error);
+      });
+    }
 
     // Trigger alpha test completion event for consistency
     window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));

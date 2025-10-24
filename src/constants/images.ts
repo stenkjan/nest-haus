@@ -68,6 +68,14 @@ export const IMAGES = {
     },
 
 
+    // Fenster & Türen overlay images
+    fensterOverlays: {
+        holz: '189-nest-haus-oeffnungen-fenster-tuer-material-holz-nachhaltig-zeitlos',
+        pvc_fenster: '190-nest-haus-oeffnungen-fenster-tuer-material-kunststoff-plastik-preiswert-guenstig',
+        aluminium_weiss: '188-nest-haus-oeffnungen-fenster-tuer-material-aluminium-hell-elegant',
+        aluminium_schwarz: '187-nest-haus-oeffnungen-fenster-tuer-material-aluminium-dunkel-modern'
+    },
+
     pvModule: {
         pvOverlay: '179-nest-solar-solarenergie-solarpanel-nachhaltig-sonne-icon-strom-energie',
 

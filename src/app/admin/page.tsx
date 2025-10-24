@@ -64,50 +64,26 @@ export default function AdminDashboard() {
           </Link>
 
           <Link
-            href="/admin/user-journey"
+            href="/admin/user-tracking"
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
           >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  User Journey Tracking
+                  User Tracking
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Analyze user paths through the configurator, identify drop-off
-                  points, and optimize the user experience.
+                  Comprehensive analytics: conversion funnel, time metrics, and
+                  popular configurations (cart-based tracking).
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • Session flow analysis
+                  • Conversion funnel
                   <br />
-                  • Click heatmaps
-                  <br />• Abandonment points
+                  • Time analytics
+                  <br />• Popular configurations
                 </div>
               </div>
-              <div className="text-4xl">🛤️</div>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/popular-configurations"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  Popular Konfigurationen
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  Discover the most popular house configurations, pricing
-                  trends, and customer preferences.
-                </p>
-                <div className="mt-4 text-sm text-gray-500">
-                  • Real database data
-                  <br />
-                  • Price distribution
-                  <br />• Selection patterns
-                </div>
-              </div>
-              <div className="text-4xl">🏠</div>
+              <div className="text-4xl">📊</div>
             </div>
           </Link>
 
@@ -260,6 +236,29 @@ export default function AdminDashboard() {
         <div className="space-y-6">
           {/* Image Cache Manager */}
           <ImageCacheManager />
+
+          {/* Developer Tools */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Developer Tools
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Link
+                href="/admin/debug/session"
+                className="flex items-center justify-between p-4 border border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+              >
+                <div>
+                  <div className="font-medium text-gray-900">
+                    Session Debugger
+                  </div>
+                  <div className="text-sm text-gray-600 mt-1">
+                    Inspect session tracking data
+                  </div>
+                </div>
+                <div className="text-2xl">🔍</div>
+              </Link>
+            </div>
+          </div>
 
           {/* Quick Actions */}
           <div className="bg-white rounded-lg shadow p-6">
