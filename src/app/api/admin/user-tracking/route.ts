@@ -6,6 +6,7 @@
  */
 
 import { NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 
 // Type definitions
@@ -169,7 +170,7 @@ class UserTrackingService {
         const sessions = await prisma.userSession.findMany({
             where: {
                 status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
-                configurationData: { not: null }
+                configurationData: { not: Prisma.JsonNull }
             },
             select: {
                 sessionId: true,
@@ -313,7 +314,7 @@ class UserTrackingService {
         const sessions = await prisma.userSession.findMany({
             where: {
                 status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
-                configurationData: { not: null }
+                configurationData: { not: Prisma.JsonNull }
             },
             select: {
                 configurationData: true
