@@ -177,6 +177,23 @@ where: {
 }
 ```
 
+**6. Prisma JSON Input Values**
+```typescript
+// ❌ WRONG - Record type not assignable to InputJsonValue
+const config: Record<string, unknown> = { ... };
+await prisma.userSession.update({
+  data: { configurationData: config }
+});
+
+// ✅ CORRECT - Cast to Prisma.InputJsonValue
+import { Prisma } from '@prisma/client';
+
+const config: Record<string, unknown> = { ... };
+await prisma.userSession.update({
+  data: { configurationData: config as Prisma.InputJsonValue }
+});
+```
+
 #### Interface Definition Requirements:
 - Create interfaces for all API response types
 - Create interfaces for all component prop types
