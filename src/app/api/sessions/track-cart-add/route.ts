@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 
 interface CartAddRequest {
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
             where: { sessionId },
             update: {
                 status: 'IN_CART',
-                configurationData: configuration,
+                configurationData: configuration as Prisma.InputJsonValue,
                 totalPrice,
                 lastActivity: new Date(),
                 updatedAt: new Date()
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
             create: {
                 sessionId,
                 status: 'IN_CART',
-                configurationData: configuration,
+                configurationData: configuration as Prisma.InputJsonValue,
                 totalPrice,
                 ipAddress: request.headers.get('x-forwarded-for') ||
                     request.headers.get('x-real-ip') ||
