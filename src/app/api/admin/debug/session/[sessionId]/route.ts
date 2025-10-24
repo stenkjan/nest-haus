@@ -183,7 +183,7 @@ export async function GET(
                     configurationKeys: configKeys.length,
                     selectionEvents: selectionEvents.length,
                     interactionEvents: interactionEvents.length,
-                    missingData: []
+                    missingData: [] as string[]
                 }
             }
         };
