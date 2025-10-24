@@ -117,6 +117,51 @@ const items = data.map((item: DataItem) => ...)
 function unused(_param: string) { ... } // unused param with _
 ```
 
+#### Critical TypeScript Patterns (Prevent Build Failures):
+
+**1. Indexing Dynamic Objects**
+```typescript
+// ❌ WRONG - TypeScript can't infer index signature
+const value = jsonObject[key];  // Error: can't index JsonValue
+
+// ✅ CORRECT - Explicit type assertion
+const record = jsonObject as Record<string, unknown>;
+const value = record[key];
+```
+
+**2. Empty Array Initialization**
+```typescript
+// ❌ WRONG - TypeScript infers never[]
+const items = [];
+items.push('string');  // Error: type 'string' not assignable to 'never'
+
+// ✅ CORRECT - Explicit type annotation
+const items: string[] = [];
+const items = [] as string[];
+```
+
+**3. Accessing Nested Properties on Unknown Types**
+```typescript
+// ❌ WRONG - TypeScript doesn't know if property exists
+if (value.nested) { ... }  // Error: property doesn't exist on unknown
+
+// ✅ CORRECT - Type guard or assertion
+if (typeof value === 'object' && value !== null && 'nested' in value) {
+  const typed = value as { nested?: unknown };
+  if (typed.nested) { ... }
+}
+```
+
+**4. JSON Data from Prisma**
+```typescript
+// ❌ WRONG - Direct property access on JsonValue
+const configValue = session.configurationData[key];
+
+// ✅ CORRECT - Cast to appropriate type first
+const config = session.configurationData as Record<string, unknown>;
+const configValue = config[key];
+```
+
 #### Interface Definition Requirements:
 - Create interfaces for all API response types
 - Create interfaces for all component prop types
