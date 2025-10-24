@@ -114,14 +114,15 @@ export async function GET(
                 totalPrice: userSession.totalPrice,
                 raw: parsedConfig,
                 selections: configKeys.length > 0 ? configKeys.map(key => {
-                    const value = parsedConfig?.[key];
+                    const configRecord = parsedConfig as Record<string, unknown>;
+                    const value = configRecord[key];
                     return {
                         category: key,
                         value: typeof value === 'object' && value !== null && 'value' in value
-                            ? value.value
+                            ? (value as { value?: unknown }).value
                             : (typeof value === 'string' ? value : JSON.stringify(value)),
                         price: typeof value === 'object' && value !== null && 'price' in value
-                            ? value.price
+                            ? (value as { price?: unknown }).price
                             : null
                     };
                 }) : []
