@@ -162,6 +162,21 @@ const config = session.configurationData as Record<string, unknown>;
 const configValue = config[key];
 ```
 
+**5. Prisma JSON Null Filtering**
+```typescript
+// ❌ WRONG - TypeScript error with plain null
+where: {
+  configurationData: { not: null }
+}
+
+// ✅ CORRECT - Use Prisma.JsonNull
+import { Prisma } from '@prisma/client';
+
+where: {
+  configurationData: { not: Prisma.JsonNull }
+}
+```
+
 #### Interface Definition Requirements:
 - Create interfaces for all API response types
 - Create interfaces for all component prop types
