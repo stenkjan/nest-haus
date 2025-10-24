@@ -1,0 +1,108 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run type checking
+        run: npx tsc --noEmit
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+          # Add minimal required env vars for build
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+
+      - name: Trigger Vercel deployment
+        run: |
+          echo "🚀 Triggering Vercel production deployment..."
+
+          # Check if deploy hook secret exists
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK_PRODUCTION }}" ]; then
+            echo "⚠️  VERCEL_DEPLOY_HOOK_PRODUCTION secret not configured"
+            echo "Please add it in GitHub repository settings:"
+            echo "1. Go to Settings → Secrets and variables → Actions"
+            echo "2. Create new secret: VERCEL_DEPLOY_HOOK_PRODUCTION"
+            echo "3. Get the hook URL from Vercel Dashboard → Settings → Git → Deploy Hooks"
+            exit 1
+          fi
+
+          RESPONSE=$(curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_PRODUCTION }}" \
+            -H "Content-Type: application/json" \
+            -w "\n%{http_code}" \
+            -s)
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
+
+          if [ "$HTTP_CODE" -eq 200 ] || [ "$HTTP_CODE" -eq 201 ]; then
+            echo "✅ Deployment triggered successfully"
+            # Extract job ID if available
+            JOB_ID=$(echo "$BODY" | grep -o '"id":"[^"]*"' | cut -d'"' -f4)
+            if [ -n "$JOB_ID" ]; then
+              echo "🔄 Deployment Job ID: $JOB_ID"
+            fi
+          else
+            echo "❌ Failed to trigger deployment"
+            echo "Response body: $BODY"
+            exit 1
+          fi
+
+      - name: Create deployment summary
+        if: success()
+        run: |
+          echo "## 🚀 Production Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: main" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Author**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Build successful" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Linting passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Type checking passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Vercel deployment triggered" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **View deployment**: [Vercel Dashboard](https://vercel.com/dashboard)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify deployment status
+        if: failure()
+        run: |
+          echo "## ❌ Production Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: main" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Author**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the logs above for error details." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Common Issues:" >> $GITHUB_STEP_SUMMARY
+          echo "- Missing VERCEL_DEPLOY_HOOK_PRODUCTION secret" >> $GITHUB_STEP_SUMMARY
+          echo "- Build/linting/type errors" >> $GITHUB_STEP_SUMMARY
+          echo "- Invalid deploy hook URL" >> $GITHUB_STEP_SUMMARY
