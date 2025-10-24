@@ -267,7 +267,7 @@ export function extractConfigurationFromInquiry(configurationData: unknown): Sta
 
     // If it's already standardized
     if (data.version === '1.0' && data.source && data.sessionId) {
-        return data as StandardizedConfiguration;
+        return data as unknown as StandardizedConfiguration;
     }
 
     // Try to standardize it
