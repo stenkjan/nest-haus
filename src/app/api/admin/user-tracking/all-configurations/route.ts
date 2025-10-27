@@ -325,7 +325,7 @@ export async function GET() {
 
         // Create a map for quick lookup
         const inquiryMap = new Map(
-            inquiries.map(inq => [inq.sessionId!, inq])
+            inquiries.map(inq => [inq.sessionId || '', inq])
         );
 
         const configurations: ConfigurationWithDetails[] = sessions.map(session => {

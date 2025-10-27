@@ -600,7 +600,7 @@ function ConfigurationModal({
                   <div className="p-3 bg-gray-50 rounded">
                     <div className="text-gray-600 mb-2">Nachricht:</div>
                     <p className="text-sm text-gray-900 italic">
-                      "{config.contactInfo.message}"
+                      &ldquo;{config.contactInfo.message}&rdquo;
                     </p>
                   </div>
                 )}
