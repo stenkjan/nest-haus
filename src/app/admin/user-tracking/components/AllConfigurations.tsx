@@ -1,0 +1,534 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
+interface ConfigurationWithDetails {
+  sessionId: string;
+  startTime: string;
+  endTime: string | null;
+  status: string;
+  totalPrice: number;
+
+  configuration: {
+    nestType: string;
+    gebaeudehuelle: string;
+    innenverkleidung: string;
+    fussboden: string;
+    pvanlage: string;
+    fenster: string;
+    planungspaket: string;
+  };
+
+  metadata: {
+    ipAddress: string | null;
+    userAgent: string | null;
+    referrer: string | null;
+    utmSource: string | null;
+    duration: number;
+  };
+
+  tracking: {
+    selectionEventsCount: number;
+    interactionEventsCount: number;
+    snapshotsCount: number;
+    lastActivity: string;
+  };
+}
+
+interface AllConfigurationsResponse {
+  success: boolean;
+  data: ConfigurationWithDetails[];
+  metadata: {
+    total: number;
+    lastUpdated: string;
+  };
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const styles = {
+    IN_CART: "bg-blue-100 text-blue-800",
+    COMPLETED: "bg-green-100 text-green-800",
+    CONVERTED: "bg-purple-100 text-purple-800",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+        styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
+
+function ConfigurationCard({
+  config,
+  onClick,
+}: {
+  config: ConfigurationWithDetails;
+  onClick: () => void;
+}) {
+  const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return minutes > 0 ? `${minutes}m ${secs}s` : `${secs}s`;
+  };
+
+  return (
+    <div
+      onClick={onClick}
+      className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow cursor-pointer border border-gray-200 hover:border-blue-400"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-start mb-3">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">
+            {config.configuration.nestType}
+          </h3>
+          <p className="text-xs text-gray-500">
+            {new Date(config.startTime).toLocaleDateString("de-DE")} •{" "}
+            {new Date(config.startTime).toLocaleTimeString("de-DE")}
+          </p>
+        </div>
+        <StatusBadge status={config.status} />
+      </div>
+
+      {/* Configuration Summary */}
+      <div className="space-y-1 text-sm mb-3">
+        <div className="flex justify-between">
+          <span className="text-gray-600">Gebäudehülle:</span>
+          <span className="font-medium text-gray-900">
+            {config.configuration.gebaeudehuelle}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Innenverkleidung:</span>
+          <span className="font-medium text-gray-900">
+            {config.configuration.innenverkleidung}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Fußboden:</span>
+          <span className="font-medium text-gray-900">
+            {config.configuration.fussboden}
+          </span>
+        </div>
+      </div>
+
+      {/* Price & Stats */}
+      <div className="pt-3 border-t border-gray-200 flex justify-between items-center">
+        <div className="text-xl font-bold text-green-600">
+          €{(config.totalPrice / 1000).toFixed(0)}k
+        </div>
+        <div className="flex gap-3 text-xs text-gray-600">
+          <span>⏱️ {formatDuration(config.metadata.duration)}</span>
+          <span>🔄 {config.tracking.selectionEventsCount} selections</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ConfigurationModal({
+  config,
+  onClose,
+}: {
+  config: ConfigurationWithDetails;
+  onClose: () => void;
+}) {
+  const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return minutes > 0 ? `${minutes}m ${secs}s` : `${secs}s`;
+  };
+
+  const parseUserAgent = (ua: string | null) => {
+    if (!ua) return { browser: "Unknown", os: "Unknown", device: "Unknown" };
+
+    const browser = ua.includes("Chrome")
+      ? "Chrome"
+      : ua.includes("Firefox")
+        ? "Firefox"
+        : ua.includes("Safari")
+          ? "Safari"
+          : "Other";
+    const os = ua.includes("Windows")
+      ? "Windows"
+      : ua.includes("Mac")
+        ? "macOS"
+        : ua.includes("Linux")
+          ? "Linux"
+          : ua.includes("Android")
+            ? "Android"
+            : ua.includes("iOS")
+              ? "iOS"
+              : "Unknown";
+    const device = ua.includes("Mobile") ? "Mobile" : "Desktop";
+
+    return { browser, os, device };
+  };
+
+  const deviceInfo = parseUserAgent(config.metadata.userAgent);
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-start">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Session Details
+            </h2>
+            <p className="text-sm text-gray-600">
+              Session ID: {config.sessionId}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="p-6 space-y-6">
+          {/* Session Overview */}
+          <div className="bg-blue-50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              📊 Session Overview
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <div className="text-xs text-gray-600">Status</div>
+                <div className="mt-1">
+                  <StatusBadge status={config.status} />
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-600">Total Price</div>
+                <div className="text-lg font-bold text-green-600">
+                  €{config.totalPrice.toLocaleString()}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-600">Duration</div>
+                <div className="text-lg font-semibold text-gray-900">
+                  {formatDuration(config.metadata.duration)}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-600">Started</div>
+                <div className="text-sm font-medium text-gray-900">
+                  {new Date(config.startTime).toLocaleString("de-DE")}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Configuration Details */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              🏠 Configuration
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Nest Type:</span>
+                <span className="font-semibold text-gray-900">
+                  {config.configuration.nestType}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Gebäudehülle:</span>
+                <span className="font-semibold text-gray-900">
+                  {config.configuration.gebaeudehuelle}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Innenverkleidung:</span>
+                <span className="font-semibold text-gray-900">
+                  {config.configuration.innenverkleidung}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Fußboden:</span>
+                <span className="font-semibold text-gray-900">
+                  {config.configuration.fussboden}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">PV-Anlage:</span>
+                <span className="font-semibold text-gray-900">
+                  {config.configuration.pvanlage}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Fenster:</span>
+                <span className="font-semibold text-gray-900">
+                  {config.configuration.fenster}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Planungspaket:</span>
+                <span className="font-semibold text-gray-900">
+                  {config.configuration.planungspaket}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* User Activity Tracking */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              🔄 Activity Tracking
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-blue-50 rounded-lg">
+                <div className="text-3xl font-bold text-blue-600">
+                  {config.tracking.selectionEventsCount}
+                </div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Selection Events
+                </div>
+              </div>
+              <div className="text-center p-4 bg-green-50 rounded-lg">
+                <div className="text-3xl font-bold text-green-600">
+                  {config.tracking.interactionEventsCount}
+                </div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Interaction Events
+                </div>
+              </div>
+              <div className="text-center p-4 bg-purple-50 rounded-lg">
+                <div className="text-3xl font-bold text-purple-600">
+                  {config.tracking.snapshotsCount}
+                </div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Configuration Snapshots
+                </div>
+              </div>
+            </div>
+            <div className="mt-3 text-xs text-gray-500">
+              Last Activity:{" "}
+              {new Date(config.tracking.lastActivity).toLocaleString("de-DE")}
+            </div>
+          </div>
+
+          {/* Session Metadata */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              💻 Session Metadata
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Device:</span>
+                <span className="font-medium text-gray-900">
+                  {deviceInfo.device}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">Browser:</span>
+                <span className="font-medium text-gray-900">
+                  {deviceInfo.browser}
+                </span>
+              </div>
+              <div className="flex justify-between p-3 bg-gray-50 rounded">
+                <span className="text-gray-600">OS:</span>
+                <span className="font-medium text-gray-900">
+                  {deviceInfo.os}
+                </span>
+              </div>
+              {config.metadata.ipAddress && (
+                <div className="flex justify-between p-3 bg-gray-50 rounded">
+                  <span className="text-gray-600">IP Address:</span>
+                  <span className="font-mono text-sm text-gray-900">
+                    {config.metadata.ipAddress}
+                  </span>
+                </div>
+              )}
+              {config.metadata.referrer && (
+                <div className="flex justify-between p-3 bg-gray-50 rounded">
+                  <span className="text-gray-600">Referrer:</span>
+                  <span className="font-mono text-xs text-gray-900 truncate max-w-xs">
+                    {config.metadata.referrer}
+                  </span>
+                </div>
+              )}
+              {config.metadata.utmSource && (
+                <div className="flex justify-between p-3 bg-gray-50 rounded">
+                  <span className="text-gray-600">UTM Source:</span>
+                  <span className="font-medium text-gray-900">
+                    {config.metadata.utmSource}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 p-4 flex justify-end">
+          <button
+            onClick={onClose}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function AllConfigurations() {
+  const [configurations, setConfigurations] = useState<
+    ConfigurationWithDetails[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedConfig, setSelectedConfig] =
+    useState<ConfigurationWithDetails | null>(null);
+  const [filter, setFilter] = useState<string>("ALL");
+
+  useEffect(() => {
+    fetchConfigurations();
+  }, []);
+
+  const fetchConfigurations = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        "/api/admin/user-tracking/all-configurations"
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch: ${response.status}`);
+      }
+
+      const result: AllConfigurationsResponse = await response.json();
+
+      if (result.success) {
+        setConfigurations(result.data);
+        setError(null);
+      } else {
+        throw new Error("Invalid response format");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch data");
+      console.error("Error fetching configurations:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredConfigurations =
+    filter === "ALL"
+      ? configurations
+      : configurations.filter((c) => c.status === filter);
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          All Configurations
+        </h2>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span className="ml-3 text-gray-600">Loading configurations...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          All Configurations
+        </h2>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-800">Error: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              All Configurations
+            </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              {configurations.length} total configurations • Click any card for
+              details
+            </p>
+          </div>
+          <button
+            onClick={fetchConfigurations}
+            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          >
+            🔄 Refresh
+          </button>
+        </div>
+
+        {/* Filter Tabs */}
+        <div className="flex gap-2 mb-6 border-b border-gray-200">
+          {["ALL", "IN_CART", "COMPLETED", "CONVERTED"].map((status) => (
+            <button
+              key={status}
+              onClick={() => setFilter(status)}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                filter === status
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              {status.replace("_", " ")}
+              {status !== "ALL" && (
+                <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded">
+                  {configurations.filter((c) => c.status === status).length}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Configurations Grid */}
+        {filteredConfigurations.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredConfigurations.map((config) => (
+              <ConfigurationCard
+                key={config.sessionId}
+                config={config}
+                onClick={() => setSelectedConfig(config)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <p className="text-gray-600">
+              No configurations found for filter: {filter}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Modal */}
+      {selectedConfig && (
+        <ConfigurationModal
+          config={selectedConfig}
+          onClose={() => setSelectedConfig(null)}
+        />
+      )}
+    </>
+  );
+}

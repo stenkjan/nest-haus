@@ -11,6 +11,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Suspense } from "react";
+import AllConfigurations from "./components/AllConfigurations";
 
 // Types matching the API response
 interface UserTrackingData {
@@ -513,10 +514,13 @@ async function UserTrackingDashboard() {
       </div>
 
       {/* Price & Selection Analytics */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <PriceDistribution data={data.priceDistribution} />
         <SelectionStats data={data.selectionStats} />
       </div>
+
+      {/* All Configurations Section */}
+      <AllConfigurations />
     </>
   );
 }
