@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8c311b06ac6ca0e577b5530e237b9236d8e9c94c] - Mon Oct 27 12:48:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: enhance configuration details in AllConfigurations component and API  - Introduced detailed configuration items with additional properties such as price, description, and square meters for better clarity in the UI. - Updated the API to include a human-readable session name and contact information from inquiries, improving the overall data structure and user experience. - Refactored the configuration parsing logic to handle both simple and detailed configurations, ensuring accurate data representation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+
+
+---
+
 ## [bed534fb114f4644bc179c1aea04ba49c4e08359] - Mon Oct 27 12:28:30 2025 +0100
 
 **Author**: stenkjan
