@@ -820,8 +820,12 @@ export default function AllConfigurations() {
     filter === "ALL"
       ? configurations
       : filter === "WITH_CONFIG"
-        ? configurations.filter((c) => !c.isOhneNestMode)
-        : configurations.filter((c) => c.isOhneNestMode);
+        ? configurations.filter(
+            (c) => !c.isOhneNestMode && c.configuration.nestType !== "Unknown"
+          )
+        : configurations.filter(
+            (c) => c.isOhneNestMode || c.configuration.nestType === "Unknown"
+          );
 
   if (loading) {
     return (
@@ -895,8 +899,16 @@ export default function AllConfigurations() {
                 {tab.key === "ALL"
                   ? configurations.length
                   : tab.key === "WITH_CONFIG"
-                    ? configurations.filter((c) => !c.isOhneNestMode).length
-                    : configurations.filter((c) => c.isOhneNestMode).length}
+                    ? configurations.filter(
+                        (c) =>
+                          !c.isOhneNestMode &&
+                          c.configuration.nestType !== "Unknown"
+                      ).length
+                    : configurations.filter(
+                        (c) =>
+                          c.isOhneNestMode ||
+                          c.configuration.nestType === "Unknown"
+                      ).length}
               </span>
             </button>
           ))}

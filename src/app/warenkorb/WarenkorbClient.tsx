@@ -82,6 +82,23 @@ export default function WarenkorbClient() {
       if (mode === "ohne-nest") {
         console.log("🏠 URL has ohne-nest mode, setting to TRUE");
         setOhneNestMode(true);
+
+        // Update the session to mark it as ohne-nest mode
+        const sessionId = configuration?.sessionId;
+        if (sessionId) {
+          console.log("📝 Updating session to ohne-nest mode:", sessionId);
+          fetch("/api/sessions/update-ohne-nest-mode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sessionId,
+              isOhneNestMode: true,
+            }),
+          }).catch((error) => {
+            console.warn("⚠️ Failed to update ohne-nest mode:", error);
+          });
+        }
+
         // Remove the mode parameter from URL to clean it up
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete("mode");
