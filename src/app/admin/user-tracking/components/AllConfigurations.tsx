@@ -525,7 +525,9 @@ export default function AllConfigurations() {
   const filteredConfigurations =
     filter === "ALL"
       ? configurations
-      : configurations.filter((c) => c.status === filter);
+      : filter === "WITH_CONFIG"
+        ? configurations.filter((c) => c.configuration.nestType !== "Unknown")
+        : configurations.filter((c) => c.configuration.nestType === "Unknown");
 
   if (loading) {
     return (
@@ -577,22 +579,35 @@ export default function AllConfigurations() {
 
         {/* Filter Tabs */}
         <div className="flex gap-2 mb-6 border-b border-gray-200">
-          {["ALL", "IN_CART", "COMPLETED", "CONVERTED"].map((status) => (
+          {[
+            { key: "ALL", label: "Alle Sitzungen" },
+            { key: "WITH_CONFIG", label: "Mit Konfiguration" },
+            {
+              key: "WITHOUT_CONFIG",
+              label: "Ohne Konfiguration (Direkt zum Vorentwurf)",
+            },
+          ].map((tab) => (
             <button
-              key={status}
-              onClick={() => setFilter(status)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                filter === status
+              key={tab.key}
+              onClick={() => setFilter(tab.key)}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                filter === tab.key
                   ? "border-blue-600 text-blue-600"
                   : "border-transparent text-gray-600 hover:text-gray-900"
               }`}
             >
-              {status.replace("_", " ")}
-              {status !== "ALL" && (
-                <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded">
-                  {configurations.filter((c) => c.status === status).length}
-                </span>
-              )}
+              {tab.label}
+              <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded">
+                {tab.key === "ALL"
+                  ? configurations.length
+                  : tab.key === "WITH_CONFIG"
+                    ? configurations.filter(
+                        (c) => c.configuration.nestType !== "Unknown"
+                      ).length
+                    : configurations.filter(
+                        (c) => c.configuration.nestType === "Unknown"
+                      ).length}
+              </span>
             </button>
           ))}
         </div>
