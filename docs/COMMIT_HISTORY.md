@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d39ebc49313cc027ffe45e4e994e2922153262d7] - Mon Oct 27 13:26:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: add isOhneNestMode property to UserSession and update related components  - Introduced isOhneNestMode boolean property in UserSession model to track direct navigation to Vorentwurf. - Updated AllConfigurations component to filter configurations based on isOhneNestMode status. - Enhanced API endpoints to include isOhneNestMode in session data handling. - Modified cartStore to send isOhneNestMode during cart add tracking, improving session management.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/conversion/page.tsx
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/sessions/track-cart-add/route.ts
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+---
+
 ## [19338a912e0e6da8d92b0d09c946a00c0992ef94] - Mon Oct 27 13:04:16 2025 +0100
 
 **Author**: stenkjan
