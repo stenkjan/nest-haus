@@ -42,6 +42,16 @@ interface ConfigurationWithDetails {
         snapshotsCount: number;
         lastActivity: string;
     };
+
+    // Payment information (from Stripe)
+    payment: {
+        paymentIntentId: string | null;
+        paymentStatus: string | null;
+        paymentMethod: string | null;
+        paymentAmount: number | null;
+        paidAt: string | null;
+        inquiryStatus: string | null;
+    } | null;
 }
 
 /**
@@ -130,11 +140,44 @@ export async function GET() {
             take: 100 // Limit to last 100 configurations
         });
 
+        // Get payment information for sessions that have associated inquiries
+        const sessionIds = sessions.map(s => s.sessionId);
+        const inquiries = await prisma.customerInquiry.findMany({
+            where: {
+                sessionId: { in: sessionIds }
+            },
+            select: {
+                sessionId: true,
+                paymentIntentId: true,
+                paymentStatus: true,
+                paymentMethod: true,
+                paymentAmount: true,
+                paidAt: true,
+                status: true
+            }
+        });
+
+        // Create a map for quick lookup
+        const inquiryMap = new Map(
+            inquiries.map(inq => [inq.sessionId, inq])
+        );
+
         const configurations: ConfigurationWithDetails[] = sessions.map(session => {
             const config = parseConfigurationData(session.configurationData);
             const duration = session.endTime
                 ? Math.round((session.endTime.getTime() - session.startTime.getTime()) / 1000)
                 : 0;
+
+            // Get payment info if available
+            const inquiry = inquiryMap.get(session.sessionId);
+            const payment = inquiry ? {
+                paymentIntentId: inquiry.paymentIntentId,
+                paymentStatus: inquiry.paymentStatus,
+                paymentMethod: inquiry.paymentMethod,
+                paymentAmount: inquiry.paymentAmount,
+                paidAt: inquiry.paidAt?.toISOString() || null,
+                inquiryStatus: inquiry.status
+            } : null;
 
             return {
                 sessionId: session.sessionId,
@@ -158,7 +201,9 @@ export async function GET() {
                     interactionEventsCount: session.interactionEvents.length,
                     snapshotsCount: session.configurationSnapshots.length,
                     lastActivity: session.lastActivity.toISOString()
-                }
+                },
+
+                payment
             };
         });
 

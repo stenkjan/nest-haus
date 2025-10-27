@@ -33,6 +33,15 @@ interface ConfigurationWithDetails {
     snapshotsCount: number;
     lastActivity: string;
   };
+
+  payment: {
+    paymentIntentId: string | null;
+    paymentStatus: string | null;
+    paymentMethod: string | null;
+    paymentAmount: number | null;
+    paidAt: string | null;
+    inquiryStatus: string | null;
+  } | null;
 }
 
 interface AllConfigurationsResponse {
@@ -45,6 +54,45 @@ interface AllConfigurationsResponse {
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const styles = {
+    IN_CART: "bg-blue-100 text-blue-800",
+    COMPLETED: "bg-green-100 text-green-800",
+    CONVERTED: "bg-purple-100 text-purple-800",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+        styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
+
+function PaymentStatusBadge({ status }: { status: string | null }) {
+  if (!status) return null;
+
+  const styles = {
+    PAID: "bg-green-100 text-green-800",
+    PENDING: "bg-yellow-100 text-yellow-800",
+    PROCESSING: "bg-blue-100 text-blue-800",
+    FAILED: "bg-red-100 text-red-800",
+    CANCELLED: "bg-gray-100 text-gray-800",
+    REFUNDED: "bg-orange-100 text-orange-800",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+        styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800"
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
   const styles = {
     IN_CART: "bg-blue-100 text-blue-800",
     COMPLETED: "bg-green-100 text-green-800",
@@ -325,6 +373,18 @@ function ConfigurationModal({
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
               💻 Session Metadata
             </h3>
+            {config.metadata.ipAddress === null ||
+            config.metadata.ipAddress === "unknown" ||
+            config.metadata.userAgent === null ||
+            config.metadata.userAgent === "unknown" ? (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-3">
+                <p className="text-sm text-yellow-800">
+                  ⚠️ <strong>Note:</strong> Some session data was not captured.
+                  This usually happens for older sessions created before full
+                  tracking was implemented.
+                </p>
+              </div>
+            ) : null}
             <div className="space-y-3">
               <div className="flex justify-between p-3 bg-gray-50 rounded">
                 <span className="text-gray-600">Device:</span>
@@ -344,14 +404,15 @@ function ConfigurationModal({
                   {deviceInfo.os}
                 </span>
               </div>
-              {config.metadata.ipAddress && (
-                <div className="flex justify-between p-3 bg-gray-50 rounded">
-                  <span className="text-gray-600">IP Address:</span>
-                  <span className="font-mono text-sm text-gray-900">
-                    {config.metadata.ipAddress}
-                  </span>
-                </div>
-              )}
+              {config.metadata.ipAddress &&
+                config.metadata.ipAddress !== "unknown" && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">IP Address:</span>
+                    <span className="font-mono text-sm text-gray-900">
+                      {config.metadata.ipAddress}
+                    </span>
+                  </div>
+                )}
               {config.metadata.referrer && (
                 <div className="flex justify-between p-3 bg-gray-50 rounded">
                   <span className="text-gray-600">Referrer:</span>
@@ -370,6 +431,68 @@ function ConfigurationModal({
               )}
             </div>
           </div>
+
+          {/* Payment Information */}
+          {config.payment && (
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                💳 Payment Information
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between p-3 bg-green-50 rounded">
+                  <span className="text-gray-600">Payment Status:</span>
+                  <PaymentStatusBadge status={config.payment.paymentStatus} />
+                </div>
+                {config.payment.paymentAmount && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">Amount Paid:</span>
+                    <span className="font-bold text-green-600 text-lg">
+                      €
+                      {(config.payment.paymentAmount / 100).toLocaleString(
+                        "de-DE",
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }
+                      )}
+                    </span>
+                  </div>
+                )}
+                {config.payment.paymentMethod && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">Payment Method:</span>
+                    <span className="font-medium text-gray-900 capitalize">
+                      {config.payment.paymentMethod.replace("_", " ")}
+                    </span>
+                  </div>
+                )}
+                {config.payment.paidAt && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">Payment Date:</span>
+                    <span className="font-medium text-gray-900">
+                      {new Date(config.payment.paidAt).toLocaleString("de-DE")}
+                    </span>
+                  </div>
+                )}
+                {config.payment.paymentIntentId && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">Payment ID:</span>
+                    <span className="font-mono text-xs text-gray-900">
+                      {config.payment.paymentIntentId}
+                    </span>
+                  </div>
+                )}
+                {config.payment.inquiryStatus && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">Inquiry Status:</span>
+                    <span className="font-medium text-gray-900">
+                      {config.payment.inquiryStatus}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
