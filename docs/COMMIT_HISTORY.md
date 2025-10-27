@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d7c94dbf407bfec439bcd6af9150e723cebe806d] - Mon Oct 27 13:59:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: enhance filtering logic in AllConfigurations component and update session handling in WarenkorbClient  - Improved the filtering logic in the AllConfigurations component to exclude configurations with an unknown nest type when isOhneNestMode is false. - Updated the WarenkorbClient to send a request to update the session when the ohne-nest mode is activated, ensuring accurate session state management.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/api/sessions/update-ohne-nest-mode/route.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [6453d997043941059fb77e4484e3c7ff1a78ba10] - Mon Oct 27 13:28:39 2025 +0100
 
 **Author**: stenkjan
