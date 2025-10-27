@@ -21,6 +21,7 @@ model UserSession {
   configurationData      Json?
   totalPrice             Int?
   status                 SessionStatus           @default(ACTIVE)
+  isOhneNestMode         Boolean                 @default(false)
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
   selectionEvents        SelectionEvent[]

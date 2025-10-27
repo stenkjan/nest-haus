@@ -23,6 +23,7 @@ interface ConfigurationWithDetails {
     endTime: string | null;
     status: string;
     totalPrice: number;
+    isOhneNestMode: boolean; // NEW: Track if user went direct to Vorentwurf
 
     // Simple configuration strings
     configuration: {
@@ -371,6 +372,7 @@ export async function GET() {
                 endTime: session.endTime?.toISOString() || null,
                 status: session.status,
                 totalPrice: session.totalPrice || 0,
+                isOhneNestMode: session.isOhneNestMode,
 
                 configuration: simple,
                 detailedConfiguration: detailed,

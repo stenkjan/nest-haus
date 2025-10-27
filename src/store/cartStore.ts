@@ -153,13 +153,15 @@ export const useCartStore = create<CartState>()(
             });
           } else {
             console.log('🛒 Tracking cart add for session:', config.sessionId);
+            const isOhneNest = get().isOhneNestMode;
             fetch('/api/sessions/track-cart-add', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 sessionId: config.sessionId,
                 configuration: config,
-                totalPrice: config.totalPrice || 0
+                totalPrice: config.totalPrice || 0,
+                isOhneNestMode: isOhneNest
               })
             }).then(response => {
               if (response.ok) {

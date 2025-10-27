@@ -13,13 +13,14 @@ interface CartAddRequest {
     sessionId: string;
     configuration: Record<string, unknown>;
     totalPrice: number;
+    isOhneNestMode?: boolean;
     timestamp?: number;
 }
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json() as CartAddRequest;
-        const { sessionId, configuration, totalPrice } = body;
+        const { sessionId, configuration, totalPrice, isOhneNestMode } = body;
 
         if (!sessionId) {
             return NextResponse.json({
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
             }, { status: 400 });
         }
 
-        console.log(`🛒 Cart add tracked for session: ${sessionId}`);
+        console.log(`🛒 Cart add tracked for session: ${sessionId} (isOhneNestMode: ${isOhneNestMode})`);
 
         // Update session to IN_CART status
         await prisma.userSession.upsert({
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
                 status: 'IN_CART',
                 configurationData: configuration as Prisma.InputJsonValue,
                 totalPrice,
+                isOhneNestMode: isOhneNestMode || false,
                 lastActivity: new Date(),
                 updatedAt: new Date(),
                 // Capture IP/userAgent on updates too (in case they weren't captured on create)
@@ -50,6 +52,7 @@ export async function POST(request: NextRequest) {
                 status: 'IN_CART',
                 configurationData: configuration as Prisma.InputJsonValue,
                 totalPrice,
+                isOhneNestMode: isOhneNestMode || false,
                 ipAddress: request.headers.get('x-forwarded-for') ||
                     request.headers.get('x-real-ip') ||
                     'unknown',
