@@ -214,8 +214,11 @@ class UserTrackingService {
 
             const group = configurationGroups.get(key)!;
 
-            // Count by status
-            if (session.status === 'IN_CART') group.cartCount++;
+            // Count by status - each session counted only once per status
+            // Sessions progress: ACTIVE -> IN_CART -> COMPLETED -> CONVERTED
+            if (session.status === 'IN_CART') {
+                group.cartCount++;
+            }
             if (session.status === 'COMPLETED') {
                 group.cartCount++;
                 group.inquiryCount++;

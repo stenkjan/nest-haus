@@ -41,6 +41,12 @@ export async function POST(request: NextRequest) {
                 totalPrice: currentPrice,
                 lastActivity: new Date(),
                 updatedAt: new Date(),
+                // Capture IP/userAgent on updates too (in case they weren't captured on create)
+                ipAddress: request.headers.get('x-forwarded-for') ||
+                    request.headers.get('x-real-ip') ||
+                    'unknown',
+                userAgent: request.headers.get('user-agent') || 'unknown',
+                referrer: request.headers.get('referer'),
             },
             create: {
                 sessionId,
@@ -51,6 +57,7 @@ export async function POST(request: NextRequest) {
                     request.headers.get('x-real-ip') ||
                     'unknown',
                 userAgent: request.headers.get('user-agent') || 'unknown',
+                referrer: request.headers.get('referer'),
             },
         });
 

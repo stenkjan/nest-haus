@@ -357,18 +357,6 @@ function ConfigurationModal({
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
               💻 Session Metadata
             </h3>
-            {config.metadata.ipAddress === null ||
-            config.metadata.ipAddress === "unknown" ||
-            config.metadata.userAgent === null ||
-            config.metadata.userAgent === "unknown" ? (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-3">
-                <p className="text-sm text-yellow-800">
-                  ⚠️ <strong>Note:</strong> Some session data was not captured.
-                  This usually happens for older sessions created before full
-                  tracking was implemented.
-                </p>
-              </div>
-            ) : null}
             <div className="space-y-3">
               <div className="flex justify-between p-3 bg-gray-50 rounded">
                 <span className="text-gray-600">Device:</span>
