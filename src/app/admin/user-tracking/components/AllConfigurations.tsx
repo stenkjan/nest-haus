@@ -2,8 +2,17 @@
 
 import { useState, useEffect } from "react";
 
+interface DetailedItem {
+  value: string;
+  name: string;
+  price: number;
+  description?: string;
+  squareMeters?: number;
+}
+
 interface ConfigurationWithDetails {
   sessionId: string;
+  sessionName: string;
   startTime: string;
   endTime: string | null;
   status: string;
@@ -17,7 +26,40 @@ interface ConfigurationWithDetails {
     pvanlage: string;
     fenster: string;
     planungspaket: string;
+    geschossdecke: string;
+    belichtungspaket: string;
+    stirnseite: string;
+    kamindurchzug: string;
+    fussbodenheizung: string;
+    bodenaufbau: string;
+    fundament: string;
   };
+
+  detailedConfiguration: {
+    nest: DetailedItem | null;
+    gebaeudehuelle: DetailedItem | null;
+    innenverkleidung: DetailedItem | null;
+    fussboden: DetailedItem | null;
+    pvanlage: DetailedItem | null;
+    fenster: DetailedItem | null;
+    planungspaket: DetailedItem | null;
+    geschossdecke: DetailedItem | null;
+    belichtungspaket: DetailedItem | null;
+    stirnseite: DetailedItem | null;
+    kamindurchzug: DetailedItem | null;
+    fussbodenheizung: DetailedItem | null;
+    bodenaufbau: DetailedItem | null;
+    fundament: DetailedItem | null;
+  };
+
+  contactInfo: {
+    name: string | null;
+    email: string | null;
+    phone: string | null;
+    preferredContact: string | null;
+    bestTimeToCall: string | null;
+    message: string | null;
+  } | null;
 
   metadata: {
     ipAddress: string | null;
@@ -114,11 +156,14 @@ function ConfigurationCard({
     >
       {/* Header */}
       <div className="flex justify-between items-start mb-3">
-        <div>
+        <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900">
-            {config.configuration.nestType}
+            {config.sessionName}
           </h3>
-          <p className="text-xs text-gray-500">
+          <p className="text-sm text-gray-700 font-medium mt-0.5">
+            {config.configuration.nestType}
+          </p>
+          <p className="text-xs text-gray-500 mt-1">
             {new Date(config.startTime).toLocaleDateString("de-DE")} •{" "}
             {new Date(config.startTime).toLocaleTimeString("de-DE")}
           </p>
@@ -264,56 +309,304 @@ function ConfigurationModal({
             </div>
           </div>
 
-          {/* Configuration Details */}
+          {/* Detailed Configuration - Like "Dein Nest Überblick" */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              🏠 Configuration
+              🏠 Dein Nest Überblick
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-gray-600">Nest Type:</span>
-                <span className="font-semibold text-gray-900">
-                  {config.configuration.nestType}
-                </span>
-              </div>
-              <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-gray-600">Gebäudehülle:</span>
-                <span className="font-semibold text-gray-900">
-                  {config.configuration.gebaeudehuelle}
-                </span>
-              </div>
-              <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-gray-600">Innenverkleidung:</span>
-                <span className="font-semibold text-gray-900">
-                  {config.configuration.innenverkleidung}
-                </span>
-              </div>
-              <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-gray-600">Fußboden:</span>
-                <span className="font-semibold text-gray-900">
-                  {config.configuration.fussboden}
-                </span>
-              </div>
-              <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-gray-600">PV-Anlage:</span>
-                <span className="font-semibold text-gray-900">
-                  {config.configuration.pvanlage}
-                </span>
-              </div>
-              <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-gray-600">Fenster:</span>
-                <span className="font-semibold text-gray-900">
-                  {config.configuration.fenster}
-                </span>
-              </div>
-              <div className="flex justify-between p-3 bg-gray-50 rounded">
-                <span className="text-gray-600">Planungspaket:</span>
-                <span className="font-semibold text-gray-900">
-                  {config.configuration.planungspaket}
-                </span>
+            <div className="space-y-3">
+              {/* Nest Type */}
+              {config.detailedConfiguration.nest && (
+                <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-bold text-lg text-gray-900">
+                        {config.detailedConfiguration.nest.name}
+                      </h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {config.detailedConfiguration.nest.value}
+                        {config.detailedConfiguration.nest.squareMeters &&
+                          ` • ${config.detailedConfiguration.nest.squareMeters}m² Nutzfläche`}
+                      </p>
+                      {config.detailedConfiguration.nest.description && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          {config.detailedConfiguration.nest.description}
+                        </p>
+                      )}
+                    </div>
+                    <span className="text-lg font-bold text-blue-600">
+                      €
+                      {config.detailedConfiguration.nest.price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Gebäudehülle */}
+              {config.detailedConfiguration.gebaeudehuelle && (
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h5 className="font-semibold text-gray-900">
+                        {config.detailedConfiguration.gebaeudehuelle.name}
+                      </h5>
+                      {config.detailedConfiguration.gebaeudehuelle
+                        .description && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          {
+                            config.detailedConfiguration.gebaeudehuelle
+                              .description
+                          }
+                        </p>
+                      )}
+                    </div>
+                    <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
+                      €
+                      {config.detailedConfiguration.gebaeudehuelle.price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Innenverkleidung */}
+              {config.detailedConfiguration.innenverkleidung && (
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h5 className="font-semibold text-gray-900">
+                        {config.detailedConfiguration.innenverkleidung.name}
+                      </h5>
+                      {config.detailedConfiguration.innenverkleidung
+                        .description && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          {
+                            config.detailedConfiguration.innenverkleidung
+                              .description
+                          }
+                        </p>
+                      )}
+                    </div>
+                    <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
+                      €
+                      {config.detailedConfiguration.innenverkleidung.price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Fußboden */}
+              {config.detailedConfiguration.fussboden && (
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h5 className="font-semibold text-gray-900">
+                        {config.detailedConfiguration.fussboden.name}
+                      </h5>
+                      {config.detailedConfiguration.fussboden.description && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          {config.detailedConfiguration.fussboden.description}
+                        </p>
+                      )}
+                    </div>
+                    <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
+                      {config.detailedConfiguration.fussboden.price === 0
+                        ? "inkludiert"
+                        : `€${config.detailedConfiguration.fussboden.price.toLocaleString()}`}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Geschossdecke */}
+              {config.detailedConfiguration.geschossdecke &&
+                config.detailedConfiguration.geschossdecke.price > 0 && (
+                  <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-gray-900">
+                          {config.detailedConfiguration.geschossdecke.name}
+                        </h5>
+                        {config.detailedConfiguration.geschossdecke
+                          .description && (
+                          <p className="text-xs text-gray-600 mt-1">
+                            {
+                              config.detailedConfiguration.geschossdecke
+                                .description
+                            }
+                          </p>
+                        )}
+                      </div>
+                      <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
+                        €
+                        {config.detailedConfiguration.geschossdecke.price.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+              {/* Belichtungspaket */}
+              {config.detailedConfiguration.belichtungspaket && (
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h5 className="font-semibold text-gray-900">
+                        {config.detailedConfiguration.belichtungspaket.name}
+                      </h5>
+                      {config.detailedConfiguration.belichtungspaket
+                        .description && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          {
+                            config.detailedConfiguration.belichtungspaket
+                              .description
+                          }
+                        </p>
+                      )}
+                    </div>
+                    <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
+                      €
+                      {config.detailedConfiguration.belichtungspaket.price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* PV-Anlage with module count */}
+              {config.detailedConfiguration.pvanlage &&
+                config.detailedConfiguration.pvanlage.price > 0 && (
+                  <div className="p-3 bg-green-50 rounded border border-green-200">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-gray-900">
+                          {config.detailedConfiguration.pvanlage.name}
+                        </h5>
+                        {config.detailedConfiguration.pvanlage.description && (
+                          <p className="text-xs text-gray-600 mt-1">
+                            {config.detailedConfiguration.pvanlage.description}
+                          </p>
+                        )}
+                        {/* Extract module count from value (e.g., "pv_3" -> "3 Module") */}
+                        {(() => {
+                          const match =
+                            config.detailedConfiguration.pvanlage.value.match(
+                              /pv_(\d+)/
+                            );
+                          return match ? (
+                            <p className="text-xs text-green-700 font-semibold mt-1">
+                              {match[1]} PV-Module • 0,4 kWpeak pro Panel
+                            </p>
+                          ) : null;
+                        })()}
+                      </div>
+                      <span className="font-bold text-green-700 ml-4 whitespace-nowrap">
+                        €
+                        {config.detailedConfiguration.pvanlage.price.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+              {/* Planungspaket */}
+              {config.detailedConfiguration.planungspaket && (
+                <div className="p-3 bg-purple-50 rounded border border-purple-200">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h5 className="font-semibold text-gray-900">
+                        {config.detailedConfiguration.planungspaket.name}
+                      </h5>
+                      {config.detailedConfiguration.planungspaket
+                        .description && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          {
+                            config.detailedConfiguration.planungspaket
+                              .description
+                          }
+                        </p>
+                      )}
+                    </div>
+                    <span className="font-bold text-purple-700 ml-4 whitespace-nowrap">
+                      €
+                      {config.detailedConfiguration.planungspaket.price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Total Price Summary */}
+              <div className="p-4 bg-gradient-to-r from-green-100 to-green-200 rounded-lg border-2 border-green-300 mt-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-bold text-gray-900">
+                    Gesamtpreis
+                  </span>
+                  <span className="text-2xl font-bold text-green-700">
+                    €{config.totalPrice.toLocaleString()}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Contact Information */}
+          {config.contactInfo && (
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                📞 Kontaktinformationen
+              </h3>
+              <div className="space-y-3">
+                {config.contactInfo.name && (
+                  <div className="flex justify-between p-3 bg-blue-50 rounded">
+                    <span className="text-gray-600">Name:</span>
+                    <span className="font-semibold text-gray-900">
+                      {config.contactInfo.name}
+                    </span>
+                  </div>
+                )}
+                {config.contactInfo.email && (
+                  <div className="flex justify-between p-3 bg-blue-50 rounded">
+                    <span className="text-gray-600">E-Mail:</span>
+                    <span className="font-medium text-blue-600">
+                      <a href={`mailto:${config.contactInfo.email}`}>
+                        {config.contactInfo.email}
+                      </a>
+                    </span>
+                  </div>
+                )}
+                {config.contactInfo.phone && (
+                  <div className="flex justify-between p-3 bg-blue-50 rounded">
+                    <span className="text-gray-600">Telefon:</span>
+                    <span className="font-medium text-gray-900">
+                      <a href={`tel:${config.contactInfo.phone}`}>
+                        {config.contactInfo.phone}
+                      </a>
+                    </span>
+                  </div>
+                )}
+                {config.contactInfo.preferredContact && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">Bevorzugter Kontakt:</span>
+                    <span className="font-medium text-gray-900 capitalize">
+                      {config.contactInfo.preferredContact}
+                    </span>
+                  </div>
+                )}
+                {config.contactInfo.bestTimeToCall && (
+                  <div className="flex justify-between p-3 bg-gray-50 rounded">
+                    <span className="text-gray-600">Beste Anrufzeit:</span>
+                    <span className="font-medium text-gray-900">
+                      {config.contactInfo.bestTimeToCall}
+                    </span>
+                  </div>
+                )}
+                {config.contactInfo.message && (
+                  <div className="p-3 bg-gray-50 rounded">
+                    <div className="text-gray-600 mb-2">Nachricht:</div>
+                    <p className="text-sm text-gray-900 italic">
+                      "{config.contactInfo.message}"
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* User Activity Tracking */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
