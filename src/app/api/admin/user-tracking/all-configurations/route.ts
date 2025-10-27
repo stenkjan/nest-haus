@@ -47,7 +47,15 @@ interface ConfigurationWithDetails {
 /**
  * Parse configuration data safely
  */
-function parseConfigurationData(data: unknown): Record<string, string> {
+function parseConfigurationData(data: unknown): {
+    nestType: string;
+    gebaeudehuelle: string;
+    innenverkleidung: string;
+    fussboden: string;
+    pvanlage: string;
+    fenster: string;
+    planungspaket: string;
+} {
     try {
         if (!data || typeof data !== 'object') {
             return {
