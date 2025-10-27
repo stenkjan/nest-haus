@@ -337,21 +337,23 @@ export default function PerformancePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-white shadow mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <nav className="flex text-sm text-gray-500 mb-2">
-                <Link href="/admin" className="hover:text-gray-700">
-                  Admin
+              <div className="flex items-center gap-2 mb-2">
+                <Link
+                  href="/admin"
+                  className="text-blue-600 hover:text-blue-800 text-2xl font-medium"
+                  title="Back to Admin"
+                >
+                  ←
                 </Link>
-                <span className="mx-2">/</span>
-                <span className="text-gray-900">Performance Metrics</span>
-              </nav>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Performance Metrics
-              </h1>
-              <p className="text-gray-600">
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Performance Metrics
+                </h1>
+              </div>
+              <p className="text-gray-600 ml-12">
                 Monitor system performance and user experience
               </p>
             </div>

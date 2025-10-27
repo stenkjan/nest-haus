@@ -17,13 +17,22 @@ export default function AlphaTestsPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 pt-6 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 pt-10 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Alpha Test Results
-              </h1>
-              <p className="text-gray-600">
+              <div className="flex items-center gap-2 mb-2">
+                <a
+                  href="/admin"
+                  className="text-blue-600 hover:text-blue-800 text-2xl font-medium"
+                  title="Back to Admin"
+                >
+                  ←
+                </a>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Alpha Test Results
+                </h1>
+              </div>
+              <p className="text-gray-600 ml-12">
                 Usability testing analytics and user feedback
               </p>
             </div>

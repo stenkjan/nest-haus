@@ -443,20 +443,23 @@ export default function CustomerInquiriesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-white shadow mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <Link
-                href="/admin"
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium mb-2 inline-block"
-              >
-                ← Back to Admin
-              </Link>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Customer Inquiries
-              </h1>
-              <p className="text-gray-600">
+              <div className="flex items-center gap-2 mb-2">
+                <Link
+                  href="/admin"
+                  className="text-blue-600 hover:text-blue-800 text-2xl font-medium"
+                  title="Back to Admin"
+                >
+                  ←
+                </Link>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Customer Inquiries
+                </h1>
+              </div>
+              <p className="text-gray-600 ml-12">
                 Manage customer contact form submissions and inquiries
               </p>
             </div>

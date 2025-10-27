@@ -134,19 +134,22 @@ export default function UsagePage() {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8 mt-6">
-          <Link
-            href="/admin"
-            className="text-blue-600 hover:text-blue-800 mb-4 inline-block"
-          >
-            ← Back to Admin Dashboard
-          </Link>
+        <div className="mb-8 mt-28">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                📊 Service Usage Monitor
-              </h1>
-              <p className="text-gray-600 mt-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Link
+                  href="/admin"
+                  className="text-blue-600 hover:text-blue-800 text-2xl font-medium"
+                  title="Back to Admin"
+                >
+                  ←
+                </Link>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  📊 Service Usage Monitor
+                </h1>
+              </div>
+              <p className="text-gray-600 ml-12">
                 Real-time capacity monitoring for all services
               </p>
             </div>

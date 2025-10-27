@@ -97,15 +97,15 @@ function ConversionFunnel({ data }: { data: ConversionsData | null }) {
 
           return (
             <div key={index} className="relative">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">
+              <div className="flex items-center justify-between mb-2 gap-4">
+                <span className="text-sm font-medium text-gray-700 flex-shrink-0">
                   {step.step}
                 </span>
-                <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-600">
+                <div className="flex items-center space-x-4 flex-shrink-0">
+                  <span className="text-sm text-gray-600 whitespace-nowrap">
                     {step.users.toLocaleString()} users
                   </span>
-                  <span className="text-sm font-medium text-blue-600">
+                  <span className="text-sm font-medium text-blue-600 whitespace-nowrap">
                     {step.conversionRate.toFixed(1)}%
                   </span>
                 </div>
@@ -125,7 +125,9 @@ function ConversionFunnel({ data }: { data: ConversionsData | null }) {
                     }`}
                     style={{ width: `${widthPercentage}%` }}
                   >
-                    {widthPercentage > 15 ? `${step.users.toLocaleString()}` : ""}
+                    {widthPercentage > 15
+                      ? `${step.users.toLocaleString()}`
+                      : ""}
                   </div>
                 </div>
 
@@ -289,18 +291,18 @@ function ConversionTrends({ data }: { data: ConversionsData | null }) {
   }
 
   // Use monthly trends if available, fallback to weekly
-  const trends = data.trends.monthly.length > 0 
-    ? data.trends.monthly 
-    : data.trends.weekly;
+  const trends =
+    data.trends.monthly.length > 0 ? data.trends.monthly : data.trends.weekly;
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        Conversion Trends {data.trends.monthly.length > 0 ? "(Monthly)" : "(Weekly)"}
+        Conversion Trends{" "}
+        {data.trends.monthly.length > 0 ? "(Monthly)" : "(Weekly)"}
       </h3>
       <div className="space-y-4">
         {trends.map((period, index) => {
-          const label = 'month' in period ? period.month : period.week;
+          const label = "month" in period ? period.month : period.week;
           return (
             <div key={index} className="flex items-center">
               <div className="w-16 text-sm text-gray-600">{label}</div>
@@ -372,21 +374,23 @@ export default function ConversionPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-white shadow mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <nav className="flex text-sm text-gray-500 mb-2">
-                <Link href="/admin" className="hover:text-gray-700">
-                  Admin
+              <div className="flex items-center gap-2 mb-2">
+                <Link
+                  href="/admin"
+                  className="text-blue-600 hover:text-blue-800 text-2xl font-medium"
+                  title="Back to Admin"
+                >
+                  ←
                 </Link>
-                <span className="mx-2">/</span>
-                <span className="text-gray-900">Conversion Analysis</span>
-              </nav>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Conversion Analysis
-              </h1>
-              <p className="text-gray-600">
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Conversion Analysis
+                </h1>
+              </div>
+              <p className="text-gray-600 ml-12">
                 Track conversion rates and revenue performance
               </p>
             </div>
@@ -500,26 +504,28 @@ export default function ConversionPage() {
                   Top Performing Configurations
                 </h3>
                 <div className="space-y-3">
-                  {data.revenue.byConfiguration.slice(0, 5).map((config, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                    >
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-gray-900">
-                          {config.configuration}
+                  {data.revenue.byConfiguration
+                    .slice(0, 5)
+                    .map((config, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      >
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-gray-900">
+                            {config.configuration}
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            {config.count} conversions
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-600">
-                          {config.count} conversions
+                        <div className="text-right">
+                          <div className="text-lg font-semibold text-green-600">
+                            {formatCurrency(config.revenue)}
+                          </div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-lg font-semibold text-green-600">
-                          {formatCurrency(config.revenue)}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             )}
@@ -537,8 +543,10 @@ export default function ConversionPage() {
                         Low Conversion Rate
                       </h4>
                       <p className="text-sm text-red-700">
-                        Overall conversion rate is {data.metadata.overallConversionRate.toFixed(2)}%.
-                        Consider improving the user journey and removing friction points.
+                        Overall conversion rate is{" "}
+                        {data.metadata.overallConversionRate.toFixed(2)}%.
+                        Consider improving the user journey and removing
+                        friction points.
                       </p>
                     </div>
                   )}
@@ -549,9 +557,10 @@ export default function ConversionPage() {
                         Focus on High-Converting Traffic
                       </h4>
                       <p className="text-sm text-blue-700">
-                        Your best traffic source is &ldquo;{data.trafficSources[0].source}&rdquo; 
-                        with {data.trafficSources[0].rate.toFixed(2)}% conversion rate.
-                        Consider increasing investment in this channel.
+                        Your best traffic source is &ldquo;
+                        {data.trafficSources[0].source}&rdquo; with{" "}
+                        {data.trafficSources[0].rate.toFixed(2)}% conversion
+                        rate. Consider increasing investment in this channel.
                       </p>
                     </div>
                   )}
@@ -562,9 +571,11 @@ export default function ConversionPage() {
                         Revenue Performance
                       </h4>
                       <p className="text-sm text-green-700">
-                        You&apos;ve generated {formatCurrency(data.metadata.totalRevenue)} from{" "}
-                        {data.metadata.totalConversions} conversions. Average order value
-                        is {formatCurrency(data.metadata.averageOrderValue)}.
+                        You&apos;ve generated{" "}
+                        {formatCurrency(data.metadata.totalRevenue)} from{" "}
+                        {data.metadata.totalConversions} conversions. Average
+                        order value is{" "}
+                        {formatCurrency(data.metadata.averageOrderValue)}.
                       </p>
                     </div>
                   )}

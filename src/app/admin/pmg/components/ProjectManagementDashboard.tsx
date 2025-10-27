@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ProjectTask } from "@prisma/client";
+import Link from "next/link";
 import GanttChart from "./GanttChart";
 import TaskFilters from "./TaskFilters";
 import TaskDetails from "./TaskDetails";
@@ -330,14 +331,23 @@ export default function ProjectManagementDashboard() {
 
   return (
     <div
-      className="container mx-auto p-4 sm:p-6 lg:p-8"
+      className="container mx-auto p-4 sm:p-6 lg:p-8 mt-20"
       style={{ fontFamily: "Inter, sans-serif" }}
     >
-      <header className="mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl mt-6 font-bold text-slate-800">
-          Projektplan: Launch-Vorbereitung NEST-Haus
-        </h1>
-        <p className="text-slate-600 mt-2">
+      <header className="mb-8">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <Link
+            href="/admin"
+            className="text-blue-600 hover:text-blue-800 text-2xl font-medium"
+            title="Back to Admin"
+          >
+            ←
+          </Link>
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-800">
+            Projektplan: Launch-Vorbereitung NEST-Haus
+          </h1>
+        </div>
+        <p className="text-slate-600 mt-2 text-center">
           Ziel: Website-Launch bis zum 15.11.2025, um Kunden erfolgreich zum
           Beratungsgespräch zu führen.
         </p>
