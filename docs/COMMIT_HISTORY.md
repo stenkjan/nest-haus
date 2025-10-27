@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3f060b21070985031e42d9aadfc9099b4c2a6463] - Mon Oct 27 10:07:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update workflows to Node 20 and sync package-lock.json  - Update both production and development workflows to use Node.js 20 - Change from npm ci to npm install for better compatibility - Regenerate package-lock.json to sync with package.json - Fixes vite@7.0.0 engine requirement (needs Node 20+)  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- .github/workflows/deploy-development.yml
+
+
+---
+
 ## [ed8fd57e445ed818b00595de730bc7b10ccd2c35] - Thu Oct 23 15:29:19 2025 +0200
 
 **Author**: stenkjan
