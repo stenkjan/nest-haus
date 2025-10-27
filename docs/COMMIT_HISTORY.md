@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bed534fb114f4644bc179c1aea04ba49c4e08359] - Mon Oct 27 12:28:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: enhance filtering options in AllConfigurations component  - Updated the filtering logic to include new options for configurations: "Mit Konfiguration" and "Ohne Konfiguration (Direkt zum Vorentwurf)". - Adjusted the filter tabs to display the count of configurations based on the selected filter, improving user experience and clarity in the UI.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+
+
+---
+
 ## [7f4f30c19ec1d0392a8b2e9303827dd9dcf7a23a] - Mon Oct 27 12:18:30 2025 +0100
 
 **Author**: stenkjan
