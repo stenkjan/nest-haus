@@ -103,7 +103,8 @@ function ConversionFunnel({ data }: { data: ConversionsData | null }) {
                 </span>
                 <div className="flex items-center space-x-4 flex-shrink-0">
                   <span className="text-sm text-gray-600 whitespace-nowrap">
-                    {step.users.toLocaleString()} sessions ({step.conversionRate.toFixed(1)}%)
+                    {step.users.toLocaleString()} sessions (
+                    {step.conversionRate.toFixed(1)}%)
                   </span>
                 </div>
               </div>
