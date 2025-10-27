@@ -16,8 +16,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm install --prefer-offline --no-audit
@@ -40,13 +40,13 @@ jobs:
             -H "Content-Type: application/json" \
             -w "\n%{http_code}" \
             -s)
-          
+
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | head -n -1)
-          
+
           echo "HTTP Status: $HTTP_CODE"
           echo "Response: $BODY"
-          
+
           if [ "$HTTP_CODE" -eq 200 ] || [ "$HTTP_CODE" -eq 201 ]; then
             echo "✅ Deployment triggered successfully"
             # Extract job ID if available

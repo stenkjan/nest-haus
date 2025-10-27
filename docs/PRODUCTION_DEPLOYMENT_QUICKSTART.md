@@ -1,6 +1,6 @@
 # 🚀 Quick Setup: Production Deployment
 
-**Status**: Workflow created ✅ | Setup required ⏳
+**Status**: Workflow created ✅ | Node 20 configured ✅ | Vercel hook setup required ⏳
 
 ---
 
