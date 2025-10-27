@@ -257,7 +257,7 @@ function parseConfigurationData(data: unknown): {
 /**
  * Generate human-readable session name
  */
-function generateSessionName(startTime: Date, name: string | null, sessionId: string): string {
+function generateSessionName(startTime: Date, name: string | null, _sessionId: string): string {
     const dateStr = startTime.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYmmDD
 
     if (name) {
