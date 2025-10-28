@@ -141,15 +141,14 @@ export class UsageMonitor {
      */
     static async getDatabaseUsage(): Promise<DatabaseInfo> {
         try {
-            // Get record counts in parallel
-            const [sessionCount, eventCount, interactionCount, configCount] = await Promise.all([
+            // Get record counts in parallel (removed configurationSnapshot)
+            const [sessionCount, eventCount, interactionCount] = await Promise.all([
                 prisma.userSession.count(),
                 prisma.selectionEvent.count(),
                 prisma.interactionEvent.count(),
-                prisma.configurationSnapshot.count(),
             ]);
 
-            const totalRecords = sessionCount + eventCount + interactionCount + configCount;
+            const totalRecords = sessionCount + eventCount + interactionCount;
 
             // Estimate storage: ~1KB per record average
             const estimatedMB = totalRecords / 1000;
@@ -162,7 +161,6 @@ export class UsageMonitor {
                     sessions: sessionCount,
                     selectionEvents: eventCount,
                     interactionEvents: interactionCount,
-                    configurations: configCount,
                     total: totalRecords,
                 },
                 storage: Math.round(estimatedMB * 10) / 10, // Round to 1 decimal

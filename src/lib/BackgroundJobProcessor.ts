@@ -157,7 +157,7 @@ export class BackgroundJobProcessor {
     try {
       const queueKey = 'interaction_queue';
       const batchSize = 100;
-      
+
       const interactions = await redis.lrange(queueKey, 0, batchSize - 1);
       if (interactions.length === 0) {
         return 0;
@@ -202,7 +202,7 @@ export class BackgroundJobProcessor {
     try {
       const queueKey = 'performance_queue';
       const batchSize = 200;
-      
+
       const metrics = await redis.lrange(queueKey, 0, batchSize - 1);
       if (metrics.length === 0) {
         return 0;
@@ -240,10 +240,10 @@ export class BackgroundJobProcessor {
   static async aggregateDailyAnalytics(): Promise<void> {
     try {
       console.log('📊 Aggregating daily analytics...');
-      
+
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
+
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -263,14 +263,14 @@ export class BackgroundJobProcessor {
       const totalSessions = sessions.length;
       const completedSessions = sessions.filter(s => s.status === 'COMPLETED').length;
       const abandondedSessions = sessions.filter(s => s.status === 'ABANDONED').length;
-      
+
       // Calculate average session duration
       const sessionsWithDuration = sessions.filter(s => s.startTime && s.endTime);
       const averageSessionDuration = sessionsWithDuration.length > 0
         ? sessionsWithDuration.reduce((sum, session) => {
-            const duration = session.endTime!.getTime() - session.startTime.getTime();
-            return sum + duration;
-          }, 0) / sessionsWithDuration.length / 1000 / 60 // Convert to minutes
+          const duration = session.endTime!.getTime() - session.startTime.getTime();
+          return sum + duration;
+        }, 0) / sessionsWithDuration.length / 1000 / 60 // Convert to minutes
         : 0;
 
       // Calculate bounce rate
@@ -296,7 +296,7 @@ export class BackgroundJobProcessor {
       });
 
       const topSelections = Object.entries(selectionCounts)
-        .sort(([,a], [,b]) => b - a)
+        .sort(([, a], [, b]) => b - a)
         .slice(0, 10)
         .map(([selection, count]) => ({ selection, count }));
 
@@ -364,7 +364,14 @@ export class BackgroundJobProcessor {
         const config = session.configurationData as ConfigurationData | null;
         if (!config) return;
 
-        const hash = this.generateConfigurationHash(config);
+        // Simple hash based on core configuration values
+        const hash = [
+          config.nest?.value || '',
+          config.gebaeudehuelle?.value || '',
+          config.innenverkleidung?.value || '',
+          config.fussboden?.value || ''
+        ].join('|');
+
         if (!configGroups[hash]) {
           configGroups[hash] = [];
         }
@@ -460,61 +467,14 @@ export class BackgroundJobProcessor {
   static async cleanupExpiredSessions(): Promise<void> {
     try {
       const _expiredThreshold = Date.now() - (24 * 60 * 60 * 1000); // 24 hours ago
-      
+
       // This would typically involve checking Redis session timestamps
       // and removing expired ones. Implementation depends on your Redis structure.
-      
+
       console.log('🧹 Cleaned up expired sessions');
     } catch (error) {
       console.error('❌ Failed to cleanup expired sessions:', error);
     }
-  }
-
-  /**
-   * Calculate configuration completion percentage
-   */
-  private static calculateCompletionPercentage(configData: ConfigurationData): number {
-    let completed = 0;
-    let total = 4; // Required fields count
-
-    // Check required fields
-    if (configData.nest?.value) completed++;
-    if (configData.gebaeudehuelle?.value) completed++;
-    if (configData.innenverkleidung?.value) completed++;
-    if (configData.fussboden?.value) completed++;
-
-    // Check optional fields and add to total if present
-    if (configData.pvanlage?.value) {
-      completed++;
-      total++;
-    }
-    if (configData.fenster?.value) {
-      completed++;
-      total++;
-    }
-    if (configData.planungspaket?.value) {
-      completed++;
-      total++;
-    }
-
-    return total > 0 ? (completed / total) * 100 : 0;
-  }
-
-  /**
-   * Generate configuration hash for grouping
-   */
-  private static generateConfigurationHash(config: ConfigurationData): string {
-    const key = [
-      config.nest?.value || '',
-      config.gebaeudehuelle?.value || '', 
-      config.innenverkleidung?.value || '',
-      config.fussboden?.value || '',
-      config.pvanlage?.value || '',
-      config.fenster?.value || '',
-      config.planungspaket?.value || ''
-    ].join('|');
-    
-    return Buffer.from(key).toString('base64');
   }
 
   /**
