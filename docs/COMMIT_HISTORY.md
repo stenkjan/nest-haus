@@ -4,6 +4,37 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7294f1440b7cf3efdf31bc527b7c6d7acef1b8e7] - Tue Oct 28 15:40:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: implement server-side authentication for admin pages  - Added server-side authentication checks to various admin pages to ensure only authorized users can access them. - Utilized cookies to verify admin credentials against the environment variable for enhanced security. - Redirected unauthorized users to the admin authentication page when access is denied.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/alpha-tests/page.tsx
+- src/app/admin/conversion/Client.tsx
+- src/app/admin/conversion/page.tsx
+- src/app/admin/customer-inquiries/page.tsx
+- src/app/admin/debug/session/Client.tsx
+- src/app/admin/debug/session/page.tsx
+- src/app/admin/page.tsx
+- src/app/admin/performance/Client.tsx
+- src/app/admin/performance/page.tsx
+- src/app/admin/pmg/milestones/page.tsx
+- src/app/admin/pmg/page.tsx
+- src/app/admin/popular-configurations/page.tsx
+- src/app/admin/security/Client.tsx
+- src/app/admin/security/page.tsx
+- src/app/admin/sync/SyncClient.tsx
+- src/app/admin/sync/page.tsx
+- src/app/admin/usage/Client.tsx
+- src/app/admin/usage/page.tsx
+- src/app/admin/user-tracking/page.tsx
+
+
+---
+
 ## [5537d0e47523e9bcc7214d7994db303fbbbc6464] - Tue Oct 28 14:59:59 2025 +0100
 
 **Author**: stenkjan
