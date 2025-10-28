@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9e837dda19d91594322cafd070313ecfc850b21b] - Tue Oct 28 09:33:43 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: streamline price calculation logic in calculateAbsolutePrices function  - Removed unnecessary imports and streamlined the calculation of absolute prices for configuration items. - Ensured that the calculateModularPrice function is consistently used for price calculations, improving code clarity and efficiency. - Updated the WarenkorbClient to run the effect only once on mount, optimizing performance and preventing unnecessary re-renders.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [7e0194103aec2fa1573a1b583a58a3b2d52cc978] - Tue Oct 28 09:27:16 2025 +0100
 
 **Author**: stenkjan
