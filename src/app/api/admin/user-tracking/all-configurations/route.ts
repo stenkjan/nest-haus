@@ -144,9 +144,22 @@ function extractDetailedItem(field: unknown): DetailedItem | null {
  * Calculate absolute prices for configuration items
  * This corrects any negative/relative prices stored in the database
  */
-function calculateAbsolutePrices(config: Record<string, unknown>): Record<string, DetailedItem | null> {
-    const result: Record<string, DetailedItem | null> = {};
-
+function calculateAbsolutePrices(config: Record<string, unknown>): {
+    nest: DetailedItem | null;
+    gebaeudehuelle: DetailedItem | null;
+    innenverkleidung: DetailedItem | null;
+    fussboden: DetailedItem | null;
+    pvanlage: DetailedItem | null;
+    fenster: DetailedItem | null;
+    planungspaket: DetailedItem | null;
+    geschossdecke: DetailedItem | null;
+    belichtungspaket: DetailedItem | null;
+    stirnseite: DetailedItem | null;
+    kamindurchzug: DetailedItem | null;
+    fussbodenheizung: DetailedItem | null;
+    bodenaufbau: DetailedItem | null;
+    fundament: DetailedItem | null;
+} {
     try {
         // Extract all items
         const nest = extractDetailedItem(config.nest);
@@ -174,41 +187,46 @@ function calculateAbsolutePrices(config: Record<string, unknown>): Record<string
                 'ohne_parkett'
             );
 
-            // Nest price is always the base price
-            result.nest = { ...nest, price: basePrice };
-
             // Calculate individual upgrade prices for each option
-            // Gebäudehülle upgrade = (current combo) - (base with other two current)
             const gebaeudehulleUpgrade = calculateModularPrice(nest.value, gebaeudehuelle.value, 'kiefer', 'ohne_parkett') - basePrice;
-            result.gebaeudehuelle = gebaeudehulleUpgrade > 0 ? { ...gebaeudehuelle, price: gebaeudehulleUpgrade } : { ...gebaeudehuelle, price: 0 };
-
-            // Innenverkleidung upgrade
             const innenverkleidungUpgrade = calculateModularPrice(nest.value, 'trapezblech', innenverkleidung.value, 'ohne_parkett') - basePrice;
-            result.innenverkleidung = innenverkleidungUpgrade > 0 ? { ...innenverkleidung, price: innenverkleidungUpgrade } : { ...innenverkleidung, price: 0 };
-
-            // Fußboden upgrade
             const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'kiefer', fussboden.value) - basePrice;
-            result.fussboden = fussbodenUpgrade > 0 ? { ...fussboden, price: fussbodenUpgrade } : { ...fussboden, price: 0 };
-        } else {
-            result.nest = nest;
-            result.gebaeudehuelle = gebaeudehuelle;
-            result.innenverkleidung = innenverkleidung;
-            result.fussboden = fussboden;
+
+            return {
+                nest: { ...nest, price: basePrice },
+                gebaeudehuelle: gebaeudehulleUpgrade > 0 ? { ...gebaeudehuelle, price: gebaeudehulleUpgrade } : { ...gebaeudehuelle, price: 0 },
+                innenverkleidung: innenverkleidungUpgrade > 0 ? { ...innenverkleidung, price: innenverkleidungUpgrade } : { ...innenverkleidung, price: 0 },
+                fussboden: fussbodenUpgrade > 0 ? { ...fussboden, price: fussbodenUpgrade } : { ...fussboden, price: 0 },
+                belichtungspaket: belichtungspaket && belichtungspaket.price > 0 ? belichtungspaket : (belichtungspaket ? { ...belichtungspaket, price: 0 } : null),
+                pvanlage: pvanlage && pvanlage.price > 0 ? pvanlage : (pvanlage ? { ...pvanlage, price: 0 } : null),
+                fenster: fenster && fenster.price > 0 ? fenster : (fenster ? { ...fenster, price: 0 } : null),
+                stirnseite: stirnseite && stirnseite.price > 0 ? stirnseite : (stirnseite ? { ...stirnseite, price: 0 } : null),
+                planungspaket,
+                geschossdecke: geschossdecke && geschossdecke.price > 0 ? geschossdecke : (geschossdecke ? { ...geschossdecke, price: 0 } : null),
+                bodenaufbau: bodenaufbau && bodenaufbau.price > 0 ? bodenaufbau : (bodenaufbau ? { ...bodenaufbau, price: 0 } : null),
+                kamindurchzug,
+                fussbodenheizung,
+                fundament,
+            };
         }
 
-        // For other items, use absolute values if positive, otherwise set to 0
-        result.belichtungspaket = belichtungspaket && belichtungspaket.price > 0 ? belichtungspaket : (belichtungspaket ? { ...belichtungspaket, price: 0 } : null);
-        result.pvanlage = pvanlage && pvanlage.price > 0 ? pvanlage : (pvanlage ? { ...pvanlage, price: 0 } : null);
-        result.fenster = fenster && fenster.price > 0 ? fenster : (fenster ? { ...fenster, price: 0 } : null);
-        result.stirnseite = stirnseite && stirnseite.price > 0 ? stirnseite : (stirnseite ? { ...stirnseite, price: 0 } : null);
-        result.planungspaket = planungspaket;
-        result.geschossdecke = geschossdecke && geschossdecke.price > 0 ? geschossdecke : (geschossdecke ? { ...geschossdecke, price: 0 } : null);
-        result.bodenaufbau = bodenaufbau && bodenaufbau.price > 0 ? bodenaufbau : (bodenaufbau ? { ...bodenaufbau, price: 0 } : null);
-        result.kamindurchzug = kamindurchzug;
-        result.fussbodenheizung = fussbodenheizung;
-        result.fundament = fundament;
-
-        return result;
+        // If core items are missing, return items as-is
+        return {
+            nest,
+            gebaeudehuelle,
+            innenverkleidung,
+            fussboden,
+            belichtungspaket: belichtungspaket && belichtungspaket.price > 0 ? belichtungspaket : (belichtungspaket ? { ...belichtungspaket, price: 0 } : null),
+            pvanlage: pvanlage && pvanlage.price > 0 ? pvanlage : (pvanlage ? { ...pvanlage, price: 0 } : null),
+            fenster: fenster && fenster.price > 0 ? fenster : (fenster ? { ...fenster, price: 0 } : null),
+            stirnseite: stirnseite && stirnseite.price > 0 ? stirnseite : (stirnseite ? { ...stirnseite, price: 0 } : null),
+            planungspaket,
+            geschossdecke: geschossdecke && geschossdecke.price > 0 ? geschossdecke : (geschossdecke ? { ...geschossdecke, price: 0 } : null),
+            bodenaufbau: bodenaufbau && bodenaufbau.price > 0 ? bodenaufbau : (bodenaufbau ? { ...bodenaufbau, price: 0 } : null),
+            kamindurchzug,
+            fussbodenheizung,
+            fundament,
+        };
     } catch (error) {
         console.error('Error calculating absolute prices:', error);
         // Fall back to original extraction
