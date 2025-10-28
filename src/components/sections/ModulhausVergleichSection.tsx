@@ -76,6 +76,7 @@ const boxesData = [
     label: "Für Vorrausdenker",
     title: "Dein ®Nest Haus",
     hasButton: true,
+    hasBorder: true,
     items: [
       { type: "check", text: "Kompakt und Mobil" },
       { type: "check", text: "Individuelle Grundrissgestalung" },
@@ -99,10 +100,11 @@ interface BoxProps {
 const Box: React.FC<BoxProps> = ({ data, layout }) => {
   const spacing = layout === "mobile" ? "space-y-2" : "space-y-3";
   const minHeight = layout === "mobile" ? "min-h-[400px]" : "min-h-[600px]";
+  const borderClass = data.hasBorder ? "border-2 border-[#3D6DE1]" : "";
 
   return (
     <div
-      className={`bg-white rounded-3xl p-6 ${layout === "mobile" ? minHeight : `flex flex-col ${minHeight}`}`}
+      className={`bg-white rounded-3xl p-6 ${borderClass} ${layout === "mobile" ? minHeight : `flex flex-col ${minHeight}`}`}
     >
       <p className="p-primary-small text-gray-600 mb-1">{data.label}</p>
       <div className="h-16 md:h-20 lg:h-24 flex items-start">
