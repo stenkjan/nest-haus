@@ -27,7 +27,6 @@ export interface DatabaseInfo {
         sessions: number;
         selectionEvents: number;
         interactionEvents: number;
-        configurations: number;
         total: number;
     };
     storage: number; // MB
@@ -171,7 +170,7 @@ export class UsageMonitor {
         } catch (error) {
             console.error('Failed to get database usage:', error);
             return {
-                records: { sessions: 0, selectionEvents: 0, interactionEvents: 0, configurations: 0, total: 0 },
+                records: { sessions: 0, selectionEvents: 0, interactionEvents: 0, total: 0 },
                 storage: 0,
                 connections: 0,
                 limit: this.LIMITS.database,
