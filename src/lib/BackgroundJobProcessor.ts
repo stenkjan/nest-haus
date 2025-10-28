@@ -54,13 +54,7 @@ interface QueuedInteraction {
   viewportHeight?: number;
 }
 
-interface QueuedConfiguration {
-  sessionId: string;
-  configurationData: ConfigurationData;
-  totalPrice?: number;
-  triggerEvent: string;
-  timestamp: number;
-}
+// ConfigurationData and QueuedConfiguration interfaces removed - no longer needed
 
 export class BackgroundJobProcessor {
   private static isProcessing = false;
@@ -117,7 +111,6 @@ export class BackgroundJobProcessor {
 
       const results = await Promise.allSettled([
         this.processInteractionQueue(),
-        this.processConfigurationQueue(),
         this.processPerformanceQueue(),
         this.cleanupExpiredSessions()
       ]);
@@ -144,7 +137,7 @@ export class BackgroundJobProcessor {
           additionalData: {
             successful,
             failed,
-            totalQueues: 4
+            totalQueues: 3  // Updated from 4 to 3 (removed configuration queue)
           }
         }
       });
@@ -198,44 +191,6 @@ export class BackgroundJobProcessor {
       return parsedInteractions.length;
     } catch (error) {
       console.error('❌ Failed to process interaction queue:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Process configuration snapshots from Redis queue
-   */
-  static async processConfigurationQueue(): Promise<number> {
-    try {
-      const queueKey = 'configuration_queue';
-      const batchSize = 50;
-      
-      const configurations = await redis.lrange(queueKey, 0, batchSize - 1);
-      if (configurations.length === 0) {
-        return 0;
-      }
-
-      const parsedConfigurations: QueuedConfiguration[] = configurations.map((item: string) => JSON.parse(item));
-
-      // Batch insert to PostgreSQL
-      await prisma.configurationSnapshot.createMany({
-        data: parsedConfigurations.map(config => ({
-          sessionId: config.sessionId,
-          configurationData: config.configurationData as Prisma.InputJsonValue,
-          totalPrice: config.totalPrice,
-          triggerEvent: config.triggerEvent,
-          timestamp: new Date(config.timestamp),
-          completionPercentage: this.calculateCompletionPercentage(config.configurationData)
-        }))
-      });
-
-      // Remove processed items from queue
-      await redis.ltrim(queueKey, batchSize, -1);
-
-      console.log(`✅ Processed ${parsedConfigurations.length} configuration snapshots`);
-      return parsedConfigurations.length;
-    } catch (error) {
-      console.error('❌ Failed to process configuration queue:', error);
       throw error;
     }
   }
