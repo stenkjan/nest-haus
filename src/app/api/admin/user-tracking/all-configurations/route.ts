@@ -14,6 +14,7 @@ interface DetailedItem {
     price: number;
     description?: string;
     squareMeters?: number;
+    quantity?: number;
 }
 
 interface ConfigurationWithDetails {
@@ -113,6 +114,8 @@ function extractValue(field: unknown): string {
 
 /**
  * Extract full item details from configuration field
+ * Note: Stored prices might be relative (upgrade/downgrade), so we return them as-is
+ * and handle absolute price calculation in parseConfigurationData
  */
 function extractDetailedItem(field: unknown): DetailedItem | null {
     if (!field) return null;
@@ -128,11 +131,114 @@ function extractDetailedItem(field: unknown): DetailedItem | null {
                 price: typeof item.price === 'number' ? item.price : 0,
                 description: typeof item.description === 'string' ? item.description : undefined,
                 squareMeters: typeof item.squareMeters === 'number' ? item.squareMeters : undefined,
+                quantity: typeof item.quantity === 'number' ? item.quantity : undefined,
             };
         }
     }
 
     return null;
+}
+
+/**
+ * Calculate absolute prices for configuration items
+ * This corrects any negative/relative prices stored in the database
+ */
+function calculateAbsolutePrices(config: Record<string, unknown>): Record<string, DetailedItem | null> {
+    const result: Record<string, DetailedItem | null> = {};
+
+    // Import the PriceCalculator helper functions
+    const { calculateModularPrice, calculateSizeDependentPrice } = require('@/constants/configurator');
+
+    try {
+        // Extract all items
+        const nest = extractDetailedItem(config.nest);
+        const gebaeudehuelle = extractDetailedItem(config.gebaeudehuelle);
+        const innenverkleidung = extractDetailedItem(config.innenverkleidung);
+        const fussboden = extractDetailedItem(config.fussboden);
+        const belichtungspaket = extractDetailedItem(config.belichtungspaket);
+        const pvanlage = extractDetailedItem(config.pvanlage);
+        const fenster = extractDetailedItem(config.fenster);
+        const stirnseite = extractDetailedItem(config.stirnseite);
+        const planungspaket = extractDetailedItem(config.planungspaket);
+        const geschossdecke = extractDetailedItem(config.geschossdecke);
+        const bodenaufbau = extractDetailedItem(config.bodenaufbau);
+        const kamindurchzug = extractDetailedItem(config.kamindurchzug);
+        const fussbodenheizung = extractDetailedItem(config.fussbodenheizung);
+        const fundament = extractDetailedItem(config.fundament);
+
+        // Calculate absolute prices for core combination items
+        if (nest && gebaeudehuelle && innenverkleidung && fussboden) {
+            // Calculate the total combination price
+            const totalCombinationPrice = calculateModularPrice(
+                nest.value,
+                gebaeudehuelle.value,
+                innenverkleidung.value,
+                fussboden.value
+            );
+
+            // Calculate base price (default combination)
+            const basePrice = calculateModularPrice(
+                nest.value,
+                'trapezblech',
+                'kiefer',
+                'ohne_parkett'
+            );
+
+            // Nest price is always the base price
+            result.nest = { ...nest, price: basePrice };
+
+            // Calculate individual upgrade prices for each option
+            // Gebäudehülle upgrade = (current combo) - (base with other two current)
+            const gebaeudehulleUpgrade = calculateModularPrice(nest.value, gebaeudehuelle.value, 'kiefer', 'ohne_parkett') - basePrice;
+            result.gebaeudehuelle = gebaeudehulleUpgrade > 0 ? { ...gebaeudehuelle, price: gebaeudehulleUpgrade } : { ...gebaeudehuelle, price: 0 };
+
+            // Innenverkleidung upgrade
+            const innenverkleidungUpgrade = calculateModularPrice(nest.value, 'trapezblech', innenverkleidung.value, 'ohne_parkett') - basePrice;
+            result.innenverkleidung = innenverkleidungUpgrade > 0 ? { ...innenverkleidung, price: innenverkleidungUpgrade } : { ...innenverkleidung, price: 0 };
+
+            // Fußboden upgrade
+            const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'kiefer', fussboden.value) - basePrice;
+            result.fussboden = fussbodenUpgrade > 0 ? { ...fussboden, price: fussbodenUpgrade } : { ...fussboden, price: 0 };
+        } else {
+            result.nest = nest;
+            result.gebaeudehuelle = gebaeudehuelle;
+            result.innenverkleidung = innenverkleidung;
+            result.fussboden = fussboden;
+        }
+
+        // For other items, use absolute values if positive, otherwise set to 0
+        result.belichtungspaket = belichtungspaket && belichtungspaket.price > 0 ? belichtungspaket : (belichtungspaket ? { ...belichtungspaket, price: 0 } : null);
+        result.pvanlage = pvanlage && pvanlage.price > 0 ? pvanlage : (pvanlage ? { ...pvanlage, price: 0 } : null);
+        result.fenster = fenster && fenster.price > 0 ? fenster : (fenster ? { ...fenster, price: 0 } : null);
+        result.stirnseite = stirnseite && stirnseite.price > 0 ? stirnseite : (stirnseite ? { ...stirnseite, price: 0 } : null);
+        result.planungspaket = planungspaket;
+        result.geschossdecke = geschossdecke && geschossdecke.price > 0 ? geschossdecke : (geschossdecke ? { ...geschossdecke, price: 0 } : null);
+        result.bodenaufbau = bodenaufbau && bodenaufbau.price > 0 ? bodenaufbau : (bodenaufbau ? { ...bodenaufbau, price: 0 } : null);
+        result.kamindurchzug = kamindurchzug;
+        result.fussbodenheizung = fussbodenheizung;
+        result.fundament = fundament;
+
+        return result;
+    } catch (error) {
+        console.error('Error calculating absolute prices:', error);
+        // Fall back to original extraction
+        return {
+            nest: extractDetailedItem(config.nest),
+            gebaeudehuelle: extractDetailedItem(config.gebaeudehuelle),
+            innenverkleidung: extractDetailedItem(config.innenverkleidung),
+            fussboden: extractDetailedItem(config.fussboden),
+            pvanlage: extractDetailedItem(config.pvanlage),
+            fenster: extractDetailedItem(config.fenster),
+            planungspaket: extractDetailedItem(config.planungspaket),
+            geschossdecke: extractDetailedItem(config.geschossdecke),
+            belichtungspaket: extractDetailedItem(config.belichtungspaket),
+            stirnseite: extractDetailedItem(config.stirnseite),
+            kamindurchzug: extractDetailedItem(config.kamindurchzug),
+            fussbodenheizung: extractDetailedItem(config.fussbodenheizung),
+            bodenaufbau: extractDetailedItem(config.bodenaufbau),
+            fundament: extractDetailedItem(config.fundament),
+        };
+    }
 }
 
 /**
@@ -182,6 +288,9 @@ function parseConfigurationData(data: unknown): {
 
         const config = data as Record<string, unknown>;
 
+        // Calculate absolute prices for all items
+        const absolutePrices = calculateAbsolutePrices(config);
+
         return {
             simple: {
                 nestType: extractValue(config.nest || config.nestType) || 'Unknown',
@@ -199,22 +308,7 @@ function parseConfigurationData(data: unknown): {
                 bodenaufbau: extractValue(config.bodenaufbau) || 'None',
                 fundament: extractValue(config.fundament) || 'None',
             },
-            detailed: {
-                nest: extractDetailedItem(config.nest),
-                gebaeudehuelle: extractDetailedItem(config.gebaeudehuelle),
-                innenverkleidung: extractDetailedItem(config.innenverkleidung),
-                fussboden: extractDetailedItem(config.fussboden),
-                pvanlage: extractDetailedItem(config.pvanlage),
-                fenster: extractDetailedItem(config.fenster),
-                planungspaket: extractDetailedItem(config.planungspaket),
-                geschossdecke: extractDetailedItem(config.geschossdecke),
-                belichtungspaket: extractDetailedItem(config.belichtungspaket),
-                stirnseite: extractDetailedItem(config.stirnseite),
-                kamindurchzug: extractDetailedItem(config.kamindurchzug),
-                fussbodenheizung: extractDetailedItem(config.fussbodenheizung),
-                bodenaufbau: extractDetailedItem(config.bodenaufbau),
-                fundament: extractDetailedItem(config.fundament),
-            }
+            detailed: absolutePrices
         };
     } catch (error) {
         console.error('Failed to parse configuration data:', error);
