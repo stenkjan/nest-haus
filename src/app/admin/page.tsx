@@ -4,13 +4,32 @@
  * Provides high-level metrics and navigation to detailed analytics sections
  */
 
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import ImageCacheManager from "@/components/images/ImageCacheManager";
 import ClientDashboardMetrics from "./components/ClientDashboardMetrics";
 
 // DashboardMetrics moved to ClientDashboardMetrics to prevent build-time API calls
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  // Server-side authentication check
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (adminPassword) {
+    const cookieStore = await cookies();
+    const authCookie = cookieStore.get("nest-haus-admin-auth");
+
+    console.log("[ADMIN_SERVER] Password protection enabled");
+    console.log("[ADMIN_SERVER] Auth cookie exists:", !!authCookie);
+
+    if (!authCookie || authCookie.value !== adminPassword) {
+      console.log("[ADMIN_SERVER] Redirecting to admin auth page");
+      redirect("/admin/auth?redirect=" + encodeURIComponent("/admin"));
+    }
+
+    console.log("[ADMIN_SERVER] Admin authenticated, rendering dashboard");
+  }
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
