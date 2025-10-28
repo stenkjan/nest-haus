@@ -494,6 +494,7 @@ export default function AlphaTestDashboard() {
     participantName: string;
   } | null>(null);
   const [exportingAllPDFs, setExportingAllPDFs] = useState(false);
+  const [showAllRecentTests, setShowAllRecentTests] = useState(false);
 
   // Helper function to extract key findings from responses
   const extractKeyFindings = (
@@ -1334,7 +1335,12 @@ export default function AlphaTestDashboard() {
           NEST-Haus Alpha Test Dashboard
         </h1>
         <p className="text-gray-600">
-          Report Period: {timeRange === "30d" ? "Last 30 days" : "Last 90 days"}{" "}
+          Report Period:{" "}
+          {timeRange === "30d"
+            ? "Last 30 days"
+            : timeRange === "90d"
+              ? "Last 90 days"
+              : "All Time"}{" "}
           | Generated: {new Date().toLocaleDateString()}
         </p>
       </div>
@@ -1342,7 +1348,7 @@ export default function AlphaTestDashboard() {
       {/* Time Range Selector */}
       <div className="flex items-center justify-between no-print">
         <div className="flex space-x-4">
-          {["30d", "90d"].map((range) => (
+          {["30d", "90d", "all"].map((range) => (
             <button
               key={range}
               onClick={() => setTimeRange(range)}
@@ -1352,7 +1358,11 @@ export default function AlphaTestDashboard() {
                   : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
               }`}
             >
-              {range === "30d" ? "Last 30 days" : "Last 90 days"}
+              {range === "30d"
+                ? "Last 30 days"
+                : range === "90d"
+                  ? "Last 90 days"
+                  : "All Time"}
             </button>
           ))}
         </div>
@@ -2267,8 +2277,32 @@ export default function AlphaTestDashboard() {
       {/* Recent Tests */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Tests</h3>
+          <div className="flex items-center space-x-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Recent Tests
+            </h3>
+            <span className="text-sm text-gray-500">
+              {showAllRecentTests
+                ? `Showing all ${recentTests.length}`
+                : `Showing ${Math.min(20, recentTests.length)} of ${recentTests.length}`}{" "}
+              tests
+            </span>
+          </div>
           <div className="flex items-center space-x-3">
+            {recentTests.length > 20 && (
+              <button
+                onClick={() => setShowAllRecentTests(!showAllRecentTests)}
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 hover:text-blue-800 transition-colors"
+                title={
+                  showAllRecentTests
+                    ? "Show only recent 20 tests"
+                    : "Show all tests"
+                }
+              >
+                <span>{showAllRecentTests ? "📋" : "📑"}</span>
+                <span>{showAllRecentTests ? "Show Less" : "Show All"}</span>
+              </button>
+            )}
             <button
               onClick={exportAllTestsToPDF}
               disabled={exportingAllPDFs}
@@ -2320,7 +2354,10 @@ export default function AlphaTestDashboard() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {recentTests.map((test) => (
+              {(showAllRecentTests
+                ? recentTests
+                : recentTests.slice(0, 20)
+              ).map((test) => (
                 <tr key={test.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm font-mono text-gray-900">
                     {test.testId.substring(0, 12)}...

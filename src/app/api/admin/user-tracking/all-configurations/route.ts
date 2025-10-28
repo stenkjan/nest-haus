@@ -177,7 +177,8 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
         const fussbodenheizung = extractDetailedItem(config.fussbodenheizung);
         const fundament = extractDetailedItem(config.fundament);
 
-        // Calculate absolute prices for core combination items
+        // Calculate absolute prices ONLY for core combination items that can have negative prices
+        // Items like belichtungspaket, fenster, pvanlage, etc. are already stored with correct absolute prices
         if (nest && gebaeudehuelle && innenverkleidung && fussboden) {
             // Calculate base price (default combination)
             const basePrice = calculateModularPrice(
@@ -193,36 +194,39 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
             const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'kiefer', fussboden.value) - basePrice;
 
             return {
+                // Core items: show base + upgrades
                 nest: { ...nest, price: basePrice },
                 gebaeudehuelle: gebaeudehulleUpgrade > 0 ? { ...gebaeudehuelle, price: gebaeudehulleUpgrade } : { ...gebaeudehuelle, price: 0 },
                 innenverkleidung: innenverkleidungUpgrade > 0 ? { ...innenverkleidung, price: innenverkleidungUpgrade } : { ...innenverkleidung, price: 0 },
                 fussboden: fussbodenUpgrade > 0 ? { ...fussboden, price: fussbodenUpgrade } : { ...fussboden, price: 0 },
-                belichtungspaket: belichtungspaket && belichtungspaket.price > 0 ? belichtungspaket : (belichtungspaket ? { ...belichtungspaket, price: 0 } : null),
-                pvanlage: pvanlage && pvanlage.price > 0 ? pvanlage : (pvanlage ? { ...pvanlage, price: 0 } : null),
-                fenster: fenster && fenster.price > 0 ? fenster : (fenster ? { ...fenster, price: 0 } : null),
-                stirnseite: stirnseite && stirnseite.price > 0 ? stirnseite : (stirnseite ? { ...stirnseite, price: 0 } : null),
+
+                // All other items: use stored prices as-is (they are already absolute)
+                belichtungspaket,
+                pvanlage,
+                fenster,
+                stirnseite,
                 planungspaket,
-                geschossdecke: geschossdecke && geschossdecke.price > 0 ? geschossdecke : (geschossdecke ? { ...geschossdecke, price: 0 } : null),
-                bodenaufbau: bodenaufbau && bodenaufbau.price > 0 ? bodenaufbau : (bodenaufbau ? { ...bodenaufbau, price: 0 } : null),
+                geschossdecke,
+                bodenaufbau,
                 kamindurchzug,
                 fussbodenheizung,
                 fundament,
             };
         }
 
-        // If core items are missing, return items as-is
+        // If core items are missing, return all items as-is
         return {
             nest,
             gebaeudehuelle,
             innenverkleidung,
             fussboden,
-            belichtungspaket: belichtungspaket && belichtungspaket.price > 0 ? belichtungspaket : (belichtungspaket ? { ...belichtungspaket, price: 0 } : null),
-            pvanlage: pvanlage && pvanlage.price > 0 ? pvanlage : (pvanlage ? { ...pvanlage, price: 0 } : null),
-            fenster: fenster && fenster.price > 0 ? fenster : (fenster ? { ...fenster, price: 0 } : null),
-            stirnseite: stirnseite && stirnseite.price > 0 ? stirnseite : (stirnseite ? { ...stirnseite, price: 0 } : null),
+            belichtungspaket,
+            pvanlage,
+            fenster,
+            stirnseite,
             planungspaket,
-            geschossdecke: geschossdecke && geschossdecke.price > 0 ? geschossdecke : (geschossdecke ? { ...geschossdecke, price: 0 } : null),
-            bodenaufbau: bodenaufbau && bodenaufbau.price > 0 ? bodenaufbau : (bodenaufbau ? { ...bodenaufbau, price: 0 } : null),
+            geschossdecke,
+            bodenaufbau,
             kamindurchzug,
             fussbodenheizung,
             fundament,

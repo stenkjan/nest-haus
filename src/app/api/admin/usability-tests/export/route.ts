@@ -12,10 +12,13 @@ export async function GET(request: NextRequest) {
 
         console.log(`📊 Exporting usability test data - Format: ${format}, Range: ${timeRange}`);
 
-        // Calculate date range
-        const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - days);
+        // Calculate date range - use null for "all" to fetch everything
+        let startDate: Date | undefined = undefined;
+        if (timeRange !== 'all') {
+            const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+        }
 
         // Improved test status management (same as main route)
         const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
@@ -109,9 +112,9 @@ export async function GET(request: NextRequest) {
 
         // Get all tests with full details
         const tests = await prisma.usabilityTest.findMany({
-            where: {
+            where: startDate ? {
                 startedAt: { gte: startDate }
-            },
+            } : {},
             include: {
                 responses: true,
                 interactions: true

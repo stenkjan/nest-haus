@@ -12,16 +12,19 @@ export async function GET(request: NextRequest) {
 
         console.log(`📄 Generating bundled PDF for all tests in timeRange: ${timeRange}`);
 
-        // Calculate date range
-        const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - days);
+        // Calculate date range - use null for "all" to fetch everything
+        let startDate: Date | undefined = undefined;
+        if (timeRange !== 'all') {
+            const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+        }
 
         // Fetch all tests in range
         const tests = await prisma.usabilityTest.findMany({
-            where: {
+            where: startDate ? {
                 startedAt: { gte: startDate }
-            },
+            } : {},
             include: {
                 responses: {
                     orderBy: { timestamp: 'asc' }
@@ -43,7 +46,7 @@ export async function GET(request: NextRequest) {
         console.log(`📄 Found ${tests.length} tests to include in bundled PDF`);
 
         // Generate HTML content for bundled PDF
-        const htmlContent = generateBundledPDFHTML(tests, timeRange, startDate);
+        const htmlContent = generateBundledPDFHTML(tests, timeRange, startDate || new Date(0));
 
         // Return HTML that will automatically trigger print dialog for PDF generation
         const response = new NextResponse(htmlContent, {
@@ -337,7 +340,7 @@ function generateBundledPDFHTML(
 <body>
     <div class="cover-header">
         <h1>🧪 Alpha Test Results Bundle</h1>
-        <p>Comprehensive Report: ${tests.length} Tests | ${timeRange.toUpperCase()} Period</p>
+        <p>Comprehensive Report: ${tests.length} Tests | ${timeRange === '30d' ? 'Last 30 Days' : timeRange === '90d' ? 'Last 90 Days' : 'All Time'}</p>
         <p>Generated on ${new Date().toLocaleDateString('de-DE')} at ${new Date().toLocaleTimeString('de-DE')}</p>
     </div>
 
@@ -355,7 +358,7 @@ function generateBundledPDFHTML(
             <div class="label">Avg Rating</div>
         </div>
         <div class="summary-card timerange">
-            <div class="value">${timeRange.toUpperCase()}</div>
+            <div class="value">${timeRange === '30d' ? '30 Days' : timeRange === '90d' ? '90 Days' : 'All Time'}</div>
             <div class="label">Time Period</div>
         </div>
     </div>
@@ -460,7 +463,7 @@ function generateBundledPDFHTML(
 
     <div class="metadata">
         <p>Generated on ${new Date().toLocaleDateString('de-DE')} at ${new Date().toLocaleTimeString('de-DE')}</p>
-        <p>NEST-Haus Alpha Test Results Bundle | Period: ${startDate.toLocaleDateString('de-DE')} - ${new Date().toLocaleDateString('de-DE')}</p>
+        <p>NEST-Haus Alpha Test Results Bundle | Period: ${timeRange === 'all' ? 'All Time' : `${startDate.toLocaleDateString('de-DE')} - ${new Date().toLocaleDateString('de-DE')}`}</p>
         <p><em>Note: Interaction timelines excluded from PDF export for readability</em></p>
         <p><strong>Total Tests Included:</strong> ${tests.length} | <strong>Completed:</strong> ${completedTests} | <strong>Average Rating:</strong> ${averageRating > 0 ? averageRating.toFixed(1) + '/6' : 'N/A'}</p>
     </div>

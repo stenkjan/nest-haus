@@ -404,13 +404,20 @@ export async function GET(request: NextRequest) {
             return await getTestDetails(testId);
         }
 
-        // Calculate date range
-        const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - days);
+        // Calculate date range - use null for "all" to fetch everything
+        let startDate: Date | undefined = undefined;
+        if (timeRange !== 'all') {
+            const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+        }
 
         console.log(`📊 Generating usability test analytics for ${timeRange}`);
-        console.log(`📊 Date range: ${startDate.toISOString()} to ${new Date().toISOString()}`);
+        if (startDate) {
+            console.log(`📊 Date range: ${startDate.toISOString()} to ${new Date().toISOString()}`);
+        } else {
+            console.log(`📊 Date range: All time`);
+        }
 
         // Improved test status management
         try {
@@ -535,9 +542,9 @@ export async function GET(request: NextRequest) {
 
         try {
             tests = await prisma.usabilityTest.findMany({
-                where: {
+                where: startDate ? {
                     startedAt: { gte: startDate }
-                },
+                } : {},
                 include: {
                     responses: true,
                     interactions: true
