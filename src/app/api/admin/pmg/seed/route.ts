@@ -1,26 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminAuth } from '@/lib/admin-auth';
 
 const prisma = new PrismaClient();
-
-/**
- * Authenticate admin requests using Basic Auth
- */
-async function authenticateRequest(authHeader: string | null): Promise<boolean> {
-    if (!authHeader) return false;
-
-    try {
-        const base64Credentials = authHeader.replace('Basic ', '');
-        const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-        const [username, password] = credentials.split(':');
-
-        return username === process.env.ADMIN_USERNAME &&
-            password === process.env.ADMIN_PASSWORD;
-    } catch (error) {
-        console.error('❌ Authentication error:', error);
-        return false;
-    }
-}
 
 const initialProjectData = [
     { taskId: "P1", task: "Phase 1: Rechtliche Basis & Kontaktfunnel", responsible: "ALLE", startDate: "2025-10-06", endDate: "2025-10-09", duration: 4, milestone: false, priority: "HOCH", notes: "Fokus auf essenzielle Funktionalität und Rechtssicherheit." },
@@ -58,10 +40,9 @@ const initialProjectData = [
  */
 export async function POST(request: NextRequest) {
     try {
-        const authHeader = request.headers.get('authorization');
-        if (!await authenticateRequest(authHeader)) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        // Validate admin authentication via cookie
+        const authError = await requireAdminAuth(request);
+        if (authError) return authError;
 
         // Clear existing data
         await prisma.projectTask.deleteMany();

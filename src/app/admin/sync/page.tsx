@@ -77,23 +77,12 @@ export default function GoogleDriveSyncAdmin() {
     setError(null);
 
     try {
-      // Get admin credentials (in a real app, these would come from secure auth)
-      const username =
-        process.env.NEXT_PUBLIC_ADMIN_USERNAME || prompt("Admin Username:");
-      const password = prompt("Admin Password:");
-
-      if (!username || !password) {
-        throw new Error("Admin credentials required");
-      }
-
-      const credentials = btoa(`${username}:${password}`);
-
       const response = await fetch("/api/sync/google-drive", {
         method: "POST",
         headers: {
-          Authorization: `Basic ${credentials}`,
           "Content-Type": "application/json",
         },
+        credentials: "include", // Ensure cookies are sent
       });
 
       const result = await response.json();

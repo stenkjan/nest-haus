@@ -29,13 +29,9 @@ export default function ProjectManagementDashboard() {
   const loadTasks = async () => {
     try {
       setLoading(true);
-      // Use hardcoded credentials for now - in production, these should be handled securely
-      const credentials = btoa("admin:MAINJAJANest");
 
       const response = await fetch("/api/admin/pmg", {
-        headers: {
-          Authorization: `Basic ${credentials}`,
-        },
+        credentials: "include", // Ensure cookies are sent
       });
 
       if (!response.ok) {
@@ -53,13 +49,9 @@ export default function ProjectManagementDashboard() {
 
   const seedDatabase = async () => {
     try {
-      const credentials = btoa("admin:MAINJAJANest");
-
       const response = await fetch("/api/admin/pmg/seed", {
         method: "POST",
-        headers: {
-          Authorization: `Basic ${credentials}`,
-        },
+        credentials: "include", // Ensure cookies are sent
       });
 
       if (!response.ok) {
@@ -75,13 +67,9 @@ export default function ProjectManagementDashboard() {
 
   const reorganizeTasks = async () => {
     try {
-      const credentials = btoa("admin:MAINJAJANest");
-
       const response = await fetch("/api/admin/pmg/reorganize", {
         method: "POST",
-        headers: {
-          Authorization: `Basic ${credentials}`,
-        },
+        credentials: "include", // Ensure cookies are sent
       });
 
       if (!response.ok) {
@@ -113,14 +101,12 @@ export default function ProjectManagementDashboard() {
         )
       );
 
-      const credentials = btoa("admin:MAINJAJANest");
-
       const response = await fetch(`/api/admin/pmg/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${credentials}`,
         },
+        credentials: "include", // Ensure cookies are sent
         body: JSON.stringify(updates),
       });
 
@@ -145,14 +131,13 @@ export default function ProjectManagementDashboard() {
   ) => {
     try {
       setIsUpdating(true);
-      const credentials = btoa("admin:MAINJAJANest");
 
       const response = await fetch("/api/admin/pmg", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${credentials}`,
         },
+        credentials: "include", // Ensure cookies are sent
         body: JSON.stringify(taskData),
       });
 
@@ -199,13 +184,9 @@ export default function ProjectManagementDashboard() {
     }
 
     try {
-      const credentials = btoa("admin:MAINJAJANest");
-
       const response = await fetch(`/api/admin/pmg?id=${taskId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Basic ${credentials}`,
-        },
+        credentials: "include", // Ensure cookies are sent
       });
 
       if (!response.ok) {
@@ -224,16 +205,14 @@ export default function ProjectManagementDashboard() {
 
   const reorderTasks = async (reorderedTasks: ProjectTask[]) => {
     try {
-      const credentials = btoa("admin:MAINJAJANest");
-
       // Update each task with its new position/taskId
       const updatePromises = reorderedTasks.map((task) =>
         fetch(`/api/admin/pmg/${task.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Basic ${credentials}`,
           },
+          credentials: "include", // Ensure cookies are sent
           body: JSON.stringify({
             taskId: task.taskId,
           }),

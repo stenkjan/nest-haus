@@ -65,7 +65,18 @@ export function useInteractionTracking({
    * Track interaction with the API
    */
   const trackInteraction = useCallback(async (interaction: InteractionData) => {
-    if (!sessionId) return;
+    if (!sessionId) {
+      console.warn('🔴 Interaction tracking skipped - no session ID');
+      return;
+    }
+
+    console.log('📊 Tracking interaction:', {
+      sessionId: sessionId.substring(0, 20) + '...',
+      eventType: interaction.eventType,
+      category: interaction.category,
+      elementId: interaction.elementId,
+      selectionValue: interaction.selectionValue?.substring(0, 30)
+    });
 
     const trackPromise = (async () => {
       try {
@@ -82,10 +93,12 @@ export function useInteractionTracking({
         });
 
         if (!response.ok) {
-          console.warn('Failed to track interaction:', response.statusText);
+          console.warn('❌ Failed to track interaction:', response.status, response.statusText);
+        } else {
+          console.log('✅ Interaction tracked successfully');
         }
       } catch (error) {
-        console.error('Interaction tracking error:', error);
+        console.error('❌ Interaction tracking error:', error);
       }
     })();
 
@@ -160,7 +173,7 @@ export function useInteractionTracking({
     if (!enablePageTracking || !sessionId) return;
 
     const currentPath = pathname;
-    
+
     // Track when leaving previous page
     if (lastPathRef.current && lastPathRef.current !== currentPath) {
       const timeSpent = Date.now() - pageStartTimeRef.current;
@@ -191,24 +204,24 @@ export function useInteractionTracking({
 
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      
+
       // Find the closest interactive element
       const interactiveElement = target.closest('button, a, [role="button"], [data-track-click]');
-      
+
       if (!interactiveElement) return;
 
-      const elementId = 
+      const elementId =
         interactiveElement.id ||
         interactiveElement.getAttribute('data-track-id') ||
         interactiveElement.getAttribute('aria-label') ||
         (interactiveElement as HTMLElement).innerText?.slice(0, 50) ||
         'unknown-element';
 
-      const category = 
+      const category =
         interactiveElement.getAttribute('data-track-category') ||
         (interactiveElement.tagName === 'A' ? 'link' : 'button');
 
-      const selectionValue = 
+      const selectionValue =
         interactiveElement.getAttribute('data-track-value') ||
         (interactiveElement as HTMLElement).innerText?.slice(0, 100);
 

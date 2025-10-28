@@ -233,13 +233,20 @@ function ConfigurationModal({
   const parseUserAgent = (ua: string | null) => {
     if (!ua) return { browser: "Unknown", os: "Unknown", device: "Unknown" };
 
-    const browser = ua.includes("Chrome")
-      ? "Chrome"
-      : ua.includes("Firefox")
-        ? "Firefox"
-        : ua.includes("Safari")
-          ? "Safari"
-          : "Other";
+    // Check for Brave first (uses Chromium, so must check before Chrome)
+    // Brave doesn't always add "Brave" to user agent, but often has specific patterns
+    const browser =
+      ua.includes("Brave") || (ua.includes("Chrome") && ua.includes("Brave"))
+        ? "Brave"
+        : ua.includes("Edg")
+          ? "Edge"
+          : ua.includes("Chrome")
+            ? "Chrome"
+            : ua.includes("Firefox")
+              ? "Firefox"
+              : ua.includes("Safari") && !ua.includes("Chrome")
+                ? "Safari"
+                : "Other";
     const os = ua.includes("Windows")
       ? "Windows"
       : ua.includes("Mac")
@@ -454,9 +461,9 @@ function ConfigurationModal({
                   </div>
                 )}
 
-              {/* Belichtungspaket */}
+              {/* Belichtungspaket (includes fenster cost) */}
               {config.detailedConfiguration.belichtungspaket && (
-                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                <div className="p-3 bg-blue-50 rounded border border-blue-200">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <h5 className="font-semibold text-gray-900">
@@ -471,6 +478,29 @@ function ConfigurationModal({
                           }
                         </p>
                       )}
+                      {/* Show fenster details as sub-item since it's included in belichtungspaket price */}
+                      {config.detailedConfiguration.fenster && (
+                        <div className="mt-2 pt-2 border-t border-blue-200">
+                          <p className="text-xs font-semibold text-blue-900">
+                            {config.detailedConfiguration.fenster.name}
+                          </p>
+                          {config.detailedConfiguration.fenster.description && (
+                            <p className="text-xs text-gray-600">
+                              {config.detailedConfiguration.fenster.description}
+                            </p>
+                          )}
+                          {config.detailedConfiguration.fenster
+                            .squareMeters && (
+                            <p className="text-xs text-blue-700 font-medium">
+                              {
+                                config.detailedConfiguration.fenster
+                                  .squareMeters
+                              }{" "}
+                              m²
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
                       {config.detailedConfiguration.belichtungspaket.price === 0
@@ -480,35 +510,6 @@ function ConfigurationModal({
                   </div>
                 </div>
               )}
-
-              {/* Fenster (only show if price > 0, as it's included in belichtungspaket) */}
-              {config.detailedConfiguration.fenster &&
-                config.detailedConfiguration.fenster.price > 0 && (
-                  <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <h5 className="font-semibold text-gray-900">
-                          {config.detailedConfiguration.fenster.name}
-                        </h5>
-                        {config.detailedConfiguration.fenster.description && (
-                          <p className="text-xs text-gray-600 mt-1">
-                            {config.detailedConfiguration.fenster.description}
-                          </p>
-                        )}
-                        {config.detailedConfiguration.fenster.squareMeters && (
-                          <p className="text-xs text-gray-600 font-semibold mt-1">
-                            {config.detailedConfiguration.fenster.squareMeters}
-                            m²
-                          </p>
-                        )}
-                      </div>
-                      <span className="font-bold text-gray-900 ml-4 whitespace-nowrap">
-                        €
-                        {config.detailedConfiguration.fenster.price.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                )}
 
               {/* PV-Anlage with module count */}
               {config.detailedConfiguration.pvanlage &&

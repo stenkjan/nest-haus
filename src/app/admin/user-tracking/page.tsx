@@ -75,17 +75,26 @@ async function fetchUserTrackingData(): Promise<UserTrackingData | null> {
   try {
     console.log("🔍 Fetching user tracking data...");
 
-    const response = await fetch(
-      `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/api/admin/user-tracking`,
-      {
-        cache: "no-store",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
+    // Build correct URL for both local and production
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000";
+
+    const url = `${baseUrl}/api/admin/user-tracking`;
+    console.log("📡 Fetching from:", url);
+
+    const response = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
     if (!response.ok) {
+      console.error(`❌ API returned ${response.status}`);
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
       throw new Error(`API returned ${response.status}`);
     }
 

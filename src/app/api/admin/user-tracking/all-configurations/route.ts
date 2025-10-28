@@ -150,6 +150,60 @@ function extractDetailedItem(field: unknown): DetailedItem | null {
 }
 
 /**
+ * Calculate belichtungspaket price based on nest size and fenster material
+ * Same logic as PriceCalculator.calculateBelichtungspaketPrice
+ */
+function calculateBelichtungspaketPrice(
+    belichtungspaketValue: string,
+    nestValue: string,
+    fensterValue: string
+): number {
+    try {
+        // Get nest size in square meters
+        const nestSizeMap: Record<string, number> = {
+            'nest80': 80,
+            'nest100': 100,
+            'nest120': 120,
+            'nest140': 140,
+            'nest160': 160
+        };
+
+        const nestSize = nestSizeMap[nestValue] || 80;
+
+        // Get percentage based on belichtungspaket option
+        const percentageMap: Record<string, number> = {
+            'light': 0.12,   // 12%
+            'medium': 0.16,  // 16%
+            'bright': 0.22   // 22%
+        };
+
+        const percentage = percentageMap[belichtungspaketValue] || 0.12;
+
+        // Calculate square meters for belichtungspaket
+        const beleuchtungsSquareMeters = Math.ceil(nestSize * percentage);
+
+        // Get fenster material price per sqm
+        const fensterPriceMap: Record<string, number> = {
+            'pvc': 280,
+            'kunststoff': 280,
+            'aluminium_hell': 350,
+            'aluminium_anthrazit': 350,
+            'holz_alu': 450
+        };
+
+        const fensterPricePerSqm = fensterPriceMap[fensterValue] || 280;
+
+        // Calculate total price
+        const totalPrice = beleuchtungsSquareMeters * fensterPricePerSqm;
+
+        return totalPrice;
+    } catch (error) {
+        console.error('Error calculating belichtungspaket price:', error);
+        return 0;
+    }
+}
+
+/**
  * Calculate absolute prices for configuration items
  * This corrects any negative/relative prices stored in the database
  */
@@ -202,6 +256,37 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
             const innenverkleidungUpgrade = calculateModularPrice(nest.value, 'trapezblech', innenverkleidung.value, 'ohne_parkett') - basePrice;
             const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'kiefer', fussboden.value) - basePrice;
 
+            // Recalculate belichtungspaket price (dynamic based on nest size and fenster)
+            let recalculatedBelichtungspaket = belichtungspaket;
+            if (belichtungspaket && nest && fenster) {
+                const calculatedPrice = calculateBelichtungspaketPrice(
+                    belichtungspaket.value,
+                    nest.value,
+                    fenster.value
+                );
+                recalculatedBelichtungspaket = {
+                    ...belichtungspaket,
+                    price: calculatedPrice
+                };
+            }
+
+            // Calculate total price for quantity-based items
+            let recalculatedGeschossdecke = geschossdecke;
+            if (geschossdecke && geschossdecke.quantity && geschossdecke.quantity > 0) {
+                recalculatedGeschossdecke = {
+                    ...geschossdecke,
+                    price: geschossdecke.price * geschossdecke.quantity
+                };
+            }
+
+            let recalculatedPvanlage = pvanlage;
+            if (pvanlage && pvanlage.quantity && pvanlage.quantity > 0) {
+                recalculatedPvanlage = {
+                    ...pvanlage,
+                    price: pvanlage.price * pvanlage.quantity
+                };
+            }
+
             return {
                 // Core items: show base + upgrades
                 nest: { ...nest, price: basePrice },
@@ -209,13 +294,15 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
                 innenverkleidung: innenverkleidungUpgrade > 0 ? { ...innenverkleidung, price: innenverkleidungUpgrade } : { ...innenverkleidung, price: 0 },
                 fussboden: fussbodenUpgrade > 0 ? { ...fussboden, price: fussbodenUpgrade } : { ...fussboden, price: 0 },
 
-                // All other items: use stored prices as-is (they are already absolute)
-                belichtungspaket,
-                pvanlage,
+                // Recalculated items
+                belichtungspaket: recalculatedBelichtungspaket,
+                pvanlage: recalculatedPvanlage,
+                geschossdecke: recalculatedGeschossdecke,
+
+                // Other items: use stored prices as-is
                 fenster,
                 stirnseite,
                 planungspaket,
-                geschossdecke,
                 bodenaufbau,
                 kamindurchzug,
                 fussbodenheizung,

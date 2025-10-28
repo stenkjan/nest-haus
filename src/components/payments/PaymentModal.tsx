@@ -15,6 +15,8 @@ interface PaymentModalProps {
   inquiryId?: string;
   onSuccess: (paymentIntentId: string) => void;
   onError: (error: string) => void;
+  initialPaymentIntentId?: string; // For redirect returns
+  initialPaymentState?: "form" | "success" | "error"; // For redirect returns
 }
 
 interface PaymentSuccessProps {
@@ -301,11 +303,15 @@ export default function PaymentModal({
   inquiryId,
   onSuccess,
   onError,
+  initialPaymentIntentId,
+  initialPaymentState,
 }: PaymentModalProps) {
   const [paymentState, setPaymentState] = useState<
     "form" | "success" | "error"
-  >("form");
-  const [paymentIntentId, setPaymentIntentId] = useState<string>("");
+  >(initialPaymentState || "form");
+  const [paymentIntentId, setPaymentIntentId] = useState<string>(
+    initialPaymentIntentId || ""
+  );
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [mounted, setMounted] = useState(false);
 
@@ -314,14 +320,14 @@ export default function PaymentModal({
     setMounted(true);
   }, []);
 
-  // Reset state when modal opens
+  // Reset state when modal opens (but respect initial state for redirects)
   useEffect(() => {
     if (isOpen) {
-      setPaymentState("form");
-      setPaymentIntentId("");
+      setPaymentState(initialPaymentState || "form");
+      setPaymentIntentId(initialPaymentIntentId || "");
       setErrorMessage("");
     }
-  }, [isOpen]);
+  }, [isOpen, initialPaymentState, initialPaymentIntentId]);
 
   // Handle successful payment
   const handlePaymentSuccess = (intentId: string) => {

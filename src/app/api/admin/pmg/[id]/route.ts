@@ -1,26 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient, TaskPriority, TaskStatus } from '@prisma/client';
+import { requireAdminAuth } from '@/lib/admin-auth';
 
 const prisma = new PrismaClient();
-
-/**
- * Authenticate admin requests using Basic Auth
- */
-async function authenticateRequest(authHeader: string | null): Promise<boolean> {
-    if (!authHeader) return false;
-
-    try {
-        const base64Credentials = authHeader.replace('Basic ', '');
-        const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-        const [username, password] = credentials.split(':');
-
-        return username === process.env.ADMIN_USERNAME &&
-            password === process.env.ADMIN_PASSWORD;
-    } catch (error) {
-        console.error('❌ Authentication error:', error);
-        return false;
-    }
-}
 
 /**
  * PUT /api/admin/pmg/[id] - Update a specific project task
@@ -30,10 +12,9 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authHeader = request.headers.get('authorization');
-        if (!await authenticateRequest(authHeader)) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        // Validate admin authentication via cookie
+        const authError = await requireAdminAuth(request);
+        if (authError) return authError;
 
         const { id } = await params;
         const data = await request.json();
@@ -95,10 +76,9 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authHeader = request.headers.get('authorization');
-        if (!await authenticateRequest(authHeader)) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        // Validate admin authentication via cookie
+        const authError = await requireAdminAuth(request);
+        if (authError) return authError;
 
         const { id } = await params;
 

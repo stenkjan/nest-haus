@@ -4,6 +4,111 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ee51231e35d607ac5bf7fa3bb315e1e0dfe34353] - Tue Oct 28 14:25:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [995259e3cf58d7bd6bc3aaae2aa45f90d31fbe3c] - Tue Oct 28 14:19:37 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: implement payment redirect handling in WarenkorbClient and CheckoutStepper  - Added state management for payment redirect status in WarenkorbClient to handle payment verification and user feedback. - Enhanced CheckoutStepper to display payment completion status and manage modal visibility based on payment redirect results. - Updated PaymentModal to accept initial payment intent and state for better integration with redirect handling.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/payments/verify-redirect/route.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/payments/PaymentModal.tsx
+
+
+#### 📚 Documentation Changes
+- docs/PAYMENT_CONFIRMATION_ALL_METHODS.md
+
+
+---
+
+## [05c778844873ce68480d8afedb91bf1e3e9b1955] - Tue Oct 28 14:00:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance configuration price calculation and user agent parsing  - Added a new function to calculate the belichtungspaket price based on nest size and fenster material, improving pricing accuracy. - Updated user agent parsing in ConfigurationModal to include detection for Brave and Edge browsers, enhancing user tracking capabilities. - Recalculated belichtungspaket price dynamically in the calculateAbsolutePrices function to reflect changes based on user selections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/components/tracking/SessionInteractionTracker.tsx
+- src/hooks/useInteractionTracking.ts
+
+
+#### 📚 Documentation Changes
+- docs/USER_TRACKING_FIXES_COMPLETE.md
+
+
+---
+
+## [86cfbcbc874f4c6c538bdf1f43bff68b00e00865] - Tue Oct 28 13:43:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance admin authentication and streamline API routes  - Updated middleware to check for admin routes in both pages and API, returning 401 for unauthorized API requests. - Removed hardcoded credentials from ProjectManagementDashboard and MilestonesManager components, ensuring cookies are sent for authentication. - Replaced Basic Auth with cookie-based admin authentication in API routes for improved security and maintainability. - Cleaned up unused authentication code in various API routes, enhancing overall code clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/ProjectManagementDashboard.tsx
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
+- src/app/admin/sync/page.tsx
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/pmg/[id]/route.ts
+- src/app/api/admin/pmg/reorganize/route.ts
+- src/app/api/admin/pmg/route.ts
+- src/app/api/admin/pmg/seed/route.ts
+- src/app/api/sync/google-drive/route.ts
+- src/app/layout.tsx
+
+
+#### 📚 Documentation Changes
+- docs/BELICHTUNGSPAKET_FENSTER_FIX.md
+- docs/ENVIRONMENT_VARIABLE_SETUP.md
+- docs/USER_TRACKING_FIXES_SUMMARY.md
+
+
+---
+
+## [e0352f5887fba29263f9696be398187dd5921398] - Tue Oct 28 13:00:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: optimize user tracking data fetching and enhance time metrics calculation  - Updated the user tracking data fetching method to use an absolute path for improved consistency in server components. - Enhanced the time metrics calculation by filtering sessions based on realistic duration criteria, ensuring more accurate metrics. - Adjusted the average session duration calculation to reflect only valid sessions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/cleanup-sessions/route.ts
+- src/app/api/admin/user-tracking/route.ts
+
+
+#### ⚙️ Backend Changes
+- scripts/cleanup-bad-sessions.js
+
+
+#### 📚 Documentation Changes
+- docs/USER_TRACKING_FIXES_SUMMARY.md
+
+
+---
+
 ## [778f760cabe0b615538a3ef2f53145ea73dfbc6c] - Tue Oct 28 12:35:59 2025 +0100
 
 **Author**: stenkjan

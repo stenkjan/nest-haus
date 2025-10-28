@@ -1,36 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminAuth } from '@/lib/admin-auth';
 
 const prisma = new PrismaClient();
-
-/**
- * Authenticate admin requests using Basic Auth
- */
-async function authenticateRequest(authHeader: string | null): Promise<boolean> {
-    if (!authHeader) return false;
-
-    try {
-        const base64Credentials = authHeader.replace('Basic ', '');
-        const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-        const [username, password] = credentials.split(':');
-
-        // Use hardcoded credentials for now - same as other endpoints
-        return username === 'admin' && password === 'MAINJAJANest';
-    } catch (error) {
-        console.error('❌ Authentication error:', error);
-        return false;
-    }
-}
 
 /**
  * POST /api/admin/pmg/reorganize - Reorganize task IDs based on chronological order
  */
 export async function POST(request: NextRequest) {
     try {
-        const authHeader = request.headers.get('authorization');
-        if (!await authenticateRequest(authHeader)) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        // Validate admin authentication via cookie
+        const authError = await requireAdminAuth(request);
+        if (authError) return authError;
 
         // Get all tasks sorted by date
         const tasks = await prisma.projectTask.findMany({

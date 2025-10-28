@@ -10,6 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleDriveSync } from '@/lib/sync/GoogleDriveSync';
+import { validateAdminAuth } from '@/lib/admin-auth';
 
 /**
  * POST /api/sync/google-drive
@@ -34,20 +35,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Authenticate request (for manual calls)
-    const authHeader = request.headers.get('authorization');
-    const isManualCall = authHeader !== null;
-
-    if (isManualCall && !await authenticateRequest(authHeader)) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
     // Check if this is a cron job (Vercel cron includes special headers)
     const isCronJob = request.headers.get('user-agent')?.includes('vercel-cron') ||
       request.headers.get('x-vercel-cron') === '1';
+
+    // For manual calls, validate admin authentication via cookie
+    if (!isCronJob) {
+      const isAuthenticated = await validateAdminAuth(request);
+      if (!isAuthenticated) {
+        return NextResponse.json(
+          { success: false, error: 'Unauthorized - Admin authentication required' },
+          { status: 401 }
+        );
+      }
+    }
 
     console.log(`🤖 Sync triggered by: ${isCronJob ? 'Cron Job' : 'Manual Call'}`);
 
@@ -151,27 +152,5 @@ export async function GET(_request: NextRequest) {
       },
       { status: 500 }
     );
-  }
-}
-
-/**
- * Authenticate manual API requests
- */
-async function authenticateRequest(authHeader: string | null): Promise<boolean> {
-  if (!authHeader) return false;
-
-  try {
-    // Extract Basic auth credentials
-    const base64Credentials = authHeader.replace('Basic ', '');
-    const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-    const [username, password] = credentials.split(':');
-
-    // Validate against admin credentials
-    return username === process.env.ADMIN_USERNAME &&
-      password === process.env.ADMIN_PASSWORD;
-
-  } catch (error) {
-    console.error('❌ Authentication error:', error);
-    return false;
   }
 } 
