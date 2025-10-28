@@ -42,21 +42,21 @@ interface AdminAnalytics {
   totalSessions: number;
   totalSessionsToday: number;
   averageSessionDuration: number;
-  
+
   // Performance Metrics
   conversionRate: number;
   completedConfigurations: number;
   abandonedSessions: number;
-  
+
   // Time-based Metrics
   sessionsLast24h: number;
   sessionsLast7d: number;
   averageInteractionsPerSession: number;
-  
+
   // System Performance
   averageApiResponseTime: number;
   systemHealth: 'excellent' | 'good' | 'needs_attention';
-  
+
   // Metadata
   lastUpdated: string;
   dataRange: {
@@ -72,7 +72,7 @@ interface AdminAnalytics {
  * It operates independently of the Redis session management.
  */
 class IsolatedAnalyticsService {
-  
+
   /**
    * Get current active sessions from Redis
    */
@@ -81,11 +81,11 @@ class IsolatedAnalyticsService {
       // Try Redis first, fallback to database estimate
       const redis = (await import('@/lib/redis')).default;
       const activeCount = await redis.scard('active_sessions');
-      
+
       if (activeCount > 0) {
         return activeCount;
       }
-      
+
       // Fallback: estimate from recent sessions (last 30 minutes)
       const recentSessionsCount = await prisma.userSession.count({
         where: {
@@ -94,14 +94,14 @@ class IsolatedAnalyticsService {
           }
         }
       });
-      
+
       return recentSessionsCount;
     } catch (error) {
       console.error('❌ Failed to get active sessions:', error);
       return 0;
     }
   }
-  
+
   /**
    * Get total sessions (all time)
    */
@@ -114,7 +114,7 @@ class IsolatedAnalyticsService {
       return 0;
     }
   }
-  
+
   /**
    * Get sessions from today
    */
@@ -122,7 +122,7 @@ class IsolatedAnalyticsService {
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
+
       const count = await prisma.userSession.count({
         where: {
           startTime: {
@@ -130,16 +130,17 @@ class IsolatedAnalyticsService {
           }
         }
       });
-      
+
       return count;
     } catch (error) {
       console.error('❌ Failed to get today sessions:', error);
       return 0;
     }
   }
-  
+
   /**
    * Calculate average session duration in milliseconds
+   * Filters out sessions > 1 hour (3600 seconds) to avoid skewing the average
    */
   static async getAverageSessionDuration(): Promise<number> {
     try {
@@ -155,52 +156,72 @@ class IsolatedAnalyticsService {
         },
         take: 1000 // Limit to recent 1000 sessions for performance
       }) as SessionWithDuration[];
-      
+
       if (sessions.length === 0) return 0;
-      
-      const totalDuration = sessions.reduce((sum: number, session: SessionWithDuration) => {
+
+      // Filter sessions with realistic durations (10 seconds to 1 hour)
+      const MIN_DURATION = 10 * 1000; // 10 seconds in milliseconds
+      const MAX_DURATION = 3600 * 1000; // 1 hour in milliseconds
+
+      const validSessions = sessions.filter(session => {
+        if (!session.endTime) return false;
+        const duration = session.endTime.getTime() - session.startTime.getTime();
+        return duration >= MIN_DURATION && duration <= MAX_DURATION;
+      });
+
+      if (validSessions.length === 0) return 0;
+
+      const totalDuration = validSessions.reduce((sum: number, session: SessionWithDuration) => {
         if (session.endTime) {
           const duration = session.endTime.getTime() - session.startTime.getTime();
           return sum + duration;
         }
         return sum;
       }, 0);
-      
-      return totalDuration / sessions.length; // Return in milliseconds
+
+      return totalDuration / validSessions.length; // Return in milliseconds
     } catch (error) {
       console.error('❌ Failed to calculate average session duration:', error);
       return 0;
     }
   }
-  
+
   /**
-   * Calculate conversion rate (sessions with completed configurations)
+   * Calculate conversion rate (CONVERTED sessions / total sessions × 100)
+   * Uses the same logic as user-tracking API for consistency
    */
   static async getConversionRate(): Promise<number> {
     try {
-      const totalSessions = await this.getTotalSessions();
-      if (totalSessions === 0) return 0;
-      
-      const completedSessions = await prisma.userSession.count({
+      // Get total sessions (all statuses)
+      const totalSessions = await prisma.userSession.count({
         where: {
-          status: 'COMPLETED'
+          status: { in: ['ACTIVE', 'IN_CART', 'COMPLETED', 'CONVERTED', 'ABANDONED'] }
         }
       });
-      
-      return (completedSessions / totalSessions) * 100;
+
+      if (totalSessions === 0) return 0;
+
+      // Get converted sessions (paid/confirmed)
+      const convertedSessions = await prisma.userSession.count({
+        where: {
+          status: 'CONVERTED'
+        }
+      });
+
+      return (convertedSessions / totalSessions) * 100;
     } catch (error) {
       console.error('❌ Failed to calculate conversion rate:', error);
       return 0;
     }
   }
-  
+
   /**
    * Get sessions from last 24 hours
    */
   static async getSessionsLast24h(): Promise<number> {
     try {
       const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
-      
+
       const count = await prisma.userSession.count({
         where: {
           startTime: {
@@ -208,21 +229,21 @@ class IsolatedAnalyticsService {
           }
         }
       });
-      
+
       return count;
     } catch (error) {
       console.error('❌ Failed to get 24h sessions:', error);
       return 0;
     }
   }
-  
+
   /**
    * Get sessions from last 7 days
    */
   static async getSessionsLast7d(): Promise<number> {
     try {
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-      
+
       const count = await prisma.userSession.count({
         where: {
           startTime: {
@@ -230,14 +251,14 @@ class IsolatedAnalyticsService {
           }
         }
       });
-      
+
       return count;
     } catch (error) {
       console.error('❌ Failed to get 7d sessions:', error);
       return 0;
     }
   }
-  
+
   /**
    * Calculate average interactions per session
    */
@@ -245,16 +266,16 @@ class IsolatedAnalyticsService {
     try {
       const totalInteractions = await prisma.interactionEvent.count();
       const totalSessions = await this.getTotalSessions();
-      
+
       if (totalSessions === 0) return 0;
-      
+
       return totalInteractions / totalSessions;
     } catch (error) {
       console.error('❌ Failed to calculate avg interactions:', error);
       return 0;
     }
   }
-  
+
   /**
    * Get average API response time from performance metrics
    */
@@ -274,9 +295,9 @@ class IsolatedAnalyticsService {
         },
         take: 100
       }) as PerformanceMetricResult[];
-      
+
       if (recentMetrics.length === 0) return 0;
-      
+
       const avgTime = recentMetrics.reduce((sum: number, metric: PerformanceMetricResult) => sum + metric.value, 0) / recentMetrics.length;
       return avgTime;
     } catch (error) {
@@ -284,7 +305,7 @@ class IsolatedAnalyticsService {
       return 0;
     }
   }
-  
+
   /**
    * Determine system health based on metrics
    */
@@ -293,13 +314,13 @@ class IsolatedAnalyticsService {
     if (avgResponseTime < 300 && conversionRate > 2) return 'good';
     return 'needs_attention';
   }
-  
+
   /**
    * Generate complete analytics data
    */
   static async generateAnalytics(): Promise<AdminAnalytics> {
     const startTime = Date.now();
-    
+
     try {
       // Execute all queries in parallel for better performance
       const [
@@ -323,14 +344,14 @@ class IsolatedAnalyticsService {
         this.getAverageInteractionsPerSession(),
         this.getAverageApiResponseTime()
       ]);
-      
+
       const completedConfigurations = Math.round((totalSessions * conversionRate) / 100);
       const abandonedSessions = totalSessions - completedConfigurations;
       const systemHealth = this.getSystemHealth(averageApiResponseTime, conversionRate);
-      
+
       const processingTime = Date.now() - startTime;
       console.log(`📊 Analytics generated in ${processingTime}ms`);
-      
+
       return {
         activeSessions,
         totalSessions,
@@ -350,10 +371,10 @@ class IsolatedAnalyticsService {
           to: new Date().toISOString()
         }
       };
-      
+
     } catch (error) {
       console.error('❌ Failed to generate analytics:', error);
-      
+
       // Return safe fallback data if database fails
       return {
         activeSessions: 0,
@@ -386,18 +407,18 @@ class IsolatedAnalyticsService {
  */
 export async function GET() {
   const startTime = Date.now();
-  
+
   try {
     console.log('📊 Admin analytics request started');
-    
+
     // Generate analytics data using isolated service
     const analytics = await IsolatedAnalyticsService.generateAnalytics();
-    
+
     const processingTime = Date.now() - startTime;
-    
+
     // Log performance for monitoring
     console.log(`✅ Admin analytics completed in ${processingTime}ms`);
-    
+
     return NextResponse.json({
       success: true,
       data: analytics,
@@ -411,11 +432,11 @@ export async function GET() {
         dataSource: 'postgresql'
       }
     });
-    
+
   } catch (error) {
     const processingTime = Date.now() - startTime;
     console.error('❌ Admin analytics failed:', error);
-    
+
     return NextResponse.json({
       success: false,
       error: 'Failed to generate analytics',
@@ -441,7 +462,7 @@ export async function HEAD() {
   try {
     // Quick database connectivity test
     await prisma.userSession.count({ take: 1 });
-    
+
     return new Response(null, {
       status: 200,
       headers: {
