@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Named export for Next.js middleware
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
