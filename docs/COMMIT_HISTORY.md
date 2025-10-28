@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5537d0e47523e9bcc7214d7994db303fbbbc6464] - Tue Oct 28 14:59:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: add named export for middleware in Next.js  - Introduced a named export for the middleware function to enhance clarity and usability in Next.js applications.  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/ADMIN_SECURITY_TESTING_GUIDE.md
+
+
+---
+
 ## [9e994699bd441e2a5a992e6969201b43086d8cf1] - Tue Oct 28 14:32:49 2025 +0100
 
 **Author**: stenkjan
