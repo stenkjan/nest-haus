@@ -61,43 +61,9 @@ export async function POST(request: NextRequest) {
             },
         });
 
-        // Create SelectionEvent records for each selection in the configuration
-        // This ensures admin dashboards can track user journey and popular configurations
-        const config = configuration as Record<string, { value?: string; price?: number; category?: string } | null | undefined>;
-        const categories = [
-            'nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden',
-            'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite', 'planungspaket',
-            'kamindurchzug', 'fussbodenheizung', 'bodenaufbau', 'geschossdecke', 'fundament'
-        ];
-
-        // Filter and create selection events for valid selections
-        const selectionEventPromises = categories
-            .filter(category => {
-                const selection = config[category];
-                return selection && typeof selection === 'object' && selection.value;
-            })
-            .map(category => {
-                const selection = config[category];
-                if (!selection || typeof selection !== 'object' || !selection.value) {
-                    return Promise.resolve();
-                }
-
-                return prisma.selectionEvent.create({
-                    data: {
-                        sessionId,
-                        category,
-                        selection: selection.value,
-                        totalPrice: currentPrice,
-                        timestamp: new Date()
-                    }
-                }).catch(error => {
-                    // Log but don't fail if selection event creation fails
-                    console.warn(`⚠️ Failed to create SelectionEvent for ${category}:`, error);
-                });
-            });
-
-        // Execute all selection event creations
-        await Promise.all(selectionEventPromises);
+        // SelectionEvents are now ONLY tracked when user actively makes a selection in the configurator
+        // NOT during sync (which happens frequently on every change)
+        // This prevents inflated event counts
 
         return NextResponse.json({
             success: true,

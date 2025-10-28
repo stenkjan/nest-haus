@@ -61,41 +61,8 @@ export async function POST(request: NextRequest) {
             }
         });
 
-        // Create SelectionEvents for this cart add
-        // Extract selections from configuration
-        const config = configuration as Record<string, { value?: string; price?: number } | null | undefined>;
-        const categories = [
-            'nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden',
-            'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite', 'planungspaket',
-            'kamindurchzug', 'fussbodenheizung', 'bodenaufbau', 'geschossdecke', 'fundament'
-        ];
-
-        // Create selection events in parallel
-        const selectionPromises = categories
-            .filter(category => {
-                const selection = config[category];
-                return selection && typeof selection === 'object' && selection.value;
-            })
-            .map(category => {
-                const selection = config[category];
-                if (!selection || typeof selection !== 'object' || !selection.value) {
-                    return Promise.resolve();
-                }
-
-                return prisma.selectionEvent.create({
-                    data: {
-                        sessionId,
-                        category,
-                        selection: selection.value,
-                        totalPrice,
-                        timestamp: new Date()
-                    }
-                }).catch(error => {
-                    console.warn(`⚠️ Failed to create SelectionEvent for ${category}:`, error);
-                });
-            });
-
-        await Promise.all(selectionPromises);
+        // SelectionEvents are tracked in the configurator when user makes selections
+        // Not here during cart add to avoid duplication
 
         console.log(`✅ Cart add tracked successfully for ${sessionId}`);
 

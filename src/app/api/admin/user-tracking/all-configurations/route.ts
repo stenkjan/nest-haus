@@ -86,7 +86,6 @@ interface ConfigurationWithDetails {
     tracking: {
         selectionEventsCount: number;
         interactionEventsCount: number;
-        snapshotsCount: number;
         lastActivity: string;
     };
 
@@ -396,9 +395,6 @@ export async function GET() {
                 },
                 interactionEvents: {
                     select: { id: true }
-                },
-                configurationSnapshots: {
-                    select: { id: true }
                 }
             },
             orderBy: {
@@ -495,7 +491,6 @@ export async function GET() {
                 tracking: {
                     selectionEventsCount: session.selectionEvents.length,
                     interactionEventsCount: session.interactionEvents.length,
-                    snapshotsCount: session.configurationSnapshots.length,
                     lastActivity: session.lastActivity.toISOString()
                 },
 

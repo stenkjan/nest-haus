@@ -644,7 +644,7 @@ function ConfigurationModal({
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
               🔄 Activity Tracking
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="text-center p-4 bg-blue-50 rounded-lg">
                 <div className="text-3xl font-bold text-blue-600">
                   {config.tracking.selectionEventsCount}
@@ -659,14 +659,6 @@ function ConfigurationModal({
                 </div>
                 <div className="text-sm text-gray-600 mt-1">
                   Interaction Events
-                </div>
-              </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <div className="text-3xl font-bold text-purple-600">
-                  {config.tracking.snapshotsCount}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  Configuration Snapshots
                 </div>
               </div>
             </div>

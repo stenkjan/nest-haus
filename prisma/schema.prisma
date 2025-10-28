@@ -9,24 +9,23 @@ datasource db {
 }
 
 model UserSession {
-  id                     String                  @id @default(cuid())
-  sessionId              String                  @unique
-  ipAddress              String?
-  userAgent              String?
-  referrer               String?
-  utmSource              String?
-  startTime              DateTime                @default(now())
-  endTime                DateTime?
-  lastActivity           DateTime                @default(now())
-  configurationData      Json?
-  totalPrice             Int?
-  status                 SessionStatus           @default(ACTIVE)
-  isOhneNestMode         Boolean                 @default(false)
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
-  selectionEvents        SelectionEvent[]
-  interactionEvents      InteractionEvent[]
-  configurationSnapshots ConfigurationSnapshot[]
+  id                String             @id @default(cuid())
+  sessionId         String             @unique
+  ipAddress         String?
+  userAgent         String?
+  referrer          String?
+  utmSource         String?
+  startTime         DateTime           @default(now())
+  endTime           DateTime?
+  lastActivity      DateTime           @default(now())
+  configurationData Json?
+  totalPrice        Int?
+  status            SessionStatus      @default(ACTIVE)
+  isOhneNestMode    Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  selectionEvents   SelectionEvent[]
+  interactionEvents InteractionEvent[]
 
   @@map("user_sessions")
 }
@@ -165,21 +164,6 @@ model InteractionEvent {
   session         UserSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
   
   @@map("interaction_events")
-}
-
-model ConfigurationSnapshot {
-  id                    String      @id @default(cuid())
-  sessionId             String
-  configurationData     Json
-  totalPrice            Int?
-  completionPercentage  Float?
-  timestamp             DateTime    @default(now())
-  triggerEvent          String      // 'auto_save', 'page_exit', 'order_attempt'
-  additionalData        Json?
-  
-  session               UserSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
-  
-  @@map("configuration_snapshots")
 }
 
 model PerformanceMetric {
