@@ -654,20 +654,64 @@ function ConfigurationModal({
               🔄 Activity Tracking
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div
+                className="text-center p-4 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors"
+                onClick={() => {
+                  const pageVisits = config.tracking.interactionEvents.filter(
+                    (e) => e.eventType === "page_visit"
+                  );
+                  if (pageVisits.length > 0) {
+                    alert(
+                      `Pages Visited:\n\n${pageVisits
+                        .map(
+                          (v) =>
+                            `${v.selectionValue || "Unknown"} - ${new Date(
+                              v.timestamp
+                            ).toLocaleString("de-DE")}`
+                        )
+                        .join("\n")}`
+                    );
+                  } else {
+                    alert("No page visits recorded.");
+                  }
+                }}
+              >
                 <div className="text-3xl font-bold text-blue-600">
-                  {config.tracking.selectionEventsCount}
+                  {config.tracking.pageVisitsCount}
                 </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  Selection Events
+                <div className="text-sm text-gray-600 mt-1">Page Visits</div>
+                <div className="text-xs text-blue-400 mt-1">
+                  Click to see details
                 </div>
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div
+                className="text-center p-4 bg-green-50 rounded-lg cursor-pointer hover:bg-green-100 transition-colors"
+                onClick={() => {
+                  const clicks = config.tracking.interactionEvents.filter(
+                    (e) => e.eventType === "click"
+                  );
+                  if (clicks.length > 0) {
+                    alert(
+                      `Click Events:\n\n${clicks
+                        .map(
+                          (c) =>
+                            `${c.selectionValue || c.elementId || "Unknown"} - ${new Date(
+                              c.timestamp
+                            ).toLocaleString("de-DE")}`
+                        )
+                        .join("\n")}`
+                    );
+                  } else {
+                    alert("No click events recorded.");
+                  }
+                }}
+              >
                 <div className="text-3xl font-bold text-green-600">
-                  {config.tracking.interactionEventsCount}
+                  {config.tracking.clickEventsCount}
                 </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  Interaction Events
+                <div className="text-sm text-gray-600 mt-1">Mouse Clicks</div>
+                <div className="text-xs text-green-400 mt-1">
+                  Click to see details
                 </div>
               </div>
             </div>
