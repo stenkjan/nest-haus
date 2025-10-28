@@ -4,6 +4,53 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9e994699bd441e2a5a992e6969201b43086d8cf1] - Tue Oct 28 14:32:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/ProjectManagementDashboard.tsx
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
+- src/app/admin/sync/page.tsx
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/analytics/route.ts
+- src/app/api/admin/cleanup-sessions/route.ts
+- src/app/api/admin/pmg/[id]/route.ts
+- src/app/api/admin/pmg/reorganize/route.ts
+- src/app/api/admin/pmg/route.ts
+- src/app/api/admin/pmg/seed/route.ts
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/api/payments/verify-redirect/route.ts
+- src/app/api/sync/google-drive/route.ts
+- src/app/layout.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/tracking/SessionInteractionTracker.tsx
+- src/hooks/useInteractionTracking.ts
+
+
+#### ⚙️ Backend Changes
+- scripts/cleanup-bad-sessions.js
+
+
+#### 📚 Documentation Changes
+- docs/ADMIN_DASHBOARD_METRICS_FIX.md
+- docs/BELICHTUNGSPAKET_FENSTER_FIX.md
+- docs/COMMIT_HISTORY.md
+- docs/ENVIRONMENT_VARIABLE_SETUP.md
+- docs/PAYMENT_CONFIRMATION_ALL_METHODS.md
+- docs/USER_TRACKING_FIXES_COMPLETE.md
+- docs/USER_TRACKING_FIXES_SUMMARY.md
+
+
+---
+
 ## [ee51231e35d607ac5bf7fa3bb315e1e0dfe34353] - Tue Oct 28 14:25:03 2025 +0100
 
 **Author**: stenkjan
