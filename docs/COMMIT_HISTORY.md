@@ -4,6 +4,29 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e0352f5887fba29263f9696be398187dd5921398] - Tue Oct 28 13:00:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: optimize user tracking data fetching and enhance time metrics calculation  - Updated the user tracking data fetching method to use an absolute path for improved consistency in server components. - Enhanced the time metrics calculation by filtering sessions based on realistic duration criteria, ensuring more accurate metrics. - Adjusted the average session duration calculation to reflect only valid sessions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/cleanup-sessions/route.ts
+- src/app/api/admin/user-tracking/route.ts
+
+
+#### ⚙️ Backend Changes
+- scripts/cleanup-bad-sessions.js
+
+
+#### 📚 Documentation Changes
+- docs/USER_TRACKING_FIXES_SUMMARY.md
+
+
+---
+
 ## [778f760cabe0b615538a3ef2f53145ea73dfbc6c] - Tue Oct 28 12:35:59 2025 +0100
 
 **Author**: stenkjan
