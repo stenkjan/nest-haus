@@ -4,6 +4,30 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6e6279a8dfb29e8b767d00f1cfafbe03a8edf3d5] - Tue Oct 28 12:03:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove ConfigurationSnapshot model and improve session tracking  - Deleted the redundant ConfigurationSnapshot model from the Prisma schema to streamline data management. - Implemented client-side tracking for user interactions, including page visits and button clicks, to ensure accurate event counts. - Adjusted the logic for SelectionEvent creation to only track user-initiated selections, preventing inflated event counts. - Updated relevant API routes and frontend components to reflect these changes, enhancing overall tracking accuracy and performance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/sessions/sync/route.ts
+- src/app/api/sessions/track-cart-add/route.ts
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 📚 Documentation Changes
+- fix-tracking-issues.plan.md
+
+
+---
+
 ## [c9fea0e2e6823b26aecce1e70959644289ad7a3c] - Tue Oct 28 11:34:08 2025 +0100
 
 **Author**: stenkjan
