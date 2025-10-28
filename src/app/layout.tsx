@@ -36,15 +36,15 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://nest-haus.com"),
+  metadataBase: new URL("https://nest-haus.at"),
   alternates: {
-    canonical: "https://nest-haus.com",
+    canonical: "https://nest-haus.at",
   },
   openGraph: {
     title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://nest-haus.com",
+    url: "https://nest-haus.at",
     siteName: "NEST-Haus",
     locale: "de_DE",
     type: "website",

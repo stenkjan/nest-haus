@@ -10,8 +10,8 @@ export function middleware(request: NextRequest) {
     console.log('[MIDDLEWARE] VERCEL_ENV:', process.env.VERCEL_ENV);
     console.log('[MIDDLEWARE] NODE_ENV:', process.env.NODE_ENV);
 
-    // Check for admin routes first
-    if (pathname.startsWith('/admin')) {
+    // Check for admin routes first (both pages and API)
+    if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
         // Skip auth check for admin auth page itself and API routes
         if (pathname === '/admin/auth' || pathname.startsWith('/api/admin/auth')) {
             console.log('[MIDDLEWARE] Skipping admin auth check for:', pathname);
@@ -38,7 +38,16 @@ export function middleware(request: NextRequest) {
             return NextResponse.next();
         }
 
-        // Redirect to admin auth page
+        // For API routes, return 401 instead of redirect
+        if (pathname.startsWith('/api/admin')) {
+            console.log('[MIDDLEWARE] API admin route unauthorized, returning 401');
+            return NextResponse.json(
+                { error: 'Unauthorized - Admin authentication required' },
+                { status: 401 }
+            );
+        }
+
+        // For page routes, redirect to admin auth page
         console.log('[MIDDLEWARE] Redirecting to admin auth page');
         const url = request.nextUrl.clone();
         url.pathname = '/admin/auth';
@@ -46,7 +55,7 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // Skip password check for API routes, static files, and auth page
+    // Skip password check for non-admin API routes, static files, and auth page
     if (
         pathname.startsWith('/api') ||
         pathname.startsWith('/_next') ||

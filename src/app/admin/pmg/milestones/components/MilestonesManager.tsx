@@ -39,12 +39,9 @@ export default function MilestonesManager() {
   const loadMilestones = async () => {
     try {
       setLoading(true);
-      const credentials = btoa("admin:MAINJAJANest");
 
       const response = await fetch("/api/admin/pmg", {
-        headers: {
-          Authorization: `Basic ${credentials}`,
-        },
+        credentials: "include", // Ensure cookies are sent
       });
 
       if (!response.ok) {
@@ -76,14 +73,12 @@ export default function MilestonesManager() {
 
   const handleSaveNote = async (milestoneId: string) => {
     try {
-      const credentials = btoa("admin:MAINJAJANest");
-
       const response = await fetch(`/api/admin/pmg/${milestoneId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${credentials}`,
         },
+        credentials: "include", // Ensure cookies are sent
         body: JSON.stringify({
           notes: noteContent,
         }),
@@ -159,13 +154,9 @@ export default function MilestonesManager() {
         return;
       }
 
-      const credentials = btoa("admin:MAINJAJANest");
-
       // Fetch ALL tasks to check for ID conflicts (not just filtered milestones)
       const allTasksResponse = await fetch("/api/admin/pmg", {
-        headers: {
-          Authorization: `Basic ${credentials}`,
-        },
+        credentials: "include", // Ensure cookies are sent
       });
 
       if (!allTasksResponse.ok) {
@@ -210,8 +201,8 @@ export default function MilestonesManager() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${credentials}`,
         },
+        credentials: "include", // Ensure cookies are sent
         body: JSON.stringify({
           taskId: finalTaskId,
           task: newMilestone.task.trim(),
@@ -266,8 +257,8 @@ export default function MilestonesManager() {
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Basic ${credentials}`,
                 },
+                credentials: "include", // Ensure cookies are sent
                 body: JSON.stringify({
                   taskId: newTaskId,
                 }),

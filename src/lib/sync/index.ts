@@ -12,14 +12,14 @@
 export { GoogleDriveSync } from './GoogleDriveSync';
 export { ImagesConstantsUpdater } from './ImagesConstantsUpdater';
 
-export type { 
-  DriveImage, 
-  BlobImage, 
-  SyncResult 
+export type {
+  DriveImage,
+  BlobImage,
+  SyncResult
 } from './GoogleDriveSync';
 
-export type { 
-  ImageMapping 
+export type {
+  ImageMapping
 } from './ImagesConstantsUpdater';
 
 /**
@@ -43,7 +43,7 @@ export async function triggerManualSync(adminCredentials?: { username: string; p
     }
 
     console.log('🚀 Triggering manual Google Drive sync...');
-    
+
     const response = await fetch(syncUrl, {
       method: 'POST',
       headers
@@ -85,27 +85,26 @@ export async function getSyncStatus() {
 /**
  * Development utility: Check if sync is properly configured
  */
-export function validateSyncConfiguration(): { 
-  isValid: boolean; 
-  missing: string[]; 
-  recommendations: string[] 
+export function validateSyncConfiguration(): {
+  isValid: boolean;
+  missing: string[];
+  recommendations: string[]
 } {
   const required = [
     'GOOGLE_DRIVE_MAIN_FOLDER_ID',
-    'GOOGLE_DRIVE_MOBILE_FOLDER_ID', 
+    'GOOGLE_DRIVE_MOBILE_FOLDER_ID',
     'BLOB_READ_WRITE_TOKEN',
-    'ADMIN_USERNAME',
     'ADMIN_PASSWORD'
   ];
 
   const missing = required.filter(env => !process.env[env]);
-  
+
   const recommendations = [];
-  
+
   if (missing.length > 0) {
     recommendations.push('Set missing environment variables in .env.local');
   }
-  
+
   if (!process.env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE) {
     recommendations.push('Ensure service-account-key.json exists in project root');
   }

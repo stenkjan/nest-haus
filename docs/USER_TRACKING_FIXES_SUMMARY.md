@@ -6,14 +6,24 @@
 
 **Problem**: User tracking page showed "Failed to load data" in production
 
-**Root Cause**: Incorrect URL construction using `process.env.VERCEL_URL` which doesn't work reliably in Next.js server components
+**Root Cause**: Server components in Next.js require full URLs when deployed to Vercel (not relative paths)
 
-**Solution**: Changed to use absolute path `/api/admin/user-tracking` instead of building full URL
+**Solution**: Updated URL construction to properly build full URL using environment variables
 
 **File Modified**: `src/app/admin/user-tracking/page.tsx`
 
-- Line 79: Simplified fetch URL to use absolute path
-- Next.js handles internal routing automatically in server components
+- Lines 79-85: Added proper URL construction logic
+- Uses `NEXT_PUBLIC_SITE_URL` (recommended) or `VERCEL_URL` (fallback)
+- Added error logging for debugging
+
+**Required Environment Variable**:
+Set in Vercel Dashboard → Settings → Environment Variables:
+
+- **Name**: `NEXT_PUBLIC_SITE_URL`
+- **Value**: `https://nest-haus.com` (or your domain)
+- **Environments**: Production, Preview, Development
+
+See `docs/ENVIRONMENT_VARIABLE_SETUP.md` for detailed setup instructions.
 
 ### 2. Time Analytics Showing Unrealistic Values ✅
 
