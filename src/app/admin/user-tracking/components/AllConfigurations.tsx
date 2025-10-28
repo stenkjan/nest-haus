@@ -233,13 +233,20 @@ function ConfigurationModal({
   const parseUserAgent = (ua: string | null) => {
     if (!ua) return { browser: "Unknown", os: "Unknown", device: "Unknown" };
 
-    const browser = ua.includes("Chrome")
-      ? "Chrome"
-      : ua.includes("Firefox")
-        ? "Firefox"
-        : ua.includes("Safari")
-          ? "Safari"
-          : "Other";
+    // Check for Brave first (uses Chromium, so must check before Chrome)
+    // Brave doesn't always add "Brave" to user agent, but often has specific patterns
+    const browser =
+      ua.includes("Brave") || (ua.includes("Chrome") && ua.includes("Brave"))
+        ? "Brave"
+        : ua.includes("Edg")
+          ? "Edge"
+          : ua.includes("Chrome")
+            ? "Chrome"
+            : ua.includes("Firefox")
+              ? "Firefox"
+              : ua.includes("Safari") && !ua.includes("Chrome")
+                ? "Safari"
+                : "Other";
     const os = ua.includes("Windows")
       ? "Windows"
       : ua.includes("Mac")
