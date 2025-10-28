@@ -4,6 +4,35 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [86cfbcbc874f4c6c538bdf1f43bff68b00e00865] - Tue Oct 28 13:43:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance admin authentication and streamline API routes  - Updated middleware to check for admin routes in both pages and API, returning 401 for unauthorized API requests. - Removed hardcoded credentials from ProjectManagementDashboard and MilestonesManager components, ensuring cookies are sent for authentication. - Replaced Basic Auth with cookie-based admin authentication in API routes for improved security and maintainability. - Cleaned up unused authentication code in various API routes, enhancing overall code clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/pmg/components/ProjectManagementDashboard.tsx
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
+- src/app/admin/sync/page.tsx
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/pmg/[id]/route.ts
+- src/app/api/admin/pmg/reorganize/route.ts
+- src/app/api/admin/pmg/route.ts
+- src/app/api/admin/pmg/seed/route.ts
+- src/app/api/sync/google-drive/route.ts
+- src/app/layout.tsx
+
+
+#### 📚 Documentation Changes
+- docs/BELICHTUNGSPAKET_FENSTER_FIX.md
+- docs/ENVIRONMENT_VARIABLE_SETUP.md
+- docs/USER_TRACKING_FIXES_SUMMARY.md
+
+
+---
+
 ## [e0352f5887fba29263f9696be398187dd5921398] - Tue Oct 28 13:00:49 2025 +0100
 
 **Author**: stenkjan
