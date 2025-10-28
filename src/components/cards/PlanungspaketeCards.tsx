@@ -476,7 +476,7 @@ export default function PlanungspaketeCards({
                         transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
                         className="flex-1"
                       >
-                        <p className="p-primary-small overflow-hidden">
+                        <p className="p-primary-small text-black overflow-hidden">
                           {getCardText(card, "description")}
                         </p>
                       </motion.div>
@@ -491,7 +491,9 @@ export default function PlanungspaketeCards({
                         }}
                         className="flex-shrink-0 flex items-start justify-start"
                       >
-                        <div className="p-primary-small">{card.price}</div>
+                        <div className="p-primary-small text-black">
+                          {card.price}
+                        </div>
                       </motion.div>
                     </div>
 
@@ -506,7 +508,7 @@ export default function PlanungspaketeCards({
                         /* Collapsed state: Show only "Mehr erfahren" button with minimal padding */
                         <div className="px-8 pb-6 text-align-left">
                           <motion.button
-                            className="p-primary-small font-bold underline hover:no-underline transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 rounded px-1"
+                            className="p-primary-small text-black font-bold underline hover:no-underline transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 rounded px-1"
                             onClick={(e) => {
                               e.stopPropagation(); // Prevent card click
                               toggleCardExpansion(card.id);
