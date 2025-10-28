@@ -5,6 +5,8 @@ import Navbar from "@/components/layout/Navbar";
 // Alpha test components - enabled for usability testing
 import AlphaTestProvider from "@/components/testing/AlphaTestProvider";
 import AlphaSessionTracker from "@/components/testing/AlphaSessionTracker";
+// Session tracking components - for all user sessions
+import SessionInteractionTracker from "@/components/tracking/SessionInteractionTracker";
 // Cookie components - enabled for GDPR compliance
 import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
 import CookieBanner from "@/components/CookieBanner";
@@ -143,6 +145,7 @@ export default function RootLayout({
           <CookieSettingsHandler />
           <AlphaTestProvider />
           <AlphaSessionTracker />
+          <SessionInteractionTracker />
 
           {/* Analytics & Performance Monitoring */}
           {/* <WebVitals /> */}
