@@ -42,6 +42,14 @@ interface CheckoutStepperProps {
   onStepChange?: (nextIndex: number) => void;
   hideProgress?: boolean;
   isOhneNestMode?: boolean;
+  paymentRedirectStatus?: {
+    show: boolean;
+    success: boolean;
+    paymentIntentId: string | null;
+    amount: number;
+    currency: string;
+  } | null;
+  onPaymentRedirectHandled?: () => void;
 }
 
 export default function CheckoutStepper({
@@ -54,6 +62,8 @@ export default function CheckoutStepper({
   onStepChange,
   hideProgress = false,
   isOhneNestMode = false,
+  paymentRedirectStatus,
+  onPaymentRedirectHandled,
 }: CheckoutStepperProps) {
   const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate } =
     useCartStore();
@@ -122,6 +132,26 @@ export default function CheckoutStepper({
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [_paymentError, setPaymentError] = useState<string | null>(null);
   const [contactWarning, setContactWarning] = useState<string | null>(null);
+
+  // Payment completion state
+  const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
+
+  // Handle payment redirect returns
+  useEffect(() => {
+    if (paymentRedirectStatus?.show && paymentRedirectStatus?.success) {
+      console.log("✅ Payment redirect success detected, showing modal");
+      setIsPaymentCompleted(true);
+      setIsPaymentModalOpen(true);
+
+      // Mark as completed after showing modal
+      if (onPaymentRedirectHandled) {
+        // Wait a bit to let modal render
+        setTimeout(() => {
+          onPaymentRedirectHandled();
+        }, 100);
+      }
+    }
+  }, [paymentRedirectStatus, onPaymentRedirectHandled]);
 
   useEffect(() => {
     // Sync with configurator's planungspaket when it changes, otherwise use cart item
@@ -2490,13 +2520,23 @@ export default function CheckoutStepper({
               {/* Moved: Heute zu bezahlen section at the end */}
               <div className="flex items-start justify-between gap-4 py-3">
                 <div className="text-left">
-                  <h2 className="h2-title text-black mb-3">
-                    Heute zu bezahlen
+                  <h2
+                    className={`h2-title mb-3 ${isPaymentCompleted ? "text-green-600" : "text-black"}`}
+                  >
+                    {isPaymentCompleted ? "✓ Bezahlt" : "Heute zu bezahlen"}
                   </h2>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug">
+                    {isPaymentCompleted && (
+                      <span className="text-green-600 font-medium">
+                        Zahlung erfolgreich abgeschlossen
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="text-right">
-                  <div className="h2-title text-black">
+                  <div
+                    className={`h2-title ${isPaymentCompleted ? "text-green-600" : "text-black"}`}
+                  >
                     {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
@@ -2530,6 +2570,7 @@ export default function CheckoutStepper({
               <div className="flex justify-center mt-6">
                 <button
                   type="button"
+                  disabled={isPaymentCompleted}
                   onClick={() => {
                     // Check if contact form has been submitted
                     const contactSubmitted = localStorage.getItem(
@@ -2573,9 +2614,13 @@ export default function CheckoutStepper({
                       setPaymentError(null);
                     }
                   }}
-                  className="bg-[#3D6CE1] text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium hover:bg-blue-700 transition-colors"
+                  className={`${
+                    isPaymentCompleted
+                      ? "bg-green-600 cursor-not-allowed opacity-75"
+                      : "bg-[#3D6CE1] hover:bg-blue-700"
+                  } text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium transition-colors`}
                 >
-                  Zur Kassa
+                  {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
                 </button>
               </div>
 
@@ -2610,13 +2655,19 @@ export default function CheckoutStepper({
         <PaymentModal
           isOpen={isPaymentModalOpen}
           onClose={() => setIsPaymentModalOpen(false)}
-          amount={getPaymentAmount()}
-          currency="eur"
+          amount={paymentRedirectStatus?.amount || getPaymentAmount()}
+          currency={paymentRedirectStatus?.currency || "eur"}
           customerEmail={getCustomerEmail()}
           customerName={getCustomerName()}
           inquiryId={undefined} // Will be created during payment process
           onSuccess={handlePaymentSuccess}
           onError={handlePaymentError}
+          initialPaymentIntentId={
+            paymentRedirectStatus?.paymentIntentId || undefined
+          }
+          initialPaymentState={
+            paymentRedirectStatus?.success ? "success" : undefined
+          }
         />
       )}
     </section>
@@ -2644,6 +2695,7 @@ export default function CheckoutStepper({
   function handlePaymentSuccess(paymentIntentId: string) {
     console.log("✅ Payment successful:", paymentIntentId);
     setPaymentError(null);
+    setIsPaymentCompleted(true); // Mark payment as completed
 
     // DON'T close the modal yet - let the user see the success message
     // The PaymentModal will show the success screen

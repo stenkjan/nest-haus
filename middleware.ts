@@ -99,6 +99,7 @@ export const config = {
     matcher: [
         // Match all paths including root
         '/',
-        '/((?!api|_next|favicon).*)',
+        // Match all non-excluded paths
+        '/((?!_next|favicon).*)',
     ],
 };

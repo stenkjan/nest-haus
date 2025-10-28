@@ -72,12 +72,73 @@ export default function WarenkorbClient() {
     return 0;
   });
 
+  // State for payment redirect handling
+  const [paymentRedirectStatus, setPaymentRedirectStatus] = useState<{
+    show: boolean;
+    success: boolean;
+    paymentIntentId: string | null;
+    amount: number;
+    currency: string;
+  } | null>(null);
+
   // Set default hash after component mounts to avoid setState during render
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Check for ohne-nest mode from URL params
       const urlParams = new URLSearchParams(window.location.search);
       const mode = urlParams.get("mode");
+
+      // Check for payment redirect return
+      const paymentIntent = urlParams.get("payment_intent");
+      const redirectStatus = urlParams.get("redirect_status");
+
+      // Handle payment redirect return (EPS, SOFORT, etc.)
+      if (paymentIntent && redirectStatus) {
+        console.log(
+          "💳 Payment redirect detected:",
+          paymentIntent,
+          redirectStatus
+        );
+
+        // Verify payment status with backend
+        fetch(`/api/payments/verify-redirect?payment_intent=${paymentIntent}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && data.status === "succeeded") {
+              console.log("✅ Payment redirect verified as successful");
+              setPaymentRedirectStatus({
+                show: true,
+                success: true,
+                paymentIntentId: data.paymentIntentId,
+                amount: data.amount,
+                currency: data.currency,
+              });
+            } else if (data.status === "processing") {
+              console.log("⏳ Payment is still processing");
+              // Show processing state
+              setPaymentRedirectStatus({
+                show: true,
+                success: false,
+                paymentIntentId: data.paymentIntentId,
+                amount: data.amount,
+                currency: data.currency,
+              });
+            } else {
+              console.error("❌ Payment redirect failed or canceled");
+              // Could show error modal here
+            }
+
+            // Clean up URL parameters
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.delete("payment_intent");
+            newUrl.searchParams.delete("payment_intent_client_secret");
+            newUrl.searchParams.delete("redirect_status");
+            window.history.replaceState({}, "", newUrl.toString());
+          })
+          .catch((error) => {
+            console.error("❌ Failed to verify payment redirect:", error);
+          });
+      }
 
       if (mode === "ohne-nest") {
         console.log("🏠 URL has ohne-nest mode, setting to TRUE");
@@ -627,6 +688,8 @@ export default function WarenkorbClient() {
             stepIndex={stepIndex}
             onStepChange={handleStepChange}
             isOhneNestMode={getIsOhneNestMode()}
+            paymentRedirectStatus={paymentRedirectStatus}
+            onPaymentRedirectHandled={() => setPaymentRedirectStatus(null)}
           />
         )}
       </div>
