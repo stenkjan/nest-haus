@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [05c778844873ce68480d8afedb91bf1e3e9b1955] - Tue Oct 28 14:00:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance configuration price calculation and user agent parsing  - Added a new function to calculate the belichtungspaket price based on nest size and fenster material, improving pricing accuracy. - Updated user agent parsing in ConfigurationModal to include detection for Brave and Edge browsers, enhancing user tracking capabilities. - Recalculated belichtungspaket price dynamically in the calculateAbsolutePrices function to reflect changes based on user selections.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/components/tracking/SessionInteractionTracker.tsx
+- src/hooks/useInteractionTracking.ts
+
+
+#### 📚 Documentation Changes
+- docs/USER_TRACKING_FIXES_COMPLETE.md
+
+
+---
+
 ## [86cfbcbc874f4c6c538bdf1f43bff68b00e00865] - Tue Oct 28 13:43:20 2025 +0100
 
 **Author**: stenkjan
