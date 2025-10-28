@@ -7,6 +7,7 @@
 import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
+import { calculateModularPrice } from '@/constants/configurator';
 
 interface DetailedItem {
     value: string;
@@ -146,9 +147,6 @@ function extractDetailedItem(field: unknown): DetailedItem | null {
 function calculateAbsolutePrices(config: Record<string, unknown>): Record<string, DetailedItem | null> {
     const result: Record<string, DetailedItem | null> = {};
 
-    // Import the PriceCalculator helper functions
-    const { calculateModularPrice, calculateSizeDependentPrice } = require('@/constants/configurator');
-
     try {
         // Extract all items
         const nest = extractDetailedItem(config.nest);
@@ -168,14 +166,6 @@ function calculateAbsolutePrices(config: Record<string, unknown>): Record<string
 
         // Calculate absolute prices for core combination items
         if (nest && gebaeudehuelle && innenverkleidung && fussboden) {
-            // Calculate the total combination price
-            const totalCombinationPrice = calculateModularPrice(
-                nest.value,
-                gebaeudehuelle.value,
-                innenverkleidung.value,
-                fussboden.value
-            );
-
             // Calculate base price (default combination)
             const basePrice = calculateModularPrice(
                 nest.value,

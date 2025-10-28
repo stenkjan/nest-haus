@@ -116,7 +116,8 @@ export default function WarenkorbClient() {
         window.history.replaceState(null, "", "#übersicht");
       }
     }
-  }, [setOhneNestMode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount, sessionId captured at mount time
 
   // Handle step changes and update URL hash
   const handleStepChange = (nextIndex: number) => {
