@@ -361,7 +361,7 @@ class UserTrackingService {
     }
 
     /**
-     * Calculate time metrics
+     * Calculate time metrics with data quality filters
      */
     static async getTimeMetrics() {
         const sessions = await prisma.userSession.findMany({
@@ -370,10 +370,21 @@ class UserTrackingService {
                 endTime: { not: null }
             },
             select: {
+                sessionId: true,
                 startTime: true,
                 endTime: true,
                 status: true
             }
+        });
+
+        // Filter sessions with realistic durations (10 seconds to 2 hours)
+        const MIN_DURATION = 10; // seconds
+        const MAX_DURATION = 7200; // 2 hours in seconds
+
+        const validSessions = sessions.filter(session => {
+            if (!session.endTime) return false;
+            const duration = (session.endTime.getTime() - session.startTime.getTime()) / 1000;
+            return duration >= MIN_DURATION && duration <= MAX_DURATION;
         });
 
         let totalTimeToCart = 0;
@@ -382,7 +393,7 @@ class UserTrackingService {
         let cartCount = 0;
         let inquiryCount = 0;
 
-        sessions.forEach(session => {
+        validSessions.forEach(session => {
             if (!session.endTime) return;
 
             const duration = (session.endTime.getTime() - session.startTime.getTime()) / 1000; // seconds
@@ -402,7 +413,7 @@ class UserTrackingService {
         return {
             avgTimeToCart: cartCount > 0 ? Math.round(totalTimeToCart / cartCount) : 0,
             avgTimeToInquiry: inquiryCount > 0 ? Math.round(totalTimeToInquiry / inquiryCount) : 0,
-            avgSessionDuration: sessions.length > 0 ? Math.round(totalDuration / sessions.length) : 0
+            avgSessionDuration: validSessions.length > 0 ? Math.round(totalDuration / validSessions.length) : 0
         };
     }
 }

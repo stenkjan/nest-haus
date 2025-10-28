@@ -75,15 +75,13 @@ async function fetchUserTrackingData(): Promise<UserTrackingData | null> {
   try {
     console.log("🔍 Fetching user tracking data...");
 
-    const response = await fetch(
-      `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/api/admin/user-tracking`,
-      {
-        cache: "no-store",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
+    // Use absolute path - Next.js handles this internally in server components
+    const response = await fetch("/api/admin/user-tracking", {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`API returned ${response.status}`);
