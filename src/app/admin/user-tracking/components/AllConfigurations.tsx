@@ -73,8 +73,17 @@ interface ConfigurationWithDetails {
   tracking: {
     selectionEventsCount: number;
     interactionEventsCount: number;
-    snapshotsCount: number;
     lastActivity: string;
+    interactionEvents: Array<{
+      id: string;
+      eventType: string;
+      category: string;
+      elementId: string | null;
+      selectionValue: string | null;
+      timestamp: string;
+    }>;
+    pageVisitsCount: number;
+    clickEventsCount: number;
   };
 
   payment: {

@@ -87,6 +87,16 @@ interface ConfigurationWithDetails {
         selectionEventsCount: number;
         interactionEventsCount: number;
         lastActivity: string;
+        interactionEvents: Array<{
+            id: string;
+            eventType: string;
+            category: string;
+            elementId: string | null;
+            selectionValue: string | null;
+            timestamp: string;
+        }>;
+        pageVisitsCount: number;
+        clickEventsCount: number;
     };
 
     // Payment information (from Stripe)
@@ -394,7 +404,16 @@ export async function GET() {
                     select: { id: true }
                 },
                 interactionEvents: {
-                    select: { id: true }
+                    select: {
+                        id: true,
+                        eventType: true,
+                        category: true,
+                        elementId: true,
+                        selectionValue: true,
+                        timestamp: true,
+                    },
+                    orderBy: { timestamp: 'desc' },
+                    take: 50 // Limit to last 50 interaction events per session
                 }
             },
             orderBy: {
@@ -491,7 +510,17 @@ export async function GET() {
                 tracking: {
                     selectionEventsCount: session.selectionEvents.length,
                     interactionEventsCount: session.interactionEvents.length,
-                    lastActivity: session.lastActivity.toISOString()
+                    lastActivity: session.lastActivity.toISOString(),
+                    interactionEvents: session.interactionEvents.map(event => ({
+                        id: event.id,
+                        eventType: event.eventType,
+                        category: event.category,
+                        elementId: event.elementId,
+                        selectionValue: event.selectionValue,
+                        timestamp: event.timestamp.toISOString()
+                    })),
+                    pageVisitsCount: session.interactionEvents.filter(e => e.eventType === 'page_visit').length,
+                    clickEventsCount: session.interactionEvents.filter(e => e.eventType === 'click').length,
                 },
 
                 payment
