@@ -20,7 +20,7 @@ export default function ModernVideoPlayer({
   enableFullscreen = true,
 }: ModernVideoPlayerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const playerRef = useRef<ReactPlayer>(null);
+  const playerRef = useRef<typeof ReactPlayer | null>(null);
 
   return (
     <>
