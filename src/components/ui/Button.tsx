@@ -50,13 +50,13 @@ const Button: React.FC<ButtonProps> = ({
     "secondary-narrow":
       "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500 shadow-sm",
     "secondary-narrow-white":
-      "bg-transparent border-1 border-white text-white hover:bg-white hover:text-black focus:ring-white",
+      "bg-transparent border-1 border-white text-white hover:bg-white hover:text-black focus:ring-white box-border",
     "secondary-narrow-blue":
-      "bg-transparent border-1 border-[#3D6CE1] text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1]",
+      "bg-transparent border-1 border-[#3D6CE1] text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1] box-border",
     tertiary:
-      "bg-transparent border-2 border-[#3D6CE1] text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1]",
+      "bg-transparent border-2 border-[#3D6CE1] text-[#3D6CE1] hover:bg-[#3D6CE1] hover:text-white focus:ring-[#3D6CE1] box-border",
     outline:
-      "border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500",
+      "border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 box-border",
     ghost: "text-gray-600 hover:bg-gray-100 focus:ring-gray-500",
 
     // Status Buttons

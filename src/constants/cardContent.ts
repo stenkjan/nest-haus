@@ -805,7 +805,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         id: 1,
         title: "Architektur fühlen,\nstatt nur sehen",
         subtitle: "",
-        description: "Gemeinsam entwerfen wir ein Zuhause, das dich wiederspiegelt",
+        description: "Gemeinsam entwerfen wir ein Zuhause, \n das dich wiederspiegelt",
         image: IMAGES.function.nestHausHandDrawing,
         backgroundColor: "#f4f4f4",
         aspectRatio: "2x2", // Portrait format
@@ -839,7 +839,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 3,
-        title: "Wohenn wie du willst, Nur mit Nest",
+        title: "Wohnen wie du willst, Nur mit Nest",
         subtitle: "",
         description: "So funktioniert die Zukunft",
         image: IMAGES.function.nestHausInteriorSteinplatten,

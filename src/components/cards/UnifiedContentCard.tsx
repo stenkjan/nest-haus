@@ -1647,32 +1647,13 @@ export default function UnifiedContentCard({
           <div className="py-8">{renderProcessDetailLayout()}</div>
         ) : (
           /* Cards Container - Carousel Layouts */
-          <div
-            className={`relative ${isLightboxMode ? "py-1 xl:py-2" : noPadding ? "" : "py-8"}`}
-          >
+          <div className="relative">
             {/* Integrated Progress Bar - Shown above cards when enabled */}
             {showProgress && displayCards.length > 1 && (
               <div className="mb-8 px-4 md:px-8">
                 {/* Desktop: Horizontal Progress Steps */}
                 <div className="hidden md:block">
                   <div className="relative max-w-4xl mx-auto">
-                    {/* Background Line */}
-                    <div className="absolute left-0 right-0 top-3 h-0.5 bg-gray-200" />
-                    {/* Progress Line */}
-                    <div
-                      className="absolute left-0 top-3 h-0.5 bg-blue-500 transition-all duration-300"
-                      style={{
-                        width:
-                          currentIndex === 0
-                            ? `${(1 / (displayCards.length * 2)) * 100}%`
-                            : displayCards.length === 1
-                              ? "100%"
-                              : currentIndex === displayCards.length - 1
-                                ? "100%"
-                                : `${(1 / (displayCards.length * 2)) * 100 + (currentIndex / (displayCards.length - 1)) * (100 - 100 / displayCards.length)}%`,
-                        transformOrigin: "left center",
-                      }}
-                    />
                     {/* Step Dots */}
                     <div
                       className="grid gap-0"
@@ -1680,6 +1661,25 @@ export default function UnifiedContentCard({
                         gridTemplateColumns: `repeat(${displayCards.length}, 1fr)`,
                       }}
                     >
+                      {/* Background Line - positioned to connect circle centers */}
+                      <div
+                        className="absolute top-3 h-0.5 bg-gray-200"
+                        style={{
+                          left: `calc(${100 / (displayCards.length * 2)}%)`,
+                          right: `calc(${100 / (displayCards.length * 2)}%)`,
+                        }}
+                      />
+                      {/* Progress Line - grows from first to current circle */}
+                      <div
+                        className="absolute top-3 h-0.5 bg-blue-500 transition-all duration-300"
+                        style={{
+                          left: `calc(${100 / (displayCards.length * 2)}%)`,
+                          width:
+                            currentIndex === 0
+                              ? "0%"
+                              : `calc(${(currentIndex / (displayCards.length - 1)) * (100 - 100 / displayCards.length)}%)`,
+                        }}
+                      />
                       {displayCards.map((card, idx) => {
                         const isActive = idx === currentIndex;
                         const isPassed = idx < currentIndex;
