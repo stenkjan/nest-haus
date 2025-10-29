@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import KonfiguratorClient from "./components/KonfiguratorClient";
 import {
   generatePageMetadata,
@@ -23,7 +25,19 @@ export async function generateStaticParams() {
 }
 
 // Server Component - Can handle initial data fetching, SEO, etc.
-export default function KonfiguratorPage() {
+export default async function KonfiguratorPage() {
+  // Server-side authentication check
+  const correctPassword = process.env.SITE_PASSWORD;
+
+  if (correctPassword) {
+    const cookieStore = await cookies();
+    const authCookie = cookieStore.get("nest-haus-auth");
+
+    if (!authCookie || authCookie.value !== correctPassword) {
+      redirect("/auth?redirect=" + encodeURIComponent("/konfigurator"));
+    }
+  }
+
   return (
     <>
       <script
