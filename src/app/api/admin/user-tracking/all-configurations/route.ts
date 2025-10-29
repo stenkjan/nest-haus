@@ -7,7 +7,7 @@
 import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { calculateModularPrice, calculateSizeDependentPrice } from '@/constants/configurator';
+import { calculateModularPrice } from '@/constants/configurator';
 
 interface DetailedItem {
     value: string;
