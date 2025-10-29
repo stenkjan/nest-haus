@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [96d2096b511070f5d7c96b2c89490730d3e5ffb5] - Wed Oct 29 13:31:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: revert playerRef type in ModernVideoPlayer to any for compatibility  - Changed playerRef type back to  from  to address compatibility issues in the component's implementation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/video/ModernVideoPlayer.tsx
+
+
+---
+
 ## [79fe74794e00a2613bf1f88fb2d768efc521f651] - Wed Oct 29 13:20:42 2025 +0100
 
 **Author**: stenkjan
