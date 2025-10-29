@@ -4,83 +4,69 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
+import { ModernVideoPlayer } from "@/components/video";
 import {
   LandingImagesCarousel,
   GetInContactBanner,
+  SectionHeader,
 } from "@/components/sections";
+import { IMAGES } from "@/constants/images";
 import Footer from "@/components/Footer";
 
-// Define sections with only vision section
+// Define sections
 const sections = [
   {
-    id: "vision",
-    title: "Unsere Vision",
-    slug: "vision",
+    id: "hero",
+    title: "Design für dich gemacht",
+    slug: "hero",
+  },
+  {
+    id: "video",
+    title: "Video Segment",
+    slug: "video",
   },
 ];
 
 export default function WarumWirClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("vision");
+  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
 
   return (
-    <div className="min-h-screen pt-12" bg-white>
+    <div className="min-h-screen pt-12 bg-white">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        {/* Section 1 - Vision */}
-        <section id="vision" className="w-full py-16 bg-black text-white">
+        {/* Section 1 - Hero */}
+        <section id="hero" className="w-full bg-white pt-12 flex items-center">
+          <div className="w-full">
+            <SectionHeader
+              title="Design für dich gemacht"
+              subtitle="Dein Design im Freistil."
+              titleClassName="text-gray-900"
+              wrapperMargin="mb-8"
+            />
+          </div>
+        </section>
+
+        {/* Section 2 - Video with Modern Player */}
+        <section id="video" className="w-full bg-white py-8 md:py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center text-white">
-              Die ®Nest Vision
-            </h1>
-            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-6xl mx-auto text-center text-white pb-16">
-              Eine Welt, in der Effizienz auf Architektur trifft. <br />
-              Eine Welt, in welcher Athmosphäre, Qualität und Nachhaltigkeit im
-              Mittelpunkt steht.
-            </h2>
+            <ModernVideoPlayer
+              videoPath={`/api/images?path=${IMAGES.videos.videoCard16}&redirect=true`}
+              aspectRatio="16/9"
+              autoPlay={false}
+              enableFullscreen={true}
+            />
 
-            <div className="text-center mb-12">
-              <p className="p-secondary text-white max-w-4xl mx-auto text-center">
-                Dein Nest Haus ist mehr als ein Gebäude. Es ist ein neues
-                Verständnis von Immobilien. <br />
-                Ein Zuhause, das nicht an Ort und Boden gebunden ist. Das
-                mitzieht, wenn das Leben ruft. Das weitergegeben wird, wenn sich
-                Wege trennen. <br />
-                <br />
-                Wir machen Wohnraum so flexibel wie dein Leben und eröffnen
-                damit einen völlig neuen Markt – einen Markt für mobile,
-                handelbare Häuser. <br />
-                <br />
-                Durch hochpräzise serielle Fertigung, inspiriert von der
-                Effizienz der Automobilindustrie, verbinden wir höchste Qualität
-                mit leistbaren Preisen. <br />
-                <br />
-                So entsteht ein neues Wohnsystem: erschwinglich, ästhetisch,
-                ökologisch und beweglich. <br />
-                Ein System, das die starren Regeln des Immobilienmarkts
-                aufbricht und eine neue Freiheit bringt. <br />
-                <br />
-                Wohnen im Freistil.
-              </p>
-              <p className="text-xs md:text-xs lg:text-xs xl:text-sm max-w-2xl mx-auto 2xl:text-base text-white leading-snug whitespace-pre-line mt-24">
-                Es gibt natürlich noch jede Menge Gründe, warum ein Nest Haus
-                dein perfektes Zuhause ist. Aber unsere Website macht gerade
-                noch ihre ersten Schritte. Bald findest du hier mehr Vorteile,
-                spannende Einblicke und die ganze Geschichte hinter Nest. Bleib
-                neugierig, es lohnt sich.
-              </p>
-
-              {/* Button Combination */}
-              <div className="flex gap-4 justify-center w-full mt-8">
-                <Link href="/entwurf">
-                  <Button variant="primary" size="xs">
-                    Entwurf
-                  </Button>
-                </Link>
-                <Link href="/nest-system">
-                  <Button variant="landing-secondary" size="xs">
-                    Nest System
-                  </Button>
-                </Link>
-              </div>
+            {/* Buttons Below Video */}
+            <div className="flex gap-4 justify-center w-full mt-8">
+              <Link href="/nest-system">
+                <Button variant="primary" size="xs">
+                  Nest System
+                </Button>
+              </Link>
+              <Link href="/entwurf">
+                <Button variant="landing-secondary-blue" size="xs">
+                  Entwurf
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
