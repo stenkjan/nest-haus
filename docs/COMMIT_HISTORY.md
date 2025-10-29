@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cae35b515337b936329da25e0eaa02d82333b4b0] - Wed Oct 29 14:17:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove unused imports in WarumWirClient  - Removed unused imports for Link and Button components to streamline the code and improve maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
 ## [e7bdb9dd323d9ed106b003ba1b1e149b510400d3] - Wed Oct 29 13:40:56 2025 +0100
 
 **Author**: stenkjan
