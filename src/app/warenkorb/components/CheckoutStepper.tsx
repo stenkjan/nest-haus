@@ -1288,7 +1288,7 @@ export default function CheckoutStepper({
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                    {PriceUtils.formatPrice(dueNow)}
+                    {PriceUtils.formatPrice(dueNow / 2)}
                   </div>
                 </div>
               </div>
@@ -1791,6 +1791,17 @@ export default function CheckoutStepper({
 
           {stepIndex === 3 && (
             <div className="space-y-4 pt-8">
+              {/* Show notification if redirected without booking appointment */}
+              {contactWarning && (
+                <div className="flex justify-center mb-6">
+                  <div className="border-2 border-gray-300 rounded-xl px-6 py-4 max-w-2xl bg-white">
+                    <p className="text-black font-normal text-base text-center">
+                      Bitte buchen Sie einen Beratungstermin, um die Zahlung
+                      Ihres Vorentwurfs abzuschließen.
+                    </p>
+                  </div>
+                </div>
+              )}
               <AppointmentBooking showLeftSide={false} />
 
               {/* Grundstückscheck Form Section */}
@@ -2534,11 +2545,21 @@ export default function CheckoutStepper({
                   </div>
                 </div>
                 <div className="text-right">
-                  <div
-                    className={`h2-title ${isPaymentCompleted ? "text-green-600" : "text-black"}`}
-                  >
-                    {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
-                  </div>
+                  {!isPaymentCompleted && (
+                    <div className="flex items-center gap-3 justify-end mb-1">
+                      <span className="h2-title text-gray-400 line-through">
+                        {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
+                      </span>
+                      <span className="h2-title text-black">
+                        {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE / 2)}
+                      </span>
+                    </div>
+                  )}
+                  {isPaymentCompleted && (
+                    <div className={`h2-title text-green-600`}>
+                      {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE / 2)}
+                    </div>
+                  )}
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
                 </div>
               </div>

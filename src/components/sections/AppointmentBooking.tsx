@@ -263,6 +263,8 @@ const AppointmentBooking = ({
 
       const result = await response.json();
 
+      console.log("📬 Appointment API response:", { ok: response.ok, result });
+
       if (response.ok && result.success) {
         console.log("✅ Appointment request sent successfully");
 
@@ -287,6 +289,11 @@ const AppointmentBooking = ({
         };
 
         setAppointmentDetails(appointmentDetails);
+
+        // IMPORTANT: Always show success message after successful submission
+        console.log(
+          "✅ Setting submitSuccess to true - success message should appear"
+        );
         setSubmitSuccess(true);
 
         // Store contact info in localStorage for checkout validation
