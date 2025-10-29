@@ -112,7 +112,6 @@ export default function DeinNestClient() {
           {/* Mobile Hero - Invisible spacer to ensure section exists for SectionRouter */}
           <div className="md:hidden h-1 w-full"></div>
         </section>
-
         {/* Section 2 - Video with Overlay Text and Buttons */}
         <section id="video" className="w-full relative bg-white">
           <div className="relative w-full">
@@ -225,7 +224,6 @@ export default function DeinNestClient() {
             </div>
           </div>
         </section>
-
         {/* Section 3 - Transportabilitaet Video */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Transportabilitaet" */}
         <section
@@ -272,7 +270,6 @@ export default function DeinNestClient() {
             ]}
           />
         </section>
-
         {/* Video-only Card Section */}
         <section className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
@@ -307,7 +304,7 @@ export default function DeinNestClient() {
             />
 
             {/* Button combination */}
-            <div className="flex flex-wrap gap-4 justify-center pb-8">
+            <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/entwurf">
                 <Button variant="primary" size="xs">
                   Vorentwurf verstehen
@@ -321,10 +318,11 @@ export default function DeinNestClient() {
             </div>
           </div>
         </section>
-
-        {/* Three Boxes Section - Modulhaus Vergleich */}
-        <ModulhausVergleichSection />
-
+        {/* Three Boxes Section - Modulhaus Vergleich */}^
+        <section
+          id="ModulhausVergleich" className="w-full py-8 md:py-16 bg-[#f4f4f4]">
+          <ModulhausVergleichSection />
+        </section>
         {/* Section 4 - Möglichkeiten Entdecken */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Moeglichkeiten-Entdecken" */}
         <section id="moeglichkeiten" className="w-full py-8 md:py-16 bg-white">
@@ -402,7 +400,6 @@ export default function DeinNestClient() {
             />
           </div>
         </section>
-
         {/* Section 5 - Konfigurationen */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Konfigurationen" */}
         <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
@@ -447,7 +444,6 @@ export default function DeinNestClient() {
             ]}
           />
         </section>
-
         {/* Section 6 - So läuft es ab */}
         <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
@@ -468,7 +464,6 @@ export default function DeinNestClient() {
             enableLightbox={false}
           />
         </section>
-
         {/* Section 7 - Planungspakete */}
         <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -487,7 +482,6 @@ export default function DeinNestClient() {
             />
           </div>
         </section>
-
         {/* Section 8 - Partners */}
         <section id="partners" className="w-full pb-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
