@@ -4,6 +4,105 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [db27c599c6fa1f44cdb4dda9dd584e061e633efa] - Wed Oct 29 13:35:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update playerRef type in ModernVideoPlayer for improved TypeScript safety  - Changed playerRef type from  to  to enhance type safety and align with TypeScript best practices.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/video/ModernVideoPlayer.tsx
+
+
+---
+
+## [96d2096b511070f5d7c96b2c89490730d3e5ffb5] - Wed Oct 29 13:31:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: revert playerRef type in ModernVideoPlayer to any for compatibility  - Changed playerRef type back to  from  to address compatibility issues in the component's implementation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/video/ModernVideoPlayer.tsx
+
+
+---
+
+## [79fe74794e00a2613bf1f88fb2d768efc521f651] - Wed Oct 29 13:20:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: refine playerRef type in ModernVideoPlayer for improved TypeScript accuracy  - Updated playerRef type to  for better type safety and clarity in the component's implementation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/video/ModernVideoPlayer.tsx
+
+
+---
+
+## [e7cbd450dfa4b7d0abd172467e5a2510739fdd14] - Wed Oct 29 13:11:37 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: add missing newline at end of vercel.json for proper formatting  `
+
+### Changes Analysis
+
+---
+
+## [ed109a64e8bea1f3e7fb3c735f4dbb1186fe5d9e] - Wed Oct 29 13:05:21 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update playerRef type in ModernVideoPlayer for better TypeScript compatibility  - Changed playerRef type from  to  to enhance type safety and prevent potential runtime errors.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/video/ModernVideoPlayer.tsx
+
+
+---
+
+## [79d3804e0411a6a0527c52cb9a8debe27aba9111] - Wed Oct 29 13:00:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [a7f382db723bffcccc10446623a73868b183d956] - Wed Oct 29 12:55:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/video/InteractiveVideoPlayer.tsx
+- src/components/video/ModernVideoPlayer.tsx
+- src/components/video/index.ts
+- src/components/video/video-player.css
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [16e2de4c477efa5155fd02a9017531b0c1728199] - Wed Oct 29 12:42:38 2025 +0100
 
 **Author**: stenkjan

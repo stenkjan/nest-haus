@@ -10,21 +10,28 @@
 import { useEffect } from "react";
 import { useInteractionTracking } from "@/hooks/useInteractionTracking";
 import { useSessionId } from "@/hooks/useSessionId";
+import { useConfiguratorStore } from "@/store/configuratorStore";
 
 export default function SessionInteractionTracker() {
-  const sessionId = useSessionId();
+  // CRITICAL: Use configurator's session ID, not a separate one!
+  const { configuration } = useConfiguratorStore();
+  const fallbackSessionId = useSessionId();
+
+  // Use configurator session ID if available, fall back to localStorage session
+  const sessionId = configuration?.sessionId || fallbackSessionId;
 
   // Log session ID for debugging
   useEffect(() => {
     if (sessionId) {
       console.log(
         "🎯 SessionInteractionTracker initialized with session ID:",
-        sessionId
+        sessionId,
+        configuration?.sessionId ? "(from configurator)" : "(from localStorage)"
       );
     } else {
       console.warn("⚠️ SessionInteractionTracker - no session ID yet");
     }
-  }, [sessionId]);
+  }, [sessionId, configuration?.sessionId]);
 
   // Initialize tracking with auto-tracking enabled
   const { trackClick, trackFormInteraction } = useInteractionTracking({

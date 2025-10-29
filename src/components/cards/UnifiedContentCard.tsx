@@ -152,7 +152,7 @@ export default function UnifiedContentCard({
   heightMode = "standard",
   imagePadding = "none", // Default: no padding (edge-to-edge)
   aspectRatio = "2x1", // Default: 2x1 aspect ratio for overlay-text
-  noPadding = false, // Default: include py-8 padding
+  noPadding: _noPadding = false, // Default: include py-8 padding
   showProgress = false, // Default: don't show integrated progress bar
   category,
   customData,

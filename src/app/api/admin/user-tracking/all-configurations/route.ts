@@ -256,6 +256,13 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
             const innenverkleidungUpgrade = calculateModularPrice(nest.value, 'trapezblech', innenverkleidung.value, 'ohne_parkett') - basePrice;
             const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'kiefer', fussboden.value) - basePrice;
 
+            // Recalculate fussboden - use combination pricing (not size-dependent)
+            // Stone floors (kalkstein_kanafar, schiefer_massiv, parkett) are part of combination pricing
+            let recalculatedFussboden = fussboden;
+            if (fussboden) {
+                recalculatedFussboden = fussbodenUpgrade > 0 ? { ...fussboden, price: fussbodenUpgrade } : { ...fussboden, price: 0 };
+            }
+
             // Recalculate belichtungspaket price (dynamic based on nest size and fenster)
             let recalculatedBelichtungspaket = belichtungspaket;
             if (belichtungspaket && nest && fenster) {
@@ -287,20 +294,26 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
                 };
             }
 
+            // Fenster price is always 0 (included in belichtungspaket)
+            let recalculatedFenster = fenster;
+            if (fenster) {
+                recalculatedFenster = { ...fenster, price: 0 };
+            }
+
             return {
                 // Core items: show base + upgrades
                 nest: { ...nest, price: basePrice },
                 gebaeudehuelle: gebaeudehulleUpgrade > 0 ? { ...gebaeudehuelle, price: gebaeudehulleUpgrade } : { ...gebaeudehuelle, price: 0 },
                 innenverkleidung: innenverkleidungUpgrade > 0 ? { ...innenverkleidung, price: innenverkleidungUpgrade } : { ...innenverkleidung, price: 0 },
-                fussboden: fussbodenUpgrade > 0 ? { ...fussboden, price: fussbodenUpgrade } : { ...fussboden, price: 0 },
+                fussboden: recalculatedFussboden,
 
                 // Recalculated items
                 belichtungspaket: recalculatedBelichtungspaket,
                 pvanlage: recalculatedPvanlage,
                 geschossdecke: recalculatedGeschossdecke,
+                fenster: recalculatedFenster,
 
                 // Other items: use stored prices as-is
-                fenster,
                 stirnseite,
                 planungspaket,
                 bodenaufbau,

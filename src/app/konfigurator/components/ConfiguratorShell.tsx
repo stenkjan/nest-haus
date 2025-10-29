@@ -230,13 +230,14 @@ export default function ConfiguratorShell({
       // Keep overlays persistent across related selections
 
       // Hide PV overlay only when switching to truly incompatible categories
-      // Allow PV overlay to persist with belichtungspaket, gebäudehülle, and nest changes
+      // Allow PV overlay to persist with belichtungspaket, gebäudehülle, fenster, and nest changes
       if (
         categoryId !== "pvanlage" &&
         isPvOverlayVisible &&
         categoryId !== "nest" && // Allow nest changes to keep PV overlay
         categoryId !== "belichtungspaket" && // Allow belichtungspaket changes to keep PV overlay
         categoryId !== "gebaeudehuelle" && // Allow gebäudehülle changes to keep PV overlay
+        categoryId !== "fenster" && // Allow fenster changes to keep PV overlay
         categoryId !== "planungspaket"
       ) {
         setIsPvOverlayVisible(false);
@@ -287,10 +288,10 @@ export default function ConfiguratorShell({
             setGeschossdeckeQuantity(1);
             setIsGeschossdeckeOverlayVisible(true);
 
-            // Switch to exterior view to show the geschossdecke overlay (material combination)
+            // Switch to interior view to show the same image as fussboden/innenverkleidung
             const { switchToView } = useConfiguratorStore.getState();
             if (switchToView) {
-              switchToView("exterior");
+              switchToView("interior");
             }
           }
         }
