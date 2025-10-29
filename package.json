@@ -49,6 +49,7 @@
     "node-ical": "^0.21.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-player": "^3.3.3",
     "resend": "^4.8.0",
     "stripe": "^19.1.0",
     "tailwind-merge": "^3.3.1",

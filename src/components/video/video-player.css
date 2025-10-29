@@ -1,0 +1,47 @@
+/* Custom styling for video player range inputs */
+
+/* Chrome, Safari, Edge */
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 10;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: none;
+    position: relative;
+    z-index: 10;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Remove default track styling */
+input[type="range"]::-webkit-slider-runnable-track {
+    background: transparent;
+    height: 4px;
+}
+
+input[type="range"]::-moz-range-track {
+    background: transparent;
+    height: 4px;
+}
