@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
-import { Button } from "@/components/ui";
 import { ModernVideoPlayer } from "@/components/video";
 import {
   LandingImagesCarousel,
