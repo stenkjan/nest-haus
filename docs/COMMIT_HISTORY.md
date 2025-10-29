@@ -4,6 +4,31 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a7f382db723bffcccc10446623a73868b183d956] - Wed Oct 29 12:55:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/video/InteractiveVideoPlayer.tsx
+- src/components/video/ModernVideoPlayer.tsx
+- src/components/video/index.ts
+- src/components/video/video-player.css
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [16e2de4c477efa5155fd02a9017531b0c1728199] - Wed Oct 29 12:42:38 2025 +0100
 
 **Author**: stenkjan
