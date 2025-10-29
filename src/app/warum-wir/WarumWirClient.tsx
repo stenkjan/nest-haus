@@ -56,14 +56,28 @@ export default function WarumWirClient() {
             />
 
             {/* Text Content Below Video */}
-            <div className="max-w-[1536px] mx-auto px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-32 mt-8 md:mt-12">
+            <div className="max-w-[1024px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-48 mt-8 md:mt-12">
               <h2
-                className="h2-title text-white"
+                className="h2-title text-white text-center"
                 dangerouslySetInnerHTML={{
                   __html:
-                    "<span class='text-nest-gray'>Unsere Vision ist es,</span> <span class='text-white font-medium'>individuelles Wohnen zugänglich zu machen</span> <span class='text-nest-gray'>- ohne Kompromisse bei</span> <span class='text-white font-medium'>Qualität, Design oder Nachhaltigkeit.</span>",
+                    "<span class='text-nest-gray'>Dein Nest ist</span> <span class='text-white font-medium'>mehr als ein Gebäude.</span> <span class='text-nest-gray'>Es ist </span> <span class='text-white font-medium'>eine neue Art zu leben.</span> <span class='text-nest-gray'>Ein</span> <span class='text-white font-medium'>Zuhause,</span> <span class='text-nest-gray'>das mit dir wächst, sich bewegt und</span> <span class='text-white font-medium'>Freiraum</span> <span class='text-nest-gray'>schafft.</span>",
                 }}
               />
+
+              {/* Buttons Below Text */}
+              <div className="flex gap-4 justify-center w-full mt-8">
+                <Link href="/nest-system">
+                  <Button variant="primary" size="xs">
+                    Nest System
+                  </Button>
+                </Link>
+                <Link href="/entwurf">
+                  <Button variant="secondary-narrow-blue" size="xs">
+                    Entwurf
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
