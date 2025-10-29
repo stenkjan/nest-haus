@@ -26,8 +26,9 @@ export default function AdminAuthForm() {
       });
 
       if (response.ok) {
-        // Set cookie and redirect
-        document.cookie = `nest-haus-admin-auth=${password}; path=/; max-age=86400; secure; samesite=strict`;
+        // Cookie is set by the API response, just redirect
+        // Wait a moment for cookie to be set
+        await new Promise((resolve) => setTimeout(resolve, 100));
         router.push(redirectTo);
       } else {
         setError("Incorrect admin password");

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import EntwurfClient from "./EntwurfClient";
 
 // Enhanced SEO metadata for the entwurf page
@@ -84,7 +86,19 @@ const designServiceSchema = {
 };
 
 // Server Component - Can handle SEO, metadata, and structured data
-export default function EntwurfPage() {
+export default async function EntwurfPage() {
+  // Server-side authentication check
+  const correctPassword = process.env.SITE_PASSWORD;
+
+  if (correctPassword) {
+    const cookieStore = await cookies();
+    const authCookie = cookieStore.get("nest-haus-auth");
+
+    if (!authCookie || authCookie.value !== correctPassword) {
+      redirect("/auth?redirect=" + encodeURIComponent("/entwurf"));
+    }
+  }
+
   return (
     <>
       <script

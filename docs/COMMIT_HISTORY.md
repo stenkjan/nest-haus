@@ -4,6 +4,50 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [53045d7f7bfe9427c57d1b4dfb1e653d74fa8a5c] - Wed Oct 29 10:35:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [3db8781d75ef306a40585b3691a9ad1312533934] - Wed Oct 29 10:08:41 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [3206f2f6ef42fd464e1051ae94c7f566a710d9ef] - Wed Oct 29 09:38:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [b410a3ba859b1b659723cdca1e2826ea49170e6e] - Tue Oct 28 20:55:41 2025 +0100
 
 **Author**: stenkjan
