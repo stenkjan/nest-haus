@@ -69,12 +69,12 @@ export default function WarumWirClient() {
               <div className="flex gap-4 justify-center w-full mt-8">
                 <Link href="/nest-system">
                   <Button variant="primary" size="xs">
-                    Nest System
+                    Termin vereinbaren
                   </Button>
                 </Link>
                 <Link href="/entwurf">
                   <Button variant="secondary-narrow-blue" size="xs">
-                    Entwurf
+                    Projekt starten
                   </Button>
                 </Link>
               </div>
