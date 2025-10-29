@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c0bbac467bd6e3e56dc769a24f58857fb1dd5d82] - Wed Oct 29 16:15:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [cae35b515337b936329da25e0eaa02d82333b4b0] - Wed Oct 29 14:17:42 2025 +0100
 
 **Author**: stenkjan
