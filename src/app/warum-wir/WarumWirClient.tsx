@@ -34,39 +34,36 @@ export default function WarumWirClient() {
     <div className="min-h-screen pt-12 bg-white">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero */}
-        <section id="hero" className="w-full bg-white pt-12 flex items-center">
+        <section id="hero" className="w-full bg-black pt-12 flex items-center">
           <div className="w-full">
             <SectionHeader
-              title="Design für dich gemacht"
-              subtitle="Dein Design im Freistil."
-              titleClassName="text-gray-900"
+              title="Die ®Nest Vision"
+              subtitle="Eine Welt, in der Effizienz auf Architektur trifft."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
               wrapperMargin="mb-8"
             />
           </div>
         </section>
 
         {/* Section 2 - Video with Modern Player */}
-        <section id="video" className="w-full bg-white py-8 md:py-16">
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="video" className="w-full bg-black pb-8 md:pb-16">
+          <div className="w-full">
             <ModernVideoPlayer
-              videoPath={`/api/images?path=${IMAGES.videos.videoCard16}&redirect=true`}
+              videoPath={`/api/images?path=${IMAGES.videos.videoCard16}`}
               aspectRatio="16/9"
               autoPlay={false}
-              enableFullscreen={true}
             />
 
-            {/* Buttons Below Video */}
-            <div className="flex gap-4 justify-center w-full mt-8">
-              <Link href="/nest-system">
-                <Button variant="primary" size="xs">
-                  Nest System
-                </Button>
-              </Link>
-              <Link href="/entwurf">
-                <Button variant="landing-secondary-blue" size="xs">
-                  Entwurf
-                </Button>
-              </Link>
+            {/* Text Content Below Video */}
+            <div className="max-w-[1536px] mx-auto px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-32 mt-8 md:mt-12">
+              <h2
+                className="h2-title text-white"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    "<span class='text-nest-gray'>Unsere Vision ist es,</span> <span class='text-white font-medium'>individuelles Wohnen zugänglich zu machen</span> <span class='text-nest-gray'>- ohne Kompromisse bei</span> <span class='text-white font-medium'>Qualität, Design oder Nachhaltigkeit.</span>",
+                }}
+              />
             </div>
           </div>
         </section>

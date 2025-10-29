@@ -1,15 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import ReactPlayer from "react-player";
-import { Dialog } from "@/components/ui";
+import React, { useState, useEffect, useRef } from "react";
 
 interface ModernVideoPlayerProps {
   videoPath: string;
   aspectRatio?: "16/9" | "21/9" | "4/3";
   autoPlay?: boolean;
   className?: string;
-  enableFullscreen?: boolean;
 }
 
 export default function ModernVideoPlayer({
@@ -17,94 +14,138 @@ export default function ModernVideoPlayer({
   aspectRatio = "16/9",
   autoPlay = false,
   className = "",
-  enableFullscreen = true,
 }: ModernVideoPlayerProps) {
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const playerRef = useRef<ReactPlayer>(null);
+  const [resolvedUrl, setResolvedUrl] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Resolve the video URL from API
+  useEffect(() => {
+    const fetchVideoUrl = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        console.log("Fetching video from:", videoPath);
+
+        // If videoPath already includes /api/, fetch the actual URL
+        if (videoPath.includes("/api/")) {
+          const response = await fetch(videoPath);
+
+          console.log("API Response status:", response.status);
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch video: ${response.status} ${response.statusText}`
+            );
+          }
+
+          const data = await response.json();
+          console.log("API Response data:", data);
+
+          if (!data.url) {
+            throw new Error("No URL in API response");
+          }
+
+          console.log("✅ Video URL resolved:", data.url);
+          setResolvedUrl(data.url);
+        } else {
+          // Direct URL provided
+          console.log("✅ Using direct URL:", videoPath);
+          setResolvedUrl(videoPath);
+        }
+      } catch (err) {
+        console.error("❌ Error fetching video URL:", err);
+        setError(err instanceof Error ? err.message : "Failed to load video");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchVideoUrl();
+  }, [videoPath]);
+
+  // Handle video load
+  useEffect(() => {
+    if (resolvedUrl && videoRef.current) {
+      console.log("🎬 Video element src set to:", resolvedUrl);
+      videoRef.current.load();
+    }
+  }, [resolvedUrl]);
+
+  if (isLoading) {
+    return (
+      <div
+        className={`relative w-full bg-gray-900 rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center ${className}`}
+        style={{ aspectRatio }}
+      >
+        <div className="text-white text-center">
+          <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm">Loading video...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !resolvedUrl) {
+    return (
+      <div
+        className={`relative w-full bg-gray-900 rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center ${className}`}
+        style={{ aspectRatio }}
+      >
+        <div className="text-white text-center p-8">
+          <svg
+            className="w-16 h-16 mx-auto mb-4 text-red-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <p className="text-sm mb-2">{error || "Failed to load video"}</p>
+          <p className="text-xs text-gray-400">Check console for details</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      {/* Regular Video Player */}
-      {!isFullscreen && (
-        <div
-          className={`relative w-full bg-black rounded-2xl overflow-hidden shadow-2xl ${className}`}
-          style={{ aspectRatio }}
-        >
-          <ReactPlayer
-            ref={playerRef}
-            url={videoPath}
-            width="100%"
-            height="100%"
-            controls={true}
-            playing={autoPlay}
-            muted={autoPlay}
-            loop={false}
-            playsinline={true}
-            pip={false}
-            stopOnUnmount={true}
-            config={{
-              file: {
-                attributes: {
-                  controlsList: "nodownload",
-                  disablePictureInPicture: true,
-                },
-              },
-            }}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-          />
-
-          {/* Fullscreen Button Overlay */}
-          {enableFullscreen && (
-            <button
-              onClick={() => setIsFullscreen(true)}
-              className="absolute top-4 right-4 z-50 text-white bg-black/50 hover:bg-black/70 rounded-full p-3 transition-all duration-200 hover:scale-110 backdrop-blur-sm"
-              aria-label="Fullscreen"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
-              </svg>
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* Fullscreen Dialog */}
-      {isFullscreen && (
-        <Dialog
-          isOpen={isFullscreen}
-          onClose={() => setIsFullscreen(false)}
-          transparent={true}
-          className="p-0 bg-black"
-        >
-          <div className="w-full h-full flex items-center justify-center p-4 md:p-8">
-            <div className="relative w-full h-full max-w-7xl">
-              <ReactPlayer
-                ref={playerRef}
-                url={videoPath}
-                width="100%"
-                height="100%"
-                controls={true}
-                playing={true}
-                loop={false}
-                playsinline={true}
-                pip={false}
-                config={{
-                  file: {
-                    attributes: {
-                      controlsList: "nodownload",
-                      disablePictureInPicture: true,
-                    },
-                  },
-                }}
-              />
-            </div>
-          </div>
-        </Dialog>
-      )}
-    </>
+    <div
+      className={`relative w-full bg-black shadow-2xl ${className}`}
+      style={{ aspectRatio }}
+    >
+      <video
+        ref={videoRef}
+        className="w-full h-full"
+        controls
+        controlsList="nodownload"
+        disablePictureInPicture
+        autoPlay={autoPlay}
+        muted={autoPlay}
+        playsInline
+        crossOrigin="anonymous"
+        preload="metadata"
+        onLoadedMetadata={() => console.log("✅ Video metadata loaded")}
+        onLoadedData={() => console.log("✅ Video data loaded")}
+        onCanPlay={() => console.log("✅ Video can play")}
+        onPlay={() => console.log("▶️ Video playing")}
+        onError={(e) => {
+          console.error("❌ Video error:", e);
+          const videoElement = e.currentTarget;
+          console.error("Video error code:", videoElement.error?.code);
+          console.error("Video error message:", videoElement.error?.message);
+          setError("Video playback error");
+        }}
+      >
+        <source src={resolvedUrl} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
   );
 }
