@@ -1665,7 +1665,7 @@ export default function CheckoutStepper({
                     <div className="w-full md:w-1/2">
                       <div className="aspect-square w-full max-w-md mx-auto">
                         <HybridBlobImage
-                          name="holzlattung_eiche_parkett"
+                          path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
                           alt="NEST-Haus Konfiguration Holzlattung Eiche Parkett"
                           fill
                           className="rounded-lg object-cover"
