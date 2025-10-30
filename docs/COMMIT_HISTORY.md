@@ -4,6 +4,33 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5b5339bc051e8dbf86269ffe48e8c1f8f0048872] - Thu Oct 30 20:12:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/ClickAnalytics.tsx
+- src/app/admin/user-tracking/components/ConfigurationSelectionAnalytics.tsx
+- src/app/admin/user-tracking/components/TrackingActions.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/user-tracking/actions/route.ts
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/steps.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/WARENKORB_REFACTORING_PROGRESS.md
+
+
+---
+
 ## [07aad28ecddce982a44a499dbea99c5fb0ae8e76] - Thu Oct 30 16:24:26 2025 +0100
 
 **Author**: stenkjan
