@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [08a588d8717e6051b556a1ae0e4fa430a16011cf] - Thu Oct 30 16:21:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: correct CardVariant prop in CheckoutStepper  - Changed variant from invalid 'compact' to valid 'responsive' - Resolves TypeScript error: CardVariant only accepts 'responsive' or 'static'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [3cc046e7b1d258c7bf7d7dd2d9241495dfe9cd93] - Thu Oct 30 16:19:35 2025 +0100
 
 **Author**: stenkjan
