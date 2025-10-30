@@ -135,6 +135,7 @@ export default function EntwurfClient() {
             maxWidth={false}
             showInstructions={false}
             noPadding={true}
+            alignment="left"
             customData={entwurfVideoCards}
           />
         </div>

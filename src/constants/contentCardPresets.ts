@@ -4,6 +4,7 @@ import {
     PLANUNGSPAKETE_CONTENT,
     ENTWURF_VIDEO_CARDS_CONTENT,
     VIDEO_BACKGROUND_CARDS_CONTENT,
+    GLASS_QUOTE_CARDS_CONTENT,
 } from "./cardContent";
 
 // Content Card Presets for reuse across the application
@@ -461,3 +462,71 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
  * 
  * ==================================================================================
  */
+
+/**
+ * ==================================================================================
+ * GLASS QUOTE CARDS PRESET
+ * ==================================================================================
+ * 
+ * Quote-style cards with glass background for testimonials and impactful statements.
+ * Features quote mark, mixed bold/gray text formatting, and attribution.
+ * 
+ * CARD FEATURES:
+ * ---------------
+ * - Layout: "glass-quote" - Glass background with quote-style text layout
+ * - Text Format: Quote text with **bold segments** (wrap in **text** for bold)
+ * - Attribution: Separated by ||| (triple pipe)
+ *   Format: "quote text with **bold**|||Name|||Title"
+ * - Style: Glass effect with backdrop blur
+ * - Colors: White text for bold, gray for normal text
+ * - Aspect Ratio: Wider cards (1.2x width) for better readability
+ * 
+ * USAGE EXAMPLE:
+ * ---------------
+ * ```tsx
+ * import { GLASS_QUOTE_CARDS_PRESET } from "@/constants/contentCardPresets";
+ * 
+ * <UnifiedContentCard
+ *   layout="glass-quote"
+ *   style="glass"
+ *   variant="responsive"
+ *   backgroundColor="black"
+ *   maxWidth={true}
+ *   showInstructions={true}
+ *   customData={GLASS_QUOTE_CARDS_PRESET.cards}
+ * />
+ * ```
+ * 
+ * TEXT FORMATTING:
+ * -----------------
+ * - Use **text** to make text white and bold
+ * - Regular text appears in gray
+ * - Separate quote, name, and title with |||
+ * 
+ * Example:
+ * "Ein **zukunftsweisendes** Projekt|||Dr. Name|||Position"
+ * 
+ * BACKGROUND:
+ * -----------
+ * - Use black background (backgroundColor="black") for best glass effect
+ * - Glass effect includes backdrop blur and subtle border
+ * - Dark overlay ensures text readability
+ * 
+ * RESPONSIVE BEHAVIOR:
+ * --------------------
+ * - Desktop: 1.9 cards per view on large screens
+ * - Tablet: 1.5 cards per view
+ * - Mobile: 1.3 cards per view with narrower aspect ratio
+ * - Text scales with breakpoints for optimal readability
+ * 
+ * ==================================================================================
+ */
+export const GLASS_QUOTE_CARDS_PRESET = {
+    layout: "glass-quote" as const,
+    style: "glass" as const,
+    variant: "responsive" as const,
+    backgroundColor: "black" as const,
+    maxWidth: true,
+    showInstructions: true,
+    cards: GLASS_QUOTE_CARDS_CONTENT,
+};

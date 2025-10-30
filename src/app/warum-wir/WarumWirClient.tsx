@@ -5,6 +5,7 @@ import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import { ModernVideoPlayer } from "@/components/video";
+import { UnifiedContentCard } from "@/components/cards";
 import {
   LandingImagesCarousel,
   GetInContactBanner,
@@ -24,6 +25,11 @@ const sections = [
     id: "video",
     title: "Video Segment",
     slug: "video",
+  },
+  {
+    id: "testimonials",
+    title: "Expertenstimmen",
+    slug: "testimonials",
   },
 ];
 
@@ -56,7 +62,7 @@ export default function WarumWirClient() {
             />
 
             {/* Text Content Below Video */}
-            <div className="max-w-[1024px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-48 mt-8 md:mt-12">
+            <div className="max-w-[1024px] 2xl:max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-8 mt-8 md:mt-12">
               <h2
                 className="h2-title text-white text-center"
                 dangerouslySetInnerHTML={{
@@ -79,6 +85,30 @@ export default function WarumWirClient() {
                 </Link>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Section 3 - Testimonials / Glass Quote Cards */}
+        <section id="testimonials" className="w-full bg-black py-16 md:py-24">
+          <div className="w-full">
+            <SectionHeader
+              title="Verlässlichkeit, auf die du bauen kannst"
+              subtitle="Innovationen entstehen dort, wo junge Ideen auf Erfahrung treffen."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+              wrapperMargin="mb-12"
+            />
+
+            <UnifiedContentCard
+              layout="glass-quote"
+              style="glass"
+              variant="responsive"
+              category="glassQuoteCards"
+              backgroundColor="black"
+              maxWidth={false}
+              showInstructions={false}
+              alignment="left"
+            />
           </div>
         </section>
       </SectionRouter>

@@ -18,6 +18,8 @@ The `UnifiedContentCard` is a flexible, multi-layout card component that handles
 - **`video`** - Video card with responsive aspect ratios
 - **`text-icon`** - Text-only card with optional icon (no image)
 - **`image-only`** - Image only, no text overlay
+- **`overlay-text`** - Full background with text overlay and buttons
+- **`glass-quote`** - Glass background with quote-style text (testimonials)
 
 ### Supported Styles
 
@@ -56,6 +58,8 @@ Use these category strings with the `category` prop:
 - `"ablaufSteps"` - Process steps (7 cards)
 - `"planungspakete"` - Planning packages (3 cards)
 - `"fullImageCards"` - Full-width image cards
+- `"videoBackgroundCards"` - Video background overlay cards
+- `"glassQuoteCards"` - Glass quote cards for testimonials (3 cards)
 
 ### Advanced Example
 
@@ -238,6 +242,24 @@ const customCards: ContentCardData[] = [
 - No images - pure text content
 - Best for: Process steps, feature lists
 
+### Glass-Quote Layout (Testimonials)
+
+```tsx
+<UnifiedContentCard
+  layout="glass-quote"
+  style="glass"
+  category="glassQuoteCards"
+  backgroundColor="black"
+/>
+```
+
+- Glass morphism effect with backdrop blur
+- Quote mark with mixed bold/gray text formatting
+- Attribution section (name + title)
+- Text format: `"quote with **bold**|||Name|||Title"`
+- Best for: Testimonials, impactful statements
+- **See:** `docs/GLASS-QUOTE-CARDS-GUIDE.md` for complete documentation
+
 ---
 
 ## 📁 File Structure
@@ -346,6 +368,14 @@ interface ButtonConfig {
 <UnifiedContentCard
   category="photovoltaik"
   layout="video"
+/>
+
+// Testimonials / Quotes
+<UnifiedContentCard
+  layout="glass-quote"
+  style="glass"
+  category="glassQuoteCards"
+  backgroundColor="black"
 />
 ```
 
