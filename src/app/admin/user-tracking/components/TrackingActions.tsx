@@ -8,7 +8,7 @@ export default function TrackingActions() {
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const handleAction = async (action: 'remove' | 'reset' | 'remove-old') => {
+  const handleAction = async (action: 'remove' | 'reset') => {
     if (!confirm(getConfirmationMessage(action))) {
       return;
     }
@@ -55,8 +55,6 @@ export default function TrackingActions() {
         return 'Are you sure you want to REMOVE ALL configurations? This will permanently delete all sessions with configurations. This action cannot be undone!';
       case 'reset':
         return 'Are you sure you want to RESET all configurations? This will clear all configuration data but keep the sessions. This action cannot be undone!';
-      case 'remove-old':
-        return 'Are you sure you want to remove all configurations prior to October 27, 2024? This will permanently delete those sessions. This action cannot be undone!';
       default:
         return 'Are you sure?';
     }
@@ -89,14 +87,6 @@ export default function TrackingActions() {
           className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
         >
           {isLoading === 'reset' ? 'Resetting...' : 'Reset All Configurations'}
-        </button>
-
-        <button
-          onClick={() => handleAction('remove-old')}
-          disabled={isLoading !== null}
-          className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
-        >
-          {isLoading === 'remove-old' ? 'Removing...' : 'Remove Old Configurations (< Oct 27)'}
         </button>
       </div>
 
