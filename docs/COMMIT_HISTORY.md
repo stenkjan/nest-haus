@@ -4,6 +4,31 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6dd66f65b367572cfb41b10c4ce56715932a57cb] - Thu Oct 30 13:24:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+- src/app/globals.css
+- src/app/showcase/cards/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/cards/README.md
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/GLASS-QUOTE-CARDS-GUIDE.md
+- docs/GLASS-QUOTE-CARDS-QUICK-REF.md
+- docs/GLASS-QUOTE-CARDS-SUMMARY.md
+
+
+---
+
 ## [418d94d87855725cb7beb218ba22aac3f1168a7a] - Thu Oct 30 13:08:44 2025 +0100
 
 **Author**: stenkjan
