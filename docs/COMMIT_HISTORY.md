@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [07aad28ecddce982a44a499dbea99c5fb0ae8e76] - Thu Oct 30 16:24:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: remove invalid cardId prop from UnifiedContentCard  - Removed cardId prop that doesn't exist in UnifiedContentCardProps interface - Component uses category prop to load planungspakete data - Resolves TypeScript error: Property 'cardId' does not exist  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [08a588d8717e6051b556a1ae0e4fa430a16011cf] - Thu Oct 30 16:21:46 2025 +0100
 
 **Author**: stenkjan
