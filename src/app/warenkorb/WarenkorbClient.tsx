@@ -40,10 +40,10 @@ export default function WarenkorbClient() {
     () =>
       ({
         0: "übersicht",
-        1: "vorentwurfsplan",
-        2: "planungspakete",
-        3: "terminvereinbarung",
-        4: "liefertermin",
+        1: "check-und-vorentwurf",
+        2: "terminvereinbarung",
+        3: "planungspakete",
+        4: "abschluss",
       }) as const,
     []
   );
@@ -52,10 +52,10 @@ export default function WarenkorbClient() {
     () =>
       ({
         übersicht: 0,
-        vorentwurfsplan: 1,
-        planungspakete: 2,
-        terminvereinbarung: 3,
-        liefertermin: 4,
+        "check-und-vorentwurf": 1,
+        terminvereinbarung: 2,
+        planungspakete: 3,
+        abschluss: 4,
       }) as const,
     []
   );
