@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1dbb1555d6a9f7780ac131fe306d26e0418d6d78] - Thu Oct 30 14:08:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove 'remove-old' action from TrackingActions component  - Eliminated the 'remove-old' action from the handleAction function to simplify configuration management. - Updated confirmation messages and button rendering to reflect the removal, enhancing clarity and usability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/TrackingActions.tsx
+
+
+---
+
 ## [fb622c5e32290eeacc6e9d655c5c1f10bb8d2f97] - Thu Oct 30 13:55:06 2025 +0100
 
 **Author**: stenkjan
