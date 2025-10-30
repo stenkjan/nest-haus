@@ -1994,7 +1994,6 @@ export default function CheckoutStepper({
                         <UnifiedContentCard
                           key={card.id}
                           category="planungspakete"
-                          cardId={card.id}
                           layout="square"
                           style="standard"
                           variant="responsive"
