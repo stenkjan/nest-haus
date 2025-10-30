@@ -14,6 +14,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import AllConfigurations from "./components/AllConfigurations";
+import ClickAnalytics from "./components/ClickAnalytics";
+import ConfigurationSelectionAnalytics from "./components/ConfigurationSelectionAnalytics";
 
 // Types matching the API response
 interface UserTrackingData {
@@ -54,6 +56,32 @@ interface UserTrackingData {
       count: number;
       percentage: number;
     }>;
+  };
+  clickAnalytics: {
+    pageClicks: Array<{ path: string; title: string; count: number; percentage: number }>;
+    mouseClicks: Array<{ elementId: string; category: string; count: number; percentage: number }>;
+  };
+  configurationAnalytics: {
+    [category: string]: Array<{
+      value: string;
+      name: string;
+      count: number;
+      percentageOfCategory: number;
+      percentageOfTotal: number;
+      quantity?: number;
+    }>;
+  };
+  quantityAnalytics: {
+    geschossdecke: {
+      totalWithOption: number;
+      averageQuantity: number;
+      quantityDistribution: Array<{ quantity: number; count: number }>;
+    };
+    pvanlage: {
+      totalWithOption: number;
+      averageQuantity: number;
+      quantityDistribution: Array<{ quantity: number; count: number }>;
+    };
   };
   timeMetrics: {
     avgTimeToCart: number;
@@ -260,82 +288,6 @@ function TimeMetrics({
 }
 
 /**
- * Configuration Card Component
- */
-function ConfigurationCard({
-  config,
-}: {
-  config: UserTrackingData["topConfigurations"][0];
-}) {
-  const conversionRate =
-    config.cartCount > 0
-      ? (config.conversionCount / config.cartCount) * 100
-      : 0;
-
-  return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900">
-            {config.nestType}
-          </h3>
-          <div className="flex space-x-2 mt-1">
-            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-              🛒 {config.cartCount}
-            </span>
-            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-              📧 {config.inquiryCount}
-            </span>
-            <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-              💰 {config.conversionCount}
-            </span>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-xl font-bold text-green-600">
-            €{(config.totalPrice / 1000).toFixed(0)}k
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span className="text-gray-600">Gebäudehülle:</span>
-          <span className="font-medium">{config.gebaeudehuelle}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">Innenverkleidung:</span>
-          <span className="font-medium">{config.innenverkleidung}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">Planungspaket:</span>
-          <span className="font-medium">{config.planungspaket}</span>
-        </div>
-      </div>
-
-      <div className="mt-4 pt-4 border-t border-gray-200">
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-gray-500">
-            Last: {new Date(config.lastSelected).toLocaleDateString()}
-          </span>
-          <div className="flex items-center">
-            <div className="w-16 bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-purple-600 h-2 rounded-full"
-                style={{ width: `${conversionRate}%` }}
-              ></div>
-            </div>
-            <span className="text-xs text-gray-600 ml-2">
-              {conversionRate.toFixed(0)}%
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
  * Price Distribution Component
  */
 function PriceDistribution({
@@ -501,28 +453,32 @@ async function UserTrackingDashboard() {
         <TimeMetrics timeMetrics={data.timeMetrics} />
       </div>
 
-      {/* Top Configurations */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Top Configurations
-        </h2>
-        {data.topConfigurations.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.topConfigurations.map((config) => (
-              <ConfigurationCard key={config.id} config={config} />
-            ))}
-          </div>
-        ) : (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-            <p className="text-yellow-800 font-medium">
-              No configuration data yet
-            </p>
-            <p className="text-yellow-600 text-sm mt-1">
-              Data will appear as customers add configurations to cart
-            </p>
-          </div>
-        )}
-      </div>
+      {/* Click Analytics Section */}
+      {data.clickAnalytics && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Click Analytics
+          </h2>
+          <ClickAnalytics
+            pageClicks={data.clickAnalytics?.pageClicks || []}
+            mouseClicks={data.clickAnalytics?.mouseClicks || []}
+          />
+        </div>
+      )}
+
+      {/* Configuration Selection Analytics */}
+      {data.configurationAnalytics && data.quantityAnalytics && (
+        <div className="mb-8">
+          <ConfigurationSelectionAnalytics
+            analytics={data.configurationAnalytics || {}}
+            quantityAnalytics={data.quantityAnalytics || {
+              geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] },
+              pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }
+            }}
+            totalConfigurations={data.metadata.totalConfigurations || 0}
+          />
+        </div>
+      )}
 
       {/* Price & Selection Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">

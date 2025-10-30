@@ -18,6 +18,13 @@ interface ConfigurationData {
     pvanlage?: string;
     fenster?: string;
     planungspaket?: string;
+    geschossdecke?: string;
+    belichtungspaket?: string;
+    stirnseite?: string;
+    kamindurchzug?: string;
+    fussbodenheizung?: string;
+    bodenaufbau?: string;
+    fundament?: string;
 }
 
 interface UserTrackingData {
@@ -61,6 +68,38 @@ interface UserTrackingData {
         nestTypes: Array<{ name: string; count: number; percentage: number }>;
         gebaeudehuelle: Array<{ name: string; count: number; percentage: number }>;
         innenverkleidung: Array<{ name: string; count: number; percentage: number }>;
+    };
+
+    // Click analytics
+    clickAnalytics: {
+        pageClicks: Array<{ path: string; title: string; count: number; percentage: number }>;
+        mouseClicks: Array<{ elementId: string; category: string; count: number; percentage: number }>;
+    };
+
+    // Configuration selection analytics (comprehensive)
+    configurationAnalytics: {
+        [category: string]: Array<{
+            value: string;
+            name: string;
+            count: number;
+            percentageOfCategory: number;
+            percentageOfTotal: number;
+            quantity?: number; // For geschossdecke and pvanlage
+        }>;
+    };
+
+    // Quantity analytics for geschossdecke and pvanlage
+    quantityAnalytics: {
+        geschossdecke: {
+            totalWithOption: number;
+            averageQuantity: number;
+            quantityDistribution: Array<{ quantity: number; count: number }>;
+        };
+        pvanlage: {
+            totalWithOption: number;
+            averageQuantity: number;
+            quantityDistribution: Array<{ quantity: number; count: number }>;
+        };
     };
 
     // Time metrics
@@ -109,14 +148,49 @@ class UserTrackingService {
                 return undefined;
             };
 
+            // Helper to extract value or quantity if it's an object
+            const extractValueOrQuantity = (field: unknown): { value?: string; quantity?: number } => {
+                if (typeof field === 'string') return { value: field };
+                if (field && typeof field === 'object' && 'value' in field) {
+                    const valueField = field as { value?: unknown; quantity?: unknown };
+                    return {
+                        value: typeof valueField.value === 'string' ? valueField.value : undefined,
+                        quantity: typeof valueField.quantity === 'number' ? valueField.quantity : undefined
+                    };
+                }
+                return {};
+            };
+
+            const nestData = extractValueOrQuantity(config.nestType || config.nest);
+            const gebaeudehuelleData = extractValueOrQuantity(config.gebaeudehuelle);
+            const innenverkleidungData = extractValueOrQuantity(config.innenverkleidung);
+            const fussbodenData = extractValueOrQuantity(config.fussboden);
+            const pvanlageData = extractValueOrQuantity(config.pvanlage);
+            const fensterData = extractValueOrQuantity(config.fenster);
+            const planungspaketData = extractValueOrQuantity(config.planungspaket);
+            const geschossdeckeData = extractValueOrQuantity(config.geschossdecke);
+            const belichtungspaketData = extractValueOrQuantity(config.belichtungspaket);
+            const stirnseiteData = extractValueOrQuantity(config.stirnseite);
+            const kamindurchzugData = extractValueOrQuantity(config.kamindurchzug);
+            const fussbodenheizungData = extractValueOrQuantity(config.fussbodenheizung);
+            const bodenaufbauData = extractValueOrQuantity(config.bodenaufbau);
+            const fundamentData = extractValueOrQuantity(config.fundament);
+
             return {
-                nestType: extractValue(config.nestType) || extractValue(config.nest),
-                gebaeudehuelle: extractValue(config.gebaeudehuelle),
-                innenverkleidung: extractValue(config.innenverkleidung),
-                fussboden: extractValue(config.fussboden),
-                pvanlage: extractValue(config.pvanlage),
-                fenster: extractValue(config.fenster),
-                planungspaket: extractValue(config.planungspaket),
+                nestType: nestData.value,
+                gebaeudehuelle: gebaeudehuelleData.value,
+                innenverkleidung: innenverkleidungData.value,
+                fussboden: fussbodenData.value,
+                pvanlage: pvanlageData.value,
+                fenster: fensterData.value,
+                planungspaket: planungspaketData.value,
+                geschossdecke: geschossdeckeData.value,
+                belichtungspaket: belichtungspaketData.value,
+                stirnseite: stirnseiteData.value,
+                kamindurchzug: kamindurchzugData.value,
+                fussbodenheizung: fussbodenheizungData.value,
+                bodenaufbau: bodenaufbauData.value,
+                fundament: fundamentData.value,
             };
         } catch (error) {
             console.error('Failed to parse configuration data:', error);
@@ -361,6 +435,341 @@ class UserTrackingService {
     }
 
     /**
+     * Get click analytics (page clicks and mouse clicks)
+     */
+    static async getClickAnalytics() {
+        // Get all sessions that reached cart
+        const sessionIds = await prisma.userSession.findMany({
+            where: {
+                status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] }
+            },
+            select: {
+                sessionId: true
+            }
+        });
+
+        const sessionIdList = sessionIds.map(s => s.sessionId);
+
+        // Get all interaction events for these sessions
+        const interactions = await prisma.interactionEvent.findMany({
+            where: {
+                sessionId: { in: sessionIdList }
+            },
+            select: {
+                eventType: true,
+                selectionValue: true,
+                elementId: true,
+                category: true
+            }
+        });
+
+        // Count page visits (page_visit events)
+        const pageClicksMap = new Map<string, number>();
+        interactions
+            .filter(i => i.eventType === 'page_visit' && i.selectionValue)
+            .forEach(i => {
+                const path = i.selectionValue || 'unknown';
+                const count = pageClicksMap.get(path) || 0;
+                pageClicksMap.set(path, count + 1);
+            });
+
+        const totalPageClicks = Array.from(pageClicksMap.values()).reduce((a, b) => a + b, 0);
+
+        const pageClicks = Array.from(pageClicksMap.entries())
+            .map(([path, count]) => {
+                // Try to extract title from path
+                const pathParts = path.split('/').filter(p => p);
+                const title = pathParts.length > 0 
+                    ? pathParts[pathParts.length - 1].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+                    : path;
+                
+                return {
+                    path,
+                    title,
+                    count,
+                    percentage: totalPageClicks > 0 ? (count / totalPageClicks) * 100 : 0
+                };
+            })
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 20);
+
+        // Count mouse clicks (click events)
+        const mouseClicksMap = new Map<string, { category: string; count: number }>();
+        interactions
+            .filter(i => i.eventType === 'click' && i.elementId)
+            .forEach(i => {
+                const key = i.elementId || 'unknown';
+                const category = i.category || 'other';
+                const existing = mouseClicksMap.get(key);
+                if (existing) {
+                    existing.count++;
+                } else {
+                    mouseClicksMap.set(key, { category, count: 1 });
+                }
+            });
+
+        const totalMouseClicks = Array.from(mouseClicksMap.values()).reduce((a, b) => a + b.count, 0);
+
+        const mouseClicks = Array.from(mouseClicksMap.entries())
+            .map(([elementId, data]) => ({
+                elementId,
+                category: data.category,
+                count: data.count,
+                percentage: totalMouseClicks > 0 ? (data.count / totalMouseClicks) * 100 : 0
+            }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 30);
+
+        return {
+            pageClicks,
+            mouseClicks
+        };
+    }
+
+    /**
+     * Get comprehensive configuration selection analytics
+     */
+    static async getConfigurationAnalytics() {
+        const sessions = await prisma.userSession.findMany({
+            where: {
+                status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
+                configurationData: { not: Prisma.JsonNull }
+            },
+            select: {
+                configurationData: true
+            }
+        });
+
+        const totalConfigs = sessions.length;
+
+        // Category order matching configurator
+        const categories = [
+            'nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'belichtungspaket',
+            'fenster', 'pvanlage', 'stirnseite', 'planungspaket', 'bodenaufbau',
+            'geschossdecke', 'kamindurchzug', 'fussbodenheizung', 'fundament'
+        ];
+
+        // Map to store selections per category
+        const categorySelections = new Map<string, Map<string, { name: string; count: number; totalQuantity: number; configCount: number }>>();
+        const categoryTotals = new Map<string, number>();
+
+        // Helper to get option name from value
+        const getOptionName = (category: string, value: string): string => {
+            // Basic mapping - could be enhanced with database lookup
+            const nameMap: Record<string, Record<string, string>> = {
+                nest: {
+                    'nest80': 'Nest 80',
+                    'nest100': 'Nest 100',
+                    'nest120': 'Nest 120',
+                    'nest140': 'Nest 140',
+                    'nest160': 'Nest 160'
+                },
+                gebaeudehuelle: {
+                    'trapezblech': 'Trapezblech',
+                    'holzlattung': 'Holzlattung Lärche Natur',
+                    'fassadenplatten_schwarz': 'Fassadenplatten Schwarz',
+                    'fassadenplatten_weiss': 'Fassadenplatten Weiß'
+                },
+                innenverkleidung: {
+                    'kiefer': 'Kiefer',
+                    'fichte': 'Fichte',
+                    'steirische_eiche': 'Steirische Eiche'
+                },
+                fussboden: {
+                    'ohne_parkett': 'Ohne Parkett',
+                    'parkett': 'Parkett Eiche',
+                    'kalkstein_kanafar': 'Steinbelag Hell',
+                    'schiefer_massiv': 'Steinbelag Dunkel'
+                },
+                belichtungspaket: {
+                    'light': 'Light',
+                    'medium': 'Medium',
+                    'bright': 'Bright'
+                },
+                fenster: {
+                    'pvc_fenster': 'PVC',
+                    'holz': 'Fichte',
+                    'aluminium_schwarz': 'Aluminium dunkel',
+                    'aluminium_weiss': 'Aluminium Hell'
+                },
+                planungspaket: {
+                    'basis': 'Planung Basis',
+                    'plus': 'Planung Plus',
+                    'pro': 'Planung Pro'
+                },
+                bodenaufbau: {
+                    'ohne_heizung': 'Ohne Heizung',
+                    'elektrische_fussbodenheizung': 'Elektrische Fußbodenheizung',
+                    'wassergefuehrte_fussbodenheizung': 'Wassergeführte Fußbodenheizung'
+                }
+            };
+            return nameMap[category]?.[value] || value;
+        };
+
+        // Process each session
+        sessions.forEach(session => {
+            const config = session.configurationData as Record<string, unknown>;
+            
+            categories.forEach(category => {
+                const field = category === 'nest' ? (config.nestType || config.nest) : config[category];
+                
+                if (!field) return;
+
+                // Extract value and quantity
+                let value: string | undefined;
+                let quantity: number | undefined;
+                
+                if (typeof field === 'string') {
+                    value = field;
+                } else if (field && typeof field === 'object' && 'value' in field) {
+                    const obj = field as { value?: unknown; quantity?: unknown; name?: unknown };
+                    value = typeof obj.value === 'string' ? obj.value : undefined;
+                    quantity = typeof obj.quantity === 'number' ? obj.quantity : undefined;
+                }
+
+                if (!value) return;
+
+                // Initialize category map if needed
+                if (!categorySelections.has(category)) {
+                    categorySelections.set(category, new Map());
+                }
+                if (!categoryTotals.has(category)) {
+                    categoryTotals.set(category, 0);
+                }
+
+                // Update counts
+                categoryTotals.set(category, categoryTotals.get(category)! + 1);
+                
+                const selectionsMap = categorySelections.get(category)!;
+                const existing = selectionsMap.get(value);
+                
+                if (existing) {
+                    existing.count++;
+                    if (quantity) {
+                        existing.totalQuantity += quantity;
+                        existing.configCount++;
+                    }
+                } else {
+                    selectionsMap.set(value, {
+                        name: getOptionName(category, value),
+                        count: 1,
+                        totalQuantity: quantity || 0,
+                        configCount: quantity ? 1 : 0
+                    });
+                }
+            });
+        });
+
+        // Build result object
+        const result: UserTrackingData['configurationAnalytics'] = {};
+        
+        categories.forEach(category => {
+            const selectionsMap = categorySelections.get(category);
+            const categoryTotal = categoryTotals.get(category) || 0;
+            
+            if (selectionsMap) {
+                result[category] = Array.from(selectionsMap.entries())
+                    .map(([value, data]) => ({
+                        value,
+                        name: data.name,
+                        count: data.count,
+                        percentageOfCategory: categoryTotal > 0 ? (data.count / categoryTotal) * 100 : 0,
+                        percentageOfTotal: totalConfigs > 0 ? (data.count / totalConfigs) * 100 : 0,
+                        quantity: data.configCount > 0 ? data.totalQuantity / data.configCount : undefined
+                    }))
+                    .sort((a, b) => b.count - a.count);
+            } else {
+                result[category] = [];
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * Get quantity analytics for geschossdecke and pvanlage
+     */
+    static async getQuantityAnalytics() {
+        const sessions = await prisma.userSession.findMany({
+            where: {
+                status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
+                configurationData: { not: Prisma.JsonNull }
+            },
+            select: {
+                configurationData: true
+            }
+        });
+
+        // Helper to extract quantity from field
+        const extractQuantity = (field: unknown): number | null => {
+            if (field && typeof field === 'object' && 'quantity' in field) {
+                const qty = (field as { quantity?: unknown }).quantity;
+                return typeof qty === 'number' && qty > 0 ? qty : null;
+            }
+            return null;
+        };
+
+        const geschossdeckeData = {
+            totalWithOption: 0,
+            totalQuantity: 0,
+            quantityMap: new Map<number, number>()
+        };
+
+        const pvanlageData = {
+            totalWithOption: 0,
+            totalQuantity: 0,
+            quantityMap: new Map<number, number>()
+        };
+
+        sessions.forEach(session => {
+            const config = session.configurationData as Record<string, unknown>;
+            
+            // Process geschossdecke
+            if (config.geschossdecke) {
+                geschossdeckeData.totalWithOption++;
+                const quantity = extractQuantity(config.geschossdecke);
+                if (quantity) {
+                    geschossdeckeData.totalQuantity += quantity;
+                    const count = geschossdeckeData.quantityMap.get(quantity) || 0;
+                    geschossdeckeData.quantityMap.set(quantity, count + 1);
+                }
+            }
+
+            // Process pvanlage
+            if (config.pvanlage) {
+                pvanlageData.totalWithOption++;
+                const quantity = extractQuantity(config.pvanlage);
+                if (quantity) {
+                    pvanlageData.totalQuantity += quantity;
+                    const count = pvanlageData.quantityMap.get(quantity) || 0;
+                    pvanlageData.quantityMap.set(quantity, count + 1);
+                }
+            }
+        });
+
+        return {
+            geschossdecke: {
+                totalWithOption: geschossdeckeData.totalWithOption,
+                averageQuantity: geschossdeckeData.totalWithOption > 0 
+                    ? geschossdeckeData.totalQuantity / geschossdeckeData.totalWithOption 
+                    : 0,
+                quantityDistribution: Array.from(geschossdeckeData.quantityMap.entries())
+                    .map(([quantity, count]) => ({ quantity, count }))
+                    .sort((a, b) => a.quantity - b.quantity)
+            },
+            pvanlage: {
+                totalWithOption: pvanlageData.totalWithOption,
+                averageQuantity: pvanlageData.totalWithOption > 0 
+                    ? pvanlageData.totalQuantity / pvanlageData.totalWithOption 
+                    : 0,
+                quantityDistribution: Array.from(pvanlageData.quantityMap.entries())
+                    .map(([quantity, count]) => ({ quantity, count }))
+                    .sort((a, b) => a.quantity - b.quantity)
+            }
+        };
+    }
+
+    /**
      * Calculate time metrics with data quality filters
      */
     static async getTimeMetrics() {
@@ -423,20 +832,62 @@ export async function GET() {
         console.log('📊 User tracking request started');
         const startTime = Date.now();
 
-        // Fetch all data in parallel
-        const [funnel, topConfigurations, priceDistribution, selectionStats, timeMetrics] = await Promise.all([
+        // Fetch all data in parallel with error handling
+        const [
+            funnel, 
+            topConfigurations, 
+            priceDistribution, 
+            selectionStats, 
+            clickAnalytics,
+            configurationAnalytics,
+            quantityAnalytics,
+            timeMetrics
+        ] = await Promise.allSettled([
             UserTrackingService.getFunnelMetrics(),
             UserTrackingService.getTopConfigurations(),
             UserTrackingService.getPriceDistribution(),
             UserTrackingService.getSelectionStats(),
+            UserTrackingService.getClickAnalytics(),
+            UserTrackingService.getConfigurationAnalytics(),
+            UserTrackingService.getQuantityAnalytics(),
             UserTrackingService.getTimeMetrics()
-        ]);
+        ]).then(results => results.map((result, index) => {
+            if (result.status === 'fulfilled') {
+                return result.value;
+            } else {
+                console.error(`❌ Failed to fetch analytics data [${index}]:`, result.reason);
+                // Return default values based on index
+                switch (index) {
+                    case 0: // funnel
+                        return { totalSessions: 0, reachedCart: 0, completedInquiry: 0, converted: 0, cartRate: 0, inquiryRate: 0, conversionRate: 0 };
+                    case 1: // topConfigurations
+                        return [];
+                    case 2: // priceDistribution
+                        return [];
+                    case 3: // selectionStats
+                        return { nestTypes: [], gebaeudehuelle: [], innenverkleidung: [] };
+                    case 4: // clickAnalytics
+                        return { pageClicks: [], mouseClicks: [] };
+                    case 5: // configurationAnalytics
+                        return {};
+                    case 6: // quantityAnalytics
+                        return { geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }, pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] } };
+                    case 7: // timeMetrics
+                        return { avgTimeToCart: 0, avgTimeToInquiry: 0, avgSessionDuration: 0 };
+                    default:
+                        return null;
+                }
+            }
+        }));
 
         const response: UserTrackingData = {
             funnel,
             topConfigurations,
             priceDistribution,
             selectionStats,
+            clickAnalytics,
+            configurationAnalytics,
+            quantityAnalytics,
             timeMetrics,
             metadata: {
                 totalConfigurations: funnel.reachedCart,
