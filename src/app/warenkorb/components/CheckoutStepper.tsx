@@ -1995,8 +1995,8 @@ export default function CheckoutStepper({
                           key={card.id}
                           category="planungspakete"
                           cardId={card.id}
-                          layout="grid"
-                          style="modern"
+                          layout="square"
+                          style="standard"
                           variant="compact"
                           maxWidth={false}
                           backgroundColor="white"
