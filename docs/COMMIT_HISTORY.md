@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3cc046e7b1d258c7bf7d7dd2d9241495dfe9cd93] - Thu Oct 30 16:19:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: correct UnifiedContentCard props in CheckoutStepper  - Changed layout from invalid 'grid' to valid 'square' - Changed style from invalid 'modern' to valid 'standard' - Resolves TypeScript build error for planungspakete cards  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [cf66605f14cb42489b42b4a0acfe78f8635e1df3] - Thu Oct 30 16:15:33 2025 +0100
 
 **Author**: stenkjan
