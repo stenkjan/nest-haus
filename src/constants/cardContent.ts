@@ -59,6 +59,8 @@ export interface ContentCardData {
     reverseTextOrder?: boolean; // Optional: reverse text order in overlay-text layout (title first, then description)
     headingLevel?: "h2" | "h3"; // Optional: control heading level for title in overlay-text layout (default: h3)
     externalLink?: string; // Optional: external URL to link the entire card to
+    bottomLabel?: string; // Optional: bottom metadata label (p-primary-small) - for team-card layout (can contain HTML)
+    bottomText?: string; // Optional: bottom metadata text (p-tertiary) - for team-card layout
 }
 
 /**
@@ -952,6 +954,74 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
  * Layout: Icon top-left, title (p-primary), subtitle (p-primary-small), quote in middle (p-secondary), attribution bottom (p-primary + p-primary-small)
  * Used in: Landing pages, About sections, Testimonials
  */
+/**
+ * WARUM WIR TEAM CARDS
+ * Team/company value cards with custom 9:10 aspect ratio (1.8x2)
+ * Used in: Warum Wir page (below testimonials section)
+ */
+export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
+    {
+        id: 1,
+        title: "Markus Schmoltner",
+        subtitle: "<span class='text-gray-400'>Diplomingenieur und Architekt</span>",
+        description: "Gründer und Inhaber",
+        image: IMAGES.hero.nestHaus1, // Placeholder - white facade panels
+        backgroundColor: "#121212",
+        textColor: "text-white",
+        aspectRatio: "2x1", // Will be custom styled for 9:10 ratio
+        bottomLabel: "<span class='text-gray-400'>Auszeichnungen</span>",
+        bottomText: "WKO Elevator Pitch Preis \n WKO Top 30 unter 30",
+    },
+    {
+        id: 2,
+        title: "Nachhaltigkeit als Standard",
+        subtitle: "<span class='text-gray-400'>Unser Antrieb</span>",
+        description: "Ressourcenschonung beginnt bei der Planung. Mit durchdachten Materialen und energieeffizienten Konzepten schaffen wir Lebensräume für Generationen.",
+        image: IMAGES.hero.nestHaus7, // Placeholder - forest view with black facade
+        backgroundColor: "#121212",
+        textColor: "text-white",
+        aspectRatio: "2x1",
+        bottomLabel: "<span class='text-gray-400'>CO₂-Bilanz</span>",
+        bottomText: "98% weniger als konventionelle Bauweise",
+    },
+    {
+        id: 3,
+        title: "Kompetenz aus Leidenschaft",
+        subtitle: "<span class='text-gray-400'>Unser Team</span>",
+        description: "Architekten, Ingenieure und Handwerker arbeiten Hand in Hand. Jeder bringt seine Expertise ein, damit dein Nest perfekt wird.",
+        image: IMAGES.hero.nestHaus3, // Placeholder - interior perspective
+        backgroundColor: "#121212",
+        textColor: "text-white",
+        aspectRatio: "2x1",
+        bottomLabel: "<span class='text-gray-400'>Unser Team</span>",
+        bottomText: "42 Experten mit durchschnittlich 15 Jahren Erfahrung",
+    },
+    {
+        id: 4,
+        title: "Qualität ohne Kompromisse",
+        subtitle: "<span class='text-gray-400'>Unser Versprechen</span>",
+        description: "Höchste Standards in Material und Verarbeitung sind für uns selbstverständlich. Wir prüfen jeden Schritt, damit du sorgenfrei wohnen kannst.",
+        image: IMAGES.hero.nestHaus4, // Placeholder - aerial view with wooden slats
+        backgroundColor: "#121212",
+        textColor: "text-white",
+        aspectRatio: "2x1",
+        bottomLabel: "<span class='text-gray-400'>Zertifizierung</span>",
+        bottomText: "ISO 9001:2015 & Passivhaus Institut",
+    },
+    {
+        id: 5,
+        title: "Persönlich und nah",
+        subtitle: "<span class='text-gray-400'>Unsere Arbeitsweise</span>",
+        description: "Von der ersten Idee bis zum Einzug begleiten wir dich. Direkter Kontakt, schnelle Antworten und echte Partnerschaft auf Augenhöhe.",
+        image: IMAGES.hero.nestHaus6, // Placeholder - interior with black stone
+        backgroundColor: "#121212",
+        textColor: "text-white",
+        aspectRatio: "2x1",
+        bottomLabel: "<span class='text-gray-400'>Kundenzufriedenheit</span>",
+        bottomText: "4.9/5 Sterne aus über 200 Bewertungen",
+    },
+];
+
 export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 0,
@@ -1019,7 +1089,8 @@ export type ContentCategory =
     | "videoBackgroundCards"
     | "entwurfVideoCards"
     | "processCards"
-    | "glassQuoteCards";
+    | "glassQuoteCards"
+    | "warumWirTeamCards";
 
 /**
  * MASTER CONTENT LOOKUP
@@ -1046,6 +1117,7 @@ export const CARD_CONTENT_BY_CATEGORY: Record<
     entwurfVideoCards: ENTWURF_VIDEO_CARDS_CONTENT,
     processCards: PROCESS_CARDS_CONTENT,
     glassQuoteCards: GLASS_QUOTE_CARDS_CONTENT,
+    warumWirTeamCards: WARUM_WIR_TEAM_CARDS_CONTENT,
 };
 
 /**

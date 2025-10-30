@@ -60,7 +60,8 @@ export type CardLayout =
   | "text-icon" // Square card with text and optional icon, no image
   | "process-detail" // Large horizontal card on top + 5 square cards below for checkout steps
   | "overlay-text" // Full image background with left-aligned text overlay and optional button
-  | "glass-quote"; // Glass background with quote-style text layout (quote mark, mixed bold/gray text, attribution)
+  | "glass-quote" // Glass background with quote-style text layout (quote mark, mixed bold/gray text, attribution)
+  | "team-card"; // Full image background with custom team/value card layout (subtitle/title/description at top, metadata at bottom)
 
 /**
  * Style Types for UnifiedContentCard
@@ -460,6 +461,37 @@ export default function UnifiedContentCard({
           const cardHeight = Math.min(600, viewportHeight * 0.75);
           setCardsPerView(2);
           setCardWidth(cardHeight * 0.6);
+        }
+      } else if (layout === "team-card") {
+        // Team-card layout: Use 1.8:2 aspect ratio (9:10 - nearly square but slightly taller)
+        const viewportHeight =
+          stableViewportHeight > 0
+            ? stableViewportHeight
+            : typeof window !== "undefined"
+              ? window.innerHeight
+              : 0;
+
+        if (width >= 1600) {
+          const cardHeight = Math.min(830, viewportHeight * 0.75);
+          setCardsPerView(2.5);
+          setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
+        } else if (width >= 1280) {
+          const cardHeight = Math.min(692, viewportHeight * 0.7);
+          setCardsPerView(2.2);
+          setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
+        } else if (width >= 1024) {
+          const cardHeight = Math.min(577, viewportHeight * 0.7);
+          setCardsPerView(1.8);
+          setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
+        } else if (width >= 768) {
+          const cardHeight = Math.min(720, viewportHeight * 0.75);
+          setCardsPerView(1.5);
+          setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
+        } else {
+          // Mobile: 1.3:2 ratio (narrower for better mobile fit)
+          const cardHeight = Math.min(600, viewportHeight * 0.75);
+          setCardsPerView(1.5);
+          setCardWidth(cardHeight * 0.65);
         }
       } else if (isStatic) {
         // Static variant: single responsive card
@@ -1484,6 +1516,108 @@ export default function UnifiedContentCard({
     );
   };
 
+  // Render team-card layout (full image background with custom team/value card layout)
+  const renderTeamCardLayout = (card: ContentCardData, index: number) => {
+    // Determine image fit behavior
+    const imageFitClass = "object-cover object-center";
+
+    // Determine text color (default to white)
+    const textColor = card.textColor || "text-white";
+
+    return (
+      <div className="relative w-full h-full overflow-hidden rounded-3xl">
+        {/* Background Image (full card) */}
+        <div className="absolute inset-0 z-0">
+          {card.video ? (
+            <ClientBlobVideo
+              path={getImagePath(card.video)}
+              className="w-full h-full object-cover"
+              autoPlay={true}
+              loop={true}
+              muted={true}
+              playsInline={true}
+              controls={false}
+              enableCache={true}
+              playbackRate={card.playbackRate}
+            />
+          ) : card.image ? (
+            <HybridBlobImage
+              path={getImagePath(card.image)}
+              alt={getCardText(card, "title")}
+              fill
+              className={imageFitClass}
+              strategy="client"
+              isInteractive={true}
+              enableCache={true}
+            />
+          ) : null}
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+
+        {/* Text Content Overlay - Left Aligned with top and bottom sections */}
+        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-8 lg:p-10">
+          {/* Top Section: Subtitle (p-primary-small) + Title (h3-secondary) + Description (p-primary) */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1, duration: 0.6 }}
+            className="text-left"
+          >
+            {/* Subtitle - p-primary-small */}
+            {card.subtitle && (
+              <p
+                className={`p-primary-small ${textColor} !mb-1 md:!mb-2`}
+                dangerouslySetInnerHTML={{
+                  __html: getCardText(card, "subtitle"),
+                }}
+              />
+            )}
+
+            {/* Title - h3-secondary */}
+            <h3
+              className={`h3-secondary ${textColor} font-bold !mb-1 md:!mb-2`}
+            >
+              {getCardText(card, "title")}
+            </h3>
+
+            {/* Description - p-primary */}
+            <p className={`p-primary ${textColor}`}>
+              {getCardText(card, "description")}
+            </p>
+          </motion.div>
+
+          {/* Bottom Section: Bottom Label (p-primary-small) + Bottom Text (p-tertiary) */}
+          {(card.bottomLabel || card.bottomText) && (
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+              className="text-left"
+            >
+              {/* Bottom Label - p-primary-small */}
+              {card.bottomLabel && (
+                <p
+                  className={`p-primary-small ${textColor} mb-1 md:mb-2`}
+                  dangerouslySetInnerHTML={{ __html: card.bottomLabel }}
+                />
+              )}
+
+              {/* Bottom Text - p-tertiary */}
+              {card.bottomText && (
+                <p
+                  className={`p-tertiary ${textColor} opacity-90 whitespace-pre-line`}
+                >
+                  {card.bottomText}
+                </p>
+              )}
+            </motion.div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   // Render process-detail layout (large horizontal card + 5 square cards)
   const renderProcessDetailLayout = () => {
     // First card is the large horizontal card at the top
@@ -2126,8 +2260,9 @@ export default function UnifiedContentCard({
                                                     heightMultiplier
                                                 );
                                     })()
-                                  : layout === "glass-quote"
-                                    ? // Glass-quote: Same height calculation as overlay-text
+                                  : layout === "glass-quote" ||
+                                      layout === "team-card"
+                                    ? // Glass-quote and team-card: Same height calculation as overlay-text
                                       (() => {
                                         const viewportHeight =
                                           stableViewportHeight > 0
@@ -2242,6 +2377,8 @@ export default function UnifiedContentCard({
                           renderImageOnlyLayout(card, index)}
                         {layout === "overlay-text" &&
                           renderOverlayTextLayout(card, index)}
+                        {layout === "team-card" &&
+                          renderTeamCardLayout(card, index)}
                         {layout === "glass-quote" &&
                           (card.buttons &&
                           card.buttons.length > 0 &&
