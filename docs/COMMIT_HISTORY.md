@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cf66605f14cb42489b42b4a0acfe78f8635e1df3] - Thu Oct 30 16:15:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge warenkorb refactor with design updates and bug fixes  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/steps.ts
+
+
+#### 📚 Documentation Changes
+- docs/WARENKORB_REFACTORING_PROGRESS.md
+
+
+---
+
 ## [1dbb1555d6a9f7780ac131fe306d26e0418d6d78] - Thu Oct 30 14:08:31 2025 +0100
 
 **Author**: stenkjan
