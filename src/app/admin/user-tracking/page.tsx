@@ -16,6 +16,7 @@ import { Suspense } from "react";
 import AllConfigurations from "./components/AllConfigurations";
 import ClickAnalytics from "./components/ClickAnalytics";
 import ConfigurationSelectionAnalytics from "./components/ConfigurationSelectionAnalytics";
+import TrackingActions from "./components/TrackingActions";
 
 // Types matching the API response
 interface UserTrackingData {
@@ -395,6 +396,14 @@ async function UserTrackingDashboard() {
             Updated: {new Date(data.metadata.lastUpdated).toLocaleString()}
           </div>
         </div>
+      </div>
+
+      {/* Tracking Actions */}
+      <div className="mb-8 bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">
+          Configuration Management
+        </h2>
+        <TrackingActions />
       </div>
 
       {/* Top Metrics */}
