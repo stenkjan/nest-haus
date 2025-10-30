@@ -139,15 +139,6 @@ class UserTrackingService {
 
             const config = data as Record<string, unknown>;
 
-            const extractValue = (field: unknown): string | undefined => {
-                if (typeof field === 'string') return field;
-                if (field && typeof field === 'object' && 'value' in field) {
-                    const valueField = field as { value?: unknown };
-                    return typeof valueField.value === 'string' ? valueField.value : undefined;
-                }
-                return undefined;
-            };
-
             // Helper to extract value or quantity if it's an object
             const extractValueOrQuantity = (field: unknown): { value?: string; quantity?: number } => {
                 if (typeof field === 'string') return { value: field };
