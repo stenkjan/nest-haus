@@ -4,6 +4,167 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [07aad28ecddce982a44a499dbea99c5fb0ae8e76] - Thu Oct 30 16:24:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: remove invalid cardId prop from UnifiedContentCard  - Removed cardId prop that doesn't exist in UnifiedContentCardProps interface - Component uses category prop to load planungspakete data - Resolves TypeScript error: Property 'cardId' does not exist  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [08a588d8717e6051b556a1ae0e4fa430a16011cf] - Thu Oct 30 16:21:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: correct CardVariant prop in CheckoutStepper  - Changed variant from invalid 'compact' to valid 'responsive' - Resolves TypeScript error: CardVariant only accepts 'responsive' or 'static'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [3cc046e7b1d258c7bf7d7dd2d9241495dfe9cd93] - Thu Oct 30 16:19:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: correct UnifiedContentCard props in CheckoutStepper  - Changed layout from invalid 'grid' to valid 'square' - Changed style from invalid 'modern' to valid 'standard' - Resolves TypeScript build error for planungspakete cards  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [cf66605f14cb42489b42b4a0acfe78f8635e1df3] - Thu Oct 30 16:15:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge warenkorb refactor with design updates and bug fixes  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/steps.ts
+
+
+#### 📚 Documentation Changes
+- docs/WARENKORB_REFACTORING_PROGRESS.md
+
+
+---
+
+## [1dbb1555d6a9f7780ac131fe306d26e0418d6d78] - Thu Oct 30 14:08:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove 'remove-old' action from TrackingActions component  - Eliminated the 'remove-old' action from the handleAction function to simplify configuration management. - Updated confirmation messages and button rendering to reflect the removal, enhancing clarity and usability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/TrackingActions.tsx
+
+
+---
+
+## [fb622c5e32290eeacc6e9d655c5c1f10bb8d2f97] - Thu Oct 30 13:55:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: add TrackingActions component to user tracking dashboard  - Introduced TrackingActions component for enhanced configuration management. - Updated UserTrackingDashboard to include a new section for tracking actions, improving user experience and functionality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/TrackingActions.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/user-tracking/actions/route.ts
+
+
+---
+
+## [970c4bad1d0cbdbd5fc225a451be1ac600a5955e] - Thu Oct 30 13:48:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: streamline analytics data fetching in user tracking  - Replaced individual variable assignments with a single results array for better readability. - Introduced a helper function to extract results with default fallbacks, improving error handling. - Simplified the handling of default values for various analytics metrics.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/route.ts
+
+
+---
+
+## [adebcc687f86f5b9a4da0f54495c580c27f3cf45] - Thu Oct 30 13:27:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove unused extractValue function in UserTrackingService  - Eliminated the extractValue helper function to streamline the code. - Retained the extractValueOrQuantity function for value extraction purposes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/route.ts
+
+
+---
+
+## [6dd66f65b367572cfb41b10c4ce56715932a57cb] - Thu Oct 30 13:24:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+- src/app/globals.css
+- src/app/showcase/cards/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/cards/README.md
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/GLASS-QUOTE-CARDS-GUIDE.md
+- docs/GLASS-QUOTE-CARDS-QUICK-REF.md
+- docs/GLASS-QUOTE-CARDS-SUMMARY.md
+
+
+---
+
+## [418d94d87855725cb7beb218ba22aac3f1168a7a] - Thu Oct 30 13:08:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: introduce glass quote card layout and enhance styling options  - Added a new  class for improved paragraph styling. - Implemented the  layout in  for testimonials with a glass background effect. - Updated  to include a testimonials section using the new . - Enhanced  with left alignment for card content. - Updated  and  to document the new glass quote card features and usage.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+- src/app/globals.css
+- src/app/showcase/cards/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/cards/README.md
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/GLASS-QUOTE-CARDS-GUIDE.md
+- docs/GLASS-QUOTE-CARDS-QUICK-REF.md
+- docs/GLASS-QUOTE-CARDS-SUMMARY.md
+
+
+---
+
 ## [ca75bff1d236cb3096fa033dd80640d00c575809] - Wed Oct 29 16:25:47 2025 +0100
 
 **Author**: stenkjan

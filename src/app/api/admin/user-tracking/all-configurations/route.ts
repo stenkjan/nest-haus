@@ -183,12 +183,12 @@ function calculateBelichtungspaketPrice(
         const beleuchtungsSquareMeters = Math.ceil(nestSize * percentage);
 
         // Get fenster material price per sqm
+        // CRITICAL: These values MUST match configuratorData.ts fenster options
         const fensterPriceMap: Record<string, number> = {
-            'pvc': 280,
-            'kunststoff': 280,
-            'aluminium_hell': 350,
-            'aluminium_anthrazit': 350,
-            'holz_alu': 450
+            'pvc_fenster': 280,     // PVC - RAL 9016 Kunststoff
+            'holz': 400,            // Fichte - Holz
+            'aluminium_schwarz': 700, // Aluminium dunkel - RAL 9005 Tiefschwarz
+            'aluminium_weiss': 700   // Aluminium Hell - RAL 9016 Reinweiß
         };
 
         const fensterPricePerSqm = fensterPriceMap[fensterValue] || 280;
