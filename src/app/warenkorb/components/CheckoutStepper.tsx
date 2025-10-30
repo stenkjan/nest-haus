@@ -1997,7 +1997,7 @@ export default function CheckoutStepper({
                           cardId={card.id}
                           layout="square"
                           style="standard"
-                          variant="compact"
+                          variant="responsive"
                           maxWidth={false}
                           backgroundColor="white"
                         />
