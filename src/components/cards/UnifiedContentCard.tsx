@@ -59,7 +59,8 @@ export type CardLayout =
   | "video" // Video card (16:9 ratio)
   | "text-icon" // Square card with text and optional icon, no image
   | "process-detail" // Large horizontal card on top + 5 square cards below for checkout steps
-  | "overlay-text"; // Full image background with left-aligned text overlay and optional button
+  | "overlay-text" // Full image background with left-aligned text overlay and optional button
+  | "glass-quote"; // Glass background with quote-style text layout (quote mark, mixed bold/gray text, attribution)
 
 /**
  * Style Types for UnifiedContentCard
@@ -88,6 +89,11 @@ export type ImagePaddingMode = "none" | "standard";
 export type AspectRatio = "2x1" | "1x1";
 
 /**
+ * Alignment Types for card positioning
+ */
+export type CardAlignment = "center" | "left";
+
+/**
  * Props for UnifiedContentCard
  */
 export interface UnifiedContentCardProps {
@@ -100,6 +106,7 @@ export interface UnifiedContentCardProps {
   aspectRatio?: AspectRatio; // Controls aspect ratio for overlay-text layout (2x1 or 1x1)
   noPadding?: boolean; // Remove py-8 container padding
   showProgress?: boolean; // Show integrated progress bar above cards
+  alignment?: CardAlignment; // Controls horizontal alignment of cards (center or left)
 
   // Content source (category or custom data)
   category?: ContentCategory;
@@ -154,6 +161,7 @@ export default function UnifiedContentCard({
   aspectRatio = "2x1", // Default: 2x1 aspect ratio for overlay-text
   noPadding: _noPadding = false, // Default: include py-8 padding
   showProgress = false, // Default: don't show integrated progress bar
+  alignment = "center", // Default: center alignment
   category,
   customData,
   title = "",
@@ -282,7 +290,7 @@ export default function UnifiedContentCard({
 
     setStableViewportHeight(getStableHeight());
 
-    // Center the first card initially
+    // Center or left-align the first card initially
     const containerWidth = window.innerWidth;
     const firstCardWidth =
       displayCards.length > 0
@@ -290,19 +298,26 @@ export default function UnifiedContentCard({
         : cardWidth;
 
     let centerOffset;
-    if (containerWidth < 768) {
-      const containerPadding = 32;
-      centerOffset = (containerWidth - firstCardWidth - containerPadding) / 2;
-    } else {
-      const effectiveWidth =
-        containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+    if (alignment === "left" && containerWidth >= 1024) {
+      // Left alignment: start from left edge with padding (desktop only)
       centerOffset =
-        (effectiveWidth - firstCardWidth) / 2 +
-        (containerWidth < 1024 ? 16 : 0);
+        containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
+    } else {
+      // Center alignment (default behavior for all, and mobile/tablet for left alignment)
+      if (containerWidth < 768) {
+        const containerPadding = 32;
+        centerOffset = (containerWidth - firstCardWidth - containerPadding) / 2;
+      } else {
+        const effectiveWidth =
+          containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+        centerOffset =
+          (effectiveWidth - firstCardWidth) / 2 +
+          (containerWidth < 1024 ? 16 : 0);
+      }
     }
 
     x.set(centerOffset);
-  }, [cardWidth, x, displayCards, getCardWidthForIndex]);
+  }, [cardWidth, x, displayCards, getCardWidthForIndex, alignment]);
 
   // Calculate responsive card dimensions
   useEffect(() => {
@@ -415,6 +430,37 @@ export default function UnifiedContentCard({
           setCardsPerView(2); // Always 2 cards per view on mobile (portrait)
           setCardWidth(cardHeight * 0.6); // Always use 2x1 ratio on mobile
         }
+      } else if (layout === "glass-quote") {
+        // Glass-quote layout: Use 2x1 aspect ratio (portrait/tall like video background cards)
+        const viewportHeight =
+          stableViewportHeight > 0
+            ? stableViewportHeight
+            : typeof window !== "undefined"
+              ? window.innerHeight
+              : 0;
+
+        if (width >= 1600) {
+          const cardHeight = Math.min(830, viewportHeight * 0.75);
+          setCardsPerView(3.8);
+          setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
+        } else if (width >= 1280) {
+          const cardHeight = Math.min(692, viewportHeight * 0.7);
+          setCardsPerView(3.2);
+          setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
+        } else if (width >= 1024) {
+          const cardHeight = Math.min(577, viewportHeight * 0.7);
+          setCardsPerView(2.6);
+          setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
+        } else if (width >= 768) {
+          const cardHeight = Math.min(720, viewportHeight * 0.75);
+          setCardsPerView(2.6);
+          setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
+        } else {
+          // Mobile: 2x1 portrait ratio
+          const cardHeight = Math.min(600, viewportHeight * 0.75);
+          setCardsPerView(2);
+          setCardWidth(cardHeight * 0.6);
+        }
       } else if (isStatic) {
         // Static variant: single responsive card
         if (width >= 1600) {
@@ -464,16 +510,23 @@ export default function UnifiedContentCard({
             : cardWidth;
 
         let centerOffset;
-        if (containerWidth < 768) {
-          const containerPadding = 32;
+        if (alignment === "left" && containerWidth >= 1024) {
+          // Left alignment: start from left edge with padding (desktop only)
           centerOffset =
-            (containerWidth - currentCardWidth - containerPadding) / 2;
+            containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
         } else {
-          const effectiveWidth =
-            containerWidth < 1024 ? containerWidth - 32 : containerWidth;
-          centerOffset =
-            (effectiveWidth - currentCardWidth) / 2 +
-            (containerWidth < 1024 ? 16 : 0);
+          // Center alignment (default behavior for all, and mobile/tablet for left alignment)
+          if (containerWidth < 768) {
+            const containerPadding = 32;
+            centerOffset =
+              (containerWidth - currentCardWidth - containerPadding) / 2;
+          } else {
+            const effectiveWidth =
+              containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+            centerOffset =
+              (effectiveWidth - currentCardWidth) / 2 +
+              (containerWidth < 1024 ? 16 : 0);
+          }
         }
 
         // Calculate cumulative position for variable-width cards
@@ -505,6 +558,7 @@ export default function UnifiedContentCard({
     displayCards,
     getCardWidthForIndex,
     stableViewportHeight,
+    alignment,
   ]);
 
   // Helper function to calculate individual card width based on aspect ratio
@@ -544,16 +598,23 @@ export default function UnifiedContentCard({
       const targetCardWidth = getCardWidth(displayCards[newIndex]);
 
       let centerOffset;
-      if (containerWidth < 768) {
-        const containerPadding = 32;
+      if (alignment === "left" && containerWidth >= 1024) {
+        // Left alignment: start from left edge with padding (desktop only)
         centerOffset =
-          (containerWidth - targetCardWidth - containerPadding) / 2;
+          containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
       } else {
-        const effectiveWidth =
-          containerWidth < 1024 ? containerWidth - 32 : containerWidth;
-        centerOffset =
-          (effectiveWidth - targetCardWidth) / 2 +
-          (containerWidth < 1024 ? 16 : 0);
+        // Center alignment (default behavior for all, and mobile/tablet for left alignment)
+        if (containerWidth < 768) {
+          const containerPadding = 32;
+          centerOffset =
+            (containerWidth - targetCardWidth - containerPadding) / 2;
+        } else {
+          const effectiveWidth =
+            containerWidth < 1024 ? containerWidth - 32 : containerWidth;
+          centerOffset =
+            (effectiveWidth - targetCardWidth) / 2 +
+            (containerWidth < 1024 ? 16 : 0);
+        }
       }
 
       // Calculate cumulative position for variable-width cards
@@ -571,7 +632,14 @@ export default function UnifiedContentCard({
         setIsAnimating(false);
       });
     },
-    [displayCards, currentIndex, getCardWidth, getCumulativePosition, x]
+    [
+      displayCards,
+      currentIndex,
+      getCardWidth,
+      getCumulativePosition,
+      x,
+      alignment,
+    ]
   );
 
   // Keyboard navigation
@@ -1155,6 +1223,9 @@ export default function UnifiedContentCard({
     // Determine text color (default to white, allow override)
     const overlayTextColor = card.textColor || "text-white";
 
+    // Determine description color (default to overlayTextColor, allow override)
+    const descriptionTextColor = card.descriptionColor || overlayTextColor;
+
     // Determine heading level (default to h3)
     const headingLevel = card.headingLevel || "h3";
     const headingClass = headingLevel === "h2" ? "h2-title" : "h3-secondary";
@@ -1225,7 +1296,7 @@ export default function UnifiedContentCard({
             ) : (
               <>
                 {/* Default order: Description first */}
-                <p className={`p-primary ${overlayTextColor} mb-2 md:mb-3`}>
+                <p className={`p-primary ${descriptionTextColor} mb-2 md:mb-3`}>
                   {getCardText(card, "description")}
                 </p>
                 {/* Title second (h2 or h3) */}
@@ -1284,6 +1355,131 @@ export default function UnifiedContentCard({
             </motion.div>
           )}
         </div>
+      </div>
+    );
+  };
+
+  // Render glass-quote layout (glass background with quote-style text layout)
+  const renderGlassQuoteLayout = (card: ContentCardData, index: number) => {
+    // Parse the description to extract quote text and attribution
+    // Expected format: "quote text|||attribution name|||attribution title"
+    const parts = (card.description || "").split("|||");
+    const quoteText = parts[0] || "";
+    const attributionName = parts[1] || "";
+    const attributionTitle = parts[2] || "";
+
+    const cardContent = (
+      <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-8 lg:p-10">
+        {/* Top Section: Logo + Title + Subtitle - Fixed height for alignment */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.1, duration: 0.6 }}
+          className="flex flex-col items-start h-[120px] md:h-[140px]"
+        >
+          {/* Logo Image - White filtered, left-aligned */}
+          {card.image && (
+            <div className="mb-2 md:mb-3 w-24 h-12 md:w-32 md:h-16 flex-shrink-0">
+              <HybridBlobImage
+                path={getImagePath(card.image)}
+                alt={getCardText(card, "title")}
+                width={128}
+                height={64}
+                className="w-full h-full object-contain object-left"
+                style={{
+                  filter: "brightness(0) invert(1)", // Makes logo white
+                }}
+                strategy="client"
+                enableCache={true}
+              />
+            </div>
+          )}
+
+          {/* Icon fallback */}
+          {!card.image && card.icon && (
+            <div className="mb-2 md:mb-3 flex-shrink-0">{card.icon}</div>
+          )}
+
+          {/* Top Text - p-primary */}
+          {card.title && (
+            <p className="p-primary text-white mb-1 underline">
+              {getCardText(card, "title")}
+            </p>
+          )}
+
+          {/* Secondary Top Text - p-primary-small */}
+          {card.subtitle && (
+            <p className="p-primary-small text-gray-400">
+              {getCardText(card, "subtitle")}
+            </p>
+          )}
+        </motion.div>
+
+        {/* Middle Section: Quote Text - Fixed height for alignment */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
+          className="flex items-start flex-1 min-h-[200px] md:min-h-[240px] mt-12 md:mt-10 lg:mt-16"
+        >
+          <div className="w-full">
+            {/* Large Quote Mark - block element with fixed height */}
+            <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
+              &ldquo;
+            </span>
+            {/* Quote Text */}
+            <p
+              className="p-tertiary text-white leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: quoteText }}
+            />
+          </div>
+        </motion.div>
+
+        {/* Bottom Section: Attribution - Fixed height for alignment */}
+        {(attributionName || attributionTitle) && (
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1 + 0.4, duration: 0.6 }}
+            className="flex flex-col items-start h-[80px] md:h-[100px] justify-end"
+          >
+            {/* Attribution Name - p-primary */}
+            {attributionName && (
+              <p className="p-primary text-white mb-1">{attributionName}</p>
+            )}
+
+            {/* Attribution Title - p-primary-small */}
+            {attributionTitle && (
+              <p className="p-primary-small text-gray-400">
+                {attributionTitle}
+              </p>
+            )}
+          </motion.div>
+        )}
+      </div>
+    );
+
+    return (
+      <div
+        className="relative w-full h-full overflow-hidden rounded-3xl"
+        style={{
+          backgroundColor: "#121212",
+          boxShadow:
+            "inset 0 6px 12px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3)",
+        }}
+      >
+        {card.externalLink ? (
+          <a
+            href={card.externalLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full h-full transition-opacity hover:opacity-90"
+          >
+            {cardContent}
+          </a>
+        ) : (
+          cardContent
+        )}
       </div>
     );
   };
@@ -1930,50 +2126,94 @@ export default function UnifiedContentCard({
                                                     heightMultiplier
                                                 );
                                     })()
-                                  : isStatic || isResponsive
-                                    ? isClient && screenWidth >= 1600
-                                      ? Math.min(
-                                          830 * heightMultiplier, // 830px standard, 1037.5px tall
-                                          typeof window !== "undefined"
-                                            ? window.innerHeight *
+                                  : layout === "glass-quote"
+                                    ? // Glass-quote: Same height calculation as overlay-text
+                                      (() => {
+                                        const viewportHeight =
+                                          stableViewportHeight > 0
+                                            ? stableViewportHeight
+                                            : typeof window !== "undefined"
+                                              ? window.innerHeight
+                                              : 0;
+                                        return isClient && screenWidth >= 1600
+                                          ? Math.min(
+                                              830 * heightMultiplier,
+                                              viewportHeight *
                                                 0.75 *
                                                 heightMultiplier
-                                            : 830 * heightMultiplier
-                                        )
-                                      : isClient && screenWidth >= 1280
-                                        ? Math.min(
-                                            692 * heightMultiplier, // 692px standard, 865px tall
-                                            typeof window !== "undefined"
-                                              ? window.innerHeight *
+                                            )
+                                          : isClient && screenWidth >= 1280
+                                            ? Math.min(
+                                                692 * heightMultiplier,
+                                                viewportHeight *
                                                   0.7 *
                                                   heightMultiplier
-                                              : 692 * heightMultiplier
+                                              )
+                                            : isClient && screenWidth >= 1024
+                                              ? Math.min(
+                                                  577 * heightMultiplier,
+                                                  viewportHeight *
+                                                    0.7 *
+                                                    heightMultiplier
+                                                )
+                                              : isClient && screenWidth >= 768
+                                                ? Math.min(
+                                                    720 * heightMultiplier,
+                                                    viewportHeight *
+                                                      0.75 *
+                                                      heightMultiplier
+                                                  )
+                                                : Math.min(
+                                                    600 * heightMultiplier,
+                                                    viewportHeight *
+                                                      0.75 *
+                                                      heightMultiplier
+                                                  );
+                                      })()
+                                    : isStatic || isResponsive
+                                      ? isClient && screenWidth >= 1600
+                                        ? Math.min(
+                                            830 * heightMultiplier, // 830px standard, 1037.5px tall
+                                            typeof window !== "undefined"
+                                              ? window.innerHeight *
+                                                  0.75 *
+                                                  heightMultiplier
+                                              : 830 * heightMultiplier
                                           )
-                                        : isClient && screenWidth >= 1024
+                                        : isClient && screenWidth >= 1280
                                           ? Math.min(
-                                              577 * heightMultiplier, // 577px standard, 721.25px tall
+                                              692 * heightMultiplier, // 692px standard, 865px tall
                                               typeof window !== "undefined"
                                                 ? window.innerHeight *
                                                     0.7 *
                                                     heightMultiplier
-                                                : 577 * heightMultiplier
+                                                : 692 * heightMultiplier
                                             )
-                                          : Math.min(
-                                              720 * heightMultiplier, // 720px standard, 900px tall
-                                              typeof window !== "undefined"
-                                                ? window.innerHeight *
-                                                    0.75 *
-                                                    heightMultiplier
-                                                : 720 * heightMultiplier
-                                            )
-                                    : Math.min(
-                                        600 * heightMultiplier, // 600px standard, 750px tall
-                                        typeof window !== "undefined"
-                                          ? window.innerHeight *
-                                              0.75 *
-                                              heightMultiplier
-                                          : 600 * heightMultiplier
-                                      ),
+                                          : isClient && screenWidth >= 1024
+                                            ? Math.min(
+                                                577 * heightMultiplier, // 577px standard, 721.25px tall
+                                                typeof window !== "undefined"
+                                                  ? window.innerHeight *
+                                                      0.7 *
+                                                      heightMultiplier
+                                                  : 577 * heightMultiplier
+                                              )
+                                            : Math.min(
+                                                720 * heightMultiplier, // 720px standard, 900px tall
+                                                typeof window !== "undefined"
+                                                  ? window.innerHeight *
+                                                      0.75 *
+                                                      heightMultiplier
+                                                  : 720 * heightMultiplier
+                                              )
+                                      : Math.min(
+                                          600 * heightMultiplier, // 600px standard, 750px tall
+                                          typeof window !== "undefined"
+                                            ? window.innerHeight *
+                                                0.75 *
+                                                heightMultiplier
+                                            : 600 * heightMultiplier
+                                        ),
                           backgroundColor: isGlass
                             ? "#121212"
                             : card.backgroundColor,
@@ -2002,6 +2242,12 @@ export default function UnifiedContentCard({
                           renderImageOnlyLayout(card, index)}
                         {layout === "overlay-text" &&
                           renderOverlayTextLayout(card, index)}
+                        {layout === "glass-quote" &&
+                          (card.buttons &&
+                          card.buttons.length > 0 &&
+                          !card.image
+                            ? renderOverlayTextLayout(card, index)
+                            : renderGlassQuoteLayout(card, index))}
                       </motion.div>
                     );
                   })}

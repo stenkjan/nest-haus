@@ -4,6 +4,30 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [418d94d87855725cb7beb218ba22aac3f1168a7a] - Thu Oct 30 13:08:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: introduce glass quote card layout and enhance styling options  - Added a new  class for improved paragraph styling. - Implemented the  layout in  for testimonials with a glass background effect. - Updated  to include a testimonials section using the new . - Enhanced  with left alignment for card content. - Updated  and  to document the new glass quote card features and usage.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+- src/app/globals.css
+- src/app/showcase/cards/page.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/cards/README.md
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/GLASS-QUOTE-CARDS-GUIDE.md
+- docs/GLASS-QUOTE-CARDS-QUICK-REF.md
+- docs/GLASS-QUOTE-CARDS-SUMMARY.md
+
+
+---
+
 ## [ca75bff1d236cb3096fa033dd80640d00c575809] - Wed Oct 29 16:25:47 2025 +0100
 
 **Author**: stenkjan

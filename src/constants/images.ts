@@ -363,14 +363,17 @@ export const IMAGES = {
         default: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDgwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9zdmc+'
     },
 
-    // Partner logos
+    // Partner logos (white logos on transparent background)
     partners: {
         partner1: '60-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz',
         partner2: '61-NEST-Haus-Partner-Kooperation-Engelsmann-Peters-Professor-TU-Graz-Stefan-Peters',
         partner3: '62-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-IAM-Institut',
         partner4: '63-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-Labor-Bauphysik',
         partner5: '64-NEST-Haus-Partner-Kooperation-Schwarz-Partner-Patentanwaelte',
-        partner6: '65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau'
+        partner6: '65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau',
+        sobitschHolzbau: '301-nest-haus-partner-sobitsch-holzbau', // White logo
+        tuGraz: '302-nest-haus-partner-tu-graz', // White logo
+        wko: '303-nest-haus-partner-wko' // White logo
     },
 
     // Step icons for process cards

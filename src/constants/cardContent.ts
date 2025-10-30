@@ -49,6 +49,7 @@ export interface ContentCardData {
     overlayImage?: string;
     backgroundColor: string;
     textColor?: string; // Optional custom text color
+    descriptionColor?: string; // Optional custom color for description text
     icon?: React.ReactNode; // Optional custom icon component
     iconNumber?: number; // Or specify a step icon by number (1-7)
     playbackRate?: number; // For video cards (1.0 = normal speed)
@@ -57,6 +58,7 @@ export interface ContentCardData {
     imageFit?: "cover" | "contain-width"; // Optional image fit behavior: "cover" (default - fills container), "contain-width" (fits width, crops top/bottom)
     reverseTextOrder?: boolean; // Optional: reverse text order in overlay-text layout (title first, then description)
     headingLevel?: "h2" | "h3"; // Optional: control heading level for title in overlay-text layout (default: h3)
+    externalLink?: string; // Optional: external URL to link the entire card to
 }
 
 /**
@@ -944,6 +946,63 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
 ];
 
 /**
+ * GLASS QUOTE CARDS CONTENT
+ * Quote-style cards with glass background for testimonials or impactful statements
+ * Text format: "quote text|||Attribution Name|||Attribution Title"
+ * Layout: Icon top-left, title (p-primary), subtitle (p-primary-small), quote in middle (p-secondary), attribution bottom (p-primary + p-primary-small)
+ * Used in: Landing pages, About sections, Testimonials
+ */
+export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
+    {
+        id: 0,
+        title: "Erfahre, was unsere Partner an Nest schätzen",
+        subtitle: "",
+        description: "Stimmen die zählen",
+        backgroundColor: "#121212",
+        aspectRatio: "2x1", // Portrait format (tall)
+        textColor: "text-white",
+        descriptionColor: "text-gray-400", // Same gray as subtitle on other cards
+        reverseTextOrder: false, // Description first (p-primary), then title (h2-title)
+        headingLevel: "h2", // Use h2-title for bigger title
+        buttons: [
+            {
+                text: "Überzeuge dich selbst",
+                variant: "primary",
+                size: "xs",
+                link: "/warum-wir",
+            },
+        ],
+    },
+    {
+        id: 1,
+        title: "Technische Universität Graz",
+        subtitle: "Projektentwicklung",
+        description: "<span class='text-nest-gray'>Ein </span> zukunftsweisendes Projekt, <span class='text-nest-gray'>welches in den Bereichen</span> Nachhaltigkeit<span class='text-nest-gray'>, Ökologie und auch vom technischen Ansatz</span> herausragend <span class='text-nest-gray'>ist!</span>|||Assoc. Prof. Dipl-Ing. Dr. Techn.|||Milena Stravic",
+        backgroundColor: "#121212",
+        image: IMAGES.partners.tuGraz, // TU Graz logo
+        externalLink: "https://www.tugraz.at", // Optional: link to TU Graz website
+    },
+    {
+        id: 2,
+        title: "Zimmererei Sobitsch",
+        subtitle: "Modulbau",
+        description: "Einfache Umsetzung <span class='text-nest-gray'>und gleichzeitig </span>hochwertige <span class='text-nest-gray'>und extrem belastbare</span> Ausführung.|||Holzbaumeister|||Franz Sobitsch",
+        backgroundColor: "#121212",
+        image: IMAGES.partners.sobitschHolzbau,
+        externalLink: "https://www.sobi.at", // Optional: link to Sobitsch website
+    },
+    {
+        id: 3,
+        title: "Wirtschaftskammer Österreich",
+        subtitle: "Auszeichnung Top 30 unter 30",
+        description: "Fillertext <span class='text-nest-gray'>hat</span> Qualität <span class='text-nest-gray'>in perfekter</span> Harmonie. <span class='text-nest-gray'>Das ist</span> modernes Wohnen, <span class='text-nest-gray'>wie es sein sollte.</span>|||WKO Steiermark|||Von Jury gekürt",
+        backgroundColor: "#121212",
+        image: IMAGES.partners.wko, // TU-IAM logo
+        externalLink: "https://www.wko.at", // Optional: link to WKO website
+    },
+];
+
+/**
  * CATEGORY TYPE
  * Type-safe category keys
  */
@@ -959,7 +1018,8 @@ export type ContentCategory =
     | "fullImageCards"
     | "videoBackgroundCards"
     | "entwurfVideoCards"
-    | "processCards";
+    | "processCards"
+    | "glassQuoteCards";
 
 /**
  * MASTER CONTENT LOOKUP
@@ -985,6 +1045,7 @@ export const CARD_CONTENT_BY_CATEGORY: Record<
     videoBackgroundCards: VIDEO_BACKGROUND_CARDS_CONTENT,
     entwurfVideoCards: ENTWURF_VIDEO_CARDS_CONTENT,
     processCards: PROCESS_CARDS_CONTENT,
+    glassQuoteCards: GLASS_QUOTE_CARDS_CONTENT,
 };
 
 /**

@@ -304,6 +304,21 @@ export default function CardsShowcasePage() {
           />
         </section>
 
+        {/* Glass Quote Cards Section */}
+        <section className="overflow-visible bg-black py-16">
+          <UnifiedContentCard
+            layout="glass-quote"
+            style="glass"
+            variant="responsive"
+            category="glassQuoteCards"
+            title="Glass Quote Cards"
+            subtitle="Quote-style cards with glass background and mixed bold/gray text • Perfect for testimonials and impactful statements"
+            maxWidth={false}
+            backgroundColor="black"
+            showInstructions={true}
+          />
+        </section>
+
         {/* Button Showcase Section - Constrained Width */}
         <section>
           <div className="max-w-7xl mx-auto px-4">
