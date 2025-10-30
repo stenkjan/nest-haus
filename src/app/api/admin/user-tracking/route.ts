@@ -824,16 +824,7 @@ export async function GET() {
         const startTime = Date.now();
 
         // Fetch all data in parallel with error handling
-        const [
-            funnel, 
-            topConfigurations, 
-            priceDistribution, 
-            selectionStats, 
-            clickAnalytics,
-            configurationAnalytics,
-            quantityAnalytics,
-            timeMetrics
-        ] = await Promise.allSettled([
+        const results = await Promise.allSettled([
             UserTrackingService.getFunnelMetrics(),
             UserTrackingService.getTopConfigurations(),
             UserTrackingService.getPriceDistribution(),
@@ -842,34 +833,30 @@ export async function GET() {
             UserTrackingService.getConfigurationAnalytics(),
             UserTrackingService.getQuantityAnalytics(),
             UserTrackingService.getTimeMetrics()
-        ]).then(results => results.map((result, index) => {
+        ]);
+
+        // Helper to extract value with default fallback
+        const getResult = <T,>(index: number, defaultValue: T): T => {
+            const result = results[index];
             if (result.status === 'fulfilled') {
-                return result.value;
+                return result.value as T;
             } else {
                 console.error(`❌ Failed to fetch analytics data [${index}]:`, result.reason);
-                // Return default values based on index
-                switch (index) {
-                    case 0: // funnel
-                        return { totalSessions: 0, reachedCart: 0, completedInquiry: 0, converted: 0, cartRate: 0, inquiryRate: 0, conversionRate: 0 };
-                    case 1: // topConfigurations
-                        return [];
-                    case 2: // priceDistribution
-                        return [];
-                    case 3: // selectionStats
-                        return { nestTypes: [], gebaeudehuelle: [], innenverkleidung: [] };
-                    case 4: // clickAnalytics
-                        return { pageClicks: [], mouseClicks: [] };
-                    case 5: // configurationAnalytics
-                        return {};
-                    case 6: // quantityAnalytics
-                        return { geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }, pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] } };
-                    case 7: // timeMetrics
-                        return { avgTimeToCart: 0, avgTimeToInquiry: 0, avgSessionDuration: 0 };
-                    default:
-                        return null;
-                }
+                return defaultValue;
             }
-        }));
+        };
+
+        const funnel = getResult(0, { totalSessions: 0, reachedCart: 0, completedInquiry: 0, converted: 0, cartRate: 0, inquiryRate: 0, conversionRate: 0 });
+        const topConfigurations = getResult(1, []);
+        const priceDistribution = getResult(2, []);
+        const selectionStats = getResult(3, { nestTypes: [], gebaeudehuelle: [], innenverkleidung: [] });
+        const clickAnalytics = getResult(4, { pageClicks: [], mouseClicks: [] });
+        const configurationAnalytics = getResult(5, {});
+        const quantityAnalytics = getResult(6, { 
+            geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }, 
+            pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] } 
+        });
+        const timeMetrics = getResult(7, { avgTimeToCart: 0, avgTimeToInquiry: 0, avgSessionDuration: 0 });
 
         const response: UserTrackingData = {
             funnel,
