@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fb622c5e32290eeacc6e9d655c5c1f10bb8d2f97] - Thu Oct 30 13:55:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: add TrackingActions component to user tracking dashboard  - Introduced TrackingActions component for enhanced configuration management. - Updated UserTrackingDashboard to include a new section for tracking actions, improving user experience and functionality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/TrackingActions.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/user-tracking/actions/route.ts
+
+
+---
+
 ## [970c4bad1d0cbdbd5fc225a451be1ac600a5955e] - Thu Oct 30 13:48:52 2025 +0100
 
 **Author**: stenkjan
