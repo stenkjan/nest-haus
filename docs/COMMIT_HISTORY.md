@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b7d6994b6cdf64874c210e1142374ced72522a0a] - Fri Oct 31 12:55:16 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [0b65fba505ec22b1305640b42bcf85d5c29a0b56] - Fri Oct 31 12:42:07 2025 +0100
 
 **Author**: stenkjan
