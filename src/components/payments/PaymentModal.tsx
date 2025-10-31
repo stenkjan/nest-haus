@@ -403,7 +403,7 @@ export default function PaymentModal({
   const [paymentStep, setPaymentStep] = useState<PaymentStep>(
     initialPaymentState === "success" ? "success" : "method-selection"
   );
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
+  const [_selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
   const [paymentState, setPaymentState] = useState<
     "form" | "success" | "error"
   >(initialPaymentState || "form");
@@ -431,21 +431,21 @@ export default function PaymentModal({
   }, [isOpen, initialPaymentState, initialPaymentIntentId]);
 
   // Handle successful payment
-  const handlePaymentSuccess = (intentId: string) => {
+  const _handlePaymentSuccess = (intentId: string) => {
     setPaymentIntentId(intentId);
     setPaymentState("success");
     onSuccess(intentId);
   };
 
   // Handle payment error
-  const handlePaymentError = (error: string) => {
+  const _handlePaymentError = (error: string) => {
     setErrorMessage(error);
     setPaymentState("error");
     onError(error);
   };
 
   // Handle retry payment
-  const handleRetry = () => {
+  const _handleRetry = () => {
     setPaymentState("form");
     setErrorMessage("");
   };
