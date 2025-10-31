@@ -2780,7 +2780,7 @@ export default function CheckoutStepper({
                                         else if (name.includes("pro"))
                                           packageType = "pro";
                                       } else if (localSelectedPlan) {
-                                        packageType = localSelectedPlan;
+                                        packageType = localSelectedPlan || "";
                                       }
 
                                       // Return simple price display
