@@ -2748,7 +2748,7 @@ export default function CheckoutStepper({
                                             return "Planungspaket 02 Plus";
                                           if (name.includes("pro"))
                                             return "Planungspaket 03 Pro";
-                                          return configItem.planungspaket.name;
+                                          return configItem?.planungspaket?.name || "—";
                                         }
                                         // Otherwise get from localSelectedPlan
                                         if (localSelectedPlan) {
@@ -2774,7 +2774,7 @@ export default function CheckoutStepper({
 
                                       if (configItem?.planungspaket?.name) {
                                         const name =
-                                          configItem.planungspaket.name.toLowerCase();
+                                          configItem?.planungspaket?.name?.toLowerCase() || "";
                                         if (name.includes("plus"))
                                           packageType = "plus";
                                         else if (name.includes("pro"))
