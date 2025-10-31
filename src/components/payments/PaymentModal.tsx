@@ -208,6 +208,96 @@ function PaymentSuccess({
   );
 }
 
+// Payment method selection component (Step 1)
+function PaymentMethodSelection({
+  onMethodSelect,
+  onCancel,
+}: {
+  onMethodSelect: (method: PaymentMethod) => void;
+  onCancel: () => void;
+}) {
+  const [selected, setSelected] = useState<PaymentMethod>("card");
+
+  const methods = [
+    {
+      id: "card" as PaymentMethod,
+      name: "Debit-oder Kreditkarte",
+      logos: ["mastercard", "visa", "amex"],
+    },
+    {
+      id: "apple_pay" as PaymentMethod,
+      name: "Apple Pay",
+      logos: ["apple_pay"],
+    },
+    {
+      id: "paypal" as PaymentMethod,
+      name: "PayPal",
+      logos: ["paypal"],
+    },
+    {
+      id: "klarna" as PaymentMethod,
+      name: "Klarna",
+      logos: ["klarna"],
+    },
+  ];
+
+  return (
+    <div className="py-6">
+      <p className="text-sm text-gray-600 mb-6 text-center">
+        *Nach Auswahl der Zahlungsmethode wirst du zum Anbieter weitergeleitet
+      </p>
+
+      <div className="space-y-3 mb-8">
+        {methods.map((method) => (
+          <button
+            key={method.id}
+            onClick={() => setSelected(method.id)}
+            className={`w-full border-2 rounded-2xl p-5 flex items-center justify-between transition-all ${
+              selected === method.id
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-300 bg-white hover:border-gray-400"
+            }`}
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2">
+                {method.logos.map((logo) => (
+                  <div
+                    key={logo}
+                    className="w-12 h-8 bg-gray-100 rounded flex items-center justify-center text-xs font-semibold"
+                  >
+                    {logo === "mastercard" && "MC"}
+                    {logo === "visa" && "VISA"}
+                    {logo === "amex" && "AMEX"}
+                    {logo === "apple_pay" && "🍎"}
+                    {logo === "paypal" && "PP"}
+                    {logo === "klarna" && "K"}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <span className="text-gray-700 font-medium">{method.name}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="flex gap-3 justify-center">
+        <button
+          onClick={onCancel}
+          className="px-6 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-50"
+        >
+          Vorgang abbrechen
+        </button>
+        <button
+          onClick={() => onMethodSelect(selected)}
+          className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700"
+        >
+          Fortfahren
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // Payment error component
 function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
   return (
@@ -293,6 +383,9 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
 }
 
 // Main payment modal component
+type PaymentMethod = "card" | "apple_pay" | "paypal" | "klarna";
+type PaymentStep = "method-selection" | "payment-details" | "success" | "error";
+
 export default function PaymentModal({
   isOpen,
   onClose,
@@ -306,6 +399,11 @@ export default function PaymentModal({
   initialPaymentIntentId,
   initialPaymentState,
 }: PaymentModalProps) {
+  // Payment step state (3-step flow)
+  const [paymentStep, setPaymentStep] = useState<PaymentStep>(
+    initialPaymentState === "success" ? "success" : "method-selection"
+  );
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
   const [paymentState, setPaymentState] = useState<
     "form" | "success" | "error"
   >(initialPaymentState || "form");
@@ -324,6 +422,9 @@ export default function PaymentModal({
   useEffect(() => {
     if (isOpen) {
       setPaymentState(initialPaymentState || "form");
+      setPaymentStep(
+        initialPaymentState === "success" ? "success" : "method-selection"
+      );
       setPaymentIntentId(initialPaymentIntentId || "");
       setErrorMessage("");
     }
@@ -352,6 +453,7 @@ export default function PaymentModal({
   // Handle modal close
   const handleClose = useCallback(() => {
     setPaymentState("form");
+    setPaymentStep("method-selection");
     setPaymentIntentId("");
     setErrorMessage("");
     onClose();
@@ -409,8 +511,8 @@ export default function PaymentModal({
               : "scale-95 opacity-0 translate-y-4"
           }`}
         >
-          {/* Close button - only show for form state */}
-          {paymentState === "form" && (
+          {/* Close button - only show for method selection and payment details */}
+          {(paymentStep === "method-selection" || paymentStep === "payment-details") && (
             <button
               onClick={handleClose}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
@@ -433,15 +535,34 @@ export default function PaymentModal({
 
           {/* Content */}
           <div className="p-6">
-            {paymentState === "form" && (
+            {/* Step 1: Payment Method Selection */}
+            {paymentStep === "method-selection" && (
               <div>
-                <div className="mb-6">
+                <div className="mb-6 text-center">
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                    Zahlung abschließen
+                    Zahlungsmethode wählen
+                  </h2>
+                </div>
+
+                <PaymentMethodSelection
+                  onMethodSelect={(method) => {
+                    setSelectedMethod(method);
+                    setPaymentStep("payment-details");
+                  }}
+                  onCancel={handleClose}
+                />
+              </div>
+            )}
+
+            {/* Step 2: Payment Details Form */}
+            {paymentStep === "payment-details" && (
+              <div>
+                <div className="mb-6 text-center">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Gleich geschafft
                   </h2>
                   <p className="text-gray-600">
-                    Schließen Sie Ihre NEST-Haus Konfiguration mit einer
-                    sicheren Zahlung ab.
+                    Fülle die Informationen aus
                   </p>
                 </div>
 
@@ -454,15 +575,24 @@ export default function PaymentModal({
                     customerEmail={customerEmail}
                     customerName={customerName}
                     inquiryId={inquiryId}
-                    onSuccess={handlePaymentSuccess}
-                    onError={handlePaymentError}
-                    onCancel={handleClose}
+                    onSuccess={(intentId) => {
+                      setPaymentIntentId(intentId);
+                      setPaymentStep("success");
+                      onSuccess(intentId);
+                    }}
+                    onError={(error) => {
+                      setErrorMessage(error);
+                      setPaymentStep("error");
+                      onError(error);
+                    }}
+                    onCancel={() => setPaymentStep("method-selection")}
                   />
                 </PaymentErrorBoundary>
               </div>
             )}
 
-            {paymentState === "success" && (
+            {/* Step 3: Success */}
+            {paymentStep === "success" && (
               <PaymentSuccess
                 paymentIntentId={paymentIntentId}
                 amount={amount}
@@ -471,10 +601,11 @@ export default function PaymentModal({
               />
             )}
 
-            {paymentState === "error" && (
+            {/* Error State */}
+            {paymentStep === "error" && (
               <PaymentError
                 error={errorMessage}
-                onRetry={handleRetry}
+                onRetry={() => setPaymentStep("payment-details")}
                 onClose={handleClose}
               />
             )}

@@ -16,6 +16,26 @@ alwaysApply: true
 - **Run lint checks** after completing tasks to avoid @typescript-eslint/no-unused-vars errors
 - **Follow the beta roadmap**: Use `docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md` as the primary guide
 
+### **CRITICAL: Webpack Module Resolution Error Prevention**
+
+**Error Pattern**: `TypeError: Cannot read properties of undefined (reading 'call')`
+
+This error occurs when webpack cannot resolve module imports after installing new dependencies.
+
+**MANDATORY FIX WORKFLOW** (After ANY `npm install`):
+```bash
+# 1. Kill all node processes
+taskkill //F //IM node.exe
+
+# 2. Delete webpack cache
+rm -rf .next
+
+# 3. Restart dev server
+npm run dev
+```
+
+**RULE**: Never assume hot reload will pick up new package installations. Always clear `.next` cache and restart after adding dependencies.
+
 ### **Build Optimization Mandate**
 
 - **Target build time**: <2 minutes (reduced from 3 minutes)
