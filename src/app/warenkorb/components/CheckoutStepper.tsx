@@ -2553,28 +2553,32 @@ export default function CheckoutStepper({
 
                       {/* Right: Heute zu bezahlen box - compact design per image */}
                       <div className="lg:sticky lg:top-4">
-                        {/* Compact box with only title, subtitle, and price */}
-                        <div className="border border-gray-300 rounded-2xl p-6 bg-white text-center mb-6">
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">
-                            {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
-                          </h3>
-                          <div className="text-sm text-gray-600 mb-4">
-                            Starte dein Bauvorhaben
+                        {/* Compact box with title/subtitle left, price right */}
+                        <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="text-left">
+                              <h3 className="text-lg font-medium text-gray-900 mb-1">
+                                {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
+                              </h3>
+                              <div className="text-sm text-gray-600">
+                                Starte dein Bauvorhaben
+                              </div>
+                            </div>
+                            {!isPaymentCompleted ? (
+                              <div className="text-right">
+                                <div className="text-3xl font-bold text-gray-900">1000 €</div>
+                              </div>
+                            ) : (
+                              <div className="text-right">
+                                <div className="text-2xl font-bold text-green-600">Bezahlt</div>
+                                <div className="text-lg text-green-600 italic">500 €</div>
+                              </div>
+                            )}
                           </div>
-                          {!isPaymentCompleted ? (
-                            <div className="text-right">
-                              <div className="text-3xl font-bold text-gray-900">€ 3.000,00</div>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="text-2xl font-bold text-green-600">Bezahlt</div>
-                              <div className="text-lg text-green-600 italic">500 €</div>
-                            </div>
-                          )}
                         </div>
 
-                        {/* Disclaimer text - centered below box */}
-                        <div className="text-sm text-gray-600 leading-relaxed text-center mb-6">
+                        {/* Disclaimer text - centered below box with margin */}
+                        <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
                           Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck.
                         </div>
 
@@ -2680,6 +2684,7 @@ export default function CheckoutStepper({
                 {configItem && !isOhneNestMode ? (
                   <>
                     {(() => {
+                      if (!configItem) return null;
                       const details = renderConfigurationDetails(configItem);
                       const topAndMiddleItems = details.filter(
                         (d) => !d.isBottomItem
