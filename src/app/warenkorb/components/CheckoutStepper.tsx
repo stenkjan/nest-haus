@@ -2386,7 +2386,7 @@ export default function CheckoutStepper({
               {/* So gehts danach weiter Section */}
               <div className="text-center mb-8">
                 <h2 className="h2-secondary text-gray-900 mb-2">
-                  So geht's danach weiter
+                  So gehts danach weiter
                 </h2>
                 <p className="p-secondary text-gray-600">
                   Deine Teilzahlungen im Überblick
