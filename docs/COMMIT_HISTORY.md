@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0b65fba505ec22b1305640b42bcf85d5c29a0b56] - Fri Oct 31 12:42:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge final warenkorb fixes  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
 ## [063a111a629318ca2aec4b7285bab3ad427eef6b] - Fri Oct 31 12:25:46 2025 +0100
 
 **Author**: stenkjan
