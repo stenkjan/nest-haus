@@ -96,12 +96,12 @@ export default function CheckoutPlanungspaketeCards({
                 </div>
               </div>
 
-              {/* Content Section - Description */}
-              <div className="px-6 py-6 flex-grow flex flex-col min-h-[400px]">
-                {/* Main Description Content */}
-                <div className="space-y-6">
+              {/* Content Section - Description - Shortened design */}
+              <div className="px-6 py-4 flex-grow flex flex-col min-h-[200px]">
+                {/* Main Description Content - Compact */}
+                <div className="space-y-3">
                   {/* Smaller text for "Inkl." section - use from cardData */}
-                  <div className="text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-relaxed whitespace-pre-line">
+                  <div className="text-xs md:text-sm text-gray-600 leading-relaxed">
                     {cardData?.description || pkg.description}
                   </div>
 
