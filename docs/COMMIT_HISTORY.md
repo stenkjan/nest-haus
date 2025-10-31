@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b92a66f532638fddacb852e61f77ffcae1503f42] - Fri Oct 31 13:45:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+---
+
 ## [e29e0fbb222945b5134a5fa10394ab33e19b2bf4] - Fri Oct 31 13:41:35 2025 +0100
 
 **Author**: stenkjan
