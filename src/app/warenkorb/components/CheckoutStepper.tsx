@@ -2024,6 +2024,31 @@ export default function CheckoutStepper({
                 </h2>
               </div>
 
+              {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
+              {isOhneNestMode && (
+                <div className="max-w-4xl mx-auto mb-12">
+                  <div className="text-center mb-8">
+                    <div className="aspect-square w-full max-w-md mx-auto mb-6">
+                      <HybridBlobImage
+                        path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                        alt="NEST-Haus Konfiguration"
+                        fill
+                        className="rounded-lg object-cover"
+                      />
+                    </div>
+                    <Button
+                      variant="primary"
+                      size="md"
+                      onClick={() => {
+                        window.location.href = "/konfigurator";
+                      }}
+                    >
+                      Konfiguration hinzufügen
+                    </Button>
+                  </div>
+                </div>
+              )}
+
               {/* Overview grid: cart on left, summary/upgrade on right */}
               {!isOhneNestMode && (
                 <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
