@@ -967,7 +967,7 @@ export default function CheckoutStepper({
     const c = copyByStep[stepIndex];
     const total = getCartTotal();
     const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
-    const dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
+    const _dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
     const _terminDone = false; // Integrate with AppointmentBooking state if available
 
