@@ -2885,14 +2885,14 @@ export default function CheckoutStepper({
                                 // Get name from cart item first, but use new naming
                                 if (configItem?.planungspaket?.name) {
                                   const name =
-                                    configItem.planungspaket.name.toLowerCase();
+                                    configItem?.planungspaket?.name?.toLowerCase() || "";
                                   if (name.includes("basis"))
                                     return "Planungspaket 01 Basis";
                                   if (name.includes("plus"))
                                     return "Planungspaket 02 Plus";
                                   if (name.includes("pro"))
                                     return "Planungspaket 03 Pro";
-                                  return configItem.planungspaket.name;
+                                  return configItem?.planungspaket?.name || "—";
                                 }
                                 // Otherwise get from localSelectedPlan
                                 if (localSelectedPlan) {
