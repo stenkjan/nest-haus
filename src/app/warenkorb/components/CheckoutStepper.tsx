@@ -2019,18 +2019,10 @@ export default function CheckoutStepper({
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
                   {getDeliveryDateFormatted() || "TBD"}
                 </div>
-                <div className="max-w-3xl mx-auto">
-                  <p className="p-secondary text-gray-700 mb-4">
-                    Hier findest du alle Details deiner Auswahl inklusive transparenter Preise. Nutze diesen Moment, um alle Angaben in Ruhe zu überprüfen. Nach dem Absenden erhältst du eine schriftliche Bestätigung, und wir beginnen mit der Ausarbeitung deines Vorentwurfs sowie der Überprüfung deines Grundstücks.
-                  </p>
-                  <p className="p-secondary text-gray-700">
-                    Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf.
-                  </p>
-                </div>
               </div>
 
-              {/* Dein Preis Überblick Section */}
-              <div className="text-center mb-12">
+              {/* Dein Preis Überblick Section - direct header */}
+              <div className="text-center mb-8">
                 <h2 className="h2-secondary text-gray-900 mb-6">
                   Dein Preis Überblick
                 </h2>
@@ -2058,6 +2050,18 @@ export default function CheckoutStepper({
                       Konfiguration hinzufügen
                     </Button>
                   </div>
+                </div>
+              )}
+
+              {/* Title before Dein Nest sections */}
+              {!isOhneNestMode && (
+                <div className="text-center mb-12">
+                  <h2 className="h2-secondary text-gray-900 mb-2">
+                    Du hast es gleich Geschafft
+                  </h2>
+                  <p className="p-secondary text-gray-600">
+                    Überprüfe deine Daten und Angaben.
+                  </p>
                 </div>
               )}
 
@@ -2380,14 +2384,139 @@ export default function CheckoutStepper({
               </div>
 
               {/* So gehts danach weiter Section */}
-              <div className="text-center mb-12">
-                <h2 className="h2-secondary text-gray-900 mb-4">
-                  So gehts danach weiter
+              <div className="text-center mb-8">
+                <h2 className="h2-secondary text-gray-900 mb-2">
+                  So geht's danach weiter
                 </h2>
                 <p className="p-secondary text-gray-600">
                   Deine Teilzahlungen im Überblick
                 </p>
               </div>
+
+              {/* Teilzahlungen Boxes - Mit Nest flow only */}
+              {!isOhneNestMode && (() => {
+                const totalPrice = Math.max(0, getCartTotal());
+                const firstPayment = GRUNDSTUECKSCHECK_PRICE;
+                const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
+                const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
+                const secondPayment = Math.max(
+                  0,
+                  secondPaymentOriginal - grundstueckscheckCredit
+                );
+                const thirdPayment = Math.max(0, totalPrice * 0.5);
+                const fourthPayment = Math.max(
+                  0,
+                  totalPrice -
+                    firstPayment -
+                    secondPaymentOriginal -
+                    thirdPayment
+                );
+                
+                return (
+                  <div className="max-w-2xl mx-auto space-y-4 mb-12">
+                    {/* 1. Teilzahlung */}
+                    <div className="border border-gray-300 rounded-2xl p-6 bg-white">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="text-lg font-medium text-gray-900">1. Teilzahlung</div>
+                          <div className="text-sm text-gray-600 mt-1">
+                            30% des Gesamtpreises
+                            <br />
+                            Abzüglich Grundstückscheck ({PriceUtils.formatPrice(grundstueckscheckCredit)})
+                            <br />
+                            Liefergarantie 6 Monate ab Teilzahlung
+                          </div>
+                        </div>
+                        <div className="text-lg font-semibold text-gray-900">
+                          {PriceUtils.formatPrice(secondPayment)}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 2. Teilzahlung */}
+                    <div className="border border-gray-300 rounded-2xl p-6 bg-white">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="text-lg font-medium text-gray-900">2. Teilzahlung</div>
+                          <div className="text-sm text-gray-600 mt-1">
+                            50% des Gesamtpreises
+                            <br />
+                            Fällig nach Fertigstellung in der Produktion
+                          </div>
+                        </div>
+                        <div className="text-lg font-semibold text-gray-900">
+                          {PriceUtils.formatPrice(thirdPayment)}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 3. Teilzahlung */}
+                    <div className="border border-gray-300 rounded-2xl p-6 bg-white">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="text-lg font-medium text-gray-900">3. Teilzahlung</div>
+                          <div className="text-sm text-gray-600 mt-1">
+                            20% des Gesamtpreises
+                            <br />
+                            Fällig nach Errichtung am Grundstück
+                          </div>
+                        </div>
+                        <div className="text-lg font-semibold text-gray-900">
+                          {PriceUtils.formatPrice(fourthPayment)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Ohne-Nest Mode: Show simplified payment structure */}
+              {isOhneNestMode && (
+                <div className="max-w-2xl mx-auto space-y-4 mb-12">
+                  {/* Vorentwurf & Grundstückscheck */}
+                  <div className="border border-gray-300 rounded-2xl p-6 bg-white">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="text-lg font-medium text-gray-900">Vorentwurf & Grundstückscheck</div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          Starte dein Bauvorhaben
+                        </div>
+                      </div>
+                      <div className="text-lg font-semibold text-gray-900">
+                        500 €
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Planungspaket */}
+                  {localSelectedPlan && (
+                    <div className="border border-gray-300 rounded-2xl p-6 bg-white">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="text-lg font-medium text-gray-900">Planungspaket</div>
+                          <div className="text-sm text-gray-600 mt-1">
+                            {localSelectedPlan === "basis"
+                              ? "Planungspaket 01 Basis"
+                              : localSelectedPlan === "plus"
+                                ? "Planungspaket 02 Plus"
+                                : "Planungspaket 03 Pro"}
+                          </div>
+                        </div>
+                        <div className="text-lg font-semibold text-gray-900">
+                          {(() => {
+                            const planPrice = PLANNING_PACKAGES.find(
+                              (p) => p.value === localSelectedPlan
+                            )?.price || 0;
+                            return localSelectedPlan === "basis"
+                              ? "inkludiert"
+                              : PriceUtils.formatPrice(planPrice);
+                          })()}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button
