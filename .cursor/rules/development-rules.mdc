@@ -234,6 +234,42 @@ cd preiskalkulation && python read_prices.py
 - **Database Errors**: Use upsert patterns to handle race conditions and missing records
 - **Session Management**: Implement fail-safe session operations that never block user interactions
 
+### **CRITICAL: Webpack Module Resolution Errors**
+
+**Error Pattern**: `TypeError: Cannot read properties of undefined (reading 'call')`
+
+This error occurs when webpack cannot resolve module imports, typically after installing new packages.
+
+**Root Cause**: Webpack cache (.next directory) contains stale module references
+
+**Prevention & Resolution Steps**:
+1. **After installing new npm packages**: ALWAYS delete `.next` folder and restart dev server
+2. **Commands to fix**:
+   ```bash
+   # Kill all node processes
+   taskkill //F //IM node.exe
+   
+   # Delete webpack cache
+   rm -rf .next
+   
+   # Restart dev server
+   npm run dev
+   ```
+3. **When adding dependencies** (e.g., Stripe, third-party libraries):
+   - Install package: `npm install package-name`
+   - Delete cache: `rm -rf .next`
+   - Kill processes: `taskkill //F //IM node.exe`
+   - Restart: `npm run dev`
+   
+4. **For persistent issues**: Full clean reinstall
+   ```bash
+   rm -rf .next node_modules
+   npm install
+   npm run dev
+   ```
+
+**CRITICAL RULE**: Never assume hot reload will pick up new package installations. Always manually restart the dev server after adding dependencies to package.json.
+
 ## Git & Line Ending Rules (Windows Development)
 
 ### **Line Ending Configuration**

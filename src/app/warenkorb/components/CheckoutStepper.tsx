@@ -67,7 +67,7 @@ export default function CheckoutStepper({
   paymentRedirectStatus,
   onPaymentRedirectHandled,
 }: CheckoutStepperProps) {
-  const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate } =
+  const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate, getDeliveryDateFormatted } =
     useCartStore();
   const { currentPrice, configuration: currentConfiguration } =
     useConfiguratorStore();
@@ -1727,29 +1727,8 @@ export default function CheckoutStepper({
 
           {stepIndex === 1 && (
             <div className="space-y-4 pt-8">
-              {/* Process Steps Title Section */}
-              <div className="text-center mb-16">
-                <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
-                  Step by Step nach Hause
-                </h1>
-                <h3 className="h3-secondary text-gray-600 mb-8">
-                  Deine Vorstellungen formen jeden Schritt am Weg zum neuen
-                  Zuhause
-                </h3>
-              </div>
-
-              <UnifiedContentCard
-                category="ablaufSteps"
-                layout="process-detail"
-                style="standard"
-                variant="responsive"
-                maxWidth={true}
-                showInstructions={false}
-                backgroundColor="white"
-              />
-
-              {/* Dein Grundstück - Unser Check Section */}
-              <div className="mt-16">
+              {/* Dein Grundstück - Unser Check Section - FIRST */}
+              <div className="mb-16">
                 <div className="text-center mb-8 pt-8">
                   <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                     Dein Grundstück - Unser Check
@@ -1810,6 +1789,29 @@ export default function CheckoutStepper({
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Process Steps - Step by Step nach Hause - SECOND */}
+              <div className="mt-16">
+                <div className="text-center mb-16">
+                  <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
+                    Step by Step nach Hause
+                  </h1>
+                  <h3 className="h3-secondary text-gray-600 mb-8">
+                    Deine Vorstellungen formen jeden Schritt am Weg zum neuen
+                    Zuhause
+                  </h3>
+                </div>
+
+                <UnifiedContentCard
+                  category="ablaufSteps"
+                  layout="process-detail"
+                  style="standard"
+                  variant="responsive"
+                  maxWidth={true}
+                  showInstructions={false}
+                  backgroundColor="white"
+                />
               </div>
 
               <div className="flex justify-center mt-16 md:mt-20">
@@ -1874,7 +1876,7 @@ export default function CheckoutStepper({
               <div className="mt-12 max-w-4xl mx-auto">
                 <button
                   onClick={() => setShowPlanungspaketeDetails(!showPlanungspaketeDetails)}
-                  className="w-full border border-gray-300 rounded-lg p-6 bg-gray-50 hover:bg-gray-100 transition-colors flex items-center justify-between"
+                  className="w-full border border-gray-300 rounded-2xl p-6 bg-gray-50 hover:bg-gray-100 transition-colors flex items-center justify-between"
                 >
                   <div className="text-left">
                     <h3 className="text-lg font-medium text-gray-900 mb-1">
@@ -1884,8 +1886,8 @@ export default function CheckoutStepper({
                       Siehe dir die Pakete im Detail an und entdecke welches am besten zu dir passt
                     </p>
                   </div>
-                  <div className="text-gray-500">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <div className="min-w-[1.5rem] min-h-[1.5rem] rounded-full border border-gray-400 flex items-center justify-center flex-shrink-0">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
