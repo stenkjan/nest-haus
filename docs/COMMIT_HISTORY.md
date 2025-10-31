@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9803f4c5af555464c16b63f70559be4445567dcf] - Fri Oct 31 13:22:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: resolve PaymentModal linter errors  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
 ## [ce1a3b9a87b56f6f8b0aff91a08fe6bd449e3782] - Fri Oct 31 13:19:04 2025 +0100
 
 **Author**: stenkjan
