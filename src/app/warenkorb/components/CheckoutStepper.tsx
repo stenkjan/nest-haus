@@ -2375,7 +2375,8 @@ export default function CheckoutStepper({
             </div>
           )}
 
-          {stepIndex === 5 && (
+          {/* Removed step 5 - we only have 5 steps (0-4) now */}
+          {false && stepIndex === 5 && (
             <div className="space-y-4 pt-8">
               <div className="pt-2"></div>
               {/* Title row replaced above - keep spacing consistent */}
