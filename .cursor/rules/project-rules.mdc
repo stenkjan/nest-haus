@@ -36,6 +36,44 @@ npm run dev
 
 **RULE**: Never assume hot reload will pick up new package installations. Always clear `.next` cache and restart after adding dependencies.
 
+### **CRITICAL: TypeScript Safety Checks Before Committing**
+
+**MANDATORY PRE-COMMIT WORKFLOW**:
+```bash
+# 1. Run linter to catch TypeScript errors
+npm run lint
+
+# 2. If linter passes, verify build
+npm run build
+```
+
+**Common TypeScript Errors to Prevent**:
+
+1. **"Possibly Undefined" Errors**:
+   - ❌ `configItem.planungspaket.name` (if configItem can be undefined)
+   - ✅ `configItem?.planungspaket?.name || "—"`
+   - ❌ `data.field.toLowerCase()` (if field can be undefined)
+   - ✅ `data?.field?.toLowerCase() || ""`
+
+2. **Array/Object Access**:
+   - ❌ `items[0].property` (if items could be empty)
+   - ✅ `items[0]?.property || defaultValue`
+   - ❌ `object[key]` (dynamic keys on unknown types)
+   - ✅ `(object as Record<string, unknown>)[key]`
+
+3. **Function Arguments**:
+   - Always ensure parameters match expected types
+   - Use type assertions when you know the type is safe
+   - Add null checks before calling functions with non-nullable params
+
+**CRITICAL RULE**: Before every commit/push:
+1. Run `npm run lint` - must show ✔ No ESLint warnings or errors
+2. Fix ALL TypeScript errors (no "possibly undefined", no type mismatches)
+3. Use optional chaining (`?.`) for potentially undefined properties
+4. Add fallback values (`|| ""`, `|| []`, `|| 0`) to prevent undefined returns
+
+**If build fails on Vercel**: The error is YOUR responsibility to fix before the next commit.
+
 ### **Build Optimization Mandate**
 
 - **Target build time**: <2 minutes (reduced from 3 minutes)
