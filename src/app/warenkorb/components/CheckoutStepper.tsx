@@ -17,10 +17,12 @@ import {
   planungspaketeCardData,
   type PlanungspaketeCardData,
 } from "@/components/cards/PlanungspaketeCards";
+import PlanungspaketeCards from "@/components/cards/PlanungspaketeCards";
 import {
   UnifiedContentCard,
   CheckoutPlanungspaketeCards,
 } from "@/components/cards";
+import { Dialog } from "@/components/ui/Dialog";
 import { ImageManager } from "@/app/konfigurator/core/ImageManager";
 import { HybridBlobImage } from "@/components/images";
 import { useCartStore } from "@/store/cartStore";
@@ -135,6 +137,7 @@ export default function CheckoutStepper({
 
   // Payment completion state
   const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
+  const [showPlanungspaketeDetails, setShowPlanungspaketeDetails] = useState(false);
 
   // Handle payment redirect returns
   useEffect(() => {
@@ -1150,7 +1153,7 @@ export default function CheckoutStepper({
                           1
                         )}`}
                       >
-                        Vorentwurf & Check
+                        Check & Vorentwurf
                       </div>
                       <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                         {getRowSubtitle(1)}
@@ -1867,35 +1870,26 @@ export default function CheckoutStepper({
                 basisDisplayPrice={basisDisplayPrice}
               />
 
-              {/* Welches Planungspaket passt zu dir expandable section */}
+              {/* Welches Planungspaket passt zu dir - Konfigurator popup style */}
               <div className="mt-12 max-w-4xl mx-auto">
-                <details className="group border border-gray-300 rounded-lg overflow-hidden">
-                  <summary className="cursor-pointer p-6 bg-gray-50 hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center justify-between">
-                      <h3 className="h3-secondary text-gray-900">
-                        Welches Planungspaket passt zu dir?
-                      </h3>
-                      <div className="text-gray-500 group-open:rotate-180 transition-transform">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-600 mt-2">
+                <button
+                  onClick={() => setShowPlanungspaketeDetails(!showPlanungspaketeDetails)}
+                  className="w-full border border-gray-300 rounded-lg p-6 bg-gray-50 hover:bg-gray-100 transition-colors flex items-center justify-between"
+                >
+                  <div className="text-left">
+                    <h3 className="text-lg font-medium text-gray-900 mb-1">
+                      Welches Planungspaket passt zu dir?
+                    </h3>
+                    <p className="text-sm text-gray-600">
                       Siehe dir die Pakete im Detail an und entdecke welches am besten zu dir passt
                     </p>
-                  </summary>
-                  <div className="p-6 bg-white">
-                    <UnifiedContentCard
-                      category="planungspakete"
-                      layout="horizontal"
-                      style="standard"
-                      variant="responsive"
-                      maxWidth={false}
-                      backgroundColor="white"
-                    />
                   </div>
-                </details>
+                  <div className="text-gray-500">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </button>
               </div>
 
               <div className="flex justify-center mt-16 md:mt-20">
@@ -1934,21 +1928,37 @@ export default function CheckoutStepper({
                   </div>
                 </div>
               )}
-              {/* Terminvereinbarung with left text + right calendar layout */}
-              <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8 mt-8">
+              {/* Terminvereinbarung with centered title */}
+              <div className="text-center mb-8">
+                <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
+                  Jetzt deinen Termin vereinbaren
+                </h1>
+              </div>
+
+              {/* Left text + right calendar layout */}
+              <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
                 <div className="w-full md:w-1/2 text-center md:text-left md:px-8 lg:px-16">
-                  <h1 className="h1-secondary text-gray-900 mb-4">
-                    Dein Termin für die Beratung
-                  </h1>
                   <p className="p-secondary text-black mb-6">
                     <span className="text-gray-500">
-                      Buche einen persönlichen Beratungstermin mit unserem Team. Wir besprechen alle Details deines Projekts und klären offene Fragen.
-                    </span>
+                      Wähle das Datum und die Uhrzeit, die dir am besten passen, und entscheide, ob du ein
+                    </span>{" "}
+                    <span className="text-black font-semibold">persönliches Gespräch oder einen</span>{" "}
+                    <span className="text-gray-500">Telefontermin bevorzugst.</span>
                   </p>
                   <p className="p-secondary text-black mb-6">
                     <span className="text-gray-500">
-                      In diesem Gespräch erhältst du alle wichtigen Informationen zu deinem Nest-Haus und wir planen gemeinsam die nächsten Schritte.
-                    </span>
+                      In diesem Termin gehen wir gemeinsam die Ergebnisse deines
+                    </span>{" "}
+                    <span className="text-black font-semibold">Grundstückschecks</span>{" "}
+                    <span className="text-gray-500">
+                      durch, besprechen deine
+                    </span>{" "}
+                    <span className="text-black font-semibold">Konfiguration oder Wünsche</span>
+                    <span className="text-gray-500">
+                      . Der Termin ist für dich selbstverständlich
+                    </span>{" "}
+                    <span className="text-black font-semibold">kostenlos und unverbindlich</span>
+                    <span className="text-gray-500">.</span>
                   </p>
                 </div>
 
@@ -1960,8 +1970,8 @@ export default function CheckoutStepper({
               {/* ContactMap */}
               <div className="mt-16">
                 <ContactMap
-                  title="Wo du uns findest"
-                  subtitle="Komm vorbei um deinen Traum mit uns zu besprechen."
+                  title="So findest du uns"
+                  subtitle="Persönlich oder telefonisch? Du entscheidest."
                   backgroundColor="white"
                   maxWidth={true}
                 />
@@ -2005,7 +2015,7 @@ export default function CheckoutStepper({
                   Dein Liefertermin
                 </h2>
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                  {getDeliveryDate()}
+                  {getDeliveryDateFormatted() || "TBD"}
                 </div>
                 <div className="max-w-3xl mx-auto">
                   <p className="p-secondary text-gray-700 mb-4">
@@ -2899,6 +2909,19 @@ export default function CheckoutStepper({
           }
         />
       )}
+
+      {/* Planungspakete Details Dialog */}
+      <Dialog
+        isOpen={showPlanungspaketeDetails}
+        onClose={() => setShowPlanungspaketeDetails(false)}
+        title="Planungspakete"
+        maxWidth="max-w-7xl"
+      >
+        <PlanungspaketeCards
+          isLightboxMode={true}
+          enableBuiltInLightbox={false}
+        />
+      </Dialog>
     </section>
   );
 
