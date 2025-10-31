@@ -2779,9 +2779,9 @@ export default function CheckoutStepper({
                                           packageType = "plus";
                                         else if (name.includes("pro"))
                                           packageType = "pro";
-                                      } else if (localSelectedPlan) {
-                                        packageType = localSelectedPlan;
-                                      }
+                                        } else if (localSelectedPlan) {
+                                          packageType = localSelectedPlan || "";
+                                        }
 
                                       // Return simple price display
                                       return packageType === "basis"
@@ -3176,8 +3176,6 @@ export default function CheckoutStepper({
       <Dialog
         isOpen={showPlanungspaketeDetails}
         onClose={() => setShowPlanungspaketeDetails(false)}
-        title="Planungspakete"
-        maxWidth="max-w-7xl"
       >
         <PlanungspaketeCards
           isLightboxMode={true}

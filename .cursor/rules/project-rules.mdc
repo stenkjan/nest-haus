@@ -66,6 +66,12 @@ npm run build
    - Use type assertions when you know the type is safe
    - Add null checks before calling functions with non-nullable params
 
+4. **Type 'null' Not Assignable to 'string'**:
+   - ❌ `variable = nullableValue` (if nullableValue is `string | null`)
+   - ✅ `variable = nullableValue || ""` (provide fallback)
+   - ❌ `const x: string = maybeNull`
+   - ✅ `const x: string = maybeNull ?? "default"`
+
 **CRITICAL RULE**: Before every commit/push:
 1. Run `npm run lint` - must show ✔ No ESLint warnings or errors
 2. Fix ALL TypeScript errors (no "possibly undefined", no type mismatches)
@@ -73,6 +79,41 @@ npm run build
 4. Add fallback values (`|| ""`, `|| []`, `|| 0`) to prevent undefined returns
 
 **If build fails on Vercel**: The error is YOUR responsibility to fix before the next commit.
+
+### **Pre-Commit Validation Checklist**
+
+**BEFORE EVERY COMMIT - NO EXCEPTIONS**:
+
+```bash
+# Step 1: Run linter
+npm run lint
+# Must show: ✔ No ESLint warnings or errors
+
+# Step 2: Search for risky patterns
+grep "configItem\\.planungspaket\\." src/app/warenkorb/components/CheckoutStepper.tsx
+# Should return: (empty) - all should use optional chaining
+
+# Step 3: Check for direct property access on nullable objects
+# Look for patterns like: object.property.method() where object might be undefined
+```
+
+**Auto-Fix Checklist**:
+- [ ] Replace `.property` with `?.property` for nullable objects
+- [ ] Add `|| fallback` for all potentially undefined values
+- [ ] Use `?? "default"` for null coalescing
+- [ ] Type assertions `as Type` only when type is guaranteed
+- [ ] Check all function parameters accept the provided types
+
+**Common Error Patterns to Search For**:
+```bash
+# Direct property access (dangerous)
+object.property.method()  # ❌ if object might be undefined
+object?.property?.method() || "" # ✅ safe
+
+# Null assignment (dangerous)  
+const x: string = maybeNull  # ❌ if maybeNull is string | null
+const x: string = maybeNull || ""  # ✅ safe
+```
 
 ### **Build Optimization Mandate**
 
