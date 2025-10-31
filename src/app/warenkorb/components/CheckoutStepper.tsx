@@ -2684,8 +2684,8 @@ export default function CheckoutStepper({
                 {configItem && !isOhneNestMode ? (
                   <>
                     {(() => {
-                      if (!configItem) return null;
-                      const details = renderConfigurationDetails(configItem);
+                      const item = configItem as ConfigurationCartItem;
+                      const details = renderConfigurationDetails(item);
                       const topAndMiddleItems = details.filter(
                         (d) => !d.isBottomItem
                       );
