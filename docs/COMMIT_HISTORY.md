@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [063a111a629318ca2aec4b7285bab3ad427eef6b] - Fri Oct 31 12:25:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix-nextjs-build-error-ldsGm: Complete warenkorb refactoring  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
 ## [5b5339bc051e8dbf86269ffe48e8c1f8f0048872] - Thu Oct 30 20:12:58 2025 +0100
 
 **Author**: stenkjan
