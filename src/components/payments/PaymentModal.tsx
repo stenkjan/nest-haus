@@ -567,7 +567,7 @@ export default function PaymentModal({
                 </div>
 
                 <PaymentErrorBoundary
-                  onError={(error) => handlePaymentError(error.message)}
+                  onError={(error) => _handlePaymentError(error.message)}
                 >
                   <StripeCheckoutForm
                     amount={amount}
