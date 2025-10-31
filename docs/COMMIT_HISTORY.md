@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c47971df445ddc7758df279e2df9a6c69171b66f] - Fri Oct 31 13:49:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: add null fallback for localSelectedPlan assignment  - Changed 'packageType = localSelectedPlan' to 'packageType = localSelectedPlan || ""' - Resolves Type 'null' is not assignable to type 'string' error  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [b92a66f532638fddacb852e61f77ffcae1503f42] - Fri Oct 31 13:45:05 2025 +0100
 
 **Author**: stenkjan
