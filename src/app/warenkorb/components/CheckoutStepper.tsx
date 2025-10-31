@@ -1876,7 +1876,7 @@ export default function CheckoutStepper({
               <div className="mt-12 max-w-4xl mx-auto">
                 <button
                   onClick={() => setShowPlanungspaketeDetails(!showPlanungspaketeDetails)}
-                  className="w-full border border-gray-300 rounded-2xl p-6 bg-gray-50 hover:bg-gray-100 transition-colors flex items-center justify-between"
+                  className="w-full border border-gray-300 rounded-3xl p-6 bg-[#F4F4F4] hover:bg-gray-200 transition-colors flex items-center justify-between"
                 >
                   <div className="text-left">
                     <h3 className="text-lg font-medium text-gray-900 mb-1">
@@ -2551,44 +2551,45 @@ export default function CheckoutStepper({
                         </div>
                       </div>
 
-                      {/* Right: Heute zu bezahlen box */}
+                      {/* Right: Heute zu bezahlen box - compact design per image */}
                       <div className="lg:sticky lg:top-4">
-                        <div className="border border-gray-300 rounded-2xl p-6 bg-white">
-                          <h3 className="text-lg font-medium text-gray-900 mb-4">
+                        {/* Compact box with only title, subtitle, and price */}
+                        <div className="border border-gray-300 rounded-2xl p-6 bg-white text-center mb-6">
+                          <h3 className="text-lg font-medium text-gray-900 mb-2">
                             {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
                           </h3>
-                          <div className="mb-4">
-                            <div className="text-sm text-gray-600 mb-2">
-                              Starte dein Bauvorhaben
-                            </div>
-                            {!isPaymentCompleted ? (
-                              <div className="flex items-center gap-3">
-                                <span className="text-2xl text-gray-400 line-through">1000 €</span>
-                                <span className="text-3xl font-bold text-gray-900">500 €</span>
-                              </div>
-                            ) : (
-                              <div>
-                                <div className="text-2xl font-bold text-green-600">Bezahlt</div>
-                                <div className="text-lg text-green-600 italic">500 €</div>
-                              </div>
-                            )}
+                          <div className="text-sm text-gray-600 mb-4">
+                            Starte dein Bauvorhaben
                           </div>
+                          {!isPaymentCompleted ? (
+                            <div className="text-right">
+                              <div className="text-3xl font-bold text-gray-900">€ 3.000,00</div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div className="text-2xl font-bold text-green-600">Bezahlt</div>
+                              <div className="text-lg text-green-600 italic">500 €</div>
+                            </div>
+                          )}
+                        </div>
 
-                          {!isPaymentCompleted && (
+                        {/* Disclaimer text - centered below box */}
+                        <div className="text-sm text-gray-600 leading-relaxed text-center mb-6">
+                          Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck.
+                        </div>
+
+                        {/* Jetzt bezahlen button - centered below text */}
+                        {!isPaymentCompleted && (
+                          <div className="flex justify-center">
                             <Button
                               variant="primary"
                               size="md"
-                              className="w-full mb-4"
                               onClick={() => setIsPaymentModalOpen(true)}
                             >
                               Jetzt bezahlen
                             </Button>
-                          )}
-
-                          <div className="text-sm text-gray-600 leading-relaxed">
-                            Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck.
                           </div>
-                        </div>
+                        )}
                       </div>
                     </div>
                   </div>

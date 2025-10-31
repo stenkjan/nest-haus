@@ -86,10 +86,10 @@ export default function CheckoutPlanungspaketeCards({
                 </div>
               </div>
 
-              {/* Content Section - Description - Shortened design */}
+              {/* Content Section - Description - Shortened design with no line spacing */}
               <div className="px-6 py-4 flex-grow flex flex-col">
-                {/* Only show the shortened description from cardData */}
-                <div className="p-primary text-gray-900 leading-relaxed whitespace-pre-line">
+                {/* Only show the shortened description - p-primary small, no line spacing */}
+                <div className="text-sm text-gray-900 leading-tight">
                   {cardData?.description || pkg.description}
                 </div>
               </div>
