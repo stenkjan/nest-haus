@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     canonical: "https://nest-haus.at",
   },
   openGraph: {
-    title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
+    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     url: "https://nest-haus.at",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: "https://nest-haus.at/nest-haus-social.jpg",
         width: 1200,
         height: 630,
         alt: "NEST-Haus Modulare Häuser",
@@ -59,10 +59,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
+    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    images: ["/images/twitter-image.jpg"],
+    images: ["https://nest-haus.at/nest-haus-social.jpg"],
   },
   robots: {
     index: true,
