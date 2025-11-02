@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 
 // Base configuration for SEO
 export const SEO_CONFIG = {
-    baseUrl: "https://nest-haus.vercel.app",
+    baseUrl: "https://nest-haus.at",
     siteName: "NEST-Haus",
-    defaultTitle: "Nest-Haus | Modulare Häuser & Nachhaltiges Bauen",
+    defaultTitle: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
     defaultDescription: "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     defaultKeywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator",
     locale: "de_DE",
@@ -26,13 +26,13 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO_CONFIG = {
     home: {
-        title: "®Nest-Haus | Modulare Häuser & Nachhaltiges Bauen in Österreich",
+        title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
         description: "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
         changeFrequency: "weekly" as const,
-        ogImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
-        twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite-og.jpg",
+        ogImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
+        twitterImage: "/images/7-NEST-Haus-Innenperspektive-Kalkstein-Holz-Verglasung-Stirnseite.jpg",
     },
     konfigurator: {
         title: "Haus Konfigurator | NEST-Haus Modulare Häuser",
@@ -208,8 +208,9 @@ export function generatePageMetadata(
             type: "website",
             images: [
                 {
-                    url: ogImage,
-                    // Add secureUrl to help strict scrapers like WhatsApp
+                    // Use absolute URL for WhatsApp and other strict scrapers
+                    url: ogImage.startsWith('http') ? ogImage : `${baseConfig.baseUrl}${ogImage}`,
+                    // Add secureUrl to help strict scrapers like WhatsApp (must be HTTPS)
                     secureUrl: ogImage.startsWith('http') ? ogImage : `${baseConfig.baseUrl}${ogImage}`,
                     width: 1200,
                     height: 630,
@@ -222,7 +223,7 @@ export function generatePageMetadata(
             card: "summary_large_image",
             title,
             description,
-            images: [twitterImage],
+            images: [twitterImage.startsWith('http') ? twitterImage : `${baseConfig.baseUrl}${twitterImage}`],
             creator: baseConfig.twitterHandle,
         },
         robots: {
