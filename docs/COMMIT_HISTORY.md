@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [74e7e76dcf591dcdd846f5ed5581bf5198e426c8] - Sun Nov 2 16:48:41 2025 +0000
+
+**Author**: Cursor Agent
+**Message**: `Fix social media preview: Add og-image and update URLs to www subdomain  - Add optimized og-image.jpg (1200x630px, 141KB) for social media previews - Update all metadata URLs from nest-haus.at to www.nest-haus.at - Fix WhatsApp preview compatibility with proper image specs - Add comprehensive documentation for social media metadata  This fixes the issue where social media link checkers couldn't find the preview image (404 error) and ensures WhatsApp displays previews correctly.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
 ## [3e4729dbe787854e851291868402d35b8b198c84] - Fri Oct 31 13:11:04 2025 +0000
 
 **Author**: Cursor Agent
