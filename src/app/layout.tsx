@@ -36,22 +36,22 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://nest-haus.at"),
+  metadataBase: new URL("https://www.nest-haus.at"),
   alternates: {
-    canonical: "https://nest-haus.at",
+    canonical: "https://www.nest-haus.at",
   },
   openGraph: {
     title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://nest-haus.at",
+    url: "https://www.nest-haus.at",
     siteName: "NEST-Haus",
     locale: "de_DE",
     type: "website",
     images: [
       {
-        url: "https://nest-haus.at/images/og-image.jpg",
-        secureUrl: "https://nest-haus.at/images/og-image.jpg",
+        url: "https://www.nest-haus.at/images/og-image.jpg",
+        secureUrl: "https://www.nest-haus.at/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    images: ["https://nest-haus.at/images/og-image.jpg"],
+    images: ["https://www.nest-haus.at/images/og-image.jpg"],
   },
   robots: {
     index: true,
