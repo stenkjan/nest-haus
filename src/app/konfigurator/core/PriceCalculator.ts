@@ -424,7 +424,7 @@ export class PriceCalculator {
    * Get base price for a nest option (calculated with default selections)
    */
   static getBasePrice(nestType: string): number {
-    // Default selections (Trapezblech + Kiefer + Ohne Parkett)
+    // Default selections (Trapezblech + Kiefer + Ohne Belag)
     return this.calculateCombinationPrice(
       nestType,
       'trapezblech',  // default
