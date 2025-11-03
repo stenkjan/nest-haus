@@ -187,7 +187,7 @@ function calculateBelichtungspaketPrice(
         const fensterPriceMap: Record<string, number> = {
             'pvc_fenster': 280,     // PVC - RAL 9016 Kunststoff
             'holz': 400,            // Fichte - Holz
-            'aluminium_schwarz': 700, // Aluminium dunkel - RAL 9005 Tiefschwarz
+            'aluminium_schwarz': 700, // Aluminium Dunkel - RAL 9005 Tiefschwarz
             'aluminium_weiss': 700   // Aluminium Hell - RAL 9016 Reinweiß
         };
 

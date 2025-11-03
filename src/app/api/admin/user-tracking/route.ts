@@ -580,7 +580,7 @@ class UserTrackingService {
                 fenster: {
                     'pvc_fenster': 'PVC',
                     'holz': 'Fichte',
-                    'aluminium_schwarz': 'Aluminium dunkel',
+                    'aluminium_schwarz': 'Aluminium Dunkel',
                     'aluminium_weiss': 'Aluminium Hell'
                 },
                 planungspaket: {

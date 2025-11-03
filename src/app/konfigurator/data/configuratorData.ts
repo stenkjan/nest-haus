@@ -237,7 +237,7 @@ export const configuratorData: CategoryData[] = [
       },
       {
         id: 'aluminium_schwarz',
-        name: 'Aluminium dunkel',
+        name: 'Aluminium Dunkel',
         description: 'RAL 9005 - Tiefschwarz\nBis zu 6,0 x 3,2 m',
         price: { type: 'upgrade', amount: 700, monthly: 4 }
       },
