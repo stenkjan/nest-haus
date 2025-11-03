@@ -20,10 +20,10 @@ export default function SimplifiedPreviewPanel({
     const nestSize = selectedNest ? NEST_SIZE_MAPPING[selectedNest] : '75';
     const facadeType = selectedFacade ? GEBAEUDE_EXTERIOR_MAPPING[selectedFacade] : 'trapezblech';
 
-    // Build the image key for exterior view (index 1 images from images.ts line 228-251)
-    const imageKey = `nest${nestSize}_${facadeType}` as keyof typeof IMAGES.configurator.exterior.index1;
+    // Build the image key for exterior view (images from images.ts line 228-251)
+    const imageKey = `nest${nestSize}_${facadeType}` as keyof typeof IMAGES.configurations;
 
-    return IMAGES.configurator.exterior.index1[imageKey] || IMAGES.configurator.exterior.index1.nest75_trapezblech;
+    return IMAGES.configurations[imageKey] || IMAGES.configurations.nest75_trapezblech;
   }, [selectedNest, selectedFacade]);
 
   return (
