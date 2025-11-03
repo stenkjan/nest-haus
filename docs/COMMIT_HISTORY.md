@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4ba928b128201a0581af854ac33b2f01cd7c6a81] - Mon Nov 3 16:38:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix: Add relative positioning to image containers in ohne nest mode  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [bb45da2c5269b624d47c5599197ab8f2e98992d3] - Mon Nov 3 16:30:01 2025 +0100
 
 **Author**: stenkjan
