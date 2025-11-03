@@ -4,6 +4,30 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7b5cab908ccfcba1b8d7c4ba927b24a5769af678] - Mon Nov 3 15:12:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge feature: Add simplified konfigurator2 with ohne nest warenkorb integration  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator2/components/Konfigurator2Client.tsx
+- src/app/konfigurator2/components/SimplifiedCategorySection.tsx
+- src/app/konfigurator2/components/SimplifiedPreviewPanel.tsx
+- src/app/konfigurator2/components/VorentwurfButton.tsx
+- src/app/konfigurator2/page.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+
+
+---
+
 ## [2e4365bed8774a34cb1b5f8bd2cbb1501b8e5f3c] - Mon Nov 3 15:06:08 2025 +0100
 
 **Author**: stenkjan
