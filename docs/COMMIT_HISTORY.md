@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [eb334045e514472383221841a7d8492257092b93] - Mon Nov 3 12:22:11 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update terminology for flooring options in configurator  - Changed 'Ohne Parkett' to 'Ohne Belag' in multiple files for consistency in user tracking, price calculation, and configurator data. - Updated comments and descriptions to reflect the new terminology.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/route.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [ab1427ff426a38013c25d7cdc5a8cc24f42c78ec] - Mon Nov 3 11:35:59 2025 +0100
 
 **Author**: stenkjan
