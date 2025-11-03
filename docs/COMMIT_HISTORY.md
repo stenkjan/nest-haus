@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [28b573b9f9762d6091299aa7a77caa9002538429] - Mon Nov 3 15:17:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Replace non-standard z-15 with standard z-20 in GeschossdeckeOverlay  - Change z-index from z-15 to z-20 (standard Tailwind class) - Maintains correct stacking order: Geschossdecke (structural) on top, Fenster (windows) behind - FensterOverlay stays at z-10 (correct position)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+
+
+---
+
 ## [7b5cab908ccfcba1b8d7c4ba927b24a5769af678] - Mon Nov 3 15:12:29 2025 +0100
 
 **Author**: stenkjan
