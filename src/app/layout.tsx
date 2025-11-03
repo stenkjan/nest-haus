@@ -23,7 +23,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen in Deutschland",
+  title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
   description:
     "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
   keywords:
@@ -36,33 +36,35 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://nest-haus.at"),
+  metadataBase: new URL("https://www.nest-haus.at"),
   alternates: {
-    canonical: "https://nest-haus.at",
+    canonical: "https://www.nest-haus.at",
   },
   openGraph: {
-    title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
+    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    url: "https://nest-haus.at",
+    url: "https://www.nest-haus.at",
     siteName: "NEST-Haus",
     locale: "de_DE",
     type: "website",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: "https://www.nest-haus.at/images/og-image.jpg",
+        secureUrl: "https://www.nest-haus.at/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "NEST-Haus Modulare Häuser",
+        alt: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+        type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NEST-Haus | Modulare Häuser & Nachhaltiges Bauen",
+    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    images: ["/images/twitter-image.jpg"],
+    images: ["https://www.nest-haus.at/images/og-image.jpg"],
   },
   robots: {
     index: true,

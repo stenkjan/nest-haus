@@ -4,6 +4,288 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [691df2af40f421eb6a83055b219653c631a7fd5e] - Mon Nov 3 11:09:22 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge c613969f1874427ad8a71ab81578ac33ca76b9c4 into 46338ae5a65fb678d79ed72999503c2ab33ee0a9  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- ADMIN_PASSWORD_FIX.md
+
+
+---
+
+## [74e7e76dcf591dcdd846f5ed5581bf5198e426c8] - Sun Nov 2 16:48:41 2025 +0000
+
+**Author**: Cursor Agent
+**Message**: `Fix social media preview: Add og-image and update URLs to www subdomain  - Add optimized og-image.jpg (1200x630px, 141KB) for social media previews - Update all metadata URLs from nest-haus.at to www.nest-haus.at - Fix WhatsApp preview compatibility with proper image specs - Add comprehensive documentation for social media metadata  This fixes the issue where social media link checkers couldn't find the preview image (404 error) and ensures WhatsApp displays previews correctly.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
+## [3e4729dbe787854e851291868402d35b8b198c84] - Fri Oct 31 13:11:04 2025 +0000
+
+**Author**: Cursor Agent
+**Message**: `Fix TypeScript build error in PaymentModal  Fixed incorrect function reference: handlePaymentError -> _handlePaymentError The function was properly prefixed with underscore but the call site was not updated.  Build now passes successfully.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
+## [05fcb184c1c6f2e600011435526b427786f8cb1e] - Fri Oct 31 14:02:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: apply optional chaining to all configItem.planungspaket references  - Fixed ALL instances with sed global replace - Line 2888 and 2895 now use optional chaining - Grep confirms no more direct property access - Linter passes: ✔ No ESLint warnings or errors  VERIFICATION: grep 'configItem\.planungspaket\.' returns empty  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [e1eb22d2696c8dad22d742d4c5089e93e2cc5367] - Fri Oct 31 13:59:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  # Conflicts: #	src/app/warenkorb/components/CheckoutStepper.tsx  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [ab3071ee600ad97728fbf861ff7e9c51721c2aec] - Fri Oct 31 13:55:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: resolve final TypeScript errors and add comprehensive pre-commit rules  ✅ Fixed Remaining Errors: - Line 2888: configItem.planungspaket.name.toLowerCase() → optional chaining - Line 2895: return configItem.planungspaket.name → optional chaining - All direct property access now uses ?.  ✅ Enhanced Project Rules: - Added Pre-Commit Validation Checklist section - Documented grep commands to find risky patterns - Auto-fix checklist with specific examples - Step-by-step validation workflow  MANDATORY: Run npm run lint before EVERY commit Search for risky patterns before pushing No exceptions - prevents Vercel build failures  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [c47971df445ddc7758df279e2df9a6c69171b66f] - Fri Oct 31 13:49:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: add null fallback for localSelectedPlan assignment  - Changed 'packageType = localSelectedPlan' to 'packageType = localSelectedPlan || ""' - Resolves Type 'null' is not assignable to type 'string' error  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [b92a66f532638fddacb852e61f77ffcae1503f42] - Fri Oct 31 13:45:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+---
+
+## [e29e0fbb222945b5134a5fa10394ab33e19b2bf4] - Fri Oct 31 13:41:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [11f8d8788290adb0fd1a107a44c491ef3bf1af4d] - Fri Oct 31 13:37:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [32526eaa06f4b9870c0b3d338b4a585868ed2712] - Fri Oct 31 13:33:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [41476393fc893c1e508c36f936c8bfcc077ded66] - Fri Oct 31 13:31:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [5a6e86bbab61bffb9ce7225e994365c2390bcb0c] - Fri Oct 31 13:27:43 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
+## [9803f4c5af555464c16b63f70559be4445567dcf] - Fri Oct 31 13:22:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: resolve PaymentModal linter errors  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
+## [ce1a3b9a87b56f6f8b0aff91a08fe6bd449e3782] - Fri Oct 31 13:19:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
+## [b9048bc8ebe7b10d28c0e3765343d6bc09a07fb8] - Fri Oct 31 13:04:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat(warenkorb/abschluss): complete final page layout per image specs  ✅ 4-Box Bewerber Grid (2x2): - Box 1: Bewerber Deine Daten (Name, Adresse, PLZ, Nation) - Box 2: Deine Termine Im Überblick (Entwurfsgespräch, Lieferungsdatum) - Box 3: Grundstück Details (Strasse, Stadt, PLZ, Grundstücknummer, Bundesland, Katastralgemeinde, Land) - Box 4: Reserved for future use  ✅ Left/Right Teilzahlungen Layout: - LEFT: 'Dein Nest Deine Konfiguration' box with all 4 Teilzahlungen listed   • 1. Teilzahlung: Grundstückscheck & Vorentwurf (Fixpreis €1.000)   • 2. Teilzahlung: 30% minus Grundstückscheck (Liefergarantie)   • 3. Teilzahlung: 50% nach Produktion   • 3. Teilzahlung: 20% nach Grundstück - RIGHT: 'Heute zu bezahlen' box with 1000€ crossed out → 500€   • 'Jetzt bezahlen' button   • Disclaimer text about Vorentwurf guarantee  ✅ Button Updates: - Changed 'Nächster Schritt' → 'Zur Kassa' - 'Zur Kassa' triggers setIsPaymentModalOpen (same as 'Jetzt bezahlen') - Full Stripe payment flow preserved  ✅ Payment Logic Maintained: - Triggers PaymentModal with all tracking - Alpha test completion handled - Session tracking integrated - Stripe webhooks called properly  ALL IMAGE SPECIFICATIONS IMPLEMENTED!  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [b7d6994b6cdf64874c210e1142374ced72522a0a] - Fri Oct 31 12:55:16 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'fix-nextjs-build-error-ldsGm'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [0b65fba505ec22b1305640b42bcf85d5c29a0b56] - Fri Oct 31 12:42:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge final warenkorb fixes  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
+## [063a111a629318ca2aec4b7285bab3ad427eef6b] - Fri Oct 31 12:25:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix-nextjs-build-error-ldsGm: Complete warenkorb refactoring  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
+## [5b5339bc051e8dbf86269ffe48e8c1f8f0048872] - Thu Oct 30 20:12:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/ClickAnalytics.tsx
+- src/app/admin/user-tracking/components/ConfigurationSelectionAnalytics.tsx
+- src/app/admin/user-tracking/components/TrackingActions.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/user-tracking/actions/route.ts
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/steps.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/WARENKORB_REFACTORING_PROGRESS.md
+
+
+---
+
 ## [07aad28ecddce982a44a499dbea99c5fb0ae8e76] - Thu Oct 30 16:24:26 2025 +0100
 
 **Author**: stenkjan

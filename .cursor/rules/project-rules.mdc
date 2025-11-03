@@ -16,6 +16,105 @@ alwaysApply: true
 - **Run lint checks** after completing tasks to avoid @typescript-eslint/no-unused-vars errors
 - **Follow the beta roadmap**: Use `docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md` as the primary guide
 
+### **CRITICAL: Webpack Module Resolution Error Prevention**
+
+**Error Pattern**: `TypeError: Cannot read properties of undefined (reading 'call')`
+
+This error occurs when webpack cannot resolve module imports after installing new dependencies.
+
+**MANDATORY FIX WORKFLOW** (After ANY `npm install`):
+```bash
+# 1. Kill all node processes
+taskkill //F //IM node.exe
+
+# 2. Delete webpack cache
+rm -rf .next
+
+# 3. Restart dev server
+npm run dev
+```
+
+**RULE**: Never assume hot reload will pick up new package installations. Always clear `.next` cache and restart after adding dependencies.
+
+### **CRITICAL: TypeScript Safety Checks Before Committing**
+
+**MANDATORY PRE-COMMIT WORKFLOW**:
+```bash
+# 1. Run linter to catch TypeScript errors
+npm run lint
+
+# 2. If linter passes, verify build
+npm run build
+```
+
+**Common TypeScript Errors to Prevent**:
+
+1. **"Possibly Undefined" Errors**:
+   - ❌ `configItem.planungspaket.name` (if configItem can be undefined)
+   - ✅ `configItem?.planungspaket?.name || "—"`
+   - ❌ `data.field.toLowerCase()` (if field can be undefined)
+   - ✅ `data?.field?.toLowerCase() || ""`
+
+2. **Array/Object Access**:
+   - ❌ `items[0].property` (if items could be empty)
+   - ✅ `items[0]?.property || defaultValue`
+   - ❌ `object[key]` (dynamic keys on unknown types)
+   - ✅ `(object as Record<string, unknown>)[key]`
+
+3. **Function Arguments**:
+   - Always ensure parameters match expected types
+   - Use type assertions when you know the type is safe
+   - Add null checks before calling functions with non-nullable params
+
+4. **Type 'null' Not Assignable to 'string'**:
+   - ❌ `variable = nullableValue` (if nullableValue is `string | null`)
+   - ✅ `variable = nullableValue || ""` (provide fallback)
+   - ❌ `const x: string = maybeNull`
+   - ✅ `const x: string = maybeNull ?? "default"`
+
+**CRITICAL RULE**: Before every commit/push:
+1. Run `npm run lint` - must show ✔ No ESLint warnings or errors
+2. Fix ALL TypeScript errors (no "possibly undefined", no type mismatches)
+3. Use optional chaining (`?.`) for potentially undefined properties
+4. Add fallback values (`|| ""`, `|| []`, `|| 0`) to prevent undefined returns
+
+**If build fails on Vercel**: The error is YOUR responsibility to fix before the next commit.
+
+### **Pre-Commit Validation Checklist**
+
+**BEFORE EVERY COMMIT - NO EXCEPTIONS**:
+
+```bash
+# Step 1: Run linter
+npm run lint
+# Must show: ✔ No ESLint warnings or errors
+
+# Step 2: Search for risky patterns
+grep "configItem\\.planungspaket\\." src/app/warenkorb/components/CheckoutStepper.tsx
+# Should return: (empty) - all should use optional chaining
+
+# Step 3: Check for direct property access on nullable objects
+# Look for patterns like: object.property.method() where object might be undefined
+```
+
+**Auto-Fix Checklist**:
+- [ ] Replace `.property` with `?.property` for nullable objects
+- [ ] Add `|| fallback` for all potentially undefined values
+- [ ] Use `?? "default"` for null coalescing
+- [ ] Type assertions `as Type` only when type is guaranteed
+- [ ] Check all function parameters accept the provided types
+
+**Common Error Patterns to Search For**:
+```bash
+# Direct property access (dangerous)
+object.property.method()  # ❌ if object might be undefined
+object?.property?.method() || "" # ✅ safe
+
+# Null assignment (dangerous)  
+const x: string = maybeNull  # ❌ if maybeNull is string | null
+const x: string = maybeNull || ""  # ✅ safe
+```
+
 ### **Build Optimization Mandate**
 
 - **Target build time**: <2 minutes (reduced from 3 minutes)
