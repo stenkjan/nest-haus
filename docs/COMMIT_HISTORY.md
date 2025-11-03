@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2e4365bed8774a34cb1b5f8bd2cbb1501b8e5f3c] - Mon Nov 3 15:06:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: enhance configurator overlays and image handling  - Added visibility state for Fenster overlay in ConfiguratorShell, ensuring it is always shown when fenster is selected. - Updated PreviewPanel to conditionally render Geschossdecke and Fenster overlays based on the active view and visibility states. - Refactored image constants for Geschossdecke overlays to use material-based variations for improved clarity and organization.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/FensterOverlay.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [677d78fb173c7f694bb42be6eb078c3e4ecba1a4] - Mon Nov 3 12:56:48 2025 +0100
 
 **Author**: stenkjan
