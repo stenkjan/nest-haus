@@ -23,7 +23,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+  title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
   description:
     "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
   keywords:
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     canonical: "https://www.nest-haus.at",
   },
   openGraph: {
-    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+    title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     url: "https://www.nest-haus.at",
@@ -50,21 +50,21 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://www.nest-haus.at/images/og-image.jpg",
-        secureUrl: "https://www.nest-haus.at/images/og-image.jpg",
+        url: "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+        secureUrl: "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         width: 1200,
         height: 630,
-        alt: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+        alt: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Weil nur du weißt, wie du richtig wohnst - Nest Haus",
+    title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    images: ["https://www.nest-haus.at/images/og-image.jpg"],
+    images: ["https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg"],
   },
   robots: {
     index: true,
