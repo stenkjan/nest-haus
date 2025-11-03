@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { HybridBlobImage } from "@/components/images";
-import { images } from "@/constants/images";
+import { IMAGES } from "@/constants/images";
 import { NEST_SIZE_MAPPING, GEBAEUDE_EXTERIOR_MAPPING } from "@/constants/configurator";
 
 interface SimplifiedPreviewPanelProps {
@@ -21,16 +21,16 @@ export default function SimplifiedPreviewPanel({
     const facadeType = selectedFacade ? GEBAEUDE_EXTERIOR_MAPPING[selectedFacade] : 'trapezblech';
 
     // Build the image key for exterior view (index 1 images from images.ts line 228-251)
-    const imageKey = `nest${nestSize}_${facadeType}` as keyof typeof images.configurator.exterior.index1;
+    const imageKey = `nest${nestSize}_${facadeType}` as keyof typeof IMAGES.configurator.exterior.index1;
 
-    return images.configurator.exterior.index1[imageKey] || images.configurator.exterior.index1.nest75_trapezblech;
+    return IMAGES.configurator.exterior.index1[imageKey] || IMAGES.configurator.exterior.index1.nest75_trapezblech;
   }, [selectedNest, selectedFacade]);
 
   return (
     <div className="w-full h-full flex items-center justify-center bg-gray-100 p-4">
       <div className="relative w-full h-full max-w-[800px] max-h-[600px]">
         <HybridBlobImage
-          src={imagePath}
+          path={imagePath}
           alt="NEST Haus Vorschau"
           fill
           className="object-contain"
