@@ -1165,7 +1165,8 @@ export default function CheckoutStepper({
                       )}`}
                     >
                       <span className="inline-flex items-center gap-2">
-                        {PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
+                        {/* In ohne nest mode, show 1.000 €, otherwise show regular price */}
+                        {isOhneNestMode ? "1.000 €" : PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
                         {grundstueckscheckDone && (
                           <span aria-hidden className="text-[#3D6CE1]">
                             ✓
@@ -1192,23 +1193,28 @@ export default function CheckoutStepper({
                         2
                       )}`}
                     >
-                      <span className="inline-flex items-center gap-2">
-                        {selectedPlanName}
-                        {isPlanSelected && (
-                          <>
-                            <span className="text-gray-600">
-                              (
-                              {selectedPlanValue === "basis"
-                                ? "inkludiert"
-                                : PriceUtils.formatPrice(selectedPlanPrice)}
-                              )
-                            </span>
-                            <span aria-hidden className="text-[#3D6CE1]">
-                              ✓
-                            </span>
-                          </>
-                        )}
-                      </span>
+                      {/* In ohne nest mode, show "—", otherwise show plan details */}
+                      {isOhneNestMode ? (
+                        "—"
+                      ) : (
+                        <span className="inline-flex items-center gap-2">
+                          {selectedPlanName}
+                          {isPlanSelected && (
+                            <>
+                              <span className="text-gray-600">
+                                (
+                                {selectedPlanValue === "basis"
+                                  ? "inkludiert"
+                                  : PriceUtils.formatPrice(selectedPlanPrice)}
+                                )
+                              </span>
+                              <span aria-hidden className="text-[#3D6CE1]">
+                                ✓
+                              </span>
+                            </>
+                          )}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className={rowWrapperClass}>
@@ -2600,51 +2606,32 @@ export default function CheckoutStepper({
                 );
               })()}
 
-              {/* Ohne-Nest Mode: Show simplified payment structure */}
+              {/* Ohne-Nest Mode: Show simplified centered payment box */}
               {isOhneNestMode && (
-                <div className="max-w-2xl mx-auto space-y-4 mb-12">
-                  {/* Vorentwurf & Grundstückscheck */}
-                  <div className="border border-gray-300 rounded-2xl p-6 bg-white">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="text-lg font-medium text-gray-900">Vorentwurf & Grundstückscheck</div>
-                        <div className="text-sm text-gray-600 mt-1">
+                <div className="max-w-2xl mx-auto mb-12">
+                  {/* Centered "Heute zu bezahlen" box */}
+                  <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="text-left flex-1">
+                        <h3 className="text-lg font-medium text-gray-900 mb-1">
+                          Heute zu bezahlen
+                        </h3>
+                        <div className="text-sm text-gray-600">
                           Starte dein Bauvorhaben
                         </div>
                       </div>
-                      <div className="text-lg font-semibold text-gray-900">
-                        500 €
+                      <div className="text-right">
+                        <div className="text-3xl font-bold text-gray-900">1.000 €</div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Planungspaket */}
-                  {localSelectedPlan && (
-                    <div className="border border-gray-300 rounded-2xl p-6 bg-white">
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1">
-                          <div className="text-lg font-medium text-gray-900">Planungspaket</div>
-                          <div className="text-sm text-gray-600 mt-1">
-                            {localSelectedPlan === "basis"
-                              ? "Planungspaket 01 Basis"
-                              : localSelectedPlan === "plus"
-                                ? "Planungspaket 02 Plus"
-                                : "Planungspaket 03 Pro"}
-                          </div>
-                        </div>
-                        <div className="text-lg font-semibold text-gray-900">
-                          {(() => {
-                            const planPrice = PLANNING_PACKAGES.find(
-                              (p) => p.value === localSelectedPlan
-                            )?.price || 0;
-                            return localSelectedPlan === "basis"
-                              ? "inkludiert"
-                              : PriceUtils.formatPrice(planPrice);
-                          })()}
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  {/* Disclaimer text - centered below box */}
+                  <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
+                    Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck.
+                  </div>
+
+                  {/* Note: "Jetzt bezahlen" button is hidden for ohne nest mode by not rendering it here */}
                 </div>
               )}
 

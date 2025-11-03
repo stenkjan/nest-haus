@@ -140,8 +140,8 @@ export default function WarenkorbClient() {
           });
       }
 
-      if (mode === "ohne-nest") {
-        console.log("🏠 URL has ohne-nest mode, setting to TRUE");
+      if (mode === "ohne-nest" || mode === "vorentwurf") {
+        console.log("🏠 URL has ohne-nest/vorentwurf mode, setting to TRUE");
         setOhneNestMode(true);
 
         // Update the session to mark it as ohne-nest mode
