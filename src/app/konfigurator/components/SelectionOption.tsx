@@ -218,7 +218,18 @@ export default function SelectionOption({
     }
 
     if (price.type === "upgrade") {
-      // Special handling for Belichtungspaket - center price without entspricht
+      // When amount is 0 (same price), only show "+/-" for ALL categories
+      if (price.amount === 0) {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              +/-
+            </p>
+          </div>
+        );
+      }
+
+      // Special handling for Belichtungspaket - center price without entspricht (only when amount !== 0)
       if (categoryId === "belichtungspaket") {
         const formattedPrice = price.amount
           ? PriceUtils.formatPrice(price.amount)
@@ -232,9 +243,7 @@ export default function SelectionOption({
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
               {price.amount !== undefined && price.amount > 0
                 ? `+${formattedPrice}`
-                : price.amount === 0
-                  ? "+/-"
-                  : formattedPrice}
+                : formattedPrice}
             </p>
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
               &nbsp;
@@ -243,7 +252,7 @@ export default function SelectionOption({
         );
       }
 
-      // Special handling for Fenster - center price without entspricht
+      // Special handling for Fenster - center price without entspricht (only when amount !== 0)
       if (categoryId === "fenster") {
         const formattedPrice = price.amount
           ? PriceUtils.formatPrice(price.amount)
@@ -262,17 +271,6 @@ export default function SelectionOption({
             </p>
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
               &nbsp;
-            </p>
-          </div>
-        );
-      }
-
-      // When amount is 0 (same price), only show "+/-" and hide any numeric values
-      if (price.amount === 0) {
-        return (
-          <div className="text-right">
-            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-              +/-
             </p>
           </div>
         );
@@ -326,7 +324,18 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
-      // Special handling for Belichtungspaket - center price without entspricht
+      // When amount is 0 (same price), only show "+/-" for ALL categories
+      if (price.amount === 0) {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              +/-
+            </p>
+          </div>
+        );
+      }
+
+      // Special handling for Belichtungspaket - center price without entspricht (only when amount !== 0)
       if (categoryId === "belichtungspaket") {
         return (
           <div className="text-right">
@@ -343,7 +352,7 @@ export default function SelectionOption({
         );
       }
 
-      // Special handling for Fenster - center price without entspricht
+      // Special handling for Fenster - center price without entspricht (only when amount !== 0)
       if (categoryId === "fenster") {
         return (
           <div className="text-right">
@@ -397,7 +406,18 @@ export default function SelectionOption({
       // Use grey text for selected options, even when type is "standard"
       const textColor = isSelected ? "text-gray-500" : "";
 
-      // Special handling for Belichtungspaket - center price without entspricht
+      // When amount is 0 (same price), only show "+/-" for ALL categories
+      if (price.amount === 0) {
+        return (
+          <div className="text-right">
+            <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
+              +/-
+            </p>
+          </div>
+        );
+      }
+
+      // Special handling for Belichtungspaket - center price without entspricht (only when amount !== 0)
       if (categoryId === "belichtungspaket") {
         return (
           <div className="text-right">
@@ -414,7 +434,7 @@ export default function SelectionOption({
         );
       }
 
-      // Special handling for Fenster - center price without entspricht
+      // Special handling for Fenster - center price without entspricht (only when amount !== 0)
       if (categoryId === "fenster") {
         return (
           <div className="text-right">
