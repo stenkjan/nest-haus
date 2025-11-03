@@ -83,7 +83,7 @@ export default function Konfigurator2Client() {
           </div>
 
           {/* Right Panel - Selections */}
-          <div className="w-1/2 overflow-y-auto">
+          <div className="w-1/2 overflow-y-auto mt-6">
             <div className="p-8 space-y-8">
               {/* Size Selection */}
               <SimplifiedCategorySection
