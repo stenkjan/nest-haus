@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [677d78fb173c7f694bb42be6eb078c3e4ecba1a4] - Mon Nov 3 12:56:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `ci: disable deployment workflows for development and production environments  - Set 'if: false' in both deploy-development.yml and deploy-production.yml to prevent automatic deployments.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- .github/workflows/deploy-development.yml
+- .github/workflows/deploy-production.yml
+
+
+---
+
 ## [eb334045e514472383221841a7d8492257092b93] - Mon Nov 3 12:22:11 2025 +0100
 
 **Author**: stenkjan
