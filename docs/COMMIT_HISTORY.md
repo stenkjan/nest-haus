@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c9ea0da91107a703e5c403c58f6164d636d86526] - Mon Nov 3 15:18:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix: Correct import and prop usage in SimplifiedPreviewPanel  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator2/components/SimplifiedPreviewPanel.tsx
+
+
+---
+
 ## [28b573b9f9762d6091299aa7a77caa9002538429] - Mon Nov 3 15:17:02 2025 +0100
 
 **Author**: stenkjan
