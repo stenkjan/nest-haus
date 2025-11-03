@@ -1669,7 +1669,7 @@ export default function CheckoutStepper({
 
                     <div className="flex flex-col md:flex-row md:items-center gap-8">
                       <div className="w-full md:w-1/2">
-                        <div className="aspect-square w-full max-w-md mx-auto">
+                        <div className="relative aspect-square w-full max-w-md mx-auto">
                           <HybridBlobImage
                             path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
                             alt="NEST-Haus Konfiguration Holzlattung Eiche Parkett"
@@ -2038,7 +2038,7 @@ export default function CheckoutStepper({
               {isOhneNestMode && (
                 <div className="max-w-4xl mx-auto mb-12">
                   <div className="text-center mb-8">
-                    <div className="aspect-square w-full max-w-md mx-auto mb-6">
+                    <div className="relative aspect-square w-full max-w-md mx-auto mb-6">
                       <HybridBlobImage
                         path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
                         alt="NEST-Haus Konfiguration"
