@@ -175,11 +175,28 @@ export default function SelectionOption({
       // Remove "Ab" from planungspakete, keep it for nest modules
       const showAbPrefix = categoryId === "nest";
 
+      // Special handling for fenster & belichtungspaket: center price without "entspricht"
+      if (categoryId === "fenster" || categoryId === "belichtungspaket") {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
+              {formattedPrice}
+              {categoryId === "fenster" && "/m²"}
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
       return (
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             {showAbPrefix ? `Ab ${formattedPrice}` : formattedPrice}
-            {categoryId === "fenster" && "/m²"}
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             entspricht

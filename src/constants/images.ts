@@ -121,46 +121,24 @@ export const IMAGES = {
 
 
 
-        // Geschossdecke overlay images - Placeholders for all nest sizes
-        // Nest75 (nest80) Geschossdecke overlay images - 4 modules max
-        nest75_geschossdecke_overlay_1: 'placeholder-nest-75-geschossdecke-overlay-1',
-        nest75_geschossdecke_overlay_2: 'placeholder-nest-75-geschossdecke-overlay-2',
-        nest75_geschossdecke_overlay_3: 'placeholder-nest-75-geschossdecke-overlay-3',
-        nest75_geschossdecke_overlay_4: 'placeholder-nest-75-geschossdecke-overlay-4',
+        // Geschossdecke overlay images - Material-based overlays
+        // Eiche (Oak) variations
+        geschossdecke_eiche_ohne_belag: '325-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-eiche',
+        geschossdecke_eiche_parkett: '328-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-eiche',
+        geschossdecke_eiche_steinplatten_hell: '331-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-eiche',
+        geschossdecke_eiche_steinplatten_dunkel: '334-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-eiche',
 
-        // Nest95 (nest100) Geschossdecke overlay images - 5 modules max
-        nest95_geschossdecke_overlay_1: 'placeholder-nest-95-geschossdecke-overlay-1',
-        nest95_geschossdecke_overlay_2: 'placeholder-nest-95-geschossdecke-overlay-2',
-        nest95_geschossdecke_overlay_3: 'placeholder-nest-95-geschossdecke-overlay-3',
-        nest95_geschossdecke_overlay_4: 'placeholder-nest-95-geschossdecke-overlay-4',
-        nest95_geschossdecke_overlay_5: 'placeholder-nest-95-geschossdecke-overlay-5',
+        // Fichte (Spruce) variations
+        geschossdecke_fichte_ohne_belag: '324-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-fichte',
+        geschossdecke_fichte_parkett: '327-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-fichte',
+        geschossdecke_fichte_steinplatten_hell: '330-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-fichte',
+        geschossdecke_fichte_steinplatten_dunkel: '333-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-fichte',
 
-        // Nest115 (nest120) Geschossdecke overlay images - 6 modules max
-        nest115_geschossdecke_overlay_1: 'placeholder-nest-115-geschossdecke-overlay-1',
-        nest115_geschossdecke_overlay_2: 'placeholder-nest-115-geschossdecke-overlay-2',
-        nest115_geschossdecke_overlay_3: 'placeholder-nest-115-geschossdecke-overlay-3',
-        nest115_geschossdecke_overlay_4: 'placeholder-nest-115-geschossdecke-overlay-4',
-        nest115_geschossdecke_overlay_5: 'placeholder-nest-115-geschossdecke-overlay-5',
-        nest115_geschossdecke_overlay_6: 'placeholder-nest-115-geschossdecke-overlay-6',
-
-        // Nest135 (nest140) Geschossdecke overlay images - 7 modules max
-        nest135_geschossdecke_overlay_1: 'placeholder-nest-135-geschossdecke-overlay-1',
-        nest135_geschossdecke_overlay_2: 'placeholder-nest-135-geschossdecke-overlay-2',
-        nest135_geschossdecke_overlay_3: 'placeholder-nest-135-geschossdecke-overlay-3',
-        nest135_geschossdecke_overlay_4: 'placeholder-nest-135-geschossdecke-overlay-4',
-        nest135_geschossdecke_overlay_5: 'placeholder-nest-135-geschossdecke-overlay-5',
-        nest135_geschossdecke_overlay_6: 'placeholder-nest-135-geschossdecke-overlay-6',
-        nest135_geschossdecke_overlay_7: 'placeholder-nest-135-geschossdecke-overlay-7',
-
-        // Nest155 (nest160) Geschossdecke overlay images - 8 modules max
-        nest155_geschossdecke_overlay_1: 'placeholder-nest-155-geschossdecke-overlay-1',
-        nest155_geschossdecke_overlay_2: 'placeholder-nest-155-geschossdecke-overlay-2',
-        nest155_geschossdecke_overlay_3: 'placeholder-nest-155-geschossdecke-overlay-3',
-        nest155_geschossdecke_overlay_4: 'placeholder-nest-155-geschossdecke-overlay-4',
-        nest155_geschossdecke_overlay_5: 'placeholder-nest-155-geschossdecke-overlay-5',
-        nest155_geschossdecke_overlay_6: 'placeholder-nest-155-geschossdecke-overlay-6',
-        nest155_geschossdecke_overlay_7: 'placeholder-nest-155-geschossdecke-overlay-7',
-        nest155_geschossdecke_overlay_8: 'placeholder-nest-155-geschossdecke-overlay-8',
+        // Kiefer (Pine) variations
+        geschossdecke_kiefer_ohne_belag: '323-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-kiefer',
+        geschossdecke_kiefer_parkett: '326-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-kiefer',
+        geschossdecke_kiefer_steinplatten_hell: '329-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-kiefer',
+        geschossdecke_kiefer_steinplatten_dunkel: '332-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-kiefer',
     },
 
 
