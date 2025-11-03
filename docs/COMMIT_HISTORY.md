@@ -4,6 +4,75 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c0b185297e3bdc0669c2734d4a23127d971ef6c1] - Mon Nov 3 11:25:25 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/payments/PaymentModal.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+#### 📚 Documentation Changes
+- ADMIN_PASSWORD_FIX.md
+- docs/COMMIT_HISTORY.md
+- docs/SOCIAL_MEDIA_METADATA_UPDATE.md
+
+
+---
+
+## [691df2af40f421eb6a83055b219653c631a7fd5e] - Mon Nov 3 11:09:22 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge c613969f1874427ad8a71ab81578ac33ca76b9c4 into 46338ae5a65fb678d79ed72999503c2ab33ee0a9  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- ADMIN_PASSWORD_FIX.md
+
+
+---
+
+## [74e7e76dcf591dcdd846f5ed5581bf5198e426c8] - Sun Nov 2 16:48:41 2025 +0000
+
+**Author**: Cursor Agent
+**Message**: `Fix social media preview: Add og-image and update URLs to www subdomain  - Add optimized og-image.jpg (1200x630px, 141KB) for social media previews - Update all metadata URLs from nest-haus.at to www.nest-haus.at - Fix WhatsApp preview compatibility with proper image specs - Add comprehensive documentation for social media metadata  This fixes the issue where social media link checkers couldn't find the preview image (404 error) and ensures WhatsApp displays previews correctly.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
+## [3e4729dbe787854e851291868402d35b8b198c84] - Fri Oct 31 13:11:04 2025 +0000
+
+**Author**: Cursor Agent
+**Message**: `Fix TypeScript build error in PaymentModal  Fixed incorrect function reference: handlePaymentError -> _handlePaymentError The function was properly prefixed with underscore but the call site was not updated.  Build now passes successfully.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/payments/PaymentModal.tsx
+
+
+---
+
 ## [05fcb184c1c6f2e600011435526b427786f8cb1e] - Fri Oct 31 14:02:12 2025 +0100
 
 **Author**: stenkjan

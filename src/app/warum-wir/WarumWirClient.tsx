@@ -115,7 +115,6 @@ export default function WarumWirClient() {
         {/* Section 4 - Team Values Cards */}
         <section className="w-full bg-white py-16 md:py-24">
           <div className="w-full">
-
             <UnifiedContentCard
               layout="team-card"
               style="glass"
