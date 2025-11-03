@@ -243,6 +243,30 @@ export default function SelectionOption({
         );
       }
 
+      // Special handling for Fenster - center price without entspricht
+      if (categoryId === "fenster") {
+        const formattedPrice = price.amount
+          ? PriceUtils.formatPrice(price.amount)
+          : "0 €";
+
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              {price.amount !== undefined && price.amount > 0
+                ? `+${formattedPrice}`
+                : formattedPrice}
+              /m²
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
       // When amount is 0 (same price), only show "+/-" and hide any numeric values
       if (price.amount === 0) {
         return (
@@ -269,27 +293,24 @@ export default function SelectionOption({
             {price.amount !== undefined && price.amount > 0
               ? `+${formattedPrice}`
               : formattedPrice}
-            {categoryId === "fenster" && "/m²"}
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "fenster" ? "basierend auf deinem" : "entspricht"}
+            entspricht
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "fenster"
-              ? "Belichtungspaket"
-              : categoryId === "pvanlage" && price.amount
-                ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
-                : shouldShowPricePerSqm &&
-                    nestModel &&
-                    price.amount &&
-                    price.amount !== 0
-                  ? PriceUtils.calculateOptionPricePerSquareMeter(
-                      price.amount,
-                      nestModel,
-                      categoryId,
-                      id
-                    )
-                  : ""}
+            {categoryId === "pvanlage" && price.amount
+              ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
+              : shouldShowPricePerSqm &&
+                  nestModel &&
+                  price.amount &&
+                  price.amount !== 0
+                ? PriceUtils.calculateOptionPricePerSquareMeter(
+                    price.amount,
+                    nestModel,
+                    categoryId,
+                    id
+                  )
+                : ""}
           </p>
         </div>
       );
@@ -305,11 +326,44 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
+      // Special handling for Belichtungspaket - center price without entspricht
+      if (categoryId === "belichtungspaket") {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
+              -{formattedPrice}
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
+      // Special handling for Fenster - center price without entspricht
+      if (categoryId === "fenster") {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
+              -{formattedPrice}/m²
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
       return (
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] text-gray-700">
             -{formattedPrice}
-            {categoryId === "fenster" && "/m²"}
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             entspricht
@@ -343,30 +397,61 @@ export default function SelectionOption({
       // Use grey text for selected options, even when type is "standard"
       const textColor = isSelected ? "text-gray-500" : "";
 
+      // Special handling for Belichtungspaket - center price without entspricht
+      if (categoryId === "belichtungspaket") {
+        return (
+          <div className="text-right">
+            <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
+              &nbsp;
+            </p>
+            <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
+              {formattedPrice}
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
+      // Special handling for Fenster - center price without entspricht
+      if (categoryId === "fenster") {
+        return (
+          <div className="text-right">
+            <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
+              &nbsp;
+            </p>
+            <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
+              {formattedPrice}/m²
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
       return (
         <div className="text-right">
           <p
             className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}
           >
             {formattedPrice}
-            {categoryId === "fenster" && "/m²"}
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "fenster" ? "basierend auf deinem" : "entspricht"}
+            entspricht
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "fenster"
-              ? "Belichtungspaket"
-              : categoryId === "pvanlage" && price.amount
-                ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
-                : shouldShowPricePerSqm && nestModel && price.amount
-                  ? PriceUtils.calculateOptionPricePerSquareMeter(
-                      price.amount,
-                      nestModel,
-                      categoryId,
-                      id
-                    )
-                  : ""}
+            {categoryId === "pvanlage" && price.amount
+              ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
+              : shouldShowPricePerSqm && nestModel && price.amount
+                ? PriceUtils.calculateOptionPricePerSquareMeter(
+                    price.amount,
+                    nestModel,
+                    categoryId,
+                    id
+                  )
+                : ""}
           </p>
         </div>
       );
