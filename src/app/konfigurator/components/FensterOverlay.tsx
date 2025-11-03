@@ -58,7 +58,7 @@ export default function FensterOverlay({
         path={overlayImagePath}
         alt="Fenster & Türen Overlay"
         fill
-        className="transition-opacity duration-300 object-contain z-15"
+        className="transition-opacity duration-300 object-contain z-10"
         strategy="client"
         isInteractive={true}
         enableCache={true}

@@ -68,7 +68,7 @@ export default function GeschossdeckeOverlay({
         path={overlayImagePath}
         alt="Geschossdecke Overlay"
         fill
-        className="transition-opacity duration-300 object-contain z-10"
+        className="transition-opacity duration-300 object-contain z-15"
         strategy="client"
         isInteractive={true}
         enableCache={true}
