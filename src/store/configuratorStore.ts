@@ -52,6 +52,7 @@ interface PersistedConfiguratorState {
   hasPart3BeenActive?: boolean
   shouldSwitchToView?: string | null
   lastSelectionCategory?: string | null
+  isVorentwurfMode?: boolean
 }
 
 interface ConfiguratorState {
@@ -70,6 +71,9 @@ interface ConfiguratorState {
   // View switching state (matches old configurator behavior)
   shouldSwitchToView: string | null
   lastSelectionCategory: string | null
+
+  // Vorentwurf mode state (simplified konfigurator)
+  isVorentwurfMode: boolean
 
   // Actions
   initializeSession: () => void
@@ -91,6 +95,10 @@ interface ConfiguratorState {
   clearViewSwitchSignal: () => void
   switchToView: (view: string) => void
   determineOptimalView: () => string
+
+  // Vorentwurf mode
+  setVorentwurfMode: (mode: boolean) => void
+  getVorentwurfMode: () => boolean
 
   // Getters
   getConfiguration: () => Configuration | null
@@ -131,6 +139,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       hasPart3BeenActive: false,
       shouldSwitchToView: null,
       lastSelectionCategory: null,
+      isVorentwurfMode: false,
 
       // Initialize session CLIENT-SIDE ONLY (no API dependency)
       initializeSession: () => {
@@ -749,11 +758,22 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           hasPart2BeenActive: false,
           hasPart3BeenActive: false,
           shouldSwitchToView: null,
-          lastSelectionCategory: null
+          lastSelectionCategory: null,
+          isVorentwurfMode: false
         })
 
         // Initialize fresh session with defaults
         get().initializeSession()
+      },
+
+      // Vorentwurf mode actions
+      setVorentwurfMode: (mode: boolean) => {
+        console.log("🏗️ ConfiguratorStore: Setting vorentwurf mode:", mode)
+        set({ isVorentwurfMode: mode })
+      },
+
+      getVorentwurfMode: () => {
+        return get().isVorentwurfMode
       },
 
       // Get configuration (for test compatibility)
