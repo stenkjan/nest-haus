@@ -348,6 +348,7 @@ export default function ConfiguratorShell({
       geschossdeckeQuantity,
       setIsPvOverlayVisible,
       isPvOverlayVisible,
+      isGeschossdeckeOverlayVisible,
     ]
   );
 
