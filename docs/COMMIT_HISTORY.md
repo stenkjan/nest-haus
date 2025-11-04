@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [87ff7cd90f61202b0fb69f83fb2a35f52f9955a4] - Tue Nov 4 10:32:37 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix: Add planungspaket to price breakdown - fixes 3.800€ calculation error  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [43f34c4b3c44897f6e987161b6cee377b021e798] - Tue Nov 4 10:19:05 2025 +0100
 
 **Author**: stenkjan
