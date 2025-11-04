@@ -1,0 +1,406 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2025-11-04T14:30:11.491658",
+    "description": "Nest-Haus Configurator Pricing Template"
+  },
+  "tabs": [
+    {
+      "name": "Base Module Pricing",
+      "columns": [
+        "Gebäudehülle",
+        "Innenverkleidung",
+        "Fussboden",
+        "Base Price (Nest 80)",
+        "Per Module Price",
+        "Notes"
+      ],
+      "data": [
+        [
+          "Trapezblech",
+          "Kiefer",
+          "Fischgraetparkett Eiche",
+          155500,
+          33600,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Kiefer",
+          "Kalkstein",
+          161200,
+          35000,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Kiefer",
+          "Feinsteinzeug Schiefer",
+          161200,
+          35000,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Fichte",
+          "Fischgraetparkett Eiche",
+          156900,
+          33800,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Fichte",
+          "Kalkstein",
+          162600,
+          35300,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Fichte",
+          "Feinsteinzeug Schiefer",
+          162600,
+          35300,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Eiche",
+          "Fischgraetparkett Eiche",
+          165700,
+          35400,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Eiche",
+          "Kalkstein",
+          171400,
+          36900,
+          ""
+        ],
+        [
+          "Trapezblech",
+          "Eiche",
+          "Feinsteinzeug Schiefer",
+          171400,
+          36900,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Kiefer",
+          "Fischgraetparkett Eiche",
+          165100,
+          35600,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Kiefer",
+          "Kalkstein",
+          170800,
+          37000,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Kiefer",
+          "Feinsteinzeug Schiefer",
+          170800,
+          37000,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Fichte",
+          "Fischgraetparkett Eiche",
+          166400,
+          35800,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Fichte",
+          "Kalkstein",
+          172100,
+          37300,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Fichte",
+          "Feinsteinzeug Schiefer",
+          172100,
+          37300,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Eiche",
+          "Fischgraetparkett Eiche",
+          175300,
+          37400,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Eiche",
+          "Kalkstein",
+          181000,
+          38900,
+          ""
+        ],
+        [
+          "Holzlattung Laerche",
+          "Eiche",
+          "Feinsteinzeug Schiefer",
+          181000,
+          38900,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Kiefer",
+          "Fischgraetparkett Eiche",
+          191900,
+          40300,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Kiefer",
+          "Kalkstein",
+          197600,
+          41700,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Kiefer",
+          "Feinsteinzeug Schiefer",
+          197600,
+          41700,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Fichte",
+          "Fischgraetparkett Eiche",
+          193200,
+          40600,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Fichte",
+          "Kalkstein",
+          198900,
+          42000,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Fichte",
+          "Feinsteinzeug Schiefer",
+          198900,
+          42000,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Eiche",
+          "Fischgraetparkett Eiche",
+          202100,
+          42200,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Eiche",
+          "Kalkstein",
+          207800,
+          43600,
+          ""
+        ],
+        [
+          "Holzverbundplatten",
+          "Eiche",
+          "Feinsteinzeug Schiefer",
+          207800,
+          43600,
+          ""
+        ]
+      ]
+    },
+    {
+      "name": "Add-On Components",
+      "columns": [
+        "Component ID",
+        "Component Name",
+        "Price Type",
+        "Base Price",
+        "Unit",
+        "Scaling Formula",
+        "Notes"
+      ],
+      "data": [
+        [
+          "pv_panele",
+          "Pv Panele",
+          "fixed",
+          390,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "fenster_pvc",
+          "Fenster Pvc",
+          "fixed",
+          280,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "fenster_fichte",
+          "Fenster Fichte",
+          "fixed",
+          400,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "fenster_eiche",
+          "Fenster Eiche",
+          "fixed",
+          550,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "fenster_alu",
+          "Fenster Alu",
+          "fixed",
+          700,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "planung_basis",
+          "Planung Basis",
+          "fixed",
+          8900,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "planung_plus",
+          "Planung Plus",
+          "fixed",
+          13900,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "planung_pro",
+          "Planung Pro",
+          "fixed",
+          18900,
+          "per unit",
+          "",
+          ""
+        ],
+        [
+          "grundstueckscheck",
+          "Grundstueckscheck",
+          "fixed",
+          490,
+          "per unit",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "name": "Size-Dependent Pricing",
+      "columns": [
+        "Component",
+        "Base Price (Nest 80)",
+        "Scaling Factor",
+        "Formula",
+        "Notes"
+      ],
+      "data": [
+        [
+          "Elektrische Fußbodenheizung",
+          5000,
+          0.25,
+          "base * (1 + 0.25 * additional_modules)",
+          ""
+        ],
+        [
+          "Wassergeführte Fußbodenheizung",
+          7500,
+          0.25,
+          "base * (1 + 0.25 * additional_modules)",
+          ""
+        ],
+        [
+          "Fundament",
+          5000,
+          0.25,
+          "base * (1 + 0.25 * additional_modules)",
+          ""
+        ],
+        [
+          "Geschossdecke",
+          5000,
+          0.25,
+          "base * (1 + 0.25 * additional_modules) * quantity",
+          "Per unit"
+        ]
+      ]
+    },
+    {
+      "name": "Percentage-Based Pricing",
+      "columns": [
+        "Component",
+        "Percentage",
+        "Base Material Price",
+        "Formula",
+        "Notes"
+      ],
+      "data": [
+        [
+          "Belichtungspaket Light",
+          12,
+          280,
+          "nest_size * percentage * material_price",
+          "PVC default"
+        ],
+        [
+          "Belichtungspaket Medium",
+          16,
+          280,
+          "nest_size * percentage * material_price",
+          "PVC default"
+        ],
+        [
+          "Belichtungspaket Bright",
+          22,
+          280,
+          "nest_size * percentage * material_price",
+          "PVC default"
+        ]
+      ]
+    }
+  ]
+}
