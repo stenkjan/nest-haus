@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-11-04T14:30:11.491958",
+  "current_pricing_summary": {
+    "total_combinations": 27,
+    "add_ons_count": 9,
+    "price_range": {
+      "min": 155500,
+      "max": 207800
+    },
+    "gebaeudehuelle_types": [
+      "Holzverbundplatten",
+      "Holzlattung Laerche",
+      "Trapezblech"
+    ],
+    "innenverkleidung_types": [
+      "Eiche",
+      "Fichte",
+      "Kiefer"
+    ],
+    "fussboden_types": [
+      "Kalkstein",
+      "Feinsteinzeug Schiefer",
+      "Fischgraetparkett Eiche"
+    ]
+  },
+  "new_pricing_summary": {},
+  "changes": [],
+  "recommendations": []
+}
