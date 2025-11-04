@@ -114,7 +114,7 @@ export default function SummaryPanel({
         // Use defaults for base calculation
         const baseGebaeudehuelle = "trapezblech";
         const baseInnenverkleidung = "kiefer";
-        const baseFussboden = "ohne_parkett";
+        const baseFussboden = "ohne_belag";
 
         // Calculate base combination price (all defaults)
         const basePrice = PriceCalculator.calculateCombinationPrice(

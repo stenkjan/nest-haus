@@ -248,12 +248,12 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
                 nest.value,
                 'trapezblech',
                 'kiefer',
-                'ohne_parkett'
+                'ohne_belag'
             );
 
             // Calculate individual upgrade prices for each option
-            const gebaeudehulleUpgrade = calculateModularPrice(nest.value, gebaeudehuelle.value, 'kiefer', 'ohne_parkett') - basePrice;
-            const innenverkleidungUpgrade = calculateModularPrice(nest.value, 'trapezblech', innenverkleidung.value, 'ohne_parkett') - basePrice;
+            const gebaeudehulleUpgrade = calculateModularPrice(nest.value, gebaeudehuelle.value, 'kiefer', 'ohne_belag') - basePrice;
+            const innenverkleidungUpgrade = calculateModularPrice(nest.value, 'trapezblech', innenverkleidung.value, 'ohne_belag') - basePrice;
             const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'kiefer', fussboden.value) - basePrice;
 
             // Recalculate fussboden - use combination pricing (not size-dependent)

@@ -88,6 +88,22 @@ export class PriceUtils {
   }
 
   /**
+   * Get parkett price based on nest size
+   * Pricing: nest80=3800€, nest100=5000€, nest120=6200€, nest140=7400€, nest160=8600€
+   */
+  static getParkettPrice(nestModel: string): number {
+    const parkettPricing: Record<string, number> = {
+      'nest80': 3800,   // 75m² → 3800€
+      'nest100': 5000,  // 95m² → 5000€
+      'nest120': 6200,  // 115m² → 6200€
+      'nest140': 7400,  // 135m² → 7400€
+      'nest160': 8600   // 155m² → 8600€
+    };
+
+    return parkettPricing[nestModel] || 3800; // Default to nest80 price
+  }
+
+  /**
    * Determine if a category should show price per m² based on overhaul requirements
    */
   static shouldShowPricePerSquareMeter(categoryId: string): boolean {
