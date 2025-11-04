@@ -256,6 +256,10 @@ h2 {
     @apply text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-base leading-snug whitespace-pre-line;
   }
 
+  .p-primary-small2 {
+    @apply text-[10px] md:text-[10px] lg:text-[10px] xl:text-xs 2xl:text-sm leading-snug whitespace-pre-line;
+  }
+
   .p-primary-small-leading-tight {
     @apply text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-base leading-tight whitespace-pre-line;
   }
