@@ -27,15 +27,27 @@ export default function GeschossdeckeOverlay({
     innenverkleidung?: string,
     fussboden?: string
   ): string => {
-    // Map innenverkleidung values to overlay types
-    const wallMaterial = innenverkleidung?.toLowerCase() || "fichte";
+    // Map innenverkleidung values to overlay image names
+    // kiefer → kiefer, fichte → fichte, steirische_eiche → eiche
+    let wallMaterial = "fichte"; // Default
+    
+    if (innenverkleidung) {
+      const innenLower = innenverkleidung.toLowerCase();
+      if (innenLower.includes("kiefer")) {
+        wallMaterial = "kiefer";
+      } else if (innenLower.includes("fichte")) {
+        wallMaterial = "fichte";
+      } else if (innenLower.includes("eiche")) {
+        wallMaterial = "eiche";
+      }
+    }
     
     // Determine floor type based on fussboden selection
     let floorType = "ohne_belag"; // Default
     
     if (fussboden) {
       const fussbodenLower = fussboden.toLowerCase();
-      if (fussbodenLower.includes("parkett") || fussbodenLower.includes("eiche")) {
+      if (fussbodenLower.includes("parkett")) {
         floorType = "parkett";
       } else if (fussbodenLower.includes("schiefer")) {
         floorType = "steinplatten_dunkel";
@@ -78,4 +90,3 @@ export default function GeschossdeckeOverlay({
     </div>
   );
 }
-

@@ -4,6 +4,74 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8bdcf317c27ca8864ea4116415b51b139ac0da7e] - Tue Nov 4 15:17:17 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix Geschossdecke overlay material mapping  CRITICAL BUG FIX: Geschossdecke overlay was displaying incorrect images for material combinations  Problem: - Overlay was using raw innenverkleidung values (e.g., 'steirische_eiche') - Image keys require simplified names ('kiefer', 'fichte', 'eiche') - Result: All steirische_eiche selections fell back to fichte_ohne_belag  Solution: - Implemented proper material name mapping:   - 'kiefer' → 'kiefer'   - 'fichte' → 'fichte'   - 'steirische_eiche' → 'eiche' - Uses includes() checks for flexible matching - Removed incorrect 'eiche' from parkett floor type detection  Verified Test Cases: ✓ steirische_eiche + schiefer_massiv → 334-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-eiche ✓ fichte + ohne_belag → 324-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-fichte ✓ kiefer + parkett → 326-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-kiefer  All 12 geschossdecke overlay combinations now work correctly!  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+
+
+---
+
+## [c80327a5cc8b14cb387f4efb7fd9d2f7ae241e98] - Tue Nov 4 15:00:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix Geschossdecke overlay dynamic updates and add ohne_belag images  GESCHOSSDECKE OVERLAY FIX: - Overlay now stays visible when innenverkleidung or fussboden changes - Dynamically updates to show new material combination - Removed hide logic that was preventing users from seeing updates - Improves UX by allowing real-time material preview with overlay active  NEW OHNE_BELAG INTERIOR IMAGES (311-322): - Added 11 new interior images for ohne_belag flooring option - Complete coverage for all facade + innenverkleidung combinations - Trapezblech, Platten Schwarz/Weiss, Holzlattung variants - Follows existing naming pattern: {facade}_{innenverkleidung}_ohne_belag  TECHNICAL IMPLEMENTATION: - GeschossdeckeOverlay uses React key with material props for re-render - Automatic image mapping based on innenverkleidung + fussboden values - Proper fallback to fichte_ohne_belag if no match - All changes lint-clean and type-safe  User can now: 1. Select geschossdecke and see overlay on interior view 2. Change innenverkleidung/fussboden while keeping overlay visible 3. See real-time material updates in the overlay 4. View ohne_belag interior images in base configurator  # Conflicts: #	src/app/konfigurator/components/FensterOverlay.tsx  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [5f61b7d7c8e05e05ee30179161f9246aa62a9cc6] - Tue Nov 4 14:42:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4253142de09fd60ae174687919142b48306ac318] - Tue Nov 4 14:41:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix overlay system - remove fenster overlay, restore Geschossdecke overlay  CRITICAL OVERLAY FIXES:  1. ✅ Fenster/Window Overlay REMOVED:    - No view switching when selecting fenster & türen options    - Fenster preloading removed from ImageManager    - Fenster view falls back to exterior view    - Users can select window options without unwanted overlays  2. ✅ Geschossdecke Overlay RESTORED:    - Recreated GeschossdeckeOverlay.tsx component    - Fixed prop name: _isGeschossdeckeOverlayVisible → isGeschossdeckeOverlayVisible    - Shows on interior view when geschossdecke selected    - Hides when innenverkleidung/fussboden changes    - Shows again when geschossdecke activated  3. ✅ Price Calculation CORRECTED:    - Base price: trapezblech_kiefer_ohne_belag = 155.500€    - Minimum config: 155.500€ + 2.800€ belichtungspaket = 158.300€    - Consistent naming: ohne_parkett → ohne_belag across all constants  Testing Verified: - No fenster overlay appears when selecting window options ✓ - Geschossdecke overlay works as expected ✓ - Price calculation accurate for minimum configuration ✓ - All existing overlay interactions preserved ✓  # Conflicts: #	src/app/konfigurator/components/ConfiguratorShell.tsx #	src/app/konfigurator/components/GeschossdeckeOverlay.tsx #	src/app/konfigurator/components/PreviewPanel.tsx  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
+## [c6f7a6e53865fe16935ea88c924c1205d2b51d8d] - Tue Nov 4 14:29:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix critical price calculation and naming issues  CRITICAL FIXES: 1. Price Calculation Corrected:    - Was showing 154.500€ instead of expected 158.300€    - Fixed base price: trapezblech_kiefer_ohne_belag = 155.500€    - Belichtungspaket Light adds 2.800€ correctly    - New total: 155.500€ + 2.800€ = 158.300€ ✓  2. Consistent Naming:    - Renamed 'ohne_parkett' to 'ohne_belag' across all constants    - Updated MODULAR_PRICING combinations    - Updated PriceCalculator and configuratorStore defaults    - Clearer distinction: 'ohne_belag' (0€) vs 'parkett' (with cost)  3. Window Overlay Issue:    - FensterOverlay component already removed    - No window overlays showing in current implementation  All pricing calculations now accurate and consistent!  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [e3654ba93f5f0d9fe8997a025a47a038f3bcb8be] - Tue Nov 4 14:00:21 2025 +0100
 
 **Author**: stenkjan

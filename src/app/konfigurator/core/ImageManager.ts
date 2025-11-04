@@ -69,7 +69,8 @@ export class ImageManager {
           imagePath = this.getPVImage(configuration);
           break;
         case 'fenster':
-          imagePath = this.getFensterImage(configuration);
+          // Fenster view removed - fall back to exterior view
+          imagePath = this.getExteriorImage(configuration);
           break;
         default:
           imagePath = this.getExteriorImage(configuration);
@@ -397,10 +398,7 @@ export class ImageManager {
       images.push(this.getPreviewImage(configuration, 'pv'));
     }
 
-    // If fenster selected, preload fenster view
-    if (configuration.fenster) {
-      images.push(this.getPreviewImage(configuration, 'fenster'));
-    }
+    // Fenster preloading removed - no longer showing fenster view
 
     // PREDICTIVE: If only nest selected, preload likely next configurations
     if (configuration.nest && !configuration.gebaeudehuelle) {
@@ -571,7 +569,7 @@ export class ImageManager {
    * Clear cache for specific configuration to force refresh
    */
   static clearCacheForConfiguration(configuration: Configuration): void {
-    const viewTypes: ViewType[] = ['exterior', 'interior', 'stirnseite', 'pv', 'fenster'];
+    const viewTypes: ViewType[] = ['exterior', 'interior', 'stirnseite', 'pv'];
 
     viewTypes.forEach(view => {
       const cacheKey = this.createCacheKey(configuration, view);
