@@ -270,6 +270,15 @@ export default function ConfiguratorShell({
           ...(categoryId === "geschossdecke" && { quantity: 1 }), // Add quantity for geschossdecke
         });
 
+        // Hide Geschossdecke overlay when innenverkleidung or fussboden changes
+        // so users can see the interior material changes in the preview
+        if (
+          isGeschossdeckeOverlayVisible &&
+          (categoryId === "innenverkleidung" || categoryId === "fussboden")
+        ) {
+          setIsGeschossdeckeOverlayVisible(false);
+        }
+
         // Handle overlay visibility based on selection - PRESERVE EXISTING OVERLAYS
         if (categoryId === "belichtungspaket") {
           // PRESERVE PV overlay - allow both to be visible simultaneously on exterior view
@@ -1483,6 +1492,11 @@ export default function ConfiguratorShell({
                   isChecked={!!configuration?.fundament}
                   onChange={handleFundamentChange}
                 />
+                
+                {/* Fundament description text */}
+                <p className="text-sm text-gray-600 leading-relaxed mt-4 px-1">
+                  Das Fundament bildet die stabile Basis für dein Nest-Haus. Es wird individuell auf dein Grundstück und die Bodenbeschaffenheit angepasst und sorgt für einen sicheren Stand über viele Jahre.
+                </p>
 
                 {/* Lightbox button for Optionen */}
                 {/* <ConfiguratorContentCardsLightbox

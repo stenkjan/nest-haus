@@ -272,8 +272,8 @@ export const PLANNING_PACKAGES = [
     value: 'basis',
     name: 'Basis',
     description: 'Grundplanung und Einreichung\nStandard-Grundriss\nBaubegleitung Basis',
-    price: 10900,
-    monthly: 63
+    price: 0, // inkludiert - no additional cost
+    monthly: 0
   },
   {
     value: 'plus',
