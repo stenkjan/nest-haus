@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c80327a5cc8b14cb387f4efb7fd9d2f7ae241e98] - Tue Nov 4 15:00:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix Geschossdecke overlay dynamic updates and add ohne_belag images  GESCHOSSDECKE OVERLAY FIX: - Overlay now stays visible when innenverkleidung or fussboden changes - Dynamically updates to show new material combination - Removed hide logic that was preventing users from seeing updates - Improves UX by allowing real-time material preview with overlay active  NEW OHNE_BELAG INTERIOR IMAGES (311-322): - Added 11 new interior images for ohne_belag flooring option - Complete coverage for all facade + innenverkleidung combinations - Trapezblech, Platten Schwarz/Weiss, Holzlattung variants - Follows existing naming pattern: {facade}_{innenverkleidung}_ohne_belag  TECHNICAL IMPLEMENTATION: - GeschossdeckeOverlay uses React key with material props for re-render - Automatic image mapping based on innenverkleidung + fussboden values - Proper fallback to fichte_ohne_belag if no match - All changes lint-clean and type-safe  User can now: 1. Select geschossdecke and see overlay on interior view 2. Change innenverkleidung/fussboden while keeping overlay visible 3. See real-time material updates in the overlay 4. View ohne_belag interior images in base configurator  # Conflicts: #	src/app/konfigurator/components/FensterOverlay.tsx  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [5f61b7d7c8e05e05ee30179161f9246aa62a9cc6] - Tue Nov 4 14:42:46 2025 +0100
 
 **Author**: stenkjan
