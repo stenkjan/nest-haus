@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0f987e5eea1db8893075b032a4aa1902f531deac] - Tue Nov 4 15:33:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Restore nest-size dependent parkett pricing  CRITICAL PRICING RESTORATION: Fixed parkett pricing that was lost during ohne_belag implementation  Problem: - Parkett was showing 0€ instead of proper nest-dependent prices - ConfiguratorShell used 'parkett' as baseline for price calculations - Made parkett appear as no upgrade cost instead of actual pricing  Root Cause Analysis: - testFussboden default was 'parkett' (should be 'ohne_belag') - basePrice calculation used 'parkett' baseline (should be 'ohne_belag') - Pricing logic calculated parkett - parkett = 0€  Solution Implemented: 1. Added getParkettPrice() utility with correct pricing table:    ✓ nest80 (75m²): 3.800€    ✓ nest100 (95m²): 5.000€    ✓ nest120 (115m²): 6.200€    ✓ nest140 (135m²): 7.400€    ✓ nest160 (155m²): 8.600€  2. Fixed ConfiguratorShell baseline calculations:    ✓ testFussboden default: 'parkett' → 'ohne_belag'    ✓ basePrice uses 'ohne_belag' as baseline    ✓ Parkett now calculated as upgrade from ohne_belag  Result: - Parkett displays correct nest-dependent pricing - ohne_belag remains 0€ (included in base price) - Dynamic pricing works across all nest sizes - Price calculations use proper baseline logic  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+---
+
 ## [e837240149e37a73b98a95097c71932fb09a1e89] - Tue Nov 4 15:27:34 2025 +0100
 
 **Author**: stenkjan
