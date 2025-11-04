@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1f71f4371a74a649df34a3db9c4e88ace90435eb] - Tue Nov 4 09:51:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix: Install missing Stripe packages  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+---
+
 ## [3a0cdb98bc90aba4c961ed40277063f09367bc5f] - Mon Nov 3 16:40:13 2025 +0100
 
 **Author**: stenkjan
