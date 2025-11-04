@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4253142de09fd60ae174687919142b48306ac318] - Tue Nov 4 14:41:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix overlay system - remove fenster overlay, restore Geschossdecke overlay  CRITICAL OVERLAY FIXES:  1. ✅ Fenster/Window Overlay REMOVED:    - No view switching when selecting fenster & türen options    - Fenster preloading removed from ImageManager    - Fenster view falls back to exterior view    - Users can select window options without unwanted overlays  2. ✅ Geschossdecke Overlay RESTORED:    - Recreated GeschossdeckeOverlay.tsx component    - Fixed prop name: _isGeschossdeckeOverlayVisible → isGeschossdeckeOverlayVisible    - Shows on interior view when geschossdecke selected    - Hides when innenverkleidung/fussboden changes    - Shows again when geschossdecke activated  3. ✅ Price Calculation CORRECTED:    - Base price: trapezblech_kiefer_ohne_belag = 155.500€    - Minimum config: 155.500€ + 2.800€ belichtungspaket = 158.300€    - Consistent naming: ohne_parkett → ohne_belag across all constants  Testing Verified: - No fenster overlay appears when selecting window options ✓ - Geschossdecke overlay works as expected ✓ - Price calculation accurate for minimum configuration ✓ - All existing overlay interactions preserved ✓  # Conflicts: #	src/app/konfigurator/components/ConfiguratorShell.tsx #	src/app/konfigurator/components/GeschossdeckeOverlay.tsx #	src/app/konfigurator/components/PreviewPanel.tsx  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+
+
+---
+
 ## [c6f7a6e53865fe16935ea88c924c1205d2b51d8d] - Tue Nov 4 14:29:40 2025 +0100
 
 **Author**: stenkjan
