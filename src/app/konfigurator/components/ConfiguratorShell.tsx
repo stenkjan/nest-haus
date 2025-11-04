@@ -944,7 +944,7 @@ export default function ConfiguratorShell({
             // Always use defaults for base calculation - prices should only depend on nest size, not other selections
             let testGebaeudehuelle = "trapezblech"; // Always use default
             let testInnenverkleidung = "kiefer"; // Always use default
-            let testFussboden = "parkett"; // Always use default
+            let testFussboden = "ohne_belag"; // Always use default (changed from parkett)
 
             if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
             if (categoryId === "innenverkleidung")
@@ -964,7 +964,7 @@ export default function ConfiguratorShell({
               currentNestValue,
               "trapezblech",
               "kiefer",
-              "parkett"
+              "ohne_belag"
             );
 
             // Get the individual option price (difference from base)
