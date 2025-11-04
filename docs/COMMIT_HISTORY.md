@@ -4,6 +4,31 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1e715275bbae82217fc1a3d2c6c84ef3938c6467] - Tue Nov 4 12:21:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Complete konfigurator & warenkorb refactoring  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator2/components/Konfigurator2Client.tsx
+- src/app/konfigurator2/components/SimplifiedCategorySection.tsx
+- src/app/konfigurator2/components/VorentwurfButton.tsx
+- src/app/konfigurator2/page.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+
+
+---
+
 ## [87ff7cd90f61202b0fb69f83fb2a35f52f9955a4] - Tue Nov 4 10:32:37 2025 +0100
 
 **Author**: stenkjan
