@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c6f7a6e53865fe16935ea88c924c1205d2b51d8d] - Tue Nov 4 14:29:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix critical price calculation and naming issues  CRITICAL FIXES: 1. Price Calculation Corrected:    - Was showing 154.500€ instead of expected 158.300€    - Fixed base price: trapezblech_kiefer_ohne_belag = 155.500€    - Belichtungspaket Light adds 2.800€ correctly    - New total: 155.500€ + 2.800€ = 158.300€ ✓  2. Consistent Naming:    - Renamed 'ohne_parkett' to 'ohne_belag' across all constants    - Updated MODULAR_PRICING combinations    - Updated PriceCalculator and configuratorStore defaults    - Clearer distinction: 'ohne_belag' (0€) vs 'parkett' (with cost)  3. Window Overlay Issue:    - FensterOverlay component already removed    - No window overlays showing in current implementation  All pricing calculations now accurate and consistent!  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [e3654ba93f5f0d9fe8997a025a47a038f3bcb8be] - Tue Nov 4 14:00:21 2025 +0100
 
 **Author**: stenkjan
