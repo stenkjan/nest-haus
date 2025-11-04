@@ -465,6 +465,79 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
 
 /**
  * ==================================================================================
+ * TALL VIDEO CARDS PRESET
+ * ==================================================================================
+ * 
+ * Tall video cards with overlay text - 25% taller than standard video cards.
+ * Combines the video background overlay-text layout with heightMode="tall" for
+ * more prominent, impactful video content cards.
+ * 
+ * CARD FEATURES:
+ * ---------------
+ * - Layout: "overlay-text" - Full video background with text overlay
+ * - Height Mode: "tall" - 25% taller than standard video cards
+ * - Aspect Ratios: Supports same aspect ratios as VIDEO_BACKGROUND_CARDS_PRESET
+ *   - 2x1 (portrait) and 1x1 (square) on desktop
+ *   - All cards forced to 2x1 (portrait) on mobile (<768px)
+ * - Autoplay Videos: All videos loop continuously with optional playback rate control
+ * - Text: White text overlay by default (customizable per card)
+ * 
+ * USAGE EXAMPLE:
+ * ---------------
+ * ```tsx
+ * import { TALL_VIDEO_CARDS_PRESET } from "@/constants/contentCardPresets";
+ * 
+ * // Option 1: Use preset with default cards
+ * <UnifiedContentCard
+ *   {...TALL_VIDEO_CARDS_PRESET}
+ *   customData={TALL_VIDEO_CARDS_PRESET.cards}
+ * />
+ * 
+ * // Option 2: Use preset props with custom cards
+ * <UnifiedContentCard
+ *   {...TALL_VIDEO_CARDS_PRESET}
+ *   customData={yourCustomCards}
+ * />
+ * ```
+ * 
+ * HEIGHT COMPARISON:
+ * ------------------
+ * Standard video cards (VIDEO_BACKGROUND_CARDS_PRESET):
+ *   - Desktop (1280px): ~692px width, ~692px height
+ *   - Desktop (1600px+): ~830px width, ~830px height
+ * 
+ * Tall video cards (TALL_VIDEO_CARDS_PRESET):
+ *   - Desktop (1280px): ~865px width, ~865px height (25% taller)
+ *   - Desktop (1600px+): ~1037px width, ~1037px height (25% taller)
+ * 
+ * KEY DIFFERENCES FROM STANDARD VIDEO CARDS:
+ * ------------------------------------------
+ * - 25% taller for more visual impact
+ * - Same video handling (autoplay, loop, muted)
+ * - Same text overlay behavior
+ * - Same aspect ratio support
+ * - Better for featured or hero video content
+ * 
+ * COMPARISON TO OTHER TALL CARDS:
+ * --------------------------------
+ * - TALL_CARD_PROPS (layout="video"): Horizontal split (text left, image right)
+ * - TALL_VIDEO_CARDS_PRESET (layout="overlay-text"): Full video background with overlay
+ * 
+ * ==================================================================================
+ */
+export const TALL_VIDEO_CARDS_PRESET = {
+    layout: "overlay-text" as const,
+    style: "standard" as const,
+    variant: "responsive" as const,
+    heightMode: "tall" as const,
+    maxWidth: true,
+    showInstructions: true,
+    cards: VIDEO_BACKGROUND_CARDS_CONTENT, // Uses same content as standard video cards
+    buttons: [], // Optional: Add buttons that appear below the carousel
+};
+
+/**
+ * ==================================================================================
  * GLASS QUOTE CARDS PRESET
  * ==================================================================================
  * 

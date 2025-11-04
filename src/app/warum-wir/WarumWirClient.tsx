@@ -10,8 +10,11 @@ import {
   LandingImagesCarousel,
   GetInContactBanner,
   SectionHeader,
+  PartnersSection,
+  FAQSection,
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
+import { TALL_CARD_PROPS_WITH_PADDING } from "@/constants/cardContent";
 import Footer from "@/components/Footer";
 
 // Define sections
@@ -30,6 +33,11 @@ const sections = [
     id: "testimonials",
     title: "Expertenstimmen",
     slug: "testimonials",
+  },
+  {
+    id: "features",
+    title: "Unsere Features",
+    slug: "features",
   },
 ];
 
@@ -58,7 +66,7 @@ export default function WarumWirClient() {
             <ModernVideoPlayer
               videoPath={`/api/images?path=${IMAGES.videos.videoCard16}`}
               aspectRatio="16/9"
-              autoPlay={false}
+              autoPlay={true}
             />
 
             {/* Text Content Below Video */}
@@ -89,7 +97,7 @@ export default function WarumWirClient() {
         </section>
 
         {/* Section 3 - Testimonials / Glass Quote Cards */}
-        <section id="testimonials" className="w-full bg-black py-16 md:py-24">
+        <section id="testimonials" className="w-full bg-black py-8 md:py-16">
           <div className="w-full">
             <SectionHeader
               title="Verlässlichkeit, auf die du bauen kannst"
@@ -113,7 +121,17 @@ export default function WarumWirClient() {
         </section>
 
         {/* Section 4 - Team Values Cards */}
-        <section className="w-full bg-white py-16 md:py-24">
+        <section className="w-full bg-white py-8 md:py-16">
+          <div className="w-full mb-12 px-4 lg:pl-16 xl:pl-20 2xl:pl-24">
+            <div className="text-left">
+              <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
+                Kreativität und Erfahrung vereint
+              </h2>
+              <h3 className="h3-secondary font-normal text-black">
+                Wir stellen uns kurz vor
+              </h3>
+            </div>
+          </div>
           <div className="w-full">
             <UnifiedContentCard
               layout="team-card"
@@ -127,6 +145,88 @@ export default function WarumWirClient() {
             />
           </div>
         </section>
+
+        {/* Partners Section */}
+        <PartnersSection />
+
+        {/* Section 5 - Tall Video Cards Features */}
+        <section id="features" className="w-full bg-white py-8 md:py-16">
+          <div className="w-full">
+            <SectionHeader
+              title="Innovation für unsere Zukunft"
+              subtitle="Weil Nachhaltigkeit schon mit deinem Zuhause beginnt"
+              wrapperMargin="mb-12"
+            />
+
+            <UnifiedContentCard
+              {...TALL_CARD_PROPS_WITH_PADDING}
+              variant="responsive"
+              noPadding={true}
+              customData={[
+                {
+                  id: 1,
+                  title: "Wohnen im Kreislauf ",
+                  subtitle: "",
+                  description:
+                    "Wohnen bedeutet Verantwortung. Deshalb bildet Nest jedes Modul als Teil eines Kreislaufes aus . Wir denken Gebäude so, dass sie sich verändern, zerlegen und wiederverwenden lassen. So entsteht ein Zuhause, das nicht nur gebaut, sondern bewusst geschaffen wird. Stets im Einklang mit Mensch und Umwelt.",
+                  video: IMAGES.videos.nestHausTransport,
+                  backgroundColor: "#F4F4F4",
+                  buttons: [
+                    {
+                      text: "Unsere Technik verstehen",
+                      variant: "primary",
+                      size: "xs",
+                      link: "/kontakt",
+                    },
+                  ],
+                },
+                {
+                  id: 2,
+                  title: "Wohnen, dass mit dir wächst",
+                  subtitle: "",
+                  description:
+                    "Das Leben verändert sich, dein Zuhause sollte das auch können. Mit dem modularen Aufbau von Nest wächst oder schrumpft dein Raum, zieht mit dir um oder bleibt dort, wo du Wurzeln schlägst. So wird Wohnen flexibel, frei und zukunftsfähig. Wir glauben an ein Zuhause ohne Kompromisse.",
+                  video: IMAGES.variantvideo.ten,
+                  backgroundColor: "#F4F4F4",
+                  buttons: [
+                    {
+                      text: "Zum Entwurf",
+                      variant: "primary",
+                      size: "xs",
+                      link: "/kontakt",
+                    },
+                    {
+                      text: "Jetzt konfigurieren",
+                      variant: "secondary-narrow-blue",
+                      size: "xs",
+                      link: "/kontakt",
+                    },
+                  ],
+                },
+                {
+                  id: 3,
+                  title: "Wohnen im Kreislauf",
+                  subtitle: "",
+                  description:
+                    "Holz ist mehr als ein Baustoff, es ist ein Versprechen an die Zukunft. Als nachwachsender Rohstoff speichert es CO₂, reguliert das Raumklima und schafft eine Atmosphäre, die natürlich wirkt und sich echt anfühlt.  Mit moderner Fertigungstechnik macht Nest aus einem natürlichen Material eine zukunftsfähige Bauweise.",
+                  image: IMAGES.function.nestHausMaterialienSchema,
+                  backgroundColor: "#F4F4F4",
+                  buttons: [
+                    {
+                      text: "Mehr zu den Materialien",
+                      variant: "primary",
+                      size: "xs",
+                      link: "/kontakt",
+                    },
+                  ],
+                },
+              ]}
+            />
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <FAQSection />
       </SectionRouter>
 
       {/* Contact Banner - Kein Plan? Kein Problem! */}
