@@ -1204,7 +1204,7 @@ export default function CheckoutStepper({
                               <span className="text-gray-600">
                                 (
                                 {selectedPlanValue === "basis"
-                                  ? "1.000 €"
+                                  ? "10.000 €"
                                   : PriceUtils.formatPrice(selectedPlanPrice)}
                                 )
                               </span>
@@ -1295,7 +1295,7 @@ export default function CheckoutStepper({
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                    500 €
+                    1.000 €
                   </div>
                 </div>
               </div>
@@ -2572,12 +2572,12 @@ export default function CheckoutStepper({
                             </div>
                             {!isPaymentCompleted ? (
                               <div className="text-right">
-                                <div className="text-3xl font-bold text-gray-900">1000 €</div>
+                                <div className="text-3xl font-bold text-gray-900">1.000 €</div>
                               </div>
                             ) : (
                               <div className="text-right">
                                 <div className="text-2xl font-bold text-green-600">Bezahlt</div>
-                                <div className="text-lg text-green-600 italic">500 €</div>
+                                <div className="text-lg text-green-600 italic">1.000 €</div>
                               </div>
                             )}
                           </div>
@@ -2909,7 +2909,7 @@ export default function CheckoutStepper({
                                 configItem?.planungspaket?.value ||
                                 localSelectedPlan;
                               if (planValue === "basis") {
-                                return "1.000 €";
+                                return "10.000 €";
                               } else {
                                 return PriceUtils.formatPrice(planPrice);
                               }
@@ -3010,10 +3010,10 @@ export default function CheckoutStepper({
                   {!isPaymentCompleted && (
                     <div className="flex items-center gap-3 justify-end mb-1">
                       <span className="h2-title text-gray-400 line-through">
-                        1000 €
+                        1.000 €
                       </span>
                       <span className="h2-title text-black">
-                        500 €
+                        1.000 €
                       </span>
                     </div>
                   )}
@@ -3023,7 +3023,7 @@ export default function CheckoutStepper({
                         Bezahlt
                       </div>
                       <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 italic">
-                        500 €
+                        1.000 €
                       </div>
                     </div>
                   )}
