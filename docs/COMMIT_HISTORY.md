@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [43f34c4b3c44897f6e987161b6cee377b021e798] - Tue Nov 4 10:19:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix: Update all pricing to consistent values across warenkorb  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [3e126a5a11a999a3565958a910cc8cf0591e8c6b] - Tue Nov 4 10:13:36 2025 +0100
 
 **Author**: stenkjan
