@@ -603,11 +603,11 @@ export class PriceCalculator {
         }
       }
 
-      // Add planungspaket to breakdown
-      if (selections.planungspaket) {
+      // Add planungspaket to breakdown (only if price > 0, basis is inkludiert)
+      if (selections.planungspaket && selections.planungspaket.price > 0) {
         breakdown.options.planungspaket = {
           name: selections.planungspaket.name,
-          price: selections.planungspaket.price || 0
+          price: selections.planungspaket.price
         }
       }
 

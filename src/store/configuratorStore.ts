@@ -125,15 +125,15 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           category: 'planungspaket',
           value: 'basis',
           name: 'Planung Basis',
-          price: 10900
+          price: 0 // inkludiert - no additional cost
         },
         kamindurchzug: null,
         fussbodenheizung: null,
-        totalPrice: 10900,
+        totalPrice: 0, // Will be calculated on initialization
         timestamp: 0
       },
 
-      currentPrice: 10900,
+      currentPrice: 0, // Will be calculated on initialization
       priceBreakdown: null,
       hasPart2BeenActive: false,
       hasPart3BeenActive: false,
@@ -664,12 +664,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             description: 'Kein Heizungssystem im Boden'
           },
 
-          // Planung Basis (default) - now has a price
+          // Planung Basis (default) - now inkludiert
           {
             category: 'planungspaket',
             value: 'basis',
             name: 'Planung Basis',
-            price: 10900,
+            price: 0, // inkludiert - no additional cost
             description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung'
           }
         ];
@@ -806,23 +806,20 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         // Type guard to ensure persistedState is the expected type
         const state = persistedState as PersistedConfiguratorState;
 
-        // Migration for planungspaket price update
+        // Migration for planungspaket price update (v0 → v1)
+        // Basis planungspaket is now inkludiert (0€) instead of 10900€
         if (version === 0 && state?.configuration?.planungspaket) {
           const planungspaket = state.configuration.planungspaket;
-          // Update basis planungspaket price from 0 to 10900
-          if (planungspaket.value === 'basis' && planungspaket.price === 0) {
-            planungspaket.price = 10900;
-            // Also update total price if it was just the planungspaket
-            if (state.configuration.totalPrice === 0) {
-              state.configuration.totalPrice = 10900;
-            } else {
-              state.configuration.totalPrice += 10900;
+          // Update basis planungspaket price from 10900 to 0 (inkludiert)
+          if (planungspaket.value === 'basis' && planungspaket.price === 10900) {
+            planungspaket.price = 0;
+            // Subtract from total price if it was included
+            if (state.configuration.totalPrice >= 10900) {
+              state.configuration.totalPrice -= 10900;
             }
             // Update current price
-            if (state.currentPrice === 0) {
-              state.currentPrice = 10900;
-            } else if (state.currentPrice !== undefined) {
-              state.currentPrice += 10900;
+            if (state.currentPrice && state.currentPrice >= 10900) {
+              state.currentPrice -= 10900;
             }
           }
         }

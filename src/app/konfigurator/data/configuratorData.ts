@@ -262,7 +262,7 @@ export const configuratorData: CategoryData[] = [
         id: 'basis',
         name: 'Planung Basis',
         description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
-        price: { type: 'upgrade', amount: 10900, monthly: 63 }
+        price: { type: 'included', amount: 0, monthly: 0 }
       },
       {
         id: 'plus',
