@@ -215,7 +215,7 @@ export const NEST_OPTIONS = [
 export const MODULAR_PRICING = {
   // Each combination has base price + per-module price
   combinations: {
-    'trapezblech_kiefer_ohne_parkett': { base: 151700, perModule: 32400 }, // Base - 3800
+    'trapezblech_kiefer_ohne_parkett': { base: 155500, perModule: 33600 }, // Base price matches expected minimum
     'trapezblech_kiefer_parkett': { base: 155500, perModule: 33600 },
     'trapezblech_kiefer_kalkstein_kanafar': { base: 161200, perModule: 35000 },
     'trapezblech_kiefer_schiefer_massiv': { base: 161200, perModule: 35000 },

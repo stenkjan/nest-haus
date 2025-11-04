@@ -630,7 +630,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: -1400,
             description: 'PEFC - Zertifiziert - Sicht 1,5 cm'
           },
-          // Ohne Belag (new default)
+          // Ohne Belag (default - 0€ flooring cost)
           {
             category: 'fussboden',
             value: 'ohne_parkett',

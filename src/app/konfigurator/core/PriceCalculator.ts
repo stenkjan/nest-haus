@@ -429,7 +429,7 @@ export class PriceCalculator {
       nestType,
       'trapezblech',  // default
       'kiefer',       // default
-      'ohne_parkett'  // default (updated)
+      'ohne_parkett'  // default - 0€ flooring, base price 155.500€
     )
   }
 
