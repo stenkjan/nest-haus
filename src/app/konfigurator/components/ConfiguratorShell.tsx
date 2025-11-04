@@ -253,6 +253,15 @@ export default function ConfiguratorShell({
           ...(categoryId === "geschossdecke" && { quantity: 1 }), // Add quantity for geschossdecke
         });
 
+        // Hide Geschossdecke overlay when innenverkleidung or fussboden changes
+        // so users can see the interior material changes in the preview
+        if (
+          isGeschossdeckeOverlayVisible &&
+          (categoryId === "innenverkleidung" || categoryId === "fussboden")
+        ) {
+          setIsGeschossdeckeOverlayVisible(false);
+        }
+
         // Handle overlay visibility based on selection - PRESERVE EXISTING OVERLAYS
         if (categoryId === "belichtungspaket") {
           // PRESERVE PV overlay - allow both to be visible simultaneously on exterior view
