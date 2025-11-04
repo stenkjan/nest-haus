@@ -511,7 +511,7 @@ export default function ConfiguratorShell({
           // Use defaults for base calculation
           let testGebaeudehuelle = "trapezblech";
           let testInnenverkleidung = "kiefer";
-          let testFussboden = "ohne_parkett";
+          let testFussboden = "ohne_belag";
 
           if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
           if (categoryId === "innenverkleidung")
@@ -529,7 +529,7 @@ export default function ConfiguratorShell({
             currentNestValue,
             "trapezblech",
             "kiefer",
-            "ohne_parkett"
+            "ohne_belag"
           );
 
           const contribution = optionTotal - baseTotal;
@@ -885,7 +885,7 @@ export default function ConfiguratorShell({
               currentNestValue,
               "trapezblech",
               "kiefer",
-              "ohne_parkett"
+              "ohne_belag"
             );
             const parkettPrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
