@@ -8,6 +8,7 @@ import { ResponsiveHybridImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
+import TwoByTwoImageGrid from "@/components/grids/TwoByTwoImageGrid";
 import Footer from "@/components/Footer";
 
 // Define sections for landing page
@@ -261,109 +262,167 @@ export default function LandingPageClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {sectionsContent.map((section) => (
-          <section
-            key={section.id}
-            id={section.sectionId}
-            className="relative w-full overflow-hidden"
-            style={{
-              marginBottom: section.id !== sectionsContent.length ? "1vh" : "0",
-            }}
-          >
-            {/* PERFORMANCE FIX: Single responsive image container with proper overlay positioning */}
-            <div
-              className="relative w-full select-none"
-              onContextMenu={(e) => e.preventDefault()}
-              onDragStart={(e) => e.preventDefault()}
+          <React.Fragment key={section.id}>
+            <section
+              id={section.sectionId}
+              className="relative w-full overflow-hidden"
               style={{
-                WebkitUserSelect: "none",
-                MozUserSelect: "none",
-                msUserSelect: "none",
-                userSelect: "none",
-                WebkitTouchCallout: "none",
-                WebkitTapHighlightColor: "transparent",
+                marginBottom:
+                  section.id !== sectionsContent.length ? "1vh" : "0",
               }}
             >
-              <ResponsiveHybridImage
-                desktopPath={section.imagePath}
-                mobilePath={getMobileImagePath(section)}
-                alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
-                style={
-                  {
-                    ...landingImageStyle,
-                    pointerEvents: "none", // Prevents direct interaction with image
-                  } as any // eslint-disable-line @typescript-eslint/no-explicit-any
-                }
-                strategy={section.id <= 2 ? "ssr" : "client"}
-                isAboveFold={section.id <= 3}
-                isCritical={section.id <= 2}
-                priority={section.id <= 3}
-                sizes="100vw"
-                quality={90}
-                unoptimized={true}
-                breakpoint={768}
-                // Aspect ratio configuration
-                desktopAspectRatio="16/9" // Desktop: landscape 16:9
-                useMobileNaturalRatio={true} // Mobile: natural vertical ratio
-                draggable={false}
-                onContextMenu={(e) => e.preventDefault()}
-              />
-
-              {/* Content Overlay - responsive for both mobile and desktop */}
+              {/* PERFORMANCE FIX: Single responsive image container with proper overlay positioning */}
               <div
-                className={`absolute inset-0 z-20 flex flex-col items-center ${
-                  // Desktop: section 4 has buttons at bottom, others at top
-                  // Mobile: sections 3, 4, 6, 7 have buttons at bottom
-                  section.id === 4
-                    ? "justify-between pt-[5vh] pb-[5vh]" // Section 4: always bottom on both mobile and desktop
-                    : section.id === 3 || section.id === 6 || section.id === 7
-                      ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,6,7: bottom on mobile only
-                      : "justify-start pt-[5vh]" // Other sections: always top
-                } ${section.id === 2 ? "px-0" : "px-8"}`}
+                className="relative w-full select-none"
+                onContextMenu={(e) => e.preventDefault()}
+                onDragStart={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  MozUserSelect: "none",
+                  msUserSelect: "none",
+                  userSelect: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitTapHighlightColor: "transparent",
+                }}
               >
-                <div className="text-center">
-                  <h1
-                    className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${
-                      section.id === 3 || section.id === 6 || section.id === 7
-                        ? "drop-shadow-lg"
-                        : ""
-                    }`}
-                  >
-                    {section.h1}
-                  </h1>
-                  <h3
-                    className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${
-                      section.id === 3 || section.id === 6 || section.id === 7
-                        ? "drop-shadow-lg"
-                        : ""
-                    }`}
-                  >
-                    {section.h3}
-                  </h3>
-                </div>
+                <ResponsiveHybridImage
+                  desktopPath={section.imagePath}
+                  mobilePath={getMobileImagePath(section)}
+                  alt={`${section.h1} - NEST-Haus modulare Häuser Ansicht ${section.id}`}
+                  style={
+                    {
+                      ...landingImageStyle,
+                      pointerEvents: "none", // Prevents direct interaction with image
+                    } as any // eslint-disable-line @typescript-eslint/no-explicit-any
+                  }
+                  strategy={section.id <= 2 ? "ssr" : "client"}
+                  isAboveFold={section.id <= 3}
+                  isCritical={section.id <= 2}
+                  priority={section.id <= 3}
+                  sizes="100vw"
+                  quality={90}
+                  unoptimized={true}
+                  breakpoint={768}
+                  // Aspect ratio configuration
+                  desktopAspectRatio="16/9" // Desktop: landscape 16:9
+                  useMobileNaturalRatio={true} // Mobile: natural vertical ratio
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
+                />
 
-                <div className="grid grid-cols-2 gap-4">
-                  <Link href="/entdecken">
-                    <Button
-                      variant="landing-primary"
-                      size="xs"
-                      className="w-full"
+                {/* Content Overlay - responsive for both mobile and desktop */}
+                <div
+                  className={`absolute inset-0 z-20 flex flex-col items-center ${
+                    // Desktop: section 4 has buttons at bottom, others at top
+                    // Mobile: sections 3, 4, 6, 7 have buttons at bottom
+                    section.id === 4
+                      ? "justify-between pt-[5vh] pb-[5vh]" // Section 4: always bottom on both mobile and desktop
+                      : section.id === 3 || section.id === 6 || section.id === 7
+                        ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,6,7: bottom on mobile only
+                        : "justify-start pt-[5vh]" // Other sections: always top
+                  } ${section.id === 2 ? "px-0" : "px-8"}`}
+                >
+                  <div className="text-center">
+                    <h1
+                      className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${
+                        section.id === 3 || section.id === 6 || section.id === 7
+                          ? "drop-shadow-lg"
+                          : ""
+                      }`}
                     >
-                      {section.button1}
-                    </Button>
-                  </Link>
-                  <Link href="/konfigurator">
-                    <Button
-                      variant={getSecondaryButtonVariant(section.id)}
-                      size="xs"
-                      className="w-full"
+                      {section.h1}
+                    </h1>
+                    <h3
+                      className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${
+                        section.id === 3 || section.id === 6 || section.id === 7
+                          ? "drop-shadow-lg"
+                          : ""
+                      }`}
                     >
-                      {section.button2}
-                    </Button>
-                  </Link>
+                      {section.h3}
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <Link href="/entdecken">
+                      <Button
+                        variant="landing-primary"
+                        size="xs"
+                        className="w-full"
+                      >
+                        {section.button1}
+                      </Button>
+                    </Link>
+                    <Link href="/konfigurator">
+                      <Button
+                        variant={getSecondaryButtonVariant(section.id)}
+                        size="xs"
+                        className="w-full"
+                      >
+                        {section.button2}
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+
+            {/* TwoByTwoImageGrid Section - After section 5 (id=5), before section 6 */}
+            {section.id === 5 && (
+              <section className="relative w-full bg-white">
+                <TwoByTwoImageGrid
+                  maxWidth={true}
+                  customData={[
+                    {
+                      id: 1,
+                      title: "Grid Item 1",
+                      subtitle: "Sample subtitle",
+                      description: "Sample description",
+                      image:
+                        IMAGES.function.nestHausEntdeckenDeinNestErklaerungProdukt,
+                      backgroundColor: "#F4F4F4",
+                      primaryAction: "Entdecken",
+                      primaryLink: "/entdecken",
+                    },
+                    {
+                      id: 2,
+                      title: "Grid Item 2",
+                      subtitle: "Sample subtitle",
+                      description: "Sample description",
+                      image:
+                        IMAGES.function.nestHausEntwurfVorentwurfCheckGrundstueckscheck,
+                      backgroundColor: "#F4F4F4",
+                      primaryAction: "Entdecken",
+                      primaryLink: "/entdecken",
+                    },
+                    {
+                      id: 3,
+                      title: "Grid Item 3",
+                      subtitle: "Sample subtitle",
+                      description: "Sample description",
+                      image:
+                        IMAGES.function.nestHausNachhaltigkeitUnserePhilosophieMission,
+                      backgroundColor: "#F4F4F4",
+                      primaryAction: "Entdecken",
+                      primaryLink: "/entdecken",
+                    },
+                    {
+                      id: 4,
+                      title: "Grid Item 4",
+                      subtitle: "Sample subtitle",
+                      description: "Sample description",
+                      image:
+                        IMAGES.function.nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
+                      backgroundColor: "#F4F4F4",
+                      primaryAction: "Entdecken",
+                      primaryLink: "/entdecken",
+                    },
+                  ]}
+                  textColor="white"
+                />
+              </section>
+            )}
+          </React.Fragment>
         ))}
       </SectionRouter>
       <Footer />
