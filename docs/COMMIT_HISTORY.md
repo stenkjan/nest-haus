@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2ea719d41cd75cb7d5b1b270c5a3b76484daf49a] - Tue Nov 4 17:30:16 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Update .gitignore to remove specific preiskalkulation files  - Removed Book5.xlsx and Angebot_-_15014024.pdf from .gitignore to prevent tracking of unnecessary temporary files in the preiskalkulation directory.  `
+
+### Changes Analysis
+
+---
+
 ## [97b9d14eb3ef4294f342602cb190236417b06a29] - Tue Nov 4 16:56:33 2025 +0100
 
 **Author**: stenkjan
