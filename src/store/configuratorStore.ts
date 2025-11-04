@@ -633,7 +633,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           // Ohne Belag (default - 0€ flooring cost)
           {
             category: 'fussboden',
-            value: 'ohne_parkett',
+            value: 'ohne_belag',
             name: 'Ohne Belag',
             price: 0,
             description: 'Kein Bodenbelag'
