@@ -69,8 +69,7 @@ export default function ConfiguratorShell({
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
   const [isGeschossdeckeOverlayVisible, setIsGeschossdeckeOverlayVisible] =
     useState<boolean>(false);
-  const [isFensterOverlayVisible, setIsFensterOverlayVisible] =
-    useState<boolean>(true); // Always visible when fenster is selected
+  // Hidden by default, only show when actively selecting fenster
 
   // Dialog state
   const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
@@ -218,15 +217,8 @@ export default function ConfiguratorShell({
         }
       }
 
-      // Special handling for Fenster & Türen selection
-      if (categoryId === "fenster") {
-        // Show fenster overlay and switch to interior view to display it
-        setIsFensterOverlayVisible(true);
-        const { switchToView } = useConfiguratorStore.getState();
-        if (switchToView) {
-          switchToView("interior"); // Switch to interior to show fenster overlay
-        }
-      }
+      // Fenster & Türen selection - NO special view switching
+      // User requested to remove fenster overlay/view completely
 
       // OVERLAY PERSISTENCE FIX: Only hide overlays when switching to truly incompatible categories
       // Keep overlays persistent across related selections
@@ -243,21 +235,6 @@ export default function ConfiguratorShell({
         categoryId !== "planungspaket"
       ) {
         setIsPvOverlayVisible(false);
-      }
-
-      // Keep Geschossdecke overlay visible when changing related interior options
-      // Only hide when explicitly selecting a different main category
-      if (
-        categoryId !== "geschossdecke" &&
-        isGeschossdeckeOverlayVisible &&
-        categoryId !== "innenverkleidung" && // Allow innenverkleidung changes to keep Geschossdecke overlay
-        categoryId !== "fussboden" && // Allow fussboden changes to keep Geschossdecke overlay
-        categoryId !== "fenster" && // Allow fenster changes to keep Geschossdecke overlay
-        categoryId !== "nest" && // Allow nest changes to keep Geschossdecke overlay
-        categoryId !== "planungspaket"
-      ) {
-        // Don't hide Geschossdecke overlay for related selections
-        // It will update automatically based on the new material selections
       }
 
       if (option && category) {
@@ -357,7 +334,6 @@ export default function ConfiguratorShell({
       geschossdeckeQuantity,
       setIsPvOverlayVisible,
       isPvOverlayVisible,
-      isGeschossdeckeOverlayVisible,
     ]
   );
 
@@ -1671,7 +1647,6 @@ export default function ConfiguratorShell({
             isMobile={true}
             isPvOverlayVisible={isPvOverlayVisible}
             isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
-            isFensterOverlayVisible={isFensterOverlayVisible}
           />
         </div>
 
@@ -1704,7 +1679,6 @@ export default function ConfiguratorShell({
             isMobile={false}
             isPvOverlayVisible={isPvOverlayVisible}
             isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
-            isFensterOverlayVisible={isFensterOverlayVisible}
           />
         </div>
 

@@ -21,7 +21,6 @@ import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
 import GeschossdeckeOverlay from "./GeschossdeckeOverlay";
-import FensterOverlay from "./FensterOverlay";
 import ProtectedContent from "@/components/security/ProtectedContent";
 
 interface PreviewPanelProps {
@@ -29,7 +28,6 @@ interface PreviewPanelProps {
   className?: string;
   isPvOverlayVisible?: boolean;
   isGeschossdeckeOverlayVisible?: boolean;
-  isFensterOverlayVisible?: boolean;
 }
 
 export default function PreviewPanel({
@@ -37,7 +35,6 @@ export default function PreviewPanel({
   className = "",
   isPvOverlayVisible = true,
   isGeschossdeckeOverlayVisible = false,
-  isFensterOverlayVisible = true,
 }: PreviewPanelProps) {
   const {
     configuration,
@@ -355,27 +352,15 @@ export default function PreviewPanel({
                 />
               )}
 
-            {/* Geschossdecke Overlay - only show on interior view when geschossdecke is selected AND (main image is loaded OR we've loaded at least one image before) */}
-            {activeView === "interior" &&
-              configuration?.geschossdecke &&
-              isGeschossdeckeOverlayVisible &&
+            {/* Geschossdecke Overlay - Shows on interior view when geschossdecke is selected */}
+            {configuration?.geschossdecke &&
+              configuration?.geschossdecke?.quantity &&
+              configuration?.geschossdecke?.quantity > 0 &&
               (isMainImageLoaded || hasLoadedFirstImage) && (
                 <GeschossdeckeOverlay
-                  innenverkleidung={configuration?.innenverkleidung?.value as string}
-                  fussboden={configuration?.fussboden?.value as string}
+                  innenverkleidung={configuration?.innenverkleidung?.value}
+                  fussboden={configuration?.fussboden?.value}
                   isVisible={isGeschossdeckeOverlayVisible && activeView === "interior"}
-                  className=""
-                />
-              )}
-
-            {/* Fenster Overlay - show on interior view when fenster is selected AND (main image is loaded OR we've loaded at least one image before) */}
-            {activeView === "interior" &&
-              configuration?.fenster &&
-              isFensterOverlayVisible &&
-              (isMainImageLoaded || hasLoadedFirstImage) && (
-                <FensterOverlay
-                  fensterMaterial={configuration?.fenster?.value as string}
-                  isVisible={isFensterOverlayVisible && activeView === "interior"}
                   className=""
                 />
               )}
