@@ -216,7 +216,7 @@ export const MODULAR_PRICING = {
   // Each combination has base price + per-module price
   combinations: {
     'trapezblech_kiefer_ohne_belag': { base: 155500, perModule: 33600 }, // Base price matches expected minimum
-    'trapezblech_kiefer_parkett': { base: 155500, perModule: 33600 },
+    'trapezblech_kiefer_parkett': { base: 155700, perModule: 34800 }, // Calculated for proper parkett scaling: nest80=+3800€, +1200€/module
     'trapezblech_kiefer_kalkstein_kanafar': { base: 161200, perModule: 35000 },
     'trapezblech_kiefer_schiefer_massiv': { base: 161200, perModule: 35000 },
     'trapezblech_fichte_ohne_belag': { base: 153100, perModule: 32600 }, // Base - 3800
