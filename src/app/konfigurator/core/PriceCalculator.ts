@@ -603,6 +603,14 @@ export class PriceCalculator {
         }
       }
 
+      // Add planungspaket to breakdown
+      if (selections.planungspaket) {
+        breakdown.options.planungspaket = {
+          name: selections.planungspaket.name,
+          price: selections.planungspaket.price || 0
+        }
+      }
+
       // Add checkbox options
       if (selections.kamindurchzug) {
         breakdown.options.kamindurchzug = {
