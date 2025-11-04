@@ -1094,6 +1094,8 @@ export default function CheckoutStepper({
               <h2 className="h2-title text-gray-500 mb-3">
                 <span className="text-black">Dein Preis</span>
                 <span className="text-gray-300"> Überblick</span>
+                <span className="text-gray-400"> | </span>
+                <span className="text-gray-500">kurz</span>
               </h2>
               <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                 <div>
