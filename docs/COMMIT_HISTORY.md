@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3e126a5a11a999a3565958a910cc8cf0591e8c6b] - Tue Nov 4 10:13:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge fix: Show actual price for basis planungspaket instead of 'inkludiert'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [1f71f4371a74a649df34a3db9c4e88ace90435eb] - Tue Nov 4 09:51:29 2025 +0100
 
 **Author**: stenkjan
