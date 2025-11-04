@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0992a282898834302e0d24f6b7d255c4cebc8e04] - Tue Nov 4 16:03:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix ohne_belag image mappings  CRITICAL IMAGE FIX: ohne_belag combinations were showing incorrect parkett images  Problem: - INTERIOR_EXACT_MAPPINGS mapped ohne_belag to parkett image paths - Should show: 311-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-ohne-Belag  Solution: - Updated all 12 ohne_belag mappings to use correct image names:   ✓ trapezblech_kiefer_ohne_belag → trapezblech_holznatur_ohne_belag   ✓ trapezblech_fichte_ohne_belag → trapezblech_holzweiss_ohne_belag   ✓ trapezblech_steirische_eiche_ohne_belag → trapezblech_eiche_ohne_belag   ✓ (and 9 more combinations for holzlattung, fassadenplatten_schwarz, fassadenplatten_weiss)  Result: - Standard config (trapezblech + kiefer + ohne_belag) now displays image 311 - All ohne_belag combinations (311-322) now show correctly in interior view - Users see proper flooring-free interior views when ohne_belag is selected  `
+
+### Changes Analysis
+
+---
+
 ## [ec7f8306133289cf2bf1fea9f84cece08fde39df] - Tue Nov 4 15:42:02 2025 +0100
 
 **Author**: stenkjan
