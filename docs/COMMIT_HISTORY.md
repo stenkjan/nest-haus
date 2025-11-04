@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8bdcf317c27ca8864ea4116415b51b139ac0da7e] - Tue Nov 4 15:17:17 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix Geschossdecke overlay material mapping  CRITICAL BUG FIX: Geschossdecke overlay was displaying incorrect images for material combinations  Problem: - Overlay was using raw innenverkleidung values (e.g., 'steirische_eiche') - Image keys require simplified names ('kiefer', 'fichte', 'eiche') - Result: All steirische_eiche selections fell back to fichte_ohne_belag  Solution: - Implemented proper material name mapping:   - 'kiefer' → 'kiefer'   - 'fichte' → 'fichte'   - 'steirische_eiche' → 'eiche' - Uses includes() checks for flexible matching - Removed incorrect 'eiche' from parkett floor type detection  Verified Test Cases: ✓ steirische_eiche + schiefer_massiv → 334-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-eiche ✓ fichte + ohne_belag → 324-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-fichte ✓ kiefer + parkett → 326-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-kiefer  All 12 geschossdecke overlay combinations now work correctly!  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+
+
+---
+
 ## [c80327a5cc8b14cb387f4efb7fd9d2f7ae241e98] - Tue Nov 4 15:00:27 2025 +0100
 
 **Author**: stenkjan
