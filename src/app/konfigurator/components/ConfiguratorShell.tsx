@@ -217,14 +217,8 @@ export default function ConfiguratorShell({
         }
       }
 
-      // Special handling for Fenster & Türen selection
-      if (categoryId === "fenster") {
-        // Switch to fenster view to show materials selection
-        const { switchToView } = useConfiguratorStore.getState();
-        if (switchToView) {
-          switchToView("fenster");
-        }
-      }
+      // Fenster & Türen selection - NO special view switching
+      // User requested to remove fenster overlay/view completely
 
       // OVERLAY PERSISTENCE FIX: Only hide overlays when switching to truly incompatible categories
       // Keep overlays persistent across related selections
@@ -1652,7 +1646,7 @@ export default function ConfiguratorShell({
           <PreviewPanel
             isMobile={true}
             isPvOverlayVisible={isPvOverlayVisible}
-            _isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
+            isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>
 
@@ -1684,7 +1678,7 @@ export default function ConfiguratorShell({
           <PreviewPanel
             isMobile={false}
             isPvOverlayVisible={isPvOverlayVisible}
-            _isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
+            isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
           />
         </div>
 

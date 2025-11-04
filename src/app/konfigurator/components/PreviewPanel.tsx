@@ -20,20 +20,21 @@ import { useConfiguratorStore } from "@/store/configuratorStore";
 import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
+import GeschossdeckeOverlay from "./GeschossdeckeOverlay";
 import ProtectedContent from "@/components/security/ProtectedContent";
 
 interface PreviewPanelProps {
   isMobile?: boolean;
   className?: string;
   isPvOverlayVisible?: boolean;
-  _isGeschossdeckeOverlayVisible?: boolean;
+  isGeschossdeckeOverlayVisible?: boolean;
 }
 
 export default function PreviewPanel({
   isMobile = false,
   className = "",
   isPvOverlayVisible = true,
-  _isGeschossdeckeOverlayVisible = false,
+  isGeschossdeckeOverlayVisible = false,
 }: PreviewPanelProps) {
   const {
     configuration,
@@ -347,6 +348,19 @@ export default function PreviewPanel({
                   }
                   moduleCount={configuration.pvanlage.quantity}
                   isVisible={isPvOverlayVisible && activeView === "exterior"}
+                  className=""
+                />
+              )}
+
+            {/* Geschossdecke Overlay - Shows on interior view when geschossdecke is selected */}
+            {configuration?.geschossdecke &&
+              configuration?.geschossdecke?.quantity &&
+              configuration?.geschossdecke?.quantity > 0 &&
+              (isMainImageLoaded || hasLoadedFirstImage) && (
+                <GeschossdeckeOverlay
+                  innenverkleidung={configuration?.innenverkleidung?.value}
+                  fussboden={configuration?.fussboden?.value}
+                  isVisible={isGeschossdeckeOverlayVisible && activeView === "interior"}
                   className=""
                 />
               )}
