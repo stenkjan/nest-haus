@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ec7f8306133289cf2bf1fea9f84cece08fde39df] - Tue Nov 4 15:42:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix critical parkett pricing in MODULAR_PRICING table  CRITICAL PRICING BUG FIX: Parkett was showing 0€ due to identical pricing with ohne_belag in MODULAR_PRICING  Root Cause: - trapezblech_kiefer_ohne_belag: base 155500, perModule 33600 - Dynamic calculation: parkett_price - ohne_belag_price = 0€  Impact: - Default material combination (trapezblech + kiefer) showed parkett as 0€ - Price didn't change when switching nest sizes - Users couldn't see proper parkett upgrade costs  Solution: - Calculated correct parkett pricing based on requirements:   - nest80 (4 modules): +3800€   - nest100 (5 modules): +5000€   - nest120 (6 modules): +6200€   - nest140 (7 modules): +7400€   - nest160 (8 modules): +8600€ - Pattern: +3800€ base difference, +1200€ per additional module - Updated trapezblech_kiefer_parkett: base 155700, perModule 34800  Verification: ✓ nest80: 260100 - 256300 = 3800€ ✓ nest100: 294900 - 289900 = 5000€ ✓ nest120: 329700 - 323500 = 6200€  Result: Parkett now displays correct nest-dependent pricing that scales properly  `
+
+### Changes Analysis
+
+---
+
 ## [1e40d55d5e624e69b46923509cccd70436641da5] - Tue Nov 4 15:35:20 2025 +0100
 
 **Author**: stenkjan
