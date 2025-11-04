@@ -567,7 +567,7 @@ class UserTrackingService {
                     'steirische_eiche': 'Steirische Eiche'
                 },
                 fussboden: {
-                    'ohne_parkett': 'Ohne Belag',
+                    'ohne_belag': 'Ohne Belag',
                     'parkett': 'Parkett Eiche',
                     'kalkstein_kanafar': 'Steinbelag Hell',
                     'schiefer_massiv': 'Steinbelag Dunkel'

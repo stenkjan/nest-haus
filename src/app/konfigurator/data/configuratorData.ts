@@ -161,7 +161,7 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Oberflächen',
     options: [
       {
-        id: 'ohne_parkett',
+        id: 'ohne_belag',
         name: 'Ohne Belag',
         description: 'Kein Bodenbelag\n\n',
         price: { type: 'included', amount: 0 }

@@ -116,7 +116,7 @@ export class PriceCalculator {
     const defaultSelections = {
       gebaeudehuelle: 'trapezblech',
       innenverkleidung: 'kiefer',
-      fussboden: 'ohne_parkett'
+      fussboden: 'ohne_belag'
     };
 
     // Current combination price
@@ -517,7 +517,7 @@ export class PriceCalculator {
         // Determine combination for breakdown
         const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
         const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
-        const fussboden = selections.fussboden?.value || 'ohne_parkett';
+        const fussboden = selections.fussboden?.value || 'ohne_belag';
 
         breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
 
