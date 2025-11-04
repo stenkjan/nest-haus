@@ -198,7 +198,7 @@ export class PriceCalculator {
           // This ensures consistent pricing regardless of selection order
           const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
           const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
-          const fussboden = selections.fussboden?.value || 'ohne_parkett';
+          const fussboden = selections.fussboden?.value || 'ohne_belag';
 
           // Calculate combination price using modular pricing system
           totalPrice = this.calculateCombinationPrice(
@@ -429,7 +429,7 @@ export class PriceCalculator {
       nestType,
       'trapezblech',  // default
       'kiefer',       // default
-      'ohne_parkett'  // default (updated)
+      'ohne_belag'    // default - 0€ flooring, base price 155.500€
     )
   }
 
