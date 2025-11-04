@@ -120,26 +120,26 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   'fassadenplatten_weiss_steirische_eiche_kalkstein_kanafar': 'plattenweiss_eiche_kalkstein',
   'fassadenplatten_weiss_steirische_eiche_schiefer_massiv': 'plattenweiss_eiche_schiefer',
 
-  // MISSING: ohne_belag combinations - use same images as parkett
+  // ohne_belag combinations - use new ohne_belag interior images
   // Trapezblech ohne_belag combinations
-  'trapezblech_kiefer_ohne_belag': 'trapezblech_holznatur_parkett',
-  'trapezblech_fichte_ohne_belag': 'trapezblech_holzweiss_parkett',
-  'trapezblech_steirische_eiche_ohne_belag': 'trapezblech_eiche_parkett',
+  'trapezblech_kiefer_ohne_belag': 'trapezblech_holznatur_ohne_belag',
+  'trapezblech_fichte_ohne_belag': 'trapezblech_holzweiss_ohne_belag',
+  'trapezblech_steirische_eiche_ohne_belag': 'trapezblech_eiche_ohne_belag',
 
   // Holzlattung ohne_belag combinations
-  'holzlattung_kiefer_ohne_belag': 'holzlattung_holznatur_parkett',
-  'holzlattung_fichte_ohne_belag': 'holzlattung_holzweiss_parkett',
-  'holzlattung_steirische_eiche_ohne_belag': 'holzlattung_eiche_parkett',
+  'holzlattung_kiefer_ohne_belag': 'holzlattung_holznatur_ohne_belag',
+  'holzlattung_fichte_ohne_belag': 'holzlattung_holzweiss_ohne_belag',
+  'holzlattung_steirische_eiche_ohne_belag': 'holzlattung_eiche_ohne_belag',
 
   // Fassadenplatten schwarz ohne_belag combinations
-  'fassadenplatten_schwarz_kiefer_ohne_belag': 'plattenschwarz_holznatur_parkett',
-  'fassadenplatten_schwarz_fichte_ohne_belag': 'plattenschwarz_holzweiss_parkett',
-  'fassadenplatten_schwarz_steirische_eiche_ohne_belag': 'plattenschwarz_eiche_parkett',
+  'fassadenplatten_schwarz_kiefer_ohne_belag': 'plattenschwarz_holznatur_ohne_belag',
+  'fassadenplatten_schwarz_fichte_ohne_belag': 'plattenschwarz_holzweiss_ohne_belag',
+  'fassadenplatten_schwarz_steirische_eiche_ohne_belag': 'plattenschwarz_eiche_ohne_belag',
 
   // Fassadenplatten weiss ohne_belag combinations
-  'fassadenplatten_weiss_kiefer_ohne_belag': 'plattenweiss_holznatur_parkett',
-  'fassadenplatten_weiss_fichte_ohne_belag': 'plattenweiss_holzweiss_parkett',
-  'fassadenplatten_weiss_steirische_eiche_ohne_belag': 'plattenweiss_eiche_parkett'
+  'fassadenplatten_weiss_kiefer_ohne_belag': 'plattenweiss_holznatur_ohne_belag',
+  'fassadenplatten_weiss_fichte_ohne_belag': 'plattenweiss_holzweiss_ohne_belag',
+  'fassadenplatten_weiss_steirische_eiche_ohne_belag': 'plattenweiss_eiche_ohne_belag'
 } as const;
 
 // Valid view types
