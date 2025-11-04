@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [478115c291d0247bbdfbdeb3648bc7234638c6c5] - Tue Nov 4 16:37:06 2025 +0000
+
+**Author**: stenkjan
+**Message**: `Merge e381c4e19589df8389edce65089037dd259e219c into 00137f134d9dc43b2e2f43845d72e73c95eff3fe  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- preiskalkulation/ANGEBOT_EXTRACTION_TEMPLATE.md
+- preiskalkulation/PRICING_ANALYSIS_CURRENT_STATE.md
+- preiskalkulation/PRICING_QUESTIONNAIRE.md
+- preiskalkulation/README_PRICING_OVERHAUL.md
+- preiskalkulation/SIMPLE_QUESTIONNAIRE.md
+- preiskalkulation/SIMPLE_QUESTIONS.md
+- preiskalkulation/START_HERE.md
+- preiskalkulation/UPLOAD_INSTRUCTIONS.md
+
+
+---
+
 ## [2ea719d41cd75cb7d5b1b270c5a3b76484daf49a] - Tue Nov 4 17:30:16 2025 +0100
 
 **Author**: stenkjan
