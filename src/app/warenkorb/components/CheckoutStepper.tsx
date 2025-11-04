@@ -1858,7 +1858,8 @@ export default function CheckoutStepper({
             </div>
           )}
 
-          {stepIndex === 3 && (
+          {/* Step 3: Planungspakete - Hide in ohne nest mode */}
+          {stepIndex === 3 && !isOhneNestMode && (
             <div className="space-y-4 pt-8">
               {(() => {
                 console.log(
