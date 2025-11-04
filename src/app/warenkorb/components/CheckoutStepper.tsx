@@ -1165,8 +1165,15 @@ export default function CheckoutStepper({
                       )}`}
                     >
                       <span className="inline-flex items-center gap-2">
-                        {/* In ohne nest mode, show 1.000 €, otherwise show regular price */}
-                        {isOhneNestMode ? "1.000 €" : PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)}
+                        {/* Show discounted price: 3.000€ crossed out → 1.500€ action price */}
+                        {isOhneNestMode ? (
+                          <span className="flex items-center gap-2">
+                            <span className="text-gray-400 line-through">3.000 €</span>
+                            <span className="text-gray-900">1.500 €</span>
+                          </span>
+                        ) : (
+                          PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)
+                        )}
                         {grundstueckscheckDone && (
                           <span aria-hidden className="text-[#3D6CE1]">
                             ✓
@@ -1294,8 +1301,9 @@ export default function CheckoutStepper({
                       Starte dein Bauvorhaben
                     </div>
                   </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                    1.000 €
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed flex items-center gap-2">
+                    <span className="text-gray-400 line-through">3.000 €</span>
+                    <span>1.500 €</span>
                   </div>
                 </div>
               </div>
@@ -2572,12 +2580,18 @@ export default function CheckoutStepper({
                             </div>
                             {!isPaymentCompleted ? (
                               <div className="text-right">
-                                <div className="text-3xl font-bold text-gray-900">1.000 €</div>
+                                <div className="flex items-center gap-2 justify-end">
+                                  <span className="text-gray-400 line-through text-xl">3.000 €</span>
+                                  <div className="text-3xl font-bold text-gray-900">1.500 €</div>
+                                </div>
                               </div>
                             ) : (
                               <div className="text-right">
                                 <div className="text-2xl font-bold text-green-600">Bezahlt</div>
-                                <div className="text-lg text-green-600 italic">1.000 €</div>
+                                <div className="flex items-center gap-2 justify-end">
+                                  <span className="text-gray-400 line-through">3.000 €</span>
+                                  <div className="text-lg text-green-600 italic">1.500 €</div>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -2621,7 +2635,10 @@ export default function CheckoutStepper({
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-3xl font-bold text-gray-900">1.000 €</div>
+                        <div className="flex items-center gap-2 justify-end">
+                          <span className="text-gray-400 line-through text-2xl">3.000 €</span>
+                          <div className="text-3xl font-bold text-gray-900">1.500 €</div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3010,10 +3027,10 @@ export default function CheckoutStepper({
                   {!isPaymentCompleted && (
                     <div className="flex items-center gap-3 justify-end mb-1">
                       <span className="h2-title text-gray-400 line-through">
-                        1.000 €
+                        3.000 €
                       </span>
                       <span className="h2-title text-black">
-                        1.000 €
+                        1.500 €
                       </span>
                     </div>
                   )}
@@ -3022,8 +3039,11 @@ export default function CheckoutStepper({
                       <div className="h2-title text-green-600">
                         Bezahlt
                       </div>
-                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 italic">
-                        1.000 €
+                      <div className="flex items-center gap-2 justify-end">
+                        <span className="text-gray-400 line-through">3.000 €</span>
+                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 italic">
+                          1.500 €
+                        </div>
                       </div>
                     </div>
                   )}
