@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e837240149e37a73b98a95097c71932fb09a1e89] - Tue Nov 4 15:27:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge: Fix ohne_belag default selection consistency  CRITICAL CONSISTENCY FIX: Unified ohne_parkett → ohne_belag naming across entire codebase  Problem: - configuratorData.ts used 'ohne_parkett' as option ID - configuratorStore.ts used 'ohne_belag' as default value - ID mismatch prevented proper auto-selection of default flooring  Solution - Updated 6 files: ✓ configuratorData.ts: Changed option ID to 'ohne_belag' ✓ ConfiguratorShell.tsx: All price calculation references ✓ PriceCalculator.ts: Default fussboden values ✓ SummaryPanel.tsx: Base calculation reference ✓ Admin API routes: User tracking field mappings  Result: - ohne_belag is first option in fussboden dropdown - Matches configuratorStore default selection - Auto-selected when configurator loads - Consistent 0€ pricing throughout app - Proper image mapping for ohne_belag interior views  User Experience: ✓ 'Ohne Belag' appears pre-selected by default ✓ No manual selection required for base configuration ✓ Consistent with minimum pricing structure (155.500€ + 2.800€) ✓ Proper geschossdecke overlay images for ohne_belag selections  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [11a31ff837a8d18bdb044f76de07108fce67b740] - Tue Nov 4 15:21:41 2025 +0100
 
 **Author**: stenkjan
