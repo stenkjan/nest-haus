@@ -247,14 +247,9 @@ export default function ConfiguratorShell({
           ...(categoryId === "geschossdecke" && { quantity: 1 }), // Add quantity for geschossdecke
         });
 
-        // Hide Geschossdecke overlay when innenverkleidung or fussboden changes
-        // so users can see the interior material changes in the preview
-        if (
-          isGeschossdeckeOverlayVisible &&
-          (categoryId === "innenverkleidung" || categoryId === "fussboden")
-        ) {
-          setIsGeschossdeckeOverlayVisible(false);
-        }
+        // Keep Geschossdecke overlay visible when innenverkleidung or fussboden changes
+        // The overlay will automatically update to show the new material combination
+        // No action needed - overlay stays visible and updates via props
 
         // Handle overlay visibility based on selection - PRESERVE EXISTING OVERLAYS
         if (categoryId === "belichtungspaket") {

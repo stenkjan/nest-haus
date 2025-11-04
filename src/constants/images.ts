@@ -278,6 +278,26 @@ export const IMAGES = {
         holzlattung_eiche_kalkstein: '172-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Kalkstein',
         holzlattung_eiche_parkett: '173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche',
 
+        // ohne_belag combinations - Trapezblech
+        trapezblech_holznatur_ohne_belag: '311-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Natur-ohne-Belag',
+        trapezblech_holzweiss_ohne_belag: '312-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Holz-Weiss-gekalkt-ohne-Belag',
+        trapezblech_eiche_ohne_belag: '313-NEST-Haus-Konfigurator-Modul-Fassade-Trapezblech-Schwarz-Steirische-Eiche-ohne-Belag',
+
+        // ohne_belag combinations - Platten Schwarz
+        plattenschwarz_holznatur_ohne_belag: '314-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Holz-Natur-ohne-Belag',
+        plattenschwarz_holzweiss_ohne_belag: '315-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Holz-Weiss-gekalt-ohne-Belag',
+        plattenschwarz_eiche_ohne_belag: '316-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Schwarz-Steirische-Eiche-ohne-Belag',
+
+        // ohne_belag combinations - Platten Weiss
+        plattenweiss_holznatur_ohne_belag: '317-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Holz-Natur-ohne-Belag',
+        plattenweiss_holzweiss_ohne_belag: '318-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Holz-Weiss-gekalt-ohne-Belag',
+        plattenweiss_eiche_ohne_belag: '319-NEST-Haus-Konfigurator-Modul-Fassadenplatten-Weiss-Steirische-Eiche-ohne-Belag',
+
+        // ohne_belag combinations - Holzlattung
+        holzlattung_holznatur_ohne_belag: '320-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-ohne-Belag',
+        holzlattung_holzweiss_ohne_belag: '321-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Weiss-gekalkt-ohne-Belag',
+        holzlattung_eiche_ohne_belag: '322-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-ohne-Belag',
+
         // Fenster/Windows
         fenster_holz_eiche: '174-NEST-Haus-Fenster-Holz-Eiche',
         fenster_holz_fichte: '175-NEST-Haus-Fenster-Holz-Fichte',
