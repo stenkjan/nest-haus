@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f52808a54a3acb6b2e6c776ddbbcbeca2f148505] - Wed Nov 5 09:44:17 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update terminology in CheckoutStepper component  - Changed "Deine Konfiguration" to "Deine Auswahl" in multiple locations for consistency. - Updated related text to enhance clarity regarding the user's selection process. - Adjusted pricing display logic to reflect the correct action price for "Check & Vorentwurf".  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/USER_TRACKING_FIXES_COMPLETE.md
+
+
+---
+
 ## [478115c291d0247bbdfbdeb3648bc7234638c6c5] - Tue Nov 4 16:37:06 2025 +0000
 
 **Author**: stenkjan
