@@ -311,11 +311,11 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         title: "Belichtungspaket - Light",
         subtitle: "Grundbeleuchtung",
         description:
-            "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 12% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche, in denen gezieltes, warmes Licht gewünscht ist. Die bewusst reduzierte Verglasung sorgt für optimale Energieeffizienz bei gleichzeitig ausreichend natürlichem Lichteinfall.",
+            "Das Light-Paket bietet eine durchdachte Grundbeleuchtung mit 15% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine angenehme, gemütliche Atmosphäre und eignet sich besonders für Wohnbereiche, in denen gezieltes, warmes Licht gewünscht ist. Die bewusst reduzierte Verglasung sorgt für optimale Energieeffizienz bei gleichzeitig ausreichend natürlichem Lichteinfall.",
         mobileTitle: "Belichtungspaket - Light",
         mobileSubtitle: "Grundbeleuchtung",
         mobileDescription:
-            "Das Light-Paket bietet eine solide Grundbeleuchtung mit 12% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
+            "Das Light-Paket bietet eine solide Grundbeleuchtung mit 15% der Nestfläche. Ideal für gemütliche Wohnbereiche mit gezielter Lichtführung.",
         image: IMAGES.hero.nestHaus7,
         backgroundColor: "#F4F4F4",
     },
@@ -324,11 +324,11 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         title: "Belichtungspaket - Medium",
         subtitle: "Ausgewogene Beleuchtung",
         description:
-            "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 16% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die sowohl Gemütlichkeit als auch ausreichend Tageslicht benötigen. Die durchdachte Verteilung der Öffnungen sorgt für optimale Raumausleuchtung.",
+            "Das Medium-Paket bietet eine ausgewogene Beleuchtung mit 22% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft eine harmonische Balance zwischen natürlichem Lichteinfall und Energieeffizienz. Ideal für Wohn- und Arbeitsbereiche, die sowohl Gemütlichkeit als auch ausreichend Tageslicht benötigen. Die durchdachte Verteilung der Öffnungen sorgt für optimale Raumausleuchtung.",
         mobileTitle: "Belichtungspaket - Medium",
         mobileSubtitle: "Ausgewogene Beleuchtung",
         mobileDescription:
-            "Das Medium-Paket bietet ausgewogene Helligkeit mit 16% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
+            "Das Medium-Paket bietet ausgewogene Helligkeit mit 22% der Nestfläche. Perfekt für Wohn- und Arbeitsbereiche mit natürlichem Lichtbedarf.",
         image: IMAGES.hero.nestHaus1,
         backgroundColor: "#F4F4F4",
     },
@@ -337,11 +337,11 @@ export const BELICHTUNGSPAKET_CONTENT: ContentCardData[] = [
         title: "Belichtungspaket - Bright",
         subtitle: "Maximale Helligkeit",
         description:
-            "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und eine starke Verbindung zur Natur schaffen möchten. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke und ein Gefühl von Grenzenlosigkeit.",
+            "Das Bright-Paket bietet maximale Helligkeit mit 28% der Nestfläche als Fenster- und Türenöffnungen. Diese Konfiguration schafft lichtdurchflutete, offene Räume mit großzügiger Verglasung und optimaler Tageslichtnutzung. Perfekt für moderne Wohnkonzepte, die Transparenz, Weite und eine starke Verbindung zur Natur schaffen möchten. Die großflächigen Öffnungen ermöglichen spektakuläre Ausblicke und ein Gefühl von Grenzenlosigkeit.",
         mobileTitle: "Belichtungspaket - Bright",
         mobileSubtitle: "Maximale Helligkeit",
         mobileDescription:
-            "Das Bright-Paket bietet maximale Helligkeit mit 22% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
+            "Das Bright-Paket bietet maximale Helligkeit mit 28% der Nestfläche. Ideal für lichtdurchflutete, offene Wohnkonzepte mit großzügiger Verglasung.",
         image: IMAGES.hero.nestHaus3,
         backgroundColor: "#F4F4F4",
     },

@@ -644,7 +644,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             value: 'light',
             name: 'Light',
             price: 0, // Will be calculated dynamically
-            description: '12% der Nestfläche\nGrundbeleuchtung'
+            description: '15% der Nestfläche\nGrundbeleuchtung'
           },
           // PVC Fenster (default)
           {
