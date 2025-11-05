@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
-import { ClientBlobVideo } from "@/components/images";
+import { ResponsiveHybridImage, ClientBlobVideo } from "@/components/images";
 import {
   PlanungspaketeCards,
   UnifiedContentCard,
@@ -20,7 +20,10 @@ import {
   ModulhausVergleichSection,
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
-import { ABLAUF_STEPS_PRESET } from "@/constants/contentCardPresets";
+import {
+  ABLAUF_STEPS_PRESET,
+  VIDEO_BACKGROUND_CARDS_PRESET,
+} from "@/constants/contentCardPresets";
 import Footer from "@/components/Footer";
 
 // Define sections with proper structure for entdecken page
@@ -111,50 +114,29 @@ export default function DeinNestClient() {
           {/* Mobile Hero - Invisible spacer to ensure section exists for SectionRouter */}
           <div className="md:hidden h-1 w-full"></div>
         </section>
-        {/* Section 2 - Video with Overlay Text and Buttons */}
+        {/* Section 2 - Image with Overlay Text and Buttons */}
         <section id="video" className="w-full relative bg-white">
           <div className="relative w-full">
-            {/* Video Background - Mobile: normal display, Desktop: cropped */}
-            {isMobile ? (
-              // Mobile: Display video normally without cropping
-              <div className="w-full">
-                <ClientBlobVideo
-                  path={IMAGES.variantvideo.mobile.ten}
-                  autoPlay={true}
-                  muted={true}
-                  controls={false}
-                  loop={true}
-                  playbackRate={1}
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-            ) : (
-              // Desktop: Apply cropping to show bottom 70% of video
-              <div
-                className="w-full overflow-hidden"
-                style={{
-                  height: "70vh", // Container takes only 70% of viewport height
-                }}
-              >
-                <div
-                  style={{
-                    clipPath: "inset(30% 0 0 0)", // Shows bottom 70% of video
-                    height: "142.857%", // Compensate for cropping (100% / 0.7)
-                    transform: "translateY(-30%)", // Move video up to show bottom portion
-                  }}
-                >
-                  <ClientBlobVideo
-                    path={IMAGES.variantvideo.ten}
-                    autoPlay={true}
-                    muted={true}
-                    controls={false}
-                    loop={true}
-                    playbackRate={1}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            )}
+            {/* Image Background - Responsive for mobile and desktop */}
+            <ResponsiveHybridImage
+              desktopPath={IMAGES.hero.nestHaus3}
+              mobilePath={IMAGES.hero.mobile.nestHaus3}
+              alt="NEST-Haus Design - Dein Design im Freistil"
+              style={{
+                objectPosition: "center center",
+                objectFit: "cover",
+              }}
+              strategy="ssr"
+              isAboveFold={true}
+              isCritical={true}
+              priority={true}
+              sizes="100vw"
+              quality={90}
+              unoptimized={true}
+              breakpoint={768}
+              desktopAspectRatio="16/9"
+              useMobileNaturalRatio={true}
+            />
 
             {/* Overlay Content */}
             <div className="absolute inset-0 flex flex-col justify-end">
@@ -170,16 +152,16 @@ export default function DeinNestClient() {
               <div className="absolute bottom-20 lg:bottom-32 xl:bottom-24 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40 max-w-[1536px] mx-auto w-full hidden lg:flex">
                 {/* Left Text Block */}
                 <div className="text-center">
-                  <h2 className="h2-title font-bold text-black">Nest 80</h2>
-                  <h3 className="h3-secondary-light text-black">
+                  <h2 className="h2-title font-bold text-white">Nest 80</h2>
+                  <h3 className="h3-secondary-light text-white">
                     75m² ab € 177.000.-
                   </h3>
                 </div>
 
                 {/* Center Text Block */}
                 <div className="text-center">
-                  <h2 className="h2-title font-bold text-black">Nest 120</h2>
-                  <h3 className="h3-secondary-light text-black">
+                  <h2 className="h2-title font-bold text-white ">Nest 120</h2>
+                  <h3 className="h3-secondary-light text-white">
                     115m² ab € 245.000.-
                   </h3>
                 </div>
@@ -223,14 +205,150 @@ export default function DeinNestClient() {
             </div>
           </div>
         </section>
-        {/* Section 3 - Transportabilitaet Video */}
+        {/* Video-only Card Section */}
+        <section className="w-full py-8 md:py-16 bg-white">
+          <SectionHeader
+            title="Ein System, das Freiheit baut"
+            subtitle="Nest ist die klarer, standardisierter Raum, den du mit deinen Ideen füllst."
+            wrapperMargin="md:mb-12 mb-12"
+          />
+
+          {/* Mobile: Full-width background video */}
+          {isMobile ? (
+            <div className="w-full">
+              <ClientBlobVideo
+                path={IMAGES.variantvideo.mobile.ten}
+                className="w-full h-auto"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            </div>
+          ) : (
+            /* Desktop: Video card with padding */
+            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
+                <div className="relative w-full overflow-hidden rounded-2xl">
+                  <ClientBlobVideo
+                    path={IMAGES.variantvideo.ten}
+                    className="w-full h-auto"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Text Grid and Buttons Container */}
+          <div className="pt-8">
+            <FullWidthTextGrid
+              maxWidth={true}
+              textBox1="Wir liefern den Anfang deines Zuhauses. Unser Modul steht für Möglichkeiten, für Raum, den du mit deinen Ideen füllst. In einem gemeinsamen Vorentwurf begleiten wir dich von der ersten Idee bis zu einem konkreten Vorentwurf deines Hauses."
+              textBox2="Schritt für Schritt entsteht so ein klares Bild davon, wie dein Nest aussehen kann. Du bestimmst, wie weit du diesen Weg mit uns gehst. Wir begleiten dich so lange, wie du möchtest, und schaffen dabei ein Zuhause, das zu deinem Leben passt."
+              backgroundColor="white"
+            />
+
+            {/* Button combination */}
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link href="/entwurf">
+                <Button variant="primary" size="xs">
+                  Vorentwurf verstehen
+                </Button>
+              </Link>
+              <Link href="/konfigurator">
+                <Button variant="landing-secondary-blue" size="xs">
+                  Unsere Technik
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+        {/* Three Boxes Section - Modulhaus Vergleich */}^
+        <section
+          id="ModulhausVergleich"
+          className="w-full py-8 md:py-16 bg-[#f4f4f4]"
+        >
+          <ModulhausVergleichSection />
+        </section>
+        {/* Section 5 - Konfigurationen */}
+        {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Konfigurationen" */}
+        <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
+          <SectionHeader
+            title="Konfiguriere dein ®Nest Haus"
+            subtitle="IDurch serielle Fertigung zu transparenten Bestpreisen"
+            wrapperMargin="mb-12"
+          />
+
+          <UnifiedContentCard
+            layout="video"
+            style="standard"
+            variant="static"
+            maxWidth={true}
+            showInstructions={false}
+            noPadding={true}
+            customData={[
+              {
+                id: 1,
+                title: "Gestalten heißt Verstehen",
+                subtitle: "",
+                description:
+                  "Planen, vergleichen, verstehen. Im Nest Konfigurator gestaltest du dein Zuhause Schritt für Schritt und siehst den Preis dabei stets in Echtzeit. Ganz ohne versteckte Kosten.  Entdecke unsere vielfältigen Möglichkeiten. Gleichzeitig liefert deine Konfiguration eine Grundlage für deinen persönlichen Vorentwurf.",
+                video: IMAGES.variantvideo.twelve,
+                backgroundColor: "#F4F4F4",
+                playbackRate: 0.5,
+                buttons: [
+                  {
+                    text: "Unser Part",
+                    variant: "primary",
+                    size: "xs",
+                    link: "/unser-part",
+                  },
+                  {
+                    text: "Jetzt bauen",
+                    variant: "secondary",
+                    size: "xs",
+                    link: "/konfigurator",
+                  },
+                ],
+              },
+            ]}
+          />
+        </section>
+        {/* Section 6 - Video Background Cards */}
+        <section className="w-full py-8 md:py-16 bg-white">
+          <div className="w-full mb-12 px-4 lg:pl-16 xl:pl-20 2xl:pl-24">
+            <div className="text-left">
+              <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
+                Warum Nest Sinn macht?
+              </h2>
+              <h3 className="h3-secondary font-normal text-black">
+                Weil kluge Entscheidungen einfach sind.
+              </h3>
+            </div>
+          </div>
+
+          <UnifiedContentCard
+            layout="overlay-text"
+            style="standard"
+            variant="responsive"
+            maxWidth={false}
+            showInstructions={false}
+            alignment="left"
+            customData={VIDEO_BACKGROUND_CARDS_PRESET.cards}
+          />
+        </section>
+        {/* Section 7 - Transportabilitaet Video */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Transportabilitaet" */}
         <section
           id="transportabilitaet"
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Dein Zuhause zieht um"
+            title="Architektur für ein bewegtes Leben."
             subtitle="Architektur für ein bewegtes Leben."
             wrapperMargin="md:mb-12 mb-12"
           />
@@ -268,220 +386,6 @@ export default function DeinNestClient() {
               },
             ]}
           />
-        </section>
-        {/* Video-only Card Section */}
-        <section className="w-full py-8 md:py-16 bg-white">
-          <SectionHeader
-            title="Ein System, das Freiheit baut"
-            subtitle="Nest ist die klarer, standardisierter Raum, den du mit deinen Ideen füllst."
-            wrapperMargin="md:mb-12 mb-12"
-          />
-
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Full-width video card with padding */}
-            <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
-              <div className="relative w-full overflow-hidden rounded-2xl">
-                <ClientBlobVideo
-                  path={IMAGES.variantvideo.ten}
-                  className="w-full h-auto"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Text Grid and Buttons Container */}
-          <div className="pt-8">
-            <FullWidthTextGrid
-              maxWidth={true}
-              textBox1="Wir liefern den Anfang deines Zuhauses. Unser Modul steht für Möglichkeiten, für Raum, den du mit deinen Ideen füllst. In einem gemeinsamen Vorentwurf begleiten wir dich von der ersten Idee bis zu einem konkreten Vorentwurf deines Hauses."
-              textBox2="Schritt für Schritt entsteht so ein klares Bild davon, wie dein Nest aussehen kann. Du bestimmst, wie weit du diesen Weg mit uns gehst. Wir begleiten dich so lange, wie du möchtest, und schaffen dabei ein Zuhause, das zu deinem Leben passt."
-              backgroundColor="white"
-            />
-
-            {/* Button combination */}
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link href="/entwurf">
-                <Button variant="primary" size="xs">
-                  Vorentwurf verstehen
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary-blue" size="xs">
-                  Unsere Technik
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-        {/* Three Boxes Section - Modulhaus Vergleich */}^
-        <section
-          id="ModulhausVergleich"
-          className="w-full py-8 md:py-16 bg-[#f4f4f4]"
-        >
-          <ModulhausVergleichSection />
-        </section>
-        {/* Section 4 - Möglichkeiten Entdecken */}
-        {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Moeglichkeiten-Entdecken" */}
-        <section id="moeglichkeiten" className="w-full py-8 md:py-16 bg-white">
-          <SectionHeader
-            title="Was macht dein Nest aus?"
-            subtitle="Entdecke die Möglichkeiten deines zukünftigen Zuhauses."
-            wrapperMargin="mb-12"
-          />
-
-          <div className="w-full">
-            <TwoByTwoImageGrid
-              maxWidth={false}
-              customData={[
-                {
-                  id: 1,
-                  title: "Das ®Nest System",
-                  subtitle: "Effizient. Präzise. Leistbar.",
-                  description: "Dein Raum. Deine Ideen.",
-                  image: IMAGES.function.nestHausSystemModulbau,
-                  backgroundColor: "#F8F9FA",
-                  textColor: "white",
-                  primaryAction: "Das Nest System",
-                  secondaryAction: "Jetzt bauen",
-                  primaryButtonVariant: "landing-primary",
-                  secondaryButtonVariant: "landing-secondary",
-                  primaryLink: "/nest-system#nest-system",
-                  secondaryLink: "/konfigurator",
-                },
-                {
-                  id: 2,
-                  title: "Dein Zuhause aus Holz",
-                  subtitle: "Gut für Dich. Besser für die Zukunft.",
-                  description: "Qualität aus Österreich.",
-                  image: IMAGES.function.nestHausMaterialienSchema,
-                  backgroundColor: "#F4F4F4",
-                  textColor: "black",
-                  primaryAction: "Die Materialien",
-                  secondaryAction: "Jetzt bauen",
-                  primaryButtonVariant: "landing-primary",
-                  secondaryButtonVariant: "landing-secondary-blue",
-                  primaryLink: "/nest-system#materialien",
-                  secondaryLink: "/konfigurator",
-                },
-                {
-                  id: 3,
-                  title: "Fenster und Türenausbau",
-                  subtitle: "Wir hören zu. Du entscheidest.",
-                  description: "Deine Fenster für deine Räume.",
-                  image: IMAGES.function.nestHausInnenausbauFenster,
-                  backgroundColor: "#F8F9FA",
-                  textColor: "white",
-                  primaryAction: "Fenster & Türen",
-                  secondaryAction: "Jetzt bauen",
-                  primaryButtonVariant: "landing-primary",
-                  secondaryButtonVariant: "landing-secondary",
-                  primaryLink: "/nest-system#fenster-tueren",
-                  secondaryLink: "/konfigurator",
-                },
-                {
-                  id: 4,
-                  title: "Individuell wie du",
-                  subtitle: "Deine Ideen. Dein Zuhause.",
-                  description: "Dein Raum. Deine Ideen.",
-                  image: IMAGES.function.nestHausSystemDeinPart,
-                  backgroundColor: "#F4F4F4",
-                  textColor: "white",
-                  primaryAction: "Nest System",
-                  secondaryAction: "Jetzt bauen",
-                  primaryButtonVariant: "landing-primary",
-                  secondaryButtonVariant: "landing-secondary",
-                  primaryLink: "/nest-system",
-                  secondaryLink: "/konfigurator",
-                },
-              ]}
-            />
-          </div>
-        </section>
-        {/* Section 5 - Konfigurationen */}
-        {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Konfigurationen" */}
-        <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
-          <SectionHeader
-            title="Konfiguriere dein ®Nest Haus"
-            subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
-            wrapperMargin="mb-12"
-          />
-
-          <UnifiedContentCard
-            layout="video"
-            style="standard"
-            variant="static"
-            maxWidth={true}
-            showInstructions={false}
-            noPadding={true}
-            customData={[
-              {
-                id: 1,
-                title: "Du hast die Wahl",
-                subtitle: "",
-                description:
-                  "Gestalte dein Zuhause so individuell wie dein Leben. In unserem Online-Konfigurator wählst du Größe, Materialien, Ausstattung und Optionen Schritt für Schritt aus. Jede Entscheidung zeigt dir sofort, wie dein Haus aussieht und was es kostet.\nSo erhältst du volle Transparenz und ein realistisches Bild, wie dein Nest-Haus zu deinen Wünschen, deinem Grundstück und deinem Budget passt.",
-                video: IMAGES.variantvideo.twelve,
-                backgroundColor: "#F4F4F4",
-                playbackRate: 0.5,
-                buttons: [
-                  {
-                    text: "Unser Part",
-                    variant: "primary",
-                    size: "xs",
-                    link: "/unser-part",
-                  },
-                  {
-                    text: "Jetzt bauen",
-                    variant: "secondary",
-                    size: "xs",
-                    link: "/konfigurator",
-                  },
-                ],
-              },
-            ]}
-          />
-        </section>
-        {/* Section 6 - So läuft es ab */}
-        <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
-          <SectionHeader
-            title="So läuft's ab"
-            subtitle="Dein Weg zum Nest-Haus"
-            wrapperMargin="mb-12"
-          />
-
-          {/* UnifiedContentCard with text-icon layout, preset data and buttons */}
-          <UnifiedContentCard
-            layout="text-icon"
-            style="standard"
-            variant="responsive"
-            maxWidth={false}
-            showInstructions={false}
-            customData={ABLAUF_STEPS_PRESET.cards}
-            buttons={ABLAUF_STEPS_PRESET.buttons}
-            enableLightbox={false}
-          />
-        </section>
-        {/* Section 7 - Planungspakete */}
-        <section id="planungspakete" className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader
-              title="Unterstützung gefällig?"
-              subtitle="Entdecke unsere Planungs-Pakete, um das Beste für dich und dein Nest rauszuholen."
-              wrapperMargin="mb-12"
-            />
-
-            <PlanungspaketeCards
-              maxWidth={false}
-              showInstructions={false}
-              customData={PLANUNGSPAKETE_PRESET.cards}
-              buttons={PLANUNGSPAKETE_PRESET.buttons}
-              onOpenLightbox={openPlanungspakete}
-            />
-          </div>
         </section>
         {/* Section 8 - Partners */}
         <section id="partners" className="w-full pb-8 md:py-16 bg-white">
