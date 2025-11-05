@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import LandingImagesCarousel from "./sections/LandingImagesCarousel";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -56,7 +57,12 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-white text-gray-700 mt-auto" role="contentinfo">
+    <footer className="bg-[#F4F4F4] text-gray-700 mt-auto" role="contentinfo">
+      {/* Image Carousel Section - Hidden on mobile */}
+      <div className="hidden md:block">
+        <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
+      </div>
+
       {/* Main footer content */}
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">

@@ -442,7 +442,7 @@ export default function NestSystemClient() {
               />
 
               {/* Additional Button Combination */}
-              <div className="flex gap-4 justify-center w-full">
+              <div className="flex gap-4 justify-center w-full pt-12">
                 {!isMobile && (
                   <Button
                     variant="primary"
@@ -585,10 +585,6 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
         {/* Contact Banner - Kein Plan? Kein Problem! */}
         <GetInContactBanner />
 
-        {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
-        <div className="hidden md:block">
-          <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
-        </div>
 
         <Footer />
 

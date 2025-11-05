@@ -10,6 +10,7 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import TwoByTwoImageGrid from "@/components/grids/TwoByTwoImageGrid";
 import Footer from "@/components/Footer";
+import { GetInContactBanner } from "@/components/sections/GetInContactBanner";
 
 // Define sections for landing page
 const sections = [
@@ -58,14 +59,14 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const, // Will be overridden by getSecondaryButtonVariant
+    secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
     id: 2,
-    sectionId: "section2",
-    imagePath: IMAGES.hero.nestHaus2,
-    h1: "Wohnen ohne Grenzen",
-    h3: "Wo Effizienz auf Architektur trifft.",
+    sectionId: "section8",
+    imagePath: IMAGES.hero.nestHaus8,
+    h1: "Dein Design im Freistil",
+    h3: "So individuell wie du",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
@@ -78,7 +79,7 @@ const sectionsContent = [
     h3: "Visionen brauchen Räume",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 4,
@@ -108,7 +109,7 @@ const sectionsContent = [
     h3: "Neue Wege. Neue Räume.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 7,
@@ -122,13 +123,13 @@ const sectionsContent = [
   },
   {
     id: 8,
-    sectionId: "section8",
-    imagePath: IMAGES.hero.nestHaus8,
-    h1: "Dein Design im Freistil",
-    h3: "So individuell wie du",
+    sectionId: "section2",
+    imagePath: IMAGES.hero.nestHaus2,
+    h1: "Wohnen ohne Grenzen",
+    h3: "Wo Effizienz auf Architektur trifft.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
 
@@ -221,10 +222,10 @@ export default function LandingPageClient() {
   // Get responsive button variant for sections 1, 2, 3, 6, and 8 (mobile blue for 8)
   const getSecondaryButtonVariant = (sectionId: number) => {
     if (sectionId === 1) {
-      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+      return "landing-secondary-blue"; // Always blue for section 1
     }
     if (sectionId === 2) {
-      return isMobile ? "landing-secondary" : "landing-secondary";
+      return "landing-secondary"; // Always blue for section 2
     }
     if (sectionId === 3) {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
@@ -233,21 +234,21 @@ export default function LandingPageClient() {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
     }
     if (sectionId === 7) {
-      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+      return "landing-secondary"; // Always white for section 7
     }
     if (sectionId === 8) {
-      return isMobile ? "landing-secondary-blue" : "landing-secondary-blue";
+      return "landing-secondary"; // Always white for section 8
     }
     return sectionsContent[sectionId - 1].secondaryButtonVariant;
   };
 
   // Utility: For section 8, always use text-[#605047] for h1/h3, else original logic
   const getSectionTextColor = (sectionId: number, _isMobile: boolean) => {
-    if (sectionId === 8) {
+    if (sectionId === 1) {
       return "text-[#605047]";
     }
     if (sectionId === 2) {
-      return "text-white";
+      return "text-[#605047]";
     }
     if (sectionId === 7) {
       return "text-white md:text-white";
@@ -368,67 +369,73 @@ export default function LandingPageClient() {
             </section>
 
             {/* TwoByTwoImageGrid Section - After section 5 (id=5), before section 6 */}
-            {section.id === 5 && (
-              <section className="relative w-full bg-white">
+            {section.id === 4 && (
+              <section
+                className="relative w-full bg-white"
+                style={{
+                  marginBottom: "1vh",
+                }}
+              >
                 <TwoByTwoImageGrid
                   maxWidth={true}
                   customData={[
                     {
                       id: 1,
-                      title: "Grid Item 1",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Wir bauen Freiheit",
+                      subtitle: "Finde heraus was Nest ausmacht",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausEntdeckenDeinNestErklaerungProdukt,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Entdecke Nest",
                       primaryLink: "/entdecken",
                     },
                     {
                       id: 2,
-                      title: "Grid Item 2",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Der Auftakt",
+                      subtitle: "Sichere noch heute deinen Entwurf",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Der erste Schritt",
                       primaryLink: "/entdecken",
                     },
                     {
                       id: 3,
-                      title: "Grid Item 3",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Dein Zuhause aus Holz",
+                      subtitle: "Unser Design trägt Verantwortung",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausNachhaltigkeitUnserePhilosophieMission,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Unsere Mission",
                       primaryLink: "/entdecken",
                     },
                     {
                       id: 4,
-                      title: "Grid Item 4",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Kein Plan? Kein Problem!",
+                      subtitle: "Melde dich, wir sind für dich da",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Termin sichern",
                       primaryLink: "/entdecken",
                     },
                   ]}
-                  textColor="white"
+                  textColor="black"
                 />
               </section>
             )}
           </React.Fragment>
         ))}
       </SectionRouter>
+      <GetInContactBanner />
       <Footer />
     </div>
   );

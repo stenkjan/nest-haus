@@ -4,6 +4,93 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [27a5538a900016120af089da077774b013272f24] - Wed Nov 5 15:04:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Update LandingPageClient and Footer for improved UI consistency  - Changed secondary button variant for sections in LandingPageClient to ensure consistent styling. - Updated text color in LandingPageClient for better visibility. - Modified footer background color in Footer component for enhanced aesthetics.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/Footer.tsx
+
+
+---
+
+## [61f8db7c8c53abfcee78cfc885a31b1082d2b9ad] - Wed Nov 5 13:32:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [6a1a7dbb5b543b6028acac0fd7874f44a25cfd5f] - Wed Nov 5 13:02:39 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [ec85d5638a6821be87fe1e43abb66e9de701106b] - Wed Nov 5 12:24:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1254ddc11c46fb906971d9667a4355427b5570c7] - Wed Nov 5 11:15:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/konfigurator/components/BelichtungspaketOverlay.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/PreviewPanel.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [9bc7940e7edf894b6350802b80c821c53545fc6f] - Wed Nov 5 10:37:14 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branches 'main' and 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [244f3256391eede800c696d612056665a5957ebe] - Wed Nov 5 10:32:44 2025 +0100
 
 **Author**: stenkjan
