@@ -10,6 +10,7 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import TwoByTwoImageGrid from "@/components/grids/TwoByTwoImageGrid";
 import Footer from "@/components/Footer";
+import { GetInContactBanner } from "@/components/sections/GetInContactBanner";
 
 // Define sections for landing page
 const sections = [
@@ -62,13 +63,13 @@ const sectionsContent = [
   },
   {
     id: 2,
-    sectionId: "section2",
-    imagePath: IMAGES.hero.nestHaus2,
-    h1: "Wohnen ohne Grenzen",
-    h3: "Wo Effizienz auf Architektur trifft.",
+    sectionId: "section8",
+    imagePath: IMAGES.hero.nestHaus8,
+    h1: "Dein Design im Freistil",
+    h3: "So individuell wie du",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const,
+    secondaryButtonVariant: "landing-secondary-blue" as const,
   },
   {
     id: 3,
@@ -122,13 +123,13 @@ const sectionsContent = [
   },
   {
     id: 8,
-    sectionId: "section8",
-    imagePath: IMAGES.hero.nestHaus8,
-    h1: "Dein Design im Freistil",
-    h3: "So individuell wie du",
+    sectionId: "section2",
+    imagePath: IMAGES.hero.nestHaus2,
+    h1: "Wohnen ohne Grenzen",
+    h3: "Wo Effizienz auf Architektur trifft.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
 
@@ -368,57 +369,62 @@ export default function LandingPageClient() {
             </section>
 
             {/* TwoByTwoImageGrid Section - After section 5 (id=5), before section 6 */}
-            {section.id === 5 && (
-              <section className="relative w-full bg-white">
+            {section.id === 4 && (
+              <section
+                className="relative w-full bg-white"
+                style={{
+                  marginBottom: "1vh",
+                }}
+              >
                 <TwoByTwoImageGrid
                   maxWidth={true}
                   customData={[
                     {
                       id: 1,
-                      title: "Grid Item 1",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Wir bauen Freiheit",
+                      subtitle: "Finde heraus was Nest ausmacht",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausEntdeckenDeinNestErklaerungProdukt,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Entdecke Nest",
                       primaryLink: "/entdecken",
                     },
                     {
                       id: 2,
-                      title: "Grid Item 2",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Der Auftakt",
+                      subtitle: "Sichere noch heute deinen Entwurf",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Der erste Schritt",
                       primaryLink: "/entdecken",
                     },
                     {
                       id: 3,
-                      title: "Grid Item 3",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Dein Zuhause aus Holz",
+                      subtitle: "Unser Design trägt Verantwortung",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausNachhaltigkeitUnserePhilosophieMission,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Unsere Mission",
                       primaryLink: "/entdecken",
                     },
                     {
                       id: 4,
-                      title: "Grid Item 4",
-                      subtitle: "Sample subtitle",
-                      description: "Sample description",
+                      title: "Kein Plan? Kein Problem!",
+                      subtitle: "Melde dich, wir sind für dich da",
+                      description: "",
                       image:
                         IMAGES.function
                           .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Entdecken",
+                      primaryAction: "Termin sichern",
                       primaryLink: "/entdecken",
                     },
                   ]}
@@ -429,6 +435,7 @@ export default function LandingPageClient() {
           </React.Fragment>
         ))}
       </SectionRouter>
+      <GetInContactBanner />
       <Footer />
     </div>
   );

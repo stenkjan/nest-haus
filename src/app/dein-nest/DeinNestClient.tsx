@@ -16,7 +16,6 @@ import { TwoByTwoImageGrid, FullWidthTextGrid } from "@/components/grids";
 import {
   GetInContactBanner,
   PartnersSection,
-  LandingImagesCarousel,
   SectionHeader,
   ModulhausVergleichSection,
 } from "@/components/sections";
@@ -320,7 +319,9 @@ export default function DeinNestClient() {
         </section>
         {/* Three Boxes Section - Modulhaus Vergleich */}^
         <section
-          id="ModulhausVergleich" className="w-full py-8 md:py-16 bg-[#f4f4f4]">
+          id="ModulhausVergleich"
+          className="w-full py-8 md:py-16 bg-[#f4f4f4]"
+        >
           <ModulhausVergleichSection />
         </section>
         {/* Section 4 - Möglichkeiten Entdecken */}
@@ -492,11 +493,6 @@ export default function DeinNestClient() {
 
       {/* Contact Banner - Testing Typography Standards */}
       <GetInContactBanner />
-
-      {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
-      <div className="hidden md:block">
-        <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
-      </div>
 
       <Footer />
 

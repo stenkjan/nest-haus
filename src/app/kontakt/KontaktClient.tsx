@@ -68,11 +68,6 @@ export default function KontaktClient() {
         />
       </SectionRouter>
 
-      {/* Image Carousel Section - Outside SectionRouter to avoid width issues */}
-      <div className="hidden md:block">
-        <LandingImagesCarousel backgroundColor="white" maxWidth={false} />
-      </div>
-
       <Footer />
     </div>
   );

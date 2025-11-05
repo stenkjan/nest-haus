@@ -65,7 +65,7 @@ interface TwoByTwoImageGridProps {
 export default function TwoByTwoImageGrid({
   maxWidth = true,
   customData,
-  textColor = "white",
+  textColor = "black",
 }: TwoByTwoImageGridProps) {
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -87,9 +87,7 @@ export default function TwoByTwoImageGrid({
     return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
 
-  const containerClasses = maxWidth
-    ? "w-full max-w-[1700px] mx-auto"
-    : "w-full";
+  const containerClasses = "w-full";
 
   // Calculate responsive sizing for ultra-wide screens
   const isUltraWide = isClient && screenWidth >= 1600;
@@ -99,7 +97,7 @@ export default function TwoByTwoImageGrid({
   if (!isClient) {
     return (
       <div className={containerClasses}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 max-w-[1700px] mx-auto gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full mx-auto gap-4 px-4">
           {customData.map((item) => (
             <div
               key={item.id}
@@ -114,17 +112,15 @@ export default function TwoByTwoImageGrid({
 
   return (
     <div className={containerClasses}>
-      {/* 2x2 Grid Container - No padding on mobile */}
+      {/* 2x2 Grid Container - Consistent padding */}
       <div
-        className={`grid grid-cols-1 lg:grid-cols-2 ${
-          maxWidth ? "max-w-[1700px] mx-auto lg:px-4" : "w-full lg:px-4"
-        }`}
-        style={{ gap: isClient && screenWidth < 1024 ? "8px" : "15px" }}
+        className="grid grid-cols-1 lg:grid-cols-2 w-full mx-auto px-2"
+        style={{ gap: "1vh" }}
       >
         {customData.map((item, index) => (
           <motion.div
             key={item.id}
-            className="relative flex-shrink-0 shadow-lg overflow-hidden"
+            className="relative w-full flex-shrink-0 overflow-hidden"
             style={{
               aspectRatio: "3/2", // 3:2 horizontal aspect ratio
               minHeight: gridMinHeight,
@@ -167,8 +163,8 @@ export default function TwoByTwoImageGrid({
                   <h2
                     className={`h2-title mb-1 ${
                       (item.textColor || textColor) === "white"
-                        ? "text-white"
-                        : "text-black"
+                        ? "!text-white"
+                        : "!text-black"
                     }`}
                   >
                     {item.title}
@@ -176,8 +172,8 @@ export default function TwoByTwoImageGrid({
                   <h3
                     className={`h3-secondary ${item.primaryAction || item.secondaryAction ? "mb-4" : ""} ${
                       (item.textColor || textColor) === "white"
-                        ? "text-white"
-                        : "text-black"
+                        ? "!text-white"
+                        : "!text-black"
                     }`}
                   >
                     {item.subtitle}
@@ -259,8 +255,8 @@ export default function TwoByTwoImageGrid({
                   <p
                     className={`p-primary text-center ${
                       (item.textColor || textColor) === "white"
-                        ? "text-white"
-                        : "text-black"
+                        ? "!text-white"
+                        : "!text-black"
                     }`}
                   >
                     {item.description}

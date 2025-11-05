@@ -7,7 +7,6 @@ import { Button } from "@/components/ui";
 import { ModernVideoPlayer } from "@/components/video";
 import { UnifiedContentCard } from "@/components/cards";
 import {
-  LandingImagesCarousel,
   GetInContactBanner,
   SectionHeader,
   PartnersSection,
@@ -231,9 +230,6 @@ export default function WarumWirClient() {
 
       {/* Contact Banner - Kein Plan? Kein Problem! */}
       <GetInContactBanner />
-
-      {/* Landing Images Carousel */}
-      <LandingImagesCarousel backgroundColor="gray" maxWidth={false} />
 
       {/* Footer */}
       <Footer />
