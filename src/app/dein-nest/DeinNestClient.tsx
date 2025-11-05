@@ -6,13 +6,13 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import { ResponsiveHybridImage, ClientBlobVideo } from "@/components/images";
 import {
-  PlanungspaketeCards,
+  PlanungspaketeCards as _PlanungspaketeCards,
   UnifiedContentCard,
-  PLANUNGSPAKETE_PRESET,
+  PLANUNGSPAKETE_PRESET as _PLANUNGSPAKETE_PRESET,
 } from "@/components/cards";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
-import { TwoByTwoImageGrid, FullWidthTextGrid } from "@/components/grids";
+import { TwoByTwoImageGrid as _TwoByTwoImageGrid, FullWidthTextGrid } from "@/components/grids";
 import {
   GetInContactBanner,
   PartnersSection,
@@ -21,7 +21,7 @@ import {
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
 import {
-  ABLAUF_STEPS_PRESET,
+  ABLAUF_STEPS_PRESET as _ABLAUF_STEPS_PRESET,
   VIDEO_BACKGROUND_CARDS_PRESET,
 } from "@/constants/contentCardPresets";
 import Footer from "@/components/Footer";
@@ -73,7 +73,7 @@ const sections = [
 export default function DeinNestClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
   const [isMobile, setIsMobile] = useState(false);
-  const { isOpen, openPlanungspakete, closePlanungspakete } =
+  const { isOpen, openPlanungspakete: _openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
 
   // Simple width-based mobile detection (same as ResponsiveHybridImage)

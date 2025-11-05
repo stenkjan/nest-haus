@@ -63,7 +63,7 @@ interface TwoByTwoImageGridProps {
 }
 
 export default function TwoByTwoImageGrid({
-  maxWidth = true,
+  maxWidth: _maxWidth = true,
   customData,
   textColor = "black",
 }: TwoByTwoImageGridProps) {

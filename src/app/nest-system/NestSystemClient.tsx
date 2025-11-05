@@ -16,7 +16,7 @@ import {
 } from "@/components/grids";
 import {
   GetInContactBanner,
-  LandingImagesCarousel,
+  LandingImagesCarousel as _LandingImagesCarousel,
   MaterialShowcase,
   SectionHeader,
 } from "@/components/sections";
