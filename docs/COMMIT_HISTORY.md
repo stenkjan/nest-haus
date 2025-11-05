@@ -4,6 +4,68 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f52808a54a3acb6b2e6c776ddbbcbeca2f148505] - Wed Nov 5 09:44:17 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update terminology in CheckoutStepper component  - Changed "Deine Konfiguration" to "Deine Auswahl" in multiple locations for consistency. - Updated related text to enhance clarity regarding the user's selection process. - Adjusted pricing display logic to reflect the correct action price for "Check & Vorentwurf".  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/USER_TRACKING_FIXES_COMPLETE.md
+
+
+---
+
+## [478115c291d0247bbdfbdeb3648bc7234638c6c5] - Tue Nov 4 16:37:06 2025 +0000
+
+**Author**: stenkjan
+**Message**: `Merge e381c4e19589df8389edce65089037dd259e219c into 00137f134d9dc43b2e2f43845d72e73c95eff3fe  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- preiskalkulation/ANGEBOT_EXTRACTION_TEMPLATE.md
+- preiskalkulation/PRICING_ANALYSIS_CURRENT_STATE.md
+- preiskalkulation/PRICING_QUESTIONNAIRE.md
+- preiskalkulation/README_PRICING_OVERHAUL.md
+- preiskalkulation/SIMPLE_QUESTIONNAIRE.md
+- preiskalkulation/SIMPLE_QUESTIONS.md
+- preiskalkulation/START_HERE.md
+- preiskalkulation/UPLOAD_INSTRUCTIONS.md
+
+---
+
+## [2ea719d41cd75cb7d5b1b270c5a3b76484daf49a] - Tue Nov 4 17:30:16 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Update .gitignore to remove specific preiskalkulation files  - Removed Book5.xlsx and Angebot_-_15014024.pdf from .gitignore to prevent tracking of unnecessary temporary files in the preiskalkulation directory.  `
+
+### Changes Analysis
+
+---
+
+## [97b9d14eb3ef4294f342602cb190236417b06a29] - Tue Nov 4 16:56:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
 ## [0992a282898834302e0d24f6b7d255c4cebc8e04] - Tue Nov 4 16:03:28 2025 +0100
 
 **Author**: stenkjan
@@ -30,6 +92,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/api/admin/user-tracking/route.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
@@ -38,10 +101,9 @@ _Auto-generated documentation of project changes_
 - src/app/konfigurator/core/PriceUtils.ts
 - src/app/konfigurator/data/configuratorData.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -53,9 +115,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/core/PriceUtils.ts
-
 
 ---
 
@@ -67,13 +129,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/api/admin/user-tracking/route.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/konfigurator/core/PriceCalculator.ts
 - src/app/konfigurator/data/configuratorData.ts
-
 
 ---
 
@@ -85,6 +147,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/FensterOverlay.tsx
 - src/app/konfigurator/components/GeschossdeckeOverlay.tsx
@@ -92,10 +155,9 @@ _Auto-generated documentation of project changes_
 - src/app/konfigurator/core/ImageManager.ts
 - src/app/konfigurator/core/PriceCalculator.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -107,8 +169,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
 
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
 
 ---
 
@@ -120,8 +182,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/ConfiguratorShell.tsx
 
+- src/app/konfigurator/components/ConfiguratorShell.tsx
 
 ---
 
@@ -133,8 +195,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -146,11 +208,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/GeschossdeckeOverlay.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/core/ImageManager.ts
-
 
 ---
 
@@ -162,8 +224,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/core/PriceCalculator.ts
 
+- src/app/konfigurator/core/PriceCalculator.ts
 
 ---
 
@@ -175,6 +237,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/core/PriceCalculator.ts
 - src/app/konfigurator/data/configuratorData.ts
@@ -184,12 +247,11 @@ _Auto-generated documentation of project changes_
 - src/app/konfigurator2/page.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/KONFIGURATOR-REFACTORING-PLAN.md
 - docs/KONFIGURATOR-SWITCH-GUIDE.md
-
 
 ---
 
@@ -201,6 +263,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/core/PriceCalculator.ts
 - src/app/konfigurator/data/configuratorData.ts
@@ -210,11 +273,10 @@ _Auto-generated documentation of project changes_
 - src/app/konfigurator2/page.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/KONFIGURATOR-REFACTORING-PLAN.md
 - docs/KONFIGURATOR-SWITCH-GUIDE.md
-
 
 ---
 
@@ -226,8 +288,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/core/PriceCalculator.ts
 
+- src/app/konfigurator/core/PriceCalculator.ts
 
 ---
 
@@ -239,8 +301,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -252,8 +314,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -265,8 +327,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -278,8 +340,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -291,8 +353,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -304,8 +366,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -317,8 +379,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -330,8 +392,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -343,8 +405,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -356,8 +418,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator2/components/SimplifiedPreviewPanel.tsx
 
+- src/app/konfigurator2/components/SimplifiedPreviewPanel.tsx
 
 ---
 
@@ -369,8 +431,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator2/components/SimplifiedPreviewPanel.tsx
 
+- src/app/konfigurator2/components/SimplifiedPreviewPanel.tsx
 
 ---
 
@@ -382,8 +444,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
 
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
 
 ---
 
@@ -395,6 +457,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/CartFooter.tsx
 - src/app/konfigurator2/components/Konfigurator2Client.tsx
 - src/app/konfigurator2/components/SimplifiedCategorySection.tsx
@@ -404,10 +467,9 @@ _Auto-generated documentation of project changes_
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 #### 📚 Documentation Changes
-- docs/KONFIGURATOR-SWITCH-GUIDE.md
 
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
 
 ---
 
@@ -419,12 +481,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/FensterOverlay.tsx
 - src/app/konfigurator/components/GeschossdeckeOverlay.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/components/SelectionOption.tsx
-
 
 ---
 
@@ -436,9 +498,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
+
 - .github/workflows/deploy-development.yml
 - .github/workflows/deploy-production.yml
-
 
 ---
 
@@ -450,10 +512,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/user-tracking/route.ts
 - src/app/konfigurator/core/PriceCalculator.ts
 - src/app/konfigurator/data/configuratorData.ts
-
 
 ---
 
@@ -465,20 +527,20 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/layout.tsx
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/payments/PaymentModal.tsx
 
-
 #### 🔧 Configuration Changes
+
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - ADMIN_PASSWORD_FIX.md
 - docs/COMMIT_HISTORY.md
 - docs/SOCIAL_MEDIA_METADATA_UPDATE.md
-
 
 ---
 
@@ -490,21 +552,21 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/layout.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
 - src/components/payments/PaymentModal.tsx
 
-
 #### 🔧 Configuration Changes
+
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - ADMIN_PASSWORD_FIX.md
 - docs/COMMIT_HISTORY.md
 - docs/SOCIAL_MEDIA_METADATA_UPDATE.md
-
 
 ---
 
@@ -516,8 +578,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- ADMIN_PASSWORD_FIX.md
 
+- ADMIN_PASSWORD_FIX.md
 
 ---
 
@@ -529,12 +591,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/layout.tsx
 
-
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -546,8 +608,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/payments/PaymentModal.tsx
 
+- src/components/payments/PaymentModal.tsx
 
 ---
 
@@ -559,8 +621,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -572,8 +634,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -585,8 +647,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -598,8 +660,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -620,8 +682,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -633,8 +695,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -646,8 +708,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -659,8 +721,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -672,9 +734,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
-
 
 ---
 
@@ -686,8 +748,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/payments/PaymentModal.tsx
 
+- src/components/payments/PaymentModal.tsx
 
 ---
 
@@ -699,22 +761,22 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/payments/PaymentModal.tsx
-
 
 ---
 
 ## [b9048bc8ebe7b10d28c0e3765343d6bc09a07fb8] - Fri Oct 31 13:04:28 2025 +0100
 
 **Author**: stenkjan
-**Message**: `feat(warenkorb/abschluss): complete final page layout per image specs  ✅ 4-Box Bewerber Grid (2x2): - Box 1: Bewerber Deine Daten (Name, Adresse, PLZ, Nation) - Box 2: Deine Termine Im Überblick (Entwurfsgespräch, Lieferungsdatum) - Box 3: Grundstück Details (Strasse, Stadt, PLZ, Grundstücknummer, Bundesland, Katastralgemeinde, Land) - Box 4: Reserved for future use  ✅ Left/Right Teilzahlungen Layout: - LEFT: 'Dein Nest Deine Konfiguration' box with all 4 Teilzahlungen listed   • 1. Teilzahlung: Grundstückscheck & Vorentwurf (Fixpreis €1.000)   • 2. Teilzahlung: 30% minus Grundstückscheck (Liefergarantie)   • 3. Teilzahlung: 50% nach Produktion   • 3. Teilzahlung: 20% nach Grundstück - RIGHT: 'Heute zu bezahlen' box with 1000€ crossed out → 500€   • 'Jetzt bezahlen' button   • Disclaimer text about Vorentwurf guarantee  ✅ Button Updates: - Changed 'Nächster Schritt' → 'Zur Kassa' - 'Zur Kassa' triggers setIsPaymentModalOpen (same as 'Jetzt bezahlen') - Full Stripe payment flow preserved  ✅ Payment Logic Maintained: - Triggers PaymentModal with all tracking - Alpha test completion handled - Session tracking integrated - Stripe webhooks called properly  ALL IMAGE SPECIFICATIONS IMPLEMENTED!  `
+**Message**: `feat(warenkorb/abschluss): complete final page layout per image specs  ✅ 4-Box Bewerber Grid (2x2): - Box 1: Bewerber Deine Daten (Name, Adresse, PLZ, Nation) - Box 2: Deine Termine Im Überblick (Entwurfsgespräch, Lieferungsdatum) - Box 3: Grundstück Details (Strasse, Stadt, PLZ, Grundstücknummer, Bundesland, Katastralgemeinde, Land) - Box 4: Reserved for future use  ✅ Left/Right Teilzahlungen Layout: - LEFT: 'Dein Nest Deine Auswahl' box with all 4 Teilzahlungen listed   • 1. Teilzahlung: Grundstückscheck & Vorentwurf (Fixpreis €1.000)   • 2. Teilzahlung: 30% minus Grundstückscheck (Liefergarantie)   • 3. Teilzahlung: 50% nach Produktion   • 3. Teilzahlung: 20% nach Grundstück - RIGHT: 'Heute zu bezahlen' box with 1000€ crossed out → 500€   • 'Jetzt bezahlen' button   • Disclaimer text about Vorentwurf guarantee  ✅ Button Updates: - Changed 'Nächster Schritt' → 'Zur Kassa' - 'Zur Kassa' triggers setIsPaymentModalOpen (same as 'Jetzt bezahlen') - Full Stripe payment flow preserved  ✅ Payment Logic Maintained: - Triggers PaymentModal with all tracking - Alpha test completion handled - Session tracking integrated - Stripe webhooks called properly  ALL IMAGE SPECIFICATIONS IMPLEMENTED!  `
 
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -726,8 +788,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -739,9 +801,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
-
 
 ---
 
@@ -753,13 +815,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
 
-
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -771,6 +833,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/components/ClickAnalytics.tsx
 - src/app/admin/user-tracking/components/ConfigurationSelectionAnalytics.tsx
 - src/app/admin/user-tracking/components/TrackingActions.tsx
@@ -782,11 +845,10 @@ _Auto-generated documentation of project changes_
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/app/warenkorb/steps.ts
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/WARENKORB_REFACTORING_PROGRESS.md
-
 
 ---
 
@@ -798,8 +860,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -811,8 +873,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -824,8 +886,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -837,14 +899,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/app/warenkorb/steps.ts
 
-
 #### 📚 Documentation Changes
-- docs/WARENKORB_REFACTORING_PROGRESS.md
 
+- docs/WARENKORB_REFACTORING_PROGRESS.md
 
 ---
 
@@ -856,8 +918,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/user-tracking/components/TrackingActions.tsx
 
+- src/app/admin/user-tracking/components/TrackingActions.tsx
 
 ---
 
@@ -869,10 +931,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/components/TrackingActions.tsx
 - src/app/admin/user-tracking/page.tsx
 - src/app/api/admin/user-tracking/actions/route.ts
-
 
 ---
 
@@ -884,8 +946,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/user-tracking/route.ts
 
+- src/app/api/admin/user-tracking/route.ts
 
 ---
 
@@ -897,8 +959,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/user-tracking/route.ts
 
+- src/app/api/admin/user-tracking/route.ts
 
 ---
 
@@ -910,6 +972,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entwurf/EntwurfClient.tsx
 - src/app/globals.css
 - src/app/showcase/cards/page.tsx
@@ -917,13 +980,12 @@ _Auto-generated documentation of project changes_
 - src/components/cards/README.md
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/GLASS-QUOTE-CARDS-GUIDE.md
 - docs/GLASS-QUOTE-CARDS-QUICK-REF.md
 - docs/GLASS-QUOTE-CARDS-SUMMARY.md
-
 
 ---
 
@@ -935,6 +997,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entwurf/EntwurfClient.tsx
 - src/app/globals.css
 - src/app/showcase/cards/page.tsx
@@ -942,12 +1005,11 @@ _Auto-generated documentation of project changes_
 - src/components/cards/README.md
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/GLASS-QUOTE-CARDS-GUIDE.md
 - docs/GLASS-QUOTE-CARDS-QUICK-REF.md
 - docs/GLASS-QUOTE-CARDS-SUMMARY.md
-
 
 ---
 
@@ -959,8 +1021,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -972,8 +1034,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -985,12 +1047,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warum-wir/WarumWirClient.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1002,8 +1064,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warum-wir/WarumWirClient.tsx
 
+- src/app/warum-wir/WarumWirClient.tsx
 
 ---
 
@@ -1015,8 +1077,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1028,8 +1090,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/video/ModernVideoPlayer.tsx
 
+- src/components/video/ModernVideoPlayer.tsx
 
 ---
 
@@ -1041,8 +1103,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/video/ModernVideoPlayer.tsx
 
+- src/components/video/ModernVideoPlayer.tsx
 
 ---
 
@@ -1054,8 +1116,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/video/ModernVideoPlayer.tsx
 
+- src/components/video/ModernVideoPlayer.tsx
 
 ---
 
@@ -1067,8 +1129,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/video/ModernVideoPlayer.tsx
 
+- src/components/video/ModernVideoPlayer.tsx
 
 ---
 
@@ -1089,8 +1151,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/video/ModernVideoPlayer.tsx
 
+- src/components/video/ModernVideoPlayer.tsx
 
 ---
 
@@ -1102,8 +1164,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1115,20 +1177,20 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/video/InteractiveVideoPlayer.tsx
 - src/components/video/ModernVideoPlayer.tsx
 - src/components/video/index.ts
 - src/components/video/video-player.css
 
-
 #### 🔧 Configuration Changes
+
 - package.json
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1140,16 +1202,16 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/video/InteractiveVideoPlayer.tsx
 - src/components/video/ModernVideoPlayer.tsx
 - src/components/video/index.ts
 - src/components/video/video-player.css
 
-
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -1161,8 +1223,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1174,8 +1236,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1187,8 +1249,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1200,8 +1262,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1213,13 +1275,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-nest/DeinNestClient.tsx
 - src/components/sections/ModulhausVergleichSection.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1231,6 +1293,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/alpha-tests/page.tsx
 - src/app/admin/conversion/Client.tsx
 - src/app/admin/conversion/page.tsx
@@ -1251,11 +1314,10 @@ _Auto-generated documentation of project changes_
 - src/app/admin/usage/page.tsx
 - src/app/admin/user-tracking/page.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/ADMIN_SECURITY_TESTING_GUIDE.md
 - docs/COMMIT_HISTORY.md
-
 
 ---
 
@@ -1267,6 +1329,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/alpha-tests/page.tsx
 - src/app/admin/conversion/Client.tsx
 - src/app/admin/conversion/page.tsx
@@ -1287,7 +1350,6 @@ _Auto-generated documentation of project changes_
 - src/app/admin/usage/page.tsx
 - src/app/admin/user-tracking/page.tsx
 
-
 ---
 
 ## [5537d0e47523e9bcc7214d7994db303fbbbc6464] - Tue Oct 28 14:59:59 2025 +0100
@@ -1298,8 +1360,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/ADMIN_SECURITY_TESTING_GUIDE.md
 
+- docs/ADMIN_SECURITY_TESTING_GUIDE.md
 
 ---
 
@@ -1311,6 +1373,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/pmg/components/ProjectManagementDashboard.tsx
 - src/app/admin/pmg/milestones/components/MilestonesManager.tsx
 - src/app/admin/sync/page.tsx
@@ -1333,12 +1396,12 @@ _Auto-generated documentation of project changes_
 - src/components/tracking/SessionInteractionTracker.tsx
 - src/hooks/useInteractionTracking.ts
 
-
 #### ⚙️ Backend Changes
+
 - scripts/cleanup-bad-sessions.js
 
-
 #### 📚 Documentation Changes
+
 - docs/ADMIN_DASHBOARD_METRICS_FIX.md
 - docs/BELICHTUNGSPAKET_FENSTER_FIX.md
 - docs/COMMIT_HISTORY.md
@@ -1346,7 +1409,6 @@ _Auto-generated documentation of project changes_
 - docs/PAYMENT_CONFIRMATION_ALL_METHODS.md
 - docs/USER_TRACKING_FIXES_COMPLETE.md
 - docs/USER_TRACKING_FIXES_SUMMARY.md
-
 
 ---
 
@@ -1358,8 +1420,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1371,15 +1433,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/payments/verify-redirect/route.ts
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/payments/PaymentModal.tsx
 
-
 #### 📚 Documentation Changes
-- docs/PAYMENT_CONFIRMATION_ALL_METHODS.md
 
+- docs/PAYMENT_CONFIRMATION_ALL_METHODS.md
 
 ---
 
@@ -1391,15 +1453,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/components/AllConfigurations.tsx
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/components/tracking/SessionInteractionTracker.tsx
 - src/hooks/useInteractionTracking.ts
 
-
 #### 📚 Documentation Changes
-- docs/USER_TRACKING_FIXES_COMPLETE.md
 
+- docs/USER_TRACKING_FIXES_COMPLETE.md
 
 ---
 
@@ -1411,6 +1473,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/pmg/components/ProjectManagementDashboard.tsx
 - src/app/admin/pmg/milestones/components/MilestonesManager.tsx
 - src/app/admin/sync/page.tsx
@@ -1423,12 +1486,11 @@ _Auto-generated documentation of project changes_
 - src/app/api/sync/google-drive/route.ts
 - src/app/layout.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/BELICHTUNGSPAKET_FENSTER_FIX.md
 - docs/ENVIRONMENT_VARIABLE_SETUP.md
 - docs/USER_TRACKING_FIXES_SUMMARY.md
-
 
 ---
 
@@ -1440,18 +1502,18 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/page.tsx
 - src/app/api/admin/cleanup-sessions/route.ts
 - src/app/api/admin/user-tracking/route.ts
 
-
 #### ⚙️ Backend Changes
+
 - scripts/cleanup-bad-sessions.js
 
-
 #### 📚 Documentation Changes
-- docs/USER_TRACKING_FIXES_SUMMARY.md
 
+- docs/USER_TRACKING_FIXES_SUMMARY.md
 
 ---
 
@@ -1463,8 +1525,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1476,8 +1538,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1489,8 +1551,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1502,8 +1564,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1524,19 +1586,19 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/components/AllConfigurations.tsx
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/api/sessions/sync/route.ts
 - src/app/api/sessions/track-cart-add/route.ts
 
-
 #### ⚙️ Backend Changes
+
 - prisma/schema.prisma
 
-
 #### 📚 Documentation Changes
-- fix-tracking-issues.plan.md
 
+- fix-tracking-issues.plan.md
 
 ---
 
@@ -1548,8 +1610,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1561,8 +1623,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/user-tracking/all-configurations/route.ts
 
+- src/app/api/admin/user-tracking/all-configurations/route.ts
 
 ---
 
@@ -1574,9 +1636,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/warenkorb/WarenkorbClient.tsx
-
 
 ---
 
@@ -1588,8 +1650,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1601,10 +1663,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/components/AllConfigurations.tsx
 - src/app/api/sessions/update-ohne-nest-mode/route.ts
 - src/app/warenkorb/WarenkorbClient.tsx
-
 
 ---
 
@@ -1616,8 +1678,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1629,15 +1691,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/conversion/page.tsx
 - src/app/admin/user-tracking/components/AllConfigurations.tsx
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/api/sessions/track-cart-add/route.ts
 
-
 #### ⚙️ Backend Changes
-- prisma/schema.prisma
 
+- prisma/schema.prisma
 
 ---
 
@@ -1649,8 +1711,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/user-tracking/all-configurations/route.ts
 
+- src/app/api/admin/user-tracking/all-configurations/route.ts
 
 ---
 
@@ -1662,8 +1724,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1675,9 +1737,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/components/AllConfigurations.tsx
 - src/app/api/admin/user-tracking/all-configurations/route.ts
-
 
 ---
 
@@ -1689,8 +1751,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/user-tracking/components/AllConfigurations.tsx
 
+- src/app/admin/user-tracking/components/AllConfigurations.tsx
 
 ---
 
@@ -1702,8 +1764,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1715,8 +1777,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1728,9 +1790,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/user-tracking/components/AllConfigurations.tsx
 - src/app/api/admin/user-tracking/all-configurations/route.ts
-
 
 ---
 
@@ -1742,8 +1804,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1755,8 +1817,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1768,8 +1830,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1781,8 +1843,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1794,8 +1856,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
-- .github/workflows/deploy-development.yml
 
+- .github/workflows/deploy-development.yml
 
 ---
 
@@ -1807,8 +1869,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1820,8 +1882,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1833,9 +1895,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entwurf/EntwurfClient.tsx
 - src/components/cards/UnifiedContentCard.tsx
-
 
 ---
 
@@ -1847,8 +1909,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1860,8 +1922,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1873,8 +1935,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1886,9 +1948,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/payments/create-payment-intent/route.ts
 - src/components/payments/StripeCheckoutForm.tsx
-
 
 ---
 
@@ -1900,22 +1962,22 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/payments/create-payment-intent/route.ts
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/payments/PaymentModal.tsx
 - src/components/payments/StripeCheckoutForm.tsx
 - src/components/payments/StripeTest.tsx
 
-
 #### 🔧 Configuration Changes
+
 - .env
 - .env.local
 
-
 #### 📚 Documentation Changes
+
 - STRIPE_DASHBOARD_SETUP.md
 - docs/COMMIT_HISTORY.md
-
 
 ---
 
@@ -1927,8 +1989,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1940,8 +2002,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1953,8 +2015,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1966,9 +2028,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/payments/PaymentModal.tsx
 - src/components/payments/StripeCheckoutForm.tsx
-
 
 ---
 
@@ -1980,8 +2042,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -1993,8 +2055,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2006,8 +2068,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2019,16 +2081,16 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entwurf/EntwurfClient.tsx
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - src/constants/TALL_CARD_PADDING_COMPARISON.md
 - src/constants/TALL_CARD_QUICK_START.md
 - src/constants/TALL_CARD_TEMPLATE.md
-
 
 ---
 
@@ -2040,12 +2102,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/payments/status/[paymentIntentId]/route.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2057,12 +2119,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2074,12 +2136,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/pmg/milestones/components/MilestonesManager.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2091,8 +2153,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2104,6 +2166,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/pmg/components/GanttChart.tsx
 - src/app/admin/pmg/components/TaskList.tsx
 - src/app/admin/pmg/milestones/components/MilestonesManager.tsx
@@ -2117,21 +2180,20 @@ _Auto-generated documentation of project changes_
 - src/components/payments/PaymentModal.tsx
 - src/components/payments/StripeCheckoutForm.tsx
 
-
 #### ⚙️ Backend Changes
+
 - prisma/schema.prisma
 
-
 #### 🔧 Configuration Changes
+
 - .env
 - .env.local
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - STRIPE_INTEGRATION_SUMMARY.md
 - docs/COMMIT_HISTORY.md
-
 
 ---
 
@@ -2143,8 +2205,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
 
+- src/app/admin/pmg/milestones/components/MilestonesManager.tsx
 
 ---
 
@@ -2156,14 +2218,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entwurf/EntwurfClient.tsx
 - src/app/layout.tsx
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2175,8 +2237,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2188,6 +2250,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/api/placeholder/[width]/[height]/route.ts
 - src/app/cookie-einstellungen/CookieEinstellungenClient.tsx
@@ -2201,10 +2264,9 @@ _Auto-generated documentation of project changes_
 - src/components/images/ResponsiveHybridImage.tsx
 - src/components/ui/Button.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2216,8 +2278,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2229,8 +2291,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2242,8 +2304,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2255,8 +2317,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/BrightnessOverlay.tsx
 
+- src/app/konfigurator/components/BrightnessOverlay.tsx
 
 ---
 
@@ -2268,8 +2330,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2281,8 +2343,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2294,12 +2356,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2311,8 +2373,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/cards/UnifiedContentCard.tsx
 
+- src/components/cards/UnifiedContentCard.tsx
 
 ---
 
@@ -2324,8 +2386,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/pmg/components/GanttChart.tsx
 
+- src/app/admin/pmg/components/GanttChart.tsx
 
 ---
 
@@ -2337,8 +2399,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2350,8 +2412,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/security/page.tsx
 
+- src/app/admin/security/page.tsx
 
 ---
 
@@ -2363,8 +2425,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2376,8 +2438,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2389,8 +2451,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2402,6 +2464,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/layout.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
@@ -2409,15 +2472,14 @@ _Auto-generated documentation of project changes_
 - src/components/layout/Navbar.tsx
 - src/hooks/useIOSViewport.ts
 
-
 #### 🔧 Configuration Changes
+
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - WEEK_1_IMPLEMENTATION_SUMMARY.md
 - WEEK_1_TESTING_GUIDE.md
-
 
 ---
 
@@ -2429,10 +2491,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/BelichtungsPaketOverlay.tsx
 - src/app/konfigurator/components/FensterOverlay.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
-
 
 ---
 
@@ -2444,8 +2506,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/showcase/grids/page.tsx
 
+- src/app/showcase/grids/page.tsx
 
 ---
 
@@ -2457,6 +2519,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
@@ -2488,16 +2551,15 @@ _Auto-generated documentation of project changes_
 - src/components/sections/GrundstueckCheckSection.tsx
 - src/components/sections/MaterialShowcase.tsx
 
-
 #### 🔧 Configuration Changes
+
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - CARD_CLEANUP_PHASE2_SUMMARY.md
 - CARD_SYSTEM_CLEANUP_SUMMARY.md
 - docs/COMMIT_HISTORY.md
-
 
 ---
 
@@ -2509,6 +2571,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/showcase/grids/page.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
@@ -2525,11 +2588,10 @@ _Auto-generated documentation of project changes_
 - src/components/grids/ImageWithFourTextGrid.tsx
 - src/components/grids/ThreeByOneAdaptiveHeight.tsx
 
-
 #### 📚 Documentation Changes
+
 - CARD_CLEANUP_PHASE2_SUMMARY.md
 - CARD_SYSTEM_CLEANUP_SUMMARY.md
-
 
 ---
 
@@ -2541,14 +2603,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/showcase/grids/page.tsx
 - src/components/grids/ThreeByOneGrid.tsx
 - src/components/lazy/LazyComponents.ts
 
-
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -2560,6 +2622,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
@@ -2581,7 +2644,6 @@ _Auto-generated documentation of project changes_
 - src/components/sections/GrundstueckCheckSection.tsx
 - src/components/sections/MaterialShowcase.tsx
 
-
 ---
 
 ## [b97b9d87f73365607c1db3bf8c7864d6a99e9947] - Tue Oct 14 17:01:37 2025 +0200
@@ -2592,8 +2654,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/core/ImageManager.ts
 
+- src/app/konfigurator/core/ImageManager.ts
 
 ---
 
@@ -2605,8 +2667,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/core/ImageManager.ts
 
+- src/app/konfigurator/core/ImageManager.ts
 
 ---
 
@@ -2618,6 +2680,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/security/dashboard/route.ts
 - src/app/api/security/events/route.ts
 - src/app/konfigurator/core/ImageManager.ts
@@ -2628,20 +2691,19 @@ _Auto-generated documentation of project changes_
 - src/components/security/ProtectedContent.tsx
 - src/components/security/ProtectedContentAdvanced.tsx
 
-
 #### ⚙️ Backend Changes
+
 - prisma/schema.prisma
 - scripts/test-security.ps1
 - scripts/test-security.sh
 
-
 #### 📚 Documentation Changes
+
 - SECURITY_IMPLEMENTATION_COMPLETE.md
 - SECURITY_SUCCESS_SUMMARY.md
 - SECURITY_TESTING_COMPLETE.md
 - SECURITY_TESTING_GUIDE.md
 - docs/COMMIT_HISTORY.md
-
 
 ---
 
@@ -2653,8 +2715,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2666,8 +2728,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2679,8 +2741,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2692,8 +2754,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2705,8 +2767,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/sections/GetInContactBanner.tsx
 
+- src/components/sections/GetInContactBanner.tsx
 
 ---
 
@@ -2718,8 +2780,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2731,6 +2793,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/usability-tests/route.ts
 - src/app/api/content/analytics/route.ts
 - src/app/entdecken/EntdeckenClient.tsx
@@ -2747,11 +2810,10 @@ _Auto-generated documentation of project changes_
 - src/components/sections/GetInContactBanner.tsx
 - src/components/sections/LandingImagesCarousel.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/TYPOGRAPHY_STANDARDS.md
-
 
 ---
 
@@ -2763,8 +2825,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/sections/LandingImagesCarousel.tsx
 
+- src/components/sections/LandingImagesCarousel.tsx
 
 ---
 
@@ -2776,8 +2838,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/sections/GetInContactBanner.tsx
 
+- src/components/sections/GetInContactBanner.tsx
 
 ---
 
@@ -2789,8 +2851,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2802,8 +2864,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2815,8 +2877,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2828,8 +2890,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2841,16 +2903,16 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/showcase/cards/page.tsx
 - src/components/sections/TransportabilitaetVideo.tsx
 - src/components/sections/index.ts
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/TYPOGRAPHY_STANDARDS.md
-
 
 ---
 
@@ -2862,6 +2924,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/usability-tests/route.ts
 - src/app/api/content/analytics/route.ts
 - src/app/dein-part/DeinPartClient.tsx
@@ -2876,10 +2939,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/VideoCard16by9.tsx
 - src/components/layout/Navbar.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2891,16 +2953,16 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/test-sections/page.tsx
 - src/components/sections/SectionHeader.tsx
 - src/components/sections/index.ts
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/TYPOGRAPHY_STANDARDS.md
-
 
 ---
 
@@ -2912,15 +2974,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/test-sections/page.tsx
 - src/components/sections/SectionHeader.tsx
 - src/components/sections/index.ts
 
-
 #### 📚 Documentation Changes
-- docs/TYPOGRAPHY_STANDARDS.md
 
+- docs/TYPOGRAPHY_STANDARDS.md
 
 ---
 
@@ -2932,6 +2994,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/sessions/sync/route.ts
 - src/app/konfigurator/components/CartFooter.tsx
 - src/app/konfigurator/components/SummaryPanel.tsx
@@ -2942,10 +3005,9 @@ _Auto-generated documentation of project changes_
 - src/components/ui/PriceDisplay.tsx
 - src/hooks/usePriceCalculation.ts
 
-
 #### 📚 Documentation Changes
-- docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
 
+- docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
 
 ---
 
@@ -2957,8 +3019,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2970,8 +3032,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -2983,10 +3045,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/konfigurator/core/PriceUtils.ts
 - src/app/warenkorb/components/CheckoutStepper.tsx
-
 
 ---
 
@@ -2998,8 +3060,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3011,8 +3073,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3024,8 +3086,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3037,8 +3099,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/LandingPageClient.tsx
 
+- src/app/LandingPageClient.tsx
 
 ---
 
@@ -3050,8 +3112,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/LandingPageClient.tsx
 
+- src/app/LandingPageClient.tsx
 
 ---
 
@@ -3063,8 +3125,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/layout.tsx
 
+- src/app/layout.tsx
 
 ---
 
@@ -3076,8 +3138,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3089,9 +3151,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/security/ProtectedContent.tsx
 - src/components/security/ProtectedImage.tsx
-
 
 ---
 
@@ -3103,8 +3165,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/security/ProtectedContent.tsx
 
+- src/components/security/ProtectedContent.tsx
 
 ---
 
@@ -3116,8 +3178,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3129,8 +3191,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
-- next.config.ts
 
+- next.config.ts
 
 ---
 
@@ -3142,9 +3204,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
+
 - next.config.ts
 - package.json
-
 
 ---
 
@@ -3156,8 +3218,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3169,8 +3231,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
-- next.config.ts
 
+- next.config.ts
 
 ---
 
@@ -3182,12 +3244,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
+
 - next.config.ts
 
-
 #### 📚 Documentation Changes
-- docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
 
+- docs/01-BETA-NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
 
 ---
 
@@ -3199,8 +3261,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3212,8 +3274,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3225,8 +3287,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🔧 Configuration Changes
-- next.config.ts
 
+- next.config.ts
 
 ---
 
@@ -3238,13 +3300,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### ⚙️ Backend Changes
+
 - scripts/optimize-cache.js
 
-
 #### 🔧 Configuration Changes
+
 - next.config.ts
 - package.json
-
 
 ---
 
@@ -3265,8 +3327,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3278,9 +3340,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
-
 
 ---
 
@@ -3292,8 +3354,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3305,8 +3367,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3318,6 +3380,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/showcase/page.tsx
 - src/components/cards/ContentCards.tsx
 - src/components/cards/ContentCards.tsx.backup
@@ -3339,10 +3402,9 @@ _Auto-generated documentation of project changes_
 - src/components/motion/MotionWrapper.tsx
 - src/components/ui/Dialog.tsx
 
-
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -3354,8 +3416,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3376,9 +3438,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/alpha-test/AlphaTestClient.tsx
 - src/app/alpha-test/page.tsx
-
 
 ---
 
@@ -3390,8 +3452,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3403,10 +3465,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/test/auth-status/route.ts
 - src/app/page.tsx
 - src/components/auth/AuthWrapper.tsx
-
 
 ---
 
@@ -3418,8 +3480,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3431,8 +3493,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3444,11 +3506,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/api/test/auth-status/route.ts
 - src/app/page.tsx
 - src/components/auth/AuthWrapper.tsx
-
 
 ---
 
@@ -3460,8 +3522,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3473,8 +3535,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3495,8 +3557,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3517,8 +3579,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/auth/page.tsx
 
+- src/app/auth/page.tsx
 
 ---
 
@@ -3530,8 +3592,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3543,8 +3605,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/pmg/reorganize/route.ts
 
+- src/app/api/admin/pmg/reorganize/route.ts
 
 ---
 
@@ -3556,8 +3618,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- README.md
 
+- README.md
 
 ---
 
@@ -3569,9 +3631,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/pmg/components/ProjectManagementDashboard.tsx
 - src/app/api/admin/pmg/reorganize/route.ts
-
 
 ---
 
@@ -3583,8 +3645,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3596,8 +3658,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3609,8 +3671,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3622,8 +3684,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3635,8 +3697,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3648,11 +3710,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/agb/AgbClient.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/components/dialogs/CalendarDialog.tsx
 - src/components/sections/TerminVereinbarenContent.tsx
-
 
 ---
 
@@ -3664,8 +3726,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/impressum/ImpressumClient.tsx
 
+- src/app/impressum/ImpressumClient.tsx
 
 ---
 
@@ -3677,8 +3739,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/impressum/ImpressumClient.tsx
 
+- src/app/impressum/ImpressumClient.tsx
 
 ---
 
@@ -3699,8 +3761,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3712,8 +3774,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/test/email/route.ts
 
+- src/app/api/test/email/route.ts
 
 ---
 
@@ -3725,8 +3787,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3738,8 +3800,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/impressum/ImpressumClient.tsx
 
+- src/app/impressum/ImpressumClient.tsx
 
 ---
 
@@ -3751,8 +3813,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3764,8 +3826,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3777,15 +3839,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/datenschutz/DatenschutzClient.tsx
 - src/app/impressum/ImpressumClient.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/DATENSCHUTZ.md
 - docs/Datenschutz.pdf
 - docs/Info.pdf
-
 
 ---
 
@@ -3797,8 +3859,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3810,8 +3872,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3823,8 +3885,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3836,8 +3898,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3849,8 +3911,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/pmg/[id]/route.ts
 
+- src/app/api/admin/pmg/[id]/route.ts
 
 ---
 
@@ -3862,8 +3924,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/pmg/[id]/route.ts
 
+- src/app/api/admin/pmg/[id]/route.ts
 
 ---
 
@@ -3875,8 +3937,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3888,8 +3950,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3901,9 +3963,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/contact/route.ts
 - src/components/sections/AppointmentBooking.tsx
-
 
 ---
 
@@ -3915,8 +3977,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/sections/AppointmentBooking.tsx
 
+- src/components/sections/AppointmentBooking.tsx
 
 ---
 
@@ -3928,8 +3990,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3941,8 +4003,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -3954,8 +4016,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/sections/AppointmentBooking.tsx
 
+- src/components/sections/AppointmentBooking.tsx
 
 ---
 
@@ -3976,15 +4038,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/calendar/availability/route.ts
 - src/app/api/calendar/book/route.ts
 - src/app/api/contact/route.ts
 
-
 #### 🔧 Configuration Changes
+
 - .env.local
 - package.json
-
 
 ---
 
@@ -3996,6 +4058,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/pmg/components/GanttChart.tsx
 - src/app/admin/pmg/components/ProjectManagementDashboard.tsx
 - src/app/admin/pmg/components/StatsCards.tsx
@@ -4003,7 +4066,6 @@ _Auto-generated documentation of project changes_
 - src/app/admin/pmg/components/TaskList.tsx
 - src/app/admin/pmg/components/TeamOverview.tsx
 - src/app/api/admin/pmg/seed/route.ts
-
 
 ---
 
@@ -4015,8 +4077,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/test/calendar/route.ts
 
+- src/app/api/test/calendar/route.ts
 
 ---
 
@@ -4028,8 +4090,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4041,8 +4103,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4054,8 +4116,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4067,8 +4129,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/calendar/book/route.ts
 
+- src/app/api/calendar/book/route.ts
 
 ---
 
@@ -4080,8 +4142,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/calendar/book/route.ts
 
+- src/app/api/calendar/book/route.ts
 
 ---
 
@@ -4093,8 +4155,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4106,8 +4168,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4119,8 +4181,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/pmg/components/GanttChart.tsx
 
+- src/app/admin/pmg/components/GanttChart.tsx
 
 ---
 
@@ -4132,8 +4194,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4145,9 +4207,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/pmg/components/GanttChart.tsx
 - src/app/admin/pmg/components/ProjectManagementDashboard.tsx
-
 
 ---
 
@@ -4159,8 +4221,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4172,8 +4234,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4185,10 +4247,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
-
 
 ---
 
@@ -4200,8 +4262,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4213,8 +4275,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4226,8 +4288,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -4239,8 +4301,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -4252,8 +4314,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
 
+- NEST-HAUS-LAUNCH-SECURITY-ROADMAP.md
 
 ---
 
@@ -4265,8 +4327,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4278,8 +4340,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -4291,8 +4353,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4304,8 +4366,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -4317,10 +4379,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
-
 
 ---
 
@@ -4332,9 +4394,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
-
 
 ---
 
@@ -4346,9 +4408,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/warenkorb/WarenkorbClient.tsx
-
 
 ---
 
@@ -4360,8 +4422,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -4373,8 +4435,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -4386,8 +4448,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4399,8 +4461,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/PreviewPanel.tsx
 
+- src/app/konfigurator/components/PreviewPanel.tsx
 
 ---
 
@@ -4412,8 +4474,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4425,8 +4487,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/ai-summarize/route.ts
 
+- src/app/api/admin/ai-summarize/route.ts
 
 ---
 
@@ -4438,8 +4500,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/LandingPageClient.tsx
 
+- src/app/LandingPageClient.tsx
 
 ---
 
@@ -4451,8 +4513,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/usability-tests/individual/[testId]/route.ts
 
+- src/app/api/admin/usability-tests/individual/[testId]/route.ts
 
 ---
 
@@ -4464,8 +4526,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4477,6 +4539,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 - src/app/alpha-test-complete/page.tsx
@@ -4494,10 +4557,9 @@ _Auto-generated documentation of project changes_
 - src/components/testing/UsabilityTestPopup.tsx
 - src/components/testing/config/TestQuestions.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4509,8 +4571,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4522,8 +4584,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4535,8 +4597,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4548,8 +4610,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4561,8 +4623,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4574,8 +4636,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4587,8 +4649,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4600,8 +4662,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4613,8 +4675,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4626,8 +4688,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4639,8 +4701,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4652,8 +4714,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4665,8 +4727,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/images/ResponsiveHybridImage.tsx
 
+- src/components/images/ResponsiveHybridImage.tsx
 
 ---
 
@@ -4678,8 +4740,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4700,8 +4762,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4731,8 +4793,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4753,10 +4815,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/impressum/ImpressumClient.tsx
 - src/components/testing/UsabilityTestPopup.tsx
 - src/components/testing/config/TestQuestions.ts
-
 
 ---
 
@@ -4768,10 +4830,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/favicon.ico
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/SummaryPanel.tsx
-
 
 ---
 
@@ -4783,17 +4845,17 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/data/configuratorData.ts
 - src/components/testing/UsabilityTestPopup.tsx
 
-
 #### ⚙️ Backend Changes
+
 - prisma/seed.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4805,15 +4867,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/sections/GrundstueckCheckSection.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4825,11 +4887,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/sections/GrundstueckCheckSection.tsx
-
 
 ---
 
@@ -4841,8 +4903,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4854,8 +4916,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/testing/UsabilityTestPopup.tsx
 
+- src/components/testing/UsabilityTestPopup.tsx
 
 ---
 
@@ -4867,12 +4929,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warum-wir/WarumWirClient.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4884,15 +4946,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/SectionRouter.tsx
 - src/components/cards/PlanungspaketeCards.tsx
 - src/components/testing/UsabilityTestPopup.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4904,8 +4966,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/testing/UsabilityTestPopup.tsx
 
+- src/components/testing/UsabilityTestPopup.tsx
 
 ---
 
@@ -4917,8 +4979,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4930,6 +4992,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/datenschutz/DatenschutzClient.tsx
 - src/app/kontakt/page.tsx
 - src/app/unser-part/UnserPartClient.tsx
@@ -4938,11 +5001,10 @@ _Auto-generated documentation of project changes_
 - src/components/sections/GrundstueckCheckForm.tsx
 - src/components/sections/TerminVereinbarenContent.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/DATENSCHUTZ.md
-
 
 ---
 
@@ -4954,8 +5016,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4967,8 +5029,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4980,14 +5042,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/grids/ThreeByOneGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -4999,8 +5061,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5021,15 +5083,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
 - src/components/cards/CheckoutStepCard.tsx
 - src/components/sections/ContactMap.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5041,6 +5103,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
 - src/app/konfigurator/core/DialogDataTransformer.ts
@@ -5050,10 +5113,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/VideoCard16by9.tsx
 - src/components/dialogs/CalendarDialog.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5065,8 +5127,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5078,8 +5140,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5091,8 +5153,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5104,14 +5166,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/globals.css
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5123,6 +5185,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/globals.css
@@ -5132,10 +5195,9 @@ _Auto-generated documentation of project changes_
 - src/components/grids/ThreeByOneGrid.tsx
 - src/components/sections/GetInContactBanner.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5147,13 +5209,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5165,9 +5227,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/sections/PartnersSection.tsx
-
 
 ---
 
@@ -5179,8 +5241,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/sections/GrundstueckCheckForm.tsx
 
+- src/components/sections/GrundstueckCheckForm.tsx
 
 ---
 
@@ -5192,8 +5254,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5205,8 +5267,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5218,10 +5280,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/cards/VideoCard16by9.tsx
-
 
 ---
 
@@ -5233,15 +5295,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/app/warenkorb/steps.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5253,8 +5315,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5266,14 +5328,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/dialogs/GrundstueckCheckDialog.tsx
 - src/components/sections/GrundstueckCheckForm.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5285,8 +5347,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5298,8 +5360,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5311,15 +5373,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/grids/ThreeByOneAdaptiveHeight.tsx
 - src/components/grids/ThreeByOneGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5331,8 +5393,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5344,17 +5406,17 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/favicon.ico
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
 - src/components/sections/AppointmentBookingSection.tsx
 - src/components/sections/ContactMap.tsx
 - src/components/sections/TerminVereinbarenContent.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - konfigurator_old/dialogs/README.md
-
 
 ---
 
@@ -5366,8 +5428,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- konfigurator_old/dialogs/README.md
 
+- konfigurator_old/dialogs/README.md
 
 ---
 
@@ -5379,10 +5441,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/sections/AppointmentBookingSection.tsx
 - src/components/sections/ContactMap.tsx
 - src/components/sections/TerminVereinbarenContent.tsx
-
 
 ---
 
@@ -5394,14 +5456,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/grids/ThreeByOneAdaptiveHeight.tsx
 - src/components/grids/ThreeByOneGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5413,12 +5475,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/cards/ContentCardsGlass.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5430,8 +5492,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5443,6 +5505,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/grids/FullWidthTextGrid.tsx
@@ -5450,10 +5513,9 @@ _Auto-generated documentation of project changes_
 - src/components/grids/ThreeByOneAdaptiveHeight.tsx
 - src/components/grids/ThreeByOneGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5465,7 +5527,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+
+- src/app/konfigurator/**tests**/SummaryPanel.test.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/data/configuratorData.ts
 - src/app/konfigurator/data/dialogConfigs.ts
@@ -5473,10 +5536,9 @@ _Auto-generated documentation of project changes_
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5488,13 +5550,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
+
+- src/app/konfigurator/**tests**/SummaryPanel.test.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/data/configuratorData.ts
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
-
 
 ---
 
@@ -5506,8 +5568,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/data/dialogConfigs.ts
 
+- src/app/konfigurator/data/dialogConfigs.ts
 
 ---
 
@@ -5519,6 +5581,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/globals.css
 - src/app/unser-part/UnserPartClient.tsx
@@ -5534,10 +5597,9 @@ _Auto-generated documentation of project changes_
 - src/components/sections/MaterialShowcase.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5549,8 +5611,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5562,8 +5624,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5575,10 +5637,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/components/layout/Navbar.tsx
 - src/components/sections/GetInContactBanner.tsx
-
 
 ---
 
@@ -5590,8 +5652,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5603,8 +5665,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5616,15 +5678,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/globals.css
 - src/components/cards/PlanungspaketeCards.tsx
 - src/components/cards/SquareTextCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5636,6 +5698,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/cards/ContentCardsGlass.tsx
@@ -5649,10 +5712,9 @@ _Auto-generated documentation of project changes_
 - src/components/sections/MaterialShowcase.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5664,8 +5726,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5677,8 +5739,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5690,8 +5752,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5703,8 +5765,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5716,8 +5778,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/cards/SquareTextCard.tsx
 
+- src/components/cards/SquareTextCard.tsx
 
 ---
 
@@ -5729,6 +5791,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
@@ -5737,11 +5800,10 @@ _Auto-generated documentation of project changes_
 - src/components/grids/ThreeByOneAdaptiveHeight.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/MODULAR_CONTENT_ARCHITECTURE.md
-
 
 ---
 
@@ -5753,10 +5815,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/cards/PlanungspaketeCards.tsx
 - src/components/sections/PartnersSection.tsx
-
 
 ---
 
@@ -5768,8 +5830,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5781,14 +5843,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/cards/PlanungspaketeCards.tsx
 - src/components/cards/SquareTextCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5800,8 +5862,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/entdecken/EntdeckenClient.tsx
 
+- src/app/entdecken/EntdeckenClient.tsx
 
 ---
 
@@ -5813,8 +5875,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5826,8 +5888,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5839,6 +5901,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
@@ -5848,11 +5911,10 @@ _Auto-generated documentation of project changes_
 - src/components/sections/GetInContactBanner.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/CURRENT_STATE_ANALYSIS_2025.md
 - docs/README.md
-
 
 ---
 
@@ -5864,8 +5926,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5877,22 +5939,22 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/page.tsx
 - src/app/page.tsx
 - src/app/sitemap.ts
 - src/components/lazy/LazyComponents.ts
 - src/components/motion/MotionWrapper.tsx
 
-
 #### 🔧 Configuration Changes
+
 - next.config.ts
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/CURRENT_STATE_ANALYSIS_2025.md
-
 
 ---
 
@@ -5904,6 +5966,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
@@ -5914,12 +5977,11 @@ _Auto-generated documentation of project changes_
 - src/components/sections/MaterialShowcase.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/CURRENT_STATE_ANALYSIS_2025.md
 - docs/README.md
-
 
 ---
 
@@ -5931,6 +5993,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
@@ -5941,11 +6004,10 @@ _Auto-generated documentation of project changes_
 - src/components/sections/MaterialShowcase.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/CURRENT_STATE_ANALYSIS_2025.md
 - docs/README.md
-
 
 ---
 
@@ -5957,8 +6019,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5970,8 +6032,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5983,8 +6045,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -5996,8 +6058,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/grids/TwoByTwoImageGrid.tsx
 
+- src/components/grids/TwoByTwoImageGrid.tsx
 
 ---
 
@@ -6009,8 +6071,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6022,14 +6084,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/cards/PlanungspaketeCards.tsx
 - src/components/cards/SquareTextCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6041,6 +6103,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/cards/ContentCardsGlassLightbox.tsx
 - src/components/cards/ContentCardsLightbox.tsx
 - src/components/cards/PlanungspaketeCards.tsx
@@ -6048,10 +6111,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/SquareGlassCardsScroll.tsx
 - src/components/cards/SquareTextCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6063,6 +6125,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -6072,10 +6135,9 @@ _Auto-generated documentation of project changes_
 - src/components/sections/AppointmentBookingSection.tsx
 - src/components/ui/Button.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6087,8 +6149,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6100,6 +6162,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/components/cards/ContentCards.tsx
 - src/components/cards/ContentCardsGlass.tsx
@@ -6108,10 +6171,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/SquareTextCard.tsx
 - src/components/ui/Dialog.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6123,8 +6185,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/ConfiguratorShell.tsx
 
+- src/app/konfigurator/components/ConfiguratorShell.tsx
 
 ---
 
@@ -6136,8 +6198,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6149,13 +6211,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/cards/ContentCards.tsx
 - src/components/cards/ContentCardsGlass.tsx
 - src/components/cards/PlanungspaketeCards.tsx
 - src/components/cards/SquareGlassCardsScroll.tsx
 - src/components/cards/SquareTextCard.tsx
 - src/components/ui/Dialog.tsx
-
 
 ---
 
@@ -6167,6 +6229,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/files/route.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/SummaryPanel.tsx
@@ -6180,10 +6243,9 @@ _Auto-generated documentation of project changes_
 - src/components/ui/Dialog.tsx
 - src/hooks/useFileDownload.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6195,10 +6257,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/data/dialogConfigs.ts
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutStepCard.tsx
-
 
 ---
 
@@ -6210,8 +6272,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6223,8 +6285,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6236,8 +6298,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6249,8 +6311,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6262,8 +6324,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6275,14 +6337,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/__tests__/ConfiguratorShell.integration.test.tsx
-- src/app/konfigurator/__tests__/PriceCalculator.test.ts
-- src/app/konfigurator/__tests__/SummaryPanel.test.tsx
-- src/app/konfigurator/__tests__/performance.test.ts
+
+- src/app/konfigurator/**tests**/ConfiguratorShell.integration.test.tsx
+- src/app/konfigurator/**tests**/PriceCalculator.test.ts
+- src/app/konfigurator/**tests**/SummaryPanel.test.tsx
+- src/app/konfigurator/**tests**/performance.test.ts
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
-
 
 ---
 
@@ -6294,8 +6356,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6307,8 +6369,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6320,6 +6382,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/CartFooter.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/components/SummaryPanel.tsx
@@ -6329,7 +6392,6 @@ _Auto-generated documentation of project changes_
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/ContentCards.tsx
 - src/components/sections/AppointmentBooking.tsx
-
 
 ---
 
@@ -6341,6 +6403,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutProgress.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/cards/CheckoutPlanungspaketeCards.tsx
@@ -6349,7 +6412,6 @@ _Auto-generated documentation of project changes_
 - src/components/grids/ThreeByOneAdaptiveHeight.tsx
 - src/components/grids/ThreeByOneGrid.tsx
 - src/components/sections/AppointmentBooking.tsx
-
 
 ---
 
@@ -6361,8 +6423,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6374,8 +6436,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6387,8 +6449,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6400,8 +6462,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6413,8 +6475,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6426,8 +6488,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6439,12 +6501,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/core/DialogDataTransformer.ts
 - src/components/dialogs/CalendarDialog.tsx
 - src/components/sections/AppointmentBooking.tsx
 - src/components/sections/TerminVereinbarenContent.tsx
 - src/components/sections/index.ts
-
 
 ---
 
@@ -6456,8 +6518,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6469,8 +6531,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6482,8 +6544,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6495,8 +6557,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6508,8 +6570,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6521,13 +6583,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/sessions/track/route.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/konfigurator/core/ImageManager.ts
 - src/app/warenkorb/WarenkorbClient.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
-
 
 ---
 
@@ -6539,8 +6601,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6552,8 +6614,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6565,9 +6627,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/ui/Button.tsx
-
 
 ---
 
@@ -6579,8 +6641,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6592,8 +6654,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/entdecken/EntdeckenClient.tsx
 
+- src/app/entdecken/EntdeckenClient.tsx
 
 ---
 
@@ -6605,8 +6667,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6618,8 +6680,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6631,8 +6693,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6644,8 +6706,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6657,8 +6719,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/layout.tsx
 
+- src/app/layout.tsx
 
 ---
 
@@ -6670,8 +6732,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6683,8 +6745,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6696,6 +6758,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -6742,10 +6805,9 @@ _Auto-generated documentation of project changes_
 - src/components/sections/index.ts
 - src/components/ui/Button.tsx
 
-
 #### 📚 Documentation Changes
-- docs/TYPOGRAPHY_STANDARDS.md
 
+- docs/TYPOGRAPHY_STANDARDS.md
 
 ---
 
@@ -6757,8 +6819,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6770,8 +6832,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 
 ---
 
@@ -6783,6 +6845,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/agb/AgbClient.tsx
 - src/app/cookie-einstellungen/CookieEinstellungenClient.tsx
 - src/app/datenschutz/DatenschutzClient.tsx
@@ -6798,13 +6861,12 @@ _Auto-generated documentation of project changes_
 - src/app/warenkorb/page.tsx
 - src/app/warum-wir/page.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/ALPHA_TEST_PRESENTATION_GUIDE.md
 - docs/CONFIGURATOR_OPTIMIZATION_GUIDE.md
 - docs/CONTACT_SYSTEM_AND_ADMIN_IMPLEMENTATION_GUIDE.md
 - docs/SECURITY_TESTING_GUIDE.md
-
 
 ---
 
@@ -6816,12 +6878,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 
-
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -6833,9 +6895,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 - src/components/layout/Navbar.tsx
-
 
 ---
 
@@ -6847,11 +6909,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/usability-tests/export/route.ts
 - src/app/api/admin/usability-tests/route.ts
 - src/components/testing/AlphaSessionTracker.tsx
 - src/hooks/useAlphaSessionTracking.ts
-
 
 ---
 
@@ -6863,8 +6925,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6876,8 +6938,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -6889,8 +6951,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/components/CheckoutStepper.tsx
 
+- src/app/warenkorb/components/CheckoutStepper.tsx
 
 ---
 
@@ -6902,8 +6964,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/data/configuratorData.ts
 
+- src/app/konfigurator/data/configuratorData.ts
 
 ---
 
@@ -6915,8 +6977,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -6928,9 +6990,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/FactsBox.tsx
-
 
 ---
 
@@ -6942,20 +7004,20 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/entdecken/EntdeckenClient.tsx
 - src/components/sections/PartnersSection.tsx
 
-
 #### ⚙️ Backend Changes
+
 - scripts/README-DEV-SERVER.md
 - scripts/dev-with-ip.cmd
 - scripts/get-local-ip.js
 - scripts/start-dev.js
 
-
 #### 🔧 Configuration Changes
-- package.json
 
+- package.json
 
 ---
 
@@ -6967,6 +7029,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -6992,11 +7055,10 @@ _Auto-generated documentation of project changes_
 - src/components/sections/index.ts
 - src/components/ui/Button.tsx
 
-
 #### 🔧 Configuration Changes
+
 - next.config.ts
 - package.json
-
 
 ---
 
@@ -7008,8 +7070,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/PreviewPanel.tsx
 
+- src/app/konfigurator/components/PreviewPanel.tsx
 
 ---
 
@@ -7021,8 +7083,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7034,8 +7096,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7047,8 +7109,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/PvModuleOverlay.tsx
 
+- src/app/konfigurator/components/PvModuleOverlay.tsx
 
 ---
 
@@ -7060,8 +7122,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/FensterOverlay.tsx
 
+- src/app/konfigurator/components/FensterOverlay.tsx
 
 ---
 
@@ -7073,8 +7135,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7086,8 +7148,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7099,11 +7161,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/FensterOverlay.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/data/configuratorData.ts
-
 
 ---
 
@@ -7115,8 +7177,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7128,8 +7190,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7141,8 +7203,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/testing/AlphaSessionTracker.tsx
 
+- src/components/testing/AlphaSessionTracker.tsx
 
 ---
 
@@ -7154,8 +7216,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7167,8 +7229,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/testing/AlphaSessionTracker.tsx
 
+- src/components/testing/AlphaSessionTracker.tsx
 
 ---
 
@@ -7180,8 +7242,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7193,8 +7255,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7206,8 +7268,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7219,8 +7281,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7232,8 +7294,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7245,8 +7307,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7258,10 +7320,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 - src/components/testing/AlphaSessionTracker.tsx
 - src/hooks/useAlphaSessionTracking.ts
-
 
 ---
 
@@ -7273,8 +7335,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7286,8 +7348,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/PvModuleOverlay.tsx
 
+- src/app/konfigurator/components/PvModuleOverlay.tsx
 
 ---
 
@@ -7299,8 +7361,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/core/ImageManager.ts
 
+- src/app/konfigurator/core/ImageManager.ts
 
 ---
 
@@ -7312,8 +7374,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 
 ---
 
@@ -7325,8 +7387,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7338,8 +7400,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7351,8 +7413,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7364,8 +7426,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7377,8 +7439,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7390,8 +7452,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7403,9 +7465,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/hooks/index.ts
 - src/hooks/useAlphaSessionTracking.ts
-
 
 ---
 
@@ -7417,6 +7479,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -7449,11 +7512,10 @@ _Auto-generated documentation of project changes_
 - src/components/sections/SectionHeader.tsx
 - src/components/sections/index.ts
 
-
 #### 📚 Documentation Changes
+
 - docs/PROJECT_OVERVIEW.md
 - docs/TYPOGRAPHY_STANDARDS.md
-
 
 ---
 
@@ -7465,8 +7527,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7478,8 +7540,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/usability-tests/route.ts
 
+- src/app/api/admin/usability-tests/route.ts
 
 ---
 
@@ -7491,8 +7553,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7504,8 +7566,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7517,8 +7579,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7530,8 +7592,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7543,16 +7605,16 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorCheckbox.tsx
 
-
 #### ⚙️ Backend Changes
+
 - prisma/schema.prisma
 
-
 #### 🔧 Configuration Changes
-- next.config.ts
 
+- next.config.ts
 
 ---
 
@@ -7564,8 +7626,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7577,8 +7639,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/usability-tests/route.ts
 
+- src/app/api/admin/usability-tests/route.ts
 
 ---
 
@@ -7590,8 +7652,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7603,8 +7665,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7616,8 +7678,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7629,8 +7691,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7642,8 +7704,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/usability-tests/route.ts
 
+- src/app/api/admin/usability-tests/route.ts
 
 ---
 
@@ -7655,8 +7717,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7668,8 +7730,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/api/admin/usability-tests/route.ts
 
+- src/app/api/admin/usability-tests/route.ts
 
 ---
 
@@ -7681,8 +7743,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7694,8 +7756,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7707,8 +7769,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7720,8 +7782,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7733,8 +7795,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7746,8 +7808,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7759,8 +7821,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### ⚙️ Backend Changes
-- prisma/schema.prisma
 
+- prisma/schema.prisma
 
 ---
 
@@ -7772,8 +7834,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7785,8 +7847,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/data/configuratorData.ts
 
+- src/app/konfigurator/data/configuratorData.ts
 
 ---
 
@@ -7798,8 +7860,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7811,6 +7873,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/usability-tests/route.ts
 - src/app/konfigurator/components/CategorySection.tsx
 - src/app/konfigurator/components/ConfiguratorCheckbox.tsx
@@ -7818,7 +7881,6 @@ _Auto-generated documentation of project changes_
 - src/app/konfigurator/core/ImageManager.ts
 - src/app/konfigurator/core/PriceCalculator.ts
 - src/app/konfigurator/data/configuratorData.ts
-
 
 ---
 
@@ -7830,8 +7892,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7843,8 +7905,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7856,8 +7918,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 
+- src/app/admin/alpha-tests/components/AlphaTestDashboard.tsx
 
 ---
 
@@ -7869,8 +7931,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7882,8 +7944,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7895,8 +7957,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7908,8 +7970,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7921,8 +7983,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -7934,6 +7996,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/BrightnessOverlay.tsx
 - src/app/konfigurator/components/CartFooter.tsx
 - src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
@@ -7963,20 +8026,20 @@ _Auto-generated documentation of project changes_
 - src/components/images/ResponsiveHybridImage.tsx
 - src/components/layout/Navbar.tsx
 
-
 #### ⚙️ Backend Changes
+
 - scripts/README-Image-Swap.md
 - scripts/execute-image-swap.ps1
 - scripts/image-name-swap.js
 - scripts/verify-image-swap.js
 
-
 #### 🔧 Configuration Changes
+
 - .github/workflows/deploy-development.yml
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - README.md
 - docs/CONFIGURATOR_CODE_REVIEW.md
 - docs/CONFIGURATOR_OPTIMIZATION_GUIDE.md
@@ -7985,7 +8048,6 @@ _Auto-generated documentation of project changes_
 - docs/PERFORMANCE_OPTIMIZATION_FIXES.md
 - docs/PRICE_CONFIGURATION_OPTIMIZATION.md
 - docs/SEO_OPTIMIZATION_ROADMAP.md
-
 
 ---
 
@@ -8006,9 +8068,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/images/ClientBlobImage.tsx
 - src/components/images/ResponsiveHybridImage.tsx
-
 
 ---
 
@@ -8020,8 +8082,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8033,8 +8095,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8046,9 +8108,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/auth/route.ts
 - src/app/auth/page.tsx
-
 
 ---
 
@@ -8060,10 +8122,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/data/configuratorData.ts
-
 
 ---
 
@@ -8075,8 +8137,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/components/ConfiguratorShell.tsx
 
+- src/app/konfigurator/components/ConfiguratorShell.tsx
 
 ---
 
@@ -8088,8 +8150,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8101,8 +8163,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/LandingPageClient.tsx
 
+- src/app/LandingPageClient.tsx
 
 ---
 
@@ -8114,10 +8176,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/components/images/ClientBlobImage.tsx
 - src/components/images/ResponsiveHybridImage.tsx
-
 
 ---
 
@@ -8129,12 +8191,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/images/HybridBlobImage.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8146,8 +8208,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/images/HybridBlobImage.tsx
 
+- src/components/images/HybridBlobImage.tsx
 
 ---
 
@@ -8159,10 +8221,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/components/images/ClientBlobImage.tsx
 - src/components/images/HybridBlobImage.tsx
-
 
 ---
 
@@ -8174,8 +8236,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8187,8 +8249,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8200,8 +8262,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8213,6 +8275,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/api/images/batch/route.ts
 - src/app/api/images/route.ts
@@ -8222,7 +8285,6 @@ _Auto-generated documentation of project changes_
 - src/components/images/LazyVideoLoader.tsx
 - src/components/images/ResponsiveHybridImage.tsx
 - src/components/images/index.ts
-
 
 ---
 
@@ -8234,8 +8296,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8247,8 +8309,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/grids/FullWidthVideoGrid.tsx
 
+- src/components/grids/FullWidthVideoGrid.tsx
 
 ---
 
@@ -8260,8 +8322,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/grids/FullWidthVideoGrid.tsx
 
+- src/components/grids/FullWidthVideoGrid.tsx
 
 ---
 
@@ -8273,8 +8335,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8286,8 +8348,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8299,14 +8361,14 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/cards/ContentCards.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8318,6 +8380,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/entdecken/EntdeckenClient.tsx
@@ -8327,10 +8390,9 @@ _Auto-generated documentation of project changes_
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/Footer.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8342,8 +8404,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8355,8 +8417,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8368,8 +8430,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8381,8 +8443,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/WarenkorbClient.tsx
 
+- src/app/warenkorb/WarenkorbClient.tsx
 
 ---
 
@@ -8394,8 +8456,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/warenkorb/WarenkorbClient.tsx
 
+- src/app/warenkorb/WarenkorbClient.tsx
 
 ---
 
@@ -8407,13 +8469,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/components/cards/ContentCards.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8425,8 +8487,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/images/batch/route.ts
-- src/app/konfigurator/__tests__/ImageManager.performance.test.ts
+- src/app/konfigurator/**tests**/ImageManager.performance.test.ts
 - src/app/konfigurator/components/CartFooter.tsx
 - src/app/konfigurator/components/CategorySection.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
@@ -8438,10 +8501,9 @@ _Auto-generated documentation of project changes_
 - src/components/images/ClientBlobImage.tsx
 - src/components/layout/Navbar.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8453,9 +8515,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/warenkorb/WarenkorbClient.tsx
-
 
 ---
 
@@ -8467,10 +8529,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/SummaryPanel.tsx
 - src/app/warenkorb/WarenkorbClient.tsx
-
 
 ---
 
@@ -8482,8 +8544,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8495,8 +8557,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8508,8 +8570,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8521,8 +8583,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8534,8 +8596,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/layout/Navbar.tsx
 
+- src/components/layout/Navbar.tsx
 
 ---
 
@@ -8547,8 +8609,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8560,8 +8622,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8573,8 +8635,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8586,8 +8648,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8599,8 +8661,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8612,8 +8674,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8625,8 +8687,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/components/layout/Navbar.tsx
 
+- src/components/layout/Navbar.tsx
 
 ---
 
@@ -8638,8 +8700,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8651,8 +8713,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8664,10 +8726,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/core/ImageManager.ts
 - src/components/images/ClientBlobImage.tsx
-
 
 ---
 
@@ -8679,11 +8741,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/images/batch/route.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/core/ImageManager.ts
 - src/components/images/ClientBlobImage.tsx
-
 
 ---
 
@@ -8695,8 +8757,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8708,8 +8770,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/core/ImageManager.ts
 
+- src/app/konfigurator/core/ImageManager.ts
 
 ---
 
@@ -8721,6 +8783,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/showcase/grids/page.tsx
 - src/components/cards/ContentCards.tsx
@@ -8728,10 +8791,9 @@ _Auto-generated documentation of project changes_
 - src/components/grids/FullWidthVideoGrid.tsx
 - src/components/sections/MaterialShowcase.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8743,15 +8805,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/__tests__/ImageManager.performance.test.ts
+
+- src/app/konfigurator/**tests**/ImageManager.performance.test.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/core/ImageManager.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8763,11 +8825,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/konfigurator/__tests__/ImageManager.performance.test.ts
+
+- src/app/konfigurator/**tests**/ImageManager.performance.test.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/core/ImageManager.ts
-
 
 ---
 
@@ -8779,8 +8841,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8792,11 +8854,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/grids/FullWidthImageGrid.tsx
 - src/components/grids/ThreeByOneAdaptiveHeight.tsx
 - src/components/grids/ThreeByOneGrid.tsx
-
 
 ---
 
@@ -8808,8 +8870,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8821,12 +8883,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/showcase/cards/page.tsx
 - src/components/cards/ImageGlassCard.tsx
 - src/components/cards/SquareGlassCard.tsx
 - src/components/cards/SquareGlassCardsScroll.tsx
-
 
 ---
 
@@ -8838,8 +8900,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8851,8 +8913,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/unser-part/UnserPartClient.tsx
 
+- src/app/unser-part/UnserPartClient.tsx
 
 ---
 
@@ -8864,8 +8926,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8877,8 +8939,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
-- src/app/kontakt/KontaktClient.tsx
 
+- src/app/kontakt/KontaktClient.tsx
 
 ---
 
@@ -8890,8 +8952,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8903,8 +8965,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8916,8 +8978,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8929,8 +8991,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -8942,6 +9004,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/sync/page.tsx
 - src/app/api/sessions/track-interaction/route.ts
 - src/app/konfigurator/components/SummaryPanel.tsx
@@ -8951,11 +9014,10 @@ _Auto-generated documentation of project changes_
 - src/components/videos/LoopingVideo.tsx
 - src/hooks/useContentAnalytics.ts
 
-
 #### ⚙️ Backend Changes
+
 - prisma/migrations/20250729125118_fix_interaction_time_spent_bigint/migration.sql
 - prisma/schema.prisma
-
 
 ---
 
@@ -8967,6 +9029,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/sync/google-drive/route.ts
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/sections/ButtonGroup.tsx
@@ -8977,10 +9040,9 @@ _Auto-generated documentation of project changes_
 - src/hooks/index.ts
 - src/hooks/useContentAnalytics.ts
 
-
 #### 📚 Documentation Changes
-- docs/MODULAR_CONTENT_ARCHITECTURE.md
 
+- docs/MODULAR_CONTENT_ARCHITECTURE.md
 
 ---
 
@@ -8992,8 +9054,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9005,13 +9067,13 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/admin/sync/page.tsx
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/grids/FullWidthVideoGrid.tsx
 - src/components/grids/VideoGallery.tsx
-
 
 ---
 
@@ -9023,6 +9085,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/kontakt/KontaktClient.tsx
 - src/app/showcase/cards/page.tsx
@@ -9031,10 +9094,9 @@ _Auto-generated documentation of project changes_
 - src/app/warum-wir/WarumWirClient.tsx
 - src/components/grids/FullWidthVideoGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9046,8 +9108,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9059,9 +9121,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/components/grids/FullWidthVideoGrid.tsx
-
 
 ---
 
@@ -9073,8 +9135,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9086,8 +9148,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9099,9 +9161,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/components/images/ClientBlobVideo.tsx
 - src/components/videos/LoopingVideo.tsx
-
 
 ---
 
@@ -9113,6 +9175,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-part/DeinPartClient.tsx
 - src/app/showcase/videos/VideoIntegrationExample.tsx
 - src/app/showcase/videos/VideoReversePlaybackTest.tsx
@@ -9130,11 +9193,10 @@ _Auto-generated documentation of project changes_
 - src/hooks/index.ts
 - src/hooks/usePingPongVideo.ts
 
-
 #### 📚 Documentation Changes
+
 - docs/IMAGE_OPTIMIZATION_GUIDE.md
 - docs/PING_PONG_VIDEO_SYSTEM.md
-
 
 ---
 
@@ -9146,6 +9208,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/content/analytics/route.ts
 - src/app/api/test/security/route.ts
 - src/app/dein-part/DeinPartClient.tsx
@@ -9170,18 +9233,18 @@ _Auto-generated documentation of project changes_
 - src/components/videos/PingPongVideo.tsx
 - src/hooks/usePingPongVideo.ts
 
-
 #### ⚙️ Backend Changes
+
 - scripts/simple-security-test.js
 - scripts/test-security-native.js
 - scripts/test-security.js
 
-
 #### 🔧 Configuration Changes
+
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/ClientBlobVideo_EventListener_Fix.md
 - docs/ClientBlobVideo_Implementation_Guide.md
@@ -9190,7 +9253,6 @@ _Auto-generated documentation of project changes_
 - docs/PING_PONG_VIDEO_REFACTORING.md
 - docs/PING_PONG_VIDEO_SYSTEM.md
 - docs/SECURITY_TESTING_GUIDE.md
-
 
 ---
 
@@ -9202,8 +9264,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9215,9 +9277,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/unser-part/UnserPartClient.tsx
 - src/components/layout/Navbar.tsx
-
 
 ---
 
@@ -9229,8 +9291,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9242,8 +9304,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9255,8 +9317,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9268,8 +9330,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9281,8 +9343,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9294,8 +9356,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9307,8 +9369,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -9320,10 +9382,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/showcase/videos/ping-pong-demo/page.tsx
 - src/app/unser-part/UnserPartClient.tsx
 - src/app/unser-part/page.tsx
-
 
 ---
 

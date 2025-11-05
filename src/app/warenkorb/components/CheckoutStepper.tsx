@@ -992,7 +992,7 @@ export default function CheckoutStepper({
     const getRowSubtitle = (rowStep: number): string => {
       switch (rowStep) {
         case 0:
-          return "Deine Konfiguration";
+          return "Deine Auswahl";
         case 1:
           return "Wir prüfen deinen Baugrund";
         case 2:
@@ -1035,32 +1035,35 @@ export default function CheckoutStepper({
               <div className="p-secondary text-black text-center md:text-left">
                 <p>
                   <span className="text-gray-500">
-                    Dein Nest-Haus beginnt mit deinem
+                    Du hast dein Nest bereits konfiguriert und hast somit den
                   </span>{" "}
                   <span className="text-black">
-                    Vorentwurf und der Überprüfung deines Grundstücks.
+                    Überblick über Preis und Aussehen
                   </span>{" "}
                   <span className="text-gray-500">
-                    Sobald du dich für dein Haus entschieden hast, klären wir
-                    gemeinsam die nächsten Schritte. Wir zeigen dir, welche
-                    Informationen und Unterlagen wir von dir benötigen und was
-                    wir für dich übernehmen, damit
+                    deines Bauvorhabens. Deine
                   </span>{" "}
-                  <span className="text-black">dein Zuhause</span>{" "}
-                  <span className="text-gray-500">genau so entsteht,</span>{" "}
-                  <span className="text-black">wie du es dir wünschst.</span>
+                  <span className="text-black">Auswahl</span>{" "}
+                  <span className="text-gray-500">bleibt dabei stets</span>{" "}
+                  <span className="text-black">flexibel</span>{" "}
+                  <span className="text-gray-500">
+                    und kann jederzeit an deine Wünsche angepasst werden.
+                  </span>
                 </p>
                 <p className="mt-6">
-                  <span className="text-gray-500">Während wir uns um alle</span>{" "}
+                  <span className="text-gray-500">Mit dem</span>{" "}
+                  <span className="text-black">heutigen Kauf</span>{" "}
+                  <span className="text-gray-500">
+                    deckst du die Kosten für
+                  </span>{" "}
                   <span className="text-black">
-                    Rahmenbedingungen und rechtlichen Schritte
+                    Grundstückscheck und Vorentwurf.
                   </span>{" "}
                   <span className="text-gray-500">
-                    kümmern, zahlst du lediglich für unseren Service. Gefällt
-                    dir unser Vorentwurf nicht, kannst du ohne Verpflichtung
+                    Fahre fort und mache den ersten Schritt in Richtung
                   </span>{" "}
                   <span className="text-black">
-                    einfach vom Kauf zurücktreten.
+                    neues Zuhause.
                   </span>
                 </p>
               </div>
@@ -1094,8 +1097,6 @@ export default function CheckoutStepper({
               <h2 className="h2-title text-gray-500 mb-3">
                 <span className="text-black">Dein Preis</span>
                 <span className="text-gray-300"> Überblick</span>
-                <span className="text-gray-400"> | </span>
-                <span className="text-gray-500">kurz</span>
               </h2>
               <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                 <div>
@@ -1170,7 +1171,9 @@ export default function CheckoutStepper({
                         {/* Show discounted price: 3.000€ crossed out → 1.500€ action price */}
                         {isOhneNestMode ? (
                           <span className="flex items-center gap-2">
-                            <span className="text-gray-400 line-through">3.000 €</span>
+                            <span className="text-gray-400 line-through">
+                              3.000 €
+                            </span>
                             <span className="text-gray-900">1.500 €</span>
                           </span>
                         ) : (
@@ -1417,7 +1420,7 @@ export default function CheckoutStepper({
                         <span className="text-black">Dein Nest</span>
                         <span className="text-gray-300">
                           {" "}
-                          Deine Konfiguration
+                          Deine Auswahl
                         </span>
                       </h2>
                       {items.map((item) => (
@@ -2090,7 +2093,7 @@ export default function CheckoutStepper({
                       <span className="text-black">Dein Nest</span>
                       <span className="text-gray-300">
                         {" "}
-                        Deine Konfiguration
+                        Deine Auswahl
                       </span>
                     </h2>
                     {items.map((item) => (
@@ -2488,7 +2491,7 @@ export default function CheckoutStepper({
                       <div className="border border-gray-300 rounded-2xl p-6 bg-white">
                         <h3 className="text-lg font-medium text-gray-900 mb-6">
                           <span className="text-black">Dein Nest</span>
-                          <span className="text-gray-400"> Deine Konfiguration</span>
+                          <span className="text-gray-400"> Deine Auswahl</span>
                         </h3>
                         
                         <div className="space-y-4">
