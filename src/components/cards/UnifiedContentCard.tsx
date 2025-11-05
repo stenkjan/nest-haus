@@ -278,18 +278,39 @@ export default function UnifiedContentCard({
     // visualViewport gives us the visible area excluding browser UI
     const getStableHeight = () => {
       if (typeof window !== "undefined") {
-        // For iOS Safari, use the maximum available height to prevent scaling
-        // when the browser bar appears/disappears
+        // For iOS Safari, capture the maximum viewport height on initial load
+        // This prevents the dialog from shrinking when the address bar state changes
         const vh = window.visualViewport
           ? window.visualViewport.height
           : window.innerHeight;
+
+        // Use the larger of the two to ensure consistent sizing
+        // This prevents shrinking on first interaction
         const calculatedHeight = Math.max(vh, window.innerHeight);
-        return calculatedHeight;
+
+        // Store the initial height for future reference
+        if (stableViewportHeight === 0) {
+          return calculatedHeight;
+        }
+        return stableViewportHeight;
       }
       return 0;
     };
 
-    setStableViewportHeight(getStableHeight());
+    const initialHeight = getStableHeight();
+    if (initialHeight > 0 && stableViewportHeight === 0) {
+      setStableViewportHeight(initialHeight);
+    }
+
+    // For lightbox mode on iOS, ensure viewport is locked immediately
+    // This prevents the shrinking issue on first slide transition
+    if (isLightboxMode && stableViewportHeight === 0) {
+      const iosHeight = Math.max(
+        window.innerHeight,
+        window.visualViewport?.height || window.innerHeight
+      );
+      setStableViewportHeight(iosHeight);
+    }
 
     // Center or left-align the first card initially
     const containerWidth = window.innerWidth;
@@ -318,7 +339,14 @@ export default function UnifiedContentCard({
     }
 
     x.set(centerOffset);
-  }, [cardWidth, x, displayCards, getCardWidthForIndex, alignment]);
+  }, [
+    cardWidth,
+    x,
+    displayCards,
+    getCardWidthForIndex,
+    alignment,
+    isLightboxMode,
+  ]);
 
   // Calculate responsive card dimensions
   useEffect(() => {
@@ -2091,7 +2119,13 @@ export default function UnifiedContentCard({
                       ? "cards-scroll-snap cards-touch-optimized cards-no-bounce"
                       : ""
                 } ${
-                  layout === "video" ? "px-4" : maxWidth ? "px-8" : "px-4"
+                  isLightboxMode
+                    ? "" // No padding in lightbox mode - use full width
+                    : layout === "video"
+                      ? "px-4"
+                      : maxWidth
+                        ? "px-8"
+                        : "px-4"
                 } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
                 style={{ overflow: "visible" }}
               >

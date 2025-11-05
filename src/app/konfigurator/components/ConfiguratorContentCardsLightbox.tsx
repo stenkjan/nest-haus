@@ -143,7 +143,16 @@ export default function ConfiguratorContentCardsLightbox({
         transparent={true}
         className="p-0"
       >
-        <div className="w-full h-full flex flex-col items-center justify-center p-1 md:p-4 overflow-y-auto">
+        <div 
+          className="w-full h-full flex flex-col items-center justify-center overflow-y-auto"
+          style={{
+            // Lock height on iOS to prevent shrinking during first interaction
+            height: 'var(--ios-vh, 100vh)',
+            minHeight: 'var(--ios-vh, 100vh)',
+            maxHeight: 'var(--ios-vh, 100vh)',
+            padding: 0, // Remove padding to use full width
+          }}
+        >
           {/* UnifiedContentCard with responsive variant and custom data - Compact spacing for lightbox */}
           <div className="w-full max-w-none">
             <UnifiedContentCard
