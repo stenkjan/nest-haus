@@ -172,9 +172,9 @@ function calculateBelichtungspaketPrice(
 
         // Get percentage based on belichtungspaket option
         const percentageMap: Record<string, number> = {
-            'light': 0.12,   // 12%
-            'medium': 0.16,  // 16%
-            'bright': 0.22   // 22%
+            'light': 0.15,   // 15%
+            'medium': 0.22,  // 22%
+            'bright': 0.28   // 28%
         };
 
         const percentage = percentageMap[belichtungspaketValue] || 0.12;

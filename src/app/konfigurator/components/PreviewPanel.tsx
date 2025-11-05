@@ -21,6 +21,7 @@ import { ImageManager } from "../core/ImageManager";
 import type { ViewType } from "../types/configurator.types";
 import PvModuleOverlay from "./PvModuleOverlay";
 import GeschossdeckeOverlay from "./GeschossdeckeOverlay";
+import BelichtungspaketOverlay from "./BelichtungspaketOverlay";
 import ProtectedContent from "@/components/security/ProtectedContent";
 
 interface PreviewPanelProps {
@@ -28,6 +29,7 @@ interface PreviewPanelProps {
   className?: string;
   isPvOverlayVisible?: boolean;
   isGeschossdeckeOverlayVisible?: boolean;
+  isBelichtungspaketOverlayVisible?: boolean;
 }
 
 export default function PreviewPanel({
@@ -35,6 +37,7 @@ export default function PreviewPanel({
   className = "",
   isPvOverlayVisible = true,
   isGeschossdeckeOverlayVisible = false,
+  isBelichtungspaketOverlayVisible = false,
 }: PreviewPanelProps) {
   const {
     configuration,
@@ -361,6 +364,17 @@ export default function PreviewPanel({
                   innenverkleidung={configuration?.innenverkleidung?.value}
                   fussboden={configuration?.fussboden?.value}
                   isVisible={isGeschossdeckeOverlayVisible && activeView === "interior"}
+                  className=""
+                />
+              )}
+
+            {/* Belichtungspaket Overlay - Shows on exterior view when belichtungspaket is selected */}
+            {activeView === "exterior" &&
+              configuration?.belichtungspaket &&
+              (isMainImageLoaded || hasLoadedFirstImage) && (
+                <BelichtungspaketOverlay
+                  belichtungspaket={configuration.belichtungspaket.value}
+                  isVisible={isBelichtungspaketOverlayVisible && activeView === "exterior"}
                   className=""
                 />
               )}
