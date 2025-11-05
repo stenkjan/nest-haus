@@ -442,7 +442,7 @@ export default function NestSystemClient() {
               />
 
               {/* Additional Button Combination */}
-              <div className="flex gap-4 justify-center w-full">
+              <div className="flex gap-4 justify-center w-full pt-12">
                 {!isMobile && (
                   <Button
                     variant="primary"
