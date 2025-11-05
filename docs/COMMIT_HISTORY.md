@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [27a5538a900016120af089da077774b013272f24] - Wed Nov 5 15:04:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Update LandingPageClient and Footer for improved UI consistency  - Changed secondary button variant for sections in LandingPageClient to ensure consistent styling. - Updated text color in LandingPageClient for better visibility. - Modified footer background color in Footer component for enhanced aesthetics.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/Footer.tsx
+
+
+---
+
 ## [61f8db7c8c53abfcee78cfc885a31b1082d2b9ad] - Wed Nov 5 13:32:35 2025 +0100
 
 **Author**: stenkjan
