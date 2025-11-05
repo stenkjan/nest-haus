@@ -13,8 +13,8 @@ interface GridItem {
   description: string; // max 25 characters
   image: string;
   backgroundColor: string;
-  primaryAction: string;
-  secondaryAction: string;
+  primaryAction?: string; // Optional - if omitted, no primary button
+  secondaryAction?: string; // Optional - if omitted, no secondary button
   textColor?: "white" | "black"; // Optional text color per item
   primaryButtonVariant?:
     | "primary"
@@ -104,7 +104,7 @@ export default function TwoByTwoImageGrid({
             <div
               key={item.id}
               className="animate-pulse bg-gray-200 rounded-lg"
-              style={{ aspectRatio: "4/5", minHeight: "400px" }}
+              style={{ aspectRatio: "3/2", minHeight: "400px" }}
             />
           ))}
         </div>
@@ -126,7 +126,7 @@ export default function TwoByTwoImageGrid({
             key={item.id}
             className="relative flex-shrink-0 shadow-lg overflow-hidden"
             style={{
-              aspectRatio: "4/5", // Match actual image dimensions
+              aspectRatio: "3/2", // 3:2 horizontal aspect ratio
               minHeight: gridMinHeight,
             }}
             transition={{ duration: 0.2 }}
@@ -148,7 +148,7 @@ export default function TwoByTwoImageGrid({
 
             {/* Content Container */}
             <div className="relative h-full flex flex-col justify-between p-6">
-              {/* Title and Subtitle - Upper 1/5 */}
+              {/* Top Section - Title, Subtitle, and Buttons */}
               <motion.div
                 className="flex-shrink-0"
                 initial={{ y: -20, opacity: 0 }}
@@ -174,7 +174,7 @@ export default function TwoByTwoImageGrid({
                     {item.title}
                   </h2>
                   <h3
-                    className={`h3-secondary ${
+                    className={`h3-secondary ${item.primaryAction || item.secondaryAction ? "mb-4" : ""} ${
                       (item.textColor || textColor) === "white"
                         ? "text-white"
                         : "text-black"
@@ -182,10 +182,64 @@ export default function TwoByTwoImageGrid({
                   >
                     {item.subtitle}
                   </h3>
+
+                  {/* Button Group - Now under subtitle - Only render if at least one button exists */}
+                  {(item.primaryAction || item.secondaryAction) && (
+                    <div className="flex gap-2 justify-center">
+                      {/* Primary Button - Only render if primaryAction is provided */}
+                      {item.primaryAction &&
+                        (item.primaryLink ? (
+                          <Link href={item.primaryLink}>
+                            <Button
+                              variant={
+                                item.primaryButtonVariant || "landing-primary"
+                              }
+                              size={isUltraWide ? "sm" : "xs"}
+                            >
+                              {item.primaryAction}
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            variant={
+                              item.primaryButtonVariant || "landing-primary"
+                            }
+                            size={isUltraWide ? "sm" : "xs"}
+                          >
+                            {item.primaryAction}
+                          </Button>
+                        ))}
+
+                      {/* Secondary Button - Only render if secondaryAction is provided */}
+                      {item.secondaryAction &&
+                        (item.secondaryLink ? (
+                          <Link href={item.secondaryLink}>
+                            <Button
+                              variant={
+                                item.secondaryButtonVariant ||
+                                "landing-secondary"
+                              }
+                              size={isUltraWide ? "sm" : "xs"}
+                            >
+                              {item.secondaryAction}
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            variant={
+                              item.secondaryButtonVariant || "landing-secondary"
+                            }
+                            size={isUltraWide ? "sm" : "xs"}
+                          >
+                            {item.secondaryAction}
+                          </Button>
+                        ))}
+                    </div>
+                  )}
                 </div>
               </motion.div>
 
-              {/* Bottom Section - Lower 1/5 */}
+              {/* Bottom Section - Description */}
               <motion.div
                 className="flex-shrink-0"
                 initial={{ y: 20, opacity: 0 }}
@@ -203,7 +257,7 @@ export default function TwoByTwoImageGrid({
                 >
                   {/* Description Text */}
                   <p
-                    className={`p-primary mb-4 text-center ${
+                    className={`p-primary text-center ${
                       (item.textColor || textColor) === "white"
                         ? "text-white"
                         : "text-black"
@@ -211,53 +265,6 @@ export default function TwoByTwoImageGrid({
                   >
                     {item.description}
                   </p>
-
-                  {/* Button Group */}
-                  <div className="flex gap-2 justify-center">
-                    {/* Primary Button */}
-                    {item.primaryLink ? (
-                      <Link href={item.primaryLink}>
-                        <Button
-                          variant={
-                            item.primaryButtonVariant || "landing-primary"
-                          }
-                          size={isUltraWide ? "sm" : "xs"}
-                        >
-                          {item.primaryAction}
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Button
-                        variant={item.primaryButtonVariant || "landing-primary"}
-                        size={isUltraWide ? "sm" : "xs"}
-                      >
-                        {item.primaryAction}
-                      </Button>
-                    )}
-
-                    {/* Secondary Button */}
-                    {item.secondaryLink ? (
-                      <Link href={item.secondaryLink}>
-                        <Button
-                          variant={
-                            item.secondaryButtonVariant || "landing-secondary"
-                          }
-                          size={isUltraWide ? "sm" : "xs"}
-                        >
-                          {item.secondaryAction}
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Button
-                        variant={
-                          item.secondaryButtonVariant || "landing-secondary"
-                        }
-                        size={isUltraWide ? "sm" : "xs"}
-                      >
-                        {item.secondaryAction}
-                      </Button>
-                    )}
-                  </div>
                 </div>
               </motion.div>
             </div>

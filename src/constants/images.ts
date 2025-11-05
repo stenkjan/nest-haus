@@ -181,6 +181,10 @@ export const IMAGES = {
         nestHausLinienplanDreier: '304-nest-haus-entwurf-grundstueckscheck-baurecht-vorentwurf-erster-schritt',
         nestHausEntwurfVorentwurf: '305-nest-haus-entwurf-vorentwurf-planung-erstentwurf-hausbau', // CONFIRMED: Path works WITHOUT .png extension
         nestHausInteriorKueche: '306-nest-haus-interior-entwurf-modern-design-innenarchitektur-kueche-mit-ausblick',
+        nestHausEntdeckenDeinNestErklaerungProdukt: '307-nest-haus-entdecken-dein-nest-erklaerung-produkt',
+        nestHausEntwurfVorentwurfCheckGrundstueckscheck: '308-nest-haus-entwurf-vorentwurf-check-grundstueckscheck',
+        nestHausNachhaltigkeitUnserePhilosophieMission: '309-nest-haus-nachhaltigkeit-unsere-philosophie-mission',
+        nestHausTerminVereinbarungBuchenGespraechAnrufenEmail: '310-nest-haus-termin-vereinbarung-buchen-gespraech-anrufen-email',
         nestHausInteriorSteinplatten: '301-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
         // Desktop versions of images 13-16
         nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
