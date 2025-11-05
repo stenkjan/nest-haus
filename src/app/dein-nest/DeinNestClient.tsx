@@ -105,9 +105,9 @@ export default function DeinNestClient() {
           {/* Desktop Hero Content */}
           <div className="hidden md:block w-full">
             <SectionHeader
-              title="Design für dich gemacht"
-              subtitle="Dein Design im Freistil."
-              titleClassName="text-gray-900"
+              title="Design oder Bestpreis?"
+              subtitle="Nest verbindet beides in einem System"
+              titleClassName="text-black"
               wrapperMargin="mb-8"
             />
           </div>
@@ -139,7 +139,7 @@ export default function DeinNestClient() {
             />
 
             {/* Overlay Content */}
-            <div className="absolute inset-0 flex flex-col justify-end">
+            <div className="absolute inset-0 flex flex-col justify-end pb-8">
               {/* Mobile Title/Subtitle Overlay - Aligned with standard spacing */}
               <div className="absolute top-12 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
                 <h1 className="h1-secondary">Design für dich gemacht</h1>
@@ -148,57 +148,66 @@ export default function DeinNestClient() {
                 </h3>
               </div>
 
-              {/* Text Blocks positioned closer to buttons - Hidden on tablet and mobile */}
-              <div className="absolute bottom-20 lg:bottom-32 xl:bottom-24 2xl:bottom-32 left-0 right-0 justify-between items-center px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40 max-w-[1536px] mx-auto w-full hidden lg:flex">
-                {/* Left Text Block */}
-                <div className="text-center">
-                  <h2 className="h2-title font-bold text-white">Nest 80</h2>
-                  <h3 className="h3-secondary-light text-white">
-                    75m² ab € 177.000.-
-                  </h3>
+              {/* Desktop: Text Blocks and Buttons grouped together - Hidden on mobile */}
+              <div className="hidden lg:flex flex-col gap-8 max-w-[1536px] mx-auto w-full px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40">
+                {/* Text Blocks */}
+                <div className="flex justify-between items-center w-full">
+                  {/* Left Text Block */}
+                  <div className="text-center">
+                    <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                      Nest 80
+                    </h2>
+                    <h3 className="h3-secondary-light text-white drop-shadow-lg">
+                      75m² ab € 177.000.-
+                    </h3>
+                  </div>
+
+                  {/* Center Text Block */}
+                  <div className="text-center">
+                    <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                      Nest 120
+                    </h2>
+                    <h3 className="h3-secondary-light text-white drop-shadow-lg">
+                      115m² ab € 245.000.-
+                    </h3>
+                  </div>
+
+                  {/* Right Text Block */}
+                  <div className="text-center">
+                    <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                      Nest 160
+                    </h2>
+                    <h3 className="h3-secondary-light text-white drop-shadow-lg">
+                      155m² ab € 313.000.-
+                    </h3>
+                  </div>
                 </div>
 
-                {/* Center Text Block */}
-                <div className="text-center">
-                  <h2 className="h2-title font-bold text-white ">Nest 120</h2>
-                  <h3 className="h3-secondary-light text-white">
-                    115m² ab € 245.000.-
-                  </h3>
-                </div>
-
-                {/* Right Text Block */}
-                <div className="text-center">
-                  <h2 className="h2-title font-bold text-black">Nest 160</h2>
-                  <h3 className="h3-secondary-light text-black">
-                    155m² ab € 313.000.-
-                  </h3>
+                {/* Buttons */}
+                <div className="flex gap-4 justify-center">
+                  <Link href="/nest-system">
+                    <Button variant="primary" size="xs">
+                      Erster Schritt
+                    </Button>
+                  </Link>
+                  <Link href="/entwurf">
+                    <Button variant="landing-secondary" size="xs">
+                      Termin vereinbaren
+                    </Button>
+                  </Link>
                 </div>
               </div>
 
-              {/* Mobile Buttons - Positioned in the middle */}
-              <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
+              {/* Mobile Buttons - Positioned at bottom */}
+              <div className="flex gap-4 justify-center px-4 sm:px-6 lg:hidden">
                 <Link href="/nest-system">
                   <Button variant="primary" size="xs">
-                    Nest System
+                    Erster Schritt
                   </Button>
                 </Link>
                 <Link href="/entwurf">
-                  <Button variant="landing-secondary-blue" size="xs">
-                    Entwurf
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Desktop Buttons - Positioned at bottom */}
-              <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
-                <Link href="/nest-system">
-                  <Button variant="primary" size="xs">
-                    Nest System
-                  </Button>
-                </Link>
-                <Link href="/entwurf">
-                  <Button variant="landing-secondary-blue" size="xs">
-                    Entwurf
+                  <Button variant="landing-secondary" size="xs">
+                    Termin vereinbaren
                   </Button>
                 </Link>
               </div>
