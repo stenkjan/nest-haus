@@ -142,9 +142,11 @@ export default function DeinNestClient() {
             <div className="absolute inset-0 flex flex-col justify-end pb-8">
               {/* Mobile Title/Subtitle Overlay - Aligned with standard spacing */}
               <div className="absolute top-12 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
-                <h1 className="h1-secondary">Design für dich gemacht</h1>
-                <h3 className="h3-secondary text-black mb-12 max-w-3xl mx-auto text-center">
-                  Dein Design im Freistil.
+                <h1 className="h1-secondary text-white drop-shadow-lg">
+                  Design oder Bestpreis?
+                </h1>
+                <h3 className="h3-secondary text-white mb-12 max-w-3xl mx-auto text-center drop-shadow-lg">
+                  Nest verbindet beides in einem System
                 </h3>
               </div>
 
@@ -288,7 +290,7 @@ export default function DeinNestClient() {
         <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
             title="Konfiguriere dein ®Nest Haus"
-            subtitle="IDurch serielle Fertigung zu transparenten Bestpreisen"
+            subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
             wrapperMargin="mb-12"
           />
 

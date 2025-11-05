@@ -2399,11 +2399,7 @@ export default function UnifiedContentCard({
                   <button
                     onClick={() => navigateCard(-1)}
                     disabled={isAnimating}
-                    className={`absolute top-1/2 transform -translate-y-1/2 ${
-                      isGlass
-                        ? "bg-gray-800 hover:bg-gray-700"
-                        : "bg-white hover:bg-gray-50"
-                    } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                    className={`absolute top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
                       screenWidth < 1024 ? "p-3" : "p-4"
                     }`}
                     style={{
@@ -2411,7 +2407,7 @@ export default function UnifiedContentCard({
                     }}
                   >
                     <svg
-                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-black"}`}
+                      className="w-6 h-6 text-black"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -2430,11 +2426,7 @@ export default function UnifiedContentCard({
                   <button
                     onClick={() => navigateCard(1)}
                     disabled={isAnimating}
-                    className={`absolute top-1/2 transform -translate-y-1/2 ${
-                      isGlass
-                        ? "bg-gray-800 hover:bg-gray-700"
-                        : "bg-white hover:bg-gray-50"
-                    } disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                    className={`absolute top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
                       screenWidth < 1024 ? "p-3" : "p-4"
                     }`}
                     style={{
@@ -2442,7 +2434,7 @@ export default function UnifiedContentCard({
                     }}
                   >
                     <svg
-                      className={`w-6 h-6 ${isGlass ? "text-white" : "text-black"}`}
+                      className="w-6 h-6 text-black"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -2456,35 +2448,6 @@ export default function UnifiedContentCard({
                     </svg>
                   </button>
                 )}
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Instructions */}
-        {showInstructions && layout !== "process-detail" && (
-          <div
-            className={`text-center mt-6 text-sm ${isGlass ? "text-white" : "text-black"}`}
-          >
-            {isStatic ? (
-              <p>
-                Single responsive {isGlass ? "glass" : ""} card • {layout}{" "}
-                layout
-              </p>
-            ) : (
-              <>
-                <p className="hidden md:block">
-                  Use ← → arrow keys to navigate
-                </p>
-                <p className="md:hidden">Use arrow buttons to navigate</p>
-                <p className="mt-1">
-                  Showing{" "}
-                  {Math.min(
-                    Math.ceil(cardsPerView),
-                    displayCards.length - currentIndex
-                  )}{" "}
-                  of {displayCards.length} cards
-                </p>
               </>
             )}
           </div>
