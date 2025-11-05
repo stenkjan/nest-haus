@@ -113,7 +113,7 @@
    - **Geschossdecke** shows total (quantity × unit price)
    - **PV-Anlage** shows total (modules × module price)
 
-3. Compare with warenkorb "Dein Nest Deine Konfiguration" - prices should match exactly
+3. Compare with warenkorb "Dein Nest Deine Auswahl" - prices should match exactly
 
 ### Test Interaction Tracking
 

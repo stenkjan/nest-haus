@@ -17,6 +17,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 ## Key Differences
 
 ### Full Konfigurator (`/konfigurator`)
+
 - Complete configuration with all options
 - Price calculations and display
 - All categories: Gebäudehülle, Innenverkleidung, Fussboden, etc.
@@ -26,6 +27,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - Complete payment flow with multiple Teilzahlungen
 
 ### Simplified Konfigurator (`/konfigurator2`)
+
 - Minimal configuration: Size and facade only
 - No price display
 - Only 2 categories: Nest (size) and Gebäudehülle (facade)
@@ -41,6 +43,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 ### Phase 1: Preparation (1-2 days before migration)
 
 1. **Backup Current Production**
+
    ```bash
    # Create a backup branch
    git checkout main
@@ -69,18 +72,21 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 **CRITICAL**: Follow this exact sequence to avoid route conflicts.
 
 1. **Rename Full Konfigurator to Backup**
+
    ```bash
    # Rename the full konfigurator directory
    mv src/app/konfigurator src/app/konfigurator-full
    ```
 
 2. **Rename Simplified Konfigurator to Main**
+
    ```bash
    # Rename konfigurator2 to konfigurator
    mv src/app/konfigurator2 src/app/konfigurator
    ```
 
 3. **Update Internal Imports** (if any direct imports exist)
+
    ```bash
    # Search for any hardcoded imports to old paths
    grep -r "from.*konfigurator2" src/
@@ -118,12 +124,13 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 ### Phase 4: SEO and Metadata Updates
 
 1. **Update Sitemap** (if applicable)
+
    ```xml
    <!-- Change from -->
    <url>
      <loc>https://nest-haus.at/konfigurator</loc>
    </url>
-   
+
    <!-- To -->
    <url>
      <loc>https://nest-haus.at/konfigurator</loc>
@@ -150,6 +157,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 ### Phase 5: Testing Checklist
 
 #### Simplified Konfigurator (`/konfigurator`)
+
 - [ ] All 5 size options selectable
 - [ ] All 4 facade options selectable
 - [ ] Preview image updates correctly
@@ -160,10 +168,11 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - [ ] No "Dein Nest Überblick" section
 
 #### Warenkorb Ohne Nest Mode
+
 - [ ] Overview shows "—" for "Dein Nest Haus"
 - [ ] Overview shows "1.000 €" for "Check & Vorentwurf"
 - [ ] Overview shows "—" for "Planungspaket"
-- [ ] "Dein Nest Deine Konfiguration" box hidden
+- [ ] "Dein Nest Deine Auswahl" box hidden
 - [ ] "Dein Nest Ein Einblick in die Zukunft" box hidden
 - [ ] Planungspakete section still visible and functional
 - [ ] Abschluss step shows centered "Heute zu bezahlen" box with 1.000 €
@@ -172,6 +181,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - [ ] "Vorheriger Schritt" and "Zur Kassa" buttons visible
 
 #### Full Konfigurator (`/konfigurator-full`) - Backward Compatibility
+
 - [ ] All existing features still work
 - [ ] Prices calculate correctly
 - [ ] All selection categories available
@@ -184,6 +194,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - [ ] Stripe integration functional
 
 #### State Management & Routing
+
 - [ ] Mode persists across page reloads
 - [ ] URL params sync with store state
 - [ ] Session storage updates correctly
@@ -196,6 +207,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 ### Phase 6: Deployment
 
 1. **Create Migration PR**
+
    ```bash
    git checkout -b migration/simplified-konfigurator
    git add .
@@ -206,7 +218,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
    - Update all internal links and navigation
    - Update SEO metadata
    - Maintain backward compatibility for full konfigurator"
-   
+
    git push origin migration/simplified-konfigurator
    ```
 
@@ -240,6 +252,7 @@ git push origin main
 ```
 
 For Vercel deployment:
+
 1. Go to Vercel dashboard
 2. Select previous deployment
 3. Click "Promote to Production"
@@ -249,12 +262,14 @@ For Vercel deployment:
 ## Post-Migration Monitoring
 
 ### Week 1: Daily Checks
+
 - Monitor error rates in Vercel logs
 - Check conversion rate for "Direkt zum Vorentwurf"
 - Verify payment success rate remains stable
 - Monitor user feedback/support tickets
 
 ### Week 2-4: Weekly Checks
+
 - Analyze user behavior (simplified vs full konfigurator usage)
 - Compare bounce rates
 - Check SEO rankings
@@ -264,39 +279,42 @@ For Vercel deployment:
 
 ## Feature Comparison Table
 
-| Feature | Full Konfigurator | Simplified Konfigurator |
-|---------|------------------|------------------------|
-| Route | `/konfigurator-full` | `/konfigurator` |
-| Size Selection | ✅ 5 options | ✅ 5 options |
-| Facade Selection | ✅ 4 options | ✅ 4 options |
-| Interior Options | ✅ Complete | ❌ None |
-| Floor Options | ✅ Complete | ❌ None |
-| Lighting Packages | ✅ 3 levels | ❌ None |
-| PV Modules | ✅ Configurable | ❌ None |
-| Additional Options | ✅ 8+ categories | ❌ None |
-| Price Display | ✅ Full breakdown | ❌ Hidden |
-| Preview Navigation | ✅ Arrows | ❌ Static |
-| Summary Panel | ✅ "Dein Nest Überblick" | ❌ Hidden |
-| Cart Button | "In den Warenkorb" | "Direkt zum Vorentwurf" |
-| Reset Button | ✅ "Neu konfigurieren" | ❌ Hidden |
-| Warenkorb Mode | Full configuration | Ohne nest (Vorentwurf) |
-| Payment Amount | Variable | Fixed 1.000 € |
+| Feature            | Full Konfigurator        | Simplified Konfigurator |
+| ------------------ | ------------------------ | ----------------------- |
+| Route              | `/konfigurator-full`     | `/konfigurator`         |
+| Size Selection     | ✅ 5 options             | ✅ 5 options            |
+| Facade Selection   | ✅ 4 options             | ✅ 4 options            |
+| Interior Options   | ✅ Complete              | ❌ None                 |
+| Floor Options      | ✅ Complete              | ❌ None                 |
+| Lighting Packages  | ✅ 3 levels              | ❌ None                 |
+| PV Modules         | ✅ Configurable          | ❌ None                 |
+| Additional Options | ✅ 8+ categories         | ❌ None                 |
+| Price Display      | ✅ Full breakdown        | ❌ Hidden               |
+| Preview Navigation | ✅ Arrows                | ❌ Static               |
+| Summary Panel      | ✅ "Dein Nest Überblick" | ❌ Hidden               |
+| Cart Button        | "In den Warenkorb"       | "Direkt zum Vorentwurf" |
+| Reset Button       | ✅ "Neu konfigurieren"   | ❌ Hidden               |
+| Warenkorb Mode     | Full configuration       | Ohne nest (Vorentwurf)  |
+| Payment Amount     | Variable                 | Fixed 1.000 €           |
 
 ---
 
 ## Technical Notes
 
 ### Session Management
+
 - Ohne nest mode flag stored in both URL params and database
 - Flag persists in `cartStore` via Zustand
 - Cleared when user navigates from full konfigurator
 
 ### Image Loading
+
 - Simplified konfigurator uses index 1 images (lines 228-251 in `images.ts`)
 - Same image paths as full konfigurator
 - No additional Google Drive sync required
 
 ### Price Calculations
+
 - Full konfigurator: Client-side calculation via `PriceCalculator`
 - Simplified konfigurator: Fixed 1.000 € for Vorentwurf
 - No impact on existing price calculation logic
@@ -324,6 +342,7 @@ For Vercel deployment:
 ## Contact
 
 For questions or issues during migration:
+
 - Technical Lead: [Contact]
 - DevOps: [Contact]
 - Product Owner: [Contact]
@@ -333,6 +352,3 @@ For questions or issues during migration:
 ## Changelog
 
 - **v1.0** (2025-11-03): Initial migration guide created
-
-
-
