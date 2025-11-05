@@ -379,7 +379,8 @@ export default function LandingPageClient() {
                       subtitle: "Sample subtitle",
                       description: "Sample description",
                       image:
-                        IMAGES.function.nestHausEntdeckenDeinNestErklaerungProdukt,
+                        IMAGES.function
+                          .nestHausEntdeckenDeinNestErklaerungProdukt,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Entdecken",
                       primaryLink: "/entdecken",
@@ -390,7 +391,8 @@ export default function LandingPageClient() {
                       subtitle: "Sample subtitle",
                       description: "Sample description",
                       image:
-                        IMAGES.function.nestHausEntwurfVorentwurfCheckGrundstueckscheck,
+                        IMAGES.function
+                          .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Entdecken",
                       primaryLink: "/entdecken",
@@ -401,7 +403,8 @@ export default function LandingPageClient() {
                       subtitle: "Sample subtitle",
                       description: "Sample description",
                       image:
-                        IMAGES.function.nestHausNachhaltigkeitUnserePhilosophieMission,
+                        IMAGES.function
+                          .nestHausNachhaltigkeitUnserePhilosophieMission,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Entdecken",
                       primaryLink: "/entdecken",
@@ -412,7 +415,8 @@ export default function LandingPageClient() {
                       subtitle: "Sample subtitle",
                       description: "Sample description",
                       image:
-                        IMAGES.function.nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
+                        IMAGES.function
+                          .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Entdecken",
                       primaryLink: "/entdecken",
