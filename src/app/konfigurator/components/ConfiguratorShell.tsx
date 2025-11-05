@@ -69,6 +69,8 @@ export default function ConfiguratorShell({
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
   const [isGeschossdeckeOverlayVisible, setIsGeschossdeckeOverlayVisible] =
     useState<boolean>(false);
+  const [isBelichtungspaketOverlayVisible, setIsBelichtungspaketOverlayVisible] =
+    useState<boolean>(false);
   // Hidden by default, only show when actively selecting fenster
 
   // Dialog state
@@ -255,6 +257,9 @@ export default function ConfiguratorShell({
         if (categoryId === "belichtungspaket") {
           // PRESERVE PV overlay - allow both to be visible simultaneously on exterior view
           // DO NOT hide PV overlay - they can coexist on exterior view
+          
+          // Show belichtungspaket overlay when selecting belichtungspaket
+          setIsBelichtungspaketOverlayVisible(true);
 
           // Switch to exterior view to show the belichtungspaket overlay
           const { switchToView } = useConfiguratorStore.getState();
@@ -263,6 +268,8 @@ export default function ConfiguratorShell({
           }
         } else if (categoryId === "fenster") {
           // DO NOT hide PV or brightness overlays - they show on different views
+          // Hide belichtungspaket overlay when fenster is being selected
+          setIsBelichtungspaketOverlayVisible(false);
         } else if (categoryId === "geschossdecke") {
           // Handle geschossdecke overlay and quantity - check if already selected
           const currentSelection =
@@ -285,6 +292,9 @@ export default function ConfiguratorShell({
             // New selection - set quantity to 1 and show overlay
             setGeschossdeckeQuantity(1);
             setIsGeschossdeckeOverlayVisible(true);
+            
+            // Hide belichtungspaket overlay when geschossdecke is selected
+            setIsBelichtungspaketOverlayVisible(false);
 
             // Switch to interior view to show the same image as fussboden/innenverkleidung
             const { switchToView } = useConfiguratorStore.getState();
@@ -292,6 +302,12 @@ export default function ConfiguratorShell({
               switchToView("interior");
             }
           }
+        } else if (categoryId === "nest" || categoryId === "gebaeudehuelle") {
+          // Hide belichtungspaket overlay when changing core building selections
+          setIsBelichtungspaketOverlayVisible(false);
+        } else if (categoryId === "innenverkleidung" || categoryId === "fussboden") {
+          // Hide belichtungspaket overlay when changing interior materials
+          setIsBelichtungspaketOverlayVisible(false);
         }
 
         // Auto-scroll to next section after selection - Commented out
@@ -561,9 +577,9 @@ export default function ConfiguratorShell({
             };
             const nestSize = nestSizeMap[configuration.nest.value] || 80;
             const percentageMap: Record<string, number> = {
-              light: 0.12,
-              medium: 0.16,
-              bright: 0.22,
+              light: 0.15,
+              medium: 0.22,
+              bright: 0.28,
             };
             const percentage =
               percentageMap[configuration.belichtungspaket.value] || 0.12;
@@ -1642,6 +1658,7 @@ export default function ConfiguratorShell({
             isMobile={true}
             isPvOverlayVisible={isPvOverlayVisible}
             isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
+            isBelichtungspaketOverlayVisible={isBelichtungspaketOverlayVisible}
           />
         </div>
 
@@ -1674,6 +1691,7 @@ export default function ConfiguratorShell({
             isMobile={false}
             isPvOverlayVisible={isPvOverlayVisible}
             isGeschossdeckeOverlayVisible={isGeschossdeckeOverlayVisible}
+            isBelichtungspaketOverlayVisible={isBelichtungspaketOverlayVisible}
           />
         </div>
 

@@ -4,6 +4,47 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9bc7940e7edf894b6350802b80c821c53545fc6f] - Wed Nov 5 10:37:14 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branches 'main' and 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [244f3256391eede800c696d612056665a5957ebe] - Wed Nov 5 10:32:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/USER_TRACKING_FIXES_COMPLETE.md
+- preiskalkulation/ANGEBOT_EXTRACTION_TEMPLATE.md
+- preiskalkulation/PRICING_ANALYSIS_CURRENT_STATE.md
+- preiskalkulation/PRICING_QUESTIONNAIRE.md
+- preiskalkulation/README_PRICING_OVERHAUL.md
+- preiskalkulation/SIMPLE_QUESTIONNAIRE.md
+- preiskalkulation/SIMPLE_QUESTIONS.md
+- preiskalkulation/START_HERE.md
+- preiskalkulation/UPLOAD_INSTRUCTIONS.md
+
+
+---
+
 ## [f52808a54a3acb6b2e6c776ddbbcbeca2f148505] - Wed Nov 5 09:44:17 2025 +0100
 
 **Author**: stenkjan

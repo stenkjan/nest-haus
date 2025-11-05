@@ -292,7 +292,7 @@ export class PriceCalculator {
   /**
    * Calculate belichtungspaket price based on nest size and fenster material
    * Formula: nest_size * percentage * fenster_material_price_per_sqm
-   * Percentages: light=12%, medium=16%, bright=22%
+   * Percentages: light=15%, medium=22%, bright=28%
    * Default fenster material: PVC (280€/m²) if no fenster selected
    */
   static calculateBelichtungspaketPrice(
@@ -314,9 +314,9 @@ export class PriceCalculator {
 
       // Get percentage based on belichtungspaket option
       const percentageMap: Record<string, number> = {
-        'light': 0.12,   // 12%
-        'medium': 0.16,  // 16%
-        'bright': 0.22   // 22%
+        'light': 0.15,   // 15%
+        'medium': 0.22,  // 22%
+        'bright': 0.28   // 28%
       };
 
       const percentage = percentageMap[belichtungspaket.value] || 0.12;
