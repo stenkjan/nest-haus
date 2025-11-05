@@ -57,7 +57,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-white text-gray-700 mt-auto" role="contentinfo">
+    <footer className="bg-[#F4F4F4] text-gray-700 mt-auto" role="contentinfo">
       {/* Image Carousel Section - Hidden on mobile */}
       <div className="hidden md:block">
         <LandingImagesCarousel backgroundColor="white" maxWidth={false} />

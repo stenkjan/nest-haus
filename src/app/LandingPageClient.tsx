@@ -59,7 +59,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const, // Will be overridden by getSecondaryButtonVariant
+    secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
     id: 2,
@@ -69,7 +69,7 @@ const sectionsContent = [
     h3: "So individuell wie du",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 3,
@@ -79,7 +79,7 @@ const sectionsContent = [
     h3: "Visionen brauchen Räume",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 4,
@@ -109,7 +109,7 @@ const sectionsContent = [
     h3: "Neue Wege. Neue Räume.",
     button1: "Entdecken",
     button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary-blue" as const,
+    secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 7,
@@ -222,10 +222,10 @@ export default function LandingPageClient() {
   // Get responsive button variant for sections 1, 2, 3, 6, and 8 (mobile blue for 8)
   const getSecondaryButtonVariant = (sectionId: number) => {
     if (sectionId === 1) {
-      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+      return "landing-secondary-blue"; // Always blue for section 1
     }
     if (sectionId === 2) {
-      return isMobile ? "landing-secondary" : "landing-secondary";
+      return "landing-secondary"; // Always blue for section 2
     }
     if (sectionId === 3) {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
@@ -234,21 +234,21 @@ export default function LandingPageClient() {
       return isMobile ? "landing-secondary" : "landing-secondary-blue";
     }
     if (sectionId === 7) {
-      return isMobile ? "landing-secondary" : "landing-secondary-blue";
+      return "landing-secondary"; // Always white for section 7
     }
     if (sectionId === 8) {
-      return isMobile ? "landing-secondary-blue" : "landing-secondary-blue";
+      return "landing-secondary"; // Always white for section 8
     }
     return sectionsContent[sectionId - 1].secondaryButtonVariant;
   };
 
   // Utility: For section 8, always use text-[#605047] for h1/h3, else original logic
   const getSectionTextColor = (sectionId: number, _isMobile: boolean) => {
-    if (sectionId === 8) {
+    if (sectionId === 1) {
       return "text-[#605047]";
     }
     if (sectionId === 2) {
-      return "text-white";
+      return "text-[#605047]";
     }
     if (sectionId === 7) {
       return "text-white md:text-white";
@@ -428,7 +428,7 @@ export default function LandingPageClient() {
                       primaryLink: "/entdecken",
                     },
                   ]}
-                  textColor="white"
+                  textColor="black"
                 />
               </section>
             )}
