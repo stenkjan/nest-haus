@@ -4,6 +4,74 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4e77da73174ee0c9c1c028cdee9d04300936ef20] - Wed Nov 5 15:56:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Rename variables for clarity and consistency  - Updated variable names in DeinNestClient, KontaktClient, NestSystemClient, UnifiedContentCard, and TwoByTwoImageGrid components to include underscores for unused parameters. - This change enhances code readability and maintains consistency across the codebase.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/kontakt/KontaktClient.tsx
+- src/app/nest-system/NestSystemClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+
+
+---
+
+## [817196d7cf7af9534140ded9d1a97473827d7e36] - Wed Nov 5 15:47:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [7579d36a952002b45c0a4ff828a1514aadd55494] - Wed Nov 5 15:20:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/kontakt/KontaktClient.tsx
+- src/app/nest-system/NestSystemClient.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/Footer.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [27a5538a900016120af089da077774b013272f24] - Wed Nov 5 15:04:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Update LandingPageClient and Footer for improved UI consistency  - Changed secondary button variant for sections in LandingPageClient to ensure consistent styling. - Updated text color in LandingPageClient for better visibility. - Modified footer background color in Footer component for enhanced aesthetics.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/Footer.tsx
+
+
+---
+
 ## [61f8db7c8c53abfcee78cfc885a31b1082d2b9ad] - Wed Nov 5 13:32:35 2025 +0100
 
 **Author**: stenkjan

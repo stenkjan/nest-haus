@@ -76,11 +76,11 @@ export const IMAGES = {
         aluminium_schwarz: '187-nest-haus-oeffnungen-fenster-tuer-material-aluminium-dunkel-modern'
     },
 
-    // Belichtungspaket overlay images (showing light intensity)
+    // Belichtungspaket overlay images (showing light intensity) - SVG overlays
     belichtungspaketOverlays: {
-        light: '66-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-leicht-light',
-        medium: '67-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-mittel-medium',
-        bright: '68-nest-haus-oeffnungen-fenster-tueren-licht-hell-belichtung-belichtungsgrad-hell-bright'
+        light: '66-nest-haus-oeffnungen-fenster-tueren-belichtungspaket-light',
+        medium: '67-nest-haus-oeffnungen-fenster-tueren-belichtungspaket-medium',
+        bright: '68-nest-haus-oeffnungen-fenster-tueren-belichtungspaket-bright'
     },
 
     pvModule: {

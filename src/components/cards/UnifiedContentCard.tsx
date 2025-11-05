@@ -168,7 +168,7 @@ export default function UnifiedContentCard({
   title = "",
   subtitle = "",
   maxWidth = true,
-  showInstructions = true,
+  showInstructions: _showInstructions = true,
   backgroundColor = "black",
   buttons,
   enableLightbox = false,
@@ -178,7 +178,7 @@ export default function UnifiedContentCard({
   // State management
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
-  const [cardsPerView, setCardsPerView] = useState(3);
+  const [_cardsPerView, setCardsPerView] = useState(3);
   const [isClient, setIsClient] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);

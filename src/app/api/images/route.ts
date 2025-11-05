@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
   try {
     // Add images/ prefix if not already present (same logic as ServerBlobImage)
     const imagePath = path.startsWith('images/') ? path : `images/${path}`;
-    const extensions = ['', '.jpg', '.jpeg', '.png', '.webp', '.avif', '.mp4', '.webm', '.mov'];
+    const extensions = ['', '.svg', '.jpg', '.jpeg', '.png', '.webp', '.avif', '.mp4', '.webm', '.mov'];
 
     // Timeout wrapper for blob list operations
     const timeoutPromise = new Promise<never>((_, reject) => {

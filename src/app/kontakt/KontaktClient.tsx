@@ -10,7 +10,7 @@ import {
   AppointmentBookingSection,
   GrundstueckCheckForm,
   GetInContactBanner,
-  LandingImagesCarousel,
+  LandingImagesCarousel as _LandingImagesCarousel,
 } from "@/components/sections";
 import Footer from "@/components/Footer";
 
