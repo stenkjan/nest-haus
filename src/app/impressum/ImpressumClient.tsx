@@ -25,14 +25,14 @@ export default function ImpressumClient() {
         {/* Company Info Section */}
         <section id="company-info" className="w-full py-16">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4 text-center">
+            <h1 className="font-medium text-4xl md:text-[60px] tracking-[-0.02em] mb-4">
               Impressum
             </h1>
-            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl mx-auto text-center">
+            <h2 className="h2-subtitle tracking-[-0.015em] leading-8 max-w-3xl">
               Angaben gemäß § 5 E-Commerce-Gesetz (ECG)
             </h2>
 
-            <div className="max-w-4xl mx-auto text-center space-y-8">
+            <div className="max-w-4xl space-y-8">
               <h3 className="text-2xl font-medium mb-8">Eco Chalets GmbH</h3>
 
               <div className="grid md:grid-cols-2 gap-12 text-gray-700">
@@ -92,8 +92,8 @@ export default function ImpressumClient() {
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="h2-section tracking-[-0.02em]">Kontaktdaten</h2>
 
-            <div className="max-w-4xl mx-auto">
-              <div className="flex justify-center text-center text-gray-700">
+            <div className="max-w-4xl">
+              <div className="text-gray-700">
                 <div className="space-y-6">
                   {/* <h3 className="text-xl font-medium mb-6">
                     Allgemeine Kontaktdaten
@@ -163,7 +163,7 @@ export default function ImpressumClient() {
               Rechtliche Hinweise
             </h2>
 
-            <div className="max-w-4xl mx-auto space-y-12 text-center text-gray-700">
+            <div className="max-w-4xl space-y-12 text-gray-700">
               <div className="space-y-4">
                 <h3 className="text-2xl font-medium">Gewerbeordnung</h3>
                 <div className="space-y-2">
@@ -261,7 +261,7 @@ export default function ImpressumClient() {
               Haftungsausschluss
             </h2>
 
-            <div className="max-w-4xl mx-auto space-y-12 text-center text-gray-700">
+            <div className="max-w-4xl space-y-12 text-gray-700">
               <div className="space-y-4">
                 <h3 className="text-2xl font-medium">Haftung für Inhalte</h3>
                 <p className="leading-relaxed">
