@@ -482,8 +482,9 @@ export default function ConfiguratorShell({
   }, [configuration?.nest?.value, getModuleCount]);
 
   // Helper function to calculate maximum Geschossdecken based on nest size
+  // Maximum is one less than the number of modules (modules - 1)
   const getMaxGeschossdecken = useCallback((): number => {
-    if (!configuration?.nest?.value) return 4; // Default for nest80
+    if (!configuration?.nest?.value) return 3; // Default for nest80 (4 modules - 1 = 3)
     const moduleMapping: Record<string, number> = {
       nest80: 4, // 80m² = 4 × 20m² modules
       nest100: 5, // 100m² = 5 × 20m² modules
@@ -491,7 +492,8 @@ export default function ConfiguratorShell({
       nest140: 7, // 140m² = 7 × 20m² modules
       nest160: 8, // 160m² = 8 × 20m² modules
     };
-    return moduleMapping[configuration.nest.value] || 4;
+    const modules = moduleMapping[configuration.nest.value] || 4;
+    return modules - 1; // Maximum is one less than modules
   }, [configuration?.nest?.value]);
 
   // RELATIVE price display - show price differences relative to currently selected option
@@ -1379,6 +1381,25 @@ export default function ConfiguratorShell({
       }
     }
   }, [getMaxPvModules, pvQuantity, configuration?.pvanlage, updateSelection]);
+
+  // Adjust geschossdecke quantity when nest size changes and exceeds new maximum
+  useEffect(() => {
+    const maxGeschossdecke = getMaxGeschossdecken();
+    if (geschossdeckeQuantity > maxGeschossdecke) {
+      setGeschossdeckeQuantity(maxGeschossdecke);
+      // Update the configuration with the new capped quantity
+      if (configuration?.geschossdecke) {
+        updateSelection({
+          category: configuration.geschossdecke.category,
+          value: configuration.geschossdecke.value,
+          name: configuration.geschossdecke.name,
+          price: configuration.geschossdecke.price,
+          description: configuration.geschossdecke.description,
+          quantity: maxGeschossdecke,
+        });
+      }
+    }
+  }, [getMaxGeschossdecken, geschossdeckeQuantity, configuration?.geschossdecke, updateSelection]);
 
   // Sync local PV quantity with store on mount/configuration change
   useEffect(() => {

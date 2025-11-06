@@ -380,12 +380,13 @@ export function calculateSizeDependentPrice(
 
 /**
  * Get maximum geschossdecken based on nest size
- * Each nest module can have one geschossdecke
+ * Maximum is one less than the number of modules (modules - 1)
  * @param nestType - The nest type (nest80, nest100, etc.)
  * @returns Maximum number of geschossdecken allowed
  */
 export function getMaxGeschossdecken(nestType: string): number {
   // Each nest size corresponds to number of 20m² modules
+  // Maximum geschossdecke is modules - 1
   const moduleMapping: Record<string, number> = {
     nest80: 4,  // 80m² = 4 × 20m² modules
     nest100: 5, // 100m² = 5 × 20m² modules  
@@ -394,5 +395,6 @@ export function getMaxGeschossdecken(nestType: string): number {
     nest160: 8  // 160m² = 8 × 20m² modules
   };
 
-  return moduleMapping[nestType] || 4; // Default to nest80
+  const modules = moduleMapping[nestType] || 4; // Default to nest80
+  return modules - 1; // Maximum is one less than modules
 }
