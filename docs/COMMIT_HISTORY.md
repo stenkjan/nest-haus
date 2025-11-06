@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [71e732639fed283b7e4678ca1259b02966ece953] - Thu Nov 6 12:36:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update interior cladding material from Kiefer to Lärche across multiple components and configurations  - Changed default and selected values for interior cladding from 'kiefer' to 'laerche' in various files including pricing calculations, configurator components, and data mappings. - Updated related descriptions and mappings to reflect the new material choice.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [fe0d90e4043aac4a75fac03e35c7832ed22926df] - Thu Nov 6 12:15:59 2025 +0100
 
 **Author**: stenkjan
