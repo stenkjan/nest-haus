@@ -37,11 +37,27 @@ const nextConfig: NextConfig = {
     // Ignore markdown files completely (they shouldn't be imported in code)
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const webpack = require('webpack');
+    
+    // Strategy 1: IgnorePlugin to prevent webpack from processing .md files
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /\.md$/,
       })
     );
+
+    // Strategy 2: NormalModuleReplacementPlugin to replace .md files with empty module
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/\.md$/, 'data:text/plain,')
+    );
+
+    // Strategy 3: Module rule to handle .md files as empty source
+    config.module.rules.push({
+      test: /\.md$/,
+      type: 'asset/source',
+      generator: {
+        dataUrl: () => 'data:text/plain;base64,',
+      },
+    });
 
     if (!isServer) {
       // Fallback for Prisma client in browser environments
