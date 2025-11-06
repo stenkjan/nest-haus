@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui";
 import { TerminVereinbarenContent } from "./TerminVereinbarenContent";
 import { useCartStore } from "@/store/cartStore";
+import { useConfiguratorStore } from "@/store/configuratorStore";
 
 /**
  * Text Preset: Description Text Small
@@ -37,6 +38,7 @@ const AppointmentBooking = ({
   showSubmitButton = true,
 }: AppointmentBookingProps) => {
   const { setAppointmentDetails } = useCartStore();
+  const { sessionId } = useConfiguratorStore();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
@@ -284,6 +286,7 @@ const AppointmentBooking = ({
             phone: formData.phone,
             email: formData.email,
           },
+          sessionId: sessionId || null,
           inquiryId: result.inquiryId,
           timeSlotAvailable: result.timeSlotAvailable,
         };

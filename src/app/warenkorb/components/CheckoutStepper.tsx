@@ -67,9 +67,9 @@ export default function CheckoutStepper({
   paymentRedirectStatus,
   onPaymentRedirectHandled,
 }: CheckoutStepperProps) {
-  const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate, getDeliveryDateFormatted } =
+  const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate, getDeliveryDateFormatted, isAppointmentFromCurrentSession, appointmentDetails } =
     useCartStore();
-  const { currentPrice, configuration: currentConfiguration } =
+  const { currentPrice, configuration: currentConfiguration, sessionId } =
     useConfiguratorStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
@@ -1243,21 +1243,36 @@ export default function CheckoutStepper({
                     <div
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(3)}`}
                     >
-                      {getAppointmentSummaryShort() ? (
-                        <div className="flex items-start gap-2 justify-end">
-                          <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line text-right max-w-[120px] md:max-w-none">
-                            {getAppointmentSummaryShort()}
-                          </span>
-                          <span
-                            aria-hidden
-                            className="text-[#3D6CE1] flex-shrink-0"
-                          >
-                            ✓
-                          </span>
-                        </div>
-                      ) : (
-                        "—"
-                      )}
+                      {(() => {
+                        const appointmentSummary = getAppointmentSummaryShort(sessionId);
+                        const hasAppointmentFromOtherSession = appointmentDetails && !isAppointmentFromCurrentSession(sessionId);
+                        
+                        if (appointmentSummary) {
+                          return (
+                            <div className="flex items-start gap-2 justify-end">
+                              <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line text-right max-w-[120px] md:max-w-none">
+                                {appointmentSummary}
+                              </span>
+                              <span
+                                aria-hidden
+                                className="text-[#3D6CE1] flex-shrink-0"
+                              >
+                                ✓
+                              </span>
+                            </div>
+                          );
+                        } else if (hasAppointmentFromOtherSession) {
+                          return (
+                            <div className="flex items-start gap-2 justify-end">
+                              <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
+                                bereits vereinbart
+                              </span>
+                            </div>
+                          );
+                        } else {
+                          return "—";
+                        }
+                      })()}
                     </div>
                   </div>
                   {/* Show delivery date only if NOT in ohne nest mode */}
@@ -1276,7 +1291,7 @@ export default function CheckoutStepper({
                       <div
                         className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
                       >
-                        {getAppointmentSummary() ? (
+                        {getAppointmentSummary(sessionId) ? (
                           <div className="flex items-start gap-2 justify-end">
                             <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
                               {deliveryDateString}
@@ -1334,7 +1349,7 @@ export default function CheckoutStepper({
 
   // Compute guaranteed delivery date (6 months from appointment date)
   const deliveryDateString = useMemo(() => {
-    const deliveryDate = getDeliveryDate();
+    const deliveryDate = getDeliveryDate(sessionId);
     if (!deliveryDate) return "";
 
     return deliveryDate.toLocaleDateString("de-DE", {
@@ -1342,7 +1357,7 @@ export default function CheckoutStepper({
       month: "2-digit",
       year: "numeric",
     });
-  }, [getDeliveryDate]);
+  }, [getDeliveryDate, sessionId]);
 
   // Decide which configuration to use for images: prioritize cart item for consistent display
   const sourceConfig = useMemo(() => {
@@ -2037,7 +2052,7 @@ export default function CheckoutStepper({
                   Dein Liefertermin
                 </h2>
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                  {getDeliveryDateFormatted() || "TBD"}
+                  {getDeliveryDateFormatted(sessionId) || "TBD"}
                 </div>
               </div>
 
@@ -2807,7 +2822,7 @@ export default function CheckoutStepper({
                               <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                    {getAppointmentSummary()
+                                    {getAppointmentSummary(sessionId)
                                       ? "Terminvereinbarung"
                                       : "—"}
                                   </div>
@@ -2816,15 +2831,30 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                  {getAppointmentSummary() ? (
-                                    <div className="flex items-start justify-end">
-                                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
-                                        {getAppointmentSummaryShort()}
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    "—"
-                                  )}
+                                  {(() => {
+                                    const appointmentSummary = getAppointmentSummaryShort(sessionId);
+                                    const hasAppointmentFromOtherSession = appointmentDetails && !isAppointmentFromCurrentSession(sessionId);
+                                    
+                                    if (appointmentSummary) {
+                                      return (
+                                        <div className="flex items-start justify-end">
+                                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
+                                            {appointmentSummary}
+                                          </span>
+                                        </div>
+                                      );
+                                    } else if (hasAppointmentFromOtherSession) {
+                                      return (
+                                        <div className="flex items-start justify-end">
+                                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
+                                            bereits vereinbart
+                                          </span>
+                                        </div>
+                                      );
+                                    } else {
+                                      return "—";
+                                    }
+                                  })()}
                                 </div>
                               </div>
                             </div>

@@ -37,6 +37,9 @@ export interface AppointmentDetails {
     phone: string
     email: string
   }
+  sessionId?: string | null
+  inquiryId?: string
+  timeSlotAvailable?: boolean
 }
 
 export interface OrderDetails {
@@ -85,10 +88,11 @@ interface CartState {
   // Appointment actions
   setAppointmentDetails: (details: AppointmentDetails) => void
   clearAppointmentDetails: () => void
-  getAppointmentSummary: () => string | null
-  getAppointmentSummaryShort: () => string | null
-  getDeliveryDate: () => Date | null
-  getDeliveryDateFormatted: () => string | null
+  getAppointmentSummary: (currentSessionId?: string | null) => string | null
+  getAppointmentSummaryShort: (currentSessionId?: string | null) => string | null
+  getDeliveryDate: (currentSessionId?: string | null) => Date | null
+  getDeliveryDateFormatted: (currentSessionId?: string | null) => string | null
+  isAppointmentFromCurrentSession: (currentSessionId?: string | null) => boolean
 
   // Order actions
   setOrderDetails: (details: OrderDetails) => void
@@ -314,10 +318,28 @@ export const useCartStore = create<CartState>()(
         set({ appointmentDetails: null })
       },
 
+      // Check if appointment belongs to current session
+      isAppointmentFromCurrentSession: (currentSessionId?: string | null) => {
+        const state = get()
+        if (!state.appointmentDetails) return false
+        
+        // If no sessionId stored with appointment, treat as old appointment (from previous session)
+        if (!state.appointmentDetails.sessionId) return false
+        
+        // If no current sessionId provided, can't verify - treat as different session
+        if (!currentSessionId) return false
+        
+        // Check if sessionIds match
+        return state.appointmentDetails.sessionId === currentSessionId
+      },
+
       // Get appointment summary
-      getAppointmentSummary: () => {
+      getAppointmentSummary: (currentSessionId?: string | null) => {
         const state = get()
         if (!state.appointmentDetails) return null
+        
+        // Only return summary if appointment belongs to current session
+        if (!get().isAppointmentFromCurrentSession(currentSessionId)) return null
 
         const date = new Date(state.appointmentDetails.date)
         const formattedDate = date.toLocaleDateString('de-DE', {
@@ -331,9 +353,12 @@ export const useCartStore = create<CartState>()(
       },
 
       // Get appointment summary in short format for price overview
-      getAppointmentSummaryShort: () => {
+      getAppointmentSummaryShort: (currentSessionId?: string | null) => {
         const state = get()
         if (!state.appointmentDetails) return null
+        
+        // Only return summary if appointment belongs to current session
+        if (!get().isAppointmentFromCurrentSession(currentSessionId)) return null
 
         const date = new Date(state.appointmentDetails.date)
         const formattedDate = date.toLocaleDateString('de-DE', {
@@ -346,9 +371,12 @@ export const useCartStore = create<CartState>()(
       },
 
       // Calculate delivery date (6 months after appointment, skipping weekends/holidays)
-      getDeliveryDate: () => {
+      getDeliveryDate: (currentSessionId?: string | null) => {
         const state = get()
         if (!state.appointmentDetails) return null
+        
+        // Only return delivery date if appointment belongs to current session
+        if (!get().isAppointmentFromCurrentSession(currentSessionId)) return null
 
         const appointmentDate = new Date(state.appointmentDetails.date)
 
@@ -404,8 +432,8 @@ export const useCartStore = create<CartState>()(
       },
 
       // Get formatted delivery date
-      getDeliveryDateFormatted: () => {
-        const deliveryDate = get().getDeliveryDate()
+      getDeliveryDateFormatted: (currentSessionId?: string | null) => {
+        const deliveryDate = get().getDeliveryDate(currentSessionId)
         if (!deliveryDate) return null
 
         return deliveryDate.toLocaleDateString('de-DE', {

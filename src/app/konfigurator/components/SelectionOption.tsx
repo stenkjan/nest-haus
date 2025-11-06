@@ -66,16 +66,14 @@ export default function SelectionOption({
               entspricht
             </p>
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-              {categoryId === "geschossdecke" && contributionPrice
-                ? "— €/m²" // Placeholder for price/m² - will be filled from sheet
-                : shouldShowPricePerSqm && nestModel && contributionPrice
-                  ? PriceUtils.calculateOptionPricePerSquareMeter(
-                      contributionPrice,
-                      nestModel,
-                      categoryId,
-                      id
-                    )
-                  : ""}
+              {shouldShowPricePerSqm && nestModel && contributionPrice
+                ? PriceUtils.calculateOptionPricePerSquareMeter(
+                    contributionPrice,
+                    nestModel,
+                    categoryId,
+                    id
+                  )
+                : ""}
             </p>
           </div>
         );
