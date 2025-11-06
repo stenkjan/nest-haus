@@ -153,26 +153,35 @@ export class PricingSyncService {
    * Get Google Service Account credentials from environment
    */
   private getCredentials() {
-    const keyFile = process.env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE;
-    
-    if (keyFile) {
-      // Load from file (development)
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        return require(`../../${keyFile}`);
-      } catch {
-        console.warn('Could not load key file, trying environment variables');
-      }
-    }
-
-    // Load from environment variables (production)
+    // Load from environment variables (works for both dev and production)
     const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
     const key = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
 
     if (!email || !key) {
+      // Try loading from file only in development (server-side only, not bundled)
+      const keyFile = process.env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE;
+      if (keyFile && typeof window === 'undefined') {
+        try {
+          // Use fs.readFileSync for server-side only (not bundled by webpack)
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const fs = require('fs');
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const path = require('path');
+          const keyPath = path.join(process.cwd(), keyFile);
+          const keyData = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
+          return {
+            client_email: keyData.client_email,
+            private_key: keyData.private_key,
+          };
+        } catch (error) {
+          console.warn('Could not load key file, trying environment variables:', error);
+        }
+      }
+
       throw new Error(
         'Google Service Account credentials not configured. ' +
-        'Set GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_SERVICE_ACCOUNT_KEY'
+        'Set GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_SERVICE_ACCOUNT_KEY, ' +
+        'or provide GOOGLE_SERVICE_ACCOUNT_KEY_FILE (development only)'
       );
     }
 

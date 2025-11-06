@@ -34,6 +34,15 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   webpack: (config, { isServer }) => {
+    // Ignore markdown files completely (they shouldn't be imported in code)
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const webpack = require('webpack');
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /\.md$/,
+      })
+    );
+
     if (!isServer) {
       // Fallback for Prisma client in browser environments
       config.resolve.fallback = {
