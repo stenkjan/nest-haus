@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c162275e80fcd6c4b24f04b7caf6a80ac2a23c34] - Thu Nov 6 15:43:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Enhance geschossdecke pricing and description handling  - Dynamically calculate and update the unit price for 'Geschossdecke' based on configuration size. - Adjusted the description for 'Geschossdecke' to reflect dynamic pricing. - Updated 'Standard' option description to be empty for better visual alignment in the UI. - Implemented special handling for 'Standard' to center vertically when no description is provided.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [5d313bc4446ebd602131c42cff989063790ecf4a] - Thu Nov 6 15:34:26 2025 +0100
 
 **Author**: stenkjan
