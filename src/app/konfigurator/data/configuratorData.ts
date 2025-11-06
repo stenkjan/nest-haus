@@ -78,6 +78,19 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
+    id: 'geschossdecke',
+    title: 'Geschossdecke',
+    subtitle: 'Zusätzliche Ebenen',
+    options: [
+      {
+        id: 'geschossdecke_module',
+        name: 'Geschossdecke',
+        description: 'Zusätzliche Geschossdecke\n5.000€ pro Einheit',
+        price: { type: 'upgrade', amount: 5000, monthly: 26 }
+      }
+    ]
+  },
+  {
     id: 'gebaeudehuelle',
     title: 'Gebäudehülle',
     subtitle: 'Kleide dich ein',
@@ -300,19 +313,6 @@ export const configuratorData: CategoryData[] = [
         name: 'Wassergeführte Fußbodenheizung',
         description: 'Wasserbasiertes Heizungssystem\nDynamische Preisgestaltung nach Größe',
         price: { type: 'upgrade', amount: 7500, monthly: 39 } // Base price for nest80
-      }
-    ]
-  },
-  {
-    id: 'geschossdecke',
-    title: 'Geschossdecke',
-    subtitle: 'Zusätzliche Ebenen',
-    options: [
-      {
-        id: 'geschossdecke_module',
-        name: 'Geschossdecke',
-        description: 'Zusätzliche Geschossdecke\n5.000€ pro Einheit',
-        price: { type: 'upgrade', amount: 5000, monthly: 26 }
       }
     ]
   }
