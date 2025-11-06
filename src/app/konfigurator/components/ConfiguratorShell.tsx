@@ -18,6 +18,7 @@ import {
 import type { SelectionOption as SelectionOptionType } from "../types/configurator.types";
 import { ImageManager } from "../core/ImageManager";
 import { PriceCalculator } from "../core/PriceCalculator";
+import { PriceUtils } from "../core/PriceUtils";
 import { configuratorData } from "../data/configuratorData";
 import { calculateSizeDependentPrice } from "@/constants/configurator";
 import CategorySection from "./CategorySection";
