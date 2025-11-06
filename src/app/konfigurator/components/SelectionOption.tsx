@@ -66,14 +66,16 @@ export default function SelectionOption({
               entspricht
             </p>
             <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-              {shouldShowPricePerSqm && nestModel && contributionPrice
-                ? PriceUtils.calculateOptionPricePerSquareMeter(
-                    contributionPrice,
-                    nestModel,
-                    categoryId,
-                    id
-                  )
-                : ""}
+              {categoryId === "geschossdecke" && contributionPrice
+                ? "— €/m²" // Placeholder for price/m² - will be filled from sheet
+                : shouldShowPricePerSqm && nestModel && contributionPrice
+                  ? PriceUtils.calculateOptionPricePerSquareMeter(
+                      contributionPrice,
+                      nestModel,
+                      categoryId,
+                      id
+                    )
+                  : ""}
             </p>
           </div>
         );
@@ -464,6 +466,8 @@ export default function SelectionOption({
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             {categoryId === "pvanlage" && price.amount
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
+              : categoryId === "geschossdecke" && price.amount
+                ? "— €/m²" // Placeholder for price/m² - will be filled from sheet
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
                     price.amount,
@@ -513,8 +517,8 @@ export default function SelectionOption({
         </button>
       )}
 
-      <div className="box_selection_name flex-1 min-w-0 pr-[clamp(0.625rem,1.75vw,1.125rem)]">
-        <p className="font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight text-black">
+      <div className={`box_selection_name flex-1 min-w-0 pr-[clamp(0.625rem,1.75vw,1.125rem)] ${categoryId === "fussboden" && id === "ohne_belag" && !description.trim() ? "flex flex-col justify-center" : ""}`}>
+        <p className={`font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight text-black ${categoryId === "fussboden" && id === "ohne_belag" && !description.trim() ? "" : ""}`}>
           {name}
         </p>
         {(() => {
@@ -522,6 +526,11 @@ export default function SelectionOption({
           const descriptionLines = description
             .split("\n")
             .filter((line) => line.trim());
+
+          // Special handling for "Standard" (ohne_belag) - center vertically by hiding description
+          if (categoryId === "fussboden" && id === "ohne_belag" && !description.trim()) {
+            return null; // Don't render description, name will be centered via flex
+          }
 
           // For nest modules, the description already contains the proper format with newlines
           if (categoryId === "nest" && descriptionLines.length >= 2) {

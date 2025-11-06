@@ -85,7 +85,7 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'geschossdecke_module',
         name: 'Geschossdecke',
-        description: 'Zusätzliche Geschossdecke\n5.000€ pro Einheit',
+        description: 'Zusätzliche Geschossdecke', // Price will be added dynamically
         price: { type: 'upgrade', amount: 5000, monthly: 26 }
       }
     ]
@@ -175,8 +175,8 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'ohne_belag',
-        name: 'Ohne Belag',
-        description: 'Kein Bodenbelag\n\n',
+        name: 'Standard',
+        description: '',
         price: { type: 'included', amount: 0 }
       },
       {

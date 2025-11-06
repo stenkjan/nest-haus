@@ -1541,12 +1541,24 @@ export default function ConfiguratorShell({
                         ? getActualContributionPrice(category.id, option.id)
                         : null;
 
+                      // For geschossdecke, dynamically calculate unit price and add to description
+                      let dynamicDescription = option.description;
+                      if (category.id === "geschossdecke" && configuration?.nest?.value) {
+                        const unitPrice = calculateSizeDependentPrice(
+                          configuration.nest.value,
+                          "geschossdecke",
+                          1
+                        );
+                        const formattedPrice = PriceUtils.formatPrice(unitPrice);
+                        dynamicDescription = `Zusätzliche Geschossdecke\n${formattedPrice} pro Einheit`;
+                      }
+
                       return (
                         <SelectionOption
                           key={option.id}
                           id={option.id}
                           name={option.name}
-                          description={option.description}
+                          description={dynamicDescription}
                           price={displayPrice}
                           isSelected={isOptionSelected(category.id, option.id)}
                           categoryId={category.id}
