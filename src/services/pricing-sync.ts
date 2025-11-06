@@ -157,11 +157,29 @@ export class PricingSyncService {
     
     if (keyFile) {
       // Load from file (development)
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        return require(`../../${keyFile}`);
-      } catch {
-        console.warn('Could not load key file, trying environment variables');
+      // Only allow JSON files to prevent webpack from bundling other file types
+      if (!keyFile.endsWith('.json')) {
+        console.warn('Key file must be a JSON file, falling back to environment variables');
+      } else {
+        try {
+          // Use fs.readFileSync to avoid webpack's dynamic require analysis
+          // This prevents webpack from trying to bundle all files in the directory
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const path = require('path');
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const fs = require('fs');
+          const keyFilePath = path.resolve(process.cwd(), keyFile);
+          
+          // Verify the file exists and is a JSON file before reading
+          if (!fs.existsSync(keyFilePath)) {
+            throw new Error(`Key file not found: ${keyFilePath}`);
+          }
+          
+          const keyFileContent = fs.readFileSync(keyFilePath, 'utf8');
+          return JSON.parse(keyFileContent);
+        } catch (error) {
+          console.warn('Could not load key file, trying environment variables:', error);
+        }
       }
     }
 
