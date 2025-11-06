@@ -136,7 +136,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
           mobile: "Lärchen-Innenverkleidung bringt natürliche Wärme in den Raum. Markante Maserung und goldgelbe Töne schaffen gemütliche Atmosphäre. Leicht, gut verarbeitbar und feuchtigkeitsregulierend.",
           desktop: "Die Innenverkleidung aus Lärchenholz bringt natürliche Wärme und lebendige Optik in den Innenraum. Die markante Maserung und die warmen, goldgelben Töne schaffen eine gemütliche, einladende Atmosphäre. Gleichzeitig ist das Holz leicht, gut zu verarbeiten und wirkt feuchtigkeitsregulierend – ideal für ein angenehmes, gesundes Raumklima. Mit seiner zeitlosen Ausstrahlung passt es sowohl in moderne als auch in traditionelle Wohnkonzepte."
         },
-        imagePath: IMAGES.interiorMaterials.kiefer
+        imagePath: IMAGES.interiorMaterials.laerche
       }
     ]
   },

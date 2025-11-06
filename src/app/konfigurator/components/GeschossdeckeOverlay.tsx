@@ -28,13 +28,13 @@ export default function GeschossdeckeOverlay({
     fussboden?: string
   ): string => {
     // Map innenverkleidung values to overlay image names
-    // laerche → kiefer (uses same image path), fichte → fichte, steirische_eiche → eiche
+    // laerche → laerche, fichte → fichte, steirische_eiche → eiche
     let wallMaterial = "fichte"; // Default
     
     if (innenverkleidung) {
       const innenLower = innenverkleidung.toLowerCase();
       if (innenLower.includes("laerche") || innenLower.includes("kiefer")) {
-        wallMaterial = "kiefer"; // Uses kiefer image path (holznatur)
+        wallMaterial = "laerche"; // Uses laerche image path (holznatur)
       } else if (innenLower.includes("fichte")) {
         wallMaterial = "fichte";
       } else if (innenLower.includes("eiche")) {

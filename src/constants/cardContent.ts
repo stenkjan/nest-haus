@@ -183,7 +183,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         mobileSubtitle: "",
         mobileDescription:
             "Lärchenholz mit lebendiger Maserung und warmen Tönen. Gemütlich, leicht zu verarbeiten und raumklimafreundlich.",
-        image: IMAGES.materials.holzKiefer,
+        image: IMAGES.materials.holzLaerche,
         backgroundColor: "#F4F4F4",
     },
     {

@@ -141,11 +141,11 @@ export const IMAGES = {
         geschossdecke_fichte_steinplatten_hell: '330-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-fichte',
         geschossdecke_fichte_steinplatten_dunkel: '333-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-fichte',
 
-        // Kiefer (Pine) variations
-        geschossdecke_kiefer_ohne_belag: '323-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-kiefer',
-        geschossdecke_kiefer_parkett: '326-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-kiefer',
-        geschossdecke_kiefer_steinplatten_hell: '329-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-kiefer',
-        geschossdecke_kiefer_steinplatten_dunkel: '332-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-kiefer',
+        // Lärche (Larch) variations
+        geschossdecke_laerche_ohne_belag: '323-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-kiefer',
+        geschossdecke_laerche_parkett: '326-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-kiefer',
+        geschossdecke_laerche_steinplatten_hell: '329-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-kiefer',
+        geschossdecke_laerche_steinplatten_dunkel: '332-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-kiefer',
     },
 
 
@@ -339,14 +339,14 @@ export const IMAGES = {
         kalkstein: '56-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Kalkstein-Kanafar',
         schiefer: '57-NEST-Haus-Materialien-Oberflaechen-Fussboden-Naturstein-Schiefer',
         holzFichte: '58-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Fichte-natur-hell',
-        holzKiefer: '59-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Kiefer-natur',
+        holzLaerche: '59-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Kiefer-natur',
     },
 
     // Interior material images for innenverkleidung dialog
     interiorMaterials: {
         eiche: '50-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Eichenholz-Interior-Eiche',
         fichte: '58-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Fichte-natur-hell',
-        kiefer: '59-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Kiefer-natur'
+        laerche: '59-NEST-Haus-Materialien-Oberflaechen-Innenausbau-Interior-Kiefer-natur'
     },
 
     // Window/Fenster detail images
