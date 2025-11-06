@@ -49,7 +49,7 @@ function calculateSimplePrice(config: _Configuration): number {
   }
   
   if (config.grundstueckscheck) {
-    totalPrice += 490; // GRUNDSTUECKSCHECK_PRICE (corrected from 990)
+    totalPrice += 1500; // GRUNDSTUECKSCHECK_PRICE
   }
   
   return totalPrice;
