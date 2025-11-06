@@ -4,6 +4,38 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ce66bc274849be197ddfcf34b988555cf1acb432] - Thu Nov 6 11:08:47 2025 +0000
+
+**Author**: stenkjan
+**Message**: `Merge 53d4da7d5949ec0cb3f72374db2598060e21bdc3 into ea947d3a41e1120bd78027d16c21506fafc57480  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/sync-pricing/route.ts
+- src/app/api/sync/pricing/route.ts
+- src/components/admin/PricingSyncPanel.tsx
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 🔧 Configuration Changes
+- .env.local
+- package.json
+
+
+#### 📚 Documentation Changes
+- docs/PRICING_SYNC_ARCHITECTURE.md
+- docs/PRICING_SYNC_ENV_VARS.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/PRICING_SYNC_QUICK_REF.md
+- docs/PRICING_SYNC_SETUP.md
+
+
+---
+
 ## [470e481e0f884575e20b63e9ffe239ebd7537d98] - Thu Nov 6 11:53:21 2025 +0100
 
 **Author**: stenkjan
