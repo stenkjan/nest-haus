@@ -133,16 +133,16 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Der Charakter',
     options: [
       {
-        id: 'laerche',
-        name: 'Lärche',
-        description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
-        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
-      },
-      {
         id: 'fichte',
         name: 'Fichte',
         description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
         price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
+      },
+      {
+        id: 'laerche',
+        name: 'Lärche',
+        description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
+        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
       },
       {
         id: 'steirische_eiche',
