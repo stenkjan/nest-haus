@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [afc2693d087f170888feefc38e20c3d6eec80edd] - Thu Nov 6 15:54:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Improve appointment handling and session management in cart store  - Updated appointment-related functions to accept sessionId for better session tracking. - Enhanced appointment summary retrieval to ensure it only returns data for the current session. - Refactored CheckoutStepper and AppointmentBooking components to utilize new session-aware methods. - Cleaned up pricing display logic in SelectionOption component for improved clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/AppointmentBooking.tsx
+
+
+---
+
 ## [4910b2169492697211a2894721b4d4ea03264645] - Thu Nov 6 15:48:01 2025 +0100
 
 **Author**: stenkjan
