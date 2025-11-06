@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d14b1ed96fe08eeed8582e136d18c5277b784f2b] - Thu Nov 6 16:02:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update pricing logic and documentation for Grundstückscheck  - Adjusted Grundstückscheck price to reflect the new value of 1500, aligning with checkout pricing. - Improved documentation in project rules to clarify mandatory workflows for TypeScript safety checks and pre-commit procedures. - Reformatted code for better readability in CheckoutStepper component, ensuring consistent styling and structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/pricing/calculate/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [afc2693d087f170888feefc38e20c3d6eec80edd] - Thu Nov 6 15:54:51 2025 +0100
 
 **Author**: stenkjan
