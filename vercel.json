@@ -4,11 +4,18 @@
     {
       "path": "/api/sync/google-drive",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/sync-pricing",
+      "schedule": "0 2 * * *"
     }
   ],
   "functions": {
     "src/app/api/sync/google-drive/route.ts": {
       "maxDuration": 300
+    },
+    "src/app/api/cron/sync-pricing/route.ts": {
+      "maxDuration": 60
     },
     "src/app/api/admin/usability-tests/route.ts": {
       "maxDuration": 60
