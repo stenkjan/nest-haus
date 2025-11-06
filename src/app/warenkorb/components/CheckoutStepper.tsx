@@ -494,7 +494,7 @@ export default function CheckoutStepper({
 
         // Use defaults for base calculation
         const baseGebaeudehuelle = "trapezblech";
-        const baseInnenverkleidung = "kiefer";
+        const baseInnenverkleidung = "laerche";
         const baseFussboden = "parkett";
 
         // Calculate base combination price (all defaults)

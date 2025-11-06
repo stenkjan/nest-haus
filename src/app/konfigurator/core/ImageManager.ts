@@ -114,7 +114,7 @@ export class ImageManager {
       view,
       this.sanitizeConfigValue(configuration.nest?.value) || 'nest80',
       this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech',
-      this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'kiefer',
+      this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'laerche',
       this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett',
       this.sanitizeConfigValue(configuration.pvanlage?.value) || 'none',
       this.sanitizeConfigValue(configuration.fenster?.value) || 'none'
@@ -194,7 +194,7 @@ export class ImageManager {
   static getInteriorImage(configuration: Configuration): string {
     // Use selected values or defaults matching new pricing structure
     const gebaeudehuelle = configuration?.gebaeudehuelle?.value || 'trapezblech';
-    const innenverkleidung = configuration?.innenverkleidung?.value || 'kiefer';
+    const innenverkleidung = configuration?.innenverkleidung?.value || 'laerche';
     const fussboden = configuration?.fussboden?.value || 'parkett';
 
     // Create combination key for exact matching
@@ -220,7 +220,7 @@ export class ImageManager {
       };
 
       const innenverkleidungMapping = {
-        'kiefer': 'holznatur',
+        'laerche': 'holznatur',
         'fichte': 'holzweiss',
         'steirische_eiche': 'eiche'
       };

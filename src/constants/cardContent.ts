@@ -175,14 +175,14 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
     },
     {
         id: 9,
-        title: "Kiefer - Innenverkleidung",
+        title: "Lärche - Innenverkleidung",
         subtitle: "",
         description:
-            "Die Innenverkleidung aus Kiefernholz bringt natürliche Wärme und lebendige Optik in den Innenraum. Die markante Maserung und die warmen, goldgelben Töne schaffen eine gemütliche, einladende Atmosphäre. Gleichzeitig ist das Holz leicht, gut zu verarbeiten und wirkt feuchtigkeitsregulierend – ideal für ein angenehmes, gesundes Raumklima. Mit seiner zeitlosen Ausstrahlung passt es sowohl in moderne als auch in traditionelle Wohnkonzepte.",
-        mobileTitle: "Kiefer - Innenverkleidung",
+            "Die Innenverkleidung aus Lärchenholz bringt natürliche Wärme und lebendige Optik in den Innenraum. Die markante Maserung und die warmen, goldgelben Töne schaffen eine gemütliche, einladende Atmosphäre. Gleichzeitig ist das Holz leicht, gut zu verarbeiten und wirkt feuchtigkeitsregulierend – ideal für ein angenehmes, gesundes Raumklima. Mit seiner zeitlosen Ausstrahlung passt es sowohl in moderne als auch in traditionelle Wohnkonzepte.",
+        mobileTitle: "Lärche - Innenverkleidung",
         mobileSubtitle: "",
         mobileDescription:
-            "Kiefernholz mit lebendiger Maserung und warmen Tönen. Gemütlich, leicht zu verarbeiten und raumklimafreundlich.",
+            "Lärchenholz mit lebendiger Maserung und warmen Tönen. Gemütlich, leicht zu verarbeiten und raumklimafreundlich.",
         image: IMAGES.materials.holzKiefer,
         backgroundColor: "#F4F4F4",
     },

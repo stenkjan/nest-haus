@@ -247,14 +247,14 @@ function calculateAbsolutePrices(config: Record<string, unknown>): {
             const basePrice = calculateModularPrice(
                 nest.value,
                 'trapezblech',
-                'kiefer',
+                'laerche',
                 'ohne_belag'
             );
 
             // Calculate individual upgrade prices for each option
-            const gebaeudehulleUpgrade = calculateModularPrice(nest.value, gebaeudehuelle.value, 'kiefer', 'ohne_belag') - basePrice;
+            const gebaeudehulleUpgrade = calculateModularPrice(nest.value, gebaeudehuelle.value, 'laerche', 'ohne_belag') - basePrice;
             const innenverkleidungUpgrade = calculateModularPrice(nest.value, 'trapezblech', innenverkleidung.value, 'ohne_belag') - basePrice;
-            const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'kiefer', fussboden.value) - basePrice;
+            const fussbodenUpgrade = calculateModularPrice(nest.value, 'trapezblech', 'laerche', fussboden.value) - basePrice;
 
             // Recalculate fussboden - use combination pricing (not size-dependent)
             // Stone floors (kalkstein_kanafar, schiefer_massiv, parkett) are part of combination pricing

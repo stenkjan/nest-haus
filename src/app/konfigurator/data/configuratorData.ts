@@ -133,8 +133,8 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Der Charakter',
     options: [
       {
-        id: 'kiefer',
-        name: 'Kiefer',
+        id: 'laerche',
+        name: 'Lärche',
         description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
         price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
       },

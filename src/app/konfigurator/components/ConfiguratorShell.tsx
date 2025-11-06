@@ -526,7 +526,7 @@ export default function ConfiguratorShell({
 
           // Use defaults for base calculation
           let testGebaeudehuelle = "trapezblech";
-          let testInnenverkleidung = "kiefer";
+          let testInnenverkleidung = "laerche";
           let testFussboden = "ohne_belag";
 
           if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
@@ -544,7 +544,7 @@ export default function ConfiguratorShell({
           const baseTotal = PriceCalculator.calculateCombinationPrice(
             currentNestValue,
             "trapezblech",
-            "kiefer",
+            "laerche",
             "ohne_belag"
           );
 
@@ -900,13 +900,13 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "kiefer",
+              "laerche",
               "ohne_belag"
             );
             const parkettPrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "kiefer",
+              "laerche",
               "parkett"
             );
             const actualPrice = parkettPrice - basePrice;
@@ -959,7 +959,7 @@ export default function ConfiguratorShell({
 
             // Always use defaults for base calculation - prices should only depend on nest size, not other selections
             let testGebaeudehuelle = "trapezblech"; // Always use default
-            let testInnenverkleidung = "kiefer"; // Always use default
+            let testInnenverkleidung = "laerche"; // Always use default
             let testFussboden = "ohne_belag"; // Always use default (changed from parkett)
 
             if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
@@ -979,7 +979,7 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "kiefer",
+              "laerche",
               "ohne_belag"
             );
 
@@ -1010,7 +1010,7 @@ export default function ConfiguratorShell({
           ) {
             // Use nest80 as base reference for pricing when nothing is selected
             let testGebaeudehuelle = "trapezblech";
-            let testInnenverkleidung = "kiefer";
+            let testInnenverkleidung = "laerche";
             let testFussboden = "parkett";
 
             if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
@@ -1030,7 +1030,7 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               "nest80",
               "trapezblech",
-              "kiefer",
+              "laerche",
               "parkett"
             );
 
@@ -1083,7 +1083,7 @@ export default function ConfiguratorShell({
 
           // Use defaults for base calculation, only change the current category for relative pricing
           const baseGebaeudehuelle = "trapezblech";
-          const baseInnenverkleidung = "kiefer";
+          const baseInnenverkleidung = "laerche";
           const baseFussboden = "parkett";
 
           // Get the current selection for THIS category only

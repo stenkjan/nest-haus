@@ -115,7 +115,7 @@ export class PriceCalculator {
     // Default selections for base comparison
     const defaultSelections = {
       gebaeudehuelle: 'trapezblech',
-      innenverkleidung: 'kiefer',
+      innenverkleidung: 'laerche',
       fussboden: 'ohne_belag'
     };
 
@@ -197,7 +197,7 @@ export class PriceCalculator {
           // ALWAYS use combination pricing with defaults for missing core selections
           // This ensures consistent pricing regardless of selection order
           const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-          const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+          const innenverkleidung = selections.innenverkleidung?.value || 'laerche';
           const fussboden = selections.fussboden?.value || 'ohne_belag';
 
           // Calculate combination price using modular pricing system
@@ -424,11 +424,11 @@ export class PriceCalculator {
    * Get base price for a nest option (calculated with default selections)
    */
   static getBasePrice(nestType: string): number {
-    // Default selections (Trapezblech + Kiefer + Ohne Belag)
+    // Default selections (Trapezblech + Lärche + Ohne Belag)
     return this.calculateCombinationPrice(
       nestType,
       'trapezblech',  // default
-      'kiefer',       // default
+      'laerche',       // default
       'ohne_belag'    // default - 0€ flooring, base price 155.500€
     )
   }
@@ -516,7 +516,7 @@ export class PriceCalculator {
 
         // Determine combination for breakdown
         const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-        const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+        const innenverkleidung = selections.innenverkleidung?.value || 'laerche';
         const fussboden = selections.fussboden?.value || 'ohne_belag';
 
         breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;

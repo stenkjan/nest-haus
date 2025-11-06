@@ -5,7 +5,7 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 interface GeschossdeckeOverlayProps {
-  innenverkleidung?: string; // "eiche" | "fichte" | "kiefer" | etc.
+  innenverkleidung?: string; // "eiche" | "fichte" | "laerche" | etc.
   fussboden?: string; // "schiefer" | "kalkstein" | "parkett" | etc.
   isVisible?: boolean;
   className?: string;
@@ -28,13 +28,13 @@ export default function GeschossdeckeOverlay({
     fussboden?: string
   ): string => {
     // Map innenverkleidung values to overlay image names
-    // kiefer → kiefer, fichte → fichte, steirische_eiche → eiche
+    // laerche → kiefer (uses same image path), fichte → fichte, steirische_eiche → eiche
     let wallMaterial = "fichte"; // Default
     
     if (innenverkleidung) {
       const innenLower = innenverkleidung.toLowerCase();
-      if (innenLower.includes("kiefer")) {
-        wallMaterial = "kiefer";
+      if (innenLower.includes("laerche") || innenLower.includes("kiefer")) {
+        wallMaterial = "kiefer"; // Uses kiefer image path (holznatur)
       } else if (innenLower.includes("fichte")) {
         wallMaterial = "fichte";
       } else if (innenLower.includes("eiche")) {

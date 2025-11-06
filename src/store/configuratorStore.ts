@@ -622,11 +622,11 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: -9600,
             description: 'RAL 9005 - 3000 x 1142 mm'
           },
-          // Kiefer
+          // Lärche
           {
             category: 'innenverkleidung',
-            value: 'kiefer',
-            name: 'Kiefer',
+            value: 'laerche',
+            name: 'Lärche',
             price: -1400,
             description: 'PEFC - Zertifiziert - Sicht 1,5 cm'
           },
