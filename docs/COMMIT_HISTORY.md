@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [af5567dd0f4485a31cef91b2de0c7328184e7259] - Fri Nov 7 13:26:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update CartFooter navigation to use window.location for state initialization  - Replaced router.push with window.location.href in CartFooter for better state management during navigation. - Adjusted styling of the "Zum Konfigurator" link in WarenkorbClient for improved UI consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [26402181d7e55358a83ea7a76608d92a46967924] - Fri Nov 7 13:13:24 2025 +0100
 
 **Author**: stenkjan
