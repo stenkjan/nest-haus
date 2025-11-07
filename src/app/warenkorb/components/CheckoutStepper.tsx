@@ -1783,40 +1783,47 @@ export default function CheckoutStepper({
 
                 {/* Show "Planen heißt Preise kennen" section for ohne-nest mode */}
                 {isOhneNestMode && (
-                  <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-8">
-                      <h2 className="h2-secondary text-gray-900 mb-4">
-                        Planen heißt Preise kennen
-                      </h2>
-                    </div>
-
-                    <div className="flex flex-col md:flex-row md:items-center gap-8">
-                      <div className="w-full md:w-1/2">
-                        <div className="relative aspect-square w-full max-w-md mx-auto">
-                          <HybridBlobImage
-                            path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                            alt="NEST-Haus Konfiguration Holzlattung Eiche Parkett"
-                            fill
-                            className="rounded-lg object-cover"
-                          />
+                  <div className="w-full bg-[#F4F4F4] py-12 md:py-16">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                        {/* Text content on left - directly on gray background */}
+                        <div className="w-full md:w-1/2">
+                          <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
+                            Planen heißt Preise kennen
+                          </h2>
+                          <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
+                            Wenn du dein Nest schon jetzt konfigurierst,
+                            erhältst du volle Klarheit über Preis, Umfang und
+                            Möglichkeiten. Deine Auswahl bleibt dabei flexibel
+                            und kann jederzeit angepasst werden, falls sich
+                            deine Wünsche im Laufe der Planung verändern.
+                          </p>
+                          <div>
+                            <Button
+                              variant="primary"
+                              size="md"
+                              onClick={() => {
+                                window.location.href = "/konfigurator";
+                              }}
+                            >
+                              Jetzt konfigurieren
+                            </Button>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="w-full md:w-1/2 text-center md:text-left">
-                        <p className="p-secondary text-gray-700 mb-6">
-                          Wenn du dein Nest schon jetzt planst, weißt du schon
-                          heute was es kosten wird und kannst dich noch besser
-                          auf dein Projekt vorbereiten.
-                        </p>
-                        <Button
-                          variant="primary"
-                          size="md"
-                          onClick={() => {
-                            window.location.href = "/konfigurator";
-                          }}
-                        >
-                          Jetzt konfigurieren
-                        </Button>
+                        {/* Image on right - inside white box */}
+                        <div className="w-full md:w-1/2">
+                          <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
+                            <div className="relative w-full aspect-square">
+                              <HybridBlobImage
+                                path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                                alt="NEST-Haus Konfiguration"
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2179,25 +2186,48 @@ export default function CheckoutStepper({
 
               {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
               {isOhneNestMode && (
-                <div className="max-w-4xl mx-auto mb-12">
-                  <div className="text-center mb-8">
-                    <div className="relative aspect-square w-full max-w-md mx-auto mb-6">
-                      <HybridBlobImage
-                        path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                        alt="NEST-Haus Konfiguration"
-                        fill
-                        className="rounded-lg object-cover"
-                      />
+                <div className="w-full bg-[#F4F4F4] py-12 md:py-16 mb-12">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                      {/* Text content on left - directly on gray background */}
+                      <div className="w-full md:w-1/2">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
+                          Planen heißt Preise kennen
+                        </h2>
+                        <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
+                          Wenn du dein Nest schon jetzt konfigurierst, erhältst
+                          du volle Klarheit über Preis, Umfang und
+                          Möglichkeiten. Deine Auswahl bleibt dabei flexibel und
+                          kann jederzeit angepasst werden, falls sich deine
+                          Wünsche im Laufe der Planung verändern.
+                        </p>
+                        <div>
+                          <Button
+                            variant="primary"
+                            size="md"
+                            onClick={() => {
+                              window.location.href = "/konfigurator";
+                            }}
+                          >
+                            Jetzt konfigurieren
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Image on right - inside white box */}
+                      <div className="w-full md:w-1/2">
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
+                          <div className="relative w-full aspect-square">
+                            <HybridBlobImage
+                              path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                              alt="NEST-Haus Konfiguration"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <Button
-                      variant="primary"
-                      size="md"
-                      onClick={() => {
-                        window.location.href = "/konfigurator";
-                      }}
-                    >
-                      Konfiguration hinzufügen
-                    </Button>
                   </div>
                 </div>
               )}
