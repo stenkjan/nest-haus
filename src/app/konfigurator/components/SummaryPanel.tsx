@@ -522,7 +522,7 @@ export default function SummaryPanel({
                   size="xs"
                   onClick={() => {
                     // Navigate to warenkorb with ohne-nest flag
-                    window.location.href = "/warenkorb?mode=ohne-nest";
+                    window.location.href = "/warenkorb?mode=vorentwurf#check-und-vorentwurf";
                   }}
                   className="h-[44px] min-h-[44px] px-4 xl:px-6 flex items-center justify-center whitespace-nowrap text-[clamp(0.75rem,1.2vw,0.875rem)]"
                 >
