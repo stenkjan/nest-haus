@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [15edc03b375a00d8acc9bcd2d6d291077b0d50b7] - Fri Nov 7 14:46:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update CheckoutStepper logic for step 3 visibility and navigation  - Modified the condition for displaying step 3 in CheckoutStepper to show when there's a configuration or when not in ohne-nest mode. - Ensured navigation buttons for step 3 are always displayed when on that step, enhancing user experience and clarity in the checkout process.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [af5567dd0f4485a31cef91b2de0c7328184e7259] - Fri Nov 7 13:26:28 2025 +0100
 
 **Author**: stenkjan
