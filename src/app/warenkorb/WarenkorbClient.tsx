@@ -671,7 +671,7 @@ export default function WarenkorbClient() {
                 </p>
                 <Link
                   href="/konfigurator"
-                  className="inline-block bg-primary text-white font-semibold rounded-lg px-6 py-3 shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border px-3 py-1.5 text-sm xl:text-base 2xl:text-xl whitespace-nowrap"
                 >
                   Zum Konfigurator
                 </Link>
