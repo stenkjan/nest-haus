@@ -937,10 +937,10 @@ export default function CheckoutStepper({
         "Damit aus deinem Vorentwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
     },
     {
-      title: "Die Planung",
-      subtitle: "Unsere Planungspakete sind hier, um dich zu unterstützen!",
+      title: "Wir freuen uns schon auf dich",
+      subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
       description:
-        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Nest-Haus. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
+        "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Vorentwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Vorentwurf, der genau zu deinen Bedürfnissen passt.**",
     },
     {
       title: "Dein individuelles Nest-Haus ",
@@ -1037,7 +1037,7 @@ export default function CheckoutStepper({
                   Dein Liefertermin
                 </div>
                 <div className="h2-title text-black">
-                  {deliveryDateString || "-"}
+                  {calculateDeliveryDate}
                 </div>
               </div>
             )}
@@ -1369,6 +1369,64 @@ export default function CheckoutStepper({
       year: "numeric",
     });
   }, [getDeliveryDate, sessionId]);
+
+  // Calculate delivery date: current date + 6 months (next weekday)
+  const calculateDeliveryDate = useMemo(() => {
+    const now = new Date();
+    const sixMonthsLater = new Date(now);
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+
+    // If the date falls on a weekend, move to next Monday
+    const dayOfWeek = sixMonthsLater.getDay();
+    if (dayOfWeek === 0) {
+      // Sunday
+      sixMonthsLater.setDate(sixMonthsLater.getDate() + 1);
+    } else if (dayOfWeek === 6) {
+      // Saturday
+      sixMonthsLater.setDate(sixMonthsLater.getDate() + 2);
+    }
+
+    return sixMonthsLater.toLocaleDateString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  }, []);
+
+  // Get user data from appointment and grundstueck forms
+  const getUserData = useMemo(() => {
+    // Try to get data from appointmentDetails (stored in cart store)
+    const appointmentData = appointmentDetails?.customerInfo;
+
+    // Try to get data from sessionStorage (grundstueck form)
+    let grundstueckData = null;
+    if (typeof window !== "undefined") {
+      try {
+        const storedData = sessionStorage.getItem("grundstueckCheckData");
+        if (storedData) {
+          grundstueckData = JSON.parse(storedData);
+        }
+      } catch (error) {
+        console.error("Error reading grundstueckCheckData:", error);
+      }
+    }
+
+    // Merge data with priority: appointment data > grundstueck data
+    return {
+      name: appointmentData?.name || grundstueckData?.name || "",
+      lastName: appointmentData?.lastName || grundstueckData?.lastName || "",
+      phone: appointmentData?.phone || grundstueckData?.phone || "",
+      email: appointmentData?.email || grundstueckData?.email || "",
+      address: grundstueckData?.address || "",
+      addressLine2: grundstueckData?.addressLine2 || "",
+      propertyNumber: grundstueckData?.propertyNumber || "",
+      cadastralCommunity: grundstueckData?.cadastralCommunity || "",
+      city: grundstueckData?.city || "",
+      state: grundstueckData?.state || "",
+      postalCode: grundstueckData?.postalCode || "",
+      country: grundstueckData?.country || "Österreich",
+    };
+  }, [appointmentDetails]);
 
   // Decide which configuration to use for images: prioritize cart item for consistent display
   const sourceConfig = useMemo(() => {
@@ -1990,12 +2048,15 @@ export default function CheckoutStepper({
                 <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                   Jetzt deinen Termin vereinbaren
                 </h1>
+                <h3 className="h3-secondary text-gray-600 mb-2">
+                  Komm vorbei um deinen Traum mit uns zu besprechen.
+                </h3>
               </div>
 
               {/* Left text + right calendar layout */}
               <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
-                <div className="w-full md:w-1/2 text-center md:text-left md:px-8 lg:px-16">
-                  <p className="p-secondary text-black mb-6">
+                <div className="w-full md:w-1/2 text-center md:text-left md:px-8 lg:px-16 pt-12">
+                  <p className="p-secondary text-black mb-6 pt-6">
                     <span className="text-gray-500">
                       Wähle das Datum und die Uhrzeit, die dir am besten passen,
                       und entscheide, ob du ein
@@ -2077,16 +2138,6 @@ export default function CheckoutStepper({
 
           {stepIndex === 4 && (
             <div className="space-y-6 pt-8">
-              {/* Dein Liefertermin Section */}
-              <div className="text-center mb-8">
-                <h2 className="h2-secondary text-gray-900 mb-4">
-                  Dein Liefertermin
-                </h2>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                  {getDeliveryDateFormatted(sessionId) || "TBD"}
-                </div>
-              </div>
-
               {/* Dein Preis Überblick Section - direct header */}
               <div className="text-center mb-8">
                 <h2 className="h2-secondary text-gray-900 mb-6">
@@ -2122,12 +2173,12 @@ export default function CheckoutStepper({
               {/* Title before Dein Nest sections */}
               {!isOhneNestMode && (
                 <div className="text-center mb-12">
-                  <h2 className="h2-secondary text-gray-900 mb-2">
+                  <h1 className="h1-secondary text-gray-900 mb-2">
                     Du hast es gleich Geschafft
-                  </h2>
-                  <p className="p-secondary text-gray-600">
+                  </h1>
+                  <h3 className="h3-secondary text-gray-600">
                     Überprüfe deine Daten und Angaben.
-                  </p>
+                  </h3>
                 </div>
               )}
 
@@ -2386,58 +2437,23 @@ export default function CheckoutStepper({
                 </div>
               )}
 
-              {/* Bewerber Data Section - 4 boxes in 2x2 grid */}
-              <div className="max-w-4xl mx-auto mt-16 mb-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Box 1: Bewerber - Deine Daten */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <h3 className="text-base font-medium text-gray-900 mb-4">
+              {/* Bewerber Data Section - 4 boxes in 2x2 grid with column headers */}
+              <div className="max-w-6xl mx-auto mt-16 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Left Column Header */}
+                  <div>
+                    <h3 className="text-base font-medium text-gray-900">
                       <span className="text-black font-semibold">Bewerber</span>
                       <span className="text-gray-400 font-normal">
                         {" "}
                         Deine Daten
                       </span>
                     </h3>
-                    <div className="space-y-2">
-                      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                        <div>
-                          <div className="text-gray-600">
-                            Vollständiger Name
-                          </div>
-                          <div className="text-gray-900 font-medium">
-                            Ines Sagadin
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-gray-600">Adressezeile 1</div>
-                          <div className="text-gray-900 font-medium">
-                            Am Ölber 17
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-gray-600">PLZ, Ort</div>
-                          <div className="text-gray-900 font-medium">
-                            8052, Graz
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-gray-600">Nation</div>
-                          <div className="text-gray-900 font-medium">
-                            Österreich
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pt-2">
-                        <button className="text-blue-600 text-sm hover:underline">
-                          Daten bearbeiten
-                        </button>
-                      </div>
-                    </div>
                   </div>
 
-                  {/* Box 2: Deine Termine - Im Überblick */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <h3 className="text-base font-medium text-gray-900 mb-4">
+                  {/* Right Column Header */}
+                  <div>
+                    <h3 className="text-base font-medium text-gray-900">
                       <span className="text-black font-semibold">
                         Deine Termine
                       </span>
@@ -2446,87 +2462,169 @@ export default function CheckoutStepper({
                         Im Überblick
                       </span>
                     </h3>
+                  </div>
+
+                  {/* Box 1: Bewerber Data (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="space-y-2">
+                      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        <div>
+                          <div className="text-gray-600">
+                            Vollständiger Name
+                          </div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.name && getUserData.lastName
+                              ? `${getUserData.name} ${getUserData.lastName}`
+                              : "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-600">Email</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.email || "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-600">Telefon</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.phone || "—"}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-600">Land</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.country || "—"}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pt-2">
+                        <button
+                          onClick={() => {
+                            window.location.hash = "terminvereinbarung";
+                          }}
+                          className="text-blue-600 text-sm hover:underline"
+                        >
+                          Daten bearbeiten
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Box 2: Entwurfsgespräch (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
                     <div className="space-y-4">
                       <div>
                         <div className="text-gray-600 text-sm">
-                          Entwurfsgespräch
+                          {appointmentDetails?.appointmentType === "personal"
+                            ? "Persönliches Gespräch"
+                            : appointmentDetails?.appointmentType === "phone"
+                              ? "Telefonische Beratung"
+                              : "Termin"}
                         </div>
                         <div className="text-xl font-bold text-gray-900">
-                          21.01.2026
+                          {appointmentDetails?.date
+                            ? new Date(
+                                appointmentDetails.date
+                              ).toLocaleDateString("de-DE", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                              })
+                            : "—"}
                         </div>
-                        <button className="text-blue-600 text-sm hover:underline">
-                          Termin personalisieren
-                        </button>
-                      </div>
-                      <div>
-                        <div className="text-gray-600 text-sm">
-                          Lieferungsdatum
-                        </div>
-                        <div className="text-xl font-bold text-gray-900">
-                          21.07.2026
-                        </div>
-                        <button className="text-blue-600 text-sm hover:underline">
+                        {appointmentDetails?.time && (
+                          <div className="text-sm text-gray-600 mt-1">
+                            {appointmentDetails.time} Uhr
+                          </div>
+                        )}
+                        <button
+                          onClick={() => {
+                            window.location.hash = "terminvereinbarung";
+                          }}
+                          className="text-blue-600 text-sm hover:underline mt-2"
+                        >
                           Termin personalisieren
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  {/* Box 3: Straße und Nummer + additional data */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                  {/* Box 3: Grundstücksinformationen (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 text-sm">
                       <div>
-                        <div className="text-gray-600">Strasse und Nummer</div>
+                        <div className="text-gray-600">Straße und Nummer</div>
                         <div className="text-gray-900 font-medium">
-                          Am Ölber 17
+                          {getUserData.address || "—"}
                         </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Stadt</div>
-                        <div className="text-gray-900 font-medium">Graz</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.city || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Zusatz</div>
                         <div className="text-gray-900 font-medium">
-                          Tür Nr 2
+                          {getUserData.addressLine2 || "—"}
                         </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Postleitzahl</div>
-                        <div className="text-gray-900 font-medium">8052</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.postalCode || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Grundstücknummer</div>
-                        <div className="text-gray-900 font-medium">377</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.propertyNumber || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Bundesland</div>
                         <div className="text-gray-900 font-medium">
-                          Steiermark
+                          {getUserData.state || "—"}
                         </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Katastralgemeinde</div>
-                        <div className="text-gray-900 font-medium">60101</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.cadastralCommunity || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Land</div>
                         <div className="text-gray-900 font-medium">
-                          Österreich
+                          {getUserData.country || "—"}
                         </div>
                       </div>
                     </div>
                     <div className="pt-3">
-                      <button className="text-blue-600 text-sm hover:underline">
+                      <button
+                        onClick={() => {
+                          window.location.hash = "check-und-vorentwurf";
+                        }}
+                        className="text-blue-600 text-sm hover:underline"
+                      >
                         Daten bearbeiten
                       </button>
                     </div>
                   </div>
 
-                  {/* Box 4: Empty placeholder or additional info */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <div className="h-full flex items-center justify-center text-gray-400">
-                      {/* This box can be used for additional information if needed */}
+                  {/* Box 4: Lieferungsdatum (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="space-y-2">
+                      <div className="text-gray-600 text-sm">
+                        Garantierter Liefertermin
+                      </div>
+                      <div className="text-2xl font-bold text-gray-900">
+                        {calculateDeliveryDate}
+                      </div>
+                      <div className="text-sm text-gray-600 mt-2">
+                        6 Monate Liefergarantie
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2534,8 +2632,8 @@ export default function CheckoutStepper({
 
               {/* So gehts danach weiter Section */}
               <div className="text-center mb-8">
-                <h2 className="h2-secondary text-gray-900 mb-2">
-                  So gehts danach weiter
+                <h2 className="h2-title text-gray-900 mb-2">
+                  So geht's danach weiter
                 </h2>
                 <p className="p-secondary text-gray-600">
                   Deine Teilzahlungen im Überblick
@@ -2928,9 +3026,9 @@ export default function CheckoutStepper({
                                         packageType = localSelectedPlan || "";
                                       }
 
-                                      // Return simple price display
+                                      // Return price display with "inkludiert" for basis
                                       return packageType === "basis"
-                                        ? "10.900,00€"
+                                        ? "inkludiert"
                                         : packageType === "plus"
                                           ? "16.900,00€"
                                           : "21.900,00€";
