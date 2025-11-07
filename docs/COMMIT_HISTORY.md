@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b3bf29442fe7ad070598a1abbfbb7de930a24f6f] - Fri Nov 7 12:51:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Mark unused delivery date function in CheckoutStepper  - Prefixed getDeliveryDate with an underscore to indicate intentional non-use, improving code clarity and adherence to TypeScript safety rules.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [a6986c748e7bf97a85a64bacdba7a1ded6fa31ec] - Fri Nov 7 12:43:24 2025 +0100
 
 **Author**: stenkjan
