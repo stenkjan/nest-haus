@@ -12,6 +12,8 @@
     "build:analyze": "ANALYZE=true npm run build",
     "postinstall": "npx prisma generate",
     "cache:clean": "rm -rf .next/cache && rm -rf node_modules/.cache",
+    "cache:fix": "node scripts/clean-cache.js",
+    "cache:fix:restart": "node scripts/clean-cache.js --restart",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",

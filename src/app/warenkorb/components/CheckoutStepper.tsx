@@ -1605,7 +1605,7 @@ export default function CheckoutStepper({
                         <span className="text-black">Dein Nest</span>
                         <span className="text-gray-300">
                           {" "}
-                          Ein Einblick in die Zukunft
+                          Ein Blick in die Zukunft
                         </span>
                       </h2>
                       {/* Configuration Image Gallery */}
@@ -2297,7 +2297,7 @@ export default function CheckoutStepper({
                       <span className="text-black">Dein Nest</span>
                       <span className="text-gray-300">
                         {" "}
-                        Ein Einblick in die Zukunft
+                        Ein Blick in die Zukunft
                       </span>
                     </h2>
                     {/* Configuration Image Gallery */}

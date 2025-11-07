@@ -173,7 +173,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - [ ] Overview shows "1.000 €" for "Check & Vorentwurf"
 - [ ] Overview shows "—" for "Planungspaket"
 - [ ] "Dein Nest Deine Auswahl" box hidden
-- [ ] "Dein Nest Ein Einblick in die Zukunft" box hidden
+- [ ] "Dein Nest Ein Blick in die Zukunft" box hidden
 - [ ] Planungspakete section still visible and functional
 - [ ] Abschluss step shows centered "Heute zu bezahlen" box with 1.000 €
 - [ ] Disclaimer text visible: "Solltest du..."
