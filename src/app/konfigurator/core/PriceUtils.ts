@@ -175,8 +175,8 @@ export class PriceUtils {
   }
 
   /**
-   * Sort configuration entries for consistent cart display
-   * Order: nest module first, regular items in middle, planungspaket/grundstueckscheck at bottom
+   * Sort configuration entries for consistent display
+   * Order: nest module first, regular items (including planungspaket after bodenaufbau) in middle, grundstueckscheck at bottom
    */
   static sortConfigurationEntries<T>(
     entries: [string, T][]
@@ -189,13 +189,13 @@ export class PriceUtils {
     const middleItems: [string, T][] = [];
     const bottomItems: [string, T][] = [];
 
-    // Define the order for middle items
-    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'bodenaufbau', 'geschossdecke', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
+    // Define the order for middle items - planungspaket now appears after bodenaufbau
+    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'bodenaufbau', 'planungspaket', 'geschossdecke', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
 
     entries.forEach(([key, value]) => {
       if (key === 'nest') {
         topItems.push([key, value]);
-      } else if (key === 'planungspaket' || key === 'grundstueckscheck') {
+      } else if (key === 'grundstueckscheck') {
         bottomItems.push([key, value]);
       } else if (middleOrder.includes(key)) {
         middleItems.push([key, value]);
@@ -215,12 +215,7 @@ export class PriceUtils {
       return aIndex - bIndex;
     });
 
-    // Sort bottom items to ensure consistent order
-    bottomItems.sort(([a], [b]) => {
-      if (a === 'planungspaket' && b === 'grundstueckscheck') return -1;
-      if (a === 'grundstueckscheck' && b === 'planungspaket') return 1;
-      return 0;
-    });
+    // Bottom items now only contain grundstueckscheck (no sorting needed)
 
     return { topItems, middleItems, bottomItems };
   }
