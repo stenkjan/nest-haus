@@ -496,7 +496,7 @@ export const KONTAKTFORMULAR_CONTENT: ContentCardData[] = [
 export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "1. Vorentwurf",
+        title: "1. Check + Entwurf",
         subtitle: "Erster Schritt.",
         description:
             "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",

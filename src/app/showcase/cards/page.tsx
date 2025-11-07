@@ -163,7 +163,7 @@ export default function CardsShowcasePage() {
             customData={[
               {
                 id: 1,
-                title: "1. Vorentwurf",
+                title: "1. Check + Entwurf",
                 subtitle: "Fenster, Türen, Innenwände",
                 description:
                   "Bevor wir starten, prüfen wir gemeinsam die Machbarkeit deines Projekts auf deinem Grundstück. \n\n Im Vorentwurfsplan legen wir Fenster, Türen und Innenwände nach deinen Wünschen fest und stimmen diese Planung mit der zuständigen Gemeinde ab.",
