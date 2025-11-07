@@ -1783,7 +1783,7 @@ export default function CheckoutStepper({
 
                 {/* Show "Planen heißt Preise kennen" section for ohne-nest mode */}
                 {isOhneNestMode && (
-                  <div className="w-full bg-[#F4F4F4] py-12 md:py-16">
+                  <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                       <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
                         {/* Text content on left - directly on gray background */}
@@ -2186,7 +2186,7 @@ export default function CheckoutStepper({
 
               {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
               {isOhneNestMode && (
-                <div className="w-full bg-[#F4F4F4] py-12 md:py-16 mb-12">
+                <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-12">
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
                       {/* Text content on left - directly on gray background */}
