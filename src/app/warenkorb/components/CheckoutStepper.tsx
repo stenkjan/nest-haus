@@ -1975,8 +1975,8 @@ export default function CheckoutStepper({
             </div>
           )}
 
-          {/* Step 3: Planungspakete - Hide in ohne nest mode */}
-          {stepIndex === 3 && !isOhneNestMode && (
+          {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-nest mode */}
+          {stepIndex === 3 && (!isOhneNestMode || configItem) && (
             <div className="space-y-4 pt-8">
               {(() => {
                 console.log(
@@ -2035,27 +2035,30 @@ export default function CheckoutStepper({
                   </div>
                 </button>
               </div>
+            </div>
+          )}
 
-              <div className="flex justify-center mt-16 md:mt-20">
-                <Button
-                  variant="landing-secondary-blue"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goPrev}
-                  disabled={stepIndex <= 0}
-                >
-                  Vorheriger Schritt
-                </Button>
-                <span className="inline-block w-3" />
-                <Button
-                  variant="primary"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goNext}
-                >
-                  Nächster Schritt
-                </Button>
-              </div>
+          {/* Navigation buttons for step 3 - Always show when on step 3 */}
+          {stepIndex === 3 && (
+            <div className="flex justify-center mt-16 md:mt-20">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Vorheriger Schritt
+              </Button>
+              <span className="inline-block w-3" />
+              <Button
+                variant="primary"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goNext}
+              >
+                Nächster Schritt
+              </Button>
             </div>
           )}
 
