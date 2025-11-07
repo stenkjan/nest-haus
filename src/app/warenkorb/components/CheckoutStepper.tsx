@@ -70,7 +70,7 @@ export default function CheckoutStepper({
   const {
     getAppointmentSummary,
     getAppointmentSummaryShort,
-    getDeliveryDate,
+    getDeliveryDate: _getDeliveryDate,
     isAppointmentFromCurrentSession,
     appointmentDetails,
   } = useCartStore();
