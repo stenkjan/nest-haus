@@ -71,7 +71,6 @@ export default function CheckoutStepper({
     getAppointmentSummary,
     getAppointmentSummaryShort,
     getDeliveryDate,
-    getDeliveryDateFormatted,
     isAppointmentFromCurrentSession,
     appointmentDetails,
   } = useCartStore();
@@ -1305,7 +1304,7 @@ export default function CheckoutStepper({
                         {getAppointmentSummary(sessionId) ? (
                           <div className="flex items-start gap-2 justify-end">
                             <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
-                              {deliveryDateString}
+                              {calculateDeliveryDate}
                             </span>
                             <span
                               aria-hidden
@@ -1357,18 +1356,6 @@ export default function CheckoutStepper({
       </div>
     </div>
   );
-
-  // Compute guaranteed delivery date (6 months from appointment date)
-  const deliveryDateString = useMemo(() => {
-    const deliveryDate = getDeliveryDate(sessionId);
-    if (!deliveryDate) return "";
-
-    return deliveryDate.toLocaleDateString("de-DE", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  }, [getDeliveryDate, sessionId]);
 
   // Calculate delivery date: current date + 6 months (next weekday)
   const calculateDeliveryDate = useMemo(() => {
@@ -2633,7 +2620,7 @@ export default function CheckoutStepper({
               {/* So gehts danach weiter Section */}
               <div className="text-center mb-8">
                 <h2 className="h2-title text-gray-900 mb-2">
-                  So geht's danach weiter
+                  So geht&apos;s danach weiter
                 </h2>
                 <p className="p-secondary text-gray-600">
                   Deine Teilzahlungen im Überblick
