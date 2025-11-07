@@ -671,7 +671,7 @@ export default function WarenkorbClient() {
                 </p>
                 <Link
                   href="/konfigurator"
-                  className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="inline-block bg-primary text-white font-semibold rounded-lg px-6 py-3 shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 >
                   Zum Konfigurator
                 </Link>

@@ -109,17 +109,34 @@ export default function CartFooter({ onReset }: CartFooterProps) {
             </p>
           </div>
 
-          {/* Cart button */}
+          {/* Zum Vorentwurf button */}
+          <button
+            onClick={() => {
+              // Set ohne nest mode and go to warenkorb for Vorentwurf only
+              console.log(
+                "📝 CartFooter: Activating ohne nest mode for Vorentwurf"
+              );
+              setOhneNestMode(true);
+              router.push("/warenkorb#check-und-vorentwurf");
+            }}
+            className="bg-white text-[#3D6CE1] border-2 border-[#3D6CE1] rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#3D6CE1] hover:text-white min-h-[44px] flex items-center justify-center touch-manipulation cursor-pointer"
+          >
+            Zum Vorentwurf
+          </button>
+
+          {/* Zum Warenkorb button */}
           <button
             onClick={() => {
               // Reset ohne nest mode when going to warenkorb from regular konfigurator
-              console.log("🛒 CartFooter: Deactivating ohne nest mode before navigating to warenkorb");
+              console.log(
+                "🛒 CartFooter: Deactivating ohne nest mode before navigating to warenkorb"
+              );
               setOhneNestMode(false);
               router.push("/warenkorb");
             }}
             className="bg-[#3D6CE1] text-white rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#2855d6] min-h-[44px] flex items-center justify-center touch-manipulation cursor-pointer"
           >
-            In den Warenkorb
+            Zum Warenkorb
           </button>
         </div>
       </div>

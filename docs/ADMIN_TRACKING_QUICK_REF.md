@@ -8,7 +8,7 @@ Your admin tracking now provides **clean, accurate, actionable data**.
 
 ### 🎯 Key Improvements
 
-1. **Smart Tracking**: Only captures data when users click "In den Warenkorb" (not on every selection)
+1. **Smart Tracking**: Only captures data when users click "Zum Warenkorb" (not on every selection)
 2. **Accurate Counts**: Configuration numbers now make sense (no more 25 total vs 105 in one range)
 3. **Clear Funnel**: See exactly where users drop off
 4. **Payment Tracking**: Know which configurations actually convert to sales
@@ -33,7 +33,7 @@ Your admin tracking now provides **clean, accurate, actionable data**.
 
 ```
 1. User configures house → Session ACTIVE
-2. User clicks "In den Warenkorb" → Session IN_CART ✨ (tracked here)
+2. User clicks "Zum Warenkorb" → Session IN_CART ✨ (tracked here)
 3. User submits contact form → Session COMPLETED
 4. User completes payment → Session CONVERTED ✨ (tracked here)
 ```
@@ -49,7 +49,7 @@ Your admin tracking now provides **clean, accurate, actionable data**.
 
 1. Open `/konfigurator`
 2. Select: Nest 100, any options
-3. Click "In den Warenkorb"
+3. Click "Zum Warenkorb"
 4. Check `/admin/user-tracking` → Should show your config
 
 ### Full Test (10 minutes):

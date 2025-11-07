@@ -12,8 +12,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -25,8 +25,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -38,8 +38,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -51,8 +51,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -64,9 +64,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/pricing/calculate/route.ts
 - src/app/warenkorb/components/CheckoutStepper.tsx
-
 
 ---
 
@@ -78,10 +78,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/SelectionOption.tsx
 - src/app/warenkorb/components/CheckoutStepper.tsx
 - src/components/sections/AppointmentBooking.tsx
-
 
 ---
 
@@ -93,8 +93,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -106,10 +106,10 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/SelectionOption.tsx
 - src/app/konfigurator/data/configuratorData.ts
-
 
 ---
 
@@ -121,8 +121,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -134,8 +134,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -147,8 +147,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -160,8 +160,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -173,8 +173,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -186,6 +186,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/api/admin/user-tracking/route.ts
 - src/app/konfigurator/components/ConfiguratorShell.tsx
@@ -197,7 +198,6 @@ _Auto-generated documentation of project changes_
 - src/app/konfigurator/data/dialogConfigs.ts
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 ---
 
 ## [fe0d90e4043aac4a75fac03e35c7832ed22926df] - Thu Nov 6 12:15:59 2025 +0100
@@ -208,28 +208,28 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/cron/sync-pricing/route.ts
 - src/app/api/sync/pricing/route.ts
 - src/components/admin/PricingSyncPanel.tsx
 
-
 #### ⚙️ Backend Changes
+
 - prisma/schema.prisma
 
-
 #### 🔧 Configuration Changes
+
 - .env.local
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/PRICING_SYNC_ARCHITECTURE.md
 - docs/PRICING_SYNC_ENV_VARS.md
 - docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
 - docs/PRICING_SYNC_QUICK_REF.md
 - docs/PRICING_SYNC_SETUP.md
-
 
 ---
 
@@ -241,27 +241,27 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/cron/sync-pricing/route.ts
 - src/app/api/sync/pricing/route.ts
 - src/components/admin/PricingSyncPanel.tsx
 
-
 #### ⚙️ Backend Changes
+
 - prisma/schema.prisma
 
-
 #### 🔧 Configuration Changes
+
 - .env.local
 - package.json
 
-
 #### 📚 Documentation Changes
+
 - docs/PRICING_SYNC_ARCHITECTURE.md
 - docs/PRICING_SYNC_ENV_VARS.md
 - docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
 - docs/PRICING_SYNC_QUICK_REF.md
 - docs/PRICING_SYNC_SETUP.md
-
 
 ---
 
@@ -273,8 +273,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -286,15 +286,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/impressum/ImpressumClient.tsx
 - src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
 - src/app/konfigurator/data/dialogConfigs.ts
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -306,6 +306,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/images/route.ts
 - src/app/dein-nest/DeinNestClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -313,10 +314,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/UnifiedContentCard.tsx
 - src/components/grids/TwoByTwoImageGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -328,12 +328,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-nest/DeinNestClient.tsx
 - src/app/kontakt/KontaktClient.tsx
 - src/app/nest-system/NestSystemClient.tsx
 - src/components/cards/UnifiedContentCard.tsx
 - src/components/grids/TwoByTwoImageGrid.tsx
-
 
 ---
 
@@ -345,8 +345,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -358,6 +358,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/dein-nest/DeinNestClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -367,10 +368,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/UnifiedContentCard.tsx
 - src/components/grids/TwoByTwoImageGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -382,9 +382,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/components/Footer.tsx
-
 
 ---
 
@@ -396,8 +396,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -409,8 +409,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -422,8 +422,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -435,16 +435,16 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/konfigurator/components/BelichtungspaketOverlay.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/core/PriceCalculator.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -456,8 +456,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -469,10 +469,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/KONFIGURATOR-REFACTORING-PLAN.md
 - docs/KONFIGURATOR-SWITCH-GUIDE.md
@@ -486,7 +487,6 @@ _Auto-generated documentation of project changes_
 - preiskalkulation/START_HERE.md
 - preiskalkulation/UPLOAD_INSTRUCTIONS.md
 
-
 ---
 
 ## [f52808a54a3acb6b2e6c776ddbbcbeca2f148505] - Wed Nov 5 09:44:17 2025 +0100
@@ -497,15 +497,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/KONFIGURATOR-REFACTORING-PLAN.md
 - docs/KONFIGURATOR-SWITCH-GUIDE.md
 - docs/USER_TRACKING_FIXES_COMPLETE.md
-
 
 ---
 
@@ -6862,7 +6862,7 @@ _Auto-generated documentation of project changes_
 ## [c90a48c5092d1a76d6a5bbd797518f7b63e4edda] - Wed Sep 10 12:24:14 2025 +0200
 
 **Author**: stenkjan
-**Message**: `refactor: update component text and structure for improved clarity and consistency  - Changed button text in CartFooter from "Jetzt bauen" to "In den Warenkorb" for better user understanding. - Enhanced accessibility by ensuring view labels in PreviewPanel are properly defined and fallback values are provided. - Simplified the SummaryPanel layout by removing unnecessary button elements, focusing on a cleaner design. - Added optional overlay image handling in various components to improve visual presentation. - Updated CheckoutStepper to prioritize cart item configuration for consistent display and added overlays for enhanced user experience.  These changes aim to improve usability, accessibility, and visual coherence across the application.  `
+**Message**: `refactor: update component text and structure for improved clarity and consistency  - Changed button text in CartFooter from "Jetzt bauen" to "Zum Warenkorb" for better user understanding. - Enhanced accessibility by ensuring view labels in PreviewPanel are properly defined and fallback values are provided. - Simplified the SummaryPanel layout by removing unnecessary button elements, focusing on a cleaner design. - Added optional overlay image handling in various components to improve visual presentation. - Updated CheckoutStepper to prioritize cart item configuration for consistent display and added overlays for enhanced user experience.  These changes aim to improve usability, accessibility, and visual coherence across the application.  `
 
 ### Changes Analysis
 
@@ -10503,7 +10503,7 @@ _Auto-generated documentation of project changes_
 ## [222ce5fb890ed6e13acaf29ec6e59dcd84afb182] - Tue Jul 8 16:41:42 2025 +0200
 
 **Author**: stenkjan
-**Message**: `refactor: enhance button layout in SummaryPanel for improved user experience  - Updated the button rendering in SummaryPanel to display the "In den Warenkorb" text and price on separate lines for better readability. - Maintained existing functionality while improving the visual presentation of the price information.  `
+**Message**: `refactor: enhance button layout in SummaryPanel for improved user experience  - Updated the button rendering in SummaryPanel to display the "Zum Warenkorb" text and price on separate lines for better readability. - Maintained existing functionality while improving the visual presentation of the price information.  `
 
 ### Changes Analysis
 

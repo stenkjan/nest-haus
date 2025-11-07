@@ -36,15 +36,8 @@ export async function GET(_request: NextRequest) {
     // Test ping
     const pingResult = await redis.ping();
     
-    // Get basic info (Upstash Redis may not support INFO command)
-    let redisVersion = 'unknown';
-    try {
-      const info = await redis.info('server');
-      redisVersion = info.match(/redis_version:([^\r\n]+)/)?.[1] || 'unknown';
-    } catch {
-      // INFO command might not be available in Upstash Redis
-      redisVersion = 'upstash-redis';
-    }
+    // Get basic info (Upstash Redis doesn't support INFO command)
+    const redisVersion = 'upstash-redis';
     
     return NextResponse.json({
       success: true,

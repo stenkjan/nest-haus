@@ -212,8 +212,8 @@ describe("ConfiguratorShell Integration", () => {
   it("should handle cart addition correctly", async () => {
     render(<ConfiguratorShell rightPanelRef={mockRightPanelRef} />);
 
-    // Find and click "In den Warenkorb" button
-    const addToCartButton = screen.getByText("In den Warenkorb");
+    // Find and click "Zum Warenkorb" button
+    const addToCartButton = screen.getByText("Zum Warenkorb");
 
     await act(async () => {
       fireEvent.click(addToCartButton);

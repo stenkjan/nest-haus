@@ -1257,6 +1257,20 @@ export default function CheckoutStepper({
                           appointmentDetails &&
                           !isAppointmentFromCurrentSession(sessionId);
 
+                        // Check if appointment is in the past
+                        if (appointmentSummary && isAppointmentInPast) {
+                          return (
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline"
+                            >
+                              Neu vereinbaren
+                            </button>
+                          );
+                        }
+
                         if (appointmentSummary) {
                           return (
                             <div className="flex items-start gap-2 justify-end">
@@ -1270,6 +1284,20 @@ export default function CheckoutStepper({
                                 ✓
                               </span>
                             </div>
+                          );
+                        } else if (
+                          hasAppointmentFromOtherSession &&
+                          isAppointmentInPast
+                        ) {
+                          return (
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline"
+                            >
+                              Neu vereinbaren
+                            </button>
                           );
                         } else if (hasAppointmentFromOtherSession) {
                           return (
@@ -1414,6 +1442,20 @@ export default function CheckoutStepper({
       country: grundstueckData?.country || "Österreich",
     };
   }, [appointmentDetails]);
+
+  // Helper function to check if appointment is in the past
+  const isAppointmentInPast = useMemo(() => {
+    if (!appointmentDetails?.date) return false;
+
+    const appointmentDate = new Date(appointmentDetails.date);
+    const now = new Date();
+
+    // Set time to start of day for fair comparison
+    appointmentDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+
+    return appointmentDate < now;
+  }, [appointmentDetails?.date]);
 
   // Decide which configuration to use for images: prioritize cart item for consistent display
   const sourceConfig = useMemo(() => {
@@ -2508,30 +2550,48 @@ export default function CheckoutStepper({
                               ? "Telefonische Beratung"
                               : "Termin"}
                         </div>
-                        <div className="text-xl font-bold text-gray-900">
-                          {appointmentDetails?.date
-                            ? new Date(
-                                appointmentDetails.date
-                              ).toLocaleDateString("de-DE", {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                              })
-                            : "—"}
-                        </div>
-                        {appointmentDetails?.time && (
-                          <div className="text-sm text-gray-600 mt-1">
-                            {appointmentDetails.time} Uhr
-                          </div>
+                        {isAppointmentInPast ? (
+                          <>
+                            <div className="text-xl font-bold text-gray-900">
+                              Neuen Termin vereinbaren
+                            </div>
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline mt-2"
+                            >
+                              Zur Terminvereinbarung
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-xl font-bold text-gray-900">
+                              {appointmentDetails?.date
+                                ? new Date(
+                                    appointmentDetails.date
+                                  ).toLocaleDateString("de-DE", {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
+                                  })
+                                : "—"}
+                            </div>
+                            {appointmentDetails?.time && (
+                              <div className="text-sm text-gray-600 mt-1">
+                                {appointmentDetails.time} Uhr
+                              </div>
+                            )}
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline mt-2"
+                            >
+                              Termin personalisieren
+                            </button>
+                          </>
                         )}
-                        <button
-                          onClick={() => {
-                            window.location.hash = "terminvereinbarung";
-                          }}
-                          className="text-blue-600 text-sm hover:underline mt-2"
-                        >
-                          Termin personalisieren
-                        </button>
                       </div>
                     </div>
                   </div>

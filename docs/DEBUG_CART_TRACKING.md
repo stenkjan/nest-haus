@@ -22,7 +22,7 @@ Open browser console and go through the flow:
 
 1. Open `/konfigurator`
 2. Make selections
-3. Click "In den Warenkorb"
+3. Click "Zum Warenkorb"
 4. Look for these console messages:
 
 **Expected (Good)**:
@@ -165,7 +165,7 @@ useEffect(() => {
 2. Refresh `/konfigurator`
 3. Check console for: `📍 Session initialized: sess_xxxxx`
 4. Make selections
-5. Click "In den Warenkorb"
+5. Click "Zum Warenkorb"
 6. Check console for: `✅ Cart add tracked successfully`
 7. Go to `/admin/user-tracking`
 8. Should see your configuration with status indicators:
@@ -210,7 +210,7 @@ OR
 1. Open browser console (F12)
 2. Go to `/konfigurator`
 3. Make selections
-4. Click "In den Warenkorb"
+4. Click "Zum Warenkorb"
 5. Copy/paste the console output here
 
 This will tell us exactly where the issue is.

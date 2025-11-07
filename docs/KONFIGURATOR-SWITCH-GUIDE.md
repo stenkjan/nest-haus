@@ -188,7 +188,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - [ ] Preview image navigation with arrows works
 - [ ] "Dein Nest Überblick" panel displays
 - [ ] "Neu Konfigurieren" button works
-- [ ] "In den Warenkorb" deactivates ohne nest mode
+- [ ] "Zum Warenkorb" deactivates ohne nest mode
 - [ ] Warenkorb displays full configuration details
 - [ ] Payment flow works with all Teilzahlungen
 - [ ] Stripe integration functional
@@ -292,7 +292,7 @@ For Vercel deployment:
 | Price Display      | ✅ Full breakdown        | ❌ Hidden               |
 | Preview Navigation | ✅ Arrows                | ❌ Static               |
 | Summary Panel      | ✅ "Dein Nest Überblick" | ❌ Hidden               |
-| Cart Button        | "In den Warenkorb"       | "Direkt zum Vorentwurf" |
+| Cart Button        | "Zum Warenkorb"          | "Direkt zum Vorentwurf" |
 | Reset Button       | ✅ "Neu konfigurieren"   | ❌ Hidden               |
 | Warenkorb Mode     | Full configuration       | Ohne nest (Vorentwurf)  |
 | Payment Amount     | Variable                 | Fixed 1.000 €           |

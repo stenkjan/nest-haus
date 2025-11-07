@@ -21,7 +21,7 @@ All 10 tasks have been successfully completed. The admin tracking system has bee
 
 **File**: `src/app/api/sessions/track-cart-add/route.ts` (NEW)
 
-- Tracks only when user clicks "In den Warenkorb"
+- Tracks only when user clicks "Zum Warenkorb"
 - Updates session status to `IN_CART`
 - Creates SelectionEvents for the configuration
 - Non-blocking, fail-safe implementation
@@ -211,7 +211,7 @@ enum SessionStatus {
 
 1. ✅ Go to `/konfigurator`
 2. ✅ Make selections (nest, gebäudehülle, etc.)
-3. ✅ Click "In den Warenkorb" → Should trigger tracking
+3. ✅ Click "Zum Warenkorb" → Should trigger tracking
 4. ✅ Check `/admin/debug/session` → Session should be `IN_CART`
 5. ✅ Fill contact form → Session should be `COMPLETED`
 6. ✅ Complete payment → Session should be `CONVERTED`
