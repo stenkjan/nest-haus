@@ -29,31 +29,6 @@ export interface CategoryData {
 
 export const configuratorData: CategoryData[] = [
   {
-    id: 'planungspaket',
-    title: 'Die Planungspakete',
-    subtitle: 'Unser Service',
-    options: [
-      {
-        id: 'basis',
-        name: 'Planung Basis',
-        description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
-        price: { type: 'included', amount: 0, monthly: 0 }
-      },
-      {
-        id: 'plus',
-        name: 'Planung Plus',
-        description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-        price: { type: 'upgrade', amount: 16900, monthly: 98 }
-      },
-      {
-        id: 'pro',
-        name: 'Planung Pro',
-        description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-        price: { type: 'upgrade', amount: 21900, monthly: 127 }
-      }
-    ]
-  },
-  {
     id: 'nest',
     title: 'Nest',
     subtitle: 'Wie groß',
@@ -309,5 +284,30 @@ export const configuratorData: CategoryData[] = [
       title: 'Die Materialien deiner Öffnungen',
       // description: 'Du bestimmst Individuell wie uns die Öffnungen für Fenster & Türen bestücken.'
     }
+  },
+  {
+    id: 'planungspaket',
+    title: 'Die Planungspakete',
+    subtitle: 'Unser Service',
+    options: [
+      {
+        id: 'basis',
+        name: 'Planung Basis',
+        description: 'Einreichplanung (Raumteilung)\nFachberatung und Baubegleitung',
+        price: { type: 'included', amount: 0, monthly: 0 }
+      },
+      {
+        id: 'plus',
+        name: 'Planung Plus',
+        description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
+        price: { type: 'upgrade', amount: 16900, monthly: 98 }
+      },
+      {
+        id: 'pro',
+        name: 'Planung Pro',
+        description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
+        price: { type: 'upgrade', amount: 21900, monthly: 127 }
+      }
+    ]
   }
 ] 
