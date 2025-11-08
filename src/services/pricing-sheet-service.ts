@@ -153,11 +153,11 @@ class PricingSheetService {
 
   private parseNumber(value: unknown, isPrice: boolean = false): number {
     if (typeof value === 'number') {
-      const rounded = Math.round(value);
-      // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
-      if (isPrice && rounded < 1000 && rounded > 0) {
-        console.log(`[DEBUG] Multiplying price: ${rounded} * 1000 = ${result}`);
+      // If it's a price and value looks like thousands (< 1000), multiply by 1000 FIRST
+      const multiplied = (isPrice && value < 1000 && value > 0) ? value * 1000 : value;
+      const result = Math.round(multiplied); // Round AFTER multiplication
+      if (isPrice && value < 1000 && value > 0) {
+        console.log(`[DEBUG] Multiplying price: ${value} * 1000 = ${multiplied}, rounded = ${result}`);
       }
       return result;
     }
@@ -165,11 +165,11 @@ class PricingSheetService {
       const cleaned = value.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
       if (isNaN(parsed)) return 0;
-      const rounded = Math.round(parsed);
-      // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
-      if (isPrice && rounded < 1000 && rounded > 0) {
-        console.log(`[DEBUG] Multiplying price (string): ${rounded} * 1000 = ${result}`);
+      // If it's a price and value looks like thousands (< 1000), multiply by 1000 FIRST
+      const multiplied = (isPrice && parsed < 1000 && parsed > 0) ? parsed * 1000 : parsed;
+      const result = Math.round(multiplied); // Round AFTER multiplication
+      if (isPrice && parsed < 1000 && parsed > 0) {
+        console.log(`[DEBUG] Multiplying price (string): ${parsed} * 1000 = ${multiplied}, rounded = ${result}`);
       }
       return result;
     }
