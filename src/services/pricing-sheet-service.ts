@@ -251,6 +251,7 @@ class PricingSheetService {
     // platte black → fassadenplatten_schwarz, platte white → fassadenplatten_weiss
     const optionMapping: Record<string, string> = {
       'lärche': 'holzlattung',
+      'laerche': 'holzlattung', // Also support ASCII version
       'trapezblech': 'trapezblech',
       'platte black': 'fassadenplatten_schwarz',
       'platte white': 'fassadenplatten_weiss',
@@ -282,6 +283,7 @@ class PricingSheetService {
       'eiche': 'steirische_eiche',
       'fichte': 'fichte',
       'laerche': 'laerche',
+      'lärche': 'laerche', // Normalize German umlaut to ASCII
     };
 
     for (let rowIndex = 23; rowIndex <= 25; rowIndex++) {

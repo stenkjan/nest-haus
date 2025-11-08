@@ -55,7 +55,7 @@ export class PriceCalculator {
   private static pricingDataPromise: Promise<PricingData> | null = null;
   private static pricingDataTimestamp = 0;
   private static readonly PRICING_DATA_TTL = 5 * 60 * 1000; // 5 minutes
-  private static readonly CACHE_VERSION = 2; // Increment this to force cache invalidation
+  private static readonly CACHE_VERSION = 3; // Increment this to force cache invalidation
   
   // Callbacks to notify when pricing data is loaded
   private static onDataLoadedCallbacks: Array<() => void> = [];
