@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3180ce8239b6e9d98656c6a259d5ee7515de91af] - Sat Nov 8 18:10:53 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add sheets info test endpoint  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/sheets-info/route.ts
+
+
+---
+
 ## [33a6aec5bb79fc6a361d22034eb5534bd781a398] - Sat Nov 8 17:34:05 2025 +0100
 
 **Author**: stenkjan
