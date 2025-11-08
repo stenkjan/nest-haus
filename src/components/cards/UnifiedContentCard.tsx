@@ -346,6 +346,7 @@ export default function UnifiedContentCard({
     getCardWidthForIndex,
     alignment,
     isLightboxMode,
+    stableViewportHeight,
   ]);
 
   // Calculate responsive card dimensions

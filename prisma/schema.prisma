@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
@@ -130,52 +130,52 @@ model CustomerInquiry {
   adminNotes        String?
   followUpDate      DateTime?
   assignedTo        String?
-  
+
   // Payment-related fields
-  paymentIntentId   String?       // Stripe Payment Intent ID
-  paymentStatus     PaymentStatus @default(PENDING)
-  paymentMethod     String?       // card, bank_transfer, etc.
-  stripeSessionId   String?       // Stripe Checkout Session ID
-  paymentAmount     Int?          // Amount actually paid (may differ from totalPrice)
-  paymentCurrency   String?       @default("eur")
-  paidAt            DateTime?     // When payment was completed
-  
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  paymentIntentId String? // Stripe Payment Intent ID
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentMethod   String? // card, bank_transfer, etc.
+  stripeSessionId String? // Stripe Checkout Session ID
+  paymentAmount   Int? // Amount actually paid (may differ from totalPrice)
+  paymentCurrency String?       @default("eur")
+  paidAt          DateTime? // When payment was completed
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("customer_inquiries")
 }
 
 model InteractionEvent {
-  id              String      @id @default(cuid())
-  sessionId       String
-  eventType       String      // 'click', 'hover', 'scroll', 'selection'
-  category        String      // 'nest', 'gebaeudehuelle', 'ausstattung'
-  elementId       String?
-  selectionValue  String?
-  previousValue   String?
-  timestamp       DateTime    @default(now())
-  timeSpent       BigInt?     // milliseconds - BigInt to handle large duration values
-  deviceType      String?
-  viewportWidth   Int?
-  viewportHeight  Int?
-  additionalData  Json?
-  
-  session         UserSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
-  
+  id             String   @id @default(cuid())
+  sessionId      String
+  eventType      String // 'click', 'hover', 'scroll', 'selection'
+  category       String // 'nest', 'gebaeudehuelle', 'ausstattung'
+  elementId      String?
+  selectionValue String?
+  previousValue  String?
+  timestamp      DateTime @default(now())
+  timeSpent      BigInt? // milliseconds - BigInt to handle large duration values
+  deviceType     String?
+  viewportWidth  Int?
+  viewportHeight Int?
+  additionalData Json?
+
+  session UserSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
+
   @@map("interaction_events")
 }
 
 model PerformanceMetric {
-  id              String   @id @default(cuid())
-  sessionId       String?
-  metricName      String   // 'api_response_time', 'image_load_time', 'price_calc_time'
-  value           Float
-  timestamp       DateTime @default(now())
-  additionalData  Json?
-  endpoint        String?
-  userAgent       String?
-  
+  id             String   @id @default(cuid())
+  sessionId      String?
+  metricName     String // 'api_response_time', 'image_load_time', 'price_calc_time'
+  value          Float
+  timestamp      DateTime @default(now())
+  additionalData Json?
+  endpoint       String?
+  userAgent      String?
+
   @@map("performance_metrics")
 }
 
@@ -213,67 +213,67 @@ enum PaymentStatus {
 }
 
 model UsabilityTest {
-  id                String              @id @default(cuid())
-  testId            String              @unique
-  sessionId         String?
-  testType          String              @default("alpha")
-  status            TestStatus          @default(IN_PROGRESS)
-  participantName   String?             // Name of the test participant
-  startedAt         DateTime            @default(now())
-  completedAt       DateTime?
-  totalDuration     Int?                // milliseconds
-  deviceInfo        Json?               // device, browser, viewport
-  ipAddress         String?
-  userAgent         String?
-  comments          String?             // User comments/notes throughout the test
-  startUrl          String?             // Starting URL for the test
-  
+  id              String     @id @default(cuid())
+  testId          String     @unique
+  sessionId       String?
+  testType        String     @default("alpha")
+  status          TestStatus @default(IN_PROGRESS)
+  participantName String? // Name of the test participant
+  startedAt       DateTime   @default(now())
+  completedAt     DateTime?
+  totalDuration   Int? // milliseconds
+  deviceInfo      Json? // device, browser, viewport
+  ipAddress       String?
+  userAgent       String?
+  comments        String? // User comments/notes throughout the test
+  startUrl        String? // Starting URL for the test
+
   // Test results
-  responses         UsabilityResponse[]
-  interactions      TestInteraction[]
-  
+  responses    UsabilityResponse[]
+  interactions TestInteraction[]
+
   // Summary metrics
-  overallRating     Float?              // 1-10 average
-  completionRate    Float?              // percentage completed
-  errorCount        Int                 @default(0)
-  consoleErrors     Json?               // captured console errors
-  
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  
+  overallRating  Float? // 1-10 average
+  completionRate Float? // percentage completed
+  errorCount     Int    @default(0)
+  consoleErrors  Json? // captured console errors
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("usability_tests")
 }
 
 model UsabilityResponse {
-  id              String         @id @default(cuid())
-  testId          String
-  questionId      String         // unique identifier for each question
-  questionType    QuestionType   // RATING, TEXT, MULTIPLE_CHOICE
-  questionText    String
-  response        Json           // flexible response storage
-  responseTime    Int?           // milliseconds to answer
-  timestamp       DateTime       @default(now())
-  
-  test            UsabilityTest  @relation(fields: [testId], references: [testId], onDelete: Cascade)
-  
+  id           String       @id @default(cuid())
+  testId       String
+  questionId   String // unique identifier for each question
+  questionType QuestionType // RATING, TEXT, MULTIPLE_CHOICE
+  questionText String
+  response     Json // flexible response storage
+  responseTime Int? // milliseconds to answer
+  timestamp    DateTime     @default(now())
+
+  test UsabilityTest @relation(fields: [testId], references: [testId], onDelete: Cascade)
+
   @@map("usability_responses")
 }
 
 model TestInteraction {
-  id              String         @id @default(cuid())
-  testId          String
-  stepId          String         // which test step/page
-  eventType       String         // click, scroll, navigation, error
-  elementId       String?
-  elementText     String?
-  timestamp       DateTime       @default(now())
-  duration        Int?           // time spent on this step
-  success         Boolean        @default(true)
-  errorMessage    String?
-  additionalData  Json?
-  
-  test            UsabilityTest  @relation(fields: [testId], references: [testId], onDelete: Cascade)
-  
+  id             String   @id @default(cuid())
+  testId         String
+  stepId         String // which test step/page
+  eventType      String // click, scroll, navigation, error
+  elementId      String?
+  elementText    String?
+  timestamp      DateTime @default(now())
+  duration       Int? // time spent on this step
+  success        Boolean  @default(true)
+  errorMessage   String?
+  additionalData Json?
+
+  test UsabilityTest @relation(fields: [testId], references: [testId], onDelete: Cascade)
+
   @@map("test_interactions")
 }
 
@@ -292,19 +292,19 @@ enum QuestionType {
 }
 
 model ProjectTask {
-  id           String       @id @default(cuid())
-  taskId       String       @unique // e.g., "P1", "1.1", "M1", etc.
-  task         String       // Task description
-  responsible  String       // Team member(s) responsible
-  startDate    DateTime     // Start date
-  endDate      DateTime     // End date
-  duration     Int          // Duration in days
-  milestone    Boolean      @default(false) // Is this a milestone?
-  priority     TaskPriority @default(MITTEL)
-  notes        String?      // Additional notes
-  status       TaskStatus   @default(PENDING)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id          String       @id @default(cuid())
+  taskId      String       @unique // e.g., "P1", "1.1", "M1", etc.
+  task        String // Task description
+  responsible String // Team member(s) responsible
+  startDate   DateTime // Start date
+  endDate     DateTime // End date
+  duration    Int // Duration in days
+  milestone   Boolean      @default(false) // Is this a milestone?
+  priority    TaskPriority @default(MITTEL)
+  notes       String? // Additional notes
+  status      TaskStatus   @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@map("project_tasks")
 }
@@ -334,11 +334,11 @@ model SecurityEvent {
   description     String
   metadata        Json?
   resolved        Boolean           @default(false)
-  responseActions Json?             // Array of automated response actions taken
+  responseActions Json? // Array of automated response actions taken
   ipAddress       String?
   userAgent       String?
   endpoint        String?
-  
+
   @@index([sessionId])
   @@index([eventType])
   @@index([severity])
@@ -347,18 +347,18 @@ model SecurityEvent {
 }
 
 model ThreatAlert {
-  id                  String            @id @default(cuid())
-  timestamp           DateTime          @default(now())
-  eventType           SecurityEventType
-  severity            EventSeverity
-  title               String
-  description         String
-  affectedSessions    Json?             // Array of session IDs
-  recommendedActions  Json?             // Array of recommended actions
-  autoResolved        Boolean           @default(false)
-  resolvedAt          DateTime?
-  resolvedBy          String?
-  
+  id                 String            @id @default(cuid())
+  timestamp          DateTime          @default(now())
+  eventType          SecurityEventType
+  severity           EventSeverity
+  title              String
+  description        String
+  affectedSessions   Json? // Array of session IDs
+  recommendedActions Json? // Array of recommended actions
+  autoResolved       Boolean           @default(false)
+  resolvedAt         DateTime?
+  resolvedBy         String?
+
   @@index([eventType])
   @@index([severity])
   @@index([autoResolved])
@@ -367,23 +367,23 @@ model ThreatAlert {
 }
 
 model BehaviorAnalysis {
-  id                String    @id @default(cuid())
-  sessionId         String
-  timestamp         DateTime  @default(now())
-  suspicionScore    Float     // 0-1
-  botProbability    Float     // 0-1
-  humanLikelihood   Float     // 0-1
-  anomalies         Json?     // Array of detected anomalies
-  confidence        Float     // 0-1
-  riskLevel         RiskLevel
-  
+  id              String    @id @default(cuid())
+  sessionId       String
+  timestamp       DateTime  @default(now())
+  suspicionScore  Float // 0-1
+  botProbability  Float // 0-1
+  humanLikelihood Float // 0-1
+  anomalies       Json? // Array of detected anomalies
+  confidence      Float // 0-1
+  riskLevel       RiskLevel
+
   // Behavioral metrics
-  mouseMovements    Int       @default(0)
-  keystrokes        Int       @default(0)
-  clicks            Int       @default(0)
-  scrollEvents      Int       @default(0)
-  sessionDuration   Int?      // milliseconds
-  
+  mouseMovements  Int  @default(0)
+  keystrokes      Int  @default(0)
+  clicks          Int  @default(0)
+  scrollEvents    Int  @default(0)
+  sessionDuration Int? // milliseconds
+
   @@index([sessionId])
   @@index([riskLevel])
   @@index([timestamp])
@@ -391,21 +391,21 @@ model BehaviorAnalysis {
 }
 
 model BotDetection {
-  id                String          @id @default(cuid())
-  sessionId         String
-  timestamp         DateTime        @default(now())
-  isBot             Boolean
-  confidence        Float           // 0-1
-  detectionMethods  Json?           // Array of detection methods used
-  riskLevel         RiskLevel
-  allowAccess       Boolean
-  reasons           Json?           // Array of detection reasons
-  userAgent         String?
-  ipAddress         String?
-  
+  id               String    @id @default(cuid())
+  sessionId        String
+  timestamp        DateTime  @default(now())
+  isBot            Boolean
+  confidence       Float // 0-1
+  detectionMethods Json? // Array of detection methods used
+  riskLevel        RiskLevel
+  allowAccess      Boolean
+  reasons          Json? // Array of detection reasons
+  userAgent        String?
+  ipAddress        String?
+
   // Browser fingerprint data
-  fingerprint       Json?
-  
+  fingerprint Json?
+
   @@index([sessionId])
   @@index([isBot])
   @@index([riskLevel])
@@ -414,34 +414,34 @@ model BotDetection {
 }
 
 model SecurityMetrics {
-  id                    String    @id @default(cuid())
-  timestamp             DateTime  @default(now())
-  activeSessions        Int       @default(0)
-  totalEvents           Int       @default(0)
-  threatLevel           ThreatLevel @default(NORMAL)
-  eventsByType          Json?     // Object with event type counts
-  eventsBySeverity      Json?     // Object with severity counts
-  averageRiskScore      Float     @default(0)
-  botDetectionRate      Float     @default(0)
-  falsePositiveRate     Float     @default(0)
-  responseTime          Float     @default(0) // Average response time in ms
-  
+  id                String      @id @default(cuid())
+  timestamp         DateTime    @default(now())
+  activeSessions    Int         @default(0)
+  totalEvents       Int         @default(0)
+  threatLevel       ThreatLevel @default(NORMAL)
+  eventsByType      Json? // Object with event type counts
+  eventsBySeverity  Json? // Object with severity counts
+  averageRiskScore  Float       @default(0)
+  botDetectionRate  Float       @default(0)
+  falsePositiveRate Float       @default(0)
+  responseTime      Float       @default(0) // Average response time in ms
+
   @@index([timestamp])
   @@index([threatLevel])
   @@map("security_metrics")
 }
 
 model ContentProtectionViolation {
-  id            String    @id @default(cuid())
+  id            String   @id @default(cuid())
   sessionId     String?
-  timestamp     DateTime  @default(now())
-  violationType String    // right_click, text_selection, copy_attempt, etc.
+  timestamp     DateTime @default(now())
+  violationType String // right_click, text_selection, copy_attempt, etc.
   elementId     String?
   elementType   String?
   userAgent     String?
   ipAddress     String?
-  blocked       Boolean   @default(false)
-  
+  blocked       Boolean  @default(false)
+
   @@index([sessionId])
   @@index([violationType])
   @@index([timestamp])
@@ -488,17 +488,17 @@ enum ThreatLevel {
 
 model PricingData {
   id            String   @id @default(cuid())
-  category      String   // e.g., "nest_groesse", "gebaeudehuelle", "fenster"
-  itemKey       String   // Unique identifier within category
-  itemName      String   // Human-readable name
-  basePrice     Int      // Base price in cents (EUR)
+  category      String // e.g., "nest_groesse", "gebaeudehuelle", "fenster"
+  itemKey       String // Unique identifier within category
+  itemName      String // Human-readable name
+  basePrice     Int // Base price in cents (EUR)
   priceModifier Int      @default(0) // Price modifier in cents (+/-)
-  metadata      Json?    // Additional data (dimensions, descriptions, etc.)
+  metadata      Json? // Additional data (dimensions, descriptions, etc.)
   isActive      Boolean  @default(true)
   version       Int      @default(1) // Increments on each update
   lastSynced    DateTime @updatedAt
   createdAt     DateTime @default(now())
-  
+
   @@unique([category, itemKey])
   @@index([category])
   @@index([isActive])
@@ -509,12 +509,28 @@ model PricingSyncLog {
   id           String   @id @default(cuid())
   syncedAt     DateTime @default(now())
   itemsUpdated Int      @default(0)
-  changes      Json?    // Detailed changelog
-  status       String   // "success" | "partial" | "failed"
-  errorDetails Json?    // Error messages if failed
-  duration     Int?     // Sync duration in milliseconds
-  
+  changes      Json? // Detailed changelog
+  status       String // "success" | "partial" | "failed"
+  errorDetails Json? // Error messages if failed
+  duration     Int? // Sync duration in milliseconds
+
   @@index([syncedAt])
   @@index([status])
   @@map("pricing_sync_logs")
+}
+
+// Shadow copy of complete pricing data from Google Sheets
+model PricingDataSnapshot {
+  id            String   @id @default(cuid())
+  version       Int      @default(1) // Increments on each sync
+  pricingData   Json     // Complete PricingData structure from pricing-sheet-service
+  syncedAt      DateTime @default(now())
+  syncedBy      String   @default("cron") // "cron" | "manual" | "api"
+  isActive      Boolean  @default(true) // Only one active snapshot at a time
+  createdAt     DateTime @default(now())
+  
+  @@index([isActive])
+  @@index([syncedAt])
+  @@index([version])
+  @@map("pricing_data_snapshots")
 }
