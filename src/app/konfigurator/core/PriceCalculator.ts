@@ -73,7 +73,8 @@ export class PriceCalculator {
   }
 
   /**
-   * Initialize pricing data from Google Sheets API
+   * Initialize pricing data from database API
+   * Uses multi-level caching: sessionStorage → memory → database
    * Call this once on app startup (client-side)
    */
   static async initializePricingData(): Promise<void> {
@@ -90,6 +91,28 @@ export class PriceCalculator {
       return;
     }
 
+    // Try to load from sessionStorage first (fastest)
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = sessionStorage.getItem('nest-haus-pricing-data');
+        if (cached) {
+          const { data, timestamp, version } = JSON.parse(cached);
+          if (now - timestamp < this.PRICING_DATA_TTL) {
+            this.pricingData = data;
+            this.pricingDataTimestamp = timestamp;
+            console.log(`✅ Pricing data loaded from sessionStorage (version ${version}, ${Math.round((now - timestamp) / 1000)}s old)`);
+            
+            // Notify callbacks
+            this.onDataLoadedCallbacks.forEach(cb => { try { cb(); } catch (e) { console.error(e); } });
+            this.onDataLoadedCallbacks = [];
+            return;
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to load pricing data from sessionStorage:', error);
+      }
+    }
+
     // Start fetching from database (shadow copy)
     this.pricingDataPromise = (async () => {
       try {
@@ -102,6 +125,19 @@ export class PriceCalculator {
           this.pricingData = result.data;
           this.pricingDataTimestamp = now;
           console.log(`✅ Pricing data loaded from database (version ${result.version || 'unknown'}, synced ${result.syncedAt || 'unknown'})`);
+          
+          // Save to sessionStorage for faster future loads
+          if (typeof window !== 'undefined') {
+            try {
+              sessionStorage.setItem('nest-haus-pricing-data', JSON.stringify({
+                data: this.pricingData,
+                timestamp: now,
+                version: result.version || 1,
+              }));
+            } catch (error) {
+              console.warn('Failed to save pricing data to sessionStorage:', error);
+            }
+          }
           
           // Notify all registered callbacks
           this.onDataLoadedCallbacks.forEach(callback => {
