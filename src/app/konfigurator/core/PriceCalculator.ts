@@ -445,24 +445,35 @@ export class PriceCalculator {
       
       if (pricingData && fenster) {
         const nestSize = nest.value as NestSize;
-        const fensterKey = fenster.value === 'aluminium_schwarz' ? 'aluminium_schwarz' : fenster.value;
+        const fensterKey = fenster.value; // Use fenster value as-is (holz, pvc_fenster, aluminium_schwarz)
         const belichtungKey = belichtungspaket.value;
+        
+        console.log(`[DEBUG] Calculating belichtungspaket: fenster=${fensterKey}, nest=${nestSize}, belichtung=${belichtungKey}`);
         
         // Get total combination price from sheet (F70-N78 contains TOTAL prices)
         const fensterPricing = pricingData.fenster.totalPrices[fensterKey];
         if (fensterPricing && fensterPricing[nestSize]) {
           const totalPrice = fensterPricing[nestSize][belichtungKey];
           if (totalPrice !== undefined) {
+            console.log(`[DEBUG] Found belichtungspaket price: ${totalPrice}`);
             return totalPrice; // Return total price directly
+          } else {
+            console.warn(`[WARN] Belichtung option "${belichtungKey}" not found for ${fensterKey} ${nestSize}`);
           }
+        } else {
+          console.warn(`[WARN] Fenster pricing not found for fensterKey="${fensterKey}", nestSize="${nestSize}"`);
+          console.warn('[WARN] Available fenster keys:', Object.keys(pricingData.fenster.totalPrices));
         }
+      } else {
+        console.warn('[WARN] Pricing data or fenster not available:', { hasPricingData: !!pricingData, hasFenster: !!fenster });
       }
       
-      // If pricing data not available, throw error
-      throw new Error('Belichtungspaket pricing data not available in database');
+      // If pricing data not available yet (loading), return 0 to prevent crash
+      console.warn('⚠️ Belichtungspaket pricing data not yet loaded, returning 0');
+      return 0;
     } catch (error) {
-      console.error('💡 Error calculating belichtungspaket price:', error);
-      throw error; // Re-throw - no fallback
+      console.error('Error calculating belichtungspaket price:', error);
+      return 0; // Return 0 instead of throwing to prevent crashes during loading
     }
   }
 
