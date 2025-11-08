@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9f659f010af8bce37c53d202668564e0458f0005] - Sat Nov 8 18:12:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update sheet name to Preistabelle_Verkauf  `
+
+### Changes Analysis
+
+---
+
 ## [3180ce8239b6e9d98656c6a259d5ee7515de91af] - Sat Nov 8 18:10:53 2025 +0100
 
 **Author**: stenkjan
