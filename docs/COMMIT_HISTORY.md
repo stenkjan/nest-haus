@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e0db261ee3d1a30ec34aad922e85d112384abf7b] - Sat Nov 8 17:01:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update pricing services to remove PricingSyncLog references and fix type casts  `
+
+### Changes Analysis
+
+---
+
 ## [f4533590a8af1beb8215c288df10d605551c0a73] - Sat Nov 8 16:53:06 2025 +0100
 
 **Author**: stenkjan
