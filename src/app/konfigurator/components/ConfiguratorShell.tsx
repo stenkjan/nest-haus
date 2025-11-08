@@ -55,11 +55,21 @@ export default function ConfiguratorShell({
   onPriceChange,
   rightPanelRef,
 }: ConfiguratorProps & { rightPanelRef?: React.Ref<HTMLDivElement> }) {
-  // Initialize pricing data from Google Sheets on mount
+  // Track pricing data loading state
+  const [isPricingDataLoaded, setIsPricingDataLoaded] = useState(false);
+  const [pricingDataError, setPricingDataError] = useState<string | null>(null);
+
+  // Initialize pricing data from database on mount
   useEffect(() => {
-    PriceCalculator.initializePricingData().catch((error) => {
-      console.error('Failed to initialize pricing data:', error);
-    });
+    PriceCalculator.initializePricingData()
+      .then(() => {
+        console.log('✅ Pricing data loaded successfully');
+        setIsPricingDataLoaded(true);
+      })
+      .catch((error) => {
+        console.error('❌ Failed to initialize pricing data:', error);
+        setPricingDataError(error.message || 'Failed to load pricing data');
+      });
   }, []);
 
   const {
@@ -1723,6 +1733,37 @@ export default function ConfiguratorShell({
   const panelHeight =
     "calc(100vh - var(--navbar-height, 3.5rem) - var(--footer-height, 2.5rem) + 5vh)";
   const panelPaddingTop = "var(--navbar-height, 3.5rem)";
+
+  // Show loading state while pricing data is being fetched
+  if (!isPricingDataLoaded && !pricingDataError) {
+    return (
+      <div className="configurator-shell w-full h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Preisdaten werden geladen...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if pricing data failed to load
+  if (pricingDataError) {
+    return (
+      <div className="configurator-shell w-full h-screen flex items-center justify-center bg-white">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="text-red-600 text-5xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold mb-2">Fehler beim Laden der Preisdaten</h2>
+          <p className="text-gray-600 mb-4">{pricingDataError}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
+          >
+            Seite neu laden
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="configurator-shell w-full h-full bg-white">
