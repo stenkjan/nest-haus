@@ -163,14 +163,21 @@ class PricingSheetService {
 
   private async fetchSheet(): Promise<unknown[][]> {
     try {
+      console.log('[DEBUG] Fetching sheet:', this.spreadsheetId, 'Range: Preistabelle_Verkauf!A1:N100');
+      
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
-        range: 'Preistabelle Verkauf!A1:N100',
+        range: 'Preistabelle_Verkauf!A1:N100',
       });
 
+      console.log('[DEBUG] Sheet fetch successful, rows:', response.data.values?.length || 0);
       return (response.data.values || []) as unknown[][];
     } catch (error) {
-      console.error('Error fetching pricing sheet:', error);
+      console.error('[ERROR] Error fetching pricing sheet:', error);
+      if (error instanceof Error) {
+        console.error('[ERROR] Error message:', error.message);
+        console.error('[ERROR] Error stack:', error.stack);
+      }
       throw error;
     }
   }
