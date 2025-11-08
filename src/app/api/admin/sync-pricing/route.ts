@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    console.log('🔄 Manual pricing sync triggered by admin...');
+    console.log('[SYNC] Manual pricing sync triggered by admin...');
 
     // Fetch fresh data from Google Sheets
     const pricingService = getPricingSheetService();
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     const duration = Date.now() - startTime;
 
-    console.log(`✅ Manual pricing sync completed in ${duration}ms`);
+    console.log(`[SUCCESS] Manual pricing sync completed in ${duration}ms`);
 
     return NextResponse.json({
       success: true,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('❌ Manual pricing sync failed:', error);
+    console.error('[ERROR] Manual pricing sync failed:', error);
     
     const duration = Date.now() - startTime;
 
