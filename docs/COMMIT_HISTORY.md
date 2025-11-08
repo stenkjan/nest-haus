@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [19324a7dc46cd043b3da594d136dc1ab4a964e63] - Sat Nov 8 21:08:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update pricing sync architecture and enhance price calculator cache versioning  - Corrected diagram formatting in PRICING_SYNC_ARCHITECTURE.md - Incremented CACHE_VERSION in PriceCalculator.ts to 3 for cache invalidation - Added support for ASCII version of 'lärche' in pricing-sheet-service.ts  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+#### 📚 Documentation Changes
+- docs/PRICING_SYNC_ARCHITECTURE.md
+
+
+---
+
 ## [7529111878cdb684ddef0d1cddf49deb6f0ad7d0] - Sat Nov 8 19:50:36 2025 +0100
 
 **Author**: stenkjan
