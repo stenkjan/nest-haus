@@ -893,8 +893,15 @@ export class PriceCalculator {
       return pricingData.geschossdecke.maxAmounts[nestSize] || 0;
     }
     
-    // If pricing data not available, throw error
-    throw new Error('Geschossdecke max amounts not available in database');
+    // Return safe default if pricing data not loaded yet
+    const defaults: Record<string, number> = {
+      nest80: 3,
+      nest100: 3,
+      nest120: 4,
+      nest140: 4,
+      nest160: 0,
+    };
+    return defaults[nestValue] || 3;
   }
 
   /**
@@ -907,8 +914,15 @@ export class PriceCalculator {
       return pricingData.pvanlage.maxModules[nestSize] || 0;
     }
     
-    // If pricing data not available, throw error
-    throw new Error('PV-Anlage max modules not available in database');
+    // Return safe default if pricing data not loaded yet
+    const defaults: Record<string, number> = {
+      nest80: 8,
+      nest100: 10,
+      nest120: 12,
+      nest140: 14,
+      nest160: 16,
+    };
+    return defaults[nestValue] || 8;
   }
 
   // REMOVED: Cache management methods no longer needed after reverting complex pricing logic
