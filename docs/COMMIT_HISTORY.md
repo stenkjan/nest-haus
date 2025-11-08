@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f68996adc47bfeeabb35f1182568417fbd30ca7c] - Sat Nov 8 18:34:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge pricing overhaul with new spreadsheet ID  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/sync-pricing/route.ts
+- src/app/api/sync/pricing/route.ts
+- src/app/api/test/sheets-info/route.ts
+- src/app/api/test/sheets-metadata/route.ts
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+---
+
 ## [9f659f010af8bce37c53d202668564e0458f0005] - Sat Nov 8 18:12:45 2025 +0100
 
 **Author**: stenkjan
