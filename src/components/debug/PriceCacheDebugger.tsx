@@ -43,6 +43,7 @@ export function PriceCacheDebugger() {
       const interval = setInterval(updateCacheInfo, 1000);
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [isVisible]);
 
   const handleClearCache = () => {
