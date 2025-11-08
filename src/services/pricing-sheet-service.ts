@@ -153,11 +153,11 @@ class PricingSheetService {
 
   private parseNumber(value: unknown, isPrice: boolean = false): number {
     if (typeof value === 'number') {
-      // If it's a price and value looks like thousands (< 1000), multiply by 1000 FIRST
-      const multiplied = (isPrice && value < 1000 && value > 0) ? value * 1000 : value;
-      const result = Math.round(multiplied); // Round AFTER multiplication
+      // If it's a price and value looks like thousands (< 1000), multiply by 1000
+      // Use EXACT values without rounding - prices come directly from spreadsheet
+      const result = (isPrice && value < 1000 && value > 0) ? value * 1000 : value;
       if (isPrice && value < 1000 && value > 0) {
-        console.log(`[DEBUG] Multiplying price: ${value} * 1000 = ${multiplied}, rounded = ${result}`);
+        console.log(`[DEBUG] Multiplying price: ${value} * 1000 = ${result}`);
       }
       return result;
     }
@@ -165,11 +165,11 @@ class PricingSheetService {
       const cleaned = value.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
       if (isNaN(parsed)) return 0;
-      // If it's a price and value looks like thousands (< 1000), multiply by 1000 FIRST
-      const multiplied = (isPrice && parsed < 1000 && parsed > 0) ? parsed * 1000 : parsed;
-      const result = Math.round(multiplied); // Round AFTER multiplication
+      // If it's a price and value looks like thousands (< 1000), multiply by 1000
+      // Use EXACT values without rounding - prices come directly from spreadsheet
+      const result = (isPrice && parsed < 1000 && parsed > 0) ? parsed * 1000 : parsed;
       if (isPrice && parsed < 1000 && parsed > 0) {
-        console.log(`[DEBUG] Multiplying price (string): ${parsed} * 1000 = ${multiplied}, rounded = ${result}`);
+        console.log(`[DEBUG] Multiplying price (string): ${parsed} * 1000 = ${result}`);
       }
       return result;
     }
@@ -211,7 +211,7 @@ class PricingSheetService {
       const colIndex = NEST_COLUMNS[nestSize];
       const price = this.parseNumber(row11[colIndex], true); // Price in thousands
       const squareMeters = this.parseNumber(row12[colIndex]); // Not a price
-      const pricePerSqm = squareMeters > 0 ? Math.round(price / squareMeters) : 0;
+      const pricePerSqm = squareMeters > 0 ? price / squareMeters : 0; // Use exact value, no rounding
 
       nestData[nestSize] = {
         price,
