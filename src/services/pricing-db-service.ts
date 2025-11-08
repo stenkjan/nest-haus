@@ -34,7 +34,7 @@ export async function savePricingSnapshot(
   await prisma.pricingDataSnapshot.create({
     data: {
       version: nextVersion,
-      pricingData: pricingData as Prisma.InputJsonValue,
+      pricingData: pricingData as unknown as Prisma.InputJsonValue,
       syncedBy,
       isActive: true,
     },
@@ -54,7 +54,7 @@ export async function getPricingDataFromDb(): Promise<PricingData | null> {
     return null;
   }
 
-  return snapshot.pricingData as PricingData;
+  return snapshot.pricingData as unknown as PricingData;
 }
 
 /**

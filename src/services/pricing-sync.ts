@@ -503,24 +503,21 @@ export class PricingSyncService {
    * Log sync result to database
    */
   private async logSync(result: SyncResult): Promise<void> {
-    await prisma.pricingSyncLog.create({
-      data: {
-        itemsUpdated: result.itemsUpdated + result.itemsAdded,
-        changes: result.changes as Prisma.InputJsonValue,
-        status: result.success ? 'success' : result.errors.length > 0 ? 'partial' : 'failed',
-      },
+    // Log to console since PricingSyncLog model was removed
+    console.log('í³Š Pricing sync result:'  , {
+      success: result.success,
+      itemsUpdated: result.itemsUpdated + result.itemsAdded,
+      status: result.success ? 'success' : result.errors.length > 0 ? 'partial' : 'failed',
+      timestamp: new Date().toISOString()
     });
   }
 
   /**
-   * Get the last sync timestamp
+   * Get the last sync timestamp (not available without PricingSyncLog)
    */
   async getLastSyncTime(): Promise<Date | null> {
-    const lastSync = await prisma.pricingSyncLog.findFirst({
-      orderBy: { syncedAt: 'desc' },
-    });
-
-    return lastSync?.syncedAt || null;
+    // Return null since PricingSyncLog model was removed
+    return null;
   }
 
   /**
