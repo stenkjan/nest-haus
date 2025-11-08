@@ -445,20 +445,20 @@ class PricingSheetService {
 
   private parseFenster(rows: unknown[][]): PricingData['fenster'] {
     // Rows 70-78 contain TOTAL combination prices (belichtungspaket × fenster × nest size)
-    // Format: belichtungspaket options × fenster options × nest sizes
+    // Actual spreadsheet order: Holz (70-72), Holz-Alu (73-75), Kunststoff (76-78)
     // Store total prices directly (price/m² calculated when needed for display)
     
     const fensterData: PricingData['fenster'] = {
       totalPrices: {},
     };
 
-    // Fenster options: pvc_fenster, holz, aluminium_schwarz (renamed to aluminium_holz)
-    const fensterOptions = ['pvc_fenster', 'holz', 'aluminium_schwarz'];
+    // Fenster options in spreadsheet order: holz, aluminium_schwarz (Holz-Alu), pvc_fenster (Kunststoff)
+    const fensterOptions = ['holz', 'aluminium_schwarz', 'pvc_fenster'];
     const belichtungOptions = ['light', 'medium', 'bright'];
 
     // Parse rows 70-78 (0-indexed: 69-77)
-    // Assuming structure: each fenster option has 3 rows (one per belichtungspaket)
-    let rowIndex = 69;
+    // Structure: each fenster option has 3 rows (one per belichtungspaket option)
+    let rowIndex = 69; // Start at row 70 (0-indexed: 69)
     
     fensterOptions.forEach((fensterOption) => {
       fensterData.totalPrices[fensterOption] = {} as {
@@ -486,6 +486,7 @@ class PricingSheetService {
       });
     });
 
+    console.log('[DEBUG] Parsed fenster data:', JSON.stringify(fensterData, null, 2));
     return fensterData;
   }
 
