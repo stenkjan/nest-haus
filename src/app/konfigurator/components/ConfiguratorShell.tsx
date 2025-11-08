@@ -65,6 +65,9 @@ export default function ConfiguratorShell({
       .then(() => {
         console.log('✅ Pricing data loaded successfully');
         setIsPricingDataLoaded(true);
+        // Recalculate prices now that data is available
+        const store = useConfiguratorStore.getState();
+        store.calculatePrice();
       })
       .catch((error) => {
         console.error('❌ Failed to initialize pricing data:', error);

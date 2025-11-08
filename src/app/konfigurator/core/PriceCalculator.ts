@@ -55,6 +55,22 @@ export class PriceCalculator {
   private static pricingDataPromise: Promise<PricingData> | null = null;
   private static pricingDataTimestamp = 0;
   private static readonly PRICING_DATA_TTL = 5 * 60 * 1000; // 5 minutes
+  
+  // Callbacks to notify when pricing data is loaded
+  private static onDataLoadedCallbacks: Array<() => void> = [];
+
+  /**
+   * Register a callback to be called when pricing data is loaded
+   */
+  static onPricingDataLoaded(callback: () => void): void {
+    if (this.pricingData) {
+      // Data already loaded, call immediately
+      callback();
+    } else {
+      // Register for later
+      this.onDataLoadedCallbacks.push(callback);
+    }
+  }
 
   /**
    * Initialize pricing data from Google Sheets API
@@ -86,6 +102,17 @@ export class PriceCalculator {
           this.pricingData = result.data;
           this.pricingDataTimestamp = now;
           console.log(`✅ Pricing data loaded from database (version ${result.version || 'unknown'}, synced ${result.syncedAt || 'unknown'})`);
+          
+          // Notify all registered callbacks
+          this.onDataLoadedCallbacks.forEach(callback => {
+            try {
+              callback();
+            } catch (error) {
+              console.error('Error in pricing data loaded callback:', error);
+            }
+          });
+          // Clear callbacks after calling them
+          this.onDataLoadedCallbacks = [];
         } else {
           throw new Error(result.message || 'Pricing data fetch returned unsuccessful result');
         }
@@ -182,12 +209,15 @@ export class PriceCalculator {
         return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
       } catch (error) {
         console.error('Error calculating combination price from database:', error);
-        throw error; // No fallback - prices should always be in database
+        // Return 0 instead of throwing to prevent crashes during initial load
+        return 0;
       }
     }
     
-    // If no pricing data available, throw error (should not happen if database is synced)
-    throw new Error('Pricing data not available. Please ensure database sync has run.');
+    // If no pricing data available yet (still loading), return 0
+    // This prevents crashes during initial page load before pricing data is fetched
+    console.warn('⚠️ Pricing data not yet loaded, returning 0');
+    return 0;
   }
 
   /**
