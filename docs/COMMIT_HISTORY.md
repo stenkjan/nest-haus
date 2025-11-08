@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7529111878cdb684ddef0d1cddf49deb6f0ad7d0] - Sat Nov 8 19:50:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 0b6c832387348e160000f85b5ac066dd469511ba into acc8e9291f4089688a0fd937f173ad3d166fcdff  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+
+
+---
+
 ## [7479c300d2ee0932f865d008ec9803f93fafe3d5] - Sat Nov 8 19:29:28 2025 +0100
 
 **Author**: stenkjan
