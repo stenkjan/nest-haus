@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d7a2c5627c811903e45bb63b9cea5773ab97c016] - Sat Nov 8 19:00:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Belichtungspaket pricing order  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [369609a683cb0f28bdf4338a60d6755bd963f52e] - Sat Nov 8 18:49:04 2025 +0100
 
 **Author**: stenkjan
