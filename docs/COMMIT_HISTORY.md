@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f03033c93f7c6952974b88c03e1c1ed84e76adae] - Sat Nov 8 18:37:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove old sync-pricing endpoints  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/sync-pricing/route.ts
+- src/app/api/sync/pricing/route.ts
+
+
+---
+
 ## [f68996adc47bfeeabb35f1182568417fbd30ca7c] - Sat Nov 8 18:34:48 2025 +0100
 
 **Author**: stenkjan
