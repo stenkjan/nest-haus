@@ -38,11 +38,11 @@ export function PriceCacheDebugger() {
   };
 
   useEffect(() => {
-    if (isVisible) {
-      updateCacheInfo();
-      const interval = setInterval(updateCacheInfo, 1000);
-      return () => clearInterval(interval);
-    }
+    if (!isVisible) return undefined;
+    
+    updateCacheInfo();
+    const interval = setInterval(updateCacheInfo, 1000);
+    return () => clearInterval(interval);
   }, [isVisible]);
 
   const handleClearCache = () => {
