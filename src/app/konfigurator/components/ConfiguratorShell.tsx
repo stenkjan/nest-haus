@@ -55,6 +55,13 @@ export default function ConfiguratorShell({
   onPriceChange,
   rightPanelRef,
 }: ConfiguratorProps & { rightPanelRef?: React.Ref<HTMLDivElement> }) {
+  // Initialize pricing data from Google Sheets on mount
+  useEffect(() => {
+    PriceCalculator.initializePricingData().catch((error) => {
+      console.error('Failed to initialize pricing data:', error);
+    });
+  }, []);
+
   const {
     updateSelection,
     removeSelection,
@@ -463,7 +470,7 @@ export default function ConfiguratorShell({
   );
 
   // Helper function to get number of modules based on nest size
-  const getModuleCount = useCallback((nestValue: string): number => {
+  const _getModuleCount = useCallback((nestValue: string): number => {
     const moduleMapping: Record<string, number> = {
       nest80: 4, // 80m² = 4 modules
       nest100: 5, // 100m² = 5 modules
@@ -476,25 +483,14 @@ export default function ConfiguratorShell({
 
   // Helper function to calculate maximum PV modules based on nest size
   const getMaxPvModules = useCallback((): number => {
-    if (!configuration?.nest?.value) return 8; // Default for nest80
-    const moduleCount = getModuleCount(configuration.nest.value);
-    // Each module can have 2 PV panels (one on each side of the roof)
-    return moduleCount * 2;
-  }, [configuration?.nest?.value, getModuleCount]);
+    if (!configuration?.nest?.value) return 8; // Default to nest80
+    return PriceCalculator.getMaxPvModules(configuration.nest.value);
+  }, [configuration?.nest?.value]);
 
   // Helper function to calculate maximum Geschossdecken based on nest size
-  // Maximum is one less than the number of modules (modules - 1)
   const getMaxGeschossdecken = useCallback((): number => {
-    if (!configuration?.nest?.value) return 3; // Default for nest80 (4 modules - 1 = 3)
-    const moduleMapping: Record<string, number> = {
-      nest80: 4, // 80m² = 4 × 20m² modules
-      nest100: 5, // 100m² = 5 × 20m² modules
-      nest120: 6, // 120m² = 6 × 20m² modules
-      nest140: 7, // 140m² = 7 × 20m² modules
-      nest160: 8, // 160m² = 8 × 20m² modules
-    };
-    const modules = moduleMapping[configuration.nest.value] || 4;
-    return modules - 1; // Maximum is one less than modules
+    if (!configuration?.nest?.value) return 3; // Default to nest80
+    return PriceCalculator.getMaxGeschossdecke(configuration.nest.value);
   }, [configuration?.nest?.value]);
 
   // RELATIVE price display - show price differences relative to currently selected option
@@ -890,7 +886,20 @@ export default function ConfiguratorShell({
         // If this option is currently selected, show per m² price for fenster, actual price for parkett, no price for others
         if (currentSelection && currentSelection.value === optionId) {
           if (categoryId === "fenster") {
-            // Show per m² price for selected fenster option
+            // Show per m² price for selected fenster option (depends on belichtungspaket and nest size)
+            if (configuration?.nest && configuration?.belichtungspaket) {
+              const pricePerSqm = PriceCalculator.getFensterPricePerSqm(
+                optionId,
+                configuration.nest.value,
+                configuration.belichtungspaket.value
+              );
+              return {
+                type: "standard" as const,
+                amount: pricePerSqm,
+                monthly: Math.round(pricePerSqm / 240),
+              };
+            }
+            // Fallback to static price
             return {
               type: "standard" as const,
               amount: option.price.amount || 0,
@@ -903,13 +912,13 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "laerche",
+              "fichte",
               "ohne_belag"
             );
             const parkettPrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "laerche",
+              "fichte",
               "parkett"
             );
             const actualPrice = parkettPrice - basePrice;
@@ -962,7 +971,7 @@ export default function ConfiguratorShell({
 
             // Always use defaults for base calculation - prices should only depend on nest size, not other selections
             let testGebaeudehuelle = "trapezblech"; // Always use default
-            let testInnenverkleidung = "laerche"; // Always use default
+            let testInnenverkleidung = "fichte"; // fichte is standard default // Always use default
             let testFussboden = "ohne_belag"; // Always use default (changed from parkett)
 
             if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
@@ -982,7 +991,7 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "laerche",
+              "fichte",
               "ohne_belag"
             );
 
@@ -1013,7 +1022,7 @@ export default function ConfiguratorShell({
           ) {
             // Use nest80 as base reference for pricing when nothing is selected
             let testGebaeudehuelle = "trapezblech";
-            let testInnenverkleidung = "laerche";
+            let testInnenverkleidung = "fichte"; // fichte is standard default
             let testFussboden = "parkett";
 
             if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
@@ -1033,7 +1042,7 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               "nest80",
               "trapezblech",
-              "laerche",
+              "fichte",
               "parkett"
             );
 
@@ -1086,7 +1095,7 @@ export default function ConfiguratorShell({
 
           // Use defaults for base calculation, only change the current category for relative pricing
           const baseGebaeudehuelle = "trapezblech";
-          const baseInnenverkleidung = "laerche";
+          const baseInnenverkleidung = "fichte"; // fichte is standard default
           const baseFussboden = "parkett";
 
           // Get the current selection for THIS category only
@@ -1221,6 +1230,39 @@ export default function ConfiguratorShell({
                 monthly: option.price.monthly,
               };
             }
+          }
+        }
+
+        // For fenster with current selection, calculate relative price/m² based on belichtungspaket and nest size
+        if (currentSelection && categoryId === "fenster" && configuration?.nest && configuration?.belichtungspaket) {
+          const currentPricePerSqm = PriceCalculator.getFensterPricePerSqm(
+            currentSelection.value,
+            configuration.nest.value,
+            configuration.belichtungspaket.value
+          );
+          
+          const optionPricePerSqm = PriceCalculator.getFensterPricePerSqm(
+            optionId,
+            configuration.nest.value,
+            configuration.belichtungspaket.value
+          );
+          
+          const priceDifference = optionPricePerSqm - currentPricePerSqm;
+          
+          if (priceDifference === 0) {
+            return { type: "selected" as const };
+          } else if (priceDifference > 0) {
+            return {
+              type: "upgrade" as const,
+              amount: priceDifference,
+              monthly: Math.round(priceDifference / 240),
+            };
+          } else {
+            return {
+              type: "discount" as const,
+              amount: Math.abs(priceDifference),
+              monthly: Math.round(Math.abs(priceDifference) / 240),
+            };
           }
         }
 

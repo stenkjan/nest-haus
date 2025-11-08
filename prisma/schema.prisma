@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
@@ -505,16 +505,18 @@ model PricingData {
   @@map("pricing_data")
 }
 
-model PricingSyncLog {
-  id           String   @id @default(cuid())
-  syncedAt     DateTime @default(now())
-  itemsUpdated Int      @default(0)
-  changes      Json?    // Detailed changelog
-  status       String   // "success" | "partial" | "failed"
-  errorDetails Json?    // Error messages if failed
-  duration     Int?     // Sync duration in milliseconds
+// Shadow copy of complete pricing data from Google Sheets
+model PricingDataSnapshot {
+  id            String   @id @default(cuid())
+  version       Int      @default(1) // Increments on each sync
+  pricingData   Json     // Complete PricingData structure from pricing-sheet-service
+  syncedAt      DateTime @default(now())
+  syncedBy      String   @default("cron") // "cron" | "manual" | "api"
+  isActive      Boolean  @default(true) // Only one active snapshot at a time
+  createdAt     DateTime @default(now())
   
+  @@index([isActive])
   @@index([syncedAt])
-  @@index([status])
-  @@map("pricing_sync_logs")
+  @@index([version])
+  @@map("pricing_data_snapshots")
 }
