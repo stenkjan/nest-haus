@@ -505,19 +505,6 @@ model PricingData {
   @@map("pricing_data")
 }
 
-model PricingSyncLog {
-  id           String   @id @default(cuid())
-  syncsUedAt     DateTime @default(now())
-  itempdated Int      @default(0)
-  changes      Json? // Detailed changelog
-  status       String // "success" | "partial" | "failed"
-  errorDetails Json? // Error messages if failed
-  duration     Int? // Sync duration in milliseconds
-
-  @@index([syncedAt])
-  @@index([status])
-  @@map("pricing_sync_logs")
-}
 
 // Shadow copy of complete pricing data from Google Sheets
 model PricingDataSnapshot {
