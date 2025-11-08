@@ -155,7 +155,11 @@ class PricingSheetService {
     if (typeof value === 'number') {
       const rounded = Math.round(value);
       // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      return (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
+      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
+      if (isPrice && rounded < 1000 && rounded > 0) {
+        console.log(`[DEBUG] Multiplying price: ${rounded} * 1000 = ${result}`);
+      }
+      return result;
     }
     if (typeof value === 'string') {
       const cleaned = value.replace(/[€$,\s]/g, '');
@@ -163,7 +167,11 @@ class PricingSheetService {
       if (isNaN(parsed)) return 0;
       const rounded = Math.round(parsed);
       // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      return (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
+      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
+      if (isPrice && rounded < 1000 && rounded > 0) {
+        console.log(`[DEBUG] Multiplying price (string): ${rounded} * 1000 = ${result}`);
+      }
+      return result;
     }
     return 0;
   }
