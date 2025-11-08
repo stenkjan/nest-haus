@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d7f2ca0c5b6ef9f717cb48a008061f69826c56a8] - Sat Nov 8 21:13:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Ensure cleanup function returns undefined in PriceCacheDebugger  - Added return statement to cleanup function in useEffect to explicitly return undefined, improving clarity and adherence to React best practices.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+---
+
 ## [19324a7dc46cd043b3da594d136dc1ab4a964e63] - Sat Nov 8 21:08:04 2025 +0100
 
 **Author**: stenkjan
