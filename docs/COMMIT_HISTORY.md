@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7479c300d2ee0932f865d008ec9803f93fafe3d5] - Sat Nov 8 19:29:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Move planungspaket section to end of configurator  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [5ad5747d33e413439aafe428b387993995a24666] - Sat Nov 8 19:25:00 2025 +0100
 
 **Author**: stenkjan
