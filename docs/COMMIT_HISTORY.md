@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fddad61d64bb96e8dfb8f9f1ad907f08be05c1c1] - Sat Nov 8 21:45:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Increment cache version to 4 to force reload of exact prices  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [b523de702bcc1cb3b872774760658ca41172c90d] - Sat Nov 8 21:38:01 2025 +0100
 
 **Author**: stenkjan
