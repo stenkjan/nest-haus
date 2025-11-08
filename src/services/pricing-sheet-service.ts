@@ -17,7 +17,6 @@ const NEST_COLUMNS = {
   nest160: 13, // N
 } as const;
 
-const NEST_COLUMN_NAMES = ['F', 'H', 'J', 'L', 'N'] as const;
 const NEST_VALUES = ['nest80', 'nest100', 'nest120', 'nest140', 'nest160'] as const;
 
 type NestSize = typeof NEST_VALUES[number];
@@ -183,11 +182,10 @@ class PricingSheetService {
     // Row 11: Prices (F11, H11, J11, L11, N11)
     // Row 12: Square meters (F12, H12, J12, L12, N12)
 
-    const row10 = rows[9] || []; // Row 10 (0-indexed: 9)
     const row11 = rows[10] || []; // Row 11
     const row12 = rows[11] || []; // Row 12
 
-    NEST_VALUES.forEach((nestSize, index) => {
+    NEST_VALUES.forEach((nestSize) => {
       const colIndex = NEST_COLUMNS[nestSize];
       const price = this.parseNumber(row11[colIndex]);
       const squareMeters = this.parseNumber(row12[colIndex]);

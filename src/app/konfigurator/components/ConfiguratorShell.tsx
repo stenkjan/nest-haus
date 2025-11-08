@@ -470,7 +470,7 @@ export default function ConfiguratorShell({
   );
 
   // Helper function to get number of modules based on nest size
-  const getModuleCount = useCallback((nestValue: string): number => {
+  const _getModuleCount = useCallback((nestValue: string): number => {
     const moduleMapping: Record<string, number> = {
       nest80: 4, // 80m² = 4 modules
       nest100: 5, // 100m² = 5 modules

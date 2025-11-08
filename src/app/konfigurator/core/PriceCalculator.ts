@@ -7,7 +7,6 @@
  */
 
 import {
-  calculateModularPrice,
   calculateSizeDependentPrice,
   GRUNDSTUECKSCHECK_PRICE,
   MODULAR_PRICING,
@@ -475,7 +474,7 @@ export class PriceCalculator {
    */
   static calculateGeschossdeckePrice(
     geschossdecke: SelectionOption,
-    nest: SelectionOption
+    _nest: SelectionOption
   ): number {
     try {
       const quantity = geschossdecke.quantity || 1;
