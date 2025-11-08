@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b523de702bcc1cb3b872774760658ca41172c90d] - Sat Nov 8 21:38:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove all price rounding to preserve exact spreadsheet values  - Removed Math.round() from parseNumber function - Removed Math.round() from pricePerSqm calculation - Prices now use exact values from Google Sheets - Example: 188.619 * 1000 = 188619 (not rounded to 189000) - Ensures 1:1 accuracy between spreadsheet and database  `
+
+### Changes Analysis
+
+---
+
 ## [143ec25cdc926e311a8712a47489dea7289cb6d4] - Sat Nov 8 21:34:38 2025 +0100
 
 **Author**: stenkjan
