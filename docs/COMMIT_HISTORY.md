@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [29a36f06a71a17407a3764c1ea11988212b37e60] - Sat Nov 8 17:15:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove all non-ASCII characters from pricing-sync.ts for UTF-8 compliance  `
+
+### Changes Analysis
+
+---
+
 ## [e0db261ee3d1a30ec34aad922e85d112384abf7b] - Sat Nov 8 17:01:13 2025 +0100
 
 **Author**: stenkjan
