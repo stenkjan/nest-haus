@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [143ec25cdc926e311a8712a47489dea7289cb6d4] - Sat Nov 8 21:34:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct price parsing to multiply before rounding  - Changed parseNumber logic to multiply by 1000 BEFORE rounding - Prevents precision loss (188.619 -> 189 -> 189000 is wrong) - Now correctly: 188.619 -> 188619 -> 188619 (after rounding) - Fixes nest prices to match exact spreadsheet values - nest80: 188,619 (was 189,000) - nest100: 226,108 (was 226,000) - nest120: 263,597 (was 264,000) - nest140: 301,086 (was 301,000) - nest160: 338,575 (was 339,000)  `
+
+### Changes Analysis
+
+---
+
 ## [d7f2ca0c5b6ef9f717cb48a008061f69826c56a8] - Sat Nov 8 21:13:24 2025 +0100
 
 **Author**: stenkjan
