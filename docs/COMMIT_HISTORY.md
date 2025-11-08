@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [369609a683cb0f28bdf4338a60d6755bd963f52e] - Sat Nov 8 18:49:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Graceful pricing data loading  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [65609e71b3e3897a2292f8af3b38817ff71a9a57] - Sat Nov 8 18:44:54 2025 +0100
 
 **Author**: stenkjan
