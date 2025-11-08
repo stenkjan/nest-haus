@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [13be76572fd44dc3d834c16fb00dbb977f02e450] - Sat Nov 8 17:28:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `docs: Add pricing initial sync guide  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/PRICING_INITIAL_SYNC.md
+
+
+---
+
 ## [29a36f06a71a17407a3764c1ea11988212b37e60] - Sat Nov 8 17:15:28 2025 +0100
 
 **Author**: stenkjan
