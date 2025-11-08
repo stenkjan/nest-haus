@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f4533590a8af1beb8215c288df10d605551c0a73] - Sat Nov 8 16:53:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Standardize formatting in Prisma schema  - Adjusted whitespace and alignment for consistency across models in the Prisma schema. - Ensured uniform spacing and indentation for improved readability and maintainability.  `
+
+### Changes Analysis
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+---
+
 ## [e8cc68ebb8d0bef3d8ae39a6a17ce6d642942d62] - Sat Nov 8 16:45:01 2025 +0100
 
 **Author**: stenkjan
