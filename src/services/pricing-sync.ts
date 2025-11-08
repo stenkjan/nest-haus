@@ -51,10 +51,10 @@ export interface SyncResult {
 
 const SHEET_MAPPINGS: SheetMapping[] = [
   {
-    sheetName: 'Nest_Groesse', // "Nest wie gross" base prices
+    sheetName: 'Nest_Groesse', // "Nest wie groß" base prices
     category: 'nest_groesse',
     columns: {
-      size: 0,        // Column A: Size name (Klein, Mittel, Gross)
+      size: 0,        // Column A: Size name (Klein, Mittel, Groß)
       width: 1,       // Column B: Width in meters
       height: 2,      // Column C: Height in meters
       basePrice: 3,   // Column D: Base price in EUR
@@ -93,7 +93,7 @@ const SHEET_MAPPINGS: SheetMapping[] = [
     category: 'innenverkleidung',
     columns: {
       material: 0,      // Column A: Material
-      pricePerSqm: 1,   // Column B: Price per m2
+      pricePerSqm: 1,   // Column B: Price per m²
       basePrice: 2,     // Column C: Base price for standard size
     },
   },
@@ -102,7 +102,7 @@ const SHEET_MAPPINGS: SheetMapping[] = [
     category: 'fussboden',
     columns: {
       type: 0,          // Column A: Flooring type
-      pricePerSqm: 1,   // Column B: Price per m2
+      pricePerSqm: 1,   // Column B: Price per m²
       basePrice: 2,     // Column C: Base price for standard size
     },
   },
@@ -334,7 +334,7 @@ export class PricingSyncService {
     if (typeof value === 'number') return Math.round(value);
     if (typeof value === 'string') {
       // Remove currency symbols and spaces
-      const cleaned = value.replace(/[EUR$,\s]/g, '');
+      const cleaned = value.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
       return isNaN(parsed) ? 0 : Math.round(parsed);
     }
@@ -368,17 +368,17 @@ export class PricingSyncService {
     };
 
     try {
-      console.log(' Starting pricing sync...');
+      console.log('🔄 Starting pricing sync...');
       const allPricingData: PricingRow[] = [];
 
       // Fetch and parse all sheets
       for (const mapping of SHEET_MAPPINGS) {
         try {
-          console.log(`[DATA] Fetching sheet: ${mapping.sheetName}`);
+          console.log(`📊 Fetching sheet: ${mapping.sheetName}`);
           const rows = await this.fetchSheet(mapping.sheetName);
           const parsed = this.parseSheetRows(rows, mapping);
           allPricingData.push(...parsed);
-          console.log(`OK: Parsed ${parsed.length} rows from ${mapping.sheetName}`);
+          console.log(`✓ Parsed ${parsed.length} rows from ${mapping.sheetName}`);
         } catch (error) {
           const errorMsg = `Failed to fetch ${mapping.sheetName}: ${error}`;
           console.error(errorMsg);
@@ -397,7 +397,7 @@ export class PricingSyncService {
       await this.logSync(result);
 
       result.success = result.errors.length === 0;
-      console.log(' Pricing sync completed:', result);
+      console.log('✅ Pricing sync completed:', result);
 
       return result;
     } catch (error) {
@@ -500,11 +500,11 @@ export class PricingSyncService {
   }
 
   /**
-   * Log sync result to database
+   * Log sync result to database (using console for now)
    */
   private async logSync(result: SyncResult): Promise<void> {
     // Log to console since PricingSyncLog model was removed
-    console.log('DATA: Pricing sync result:'  , {
+    console.log('Pricing sync result:', {
       success: result.success,
       itemsUpdated: result.itemsUpdated + result.itemsAdded,
       status: result.success ? 'success' : result.errors.length > 0 ? 'partial' : 'failed',
@@ -517,6 +517,7 @@ export class PricingSyncService {
    */
   async getLastSyncTime(): Promise<Date | null> {
     // Return null since PricingSyncLog model was removed
+    // Sync time can be tracked via PricingDataSnapshot.syncedAt instead
     return null;
   }
 
