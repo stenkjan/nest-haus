@@ -338,9 +338,8 @@ export class PriceCalculator {
             const nestSize = selections.nest.value as NestSize;
             const pricePerModule = pricingData.pvanlage.pricePerModule[nestSize] || 0;
             additionalPrice += selections.pvanlage.quantity * pricePerModule;
-          } else {
-            throw new Error('PV-Anlage pricing data not available in database');
           }
+          // If data not loaded, price will be 0 until loaded
         }
 
         // Add belichtungspaket price (calculated based on nest size and fenster material)
@@ -401,9 +400,8 @@ export class PriceCalculator {
           const pricingData = this.getPricingData();
           if (pricingData) {
             additionalPrice += pricingData.optionen.kaminschacht || 0;
-          } else {
-            throw new Error('Kaminschacht pricing data not available in database');
           }
+          // If data not loaded, price will be 0 until loaded
         }
 
         if (selections.fussbodenheizung) {
@@ -415,9 +413,8 @@ export class PriceCalculator {
           if (pricingData) {
             const nestSize = selections.nest.value as NestSize;
             additionalPrice += pricingData.optionen.fundament[nestSize] || 0;
-          } else {
-            throw new Error('Fundament pricing data not available in database');
           }
+          // If data not loaded, price will be 0 until loaded
         }
 
         // Planning package and Grundstückscheck removed - handled in separate cart logic
@@ -501,11 +498,11 @@ export class PriceCalculator {
         }
       }
 
-      // If pricing data not available, throw error
-      throw new Error('Bodenaufbau pricing data not available in database');
+      // If pricing data not available yet, return 0
+      return 0;
     } catch (error) {
-      console.error('🔥 Error calculating bodenaufbau price:', error);
-      throw error; // Re-throw - no fallback
+      console.error('Error calculating bodenaufbau price:', error);
+      return 0;
     }
   }
 
@@ -515,7 +512,7 @@ export class PriceCalculator {
    */
   static calculateGeschossdeckePrice(
     geschossdecke: SelectionOption,
-    _nest: SelectionOption
+    _nest: SelectionOption // Renamed to _nest to mark as intentionally unused
   ): number {
     try {
       const quantity = geschossdecke.quantity || 1;
@@ -526,11 +523,11 @@ export class PriceCalculator {
         return basePrice * quantity;
       }
 
-      // If pricing data not available, throw error
-      throw new Error('Geschossdecke pricing data not available in database');
+      // If pricing data not available yet, return 0
+      return 0;
     } catch (error) {
-      console.error('🏢 Error calculating geschossdecke price:', error);
-      throw error; // Re-throw - no fallback
+      console.error('Error calculating geschossdecke price:', error);
+      return 0;
     }
   }
 
@@ -879,8 +876,8 @@ export class PriceCalculator {
       }
     }
     
-    // If pricing data not available, throw error
-    throw new Error('Fenster pricing data not available in database');
+    // If pricing data not available yet, return 0
+    return 0;
   }
 
   /**
