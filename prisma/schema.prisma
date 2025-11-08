@@ -507,8 +507,8 @@ model PricingData {
 
 model PricingSyncLog {
   id           String   @id @default(cuid())
-  syncedAt     DateTime @default(now())
-  itemsUpdated Int      @default(0)
+  syncsUedAt     DateTime @default(now())
+  itempdated Int      @default(0)
   changes      Json? // Detailed changelog
   status       String // "success" | "partial" | "failed"
   errorDetails Json? // Error messages if failed
