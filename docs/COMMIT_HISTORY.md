@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [dc5d61b7f4a5bd0c8295e0ae8dc955fdbb415f6f] - Sat Nov 8 19:04:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: PV modules safe defaults  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [d7a2c5627c811903e45bb63b9cea5773ab97c016] - Sat Nov 8 19:00:08 2025 +0100
 
 **Author**: stenkjan
