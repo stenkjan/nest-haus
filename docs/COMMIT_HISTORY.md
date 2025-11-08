@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [40574b2fe66df29ee8abef7760012a4f1ca307eb] - Sat Nov 8 19:10:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `perf: Session caching and error handling  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [dc5d61b7f4a5bd0c8295e0ae8dc955fdbb415f6f] - Sat Nov 8 19:04:52 2025 +0100
 
 **Author**: stenkjan
