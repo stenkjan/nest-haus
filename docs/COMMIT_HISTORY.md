@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0d3321b4cfd4968a00c322b16719761ed75bed45] - Sat Nov 8 19:23:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Price parsing in thousands  `
+
+### Changes Analysis
+
+---
+
 ## [40574b2fe66df29ee8abef7760012a4f1ca307eb] - Sat Nov 8 19:10:29 2025 +0100
 
 **Author**: stenkjan
