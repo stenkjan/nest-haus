@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e8cc68ebb8d0bef3d8ae39a6a17ce6d642942d62] - Sat Nov 8 16:45:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove corrupted PricingSyncLog model and fix unused variable errors  `
+
+### Changes Analysis
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+---
+
 ## [92a1d848a594a440c3bb00e5305238c149993acc] - Sat Nov 8 15:53:32 2025 +0100
 
 **Author**: stenkjan
