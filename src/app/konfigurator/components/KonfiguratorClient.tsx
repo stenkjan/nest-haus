@@ -5,11 +5,34 @@ import { useConfiguratorStore } from "@/store/configuratorStore";
 import ConfiguratorShell from "./ConfiguratorShell";
 import { ConfiguratorPanelProvider } from "@/contexts/ConfiguratorPanelContext";
 import { PriceCacheDebugger } from "@/components/debug/PriceCacheDebugger";
+import { PriceCalculator } from "../core/PriceCalculator";
 
 // Client Component - Handles all interactive functionality
 export default function KonfiguratorClient() {
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const { initializeSession } = useConfiguratorStore();
+
+  // Check for force refresh URL parameter
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('refresh-prices') || urlParams.has('clear-cache')) {
+        console.log('🔄 Force refresh requested via URL parameter');
+        PriceCalculator.clearAllCaches();
+        
+        // Remove the parameter from URL
+        urlParams.delete('refresh-prices');
+        urlParams.delete('clear-cache');
+        const newUrl = `${window.location.pathname}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+        window.history.replaceState({}, '', newUrl);
+        
+        // Show user notification
+        setTimeout(() => {
+          alert('✅ Price cache cleared! Fresh pricing data will be loaded.');
+        }, 500);
+      }
+    }
+  }, []);
 
   // Initialize session once on mount - no dependencies to prevent infinite loop
   useEffect(() => {

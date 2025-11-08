@@ -55,7 +55,7 @@ export class PriceCalculator {
   private static pricingDataPromise: Promise<PricingData> | null = null;
   private static pricingDataTimestamp = 0;
   private static readonly PRICING_DATA_TTL = 5 * 60 * 1000; // 5 minutes
-  private static readonly CACHE_VERSION = 2; // Increment this to force cache invalidation
+  private static readonly CACHE_VERSION = 3; // Increment this to force cache invalidation
   
   // Callbacks to notify when pricing data is loaded
   private static onDataLoadedCallbacks: Array<() => void> = [];
@@ -97,12 +97,15 @@ export class PriceCalculator {
       try {
         const cached = sessionStorage.getItem('nest-haus-pricing-data');
         if (cached) {
-          const { data, timestamp, version, cacheVersion } = JSON.parse(cached);
+          const parsedCache = JSON.parse(cached);
+          const { data, timestamp, version, cacheVersion } = parsedCache;
           
           // Check if cache version matches (invalidate old cache)
-          if (cacheVersion !== this.CACHE_VERSION) {
-            console.log(`🔄 Cache version mismatch (cached: ${cacheVersion}, current: ${this.CACHE_VERSION}), invalidating...`);
+          // If cacheVersion is undefined (old format), also invalidate
+          if (cacheVersion === undefined || cacheVersion !== this.CACHE_VERSION) {
+            console.log(`🔄 Cache version mismatch (cached: ${cacheVersion || 'undefined'}, current: ${this.CACHE_VERSION}), invalidating old cache...`);
             sessionStorage.removeItem('nest-haus-pricing-data');
+            // Don't return - continue to fetch fresh data
           } else if (now - timestamp < this.PRICING_DATA_TTL) {
             this.pricingData = data;
             this.pricingDataTimestamp = timestamp;
@@ -114,12 +117,17 @@ export class PriceCalculator {
             return;
           } else {
             console.log(`⏰ Cache expired (${Math.round((now - timestamp) / 1000)}s old), fetching fresh data...`);
+            sessionStorage.removeItem('nest-haus-pricing-data');
           }
         }
       } catch (error) {
-        console.warn('Failed to load pricing data from sessionStorage:', error);
+        console.warn('⚠️ Failed to load pricing data from sessionStorage:', error);
         // Clear corrupted cache
-        sessionStorage.removeItem('nest-haus-pricing-data');
+        try {
+          sessionStorage.removeItem('nest-haus-pricing-data');
+        } catch (e) {
+          console.error('Failed to clear corrupted cache:', e);
+        }
       }
     }
 
