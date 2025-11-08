@@ -151,12 +151,19 @@ class PricingSheetService {
     };
   }
 
-  private parseNumber(value: unknown): number {
-    if (typeof value === 'number') return Math.round(value);
+  private parseNumber(value: unknown, isPrice: boolean = false): number {
+    if (typeof value === 'number') {
+      const rounded = Math.round(value);
+      // If it's a price and value looks like thousands (< 1000), multiply by 1000
+      return (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
+    }
     if (typeof value === 'string') {
       const cleaned = value.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
-      return isNaN(parsed) ? 0 : Math.round(parsed);
+      if (isNaN(parsed)) return 0;
+      const rounded = Math.round(parsed);
+      // If it's a price and value looks like thousands (< 1000), multiply by 1000
+      return (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
     }
     return 0;
   }
@@ -194,8 +201,8 @@ class PricingSheetService {
 
     NEST_VALUES.forEach((nestSize) => {
       const colIndex = NEST_COLUMNS[nestSize];
-      const price = this.parseNumber(row11[colIndex]);
-      const squareMeters = this.parseNumber(row12[colIndex]);
+      const price = this.parseNumber(row11[colIndex], true); // Price in thousands
+      const squareMeters = this.parseNumber(row12[colIndex]); // Not a price
       const pricePerSqm = squareMeters > 0 ? Math.round(price / squareMeters) : 0;
 
       nestData[nestSize] = {
@@ -211,14 +218,14 @@ class PricingSheetService {
   private parseGeschossdecke(rows: unknown[][]): PricingData['geschossdecke'] {
     const row7 = rows[6] || []; // Row 7 (0-indexed: 6)
 
-    const basePrice = this.parseNumber(row7[3]); // D7 (column D = index 3)
+    const basePrice = this.parseNumber(row7[3], true); // D7 is a price in thousands
     
     const maxAmounts: Partial<PricingData['geschossdecke']['maxAmounts']> = {};
-    maxAmounts.nest80 = this.parseNumber(row7[6]); // G7 (column G = index 6)
-    maxAmounts.nest100 = this.parseNumber(row7[8]); // I7 (column I = index 8)
-    maxAmounts.nest120 = this.parseNumber(row7[10]); // K7 (column K = index 10)
-    maxAmounts.nest140 = this.parseNumber(row7[12]); // M7 (column M = index 12)
-    maxAmounts.nest160 = this.parseNumber(row7[14]); // O7 (column O = index 14)
+    maxAmounts.nest80 = this.parseNumber(row7[6]); // G7 is a quantity, not a price
+    maxAmounts.nest100 = this.parseNumber(row7[8]); // I7
+    maxAmounts.nest120 = this.parseNumber(row7[10]); // K7
+    maxAmounts.nest140 = this.parseNumber(row7[12]); // M7
+    maxAmounts.nest160 = this.parseNumber(row7[14]); // O7
 
     return {
       basePrice,
@@ -252,7 +259,7 @@ class PricingSheetService {
 
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
-        gebaeudehuelleData[mappedKey][nestSize] = this.parseNumber(row[colIndex]);
+        gebaeudehuelleData[mappedKey][nestSize] = this.parseNumber(row[colIndex], true); // Prices in thousands
       });
     }
 
@@ -280,7 +287,7 @@ class PricingSheetService {
 
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
-        innenverkleidungData[mappedKey][nestSize] = this.parseNumber(row[colIndex]);
+        innenverkleidungData[mappedKey][nestSize] = this.parseNumber(row[colIndex], true); // Prices in thousands
       });
     }
 
@@ -295,7 +302,7 @@ class PricingSheetService {
     const pricePerModule: Partial<PricingData['pvanlage']['pricePerModule']> = {};
     NEST_VALUES.forEach((nestSize) => {
       const colIndex = NEST_COLUMNS[nestSize];
-      pricePerModule[nestSize] = this.parseNumber(row29[colIndex]);
+      pricePerModule[nestSize] = this.parseNumber(row29[colIndex], true); // Prices in thousands
     });
 
     // Hardcoded max modules
@@ -352,7 +359,7 @@ class PricingSheetService {
 
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
-        bodenbelagData[mappedKey][nestSize] = this.parseNumber(row[colIndex]);
+        bodenbelagData[mappedKey][nestSize] = this.parseNumber(row[colIndex], true); // Prices in thousands
       });
     }
 
@@ -394,7 +401,7 @@ class PricingSheetService {
 
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
-        bodenaufbauData[mappedKey][nestSize] = this.parseNumber(row[colIndex]);
+        bodenaufbauData[mappedKey][nestSize] = this.parseNumber(row[colIndex], true); // Prices in thousands
       });
     }
 
@@ -436,7 +443,7 @@ class PricingSheetService {
 
       NEST_VALUES.forEach((nestSize) => {
         const colIndex = NEST_COLUMNS[nestSize];
-        belichtungspaketData[mappedKey][nestSize] = this.parseNumber(row[colIndex]);
+        belichtungspaketData[mappedKey][nestSize] = this.parseNumber(row[colIndex], true); // Prices in thousands
       });
     }
 
@@ -472,7 +479,7 @@ class PricingSheetService {
         
         NEST_VALUES.forEach((nestSize) => {
           const colIndex = NEST_COLUMNS[nestSize];
-          const totalPrice = this.parseNumber(row[colIndex]); // Total price from F70-N78
+          const totalPrice = this.parseNumber(row[colIndex], true); // Total price in thousands from F70-N78
 
           if (!fensterData.totalPrices[fensterOption][nestSize]) {
             fensterData.totalPrices[fensterOption][nestSize] = {} as { [belichtung: string]: number };
@@ -502,18 +509,18 @@ class PricingSheetService {
       const cellE = String(rows[i]?.[4] || '').toLowerCase();
       if (cellE.includes('kamin') || cellE.includes('kaminschacht')) {
         // Price might be in a different column, check common columns
-        kaminschachtPrice = this.parseNumber(rows[i]?.[5] || rows[i]?.[6] || 2000);
+        kaminschachtPrice = this.parseNumber(rows[i]?.[5] || rows[i]?.[6] || 2000, true);
         break;
       }
     }
 
     // Parse fundament prices from row 83 (0-indexed: 82)
     const row83 = rows[82] || [];
-    fundamentPrices.nest80 = this.parseNumber(row83[5]); // F83
-    fundamentPrices.nest100 = this.parseNumber(row83[7]); // H83
-    fundamentPrices.nest120 = this.parseNumber(row83[9]); // J83
-    fundamentPrices.nest140 = this.parseNumber(row83[11]); // L83
-    fundamentPrices.nest160 = this.parseNumber(row83[13]); // N83
+    fundamentPrices.nest80 = this.parseNumber(row83[5], true); // F83 in thousands
+    fundamentPrices.nest100 = this.parseNumber(row83[7], true); // H83
+    fundamentPrices.nest120 = this.parseNumber(row83[9], true); // J83
+    fundamentPrices.nest140 = this.parseNumber(row83[11], true); // L83
+    fundamentPrices.nest160 = this.parseNumber(row83[13], true); // N83
 
     return {
       kaminschacht: kaminschachtPrice,
@@ -555,12 +562,12 @@ class PricingSheetService {
       if (optionName.includes('plus')) {
         NEST_VALUES.forEach((nestSize) => {
           const colIndex = NEST_COLUMNS[nestSize];
-          planungspaketData.plus![nestSize] = this.parseNumber(row[colIndex]);
+          planungspaketData.plus![nestSize] = this.parseNumber(row[colIndex], true); // Price in thousands
         });
       } else if (optionName.includes('pro')) {
         NEST_VALUES.forEach((nestSize) => {
           const colIndex = NEST_COLUMNS[nestSize];
-          planungspaketData.pro![nestSize] = this.parseNumber(row[colIndex]);
+          planungspaketData.pro![nestSize] = this.parseNumber(row[colIndex], true); // Price in thousands
         });
       }
     }
