@@ -7,7 +7,6 @@
  */
 
 import {
-  calculateSizeDependentPrice,
   GRUNDSTUECKSCHECK_PRICE,
   MODULAR_PRICING,
   NEST_OPTIONS,
