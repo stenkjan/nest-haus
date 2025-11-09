@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [79e94f3ecd207485ed3d79ea70e1156c6f85919d] - Sun Nov 9 15:04:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Show absolute prices for innenverkleidung options instead of relative prices  - Changed Fichte preselection price from 1400€ to 23020€ (nest80 value from Google Sheets F24) - Modified getActualContributionPrice() to show ABSOLUTE prices for innenverkleidung category - Fichte now displays 23,020€ when selected (not 'inklusive') - Lärche displays 31,921€ when selected - Eiche displays 37,235€ when selected - All prices correctly scale with nest size selection - Fixes issue where innenverkleidung showed 'inklusive' for standard option despite having concrete pricing  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [48482beddf7cf5fa54d349e755683dc13881a21c] - Sun Nov 9 14:56:25 2025 +0100
 
 **Author**: stenkjan
