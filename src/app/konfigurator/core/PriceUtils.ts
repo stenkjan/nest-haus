@@ -56,7 +56,7 @@ export class PriceUtils {
   /**
    * Get adjusted nutzfläche for Nest models (matches configuratorData.ts descriptions)
    * @param nestModel - The nest model (nest80, nest100, etc.)
-   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
+   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 6.5m² per unit)
    */
   static getAdjustedNutzflaeche(nestModel: string, geschossdeckeQuantity?: number): number {
     const nutzflaecheMap: Record<string, number> = {
@@ -68,7 +68,7 @@ export class PriceUtils {
     };
 
     const baseArea = nutzflaecheMap[nestModel] || 0;
-    const geschossdeckeArea = (geschossdeckeQuantity || 0) * 7.5;
+    const geschossdeckeArea = (geschossdeckeQuantity || 0) * 6.5;
 
     return baseArea + geschossdeckeArea;
   }
@@ -77,7 +77,7 @@ export class PriceUtils {
    * Calculate and format price per square meter
    * @param totalPrice - Total price to calculate per m²
    * @param nestModel - The nest model (nest80, nest100, etc.)
-   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
+   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 6.5m² per unit)
    */
   static calculatePricePerSquareMeter(totalPrice: number, nestModel: string, geschossdeckeQuantity?: number): string {
     const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);

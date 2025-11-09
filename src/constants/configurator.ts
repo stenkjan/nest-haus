@@ -166,46 +166,46 @@ export type ImageCombinationKey = keyof typeof INTERIOR_EXACT_MAPPINGS;
 // Grundstückscheck price - Updated to match checkout pricing (with 50% discount: was 3000, now 1500)
 export const GRUNDSTUECKSCHECK_PRICE = 1500;
 
-// Nest options with base pricing
+// Nest options with base pricing - UPDATED TO MATCH GOOGLE SHEETS
 export const NEST_OPTIONS = [
   {
     id: 'nest80',
     name: 'Nest. 80',
     description: '75m² Nutzfläche',
-    price: 155500,
-    monthly: 816,
+    price: 188619,
+    monthly: 990,
     modules: 1
   },
   {
     id: 'nest100',
     name: 'Nest. 100',
     description: '95m² Nutzfläche',
-    price: 189100,
-    monthly: 993,
+    price: 226108,
+    monthly: 1187,
     modules: 2
   },
   {
     id: 'nest120',
     name: 'Nest. 120',
     description: '115m² Nutzfläche',
-    price: 222700,
-    monthly: 1169,
+    price: 263597,
+    monthly: 1384,
     modules: 3
   },
   {
     id: 'nest140',
     name: 'Nest. 140',
     description: '135m² Nutzfläche',
-    price: 256300,
-    monthly: 1346,
+    price: 301086,
+    monthly: 1581,
     modules: 4
   },
   {
     id: 'nest160',
     name: 'Nest. 160',
     description: '155m² Nutzfläche',
-    price: 289900,
-    monthly: 1522,
+    price: 338575,
+    monthly: 1778,
     modules: 5
   }
 ] as const;
@@ -340,12 +340,12 @@ export function calculateModularPrice(
  * Base pricing for nest80, scales by 25% per additional 20m² module
  */
 
-// Base prices for nest80 (80m²)
+// Base prices for nest80 (80m²) - from Google Sheets
 export const SIZE_DEPENDENT_BASE_PRICES = {
-  elektrische_fussbodenheizung: 5000,
-  wassergefuehrte_fussbodenheizung: 7500,
-  fundament: 5000,
-  geschossdecke: 5000 // per unit
+  elektrische_fussbodenheizung: 10842,
+  wassergefuehrte_fussbodenheizung: 13486,
+  fundament: 15480,
+  geschossdecke: 4115 // per unit
 } as const;
 
 /**

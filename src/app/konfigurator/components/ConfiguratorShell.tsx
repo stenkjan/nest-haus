@@ -538,7 +538,7 @@ export default function ConfiguratorShell({
 
           // Use defaults for base calculation
           let testGebaeudehuelle = "trapezblech";
-          let testInnenverkleidung = "laerche";
+          let testInnenverkleidung = "fichte"; // Fichte is the standard option
           let testFussboden = "ohne_belag";
 
           if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
@@ -556,7 +556,7 @@ export default function ConfiguratorShell({
           const baseTotal = PriceCalculator.calculateCombinationPrice(
             currentNestValue,
             "trapezblech",
-            "laerche",
+            "fichte", // Fichte is the standard option
             "ohne_belag"
           );
 
@@ -1524,7 +1524,10 @@ export default function ConfiguratorShell({
                   id="kamindurchzug-checkbox"
                   uncheckedText="Kaminschachtvorbereitung"
                   checkedText="Kaminschachtvorbereitung"
-                  price={2000}
+                  price={(() => {
+                    const pricingData = PriceCalculator.getPricingData();
+                    return pricingData?.optionen?.kaminschacht || 887;
+                  })()}
                   isChecked={!!configuration?.kamindurchzug}
                   onChange={handleKamindurchzugChange}
                 />
@@ -1534,24 +1537,29 @@ export default function ConfiguratorShell({
                   id="fundament-checkbox"
                   uncheckedText="Fundament"
                   checkedText="Fundament"
-                  price={
-                    configuration?.nest?.value
-                      ? calculateSizeDependentPrice(
-                          configuration.nest.value,
-                          "fundament"
-                        )
-                      : 5000
-                  }
+                  price={(() => {
+                    if (configuration?.nest?.value) {
+                      const pricingData = PriceCalculator.getPricingData();
+                      if (pricingData) {
+                        const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+                        return pricingData.optionen.fundament[nestSize] || 15480;
+                      }
+                    }
+                    return 15480; // nest80 default
+                  })()}
                   pricePerSqm={
                     configuration?.nest?.value
-                      ? calculateSizeDependentPrice(
-                          configuration.nest.value,
-                          "fundament"
-                        ) /
-                        (parseInt(
-                          configuration.nest.value.replace("nest", "")
-                        ) || 80)
-                      : 62.5
+                      ? (() => {
+                          const pricingData = PriceCalculator.getPricingData();
+                          if (pricingData) {
+                            const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+                            const fundamentPrice = pricingData.optionen.fundament[nestSize] || 15480;
+                            const nestSquareMeters = parseInt(configuration.nest.value.replace("nest", "")) || 80;
+                            return fundamentPrice / nestSquareMeters;
+                          }
+                          return 193.5; // 15480 / 80
+                        })()
+                      : 193.5
                   }
                   isChecked={!!configuration?.fundament}
                   onChange={handleFundamentChange}

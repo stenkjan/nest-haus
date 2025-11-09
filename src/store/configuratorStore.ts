@@ -426,17 +426,17 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           const optionData = {
             kamindurchzug: {
               name: 'Kamindurchzug',
-              price: 2000,
+              price: 887, // Fixed price from Google Sheets F82
               description: 'Vorbereitung für Kaminanschluss'
             },
             fussbodenheizung: {
               name: 'Fußbodenheizung',
-              price: 5000,
+              price: 10842, // Base nest80 price, will be calculated dynamically in PriceCalculator
               description: 'Elektrische Fußbodenheizung'
             },
             fundament: {
               name: 'Fundament',
-              price: 5000, // Base price, will be calculated dynamically in PriceCalculator
+              price: 15480, // Base nest80 price from Google Sheets F83, will be calculated dynamically in PriceCalculator
               description: 'Fundamentvorbereitung'
             }
           }
@@ -611,7 +611,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'nest',
             value: 'nest80',
             name: 'Nest. 80',
-            price: 155500,
+            price: 188619,
             description: '75m² Nutzfläche'
           },
           // Trapezblech (new default)

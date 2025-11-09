@@ -24,13 +24,13 @@ function calculateSimplePrice(config: _Configuration): number {
   // Use combination logic inline to avoid import conflicts
   let totalPrice = 0;
   
-  // Base price from nest selection
+  // Base price from nest selection - UPDATED TO MATCH GOOGLE SHEETS
   const nestPrices: Record<string, number> = {
-    'nest80': 155500,
-    'nest100': 189100,
-    'nest120': 222700,
-    'nest140': 256300,
-    'nest160': 289900
+    'nest80': 188619,
+    'nest100': 226108,
+    'nest120': 263597,
+    'nest140': 301086,
+    'nest160': 338575
   };
   
   totalPrice = nestPrices[config.nest.value] || 0;

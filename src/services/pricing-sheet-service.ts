@@ -46,8 +46,10 @@ interface PricingData {
     };
   };
   pvanlage: {
-    pricePerModule: {
-      [key in NestSize]: number;
+    pricesByQuantity: {
+      [key in NestSize]: {
+        [quantity: number]: number; // quantity 1-16 → price
+      };
     };
     maxModules: {
       [key in NestSize]: number;
@@ -153,11 +155,11 @@ class PricingSheetService {
 
   private parseNumber(value: unknown, isPrice: boolean = false): number {
     if (typeof value === 'number') {
-      const rounded = Math.round(value);
       // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
-      if (isPrice && rounded < 1000 && rounded > 0) {
-        console.log(`[DEBUG] Multiplying price: ${rounded} * 1000 = ${result}`);
+      // Keep EXACT values, no rounding!
+      const result = (isPrice && value < 1000 && value > 0) ? value * 1000 : value;
+      if (isPrice && value < 1000 && value > 0) {
+        console.log(`[DEBUG] Multiplying price: ${value} * 1000 = ${result}`);
       }
       return result;
     }
@@ -165,11 +167,11 @@ class PricingSheetService {
       const cleaned = value.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
       if (isNaN(parsed)) return 0;
-      const rounded = Math.round(parsed);
       // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
-      if (isPrice && rounded < 1000 && rounded > 0) {
-        console.log(`[DEBUG] Multiplying price (string): ${rounded} * 1000 = ${result}`);
+      // Keep EXACT values, no rounding!
+      const result = (isPrice && parsed < 1000 && parsed > 0) ? parsed * 1000 : parsed;
+      if (isPrice && parsed < 1000 && parsed > 0) {
+        console.log(`[DEBUG] Multiplying price (string): ${parsed} * 1000 = ${result}`);
       }
       return result;
     }
@@ -282,6 +284,7 @@ class PricingSheetService {
       'eiche': 'steirische_eiche',
       'fichte': 'fichte',
       'laerche': 'laerche',
+      'lärche': 'laerche', // Handle umlaut version
     };
 
     for (let rowIndex = 23; rowIndex <= 25; rowIndex++) {
@@ -303,17 +306,29 @@ class PricingSheetService {
   }
 
   private parsePvAnlage(rows: unknown[][]): PricingData['pvanlage'] {
-    // Rows 29-44 (0-indexed: 28-43), prices are same across rows
-    // Use row 29 for prices, columns F-N
-    const row29 = rows[28] || [];
+    // Rows 29-44 (0-indexed: 28-43) - each row represents quantity 1-16
+    // Columns F-N represent nest sizes 80-160
     
-    const pricePerModule: Partial<PricingData['pvanlage']['pricePerModule']> = {};
+    const pricesByQuantity: Partial<PricingData['pvanlage']['pricesByQuantity']> = {};
+    
+    // Initialize structure for each nest size
     NEST_VALUES.forEach((nestSize) => {
-      const colIndex = NEST_COLUMNS[nestSize];
-      pricePerModule[nestSize] = this.parseNumber(row29[colIndex], true); // Prices in thousands
+      pricesByQuantity[nestSize] = {};
     });
 
-    // Hardcoded max modules
+    // Parse rows 29-44 (quantities 1-16)
+    for (let rowIndex = 28; rowIndex <= 43 && rowIndex < rows.length; rowIndex++) {
+      const row = rows[rowIndex] || [];
+      const quantity = rowIndex - 28 + 1; // Row 28 (29 in sheet) = quantity 1, row 43 (44 in sheet) = quantity 16
+      
+      NEST_VALUES.forEach((nestSize) => {
+        const colIndex = NEST_COLUMNS[nestSize];
+        const price = this.parseNumber(row[colIndex], true); // Prices in thousands
+        pricesByQuantity[nestSize]![quantity] = price;
+      });
+    }
+
+    // Hardcoded max modules based on nest size
     const maxModules: PricingData['pvanlage']['maxModules'] = {
       nest80: 8,
       nest100: 10,
@@ -323,14 +338,13 @@ class PricingSheetService {
     };
 
     return {
-      pricePerModule: pricePerModule as PricingData['pvanlage']['pricePerModule'],
+      pricesByQuantity: pricesByQuantity as PricingData['pvanlage']['pricesByQuantity'],
       maxModules,
     };
   }
 
   private parseBodenbelag(rows: unknown[][]): PricingData['bodenbelag'] {
-    // Find rows with bodenbelag options (around row 50-53)
-    // Column E has option names
+    // Rows 50-53 (0-indexed: 49-52), Column E has option names
     const bodenbelagData: PricingData['bodenbelag'] = {};
 
     const optionMapping: Record<string, string> = {
@@ -340,23 +354,8 @@ class PricingSheetService {
       'dunkler stein': 'schiefer_massiv',
     };
 
-    // Scan rows to find bodenbelag section (look for "bodenbelag" in column E)
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('bodenbelag') || cellE.includes('boden')) {
-        startRow = i + 1; // Next rows contain options
-        break;
-      }
-    }
-
-    if (startRow === -1) {
-      console.warn('Bodenbelag section not found');
-      return bodenbelagData;
-    }
-
-    // Parse next 4 rows (assuming 4 options)
-    for (let rowIndex = startRow; rowIndex < startRow + 4 && rowIndex < rows.length; rowIndex++) {
+    // Parse rows 50-53 (0-indexed: 49-52) - exact row indices
+    for (let rowIndex = 49; rowIndex <= 52 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
       
@@ -375,30 +374,19 @@ class PricingSheetService {
   }
 
   private parseBodenaufbau(rows: unknown[][]): PricingData['bodenaufbau'] {
-    // Find rows with heizung/bodenaufbau options (around row 60-62)
+    // Rows 57-59 (0-indexed: 56-58), Column E has option names
     const bodenaufbauData: PricingData['bodenaufbau'] = {};
 
     const optionMapping: Record<string, string> = {
       'ohne heizung': 'ohne_heizung',
       'elektrische fbh': 'elektrische_fussbodenheizung',
       'wassergeführte fbh': 'wassergefuehrte_fussbodenheizung',
+      'wassergef. fbh': 'wassergefuehrte_fussbodenheizung', // Handle abbreviated version
+      'wassergeführt fbh': 'wassergefuehrte_fussbodenheizung', // Another possible variation
     };
 
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('heizung') || cellE.includes('bodenaufbau')) {
-        startRow = i + 1;
-        break;
-      }
-    }
-
-    if (startRow === -1) {
-      console.warn('Bodenaufbau section not found');
-      return bodenaufbauData;
-    }
-
-    for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
+    // Parse rows 57-59 (0-indexed: 56-58) - exact row indices
+    for (let rowIndex = 56; rowIndex <= 58 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
       
@@ -417,22 +405,8 @@ class PricingSheetService {
   }
 
   private parseBelichtungspaket(rows: unknown[][]): PricingData['belichtungspaket'] {
-    // Find belichtungspaket section (around row 65-67)
+    // Rows 64-66 (0-indexed: 63-65), Column E has option names
     const belichtungspaketData: PricingData['belichtungspaket'] = {};
-
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('belichtung')) {
-        startRow = i + 1;
-        break;
-      }
-    }
-
-    if (startRow === -1) {
-      console.warn('Belichtungspaket section not found');
-      return belichtungspaketData;
-    }
 
     const optionMapping: Record<string, string> = {
       'light': 'light',
@@ -440,7 +414,8 @@ class PricingSheetService {
       'bright': 'bright',
     };
 
-    for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
+    // Parse rows 64-66 (0-indexed: 63-65) - exact row indices
+    for (let rowIndex = 63; rowIndex <= 65 && rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
       
@@ -506,24 +481,16 @@ class PricingSheetService {
   }
 
   private parseOptionen(rows: unknown[][]): PricingData['optionen'] {
-    // Kaminschachtvorbereitung: fixed price (find in rows ~80-83)
-    // Fundament: F83-M83 (nest-size dependent)
+    // Row 82: Kaminschachtvorbereitung (fixed price)
+    // Row 83: Fundament (F83-N83, nest-size dependent)
     
-    let kaminschachtPrice = 2000; // Default fallback
-    const fundamentPrices: Partial<PricingData['optionen']['fundament']> = {};
-
-    // Find kaminschacht price
-    for (let i = 79; i < 84 && i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('kamin') || cellE.includes('kaminschacht')) {
-        // Price might be in a different column, check common columns
-        kaminschachtPrice = this.parseNumber(rows[i]?.[5] || rows[i]?.[6] || 2000, true);
-        break;
-      }
-    }
-
+    // Parse kaminschacht price from row 82 (0-indexed: 81)
+    const row82 = rows[81] || [];
+    const kaminschachtPrice = this.parseNumber(row82[5], false); // F82 - NOT in thousands, already full price
+    
     // Parse fundament prices from row 83 (0-indexed: 82)
     const row83 = rows[82] || [];
+    const fundamentPrices: Partial<PricingData['optionen']['fundament']> = {};
     fundamentPrices.nest80 = this.parseNumber(row83[5], true); // F83 in thousands
     fundamentPrices.nest100 = this.parseNumber(row83[7], true); // H83
     fundamentPrices.nest120 = this.parseNumber(row83[9], true); // J83
@@ -537,48 +504,29 @@ class PricingSheetService {
   }
 
   private parsePlanungspakete(rows: unknown[][]): PricingData['planungspaket'] {
-    // Find planungspakete section (around row 85-87)
-    // Only parse plus and pro, basis stays 0
+    // Row 87: Basis (0€, not parsed)
+    // Row 88: Plus 
+    // Row 89: Pro
+    // Row 90: IGNORED
     
     const planungspaketData: Partial<PricingData['planungspaket']> = {
       plus: {} as { [key in NestSize]: number },
       pro: {} as { [key in NestSize]: number },
     };
 
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('planung')) {
-        startRow = i + 1;
-        break;
-      }
-    }
+    // Parse row 89 (0-indexed: 88) for Plus
+    const row89 = rows[88] || [];
+    NEST_VALUES.forEach((nestSize) => {
+      const colIndex = NEST_COLUMNS[nestSize];
+      planungspaketData.plus![nestSize] = this.parseNumber(row89[colIndex], true); // Price in thousands
+    });
 
-    if (startRow === -1) {
-      console.warn('Planungspakete section not found');
-      return {
-        plus: {} as { [key in NestSize]: number },
-        pro: {} as { [key in NestSize]: number },
-      };
-    }
-
-    // Find plus and pro rows
-    for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
-      const row = rows[rowIndex] || [];
-      const optionName = String(row[4] || '').toLowerCase().trim();
-      
-      if (optionName.includes('plus')) {
-        NEST_VALUES.forEach((nestSize) => {
-          const colIndex = NEST_COLUMNS[nestSize];
-          planungspaketData.plus![nestSize] = this.parseNumber(row[colIndex], true); // Price in thousands
-        });
-      } else if (optionName.includes('pro')) {
-        NEST_VALUES.forEach((nestSize) => {
-          const colIndex = NEST_COLUMNS[nestSize];
-          planungspaketData.pro![nestSize] = this.parseNumber(row[colIndex], true); // Price in thousands
-        });
-      }
-    }
+    // Parse row 90 (0-indexed: 89) for Pro
+    const row90 = rows[89] || [];
+    NEST_VALUES.forEach((nestSize) => {
+      const colIndex = NEST_COLUMNS[nestSize];
+      planungspaketData.pro![nestSize] = this.parseNumber(row90[colIndex], true); // Price in thousands
+    });
 
     return planungspaketData as PricingData['planungspaket'];
   }

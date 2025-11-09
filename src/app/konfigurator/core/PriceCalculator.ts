@@ -229,18 +229,18 @@ export class PriceCalculator {
         // Get nest base price
         const nestPrice = pricingData.nest[nestSize]?.price || 0;
         
-        // Get relative prices (trapezblech is base = 0, fichte is base = 0, ohne_belag is base = 0)
+        // Get absolute prices (all materials have prices, none are "base = 0")
         const gebaeudehuellePrice = pricingData.gebaeudehuelle[gebaeudehuelle]?.[nestSize] || 0;
         const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
-        const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
+        const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice; // trapezblech is STANDARD (included in nest)
         
         const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
         const fichtePrice = pricingData.innenverkleidung.fichte?.[nestSize] || 0;
-        const innenverkleidungRelative = innenverkleidungPrice - fichtePrice; // fichte is standard (base = 0)
+        const innenverkleidungRelative = innenverkleidungPrice - fichtePrice; // fichte is STANDARD (included in nest)
         
         const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
-        const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
+        const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice; // ohne_belag is STANDARD (included in nest)
         
         return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
       } catch (error) {
@@ -372,8 +372,9 @@ export class PriceCalculator {
           const pricingData = this.getPricingData();
           if (pricingData) {
             const nestSize = selections.nest.value as NestSize;
-            const pricePerModule = pricingData.pvanlage.pricePerModule[nestSize] || 0;
-            additionalPrice += selections.pvanlage.quantity * pricePerModule;
+            const quantity = selections.pvanlage.quantity;
+            const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
+            additionalPrice += price;
           }
           // If data not loaded, price will be 0 until loaded
         }
@@ -717,10 +718,18 @@ export class PriceCalculator {
       }
 
       // Add additional options (works for both nest and grundstückscheck-only)
-      if (selections.pvanlage && selections.pvanlage.quantity) {
+      if (selections.pvanlage && selections.pvanlage.quantity && selections.nest) {
+        const pricingData = this.getPricingData();
+        let pvPrice = 0;
+        if (pricingData) {
+          const nestSize = selections.nest.value as NestSize;
+          const quantity = selections.pvanlage.quantity;
+          pvPrice = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
+        }
+        
         breakdown.options.pvanlage = {
           name: `${selections.pvanlage.name} (${selections.pvanlage.quantity}x)`,
-          price: selections.pvanlage.quantity * selections.pvanlage.price
+          price: pvPrice
         }
       }
 
@@ -797,9 +806,14 @@ export class PriceCalculator {
 
       // Add checkbox options
       if (selections.kamindurchzug) {
+        const pricingData = this.getPricingData();
+        let kaminschachtPrice = 0;
+        if (pricingData) {
+          kaminschachtPrice = pricingData.optionen.kaminschacht || 0;
+        }
         breakdown.options.kamindurchzug = {
           name: selections.kamindurchzug.name,
-          price: selections.kamindurchzug.price
+          price: kaminschachtPrice
         }
       }
 
@@ -838,10 +852,12 @@ export class PriceCalculator {
       }
 
       if (selections.fundament && selections.nest) {
-        const fundamentPrice = calculateSizeDependentPrice(
-          selections.nest.value,
-          'fundament'
-        );
+        const pricingData = this.getPricingData();
+        let fundamentPrice = 0;
+        if (pricingData) {
+          const nestSize = selections.nest.value as NestSize;
+          fundamentPrice = pricingData.optionen.fundament[nestSize] || 0;
+        }
         breakdown.options.fundament = {
           name: selections.fundament.name,
           price: fundamentPrice

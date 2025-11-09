@@ -37,31 +37,31 @@ export const configuratorData: CategoryData[] = [
         id: 'nest80',
         name: 'Nest 80',
         description: '4 Module für\n75m² Nutzfläche',
-        price: { type: 'base', amount: 155500, monthly: 816 }
+        price: { type: 'base', amount: 188619, monthly: 990 }
       },
       {
         id: 'nest100',
         name: 'Nest 100',
         description: '5 Module für\n95m² Nutzfläche',
-        price: { type: 'base', amount: 189100, monthly: 993 }
+        price: { type: 'base', amount: 226108, monthly: 1187 }
       },
       {
         id: 'nest120',
         name: 'Nest 120',
         description: '6 Module für\n115m² Nutzfläche',
-        price: { type: 'base', amount: 222700, monthly: 1169 }
+        price: { type: 'base', amount: 263597, monthly: 1384 }
       },
       {
         id: 'nest140',
         name: 'Nest 140',
         description: '7 Module für\n135m² Nutzfläche',
-        price: { type: 'base', amount: 256300, monthly: 1346 }
+        price: { type: 'base', amount: 301086, monthly: 1581 }
       },
       {
         id: 'nest160',
         name: 'Nest 160',
         description: '8 Module für\n155m² Nutzfläche',
-        price: { type: 'base', amount: 289900, monthly: 1522 }
+        price: { type: 'base', amount: 338575, monthly: 1778 }
       }
     ],
     facts: {
@@ -86,7 +86,7 @@ export const configuratorData: CategoryData[] = [
         id: 'geschossdecke_module',
         name: 'Geschossdecke',
         description: 'Zusätzliche Geschossdecke', // Price will be added dynamically
-        price: { type: 'upgrade', amount: 5000, monthly: 26 }
+        price: { type: 'upgrade', amount: 4115, monthly: 22 }
       }
     ]
   },
@@ -133,7 +133,7 @@ export const configuratorData: CategoryData[] = [
         id: 'pv_modules',
         name: 'Photovoltaik-Module',
         description: '0,4 kWpeak pro Panel\n3 Panels pro PV-Modul',
-        price: { type: 'upgrade', amount: 1170, monthly: 6 }
+        price: { type: 'upgrade', amount: 3934, monthly: 21 }
       }
     ],
     infoBox: {
@@ -149,19 +149,19 @@ export const configuratorData: CategoryData[] = [
         id: 'fichte',
         name: 'Fichte',
         description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
-        price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
+        price: { type: 'included', amount: 23020, monthly: 121 } // Standard option (included in nest base price)
       },
       {
         id: 'laerche',
         name: 'Lärche',
         description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
-        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
+        price: { type: 'upgrade', amount: 31921, monthly: 168 } // nest80 price from F25
       },
       {
         id: 'steirische_eiche',
         name: 'Steirische Eiche',
         description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
-        price: { type: 'upgrade', amount: 8800, monthly: 47 } // 10200 - 1400 = 8800 vs standard
+        price: { type: 'upgrade', amount: 37235, monthly: 196 } // nest80 price from F26
       }
     ],
     infoBox: {
@@ -217,13 +217,13 @@ export const configuratorData: CategoryData[] = [
         id: 'elektrische_fussbodenheizung',
         name: 'Elektrische Fußbodenheizung',
         description: 'Elektrisches Heizungssystem\nDynamische Preisgestaltung nach Größe',
-        price: { type: 'upgrade', amount: 5000, monthly: 26 } // Base price for nest80
+        price: { type: 'upgrade', amount: 10842, monthly: 57 } // Base price for nest80
       },
       {
         id: 'wassergefuehrte_fussbodenheizung',
         name: 'Wassergeführte Fußbodenheizung',
         description: 'Wasserbasiertes Heizungssystem\nDynamische Preisgestaltung nach Größe',
-        price: { type: 'upgrade', amount: 7500, monthly: 39 } // Base price for nest80
+        price: { type: 'upgrade', amount: 13486, monthly: 71 } // Base price for nest80
       }
     ]
   },
@@ -300,13 +300,13 @@ export const configuratorData: CategoryData[] = [
         id: 'plus',
         name: 'Planung Plus',
         description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-        price: { type: 'upgrade', amount: 16900, monthly: 98 }
+        price: { type: 'upgrade', amount: 9600, monthly: 50 }
       },
       {
         id: 'pro',
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-        price: { type: 'upgrade', amount: 21900, monthly: 127 }
+        price: { type: 'upgrade', amount: 12700, monthly: 67 }
       }
     ]
   }
