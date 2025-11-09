@@ -4,6 +4,86 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fddad61d64bb96e8dfb8f9f1ad907f08be05c1c1] - Sat Nov 8 21:45:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Increment cache version to 4 to force reload of exact prices  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [b523de702bcc1cb3b872774760658ca41172c90d] - Sat Nov 8 21:38:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove all price rounding to preserve exact spreadsheet values  - Removed Math.round() from parseNumber function - Removed Math.round() from pricePerSqm calculation - Prices now use exact values from Google Sheets - Example: 188.619 * 1000 = 188619 (not rounded to 189000) - Ensures 1:1 accuracy between spreadsheet and database  `
+
+### Changes Analysis
+
+---
+
+## [143ec25cdc926e311a8712a47489dea7289cb6d4] - Sat Nov 8 21:34:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct price parsing to multiply before rounding  - Changed parseNumber logic to multiply by 1000 BEFORE rounding - Prevents precision loss (188.619 -> 189 -> 189000 is wrong) - Now correctly: 188.619 -> 188619 -> 188619 (after rounding) - Fixes nest prices to match exact spreadsheet values - nest80: 188,619 (was 189,000) - nest100: 226,108 (was 226,000) - nest120: 263,597 (was 264,000) - nest140: 301,086 (was 301,000) - nest160: 338,575 (was 339,000)  `
+
+### Changes Analysis
+
+---
+
+## [d7f2ca0c5b6ef9f717cb48a008061f69826c56a8] - Sat Nov 8 21:13:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Ensure cleanup function returns undefined in PriceCacheDebugger  - Added return statement to cleanup function in useEffect to explicitly return undefined, improving clarity and adherence to React best practices.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+---
+
+## [19324a7dc46cd043b3da594d136dc1ab4a964e63] - Sat Nov 8 21:08:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update pricing sync architecture and enhance price calculator cache versioning  - Corrected diagram formatting in PRICING_SYNC_ARCHITECTURE.md - Incremented CACHE_VERSION in PriceCalculator.ts to 3 for cache invalidation - Added support for ASCII version of 'lärche' in pricing-sheet-service.ts  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+#### 📚 Documentation Changes
+- docs/PRICING_SYNC_ARCHITECTURE.md
+
+
+---
+
+## [7529111878cdb684ddef0d1cddf49deb6f0ad7d0] - Sat Nov 8 19:50:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 0b6c832387348e160000f85b5ac066dd469511ba into acc8e9291f4089688a0fd937f173ad3d166fcdff  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+
+
+---
+
 ## [7479c300d2ee0932f865d008ec9803f93fafe3d5] - Sat Nov 8 19:29:28 2025 +0100
 
 **Author**: stenkjan

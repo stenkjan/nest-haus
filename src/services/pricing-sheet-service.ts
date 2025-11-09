@@ -213,7 +213,7 @@ class PricingSheetService {
       const colIndex = NEST_COLUMNS[nestSize];
       const price = this.parseNumber(row11[colIndex], true); // Price in thousands
       const squareMeters = this.parseNumber(row12[colIndex]); // Not a price
-      const pricePerSqm = squareMeters > 0 ? Math.round(price / squareMeters) : 0;
+      const pricePerSqm = squareMeters > 0 ? price / squareMeters : 0; // Use exact value, no rounding
 
       nestData[nestSize] = {
         price,
@@ -253,6 +253,7 @@ class PricingSheetService {
     // platte black → fassadenplatten_schwarz, platte white → fassadenplatten_weiss
     const optionMapping: Record<string, string> = {
       'lärche': 'holzlattung',
+      'laerche': 'holzlattung', // Also support ASCII version
       'trapezblech': 'trapezblech',
       'platte black': 'fassadenplatten_schwarz',
       'platte white': 'fassadenplatten_weiss',

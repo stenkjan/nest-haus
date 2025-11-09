@@ -55,6 +55,7 @@ export class PriceCalculator {
   private static pricingDataPromise: Promise<PricingData> | null = null;
   private static pricingDataTimestamp = 0;
   private static readonly PRICING_DATA_TTL = 5 * 60 * 1000; // 5 minutes
+  private static readonly CACHE_VERSION = 4; // Increment this to force cache invalidation
   
   // Callbacks to notify when pricing data is loaded
   private static onDataLoadedCallbacks: Array<() => void> = [];
@@ -96,8 +97,13 @@ export class PriceCalculator {
       try {
         const cached = sessionStorage.getItem('nest-haus-pricing-data');
         if (cached) {
-          const { data, timestamp, version } = JSON.parse(cached);
-          if (now - timestamp < this.PRICING_DATA_TTL) {
+          const { data, timestamp, version, cacheVersion } = JSON.parse(cached);
+          
+          // Check if cache version matches (invalidate old cache)
+          if (cacheVersion !== this.CACHE_VERSION) {
+            console.log(`🔄 Cache version mismatch (cached: ${cacheVersion}, current: ${this.CACHE_VERSION}), invalidating...`);
+            sessionStorage.removeItem('nest-haus-pricing-data');
+          } else if (now - timestamp < this.PRICING_DATA_TTL) {
             this.pricingData = data;
             this.pricingDataTimestamp = timestamp;
             console.log(`✅ Pricing data loaded from sessionStorage (version ${version}, ${Math.round((now - timestamp) / 1000)}s old)`);
@@ -106,10 +112,14 @@ export class PriceCalculator {
             this.onDataLoadedCallbacks.forEach(cb => { try { cb(); } catch (e) { console.error(e); } });
             this.onDataLoadedCallbacks = [];
             return;
+          } else {
+            console.log(`⏰ Cache expired (${Math.round((now - timestamp) / 1000)}s old), fetching fresh data...`);
           }
         }
       } catch (error) {
         console.warn('Failed to load pricing data from sessionStorage:', error);
+        // Clear corrupted cache
+        sessionStorage.removeItem('nest-haus-pricing-data');
       }
     }
 
@@ -133,6 +143,7 @@ export class PriceCalculator {
                 data: this.pricingData,
                 timestamp: now,
                 version: result.version || 1,
+                cacheVersion: this.CACHE_VERSION, // Add cache version for invalidation
               }));
             } catch (error) {
               console.warn('Failed to save pricing data to sessionStorage:', error);
@@ -171,6 +182,48 @@ export class PriceCalculator {
    */
   private static getPricingData(): PricingData | null {
     return this.pricingData;
+  }
+
+  /**
+   * Manually clear all pricing caches (for debugging/testing)
+   * Call this to force fresh pricing data on next load
+   */
+  static clearAllCaches(): void {
+    // Clear in-memory cache
+    this.pricingData = null;
+    this.pricingDataPromise = null;
+    this.pricingDataTimestamp = 0;
+    this.cache.clear();
+    
+    // Clear sessionStorage cache
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('nest-haus-pricing-data');
+      console.log('🧹 All pricing caches cleared');
+    }
+  }
+
+  /**
+   * Get cache info for debugging
+   */
+  static getCacheInfo(): {
+    hasPricingData: boolean;
+    cacheAge: number | null;
+    cacheVersion: number;
+    sessionStorageCached: boolean;
+  } {
+    const info = {
+      hasPricingData: this.pricingData !== null,
+      cacheAge: this.pricingDataTimestamp ? Date.now() - this.pricingDataTimestamp : null,
+      cacheVersion: this.CACHE_VERSION,
+      sessionStorageCached: false,
+    };
+
+    if (typeof window !== 'undefined') {
+      const cached = sessionStorage.getItem('nest-haus-pricing-data');
+      info.sessionStorageCached = !!cached;
+    }
+
+    return info;
   }
 
   /**
