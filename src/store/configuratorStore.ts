@@ -622,12 +622,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: -9600,
             description: 'RAL 9005 - 3000 x 1142 mm'
           },
-          // Fichte (standard default)
+          // Fichte (standard default) - F24 for nest80
           {
             category: 'innenverkleidung',
             value: 'fichte',
             name: 'Fichte',
-            price: 1400,
+            price: 23020, // Exact price from Google Sheets F24 for nest80
             description: 'PEFC-Zertifiziert\nSicht 1,9 cm'
           },
           // Standard (ohne_belag) - default flooring

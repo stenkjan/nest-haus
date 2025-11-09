@@ -535,6 +535,16 @@ export default function ConfiguratorShell({
           )
         ) {
           const currentNestValue = configuration.nest.value;
+          
+          // Special handling for innenverkleidung: show ABSOLUTE prices, not relative
+          if (categoryId === "innenverkleidung") {
+            const pricingData = PriceCalculator.getPricingData();
+            if (pricingData) {
+              const nestSize = currentNestValue as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+              return pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
+            }
+            return 0;
+          }
 
           // Use defaults for base calculation
           let testGebaeudehuelle = "trapezblech";
