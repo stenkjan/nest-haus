@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [33cbc4065fd185b5aff7b1fd9a00f6d94e8941a2] - Sun Nov 9 14:52:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Remove unused price calculation function from PriceCalculator  - Deleted the  import as it is no longer needed. - Streamlines the PriceCalculator module for better maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [348abf1c1abd49c535e1cb4e46a2d42ea645aa14] - Sun Nov 9 14:45:13 2025 +0100
 
 **Author**: stenkjan
