@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [48482beddf7cf5fa54d349e755683dc13881a21c] - Sun Nov 9 14:56:25 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Change getPricingData method visibility to public  - Updated the visibility of the  method in the PriceCalculator class from private to public to allow external access. - Enhances the usability of the PriceCalculator module.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [33cbc4065fd185b5aff7b1fd9a00f6d94e8941a2] - Sun Nov 9 14:52:26 2025 +0100
 
 **Author**: stenkjan
