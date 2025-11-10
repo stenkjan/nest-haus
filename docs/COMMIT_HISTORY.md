@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9c2f8be39079a946bce70a1db0de4eef4a6caab4] - Mon Nov 10 10:59:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: CRITICAL - Fix Geschossdecke pricing to ALWAYS show 4115€ unit price  **ALL GESCHOSSDECKE PRICING ISSUES FIXED:**  1. **Removed 'Ab' from left description**    - Changed 'Ab 4.115€ pro Einheit' to '4.115€ pro Einheit'  2. **Fixed right side price to ALWAYS show 4115€**    - Removed calculateSizeDependentPrice() from getDisplayPrice()    - Now uses fixed pricingData.geschossdecke.basePrice    - No more nest-size-dependent pricing (was 7201€ for nest140, etc.)  3. **Implemented correct m² calculation**    - Formula: 4115 / nestSize / 6.5    - nest80: 4115/80/6.5 = 8€/m²    - nest160: 4115/160/6.5 = 4€/m²    - Replaced '— €/m²' placeholder with actual calculation  4. **Price display now consistent:**    - Left: '4.115€ pro Einheit'    - Right: 'Ab 4.115€ entspricht X€/m²'    - ALWAYS 4115€ regardless of quantity or nest size  This fixes the critical bug where Geschossdecke showed incremental prices (7201€, 8230€) instead of the fixed unit price.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [54fcda9be6629c37e343a501907afcf4431fea71] - Mon Nov 10 10:47:26 2025 +0100
 
 **Author**: stenkjan
