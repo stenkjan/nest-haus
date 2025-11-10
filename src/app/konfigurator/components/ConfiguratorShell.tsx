@@ -611,16 +611,12 @@ export default function ConfiguratorShell({
           }
         }
 
-        // For PV, calculate quantity × price
-        if (categoryId === "pvanlage" && configuration.pvanlage?.quantity) {
-          const category = configuratorData.find(
-            (cat) => cat.id === categoryId
-          );
-          const option = category?.options.find((opt) => opt.id === optionId);
-          return (
-            (configuration.pvanlage.quantity || 0) *
-            (option?.price?.amount || 0)
-          );
+        // For PV, use cumulative price from pricing data table
+        if (categoryId === "pvanlage" && configuration.pvanlage?.quantity && configuration.nest) {
+          const pricingData = PriceCalculator.getPricingData();
+          if (!pricingData) return 0;
+          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+          return pricingData.pvanlage.pricesByQuantity[nestSize]?.[configuration.pvanlage.quantity] || 0;
         }
 
         // For bodenaufbau, calculate dynamic price
@@ -1654,7 +1650,13 @@ export default function ConfiguratorShell({
                         label="Anzahl der PV-Module"
                         value={pvQuantity}
                         max={getMaxPvModules()}
-                        unitPrice={configuration.pvanlage.price || 0}
+                        unitPrice={0} // Not used for PV, use cumulativePrice instead
+                        cumulativePrice={(() => {
+                          const pricingData = PriceCalculator.getPricingData();
+                          if (!pricingData || !configuration.nest) return 0;
+                          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+                          return pricingData.pvanlage.pricesByQuantity[nestSize]?.[pvQuantity] || 0;
+                        })()}
                         onChange={handlePvQuantityChange}
                       />
                     </>
