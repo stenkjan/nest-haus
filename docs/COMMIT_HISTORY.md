@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [479366cb37422f03ec0af097a5f83fb762dee345] - Mon Nov 10 12:58:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add clearAllCaches method to PriceCalculator  Added clearAllCaches() method to support the debug component: - Clears calculation cache (LRU cache) - Clears pricing data from memory - Removes sessionStorage cache - Resets cache statistics  This allows developers to force a fresh reload of pricing data during debugging.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [fe869104ad632caa379fed41cbe76bd747f69a62] - Mon Nov 10 12:53:18 2025 +0100
 
 **Author**: stenkjan
