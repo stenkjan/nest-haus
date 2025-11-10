@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fe869104ad632caa379fed41cbe76bd747f69a62] - Mon Nov 10 12:53:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update parsePvAnlage to use pricesByQuantity structure  Changed PV-Anlage parsing to match the new data structure: - Parse rows 29-44 (quantities 1-16) from Google Sheets - Store prices by quantity: pricesByQuantity[nestSize][quantity] - Removed obsolete pricePerModule structure  This ensures the pricing sync correctly populates the database with quantity-based pricing for PV-Anlage modules.  `
+
+### Changes Analysis
+
+---
+
 ## [a4977bf2fdf46807b036049bc8bbd94683893472] - Mon Nov 10 12:51:33 2025 +0100
 
 **Author**: stenkjan
