@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fecf1bb3124c058bb83069db749f8e9d3b8a7dc4] - Mon Nov 10 12:37:10 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update PricingData interface for pvanlage.pricesByQuantity  TypeScript error: Property 'pricesByQuantity' does not exist Issue: Interface had 'pricePerModule' but actual data structure uses 'pricesByQuantity'  Fix: Updated pvanlage interface to match actual data structure with quantity-based pricing  `
+
+### Changes Analysis
+
+---
+
 ## [f2d8c1127c60d67a233028a1a538840ab841c465] - Mon Nov 10 12:28:47 2025 +0100
 
 **Author**: stenkjan
