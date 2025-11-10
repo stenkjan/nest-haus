@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d88370df200890d4d95a12df349f1928cc635ed3] - Mon Nov 10 15:05:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: CRITICAL - Revert broken Innenverkleidung pricing logic  PROBLEM: Nest 80 was displaying 155,500€ instead of 188,619€  ROOT CAUSE: Previous commit incorrectly changed Innenverkleidung from relative to absolute pricing, causing double-counting.  THE FIX: Restored relative pricing calculation for Innenverkleidung - Added back: fichtePrice and innenverkleidungRelative calculation - Changed: return nestPrice + ... + innenverkleidungPrice (WRONG) - To: return nestPrice + ... + innenverkleidungRelative (CORRECT)  WHY: The nest base price (F11 = 188,619€) INCLUDES Fichte innenverkleidung (23,020€). Using absolute pricing was adding Fichte price twice.  MATH PROOF: - Nest base: 188,619€ (already includes Fichte 23,020€) - With Fichte selected: 188,619 + (23,020 - 23,020) = 188,619€ ✓ - With Lärche selected: 188,619 + (31,921 - 23,020) = 197,520€ ✓  This restores correct pricing display in the Konfigurator.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [08f059eeba5c7b69a9216f2591f8976254ec9192] - Mon Nov 10 14:56:08 2025 +0100
 
 **Author**: stenkjan
