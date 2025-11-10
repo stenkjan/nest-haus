@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [02de6ccb26e815f194ba9feaefe1ba3f855a495c] - Mon Nov 10 13:49:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove relative pricing logic for Innenverkleidung  CRITICAL FIX: Innenverkleidung should NOT use relative pricing. All options (Fichte, Lärche, Eiche) have actual costs that must be added to the nest base price.  Before: - innenverkleidungRelative = innenverkleidungPrice - fichtePrice - This made Fichte show as 0€ (inkludiert) which is INCORRECT  After: - innenverkleidungPrice is added directly to total - Fichte now correctly shows 23,020€ for Nest 80 - Lärche shows +8,901€ relative when not selected - Eiche shows +14,215€ relative when not selected  Fixes issue where Nest 160 selection caused inkludiert to appear.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [8b30c5c581653c6e16de712b5185091d06a166d8] - Mon Nov 10 13:36:00 2025 +0100
 
 **Author**: stenkjan
