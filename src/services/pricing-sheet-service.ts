@@ -584,8 +584,6 @@ class PricingSheetService {
       },
     };
   }
-    return planungspaketData as PricingData['planungspaket'];
-  }
 
   async loadPricingData(forceRefresh = false): Promise<PricingData> {
     const now = Date.now();
