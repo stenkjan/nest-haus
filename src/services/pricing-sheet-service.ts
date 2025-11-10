@@ -305,17 +305,34 @@ class PricingSheetService {
   }
 
   private parsePvAnlage(rows: unknown[][]): PricingData['pvanlage'] {
-    // Rows 29-44 (0-indexed: 28-43), prices are same across rows
-    // Use row 29 for prices, columns F-N
-    const row29 = rows[28] || [];
+    // Rows 29-44 (0-indexed: 28-43) contain prices by quantity
+    // Each row represents a different quantity (1-16 modules)
+    // Columns F-N represent different Nest sizes
     
-    const pricePerModule: Partial<PricingData['pvanlage']['pricePerModule']> = {};
-    NEST_VALUES.forEach((nestSize) => {
-      const colIndex = NEST_COLUMNS[nestSize];
-      pricePerModule[nestSize] = this.parseNumber(row29[colIndex], true); // Prices in thousands
-    });
+    const pricesByQuantity: PricingData['pvanlage']['pricesByQuantity'] = {
+      nest80: {},
+      nest100: {},
+      nest120: {},
+      nest140: {},
+      nest160: {},
+    };
 
-    // Hardcoded max modules
+    // Parse rows 29-44 (quantities 1-16)
+    for (let i = 0; i < 16; i++) {
+      const rowIndex = 28 + i; // Start at row 29 (0-indexed: 28)
+      if (rowIndex >= rows.length) break;
+      
+      const row = rows[rowIndex] || [];
+      const quantity = i + 1; // Quantity 1-16
+      
+      NEST_VALUES.forEach((nestSize) => {
+        const colIndex = NEST_COLUMNS[nestSize];
+        const price = this.parseNumber(row[colIndex], true); // Prices in thousands
+        pricesByQuantity[nestSize][quantity] = price;
+      });
+    }
+
+    // Hardcoded max modules per Nest size
     const maxModules: PricingData['pvanlage']['maxModules'] = {
       nest80: 8,
       nest100: 10,
@@ -324,11 +341,14 @@ class PricingSheetService {
       nest160: 16,
     };
 
+    console.log('[DEBUG] Parsed PV-Anlage data:', JSON.stringify(pricesByQuantity, null, 2));
+
     return {
-      pricePerModule: pricePerModule as PricingData['pvanlage']['pricePerModule'],
+      pricesByQuantity,
       maxModules,
     };
   }
+
 
   private parseBodenbelag(rows: unknown[][]): PricingData['bodenbelag'] {
     // Find rows with bodenbelag options (around row 50-53)
