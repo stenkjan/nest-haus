@@ -4,6 +4,90 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8b30c5c581653c6e16de712b5185091d06a166d8] - Mon Nov 10 13:36:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/sync-pricing/route.ts
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/api/cron/sync-pricing-sheet/route.ts
+- src/app/api/pricing/calculate/route.ts
+- src/app/api/pricing/data/route.ts
+- src/app/api/pricing/sync/route.ts
+- src/app/api/test/db/route.ts
+- src/app/api/test/pricing-sheet/route.ts
+- src/app/api/test/redis/route.ts
+- src/app/api/test/sheets-info/route.ts
+- src/app/api/test/sheets-metadata/route.ts
+- src/app/konfigurator/__tests__/ConfiguratorShell.integration.test.tsx
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/QuantitySelector.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/showcase/cards/page.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/admin/PricingSyncPanel.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/debug/PriceCacheDebugger.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/hooks/useInteractionTracking.ts
+
+
+#### ⚙️ Backend Changes
+- prisma/migrations/20250101000000_add_pricing_data_snapshot/migration.sql
+- prisma/schema.prisma
+- scripts/README-cache-cleaning.md
+- scripts/clean-cache.bat
+- scripts/clean-cache.js
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+- next.config.ts
+- package.json
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+- docs/ADMIN_REORGANIZATION_COMPLETE.md
+- docs/ADMIN_REORGANIZATION_PROGRESS.md
+- docs/ADMIN_TRACKING_QUICK_REF.md
+- docs/COMMIT_HISTORY.md
+- docs/DEBUG_CART_TRACKING.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/KONFIGURATOR_AUDIT_REPORT.md
+- docs/KONFIGURATOR_AUDIT_SUMMARY.md
+- docs/KONFIGURATOR_OPTIMIZATION_PLAN.md
+- docs/KONFIGURATOR_TESTING_CHECKLIST.md
+- docs/PRICING_INITIAL_SYNC.md
+- docs/PRICING_SHADOW_COPY_SETUP.md
+- docs/PRICING_SYNC_ARCHITECTURE.md
+- docs/PRICING_SYNC_ENV_VARS.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/PRICING_SYNC_QUICK_REF.md
+- docs/PRICING_SYNC_SETUP.md
+- docs/SESSION_SUMMARY_OCT24.md
+
+
+---
+
 ## [09c9e63aa5c115c1a3829ddc898b03d4ff423e9f] - Mon Nov 10 13:26:48 2025 +0100
 
 **Author**: stenkjan
