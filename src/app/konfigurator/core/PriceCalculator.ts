@@ -285,6 +285,37 @@ export class PriceCalculator {
   }
 
   /**
+   * Clear all caches (calculation cache, pricing data, and sessionStorage)
+   */
+  static clearAllCaches(): void {
+    // Clear calculation cache
+    this.cache.clear();
+    this.cacheKeys = [];
+    
+    // Clear pricing data
+    this.pricingData = null;
+    this.pricingDataTimestamp = 0;
+    this.pricingDataPromise = null;
+    
+    // Clear sessionStorage
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.removeItem('nest-haus-pricing-data');
+      } catch (error) {
+        console.warn('Failed to clear sessionStorage:', error);
+      }
+    }
+    
+    // Reset cache stats
+    this.cacheHits = 0;
+    this.cacheMisses = 0;
+    this.totalCalculations = 0;
+    this.totalDuration = 0;
+    
+    console.log('All caches cleared');
+  }
+
+  /**
    * Calculate the EXACT modular price using Google Sheets data
    * Formula: Nest base price + gebaeudehuelle relative price + innenverkleidung relative price + bodenbelag relative price
    * CLIENT-SIDE calculation for efficiency with memoization
