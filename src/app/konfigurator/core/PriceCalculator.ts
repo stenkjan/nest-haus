@@ -448,7 +448,8 @@ export class PriceCalculator {
           const pricingData = this.getPricingData();
           if (pricingData) {
             const nestSize = selections.nest.value as NestSize;
-            const pricePerModule = pricingData.pvanlage.pricePerModule[nestSize] || 0;
+            const quantity = selections.pvanlage.quantity;
+            const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
             additionalPrice += selections.pvanlage.quantity * pricePerModule;
           }
           // If data not loaded, price will be 0 until loaded
