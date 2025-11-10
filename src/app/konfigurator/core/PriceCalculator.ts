@@ -188,7 +188,7 @@ export class PriceCalculator {
   /**
    * Get pricing data (synchronous access, may return null if not initialized)
    */
-  private static getPricingData(): PricingData | null {
+  static getPricingData(): PricingData | null {
     return this.pricingData;
   }
 
