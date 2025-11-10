@@ -622,21 +622,21 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: -9600,
             description: 'RAL 9005 - 3000 x 1142 mm'
           },
-          // Kiefer
+          // Fichte (standard default)
           {
             category: 'innenverkleidung',
-            value: 'kiefer',
-            name: 'Kiefer',
-            price: -1400,
-            description: 'PEFC - Zertifiziert - Sicht 1,5 cm'
+            value: 'fichte',
+            name: 'Fichte',
+            price: 1400,
+            description: 'PEFC-Zertifiziert\nSicht 1,9 cm'
           },
-          // Ohne Belag (default - 0€ flooring cost)
+          // Standard (ohne_belag) - default flooring
           {
             category: 'fussboden',
             value: 'ohne_belag',
-            name: 'Ohne Belag',
+            name: 'Standard',
             price: 0,
-            description: 'Kein Bodenbelag'
+            description: ''
           },
           // Light Belichtungspaket
           {

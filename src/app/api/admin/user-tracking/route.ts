@@ -562,7 +562,7 @@ class UserTrackingService {
                     'fassadenplatten_weiss': 'Fassadenplatten Weiß'
                 },
                 innenverkleidung: {
-                    'kiefer': 'Kiefer',
+                    'laerche': 'Lärche',
                     'fichte': 'Fichte',
                     'steirische_eiche': 'Steirische Eiche'
                 },

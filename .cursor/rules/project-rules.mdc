@@ -23,6 +23,7 @@ alwaysApply: true
 This error occurs when webpack cannot resolve module imports after installing new dependencies.
 
 **MANDATORY FIX WORKFLOW** (After ANY `npm install`):
+
 ```bash
 # 1. Kill all node processes
 taskkill //F //IM node.exe
@@ -39,6 +40,7 @@ npm run dev
 ### **CRITICAL: TypeScript Safety Checks Before Committing**
 
 **MANDATORY PRE-COMMIT WORKFLOW**:
+
 ```bash
 # 1. Run linter to catch TypeScript errors
 npm run lint
@@ -73,6 +75,7 @@ npm run build
    - ✅ `const x: string = maybeNull ?? "default"`
 
 **CRITICAL RULE**: Before every commit/push:
+
 1. Run `npm run lint` - must show ✔ No ESLint warnings or errors
 2. Fix ALL TypeScript errors (no "possibly undefined", no type mismatches)
 3. Use optional chaining (`?.`) for potentially undefined properties
@@ -98,6 +101,7 @@ grep "configItem\\.planungspaket\\." src/app/warenkorb/components/CheckoutSteppe
 ```
 
 **Auto-Fix Checklist**:
+
 - [ ] Replace `.property` with `?.property` for nullable objects
 - [ ] Add `|| fallback` for all potentially undefined values
 - [ ] Use `?? "default"` for null coalescing
@@ -105,12 +109,13 @@ grep "configItem\\.planungspaket\\." src/app/warenkorb/components/CheckoutSteppe
 - [ ] Check all function parameters accept the provided types
 
 **Common Error Patterns to Search For**:
+
 ```bash
 # Direct property access (dangerous)
 object.property.method()  # ❌ if object might be undefined
 object?.property?.method() || "" # ✅ safe
 
-# Null assignment (dangerous)  
+# Null assignment (dangerous)
 const x: string = maybeNull  # ❌ if maybeNull is string | null
 const x: string = maybeNull || ""  # ✅ safe
 ```

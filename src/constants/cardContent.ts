@@ -175,15 +175,15 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
     },
     {
         id: 9,
-        title: "Kiefer - Innenverkleidung",
+        title: "Lärche - Innenverkleidung",
         subtitle: "",
         description:
-            "Die Innenverkleidung aus Kiefernholz bringt natürliche Wärme und lebendige Optik in den Innenraum. Die markante Maserung und die warmen, goldgelben Töne schaffen eine gemütliche, einladende Atmosphäre. Gleichzeitig ist das Holz leicht, gut zu verarbeiten und wirkt feuchtigkeitsregulierend – ideal für ein angenehmes, gesundes Raumklima. Mit seiner zeitlosen Ausstrahlung passt es sowohl in moderne als auch in traditionelle Wohnkonzepte.",
-        mobileTitle: "Kiefer - Innenverkleidung",
+            "Die Innenverkleidung aus Lärchenholz bringt natürliche Wärme und lebendige Optik in den Innenraum. Die markante Maserung und die warmen, goldgelben Töne schaffen eine gemütliche, einladende Atmosphäre. Gleichzeitig ist das Holz leicht, gut zu verarbeiten und wirkt feuchtigkeitsregulierend – ideal für ein angenehmes, gesundes Raumklima. Mit seiner zeitlosen Ausstrahlung passt es sowohl in moderne als auch in traditionelle Wohnkonzepte.",
+        mobileTitle: "Lärche - Innenverkleidung",
         mobileSubtitle: "",
         mobileDescription:
-            "Kiefernholz mit lebendiger Maserung und warmen Tönen. Gemütlich, leicht zu verarbeiten und raumklimafreundlich.",
-        image: IMAGES.materials.holzKiefer,
+            "Lärchenholz mit lebendiger Maserung und warmen Tönen. Gemütlich, leicht zu verarbeiten und raumklimafreundlich.",
+        image: IMAGES.materials.holzLaerche,
         backgroundColor: "#F4F4F4",
     },
     {
@@ -496,8 +496,8 @@ export const KONTAKTFORMULAR_CONTENT: ContentCardData[] = [
 export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "1. Vorentwurf",
-        subtitle: "Erster Schritt.",
+        title: "1. Check + Entwurf",
+        subtitle: "Diese Kosten deckst du heute",
         description:
             "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
         backgroundColor: "#f4f4f4",
@@ -506,7 +506,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 2,
         title: "2. Einreichplan",
-        subtitle: "Formalitäten Abklären.",
+        subtitle: "Rechtliche Grundlagen",
         description:
             "Sobald dein Vorentwurf fertiggestellt ist, starten wir mit der rechtlich korrekten Planung für dein zuständiges Bauamt (Planungspaket Basis).\n\nDabei werden alle formellen Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Zufahrten sowie örtliche Bauvorschriften geprüft, abgestimmt und detailliert definiert, um eine reibungslose Genehmigung sicherzustellen.",
         backgroundColor: "#f4f4f4",
@@ -533,7 +533,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 5,
         title: "5. Lieferung + Aufbau",
-        subtitle: "Immer transparent",
+        subtitle: "In nur 6 Monaten",
         description:
             "Sobald dein Fundament fertig ist, liefern wir dein Nest-Haus direkt zu dir. Unser erfahrenes Team übernimmt die Montage vor Ort, sodass dein Zuhause in kürzester Zeit steht.\n\nDie Kosten sind transparent geregelt und werden nach Bekanntgabe deines Bauplatzes exakt festgelegt.",
         backgroundColor: "#f4f4f4",
@@ -542,7 +542,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 6,
         title: "6. Fertigstellung",
-        subtitle: "Planungspaket Plus",
+        subtitle: "Gemeinsam ans Ziel",
         description:
             "Für die Fertigstellung begleiten wir dich Schritt für Schritt und vermitteln bei Bedarf zuverlässige Partnerfirmen. Ob in Eigenregie oder mit Fachbetrieben\n\nMit dem Planungspaket Plus erhältst du einen klaren Ablaufplan und Unterstützung bis zur Schlüsselübergabe, inklusive aller Gewerke von Elektro über Sanitär bis Innenausbau.",
         backgroundColor: "#f4f4f4",
@@ -584,7 +584,7 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         mobileDescription:
             "Inkl.\n\nEinreichplanung des Gesamtprojekts\n\nFachberatung und Baubegleitung\n\nBürokratische Unterstützung",
         image: IMAGES.hero.nestHaus8,
-        price: "€10.900,00",
+        price: "inkludiert",
         backgroundColor: "#F4F4F4",
         grayWord: "Basis",
         extendedDescription:

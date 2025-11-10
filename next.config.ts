@@ -34,6 +34,16 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   webpack: (config, { isServer }) => {
+    // Ignore markdown files to prevent webpack from trying to bundle them
+    // This fixes the build error where webpack tries to parse .md files
+    const webpack = require('webpack');
+    config.plugins = config.plugins || [];
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /\.md$/,
+      })
+    );
+
     if (!isServer) {
       // Fallback for Prisma client in browser environments
       config.resolve.fallback = {

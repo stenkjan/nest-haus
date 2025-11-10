@@ -15,6 +15,8 @@ interface QuantitySelectorProps {
   unit?: string;
   onChange: (value: number) => void;
   className?: string;
+  /** Optional: For cumulative pricing (PV-Anlage), pass the total price directly instead of calculating quantity * unitPrice */
+  cumulativePrice?: number;
 }
 
 export default function QuantitySelector({
@@ -25,6 +27,7 @@ export default function QuantitySelector({
   unit = "Stück",
   onChange,
   className = "",
+  cumulativePrice,
 }: QuantitySelectorProps) {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("de-DE", {
@@ -63,7 +66,7 @@ export default function QuantitySelector({
     }
   };
 
-  const totalPrice = value * unitPrice;
+  const totalPrice = cumulativePrice !== undefined ? cumulativePrice : value * unitPrice;
 
   return (
     <div
@@ -125,15 +128,29 @@ export default function QuantitySelector({
         </div>
 
         <div className="ml-[clamp(1rem,2vw,1.5rem)] text-right">
-          {/* Unit price per panel/m² */}
-          <div className="text-[clamp(0.75rem,1.1vw,0.8125rem)] text-gray-600 mb-1">
-            {formatUnitPrice(unitPrice, unit)}
-          </div>
-          {/* Total price */}
-          <div className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed text-gray-700 font-medium">
-            {formatPrice(totalPrice)}
-            {unit !== "Stück" && value > 0 && ` / ${value} ${unit}`}
-          </div>
+          {/* For cumulative pricing (PV), show total as main price */}
+          {cumulativePrice !== undefined ? (
+            <>
+              <div className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed text-gray-700 font-medium">
+                {formatPrice(totalPrice)}
+              </div>
+              <div className="text-[clamp(0.75rem,1.1vw,0.8125rem)] text-gray-500 mt-1">
+                für {value} {value === 1 ? 'Modul' : 'Module'}
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Unit price per panel/m² */}
+              <div className="text-[clamp(0.75rem,1.1vw,0.8125rem)] text-gray-600 mb-1">
+                {formatUnitPrice(unitPrice, unit)}
+              </div>
+              {/* Total price */}
+              <div className="text-[clamp(0.75rem,1.2vw,0.875rem)] tracking-wide leading-relaxed text-gray-700 font-medium">
+                {formatPrice(totalPrice)}
+                {unit !== "Stück" && value > 0 && ` / ${value} ${unit}`}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

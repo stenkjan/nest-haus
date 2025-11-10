@@ -50,7 +50,7 @@
 
 #### Priority 1: Cart Tracking
 
-**Issue**: Configurations not appearing in User Tracking after clicking "In den Warenkorb"
+**Issue**: Configurations not appearing in User Tracking after clicking "Zum Warenkorb"
 
 **Possible Cause**: SessionId missing or not being passed to cart
 
@@ -60,7 +60,7 @@
 2. Go to `/konfigurator`
 3. Look for: `📍 Session initialized: sess_xxxxx`
 4. Make selections
-5. Click "In den Warenkorb"
+5. Click "Zum Warenkorb"
 6. Look for one of:
    - ✅ `🛒 Tracking cart add for session: sess_xxxxx` → `✅ Cart add tracked successfully`
    - ❌ `⚠️ No sessionId found for cart tracking`
@@ -72,7 +72,7 @@
 
 #### Priority 2: Database Verification
 
-After clicking "In den Warenkorb":
+After clicking "Zum Warenkorb":
 
 1. Go to `/admin/user-tracking`
 2. Check "Total Sessions" and "Reached Cart" counts
@@ -132,7 +132,7 @@ After clicking "In den Warenkorb":
    - Go to `/konfigurator`
    - Check console for session initialization
    - Make selections
-   - Click "In den Warenkorb"
+   - Click "Zum Warenkorb"
    - Share console output
 
 ### If Tracking Works

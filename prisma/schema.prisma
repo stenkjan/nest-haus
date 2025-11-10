@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
@@ -482,4 +482,41 @@ enum ThreatLevel {
   ELEVATED
   HIGH
   CRITICAL
+}
+
+// ===== PRICING SYNC MODELS =====
+
+model PricingData {
+  id            String   @id @default(cuid())
+  category      String   // e.g., "nest_groesse", "gebaeudehuelle", "fenster"
+  itemKey       String   // Unique identifier within category
+  itemName      String   // Human-readable name
+  basePrice     Int      // Base price in cents (EUR)
+  priceModifier Int      @default(0) // Price modifier in cents (+/-)
+  metadata      Json?    // Additional data (dimensions, descriptions, etc.)
+  isActive      Boolean  @default(true)
+  version       Int      @default(1) // Increments on each update
+  lastSynced    DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  
+  @@unique([category, itemKey])
+  @@index([category])
+  @@index([isActive])
+  @@map("pricing_data")
+}
+
+// Shadow copy of complete pricing data from Google Sheets
+model PricingDataSnapshot {
+  id            String   @id @default(cuid())
+  version       Int      @default(1) // Increments on each sync
+  pricingData   Json     // Complete PricingData structure from pricing-sheet-service
+  syncedAt      DateTime @default(now())
+  syncedBy      String   @default("cron") // "cron" | "manual" | "api"
+  isActive      Boolean  @default(true) // Only one active snapshot at a time
+  createdAt     DateTime @default(now())
+  
+  @@index([isActive])
+  @@index([syncedAt])
+  @@index([version])
+  @@map("pricing_data_snapshots")
 }

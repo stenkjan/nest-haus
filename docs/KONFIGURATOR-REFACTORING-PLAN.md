@@ -380,7 +380,7 @@ useEffect(() => {
 ### Mit Nest (Normal Flow):
 
 1. Configure nest in konfigurator
-2. Click "In den Warenkorb"
+2. Click "Zum Warenkorb"
 3. Verify full configuration shown
 4. Verify planungspaket basis shows "inkludiert"
 5. Verify total matches konfigurator price

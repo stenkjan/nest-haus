@@ -173,7 +173,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - [ ] Overview shows "1.000 €" for "Check & Vorentwurf"
 - [ ] Overview shows "—" for "Planungspaket"
 - [ ] "Dein Nest Deine Auswahl" box hidden
-- [ ] "Dein Nest Ein Einblick in die Zukunft" box hidden
+- [ ] "Dein Nest Ein Blick in die Zukunft" box hidden
 - [ ] Planungspakete section still visible and functional
 - [ ] Abschluss step shows centered "Heute zu bezahlen" box with 1.000 €
 - [ ] Disclaimer text visible: "Solltest du..."
@@ -188,7 +188,7 @@ The simplified konfigurator is designed for users who want to quickly get a prel
 - [ ] Preview image navigation with arrows works
 - [ ] "Dein Nest Überblick" panel displays
 - [ ] "Neu Konfigurieren" button works
-- [ ] "In den Warenkorb" deactivates ohne nest mode
+- [ ] "Zum Warenkorb" deactivates ohne nest mode
 - [ ] Warenkorb displays full configuration details
 - [ ] Payment flow works with all Teilzahlungen
 - [ ] Stripe integration functional
@@ -292,7 +292,7 @@ For Vercel deployment:
 | Price Display      | ✅ Full breakdown        | ❌ Hidden               |
 | Preview Navigation | ✅ Arrows                | ❌ Static               |
 | Summary Panel      | ✅ "Dein Nest Überblick" | ❌ Hidden               |
-| Cart Button        | "In den Warenkorb"       | "Direkt zum Vorentwurf" |
+| Cart Button        | "Zum Warenkorb"          | "Direkt zum Vorentwurf" |
 | Reset Button       | ✅ "Neu konfigurieren"   | ❌ Hidden               |
 | Warenkorb Mode     | Full configuration       | Ohne nest (Vorentwurf)  |
 | Payment Amount     | Variable                 | Fixed 1.000 €           |

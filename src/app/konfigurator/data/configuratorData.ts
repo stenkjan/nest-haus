@@ -78,6 +78,19 @@ export const configuratorData: CategoryData[] = [
     }
   },
   {
+    id: 'geschossdecke',
+    title: 'Geschossdecke',
+    subtitle: 'Zusätzliche Ebenen',
+    options: [
+      {
+        id: 'geschossdecke_module',
+        name: 'Geschossdecke',
+        description: 'Zusätzliche Geschossdecke', // Price will be added dynamically
+        price: { type: 'upgrade', amount: 5000, monthly: 26 }
+      }
+    ]
+  },
+  {
     id: 'gebaeudehuelle',
     title: 'Gebäudehülle',
     subtitle: 'Kleide dich ein',
@@ -133,16 +146,16 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Der Charakter',
     options: [
       {
-        id: 'kiefer',
-        name: 'Kiefer',
-        description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
-        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
-      },
-      {
         id: 'fichte',
         name: 'Fichte',
         description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
         price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
+      },
+      {
+        id: 'laerche',
+        name: 'Lärche',
+        description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
+        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
       },
       {
         id: 'steirische_eiche',
@@ -162,8 +175,8 @@ export const configuratorData: CategoryData[] = [
     options: [
       {
         id: 'ohne_belag',
-        name: 'Ohne Belag',
-        description: 'Kein Bodenbelag\n\n',
+        name: 'Standard',
+        description: '',
         price: { type: 'included', amount: 0 }
       },
       {
@@ -188,6 +201,31 @@ export const configuratorData: CategoryData[] = [
     infoBox: {
       title: 'Daraus besteht dein Nest - Fußboden'
     }
+  },
+  {
+    id: 'bodenaufbau',
+    title: 'Bodenaufbau',
+    subtitle: 'Heizungssystem',
+    options: [
+      {
+        id: 'ohne_heizung',
+        name: 'Ohne Heizung',
+        description: 'Kein Heizungssystem im Boden',
+        price: { type: 'included', amount: 0 }
+      },
+      {
+        id: 'elektrische_fussbodenheizung',
+        name: 'Elektrische Fußbodenheizung',
+        description: 'Elektrisches Heizungssystem\nDynamische Preisgestaltung nach Größe',
+        price: { type: 'upgrade', amount: 5000, monthly: 26 } // Base price for nest80
+      },
+      {
+        id: 'wassergefuehrte_fussbodenheizung',
+        name: 'Wassergeführte Fußbodenheizung',
+        description: 'Wasserbasiertes Heizungssystem\nDynamische Preisgestaltung nach Größe',
+        price: { type: 'upgrade', amount: 7500, monthly: 39 } // Base price for nest80
+      }
+    ]
   },
   {
     id: 'belichtungspaket',
@@ -237,14 +275,8 @@ export const configuratorData: CategoryData[] = [
       },
       {
         id: 'aluminium_schwarz',
-        name: 'Aluminium Dunkel',
+        name: 'Aluminium Holz',
         description: 'RAL 9005 - Tiefschwarz\nBis zu 6,0 x 3,2 m',
-        price: { type: 'upgrade', amount: 700, monthly: 4 }
-      },
-      {
-        id: 'aluminium_weiss',
-        name: 'Aluminium Hell',
-        description: 'RAL 9016 - Reinweiß\nBis zu 6,0 x 3,2 m',
         price: { type: 'upgrade', amount: 700, monthly: 4 }
       }
     ],
@@ -275,44 +307,6 @@ export const configuratorData: CategoryData[] = [
         name: 'Planung Pro',
         description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
         price: { type: 'upgrade', amount: 21900, monthly: 127 }
-      }
-    ]
-  },
-  {
-    id: 'bodenaufbau',
-    title: 'Bodenaufbau',
-    subtitle: 'Heizungssystem',
-    options: [
-      {
-        id: 'ohne_heizung',
-        name: 'Ohne Heizung',
-        description: 'Kein Heizungssystem im Boden',
-        price: { type: 'included', amount: 0 }
-      },
-      {
-        id: 'elektrische_fussbodenheizung',
-        name: 'Elektrische Fußbodenheizung',
-        description: 'Elektrisches Heizungssystem\nDynamische Preisgestaltung nach Größe',
-        price: { type: 'upgrade', amount: 5000, monthly: 26 } // Base price for nest80
-      },
-      {
-        id: 'wassergefuehrte_fussbodenheizung',
-        name: 'Wassergeführte Fußbodenheizung',
-        description: 'Wasserbasiertes Heizungssystem\nDynamische Preisgestaltung nach Größe',
-        price: { type: 'upgrade', amount: 7500, monthly: 39 } // Base price for nest80
-      }
-    ]
-  },
-  {
-    id: 'geschossdecke',
-    title: 'Geschossdecke',
-    subtitle: 'Zusätzliche Ebenen',
-    options: [
-      {
-        id: 'geschossdecke_module',
-        name: 'Geschossdecke',
-        description: 'Zusätzliche Geschossdecke\n5.000€ pro Einheit',
-        price: { type: 'upgrade', amount: 5000, monthly: 26 }
       }
     ]
   }

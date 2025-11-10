@@ -7,14 +7,15 @@
  */
 
 import {
-  calculateModularPrice,
   calculateSizeDependentPrice,
   GRUNDSTUECKSCHECK_PRICE,
   MODULAR_PRICING,
   NEST_OPTIONS,
   type CombinationKey
 } from '@/constants/configurator'
+import type { PricingData, NestSize } from '@/services/pricing-sheet-service'
 
+import { PriceUtils } from './PriceUtils'
 // REMOVED: SimplePriceCache class - no longer needed after reverting complex pricing logic
 
 interface SelectionOption {
@@ -46,48 +47,278 @@ interface Selections {
 }
 
 export class PriceCalculator {
-  // Simple in-memory cache for price calculations
+  // LRU cache for price calculations with bounded size
   private static cache = new Map<string, { result: number; timestamp: number }>();
-  private static readonly CACHE_TTL = 5000; // 5 seconds
+  private static cacheKeys: string[] = []; // Track insertion order for LRU
+  private static readonly CACHE_TTL = 60000; // 60 seconds (increased from 5s for better hit rate)
+  private static readonly MAX_CACHE_SIZE = 100; // Prevent unbounded growth
+  
+  // Performance metrics (development only)
+  private static cacheHits = 0;
+  private static cacheMisses = 0;
+  private static totalCalculations = 0;
+  private static totalDuration = 0;
+
+  // Pricing data from Google Sheets
+  private static pricingData: PricingData | null = null;
+  private static pricingDataPromise: Promise<PricingData> | null = null;
+  private static pricingDataTimestamp = 0;
+  private static readonly PRICING_DATA_TTL = 5 * 60 * 1000; // 5 minutes
+  
+  // Callbacks to notify when pricing data is loaded
+  private static onDataLoadedCallbacks: Array<() => void> = [];
 
   /**
-   * Clear expired cache entries
+   * Register a callback to be called when pricing data is loaded
+   */
+  static onPricingDataLoaded(callback: () => void): void {
+    if (this.pricingData) {
+      // Data already loaded, call immediately
+      callback();
+    } else {
+      // Register for later
+      this.onDataLoadedCallbacks.push(callback);
+    }
+  }
+
+  /**
+   * Initialize pricing data from database API
+   * Uses multi-level caching: sessionStorage → memory → database
+   * Call this once on app startup (client-side)
+   */
+  static async initializePricingData(): Promise<void> {
+    const now = Date.now();
+    
+    // Return cached data if still valid
+    if (this.pricingData && (now - this.pricingDataTimestamp) < this.PRICING_DATA_TTL) {
+      return;
+    }
+
+    // If already fetching, wait for that promise
+    if (this.pricingDataPromise) {
+      await this.pricingDataPromise;
+      return;
+    }
+
+    // Try to load from sessionStorage first (fastest)
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = sessionStorage.getItem('nest-haus-pricing-data');
+        if (cached) {
+          const { data, timestamp, version } = JSON.parse(cached);
+          if (now - timestamp < this.PRICING_DATA_TTL) {
+            this.pricingData = data;
+            this.pricingDataTimestamp = timestamp;
+            console.log(`✅ Pricing data loaded from sessionStorage (version ${version}, ${Math.round((now - timestamp) / 1000)}s old)`);
+            
+            // Notify callbacks
+            this.onDataLoadedCallbacks.forEach(cb => { try { cb(); } catch (e) { console.error(e); } });
+            this.onDataLoadedCallbacks = [];
+            return;
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to load pricing data from sessionStorage:', error);
+      }
+    }
+
+    // Start fetching from database (shadow copy)
+    this.pricingDataPromise = (async () => {
+      try {
+        const response = await fetch('/api/pricing/data');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch pricing data: ${response.statusText}`);
+        }
+        const result = await response.json();
+        if (result.success && result.data) {
+          this.pricingData = result.data;
+          this.pricingDataTimestamp = now;
+          console.log(`✅ Pricing data loaded from database (version ${result.version || 'unknown'}, synced ${result.syncedAt || 'unknown'})`);
+          
+          // Save to sessionStorage for faster future loads
+          if (typeof window !== 'undefined') {
+            try {
+              sessionStorage.setItem('nest-haus-pricing-data', JSON.stringify({
+                data: this.pricingData,
+                timestamp: now,
+                version: result.version || 1,
+              }));
+            } catch (error) {
+              console.warn('Failed to save pricing data to sessionStorage:', error);
+            }
+          }
+          
+          // Notify all registered callbacks
+          this.onDataLoadedCallbacks.forEach(callback => {
+            try {
+              callback();
+            } catch (error) {
+              console.error('Error in pricing data loaded callback:', error);
+            }
+          });
+          // Clear callbacks after calling them
+          this.onDataLoadedCallbacks = [];
+        } else {
+          throw new Error(result.message || 'Pricing data fetch returned unsuccessful result');
+        }
+      } catch (error) {
+        console.error('❌ Error initializing pricing data from database:', error);
+        // No fallback - prices should always be in database
+        // If database is empty, admin needs to run initial sync
+        throw error;
+      } finally {
+        this.pricingDataPromise = null;
+      }
+      return this.pricingData!;
+    })();
+
+    await this.pricingDataPromise;
+  }
+
+  /**
+   * Get pricing data (synchronous access, may return null if not initialized)
+   * Public for use in UI components that need direct access to pricing structure
+   */
+  static getPricingData(): PricingData | null {
+    return this.pricingData;
+  }
+
+  /**
+   * Clear expired cache entries and enforce max size with LRU eviction
    */
   private static cleanCache(): void {
     const now = Date.now();
+    
+    // Remove expired entries
     for (const [key, value] of this.cache.entries()) {
       if (now - value.timestamp > this.CACHE_TTL) {
         this.cache.delete(key);
+        const index = this.cacheKeys.indexOf(key);
+        if (index > -1) {
+          this.cacheKeys.splice(index, 1);
+        }
+      }
+    }
+    
+    // Enforce max size with LRU eviction
+    while (this.cache.size >= this.MAX_CACHE_SIZE) {
+      const oldestKey = this.cacheKeys.shift();
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
       }
     }
   }
 
   /**
-   * Get cached result or calculate new one
+   * Get cached result or calculate new one with LRU cache management
    */
   private static getCachedResult<T>(
     cacheKey: string,
     calculator: () => T
   ): T {
-    this.cleanCache();
-
+    const startTime = performance.now();
     const cached = this.cache.get(cacheKey);
+
+    // Cache hit
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      this.cacheHits++;
+      
+      // Move to end of LRU queue (most recently used)
+      const index = this.cacheKeys.indexOf(cacheKey);
+      if (index > -1) {
+        this.cacheKeys.splice(index, 1);
+        this.cacheKeys.push(cacheKey);
+      }
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Cache HIT for ${cacheKey.substring(0, 50)}...`);
+      }
+      
       return cached.result as T;
     }
 
+    // Cache miss - calculate
+    this.cacheMisses++;
+    this.totalCalculations++;
+    
     const result = calculator();
+    const duration = performance.now() - startTime;
+    this.totalDuration += duration;
+    
+    // Log slow calculations in development
+    if (process.env.NODE_ENV === 'development' && duration > 50) {
+      console.warn(`⚠️ Slow calculation: ${duration.toFixed(2)}ms for ${cacheKey.substring(0, 50)}...`);
+    }
+    
+    // Clean cache before adding new entry
+    this.cleanCache();
+    
+    // Add to cache with LRU tracking
     this.cache.set(cacheKey, {
       result: result as number,
       timestamp: Date.now(),
     });
+    this.cacheKeys.push(cacheKey);
 
     return result;
   }
+  
+  /**
+   * Get cache statistics (development/monitoring)
+   */
+  static getCacheStats() {
+    const hitRate = this.cacheHits + this.cacheMisses > 0 
+      ? (this.cacheHits / (this.cacheHits + this.cacheMisses)) * 100 
+      : 0;
+    const avgDuration = this.totalCalculations > 0 
+      ? this.totalDuration / this.totalCalculations 
+      : 0;
+      
+    return {
+      size: this.cache.size,
+      maxSize: this.MAX_CACHE_SIZE,
+      hits: this.cacheHits,
+      misses: this.cacheMisses,
+      hitRate: hitRate.toFixed(2) + '%',
+      avgDuration: avgDuration.toFixed(2) + 'ms',
+      totalCalculations: this.totalCalculations,
+    };
+  }
 
   /**
-   * Calculate the EXACT modular price using Excel data
-   * Formula: Base Price (Nest 80) + (Additional Modules × Price Per Module)
+   * Clear all caches (calculation cache, pricing data, and sessionStorage)
+   */
+  static clearAllCaches(): void {
+    // Clear calculation cache
+    this.cache.clear();
+    this.cacheKeys = [];
+    
+    // Clear pricing data
+    this.pricingData = null;
+    this.pricingDataTimestamp = 0;
+    this.pricingDataPromise = null;
+    
+    // Clear sessionStorage
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.removeItem('nest-haus-pricing-data');
+      } catch (error) {
+        console.warn('Failed to clear sessionStorage:', error);
+      }
+    }
+    
+    // Reset cache stats
+    this.cacheHits = 0;
+    this.cacheMisses = 0;
+    this.totalCalculations = 0;
+    this.totalDuration = 0;
+    
+    console.log('All caches cleared');
+  }
+
+  /**
+   * Calculate the EXACT modular price using Google Sheets data
+   * Formula: Nest base price + gebaeudehuelle relative price + innenverkleidung relative price + bodenbelag relative price
    * CLIENT-SIDE calculation for efficiency with memoization
    */
   static calculateCombinationPrice(
@@ -96,9 +327,41 @@ export class PriceCalculator {
     innenverkleidung: string,
     fussboden: string
   ): number {
-    const price = calculateModularPrice(nestType, gebaeudehuelle, innenverkleidung, fussboden);
-
-    return price;
+    const pricingData = this.getPricingData();
+    
+    // If pricing data is available, use it
+    if (pricingData) {
+      try {
+        const nestSize = nestType as NestSize;
+        
+        // Get nest base price
+        const nestPrice = pricingData.nest[nestSize]?.price || 0;
+        
+        // Get relative prices (trapezblech is base = 0, fichte is base = 0, ohne_belag is base = 0)
+        const gebaeudehuellePrice = pricingData.gebaeudehuelle[gebaeudehuelle]?.[nestSize] || 0;
+        const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
+        const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
+        
+        const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
+        const fichtePrice = pricingData.innenverkleidung.fichte?.[nestSize] || 0;
+        const innenverkleidungRelative = innenverkleidungPrice - fichtePrice; // fichte is standard (base = 0)
+        
+        const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
+        const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
+        const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
+        
+        return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
+      } catch (error) {
+        console.error('Error calculating combination price from database:', error);
+        // Return 0 instead of throwing to prevent crashes during initial load
+        return 0;
+      }
+    }
+    
+    // If no pricing data available yet (still loading), return 0
+    // This prevents crashes during initial page load before pricing data is fetched
+    console.warn('⚠️ Pricing data not yet loaded, returning 0');
+    return 0;
   }
 
   /**
@@ -115,7 +378,7 @@ export class PriceCalculator {
     // Default selections for base comparison
     const defaultSelections = {
       gebaeudehuelle: 'trapezblech',
-      innenverkleidung: 'kiefer',
+      innenverkleidung: 'fichte', // fichte is standard default
       fussboden: 'ohne_belag'
     };
 
@@ -197,7 +460,7 @@ export class PriceCalculator {
           // ALWAYS use combination pricing with defaults for missing core selections
           // This ensures consistent pricing regardless of selection order
           const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-          const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+          const innenverkleidung = selections.innenverkleidung?.value || 'fichte';
           const fussboden = selections.fussboden?.value || 'ohne_belag';
 
           // Calculate combination price using modular pricing system
@@ -213,9 +476,15 @@ export class PriceCalculator {
         let additionalPrice = 0;
 
         // Add PV price
-        if (selections.pvanlage && selections.pvanlage.quantity) {
-          const pvPrice = selections.pvanlage.quantity * (selections.pvanlage.price || 0);
-          additionalPrice += pvPrice;
+        if (selections.pvanlage && selections.pvanlage.quantity && selections.nest) {
+          const pricingData = this.getPricingData();
+          if (pricingData) {
+            const nestSize = selections.nest.value as NestSize;
+            const quantity = selections.pvanlage.quantity;
+            const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
+            additionalPrice += price;
+          }
+          // If data not loaded, price will be 0 until loaded
         }
 
         // Add belichtungspaket price (calculated based on nest size and fenster material)
@@ -257,14 +526,27 @@ export class PriceCalculator {
 
         // Fenster price is already included in belichtungspaket calculation, so don't add it separately
 
-        // Add planungspaket price (fixed price independent of nest module)
-        if (selections.planungspaket) {
-          additionalPrice += selections.planungspaket.price || 0;
+        // Add planungspaket price (nest-size dependent)
+        if (selections.planungspaket && selections.nest) {
+          const pricingData = this.getPricingData();
+          if (pricingData && selections.planungspaket.value !== 'basis') {
+            const nestSize = selections.nest.value as NestSize;
+            if (selections.planungspaket.value === 'plus') {
+              additionalPrice += pricingData.planungspaket.plus[nestSize] || 0;
+            } else if (selections.planungspaket.value === 'pro') {
+              additionalPrice += pricingData.planungspaket.pro[nestSize] || 0;
+            }
+          }
+          // Basis is always 0 (included)
         }
 
         // Add checkbox options (kamindurchzug, fussbodenheizung, fundament)
         if (selections.kamindurchzug) {
-          additionalPrice += selections.kamindurchzug.price || 0;
+          const pricingData = this.getPricingData();
+          if (pricingData) {
+            additionalPrice += pricingData.optionen.kaminschacht || 0;
+          }
+          // If data not loaded, price will be 0 until loaded
         }
 
         if (selections.fussbodenheizung) {
@@ -272,11 +554,12 @@ export class PriceCalculator {
         }
 
         if (selections.fundament && selections.nest) {
-          const fundamentPrice = calculateSizeDependentPrice(
-            selections.nest.value,
-            'fundament'
-          );
-          additionalPrice += fundamentPrice;
+          const pricingData = this.getPricingData();
+          if (pricingData) {
+            const nestSize = selections.nest.value as NestSize;
+            additionalPrice += pricingData.optionen.fundament[nestSize] || 0;
+          }
+          // If data not loaded, price will be 0 until loaded
         }
 
         // Planning package and Grundstückscheck removed - handled in separate cart logic
@@ -290,10 +573,9 @@ export class PriceCalculator {
   }
 
   /**
-   * Calculate belichtungspaket price based on nest size and fenster material
-   * Formula: nest_size * percentage * fenster_material_price_per_sqm
-   * Percentages: light=15%, medium=22%, bright=28%
-   * Default fenster material: PVC (280€/m²) if no fenster selected
+   * Calculate belichtungspaket price based on nest size, belichtungspaket option, and fenster material
+   * Uses combination prices from Google Sheets (F70-N78)
+   * Formula: combination_price = price_per_sqm × nest_size (from sheet)
    */
   static calculateBelichtungspaketPrice(
     belichtungspaket: SelectionOption,
@@ -301,46 +583,45 @@ export class PriceCalculator {
     fenster?: SelectionOption
   ): number {
     try {
-      // Get nest size in square meters
-      const nestSizeMap: Record<string, number> = {
-        'nest80': 80,
-        'nest100': 100,
-        'nest120': 120,
-        'nest140': 140,
-        'nest160': 160
-      };
-
-      const nestSize = nestSizeMap[nest.value] || 80;
-
-      // Get percentage based on belichtungspaket option
-      const percentageMap: Record<string, number> = {
-        'light': 0.15,   // 15%
-        'medium': 0.22,  // 22%
-        'bright': 0.28   // 28%
-      };
-
-      const percentage = percentageMap[belichtungspaket.value] || 0.12;
-
-      // Calculate square meters for belichtungspaket
-      const beleuchtungsSquareMeters = Math.ceil(nestSize * percentage);
-
-      // Get fenster material price (default to PVC 280€ if no fenster selected)
-      const fensterPricePerSqm = fenster?.price || 280;
-
-      // Calculate total price
-      const totalPrice = beleuchtungsSquareMeters * fensterPricePerSqm;
-
-
-      return totalPrice;
-    } catch (error) {
-      console.error('💡 Error calculating belichtungspaket price:', error);
+      const pricingData = this.getPricingData();
+      
+      if (pricingData && fenster) {
+        const nestSize = nest.value as NestSize;
+        const fensterKey = fenster.value; // Use fenster value as-is (holz, pvc_fenster, aluminium_schwarz)
+        const belichtungKey = belichtungspaket.value;
+        
+        console.log(`[DEBUG] Calculating belichtungspaket: fenster=${fensterKey}, nest=${nestSize}, belichtung=${belichtungKey}`);
+        
+        // Get total combination price from sheet (F70-N78 contains TOTAL prices)
+        const fensterPricing = pricingData.fenster.totalPrices[fensterKey];
+        if (fensterPricing && fensterPricing[nestSize]) {
+          const totalPrice = fensterPricing[nestSize][belichtungKey];
+          if (totalPrice !== undefined) {
+            console.log(`[DEBUG] Found belichtungspaket price: ${totalPrice}`);
+            return totalPrice; // Return total price directly
+          } else {
+            console.warn(`[WARN] Belichtung option "${belichtungKey}" not found for ${fensterKey} ${nestSize}`);
+          }
+        } else {
+          console.warn(`[WARN] Fenster pricing not found for fensterKey="${fensterKey}", nestSize="${nestSize}"`);
+          console.warn('[WARN] Available fenster keys:', Object.keys(pricingData.fenster.totalPrices));
+        }
+      } else {
+        console.warn('[WARN] Pricing data or fenster not available:', { hasPricingData: !!pricingData, hasFenster: !!fenster });
+      }
+      
+      // If pricing data not available yet (loading), return 0 to prevent crash
+      console.warn('⚠️ Belichtungspaket pricing data not yet loaded, returning 0');
       return 0;
+    } catch (error) {
+      console.error('Error calculating belichtungspaket price:', error);
+      return 0; // Return 0 instead of throwing to prevent crashes during loading
     }
   }
 
   /**
    * Calculate bodenaufbau price based on nest size
-   * Formula: calculateSizeDependentPrice for heating options, 0 for ohne_heizung
+   * Uses Google Sheets pricing data
    */
   static calculateBodenaufbauPrice(
     bodenaufbau: SelectionOption,
@@ -351,34 +632,46 @@ export class PriceCalculator {
         return 0;
       }
 
-      const price = calculateSizeDependentPrice(
-        nest.value,
-        bodenaufbau.value as 'elektrische_fussbodenheizung' | 'wassergefuehrte_fussbodenheizung'
-      );
-      return price;
+      const pricingData = this.getPricingData();
+      if (pricingData) {
+        const nestSize = nest.value as NestSize;
+        const bodenaufbauPrice = pricingData.bodenaufbau[bodenaufbau.value]?.[nestSize];
+        if (bodenaufbauPrice !== undefined) {
+          // Get relative price (ohne_heizung is base = 0)
+          const ohneHeizungPrice = pricingData.bodenaufbau.ohne_heizung?.[nestSize] || 0;
+          return bodenaufbauPrice - ohneHeizungPrice;
+        }
+      }
+
+      // If pricing data not available yet, return 0
+      return 0;
     } catch (error) {
-      console.error('🔥 Error calculating bodenaufbau price:', error);
+      console.error('Error calculating bodenaufbau price:', error);
       return 0;
     }
   }
 
   /**
    * Calculate geschossdecke price based on nest size and quantity
-   * Formula: calculateSizeDependentPrice × quantity
+   * Uses Google Sheets base price (D7) × quantity
    */
   static calculateGeschossdeckePrice(
     geschossdecke: SelectionOption,
-    nest: SelectionOption
+    _nest: SelectionOption // Renamed to _nest to mark as intentionally unused
   ): number {
     try {
       const quantity = geschossdecke.quantity || 1;
-      return calculateSizeDependentPrice(
-        nest.value,
-        'geschossdecke',
-        quantity
-      );
+      
+      const pricingData = this.getPricingData();
+      if (pricingData) {
+        const basePrice = pricingData.geschossdecke.basePrice;
+        return basePrice * quantity;
+      }
+
+      // If pricing data not available yet, return 0
+      return 0;
     } catch (error) {
-      console.error('🏢 Error calculating geschossdecke price:', error);
+      console.error('Error calculating geschossdecke price:', error);
       return 0;
     }
   }
@@ -424,12 +717,12 @@ export class PriceCalculator {
    * Get base price for a nest option (calculated with default selections)
    */
   static getBasePrice(nestType: string): number {
-    // Default selections (Trapezblech + Kiefer + Ohne Belag)
+    // Default selections (Trapezblech + Fichte + Standard/Ohne Belag)
     return this.calculateCombinationPrice(
       nestType,
       'trapezblech',  // default
-      'kiefer',       // default
-      'ohne_belag'    // default - 0€ flooring, base price 155.500€
+      'fichte',       // default (standard)
+      'ohne_belag'    // default - 0€ flooring
     )
   }
 
@@ -516,7 +809,7 @@ export class PriceCalculator {
 
         // Determine combination for breakdown
         const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-        const innenverkleidung = selections.innenverkleidung?.value || 'kiefer';
+        const innenverkleidung = selections.innenverkleidung?.value || 'laerche';
         const fussboden = selections.fussboden?.value || 'ohne_belag';
 
         breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
@@ -693,6 +986,79 @@ export class PriceCalculator {
    */
   static getValidCombinations(_nestType: string): CombinationKey[] {
     return Object.keys(MODULAR_PRICING.combinations) as CombinationKey[];
+  }
+
+  /**
+   * Get fenster price per m² for display in fenster section
+   * Calculates: total_price / nest_size
+   */
+  static getFensterPricePerSqm(
+    fensterValue: string,
+    nestValue: string,
+    belichtungspaketValue: string,
+    geschossdeckeQuantity?: number
+  ): number {
+    const pricingData = this.getPricingData();
+    if (pricingData) {
+      const nestSize = nestValue as NestSize;
+      const fensterKey = fensterValue === 'aluminium_schwarz' ? 'aluminium_schwarz' : fensterValue;
+      const belichtungKey = belichtungspaketValue;
+      
+      const fensterPricing = pricingData.fenster.totalPrices[fensterKey];
+      if (fensterPricing && fensterPricing[nestSize]) {
+        const totalPrice = fensterPricing[nestSize][belichtungKey];
+        if (totalPrice !== undefined) {
+          // Calculate price per m² using the correct formula: (nestSize - 5) + (geschossdecke * 6.5)
+          const squareMeters = PriceUtils.getAdjustedNutzflaeche(nestValue, geschossdeckeQuantity);
+          return squareMeters > 0 ? Math.round(totalPrice / squareMeters) : 0;
+        }
+      }
+    }
+    
+    // If pricing data not available yet, return 0
+    return 0;
+  }
+
+  /**
+   * Get max geschossdecke amount for a nest size
+   */
+  static getMaxGeschossdecke(nestValue: string): number {
+    const pricingData = this.getPricingData();
+    if (pricingData) {
+      const nestSize = nestValue as NestSize;
+      return pricingData.geschossdecke.maxAmounts[nestSize] || 0;
+    }
+    
+    // Return safe default if pricing data not loaded yet
+    const defaults: Record<string, number> = {
+      nest80: 3,
+      nest100: 3,
+      nest120: 4,
+      nest140: 4,
+      nest160: 0,
+    };
+    return defaults[nestValue] || 3;
+  }
+
+  /**
+   * Get max PV-Anlage modules for a nest size
+   */
+  static getMaxPvModules(nestValue: string): number {
+    const pricingData = this.getPricingData();
+    if (pricingData) {
+      const nestSize = nestValue as NestSize;
+      return pricingData.pvanlage.maxModules[nestSize] || 0;
+    }
+    
+    // Return safe default if pricing data not loaded yet
+    const defaults: Record<string, number> = {
+      nest80: 8,
+      nest100: 10,
+      nest120: 12,
+      nest140: 14,
+      nest160: 16,
+    };
+    return defaults[nestValue] || 8;
   }
 
   // REMOVED: Cache management methods no longer needed after reverting complex pricing logic

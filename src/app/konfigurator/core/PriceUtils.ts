@@ -54,21 +54,24 @@ export class PriceUtils {
   }
 
   /**
-   * Get adjusted nutzfläche for Nest models (matches configuratorData.ts descriptions)
+   * Get adjusted nutzfläche for Nest models
+   * Formula: (nestSize - 5) + (geschossdeckeQuantity * 6.5)
    * @param nestModel - The nest model (nest80, nest100, etc.)
-   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
+   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 6.5m² per unit)
    */
   static getAdjustedNutzflaeche(nestModel: string, geschossdeckeQuantity?: number): number {
-    const nutzflaecheMap: Record<string, number> = {
-      'nest80': 75,   // 75m² Nutzfläche (adjusted)
-      'nest100': 95,  // 95m² Nutzfläche (adjusted)
-      'nest120': 115, // 115m² Nutzfläche (adjusted)
-      'nest140': 135, // 135m² Nutzfläche (adjusted)
-      'nest160': 155  // 155m² Nutzfläche (adjusted)
-    };
-
-    const baseArea = nutzflaecheMap[nestModel] || 0;
-    const geschossdeckeArea = (geschossdeckeQuantity || 0) * 7.5;
+    // Extract nest size number (80, 100, 120, 140, 160)
+    const sizeMatch = nestModel.match(/\d+/);
+    if (!sizeMatch) return 0;
+    
+    const nestSize = parseInt(sizeMatch[0]);
+    
+    // Base area formula: nestSize - 5
+    // nest80 → 75m², nest100 → 95m², nest120 → 115m², nest140 → 135m², nest160 → 155m²
+    const baseArea = nestSize - 5;
+    
+    // Each geschossdecke adds 6.5m²
+    const geschossdeckeArea = (geschossdeckeQuantity || 0) * 6.5;
 
     return baseArea + geschossdeckeArea;
   }
@@ -77,7 +80,7 @@ export class PriceUtils {
    * Calculate and format price per square meter
    * @param totalPrice - Total price to calculate per m²
    * @param nestModel - The nest model (nest80, nest100, etc.)
-   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 7.5m² per unit)
+   * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 6.5m² per unit)
    */
   static calculatePricePerSquareMeter(totalPrice: number, nestModel: string, geschossdeckeQuantity?: number): string {
     const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
@@ -107,7 +110,20 @@ export class PriceUtils {
    * Determine if a category should show price per m² based on overhaul requirements
    */
   static shouldShowPricePerSquareMeter(categoryId: string): boolean {
-    const eligibleCategories = ['nest', 'gebaeudehuelle', 'innenverkleidung', 'fussboden', 'planungspaket', 'bodenaufbau'];
+    const eligibleCategories = [
+      'nest',
+      'geschossdecke',
+      'gebaeudehuelle',
+      'innenverkleidung',
+      'fussboden',
+      'bodenbelag', // alias for fussboden
+      'pvanlage',
+      'bodenaufbau',
+      'optionen', // for fundament
+      'fundament', // direct category name
+      'planungspaket',
+      'planungspakete', // plural form
+    ];
     return eligibleCategories.includes(categoryId);
   }
 
@@ -136,6 +152,13 @@ export class PriceUtils {
       if (adjustedNutzflaeche === 0) return '';
 
       const pricePerSqm = Math.round(fullNestPrice / adjustedNutzflaeche);
+      return `${this.formatPrice(pricePerSqm)} /m²`;
+    }
+
+    // For geschossdecke: calculate price per m² based on geschossdecke's own area (6.5m²), not total Nest area
+    if (categoryId === 'geschossdecke') {
+      const geschossdeckeArea = 6.5; // Each geschossdecke unit adds 6.5m²
+      const pricePerSqm = Math.round(price / geschossdeckeArea);
       return `${this.formatPrice(pricePerSqm)} /m²`;
     }
 
@@ -175,8 +198,8 @@ export class PriceUtils {
   }
 
   /**
-   * Sort configuration entries for consistent cart display
-   * Order: nest module first, regular items in middle, planungspaket/grundstueckscheck at bottom
+   * Sort configuration entries for consistent display
+   * Order: nest module first, regular items (including planungspaket after bodenaufbau) in middle, grundstueckscheck at bottom
    */
   static sortConfigurationEntries<T>(
     entries: [string, T][]
@@ -189,13 +212,13 @@ export class PriceUtils {
     const middleItems: [string, T][] = [];
     const bottomItems: [string, T][] = [];
 
-    // Define the order for middle items
-    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'bodenaufbau', 'geschossdecke', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
+    // Define the order for middle items - planungspaket now appears after bodenaufbau
+    const middleOrder = ['gebaeudehuelle', 'innenverkleidung', 'fussboden', 'bodenaufbau', 'planungspaket', 'geschossdecke', 'belichtungspaket', 'pvanlage', 'fenster', 'stirnseite'];
 
     entries.forEach(([key, value]) => {
       if (key === 'nest') {
         topItems.push([key, value]);
-      } else if (key === 'planungspaket' || key === 'grundstueckscheck') {
+      } else if (key === 'grundstueckscheck') {
         bottomItems.push([key, value]);
       } else if (middleOrder.includes(key)) {
         middleItems.push([key, value]);
@@ -215,12 +238,7 @@ export class PriceUtils {
       return aIndex - bIndex;
     });
 
-    // Sort bottom items to ensure consistent order
-    bottomItems.sort(([a], [b]) => {
-      if (a === 'planungspaket' && b === 'grundstueckscheck') return -1;
-      if (a === 'grundstueckscheck' && b === 'planungspaket') return 1;
-      return 0;
-    });
+    // Bottom items now only contain grundstueckscheck (no sorting needed)
 
     return { topItems, middleItems, bottomItems };
   }

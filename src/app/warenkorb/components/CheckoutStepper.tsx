@@ -67,10 +67,18 @@ export default function CheckoutStepper({
   paymentRedirectStatus,
   onPaymentRedirectHandled,
 }: CheckoutStepperProps) {
-  const { getAppointmentSummary, getAppointmentSummaryShort, getDeliveryDate, getDeliveryDateFormatted } =
-    useCartStore();
-  const { currentPrice, configuration: currentConfiguration } =
-    useConfiguratorStore();
+  const {
+    getAppointmentSummary,
+    getAppointmentSummaryShort,
+    getDeliveryDate: _getDeliveryDate,
+    isAppointmentFromCurrentSession,
+    appointmentDetails,
+  } = useCartStore();
+  const {
+    currentPrice,
+    configuration: currentConfiguration,
+    sessionId,
+  } = useConfiguratorStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
   const [_hasScrolledToBottom, setHasScrolledToBottom] =
     useState<boolean>(false);
@@ -137,7 +145,8 @@ export default function CheckoutStepper({
 
   // Payment completion state
   const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
-  const [showPlanungspaketeDetails, setShowPlanungspaketeDetails] = useState(false);
+  const [showPlanungspaketeDetails, setShowPlanungspaketeDetails] =
+    useState(false);
 
   // Handle payment redirect returns
   useEffect(() => {
@@ -494,7 +503,7 @@ export default function CheckoutStepper({
 
         // Use defaults for base calculation
         const baseGebaeudehuelle = "trapezblech";
-        const baseInnenverkleidung = "kiefer";
+        const baseInnenverkleidung = "laerche";
         const baseFussboden = "parkett";
 
         // Calculate base combination price (all defaults)
@@ -927,10 +936,10 @@ export default function CheckoutStepper({
         "Damit aus deinem Vorentwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
     },
     {
-      title: "Die Planung",
-      subtitle: "Unsere Planungspakete sind hier, um dich zu unterstützen!",
+      title: "Wir freuen uns schon auf dich",
+      subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
       description:
-        "Unsere **drei Planungspakete** geben dir Sicherheit für dein Nest-Haus. Mit dem **Basis-Paket** erhältst du eine genehmigungsfähige **Einreichplanung** und alle technischen **Grundlagen.** Das **Plus-Paket** erweitert dies um die komplette **Haustechnik- und Innenausbauplanung.**\n\nIm **Pro-Paket** entwickeln wir zusätzlich ein umfassendes **Interiorkonzept,** das Raumgefühl, Farben, Materialien und Licht vereint. Die Umsetzung kannst du **selbst übernehmen** oder mit unseren erfahrenen **Partnerfirmen realisieren.**",
+        "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Vorentwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Vorentwurf, der genau zu deinen Bedürfnissen passt.**",
     },
     {
       title: "Dein individuelles Nest-Haus ",
@@ -1027,7 +1036,7 @@ export default function CheckoutStepper({
                   Dein Liefertermin
                 </div>
                 <div className="h2-title text-black">
-                  {deliveryDateString || "—"}
+                  {calculateDeliveryDate}
                 </div>
               </div>
             )}
@@ -1062,9 +1071,7 @@ export default function CheckoutStepper({
                   <span className="text-gray-500">
                     Fahre fort und mache den ersten Schritt in Richtung
                   </span>{" "}
-                  <span className="text-black">
-                    neues Zuhause.
-                  </span>
+                  <span className="text-black">neues Zuhause.</span>
                 </p>
               </div>
             ) : (
@@ -1243,21 +1250,67 @@ export default function CheckoutStepper({
                     <div
                       className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(3)}`}
                     >
-                      {getAppointmentSummaryShort() ? (
-                        <div className="flex items-start gap-2 justify-end">
-                          <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line text-right max-w-[120px] md:max-w-none">
-                            {getAppointmentSummaryShort()}
-                          </span>
-                          <span
-                            aria-hidden
-                            className="text-[#3D6CE1] flex-shrink-0"
-                          >
-                            ✓
-                          </span>
-                        </div>
-                      ) : (
-                        "—"
-                      )}
+                      {(() => {
+                        const appointmentSummary =
+                          getAppointmentSummaryShort(sessionId);
+                        const hasAppointmentFromOtherSession =
+                          appointmentDetails &&
+                          !isAppointmentFromCurrentSession(sessionId);
+
+                        // Check if appointment is in the past
+                        if (appointmentSummary && isAppointmentInPast) {
+                          return (
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline"
+                            >
+                              Neu vereinbaren
+                            </button>
+                          );
+                        }
+
+                        if (appointmentSummary) {
+                          return (
+                            <div className="flex items-start gap-2 justify-end">
+                              <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line text-right max-w-[120px] md:max-w-none">
+                                {appointmentSummary}
+                              </span>
+                              <span
+                                aria-hidden
+                                className="text-[#3D6CE1] flex-shrink-0"
+                              >
+                                ✓
+                              </span>
+                            </div>
+                          );
+                        } else if (
+                          hasAppointmentFromOtherSession &&
+                          isAppointmentInPast
+                        ) {
+                          return (
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline"
+                            >
+                              Neu vereinbaren
+                            </button>
+                          );
+                        } else if (hasAppointmentFromOtherSession) {
+                          return (
+                            <div className="flex items-start gap-2 justify-end">
+                              <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
+                                bereits vereinbart
+                              </span>
+                            </div>
+                          );
+                        } else {
+                          return "—";
+                        }
+                      })()}
                     </div>
                   </div>
                   {/* Show delivery date only if NOT in ohne nest mode */}
@@ -1276,10 +1329,10 @@ export default function CheckoutStepper({
                       <div
                         className={`text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed ${rowTextClass(4)}`}
                       >
-                        {getAppointmentSummary() ? (
+                        {getAppointmentSummary(sessionId) ? (
                           <div className="flex items-start gap-2 justify-end">
                             <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
-                              {deliveryDateString}
+                              {calculateDeliveryDate}
                             </span>
                             <span
                               aria-hidden
@@ -1332,17 +1385,77 @@ export default function CheckoutStepper({
     </div>
   );
 
-  // Compute guaranteed delivery date (6 months from appointment date)
-  const deliveryDateString = useMemo(() => {
-    const deliveryDate = getDeliveryDate();
-    if (!deliveryDate) return "";
+  // Calculate delivery date: current date + 6 months (next weekday)
+  const calculateDeliveryDate = useMemo(() => {
+    const now = new Date();
+    const sixMonthsLater = new Date(now);
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
 
-    return deliveryDate.toLocaleDateString("de-DE", {
+    // If the date falls on a weekend, move to next Monday
+    const dayOfWeek = sixMonthsLater.getDay();
+    if (dayOfWeek === 0) {
+      // Sunday
+      sixMonthsLater.setDate(sixMonthsLater.getDate() + 1);
+    } else if (dayOfWeek === 6) {
+      // Saturday
+      sixMonthsLater.setDate(sixMonthsLater.getDate() + 2);
+    }
+
+    return sixMonthsLater.toLocaleDateString("de-DE", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     });
-  }, [getDeliveryDate]);
+  }, []);
+
+  // Get user data from appointment and grundstueck forms
+  const getUserData = useMemo(() => {
+    // Try to get data from appointmentDetails (stored in cart store)
+    const appointmentData = appointmentDetails?.customerInfo;
+
+    // Try to get data from sessionStorage (grundstueck form)
+    let grundstueckData = null;
+    if (typeof window !== "undefined") {
+      try {
+        const storedData = sessionStorage.getItem("grundstueckCheckData");
+        if (storedData) {
+          grundstueckData = JSON.parse(storedData);
+        }
+      } catch (error) {
+        console.error("Error reading grundstueckCheckData:", error);
+      }
+    }
+
+    // Merge data with priority: appointment data > grundstueck data
+    return {
+      name: appointmentData?.name || grundstueckData?.name || "",
+      lastName: appointmentData?.lastName || grundstueckData?.lastName || "",
+      phone: appointmentData?.phone || grundstueckData?.phone || "",
+      email: appointmentData?.email || grundstueckData?.email || "",
+      address: grundstueckData?.address || "",
+      addressLine2: grundstueckData?.addressLine2 || "",
+      propertyNumber: grundstueckData?.propertyNumber || "",
+      cadastralCommunity: grundstueckData?.cadastralCommunity || "",
+      city: grundstueckData?.city || "",
+      state: grundstueckData?.state || "",
+      postalCode: grundstueckData?.postalCode || "",
+      country: grundstueckData?.country || "Österreich",
+    };
+  }, [appointmentDetails]);
+
+  // Helper function to check if appointment is in the past
+  const isAppointmentInPast = useMemo(() => {
+    if (!appointmentDetails?.date) return false;
+
+    const appointmentDate = new Date(appointmentDetails.date);
+    const now = new Date();
+
+    // Set time to start of day for fair comparison
+    appointmentDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+
+    return appointmentDate < now;
+  }, [appointmentDetails?.date]);
 
   // Decide which configuration to use for images: prioritize cart item for consistent display
   const sourceConfig = useMemo(() => {
@@ -1418,10 +1531,7 @@ export default function CheckoutStepper({
                     <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                       <h2 className="h3-secondary text-gray-500">
                         <span className="text-black">Dein Nest</span>
-                        <span className="text-gray-300">
-                          {" "}
-                          Deine Auswahl
-                        </span>
+                        <span className="text-gray-300"> Deine Auswahl</span>
                       </h2>
                       {items.map((item) => (
                         <div
@@ -1582,7 +1692,7 @@ export default function CheckoutStepper({
                         <span className="text-black">Dein Nest</span>
                         <span className="text-gray-300">
                           {" "}
-                          Ein Einblick in die Zukunft
+                          Ein Blick in die Zukunft
                         </span>
                       </h2>
                       {/* Configuration Image Gallery */}
@@ -1673,38 +1783,47 @@ export default function CheckoutStepper({
 
                 {/* Show "Planen heißt Preise kennen" section for ohne-nest mode */}
                 {isOhneNestMode && (
-                  <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-8">
-                      <h2 className="h2-secondary text-gray-900 mb-4">
-                        Planen heißt Preise kennen
-                      </h2>
-                    </div>
-
-                    <div className="flex flex-col md:flex-row md:items-center gap-8">
-                      <div className="w-full md:w-1/2">
-                        <div className="relative aspect-square w-full max-w-md mx-auto">
-                          <HybridBlobImage
-                            path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                            alt="NEST-Haus Konfiguration Holzlattung Eiche Parkett"
-                            fill
-                            className="rounded-lg object-cover"
-                          />
+                  <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                        {/* Text content on left - directly on gray background */}
+                        <div className="w-full md:w-1/2">
+                          <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
+                            Planen heißt Preise kennen
+                          </h2>
+                          <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
+                            Wenn du dein Nest schon jetzt konfigurierst,
+                            erhältst du volle Klarheit über Preis, Umfang und
+                            Möglichkeiten. Deine Auswahl bleibt dabei flexibel
+                            und kann jederzeit angepasst werden, falls sich
+                            deine Wünsche im Laufe der Planung verändern.
+                          </p>
+                          <div>
+                            <Button
+                              variant="primary"
+                              size="md"
+                              onClick={() => {
+                                window.location.href = "/konfigurator";
+                              }}
+                            >
+                              Jetzt konfigurieren
+                            </Button>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="w-full md:w-1/2 text-center md:text-left">
-                        <p className="p-secondary text-gray-700 mb-6">
-                          Wenn du dein Nest schon jetzt planst, weißt du schon heute was es kosten wird und kannst dich noch besser auf dein Projekt vorbereiten.
-                        </p>
-                        <Button
-                          variant="primary"
-                          size="md"
-                          onClick={() => {
-                            window.location.href = "/konfigurator";
-                          }}
-                        >
-                          Jetzt konfigurieren
-                        </Button>
+                        {/* Image on right - inside white box */}
+                        <div className="w-full md:w-1/2">
+                          <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
+                            <div className="relative w-full aspect-square">
+                              <HybridBlobImage
+                                path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                                alt="NEST-Haus Konfiguration"
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1863,8 +1982,8 @@ export default function CheckoutStepper({
             </div>
           )}
 
-          {/* Step 3: Planungspakete - Hide in ohne nest mode */}
-          {stepIndex === 3 && !isOhneNestMode && (
+          {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-nest mode */}
+          {stepIndex === 3 && (!isOhneNestMode || configItem) && (
             <div className="space-y-4 pt-8">
               {(() => {
                 console.log(
@@ -1895,7 +2014,9 @@ export default function CheckoutStepper({
               {/* Welches Planungspaket passt zu dir - Konfigurator popup style */}
               <div className="mt-12 max-w-4xl mx-auto">
                 <button
-                  onClick={() => setShowPlanungspaketeDetails(!showPlanungspaketeDetails)}
+                  onClick={() =>
+                    setShowPlanungspaketeDetails(!showPlanungspaketeDetails)
+                  }
                   className="w-full border border-gray-300 rounded-3xl p-6 bg-[#F4F4F4] hover:bg-gray-200 transition-colors flex items-center justify-between"
                 >
                   <div className="text-left">
@@ -1903,37 +2024,48 @@ export default function CheckoutStepper({
                       Welches Planungspaket passt zu dir?
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Siehe dir die Pakete im Detail an und entdecke welches am besten zu dir passt
+                      Siehe dir die Pakete im Detail an und entdecke welches am
+                      besten zu dir passt
                     </p>
                   </div>
                   <div className="min-w-[1.5rem] min-h-[1.5rem] rounded-full border border-gray-400 flex items-center justify-center flex-shrink-0">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
                       <path d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
                 </button>
               </div>
+            </div>
+          )}
 
-              <div className="flex justify-center mt-16 md:mt-20">
-                <Button
-                  variant="landing-secondary-blue"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goPrev}
-                  disabled={stepIndex <= 0}
-                >
-                  Vorheriger Schritt
-                </Button>
-                <span className="inline-block w-3" />
-                <Button
-                  variant="primary"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goNext}
-                >
-                  Nächster Schritt
-                </Button>
-              </div>
+          {/* Navigation buttons for step 3 - Always show when on step 3 */}
+          {stepIndex === 3 && (
+            <div className="flex justify-center mt-16 md:mt-20">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Vorheriger Schritt
+              </Button>
+              <span className="inline-block w-3" />
+              <Button
+                variant="primary"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goNext}
+              >
+                Nächster Schritt
+              </Button>
             </div>
           )}
 
@@ -1955,31 +2087,45 @@ export default function CheckoutStepper({
                 <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
                   Jetzt deinen Termin vereinbaren
                 </h1>
+                <h3 className="h3-secondary text-gray-600 mb-2">
+                  Komm vorbei um deinen Traum mit uns zu besprechen.
+                </h3>
               </div>
 
               {/* Left text + right calendar layout */}
               <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
-                <div className="w-full md:w-1/2 text-center md:text-left md:px-8 lg:px-16">
-                  <p className="p-secondary text-black mb-6">
+                <div className="w-full md:w-1/2 text-center md:text-left md:px-8 lg:px-16 pt-12">
+                  <p className="p-secondary text-black mb-6 pt-6">
                     <span className="text-gray-500">
-                      Wähle das Datum und die Uhrzeit, die dir am besten passen, und entscheide, ob du ein
+                      Wähle das Datum und die Uhrzeit, die dir am besten passen,
+                      und entscheide, ob du ein
                     </span>{" "}
-                    <span className="text-black font-semibold">persönliches Gespräch oder einen</span>{" "}
-                    <span className="text-gray-500">Telefontermin bevorzugst.</span>
+                    <span className="text-black font-semibold">
+                      persönliches Gespräch oder einen
+                    </span>{" "}
+                    <span className="text-gray-500">
+                      Telefontermin bevorzugst.
+                    </span>
                   </p>
                   <p className="p-secondary text-black mb-6">
                     <span className="text-gray-500">
                       In diesem Termin gehen wir gemeinsam die Ergebnisse deines
                     </span>{" "}
-                    <span className="text-black font-semibold">Grundstückschecks</span>{" "}
+                    <span className="text-black font-semibold">
+                      Grundstückschecks
+                    </span>{" "}
                     <span className="text-gray-500">
                       durch, besprechen deine
                     </span>{" "}
-                    <span className="text-black font-semibold">Konfiguration oder Wünsche</span>
+                    <span className="text-black font-semibold">
+                      Konfiguration oder Wünsche
+                    </span>
                     <span className="text-gray-500">
                       . Der Termin ist für dich selbstverständlich
                     </span>{" "}
-                    <span className="text-black font-semibold">kostenlos und unverbindlich</span>
+                    <span className="text-black font-semibold">
+                      kostenlos und unverbindlich
+                    </span>
                     <span className="text-gray-500">.</span>
                   </p>
                 </div>
@@ -2031,16 +2177,6 @@ export default function CheckoutStepper({
 
           {stepIndex === 4 && (
             <div className="space-y-6 pt-8">
-              {/* Dein Liefertermin Section */}
-              <div className="text-center mb-8">
-                <h2 className="h2-secondary text-gray-900 mb-4">
-                  Dein Liefertermin
-                </h2>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                  {getDeliveryDateFormatted() || "TBD"}
-                </div>
-              </div>
-
               {/* Dein Preis Überblick Section - direct header */}
               <div className="text-center mb-8">
                 <h2 className="h2-secondary text-gray-900 mb-6">
@@ -2050,25 +2186,48 @@ export default function CheckoutStepper({
 
               {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
               {isOhneNestMode && (
-                <div className="max-w-4xl mx-auto mb-12">
-                  <div className="text-center mb-8">
-                    <div className="relative aspect-square w-full max-w-md mx-auto mb-6">
-                      <HybridBlobImage
-                        path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                        alt="NEST-Haus Konfiguration"
-                        fill
-                        className="rounded-lg object-cover"
-                      />
+                <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-12">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                      {/* Text content on left - directly on gray background */}
+                      <div className="w-full md:w-1/2">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
+                          Planen heißt Preise kennen
+                        </h2>
+                        <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
+                          Wenn du dein Nest schon jetzt konfigurierst, erhältst
+                          du volle Klarheit über Preis, Umfang und
+                          Möglichkeiten. Deine Auswahl bleibt dabei flexibel und
+                          kann jederzeit angepasst werden, falls sich deine
+                          Wünsche im Laufe der Planung verändern.
+                        </p>
+                        <div>
+                          <Button
+                            variant="primary"
+                            size="md"
+                            onClick={() => {
+                              window.location.href = "/konfigurator";
+                            }}
+                          >
+                            Jetzt konfigurieren
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Image on right - inside white box */}
+                      <div className="w-full md:w-1/2">
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
+                          <div className="relative w-full aspect-square">
+                            <HybridBlobImage
+                              path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                              alt="NEST-Haus Konfiguration"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <Button
-                      variant="primary"
-                      size="md"
-                      onClick={() => {
-                        window.location.href = "/konfigurator";
-                      }}
-                    >
-                      Konfiguration hinzufügen
-                    </Button>
                   </div>
                 </div>
               )}
@@ -2076,12 +2235,12 @@ export default function CheckoutStepper({
               {/* Title before Dein Nest sections */}
               {!isOhneNestMode && (
                 <div className="text-center mb-12">
-                  <h2 className="h2-secondary text-gray-900 mb-2">
+                  <h1 className="h1-secondary text-gray-900 mb-2">
                     Du hast es gleich Geschafft
-                  </h2>
-                  <p className="p-secondary text-gray-600">
+                  </h1>
+                  <h3 className="h3-secondary text-gray-600">
                     Überprüfe deine Daten und Angaben.
-                  </p>
+                  </h3>
                 </div>
               )}
 
@@ -2091,10 +2250,7 @@ export default function CheckoutStepper({
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500">
                       <span className="text-black">Dein Nest</span>
-                      <span className="text-gray-300">
-                        {" "}
-                        Deine Auswahl
-                      </span>
+                      <span className="text-gray-300"> Deine Auswahl</span>
                     </h2>
                     {items.map((item) => (
                       <div
@@ -2254,7 +2410,7 @@ export default function CheckoutStepper({
                       <span className="text-black">Dein Nest</span>
                       <span className="text-gray-300">
                         {" "}
-                        Ein Einblick in die Zukunft
+                        Ein Blick in die Zukunft
                       </span>
                     </h2>
                     {/* Configuration Image Gallery */}
@@ -2343,113 +2499,212 @@ export default function CheckoutStepper({
                 </div>
               )}
 
-              {/* Bewerber Data Section - 4 boxes in 2x2 grid */}
-              <div className="max-w-4xl mx-auto mt-16 mb-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Box 1: Bewerber - Deine Daten */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <h3 className="text-base font-medium text-gray-900 mb-4">
+              {/* Bewerber Data Section - 4 boxes in 2x2 grid with column headers */}
+              <div className="max-w-6xl mx-auto mt-16 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Left Column Header */}
+                  <div>
+                    <h3 className="text-base font-medium text-gray-900">
                       <span className="text-black font-semibold">Bewerber</span>
-                      <span className="text-gray-400 font-normal"> Deine Daten</span>
+                      <span className="text-gray-400 font-normal">
+                        {" "}
+                        Deine Daten
+                      </span>
                     </h3>
+                  </div>
+
+                  {/* Right Column Header */}
+                  <div>
+                    <h3 className="text-base font-medium text-gray-900">
+                      <span className="text-black font-semibold">
+                        Deine Termine
+                      </span>
+                      <span className="text-gray-400 font-normal">
+                        {" "}
+                        Im Überblick
+                      </span>
+                    </h3>
+                  </div>
+
+                  {/* Box 1: Bewerber Data (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
                     <div className="space-y-2">
                       <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
                         <div>
-                          <div className="text-gray-600">Vollständiger Name</div>
-                          <div className="text-gray-900 font-medium">Ines Sagadin</div>
+                          <div className="text-gray-600">
+                            Vollständiger Name
+                          </div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.name && getUserData.lastName
+                              ? `${getUserData.name} ${getUserData.lastName}`
+                              : "—"}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-gray-600">Adressezeile 1</div>
-                          <div className="text-gray-900 font-medium">Am Ölber 17</div>
+                          <div className="text-gray-600">Email</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.email || "—"}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-gray-600">PLZ, Ort</div>
-                          <div className="text-gray-900 font-medium">8052, Graz</div>
+                          <div className="text-gray-600">Telefon</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.phone || "—"}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-gray-600">Nation</div>
-                          <div className="text-gray-900 font-medium">Österreich</div>
+                          <div className="text-gray-600">Land</div>
+                          <div className="text-gray-900 font-medium">
+                            {getUserData.country || "—"}
+                          </div>
                         </div>
                       </div>
                       <div className="pt-2">
-                        <button className="text-blue-600 text-sm hover:underline">
+                        <button
+                          onClick={() => {
+                            window.location.hash = "terminvereinbarung";
+                          }}
+                          className="text-blue-600 text-sm hover:underline"
+                        >
                           Daten bearbeiten
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  {/* Box 2: Deine Termine - Im Überblick */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <h3 className="text-base font-medium text-gray-900 mb-4">
-                      <span className="text-black font-semibold">Deine Termine</span>
-                      <span className="text-gray-400 font-normal"> Im Überblick</span>
-                    </h3>
+                  {/* Box 2: Entwurfsgespräch (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
                     <div className="space-y-4">
                       <div>
-                        <div className="text-gray-600 text-sm">Entwurfsgespräch</div>
-                        <div className="text-xl font-bold text-gray-900">21.01.2026</div>
-                        <button className="text-blue-600 text-sm hover:underline">
-                          Termin personalisieren
-                        </button>
-                      </div>
-                      <div>
-                        <div className="text-gray-600 text-sm">Lieferungsdatum</div>
-                        <div className="text-xl font-bold text-gray-900">21.07.2026</div>
-                        <button className="text-blue-600 text-sm hover:underline">
-                          Termin personalisieren
-                        </button>
+                        <div className="text-gray-600 text-sm">
+                          {appointmentDetails?.appointmentType === "personal"
+                            ? "Persönliches Gespräch"
+                            : appointmentDetails?.appointmentType === "phone"
+                              ? "Telefonische Beratung"
+                              : "Termin"}
+                        </div>
+                        {isAppointmentInPast ? (
+                          <>
+                            <div className="text-xl font-bold text-gray-900">
+                              Neuen Termin vereinbaren
+                            </div>
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline mt-2"
+                            >
+                              Zur Terminvereinbarung
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-xl font-bold text-gray-900">
+                              {appointmentDetails?.date
+                                ? new Date(
+                                    appointmentDetails.date
+                                  ).toLocaleDateString("de-DE", {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
+                                  })
+                                : "—"}
+                            </div>
+                            {appointmentDetails?.time && (
+                              <div className="text-sm text-gray-600 mt-1">
+                                {appointmentDetails.time} Uhr
+                              </div>
+                            )}
+                            <button
+                              onClick={() => {
+                                window.location.hash = "terminvereinbarung";
+                              }}
+                              className="text-blue-600 text-sm hover:underline mt-2"
+                            >
+                              Termin personalisieren
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Box 3: Straße und Nummer + additional data */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                  {/* Box 3: Grundstücksinformationen (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 text-sm">
                       <div>
-                        <div className="text-gray-600">Strasse und Nummer</div>
-                        <div className="text-gray-900 font-medium">Am Ölber 17</div>
+                        <div className="text-gray-600">Straße und Nummer</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.address || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Stadt</div>
-                        <div className="text-gray-900 font-medium">Graz</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.city || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Zusatz</div>
-                        <div className="text-gray-900 font-medium">Tür Nr 2</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.addressLine2 || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Postleitzahl</div>
-                        <div className="text-gray-900 font-medium">8052</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.postalCode || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Grundstücknummer</div>
-                        <div className="text-gray-900 font-medium">377</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.propertyNumber || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Bundesland</div>
-                        <div className="text-gray-900 font-medium">Steiermark</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.state || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Katastralgemeinde</div>
-                        <div className="text-gray-900 font-medium">60101</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.cadastralCommunity || "—"}
+                        </div>
                       </div>
                       <div>
                         <div className="text-gray-600">Land</div>
-                        <div className="text-gray-900 font-medium">Österreich</div>
+                        <div className="text-gray-900 font-medium">
+                          {getUserData.country || "—"}
+                        </div>
                       </div>
                     </div>
                     <div className="pt-3">
-                      <button className="text-blue-600 text-sm hover:underline">
+                      <button
+                        onClick={() => {
+                          window.location.hash = "check-und-vorentwurf";
+                        }}
+                        className="text-blue-600 text-sm hover:underline"
+                      >
                         Daten bearbeiten
                       </button>
                     </div>
                   </div>
 
-                  {/* Box 4: Empty placeholder or additional info */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6">
-                    <div className="h-full flex items-center justify-center text-gray-400">
-                      {/* This box can be used for additional information if needed */}
+                  {/* Box 4: Lieferungsdatum (no title) */}
+                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                    <div className="space-y-2">
+                      <div className="text-gray-600 text-sm">
+                        Garantierter Liefertermin
+                      </div>
+                      <div className="text-2xl font-bold text-gray-900">
+                        {calculateDeliveryDate}
+                      </div>
+                      <div className="text-sm text-gray-600 mt-2">
+                        6 Monate Liefergarantie
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2457,8 +2712,8 @@ export default function CheckoutStepper({
 
               {/* So gehts danach weiter Section */}
               <div className="text-center mb-8">
-                <h2 className="h2-secondary text-gray-900 mb-2">
-                  So gehts danach weiter
+                <h2 className="h2-title text-gray-900 mb-2">
+                  So geht&apos;s danach weiter
                 </h2>
                 <p className="p-secondary text-gray-600">
                   Deine Teilzahlungen im Überblick
@@ -2466,165 +2721,211 @@ export default function CheckoutStepper({
               </div>
 
               {/* Left/Right Layout: Teilzahlungen (left) + Heute zu bezahlen (right) */}
-              {!isOhneNestMode && (() => {
-                const totalPrice = Math.max(0, getCartTotal());
-                const firstPayment = GRUNDSTUECKSCHECK_PRICE;
-                const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
-                const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
-                const secondPayment = Math.max(
-                  0,
-                  secondPaymentOriginal - grundstueckscheckCredit
-                );
-                const thirdPayment = Math.max(0, totalPrice * 0.5);
-                const fourthPayment = Math.max(
-                  0,
-                  totalPrice -
-                    firstPayment -
-                    secondPaymentOriginal -
-                    thirdPayment
-                );
-                
-                return (
-                  <div className="max-w-6xl mx-auto mb-12">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                      {/* Left: Dein Nest - Deine Konfiguration with Teilzahlungen */}
-                      <div className="border border-gray-300 rounded-2xl p-6 bg-white">
-                        <h3 className="text-lg font-medium text-gray-900 mb-6">
-                          <span className="text-black">Dein Nest</span>
-                          <span className="text-gray-400"> Deine Auswahl</span>
-                        </h3>
-                        
-                        <div className="space-y-4">
-                          {/* 1. Teilzahlung */}
-                          <div className="pb-4 border-b border-gray-200">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">1. Teilzahlung</div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Heute zu begleichen
-                                  <br />
-                                  Grundstückscheck und Vorentwurf
+              {!isOhneNestMode &&
+                (() => {
+                  const totalPrice = Math.max(0, getCartTotal());
+                  const firstPayment = GRUNDSTUECKSCHECK_PRICE;
+                  const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
+                  const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
+                  const secondPayment = Math.max(
+                    0,
+                    secondPaymentOriginal - grundstueckscheckCredit
+                  );
+                  const thirdPayment = Math.max(0, totalPrice * 0.5);
+                  const fourthPayment = Math.max(
+                    0,
+                    totalPrice -
+                      firstPayment -
+                      secondPaymentOriginal -
+                      thirdPayment
+                  );
+
+                  return (
+                    <div className="max-w-6xl mx-auto mb-12">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                        {/* Left: Dein Nest - Deine Konfiguration with Teilzahlungen */}
+                        <div className="border border-gray-300 rounded-2xl p-6 bg-white">
+                          <h3 className="text-lg font-medium text-gray-900 mb-6">
+                            <span className="text-black">Dein Nest</span>
+                            <span className="text-gray-400">
+                              {" "}
+                              Deine Auswahl
+                            </span>
+                          </h3>
+
+                          <div className="space-y-4">
+                            {/* 1. Teilzahlung */}
+                            <div className="pb-4 border-b border-gray-200">
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex-1">
+                                  <div className="font-medium text-gray-900">
+                                    1. Teilzahlung
+                                  </div>
+                                  <div className="text-sm text-gray-600 mt-1">
+                                    Heute zu begleichen
+                                    <br />
+                                    Grundstückscheck und Vorentwurf
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-sm text-gray-500">
+                                    Fixpreis
+                                  </div>
+                                  <div className="font-semibold text-gray-900">
+                                    {PriceUtils.formatPrice(firstPayment)}
+                                  </div>
                                 </div>
                               </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">Fixpreis</div>
-                                <div className="font-semibold text-gray-900">{PriceUtils.formatPrice(firstPayment)}</div>
-                              </div>
                             </div>
-                          </div>
 
-                          {/* 2. Teilzahlung */}
-                          <div className="pb-4 border-b border-gray-200">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">2. Teilzahlung</div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Abzüglich Grundstückscheck: {PriceUtils.formatPrice(grundstueckscheckCredit)}
-                                  <br />
-                                  Liefergarantie 6 Monate ab Teilzahlung
+                            {/* 2. Teilzahlung */}
+                            <div className="pb-4 border-b border-gray-200">
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex-1">
+                                  <div className="font-medium text-gray-900">
+                                    2. Teilzahlung
+                                  </div>
+                                  <div className="text-sm text-gray-600 mt-1">
+                                    Abzüglich Grundstückscheck:{" "}
+                                    {PriceUtils.formatPrice(
+                                      grundstueckscheckCredit
+                                    )}
+                                    <br />
+                                    Liefergarantie 6 Monate ab Teilzahlung
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-sm text-gray-500">
+                                    30% des Gesamtpreises
+                                  </div>
+                                  <div className="font-semibold text-gray-900">
+                                    {PriceUtils.formatPrice(secondPayment)}
+                                  </div>
                                 </div>
                               </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">30% des Gesamtpreises</div>
-                                <div className="font-semibold text-gray-900">{PriceUtils.formatPrice(secondPayment)}</div>
-                              </div>
                             </div>
-                          </div>
 
-                          {/* 3. Teilzahlung */}
-                          <div className="pb-4 border-b border-gray-200">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">3. Teilzahlung</div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Fällig nach Fertigstellung in Produktion
+                            {/* 3. Teilzahlung */}
+                            <div className="pb-4 border-b border-gray-200">
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex-1">
+                                  <div className="font-medium text-gray-900">
+                                    3. Teilzahlung
+                                  </div>
+                                  <div className="text-sm text-gray-600 mt-1">
+                                    Fällig nach Fertigstellung in Produktion
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-sm text-gray-500">
+                                    50% des Gesamtpreises nach Fertigstellung
+                                  </div>
+                                  <div className="font-semibold text-gray-900">
+                                    {PriceUtils.formatPrice(thirdPayment)}
+                                  </div>
                                 </div>
                               </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">50% des Gesamtpreises nach Fertigstellung</div>
-                                <div className="font-semibold text-gray-900">{PriceUtils.formatPrice(thirdPayment)}</div>
-                              </div>
                             </div>
-                          </div>
 
-                          {/* 4. Teilzahlung (labeled as 3. in display) */}
-                          <div>
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-medium text-gray-900">3. Teilzahlung</div>
-                                <div className="text-sm text-gray-600 mt-1">
-                                  Fällig nach Fertigstellung am Grundstück
+                            {/* 4. Teilzahlung (labeled as 3. in display) */}
+                            <div>
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex-1">
+                                  <div className="font-medium text-gray-900">
+                                    3. Teilzahlung
+                                  </div>
+                                  <div className="text-sm text-gray-600 mt-1">
+                                    Fällig nach Fertigstellung am Grundstück
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-sm text-gray-500">
+                                    20% des Gesamtpreises nach Fertigstellung
+                                  </div>
+                                  <div className="font-semibold text-gray-900">
+                                    {PriceUtils.formatPrice(fourthPayment)}
+                                  </div>
                                 </div>
                               </div>
-                              <div className="text-right">
-                                <div className="text-sm text-gray-500">20% des Gesamtpreises nach Fertigstellung</div>
-                                <div className="font-semibold text-gray-900">{PriceUtils.formatPrice(fourthPayment)}</div>
-                              </div>
                             </div>
-                          </div>
 
-                          <div className="pt-4 mt-4 border-t border-gray-200">
-                            <button className="text-blue-600 text-sm hover:underline">
-                              Konfiguration bearbeiten
-                            </button>
+                            <div className="pt-4 mt-4 border-t border-gray-200">
+                              <button className="text-blue-600 text-sm hover:underline">
+                                Konfiguration bearbeiten
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Right: Heute zu bezahlen box - compact design per image */}
-                      <div className="lg:sticky lg:top-4">
-                        {/* Compact box with title/subtitle left, price right */}
-                        <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="text-left">
-                              <h3 className="text-lg font-medium text-gray-900 mb-1">
-                                {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
-                              </h3>
-                              <div className="text-sm text-gray-600">
-                                Starte dein Bauvorhaben
+                        {/* Right: Heute zu bezahlen box - compact design per image */}
+                        <div className="lg:sticky lg:top-4">
+                          {/* Compact box with title/subtitle left, price right */}
+                          <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="text-left">
+                                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                                  {isPaymentCompleted
+                                    ? "Bezahlt"
+                                    : "Heute zu bezahlen"}
+                                </h3>
+                                <div className="text-sm text-gray-600">
+                                  Starte dein Bauvorhaben
+                                </div>
                               </div>
+                              {!isPaymentCompleted ? (
+                                <div className="text-right">
+                                  <div className="flex items-center gap-2 justify-end">
+                                    <span className="text-gray-400 line-through text-xl">
+                                      3.000 €
+                                    </span>
+                                    <div className="text-3xl font-bold text-gray-900">
+                                      1.500 €
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="text-right">
+                                  <div className="text-2xl font-bold text-green-600">
+                                    Bezahlt
+                                  </div>
+                                  <div className="flex items-center gap-2 justify-end">
+                                    <span className="text-gray-400 line-through">
+                                      3.000 €
+                                    </span>
+                                    <div className="text-lg text-green-600 italic">
+                                      1.500 €
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                            {!isPaymentCompleted ? (
-                              <div className="text-right">
-                                <div className="flex items-center gap-2 justify-end">
-                                  <span className="text-gray-400 line-through text-xl">3.000 €</span>
-                                  <div className="text-3xl font-bold text-gray-900">1.500 €</div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="text-right">
-                                <div className="text-2xl font-bold text-green-600">Bezahlt</div>
-                                <div className="flex items-center gap-2 justify-end">
-                                  <span className="text-gray-400 line-through">3.000 €</span>
-                                  <div className="text-lg text-green-600 italic">1.500 €</div>
-                                </div>
-                              </div>
-                            )}
                           </div>
-                        </div>
 
-                        {/* Disclaimer text - centered below box with margin */}
-                        <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
-                          Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck.
-                        </div>
-
-                        {/* Jetzt bezahlen button - centered below text */}
-                        {!isPaymentCompleted && (
-                          <div className="flex justify-center">
-                            <Button
-                              variant="primary"
-                              size="md"
-                              onClick={() => setIsPaymentModalOpen(true)}
-                            >
-                              Jetzt bezahlen
-                            </Button>
+                          {/* Disclaimer text - centered below box with margin */}
+                          <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
+                            Solltest du mit dem Vorentwurf nicht zufrieden sein,
+                            kannst du vom Kauf deines Nest-Hauses zurücktreten.
+                            In diesem Fall zahlst du lediglich die Kosten für
+                            den Vorentwurf und Grundstückscheck.
                           </div>
-                        )}
+
+                          {/* Jetzt bezahlen button - centered below text */}
+                          {!isPaymentCompleted && (
+                            <div className="flex justify-center">
+                              <Button
+                                variant="primary"
+                                size="md"
+                                onClick={() => setIsPaymentModalOpen(true)}
+                              >
+                                Jetzt bezahlen
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })()}
+                  );
+                })()}
 
               {/* Ohne-Nest Mode: Show simplified centered payment box */}
               {isOhneNestMode && (
@@ -2642,8 +2943,12 @@ export default function CheckoutStepper({
                       </div>
                       <div className="text-right">
                         <div className="flex items-center gap-2 justify-end">
-                          <span className="text-gray-400 line-through text-2xl">3.000 €</span>
-                          <div className="text-3xl font-bold text-gray-900">1.500 €</div>
+                          <span className="text-gray-400 line-through text-2xl">
+                            3.000 €
+                          </span>
+                          <div className="text-3xl font-bold text-gray-900">
+                            1.500 €
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2651,7 +2956,10 @@ export default function CheckoutStepper({
 
                   {/* Disclaimer text - centered below box */}
                   <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
-                    Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck.
+                    Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst
+                    du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
+                    zahlst du lediglich die Kosten für den Vorentwurf und
+                    Grundstückscheck.
                   </div>
 
                   {/* Note: "Jetzt bezahlen" button is hidden for ohne nest mode by not rendering it here */}
@@ -2751,14 +3059,18 @@ export default function CheckoutStepper({
                                         // Get name from cart item first, but use new naming
                                         if (configItem?.planungspaket?.name) {
                                           const name =
-                                            configItem?.planungspaket?.name?.toLowerCase() || "";
+                                            configItem?.planungspaket?.name?.toLowerCase() ||
+                                            "";
                                           if (name.includes("basis"))
                                             return "Planungspaket 01 Basis";
                                           if (name.includes("plus"))
                                             return "Planungspaket 02 Plus";
                                           if (name.includes("pro"))
                                             return "Planungspaket 03 Pro";
-                                          return configItem?.planungspaket?.name || "—";
+                                          return (
+                                            configItem?.planungspaket?.name ||
+                                            "—"
+                                          );
                                         }
                                         // Otherwise get from localSelectedPlan
                                         if (localSelectedPlan) {
@@ -2784,18 +3096,19 @@ export default function CheckoutStepper({
 
                                       if (configItem?.planungspaket?.name) {
                                         const name =
-                                          configItem?.planungspaket?.name?.toLowerCase() || "";
+                                          configItem?.planungspaket?.name?.toLowerCase() ||
+                                          "";
                                         if (name.includes("plus"))
                                           packageType = "plus";
                                         else if (name.includes("pro"))
                                           packageType = "pro";
-                                        } else if (localSelectedPlan) {
-                                          packageType = localSelectedPlan || "";
-                                        }
+                                      } else if (localSelectedPlan) {
+                                        packageType = localSelectedPlan || "";
+                                      }
 
-                                      // Return simple price display
+                                      // Return price display with "inkludiert" for basis
                                       return packageType === "basis"
-                                        ? "10.900,00€"
+                                        ? "inkludiert"
                                         : packageType === "plus"
                                           ? "16.900,00€"
                                           : "21.900,00€";
@@ -2807,7 +3120,7 @@ export default function CheckoutStepper({
                               <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                    {getAppointmentSummary()
+                                    {getAppointmentSummary(sessionId)
                                       ? "Terminvereinbarung"
                                       : "—"}
                                   </div>
@@ -2816,15 +3129,35 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                  {getAppointmentSummary() ? (
-                                    <div className="flex items-start justify-end">
-                                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
-                                        {getAppointmentSummaryShort()}
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    "—"
-                                  )}
+                                  {(() => {
+                                    const appointmentSummary =
+                                      getAppointmentSummaryShort(sessionId);
+                                    const hasAppointmentFromOtherSession =
+                                      appointmentDetails &&
+                                      !isAppointmentFromCurrentSession(
+                                        sessionId
+                                      );
+
+                                    if (appointmentSummary) {
+                                      return (
+                                        <div className="flex items-start justify-end">
+                                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
+                                            {appointmentSummary}
+                                          </span>
+                                        </div>
+                                      );
+                                    } else if (hasAppointmentFromOtherSession) {
+                                      return (
+                                        <div className="flex items-start justify-end">
+                                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
+                                            bereits vereinbart
+                                          </span>
+                                        </div>
+                                      );
+                                    } else {
+                                      return "—";
+                                    }
+                                  })()}
                                 </div>
                               </div>
                             </div>
@@ -2895,7 +3228,8 @@ export default function CheckoutStepper({
                                 // Get name from cart item first, but use new naming
                                 if (configItem?.planungspaket?.name) {
                                   const name =
-                                    configItem?.planungspaket?.name?.toLowerCase() || "";
+                                    configItem?.planungspaket?.name?.toLowerCase() ||
+                                    "";
                                   if (name.includes("basis"))
                                     return "Planungspaket 01 Basis";
                                   if (name.includes("plus"))
@@ -3035,18 +3369,16 @@ export default function CheckoutStepper({
                       <span className="h2-title text-gray-400 line-through">
                         3.000 €
                       </span>
-                      <span className="h2-title text-black">
-                        1.500 €
-                      </span>
+                      <span className="h2-title text-black">1.500 €</span>
                     </div>
                   )}
                   {isPaymentCompleted && (
                     <div className="text-right">
-                      <div className="h2-title text-green-600">
-                        Bezahlt
-                      </div>
+                      <div className="h2-title text-green-600">Bezahlt</div>
                       <div className="flex items-center gap-2 justify-end">
-                        <span className="text-gray-400 line-through">3.000 €</span>
+                        <span className="text-gray-400 line-through">
+                          3.000 €
+                        </span>
                         <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 italic">
                           1.500 €
                         </div>

@@ -78,7 +78,7 @@ export default function CheckoutPlanungspaketeCards({
                 <div className="md:hidden mb-6">
                   <div className="text-lg font-regular text-gray-900">
                     {pkg.value === "basis"
-                      ? "€ 10.900,00"
+                      ? "inkludiert"
                       : pkg.value === "plus"
                         ? "€ 16.900,00"
                         : "€ 21.900,00"}
@@ -100,7 +100,7 @@ export default function CheckoutPlanungspaketeCards({
                   <div className="text-left">
                     <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
                       {pkg.value === "basis"
-                        ? "€ 10.900,00"
+                        ? "inkludiert"
                         : pkg.value === "plus"
                           ? "€ 16.900,00"
                           : "€ 21.900,00"}

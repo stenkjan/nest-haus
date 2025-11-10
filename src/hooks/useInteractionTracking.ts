@@ -79,26 +79,54 @@ export function useInteractionTracking({
     });
 
     const trackPromise = (async () => {
-      try {
-        const response = await fetch('/api/sessions/track-interaction', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sessionId,
-            interaction: {
-              ...interaction,
-              deviceInfo: interaction.deviceInfo || getDeviceInfo(),
-            },
-          }),
-        });
+      const maxRetries = 2;
+      let lastError: Error | null = null;
 
-        if (!response.ok) {
-          console.warn('❌ Failed to track interaction:', response.status, response.statusText);
-        } else {
-          console.log('✅ Interaction tracked successfully');
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await fetch('/api/sessions/track-interaction', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId,
+              interaction: {
+                ...interaction,
+                deviceInfo: interaction.deviceInfo || getDeviceInfo(),
+              },
+            }),
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text().catch(() => 'Unknown error');
+            console.warn(`❌ Failed to track interaction (attempt ${attempt + 1}/${maxRetries + 1}):`, 
+              response.status, response.statusText, errorText);
+            
+            // Don't retry on client errors (4xx), only on server errors (5xx) or network issues
+            if (response.status >= 400 && response.status < 500) {
+              break;
+            }
+            
+            if (attempt === maxRetries) {
+              console.error('❌ Interaction tracking failed after all retries');
+            }
+          } else {
+            console.log('✅ Interaction tracked successfully');
+            return; // Success, exit retry loop
+          }
+        } catch (error) {
+          lastError = error instanceof Error ? error : new Error('Unknown fetch error');
+          console.error(`❌ Interaction tracking error (attempt ${attempt + 1}/${maxRetries + 1}):`, error);
+          
+          // Add delay before retry (exponential backoff)
+          if (attempt < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+          }
         }
-      } catch (error) {
-        console.error('❌ Interaction tracking error:', error);
+      }
+
+      // Log final error if all retries failed
+      if (lastError) {
+        console.error('❌ Interaction tracking failed permanently:', lastError.message);
       }
     })();
 

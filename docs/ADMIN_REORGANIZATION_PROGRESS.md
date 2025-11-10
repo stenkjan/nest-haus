@@ -106,7 +106,7 @@
 1. **Test Cart Tracking**:
    - Go to `/konfigurator`
    - Make selections
-   - Click "In den Warenkorb"
+   - Click "Zum Warenkorb"
    - Check debug tool - session should be `IN_CART` ✅
 
 2. **Test Payment Tracking**:

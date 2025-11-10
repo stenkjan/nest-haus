@@ -4,6 +4,1095 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [09c9e63aa5c115c1a3829ddc898b03d4ff423e9f] - Mon Nov 10 13:26:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Replace require() with ES6 import for PriceUtils  - Added static import at top: import { PriceUtils } from './PriceUtils' - Removed dynamic require() call in getFensterPricePerSqm - Fixes ESLint error: @typescript-eslint/no-require-imports  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [d0b54e0094c05a0dda02cf5d834bddadccf0ab2d] - Mon Nov 10 13:17:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove duplicate lines in getFensterPricePerSqm  Removed duplicate closing brace and return statement that was causing syntax error: - Lines 1021-1025 were duplicates of lines 1016-1020 - This was causing 'Return statement is not allowed here' error in Vercel build  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [58fb4d97f0f74bd93c12600e9d0bee0efbce7508] - Mon Nov 10 13:13:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Apply getFensterPricePerSqm changes to use adjusted nutzfläche  Updated method to: - Accept geschossdeckeQuantity parameter - Use PriceUtils.getAdjustedNutzflaeche() for correct divisor - Apply (nestSize - 5) + (geschossdecke * 6.5) formula  This ensures fenster m² prices update when geschossdecke changes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [128ede1f6cf50e84ca8d817efe82fa587b9b0464] - Mon Nov 10 13:12:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update Fenster & Türen m² price to include geschossdecke in calculation  Updated getFensterPricePerSqm to: - Accept geschossdeckeQuantity parameter - Use PriceUtils.getAdjustedNutzflaeche() for correct divisor - Apply (nestSize - 5) + (geschossdecke * 6.5) formula  Updated ConfiguratorShell.tsx to: - Pass geschossdecke quantity to all getFensterPricePerSqm() calls - Ensures fenster m² price updates when geschossdecke changes  Now fenster & türen /m² price correctly reflects total usable area including geschossdecke.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [2c9ee82e3b7cde428e248a27ce3b69050c9397b5] - Mon Nov 10 13:11:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct m² calculation formula and Planungspakete prices  1. Fixed getAdjustedNutzflaeche formula:    - Now uses (nestSize - 5) for base area    - Geschossdecke adds 6.5m² per unit (not 7.5m²)    - Applies to ALL m² price calculations in the configurator  2. Fixed Planungspakete prices (now FIXED, not dependent on Nest size):    - Basis: 0€ (included)    - Plus: 9600€    - Pro: 12700€  3. Updated geschossdecke own area calculation to 6.5m²  This ensures correct m² pricing for: - Geschossdecke, Gebäudehülle, Innenverkleidung - Bodenbelag, Bodenaufbau, Fenster & Türen - Fundament, Planungspakete  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+---
+
+## [479366cb37422f03ec0af097a5f83fb762dee345] - Mon Nov 10 12:58:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add clearAllCaches method to PriceCalculator  Added clearAllCaches() method to support the debug component: - Clears calculation cache (LRU cache) - Clears pricing data from memory - Removes sessionStorage cache - Resets cache statistics  This allows developers to force a fresh reload of pricing data during debugging.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [fe869104ad632caa379fed41cbe76bd747f69a62] - Mon Nov 10 12:53:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update parsePvAnlage to use pricesByQuantity structure  Changed PV-Anlage parsing to match the new data structure: - Parse rows 29-44 (quantities 1-16) from Google Sheets - Store prices by quantity: pricesByQuantity[nestSize][quantity] - Removed obsolete pricePerModule structure  This ensures the pricing sync correctly populates the database with quantity-based pricing for PV-Anlage modules.  `
+
+### Changes Analysis
+
+---
+
+## [a4977bf2fdf46807b036049bc8bbd94683893472] - Mon Nov 10 12:51:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update PriceCacheDebugger to match getCacheStats return type  Updated CacheInfo interface to match the actual return type of PriceCalculator.getCacheStats(): - size, maxSize, hits, misses, hitRate, avgDuration, totalCalculations  Updated JSX to display new cache statistics: - Cache size utilization - Hit rate percentage - Average calculation duration - Total calculations, hits, and misses  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+---
+
+## [c7cf50b60dcd008ead13d564c8ed076cbe636ece] - Mon Nov 10 12:47:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Rename getCacheInfo to getCacheStats in PriceCacheDebugger  The PriceCalculator class exports getCacheStats(), not getCacheInfo(). Updated the debug component to use the correct method name.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+---
+
+## [10bfb2197f8c279ab779aa4e6e6dd116c69654c5] - Mon Nov 10 12:44:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Complete PV-Anlage pricing calculation fix  Changed line 453 from:   additionalPrice += selections.pvanlage.quantity * pricePerModule To:   additionalPrice += price  Now correctly uses quantity-based pricing from Google Sheets.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [fecf1bb3124c058bb83069db749f8e9d3b8a7dc4] - Mon Nov 10 12:37:10 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update PricingData interface for pvanlage.pricesByQuantity  TypeScript error: Property 'pricesByQuantity' does not exist Issue: Interface had 'pricePerModule' but actual data structure uses 'pricesByQuantity'  Fix: Updated pvanlage interface to match actual data structure with quantity-based pricing  `
+
+### Changes Analysis
+
+---
+
+## [f2d8c1127c60d67a233028a1a538840ab841c465] - Mon Nov 10 12:28:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct geschossdecke price per m² calculation  Issue: Geschossdecke showed different price/m² when clicked vs when Nest size changed  Root cause: - Was dividing unit price (4,115€) by TOTAL Nest area - Should divide by geschossdecke's own area (7.5m²)  Fixes: 1. Added special handling for geschossdecke in calculateOptionPricePerSquareMeter() 2. Price/m² now correctly calculated as: 4,115€ / 7.5m² = ~549€/m² 3. Fixed geschossdeckeArea from 6.5m² to 7.5m² (correct value)  Result: Consistent price/m² display for geschossdecke regardless of selection method  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+---
+
+## [8bdb5d0982e77c01ccd88bd298b26646e7338e43] - Mon Nov 10 12:15:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Make getPricingData() public for ConfiguratorShell access  TypeScript error: Property 'getPricingData' is private ConfiguratorShell needs access to pricing data for innenverkleidung display Changed visibility from private to public  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [56c3bfc2b52613ff866237c95bb9ee8fb5bd1d4c] - Mon Nov 10 12:13:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Enhance pricing data handling and caching mechanisms  - Added cache control headers to API responses for improved caching strategies. - Updated PriceCalculator to implement an LRU cache with a maximum size and increased TTL for better performance. - Refactored pricing data structure to use price per module instead of prices by quantity for PV modules. - Adjusted various pricing amounts in configurator data for accuracy and consistency. - Improved error handling and logging in pricing sheet service for better debugging.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/pricing/data/route.ts
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+
+
+#### 📚 Documentation Changes
+- docs/KONFIGURATOR_AUDIT_REPORT.md
+- docs/KONFIGURATOR_AUDIT_SUMMARY.md
+- docs/KONFIGURATOR_OPTIMIZATION_PLAN.md
+- docs/KONFIGURATOR_TESTING_CHECKLIST.md
+
+
+---
+
+## [3e2c7fdb5e6cb9c6ea5cac81d1544785fb4fff7c] - Mon Nov 10 11:39:14 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Pass geschossdeckeQuantity to all price/m² calculations  - Added geschossdeckeQuantity prop to SelectionOption component - Pass configuration?.geschossdecke?.quantity to all SelectionOption instances - All calculateOptionPricePerSquareMeter calls now include geschossdeckeQuantity parameter - Price/m² now correctly adjusts when Geschossdecke is selected:   * Base: totalPrice / nestSize   * With 1 Geschossdecke: totalPrice / (nestSize + 6.5)   * With 2 Geschossdecke: totalPrice / (nestSize + 13)   * etc. - This brings down the price per m² as intended when Geschossdecke is added  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
+## [a8f25b0d7656dfc495309ae63390a36e15685edd] - Mon Nov 10 11:26:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Hardcode nest160 max geschossdecke to 7 when sheet returns 0  - Google Sheets O7 cell returns 0 for unknown reason despite showing 7 - Added fallback logic: if parsed value is 0, use 7 instead - This ensures nest160 can select up to 7 geschossdecke modules - Added debug logging to track raw value -> parsed -> final value  `
+
+### Changes Analysis
+
+---
+
+## [cfecdcab65b1124b3d77289bed90a50d526e6e82] - Mon Nov 10 11:21:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [116716ec38c792dfe5cb25b19397392b7e7d4e07] - Mon Nov 10 11:08:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Geschossdecke amount picker stays visible when switching nest sizes  - Changed selector visibility condition from 'configuration?.geschossdecke' to 'configuration?.geschossdecke || geschossdeckeQuantity > 0' - Selector now remains visible when local state has quantity even if configuration hasn't updated yet - Fixes issue where amount picker disappeared when switching between nest sizes - Users can now change geschossdecke amount for all nest sizes (80, 100, 120, 140, 160)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [9c2f8be39079a946bce70a1db0de4eef4a6caab4] - Mon Nov 10 10:59:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: CRITICAL - Fix Geschossdecke pricing to ALWAYS show 4115€ unit price  **ALL GESCHOSSDECKE PRICING ISSUES FIXED:**  1. **Removed 'Ab' from left description**    - Changed 'Ab 4.115€ pro Einheit' to '4.115€ pro Einheit'  2. **Fixed right side price to ALWAYS show 4115€**    - Removed calculateSizeDependentPrice() from getDisplayPrice()    - Now uses fixed pricingData.geschossdecke.basePrice    - No more nest-size-dependent pricing (was 7201€ for nest140, etc.)  3. **Implemented correct m² calculation**    - Formula: 4115 / nestSize / 6.5    - nest80: 4115/80/6.5 = 8€/m²    - nest160: 4115/160/6.5 = 4€/m²    - Replaced '— €/m²' placeholder with actual calculation  4. **Price display now consistent:**    - Left: '4.115€ pro Einheit'    - Right: 'Ab 4.115€ entspricht X€/m²'    - ALWAYS 4115€ regardless of quantity or nest size  This fixes the critical bug where Geschossdecke showed incremental prices (7201€, 8230€) instead of the fixed unit price.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
+## [54fcda9be6629c37e343a501907afcf4431fea71] - Mon Nov 10 10:47:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Geschossdecke display shows unit price instead of total  - Fixed getActualContributionPrice to return UNIT price (4115€) not total price - Removed quantity multiplication for geschossdecke display price - Selection box now always shows 'Ab 4.115€' regardless of quantity selected - QuantitySelector shows the total (e.g., '2 × 4.115€ = 8.230€') - Removed unnecessary quantity check - geschossdecke can exist without quantity - Fixes issue where price displayed as 8.230€ (2×4115) instead of 4.115€  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [feb1662ae1723d5439f954fe7a0b5dd80db90a49] - Mon Nov 10 10:36:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Add Ab prefix to PV-Anlage standard price type  - PV-Anlage price type is converted from 'upgrade' to 'standard' in ConfiguratorShell - Added 'Ab' prefix logic to type === 'standard' section for pvanlage and geschossdecke - Now shows 'Ab 3.934€' for PV-Anlage in all display states - Fixes issue where PV showed '3.934€' without 'Ab' prefix while Geschossdecke showed it correctly  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
+## [f8ae8e6a9430156d93ee9ff5b859c300fb964035] - Mon Nov 10 10:34:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: CRITICAL - Fix Geschossdecke incremental pricing and add Ab prefix  **GESCHOSSDECKE FIXES:** - Fixed Geschossdecke to use FIXED base price (4115€) instead of nest-size-dependent pricing - Replaced all calculateSizeDependentPrice() calls with pricingData.geschossdecke.basePrice - Geschossdecke price is now ALWAYS 4115€ per unit regardless of nest size - Updated unit price display to show 'Ab 4.115€ pro Einheit' - Fixed QuantitySelector to use fixed base price from pricing data  **AB PREFIX FIXES:** - Added 'Ab' prefix to Geschossdecke unselected state (type: 'upgrade') - Added 'Ab' prefix to Geschossdecke selected state (type: 'selected') - Both PV-Anlage and Geschossdecke now consistently show 'Ab' prefix in all states  This fixes the critical issue where Geschossdecke incorrectly increased in price for larger nest sizes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
+## [fe239bad1311223afc708ec20037375219f98371] - Mon Nov 10 09:52:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Add 'Ab' prefix to PV-Anlage selected state price display  - Added 'Ab' prefix to pvanlage price when option is selected (type: 'selected') - Previously only showed 'Ab' for unselected state - Now consistently shows 'Ab 3.934€' in both selected and unselected states - Fixes issue where selected PV box showed '3.934€' without 'Ab' prefix  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
+## [5df809eb5e32b10a0eb5e8867e7f54c637208db3] - Mon Nov 10 09:43:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Add 'Ab' prefix to PV-Anlage upgrade price display  - Modified upgrade price display logic in SelectionOption to show 'Ab 3.934€' for pvanlage category - Previously showed '+3.934€' or '3.934€' without 'Ab' prefix - Now correctly displays 'Ab 3.934€' with 'entspricht 984€ / Panel' subtitle  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
+## [96d7447178d91bc7798469f324288ca9a78c26cf] - Mon Nov 10 09:40:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct PV-Anlage panel count and price display  - Changed description from '3 Panels pro PV-Modul' to '4 Panels pro PV-Modul' - Added 'Ab' prefix to PV-Anlage base price display (e.g., 'Ab 3.934€') - Fixed per-panel price calculation to divide by 4 instead of 3 (3934€ / 4 = 984€ per panel) - Updated all price.amount / 3 calculations to price.amount / 4 throughout SelectionOption component - Now correctly shows 'entspricht 984€ / Panel' instead of '1.311€ / Panel'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
+## [67422a2c765820ec52ee1df3a2be700faf03dc33] - Mon Nov 10 09:31:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Use cumulative pricing for PV-Anlage from pricing data table  - Modified QuantitySelector to support cumulative pricing via new cumulativePrice prop - For PV-Anlage, display shows cumulative total price instead of unitPrice × quantity - Updated ConfiguratorShell to fetch cumulative prices from pricingData.pvanlage.pricesByQuantity - Prices now correctly match Google Sheets table (F29-N44):   * nest80: 1 module = 3,934€, 2 = 6,052€, 3 = 8,169€, 4 = 10,286€, ..., 8 = 18,815€   * nest160: 16 modules = 39,539€ (N44) - Display format changed from 'X€/Modul' to total price with 'für X Module' subtitle - Fixes issue where PV pricing was calculated as quantity × per-module price instead of using cumulative table values  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/QuantitySelector.tsx
+
+
+---
+
+## [79e94f3ecd207485ed3d79ea70e1156c6f85919d] - Sun Nov 9 15:04:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Show absolute prices for innenverkleidung options instead of relative prices  - Changed Fichte preselection price from 1400€ to 23020€ (nest80 value from Google Sheets F24) - Modified getActualContributionPrice() to show ABSOLUTE prices for innenverkleidung category - Fichte now displays 23,020€ when selected (not 'inklusive') - Lärche displays 31,921€ when selected - Eiche displays 37,235€ when selected - All prices correctly scale with nest size selection - Fixes issue where innenverkleidung showed 'inklusive' for standard option despite having concrete pricing  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [48482beddf7cf5fa54d349e755683dc13881a21c] - Sun Nov 9 14:56:25 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Change getPricingData method visibility to public  - Updated the visibility of the  method in the PriceCalculator class from private to public to allow external access. - Enhances the usability of the PriceCalculator module.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [33cbc4065fd185b5aff7b1fd9a00f6d94e8941a2] - Sun Nov 9 14:52:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Remove unused price calculation function from PriceCalculator  - Deleted the  import as it is no longer needed. - Streamlines the PriceCalculator module for better maintainability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [348abf1c1abd49c535e1cb4e46a2d42ea645aa14] - Sun Nov 9 14:45:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+- docs/COMMIT_HISTORY.md
+- docs/PRICING_SYNC_ARCHITECTURE.md
+
+
+---
+
+## [fddad61d64bb96e8dfb8f9f1ad907f08be05c1c1] - Sat Nov 8 21:45:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Increment cache version to 4 to force reload of exact prices  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [b523de702bcc1cb3b872774760658ca41172c90d] - Sat Nov 8 21:38:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove all price rounding to preserve exact spreadsheet values  - Removed Math.round() from parseNumber function - Removed Math.round() from pricePerSqm calculation - Prices now use exact values from Google Sheets - Example: 188.619 * 1000 = 188619 (not rounded to 189000) - Ensures 1:1 accuracy between spreadsheet and database  `
+
+### Changes Analysis
+
+---
+
+## [143ec25cdc926e311a8712a47489dea7289cb6d4] - Sat Nov 8 21:34:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct price parsing to multiply before rounding  - Changed parseNumber logic to multiply by 1000 BEFORE rounding - Prevents precision loss (188.619 -> 189 -> 189000 is wrong) - Now correctly: 188.619 -> 188619 -> 188619 (after rounding) - Fixes nest prices to match exact spreadsheet values - nest80: 188,619 (was 189,000) - nest100: 226,108 (was 226,000) - nest120: 263,597 (was 264,000) - nest140: 301,086 (was 301,000) - nest160: 338,575 (was 339,000)  `
+
+### Changes Analysis
+
+---
+
+## [d7f2ca0c5b6ef9f717cb48a008061f69826c56a8] - Sat Nov 8 21:13:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Ensure cleanup function returns undefined in PriceCacheDebugger  - Added return statement to cleanup function in useEffect to explicitly return undefined, improving clarity and adherence to React best practices.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+---
+
+## [19324a7dc46cd043b3da594d136dc1ab4a964e63] - Sat Nov 8 21:08:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update pricing sync architecture and enhance price calculator cache versioning  - Corrected diagram formatting in PRICING_SYNC_ARCHITECTURE.md - Incremented CACHE_VERSION in PriceCalculator.ts to 3 for cache invalidation - Added support for ASCII version of 'lärche' in pricing-sheet-service.ts  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+#### 📚 Documentation Changes
+- docs/PRICING_SYNC_ARCHITECTURE.md
+
+
+---
+
+## [7529111878cdb684ddef0d1cddf49deb6f0ad7d0] - Sat Nov 8 19:50:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 0b6c832387348e160000f85b5ac066dd469511ba into acc8e9291f4089688a0fd937f173ad3d166fcdff  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+
+
+---
+
+## [7479c300d2ee0932f865d008ec9803f93fafe3d5] - Sat Nov 8 19:29:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Move planungspaket section to end of configurator  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
+## [5ad5747d33e413439aafe428b387993995a24666] - Sat Nov 8 19:25:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [0d3321b4cfd4968a00c322b16719761ed75bed45] - Sat Nov 8 19:23:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Price parsing in thousands  `
+
+### Changes Analysis
+
+---
+
+## [40574b2fe66df29ee8abef7760012a4f1ca307eb] - Sat Nov 8 19:10:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `perf: Session caching and error handling  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [dc5d61b7f4a5bd0c8295e0ae8dc955fdbb415f6f] - Sat Nov 8 19:04:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: PV modules safe defaults  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [d7a2c5627c811903e45bb63b9cea5773ab97c016] - Sat Nov 8 19:00:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Belichtungspaket pricing order  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [369609a683cb0f28bdf4338a60d6755bd963f52e] - Sat Nov 8 18:49:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Graceful pricing data loading  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [65609e71b3e3897a2292f8af3b38817ff71a9a57] - Sat Nov 8 18:44:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f03033c93f7c6952974b88c03e1c1ed84e76adae] - Sat Nov 8 18:37:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove old sync-pricing endpoints  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/sync-pricing/route.ts
+- src/app/api/sync/pricing/route.ts
+
+
+---
+
+## [f68996adc47bfeeabb35f1182568417fbd30ca7c] - Sat Nov 8 18:34:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge pricing overhaul with new spreadsheet ID  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/cron/sync-pricing/route.ts
+- src/app/api/sync/pricing/route.ts
+- src/app/api/test/sheets-info/route.ts
+- src/app/api/test/sheets-metadata/route.ts
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+---
+
+## [9f659f010af8bce37c53d202668564e0458f0005] - Sat Nov 8 18:12:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update sheet name to Preistabelle_Verkauf  `
+
+### Changes Analysis
+
+---
+
+## [3180ce8239b6e9d98656c6a259d5ee7515de91af] - Sat Nov 8 18:10:53 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add sheets info test endpoint  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/sheets-info/route.ts
+
+
+---
+
+## [33a6aec5bb79fc6a361d22034eb5534bd781a398] - Sat Nov 8 17:34:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [13be76572fd44dc3d834c16fb00dbb977f02e450] - Sat Nov 8 17:28:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `docs: Add pricing initial sync guide  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/PRICING_INITIAL_SYNC.md
+
+
+---
+
+## [29a36f06a71a17407a3764c1ea11988212b37e60] - Sat Nov 8 17:15:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove all non-ASCII characters from pricing-sync.ts for UTF-8 compliance  `
+
+### Changes Analysis
+
+---
+
+## [e0db261ee3d1a30ec34aad922e85d112384abf7b] - Sat Nov 8 17:01:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update pricing services to remove PricingSyncLog references and fix type casts  `
+
+### Changes Analysis
+
+---
+
+## [f4533590a8af1beb8215c288df10d605551c0a73] - Sat Nov 8 16:53:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Standardize formatting in Prisma schema  - Adjusted whitespace and alignment for consistency across models in the Prisma schema. - Ensured uniform spacing and indentation for improved readability and maintainability.  `
+
+### Changes Analysis
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+---
+
+## [e8cc68ebb8d0bef3d8ae39a6a17ce6d642942d62] - Sat Nov 8 16:45:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove corrupted PricingSyncLog model and fix unused variable errors  `
+
+### Changes Analysis
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+---
+
+## [92a1d848a594a440c3bb00e5305238c149993acc] - Sat Nov 8 15:53:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [fd648334524621fa5e204abe1082d69de97c6b65] - Fri Nov 7 15:51:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [5923825d5c530e47b93587170231e03e11fb7b5b] - Fri Nov 7 15:38:56 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [e914acc3b2330ee8fe1a6772dc8492b225110789] - Fri Nov 7 15:29:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [15edc03b375a00d8acc9bcd2d6d291077b0d50b7] - Fri Nov 7 14:46:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update CheckoutStepper logic for step 3 visibility and navigation  - Modified the condition for displaying step 3 in CheckoutStepper to show when there's a configuration or when not in ohne-nest mode. - Ensured navigation buttons for step 3 are always displayed when on that step, enhancing user experience and clarity in the checkout process.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [af5567dd0f4485a31cef91b2de0c7328184e7259] - Fri Nov 7 13:26:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update CartFooter navigation to use window.location for state initialization  - Replaced router.push with window.location.href in CartFooter for better state management during navigation. - Adjusted styling of the "Zum Konfigurator" link in WarenkorbClient for improved UI consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
+## [26402181d7e55358a83ea7a76608d92a46967924] - Fri Nov 7 13:13:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b3bf29442fe7ad070598a1abbfbb7de930a24f6f] - Fri Nov 7 12:51:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Mark unused delivery date function in CheckoutStepper  - Prefixed getDeliveryDate with an underscore to indicate intentional non-use, improving code clarity and adherence to TypeScript safety rules.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [a6986c748e7bf97a85a64bacdba7a1ded6fa31ec] - Fri Nov 7 12:43:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [ba012bbd2ef995101b28df189a627eb3af5a6c4e] - Fri Nov 7 12:30:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branches 'main' and 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [7a529d86296b9bcc42dc1ce3c3cc740094a86c82] - Fri Nov 7 11:30:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [20b3f5553e0fad0c5477bad78191f653bdc6a853] - Fri Nov 7 11:28:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [d14b1ed96fe08eeed8582e136d18c5277b784f2b] - Thu Nov 6 16:02:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update pricing logic and documentation for Grundstückscheck  - Adjusted Grundstückscheck price to reflect the new value of 1500, aligning with checkout pricing. - Improved documentation in project rules to clarify mandatory workflows for TypeScript safety checks and pre-commit procedures. - Reformatted code for better readability in CheckoutStepper component, ensuring consistent styling and structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/api/pricing/calculate/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+---
+
+## [afc2693d087f170888feefc38e20c3d6eec80edd] - Thu Nov 6 15:54:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Improve appointment handling and session management in cart store  - Updated appointment-related functions to accept sessionId for better session tracking. - Enhanced appointment summary retrieval to ensure it only returns data for the current session. - Refactored CheckoutStepper and AppointmentBooking components to utilize new session-aware methods. - Cleaned up pricing display logic in SelectionOption component for improved clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/AppointmentBooking.tsx
+
+---
+
+## [4910b2169492697211a2894721b4d4ea03264645] - Thu Nov 6 15:48:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [c162275e80fcd6c4b24f04b7caf6a80ac2a23c34] - Thu Nov 6 15:43:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Enhance geschossdecke pricing and description handling  - Dynamically calculate and update the unit price for 'Geschossdecke' based on configuration size. - Adjusted the description for 'Geschossdecke' to reflect dynamic pricing. - Updated 'Standard' option description to be empty for better visual alignment in the UI. - Implemented special handling for 'Standard' to center vertically when no description is provided.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+---
+
+## [5d313bc4446ebd602131c42cff989063790ecf4a] - Thu Nov 6 15:34:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [e55ee06c52e70a0933920e3f35cd921fbd3d3151] - Thu Nov 6 15:21:22 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [7c2db51ce8287278117e8353f9393b8bd9047f1e] - Thu Nov 6 13:49:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [371e22ef120be3a714e7b4aab7e6dca3a11e9630] - Thu Nov 6 12:51:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [618d104e10732021706dadb2303ab9dd869c6775] - Thu Nov 6 12:39:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
+## [71e732639fed283b7e4678ca1259b02966ece953] - Thu Nov 6 12:36:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update interior cladding material from Kiefer to Lärche across multiple components and configurations  - Changed default and selected values for interior cladding from 'kiefer' to 'laerche' in various files including pricing calculations, configurator components, and data mappings. - Updated related descriptions and mappings to reflect the new material choice.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+---
+
+## [fe0d90e4043aac4a75fac03e35c7832ed22926df] - Thu Nov 6 12:15:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/api/cron/sync-pricing/route.ts
+- src/app/api/sync/pricing/route.ts
+- src/components/admin/PricingSyncPanel.tsx
+
+#### ⚙️ Backend Changes
+
+- prisma/schema.prisma
+
+#### 🔧 Configuration Changes
+
+- .env.local
+- package.json
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+- docs/PRICING_SYNC_ARCHITECTURE.md
+- docs/PRICING_SYNC_ENV_VARS.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/PRICING_SYNC_QUICK_REF.md
+- docs/PRICING_SYNC_SETUP.md
+
+---
+
+## [ce66bc274849be197ddfcf34b988555cf1acb432] - Thu Nov 6 11:08:47 2025 +0000
+
+**Author**: stenkjan
+**Message**: `Merge 53d4da7d5949ec0cb3f72374db2598060e21bdc3 into ea947d3a41e1120bd78027d16c21506fafc57480  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+
+- src/app/api/cron/sync-pricing/route.ts
+- src/app/api/sync/pricing/route.ts
+- src/components/admin/PricingSyncPanel.tsx
+
+#### ⚙️ Backend Changes
+
+- prisma/schema.prisma
+
+#### 🔧 Configuration Changes
+
+- .env.local
+- package.json
+
+#### 📚 Documentation Changes
+
+- docs/PRICING_SYNC_ARCHITECTURE.md
+- docs/PRICING_SYNC_ENV_VARS.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/PRICING_SYNC_QUICK_REF.md
+- docs/PRICING_SYNC_SETUP.md
+
+---
+
+## [470e481e0f884575e20b63e9ffe239ebd7537d98] - Thu Nov 6 11:53:21 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+
+- docs/COMMIT_HISTORY.md
+
+---
+
 ## [28e795b9200832334d0a95ebd85047d681ac8b6f] - Wed Nov 5 16:43:35 2025 +0100
 
 **Author**: stenkjan
@@ -12,15 +1101,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/impressum/ImpressumClient.tsx
 - src/app/konfigurator/components/ConfiguratorContentCardsLightbox.tsx
 - src/app/konfigurator/data/dialogConfigs.ts
 - src/components/cards/UnifiedContentCard.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -32,6 +1121,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/images/route.ts
 - src/app/dein-nest/DeinNestClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -39,10 +1129,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/UnifiedContentCard.tsx
 - src/components/grids/TwoByTwoImageGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -54,12 +1143,12 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/dein-nest/DeinNestClient.tsx
 - src/app/kontakt/KontaktClient.tsx
 - src/app/nest-system/NestSystemClient.tsx
 - src/components/cards/UnifiedContentCard.tsx
 - src/components/grids/TwoByTwoImageGrid.tsx
-
 
 ---
 
@@ -71,8 +1160,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -84,6 +1173,7 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/app/dein-nest/DeinNestClient.tsx
 - src/app/kontakt/KontaktClient.tsx
@@ -93,10 +1183,9 @@ _Auto-generated documentation of project changes_
 - src/components/cards/UnifiedContentCard.tsx
 - src/components/grids/TwoByTwoImageGrid.tsx
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -108,9 +1197,9 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/LandingPageClient.tsx
 - src/components/Footer.tsx
-
 
 ---
 
@@ -122,8 +1211,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -135,8 +1224,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -148,8 +1237,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -161,16 +1250,16 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/api/admin/user-tracking/all-configurations/route.ts
 - src/app/konfigurator/components/BelichtungspaketOverlay.tsx
 - src/app/konfigurator/components/ConfiguratorShell.tsx
 - src/app/konfigurator/components/PreviewPanel.tsx
 - src/app/konfigurator/core/PriceCalculator.ts
 
-
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -182,8 +1271,8 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 📚 Documentation Changes
-- docs/COMMIT_HISTORY.md
 
+- docs/COMMIT_HISTORY.md
 
 ---
 
@@ -195,10 +1284,11 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/KONFIGURATOR-REFACTORING-PLAN.md
 - docs/KONFIGURATOR-SWITCH-GUIDE.md
@@ -212,7 +1302,6 @@ _Auto-generated documentation of project changes_
 - preiskalkulation/START_HERE.md
 - preiskalkulation/UPLOAD_INSTRUCTIONS.md
 
-
 ---
 
 ## [f52808a54a3acb6b2e6c776ddbbcbeca2f148505] - Wed Nov 5 09:44:17 2025 +0100
@@ -223,15 +1312,15 @@ _Auto-generated documentation of project changes_
 ### Changes Analysis
 
 #### 🎨 Frontend Changes
+
 - src/app/warenkorb/components/CheckoutStepper.tsx
 
-
 #### 📚 Documentation Changes
+
 - docs/COMMIT_HISTORY.md
 - docs/KONFIGURATOR-REFACTORING-PLAN.md
 - docs/KONFIGURATOR-SWITCH-GUIDE.md
 - docs/USER_TRACKING_FIXES_COMPLETE.md
-
 
 ---
 
@@ -6588,7 +7677,7 @@ _Auto-generated documentation of project changes_
 ## [c90a48c5092d1a76d6a5bbd797518f7b63e4edda] - Wed Sep 10 12:24:14 2025 +0200
 
 **Author**: stenkjan
-**Message**: `refactor: update component text and structure for improved clarity and consistency  - Changed button text in CartFooter from "Jetzt bauen" to "In den Warenkorb" for better user understanding. - Enhanced accessibility by ensuring view labels in PreviewPanel are properly defined and fallback values are provided. - Simplified the SummaryPanel layout by removing unnecessary button elements, focusing on a cleaner design. - Added optional overlay image handling in various components to improve visual presentation. - Updated CheckoutStepper to prioritize cart item configuration for consistent display and added overlays for enhanced user experience.  These changes aim to improve usability, accessibility, and visual coherence across the application.  `
+**Message**: `refactor: update component text and structure for improved clarity and consistency  - Changed button text in CartFooter from "Jetzt bauen" to "Zum Warenkorb" for better user understanding. - Enhanced accessibility by ensuring view labels in PreviewPanel are properly defined and fallback values are provided. - Simplified the SummaryPanel layout by removing unnecessary button elements, focusing on a cleaner design. - Added optional overlay image handling in various components to improve visual presentation. - Updated CheckoutStepper to prioritize cart item configuration for consistent display and added overlays for enhanced user experience.  These changes aim to improve usability, accessibility, and visual coherence across the application.  `
 
 ### Changes Analysis
 
@@ -10229,7 +11318,7 @@ _Auto-generated documentation of project changes_
 ## [222ce5fb890ed6e13acaf29ec6e59dcd84afb182] - Tue Jul 8 16:41:42 2025 +0200
 
 **Author**: stenkjan
-**Message**: `refactor: enhance button layout in SummaryPanel for improved user experience  - Updated the button rendering in SummaryPanel to display the "In den Warenkorb" text and price on separate lines for better readability. - Maintained existing functionality while improving the visual presentation of the price information.  `
+**Message**: `refactor: enhance button layout in SummaryPanel for improved user experience  - Updated the button rendering in SummaryPanel to display the "Zum Warenkorb" text and price on separate lines for better readability. - Maintained existing functionality while improving the visual presentation of the price information.  `
 
 ### Changes Analysis
 

@@ -38,7 +38,7 @@ export const GEBAEUDE_PREFIX_MAPPING: Record<string, string> = {
 
 // Innenverkleidung mapping
 export const INNENVERKLEIDUNG_MAPPING: Record<string, string> = {
-  'kiefer': 'holznatur',
+  'laerche': 'holznatur',
   'fichte': 'holzweiss',
   'steirische_eiche': 'eiche'
 } as const;
@@ -77,9 +77,9 @@ export const FENSTER_IMAGE_MAPPING: Record<string, string> = {
 // Exact mappings for specific interior combinations
 export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   // Trapezblech combinations
-  'trapezblech_kiefer_parkett': 'trapezblech_holznatur_parkett',
-  'trapezblech_kiefer_kalkstein_kanafar': 'trapezblech_holznatur_kalkstein',
-  'trapezblech_kiefer_schiefer_massiv': 'trapezblech_holznatur_schiefer',
+  'trapezblech_laerche_parkett': 'trapezblech_holznatur_parkett',
+  'trapezblech_laerche_kalkstein_kanafar': 'trapezblech_holznatur_kalkstein',
+  'trapezblech_laerche_schiefer_massiv': 'trapezblech_holznatur_schiefer',
   'trapezblech_fichte_parkett': 'trapezblech_holzweiss_parkett',
   'trapezblech_fichte_kalkstein_kanafar': 'trapezblech_holzweiss_kalkstein',
   'trapezblech_fichte_schiefer_massiv': 'trapezblech_holzweiss_schiefer',
@@ -88,9 +88,9 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   'trapezblech_steirische_eiche_schiefer_massiv': 'trapezblech_eiche_schiefer',
 
   // Holzlattung combinations
-  'holzlattung_kiefer_parkett': 'holzlattung_holznatur_parkett',
-  'holzlattung_kiefer_kalkstein_kanafar': 'holzlattung_holznatur_kalkstein',
-  'holzlattung_kiefer_schiefer_massiv': 'holzlattung_holznatur_schiefer',
+  'holzlattung_laerche_parkett': 'holzlattung_holznatur_parkett',
+  'holzlattung_laerche_kalkstein_kanafar': 'holzlattung_holznatur_kalkstein',
+  'holzlattung_laerche_schiefer_massiv': 'holzlattung_holznatur_schiefer',
   'holzlattung_fichte_parkett': 'holzlattung_holzweiss_parkett',
   'holzlattung_fichte_kalkstein_kanafar': 'holzlattung_holzweiss_kalkstein',
   'holzlattung_fichte_schiefer_massiv': 'holzlattung_holzweiss_schiefer',
@@ -99,9 +99,9 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   'holzlattung_steirische_eiche_schiefer_massiv': 'holzlattung_eiche_schiefer',
 
   // Fassadenplatten schwarz combinations
-  'fassadenplatten_schwarz_kiefer_parkett': 'plattenschwarz_holznatur_parkett',
-  'fassadenplatten_schwarz_kiefer_kalkstein_kanafar': 'plattenschwarz_holznatur_kalkstein',
-  'fassadenplatten_schwarz_kiefer_schiefer_massiv': 'plattenschwarz_holznatur_schiefer',
+  'fassadenplatten_schwarz_laerche_parkett': 'plattenschwarz_holznatur_parkett',
+  'fassadenplatten_schwarz_laerche_kalkstein_kanafar': 'plattenschwarz_holznatur_kalkstein',
+  'fassadenplatten_schwarz_laerche_schiefer_massiv': 'plattenschwarz_holznatur_schiefer',
   'fassadenplatten_schwarz_fichte_parkett': 'plattenschwarz_holzweiss_parkett',
   'fassadenplatten_schwarz_fichte_kalkstein_kanafar': 'plattenschwarz_holzweiss_kalkstein',
   'fassadenplatten_schwarz_fichte_schiefer_massiv': 'plattenschwarz_holzweiss_schiefer',
@@ -110,9 +110,9 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
   'fassadenplatten_schwarz_steirische_eiche_schiefer_massiv': 'plattenschwarz_eiche_schiefer',
 
   // Fassadenplatten weiss combinations
-  'fassadenplatten_weiss_kiefer_parkett': 'plattenweiss_holznatur_parkett',
-  'fassadenplatten_weiss_kiefer_kalkstein_kanafar': 'plattenweiss_holznatur_kalkstein',
-  'fassadenplatten_weiss_kiefer_schiefer_massiv': 'plattenweiss_holznatur_schiefer',
+  'fassadenplatten_weiss_laerche_parkett': 'plattenweiss_holznatur_parkett',
+  'fassadenplatten_weiss_laerche_kalkstein_kanafar': 'plattenweiss_holznatur_kalkstein',
+  'fassadenplatten_weiss_laerche_schiefer_massiv': 'plattenweiss_holznatur_schiefer',
   'fassadenplatten_weiss_fichte_parkett': 'plattenweiss_holzweiss_parkett',
   'fassadenplatten_weiss_fichte_kalkstein_kanafar': 'plattenweiss_holzweiss_kalkstein',
   'fassadenplatten_weiss_fichte_schiefer_massiv': 'plattenweiss_holzweiss_schiefer',
@@ -122,22 +122,22 @@ export const INTERIOR_EXACT_MAPPINGS: Record<string, string> = {
 
   // ohne_belag combinations - use new ohne_belag interior images
   // Trapezblech ohne_belag combinations
-  'trapezblech_kiefer_ohne_belag': 'trapezblech_holznatur_ohne_belag',
+  'trapezblech_laerche_ohne_belag': 'trapezblech_holznatur_ohne_belag',
   'trapezblech_fichte_ohne_belag': 'trapezblech_holzweiss_ohne_belag',
   'trapezblech_steirische_eiche_ohne_belag': 'trapezblech_eiche_ohne_belag',
 
   // Holzlattung ohne_belag combinations
-  'holzlattung_kiefer_ohne_belag': 'holzlattung_holznatur_ohne_belag',
+  'holzlattung_laerche_ohne_belag': 'holzlattung_holznatur_ohne_belag',
   'holzlattung_fichte_ohne_belag': 'holzlattung_holzweiss_ohne_belag',
   'holzlattung_steirische_eiche_ohne_belag': 'holzlattung_eiche_ohne_belag',
 
   // Fassadenplatten schwarz ohne_belag combinations
-  'fassadenplatten_schwarz_kiefer_ohne_belag': 'plattenschwarz_holznatur_ohne_belag',
+  'fassadenplatten_schwarz_laerche_ohne_belag': 'plattenschwarz_holznatur_ohne_belag',
   'fassadenplatten_schwarz_fichte_ohne_belag': 'plattenschwarz_holzweiss_ohne_belag',
   'fassadenplatten_schwarz_steirische_eiche_ohne_belag': 'plattenschwarz_eiche_ohne_belag',
 
   // Fassadenplatten weiss ohne_belag combinations
-  'fassadenplatten_weiss_kiefer_ohne_belag': 'plattenweiss_holznatur_ohne_belag',
+  'fassadenplatten_weiss_laerche_ohne_belag': 'plattenweiss_holznatur_ohne_belag',
   'fassadenplatten_weiss_fichte_ohne_belag': 'plattenweiss_holzweiss_ohne_belag',
   'fassadenplatten_weiss_steirische_eiche_ohne_belag': 'plattenweiss_eiche_ohne_belag'
 } as const;
@@ -163,49 +163,49 @@ export type ImageCombinationKey = keyof typeof INTERIOR_EXACT_MAPPINGS;
  * Following project rules: shared constants in src/constants/
  */
 
-// Grundstückscheck price - Updated to match checkout pricing (with 50% discount: was 3000, now 1000)
-export const GRUNDSTUECKSCHECK_PRICE = 1000;
+// Grundstückscheck price - Updated to match checkout pricing (with 50% discount: was 3000, now 1500)
+export const GRUNDSTUECKSCHECK_PRICE = 1500;
 
-// Nest options with base pricing
+// Nest options with base pricing - UPDATED TO MATCH GOOGLE SHEETS
 export const NEST_OPTIONS = [
   {
     id: 'nest80',
     name: 'Nest. 80',
     description: '75m² Nutzfläche',
-    price: 155500,
-    monthly: 816,
+    price: 188619,
+    monthly: 990,
     modules: 1
   },
   {
     id: 'nest100',
     name: 'Nest. 100',
     description: '95m² Nutzfläche',
-    price: 189100,
-    monthly: 993,
+    price: 226108,
+    monthly: 1187,
     modules: 2
   },
   {
     id: 'nest120',
     name: 'Nest. 120',
     description: '115m² Nutzfläche',
-    price: 222700,
-    monthly: 1169,
+    price: 263597,
+    monthly: 1384,
     modules: 3
   },
   {
     id: 'nest140',
     name: 'Nest. 140',
     description: '135m² Nutzfläche',
-    price: 256300,
-    monthly: 1346,
+    price: 301086,
+    monthly: 1581,
     modules: 4
   },
   {
     id: 'nest160',
     name: 'Nest. 160',
     description: '155m² Nutzfläche',
-    price: 289900,
-    monthly: 1522,
+    price: 338575,
+    monthly: 1778,
     modules: 5
   }
 ] as const;
@@ -215,10 +215,10 @@ export const NEST_OPTIONS = [
 export const MODULAR_PRICING = {
   // Each combination has base price + per-module price
   combinations: {
-    'trapezblech_kiefer_ohne_belag': { base: 155500, perModule: 33600 }, // Base price matches expected minimum
-    'trapezblech_kiefer_parkett': { base: 155700, perModule: 34800 }, // Calculated for proper parkett scaling: nest80=+3800€, +1200€/module
-    'trapezblech_kiefer_kalkstein_kanafar': { base: 161200, perModule: 35000 },
-    'trapezblech_kiefer_schiefer_massiv': { base: 161200, perModule: 35000 },
+    'trapezblech_laerche_ohne_belag': { base: 155500, perModule: 33600 }, // Base price matches expected minimum
+    'trapezblech_laerche_parkett': { base: 155700, perModule: 34800 }, // Calculated for proper parkett scaling: nest80=+3800€, +1200€/module
+    'trapezblech_laerche_kalkstein_kanafar': { base: 161200, perModule: 35000 },
+    'trapezblech_laerche_schiefer_massiv': { base: 161200, perModule: 35000 },
     'trapezblech_fichte_ohne_belag': { base: 153100, perModule: 32600 }, // Base - 3800
     'trapezblech_fichte_parkett': { base: 156900, perModule: 33800 },
     'trapezblech_fichte_kalkstein_kanafar': { base: 162600, perModule: 35300 },
@@ -227,10 +227,10 @@ export const MODULAR_PRICING = {
     'trapezblech_steirische_eiche_parkett': { base: 165700, perModule: 35400 },
     'trapezblech_steirische_eiche_kalkstein_kanafar': { base: 171400, perModule: 36900 },
     'trapezblech_steirische_eiche_schiefer_massiv': { base: 171400, perModule: 36900 },
-    'holzlattung_kiefer_ohne_belag': { base: 161300, perModule: 34400 }, // Base - 3800
-    'holzlattung_kiefer_parkett': { base: 165100, perModule: 35600 },
-    'holzlattung_kiefer_kalkstein_kanafar': { base: 170800, perModule: 37000 },
-    'holzlattung_kiefer_schiefer_massiv': { base: 170800, perModule: 37000 },
+    'holzlattung_laerche_ohne_belag': { base: 161300, perModule: 34400 }, // Base - 3800
+    'holzlattung_laerche_parkett': { base: 165100, perModule: 35600 },
+    'holzlattung_laerche_kalkstein_kanafar': { base: 170800, perModule: 37000 },
+    'holzlattung_laerche_schiefer_massiv': { base: 170800, perModule: 37000 },
     'holzlattung_fichte_ohne_belag': { base: 162600, perModule: 34600 }, // Base - 3800
     'holzlattung_fichte_parkett': { base: 166400, perModule: 35800 },
     'holzlattung_fichte_kalkstein_kanafar': { base: 172100, perModule: 37300 },
@@ -239,10 +239,10 @@ export const MODULAR_PRICING = {
     'holzlattung_steirische_eiche_parkett': { base: 175300, perModule: 37400 },
     'holzlattung_steirische_eiche_kalkstein_kanafar': { base: 181000, perModule: 38900 },
     'holzlattung_steirische_eiche_schiefer_massiv': { base: 181000, perModule: 38900 },
-    'fassadenplatten_schwarz_kiefer_ohne_belag': { base: 188100, perModule: 39100 }, // Base - 3800
-    'fassadenplatten_schwarz_kiefer_parkett': { base: 191900, perModule: 40300 },
-    'fassadenplatten_schwarz_kiefer_kalkstein_kanafar': { base: 197600, perModule: 41700 },
-    'fassadenplatten_schwarz_kiefer_schiefer_massiv': { base: 197600, perModule: 41700 },
+    'fassadenplatten_schwarz_laerche_ohne_belag': { base: 188100, perModule: 39100 }, // Base - 3800
+    'fassadenplatten_schwarz_laerche_parkett': { base: 191900, perModule: 40300 },
+    'fassadenplatten_schwarz_laerche_kalkstein_kanafar': { base: 197600, perModule: 41700 },
+    'fassadenplatten_schwarz_laerche_schiefer_massiv': { base: 197600, perModule: 41700 },
     'fassadenplatten_schwarz_fichte_ohne_belag': { base: 189400, perModule: 39400 }, // Base - 3800
     'fassadenplatten_schwarz_fichte_parkett': { base: 193200, perModule: 40600 },
     'fassadenplatten_schwarz_fichte_kalkstein_kanafar': { base: 198900, perModule: 42000 },
@@ -251,10 +251,10 @@ export const MODULAR_PRICING = {
     'fassadenplatten_schwarz_steirische_eiche_parkett': { base: 202100, perModule: 42200 },
     'fassadenplatten_schwarz_steirische_eiche_kalkstein_kanafar': { base: 207800, perModule: 43600 },
     'fassadenplatten_schwarz_steirische_eiche_schiefer_massiv': { base: 207800, perModule: 43600 },
-    'fassadenplatten_weiss_kiefer_ohne_belag': { base: 188100, perModule: 39100 }, // Base - 3800
-    'fassadenplatten_weiss_kiefer_parkett': { base: 191900, perModule: 40300 },
-    'fassadenplatten_weiss_kiefer_kalkstein_kanafar': { base: 197600, perModule: 41700 },
-    'fassadenplatten_weiss_kiefer_schiefer_massiv': { base: 197600, perModule: 41700 },
+    'fassadenplatten_weiss_laerche_ohne_belag': { base: 188100, perModule: 39100 }, // Base - 3800
+    'fassadenplatten_weiss_laerche_parkett': { base: 191900, perModule: 40300 },
+    'fassadenplatten_weiss_laerche_kalkstein_kanafar': { base: 197600, perModule: 41700 },
+    'fassadenplatten_weiss_laerche_schiefer_massiv': { base: 197600, perModule: 41700 },
     'fassadenplatten_weiss_fichte_ohne_belag': { base: 189400, perModule: 39400 }, // Base - 3800
     'fassadenplatten_weiss_fichte_parkett': { base: 193200, perModule: 40600 },
     'fassadenplatten_weiss_fichte_kalkstein_kanafar': { base: 198900, perModule: 42000 },
@@ -315,7 +315,7 @@ export function calculateModularPrice(
   if (!combinationData) {
     console.warn(`💰 No pricing data found for combination: ${combinationKey}`);
     // Fallback to base combination
-    const fallbackData = MODULAR_PRICING.combinations['trapezblech_kiefer_parkett'];
+    const fallbackData = MODULAR_PRICING.combinations['trapezblech_laerche_parkett'];
     return fallbackData.base;
   }
 
@@ -340,12 +340,12 @@ export function calculateModularPrice(
  * Base pricing for nest80, scales by 25% per additional 20m² module
  */
 
-// Base prices for nest80 (80m²)
+// Base prices for nest80 (80m²) - from Google Sheets
 export const SIZE_DEPENDENT_BASE_PRICES = {
-  elektrische_fussbodenheizung: 5000,
-  wassergefuehrte_fussbodenheizung: 7500,
-  fundament: 5000,
-  geschossdecke: 5000 // per unit
+  elektrische_fussbodenheizung: 10842,
+  wassergefuehrte_fussbodenheizung: 13486,
+  fundament: 15480,
+  geschossdecke: 4115 // per unit
 } as const;
 
 /**
@@ -380,12 +380,13 @@ export function calculateSizeDependentPrice(
 
 /**
  * Get maximum geschossdecken based on nest size
- * Each nest module can have one geschossdecke
+ * Maximum is one less than the number of modules (modules - 1)
  * @param nestType - The nest type (nest80, nest100, etc.)
  * @returns Maximum number of geschossdecken allowed
  */
 export function getMaxGeschossdecken(nestType: string): number {
   // Each nest size corresponds to number of 20m² modules
+  // Maximum geschossdecke is modules - 1
   const moduleMapping: Record<string, number> = {
     nest80: 4,  // 80m² = 4 × 20m² modules
     nest100: 5, // 100m² = 5 × 20m² modules  
@@ -394,5 +395,6 @@ export function getMaxGeschossdecken(nestType: string): number {
     nest160: 8  // 160m² = 8 × 20m² modules
   };
 
-  return moduleMapping[nestType] || 4; // Default to nest80
+  const modules = moduleMapping[nestType] || 4; // Default to nest80
+  return modules - 1; // Maximum is one less than modules
 }
