@@ -889,7 +889,7 @@ export default function ConfiguratorShell({
           }
         }
 
-        // If this option is currently selected, show per m² price for fenster, actual price for parkett, no price for others
+        // If this option is currently selected, show per m² price for fenster, actual price for parkett and innenverkleidung
         if (currentSelection && currentSelection.value === optionId) {
           if (categoryId === "fenster") {
             // Show per m² price for selected fenster option (depends on belichtungspaket and nest size)
@@ -907,6 +907,24 @@ export default function ConfiguratorShell({
               };
             }
             // Fallback to static price
+            return {
+              type: "standard" as const,
+              amount: option.price.amount || 0,
+              monthly: option.price.monthly,
+            };
+          }
+          if (categoryId === "innenverkleidung") {
+            // Show ABSOLUTE price for selected innenverkleidung (NEVER show as "inkludiert")
+            const pricingData = PriceCalculator.getPricingData();
+            if (pricingData && configuration?.nest) {
+              const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+              const absolutePrice = pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
+              return {
+                type: "standard" as const,
+                amount: absolutePrice,
+                monthly: Math.round(absolutePrice / 240),
+              };
+            }
             return {
               type: "standard" as const,
               amount: option.price.amount || 0,
