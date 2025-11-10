@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [96d7447178d91bc7798469f324288ca9a78c26cf] - Mon Nov 10 09:40:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct PV-Anlage panel count and price display  - Changed description from '3 Panels pro PV-Modul' to '4 Panels pro PV-Modul' - Added 'Ab' prefix to PV-Anlage base price display (e.g., 'Ab 3.934€') - Fixed per-panel price calculation to divide by 4 instead of 3 (3934€ / 4 = 984€ per panel) - Updated all price.amount / 3 calculations to price.amount / 4 throughout SelectionOption component - Now correctly shows 'entspricht 984€ / Panel' instead of '1.311€ / Panel'  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [67422a2c765820ec52ee1df3a2be700faf03dc33] - Mon Nov 10 09:31:55 2025 +0100
 
 **Author**: stenkjan
