@@ -897,7 +897,8 @@ export default function ConfiguratorShell({
               const pricePerSqm = PriceCalculator.getFensterPricePerSqm(
                 optionId,
                 configuration.nest.value,
-                configuration.belichtungspaket.value
+                configuration.belichtungspaket.value,
+                configuration?.geschossdecke?.quantity || 0
               );
               return {
                 type: "standard" as const,
@@ -1244,13 +1245,15 @@ export default function ConfiguratorShell({
           const currentPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             currentSelection.value,
             configuration.nest.value,
-            configuration.belichtungspaket.value
+            configuration.belichtungspaket.value,
+            configuration?.geschossdecke?.quantity || 0
           );
           
           const optionPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             optionId,
             configuration.nest.value,
-            configuration.belichtungspaket.value
+            configuration.belichtungspaket.value,
+            configuration?.geschossdecke?.quantity || 0
           );
           
           const priceDifference = optionPricePerSqm - currentPricePerSqm;
