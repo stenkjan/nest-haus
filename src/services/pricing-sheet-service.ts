@@ -175,7 +175,6 @@ class PricingSheetService {
     }
     return 0;
   }
-  }
 
   private async fetchSheet(): Promise<unknown[][]> {
     try {
