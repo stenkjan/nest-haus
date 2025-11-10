@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
-import { ResponsiveHybridImage, ClientBlobVideo } from "@/components/images";
+import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import {
   PlanungspaketeCards as _PlanungspaketeCards,
   UnifiedContentCard,
@@ -103,61 +103,34 @@ export default function DeinNestClient() {
       style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        {/* Section 1 - Hero with Title and Subtitle */}
-        <section
-          id="hero"
-          className="w-full bg-white md:pt-12 flex items-center"
-        >
-          {/* Desktop Hero Content */}
-          <div className="hidden md:block w-full">
-            <SectionHeader
-              title="Design oder Bestpreis?"
-              subtitle="Nest verbindet beides in einem System"
-              titleClassName="text-black"
-              wrapperMargin="mb-8"
-            />
-          </div>
-          {/* Mobile Hero - Invisible spacer to ensure section exists for SectionRouter */}
-          <div className="md:hidden h-1 w-full"></div>
-        </section>
-        {/* Section 2 - Image with Overlay Text and Buttons */}
-        <section id="video" className="w-full relative bg-white">
-          <div className="relative w-full">
-            {/* Image Background - Responsive for mobile and desktop */}
-            <ResponsiveHybridImage
-              desktopPath={IMAGES.hero.nestHaus3}
+        {/* Section 1 - Hero with Image and Overlay Text */}
+        <section id="hero" className="w-full">
+          <div className="relative w-full h-[50vh] md:h-[60vh]">
+            {/* Background Image */}
+            <HybridBlobImage
+              path={IMAGES.hero.nestHaus3}
               mobilePath={IMAGES.hero.mobile.nestHaus3}
               alt="NEST-Haus Design - Dein Design im Freistil"
-              style={{
-                objectPosition: "center center",
-                objectFit: "cover",
-              }}
+              className="absolute inset-0 w-full h-full object-cover"
               strategy="ssr"
               isAboveFold={true}
               isCritical={true}
               priority={true}
-              sizes="100vw"
-              quality={90}
-              unoptimized={true}
-              breakpoint={768}
-              desktopAspectRatio="16/9"
-              useMobileNaturalRatio={true}
             />
 
-            {/* Overlay Content */}
-            <div className="absolute inset-0 flex flex-col justify-end pb-8">
-              {/* Mobile Title/Subtitle Overlay - Aligned with standard spacing */}
-              <div className="absolute top-12 left-0 right-0 text-center px-4 sm:px-6 md:hidden">
-                <h1 className="h1-secondary text-white drop-shadow-lg">
-                  Design oder Bestpreis?
-                </h1>
-                <h3 className="h3-secondary text-white mb-12 max-w-3xl mx-auto text-center drop-shadow-lg">
-                  Nest verbindet beides in einem System
-                </h3>
-              </div>
+            {/* Text Overlay */}
+            <div className="absolute inset-0 flex items-start justify-center pt-12">
+              <SectionHeader
+                title="Design oder Bestpreis?"
+                subtitle="Nest verbindet beides in einem System"
+                titleClassName="text-white"
+                subtitleClassName="text-white"
+              />
+            </div>
 
-              {/* Desktop: Text Blocks and Buttons grouped together - Hidden on mobile */}
-              <div className="hidden lg:flex flex-col gap-8 max-w-[1536px] mx-auto w-full px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40">
+            {/* Desktop: Text Blocks and Buttons at bottom - Hidden on mobile */}
+            <div className="absolute bottom-16 left-0 right-0 hidden lg:block">
+              <div className="flex flex-col gap-2 max-w-[1536px] mx-auto w-full px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40">
                 {/* Text Blocks */}
                 <div className="flex justify-between items-center w-full">
                   {/* Left Text Block */}
@@ -195,89 +168,93 @@ export default function DeinNestClient() {
                 <div className="flex gap-4 justify-center">
                   <Link href="/nest-system">
                     <Button variant="primary" size="xs">
-                      Erster Schritt
+                      Nest System
                     </Button>
                   </Link>
-                  <Link href="/entwurf">
+                  <Link href="/konfigurator">
                     <Button variant="landing-secondary" size="xs">
-                      Termin vereinbaren
+                      Jetzt bauen
                     </Button>
                   </Link>
                 </div>
               </div>
+            </div>
 
-              {/* Mobile Buttons - Positioned at bottom */}
-              <div className="flex gap-4 justify-center px-4 sm:px-6 lg:hidden">
-                <Link href="/nest-system">
-                  <Button variant="primary" size="xs">
-                    Erster Schritt
-                  </Button>
-                </Link>
-                <Link href="/entwurf">
-                  <Button variant="landing-secondary" size="xs">
-                    Termin vereinbaren
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* Text Content Below Video */}
-        <div className="max-w-[1440px] 2xl:max-w-[1440px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-32 mt-8 md:mt-12 pt-8">
-          <h2
-            className="h2-title text-center"
-            dangerouslySetInnerHTML={{
-              __html:
-                "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>industrielle Präzision</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>architektonischem Design.</span><span class='text-nest-gray'> Dein Zuhause entsteht dabei aus seriell gefertigten </span><span class='text-black font-medium'>Modulen</span><span class='text-nest-gray'>, die du mit </span><span class='text-black font-medium'>deinen Ideen</span><span class='text-nest-gray'> füllst.</span><br/><br/><span class='text-nest-gray'>Atmosphäre, individuell und ganz nach deinen Vorstellungen.</span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
-            }}
-          />
-        </div>
-        {/* Video-only Card Section */}
-        <section className="w-full py-8 md:py-16 bg-white">
-          {/* Mobile: Full-width background video */}
-          {isMobile ? (
-            <div className="w-full">
-              <ClientBlobVideo
-                path={IMAGES.variantvideo.mobile.ten}
-                className="w-full h-auto"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            </div>
-          ) : (
-            /* Desktop: Video card with padding */
-            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
-                <div className="relative w-full overflow-hidden rounded-2xl">
-                  <ClientBlobVideo
-                    path={IMAGES.variantvideo.ten}
-                    className="w-full h-auto"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Text Grid and Buttons Container */}
-          <div className="pt-8">
-            {/* Button combination */}
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link href="/entwurf">
+            {/* Mobile Buttons Only - Positioned at bottom */}
+            <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 lg:hidden">
+              <Link href="/nest-system">
                 <Button variant="primary" size="xs">
-                  Vorentwurf verstehen
+                  Nest System
                 </Button>
               </Link>
               <Link href="/konfigurator">
-                <Button variant="landing-secondary-blue" size="xs">
-                  Unsere Technik
+                <Button variant="landing-secondary" size="xs">
+                  Jetzt bauen
                 </Button>
               </Link>
+            </div>
+          </div>
+        </section>
+        {/* Section 2 - Text Content Below Hero */}
+        <section id="video" className="w-full relative bg-white">
+          {/* Text Content Below Video */}
+          <div className="max-w-[1440px] 2xl:max-w-[1440px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-32 mt-8 md:mt-12 pt-8">
+            <h2
+              className="h2-title text-center"
+              dangerouslySetInnerHTML={{
+                __html:
+                  "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>industrielle Präzision</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>architektonischem Design.</span><span class='text-nest-gray'> Dein Zuhause entsteht dabei aus seriell gefertigten </span><span class='text-black font-medium'>Modulen</span><span class='text-nest-gray'>, die du mit </span><span class='text-black font-medium'>deinen Ideen</span><span class='text-nest-gray'> füllst.</span><br/><br/><span class='text-nest-gray'>Atmosphäre, individuell und ganz nach deinen Vorstellungen.</span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
+              }}
+            />
+          </div>
+
+          {/* Video-only Card Section */}
+          <div className="w-full py-8 md:py-16">
+            {/* Mobile: Full-width background video */}
+            {isMobile ? (
+              <div className="w-full">
+                <ClientBlobVideo
+                  path={IMAGES.variantvideo.mobile.ten}
+                  className="w-full h-auto"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              </div>
+            ) : (
+              /* Desktop: Video card with padding */
+              <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
+                  <div className="relative w-full overflow-hidden rounded-2xl">
+                    <ClientBlobVideo
+                      path={IMAGES.variantvideo.ten}
+                      className="w-full h-auto"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Text Grid and Buttons Container */}
+            <div className="pt-8">
+              {/* Button combination */}
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Link href="/entwurf">
+                  <Button variant="primary" size="xs">
+                    Vorentwurf verstehen
+                  </Button>
+                </Link>
+                <Link href="/konfigurator">
+                  <Button variant="landing-secondary-blue" size="xs">
+                    Unsere Technik
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -364,9 +341,9 @@ export default function DeinNestClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Architektur für ein bewegtes Leben."
-            subtitle="Architektur für ein bewegtes Leben."
-            wrapperMargin="md:mb-12 mb-12"
+            title="Dein Zuhause zieht um"
+            subtitle="Früher war Wohnen Stillstand. heute ist es Nest."
+            wrapperMargin="mb-12"
           />
 
           <UnifiedContentCard
@@ -379,21 +356,21 @@ export default function DeinNestClient() {
             customData={[
               {
                 id: 1,
-                title: "Unsere Technik",
+                title: "Architektur für ein bewegtes Leben",
                 subtitle: "",
                 description:
-                  "Aufbauen. Mitnehmen. Weitergeben.\nGanz wie du willst. Dank hochpräziser Konstruktion entsteht dein Zuhause in kürzester Zeit, an nahezu jedem Ort. Und wenn du weiterziehst? Dann ziehst du nicht nur um, sondern nimmst dein Zuhause einfach mit. Oder du bleibst flexibel und verkaufst es weiter, so wie ein gut gepflegtes Auto.",
+                  "<span class='text-black font-medium'>Aufbauen. Mitnehmen. Weitergeben.</span>\n<span class='text-nest-gray'>Ganz wie du willst. Früher war ein Haus eine Entscheidung fürs Leben. Heute darf </span><span class='text-black font-medium'>Wohnen beweglich</span><span class='text-nest-gray'> sein. Dank unserer mit </span><span class='text-black font-medium'>Präzision</span><span class='text-nest-gray'> gefertigten Module bleibt </span><span class='text-black font-medium'>Nest stets transportierbar.</span><span class='text-nest-gray'> Dein Haus ist nicht mehr an einen Ort gebunden, sondern kann </span><span class='text-black font-medium'>bewegt, weiterverkauft</span><span class='text-nest-gray'> und an einem neuen Platz </span><span class='text-black font-medium'>wieder aufgestellt</span><span class='text-nest-gray'> werden. Ein Zuhause, das mitdenkt und mitgeht.</span>",
                 video: IMAGES.videos.nestHausTransport,
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
-                    text: "Unser Part",
+                    text: "Unser Philosophie",
                     variant: "primary",
                     size: "xs",
                     link: "/entwurf",
                   },
                   {
-                    text: "Jetzt bauen",
+                    text: "Unsere Technik",
                     variant: "landing-secondary-blue",
                     size: "xs",
                     link: "/konfigurator",

@@ -19,6 +19,8 @@ interface Partner {
   name: string;
   path: string;
   description: string;
+  isTextBox?: boolean;
+  textContent?: string;
 }
 
 const partners: Partner[] = [
@@ -58,6 +60,14 @@ const partners: Partner[] = [
     path: "65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau",
     description: "Zimmermann",
   },
+  {
+    id: "gemeinsam-staerker",
+    name: "Hier Könnte dein Name stehen",
+    path: "",
+    description: "Werde teil von Nest",
+    isTextBox: true,
+    textContent: "Gemeinsam stärker",
+  },
 ];
 
 interface PartnersSectionProps {
@@ -90,23 +100,31 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
                 <div key={partner.id} className="flex flex-col items-center">
                   {/* Square container wrapper */}
                   <div className="w-full aspect-square mb-3 bg-white rounded-3xl p-4 md:p-6 flex items-center justify-center">
-                    {/* Image constrained to fit within padding */}
-                    <div className="w-full h-full flex items-center justify-center">
-                      <HybridBlobImage
-                        path={partner.path}
-                        alt={partner.name}
-                        strategy="auto"
-                        isAboveFold={false}
-                        isCritical={false}
-                        className="max-w-full max-h-full w-auto h-auto object-contain"
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                        quality={85}
-                      />
-                    </div>
+                    {/* Image or Text content */}
+                    {partner.isTextBox ? (
+                      <h3 className="h3-secondary text-blue-300 text-center">
+                        {partner.textContent}
+                      </h3>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <HybridBlobImage
+                          path={partner.path}
+                          alt={partner.name}
+                          strategy="auto"
+                          isAboveFold={false}
+                          isCritical={false}
+                          className="max-w-full max-h-full w-auto h-auto object-contain"
+                          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                          quality={85}
+                        />
+                      </div>
+                    )}
                   </div>
-                  <p className="p-primary-small text-gray-700 text-center mb-1">
-                    {partner.name}
-                  </p>
+                  {partner.name && (
+                    <p className="p-primary-small text-gray-700 text-center mb-1">
+                      {partner.name}
+                    </p>
+                  )}
                   {partner.description && (
                     <p className="p-primary-small2 text-gray-700 text-center">
                       {partner.description}
@@ -162,23 +180,31 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
                   <div key={partner.id} className="flex flex-col items-center">
                     {/* Square container wrapper */}
                     <div className="w-full aspect-square mb-3 bg-white rounded-3xl p-4 md:p-6 flex items-center justify-center">
-                      {/* Image constrained to fit within padding */}
-                      <div className="w-full h-full flex items-center justify-center">
-                        <HybridBlobImage
-                          path={partner.path}
-                          alt={partner.name}
-                          strategy="auto"
-                          isAboveFold={false}
-                          isCritical={false}
-                          className="max-w-full max-h-full w-auto h-auto object-contain"
-                          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                          quality={85}
-                        />
-                      </div>
+                      {/* Image or Text content */}
+                      {partner.isTextBox ? (
+                        <h3 className="h3-secondary text-blue-500 text-center pt-4">
+                          {partner.textContent}
+                        </h3>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <HybridBlobImage
+                            path={partner.path}
+                            alt={partner.name}
+                            strategy="auto"
+                            isAboveFold={false}
+                            isCritical={false}
+                            className="max-w-full max-h-full w-auto h-auto object-contain"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                            quality={85}
+                          />
+                        </div>
+                      )}
                     </div>
-                    <p className="p-primary-small text-black text-center">
-                      {partner.name}
-                    </p>
+                    {partner.name && (
+                      <p className="p-primary-small text-black text-center">
+                        {partner.name}
+                      </p>
+                    )}
                     {partner.description && (
                       <p className="p-primary-small2 text-gray-400 text-center">
                         {partner.description}
