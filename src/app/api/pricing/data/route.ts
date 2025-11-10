@@ -28,6 +28,13 @@ export async function GET(_request: NextRequest) {
         version: info?.version,
         syncedAt: info?.syncedAt,
         timestamp: new Date().toISOString(),
+      }, {
+        headers: {
+          // Browser can cache for 5 minutes
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+          // CDN can cache for 1 hour (pricing rarely changes)
+          'CDN-Cache-Control': 'public, s-maxage=3600',
+        },
       });
     }
 
@@ -56,6 +63,13 @@ export async function GET(_request: NextRequest) {
       syncedBy: info?.syncedBy,
       syncedAt: info?.syncedAt,
       timestamp: new Date().toISOString(),
+    }, {
+      headers: {
+        // Browser can cache for 5 minutes
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        // CDN can cache for 1 hour
+        'CDN-Cache-Control': 'public, s-maxage=3600',
+      },
     });
 
   } catch (error) {

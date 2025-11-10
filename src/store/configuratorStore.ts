@@ -426,17 +426,17 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           const optionData = {
             kamindurchzug: {
               name: 'Kamindurchzug',
-              price: 887, // Fixed price from Google Sheets F82
+              price: 2000,
               description: 'Vorbereitung für Kaminanschluss'
             },
             fussbodenheizung: {
               name: 'Fußbodenheizung',
-              price: 10842, // Base nest80 price, will be calculated dynamically in PriceCalculator
+              price: 5000,
               description: 'Elektrische Fußbodenheizung'
             },
             fundament: {
               name: 'Fundament',
-              price: 15480, // Base nest80 price from Google Sheets F83, will be calculated dynamically in PriceCalculator
+              price: 5000, // Base price, will be calculated dynamically in PriceCalculator
               description: 'Fundamentvorbereitung'
             }
           }
@@ -611,7 +611,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'nest',
             value: 'nest80',
             name: 'Nest. 80',
-            price: 188619,
+            price: 155500,
             description: '75m² Nutzfläche'
           },
           // Trapezblech (new default)
@@ -622,12 +622,12 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: -9600,
             description: 'RAL 9005 - 3000 x 1142 mm'
           },
-          // Fichte (standard default) - F24 for nest80
+          // Fichte (standard default)
           {
             category: 'innenverkleidung',
             value: 'fichte',
             name: 'Fichte',
-            price: 23020, // Exact price from Google Sheets F24 for nest80
+            price: 1400,
             description: 'PEFC-Zertifiziert\nSicht 1,9 cm'
           },
           // Standard (ohne_belag) - default flooring

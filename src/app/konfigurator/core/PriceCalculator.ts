@@ -7,6 +7,7 @@
  */
 
 import {
+  calculateSizeDependentPrice,
   GRUNDSTUECKSCHECK_PRICE,
   MODULAR_PRICING,
   NEST_OPTIONS,
@@ -45,16 +46,23 @@ interface Selections {
 }
 
 export class PriceCalculator {
-  // Simple in-memory cache for price calculations
+  // LRU cache for price calculations with bounded size
   private static cache = new Map<string, { result: number; timestamp: number }>();
-  private static readonly CACHE_TTL = 5000; // 5 seconds
+  private static cacheKeys: string[] = []; // Track insertion order for LRU
+  private static readonly CACHE_TTL = 60000; // 60 seconds (increased from 5s for better hit rate)
+  private static readonly MAX_CACHE_SIZE = 100; // Prevent unbounded growth
+  
+  // Performance metrics (development only)
+  private static cacheHits = 0;
+  private static cacheMisses = 0;
+  private static totalCalculations = 0;
+  private static totalDuration = 0;
 
   // Pricing data from Google Sheets
   private static pricingData: PricingData | null = null;
   private static pricingDataPromise: Promise<PricingData> | null = null;
   private static pricingDataTimestamp = 0;
   private static readonly PRICING_DATA_TTL = 5 * 60 * 1000; // 5 minutes
-  private static readonly CACHE_VERSION = 4; // Increment this to force cache invalidation
   
   // Callbacks to notify when pricing data is loaded
   private static onDataLoadedCallbacks: Array<() => void> = [];
@@ -96,13 +104,8 @@ export class PriceCalculator {
       try {
         const cached = sessionStorage.getItem('nest-haus-pricing-data');
         if (cached) {
-          const { data, timestamp, version, cacheVersion } = JSON.parse(cached);
-          
-          // Check if cache version matches (invalidate old cache)
-          if (cacheVersion !== this.CACHE_VERSION) {
-            console.log(`🔄 Cache version mismatch (cached: ${cacheVersion}, current: ${this.CACHE_VERSION}), invalidating...`);
-            sessionStorage.removeItem('nest-haus-pricing-data');
-          } else if (now - timestamp < this.PRICING_DATA_TTL) {
+          const { data, timestamp, version } = JSON.parse(cached);
+          if (now - timestamp < this.PRICING_DATA_TTL) {
             this.pricingData = data;
             this.pricingDataTimestamp = timestamp;
             console.log(`✅ Pricing data loaded from sessionStorage (version ${version}, ${Math.round((now - timestamp) / 1000)}s old)`);
@@ -111,14 +114,10 @@ export class PriceCalculator {
             this.onDataLoadedCallbacks.forEach(cb => { try { cb(); } catch (e) { console.error(e); } });
             this.onDataLoadedCallbacks = [];
             return;
-          } else {
-            console.log(`⏰ Cache expired (${Math.round((now - timestamp) / 1000)}s old), fetching fresh data...`);
           }
         }
       } catch (error) {
         console.warn('Failed to load pricing data from sessionStorage:', error);
-        // Clear corrupted cache
-        sessionStorage.removeItem('nest-haus-pricing-data');
       }
     }
 
@@ -142,7 +141,6 @@ export class PriceCalculator {
                 data: this.pricingData,
                 timestamp: now,
                 version: result.version || 1,
-                cacheVersion: this.CACHE_VERSION, // Add cache version for invalidation
               }));
             } catch (error) {
               console.warn('Failed to save pricing data to sessionStorage:', error);
@@ -179,85 +177,110 @@ export class PriceCalculator {
   /**
    * Get pricing data (synchronous access, may return null if not initialized)
    */
-  public static getPricingData(): PricingData | null {
+  private static getPricingData(): PricingData | null {
     return this.pricingData;
   }
 
   /**
-   * Manually clear all pricing caches (for debugging/testing)
-   * Call this to force fresh pricing data on next load
-   */
-  static clearAllCaches(): void {
-    // Clear in-memory cache
-    this.pricingData = null;
-    this.pricingDataPromise = null;
-    this.pricingDataTimestamp = 0;
-    this.cache.clear();
-    
-    // Clear sessionStorage cache
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('nest-haus-pricing-data');
-      console.log('🧹 All pricing caches cleared');
-    }
-  }
-
-  /**
-   * Get cache info for debugging
-   */
-  static getCacheInfo(): {
-    hasPricingData: boolean;
-    cacheAge: number | null;
-    cacheVersion: number;
-    sessionStorageCached: boolean;
-  } {
-    const info = {
-      hasPricingData: this.pricingData !== null,
-      cacheAge: this.pricingDataTimestamp ? Date.now() - this.pricingDataTimestamp : null,
-      cacheVersion: this.CACHE_VERSION,
-      sessionStorageCached: false,
-    };
-
-    if (typeof window !== 'undefined') {
-      const cached = sessionStorage.getItem('nest-haus-pricing-data');
-      info.sessionStorageCached = !!cached;
-    }
-
-    return info;
-  }
-
-  /**
-   * Clear expired cache entries
+   * Clear expired cache entries and enforce max size with LRU eviction
    */
   private static cleanCache(): void {
     const now = Date.now();
+    
+    // Remove expired entries
     for (const [key, value] of this.cache.entries()) {
       if (now - value.timestamp > this.CACHE_TTL) {
         this.cache.delete(key);
+        const index = this.cacheKeys.indexOf(key);
+        if (index > -1) {
+          this.cacheKeys.splice(index, 1);
+        }
+      }
+    }
+    
+    // Enforce max size with LRU eviction
+    while (this.cache.size >= this.MAX_CACHE_SIZE) {
+      const oldestKey = this.cacheKeys.shift();
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
       }
     }
   }
 
   /**
-   * Get cached result or calculate new one
+   * Get cached result or calculate new one with LRU cache management
    */
   private static getCachedResult<T>(
     cacheKey: string,
     calculator: () => T
   ): T {
-    this.cleanCache();
-
+    const startTime = performance.now();
     const cached = this.cache.get(cacheKey);
+
+    // Cache hit
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      this.cacheHits++;
+      
+      // Move to end of LRU queue (most recently used)
+      const index = this.cacheKeys.indexOf(cacheKey);
+      if (index > -1) {
+        this.cacheKeys.splice(index, 1);
+        this.cacheKeys.push(cacheKey);
+      }
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Cache HIT for ${cacheKey.substring(0, 50)}...`);
+      }
+      
       return cached.result as T;
     }
 
+    // Cache miss - calculate
+    this.cacheMisses++;
+    this.totalCalculations++;
+    
     const result = calculator();
+    const duration = performance.now() - startTime;
+    this.totalDuration += duration;
+    
+    // Log slow calculations in development
+    if (process.env.NODE_ENV === 'development' && duration > 50) {
+      console.warn(`⚠️ Slow calculation: ${duration.toFixed(2)}ms for ${cacheKey.substring(0, 50)}...`);
+    }
+    
+    // Clean cache before adding new entry
+    this.cleanCache();
+    
+    // Add to cache with LRU tracking
     this.cache.set(cacheKey, {
       result: result as number,
       timestamp: Date.now(),
     });
+    this.cacheKeys.push(cacheKey);
 
     return result;
+  }
+  
+  /**
+   * Get cache statistics (development/monitoring)
+   */
+  static getCacheStats() {
+    const hitRate = this.cacheHits + this.cacheMisses > 0 
+      ? (this.cacheHits / (this.cacheHits + this.cacheMisses)) * 100 
+      : 0;
+    const avgDuration = this.totalCalculations > 0 
+      ? this.totalDuration / this.totalCalculations 
+      : 0;
+      
+    return {
+      size: this.cache.size,
+      maxSize: this.MAX_CACHE_SIZE,
+      hits: this.cacheHits,
+      misses: this.cacheMisses,
+      hitRate: hitRate.toFixed(2) + '%',
+      avgDuration: avgDuration.toFixed(2) + 'ms',
+      totalCalculations: this.totalCalculations,
+    };
   }
 
   /**
@@ -281,18 +304,18 @@ export class PriceCalculator {
         // Get nest base price
         const nestPrice = pricingData.nest[nestSize]?.price || 0;
         
-        // Get absolute prices (all materials have prices, none are "base = 0")
+        // Get relative prices (trapezblech is base = 0, fichte is base = 0, ohne_belag is base = 0)
         const gebaeudehuellePrice = pricingData.gebaeudehuelle[gebaeudehuelle]?.[nestSize] || 0;
         const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
-        const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice; // trapezblech is STANDARD (included in nest)
+        const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
         
         const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
         const fichtePrice = pricingData.innenverkleidung.fichte?.[nestSize] || 0;
-        const innenverkleidungRelative = innenverkleidungPrice - fichtePrice; // fichte is STANDARD (included in nest)
+        const innenverkleidungRelative = innenverkleidungPrice - fichtePrice; // fichte is standard (base = 0)
         
         const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
-        const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice; // ohne_belag is STANDARD (included in nest)
+        const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
         
         return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
       } catch (error) {
@@ -424,9 +447,8 @@ export class PriceCalculator {
           const pricingData = this.getPricingData();
           if (pricingData) {
             const nestSize = selections.nest.value as NestSize;
-            const quantity = selections.pvanlage.quantity;
-            const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
-            additionalPrice += price;
+            const pricePerModule = pricingData.pvanlage.pricePerModule[nestSize] || 0;
+            additionalPrice += selections.pvanlage.quantity * pricePerModule;
           }
           // If data not loaded, price will be 0 until loaded
         }
@@ -770,18 +792,10 @@ export class PriceCalculator {
       }
 
       // Add additional options (works for both nest and grundstückscheck-only)
-      if (selections.pvanlage && selections.pvanlage.quantity && selections.nest) {
-        const pricingData = this.getPricingData();
-        let pvPrice = 0;
-        if (pricingData) {
-          const nestSize = selections.nest.value as NestSize;
-          const quantity = selections.pvanlage.quantity;
-          pvPrice = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
-        }
-        
+      if (selections.pvanlage && selections.pvanlage.quantity) {
         breakdown.options.pvanlage = {
           name: `${selections.pvanlage.name} (${selections.pvanlage.quantity}x)`,
-          price: pvPrice
+          price: selections.pvanlage.quantity * selections.pvanlage.price
         }
       }
 
@@ -858,14 +872,9 @@ export class PriceCalculator {
 
       // Add checkbox options
       if (selections.kamindurchzug) {
-        const pricingData = this.getPricingData();
-        let kaminschachtPrice = 0;
-        if (pricingData) {
-          kaminschachtPrice = pricingData.optionen.kaminschacht || 0;
-        }
         breakdown.options.kamindurchzug = {
           name: selections.kamindurchzug.name,
-          price: kaminschachtPrice
+          price: selections.kamindurchzug.price
         }
       }
 
@@ -904,12 +913,10 @@ export class PriceCalculator {
       }
 
       if (selections.fundament && selections.nest) {
-        const pricingData = this.getPricingData();
-        let fundamentPrice = 0;
-        if (pricingData) {
-          const nestSize = selections.nest.value as NestSize;
-          fundamentPrice = pricingData.optionen.fundament[nestSize] || 0;
-        }
+        const fundamentPrice = calculateSizeDependentPrice(
+          selections.nest.value,
+          'fundament'
+        );
         breakdown.options.fundament = {
           name: selections.fundament.name,
           price: fundamentPrice
