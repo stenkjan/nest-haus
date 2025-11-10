@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5df809eb5e32b10a0eb5e8867e7f54c637208db3] - Mon Nov 10 09:43:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Add 'Ab' prefix to PV-Anlage upgrade price display  - Modified upgrade price display logic in SelectionOption to show 'Ab 3.934€' for pvanlage category - Previously showed '+3.934€' or '3.934€' without 'Ab' prefix - Now correctly displays 'Ab 3.934€' with 'entspricht 984€ / Panel' subtitle  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [96d7447178d91bc7798469f324288ca9a78c26cf] - Mon Nov 10 09:40:57 2025 +0100
 
 **Author**: stenkjan
