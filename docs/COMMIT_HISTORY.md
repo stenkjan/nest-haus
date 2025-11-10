@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a4977bf2fdf46807b036049bc8bbd94683893472] - Mon Nov 10 12:51:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update PriceCacheDebugger to match getCacheStats return type  Updated CacheInfo interface to match the actual return type of PriceCalculator.getCacheStats(): - size, maxSize, hits, misses, hitRate, avgDuration, totalCalculations  Updated JSX to display new cache statistics: - Cache size utilization - Hit rate percentage - Average calculation duration - Total calculations, hits, and misses  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+---
+
 ## [c7cf50b60dcd008ead13d564c8ed076cbe636ece] - Mon Nov 10 12:47:12 2025 +0100
 
 **Author**: stenkjan
