@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [eccc9e1fc8ab580d6b068545f847c134c7dd8892] - Mon Nov 10 14:48:53 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove Math.round() from price parsing - preserve exact prices  - Removed Math.round() from parseNumber function for numbers and strings - Removed Math.round() from pricePerSqm calculation in parseNest - Now preserves exact decimal prices from Google Sheets:   * Nest 80: 188,619€ (not 189,000€)   * Nest 100: 226,108€ (not 226,000€)   * Nest 120: 263,597€ (not 264,000€)   * Nest 140: 301,086€ (not 301,000€)   * Nest 160: 338,575€ (not 339,000€)  `
+
+### Changes Analysis
+
+---
+
 ## [327d7e416bec1bc5efed520f50c68b0ae7bb3690] - Mon Nov 10 14:36:09 2025 +0100
 
 **Author**: stenkjan
