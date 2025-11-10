@@ -26,6 +26,7 @@ interface SelectionOptionProps {
   categoryId?: string;
   nestModel?: string;
   contributionPrice?: number | null; // Actual price contribution for selected options
+  geschossdeckeQuantity?: number; // Number of Geschossdecke units selected (affects m² calculation)
 }
 
 export default function SelectionOption({
@@ -42,6 +43,7 @@ export default function SelectionOption({
   categoryId,
   nestModel,
   contributionPrice,
+  geschossdeckeQuantity,
 }: SelectionOptionProps) {
   const renderPrice = () => {
     if (!price) return null;
@@ -71,7 +73,8 @@ export default function SelectionOption({
                     contributionPrice,
                     nestModel,
                     categoryId,
-                    id
+                    id,
+                    geschossdeckeQuantity
                   )
                 : ""}
             </p>
@@ -137,7 +140,8 @@ export default function SelectionOption({
                             contributionPrice,
                             nestModel,
                             categoryId,
-                            id
+                            id,
+                            geschossdeckeQuantity
                           )
                         : ""}
                 </p>
@@ -210,7 +214,8 @@ export default function SelectionOption({
                     price.amount,
                     nestModel,
                     categoryId,
-                    id
+                    id,
+                    geschossdeckeQuantity
                   )
                 : ""}
           </p>
@@ -309,7 +314,8 @@ export default function SelectionOption({
                     price.amount,
                     nestModel,
                     categoryId,
-                    id
+                    id,
+                    geschossdeckeQuantity
                   )
                 : ""}
           </p>
@@ -388,7 +394,8 @@ export default function SelectionOption({
                     price.amount,
                     nestModel,
                     categoryId,
-                    id
+                    id,
+                    geschossdeckeQuantity
                   )
                 : ""}
           </p>
@@ -484,7 +491,8 @@ export default function SelectionOption({
                     price.amount,
                     nestModel,
                     categoryId,
-                    id
+                    id,
+                    geschossdeckeQuantity
                   )
                 : ""}
           </p>

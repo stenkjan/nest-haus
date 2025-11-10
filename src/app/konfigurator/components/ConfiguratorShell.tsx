@@ -1620,6 +1620,7 @@ export default function ConfiguratorShell({
                           categoryId={category.id}
                           nestModel={configuration?.nest?.value}
                           contributionPrice={contributionPrice}
+                          geschossdeckeQuantity={configuration?.geschossdecke?.quantity || 0}
                           onClick={(optionId) => {
                             // Always allow selections with defaults in place
                             handleSelection(category.id, optionId);
