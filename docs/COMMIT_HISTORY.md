@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [8bdb5d0982e77c01ccd88bd298b26646e7338e43] - Mon Nov 10 12:15:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Make getPricingData() public for ConfiguratorShell access  TypeScript error: Property 'getPricingData' is private ConfiguratorShell needs access to pricing data for innenverkleidung display Changed visibility from private to public  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [56c3bfc2b52613ff866237c95bb9ee8fb5bd1d4c] - Mon Nov 10 12:13:02 2025 +0100
 
 **Author**: stenkjan
