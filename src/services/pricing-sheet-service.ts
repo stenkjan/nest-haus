@@ -175,7 +175,6 @@ class PricingSheetService {
     }
     return 0;
   }
-  }
 
   private async fetchSheet(): Promise<unknown[][]> {
     try {
@@ -584,8 +583,6 @@ class PricingSheetService {
         nest160: proPrice,
       },
     };
-  }
-    return planungspaketData as PricingData['planungspaket'];
   }
 
   async loadPricingData(forceRefresh = false): Promise<PricingData> {
