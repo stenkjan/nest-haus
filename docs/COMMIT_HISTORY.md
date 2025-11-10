@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fd689a6fdf9cee87433fbb58d60e607c7e1670ab] - Mon Nov 10 15:37:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `docs: Add pricing sync status and troubleshooting guide  Created comprehensive guide explaining: - Why prices are still showing as rounded - Current code state (Math.round removed) - Database has old cached values - Steps to fix: wait for deployment + re-sync - Debugging checklist  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/PRICING_SYNC_STATUS.md
+
+
+---
+
 ## [d0dbf255240ec9d89e46785b037ea88c0dd164cd] - Mon Nov 10 15:29:56 2025 +0100
 
 **Author**: stenkjan
