@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [116716ec38c792dfe5cb25b19397392b7e7d4e07] - Mon Nov 10 11:08:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Geschossdecke amount picker stays visible when switching nest sizes  - Changed selector visibility condition from 'configuration?.geschossdecke' to 'configuration?.geschossdecke || geschossdeckeQuantity > 0' - Selector now remains visible when local state has quantity even if configuration hasn't updated yet - Fixes issue where amount picker disappeared when switching between nest sizes - Users can now change geschossdecke amount for all nest sizes (80, 100, 120, 140, 160)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [9c2f8be39079a946bce70a1db0de4eef4a6caab4] - Mon Nov 10 10:59:08 2025 +0100
 
 **Author**: stenkjan
