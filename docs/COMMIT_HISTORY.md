@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [67422a2c765820ec52ee1df3a2be700faf03dc33] - Mon Nov 10 09:31:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Use cumulative pricing for PV-Anlage from pricing data table  - Modified QuantitySelector to support cumulative pricing via new cumulativePrice prop - For PV-Anlage, display shows cumulative total price instead of unitPrice × quantity - Updated ConfiguratorShell to fetch cumulative prices from pricingData.pvanlage.pricesByQuantity - Prices now correctly match Google Sheets table (F29-N44):   * nest80: 1 module = 3,934€, 2 = 6,052€, 3 = 8,169€, 4 = 10,286€, ..., 8 = 18,815€   * nest160: 16 modules = 39,539€ (N44) - Display format changed from 'X€/Modul' to total price with 'für X Module' subtitle - Fixes issue where PV pricing was calculated as quantity × per-module price instead of using cumulative table values  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/QuantitySelector.tsx
+
+
+---
+
 ## [79e94f3ecd207485ed3d79ea70e1156c6f85919d] - Sun Nov 9 15:04:18 2025 +0100
 
 **Author**: stenkjan
