@@ -4,6 +4,29 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [56c3bfc2b52613ff866237c95bb9ee8fb5bd1d4c] - Mon Nov 10 12:13:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Enhance pricing data handling and caching mechanisms  - Added cache control headers to API responses for improved caching strategies. - Updated PriceCalculator to implement an LRU cache with a maximum size and increased TTL for better performance. - Refactored pricing data structure to use price per module instead of prices by quantity for PV modules. - Adjusted various pricing amounts in configurator data for accuracy and consistency. - Improved error handling and logging in pricing sheet service for better debugging.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/pricing/data/route.ts
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+
+
+#### 📚 Documentation Changes
+- docs/KONFIGURATOR_AUDIT_REPORT.md
+- docs/KONFIGURATOR_AUDIT_SUMMARY.md
+- docs/KONFIGURATOR_OPTIMIZATION_PLAN.md
+- docs/KONFIGURATOR_TESTING_CHECKLIST.md
+
+
+---
+
 ## [3e2c7fdb5e6cb9c6ea5cac81d1544785fb4fff7c] - Mon Nov 10 11:39:14 2025 +0100
 
 **Author**: stenkjan
