@@ -15,6 +15,7 @@ import {
 } from '@/constants/configurator'
 import type { PricingData, NestSize } from '@/services/pricing-sheet-service'
 
+import { PriceUtils } from './PriceUtils'
 // REMOVED: SimplePriceCache class - no longer needed after reverting complex pricing logic
 
 interface SelectionOption {
@@ -1008,7 +1009,6 @@ export class PriceCalculator {
         const totalPrice = fensterPricing[nestSize][belichtungKey];
         if (totalPrice !== undefined) {
           // Calculate price per m² using the correct formula: (nestSize - 5) + (geschossdecke * 6.5)
-          const { PriceUtils } = require('./PriceUtils');
           const squareMeters = PriceUtils.getAdjustedNutzflaeche(nestValue, geschossdeckeQuantity);
           return squareMeters > 0 ? Math.round(totalPrice / squareMeters) : 0;
         }
