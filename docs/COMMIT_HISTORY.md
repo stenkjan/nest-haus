@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7ce4b8c91698dac03c3f4ce3293fbe256361e829] - Mon Nov 10 14:16:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct Innenverkleidung pricing - show absolute prices but keep relative calculation  CRITICAL FIX: The nest base price (189,100€) INCLUDES Trapezblech + Fichte + Standard flooring.  Changes: 1. PriceCalculator.ts: REVERTED to use relative pricing in calculation    - nestPrice includes Fichte, so we must subtract fichtePrice for upgrades    - This keeps Nest 80 at correct 189,100€ base price  2. ConfiguratorShell.tsx: Added special handling for SELECTED innenverkleidung    - When Fichte is SELECTED: Shows absolute price 23,020€ (not inkludiert)    - When Lärche is SELECTED: Shows absolute price 31,921€    - When Eiche is SELECTED: Shows absolute price 37,235€    - When NOT selected: Shows relative price difference  This ensures: - Nest 80 base = 189,100€ (correct) - Innenverkleidung NEVER shows as inkludiert - All prices display absolute values when selected - Relative prices show for non-selected options  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [02de6ccb26e815f194ba9feaefe1ba3f855a495c] - Mon Nov 10 13:49:03 2025 +0100
 
 **Author**: stenkjan
