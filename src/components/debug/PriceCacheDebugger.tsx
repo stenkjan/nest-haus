@@ -11,10 +11,13 @@ import { useState, useEffect } from 'react';
 import { PriceCalculator } from '@/app/konfigurator/core/PriceCalculator';
 
 interface CacheInfo {
-  hasPricingData: boolean;
-  cacheAge: number | null;
-  cacheVersion: number;
-  sessionStorageCached: boolean;
+  size: number;
+  maxSize: number;
+  hits: number;
+  misses: number;
+  hitRate: string;
+  avgDuration: string;
+  totalCalculations: number;
 }
 
 export function PriceCacheDebugger() {
@@ -71,8 +74,6 @@ export function PriceCacheDebugger() {
 
   if (!isVisible || !cacheInfo) return null;
 
-  const cacheAgeMinutes = cacheInfo.cacheAge ? Math.round(cacheInfo.cacheAge / 1000 / 60) : 0;
-
   return (
     <div 
       style={{
@@ -95,29 +96,39 @@ export function PriceCacheDebugger() {
       
       <div style={{ marginBottom: '10px' }}>
         <div style={{ marginBottom: '5px' }}>
-          <span style={{ color: '#888' }}>Memory Cache:</span>{' '}
-          <span style={{ color: cacheInfo.hasPricingData ? '#4ade80' : '#f87171' }}>
-            {cacheInfo.hasPricingData ? '✓ Loaded' : '✗ Empty'}
+          <span style={{ color: '#888' }}>Cache Size:</span>{' '}
+          <span style={{ color: cacheInfo.size > 0 ? '#4ade80' : '#888' }}>
+            {cacheInfo.size} / {cacheInfo.maxSize}
           </span>
         </div>
         
         <div style={{ marginBottom: '5px' }}>
-          <span style={{ color: '#888' }}>Session Storage:</span>{' '}
-          <span style={{ color: cacheInfo.sessionStorageCached ? '#4ade80' : '#f87171' }}>
-            {cacheInfo.sessionStorageCached ? '✓ Cached' : '✗ Empty'}
+          <span style={{ color: '#888' }}>Hit Rate:</span>{' '}
+          <span style={{ color: '#4ade80' }}>
+            {cacheInfo.hitRate}
           </span>
         </div>
         
         <div style={{ marginBottom: '5px' }}>
-          <span style={{ color: '#888' }}>Cache Age:</span>{' '}
-          <span style={{ color: cacheAgeMinutes > 3 ? '#fb923c' : '#4ade80' }}>
-            {cacheAgeMinutes > 0 ? `${cacheAgeMinutes}m` : 'N/A'}
+          <span style={{ color: '#888' }}>Avg Duration:</span>{' '}
+          <span style={{ color: '#4ade80' }}>
+            {cacheInfo.avgDuration}
           </span>
+        </div>
+        
+        <div style={{ marginBottom: '5px' }}>
+          <span style={{ color: '#888' }}>Total Calculations:</span>{' '}
+          <span>{cacheInfo.totalCalculations}</span>
+        </div>
+        
+        <div style={{ marginBottom: '5px' }}>
+          <span style={{ color: '#888' }}>Cache Hits:</span>{' '}
+          <span style={{ color: '#4ade80' }}>{cacheInfo.hits}</span>
         </div>
         
         <div>
-          <span style={{ color: '#888' }}>Cache Version:</span>{' '}
-          <span>{cacheInfo.cacheVersion}</span>
+          <span style={{ color: '#888' }}>Cache Misses:</span>{' '}
+          <span style={{ color: '#fb923c' }}>{cacheInfo.misses}</span>
         </div>
       </div>
 
