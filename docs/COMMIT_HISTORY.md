@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fe239bad1311223afc708ec20037375219f98371] - Mon Nov 10 09:52:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Add 'Ab' prefix to PV-Anlage selected state price display  - Added 'Ab' prefix to pvanlage price when option is selected (type: 'selected') - Previously only showed 'Ab' for unselected state - Now consistently shows 'Ab 3.934€' in both selected and unselected states - Fixes issue where selected PV box showed '3.934€' without 'Ab' prefix  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [5df809eb5e32b10a0eb5e8867e7f54c637208db3] - Mon Nov 10 09:43:44 2025 +0100
 
 **Author**: stenkjan
