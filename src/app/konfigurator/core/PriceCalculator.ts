@@ -994,7 +994,8 @@ export class PriceCalculator {
   static getFensterPricePerSqm(
     fensterValue: string,
     nestValue: string,
-    belichtungspaketValue: string
+    belichtungspaketValue: string,
+    geschossdeckeQuantity?: number
   ): number {
     const pricingData = this.getPricingData();
     if (pricingData) {
@@ -1006,18 +1007,17 @@ export class PriceCalculator {
       if (fensterPricing && fensterPricing[nestSize]) {
         const totalPrice = fensterPricing[nestSize][belichtungKey];
         if (totalPrice !== undefined) {
-          // Calculate price per m²: total_price / nest_size
-          const nestSizeMap: Record<NestSize, number> = {
-            nest80: 80,
-            nest100: 100,
-            nest120: 120,
-            nest140: 140,
-            nest160: 160,
-          };
-          const squareMeters = nestSizeMap[nestSize] || 80;
+          // Calculate price per m² using the correct formula: (nestSize - 5) + (geschossdecke * 6.5)
+          const { PriceUtils } = require('./PriceUtils');
+          const squareMeters = PriceUtils.getAdjustedNutzflaeche(nestValue, geschossdeckeQuantity);
           return squareMeters > 0 ? Math.round(totalPrice / squareMeters) : 0;
         }
       }
+    }
+    
+    // If pricing data not available yet, return 0
+    return 0;
+  }
     }
     
     // If pricing data not available yet, return 0
