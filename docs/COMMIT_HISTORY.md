@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [10bfb2197f8c279ab779aa4e6e6dd116c69654c5] - Mon Nov 10 12:44:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Complete PV-Anlage pricing calculation fix  Changed line 453 from:   additionalPrice += selections.pvanlage.quantity * pricePerModule To:   additionalPrice += price  Now correctly uses quantity-based pricing from Google Sheets.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [fecf1bb3124c058bb83069db749f8e9d3b8a7dc4] - Mon Nov 10 12:37:10 2025 +0100
 
 **Author**: stenkjan
