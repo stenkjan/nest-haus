@@ -128,7 +128,7 @@ export default function SelectionOption({
                   {categoryId === "fenster"
                     ? "Belichtungspaket"
                     : categoryId === "pvanlage" && contributionPrice > 0
-                      ? `${PriceUtils.formatPrice(Math.round(contributionPrice / 3))} / Panel`
+                      ? `${PriceUtils.formatPrice(Math.round(contributionPrice / 4))} / Panel`
                       : shouldShowPricePerSqm &&
                           nestModel &&
                           contributionPrice > 0
@@ -172,8 +172,8 @@ export default function SelectionOption({
       const shouldShowPricePerSqm =
         categoryId && PriceUtils.shouldShowPricePerSquareMeter(categoryId);
 
-      // Remove "Ab" from planungspakete, keep it for nest modules
-      const showAbPrefix = categoryId === "nest";
+      // Remove "Ab" from planungspakete, keep it for nest modules and pvanlage
+      const showAbPrefix = categoryId === "nest" || categoryId === "pvanlage";
 
       // Special handling for fenster & belichtungspaket: center price without "entspricht"
       if (categoryId === "fenster" || categoryId === "belichtungspaket") {
@@ -203,7 +203,7 @@ export default function SelectionOption({
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             {categoryId === "pvanlage" && price.amount
-              ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
+              ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
                     price.amount,
@@ -297,7 +297,7 @@ export default function SelectionOption({
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             {categoryId === "pvanlage" && price.amount
-              ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
+              ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : shouldShowPricePerSqm &&
                   nestModel &&
                   price.amount &&
@@ -379,7 +379,7 @@ export default function SelectionOption({
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             {categoryId === "pvanlage" && price.amount
-              ? `${PriceUtils.formatPrice(Math.round(Math.abs(price.amount) / 3))} / Panel`
+              ? `${PriceUtils.formatPrice(Math.round(Math.abs(price.amount) / 4))} / Panel`
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
                     price.amount,
@@ -463,7 +463,7 @@ export default function SelectionOption({
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             {categoryId === "pvanlage" && price.amount
-              ? `${PriceUtils.formatPrice(Math.round(price.amount / 3))} / Panel`
+              ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : categoryId === "geschossdecke" && price.amount
                 ? "— €/m²" // Placeholder for price/m² - will be filled from sheet
               : shouldShowPricePerSqm && nestModel && price.amount
