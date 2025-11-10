@@ -1018,11 +1018,6 @@ export class PriceCalculator {
     // If pricing data not available yet, return 0
     return 0;
   }
-    }
-    
-    // If pricing data not available yet, return 0
-    return 0;
-  }
 
   /**
    * Get max geschossdecke amount for a nest size
