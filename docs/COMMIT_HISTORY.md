@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [327d7e416bec1bc5efed520f50c68b0ae7bb3690] - Mon Nov 10 14:36:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Complete m² and pricing overhaul per user requirements  1. Fixed PriceUtils.ts m² calculation:    - Changed geschossdecke area from 7.5m² to 6.5m² per unit    - Formula now: (nest_size - 5) + (geschossdecke_qty * 6.5)  2. Fixed Innenverkleidung pricing logic:    - Removed 'Fichte as base' relative pricing    - Now uses ABSOLUTE prices from sheet (F24-26, H24-26, etc.)    - Fichte shows 23020€ for Nest80, not 0€ (inkludiert)  3. Fixed Planungspakete prices:    - Changed to read from fixed rows 88-90 (0-indexed: 87-89)    - Plus = 9600€, Pro = 12700€ (same for all nest sizes)    - Removed dynamic row search  4. Fixed Fenster & Türen m² calculation:    - Added geschossdeckeQuantity parameter to getFensterPricePerSqm    - Now uses PriceUtils.getAdjustedNutzflaeche formula    - m² price updates when Geschossdecke changes  5. Updated ConfiguratorShell:    - Passes geschossdeckeQty to all getFensterPricePerSqm calls    - Ensures m² prices update dynamically with Geschossdecke  All changes maintain existing functionality while fixing pricing accuracy.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+---
+
 ## [7ce4b8c91698dac03c3f4ce3293fbe256361e829] - Mon Nov 10 14:16:15 2025 +0100
 
 **Author**: stenkjan
