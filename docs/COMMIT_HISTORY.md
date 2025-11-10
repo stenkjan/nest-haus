@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [09c9e63aa5c115c1a3829ddc898b03d4ff423e9f] - Mon Nov 10 13:26:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Replace require() with ES6 import for PriceUtils  - Added static import at top: import { PriceUtils } from './PriceUtils' - Removed dynamic require() call in getFensterPricePerSqm - Fixes ESLint error: @typescript-eslint/no-require-imports  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [d0b54e0094c05a0dda02cf5d834bddadccf0ab2d] - Mon Nov 10 13:17:45 2025 +0100
 
 **Author**: stenkjan
