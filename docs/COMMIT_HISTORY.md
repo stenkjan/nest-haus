@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [128ede1f6cf50e84ca8d817efe82fa587b9b0464] - Mon Nov 10 13:12:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update Fenster & Türen m² price to include geschossdecke in calculation  Updated getFensterPricePerSqm to: - Accept geschossdeckeQuantity parameter - Use PriceUtils.getAdjustedNutzflaeche() for correct divisor - Apply (nestSize - 5) + (geschossdecke * 6.5) formula  Updated ConfiguratorShell.tsx to: - Pass geschossdecke quantity to all getFensterPricePerSqm() calls - Ensures fenster m² price updates when geschossdecke changes  Now fenster & türen /m² price correctly reflects total usable area including geschossdecke.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [2c9ee82e3b7cde428e248a27ce3b69050c9397b5] - Mon Nov 10 13:11:00 2025 +0100
 
 **Author**: stenkjan
