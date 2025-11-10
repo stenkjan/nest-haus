@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a8f25b0d7656dfc495309ae63390a36e15685edd] - Mon Nov 10 11:26:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Hardcode nest160 max geschossdecke to 7 when sheet returns 0  - Google Sheets O7 cell returns 0 for unknown reason despite showing 7 - Added fallback logic: if parsed value is 0, use 7 instead - This ensures nest160 can select up to 7 geschossdecke modules - Added debug logging to track raw value -> parsed -> final value  `
+
+### Changes Analysis
+
+---
+
 ## [cfecdcab65b1124b3d77289bed90a50d526e6e82] - Mon Nov 10 11:21:24 2025 +0100
 
 **Author**: stenkjan
