@@ -33,7 +33,7 @@ export function PriceCacheDebugger() {
   }, []);
 
   const updateCacheInfo = () => {
-    const info = PriceCalculator.getCacheInfo();
+    const info = PriceCalculator.getCacheStats();
     setCacheInfo(info);
   };
 
