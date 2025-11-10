@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2c9ee82e3b7cde428e248a27ce3b69050c9397b5] - Mon Nov 10 13:11:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct m² calculation formula and Planungspakete prices  1. Fixed getAdjustedNutzflaeche formula:    - Now uses (nestSize - 5) for base area    - Geschossdecke adds 6.5m² per unit (not 7.5m²)    - Applies to ALL m² price calculations in the configurator  2. Fixed Planungspakete prices (now FIXED, not dependent on Nest size):    - Basis: 0€ (included)    - Plus: 9600€    - Pro: 12700€  3. Updated geschossdecke own area calculation to 6.5m²  This ensures correct m² pricing for: - Geschossdecke, Gebäudehülle, Innenverkleidung - Bodenbelag, Bodenaufbau, Fenster & Türen - Fundament, Planungspakete  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+---
+
 ## [479366cb37422f03ec0af097a5f83fb762dee345] - Mon Nov 10 12:58:23 2025 +0100
 
 **Author**: stenkjan
