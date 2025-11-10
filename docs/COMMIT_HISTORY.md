@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f8ae8e6a9430156d93ee9ff5b859c300fb964035] - Mon Nov 10 10:34:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: CRITICAL - Fix Geschossdecke incremental pricing and add Ab prefix  **GESCHOSSDECKE FIXES:** - Fixed Geschossdecke to use FIXED base price (4115€) instead of nest-size-dependent pricing - Replaced all calculateSizeDependentPrice() calls with pricingData.geschossdecke.basePrice - Geschossdecke price is now ALWAYS 4115€ per unit regardless of nest size - Updated unit price display to show 'Ab 4.115€ pro Einheit' - Fixed QuantitySelector to use fixed base price from pricing data  **AB PREFIX FIXES:** - Added 'Ab' prefix to Geschossdecke unselected state (type: 'upgrade') - Added 'Ab' prefix to Geschossdecke selected state (type: 'selected') - Both PV-Anlage and Geschossdecke now consistently show 'Ab' prefix in all states  This fixes the critical issue where Geschossdecke incorrectly increased in price for larger nest sizes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [fe239bad1311223afc708ec20037375219f98371] - Mon Nov 10 09:52:51 2025 +0100
 
 **Author**: stenkjan
