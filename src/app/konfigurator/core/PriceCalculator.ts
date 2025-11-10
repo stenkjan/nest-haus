@@ -46,9 +46,17 @@ interface Selections {
 }
 
 export class PriceCalculator {
-  // Simple in-memory cache for price calculations
+  // LRU cache for price calculations with bounded size
   private static cache = new Map<string, { result: number; timestamp: number }>();
-  private static readonly CACHE_TTL = 5000; // 5 seconds
+  private static cacheKeys: string[] = []; // Track insertion order for LRU
+  private static readonly CACHE_TTL = 60000; // 60 seconds (increased from 5s for better hit rate)
+  private static readonly MAX_CACHE_SIZE = 100; // Prevent unbounded growth
+  
+  // Performance metrics (development only)
+  private static cacheHits = 0;
+  private static cacheMisses = 0;
+  private static totalCalculations = 0;
+  private static totalDuration = 0;
 
   // Pricing data from Google Sheets
   private static pricingData: PricingData | null = null;
@@ -174,38 +182,105 @@ export class PriceCalculator {
   }
 
   /**
-   * Clear expired cache entries
+   * Clear expired cache entries and enforce max size with LRU eviction
    */
   private static cleanCache(): void {
     const now = Date.now();
+    
+    // Remove expired entries
     for (const [key, value] of this.cache.entries()) {
       if (now - value.timestamp > this.CACHE_TTL) {
         this.cache.delete(key);
+        const index = this.cacheKeys.indexOf(key);
+        if (index > -1) {
+          this.cacheKeys.splice(index, 1);
+        }
+      }
+    }
+    
+    // Enforce max size with LRU eviction
+    while (this.cache.size >= this.MAX_CACHE_SIZE) {
+      const oldestKey = this.cacheKeys.shift();
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
       }
     }
   }
 
   /**
-   * Get cached result or calculate new one
+   * Get cached result or calculate new one with LRU cache management
    */
   private static getCachedResult<T>(
     cacheKey: string,
     calculator: () => T
   ): T {
-    this.cleanCache();
-
+    const startTime = performance.now();
     const cached = this.cache.get(cacheKey);
+
+    // Cache hit
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      this.cacheHits++;
+      
+      // Move to end of LRU queue (most recently used)
+      const index = this.cacheKeys.indexOf(cacheKey);
+      if (index > -1) {
+        this.cacheKeys.splice(index, 1);
+        this.cacheKeys.push(cacheKey);
+      }
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Cache HIT for ${cacheKey.substring(0, 50)}...`);
+      }
+      
       return cached.result as T;
     }
 
+    // Cache miss - calculate
+    this.cacheMisses++;
+    this.totalCalculations++;
+    
     const result = calculator();
+    const duration = performance.now() - startTime;
+    this.totalDuration += duration;
+    
+    // Log slow calculations in development
+    if (process.env.NODE_ENV === 'development' && duration > 50) {
+      console.warn(`⚠️ Slow calculation: ${duration.toFixed(2)}ms for ${cacheKey.substring(0, 50)}...`);
+    }
+    
+    // Clean cache before adding new entry
+    this.cleanCache();
+    
+    // Add to cache with LRU tracking
     this.cache.set(cacheKey, {
       result: result as number,
       timestamp: Date.now(),
     });
+    this.cacheKeys.push(cacheKey);
 
     return result;
+  }
+  
+  /**
+   * Get cache statistics (development/monitoring)
+   */
+  static getCacheStats() {
+    const hitRate = this.cacheHits + this.cacheMisses > 0 
+      ? (this.cacheHits / (this.cacheHits + this.cacheMisses)) * 100 
+      : 0;
+    const avgDuration = this.totalCalculations > 0 
+      ? this.totalDuration / this.totalCalculations 
+      : 0;
+      
+    return {
+      size: this.cache.size,
+      maxSize: this.MAX_CACHE_SIZE,
+      hits: this.cacheHits,
+      misses: this.cacheMisses,
+      hitRate: hitRate.toFixed(2) + '%',
+      avgDuration: avgDuration.toFixed(2) + 'ms',
+      totalCalculations: this.totalCalculations,
+    };
   }
 
   /**
