@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3e2c7fdb5e6cb9c6ea5cac81d1544785fb4fff7c] - Mon Nov 10 11:39:14 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Pass geschossdeckeQuantity to all price/m² calculations  - Added geschossdeckeQuantity prop to SelectionOption component - Pass configuration?.geschossdecke?.quantity to all SelectionOption instances - All calculateOptionPricePerSquareMeter calls now include geschossdeckeQuantity parameter - Price/m² now correctly adjusts when Geschossdecke is selected:   * Base: totalPrice / nestSize   * With 1 Geschossdecke: totalPrice / (nestSize + 6.5)   * With 2 Geschossdecke: totalPrice / (nestSize + 13)   * etc. - This brings down the price per m² as intended when Geschossdecke is added  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [a8f25b0d7656dfc495309ae63390a36e15685edd] - Mon Nov 10 11:26:19 2025 +0100
 
 **Author**: stenkjan
