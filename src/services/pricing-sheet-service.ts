@@ -46,8 +46,10 @@ interface PricingData {
     };
   };
   pvanlage: {
-    pricePerModule: {
-      [key in NestSize]: number;
+    pricesByQuantity: {
+      [key in NestSize]: {
+        [quantity: number]: number;
+      };
     };
     maxModules: {
       [key in NestSize]: number;
