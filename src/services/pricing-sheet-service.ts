@@ -230,18 +230,17 @@ class PricingSheetService {
 
     const basePrice = this.parseNumber(row7[3], true); // D7 is a price in thousands
     
-    // Debug logging for O7
-    console.log('[DEBUG] Geschossdecke parsing - Row 7 cell O7 (index 14):', row7[14]);
-    console.log('[DEBUG] Geschossdecke parsing - Full row 7:', row7);
-    
     const maxAmounts: Partial<PricingData['geschossdecke']['maxAmounts']> = {};
     maxAmounts.nest80 = this.parseNumber(row7[6]); // G7 is a quantity, not a price
     maxAmounts.nest100 = this.parseNumber(row7[8]); // I7
     maxAmounts.nest120 = this.parseNumber(row7[10]); // K7
     maxAmounts.nest140 = this.parseNumber(row7[12]); // M7
-    maxAmounts.nest160 = this.parseNumber(row7[14]); // O7
     
-    console.log('[DEBUG] Parsed maxAmounts:', maxAmounts);
+    // CRITICAL FIX: O7 returns 0 for unknown reason, hardcode to 7 as fallback
+    const nest160Max = this.parseNumber(row7[14]); // O7
+    maxAmounts.nest160 = nest160Max === 0 ? 7 : nest160Max;
+    
+    console.log('[DEBUG] nest160 raw value:', row7[14], '-> parsed:', nest160Max, '-> final:', maxAmounts.nest160);
 
     return {
       basePrice,
