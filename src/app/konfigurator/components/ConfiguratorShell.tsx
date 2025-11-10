@@ -632,15 +632,12 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For geschossdecke, use fixed base price from pricing data × quantity
-        if (
-          categoryId === "geschossdecke" &&
-          configuration?.nest &&
-          configuration.geschossdecke?.quantity
-        ) {
+        // For geschossdecke, show fixed unit price (not multiplied by quantity)
+        // The quantity selector will show the total
+        if (categoryId === "geschossdecke" && configuration?.nest) {
           const pricingData = PriceCalculator.getPricingData();
           if (pricingData) {
-            return pricingData.geschossdecke.basePrice * configuration.geschossdecke.quantity;
+            return pricingData.geschossdecke.basePrice; // Return unit price only
           }
           return 0;
         }
@@ -666,15 +663,12 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For geschossdecke, use fixed base price from pricing data × quantity
-        if (
-          categoryId === "geschossdecke" &&
-          configuration?.nest &&
-          configuration.geschossdecke?.quantity
-        ) {
+        // For geschossdecke, show fixed unit price (not multiplied by quantity)
+        // The quantity selector will show the total
+        if (categoryId === "geschossdecke" && configuration?.nest) {
           const pricingData = PriceCalculator.getPricingData();
           if (pricingData) {
-            return pricingData.geschossdecke.basePrice * configuration.geschossdecke.quantity;
+            return pricingData.geschossdecke.basePrice; // Return unit price only
           }
           return 0;
         }
