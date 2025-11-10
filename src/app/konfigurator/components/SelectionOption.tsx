@@ -116,8 +116,9 @@ export default function SelectionOption({
               // For items with actual prices
               <>
                 <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
-                  {PriceUtils.formatPrice(contributionPrice)}
-                  {categoryId === "fenster" && "/m²"}
+                  {categoryId === "pvanlage" 
+                    ? `Ab ${PriceUtils.formatPrice(contributionPrice)}` 
+                    : `${PriceUtils.formatPrice(contributionPrice)}${categoryId === "fenster" ? "/m²" : ""}`}
                 </p>
                 <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
                   {categoryId === "fenster"
