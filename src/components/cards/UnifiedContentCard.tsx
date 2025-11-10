@@ -1056,9 +1056,10 @@ export default function UnifiedContentCard({
             )}
             <p
               className={`p-primary ${textColors.description} leading-relaxed`}
-            >
-              {getCardText(card, "description")}
-            </p>
+              dangerouslySetInnerHTML={{
+                __html: getCardText(card, "description").replace(/\n/g, "<br/>"),
+              }}
+            />
             {/* Note: Buttons are not shown on mobile/tablet to match VideoCard16by9 behavior */}
           </motion.div>
         </div>
@@ -1155,9 +1156,12 @@ export default function UnifiedContentCard({
                 {getCardText(card, "subtitle")}
               </h3>
             )}
-            <p className={`p-primary ${textColors.description}`}>
-              {getCardText(card, "description")}
-            </p>
+            <p
+              className={`p-primary ${textColors.description}`}
+              dangerouslySetInnerHTML={{
+                __html: getCardText(card, "description").replace(/\n/g, "<br/>"),
+              }}
+            />
 
             {/* Buttons for Video Cards - Desktop Layout */}
             {card.buttons && card.buttons.length > 0 && (

@@ -132,7 +132,7 @@ const Box: React.FC<BoxProps> = ({ data, layout }) => {
         <div className="flex justify-center mt-16">
           <Link href="/konfigurator">
             <Button variant="primary" size="xs">
-              Jetzt starten
+              Dein Weg zum Nest
             </Button>
           </Link>
         </div>

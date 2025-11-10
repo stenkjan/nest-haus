@@ -657,15 +657,15 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "Moderne Architektur trifft Natur",
+        title: "Mit Nest schon heute den Überblick haben",
         subtitle: "",
-        description: "Zeitloses Design fürs Leben",
+        description: "Vorentwurf und Grundstückscheck",
         video: IMAGES.videos.videoCard01,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Tall portrait format
         buttons: [
             {
-                text: "Vorentwurf kaufen",
+                text: "Ersten Schritt machen",
                 variant: "primary",
                 size: "xs",
                 link: "/kontakt",
@@ -674,30 +674,54 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 2,
-        title: "Flexibel wohnen nach Maß",
+        title: "Keine Entscheidung für's Leben",
         subtitle: "",
-        description: "Dein Zuhause wächst mit",
+        description: "Warum Nest?",
         video: IMAGES.videos.videoCard02,
         backgroundColor: "#F4F4F4",
-        aspectRatio: "1x1", // Square format
+        aspectRatio: "2x1", // Square format
+        buttons: [
+            {
+                text: "Unsere Philosophie",
+                variant: "secondary-narrow-white",
+                size: "xs",
+                link: "/kontakt",
+            },
+        ],
     },
     {
         id: 3,
-        title: "Nachhaltigkeit trifft Innovation",
+        title: "Nachhaltigkeit durch neuen Markt",
         subtitle: "",
-        description: "Grünes Bauen für morgen",
+        description: "So funktioniert die Zukunft",
         video: IMAGES.videos.videoCard03,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Tall portrait format
+        buttons: [
+            {
+                text: "Das System verstehen",
+                variant: "secondary-narrow-white",
+                size: "xs",
+                link: "/kontakt",
+            },
+        ],
     },
     {
         id: 4,
-        title: "Transparenz durch großzügige Verglasung",
+        title: "Gemeinsam Großes schaffen",
         subtitle: "",
-        description: "Licht durchflutet jeden Raum",
+        description: "Lerne uns kennen",
         video: IMAGES.videos.videoCard04,
         backgroundColor: "#F4F4F4",
-        aspectRatio: "1x1", // Square format
+        aspectRatio: "2x1", // Square format
+        buttons: [
+            {
+                text: "Termin vereinbaren",
+                variant: "secondary-narrow-white",
+                size: "xs",
+                link: "/kontakt",
+            },
+        ],
     },
     {
         id: 5,

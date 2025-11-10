@@ -12,7 +12,10 @@ import {
 } from "@/components/cards";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
-import { TwoByTwoImageGrid as _TwoByTwoImageGrid, FullWidthTextGrid } from "@/components/grids";
+import {
+  TwoByTwoImageGrid as _TwoByTwoImageGrid,
+  FullWidthTextGrid,
+} from "@/components/grids";
 import {
   GetInContactBanner,
   PartnersSection,
@@ -73,8 +76,11 @@ const sections = [
 export default function DeinNestClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
   const [isMobile, setIsMobile] = useState(false);
-  const { isOpen, openPlanungspakete: _openPlanungspakete, closePlanungspakete } =
-    usePlanungspaketePopup();
+  const {
+    isOpen,
+    openPlanungspakete: _openPlanungspakete,
+    closePlanungspakete,
+  } = usePlanungspaketePopup();
 
   // Simple width-based mobile detection (same as ResponsiveHybridImage)
   useEffect(() => {
@@ -216,14 +222,18 @@ export default function DeinNestClient() {
             </div>
           </div>
         </section>
+        {/* Text Content Below Video */}
+        <div className="max-w-[1440px] 2xl:max-w-[1440px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-32 mt-8 md:mt-12 pt-8">
+          <h2
+            className="h2-title text-center"
+            dangerouslySetInnerHTML={{
+              __html:
+                "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>industrielle Präzision</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>architektonischem Design.</span><span class='text-nest-gray'> Dein Zuhause entsteht dabei aus seriell gefertigten </span><span class='text-black font-medium'>Modulen</span><span class='text-nest-gray'>, die du mit </span><span class='text-black font-medium'>deinen Ideen</span><span class='text-nest-gray'> füllst.</span><br/><br/><span class='text-nest-gray'>Atmosphäre, individuell und ganz nach deinen Vorstellungen.</span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
+            }}
+          />
+        </div>
         {/* Video-only Card Section */}
         <section className="w-full py-8 md:py-16 bg-white">
-          <SectionHeader
-            title="Ein System, das Freiheit baut"
-            subtitle="Nest ist die klarer, standardisierter Raum, den du mit deinen Ideen füllst."
-            wrapperMargin="md:mb-12 mb-12"
-          />
-
           {/* Mobile: Full-width background video */}
           {isMobile ? (
             <div className="w-full">
@@ -256,13 +266,6 @@ export default function DeinNestClient() {
 
           {/* Text Grid and Buttons Container */}
           <div className="pt-8">
-            <FullWidthTextGrid
-              maxWidth={true}
-              textBox1="Wir liefern den Anfang deines Zuhauses. Unser Modul steht für Möglichkeiten, für Raum, den du mit deinen Ideen füllst. In einem gemeinsamen Vorentwurf begleiten wir dich von der ersten Idee bis zu einem konkreten Vorentwurf deines Hauses."
-              textBox2="Schritt für Schritt entsteht so ein klares Bild davon, wie dein Nest aussehen kann. Du bestimmst, wie weit du diesen Weg mit uns gehst. Wir begleiten dich so lange, wie du möchtest, und schaffen dabei ein Zuhause, das zu deinem Leben passt."
-              backgroundColor="white"
-            />
-
             {/* Button combination */}
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/entwurf">
@@ -307,19 +310,19 @@ export default function DeinNestClient() {
                 title: "Gestalten heißt Verstehen",
                 subtitle: "",
                 description:
-                  "Planen, vergleichen, verstehen. Im Nest Konfigurator gestaltest du dein Zuhause Schritt für Schritt und siehst den Preis dabei stets in Echtzeit. Ganz ohne versteckte Kosten.  Entdecke unsere vielfältigen Möglichkeiten. Gleichzeitig liefert deine Konfiguration eine Grundlage für deinen persönlichen Vorentwurf.",
+                  "<span class='text-nest-gray'>Planen, vergleichen, verstehen. Im Nest Konfigurator gestaltest du </span><span class='text-black font-medium'>dein Zuhause Schritt für Schritt</span><span class='text-nest-gray'> und siehst den Preis dabei stets in Echtzeit. Ganz </span><span class='text-black font-medium'>ohne versteckte Kosten.</span>\n\n<span class='text-nest-gray'> Entdecke unsere </span><span class='text-black font-medium'>vielfältigen Möglichkeiten.</span><span class='text-nest-gray'> Gleichzeitig liefert deine Konfiguration eine Grundlage für deinen persönlichen Vorentwurf.</span>",
                 video: IMAGES.variantvideo.twelve,
                 backgroundColor: "#F4F4F4",
                 playbackRate: 0.5,
                 buttons: [
                   {
-                    text: "Unser Part",
+                    text: "Erster Schritt",
                     variant: "primary",
                     size: "xs",
-                    link: "/unser-part",
+                    link: "/entwurf",
                   },
                   {
-                    text: "Jetzt bauen",
+                    text: "Jetzt konfigurieren",
                     variant: "secondary",
                     size: "xs",
                     link: "/konfigurator",
@@ -349,7 +352,9 @@ export default function DeinNestClient() {
             maxWidth={false}
             showInstructions={false}
             alignment="left"
-            customData={VIDEO_BACKGROUND_CARDS_PRESET.cards}
+            customData={VIDEO_BACKGROUND_CARDS_PRESET.cards.filter(
+              (card) => card.id >= 1 && card.id <= 4
+            )}
           />
         </section>
         {/* Section 7 - Transportabilitaet Video */}
