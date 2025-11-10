@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [54fcda9be6629c37e343a501907afcf4431fea71] - Mon Nov 10 10:47:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Geschossdecke display shows unit price instead of total  - Fixed getActualContributionPrice to return UNIT price (4115€) not total price - Removed quantity multiplication for geschossdecke display price - Selection box now always shows 'Ab 4.115€' regardless of quantity selected - QuantitySelector shows the total (e.g., '2 × 4.115€ = 8.230€') - Removed unnecessary quantity check - geschossdecke can exist without quantity - Fixes issue where price displayed as 8.230€ (2×4115) instead of 4.115€  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [feb1662ae1723d5439f954fe7a0b5dd80db90a49] - Mon Nov 10 10:36:23 2025 +0100
 
 **Author**: stenkjan
