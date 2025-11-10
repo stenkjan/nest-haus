@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [d0b54e0094c05a0dda02cf5d834bddadccf0ab2d] - Mon Nov 10 13:17:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove duplicate lines in getFensterPricePerSqm  Removed duplicate closing brace and return statement that was causing syntax error: - Lines 1021-1025 were duplicates of lines 1016-1020 - This was causing 'Return statement is not allowed here' error in Vercel build  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [58fb4d97f0f74bd93c12600e9d0bee0efbce7508] - Mon Nov 10 13:13:51 2025 +0100
 
 **Author**: stenkjan
