@@ -1650,7 +1650,7 @@ export default function ConfiguratorShell({
 
                   {/* Geschossdecke Quantity Selector */}
                   {category.id === "geschossdecke" &&
-                    configuration?.geschossdecke && (
+                    (configuration?.geschossdecke || geschossdeckeQuantity > 0) && (
                       <>
                         <QuantitySelector
                           label="Anzahl der Geschossdecken"
