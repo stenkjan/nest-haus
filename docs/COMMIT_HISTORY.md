@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [58fb4d97f0f74bd93c12600e9d0bee0efbce7508] - Mon Nov 10 13:13:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Apply getFensterPricePerSqm changes to use adjusted nutzfläche  Updated method to: - Accept geschossdeckeQuantity parameter - Use PriceUtils.getAdjustedNutzflaeche() for correct divisor - Apply (nestSize - 5) + (geschossdecke * 6.5) formula  This ensures fenster m² prices update when geschossdecke changes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [128ede1f6cf50e84ca8d817efe82fa587b9b0464] - Mon Nov 10 13:12:48 2025 +0100
 
 **Author**: stenkjan
