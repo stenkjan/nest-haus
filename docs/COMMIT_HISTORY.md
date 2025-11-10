@@ -4,6 +4,140 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [eccc9e1fc8ab580d6b068545f847c134c7dd8892] - Mon Nov 10 14:48:53 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove Math.round() from price parsing - preserve exact prices  - Removed Math.round() from parseNumber function for numbers and strings - Removed Math.round() from pricePerSqm calculation in parseNest - Now preserves exact decimal prices from Google Sheets:   * Nest 80: 188,619€ (not 189,000€)   * Nest 100: 226,108€ (not 226,000€)   * Nest 120: 263,597€ (not 264,000€)   * Nest 140: 301,086€ (not 301,000€)   * Nest 160: 338,575€ (not 339,000€)  `
+
+### Changes Analysis
+
+---
+
+## [327d7e416bec1bc5efed520f50c68b0ae7bb3690] - Mon Nov 10 14:36:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Complete m² and pricing overhaul per user requirements  1. Fixed PriceUtils.ts m² calculation:    - Changed geschossdecke area from 7.5m² to 6.5m² per unit    - Formula now: (nest_size - 5) + (geschossdecke_qty * 6.5)  2. Fixed Innenverkleidung pricing logic:    - Removed 'Fichte as base' relative pricing    - Now uses ABSOLUTE prices from sheet (F24-26, H24-26, etc.)    - Fichte shows 23020€ for Nest80, not 0€ (inkludiert)  3. Fixed Planungspakete prices:    - Changed to read from fixed rows 88-90 (0-indexed: 87-89)    - Plus = 9600€, Pro = 12700€ (same for all nest sizes)    - Removed dynamic row search  4. Fixed Fenster & Türen m² calculation:    - Added geschossdeckeQuantity parameter to getFensterPricePerSqm    - Now uses PriceUtils.getAdjustedNutzflaeche formula    - m² price updates when Geschossdecke changes  5. Updated ConfiguratorShell:    - Passes geschossdeckeQty to all getFensterPricePerSqm calls    - Ensures m² prices update dynamically with Geschossdecke  All changes maintain existing functionality while fixing pricing accuracy.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+---
+
+## [7ce4b8c91698dac03c3f4ce3293fbe256361e829] - Mon Nov 10 14:16:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct Innenverkleidung pricing - show absolute prices but keep relative calculation  CRITICAL FIX: The nest base price (189,100€) INCLUDES Trapezblech + Fichte + Standard flooring.  Changes: 1. PriceCalculator.ts: REVERTED to use relative pricing in calculation    - nestPrice includes Fichte, so we must subtract fichtePrice for upgrades    - This keeps Nest 80 at correct 189,100€ base price  2. ConfiguratorShell.tsx: Added special handling for SELECTED innenverkleidung    - When Fichte is SELECTED: Shows absolute price 23,020€ (not inkludiert)    - When Lärche is SELECTED: Shows absolute price 31,921€    - When Eiche is SELECTED: Shows absolute price 37,235€    - When NOT selected: Shows relative price difference  This ensures: - Nest 80 base = 189,100€ (correct) - Innenverkleidung NEVER shows as inkludiert - All prices display absolute values when selected - Relative prices show for non-selected options  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [02de6ccb26e815f194ba9feaefe1ba3f855a495c] - Mon Nov 10 13:49:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove relative pricing logic for Innenverkleidung  CRITICAL FIX: Innenverkleidung should NOT use relative pricing. All options (Fichte, Lärche, Eiche) have actual costs that must be added to the nest base price.  Before: - innenverkleidungRelative = innenverkleidungPrice - fichtePrice - This made Fichte show as 0€ (inkludiert) which is INCORRECT  After: - innenverkleidungPrice is added directly to total - Fichte now correctly shows 23,020€ for Nest 80 - Lärche shows +8,901€ relative when not selected - Eiche shows +14,215€ relative when not selected  Fixes issue where Nest 160 selection caused inkludiert to appear.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
+## [8b30c5c581653c6e16de712b5185091d06a166d8] - Mon Nov 10 13:36:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/sync-pricing/route.ts
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+- src/app/api/cron/sync-pricing-sheet/route.ts
+- src/app/api/pricing/calculate/route.ts
+- src/app/api/pricing/data/route.ts
+- src/app/api/pricing/sync/route.ts
+- src/app/api/test/db/route.ts
+- src/app/api/test/pricing-sheet/route.ts
+- src/app/api/test/redis/route.ts
+- src/app/api/test/sheets-info/route.ts
+- src/app/api/test/sheets-metadata/route.ts
+- src/app/konfigurator/__tests__/ConfiguratorShell.integration.test.tsx
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/QuantitySelector.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/ImageManager.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/showcase/cards/page.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/admin/PricingSyncPanel.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/debug/PriceCacheDebugger.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/hooks/useInteractionTracking.ts
+
+
+#### ⚙️ Backend Changes
+- prisma/migrations/20250101000000_add_pricing_data_snapshot/migration.sql
+- prisma/schema.prisma
+- scripts/README-cache-cleaning.md
+- scripts/clean-cache.bat
+- scripts/clean-cache.js
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+- next.config.ts
+- package.json
+
+
+#### 📚 Documentation Changes
+- FIX_OLD_PRICES_DISPLAY.md
+- docs/ADMIN_REORGANIZATION_COMPLETE.md
+- docs/ADMIN_REORGANIZATION_PROGRESS.md
+- docs/ADMIN_TRACKING_QUICK_REF.md
+- docs/COMMIT_HISTORY.md
+- docs/DEBUG_CART_TRACKING.md
+- docs/KONFIGURATOR-REFACTORING-PLAN.md
+- docs/KONFIGURATOR-SWITCH-GUIDE.md
+- docs/KONFIGURATOR_AUDIT_REPORT.md
+- docs/KONFIGURATOR_AUDIT_SUMMARY.md
+- docs/KONFIGURATOR_OPTIMIZATION_PLAN.md
+- docs/KONFIGURATOR_TESTING_CHECKLIST.md
+- docs/PRICING_INITIAL_SYNC.md
+- docs/PRICING_SHADOW_COPY_SETUP.md
+- docs/PRICING_SYNC_ARCHITECTURE.md
+- docs/PRICING_SYNC_ENV_VARS.md
+- docs/PRICING_SYNC_IMPLEMENTATION_COMPLETE.md
+- docs/PRICING_SYNC_QUICK_REF.md
+- docs/PRICING_SYNC_SETUP.md
+- docs/SESSION_SUMMARY_OCT24.md
+
+
+---
+
 ## [09c9e63aa5c115c1a3829ddc898b03d4ff423e9f] - Mon Nov 10 13:26:48 2025 +0100
 
 **Author**: stenkjan

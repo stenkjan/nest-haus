@@ -336,21 +336,22 @@ export class PriceCalculator {
         
         // Get nest base price
         const nestPrice = pricingData.nest[nestSize]?.price || 0;
-        
-        // Get relative prices (trapezblech is base = 0, fichte is base = 0, ohne_belag is base = 0)
+        // Get relative prices (trapezblech is base = 0, ohne_belag is base = 0)
+        // Innenverkleidung uses ABSOLUTE prices, not relative
         const gebaeudehuellePrice = pricingData.gebaeudehuelle[gebaeudehuelle]?.[nestSize] || 0;
         const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
         const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
         
         const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
-        const fichtePrice = pricingData.innenverkleidung.fichte?.[nestSize] || 0;
-        const innenverkleidungRelative = innenverkleidungPrice - fichtePrice; // fichte is standard (base = 0)
+        // No relative calculation for innenverkleidung - use absolute price
         
         const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
         
-        return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
+        return nestPrice + gebaeudehuelleRelative + innenverkleidungPrice + bodenbelagRelative;
+        
+        return nestPrice + gebaeudehuelleRelative + innenverkleidungPrice + bodenbelagRelative;
       } catch (error) {
         console.error('Error calculating combination price from database:', error);
         // Return 0 instead of throwing to prevent crashes during initial load

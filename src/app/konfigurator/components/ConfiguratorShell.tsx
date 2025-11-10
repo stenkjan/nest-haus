@@ -894,11 +894,12 @@ export default function ConfiguratorShell({
           if (categoryId === "fenster") {
             // Show per m² price for selected fenster option (depends on belichtungspaket and nest size)
             if (configuration?.nest && configuration?.belichtungspaket) {
+              const geschossdeckeQty = configuration.geschossdecke?.quantity || 0;
               const pricePerSqm = PriceCalculator.getFensterPricePerSqm(
                 optionId,
                 configuration.nest.value,
                 configuration.belichtungspaket.value,
-                configuration?.geschossdecke?.quantity || 0
+                geschossdeckeQty
               );
               return {
                 type: "standard" as const,
@@ -1242,18 +1243,19 @@ export default function ConfiguratorShell({
 
         // For fenster with current selection, calculate relative price/m² based on belichtungspaket and nest size
         if (currentSelection && categoryId === "fenster" && configuration?.nest && configuration?.belichtungspaket) {
+          const geschossdeckeQty = configuration.geschossdecke?.quantity || 0;
           const currentPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             currentSelection.value,
             configuration.nest.value,
             configuration.belichtungspaket.value,
-            configuration?.geschossdecke?.quantity || 0
+            geschossdeckeQty
           );
           
           const optionPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             optionId,
             configuration.nest.value,
             configuration.belichtungspaket.value,
-            configuration?.geschossdecke?.quantity || 0
+            geschossdeckeQty
           );
           
           const priceDifference = optionPricePerSqm - currentPricePerSqm;

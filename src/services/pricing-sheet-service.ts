@@ -155,11 +155,10 @@ class PricingSheetService {
 
   private parseNumber(value: unknown, isPrice: boolean = false): number {
     if (typeof value === 'number') {
-      const rounded = Math.round(value);
       // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
-      if (isPrice && rounded < 1000 && rounded > 0) {
-        console.log(`[DEBUG] Multiplying price: ${rounded} * 1000 = ${result}`);
+      const result = (isPrice && value < 1000 && value > 0) ? value * 1000 : value;
+      if (isPrice && value < 1000 && value > 0) {
+        console.log(`[DEBUG] Multiplying price: ${value} * 1000 = ${result}`);
       }
       return result;
     }
@@ -167,15 +166,15 @@ class PricingSheetService {
       const cleaned = value.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
       if (isNaN(parsed)) return 0;
-      const rounded = Math.round(parsed);
       // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && rounded < 1000 && rounded > 0) ? rounded * 1000 : rounded;
-      if (isPrice && rounded < 1000 && rounded > 0) {
-        console.log(`[DEBUG] Multiplying price (string): ${rounded} * 1000 = ${result}`);
+      const result = (isPrice && parsed < 1000 && parsed > 0) ? parsed * 1000 : parsed;
+      if (isPrice && parsed < 1000 && parsed > 0) {
+        console.log(`[DEBUG] Multiplying price (string): ${parsed} * 1000 = ${result}`);
       }
       return result;
     }
     return 0;
+  }
   }
 
   private async fetchSheet(): Promise<unknown[][]> {
@@ -213,7 +212,7 @@ class PricingSheetService {
       const colIndex = NEST_COLUMNS[nestSize];
       const price = this.parseNumber(row11[colIndex], true); // Price in thousands
       const squareMeters = this.parseNumber(row12[colIndex]); // Not a price
-      const pricePerSqm = squareMeters > 0 ? Math.round(price / squareMeters) : 0;
+      const pricePerSqm = squareMeters > 0 ? price / squareMeters : 0;
 
       nestData[nestSize] = {
         price,
@@ -557,51 +556,35 @@ class PricingSheetService {
       fundament: fundamentPrices as PricingData['optionen']['fundament'],
     };
   }
-
   private parsePlanungspakete(rows: unknown[][]): PricingData['planungspaket'] {
-    // Find planungspakete section (around row 85-87)
-    // Only parse plus and pro, basis stays 0
+    // Rows 88-90 (0-indexed: 87-89)
+    // Basis (row 88) = 0
+    // Plus (row 89) = 9600
+    // Pro (row 90) = 12700
+    // Price is same across all nest sizes (columns F-N)
     
-    const planungspaketData: Partial<PricingData['planungspaket']> = {
-      plus: {} as { [key in NestSize]: number },
-      pro: {} as { [key in NestSize]: number },
+    const plusPrice = this.parseNumber(rows[88]?.[5], true) || 9600; // F89 (0-indexed: row 88, col 5)
+    const proPrice = this.parseNumber(rows[89]?.[5], true) || 12700; // F90 (0-indexed: row 89, col 5)
+    
+    console.log('[DEBUG] Planungspakete prices - Plus:', plusPrice, 'Pro:', proPrice);
+    
+    return {
+      plus: {
+        nest80: plusPrice,
+        nest100: plusPrice,
+        nest120: plusPrice,
+        nest140: plusPrice,
+        nest160: plusPrice,
+      },
+      pro: {
+        nest80: proPrice,
+        nest100: proPrice,
+        nest120: proPrice,
+        nest140: proPrice,
+        nest160: proPrice,
+      },
     };
-
-    let startRow = -1;
-    for (let i = 0; i < rows.length; i++) {
-      const cellE = String(rows[i]?.[4] || '').toLowerCase();
-      if (cellE.includes('planung')) {
-        startRow = i + 1;
-        break;
-      }
-    }
-
-    if (startRow === -1) {
-      console.warn('Planungspakete section not found');
-      return {
-        plus: {} as { [key in NestSize]: number },
-        pro: {} as { [key in NestSize]: number },
-      };
-    }
-
-    // Find plus and pro rows
-    for (let rowIndex = startRow; rowIndex < startRow + 3 && rowIndex < rows.length; rowIndex++) {
-      const row = rows[rowIndex] || [];
-      const optionName = String(row[4] || '').toLowerCase().trim();
-      
-      if (optionName.includes('plus')) {
-        NEST_VALUES.forEach((nestSize) => {
-          const colIndex = NEST_COLUMNS[nestSize];
-          planungspaketData.plus![nestSize] = this.parseNumber(row[colIndex], true); // Price in thousands
-        });
-      } else if (optionName.includes('pro')) {
-        NEST_VALUES.forEach((nestSize) => {
-          const colIndex = NEST_COLUMNS[nestSize];
-          planungspaketData.pro![nestSize] = this.parseNumber(row[colIndex], true); // Price in thousands
-        });
-      }
-    }
-
+  }
     return planungspaketData as PricingData['planungspaket'];
   }
 
