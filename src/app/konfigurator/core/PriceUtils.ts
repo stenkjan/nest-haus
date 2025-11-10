@@ -54,24 +54,21 @@ export class PriceUtils {
   }
 
   /**
-   * Get adjusted nutzfläche for Nest models
-   * Formula: (nestSize - 5) + (geschossdeckeQuantity * 6.5)
+   * Get adjusted nutzfläche for Nest models (matches configuratorData.ts descriptions)
    * @param nestModel - The nest model (nest80, nest100, etc.)
    * @param geschossdeckeQuantity - Optional quantity of Geschossdecke (adds 6.5m² per unit)
    */
   static getAdjustedNutzflaeche(nestModel: string, geschossdeckeQuantity?: number): number {
-    // Extract nest size number (80, 100, 120, 140, 160)
-    const sizeMatch = nestModel.match(/\d+/);
-    if (!sizeMatch) return 0;
-    
-    const nestSize = parseInt(sizeMatch[0]);
-    
-    // Base area formula: nestSize - 5
-    // nest80 → 75m², nest100 → 95m², nest120 → 115m², nest140 → 135m², nest160 → 155m²
-    const baseArea = nestSize - 5;
-    
-    // Each geschossdecke adds 6.5m²
-    const geschossdeckeArea = (geschossdeckeQuantity || 0) * 6.5;
+    const nutzflaecheMap: Record<string, number> = {
+      'nest80': 75,   // 75m² Nutzfläche (adjusted)
+      'nest100': 95,  // 95m² Nutzfläche (adjusted)
+      'nest120': 115, // 115m² Nutzfläche (adjusted)
+      'nest140': 135, // 135m² Nutzfläche (adjusted)
+      'nest160': 155  // 155m² Nutzfläche (adjusted)
+    };
+
+    const baseArea = nutzflaecheMap[nestModel] || 0;
+    const geschossdeckeArea = (geschossdeckeQuantity || 0) * 6.5; // 6.5m² per geschossdecke
 
     return baseArea + geschossdeckeArea;
   }

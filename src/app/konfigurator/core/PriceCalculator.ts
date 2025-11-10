@@ -336,20 +336,20 @@ export class PriceCalculator {
         
         // Get nest base price
         const nestPrice = pricingData.nest[nestSize]?.price || 0;
-        
-        // Get relative prices for gebaeudehuelle and bodenbelag (trapezblech and ohne_belag are base = 0)
-        // IMPORTANT: Innenverkleidung does NOT use relative pricing - all options have actual costs
+        // Get relative prices (trapezblech is base = 0, ohne_belag is base = 0)
+        // Innenverkleidung uses ABSOLUTE prices, not relative
         const gebaeudehuellePrice = pricingData.gebaeudehuelle[gebaeudehuelle]?.[nestSize] || 0;
         const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
         const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
         
-        // Innenverkleidung: ALL options have real prices (Fichte: 23,020€, Lärche: 31,921€, Eiche: 37,235€ for Nest 80)
-        // DO NOT subtract fichtePrice - this would make Fichte show as "inkludiert" which is incorrect
         const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
+        // No relative calculation for innenverkleidung - use absolute price
         
         const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
+        
+        return nestPrice + gebaeudehuelleRelative + innenverkleidungPrice + bodenbelagRelative;
         
         return nestPrice + gebaeudehuelleRelative + innenverkleidungPrice + bodenbelagRelative;
       } catch (error) {

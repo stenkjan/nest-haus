@@ -889,16 +889,17 @@ export default function ConfiguratorShell({
           }
         }
 
-        // If this option is currently selected, show per m² price for fenster, actual price for parkett and innenverkleidung
+        // If this option is currently selected, show per m² price for fenster, actual price for parkett, no price for others
         if (currentSelection && currentSelection.value === optionId) {
           if (categoryId === "fenster") {
             // Show per m² price for selected fenster option (depends on belichtungspaket and nest size)
             if (configuration?.nest && configuration?.belichtungspaket) {
+              const geschossdeckeQty = configuration.geschossdecke?.quantity || 0;
               const pricePerSqm = PriceCalculator.getFensterPricePerSqm(
                 optionId,
                 configuration.nest.value,
                 configuration.belichtungspaket.value,
-                configuration?.geschossdecke?.quantity || 0
+                geschossdeckeQty
               );
               return {
                 type: "standard" as const,
@@ -907,24 +908,6 @@ export default function ConfiguratorShell({
               };
             }
             // Fallback to static price
-            return {
-              type: "standard" as const,
-              amount: option.price.amount || 0,
-              monthly: option.price.monthly,
-            };
-          }
-          if (categoryId === "innenverkleidung") {
-            // Show ABSOLUTE price for selected innenverkleidung (NEVER show as "inkludiert")
-            const pricingData = PriceCalculator.getPricingData();
-            if (pricingData && configuration?.nest) {
-              const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-              const absolutePrice = pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
-              return {
-                type: "standard" as const,
-                amount: absolutePrice,
-                monthly: Math.round(absolutePrice / 240),
-              };
-            }
             return {
               type: "standard" as const,
               amount: option.price.amount || 0,
@@ -1260,18 +1243,19 @@ export default function ConfiguratorShell({
 
         // For fenster with current selection, calculate relative price/m² based on belichtungspaket and nest size
         if (currentSelection && categoryId === "fenster" && configuration?.nest && configuration?.belichtungspaket) {
+          const geschossdeckeQty = configuration.geschossdecke?.quantity || 0;
           const currentPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             currentSelection.value,
             configuration.nest.value,
             configuration.belichtungspaket.value,
-            configuration?.geschossdecke?.quantity || 0
+            geschossdeckeQty
           );
           
           const optionPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             optionId,
             configuration.nest.value,
             configuration.belichtungspaket.value,
-            configuration?.geschossdecke?.quantity || 0
+            geschossdeckeQty
           );
           
           const priceDifference = optionPricePerSqm - currentPricePerSqm;
