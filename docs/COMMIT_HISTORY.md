@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [feb1662ae1723d5439f954fe7a0b5dd80db90a49] - Mon Nov 10 10:36:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Add Ab prefix to PV-Anlage standard price type  - PV-Anlage price type is converted from 'upgrade' to 'standard' in ConfiguratorShell - Added 'Ab' prefix logic to type === 'standard' section for pvanlage and geschossdecke - Now shows 'Ab 3.934€' for PV-Anlage in all display states - Fixes issue where PV showed '3.934€' without 'Ab' prefix while Geschossdecke showed it correctly  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [f8ae8e6a9430156d93ee9ff5b859c300fb964035] - Mon Nov 10 10:34:36 2025 +0100
 
 **Author**: stenkjan
