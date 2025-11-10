@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f2d8c1127c60d67a233028a1a538840ab841c465] - Mon Nov 10 12:28:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct geschossdecke price per m² calculation  Issue: Geschossdecke showed different price/m² when clicked vs when Nest size changed  Root cause: - Was dividing unit price (4,115€) by TOTAL Nest area - Should divide by geschossdecke's own area (7.5m²)  Fixes: 1. Added special handling for geschossdecke in calculateOptionPricePerSquareMeter() 2. Price/m² now correctly calculated as: 4,115€ / 7.5m² = ~549€/m² 3. Fixed geschossdeckeArea from 6.5m² to 7.5m² (correct value)  Result: Consistent price/m² display for geschossdecke regardless of selection method  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+---
+
 ## [8bdb5d0982e77c01ccd88bd298b26646e7338e43] - Mon Nov 10 12:15:49 2025 +0100
 
 **Author**: stenkjan
