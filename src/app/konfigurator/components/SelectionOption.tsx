@@ -116,7 +116,7 @@ export default function SelectionOption({
               // For items with actual prices
               <>
                 <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
-                  {categoryId === "pvanlage" 
+                  {categoryId === "pvanlage" || categoryId === "geschossdecke"
                     ? `Ab ${PriceUtils.formatPrice(contributionPrice)}` 
                     : `${PriceUtils.formatPrice(contributionPrice)}${categoryId === "fenster" ? "/m²" : ""}`}
                 </p>
@@ -289,8 +289,8 @@ export default function SelectionOption({
       return (
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
-            {categoryId === "pvanlage"
-              ? `Ab ${formattedPrice}` // PV-Anlage shows "Ab" prefix
+            {categoryId === "pvanlage" || categoryId === "geschossdecke"
+              ? `Ab ${formattedPrice}` // PV-Anlage and Geschossdecke show "Ab" prefix
               : price.amount !== undefined && price.amount > 0
                 ? `+${formattedPrice}`
                 : formattedPrice}

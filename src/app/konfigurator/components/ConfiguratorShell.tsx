@@ -632,17 +632,17 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For geschossdecke, calculate dynamic price with quantity
+        // For geschossdecke, use fixed base price from pricing data × quantity
         if (
           categoryId === "geschossdecke" &&
           configuration?.nest &&
           configuration.geschossdecke?.quantity
         ) {
-          return calculateSizeDependentPrice(
-            configuration.nest.value,
-            "geschossdecke",
-            configuration.geschossdecke.quantity
-          );
+          const pricingData = PriceCalculator.getPricingData();
+          if (pricingData) {
+            return pricingData.geschossdecke.basePrice * configuration.geschossdecke.quantity;
+          }
+          return 0;
         }
 
         // For fundament, calculate dynamic price
@@ -666,17 +666,17 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For geschossdecke, calculate dynamic price with quantity
+        // For geschossdecke, use fixed base price from pricing data × quantity
         if (
           categoryId === "geschossdecke" &&
           configuration?.nest &&
           configuration.geschossdecke?.quantity
         ) {
-          return calculateSizeDependentPrice(
-            configuration.nest.value,
-            "geschossdecke",
-            configuration.geschossdecke.quantity
-          );
+          const pricingData = PriceCalculator.getPricingData();
+          if (pricingData) {
+            return pricingData.geschossdecke.basePrice * configuration.geschossdecke.quantity;
+          }
+          return 0;
         }
 
         // For fundament, calculate dynamic price
@@ -1611,16 +1611,15 @@ export default function ConfiguratorShell({
                         ? getActualContributionPrice(category.id, option.id)
                         : null;
 
-                      // For geschossdecke, dynamically calculate unit price and add to description
+                      // For geschossdecke, use fixed unit price from pricing data
                       let dynamicDescription = option.description;
-                      if (category.id === "geschossdecke" && configuration?.nest?.value) {
-                        const unitPrice = calculateSizeDependentPrice(
-                          configuration.nest.value,
-                          "geschossdecke",
-                          1
-                        );
-                        const formattedPrice = PriceUtils.formatPrice(unitPrice);
-                        dynamicDescription = `Zusätzliche Geschossdecke\n${formattedPrice} pro Einheit`;
+                      if (category.id === "geschossdecke") {
+                        const pricingData = PriceCalculator.getPricingData();
+                        if (pricingData) {
+                          const unitPrice = pricingData.geschossdecke.basePrice;
+                          const formattedPrice = PriceUtils.formatPrice(unitPrice);
+                          dynamicDescription = `Zusätzliche Geschossdecke\nAb ${formattedPrice} pro Einheit`;
+                        }
                       }
 
                       return (
@@ -1670,7 +1669,10 @@ export default function ConfiguratorShell({
                           label="Anzahl der Geschossdecken"
                           value={geschossdeckeQuantity}
                           max={getMaxGeschossdecken()}
-                          unitPrice={configuration.geschossdecke.price || 0}
+                          unitPrice={(() => {
+                            const pricingData = PriceCalculator.getPricingData();
+                            return pricingData?.geschossdecke?.basePrice || 4115;
+                          })()}
                           onChange={handleGeschossdeckeQuantityChange}
                         />
                       </>
