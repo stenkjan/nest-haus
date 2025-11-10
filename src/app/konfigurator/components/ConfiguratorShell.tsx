@@ -867,27 +867,20 @@ export default function ConfiguratorShell({
           }
         }
 
-        // Special handling for geschossdecke - calculate relative pricing like planungspaket
+        // Special handling for geschossdecke - show fixed unit price
         if (categoryId === "geschossdecke") {
+          const pricingData = PriceCalculator.getPricingData();
+          const unitPrice = pricingData?.geschossdecke?.basePrice || 4115;
+          
           if (currentSelection && currentSelection.value === optionId) {
-            // Show unit price for selected geschossdecke in gray
-            const unitPrice = calculateSizeDependentPrice(
-              configuration.nest?.value || "nest80",
-              "geschossdecke",
-              1
-            );
+            // Show fixed unit price for selected geschossdecke in gray
             return {
               type: "standard" as const,
               amount: unitPrice,
               monthly: Math.round(unitPrice / 240),
             };
           } else {
-            // Show unit price for geschossdecke
-            const unitPrice = calculateSizeDependentPrice(
-              configuration.nest?.value || "nest80",
-              "geschossdecke",
-              1
-            );
+            // Show fixed unit price for geschossdecke
             return {
               type: "upgrade" as const,
               amount: unitPrice,
@@ -1612,7 +1605,7 @@ export default function ConfiguratorShell({
                         if (pricingData) {
                           const unitPrice = pricingData.geschossdecke.basePrice;
                           const formattedPrice = PriceUtils.formatPrice(unitPrice);
-                          dynamicDescription = `Zusätzliche Geschossdecke\nAb ${formattedPrice} pro Einheit`;
+                          dynamicDescription = `Zusätzliche Geschossdecke\n${formattedPrice} pro Einheit`;
                         }
                       }
 

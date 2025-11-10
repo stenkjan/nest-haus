@@ -469,8 +469,16 @@ export default function SelectionOption({
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
             {categoryId === "pvanlage" && price.amount
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
-              : categoryId === "geschossdecke" && price.amount
-                ? "— €/m²" // Placeholder for price/m² - will be filled from sheet
+              : categoryId === "geschossdecke" && price.amount && nestModel
+                ? (() => {
+                    // Calculate price per m² for geschossdecke: basePrice / nestSize / 6.5
+                    const nestSizeMap: Record<string, number> = {
+                      nest80: 80, nest100: 100, nest120: 120, nest140: 140, nest160: 160
+                    };
+                    const nestArea = nestSizeMap[nestModel] || 80;
+                    const pricePerSqm = Math.round(price.amount / nestArea / 6.5);
+                    return `${PriceUtils.formatPrice(pricePerSqm)} /m²`;
+                  })()
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
                     price.amount,
