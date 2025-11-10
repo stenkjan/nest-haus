@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c7cf50b60dcd008ead13d564c8ed076cbe636ece] - Mon Nov 10 12:47:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Rename getCacheInfo to getCacheStats in PriceCacheDebugger  The PriceCalculator class exports getCacheStats(), not getCacheInfo(). Updated the debug component to use the correct method name.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/debug/PriceCacheDebugger.tsx
+
+
+---
+
 ## [10bfb2197f8c279ab779aa4e6e6dd116c69654c5] - Mon Nov 10 12:44:26 2025 +0100
 
 **Author**: stenkjan
