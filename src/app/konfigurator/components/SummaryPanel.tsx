@@ -48,7 +48,7 @@ export default function SummaryPanel({
           const nestBasePrice = pricingData.nest[nestSize]?.price || 0;
           return nestBasePrice; // Return RAW construction price only
         }
-      } catch (error) {
+      } catch {
         // Fallback to stored price if pricing data not loaded yet
       }
       return selection.price || 0;
@@ -64,7 +64,7 @@ export default function SummaryPanel({
           const absolutePrice = pricingData.innenverkleidung[innenverkleidungOption]?.[nestSize] || 0;
           return absolutePrice; // Return ABSOLUTE price (never 0 / "inkludiert")
         }
-      } catch (error) {
+      } catch {
         // Fallback to stored price if pricing data not loaded yet
       }
       return selection.price || 0;

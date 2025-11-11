@@ -105,7 +105,7 @@ export class PriceCalculator {
       try {
         const cached = sessionStorage.getItem('nest-haus-pricing-data');
         if (cached) {
-          const { data, timestamp, version } = JSON.parse(cached);
+          const { data, timestamp } = JSON.parse(cached);
           if (now - timestamp < this.PRICING_DATA_TTL) {
             this.pricingData = data;
             this.pricingDataTimestamp = timestamp;
@@ -116,9 +116,9 @@ export class PriceCalculator {
             return;
           }
         }
-      } catch (error) {
-        // SessionStorage not available or failed
-      }
+        } catch {
+          // SessionStorage not available or failed
+        }
     }
 
     // Start fetching from database (shadow copy)
@@ -141,7 +141,7 @@ export class PriceCalculator {
                 timestamp: now,
                 version: result.version || 1,
               }));
-            } catch (error) {
+            } catch {
               // SessionStorage not available
             }
           }
@@ -290,10 +290,10 @@ export class PriceCalculator {
     // Clear sessionStorage
     if (typeof window !== 'undefined') {
       try {
-        sessionStorage.removeItem('nest-haus-pricing-data');
-      } catch (error) {
-        // SessionStorage not available
-      }
+      sessionStorage.removeItem('nest-haus-pricing-data');
+    } catch {
+      // SessionStorage not available
+    }
     }
 
     // Reset cache stats
