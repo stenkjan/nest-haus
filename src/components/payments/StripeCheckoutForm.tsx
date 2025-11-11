@@ -55,7 +55,7 @@ const getPaymentElementOptions = (selectedMethod?: string) => {
   // Only show card, EPS, and SOFORT in step 2
   // Klarna, Apple Pay, and Google Pay are handled in step 1 (redirect-based)
   let paymentMethodTypes: string[] = ["card", "eps", "sofort"];
-  
+
   if (selectedMethod === "card") {
     paymentMethodTypes = ["card"];
   } else if (selectedMethod === "eps") {
@@ -218,7 +218,7 @@ function PaymentForm({
           <span>•</span>
           <span>Powered by Stripe</span>
         </div>
-        
+
         <div className="flex gap-4 justify-center">
           <button
             type="button"
@@ -281,7 +281,7 @@ export default function StripeCheckoutForm({
 }: StripeCheckoutFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [_paymentLoading, setPaymentLoading] = useState(false);
 
   // Create payment intent on component mount
   useEffect(() => {
@@ -289,7 +289,7 @@ export default function StripeCheckoutForm({
       try {
         // Determine payment method types to enable
         const paymentMethodTypes = ["card", "eps", "sofort"];
-        
+
         const response = await fetch("/api/payments/create-payment-intent", {
           method: "POST",
           headers: {
@@ -324,7 +324,15 @@ export default function StripeCheckoutForm({
     };
 
     createPaymentIntent();
-  }, [amount, currency, customerEmail, customerName, inquiryId, selectedPaymentMethod, onError]);
+  }, [
+    amount,
+    currency,
+    customerEmail,
+    customerName,
+    inquiryId,
+    selectedPaymentMethod,
+    onError,
+  ]);
 
   const elementsOptions: StripeElementsOptions = {
     clientSecret: clientSecret || undefined,

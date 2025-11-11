@@ -307,10 +307,10 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                       <div className="flex justify-between items-end">
                         {/* Left side - Title and Subtitle */}
                         <div className="text-white flex-1 pr-4">
-                          <h3 className="h3-tertiary-no-m text-white">
+                          <h3 className="p-primary-small text-white">
                             {img.description.title}
                           </h3>
-                          <p className="p-secondary-small text-gray-200">
+                          <p className="p-primary-small2 text-gray-200">
                             {img.description.subtitle}
                           </p>
                         </div>
@@ -319,7 +319,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                         <div className="flex-shrink-0">
                           <Link
                             href={`/#${img.description.sectionSlug}`}
-                            className="inline-flex items-center p-secondary-small text-white hover:text-gray-200 transition-colors duration-200 group whitespace-nowrap"
+                            className="inline-flex items-center p-primary-small2 text-white hover:text-gray-200 transition-colors duration-200 group whitespace-nowrap underline"
                           >
                             Weitere Beispiele entdecken
                             <svg
