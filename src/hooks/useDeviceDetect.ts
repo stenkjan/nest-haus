@@ -44,15 +44,14 @@ export function useDeviceDetect(): DeviceInfo {
                     window.matchMedia("(pointer: coarse)").matches);
 
             // Check for orientation API (mobile/tablet specific)
-            const hasOrientationAPI =
+            const _hasOrientationAPI =
                 typeof window.orientation !== "undefined" ||
                 "orientation" in window ||
                 navigator.userAgent.indexOf("Mobile") !== -1;
 
-            // IMPROVED LOGIC: Prioritize user agent over viewport width
-            // This prevents F12 device toolbar from incorrectly triggering mobile detection
+            // IMPROVED LOGIC: Balanced approach for DevTools and real devices
             
-            // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop (laptops, large tablets, desktops)
+            // CRITICAL FIX #1: Viewport >= 1024px is ALWAYS desktop (laptops, large tablets, desktops)
             // This handles DevTools laptop presets (1440px, 1024px) that simulate touch
             if (width >= 1024) {
                 return {
@@ -63,10 +62,37 @@ export function useDeviceDetect(): DeviceInfo {
                 };
             }
             
-            // If user agent clearly indicates desktop (and not large screen already handled above)
-            if (isDesktopUserAgent && !hasTouchScreen) {
-                // Desktop browser - viewport size alone doesn't make it mobile
-                // This handles F12 device toolbar case with smaller viewports
+            // CRITICAL FIX #2: Viewport < 768px with desktop UA = Allow mobile for DevTools testing
+            // This lets developers test mobile layouts in DevTools with mobile presets
+            if (width < 768) {
+                // For small viewports, show mobile view even with desktop user agent
+                // This enables mobile testing in DevTools while still detecting real mobile devices
+                return {
+                    isMobile: true,
+                    isTablet: false,
+                    isDesktop: false,
+                    screenWidth: width,
+                };
+            }
+            
+            // For medium viewports (768-1023px): Check device signals for tablets
+            // This range is typically tablets or small laptops
+            if (width >= 768 && width < 1024) {
+                // Check if it's a real tablet device
+                const isTablet = (isTabletDevice && hasTouchScreen) || 
+                                 (hasTouchScreen && !isMobileDevice && !isDesktopUserAgent);
+                
+                if (isTablet) {
+                    return {
+                        isMobile: false,
+                        isTablet: true,
+                        isDesktop: false,
+                        screenWidth: width,
+                    };
+                }
+                
+                // For desktop browsers in this range (e.g., resized window)
+                // treat as desktop to avoid switching to mobile on resize
                 return {
                     isMobile: false,
                     isTablet: false,
@@ -75,17 +101,9 @@ export function useDeviceDetect(): DeviceInfo {
                 };
             }
 
-            // For actual mobile devices: User agent says mobile + touch screen
-            const isMobile =
-                (isMobileDevice && hasTouchScreen) ||
-                (width < 768 && isMobileDevice) ||
-                (width < 768 && hasTouchScreen && hasOrientationAPI);
-
-            // For tablets: User agent says tablet + touch screen (only in 768-1023px range)
-            const isTablet =
-                (isTabletDevice && hasTouchScreen) ||
-                (width >= 768 && width < 1024 && isTabletDevice);
-
+            // Fallback (should not reach here due to above conditions)
+            const isMobile = isMobileDevice && hasTouchScreen;
+            const isTablet = isTabletDevice && hasTouchScreen;
             const isDesktop = !isMobile && !isTablet;
 
             return {

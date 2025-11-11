@@ -44,32 +44,39 @@ export function getConnectionInfo(): ConnectionInfo {
     }
 
     // Detect mobile device
-    // CRITICAL: Prioritize user agent over viewport width to prevent F12 device toolbar issues
-    // ALSO: Viewport >= 1024px is ALWAYS desktop (handles DevTools laptop presets)
+    // BALANCED APPROACH: Allow both laptop testing (>= 1024px) and mobile testing (< 768px)
     const width = window.innerWidth;
     
-    // Large viewports are always desktop, regardless of other factors
+    // Large viewports (>= 1024px) are always desktop
     if (width >= 1024) {
         connectionInfo = {
             isSlowConnection: false,
             effectiveType: 'desktop',
             isMobile: false
         };
-    } else {
+    } 
+    // Small viewports (< 768px) are always mobile (for DevTools testing and real devices)
+    else if (width < 768) {
+        connectionInfo = {
+            isSlowConnection: true,
+            effectiveType: 'mobile-fallback',
+            isMobile: true
+        };
+    }
+    // Medium range (768-1023px): Check device signals
+    else {
         const userAgent = navigator.userAgent || '';
         const isMobileUserAgent = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-        const isDesktopUserAgent = !isMobileUserAgent && !/mobile|android/i.test(userAgent.toLowerCase());
+        const isTabletUserAgent = /iPad|tablet/i.test(userAgent);
         
-        // Check for touch capabilities (real mobile devices have touch)
+        // Check for touch capabilities
         const hasTouchScreen =
           "ontouchstart" in window ||
           navigator.maxTouchPoints > 0 ||
           (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
         
-        // If desktop browser (even with small viewport like F12 device toolbar), it's not mobile
-        const isMobile = isDesktopUserAgent && !hasTouchScreen 
-          ? false 
-          : (isMobileUserAgent || (width < 768 && hasTouchScreen));
+        // Tablet range: only mobile if it's a real tablet
+        const isMobile = (isTabletUserAgent || isMobileUserAgent) && hasTouchScreen;
         
         connectionInfo = {
             isSlowConnection: isMobile,

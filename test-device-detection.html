@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Device Detection Test - UPDATED FIX</title>
+    <title>Device Detection Test - BALANCED FIX V3</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,7 +20,7 @@
         }
         .mobile { border-color: #4CAF50; background: #e8f5e9; }
         .desktop { border-color: #2196F3; background: #e3f2fd; }
-        .laptop { border-color: #FF9800; background: #fff3e0; }
+        .tablet { border-color: #FF9800; background: #fff3e0; }
         h1 { color: #333; }
         .test-result {
             font-weight: bold;
@@ -45,17 +45,29 @@
             border-left: 4px solid #0c5460;
             font-weight: bold;
         }
+        .breakpoints {
+            background: #e7f3ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2196F3;
+        }
     </style>
 </head>
 <body>
-    <h1>🔍 Device Detection Test - UPDATED FIX</h1>
-    <p><strong>Instructions:</strong></p>
+    <h1>🔍 Device Detection Test - BALANCED FIX V3</h1>
+    
+    <div class="breakpoints">
+        <strong>📐 Breakpoint Rules:</strong><br>
+        • < 768px = Mobile (ALWAYS) ⭐<br>
+        • 768-1023px = Tablet/Desktop (check device)<br>
+        • >= 1024px = Desktop (ALWAYS) ⭐
+    </div>
+    
+    <p><strong>Test Instructions:</strong></p>
     <ol>
-        <li>Open this in Chrome on desktop</li>
-        <li>Press F12 to open DevTools</li>
-        <li>Toggle device toolbar (or press Ctrl+Shift+M)</li>
-        <li><strong>Select LAPTOP presets:</strong> Laptop (1440x900) or Laptop L (1024x768)</li>
-        <li><strong>Result should be: DESKTOP</strong> (not Mobile!)</li>
+        <li><strong>Test Mobile:</strong> Select iPhone 12 Pro (390px) → Should show Mobile ✅</li>
+        <li><strong>Test Tablet:</strong> Select iPad Mini (768px) → Should show Tablet/Desktop ✅</li>
+        <li><strong>Test Laptop:</strong> Select Laptop (1440px) → Should show Desktop ✅</li>
     </ol>
     
     <div id="results"></div>
@@ -63,68 +75,62 @@
     <script>
         function detectDevice() {
             const width = window.innerWidth;
-            const userAgent = navigator.userAgent.toLowerCase();
             
-            // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+            // CRITICAL FIX #1: Viewport >= 1024px is ALWAYS desktop
             if (width >= 1024) {
                 return {
                     isMobile: false,
+                    isTablet: false,
                     isDesktop: true,
                     width,
-                    forcedDesktop: true,
-                    reason: 'Viewport >= 1024px (LAPTOP SIZE) → Always Desktop',
-                    isMobileUserAgent: false,
-                    isDesktopUserAgent: true,
-                    hasTouchScreen: false
+                    rule: 'Viewport >= 1024px → Desktop (Laptop/Desktop)',
+                    priority: '🔴 Priority 1: Viewport Width'
                 };
             }
             
-            // Check for mobile device signals
-            const isMobileUserAgent =
-                /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+            // CRITICAL FIX #2: Viewport < 768px is ALWAYS mobile
+            if (width < 768) {
+                return {
+                    isMobile: true,
+                    isTablet: false,
+                    isDesktop: false,
+                    width,
+                    rule: 'Viewport < 768px → Mobile (Phone)',
+                    priority: '🔴 Priority 1: Viewport Width'
+                };
+            }
+            
+            // For medium range (768-1023px): Check device signals
+            const userAgent = navigator.userAgent.toLowerCase();
             const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
-
-            // CRITICAL: Check if this is a desktop browser
-            const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
-                !/mobile|android/i.test(userAgent);
-
-            // Check for touch capabilities
+            const isMobileUserAgent = /android|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+            
             const hasTouchScreen =
                 "ontouchstart" in window ||
                 navigator.maxTouchPoints > 0 ||
                 (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
 
-            // IMPROVED LOGIC: Prioritize user agent over viewport width
-            let isMobile, isDesktop, reason;
+            const isTablet = isTabletUserAgent && hasTouchScreen;
             
-            if (isDesktopUserAgent && !hasTouchScreen) {
-                // Desktop browser - viewport size alone doesn't make it mobile
-                isMobile = false;
-                isDesktop = true;
-                reason = 'Desktop user agent + No touch';
-            } else if (isMobileUserAgent && hasTouchScreen) {
-                isMobile = true;
-                isDesktop = false;
-                reason = 'Mobile user agent + Touch screen';
-            } else if (width < 768 && hasTouchScreen) {
-                isMobile = true;
-                isDesktop = false;
-                reason = 'Small viewport (<768px) + Touch';
-            } else {
-                isMobile = false;
-                isDesktop = true;
-                reason = 'Default to desktop';
+            if (isTablet) {
+                return {
+                    isMobile: false,
+                    isTablet: true,
+                    isDesktop: false,
+                    width,
+                    rule: 'Tablet user agent + Touch in 768-1023px range',
+                    priority: '🟡 Priority 2: Device Signals'
+                };
             }
-
+            
+            // Default to desktop for this range
             return {
-                isMobile,
-                isDesktop,
+                isMobile: false,
+                isTablet: false,
+                isDesktop: true,
                 width,
-                forcedDesktop: false,
-                reason,
-                isMobileUserAgent,
-                isDesktopUserAgent,
-                hasTouchScreen
+                rule: 'Medium viewport (768-1023px) → Desktop',
+                priority: '🟢 Priority 3: Default'
             };
         }
 
@@ -132,77 +138,80 @@
             const detection = detectDevice();
             const resultsDiv = document.getElementById('results');
             
-            const deviceType = detection.isMobile ? 'Mobile' : 'Desktop';
-            const boxClass = detection.isMobile ? 'mobile' : (detection.width >= 1024 ? 'laptop' : 'desktop');
+            const deviceType = detection.isMobile ? 'Mobile' : 
+                              detection.isTablet ? 'Tablet' : 'Desktop';
+            const boxClass = detection.isMobile ? 'mobile' : 
+                            detection.isTablet ? 'tablet' : 'desktop';
             
             let criticalFixHtml = '';
-            if (detection.forcedDesktop) {
+            if (detection.width >= 1024) {
                 criticalFixHtml = `
                     <div class="critical-fix">
-                        ⭐ CRITICAL FIX ACTIVE: Viewport ${detection.width}px >= 1024px<br>
+                        ✅ DESKTOP FIX ACTIVE: Viewport ${detection.width}px >= 1024px<br>
                         → FORCED TO DESKTOP (Laptop/Desktop size)<br>
-                        → This fixes DevTools laptop preset issue!
+                        → Ignores simulated touch events from DevTools
                     </div>
                 `;
-            }
-            
-            let devToolsWarning = '';
-            if (detection.hasTouchScreen && detection.isDesktopUserAgent && detection.width >= 1024) {
-                devToolsWarning = `
-                    <div class="info-box laptop">
-                        <strong>🔧 DevTools Laptop Preset Detected!</strong><br>
-                        • Width: ${detection.width}px (laptop size)<br>
-                        • Touch: Simulated by DevTools<br>
-                        • User Agent: Desktop browser<br>
-                        • <strong>Result: ✅ Correctly showing as Desktop</strong>
+            } else if (detection.width < 768) {
+                criticalFixHtml = `
+                    <div class="critical-fix" style="background: #e8f5e9; border-left-color: #4CAF50;">
+                        ✅ MOBILE FIX ACTIVE: Viewport ${detection.width}px < 768px<br>
+                        → FORCED TO MOBILE (Phone size)<br>
+                        → Enables mobile testing in DevTools
                     </div>
                 `;
             }
             
             resultsDiv.innerHTML = `
                 ${criticalFixHtml}
-                ${devToolsWarning}
                 
                 <div class="info-box ${boxClass}">
                     <div class="test-result">
-                        ${detection.isMobile ? '📱' : '💻'} Device Type: ${deviceType}
+                        ${detection.isMobile ? '📱' : detection.isTablet ? '📱' : '💻'} Device Type: ${deviceType}
                     </div>
                     <div class="details">
-                        <strong>Detection Logic:</strong><br>
-                        ${detection.reason}<br><br>
+                        <strong>${detection.priority}</strong><br>
+                        ${detection.rule}<br><br>
                         <strong>Detection Details:</strong><br>
-                        • User Agent is Mobile: ${detection.isMobileUserAgent ? '✅ Yes' : '❌ No'}<br>
-                        • User Agent is Desktop: ${detection.isDesktopUserAgent ? '✅ Yes' : '❌ No'}<br>
-                        • Has Touch Screen: ${detection.hasTouchScreen ? '✅ Yes' : '❌ No'}<br>
-                        • Forced Desktop (>= 1024px): ${detection.forcedDesktop ? '✅ Yes' : '❌ No'}<br>
-                        • Final Decision: ${deviceType}
+                        • Width: ${detection.width}px<br>
+                        • Mobile: ${detection.isMobile ? '✅' : '❌'}<br>
+                        • Tablet: ${detection.isTablet ? '✅' : '❌'}<br>
+                        • Desktop: ${detection.isDesktop ? '✅' : '❌'}
                     </div>
                 </div>
                 
                 <div class="viewport-info">
-                    <strong>📐 Viewport Info:</strong><br>
-                    • Window Width: ${detection.width}px<br>
-                    • Mobile Breakpoint: < 768px<br>
-                    • Laptop Breakpoint: >= 1024px <strong>(NEW FIX!)</strong><br>
-                    • User Agent: <code style="font-size: 0.8em; word-break: break-all;">${navigator.userAgent}</code>
+                    <strong>📐 Current Viewport:</strong> ${detection.width}px<br>
+                    <strong>📱 Breakpoint:</strong> ${
+                        detection.width < 768 ? '< 768px (Mobile)' :
+                        detection.width < 1024 ? '768-1023px (Tablet range)' :
+                        '>= 1024px (Desktop/Laptop)'
+                    }<br>
+                    <strong>🔧 User Agent:</strong> <code style="font-size: 0.8em; word-break: break-all;">${navigator.userAgent}</code>
                 </div>
 
                 <div class="info-box">
-                    <strong>🧪 Test Scenarios:</strong><br><br>
+                    <strong>🧪 Expected Results by DevTools Preset:</strong><br><br>
                     
-                    <strong>✅ Expected Results:</strong><br>
-                    • Normal desktop (1920px): Desktop<br>
-                    • <strong>DevTools Laptop (1440px): Desktop ⭐</strong><br>
-                    • <strong>DevTools Laptop L (1024px): Desktop ⭐</strong><br>
-                    • DevTools iPad (768px): Tablet/Desktop<br>
-                    • DevTools iPhone (375px): Desktop (desktop user agent)<br>
-                    • Real iPhone: Mobile<br><br>
+                    <strong>Mobile Presets:</strong><br>
+                    • iPhone 12 Pro (390px) → Mobile ✅<br>
+                    • iPhone SE (375px) → Mobile ✅<br>
+                    • Samsung Galaxy S20 (360px) → Mobile ✅<br><br>
                     
-                    ${detection.width >= 1024 && detection.isDesktopUserAgent ? 
-                        '<strong style="color: #4CAF50;">✅ LAPTOP SIZE TEST PASSED!</strong><br>Viewport >= 1024px correctly shows Desktop' :
-                        detection.width < 1024 && detection.isDesktopUserAgent && !detection.hasTouchScreen ?
-                        '<strong style="color: #4CAF50;">✅ DESKTOP BROWSER TEST PASSED!</strong><br>Desktop browser with small viewport' :
-                        ''
+                    <strong>Tablet Presets:</strong><br>
+                    • iPad Mini (768px) → Tablet/Desktop ✅<br>
+                    • iPad Air (820px) → Tablet/Desktop ✅<br>
+                    • Surface Pro 7 (912px) → Tablet/Desktop ✅<br><br>
+                    
+                    <strong>Laptop Presets:</strong><br>
+                    • Laptop (1440px) → Desktop ✅<br>
+                    • Laptop L (1024px) → Desktop ✅<br><br>
+                    
+                    ${detection.width < 768 ? 
+                        '<strong style="color: #4CAF50;">✅ MOBILE SIZE DETECTED!</strong><br>Viewport < 768px correctly shows Mobile' :
+                        detection.width >= 1024 ?
+                        '<strong style="color: #2196F3;">✅ LAPTOP SIZE DETECTED!</strong><br>Viewport >= 1024px correctly shows Desktop' :
+                        '<strong style="color: #FF9800;">✅ TABLET SIZE DETECTED!</strong><br>Viewport in tablet range (768-1023px)'
                     }
                 </div>
             `;

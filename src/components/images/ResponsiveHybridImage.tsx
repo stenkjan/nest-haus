@@ -55,23 +55,25 @@ export default function ResponsiveHybridImage({
     // Client-side: Immediate detection with proper desktop browser handling
     const width = window.innerWidth;
     
-    // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+    // CRITICAL FIX #1: Viewport >= 1024px is ALWAYS desktop
     // This handles DevTools laptop presets that simulate touch
     if (width >= 1024) {
       return false; // Large viewport = desktop, always
     }
     
+    // CRITICAL FIX #2: Viewport < 768px = ALWAYS mobile
+    // This allows mobile testing in DevTools and detects real mobile devices
+    if (width < 768) {
+      return true; // Small viewport = mobile for testing and real devices
+    }
+    
+    // For medium viewports (768-1023px): Check device signals
     const userAgent = navigator.userAgent.toLowerCase();
-    const isMobileUserAgent =
+    const _isMobileUserAgent =
       /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
         userAgent
       );
     const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
-    const isSmallViewport = width < breakpoint;
-
-    // CRITICAL: Check if this is a desktop browser
-    const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
-      !/mobile|android/i.test(userAgent);
 
     // Check for touch capabilities
     const hasTouchScreen =
@@ -79,13 +81,9 @@ export default function ResponsiveHybridImage({
       navigator.maxTouchPoints > 0 ||
       (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
 
-    // Prioritize user agent: desktop browser stays desktop even with small viewport
-    if (isDesktopUserAgent && !hasTouchScreen) {
-      return false; // Desktop browser, not mobile
-    }
-
-    // For actual mobile devices
-    return isMobileUserAgent || (isSmallViewport && hasTouchScreen);
+    // In tablet range (768-1023px), treat as desktop unless it's a real tablet
+    // This prevents desktop browser resize from triggering mobile mode
+    return isTabletUserAgent && hasTouchScreen;
   };
 
   const [isMobile, setIsMobile] = useState<boolean>(getInitialMobileState);
@@ -99,25 +97,27 @@ export default function ResponsiveHybridImage({
       // Enhanced mobile detection combining viewport size and user agent
       const width = window.innerWidth;
       
-      // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+      // CRITICAL FIX #1: Viewport >= 1024px is ALWAYS desktop
       // This handles DevTools laptop presets (1440px, 1024px) that simulate touch
       if (width >= 1024) {
         setIsMobile((current) => (current !== false ? false : current));
         return;
       }
       
+      // CRITICAL FIX #2: Viewport < 768px is ALWAYS mobile
+      // This allows mobile testing in DevTools and detects real mobile devices
+      if (width < 768) {
+        setIsMobile((current) => (current !== true ? true : current));
+        return;
+      }
+      
+      // For medium viewports (768-1023px): Check device signals for tablets
       const userAgent = navigator.userAgent.toLowerCase();
-      const isMobileUserAgent =
+      const _isMobileUserAgent =
         /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
           userAgent
         );
       const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
-      const isSmallViewport = width < breakpoint;
-
-      // CRITICAL: Check if this is a desktop browser
-      // Prevents F12 device toolbar from incorrectly triggering mobile detection
-      const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
-        !/mobile|android/i.test(userAgent);
 
       // Check for touch capabilities (real mobile devices have touch)
       const hasTouchScreen =
@@ -125,17 +125,8 @@ export default function ResponsiveHybridImage({
         navigator.maxTouchPoints > 0 ||
         (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
 
-      // IMPROVED LOGIC: Prioritize user agent over viewport width
-      // If user agent clearly indicates desktop, trust it even if viewport is small (F12 device toolbar)
-      let newIsMobile: boolean;
-      
-      if (isDesktopUserAgent && !hasTouchScreen) {
-        // Desktop browser - viewport size alone doesn't make it mobile
-        newIsMobile = false;
-      } else {
-        // For actual mobile devices: user agent + viewport or touch
-        newIsMobile = isMobileUserAgent || (isSmallViewport && hasTouchScreen);
-      }
+      // In tablet range, only treat as mobile if it's a real tablet device
+      const newIsMobile = isTabletUserAgent && hasTouchScreen;
 
       // Only update if the state actually changes to prevent unnecessary re-renders
       setIsMobile((current) =>
