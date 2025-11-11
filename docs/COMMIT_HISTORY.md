@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7b0e193a58cbf4a4bd10b1f76cf85a92d5fc1bae] - Tue Nov 11 13:12:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Critical fix: Use actual innenverkleidung selection in price calculations  The gebaeudehuelle and fussboden price calculations were always using the default 'fichte' value instead of the user's actual innenverkleidung selection. This caused incorrect prices when users selected Lärche or Eiche.  Fix: Changed testInnenverkleidung from hardcoded baseInnenverkleidung to use configuration.innenverkleidung?.value || baseInnenverkleidung  This ensures price calculations reflect the user's actual configuration, not just defaults.  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/INNENVERKLEIDUNG_SELECTION_FIX_NOV11.md
+
+
+---
+
 ## [e871eb3b751daa52ae39b387485c007cdebca4da] - Tue Nov 11 12:56:42 2025 +0100
 
 **Author**: stenkjan
