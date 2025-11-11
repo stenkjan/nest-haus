@@ -705,6 +705,10 @@ export default function ConfiguratorShell({
         return { type: "included" as const };
       }
 
+      // DYNAMIC PRICING: Override static configuratorData prices with Google Sheets data
+      const pricingData = PriceCalculator.getPricingData();
+      const currentNestValue = (configuration?.nest?.value || 'nest80') as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+
       // For PV anlage, convert upgrade types to standard for initial display
       if (categoryId === "pvanlage") {
         const originalPrice = option.price;
@@ -729,7 +733,20 @@ export default function ConfiguratorShell({
           return { type: "selected" as const };
         }
 
-        // For nest modules, always show the total price (not relative)
+        // DYNAMIC PRICING: Override static nest prices with Google Sheets data
+        if (pricingData) {
+          const nestSize = optionId as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+          const dynamicPrice = pricingData.nest[nestSize]?.price;
+          if (dynamicPrice) {
+            return {
+              type: "base" as const,
+              amount: dynamicPrice,
+              monthly: PriceCalculator.calculateMonthlyPaymentAmount(dynamicPrice),
+            };
+          }
+        }
+
+        // Fallback to static pricing if dynamic data not loaded yet
         const originalPrice = option.price;
         if (originalPrice.type === "upgrade") {
           return {
@@ -739,6 +756,164 @@ export default function ConfiguratorShell({
           };
         }
         return originalPrice;
+      }
+
+      // DYNAMIC PRICING OVERRIDES FOR ALL CATEGORIES
+      // Override static configuratorData prices with Google Sheets pricing
+      if (pricingData && categoryId === "innenverkleidung") {
+        // Innenverkleidung: Show ABSOLUTE prices from sheet (fichte is NOT 0€!)
+        const absolutePrice = pricingData.innenverkleidung[optionId]?.[currentNestValue];
+        if (absolutePrice !== undefined) {
+          const currentSelection = configuration?.innenverkleidung;
+          
+          if (currentSelection && currentSelection.value === optionId) {
+            // Selected option - show in gray with actual price
+            return { type: "selected" as const };
+          }
+          
+          if (!currentSelection) {
+            // No selection yet - show as base price
+            return {
+              type: "base" as const,
+              amount: absolutePrice,
+            };
+          }
+          
+          // Other options - show relative to selected option
+          const selectedPrice = pricingData.innenverkleidung[currentSelection.value]?.[currentNestValue] || 0;
+          const priceDiff = absolutePrice - selectedPrice;
+          
+          if (priceDiff === 0) {
+            return { type: "upgrade" as const, amount: 0 };
+          }
+          
+          return {
+            type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+            amount: Math.abs(priceDiff),
+          };
+        }
+      }
+
+      if (pricingData && categoryId === "gebaeudehuelle") {
+        // Gebäudehülle: Relative to trapezblech (base = 0)
+        const optionPrice = pricingData.gebaeudehuelle[optionId]?.[currentNestValue] || 0;
+        const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[currentNestValue] || 0;
+        const relativePrice = optionPrice - trapezblechPrice;
+        
+        const currentSelection = configuration?.gebaeudehuelle;
+        
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+        
+        if (relativePrice === 0) {
+          return { type: "included" as const }; // trapezblech
+        }
+        
+        if (!currentSelection) {
+          return {
+            type: "upgrade" as const,
+            amount: relativePrice,
+          };
+        }
+        
+        // Show relative to currently selected option
+        const selectedPrice = pricingData.gebaeudehuelle[currentSelection.value]?.[currentNestValue] || 0;
+        const selectedRelative = selectedPrice - trapezblechPrice;
+        const priceDiff = relativePrice - selectedRelative;
+        
+        if (priceDiff === 0) {
+          return { type: "upgrade" as const, amount: 0 };
+        }
+        
+        return {
+          type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+          amount: Math.abs(priceDiff),
+        };
+      }
+
+      if (pricingData && categoryId === "fussboden") {
+        // Bodenbelag: Relative to ohne_belag (base = 0)
+        const optionPrice = pricingData.bodenbelag[optionId]?.[currentNestValue] || 0;
+        const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[currentNestValue] || 0;
+        const relativePrice = optionPrice - ohneBelagPrice;
+        
+        const currentSelection = configuration?.fussboden;
+        
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+        
+        if (relativePrice === 0) {
+          return { type: "included" as const }; // ohne_belag / standard
+        }
+        
+        if (!currentSelection) {
+          return {
+            type: "upgrade" as const,
+            amount: relativePrice,
+          };
+        }
+        
+        // Show relative to currently selected option
+        const selectedPrice = pricingData.bodenbelag[currentSelection.value]?.[currentNestValue] || 0;
+        const selectedRelative = selectedPrice - ohneBelagPrice;
+        const priceDiff = relativePrice - selectedRelative;
+        
+        if (priceDiff === 0) {
+          return { type: "upgrade" as const, amount: 0 };
+        }
+        
+        return {
+          type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+          amount: Math.abs(priceDiff),
+        };
+      }
+
+      if (pricingData && categoryId === "planungspaket") {
+        // Planungspakete: Fixed prices (basis=0, plus=9600, pro=12700)
+        const currentSelection = configuration?.planungspaket;
+        
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
+        }
+        
+        let dynamicPrice = 0;
+        if (optionId === "plus") {
+          dynamicPrice = pricingData.planungspaket.plus[currentNestValue];
+        } else if (optionId === "pro") {
+          dynamicPrice = pricingData.planungspaket.pro[currentNestValue];
+        }
+        
+        if (dynamicPrice === 0) {
+          return { type: "included" as const }; // basis
+        }
+        
+        if (!currentSelection) {
+          return {
+            type: "base" as const,
+            amount: dynamicPrice,
+          };
+        }
+        
+        // Show relative to currently selected
+        let selectedPrice = 0;
+        if (currentSelection.value === "plus") {
+          selectedPrice = pricingData.planungspaket.plus[currentNestValue];
+        } else if (currentSelection.value === "pro") {
+          selectedPrice = pricingData.planungspaket.pro[currentNestValue];
+        }
+        
+        const priceDiff = dynamicPrice - selectedPrice;
+        
+        if (priceDiff === 0) {
+          return { type: "upgrade" as const, amount: 0 };
+        }
+        
+        return {
+          type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+          amount: Math.abs(priceDiff),
+        };
       }
 
       // For relative pricing sections (gebäudehülle, innenverkleidung, fussboden, belichtungspaket, fenster, planungspaket, bodenaufbau, geschossdecke)

@@ -229,11 +229,12 @@ class PricingSheetService {
     const basePrice = this.parseNumber(row7[3], true); // D7 is a price in thousands
     
     const maxAmounts: Partial<PricingData['geschossdecke']['maxAmounts']> = {};
-    maxAmounts.nest80 = this.parseNumber(row7[6]); // G7 is a quantity, not a price
-    maxAmounts.nest100 = this.parseNumber(row7[8]); // I7
-    maxAmounts.nest120 = this.parseNumber(row7[10]); // K7
-    maxAmounts.nest140 = this.parseNumber(row7[12]); // M7
-    maxAmounts.nest160 = this.parseNumber(row7[14]); // O7
+    // Fixed column mapping: F=5, H=7, J=9, L=11, N=13 (same as nest sizes)
+    maxAmounts.nest80 = this.parseNumber(row7[5]); // F7 is a quantity, not a price
+    maxAmounts.nest100 = this.parseNumber(row7[7]); // H7
+    maxAmounts.nest120 = this.parseNumber(row7[9]); // J7
+    maxAmounts.nest140 = this.parseNumber(row7[11]); // L7
+    maxAmounts.nest160 = this.parseNumber(row7[13]); // N7
 
     return {
       basePrice,

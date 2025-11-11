@@ -342,15 +342,16 @@ export class PriceCalculator {
         const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
         const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
         
+        // CRITICAL: Innenverkleidung uses ABSOLUTE prices, not relative!
+        // The nest base price does NOT include innenverkleidung.
+        // Fichte is the standard option but costs money (e.g., 23020€ for nest80)
         const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
-        const fichtePrice = pricingData.innenverkleidung.fichte?.[nestSize] || 0;
-        const innenverkleidungRelative = innenverkleidungPrice - fichtePrice;
         
         const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
         
-        return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
+        // Return: Nest base + gebaeudehuelle relative + innenverkleidung ABSOLUTE + bodenbelag relative
         return nestPrice + gebaeudehuelleRelative + innenverkleidungPrice + bodenbelagRelative;
       } catch (error) {
         console.error('Error calculating combination price from database:', error);
