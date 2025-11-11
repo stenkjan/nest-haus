@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
-import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
+import { GRUNDSTUECKSCHECK_PRICE, PLANNING_PACKAGES } from "@/constants/configurator";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
 
@@ -454,11 +454,12 @@ export default function WarenkorbClient() {
 
   // Get next higher planungspaket for upgrade suggestions
   const getNextPlanungspaket = (currentPackage?: string) => {
-    const packageHierarchy = [
-      { id: "basis", name: "Planung Basis", price: 10900 },
-      { id: "plus", name: "Planung Plus", price: 16900 },
-      { id: "pro", name: "Planung Pro", price: 21900 },
-    ];
+    // Use PLANNING_PACKAGES from constants to ensure consistency
+    const packageHierarchy = PLANNING_PACKAGES.map(pkg => ({
+      id: pkg.value,
+      name: `Planung ${pkg.name}`,
+      price: pkg.price
+    }));
 
     if (!currentPackage) {
       return packageHierarchy[0]; // Suggest basis if no package selected

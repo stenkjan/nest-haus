@@ -13,7 +13,7 @@ interface CheckoutPlanungspaketeCardsProps {
 export default function CheckoutPlanungspaketeCards({
   selectedPlan,
   onPlanSelect,
-  basisDisplayPrice: _basisDisplayPrice = 10900, // Default basis price for delta calculation
+  basisDisplayPrice: _basisDisplayPrice = 0, // Basis is now included (0€)
 }: CheckoutPlanungspaketeCardsProps) {
   // Helper function to get the corresponding card data from PlanungspaketeCards
   const getCardData = (packageValue: string) => {
@@ -25,12 +25,24 @@ export default function CheckoutPlanungspaketeCards({
     return cardMap[packageValue as keyof typeof cardMap];
   };
 
+  // Helper function to format price consistently
+  const formatPrice = (price: number): string => {
+    if (price === 0) return "inkludiert";
+    return new Intl.NumberFormat("de-AT", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(price);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
       {PLANNING_PACKAGES.map((pkg) => {
         const isSelected = selectedPlan === pkg.value;
         const isBasis = pkg.value === "basis";
         const cardData = getCardData(pkg.value);
+        const displayPrice = formatPrice(pkg.price);
 
         return (
           <div key={pkg.value} className="h-full">
@@ -77,11 +89,7 @@ export default function CheckoutPlanungspaketeCards({
                 {/* Price Section - Mobile: After title, Desktop: At bottom */}
                 <div className="md:hidden mb-6">
                   <div className="text-lg font-regular text-gray-900">
-                    {pkg.value === "basis"
-                      ? "inkludiert"
-                      : pkg.value === "plus"
-                        ? "€ 16.900,00"
-                        : "€ 21.900,00"}
+                    {displayPrice}
                   </div>
                 </div>
               </div>
@@ -99,11 +107,7 @@ export default function CheckoutPlanungspaketeCards({
                 <div className="pt-4">
                   <div className="text-left">
                     <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
-                      {pkg.value === "basis"
-                        ? "inkludiert"
-                        : pkg.value === "plus"
-                          ? "€ 16.900,00"
-                          : "€ 21.900,00"}
+                      {displayPrice}
                     </div>
                   </div>
                   {/* Click instruction - right side, positioned lower */}

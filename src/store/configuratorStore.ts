@@ -578,9 +578,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             category: 'planungspaket',
             value: 'basis',
             name: 'Planung Basis',
-            price: 10900
+            price: 0 // Basis is inkludiert (updated Nov 2025)
           },
-          totalPrice: 10900,
+          totalPrice: 0, // No initial price since basis is inkludiert
           timestamp: Date.now()
         }
 
@@ -588,7 +588,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           sessionId,
           configuration: defaultConfiguration,
 
-          currentPrice: 10900,
+          currentPrice: 0, // No initial price since basis is inkludiert
           priceBreakdown: null,
           hasPart2BeenActive: false,
           hasPart3BeenActive: false,
