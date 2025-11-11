@@ -14,7 +14,6 @@ import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsL
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
 import {
   TwoByTwoImageGrid as _TwoByTwoImageGrid,
-  FullWidthTextGrid,
 } from "@/components/grids";
 import {
   GetInContactBanner,
