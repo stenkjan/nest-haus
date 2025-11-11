@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Detection Test - UPDATED FIX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .info-box {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .mobile { border-color: #4CAF50; background: #e8f5e9; }
+        .desktop { border-color: #2196F3; background: #e3f2fd; }
+        .laptop { border-color: #FF9800; background: #fff3e0; }
+        h1 { color: #333; }
+        .test-result {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+        .details {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+        .viewport-info {
+            background: #fff3cd;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+        .critical-fix {
+            background: #d1ecf1;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #0c5460;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Device Detection Test - UPDATED FIX</h1>
+    <p><strong>Instructions:</strong></p>
+    <ol>
+        <li>Open this in Chrome on desktop</li>
+        <li>Press F12 to open DevTools</li>
+        <li>Toggle device toolbar (or press Ctrl+Shift+M)</li>
+        <li><strong>Select LAPTOP presets:</strong> Laptop (1440x900) or Laptop L (1024x768)</li>
+        <li><strong>Result should be: DESKTOP</strong> (not Mobile!)</li>
+    </ol>
+    
+    <div id="results"></div>
+
+    <script>
+        function detectDevice() {
+            const width = window.innerWidth;
+            const userAgent = navigator.userAgent.toLowerCase();
+            
+            // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+            if (width >= 1024) {
+                return {
+                    isMobile: false,
+                    isDesktop: true,
+                    width,
+                    forcedDesktop: true,
+                    reason: 'Viewport >= 1024px (LAPTOP SIZE) → Always Desktop',
+                    isMobileUserAgent: false,
+                    isDesktopUserAgent: true,
+                    hasTouchScreen: false
+                };
+            }
+            
+            // Check for mobile device signals
+            const isMobileUserAgent =
+                /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+            const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
+
+            // CRITICAL: Check if this is a desktop browser
+            const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
+                !/mobile|android/i.test(userAgent);
+
+            // Check for touch capabilities
+            const hasTouchScreen =
+                "ontouchstart" in window ||
+                navigator.maxTouchPoints > 0 ||
+                (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
+            // IMPROVED LOGIC: Prioritize user agent over viewport width
+            let isMobile, isDesktop, reason;
+            
+            if (isDesktopUserAgent && !hasTouchScreen) {
+                // Desktop browser - viewport size alone doesn't make it mobile
+                isMobile = false;
+                isDesktop = true;
+                reason = 'Desktop user agent + No touch';
+            } else if (isMobileUserAgent && hasTouchScreen) {
+                isMobile = true;
+                isDesktop = false;
+                reason = 'Mobile user agent + Touch screen';
+            } else if (width < 768 && hasTouchScreen) {
+                isMobile = true;
+                isDesktop = false;
+                reason = 'Small viewport (<768px) + Touch';
+            } else {
+                isMobile = false;
+                isDesktop = true;
+                reason = 'Default to desktop';
+            }
+
+            return {
+                isMobile,
+                isDesktop,
+                width,
+                forcedDesktop: false,
+                reason,
+                isMobileUserAgent,
+                isDesktopUserAgent,
+                hasTouchScreen
+            };
+        }
+
+        function updateDisplay() {
+            const detection = detectDevice();
+            const resultsDiv = document.getElementById('results');
+            
+            const deviceType = detection.isMobile ? 'Mobile' : 'Desktop';
+            const boxClass = detection.isMobile ? 'mobile' : (detection.width >= 1024 ? 'laptop' : 'desktop');
+            
+            let criticalFixHtml = '';
+            if (detection.forcedDesktop) {
+                criticalFixHtml = `
+                    <div class="critical-fix">
+                        ⭐ CRITICAL FIX ACTIVE: Viewport ${detection.width}px >= 1024px<br>
+                        → FORCED TO DESKTOP (Laptop/Desktop size)<br>
+                        → This fixes DevTools laptop preset issue!
+                    </div>
+                `;
+            }
+            
+            let devToolsWarning = '';
+            if (detection.hasTouchScreen && detection.isDesktopUserAgent && detection.width >= 1024) {
+                devToolsWarning = `
+                    <div class="info-box laptop">
+                        <strong>🔧 DevTools Laptop Preset Detected!</strong><br>
+                        • Width: ${detection.width}px (laptop size)<br>
+                        • Touch: Simulated by DevTools<br>
+                        • User Agent: Desktop browser<br>
+                        • <strong>Result: ✅ Correctly showing as Desktop</strong>
+                    </div>
+                `;
+            }
+            
+            resultsDiv.innerHTML = `
+                ${criticalFixHtml}
+                ${devToolsWarning}
+                
+                <div class="info-box ${boxClass}">
+                    <div class="test-result">
+                        ${detection.isMobile ? '📱' : '💻'} Device Type: ${deviceType}
+                    </div>
+                    <div class="details">
+                        <strong>Detection Logic:</strong><br>
+                        ${detection.reason}<br><br>
+                        <strong>Detection Details:</strong><br>
+                        • User Agent is Mobile: ${detection.isMobileUserAgent ? '✅ Yes' : '❌ No'}<br>
+                        • User Agent is Desktop: ${detection.isDesktopUserAgent ? '✅ Yes' : '❌ No'}<br>
+                        • Has Touch Screen: ${detection.hasTouchScreen ? '✅ Yes' : '❌ No'}<br>
+                        • Forced Desktop (>= 1024px): ${detection.forcedDesktop ? '✅ Yes' : '❌ No'}<br>
+                        • Final Decision: ${deviceType}
+                    </div>
+                </div>
+                
+                <div class="viewport-info">
+                    <strong>📐 Viewport Info:</strong><br>
+                    • Window Width: ${detection.width}px<br>
+                    • Mobile Breakpoint: < 768px<br>
+                    • Laptop Breakpoint: >= 1024px <strong>(NEW FIX!)</strong><br>
+                    • User Agent: <code style="font-size: 0.8em; word-break: break-all;">${navigator.userAgent}</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>🧪 Test Scenarios:</strong><br><br>
+                    
+                    <strong>✅ Expected Results:</strong><br>
+                    • Normal desktop (1920px): Desktop<br>
+                    • <strong>DevTools Laptop (1440px): Desktop ⭐</strong><br>
+                    • <strong>DevTools Laptop L (1024px): Desktop ⭐</strong><br>
+                    • DevTools iPad (768px): Tablet/Desktop<br>
+                    • DevTools iPhone (375px): Desktop (desktop user agent)<br>
+                    • Real iPhone: Mobile<br><br>
+                    
+                    ${detection.width >= 1024 && detection.isDesktopUserAgent ? 
+                        '<strong style="color: #4CAF50;">✅ LAPTOP SIZE TEST PASSED!</strong><br>Viewport >= 1024px correctly shows Desktop' :
+                        detection.width < 1024 && detection.isDesktopUserAgent && !detection.hasTouchScreen ?
+                        '<strong style="color: #4CAF50;">✅ DESKTOP BROWSER TEST PASSED!</strong><br>Desktop browser with small viewport' :
+                        ''
+                    }
+                </div>
+            `;
+        }
+
+        // Update on load
+        updateDisplay();
+
+        // Update on resize with debounce
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(updateDisplay, 150);
+        });
+    </script>
+</body>
+</html>

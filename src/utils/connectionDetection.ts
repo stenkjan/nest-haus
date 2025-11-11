@@ -44,7 +44,39 @@ export function getConnectionInfo(): ConnectionInfo {
     }
 
     // Detect mobile device
-    const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // CRITICAL: Prioritize user agent over viewport width to prevent F12 device toolbar issues
+    // ALSO: Viewport >= 1024px is ALWAYS desktop (handles DevTools laptop presets)
+    const width = window.innerWidth;
+    
+    // Large viewports are always desktop, regardless of other factors
+    if (width >= 1024) {
+        connectionInfo = {
+            isSlowConnection: false,
+            effectiveType: 'desktop',
+            isMobile: false
+        };
+    } else {
+        const userAgent = navigator.userAgent || '';
+        const isMobileUserAgent = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+        const isDesktopUserAgent = !isMobileUserAgent && !/mobile|android/i.test(userAgent.toLowerCase());
+        
+        // Check for touch capabilities (real mobile devices have touch)
+        const hasTouchScreen =
+          "ontouchstart" in window ||
+          navigator.maxTouchPoints > 0 ||
+          (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+        
+        // If desktop browser (even with small viewport like F12 device toolbar), it's not mobile
+        const isMobile = isDesktopUserAgent && !hasTouchScreen 
+          ? false 
+          : (isMobileUserAgent || (width < 768 && hasTouchScreen));
+        
+        connectionInfo = {
+            isSlowConnection: isMobile,
+            effectiveType: isMobile ? 'mobile-fallback' : 'desktop-fallback',
+            isMobile
+        };
+    }
 
     // Network Information API (limited browser support)
     const nav = navigator as NavigatorWithConnection;
