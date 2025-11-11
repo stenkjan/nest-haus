@@ -339,10 +339,26 @@ export default function CheckoutStepper({
   const setPlanningPackage = (value: string) => {
     console.log("📦 CheckoutStepper: Setting planning package to:", value);
 
-    if (!configItem) return;
     const target = PLANNING_PACKAGES.find((p) => p.value === value);
     if (!target) return;
 
+    // Handle ohne nest mode - update configurator store only
+    if (isOhneNestMode || !configItem) {
+      console.log(
+        "🔄 CheckoutStepper: Ohne nest mode - updating configurator store only"
+      );
+      const { updateSelection } = useConfiguratorStore.getState();
+      updateSelection({
+        category: "planungspaket",
+        value: target.value,
+        name: target.name,
+        price: target.price,
+        description: target.description,
+      });
+      return;
+    }
+
+    // Normal mode - update both cart and configurator
     const previousPrice = configItem.planungspaket?.price || 0;
     const updated: ConfigurationCartItem = {
       ...configItem,
@@ -985,8 +1001,11 @@ export default function CheckoutStepper({
     const _terminDone = false; // Integrate with AppointmentBooking state if available
 
     // Use local selection if available so summary reflects user choice immediately
+    // In ohne nest mode, default to "basis" if nothing is selected
     const selectedPlanValue =
-      localSelectedPlan ?? configItem?.planungspaket?.value ?? null;
+      localSelectedPlan ?? 
+      configItem?.planungspaket?.value ?? 
+      (isOhneNestMode ? "basis" : null);
     const selectedPlanPackage = selectedPlanValue
       ? PLANNING_PACKAGES.find((p) => p.value === selectedPlanValue)
       : null;
@@ -1213,28 +1232,24 @@ export default function CheckoutStepper({
                         2
                       )}`}
                     >
-                      {/* In ohne nest mode, show "—", otherwise show plan details */}
-                      {isOhneNestMode ? (
-                        "—"
-                      ) : (
-                        <span className="inline-flex items-center gap-2">
-                          {selectedPlanName}
-                          {isPlanSelected && (
-                            <>
-                              <span className="text-gray-600">
-                                (
-                                {selectedPlanValue === "basis"
-                                  ? "inkludiert"
-                                  : PriceUtils.formatPrice(selectedPlanPrice)}
-                                )
-                              </span>
-                              <span aria-hidden className="text-[#3D6CE1]">
-                                ✓
-                              </span>
-                            </>
-                          )}
-                        </span>
-                      )}
+                      {/* Show plan details in both normal and ohne nest mode */}
+                      <span className="inline-flex items-center gap-2">
+                        {selectedPlanName}
+                        {isPlanSelected && (
+                          <>
+                            <span className="text-gray-600">
+                              (
+                              {selectedPlanValue === "basis"
+                                ? "inkludiert"
+                                : PriceUtils.formatPrice(selectedPlanPrice)}
+                              )
+                            </span>
+                            <span aria-hidden className="text-[#3D6CE1]">
+                              ✓
+                            </span>
+                          </>
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div className={rowWrapperClass}>

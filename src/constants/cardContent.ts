@@ -578,11 +578,11 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 01",
         subtitle: "Basis",
         description:
-            "Inkl.\n\nEinreichplanung des Gesamtprojekts\n\nFachberatung und Baubegleitung\n\nBürokratische Unterstützung",
+            "Inkl.\n\nEinreichplanung des Gesamtprojekts,\n\nFachberatung und Baubegleitung,\n\nBürokratische Unterstützung",
         mobileTitle: "Planungspaket 01",
         mobileSubtitle: "Basis",
         mobileDescription:
-            "Inkl.\n\nEinreichplanung des Gesamtprojekts\n\nFachberatung und Baubegleitung\n\nBürokratische Unterstützung",
+            "Inkl.\n\nEinreichplanung des Gesamtprojekts,\n\nFachberatung und Baubegleitung,\n\nBürokratische Unterstützung",
         image: IMAGES.hero.nestHaus8,
         price: "inkludiert",
         backgroundColor: "#F4F4F4",
@@ -597,13 +597,13 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 02",
         subtitle: "Plus",
         description:
-            "Inkl.\n\nPlanungspaket Basis\n\nHaustechnikplanung\n\nDetailplanungen\n\nAusführungsplanung Innenausbau",
+            "Inkl.\n\nPlanungspaket Basis,\n\nHaustechnikplanung\n\nDetailplanungen,\n\nAusführungsplanung Innenausbau",
         mobileTitle: "Planungspaket 02",
         mobileSubtitle: "Plus",
         mobileDescription:
-            "Inkl.\n\nPlanungspaket Basis\n\nHaustechnikplanung\n\nDetailplanungen\n\nAusführungsplanung Innenausbau",
+            "Inkl.\n\nPlanungspaket Basis,\n\nHaustechnikplanung\n\nDetailplanungen,\n\nAusführungsplanung Innenausbau",
         image: IMAGES.hero.nestHaus1,
-        price: "€16.900,00",
+        price: "€9.600,00", // Updated Nov 2025
         backgroundColor: "#F4F4F4",
         grayWord: "Plus",
         extendedDescription:
@@ -616,13 +616,13 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 03",
         subtitle: "Pro",
         description:
-            "Inkl.\n\nPlanungspaket Plus\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
+            "Inkl.\n\nPlanungspaket Plus,\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
         mobileTitle: "Planungspaket 03",
         mobileSubtitle: "Pro",
         mobileDescription:
-            "Inkl.\n\nPlanungspaket Plus\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
+            "Inkl.\n\nPlanungspaket Plus,\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
         image: IMAGES.hero.nestHaus4,
-        price: "€21.900,00",
+        price: "€12.700,00", // Updated Nov 2025
         backgroundColor: "#F4F4F4",
         grayWord: "Pro",
         extendedDescription:
