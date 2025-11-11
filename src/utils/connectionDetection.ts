@@ -47,21 +47,16 @@ export function getConnectionInfo(): ConnectionInfo {
     // BALANCED APPROACH: Allow both laptop testing (>= 1024px) and mobile testing (< 768px)
     const width = window.innerWidth;
     
+    // Determine isMobile based on viewport
+    let isMobile: boolean;
+    
     // Large viewports (>= 1024px) are always desktop
     if (width >= 1024) {
-        connectionInfo = {
-            isSlowConnection: false,
-            effectiveType: 'desktop',
-            isMobile: false
-        };
+        isMobile = false;
     } 
     // Small viewports (< 768px) are always mobile (for DevTools testing and real devices)
     else if (width < 768) {
-        connectionInfo = {
-            isSlowConnection: true,
-            effectiveType: 'mobile-fallback',
-            isMobile: true
-        };
+        isMobile = true;
     }
     // Medium range (768-1023px): Check device signals
     else {
@@ -76,13 +71,7 @@ export function getConnectionInfo(): ConnectionInfo {
           (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
         
         // Tablet range: only mobile if it's a real tablet
-        const isMobile = (isTabletUserAgent || isMobileUserAgent) && hasTouchScreen;
-        
-        connectionInfo = {
-            isSlowConnection: isMobile,
-            effectiveType: isMobile ? 'mobile-fallback' : 'desktop-fallback',
-            isMobile
-        };
+        isMobile = (isTabletUserAgent || isMobileUserAgent) && hasTouchScreen;
     }
 
     // Network Information API (limited browser support)
