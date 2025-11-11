@@ -79,7 +79,7 @@ export function GetInContactBanner({
     >
       <div className="w-full max-w-screen-3xl mx-auto pb-4 py-4 sm:px-12 lg:px-8">
         <div className="flex justify-center">
-          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform w-[90%]">
+          <div className="rounded-3xl shadow-lg overflow-hidden bg-gray-50 w-[90%]">
             <div className="p-12 text-center">
               {/* Icon */}
               <div className="flex justify-center">

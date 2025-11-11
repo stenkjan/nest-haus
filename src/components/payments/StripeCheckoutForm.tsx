@@ -242,7 +242,7 @@ export default function StripeCheckoutForm({
 }: StripeCheckoutFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [_paymentLoading, setPaymentLoading] = useState(false);
 
   // Create payment intent on component mount
   useEffect(() => {
@@ -436,7 +436,7 @@ export default function StripeCheckoutForm({
         <div className="mt-6 pt-4 border-t border-gray-200">
           <button
             onClick={onCancel}
-            disabled={paymentLoading}
+            disabled={_paymentLoading}
             className="w-full py-2 px-4 text-sm text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50"
           >
             Abbrechen

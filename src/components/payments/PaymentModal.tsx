@@ -216,6 +216,9 @@ function PaymentMethodSelection({
   onMethodSelect: (method: PaymentMethod) => void;
   onCancel: () => void;
 }) {
+  // This component is currently not in use but kept for future payment method selection
+  void onMethodSelect;
+  void onCancel;
   const [selected, setSelected] = useState<PaymentMethod>("card");
 
   const methods = [
