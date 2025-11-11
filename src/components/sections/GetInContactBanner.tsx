@@ -77,7 +77,7 @@ export function GetInContactBanner({
       className={`w-full ${className}`}
       style={{ backgroundColor }}
     >
-      <div className="w-full max-w-screen-3xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+      <div className="w-full max-w-screen-3xl mx-auto pb-4 py-4 sm:px-12 lg:px-8">
         <div className="flex justify-center">
           <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform w-[90%]">
             <div className="p-12 text-center">
@@ -96,7 +96,7 @@ export function GetInContactBanner({
               </div>
 
               {/* Title */}
-              <h1 className="h1-secondary text-black mb-3">{title}</h1>
+              <h2 className="h2-title text-black mb-3">{title}</h2>
 
               {/* Subtitle */}
               <h3 className="h3-secondary text-black leading-relaxed">
