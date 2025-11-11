@@ -4,6 +4,30 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [70a00c67527a1d31a833d491ed8a9599c0e548b5] - Tue Nov 11 11:25:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/entwurf/EntwurfClient.tsx
+- src/components/Footer.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+- docs/PRICING_SYNC_STATUS.md
+
+
+---
+
 ## [3c0fa0f942eba6b5f24dd4f1e8eddb57f87df5f9] - Tue Nov 11 10:46:46 2025 +0100
 
 **Author**: stenkjan
