@@ -52,7 +52,7 @@ export class PriceCalculator {
   private static cacheKeys: string[] = []; // Track insertion order for LRU
   private static readonly CACHE_TTL = 60000; // 60 seconds (increased from 5s for better hit rate)
   private static readonly MAX_CACHE_SIZE = 100; // Prevent unbounded growth
-  
+
   // Performance metrics (development only)
   private static cacheHits = 0;
   private static cacheMisses = 0;
@@ -64,7 +64,7 @@ export class PriceCalculator {
   private static pricingDataPromise: Promise<PricingData> | null = null;
   private static pricingDataTimestamp = 0;
   private static readonly PRICING_DATA_TTL = 5 * 60 * 1000; // 5 minutes
-  
+
   // Callbacks to notify when pricing data is loaded
   private static onDataLoadedCallbacks: Array<() => void> = [];
 
@@ -88,7 +88,7 @@ export class PriceCalculator {
    */
   static async initializePricingData(): Promise<void> {
     const now = Date.now();
-    
+
     // Return cached data if still valid
     if (this.pricingData && (now - this.pricingDataTimestamp) < this.PRICING_DATA_TTL) {
       return;
@@ -105,18 +105,18 @@ export class PriceCalculator {
       try {
         const cached = sessionStorage.getItem('nest-haus-pricing-data');
         if (cached) {
-          const { data, timestamp, version } = JSON.parse(cached);
+          const { data, timestamp } = JSON.parse(cached);
           if (now - timestamp < this.PRICING_DATA_TTL) {
             this.pricingData = data;
             this.pricingDataTimestamp = timestamp;
-            
+
             // Notify callbacks
             this.onDataLoadedCallbacks.forEach(cb => { try { cb(); } catch (e) { console.error(e); } });
             this.onDataLoadedCallbacks = [];
             return;
           }
         }
-        } catch (error) {
+        } catch {
           // SessionStorage not available or failed
         }
     }
@@ -132,7 +132,7 @@ export class PriceCalculator {
         if (result.success && result.data) {
           this.pricingData = result.data;
           this.pricingDataTimestamp = now;
-          
+
           // Save to sessionStorage for faster future loads
           if (typeof window !== 'undefined') {
             try {
@@ -141,11 +141,11 @@ export class PriceCalculator {
                 timestamp: now,
                 version: result.version || 1,
               }));
-            } catch (error) {
+            } catch {
               // SessionStorage not available
             }
           }
-          
+
           // Notify all registered callbacks
           this.onDataLoadedCallbacks.forEach(callback => {
             try {
@@ -186,7 +186,7 @@ export class PriceCalculator {
    */
   private static cleanCache(): void {
     const now = Date.now();
-    
+
     // Remove expired entries
     for (const [key, value] of this.cache.entries()) {
       if (now - value.timestamp > this.CACHE_TTL) {
@@ -197,7 +197,7 @@ export class PriceCalculator {
         }
       }
     }
-    
+
     // Enforce max size with LRU eviction
     while (this.cache.size >= this.MAX_CACHE_SIZE) {
       const oldestKey = this.cacheKeys.shift();
@@ -220,28 +220,28 @@ export class PriceCalculator {
     // Cache hit
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
       this.cacheHits++;
-      
+
       // Move to end of LRU queue (most recently used)
       const index = this.cacheKeys.indexOf(cacheKey);
       if (index > -1) {
         this.cacheKeys.splice(index, 1);
         this.cacheKeys.push(cacheKey);
       }
-      
+
       return cached.result as T;
     }
 
     // Cache miss - calculate
     this.cacheMisses++;
     this.totalCalculations++;
-    
+
     const result = calculator();
     const duration = performance.now() - startTime;
     this.totalDuration += duration;
-    
+
     // Clean cache before adding new entry
     this.cleanCache();
-    
+
     // Add to cache with LRU tracking
     this.cache.set(cacheKey, {
       result: result as number,
@@ -251,18 +251,18 @@ export class PriceCalculator {
 
     return result;
   }
-  
+
   /**
    * Get cache statistics (development/monitoring)
    */
   static getCacheStats() {
-    const hitRate = this.cacheHits + this.cacheMisses > 0 
-      ? (this.cacheHits / (this.cacheHits + this.cacheMisses)) * 100 
+    const hitRate = this.cacheHits + this.cacheMisses > 0
+      ? (this.cacheHits / (this.cacheHits + this.cacheMisses)) * 100
       : 0;
-    const avgDuration = this.totalCalculations > 0 
-      ? this.totalDuration / this.totalCalculations 
+    const avgDuration = this.totalCalculations > 0
+      ? this.totalDuration / this.totalCalculations
       : 0;
-      
+
     return {
       size: this.cache.size,
       maxSize: this.MAX_CACHE_SIZE,
@@ -281,28 +281,26 @@ export class PriceCalculator {
     // Clear calculation cache
     this.cache.clear();
     this.cacheKeys = [];
-    
+
     // Clear pricing data
     this.pricingData = null;
     this.pricingDataTimestamp = 0;
     this.pricingDataPromise = null;
-    
+
     // Clear sessionStorage
     if (typeof window !== 'undefined') {
       try {
       sessionStorage.removeItem('nest-haus-pricing-data');
-    } catch (error) {
+    } catch {
       // SessionStorage not available
     }
     }
-    
+
     // Reset cache stats
     this.cacheHits = 0;
     this.cacheMisses = 0;
     this.totalCalculations = 0;
     this.totalDuration = 0;
-    
-    console.log('All caches cleared');
   }
 
   /**
@@ -325,29 +323,29 @@ export class PriceCalculator {
     fussboden: string
   ): number {
     const pricingData = this.getPricingData();
-    
+
     // If pricing data is available, use it
     if (pricingData) {
       try {
         const nestSize = nestType as NestSize;
-        
+
         // Get nest base price (raw construction only)
         const nestPrice = pricingData.nest[nestSize]?.price || 0;
-        
+
         // Get gebaeudehuelle price (relative to trapezblech = 0)
         const gebaeudehuellePrice = pricingData.gebaeudehuelle[gebaeudehuelle]?.[nestSize] || 0;
         const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
         const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
-        
+
         // Get innenverkleidung ABSOLUTE price
         // ALL innenverkleidung options have prices (Fichte = 23,020€, Lärche = 31,921€, etc.)
         const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
-        
+
         // Get bodenbelag price (relative to ohne_belag/bauherr = 0)
         const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
-        
+
         // TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung ABSOLUTE + Bodenbelag relative
         return nestPrice + gebaeudehuelleRelative + innenverkleidungPrice + bodenbelagRelative;
       } catch (error) {
@@ -356,7 +354,7 @@ export class PriceCalculator {
         return 0;
       }
     }
-    
+
     // If no pricing data available yet (still loading), return 0
     // This prevents crashes during initial page load before pricing data is fetched
     return 0;
@@ -582,12 +580,12 @@ export class PriceCalculator {
   ): number {
     try {
       const pricingData = this.getPricingData();
-      
+
       if (pricingData && fenster) {
         const nestSize = nest.value as NestSize;
         const fensterKey = fenster.value; // Use fenster value as-is (holz, pvc_fenster, aluminium_schwarz)
         const belichtungKey = belichtungspaket.value;
-        
+
         // Get total combination price from sheet (F70-N78 contains TOTAL prices)
         const fensterPricing = pricingData.fenster.totalPrices[fensterKey];
         if (fensterPricing && fensterPricing[nestSize]) {
@@ -597,7 +595,7 @@ export class PriceCalculator {
           }
         }
       }
-      
+
       // If pricing data not available yet (loading), return 0 to prevent crash
       return 0;
     } catch (error) {
@@ -648,7 +646,7 @@ export class PriceCalculator {
   ): number {
     try {
       const quantity = geschossdecke.quantity || 1;
-      
+
       const pricingData = this.getPricingData();
       if (pricingData) {
         const basePrice = pricingData.geschossdecke.basePrice;
@@ -990,7 +988,7 @@ export class PriceCalculator {
       const nestSize = nestValue as NestSize;
       const fensterKey = fensterValue === 'aluminium_schwarz' ? 'aluminium_schwarz' : fensterValue;
       const belichtungKey = belichtungspaketValue;
-      
+
       const fensterPricing = pricingData.fenster.totalPrices[fensterKey];
       if (fensterPricing && fensterPricing[nestSize]) {
         const totalPrice = fensterPricing[nestSize][belichtungKey];
@@ -1001,7 +999,7 @@ export class PriceCalculator {
         }
       }
     }
-    
+
     // If pricing data not available yet, return 0
     return 0;
   }
@@ -1015,7 +1013,7 @@ export class PriceCalculator {
       const nestSize = nestValue as NestSize;
       return pricingData.geschossdecke.maxAmounts[nestSize] || 0;
     }
-    
+
     // Return safe default if pricing data not loaded yet
     const defaults: Record<string, number> = {
       nest80: 3,
@@ -1036,7 +1034,7 @@ export class PriceCalculator {
       const nestSize = nestValue as NestSize;
       return pricingData.pvanlage.maxModules[nestSize] || 0;
     }
-    
+
     // Return safe default if pricing data not loaded yet
     const defaults: Record<string, number> = {
       nest80: 8,

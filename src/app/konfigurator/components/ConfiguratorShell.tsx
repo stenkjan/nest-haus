@@ -403,8 +403,6 @@ export default function ConfiguratorShell({
   // Grundstückscheck logic removed from configurator; now handled in Warenkorb
 
   const handleInfoClick = useCallback((infoKey: string) => {
-    setActiveInfoModal(infoKey);
-
     switch (infoKey) {
       case "beratung":
       case "nest": // "Noch Fragen offen?" box after module selection

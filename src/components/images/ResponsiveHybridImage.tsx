@@ -52,15 +52,40 @@ export default function ResponsiveHybridImage({
       return isCritical || isAboveFold;
     }
 
-    // Client-side: Immediate detection
+    // Client-side: Immediate detection with proper desktop browser handling
+    const width = window.innerWidth;
+    
+    // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+    // This handles DevTools laptop presets that simulate touch
+    if (width >= 1024) {
+      return false; // Large viewport = desktop, always
+    }
+    
     const userAgent = navigator.userAgent.toLowerCase();
     const isMobileUserAgent =
       /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
         userAgent
       );
-    const isSmallViewport = window.innerWidth < breakpoint;
+    const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
+    const isSmallViewport = width < breakpoint;
 
-    return isMobileUserAgent || isSmallViewport;
+    // CRITICAL: Check if this is a desktop browser
+    const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
+      !/mobile|android/i.test(userAgent);
+
+    // Check for touch capabilities
+    const hasTouchScreen =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
+    // Prioritize user agent: desktop browser stays desktop even with small viewport
+    if (isDesktopUserAgent && !hasTouchScreen) {
+      return false; // Desktop browser, not mobile
+    }
+
+    // For actual mobile devices
+    return isMobileUserAgent || (isSmallViewport && hasTouchScreen);
   };
 
   const [isMobile, setIsMobile] = useState<boolean>(getInitialMobileState);
@@ -72,14 +97,45 @@ export default function ResponsiveHybridImage({
 
     const checkDevice = () => {
       // Enhanced mobile detection combining viewport size and user agent
+      const width = window.innerWidth;
+      
+      // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+      // This handles DevTools laptop presets (1440px, 1024px) that simulate touch
+      if (width >= 1024) {
+        setIsMobile((current) => (current !== false ? false : current));
+        return;
+      }
+      
       const userAgent = navigator.userAgent.toLowerCase();
       const isMobileUserAgent =
         /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
           userAgent
         );
-      const isSmallViewport = window.innerWidth < breakpoint;
+      const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
+      const isSmallViewport = width < breakpoint;
 
-      const newIsMobile = isMobileUserAgent || isSmallViewport;
+      // CRITICAL: Check if this is a desktop browser
+      // Prevents F12 device toolbar from incorrectly triggering mobile detection
+      const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
+        !/mobile|android/i.test(userAgent);
+
+      // Check for touch capabilities (real mobile devices have touch)
+      const hasTouchScreen =
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
+      // IMPROVED LOGIC: Prioritize user agent over viewport width
+      // If user agent clearly indicates desktop, trust it even if viewport is small (F12 device toolbar)
+      let newIsMobile: boolean;
+      
+      if (isDesktopUserAgent && !hasTouchScreen) {
+        // Desktop browser - viewport size alone doesn't make it mobile
+        newIsMobile = false;
+      } else {
+        // For actual mobile devices: user agent + viewport or touch
+        newIsMobile = isMobileUserAgent || (isSmallViewport && hasTouchScreen);
+      }
 
       // Only update if the state actually changes to prevent unnecessary re-renders
       setIsMobile((current) =>

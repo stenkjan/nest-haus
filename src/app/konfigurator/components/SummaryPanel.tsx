@@ -37,10 +37,39 @@ export default function SummaryPanel({
     setIsClient(true);
   }, []);
 
-  // REMOVED: getDynamicPrice variable no longer needed after reverting complex pricing logic
-
-  // Enhanced item price calculation with dynamic pricing for belichtungspaket and stirnseite
+  // Enhanced item price calculation with dynamic pricing from Google Sheets
   const getItemPrice = (key: string, selection: ConfigurationItem): number => {
+    // For nest, return the RAW nest base price from PriceCalculator
+    if (key === "nest" && configuration?.nest) {
+      try {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData) {
+          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+          const nestBasePrice = pricingData.nest[nestSize]?.price || 0;
+          return nestBasePrice; // Return RAW construction price only
+        }
+      } catch {
+        // Fallback to stored price if pricing data not loaded yet
+      }
+      return selection.price || 0;
+    }
+
+    // For innenverkleidung, return ABSOLUTE price from PriceCalculator
+    if (key === "innenverkleidung" && configuration?.nest) {
+      try {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData && selection.value) {
+          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+          const innenverkleidungOption = selection.value as 'fichte' | 'laerche' | 'eiche';
+          const absolutePrice = pricingData.innenverkleidung[innenverkleidungOption]?.[nestSize] || 0;
+          return absolutePrice; // Return ABSOLUTE price (never 0 / "inkludiert")
+        }
+      } catch {
+        // Fallback to stored price if pricing data not loaded yet
+      }
+      return selection.price || 0;
+    }
+
     // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
       return (selection.quantity || 1) * (selection.price || 0);
@@ -55,9 +84,6 @@ export default function SummaryPanel({
       try {
         // Ensure we have valid selection data
         if (!selection.value || !configuration.nest.value) {
-          console.warn(
-            "Invalid belichtungspaket or nest data, using base price"
-          );
           return selection.price || 0;
         }
 
@@ -100,11 +126,9 @@ export default function SummaryPanel({
       }
     }
 
-    // For gebäudehülle, innenverkleidung, and fussboden, calculate dynamic price based on nest size
+    // For gebäudehülle and fussboden, calculate dynamic price based on nest size
     if (
-      (key === "gebaeudehuelle" ||
-        key === "innenverkleidung" ||
-        key === "fussboden") &&
+      (key === "gebaeudehuelle" || key === "fussboden") &&
       configuration?.nest
     ) {
       try {
@@ -113,7 +137,7 @@ export default function SummaryPanel({
 
         // Use defaults for base calculation
         const baseGebaeudehuelle = "trapezblech";
-        const baseInnenverkleidung = "laerche";
+        const baseInnenverkleidung = "fichte";
         const baseFussboden = "ohne_belag";
 
         // Calculate base combination price (all defaults)
@@ -126,11 +150,10 @@ export default function SummaryPanel({
 
         // Calculate combination price with this specific option
         let testGebaeudehuelle = baseGebaeudehuelle;
-        let testInnenverkleidung = baseInnenverkleidung;
+        const testInnenverkleidung = baseInnenverkleidung;
         let testFussboden = baseFussboden;
 
         if (key === "gebaeudehuelle") testGebaeudehuelle = selection.value;
-        if (key === "innenverkleidung") testInnenverkleidung = selection.value;
         if (key === "fussboden") testFussboden = selection.value;
 
         const combinationPrice = PriceCalculator.calculateCombinationPrice(
@@ -344,7 +367,13 @@ export default function SummaryPanel({
                               Startpreis
                             </div>
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              {PriceUtils.formatPrice(selection.price || 0)}
+                              {PriceUtils.formatPrice(itemPrice)}
+                            </div>
+                          </>
+                        ) : key === "innenverkleidung" ? (
+                          <>
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              {PriceUtils.formatPrice(itemPrice)}
                             </div>
                           </>
                         ) : !isIncluded && itemPrice > 0 ? (

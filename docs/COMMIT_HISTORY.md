@@ -4,6 +4,120 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c7179be802abe4d39015d63627cfdd255ae1afe3] - Tue Nov 11 12:52:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Remove debug logging, fix pricing display, and resolve build errors  - Remove all console.log debug statements from pricing system - Delete PriceCacheDebugger component - Fix SummaryPanel to show correct prices (Nest 188,619€, Fichte 23,020€) - Fix orphaned setActiveInfoModal call in ConfiguratorShell - Add missing baseInnenverkleidung variable - Fix all ESLint unused variable errors - Fix isMobile variable scope in connectionDetection - Remove innenverkleidung check from gebaeudehuelle/fussboden block  All linting passes, build should succeed on Vercel.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
+## [06b68c48ad54c36afa58fe8ef8fbc19c966b4abb] - Tue Nov 11 12:48:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add default interior cladding to SummaryPanel  - Introduced a new default value for interior cladding as "fichte" in the SummaryPanel component to enhance base calculation options.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/BUILD_FIXES_NOV11.md
+
+
+---
+
+## [28fc00f1962c190ca5e69ff5c51a2a433df823c3] - Tue Nov 11 12:42:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [b300761836ef8853beda8126fb67b6206f87d299] - Tue Nov 11 12:34:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ResponsiveHybridImage.tsx
+- src/hooks/useDeviceDetect.ts
+
+
+#### 📚 Documentation Changes
+- DEVICE_DETECTION_FIX.md
+- DEVICE_DETECTION_FIX_V2.md
+- FIX_SUMMARY.md
+- FIX_SUMMARY_V2.md
+- TESTING_INSTRUCTIONS.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [307ca366b515a798687ca784d70f78af0313d53a] - Tue Nov 11 11:32:58 2025 +0000
+
+**Author**: stenkjan
+**Message**: `Merge b95fd44046c8ce203b7c8f1e13eb449ad13840d7 into d3ff6e600cddf26a9740fbfa301878f16a771842  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ResponsiveHybridImage.tsx
+- src/hooks/useDeviceDetect.ts
+
+
+#### 📚 Documentation Changes
+- DEVICE_DETECTION_FIX.md
+- DEVICE_DETECTION_FIX_V2.md
+- FIX_SUMMARY.md
+- FIX_SUMMARY_V2.md
+- TESTING_INSTRUCTIONS.md
+
+
+---
+
+## [af753ebc18a4a07b5eb31d64a0d12d594d4dd189] - Tue Nov 11 12:30:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [14a7543c0d618d90788f12f6da499b1ace7c2134] - Tue Nov 11 12:26:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [ad54338ad3660ad52ab754b7fffcb9fda873169b] - Tue Nov 11 12:18:39 2025 +0100
 
 **Author**: stenkjan
