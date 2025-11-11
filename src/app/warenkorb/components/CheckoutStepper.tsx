@@ -1054,7 +1054,7 @@ export default function CheckoutStepper({
         {/* Timeline directly after title/subtitle */}
         {!hideProgress && <div className="mb-6">{renderProgress()}</div>}
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
-          <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1">
+          <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1 mt-5">
             {/* Delivery Date Component for Step 4 */}
             {stepIndex === 4 && (
               <div className="mb-8 text-center md:text-left">
@@ -2201,7 +2201,7 @@ export default function CheckoutStepper({
             <div className="space-y-6 pt-8">
               {/* Dein Preis Überblick Section - direct header */}
               <div className="text-center mb-8">
-                <h2 className="h2-secondary text-gray-900 mb-6">
+                <h2 className="h2-title text-gray-900 mb-6">
                   Dein Preis Überblick
                 </h2>
               </div>
@@ -2916,7 +2916,7 @@ export default function CheckoutStepper({
                               ) : (
                                 <div className="text-right flex items-center justify-end gap-2">
                                   <svg
-                                    className="w-8 h-8 text-green-600"
+                                    className="w-8 h-8 text-green-600 mt-2"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                   >
@@ -2926,7 +2926,7 @@ export default function CheckoutStepper({
                                       clipRule="evenodd"
                                     />
                                   </svg>
-                                  <div className="text-2xl font-bold text-green-600">
+                                  <div className="text-2xl font-bold text-green-600 mt-2">
                                     Bezahlt
                                   </div>
                                 </div>
