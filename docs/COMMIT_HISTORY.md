@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e6b987131d487d9c9f24998a7395d2830c21a26c] - Tue Nov 11 13:39:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update planning package prices and refactor related components for consistency  - Updated prices for Planung Plus and Planung Pro in configuratorData and PLANNING_PACKAGES constant. - Refactored WarenkorbClient and CheckoutStepper to utilize PLANNING_PACKAGES for package hierarchy. - Adjusted CheckoutPlanungspaketeCards to display updated prices and handle basis package as included (0€). - Modified configuratorStore to reflect changes in initial pricing for basis package.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
 ## [470b6b4b034599d347b4a90f8e6116a9a10a88c5] - Tue Nov 11 13:27:02 2025 +0100
 
 **Author**: stenkjan
