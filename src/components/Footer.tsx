@@ -51,6 +51,7 @@ export default function Footer() {
         { text: "Beratung", href: "/kontakt" },
         { text: "Support", href: "/kontakt" },
         { text: "Standorte", href: "/kontakt" },
+        { text: "FAQ", href: "/faq" },
         { text: "Newsletter", href: "/kontakt" },
       ],
     },

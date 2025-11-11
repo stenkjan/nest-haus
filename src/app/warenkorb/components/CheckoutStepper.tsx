@@ -145,6 +145,12 @@ export default function CheckoutStepper({
 
   // Payment completion state
   const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
+  const [successfulPaymentIntentId, setSuccessfulPaymentIntentId] = useState<
+    string | null
+  >(null);
+  const [paymentCompletedDate, setPaymentCompletedDate] = useState<Date | null>(
+    null
+  );
   const [showPlanungspaketeDetails, setShowPlanungspaketeDetails] =
     useState(false);
 
@@ -726,10 +732,10 @@ export default function CheckoutStepper({
 
   const getNextPlanungspaket = (currentPackage?: string) => {
     // Use prices from PLANNING_PACKAGES constant to ensure consistency
-    const packageHierarchy = PLANNING_PACKAGES.map(pkg => ({
+    const packageHierarchy = PLANNING_PACKAGES.map((pkg) => ({
       id: pkg.value,
       name: `Planung ${pkg.name}`,
-      price: pkg.price
+      price: pkg.price,
     }));
     if (!currentPackage) return packageHierarchy[0];
     const currentIndex = packageHierarchy.findIndex(
@@ -1003,8 +1009,8 @@ export default function CheckoutStepper({
     // Use local selection if available so summary reflects user choice immediately
     // In ohne nest mode, default to "basis" if nothing is selected
     const selectedPlanValue =
-      localSelectedPlan ?? 
-      configItem?.planungspaket?.value ?? 
+      localSelectedPlan ??
+      configItem?.planungspaket?.value ??
       (isOhneNestMode ? "basis" : null);
     const selectedPlanPackage = selectedPlanValue
       ? PLANNING_PACKAGES.find((p) => p.value === selectedPlanValue)
@@ -1048,7 +1054,7 @@ export default function CheckoutStepper({
         {/* Timeline directly after title/subtitle */}
         {!hideProgress && <div className="mb-6">{renderProgress()}</div>}
         <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-12 md:gap-6">
-          <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1">
+          <div className="w-full md:w-1/2 text-left md:px-16 lg:px-24 order-2 md:order-1 mt-5">
             {/* Delivery Date Component for Step 4 */}
             {stepIndex === 4 && (
               <div className="mb-8 text-center md:text-left">
@@ -2195,7 +2201,7 @@ export default function CheckoutStepper({
             <div className="space-y-6 pt-8">
               {/* Dein Preis Überblick Section - direct header */}
               <div className="text-center mb-8">
-                <h2 className="h2-secondary text-gray-900 mb-6">
+                <h2 className="h2-title text-gray-900 mb-6">
                   Dein Preis Überblick
                 </h2>
               </div>
@@ -2729,10 +2735,14 @@ export default function CheckoutStepper({
               {/* So gehts danach weiter Section */}
               <div className="text-center mb-8">
                 <h2 className="h2-title text-gray-900 mb-2">
-                  So geht&apos;s danach weiter
+                  {isPaymentCompleted
+                    ? "Vielen Dank"
+                    : "So geht's danach weiter"}
                 </h2>
                 <p className="p-secondary text-gray-600">
-                  Deine Teilzahlungen im Überblick
+                  {isPaymentCompleted
+                    ? "Deine Zahlung wurde bearbeitet"
+                    : "Dein Preis im Überblick"}
                 </p>
               </div>
 
@@ -2879,13 +2889,17 @@ export default function CheckoutStepper({
                           <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
                             <div className="flex items-start justify-between gap-4">
                               <div className="text-left">
-                                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                                <h3
+                                  className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
+                                >
                                   {isPaymentCompleted
                                     ? "Bezahlt"
                                     : "Heute zu bezahlen"}
                                 </h3>
                                 <div className="text-sm text-gray-600">
-                                  Starte dein Bauvorhaben
+                                  {isPaymentCompleted
+                                    ? "Zahlung erfolgreich abgeschlossen"
+                                    : "Starte dein Bauvorhaben"}
                                 </div>
                               </div>
                               {!isPaymentCompleted ? (
@@ -2900,22 +2914,84 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                               ) : (
-                                <div className="text-right">
-                                  <div className="text-2xl font-bold text-green-600">
+                                <div className="text-right flex items-center justify-end gap-2">
+                                  <svg
+                                    className="w-8 h-8 text-green-600 mt-2"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                  <div className="text-2xl font-bold text-green-600 mt-2">
                                     Bezahlt
-                                  </div>
-                                  <div className="flex items-center gap-2 justify-end">
-                                    <span className="text-gray-400 line-through">
-                                      3.000 €
-                                    </span>
-                                    <div className="text-lg text-green-600 italic">
-                                      1.500 €
-                                    </div>
                                   </div>
                                 </div>
                               )}
                             </div>
                           </div>
+
+                          {/* Green transaction details box - only show after payment */}
+                          {isPaymentCompleted && (
+                            <div className="mb-6">
+                              <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
+                                <div className="space-y-3">
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                      Deine Nest ID:
+                                    </span>
+                                    <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                                      {configItem?.sessionId ||
+                                        configuration?.sessionId ||
+                                        "nest-haus-" + Date.now().toString(36)}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                      Transaktion ID:
+                                    </span>
+                                    <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                                      {successfulPaymentIntentId ||
+                                        "pi_xxxxxxxxxxxxx"}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                      Betrag:
+                                    </span>
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
+                                      1.500 €
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                      Status:
+                                    </span>
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
+                                      Bezahlt
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                      Datum:
+                                    </span>
+                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
+                                      {(() => {
+                                        const paymentDate =
+                                          paymentCompletedDate || new Date();
+                                        const date = `${paymentDate.getDate().toString().padStart(2, "0")}.${(paymentDate.getMonth() + 1).toString().padStart(2, "0")}.${paymentDate.getFullYear()}`;
+                                        const time = `${paymentDate.getHours().toString().padStart(2, "0")}:${paymentDate.getMinutes().toString().padStart(2, "0")}`;
+                                        return `${date} | ${time}`;
+                                      })()}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
 
                           {/* Disclaimer text - centered below box with margin */}
                           <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
@@ -2950,25 +3026,107 @@ export default function CheckoutStepper({
                   <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
                     <div className="flex items-start justify-between gap-4">
                       <div className="text-left flex-1">
-                        <h3 className="text-lg font-medium text-gray-900 mb-1">
-                          Heute zu bezahlen
+                        <h3
+                          className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
+                        >
+                          {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
                         </h3>
                         <div className="text-sm text-gray-600">
-                          Starte dein Bauvorhaben
+                          {isPaymentCompleted
+                            ? "Zahlung erfolgreich abgeschlossen"
+                            : "Starte dein Bauvorhaben"}
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="flex items-center gap-2 justify-end mt-2">
-                          <span className="text-gray-400 line-through text-2xl">
-                            3.000 €
-                          </span>
-                          <div className="text-3xl font-bold text-gray-900">
-                            1.500 €
+                        {!isPaymentCompleted && (
+                          <div className="flex items-center gap-2 justify-end mt-2">
+                            <span className="text-gray-400 line-through text-2xl">
+                              3.000 €
+                            </span>
+                            <div className="text-3xl font-bold text-gray-900">
+                              1.500 €
+                            </div>
+                          </div>
+                        )}
+                        {isPaymentCompleted && (
+                          <div className="flex items-center justify-end gap-2">
+                            <svg
+                              className="w-8 h-8 text-green-600"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <div className="text-2xl font-bold text-green-600">
+                              Bezahlt
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Green transaction details box - only show after payment */}
+                  {isPaymentCompleted && (
+                    <div className="mb-6">
+                      <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                              Deine Nest ID:
+                            </span>
+                            <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                              {configItem?.sessionId ||
+                                configuration?.sessionId ||
+                                "nest-haus-" + Date.now().toString(36)}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                              Transaktion ID:
+                            </span>
+                            <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                              {successfulPaymentIntentId || "pi_xxxxxxxxxxxxx"}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                              Betrag:
+                            </span>
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
+                              1.500 €
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                              Status:
+                            </span>
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
+                              Bezahlt
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                              Datum:
+                            </span>
+                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
+                              {(() => {
+                                const paymentDate =
+                                  paymentCompletedDate || new Date();
+                                const date = `${paymentDate.getDate().toString().padStart(2, "0")}.${(paymentDate.getMonth() + 1).toString().padStart(2, "0")}.${paymentDate.getFullYear()}`;
+                                const time = `${paymentDate.getHours().toString().padStart(2, "0")}:${paymentDate.getMinutes().toString().padStart(2, "0")}`;
+                                return `${date} | ${time}`;
+                              })()}
+                            </span>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Disclaimer text - centered below box */}
                   <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
@@ -2998,8 +3156,9 @@ export default function CheckoutStepper({
                   size="xs"
                   className="whitespace-nowrap"
                   onClick={() => setIsPaymentModalOpen(true)}
+                  disabled={isPaymentCompleted}
                 >
-                  Zur Kassa
+                  {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
                 </Button>
               </div>
             </div>
@@ -3389,21 +3548,82 @@ export default function CheckoutStepper({
                     </div>
                   )}
                   {isPaymentCompleted && (
-                    <div className="text-right">
+                    <div className="text-right flex items-center justify-end gap-2">
+                      <svg
+                        className="w-8 h-8 text-green-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                       <div className="h2-title text-green-600">Bezahlt</div>
-                      <div className="flex items-center gap-2 justify-end">
-                        <span className="text-gray-400 line-through">
-                          3.000 €
-                        </span>
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 italic">
-                          1.500 €
-                        </div>
-                      </div>
                     </div>
                   )}
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
                 </div>
               </div>
+
+              {/* Green transaction details box - only show after payment */}
+              {isPaymentCompleted && (
+                <div className="mt-6">
+                  <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                          Deine Nest ID:
+                        </span>
+                        <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                          {configItem?.sessionId ||
+                            configuration?.sessionId ||
+                            "nest-haus-" + Date.now().toString(36)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                          Transaktion ID:
+                        </span>
+                        <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                          {/* Will be populated from payment success */}
+                          pi_xxxxxxxxxxxxx
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                          Betrag:
+                        </span>
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
+                          1.500 €
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                          Status:
+                        </span>
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
+                          Bezahlt
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                          Datum:
+                        </span>
+                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
+                          {(() => {
+                            const now = new Date();
+                            const date = `${now.getDate().toString().padStart(2, "0")}.${(now.getMonth() + 1).toString().padStart(2, "0")}.${now.getFullYear()}`;
+                            const time = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+                            return `${date} | ${time}`;
+                          })()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Contact form warning */}
               {contactWarning && (
@@ -3488,10 +3708,9 @@ export default function CheckoutStepper({
 
               <div className="border border-gray-300 rounded-[19px] px-6 py-3 bg-white mt-12">
                 <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
-                  Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du
-                  vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
-                  zahlst du lediglich die Kosten für den Vorentwurf und
-                  Grundstückscheck.
+                  {isOhneNestMode
+                    ? "Du zahlst lediglich den Vorentwurf und Grundstückscheck"
+                    : "Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck."}
                 </div>
               </div>
 
@@ -3569,6 +3788,8 @@ export default function CheckoutStepper({
     console.log("✅ Payment successful:", paymentIntentId);
     setPaymentError(null);
     setIsPaymentCompleted(true); // Mark payment as completed
+    setSuccessfulPaymentIntentId(paymentIntentId); // Store the payment intent ID
+    setPaymentCompletedDate(new Date()); // Store the payment completion date
 
     // DON'T close the modal yet - let the user see the success message
     // The PaymentModal will show the success screen

@@ -4,6 +4,113 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b7697644c80c564ca0fdb16aea5171492ff91ac4] - Tue Nov 11 16:18:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [bd8cf855968a0fe7484a9991c1a07c57e130b185] - Tue Nov 11 15:59:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add FAQ link and SEO metadata for FAQ page  - Included a new "FAQ" link in the Footer component for easy navigation. - Added SEO configuration for the FAQ page, including title, description, keywords, and image metadata.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/faq/FAQClient.tsx
+- src/app/faq/page.tsx
+- src/components/Footer.tsx
+
+
+---
+
+## [a178081adb3654f7649f8ca96577ee16069e0080] - Tue Nov 11 15:43:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Adjust layout and styling in CheckoutStepper component  - Added margin-top to specific div elements for improved spacing. - Updated header class for "Dein Preis Überblick" to enhance visual hierarchy. - Ensured consistent styling for payment status indicators with margin adjustments.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [44922408d3cd1f57b8a7ef1cb89d502cdc551d88] - Tue Nov 11 15:19:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Enhance CheckoutStepper with payment details and state management  - Introduced state variables for successful payment intent ID and payment completion date. - Updated UI to conditionally display payment status and transaction details after payment completion. - Added a green transaction details box showing Nest ID, transaction ID, amount, status, and date. - Improved responsiveness and clarity of payment messages in the CheckoutStepper component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [c9e029253bd9a434e016af89e69be009de6c2009] - Tue Nov 11 14:58:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [0dd4f78af1fba8f2e9e69d0f654d898dbeeef5d4] - Tue Nov 11 14:46:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/payments/StripeCheckoutForm.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [3c8309f568760153a7f9730a3880a72710d02161] - Tue Nov 11 14:36:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/payments/create-payment-intent/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/payments/StripeCheckoutForm.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [f0b86e9cdf64a29b0f13d8189c863fc3077f6500] - Tue Nov 11 14:35:07 2025 +0100
 
 **Author**: stenkjan

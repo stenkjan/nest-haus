@@ -23,6 +23,7 @@ interface PaymentSuccessProps {
   paymentIntentId: string;
   amount: number;
   currency: string;
+  sessionId?: string;
   onClose: () => void;
 }
 
@@ -37,46 +38,33 @@ function PaymentSuccess({
   paymentIntentId,
   amount,
   currency,
-  onClose,
+  sessionId,
+  onClose: _onClose,
 }: PaymentSuccessProps) {
   const formattedAmount = new Intl.NumberFormat("de-DE", {
     style: "currency",
     currency: currency.toUpperCase(),
   }).format(amount / 100);
 
+  // Format current date and time
+  const now = new Date();
+  const formattedDate = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}`;
+  const formattedTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
   return (
     <div className="text-center py-8">
-      <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
-        <svg
-          className="h-8 w-8 text-green-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 13l4 4L19 7"
-          />
-        </svg>
-      </div>
-
-      <h3 className="text-2xl font-bold text-gray-900 mb-3">
-        🎉 Zahlung erfolgreich!
-      </h3>
-
-      <p className="text-gray-600 mb-8 text-lg">
-        Vielen Dank! Ihre Zahlung über <strong>{formattedAmount}</strong> wurde
-        erfolgreich verarbeitet und Ihre NEST-Haus Konfiguration ist jetzt
-        bestätigt.
-      </p>
-
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 mb-8 border border-green-200">
-        <div className="text-sm space-y-3">
+      {/* Green highlighted box with transaction details */}
+      <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6 mb-6">
+        <div className="space-y-3 text-left">
           <div className="flex justify-between items-center">
-            <span className="text-gray-700 font-medium">Transaktions-ID:</span>
-            <span className="font-mono text-xs bg-white px-2 py-1 rounded border">
+            <span className="text-gray-700 font-medium">Deine Nest ID:</span>
+            <span className="font-mono text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+              {sessionId || 'nest-haus-' + paymentIntentId.substring(0, 10)}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-700 font-medium">Transaktion ID:</span>
+            <span className="font-mono text-xs bg-white px-3 py-1.5 rounded-lg border border-green-300">
               {paymentIntentId}
             </span>
           </div>
@@ -88,121 +76,34 @@ function PaymentSuccess({
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Status:</span>
-            <span className="text-green-600 font-bold flex items-center">
-              <svg
-                className="w-4 h-4 mr-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Bezahlt
-            </span>
+            <span className="text-green-600 font-bold">Bezahlt</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Datum:</span>
-            <span className="text-gray-600">
-              {new Date().toLocaleDateString("de-DE")}
-            </span>
+            <span className="text-gray-700">{formattedDate} | {formattedTime}</span>
           </div>
         </div>
       </div>
 
-      <div className="bg-blue-50 rounded-xl p-6 mb-8 border border-blue-200">
-        <h4 className="font-semibold text-blue-900 mb-4 flex items-center">
-          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Nächste Schritte
-        </h4>
-        <div className="space-y-3 text-sm text-blue-800">
-          <div className="flex items-start">
-            <svg
-              className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>
-              <strong>Vorentwurf bestätigt</strong> - Ihre Anzahlung wurde
-              erfolgreich verarbeitet
-            </span>
-          </div>
-          <div className="flex items-start">
-            <svg
-              className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>
-              <strong>Wir melden uns zeitnah</strong> - Unser Team kontaktiert
-              Sie zum vereinbarten Termin
-            </span>
-          </div>
-          <div className="flex items-start">
-            <svg
-              className="w-5 h-5 text-purple-500 mr-3 mt-0.5 flex-shrink-0"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>
-              <strong>Konfiguration in Bearbeitung</strong> - Ihre Planung wird
-              vorbereitet
-            </span>
-          </div>
+      {/* White box with next steps */}
+      <div className="bg-white rounded-2xl p-6 mb-6 border border-gray-200 text-left">
+        <h4 className="font-semibold text-gray-900 mb-4">Nächste Schritte:</h4>
+        <div className="space-y-4 text-sm text-gray-700">
+          <p>
+            <strong>Vorentwurf bestätigt</strong> - Sie erhalten eine Bestätigung per Mail sobald die Zahlung bei uns eingeht
+          </p>
+          <p>
+            <strong>Konfiguration in Bearbeitung</strong> - Ihr Vorentwurf wird vorbereitet
+          </p>
+          <p>
+            <strong>Wir melden uns Zeitnah</strong> - Unser Team kontaktiert Sie zum vereinbarten Termin
+          </p>
         </div>
       </div>
 
-      <div className="space-y-4">
-        <button
-          onClick={onClose}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-        >
-          ✨ Perfekt! Weiter zur Konfiguration
-        </button>
-
-        <div className="text-center text-sm text-gray-500">
-          <p>Fragen? Kontaktieren Sie uns:</p>
-          <div className="flex justify-center space-x-4 mt-2">
-            <a
-              href="mailto:info@nest-haus.at"
-              className="text-blue-600 hover:text-blue-800 flex items-center"
-            >
-              📧 info@nest-haus.at
-            </a>
-            <a
-              href="tel:+43123456789"
-              className="text-blue-600 hover:text-blue-800 flex items-center"
-            >
-              📞 +43 123 456 789
-            </a>
-          </div>
-        </div>
+      {/* Contact info */}
+      <div className="text-center text-sm text-gray-500">
+        <p>Noch Fragen? Mail: <a href="mailto:nest-haus@info.at" className="text-blue-600 hover:text-blue-800">nest-haus@info.at</a> | Tel: <a href="tel:+436643948906" className="text-blue-600 hover:text-blue-800">+43 664 3948906</a></p>
       </div>
     </div>
   );
@@ -210,8 +111,8 @@ function PaymentSuccess({
 
 // Payment method selection component (Step 1)
 function PaymentMethodSelection({
-  onMethodSelect,
-  onCancel,
+  onMethodSelect: _onMethodSelect,
+  onCancel: _onCancel,
   selectedMethod,
   onSelectionChange,
 }: {
@@ -286,6 +187,7 @@ function PaymentMethodSelection({
           >
             <div className="flex items-center gap-4">
               {method.icons.map((icon, idx) => (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={idx}
                   src={icon.src}
@@ -533,6 +435,18 @@ export default function PaymentModal({
               </p>
             </div>
           )}
+
+          {/* Title for success step - outside the box */}
+          {paymentStep === "success" && (
+            <div className="mb-6 text-center relative z-50">
+              <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">
+                Zahlung erfolgreich!
+              </h1>
+              <h2 className="h2-title text-gray-700">
+                Vielen Dank! Ihre Zahlung wurde verarbeitet
+              </h2>
+            </div>
+          )}
           
           <div
             className={`relative bg-[#F4F4F4] rounded-3xl shadow-2xl border border-gray-200/50 w-full max-h-[80vh] overflow-y-auto transform transition-all duration-300 ${
@@ -615,6 +529,7 @@ export default function PaymentModal({
                   paymentIntentId={paymentIntentId}
                   amount={amount}
                   currency={currency}
+                  sessionId={inquiryId}
                   onClose={handleClose}
                 />
               )}
@@ -654,6 +569,18 @@ export default function PaymentModal({
                 className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#2E5BC7] hover:border-[#2E5BC7] focus:ring-[#3D6CE1] box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg"
               >
                 Fortfahren
+              </button>
+            </div>
+          )}
+
+          {/* Button for success step - outside the box */}
+          {paymentStep === "success" && (
+            <div className="flex justify-center mt-6 relative z-50">
+              <button
+                onClick={handleClose}
+                className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#2E5BC7] hover:border-[#2E5BC7] focus:ring-[#3D6CE1] box-border px-6 py-3 text-sm xl:text-base 2xl:text-lg"
+              >
+                Zurück zur Kaufübersicht
               </button>
             </div>
           )}

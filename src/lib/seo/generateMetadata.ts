@@ -151,6 +151,15 @@ export const PAGE_SEO_CONFIG = {
         ogImage: "/images/agb-og.jpg",
         twitterImage: "/images/agb-twitter.jpg",
     },
+    faq: {
+        title: "FAQ | NEST-Haus Häufig gestellte Fragen",
+        description: "Antworten auf häufig gestellte Fragen zu NEST-Haus. Informationen zu Bauablauf, Kosten, Konfiguration und mehr.",
+        keywords: "faq, häufig gestellte fragen, bauablauf, kosten, konfiguration, modulhaus fragen",
+        priority: 0.7,
+        changeFrequency: "monthly" as const,
+        ogImage: "/images/faq-og.jpg",
+        twitterImage: "/images/faq-twitter.jpg",
+    },
 } as const;
 
 // Type definitions
