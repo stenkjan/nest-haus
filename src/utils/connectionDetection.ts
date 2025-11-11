@@ -48,6 +48,9 @@ export function getConnectionInfo(): ConnectionInfo {
     // ALSO: Viewport >= 1024px is ALWAYS desktop (handles DevTools laptop presets)
     const width = window.innerWidth;
     
+    // Declare isMobile variable in outer scope so it's accessible later
+    let isMobile = false;
+    
     // Large viewports are always desktop, regardless of other factors
     if (width >= 1024) {
         connectionInfo = {
@@ -67,7 +70,7 @@ export function getConnectionInfo(): ConnectionInfo {
           (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
         
         // If desktop browser (even with small viewport like F12 device toolbar), it's not mobile
-        const isMobile = isDesktopUserAgent && !hasTouchScreen 
+        isMobile = isDesktopUserAgent && !hasTouchScreen 
           ? false 
           : (isMobileUserAgent || (width < 768 && hasTouchScreen));
         
