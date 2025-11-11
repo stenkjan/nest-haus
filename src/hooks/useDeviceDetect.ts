@@ -52,10 +52,21 @@ export function useDeviceDetect(): DeviceInfo {
             // IMPROVED LOGIC: Prioritize user agent over viewport width
             // This prevents F12 device toolbar from incorrectly triggering mobile detection
             
-            // If user agent clearly indicates desktop, trust it even if viewport is small
+            // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop (laptops, large tablets, desktops)
+            // This handles DevTools laptop presets (1440px, 1024px) that simulate touch
+            if (width >= 1024) {
+                return {
+                    isMobile: false,
+                    isTablet: false,
+                    isDesktop: true,
+                    screenWidth: width,
+                };
+            }
+            
+            // If user agent clearly indicates desktop (and not large screen already handled above)
             if (isDesktopUserAgent && !hasTouchScreen) {
                 // Desktop browser - viewport size alone doesn't make it mobile
-                // This handles F12 device toolbar case
+                // This handles F12 device toolbar case with smaller viewports
                 return {
                     isMobile: false,
                     isTablet: false,
@@ -70,7 +81,7 @@ export function useDeviceDetect(): DeviceInfo {
                 (width < 768 && isMobileDevice) ||
                 (width < 768 && hasTouchScreen && hasOrientationAPI);
 
-            // For tablets: User agent says tablet + touch screen
+            // For tablets: User agent says tablet + touch screen (only in 768-1023px range)
             const isTablet =
                 (isTabletDevice && hasTouchScreen) ||
                 (width >= 768 && width < 1024 && isTabletDevice);

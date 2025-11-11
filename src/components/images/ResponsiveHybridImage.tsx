@@ -53,13 +53,21 @@ export default function ResponsiveHybridImage({
     }
 
     // Client-side: Immediate detection with proper desktop browser handling
+    const width = window.innerWidth;
+    
+    // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+    // This handles DevTools laptop presets that simulate touch
+    if (width >= 1024) {
+      return false; // Large viewport = desktop, always
+    }
+    
     const userAgent = navigator.userAgent.toLowerCase();
     const isMobileUserAgent =
       /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
         userAgent
       );
     const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
-    const isSmallViewport = window.innerWidth < breakpoint;
+    const isSmallViewport = width < breakpoint;
 
     // CRITICAL: Check if this is a desktop browser
     const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
@@ -89,13 +97,22 @@ export default function ResponsiveHybridImage({
 
     const checkDevice = () => {
       // Enhanced mobile detection combining viewport size and user agent
+      const width = window.innerWidth;
+      
+      // CRITICAL FIX: Viewport >= 1024px is ALWAYS desktop
+      // This handles DevTools laptop presets (1440px, 1024px) that simulate touch
+      if (width >= 1024) {
+        setIsMobile((current) => (current !== false ? false : current));
+        return;
+      }
+      
       const userAgent = navigator.userAgent.toLowerCase();
       const isMobileUserAgent =
         /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
           userAgent
         );
       const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
-      const isSmallViewport = window.innerWidth < breakpoint;
+      const isSmallViewport = width < breakpoint;
 
       // CRITICAL: Check if this is a desktop browser
       // Prevents F12 device toolbar from incorrectly triggering mobile detection
