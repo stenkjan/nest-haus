@@ -78,7 +78,7 @@ const getPaymentElementOptions = (selectedMethod?: string) => {
       applePay: "never" as const,
       googlePay: "never" as const,
     },
-    paymentMethodOrder: paymentMethodTypes,
+    // Don't use paymentMethodOrder - let Stripe show all enabled types
   };
 };
 
