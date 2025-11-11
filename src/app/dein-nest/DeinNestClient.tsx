@@ -12,9 +12,7 @@ import {
 } from "@/components/cards";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
-import {
-  TwoByTwoImageGrid as _TwoByTwoImageGrid,
-} from "@/components/grids";
+import { TwoByTwoImageGrid as _TwoByTwoImageGrid } from "@/components/grids";
 import {
   GetInContactBanner,
   PartnersSection,
@@ -104,18 +102,21 @@ export default function DeinNestClient() {
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero with Image and Overlay Text */}
         <section id="hero" className="w-full">
-          <div className="relative w-full h-[50vh] md:h-[60vh]">
+          <div className="relative w-full">
             {/* Background Image */}
             <HybridBlobImage
               path={IMAGES.hero.nestHaus3}
               mobilePath={IMAGES.hero.mobile.nestHaus3}
               alt="NEST-Haus Design - Dein Design im Freistil"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="w-full h-auto"
               strategy="ssr"
               isAboveFold={true}
               isCritical={true}
               priority={true}
             />
+
+            {/* Dark Tint Overlay */}
+            <div className="absolute inset-0 bg-black/10"></div>
 
             {/* Text Overlay */}
             <div className="absolute inset-0 flex items-start justify-center pt-12">
@@ -137,7 +138,7 @@ export default function DeinNestClient() {
                     <h2 className="h2-title font-bold text-white drop-shadow-lg">
                       Nest 80
                     </h2>
-                    <h3 className="h3-secondary-light text-white drop-shadow-lg">
+                    <h3 className="p-primary text-white drop-shadow-lg">
                       75m² ab € 177.000.-
                     </h3>
                   </div>
@@ -147,7 +148,7 @@ export default function DeinNestClient() {
                     <h2 className="h2-title font-bold text-white drop-shadow-lg">
                       Nest 120
                     </h2>
-                    <h3 className="h3-secondary-light text-white drop-shadow-lg">
+                    <h3 className="p-primary text-white drop-shadow-lg">
                       115m² ab € 245.000.-
                     </h3>
                   </div>
@@ -157,7 +158,7 @@ export default function DeinNestClient() {
                     <h2 className="h2-title font-bold text-white drop-shadow-lg">
                       Nest 160
                     </h2>
-                    <h3 className="h3-secondary-light text-white drop-shadow-lg">
+                    <h3 className="p-primary text-white drop-shadow-lg">
                       155m² ab € 313.000.-
                     </h3>
                   </div>
@@ -187,7 +188,8 @@ export default function DeinNestClient() {
                 </Button>
               </Link>
               <Link href="/konfigurator">
-                <Button variant="landing-secondary" size="xs">
+                <Button variant="landing-secondary" size="xs">iü
+                  
                   Jetzt bauen
                 </Button>
               </Link>
