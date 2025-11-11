@@ -2958,7 +2958,7 @@ export default function CheckoutStepper({
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="flex items-center gap-2 justify-end">
+                        <div className="flex items-center gap-2 justify-end mt-2">
                           <span className="text-gray-400 line-through text-2xl">
                             3.000 €
                           </span>

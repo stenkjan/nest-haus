@@ -14,6 +14,7 @@ const createPaymentIntentSchema = z.object({
     customerEmail: z.string().email(),
     customerName: z.string().optional(),
     inquiryId: z.string().optional(),
+    paymentMethodTypes: z.array(z.string()).optional(), // Allow specifying payment method types
     metadata: z.record(z.string()).optional(),
 });
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
         }
 
         let { amount } = validation.data;
-        const { currency, customerEmail, customerName, inquiryId, metadata } = validation.data;
+        const { currency, customerEmail, customerName, inquiryId, paymentMethodTypes, metadata } = validation.data;
 
         // Override amount with server-side configuration for testing
         const paymentMode = process.env.PAYMENT_MODE || "deposit";
@@ -65,16 +66,18 @@ export async function POST(request: NextRequest) {
             });
         }
 
-        // Create payment intent with automatic payment methods (recommended approach)
+        // Create payment intent with specific payment methods if provided
+        // Only allow card, eps, and sofort in step 2 (exclude klarna)
+        const allowedPaymentMethods = paymentMethodTypes && paymentMethodTypes.length > 0 
+            ? paymentMethodTypes 
+            : ['card', 'eps', 'sofort'];
+
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(amount), // Stripe expects amount in cents
             currency: currency.toLowerCase(),
             customer: customer.id,
-            // Use automatic payment methods - Stripe will show relevant methods based on country/currency
-            automatic_payment_methods: {
-                enabled: true,
-                allow_redirects: 'always', // Allow bank redirects like EPS, Sofort
-            },
+            // Use specific payment methods instead of automatic
+            payment_method_types: allowedPaymentMethods,
             metadata: {
                 customerEmail,
                 inquiryId: inquiryId || '',

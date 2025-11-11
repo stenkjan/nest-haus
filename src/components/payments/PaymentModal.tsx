@@ -255,7 +255,7 @@ function PaymentMethodSelection({
       id: "sofort" as PaymentMethod,
       name: "SOFORT Überweisung",
       icons: [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/5/53/Sofort_%C3%9Cberweisung_Logo.svg", alt: "SOFORT" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Sofort%C3%BCberweisung_Logo.svg", alt: "SOFORT" },
       ],
     },
     {
