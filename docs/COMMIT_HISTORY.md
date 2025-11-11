@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0dd4f78af1fba8f2e9e69d0f654d898dbeeef5d4] - Tue Nov 11 14:46:29 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/payments/StripeCheckoutForm.tsx
+- src/components/sections/GetInContactBanner.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [3c8309f568760153a7f9730a3880a72710d02161] - Tue Nov 11 14:36:42 2025 +0100
 
 **Author**: stenkjan
