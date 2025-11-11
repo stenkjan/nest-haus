@@ -4,6 +4,29 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b300761836ef8853beda8126fb67b6206f87d299] - Tue Nov 11 12:34:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ResponsiveHybridImage.tsx
+- src/hooks/useDeviceDetect.ts
+
+
+#### 📚 Documentation Changes
+- DEVICE_DETECTION_FIX.md
+- DEVICE_DETECTION_FIX_V2.md
+- FIX_SUMMARY.md
+- FIX_SUMMARY_V2.md
+- TESTING_INSTRUCTIONS.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [307ca366b515a798687ca784d70f78af0313d53a] - Tue Nov 11 11:32:58 2025 +0000
 
 **Author**: stenkjan
