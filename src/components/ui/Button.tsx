@@ -80,12 +80,12 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const sizes = {
-    xxs: "px-2.5 py-1 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
-    xs: "px-3 py-1.5 text-sm xl:text-base 2xl:text-xl",
-    sm: "px-5 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-lg",
-    md: "px-6 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl",
-    lg: "px-9 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl",
-    xl: "px-12 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl",
+    xxs: "px-2.5 py-1 text-xs sm:text-sm md:text-base lg:text-base xl:text-base",
+    xs: "px-3 py-1.5 text-sm xl:text-base 2xl:text-lg",
+    sm: "px-5 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base lg:text-base xl:text-base",
+    md: "px-6 py-1 sm:py-1.5 md:py-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-lg",
+    lg: "px-9 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl",
+    xl: "px-12 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-2xl",
   };
 
   const buttonClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
