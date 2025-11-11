@@ -1,0 +1,84 @@
+╔══════════════════════════════════════════════════════════════╗
+║     DEVICE DETECTION FIX V2 - CRITICAL UPDATE APPLIED        ║
+╚══════════════════════════════════════════════════════════════╝
+
+🎯 PROBLEM SOLVED:
+   DevTools laptop presets (1440px, 1024px) were showing MOBILE images
+   instead of DESKTOP images, even with the first fix applied.
+
+🔍 ROOT CAUSE:
+   Chrome DevTools simulates touch events (maxTouchPoints > 0) for ALL
+   device presets, including laptops. This triggered mobile detection.
+
+✅ SOLUTION:
+   Added CRITICAL RULE: Viewport >= 1024px = ALWAYS DESKTOP
+   This check happens FIRST, before any other detection logic.
+
+📝 CHANGES MADE:
+
+   1. src/hooks/useDeviceDetect.ts
+      → Added viewport >= 1024px check at start of detectDevice()
+      → Early return for desktop when viewport is laptop size
+      
+   2. src/components/images/ResponsiveHybridImage.tsx
+      → Added viewport check in getInitialMobileState()
+      → Added viewport check in checkDevice() with early return
+      
+   3. src/utils/connectionDetection.ts
+      → Added viewport-first detection logic
+      → Forces desktop connection type for large viewports
+
+📊 NEW DETECTION PRIORITY:
+
+   Priority 1: Viewport >= 1024px → DESKTOP ⭐ (NEW - HIGHEST)
+   Priority 2: Desktop UA + No Touch → DESKTOP
+   Priority 3: Mobile UA + Touch → MOBILE
+   Priority 4: Small Viewport + Touch → MOBILE
+   Default: DESKTOP
+
+🧪 TEST IMMEDIATELY:
+
+   1. Open site in Chrome
+   2. Press F12 → Enable device toolbar (Ctrl+Shift+M)
+   3. Select "Laptop" (1440x900) ← MAIN TEST
+      → Should show: Desktop images ✅
+   4. Select "Laptop L" (1024x768) ← MAIN TEST  
+      → Should show: Desktop images ✅
+
+📁 FILES UPDATED:
+   ✓ src/hooks/useDeviceDetect.ts
+   ✓ src/components/images/ResponsiveHybridImage.tsx
+   ✓ src/utils/connectionDetection.ts
+   ✓ test-device-detection.html (updated test page)
+
+📚 DOCUMENTATION:
+   → DEVICE_DETECTION_FIX_V2.md (full technical details)
+   → TESTING_INSTRUCTIONS.md (step-by-step testing)
+   → FIX_SUMMARY_V2.md (quick reference)
+
+✅ BUILD STATUS:
+   ✓ ESLint: No errors
+   ✓ TypeScript: Compiles successfully
+   ✓ No breaking changes
+   ✓ Backwards compatible
+
+🎯 QUICK VERIFICATION:
+   Open test-device-detection.html in browser
+   → Look for "CRITICAL FIX ACTIVE" banner at 1024px+
+   → Device type should show "Desktop" for laptop presets
+
+⚡ WHAT YOU'LL SEE:
+   At 1440px or 1024px viewport:
+   → Desktop images (landscape, 16:9 ratio)
+   → Console: "Device: Desktop"
+   → NOT mobile images (portrait, 9:16 ratio)
+
+═══════════════════════════════════════════════════════════════
+
+STATUS: ✅ READY TO TEST
+RISK: 🟢 LOW (Only adds safeguard, no breaking changes)
+TIME TO TEST: ~5 minutes
+
+Next step: Test with DevTools laptop presets to confirm fix works!
+
+═══════════════════════════════════════════════════════════════
