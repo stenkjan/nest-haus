@@ -89,8 +89,8 @@ export default function SelectionOption({
 
         return (
           <div className="text-right">
-            {contributionPrice === 0 ? (
-              // For inklusive items, center the text like unselected inklusive
+            {contributionPrice === 0 && categoryId !== "innenverkleidung" ? (
+              // For inklusive items (EXCEPT innenverkleidung - ALL have prices!), center the text
               <>
                 <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
                   &nbsp;
@@ -102,8 +102,8 @@ export default function SelectionOption({
                   &nbsp;
                 </p>
               </>
-            ) : categoryId === "belichtungspaket" ? (
-              // For belichtungspaket, center the price without entspricht
+            ) : categoryId === "belichtungspaket" || categoryId === "innenverkleidung" ? (
+              // For belichtungspaket and innenverkleidung, center the price without entspricht
               <>
                 <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
                   &nbsp;

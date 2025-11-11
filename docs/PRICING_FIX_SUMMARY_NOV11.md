@@ -2,10 +2,10 @@
 
 ## ✅ Completed Fixes
 
-### 1. **Spreadsheet ID Correction**
-- **Changed**: `.env` and `.env.local` 
-- **From**: `PRICING_SPREADSHEET_ID="10FYz4vTgdN-L4k87PYn-59-myGQel20svyJpYliRM38"`
-- **To**: `PRICING_SPREADSHEET_ID="0FYz4vTgdN-L4k87PYn-59-myGQel20svyJpYliRM38"`
+### 1. **Spreadsheet ID Verified**
+- **Spreadsheet ID**: `10FYz4vTgdN-L4k87PYn-59-myGQel20svyJpYliRM38`
+- **URL**: `https://docs.google.com/spreadsheets/d/10FYz4vTgdN-L4k87PYn-59-myGQel20svyJpYliRM38/edit?gid=139712581#gid=139712581`
+- **Status**: ✅ Correct (no changes needed)
 
 ### 2. **Geschossdecke Column Mapping Fixed**
 **File**: `src/services/pricing-sheet-service.ts`

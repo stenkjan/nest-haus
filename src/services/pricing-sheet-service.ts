@@ -155,44 +155,32 @@ class PricingSheetService {
 
   private parseNumber(value: unknown, isPrice: boolean = false): number {
     if (typeof value === 'number') {
-      // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && value < 1000 && value > 0) ? value * 1000 : value;
-      if (isPrice && value < 1000 && value > 0) {
-        console.log(`[DEBUG] Multiplying price: ${value} * 1000 = ${result}`);
-      }
-      return result;
+      // CRITICAL: Numbers >= 1000 are NEVER in thousands format!
+      // Only multiply by 1000 if value < 1000 AND value looks like decimal thousands (e.g., 188.619)
+      // Numbers like 887 should stay as 887 (not multiplied)
+      return (isPrice && value < 1000 && value > 0 && value < 500) ? value * 1000 : value;
     }
     if (typeof value === 'string') {
       const cleaned = value.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
       if (isNaN(parsed)) return 0;
-      // If it's a price and value looks like thousands (< 1000), multiply by 1000
-      const result = (isPrice && parsed < 1000 && parsed > 0) ? parsed * 1000 : parsed;
-      if (isPrice && parsed < 1000 && parsed > 0) {
-        console.log(`[DEBUG] Multiplying price (string): ${parsed} * 1000 = ${result}`);
-      }
-      return result;
+      // CRITICAL: Numbers >= 1000 are NEVER in thousands format!
+      // Only multiply by 1000 if value < 1000 AND value looks like decimal thousands (e.g., 188.619)
+      return (isPrice && parsed < 1000 && parsed > 0 && parsed < 500) ? parsed * 1000 : parsed;
     }
     return 0;
   }
 
   private async fetchSheet(): Promise<unknown[][]> {
     try {
-      console.log('[DEBUG] Fetching sheet:', this.spreadsheetId, 'Range: Preistabelle_Verkauf!A1:N100');
-      
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
         range: 'Preistabelle_Verkauf!A1:N100',
       });
 
-      console.log('[DEBUG] Sheet fetch successful, rows:', response.data.values?.length || 0);
       return (response.data.values || []) as unknown[][];
     } catch (error) {
-      console.error('[ERROR] Error fetching pricing sheet:', error);
-      if (error instanceof Error) {
-        console.error('[ERROR] Error message:', error.message);
-        console.error('[ERROR] Error stack:', error.stack);
-      }
+      console.error('Error fetching pricing sheet:', error);
       throw error;
     }
   }
@@ -282,7 +270,8 @@ class PricingSheetService {
     const optionMapping: Record<string, string> = {
       'eiche': 'steirische_eiche',
       'fichte': 'fichte',
-      'laerche': 'laerche',
+      'laerche': 'laerche',  // ASCII version
+      'lärche': 'laerche',   // UTF-8 version from Google Sheets (ä = umlaut)
     };
 
     for (let rowIndex = 23; rowIndex <= 25; rowIndex++) {
@@ -340,8 +329,6 @@ class PricingSheetService {
       nest160: 16,
     };
 
-    console.log('[DEBUG] Parsed PV-Anlage data:', JSON.stringify(pricesByQuantity, null, 2));
-
     return {
       pricesByQuantity,
       maxModules,
@@ -372,7 +359,6 @@ class PricingSheetService {
     }
 
     if (startRow === -1) {
-      console.warn('Bodenbelag section not found');
       return bodenbelagData;
     }
 
@@ -415,7 +401,6 @@ class PricingSheetService {
     }
 
     if (startRow === -1) {
-      console.warn('Bodenaufbau section not found');
       return bodenaufbauData;
     }
 
@@ -451,7 +436,6 @@ class PricingSheetService {
     }
 
     if (startRow === -1) {
-      console.warn('Belichtungspaket section not found');
       return belichtungspaketData;
     }
 
@@ -537,8 +521,9 @@ class PricingSheetService {
     for (let i = 79; i < 84 && i < rows.length; i++) {
       const cellE = String(rows[i]?.[4] || '').toLowerCase();
       if (cellE.includes('kamin') || cellE.includes('kaminschacht')) {
-        // Price might be in a different column, check common columns
-        kaminschachtPrice = this.parseNumber(rows[i]?.[5] || rows[i]?.[6] || 2000, true);
+        // Kaminschacht is genuinely 887€ (not in thousands format like other prices)
+        // So parse as regular number, NOT as thousands format
+        kaminschachtPrice = this.parseNumber(rows[i]?.[5] || rows[i]?.[6] || 2000, false); // false = NOT a thousands-format price
         break;
       }
     }
@@ -566,8 +551,6 @@ class PricingSheetService {
     const plusPrice = this.parseNumber(rows[88]?.[5], true) || 9600; // F89 (0-indexed: row 88, col 5)
     const proPrice = this.parseNumber(rows[89]?.[5], true) || 12700; // F90 (0-indexed: row 89, col 5)
     
-    console.log('[DEBUG] Planungspakete prices - Plus:', plusPrice, 'Pro:', proPrice);
-    
     return {
       plus: {
         nest80: plusPrice,
@@ -593,7 +576,6 @@ class PricingSheetService {
       return this.cache;
     }
 
-    console.log('📊 Loading pricing data from Google Sheets...');
     const rows = await this.fetchSheet();
 
     const pricingData: PricingData = {
@@ -613,7 +595,6 @@ class PricingSheetService {
     this.cache = pricingData;
     this.cacheTimestamp = now;
     
-    console.log('✅ Pricing data loaded successfully');
     return pricingData;
   }
 

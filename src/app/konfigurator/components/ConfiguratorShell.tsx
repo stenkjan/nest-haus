@@ -63,7 +63,6 @@ export default function ConfiguratorShell({
   useEffect(() => {
     PriceCalculator.initializePricingData()
       .then(() => {
-        console.log('✅ Pricing data loaded successfully');
         setIsPricingDataLoaded(true);
         // Recalculate prices now that data is available
         const store = useConfiguratorStore.getState();
@@ -183,7 +182,6 @@ export default function ConfiguratorShell({
 
   // Reset local state function for CartFooter
   const resetLocalState = useCallback(() => {
-    console.log("🔄 ConfiguratorShell: Resetting local state");
     setPvQuantity(0);
     setGeschossdeckeQuantity(0);
     setIsPvOverlayVisible(false); // Hide PV overlay when resetting since quantity is 0
@@ -405,7 +403,7 @@ export default function ConfiguratorShell({
   // Grundstückscheck logic removed from configurator; now handled in Warenkorb
 
   const handleInfoClick = useCallback((infoKey: string) => {
-    console.log("🚀 Info click:", infoKey);
+    setActiveInfoModal(infoKey);
 
     switch (infoKey) {
       case "beratung":
@@ -513,6 +511,16 @@ export default function ConfiguratorShell({
       if (!configuration?.nest) return null;
 
       try {
+        const pricingData = PriceCalculator.getPricingData();
+        const currentNestValue = configuration.nest.value;
+        const nestSize = currentNestValue as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+
+        // For NEST: Return ONLY the base price (raw construction, no materials)
+        if (categoryId === "nest" && pricingData) {
+          const nestBasePrice = pricingData.nest[optionId as typeof nestSize]?.price || 0;
+          return nestBasePrice; // ONLY base price, no materials!
+        }
+
         // For belichtungspaket, calculate actual price
         if (categoryId === "belichtungspaket") {
           const selectionOption = {
@@ -528,50 +536,23 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For nest-dependent categories (gebaeudehuelle, innenverkleidung, fussboden)
-        if (
-          ["gebaeudehuelle", "innenverkleidung", "fussboden"].includes(
-            categoryId
-          )
-        ) {
-          const currentNestValue = configuration.nest.value;
-          
-          // Special handling for innenverkleidung: show ABSOLUTE prices, not relative
-          if (categoryId === "innenverkleidung") {
-            const pricingData = PriceCalculator.getPricingData();
-            if (pricingData) {
-              const nestSize = currentNestValue as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-              return pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
-            }
-            return 0;
-          }
+        // For INNENVERKLEIDUNG: Return ABSOLUTE price (ALL options have prices!)
+        if (categoryId === "innenverkleidung" && pricingData) {
+          return pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
+        }
 
-          // Use defaults for base calculation
-          let testGebaeudehuelle = "trapezblech";
-          let testInnenverkleidung = "fichte"; // Fichte is the standard option
-          let testFussboden = "ohne_belag";
+        // For GEBÄUDEHÜLLE: Return ABSOLUTE price, then calculate relative in display
+        if (categoryId === "gebaeudehuelle" && pricingData) {
+          const optionPrice = pricingData.gebaeudehuelle[optionId]?.[nestSize] || 0;
+          const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
+          return optionPrice - trapezblechPrice; // Relative to trapezblech = 0
+        }
 
-          if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
-          if (categoryId === "innenverkleidung")
-            testInnenverkleidung = optionId;
-          if (categoryId === "fussboden") testFussboden = optionId;
-
-          const optionTotal = PriceCalculator.calculateCombinationPrice(
-            currentNestValue,
-            testGebaeudehuelle,
-            testInnenverkleidung,
-            testFussboden
-          );
-
-          const baseTotal = PriceCalculator.calculateCombinationPrice(
-            currentNestValue,
-            "trapezblech",
-            "fichte", // Fichte is the standard option
-            "ohne_belag"
-          );
-
-          const contribution = optionTotal - baseTotal;
-          return contribution === 0 ? 0 : contribution; // Return 0 for inklusive items
+        // For BODENBELAG: Return ABSOLUTE price, then calculate relative in display
+        if (categoryId === "fussboden" && pricingData) {
+          const optionPrice = pricingData.bodenbelag[optionId]?.[nestSize] || 0;
+          const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
+          return optionPrice - ohneBelagPrice; // Relative to ohne_belag = 0
         }
 
         // For fenster, calculate area × price
@@ -722,26 +703,28 @@ export default function ConfiguratorShell({
         return originalPrice;
       }
 
-      // For nest modules, show total prices instead of relative prices
+      // For nest modules, show ONLY the base price (raw construction, no materials included)
       if (categoryId === "nest") {
         const currentSelection = configuration[
           categoryId as keyof typeof configuration
         ] as ConfigurationItem | undefined;
 
-        // If this option is currently selected, show no price at all
+        // If this option is currently selected, show as selected
         if (currentSelection && currentSelection.value === optionId) {
           return { type: "selected" as const };
         }
 
-        // DYNAMIC PRICING: Override static nest prices with Google Sheets data
+        // DYNAMIC PRICING: Show ONLY the nest base price from Google Sheets
+        // DO NOT add innenverkleidung or any other materials!
+        // Nest base price = raw construction only (e.g., 188,619€ for Nest 80)
         if (pricingData) {
           const nestSize = optionId as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-          const dynamicPrice = pricingData.nest[nestSize]?.price;
-          if (dynamicPrice) {
+          const nestBasePrice = pricingData.nest[nestSize]?.price;
+          if (nestBasePrice) {
             return {
               type: "base" as const,
-              amount: dynamicPrice,
-              monthly: PriceCalculator.calculateMonthlyPaymentAmount(dynamicPrice),
+              amount: nestBasePrice, // ONLY base price, no materials!
+              monthly: PriceCalculator.calculateMonthlyPaymentAmount(nestBasePrice),
             };
           }
         }
@@ -771,12 +754,25 @@ export default function ConfiguratorShell({
             return { type: "selected" as const };
           }
           
+          // Get the price of Fichte (standard/base option for relative comparison)
+          const fichtePrice = pricingData.innenverkleidung.fichte?.[currentNestValue] || 0;
+          
           if (!currentSelection) {
-            // No selection yet - show as base price
-            return {
-              type: "base" as const,
-              amount: absolutePrice,
-            };
+            // No selection yet - show relative to Fichte (the standard preselected option)
+            if (optionId === 'fichte') {
+              // Fichte itself - show actual price
+              return {
+                type: "base" as const,
+                amount: absolutePrice,
+              };
+            } else {
+              // Other options - show difference from Fichte
+              const priceDiff = absolutePrice - fichtePrice;
+              return {
+                type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+                amount: Math.abs(priceDiff),
+              };
+            }
           }
           
           // Other options - show relative to selected option
@@ -1635,7 +1631,6 @@ export default function ConfiguratorShell({
     if (configuration?.pvanlage?.quantity !== undefined) {
       const storeQuantity = configuration.pvanlage.quantity;
       if (storeQuantity !== pvQuantity) {
-        console.log("🔧 DEBUG: Syncing PV quantity from store:", storeQuantity);
         setPvQuantity(storeQuantity);
         // Also sync overlay visibility
         if (storeQuantity > 0) {
@@ -1650,10 +1645,6 @@ export default function ConfiguratorShell({
     if (configuration?.geschossdecke?.quantity !== undefined) {
       const storeQuantity = configuration.geschossdecke.quantity;
       if (storeQuantity !== geschossdeckeQuantity) {
-        console.log(
-          "🔧 DEBUG: Syncing Geschossdecke quantity from store:",
-          storeQuantity
-        );
         setGeschossdeckeQuantity(storeQuantity);
         // Also sync overlay visibility
         if (storeQuantity > 0) {
