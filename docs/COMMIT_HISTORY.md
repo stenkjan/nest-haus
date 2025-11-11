@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ac9e4a3b6cfd7ab0f39e55568f50020ce0eec1ff] - Tue Nov 11 13:19:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add 'Ohne Nest fortfahren' button at top of Konfigurator  - Added centered button at the top of right panel above Nest section - Button navigates to /warenkorb?mode=vorentwurf (same as Zum Vorentwurf) - Matches existing button styling (white bg, blue border, hover effects) - Provides users immediate option to proceed without configuring Nest - Responsive design with proper touch targets (48px min height) - Symmetrical UX: button at top AND bottom for convenience  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+#### 📚 Documentation Changes
+- docs/OHNE_NEST_BUTTON_NOV11.md
+
+
+---
+
 ## [9eb611db20a73221833569a74e909a3bd4478643] - Tue Nov 11 13:14:35 2025 +0100
 
 **Author**: stenkjan
