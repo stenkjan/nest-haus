@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [489c93e3a287d712678662daace896ef34da7eaa] - Tue Nov 11 10:40:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove unused FullWidthTextGrid import  ESLint error: 'FullWidthTextGrid' is defined but never used Removed unused import from DeinNestClient.tsx  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+
+
+---
+
 ## [7607ed8c2efd6096e98d6b6992802ba78be58d0a] - Tue Nov 11 10:37:15 2025 +0100
 
 **Author**: stenkjan
