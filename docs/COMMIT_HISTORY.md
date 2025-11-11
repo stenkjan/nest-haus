@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bd8cf855968a0fe7484a9991c1a07c57e130b185] - Tue Nov 11 15:59:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add FAQ link and SEO metadata for FAQ page  - Included a new "FAQ" link in the Footer component for easy navigation. - Added SEO configuration for the FAQ page, including title, description, keywords, and image metadata.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/faq/FAQClient.tsx
+- src/app/faq/page.tsx
+- src/components/Footer.tsx
+
+
+---
+
 ## [a178081adb3654f7649f8ca96577ee16069e0080] - Tue Nov 11 15:43:02 2025 +0100
 
 **Author**: stenkjan
