@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Detection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .info-box {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .mobile { border-color: #4CAF50; background: #e8f5e9; }
+        .desktop { border-color: #2196F3; background: #e3f2fd; }
+        h1 { color: #333; }
+        .test-result {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+        .details {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+        .viewport-info {
+            background: #fff3cd;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Device Detection Test</h1>
+    <p><strong>Instructions:</strong> Open this in Chrome, press F12, then toggle device toolbar. The detection should stay as "Desktop" because the user agent hasn't changed.</p>
+    
+    <div id="results"></div>
+
+    <script>
+        function detectDevice() {
+            const width = window.innerWidth;
+            const userAgent = navigator.userAgent.toLowerCase();
+            
+            // Check for mobile device signals
+            const isMobileUserAgent =
+                /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+            const isTabletUserAgent = /ipad|tablet/i.test(userAgent);
+
+            // CRITICAL: Check if this is a desktop browser
+            const isDesktopUserAgent = !isMobileUserAgent && !isTabletUserAgent && 
+                !/mobile|android/i.test(userAgent);
+
+            // Check for touch capabilities
+            const hasTouchScreen =
+                "ontouchstart" in window ||
+                navigator.maxTouchPoints > 0 ||
+                (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
+            // IMPROVED LOGIC: Prioritize user agent over viewport width
+            let isMobile, isDesktop;
+            
+            if (isDesktopUserAgent && !hasTouchScreen) {
+                // Desktop browser - viewport size alone doesn't make it mobile
+                isMobile = false;
+                isDesktop = true;
+            } else {
+                // For actual mobile devices
+                isMobile = (isMobileUserAgent && hasTouchScreen) ||
+                    (width < 768 && isMobileUserAgent) ||
+                    (width < 768 && hasTouchScreen && typeof window.orientation !== "undefined");
+                isDesktop = !isMobile;
+            }
+
+            return {
+                isMobile,
+                isDesktop,
+                width,
+                isMobileUserAgent,
+                isDesktopUserAgent,
+                hasTouchScreen
+            };
+        }
+
+        function updateDisplay() {
+            const detection = detectDevice();
+            const resultsDiv = document.getElementById('results');
+            
+            const deviceType = detection.isMobile ? 'Mobile' : 'Desktop';
+            const boxClass = detection.isMobile ? 'mobile' : 'desktop';
+            
+            resultsDiv.innerHTML = `
+                <div class="info-box ${boxClass}">
+                    <div class="test-result">
+                        ${detection.isMobile ? '📱' : '💻'} Device Type: ${deviceType}
+                    </div>
+                    <div class="details">
+                        <strong>Detection Details:</strong><br>
+                        • User Agent is Mobile: ${detection.isMobileUserAgent ? '✅ Yes' : '❌ No'}<br>
+                        • User Agent is Desktop: ${detection.isDesktopUserAgent ? '✅ Yes' : '❌ No'}<br>
+                        • Has Touch Screen: ${detection.hasTouchScreen ? '✅ Yes' : '❌ No'}<br>
+                        • Final Decision: ${deviceType} (prioritizing user agent)
+                    </div>
+                </div>
+                
+                <div class="viewport-info">
+                    <strong>📐 Viewport Info:</strong><br>
+                    • Window Width: ${detection.width}px<br>
+                    • Breakpoint: 768px (mobile if below)<br>
+                    • User Agent: <code style="font-size: 0.8em; word-break: break-all;">${navigator.userAgent}</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>🧪 Test Scenario:</strong><br>
+                    ${detection.isDesktopUserAgent && detection.width < 768 ? 
+                        '✅ <strong>F12 Device Toolbar Detected!</strong> Desktop user agent with small viewport. Should show as Desktop (not Mobile).' : 
+                        detection.isMobile ? 
+                        '📱 Real mobile device detected' : 
+                        '💻 Normal desktop browsing'}
+                </div>
+            `;
+        }
+
+        // Update on load
+        updateDisplay();
+
+        // Update on resize with debounce
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(updateDisplay, 150);
+        });
+    </script>
+</body>
+</html>

@@ -30,6 +30,11 @@ export function useDeviceDetect(): DeviceInfo {
                 );
             const isTabletDevice = /ipad|tablet/i.test(userAgent);
 
+            // CRITICAL: Check if this is a desktop browser (not mobile/tablet in user agent)
+            // This helps prevent F12 device toolbar from triggering mobile mode
+            const isDesktopUserAgent = !isMobileDevice && !isTabletDevice && 
+                !/mobile|android/i.test(userAgent);
+
             // Check for touch capabilities
             const hasTouchScreen =
                 "ontouchstart" in window ||
@@ -44,15 +49,31 @@ export function useDeviceDetect(): DeviceInfo {
                 "orientation" in window ||
                 navigator.userAgent.indexOf("Mobile") !== -1;
 
-            // Determine device type using multiple signals
-            const isMobile =
-                (width < 768 &&
-                    (isMobileDevice || (hasTouchScreen && hasOrientationAPI))) ||
-                (isMobileDevice && hasTouchScreen);
+            // IMPROVED LOGIC: Prioritize user agent over viewport width
+            // This prevents F12 device toolbar from incorrectly triggering mobile detection
+            
+            // If user agent clearly indicates desktop, trust it even if viewport is small
+            if (isDesktopUserAgent && !hasTouchScreen) {
+                // Desktop browser - viewport size alone doesn't make it mobile
+                // This handles F12 device toolbar case
+                return {
+                    isMobile: false,
+                    isTablet: false,
+                    isDesktop: true,
+                    screenWidth: width,
+                };
+            }
 
+            // For actual mobile devices: User agent says mobile + touch screen
+            const isMobile =
+                (isMobileDevice && hasTouchScreen) ||
+                (width < 768 && isMobileDevice) ||
+                (width < 768 && hasTouchScreen && hasOrientationAPI);
+
+            // For tablets: User agent says tablet + touch screen
             const isTablet =
-                (width >= 768 && width < 1024 && (isTabletDevice || hasTouchScreen)) ||
-                (isTabletDevice && hasTouchScreen);
+                (isTabletDevice && hasTouchScreen) ||
+                (width >= 768 && width < 1024 && isTabletDevice);
 
             const isDesktop = !isMobile && !isTablet;
 
