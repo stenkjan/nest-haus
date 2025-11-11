@@ -150,11 +150,10 @@ export default function SummaryPanel({
 
         // Calculate combination price with this specific option
         let testGebaeudehuelle = baseGebaeudehuelle;
-        let testInnenverkleidung = baseInnenverkleidung;
+        const testInnenverkleidung = baseInnenverkleidung;
         let testFussboden = baseFussboden;
 
         if (key === "gebaeudehuelle") testGebaeudehuelle = selection.value;
-        if (key === "innenverkleidung") testInnenverkleidung = selection.value;
         if (key === "fussboden") testFussboden = selection.value;
 
         const combinationPrice = PriceCalculator.calculateCombinationPrice(
