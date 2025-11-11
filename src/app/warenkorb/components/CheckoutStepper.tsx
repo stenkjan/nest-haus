@@ -3548,9 +3548,9 @@ export default function CheckoutStepper({
 
   // Helper functions for payment
   function getPaymentAmount(): number {
-    // Vorentwurf deposit: €500 (50000 cents)
-    // Configured in environment variables (DEPOSIT_AMOUNT)
-    return 50000; // 500 EUR in cents
+    // Vorentwurf deposit: €1,500 (150000 cents) - Action price (50% discount from €3,000)
+    // This matches the "Heute zu bezahlen" amount displayed in the checkout
+    return 150000; // 1,500 EUR in cents
   }
 
   function getCustomerEmail(): string {
