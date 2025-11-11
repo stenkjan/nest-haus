@@ -4,6 +4,40 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e871eb3b751daa52ae39b387485c007cdebca4da] - Tue Nov 11 12:56:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/components/debug/PriceCacheDebugger.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+- src/hooks/useDeviceDetect.ts
+
+
+#### 📚 Documentation Changes
+- DEVICE_DETECTION_FIX.md
+- DEVICE_DETECTION_FIX_V2.md
+- FIX_SUMMARY.md
+- FIX_SUMMARY_V2.md
+- TESTING_INSTRUCTIONS.md
+- docs/BUILD_FIXES_NOV11.md
+- docs/COMMIT_HISTORY.md
+- docs/ESLINT_FIXES_NOV11.md
+- docs/MISSING_VARIABLE_FIX_NOV11.md
+- docs/ORPHANED_STATE_FIX_NOV11.md
+- docs/PRICE_CACHE_DEBUG_REMOVAL_NOV11.md
+- docs/SUMMARY_PANEL_PRICING_FIX_NOV11.md
+
+
+---
+
 ## [c7179be802abe4d39015d63627cfdd255ae1afe3] - Tue Nov 11 12:52:06 2025 +0100
 
 **Author**: stenkjan
