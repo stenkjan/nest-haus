@@ -212,90 +212,92 @@ function PaymentSuccess({
 function PaymentMethodSelection({
   onMethodSelect,
   onCancel,
+  selectedMethod,
+  onSelectionChange,
 }: {
   onMethodSelect: (method: PaymentMethod) => void;
   onCancel: () => void;
+  selectedMethod: PaymentMethod;
+  onSelectionChange: (method: PaymentMethod) => void;
 }) {
-  // This component is currently not in use but kept for future payment method selection
-  void onMethodSelect;
-  void onCancel;
-  const [selected, setSelected] = useState<PaymentMethod>("card");
-
   const methods = [
     {
       id: "card" as PaymentMethod,
       name: "Debit-oder Kreditkarte",
-      logos: ["mastercard", "visa", "amex"],
+      icons: [
+        { src: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg", alt: "Mastercard" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg", alt: "Visa" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg", alt: "American Express" },
+      ],
     },
     {
       id: "apple_pay" as PaymentMethod,
       name: "Apple Pay",
-      logos: ["apple_pay"],
+      icons: [
+        { src: "https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg", alt: "Apple Pay" },
+      ],
     },
     {
-      id: "paypal" as PaymentMethod,
-      name: "PayPal",
-      logos: ["paypal"],
+      id: "google_pay" as PaymentMethod,
+      name: "Google Pay",
+      icons: [
+        { src: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg", alt: "Google Pay" },
+      ],
     },
     {
       id: "klarna" as PaymentMethod,
       name: "Klarna",
-      logos: ["klarna"],
+      icons: [
+        { src: "https://upload.wikimedia.org/wikipedia/commons/4/40/Klarna_Payment_Badge.svg", alt: "Klarna" },
+      ],
+    },
+    {
+      id: "sofort" as PaymentMethod,
+      name: "SOFORT Überweisung",
+      icons: [
+        { src: "https://upload.wikimedia.org/wikipedia/commons/5/53/Sofort_%C3%9Cberweisung_Logo.svg", alt: "SOFORT" },
+      ],
+    },
+    {
+      id: "eps" as PaymentMethod,
+      name: "EPS-Überweisung",
+      icons: [
+        { src: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Eps-%C3%9Cberweisung_Logo.svg", alt: "EPS" },
+      ],
     },
   ];
 
   return (
     <div className="py-6">
-      <p className="text-sm text-gray-600 mb-6 text-center">
+      <p className="text-sm text-gray-600 mb-6">
         *Nach Auswahl der Zahlungsmethode wirst du zum Anbieter weitergeleitet
       </p>
 
-      <div className="space-y-3 mb-8">
+      <div className="space-y-4 mb-8">
         {methods.map((method) => (
           <button
             key={method.id}
-            onClick={() => setSelected(method.id)}
-            className={`w-full border-2 rounded-2xl p-5 flex items-center justify-between transition-all ${
-              selected === method.id
+            onClick={() => onSelectionChange(method.id)}
+            className={`w-full border-2 rounded-2xl p-6 flex items-center justify-between transition-all min-h-[80px] ${
+              selectedMethod === method.id
                 ? "border-blue-500 bg-blue-50"
                 : "border-gray-300 bg-white hover:border-gray-400"
             }`}
           >
             <div className="flex items-center gap-4">
-              <div className="flex gap-2">
-                {method.logos.map((logo) => (
-                  <div
-                    key={logo}
-                    className="w-12 h-8 bg-gray-100 rounded flex items-center justify-center text-xs font-semibold"
-                  >
-                    {logo === "mastercard" && "MC"}
-                    {logo === "visa" && "VISA"}
-                    {logo === "amex" && "AMEX"}
-                    {logo === "apple_pay" && "🍎"}
-                    {logo === "paypal" && "PP"}
-                    {logo === "klarna" && "K"}
-                  </div>
-                ))}
-              </div>
+              {method.icons.map((icon, idx) => (
+                <img
+                  key={idx}
+                  src={icon.src}
+                  alt={icon.alt}
+                  className="h-8 object-contain"
+                  style={{ maxWidth: "60px" }}
+                />
+              ))}
             </div>
-            <span className="text-gray-700 font-medium">{method.name}</span>
+            <span className="text-gray-900 font-medium">{method.name}</span>
           </button>
         ))}
-      </div>
-
-      <div className="flex gap-3 justify-center">
-        <button
-          onClick={onCancel}
-          className="px-6 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-50"
-        >
-          Vorgang abbrechen
-        </button>
-        <button
-          onClick={() => onMethodSelect(selected)}
-          className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700"
-        >
-          Fortfahren
-        </button>
       </div>
     </div>
   );
@@ -386,7 +388,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
 }
 
 // Main payment modal component
-type PaymentMethod = "card" | "apple_pay" | "paypal" | "klarna";
+type PaymentMethod = "card" | "apple_pay" | "google_pay" | "klarna" | "eps" | "sofort";
 type PaymentStep = "method-selection" | "payment-details" | "success" | "error";
 
 export default function PaymentModal({
@@ -406,7 +408,7 @@ export default function PaymentModal({
   const [paymentStep, setPaymentStep] = useState<PaymentStep>(
     initialPaymentState === "success" ? "success" : "method-selection"
   );
-  const [_selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
   const [paymentState, setPaymentState] = useState<
     "form" | "success" | "error"
   >(initialPaymentState || "form");
@@ -507,112 +509,154 @@ export default function PaymentModal({
 
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div
-          className={`relative bg-white rounded-xl shadow-2xl border border-gray-200/50 max-w-2xl w-full max-h-[90vh] overflow-y-auto transform transition-all duration-300 ${
-            isAnimating
-              ? "scale-100 opacity-100 translate-y-0"
-              : "scale-95 opacity-0 translate-y-4"
-          }`}
-        >
-          {/* Close button - only show for method selection and payment details */}
-          {(paymentStep === "method-selection" || paymentStep === "payment-details") && (
-            <button
-              onClick={handleClose}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+        <div className="w-full max-w-2xl">
+          {/* Title and subtitle - outside the box, not blurred */}
+          {paymentStep === "method-selection" && (
+            <div className="mb-6 text-center relative z-50">
+              <h2 className="h2-title text-black mb-2">
+                Gleich geschafft
+              </h2>
+              <h3 className="h3-primary text-gray-700">
+                Wähle eine Zahlungsmethode
+              </h3>
+            </div>
           )}
-
-          {/* Content */}
-          <div className="p-6">
-            {/* Step 1: Payment Method Selection */}
-            {paymentStep === "method-selection" && (
-              <div>
-                <div className="mb-6 text-center">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                    Zahlungsmethode wählen
-                  </h2>
-                </div>
-
-                <PaymentMethodSelection
-                  onMethodSelect={(method) => {
-                    setSelectedMethod(method);
-                    setPaymentStep("payment-details");
-                  }}
-                  onCancel={handleClose}
-                />
-              </div>
-            )}
-
-            {/* Step 2: Payment Details Form */}
-            {paymentStep === "payment-details" && (
-              <div>
-                <div className="mb-6 text-center">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                    Gleich geschafft
-                  </h2>
-                  <p className="text-gray-600">
-                    Fülle die Informationen aus
-                  </p>
-                </div>
-
-                <PaymentErrorBoundary
-                  onError={(error) => _handlePaymentError(error.message)}
+          
+          {/* Title for payment details step - outside the box */}
+          {paymentStep === "payment-details" && (
+            <div className="mb-6 text-center relative z-50">
+              <h2 className="h2-title text-black mb-2">
+                Gleich geschafft
+              </h2>
+              <p className="h3-primary text-gray-700">
+                Fülle die Informationen aus
+              </p>
+            </div>
+          )}
+          
+          <div
+            className={`relative bg-[#F4F4F4] rounded-3xl shadow-2xl border border-gray-200/50 w-full max-h-[80vh] overflow-y-auto transform transition-all duration-300 ${
+              isAnimating
+                ? "scale-100 opacity-100 translate-y-0"
+                : "scale-95 opacity-0 translate-y-4"
+            }`}
+          >
+            {/* Close button - only show for method selection and payment details */}
+            {(paymentStep === "method-selection" || paymentStep === "payment-details") && (
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <StripeCheckoutForm
-                    amount={amount}
-                    currency={currency}
-                    customerEmail={customerEmail}
-                    customerName={customerName}
-                    inquiryId={inquiryId}
-                    onSuccess={(intentId) => {
-                      setPaymentIntentId(intentId);
-                      setPaymentStep("success");
-                      onSuccess(intentId);
-                    }}
-                    onError={(error) => {
-                      setErrorMessage(error);
-                      setPaymentStep("error");
-                      onError(error);
-                    }}
-                    onCancel={() => setPaymentStep("method-selection")}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
                   />
-                </PaymentErrorBoundary>
-              </div>
+                </svg>
+              </button>
             )}
 
-            {/* Step 3: Success */}
-            {paymentStep === "success" && (
-              <PaymentSuccess
-                paymentIntentId={paymentIntentId}
-                amount={amount}
-                currency={currency}
-                onClose={handleClose}
-              />
-            )}
+            {/* Content */}
+            <div className="p-6 md:p-8">
+              {/* Step 1: Payment Method Selection */}
+              {paymentStep === "method-selection" && (
+                <div>
+                  <PaymentMethodSelection
+                    selectedMethod={selectedMethod}
+                    onSelectionChange={setSelectedMethod}
+                    onMethodSelect={(method) => {
+                      setSelectedMethod(method);
+                      setPaymentStep("payment-details");
+                    }}
+                    onCancel={handleClose}
+                  />
+                </div>
+              )}
 
-            {/* Error State */}
-            {paymentStep === "error" && (
-              <PaymentError
-                error={errorMessage}
-                onRetry={() => setPaymentStep("payment-details")}
-                onClose={handleClose}
-              />
-            )}
+              {/* Step 2: Payment Details Form */}
+              {paymentStep === "payment-details" && (
+                <div>
+                  <PaymentErrorBoundary
+                    onError={(error) => _handlePaymentError(error.message)}
+                  >
+                    <StripeCheckoutForm
+                      amount={amount}
+                      currency={currency}
+                      customerEmail={customerEmail}
+                      customerName={customerName}
+                      inquiryId={inquiryId}
+                      selectedPaymentMethod={selectedMethod}
+                      onSuccess={(intentId) => {
+                        setPaymentIntentId(intentId);
+                        setPaymentStep("success");
+                        onSuccess(intentId);
+                      }}
+                      onError={(error) => {
+                        setErrorMessage(error);
+                        setPaymentStep("error");
+                        onError(error);
+                      }}
+                      onCancel={() => setPaymentStep("method-selection")}
+                    />
+                  </PaymentErrorBoundary>
+                </div>
+              )}
+
+              {/* Step 3: Success */}
+              {paymentStep === "success" && (
+                <PaymentSuccess
+                  paymentIntentId={paymentIntentId}
+                  amount={amount}
+                  currency={currency}
+                  onClose={handleClose}
+                />
+              )}
+
+              {/* Error State */}
+              {paymentStep === "error" && (
+                <PaymentError
+                  error={errorMessage}
+                  onRetry={() => setPaymentStep("payment-details")}
+                  onClose={handleClose}
+                />
+              )}
+            </div>
           </div>
+          
+          {/* Action buttons outside the box - only for method selection */}
+          {paymentStep === "method-selection" && (
+            <div className="flex gap-4 justify-center mt-6 relative z-50">
+              <button
+                onClick={handleClose}
+                className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:ring-gray-400 box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg"
+              >
+                Vorgang abbrechen
+              </button>
+              <button
+                onClick={() => {
+                  // Skip payment-details for Klarna, Apple Pay, and Google Pay
+                  if (selectedMethod === "klarna" || selectedMethod === "apple_pay" || selectedMethod === "google_pay") {
+                    // TODO: Implement direct payment flow for these methods
+                    console.log(`Direct payment for ${selectedMethod} not yet implemented`);
+                    // For now, show an alert
+                    alert(`${selectedMethod === "klarna" ? "Klarna" : selectedMethod === "apple_pay" ? "Apple Pay" : "Google Pay"} Integration wird in Kürze verfügbar sein.`);
+                  } else {
+                    setPaymentStep("payment-details");
+                  }
+                }}
+                className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#2E5BC7] hover:border-[#2E5BC7] focus:ring-[#3D6CE1] box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg"
+              >
+                Fortfahren
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

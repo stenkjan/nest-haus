@@ -30,9 +30,11 @@ interface PaymentFormProps {
   customerName: string;
   amount: number;
   currency: string;
+  selectedPaymentMethod?: string;
   onSuccess: (paymentIntentId: string) => void;
   onError: (error: string) => void;
   onLoading: (loading: boolean) => void;
+  onCancel: () => void;
 }
 
 interface StripeCheckoutFormProps {
@@ -41,26 +43,43 @@ interface StripeCheckoutFormProps {
   customerEmail: string;
   customerName: string;
   inquiryId?: string;
+  selectedPaymentMethod?: string;
   onSuccess: (paymentIntentId: string) => void;
   onError: (error: string) => void;
   onCancel: () => void;
 }
 
 // Payment element configuration
-const paymentElementOptions = {
-  layout: {
-    type: "tabs" as const,
-    defaultCollapsed: false,
-    radios: false,
-    spacedAccordionItems: true,
-  },
-  fields: {
-    billingDetails: "auto" as const,
-  },
-  wallets: {
-    applePay: "auto" as const,
-    googlePay: "auto" as const,
-  },
+const getPaymentElementOptions = (selectedMethod?: string) => {
+  // Determine which payment methods to show based on selection
+  // Only show card, EPS, and SOFORT in step 2
+  // Klarna, Apple Pay, and Google Pay are handled in step 1 (redirect-based)
+  let paymentMethodTypes: string[] = ["card", "eps", "sofort"];
+
+  if (selectedMethod === "card") {
+    paymentMethodTypes = ["card"];
+  } else if (selectedMethod === "eps") {
+    paymentMethodTypes = ["eps"];
+  } else if (selectedMethod === "sofort") {
+    paymentMethodTypes = ["sofort"];
+  }
+
+  return {
+    layout: {
+      type: "tabs" as const,
+      defaultCollapsed: false,
+      radios: false,
+      spacedAccordionItems: true,
+    },
+    fields: {
+      billingDetails: "auto" as const,
+    },
+    wallets: {
+      applePay: "never" as const,
+      googlePay: "never" as const,
+    },
+    paymentMethodOrder: paymentMethodTypes,
+  };
 };
 
 // Payment form component (inside Elements provider)
@@ -70,9 +89,11 @@ function PaymentForm({
   customerName: _customerName,
   amount,
   currency,
+  selectedPaymentMethod: _selectedPaymentMethod,
   onSuccess,
   onError,
   onLoading,
+  onCancel,
 }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
@@ -148,13 +169,15 @@ function PaymentForm({
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Zahlungsmethode wählen
         </label>
-        <div className="border border-gray-300 rounded-lg p-4 bg-white">
-          <PaymentElement options={paymentElementOptions} />
+        <div className="border border-gray-300 rounded-2xl p-4 bg-[#F4F4F4]">
+          <PaymentElement
+            options={getPaymentElementOptions(selectedPaymentMethod)}
+          />
         </div>
       </div>
 
       {errorMessage && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
           <div className="flex">
             <div className="flex-shrink-0">
               <svg
@@ -176,7 +199,7 @@ function PaymentForm({
         </div>
       )}
 
-      <div className="bg-gray-50 rounded-lg p-4">
+      <div className="bg-[#F4F4F4] rounded-2xl p-4">
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-600">Zu zahlender Betrag:</span>
           <span className="font-semibold text-gray-900">
@@ -188,43 +211,57 @@ function PaymentForm({
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={!stripe || isProcessing}
-        className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-colors ${
-          isProcessing
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        }`}
-      >
-        {isProcessing ? (
-          <div className="flex items-center justify-center">
-            <svg
-              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            Zahlung wird verarbeitet...
-          </div>
-        ) : (
-          `Jetzt bezahlen`
-        )}
-      </button>
+      <div className="pt-2 text-center">
+        <div className="flex items-center justify-center space-x-2 text-xs text-gray-500 mb-4">
+          <span>🔒 SSL verschlüsselt</span>
+          <span>•</span>
+          <span>Powered by Stripe</span>
+        </div>
+
+        <div className="flex gap-4 justify-center">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isProcessing}
+            className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:ring-gray-400 box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Abbrechen
+          </button>
+          <button
+            type="submit"
+            disabled={!stripe || isProcessing}
+            className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#2E5BC7] hover:border-[#2E5BC7] focus:ring-[#3D6CE1] box-border px-4 py-1.5 text-sm xl:text-base 2xl:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isProcessing ? (
+              <div className="flex items-center">
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Wird verarbeitet...
+              </div>
+            ) : (
+              "Jetzt bezahlen"
+            )}
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
@@ -236,6 +273,7 @@ export default function StripeCheckoutForm({
   customerEmail,
   customerName,
   inquiryId,
+  selectedPaymentMethod,
   onSuccess,
   onError,
   onCancel,
@@ -248,6 +286,9 @@ export default function StripeCheckoutForm({
   useEffect(() => {
     const createPaymentIntent = async () => {
       try {
+        // Determine payment method types to enable
+        const paymentMethodTypes = ["card", "eps", "sofort"];
+
         const response = await fetch("/api/payments/create-payment-intent", {
           method: "POST",
           headers: {
@@ -259,8 +300,10 @@ export default function StripeCheckoutForm({
             customerEmail,
             customerName,
             inquiryId,
+            paymentMethodTypes, // Specify allowed payment methods
             metadata: {
               source: "warenkorb-checkout",
+              selectedMethod: selectedPaymentMethod || "card",
             },
           }),
         });
@@ -280,31 +323,46 @@ export default function StripeCheckoutForm({
     };
 
     createPaymentIntent();
-  }, [amount, currency, customerEmail, customerName, inquiryId, onError]);
+  }, [
+    amount,
+    currency,
+    customerEmail,
+    customerName,
+    inquiryId,
+    selectedPaymentMethod,
+    onError,
+  ]);
 
-  // Stripe Elements configuration
   const elementsOptions: StripeElementsOptions = {
     clientSecret: clientSecret || undefined,
     appearance: {
       theme: "stripe",
       variables: {
-        colorPrimary: "#3b82f6",
+        colorPrimary: "#3D6CE1",
         colorBackground: "#ffffff",
         colorText: "#1f2937",
         colorDanger: "#ef4444",
         fontFamily: "system-ui, -apple-system, sans-serif",
         spacingUnit: "4px",
-        borderRadius: "8px",
+        borderRadius: "16px",
       },
       rules: {
         ".Tab": {
           border: "1px solid #e5e7eb",
-          borderRadius: "8px",
+          borderRadius: "16px",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+          backgroundColor: "#ffffff",
         },
         ".Tab--selected": {
-          borderColor: "#3b82f6",
-          backgroundColor: "#eff6ff",
+          borderColor: "#3D6CE1",
+          backgroundColor: "#ffffff",
+        },
+        ".Input": {
+          backgroundColor: "#ffffff",
+          borderRadius: "12px",
+        },
+        ".Label": {
+          color: "#374151",
         },
       },
     },
@@ -409,46 +467,30 @@ export default function StripeCheckoutForm({
 
   return (
     <div className="w-full">
-      <div className="bg-white rounded-lg p-6">
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Sichere Zahlung
-          </h3>
-          <p className="text-sm text-gray-600">
-            Ihre Zahlungsdaten werden verschlüsselt übertragen und sicher
-            verarbeitet.
-          </p>
-        </div>
-
-        <Elements stripe={currentStripePromise} options={elementsOptions}>
-          <PaymentForm
-            clientSecret={clientSecret}
-            customerEmail={customerEmail}
-            customerName={customerName}
-            amount={amount}
-            currency={currency}
-            onSuccess={onSuccess}
-            onError={onError}
-            onLoading={setPaymentLoading}
-          />
-        </Elements>
-
-        <div className="mt-6 pt-4 border-t border-gray-200">
-          <button
-            onClick={onCancel}
-            disabled={_paymentLoading}
-            className="w-full py-2 px-4 text-sm text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50"
-          >
-            Abbrechen
-          </button>
-        </div>
-
-        <div className="mt-4 flex items-center justify-center space-x-4 text-xs text-gray-500">
-          <span>🔒 SSL verschlüsselt</span>
-          <span>•</span>
-          <span>Powered by Stripe</span>
-        </div>
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          Sichere Zahlung
+        </h3>
+        <p className="text-sm text-gray-600">
+          Ihre Zahlungsdaten werden verschlüsselt übertragen und sicher
+          verarbeitet.
+        </p>
       </div>
+
+      <Elements stripe={currentStripePromise} options={elementsOptions}>
+        <PaymentForm
+          clientSecret={clientSecret}
+          customerEmail={customerEmail}
+          customerName={customerName}
+          amount={amount}
+          currency={currency}
+          selectedPaymentMethod={selectedPaymentMethod}
+          onSuccess={onSuccess}
+          onError={onError}
+          onLoading={setPaymentLoading}
+          onCancel={onCancel}
+        />
+      </Elements>
     </div>
   );
 }
