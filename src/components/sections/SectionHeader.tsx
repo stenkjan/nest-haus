@@ -13,6 +13,11 @@ import React from "react";
  * - H3 subtitle with h3-secondary styling + max-width constraint
  * - Consistent margin-bottom between sections (mb-12)
  *
+ * New Feature: Responsive Mobile/Desktop Variants
+ * - Use `mobileTitle` and `mobileSubtitle` to provide different content for mobile
+ * - Supports HTML in mobile variants for line breaks (use `<br/>`)
+ * - Mobile subtitle optional - no space occupied if not provided
+ *
  * See: /docs/TYPOGRAPHY_STANDARDS.md
  *
  * @example
@@ -23,6 +28,21 @@ import React from "react";
  *   subtitle="Architektur für ein bewegtes Leben."
  * />
  *
+ * // With mobile variants (different text for mobile)
+ * <SectionHeader
+ *   title="Konfiguriere dein ®Nest Haus"
+ *   subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
+ *   mobileTitle="Konfiguriere dein<br/>®Nest Haus"
+ *   mobileSubtitle="Durch serielle Fertigung<br/>zu transparenten Bestpreisen"
+ * />
+ *
+ * // Mobile title only (no subtitle on mobile)
+ * <SectionHeader
+ *   title="Desktop Title with Subtitle"
+ *   subtitle="Desktop Subtitle"
+ *   mobileTitle="Mobile Title<br/>Only"
+ * />
+ *
  * // With custom styling
  * <SectionHeader
  *   title="Design für dich gemacht"
@@ -30,13 +50,6 @@ import React from "react";
  *   titleClassName="text-gray-900"
  *   subtitleClassName="text-gray-600"
  *   wrapperMargin="md:mb-12 mb-12"
- * />
- *
- * // Left-aligned variant
- * <SectionHeader
- *   title="Section Title"
- *   subtitle="Section subtitle"
- *   centered={false}
  * />
  * ```
  */
@@ -51,6 +64,19 @@ interface SectionHeaderProps {
    * Optional subtitle text
    */
   subtitle?: string;
+
+  /**
+   * Mobile-specific title (supports HTML for line breaks)
+   * If provided, will be used on screens < 1024px instead of title
+   */
+  mobileTitle?: string;
+
+  /**
+   * Mobile-specific subtitle (supports HTML for line breaks)
+   * If provided, will be used on screens < 1024px instead of subtitle
+   * If not provided and mobileTitle is set, no subtitle space is occupied on mobile
+   */
+  mobileSubtitle?: string;
 
   /**
    * HTML tag for the title
@@ -105,6 +131,8 @@ interface SectionHeaderProps {
 export function SectionHeader({
   title,
   subtitle,
+  mobileTitle,
+  mobileSubtitle,
   titleTag = "h1",
   titleClassName = "",
   subtitleClassName = "text-black",
@@ -116,20 +144,59 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   const TitleTag = titleTag;
 
+  // Determine if we have mobile variants
+  const hasMobileVariant = mobileTitle !== undefined;
+
   return (
     <div className={`w-full ${containerMaxWidth} mx-auto px-4 sm:px-6 lg:px-8`}>
       <div
         className={`${centered ? "text-center" : ""} ${wrapperMargin} ${className}`}
       >
-        <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName}`}>
-          {title}
-        </TitleTag>
-        {subtitle && (
-          <h3
-            className={`h3-secondary ${subtitleClassName} ${maxWidth} ${centered ? "mx-auto text-center" : ""}`}
-          >
-            {subtitle}
-          </h3>
+        {/* Desktop Version (≥1024px) */}
+        {hasMobileVariant ? (
+          <>
+            <TitleTag
+              className={`h1-secondary mb-2 md:mb-3 ${titleClassName} hidden lg:block`}
+            >
+              {title}
+            </TitleTag>
+            {subtitle && (
+              <h3
+                className={`h3-secondary ${subtitleClassName} ${maxWidth} ${centered ? "mx-auto text-center" : ""} hidden lg:block`}
+              >
+                {subtitle}
+              </h3>
+            )}
+          </>
+        ) : (
+          <>
+            <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName}`}>
+              {title}
+            </TitleTag>
+            {subtitle && (
+              <h3
+                className={`h3-secondary ${subtitleClassName} ${maxWidth} ${centered ? "mx-auto text-center" : ""}`}
+              >
+                {subtitle}
+              </h3>
+            )}
+          </>
+        )}
+
+        {/* Mobile Version (<1024px) - Only shown if mobile variants exist */}
+        {hasMobileVariant && (
+          <>
+            <TitleTag
+              className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
+              dangerouslySetInnerHTML={{ __html: mobileTitle }}
+            />
+            {mobileSubtitle && (
+              <h3
+                className={`h3-secondary ${subtitleClassName} ${maxWidth} ${centered ? "mx-auto text-center" : ""} lg:hidden`}
+                dangerouslySetInnerHTML={{ __html: mobileSubtitle }}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

@@ -1033,7 +1033,7 @@ export default function UnifiedContentCard({
       // Mobile/Tablet: Stacked layout (Text top, Video bottom with 16:10 aspect ratio)
       <div className="flex flex-col">
         {/* Text Content - More space with better padding */}
-        <div className="flex flex-col justify-center items-center text-center px-6 py-6">
+        <div className="flex flex-col justify-center items-start text-left px-6 py-6">
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -1057,7 +1057,10 @@ export default function UnifiedContentCard({
             <p
               className={`p-primary ${textColors.description} leading-relaxed`}
               dangerouslySetInnerHTML={{
-                __html: getCardText(card, "description").replace(/\n/g, "<br/>"),
+                __html: getCardText(card, "description").replace(
+                  /\n/g,
+                  "<br/>"
+                ),
               }}
             />
             {/* Note: Buttons are not shown on mobile/tablet to match VideoCard16by9 behavior */}
@@ -1159,7 +1162,10 @@ export default function UnifiedContentCard({
             <p
               className={`p-primary ${textColors.description}`}
               dangerouslySetInnerHTML={{
-                __html: getCardText(card, "description").replace(/\n/g, "<br/>"),
+                __html: getCardText(card, "description").replace(
+                  /\n/g,
+                  "<br/>"
+                ),
               }}
             />
 

@@ -283,7 +283,8 @@ export default function DeinNestClient() {
           <SectionHeader
             title="Konfiguriere dein ®Nest Haus"
             subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
-            wrapperMargin="mb-12"
+            mobileTitle="Konfiguriere dein<br/>®Nest Haus"
+            wrapperMargin="mb-8 mt-8 lg:mb-12"
           />
 
           <UnifiedContentCard
