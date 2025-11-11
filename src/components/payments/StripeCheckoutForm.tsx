@@ -50,19 +50,10 @@ interface StripeCheckoutFormProps {
 }
 
 // Payment element configuration
-const getPaymentElementOptions = (selectedMethod?: string) => {
-  // Determine which payment methods to show based on selection
-  // Only show card, EPS, and SOFORT in step 2
-  // Klarna, Apple Pay, and Google Pay are handled in step 1 (redirect-based)
-  let paymentMethodTypes: string[] = ["card", "eps", "sofort"];
-
-  if (selectedMethod === "card") {
-    paymentMethodTypes = ["card"];
-  } else if (selectedMethod === "eps") {
-    paymentMethodTypes = ["eps"];
-  } else if (selectedMethod === "sofort") {
-    paymentMethodTypes = ["sofort"];
-  }
+const getPaymentElementOptions = (_selectedMethod?: string) => {
+  // In Step 2, we always show all three available methods (card, EPS, SOFORT)
+  // regardless of what was selected in Step 1. Users can change their mind.
+  // Klarna, Apple Pay, and Google Pay skip Step 2 entirely (redirect-based).
 
   return {
     layout: {
@@ -78,7 +69,8 @@ const getPaymentElementOptions = (selectedMethod?: string) => {
       applePay: "never" as const,
       googlePay: "never" as const,
     },
-    // Don't use paymentMethodOrder - let Stripe show all enabled types
+    // Let Stripe show all enabled payment methods (card, EPS, SOFORT)
+    // Backend controls which methods are available via paymentMethodTypes
   };
 };
 
@@ -287,7 +279,9 @@ export default function StripeCheckoutForm({
   useEffect(() => {
     const createPaymentIntent = async () => {
       try {
-        // Determine payment method types to enable
+        // Step 2 always enables all three standard payment methods
+        // Users can switch between card, EPS, and SOFORT in the Stripe UI
+        // selectedPaymentMethod from Step 1 is stored in metadata for tracking
         const paymentMethodTypes = ["card", "eps", "sofort"];
 
         const response = await fetch("/api/payments/create-payment-intent", {

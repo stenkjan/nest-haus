@@ -39,7 +39,7 @@ function PaymentSuccess({
   amount,
   currency,
   sessionId,
-  onClose,
+  onClose: _onClose,
 }: PaymentSuccessProps) {
   const formattedAmount = new Intl.NumberFormat("de-DE", {
     style: "currency",
