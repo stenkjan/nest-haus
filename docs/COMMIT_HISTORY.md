@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a178081adb3654f7649f8ca96577ee16069e0080] - Tue Nov 11 15:43:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Adjust layout and styling in CheckoutStepper component  - Added margin-top to specific div elements for improved spacing. - Updated header class for "Dein Preis Überblick" to enhance visual hierarchy. - Ensured consistent styling for payment status indicators with margin adjustments.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [44922408d3cd1f57b8a7ef1cb89d502cdc551d88] - Tue Nov 11 15:19:50 2025 +0100
 
 **Author**: stenkjan
