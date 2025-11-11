@@ -9,17 +9,17 @@ import { Button } from "@/components/ui";
  */
 const CheckmarkBullet = () => (
   <svg
-    className="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:h-6 flex-shrink-0"
+    className="w-5 h-5 lg:w-6 lg:h-6 flex-shrink-0"
     viewBox="0 0 24 24"
     fill="none"
   >
-    <circle cx="12" cy="12" r="10" fill="#3B82F6" />
+    <circle cx="12" cy="9" r="8" fill="#3d6ce1" />
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={2.5}
+      strokeWidth={2.0}
       stroke="white"
-      d="M7 12l3 3 7-7"
+      d="M8 9l3 3 5-6"
     />
   </svg>
 );
@@ -29,18 +29,11 @@ const CheckmarkBullet = () => (
  */
 const CircleBullet = () => (
   <svg
-    className="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:h-6 flex-shrink-0"
+    className="w-5 h-5 lg:w-6 lg:h-6 flex-shrink-0"
     viewBox="0 0 24 24"
     fill="none"
   >
-    <circle
-      cx="12"
-      cy="12"
-      r="10"
-      stroke="#9CA3AF"
-      strokeWidth="2"
-      fill="none"
-    />
+    <circle cx="12" cy="9" r="8" stroke="#9CA3AF" strokeWidth="2" fill="none" />
   </svg>
 );
 
@@ -98,21 +91,20 @@ interface BoxProps {
 }
 
 const Box: React.FC<BoxProps> = ({ data, layout }) => {
-  const spacing = layout === "mobile" ? "space-y-2" : "space-y-3";
-  const minHeight = layout === "mobile" ? "min-h-[400px]" : "min-h-[600px]";
+  const spacing = layout === "mobile" ? "space-y-" : "space-y-1";
+  const minHeight = layout === "mobile" ? "min-h-[200px]" : "min-h-[200px]";
   const borderClass = data.hasBorder ? "border-2 border-[#3D6DE1]" : "";
 
   return (
     <div
-      className={`bg-white rounded-3xl p-6 ${borderClass} ${layout === "mobile" ? minHeight : `flex flex-col ${minHeight}`}`}
+      className={`bg-white rounded-3xl p-8 ${borderClass} ${layout === "mobile" ? minHeight : `flex flex-col ${minHeight}`}`}
     >
-      <p className="p-primary-small text-gray-600 mb-1">{data.label}</p>
+      <p className="p-primary-small text-gray-600">{data.label}</p>
       <div className="h-16 md:h-20 lg:h-24 flex items-start">
         <h3 className="h3-secondary text-black">{data.title}</h3>
       </div>
 
       {/* Spacer between title and bullet points */}
-      <div className="h-8 md:h-10 lg:h-12"></div>
 
       <ul className={`${spacing} mb-6 ${layout === "desktop" ? "flex-1" : ""}`}>
         {data.items.map((item, index) => (
@@ -129,7 +121,7 @@ const Box: React.FC<BoxProps> = ({ data, layout }) => {
         ))}
       </ul>
       {data.hasButton && (
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center mt-0">
           <Link href="/konfigurator">
             <Button variant="primary" size="xs">
               Dein Weg zum Nest

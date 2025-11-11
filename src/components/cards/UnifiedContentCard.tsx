@@ -1132,9 +1132,9 @@ export default function UnifiedContentCard({
           } flex flex-col justify-center items-start text-left ${
             isClient && screenWidth >= 1024 && screenWidth < 1280
               ? heightMode === "tall"
-                ? "px-12" // Standard padding for tall cards
-                : "px-8" // Less padding for standard cards at 1024px
-              : "px-12" // Standard padding at 1280px+
+                ? "px-16" // Standard padding for tall cards
+                : "px-16" // Less padding for standard cards at 1024px
+              : "px-16" // Standard padding at 1280px+
           } py-6`}
         >
           <motion.div

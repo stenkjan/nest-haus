@@ -118,54 +118,80 @@ export default function DeinNestClient() {
             {/* Dark Tint Overlay */}
             <div className="absolute inset-0 bg-black/10"></div>
 
-            {/* Text Overlay */}
-            <div className="absolute inset-0 flex items-start justify-center pt-12">
-              <SectionHeader
-                title="Design oder Bestpreis?"
-                subtitle="Nest verbindet beides in einem System"
-                titleClassName="text-white"
-                subtitleClassName="text-white"
-              />
-            </div>
+            {/* ALL OVERLAY CONTENT - Easy to position */}
+            <div className="absolute inset-0">
+              {/* Container for all content with padding from edges */}
+              <div className="relative w-full h-full max-w-[1536px] mx-auto px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40">
+                {/* SECTION 1: Header at Top */}
+                <div className="absolute top-12 left-0 right-0 flex justify-center">
+                  <SectionHeader
+                    title="Design oder Bestpreis?"
+                    subtitle="Nest verbiniert beides in einem System"
+                    titleClassName="text-white"
+                    subtitleClassName="text-white"
+                  />
+                </div>
 
-            {/* Desktop: Text Blocks and Buttons at bottom - Hidden on mobile */}
-            <div className="absolute bottom-16 left-0 right-0 hidden lg:block">
-              <div className="flex flex-col gap-2 max-w-[1536px] mx-auto w-full px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40">
-                {/* Text Blocks */}
-                <div className="flex justify-between items-center w-full">
-                  {/* Left Text Block */}
-                  <div className="text-center">
-                    <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                      Nest 80
-                    </h2>
-                    <h3 className="p-primary text-white drop-shadow-lg">
-                      75m² ab € 177.000.-
-                    </h3>
-                  </div>
+                {/* SECTION 2: Text Blocks (Desktop Only) - Distance from BOTTOM */}
+                <div
+                  className="hidden lg:block absolute left-0 right-0"
+                  style={{ bottom: "15%" }}
+                >
+                  <div className="flex justify-between items-center w-full px-16 xl:px-24 2xl:px-32">
+                    {/* Left Text Block */}
+                    <div className="text-center">
+                      <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                        Nest 80
+                      </h2>
+                      <h3 className="p-primary text-white drop-shadow-lg">
+                        75m² ab € 177.000.-
+                      </h3>
+                    </div>
 
-                  {/* Center Text Block */}
-                  <div className="text-center">
-                    <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                      Nest 120
-                    </h2>
-                    <h3 className="p-primary text-white drop-shadow-lg">
-                      115m² ab € 245.000.-
-                    </h3>
-                  </div>
+                    {/* Center Text Block */}
+                    <div className="text-center">
+                      <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                        Nest 120
+                      </h2>
+                      <h3 className="p-primary text-white drop-shadow-lg">
+                        115m² ab € 245.000.-
+                      </h3>
+                    </div>
 
-                  {/* Right Text Block */}
-                  <div className="text-center">
-                    <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                      Nest 160
-                    </h2>
-                    <h3 className="p-primary text-white drop-shadow-lg">
-                      155m² ab € 313.000.-
-                    </h3>
+                    {/* Right Text Block */}
+                    <div className="text-center">
+                      <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                        Nest 160
+                      </h2>
+                      <h3 className="p-primary text-white drop-shadow-lg">
+                        155m² ab € 313.000.-
+                      </h3>
+                    </div>
                   </div>
                 </div>
 
-                {/* Buttons */}
-                <div className="flex gap-4 justify-center">
+                {/* SECTION 3: Buttons (Desktop) - Distance from BOTTOM */}
+                <div
+                  className="hidden lg:flex absolute left-0 right-0 gap-4 justify-center"
+                  style={{ bottom: "4%" }}
+                >
+                  <Link href="/nest-system">
+                    <Button variant="primary" size="xs">
+                      Erster Schritte
+                    </Button>
+                  </Link>
+                  <Link href="/konfigurator">
+                    <Button variant="landing-secondary" size="xs">
+                      Termin vereinbaren
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* SECTION 4: Buttons (Mobile Only) - Distance from BOTTOM */}
+                <div
+                  className="flex lg:hidden absolute left-0 right-0 gap-4 justify-center px-4"
+                  style={{ bottom: "8%" }}
+                >
                   <Link href="/nest-system">
                     <Button variant="primary" size="xs">
                       Nest System
@@ -179,21 +205,6 @@ export default function DeinNestClient() {
                 </div>
               </div>
             </div>
-
-            {/* Mobile Buttons Only - Positioned at bottom */}
-            <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 lg:hidden">
-              <Link href="/nest-system">
-                <Button variant="primary" size="xs">
-                  Nest System
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary" size="xs">iü
-                  
-                  Jetzt bauen
-                </Button>
-              </Link>
-            </div>
           </div>
         </section>
         {/* Section 2 - Text Content Below Hero */}
@@ -204,7 +215,7 @@ export default function DeinNestClient() {
               className="h2-title text-center"
               dangerouslySetInnerHTML={{
                 __html:
-                  "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>industrielle Präzision</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>architektonischem Design.</span><span class='text-nest-gray'> Dein Zuhause entsteht dabei aus seriell gefertigten </span><span class='text-black font-medium'>Modulen</span><span class='text-nest-gray'>, die du mit </span><span class='text-black font-medium'>deinen Ideen</span><span class='text-nest-gray'> füllst.</span><br/><br/><span class='text-nest-gray'>Atmosphäre, individuell und ganz nach deinen Vorstellungen.</span><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
+                  "<span class='text-nest-gray'>Wir vereinen </span><span class='text-black font-medium'>industrielle Präzision</span><span class='text-nest-gray'> mit </span><span class='text-black font-medium'>architektonischem Design.</span><span class='text-nest-gray'> Dein Zuhause entsteht dabei aus seriell gefertigten </span><span class='text-black font-medium'>Modulen</span><span class='text-nest-gray'>, die du mit </span><span class='text-black font-medium'>deinen Ideen</span><span class='text-nest-gray'> füllst.</span><br/><br/><span class='text-nest-gray'>Atmosphäre, individuell und ganz nach deinen Vorstellungen.</span><br/><span class='text-black font-medium'>Weil nur du weißt, wie du richtig wohnst.</span>",
               }}
             />
           </div>
