@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [307ca366b515a798687ca784d70f78af0313d53a] - Tue Nov 11 11:32:58 2025 +0000
+
+**Author**: stenkjan
+**Message**: `Merge b95fd44046c8ce203b7c8f1e13eb449ad13840d7 into d3ff6e600cddf26a9740fbfa301878f16a771842  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/images/ResponsiveHybridImage.tsx
+- src/hooks/useDeviceDetect.ts
+
+
+#### 📚 Documentation Changes
+- DEVICE_DETECTION_FIX.md
+- DEVICE_DETECTION_FIX_V2.md
+- FIX_SUMMARY.md
+- FIX_SUMMARY_V2.md
+- TESTING_INSTRUCTIONS.md
+
+
+---
+
 ## [af753ebc18a4a07b5eb31d64a0d12d594d4dd189] - Tue Nov 11 12:30:59 2025 +0100
 
 **Author**: stenkjan
