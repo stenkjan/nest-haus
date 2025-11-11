@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [69cb3cde7493b54816135dbd9a59fc7e61611b59] - Tue Nov 11 13:23:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix margin: mt-3 only on mobile, lg:mt-0 on desktop  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [f2974dc7d4d787101316248e45b458eeafb6de38] - Tue Nov 11 13:20:33 2025 +0100
 
 **Author**: stenkjan
