@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [06b68c48ad54c36afa58fe8ef8fbc19c966b4abb] - Tue Nov 11 12:48:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Add default interior cladding to SummaryPanel  - Introduced a new default value for interior cladding as "fichte" in the SummaryPanel component to enhance base calculation options.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/BUILD_FIXES_NOV11.md
+
+
+---
+
 ## [28fc00f1962c190ca5e69ff5c51a2a433df823c3] - Tue Nov 11 12:42:15 2025 +0100
 
 **Author**: stenkjan
