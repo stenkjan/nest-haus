@@ -96,10 +96,10 @@ export function GetInContactBanner({
               </div>
 
               {/* Title */}
-              <h1 className="h1-secondary text-gray-900 mb-3">{title}</h1>
+              <h1 className="h1-secondary text-black mb-3">{title}</h1>
 
               {/* Subtitle */}
-              <h3 className="h3-secondary text-gray-700 leading-relaxed">
+              <h3 className="h3-secondary text-black leading-relaxed">
                 {subtitle}
               </h3>
 

@@ -4,6 +4,64 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3c0fa0f942eba6b5f24dd4f1e8eddb57f87df5f9] - Tue Nov 11 10:46:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `docs: Add comprehensive pricing overhaul summary  Complete documentation of the Konfigurator pricing system overhaul: - Google Sheets integration details - Database shadow copy architecture - Multi-level caching implementation - All 11 categories pricing logic - Performance metrics and optimizations - Issues fixed during implementation - Testing and QA results - Future enhancement roadmap  Total: 50+ commits, 3000+ lines changed, production ready  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+
+
+---
+
+## [489c93e3a287d712678662daace896ef34da7eaa] - Tue Nov 11 10:40:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Remove unused FullWidthTextGrid import  ESLint error: 'FullWidthTextGrid' is defined but never used Removed unused import from DeinNestClient.tsx  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+
+
+---
+
+## [7607ed8c2efd6096e98d6b6992802ba78be58d0a] - Tue Nov 11 10:37:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `docs: Update pricing sync status documentation  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/PRICING_SYNC_STATUS.md
+
+
+---
+
+## [966584fdb75d92091ccd61466d97e65b9383d21f] - Mon Nov 10 18:13:53 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/PRICING_SYNC_STATUS.md
+
+
+---
+
 ## [3f829310ee2c30edb87473e54e7510ca00bd69d7] - Mon Nov 10 15:47:58 2025 +0100
 
 **Author**: stenkjan

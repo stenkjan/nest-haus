@@ -49,8 +49,8 @@ export default function EntwurfClient() {
           {/* Text Overlay */}
           <div className="absolute inset-0 flex items-start justify-center pt-12">
             <SectionHeader
-              title="Ein Schritt, zwei Ergebnisse"
-              subtitle="Starte heute und erhalte deinen persönlichen Vorentwurf sowie rechtliche Klarheit."
+              title="Entwurf & Grundstücks-Check"
+              subtitle="Starte dein Bauvorhaben mit Rechtssicherheit."
               titleClassName="text-white"
               subtitleClassName="text-white"
             />
@@ -60,12 +60,12 @@ export default function EntwurfClient() {
           <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
             <Link href="/nest-system">
               <Button variant="primary" size="xs">
-                Nest System
+                Vorentwurf sichern
               </Button>
             </Link>
             <Link href="/konfigurator">
               <Button variant="landing-secondary" size="xs">
-                Jetzt bauen
+                Termin vereinbaren
               </Button>
             </Link>
           </div>
@@ -74,12 +74,12 @@ export default function EntwurfClient() {
           <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
             <Link href="/nest-system">
               <Button variant="primary" size="xs">
-                Nest System
+                Vorentwurf sichern
               </Button>
             </Link>
             <Link href="/konfigurator">
               <Button variant="landing-secondary" size="xs">
-                Jetzt bauen
+                Termin vereinbaren
               </Button>
             </Link>
           </div>
@@ -104,10 +104,10 @@ export default function EntwurfClient() {
           customData={[
             {
               id: 1,
-              title: "Der Auftakt",
+              title: "Der Entwurf",
               subtitle: "",
               description:
-                "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Vorentwurf, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Vorentwurf.",
+                "<span class='text-nest-gray'>Dein Nest entsteht schnell, doch </span><span class='text-black font-medium'>Individualität</span><span class='text-nest-gray'> steht immer </span><span class='text-black font-medium'>an erster Stelle.</span><span class='text-nest-gray'> Mit deiner </span><span class='text-black font-medium'>ersten Anzahlung</span><span class='text-nest-gray'> erhältst du </span><span class='text-black font-medium'>rechtliche Sicherheit</span><span class='text-nest-gray'> und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen </span><span class='text-black font-medium'>Vorentwurf,</span><span class='text-nest-gray'> der deine Idee greifbar macht.</span>\n\n<span class='text-nest-gray'>Du entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die </span><span class='text-black font-medium'>rechtliche Prüfung und Vorentwurf.</span>",
               image: IMAGES.function.nestHausEntwurfVorentwurf,
               backgroundColor: "#F4F4F4",
               buttons: [
@@ -145,8 +145,8 @@ export default function EntwurfClient() {
       <section className="w-full py-8 md:py-16 bg-white">
         <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
           <SectionHeader
-            title="Dein ®Nest System"
-            subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
+            title="Dein Grundstücks-Check"
+            subtitle="Der erste Schritt für jedes Bauvorhaben."
             titleClassName="text-black"
             subtitleClassName="text-black"
             wrapperMargin="mb-12"
@@ -158,10 +158,10 @@ export default function EntwurfClient() {
           customData={[
             {
               id: 2,
-              title: "Die Basis",
+              title: "Rahmenbedingungen",
               subtitle: "",
               description:
-                "Mit dem Grundstückscheck, der Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfan an mit Sicherheit planen.",
+                "<span class='text-nest-gray'>Mit dem Grundstückscheck, der </span><span class='text-black font-medium'>Teil deiner ersten Anzahlung</span><span class='text-nest-gray'> ist, erhältst du sofort </span><span class='text-black font-medium'>rechtliche Sicherheit.</span><span class='text-nest-gray'> Wir prüfen, ob dein Grundstück die </span><span class='text-black font-medium'>gesetzlichen Anforderungen</span><span class='text-nest-gray'> erfüllt. Dazu gehören das jeweilige </span><span class='text-black font-medium'>Landesbaugesetz,</span><span class='text-nest-gray'> das </span><span class='text-black font-medium'>Raumordnungsgesetz</span><span class='text-nest-gray'> und die </span><span class='text-black font-medium'>örtlichen Vorschriften</span><span class='text-nest-gray'>, damit dein Bauvorhaben von Beginn an </span><span class='text-black font-medium'>auf sicheren Grundlagen</span><span class='text-nest-gray'> steht.</span>\n\n<span class='text-nest-gray'>Diese </span><span class='text-black font-medium'>Leistungen bleiben dir erhalten,</span><span class='text-nest-gray'> auch wenn du dich gegen den Bau deines Hauses mit Nest entscheiden solltest.*</span>",
               image: IMAGES.function.nestHausGrundstueckCheck,
               backgroundColor: "#F4F4F4",
               buttons: [
@@ -179,8 +179,8 @@ export default function EntwurfClient() {
 
       <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
         <SectionHeader
-          title="So läuft's ab"
-          subtitle="Dein Weg zum Nest-Haus"
+          title="Step by Step nach Hause"
+          subtitle="So gehts nach dem ersten schritt weiter"
           wrapperMargin="mb-12"
         />
 
