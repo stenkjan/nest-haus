@@ -113,10 +113,11 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
     [images]
   );
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState<number>(4);
   const [isHovered, setIsHovered] = useState(false);
-  const isAnimatingRef = useRef(false);
+  const [translateX, setTranslateX] = useState(0);
+  const animationRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
 
   const bgClass =
     backgroundColor === "gray"
@@ -129,35 +130,8 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
     ? "w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8"
     : "w-full";
 
-  const goTo = (index: number) => {
-    if (isAnimatingRef.current) return;
-    isAnimatingRef.current = true;
-
-    // Handle seamless infinite looping
-    let newIndex = index;
-    if (index >= images.length * 2) {
-      // If we're past the second set, jump to the start of the second set (seamless)
-      newIndex = images.length;
-    } else if (index < images.length) {
-      // If we're before the first set, jump to the end of the second set (seamless)
-      newIndex = images.length * 2 - 1;
-    }
-
-    setCurrentIndex(newIndex);
-
-    // After transition completes, reset position if needed for seamless loop
-    setTimeout(() => {
-      if (newIndex >= images.length * 2) {
-        setCurrentIndex(images.length);
-      } else if (newIndex < images.length) {
-        setCurrentIndex(images.length * 2 - 1);
-      }
-      isAnimatingRef.current = false;
-    }, 600);
-  };
-
-  const next = () => goTo(currentIndex + 1);
-  const prev = () => goTo(currentIndex - 1);
+  // Continuous slow movement speed (pixels per second)
+  const movementSpeed = 30; // Adjust this value to control speed
 
   // Responsive items per view and image sizing
   const [imageWidth, setImageWidth] = useState<number>(400);
@@ -199,38 +173,101 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
 
   // Auto-advance with seamless looping
   useEffect(() => {
-    const timer = setInterval(
-      () => {
-        // Always move forward, the goTo function handles the looping
-        next();
-      },
-      Math.max(2000, intervalMs)
-    );
-    return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex, intervalMs]);
+    const animate = (timestamp: number) => {
+      if (!lastTimeRef.current) {
+        lastTimeRef.current = timestamp;
+      }
 
-  // Arrow keys
+      const deltaTime = timestamp - lastTimeRef.current;
+      lastTimeRef.current = timestamp;
+
+      setTranslateX((prev) => {
+        const newTranslate = prev + (movementSpeed * deltaTime) / 1000;
+
+        // Reset position for seamless loop when we've scrolled past one full set
+        const totalWidth = images.length * imageWidth;
+        if (newTranslate >= totalWidth) {
+          return newTranslate - totalWidth;
+        }
+
+        return newTranslate;
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [imageWidth, images.length, movementSpeed]);
+
+  // Arrow keys for manual control
   useEffect(() => {
+    const handleManualScroll = (direction: number) => {
+      setTranslateX((prev) => {
+        const newTranslate = prev + direction * imageWidth;
+        const totalWidth = images.length * imageWidth;
+
+        // Wrap around for seamless loop
+        if (newTranslate < 0) {
+          return totalWidth + newTranslate;
+        } else if (newTranslate >= totalWidth) {
+          return newTranslate - totalWidth;
+        }
+
+        return newTranslate;
+      });
+    };
+
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        prev();
+        handleManualScroll(-1);
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        next();
+        handleManualScroll(1);
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex]);
+  }, [imageWidth, images.length]);
 
   // Track width based on infinite images and dynamic sizing
   const trackStyle: React.CSSProperties = {
     width: `${infiniteImages.length * imageWidth}px`,
-    transform: `translateX(-${currentIndex * imageWidth}px)`,
-    transition: "transform 600ms ease-in-out",
+    transform: `translateX(-${translateX}px)`,
+    transition: "none", // Smooth continuous animation without CSS transitions
+  };
+
+  // Navigation functions for arrow buttons
+  const handlePrev = () => {
+    setTranslateX((prev) => {
+      const newTranslate = prev - imageWidth;
+      const totalWidth = images.length * imageWidth;
+
+      if (newTranslate < 0) {
+        return totalWidth + newTranslate;
+      }
+
+      return newTranslate;
+    });
+  };
+
+  const handleNext = () => {
+    setTranslateX((prev) => {
+      const newTranslate = prev + imageWidth;
+      const totalWidth = images.length * imageWidth;
+
+      if (newTranslate >= totalWidth) {
+        return newTranslate - totalWidth;
+      }
+
+      return newTranslate;
+    });
   };
 
   return (
@@ -311,7 +348,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
           {infiniteImages.length > itemsPerView && isHovered && (
             <>
               <button
-                onClick={prev}
+                onClick={handlePrev}
                 aria-label="Vorheriges Bild"
                 className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-200 transition-all duration-200 hover:scale-110 z-10"
               >
@@ -330,7 +367,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                 </svg>
               </button>
               <button
-                onClick={next}
+                onClick={handleNext}
                 aria-label="Nächstes Bild"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-200 transition-all duration-200 hover:scale-110 z-10"
               >
