@@ -27,6 +27,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
   subtitle = "Einblicke in NEST-Haus",
   backgroundColor = "white",
   maxWidth = true,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   intervalMs = 5000,
 }) => {
   const images = useMemo(
