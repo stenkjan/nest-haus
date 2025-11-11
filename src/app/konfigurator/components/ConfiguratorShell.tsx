@@ -1672,7 +1672,7 @@ export default function ConfiguratorShell({
   const SelectionContent = () => (
     <div className="p-[clamp(0.875rem,2.75vw,1.75rem)] space-y-[clamp(2.75rem,5vh,3.75rem)]">
       {/* Ohne Nest fortfahren button - at the top */}
-      <div className="flex flex-col items-center mt-3 lg:-mt-2 mb-4 gap-2">
+      <div className="flex flex-col items-center mt-3 lg:mt-0 mb-4 gap-2">
         <button
           onClick={() => {
             window.location.href = "/warenkorb?mode=vorentwurf";
