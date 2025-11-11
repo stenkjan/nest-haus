@@ -709,11 +709,12 @@ export default function CheckoutStepper({
   };
 
   const getNextPlanungspaket = (currentPackage?: string) => {
-    const packageHierarchy = [
-      { id: "basis", name: "Planung Basis", price: 10900 },
-      { id: "plus", name: "Planung Plus", price: 16900 },
-      { id: "pro", name: "Planung Pro", price: 21900 },
-    ];
+    // Use prices from PLANNING_PACKAGES constant to ensure consistency
+    const packageHierarchy = PLANNING_PACKAGES.map(pkg => ({
+      id: pkg.value,
+      name: `Planung ${pkg.name}`,
+      price: pkg.price
+    }));
     if (!currentPackage) return packageHierarchy[0];
     const currentIndex = packageHierarchy.findIndex(
       (pkg) => pkg.id === currentPackage

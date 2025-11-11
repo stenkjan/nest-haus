@@ -4,6 +4,138 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e6b987131d487d9c9f24998a7395d2830c21a26c] - Tue Nov 11 13:39:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update planning package prices and refactor related components for consistency  - Updated prices for Planung Plus and Planung Pro in configuratorData and PLANNING_PACKAGES constant. - Refactored WarenkorbClient and CheckoutStepper to utilize PLANNING_PACKAGES for package hierarchy. - Adjusted CheckoutPlanungspaketeCards to display updated prices and handle basis package as included (0€). - Modified configuratorStore to reflect changes in initial pricing for basis package.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+
+
+---
+
+## [470b6b4b034599d347b4a90f8e6116a9a10a88c5] - Tue Nov 11 13:27:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [69cb3cde7493b54816135dbd9a59fc7e61611b59] - Tue Nov 11 13:23:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix margin: mt-3 only on mobile, lg:mt-0 on desktop  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [f2974dc7d4d787101316248e45b458eeafb6de38] - Tue Nov 11 13:20:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Improve 'Ohne Nest fortfahren' button with subtext and better sizing  - Added italic subtext: *Nur den Vorentwurf bestellen - Stretched button to w-full with max-w-[280px] for better fit - Changed container to flex-col with items-center for vertical layout - Added gap-2 between button and subtext - Subtext uses correct brand color #3D6CE1 - Responsive text sizing for subtext: clamp(0.75rem,1vw,0.875rem)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
+## [ac9e4a3b6cfd7ab0f39e55568f50020ce0eec1ff] - Tue Nov 11 13:19:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add 'Ohne Nest fortfahren' button at top of Konfigurator  - Added centered button at the top of right panel above Nest section - Button navigates to /warenkorb?mode=vorentwurf (same as Zum Vorentwurf) - Matches existing button styling (white bg, blue border, hover effects) - Provides users immediate option to proceed without configuring Nest - Responsive design with proper touch targets (48px min height) - Symmetrical UX: button at top AND bottom for convenience  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+#### 📚 Documentation Changes
+- docs/OHNE_NEST_BUTTON_NOV11.md
+
+
+---
+
+## [9eb611db20a73221833569a74e909a3bd4478643] - Tue Nov 11 13:14:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Refactor: Improve type safety for nest size and interior cladding in SummaryPanel  Updated the SummaryPanel component to enhance type safety by formatting the type assertions for nest size and interior cladding options across price calculations. This change improves code readability and maintains consistency with TypeScript best practices.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
+## [7b0e193a58cbf4a4bd10b1f76cf85a92d5fc1bae] - Tue Nov 11 13:12:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Critical fix: Use actual innenverkleidung selection in price calculations  The gebaeudehuelle and fussboden price calculations were always using the default 'fichte' value instead of the user's actual innenverkleidung selection. This caused incorrect prices when users selected Lärche or Eiche.  Fix: Changed testInnenverkleidung from hardcoded baseInnenverkleidung to use configuration.innenverkleidung?.value || baseInnenverkleidung  This ensures price calculations reflect the user's actual configuration, not just defaults.  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/INNENVERKLEIDUNG_SELECTION_FIX_NOV11.md
+
+
+---
+
+## [e871eb3b751daa52ae39b387485c007cdebca4da] - Tue Nov 11 12:56:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/components/debug/PriceCacheDebugger.tsx
+- src/components/images/ResponsiveHybridImage.tsx
+- src/hooks/useDeviceDetect.ts
+
+
+#### 📚 Documentation Changes
+- DEVICE_DETECTION_FIX.md
+- DEVICE_DETECTION_FIX_V2.md
+- FIX_SUMMARY.md
+- FIX_SUMMARY_V2.md
+- TESTING_INSTRUCTIONS.md
+- docs/BUILD_FIXES_NOV11.md
+- docs/COMMIT_HISTORY.md
+- docs/ESLINT_FIXES_NOV11.md
+- docs/MISSING_VARIABLE_FIX_NOV11.md
+- docs/ORPHANED_STATE_FIX_NOV11.md
+- docs/PRICE_CACHE_DEBUG_REMOVAL_NOV11.md
+- docs/SUMMARY_PANEL_PRICING_FIX_NOV11.md
+
+
+---
+
 ## [c7179be802abe4d39015d63627cfdd255ae1afe3] - Tue Nov 11 12:52:06 2025 +0100
 
 **Author**: stenkjan

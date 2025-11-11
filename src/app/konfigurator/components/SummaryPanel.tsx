@@ -44,7 +44,12 @@ export default function SummaryPanel({
       try {
         const pricingData = PriceCalculator.getPricingData();
         if (pricingData) {
-          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+          const nestSize = configuration.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
           const nestBasePrice = pricingData.nest[nestSize]?.price || 0;
           return nestBasePrice; // Return RAW construction price only
         }
@@ -59,9 +64,19 @@ export default function SummaryPanel({
       try {
         const pricingData = PriceCalculator.getPricingData();
         if (pricingData && selection.value) {
-          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-          const innenverkleidungOption = selection.value as 'fichte' | 'laerche' | 'eiche';
-          const absolutePrice = pricingData.innenverkleidung[innenverkleidungOption]?.[nestSize] || 0;
+          const nestSize = configuration.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          const innenverkleidungOption = selection.value as
+            | "fichte"
+            | "laerche"
+            | "eiche";
+          const absolutePrice =
+            pricingData.innenverkleidung[innenverkleidungOption]?.[nestSize] ||
+            0;
           return absolutePrice; // Return ABSOLUTE price (never 0 / "inkludiert")
         }
       } catch {

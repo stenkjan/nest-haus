@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
-import { GRUNDSTUECKSCHECK_PRICE } from "@/constants/configurator";
+import { GRUNDSTUECKSCHECK_PRICE, PLANNING_PACKAGES } from "@/constants/configurator";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
 
@@ -165,11 +165,43 @@ export default function WarenkorbClient() {
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
       } else {
-        // CRITICAL: If no mode parameter, we're in normal warenkorb mode
-        console.log(
-          "🏠 Normal warenkorb access, RESETTING ohne nest mode to FALSE"
-        );
-        setOhneNestMode(false);
+        // Check if this is a new session with no configuration selected
+        // If no nest has been selected and configurator hasn't been opened, treat as ohne-nest mode
+        const hasNestSelected = configuration?.nest != null;
+        const hasAnyConfiguration = hasNestSelected || 
+          configuration?.gebaeudehuelle != null ||
+          configuration?.innenverkleidung != null ||
+          configuration?.fussboden != null ||
+          configuration?.belichtungspaket != null;
+
+        if (!hasAnyConfiguration) {
+          console.log(
+            "🏠 No configuration found, automatically enabling ohne-nest mode (vorentwurf)"
+          );
+          setOhneNestMode(true);
+
+          // Update the session to mark it as ohne-nest mode
+          const sessionId = configuration?.sessionId;
+          if (sessionId) {
+            console.log("📝 Updating session to ohne-nest mode:", sessionId);
+            fetch("/api/sessions/update-ohne-nest-mode", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                sessionId,
+                isOhneNestMode: true,
+              }),
+            }).catch((error) => {
+              console.warn("⚠️ Failed to update ohne-nest mode:", error);
+            });
+          }
+        } else {
+          // User has a configuration, this is normal warenkorb mode
+          console.log(
+            "🏠 Configuration found, using normal warenkorb mode"
+          );
+          setOhneNestMode(false);
+        }
       }
 
       // Set default hash if none exists
@@ -422,11 +454,12 @@ export default function WarenkorbClient() {
 
   // Get next higher planungspaket for upgrade suggestions
   const getNextPlanungspaket = (currentPackage?: string) => {
-    const packageHierarchy = [
-      { id: "basis", name: "Planung Basis", price: 10900 },
-      { id: "plus", name: "Planung Plus", price: 16900 },
-      { id: "pro", name: "Planung Pro", price: 21900 },
-    ];
+    // Use PLANNING_PACKAGES from constants to ensure consistency
+    const packageHierarchy = PLANNING_PACKAGES.map(pkg => ({
+      id: pkg.value,
+      name: `Planung ${pkg.name}`,
+      price: pkg.price
+    }));
 
     if (!currentPackage) {
       return packageHierarchy[0]; // Suggest basis if no package selected

@@ -266,7 +266,7 @@ export const MODULAR_PRICING = {
   }
 } as const;
 
-// Planning packages
+// Planning packages - Updated prices (Nov 2025)
 export const PLANNING_PACKAGES = [
   {
     value: 'basis',
@@ -279,15 +279,15 @@ export const PLANNING_PACKAGES = [
     value: 'plus',
     name: 'Plus',
     description: 'Inkl. Planungspaket Basis\nPlus HKLS-Planung (Gebäudetechnik)',
-    price: 16900,
-    monthly: 98
+    price: 9600, // Updated from 16900 (Nov 2025)
+    monthly: 56 // Updated monthly based on 9600€ at 240 months
   },
   {
     value: 'pro',
     name: 'Pro',
     description: 'Inkl. Planungspaket Plus\nPlus Interiorkonzept (Möblierungsvorschlag)',
-    price: 21900,
-    monthly: 127
+    price: 12700, // Updated from 21900 (Nov 2025)
+    monthly: 74 // Updated monthly based on 12700€ at 240 months
   }
 ] as const;
 
