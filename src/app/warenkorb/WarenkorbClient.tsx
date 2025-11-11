@@ -165,11 +165,43 @@ export default function WarenkorbClient() {
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
       } else {
-        // CRITICAL: If no mode parameter, we're in normal warenkorb mode
-        console.log(
-          "🏠 Normal warenkorb access, RESETTING ohne nest mode to FALSE"
-        );
-        setOhneNestMode(false);
+        // Check if this is a new session with no configuration selected
+        // If no nest has been selected and configurator hasn't been opened, treat as ohne-nest mode
+        const hasNestSelected = configuration?.nest != null;
+        const hasAnyConfiguration = hasNestSelected || 
+          configuration?.gebaeudehuelle != null ||
+          configuration?.innenverkleidung != null ||
+          configuration?.fussboden != null ||
+          configuration?.belichtungspaket != null;
+
+        if (!hasAnyConfiguration) {
+          console.log(
+            "🏠 No configuration found, automatically enabling ohne-nest mode (vorentwurf)"
+          );
+          setOhneNestMode(true);
+
+          // Update the session to mark it as ohne-nest mode
+          const sessionId = configuration?.sessionId;
+          if (sessionId) {
+            console.log("📝 Updating session to ohne-nest mode:", sessionId);
+            fetch("/api/sessions/update-ohne-nest-mode", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                sessionId,
+                isOhneNestMode: true,
+              }),
+            }).catch((error) => {
+              console.warn("⚠️ Failed to update ohne-nest mode:", error);
+            });
+          }
+        } else {
+          // User has a configuration, this is normal warenkorb mode
+          console.log(
+            "🏠 Configuration found, using normal warenkorb mode"
+          );
+          setOhneNestMode(false);
+        }
       }
 
       // Set default hash if none exists
