@@ -4,7 +4,6 @@ import React, { useRef, useEffect } from "react";
 import { useConfiguratorStore } from "@/store/configuratorStore";
 import ConfiguratorShell from "./ConfiguratorShell";
 import { ConfiguratorPanelProvider } from "@/contexts/ConfiguratorPanelContext";
-import { PriceCacheDebugger } from "@/components/debug/PriceCacheDebugger";
 
 // Client Component - Handles all interactive functionality
 export default function KonfiguratorClient() {
@@ -64,7 +63,6 @@ export default function KonfiguratorClient() {
       <ConfiguratorPanelProvider value={rightPanelRef}>
         <ConfiguratorShell rightPanelRef={rightPanelRef} />
       </ConfiguratorPanelProvider>
-      <PriceCacheDebugger />
     </div>
   );
 }
