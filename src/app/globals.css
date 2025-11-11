@@ -197,7 +197,7 @@ h2 {
 
   /* Primary H3 styling - responsive text sizes and spacing */
   .h3-primary {
-    @apply font-medium text-base sm:text-sm md:text-lg lg:text-xl xl:text-2xl mb-4 lg:mb-5;
+    @apply font-medium text-lg sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-4 lg:mb-5;
   }
 
   /* Alternative H1 styling for other pages (commonly used pattern) */

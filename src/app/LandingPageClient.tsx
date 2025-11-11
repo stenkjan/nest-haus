@@ -57,6 +57,8 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus1,
     h1: "Dein ®Nest Haus",
     h3: "Dein Stil. Dein Zuhause.",
+    modelName: "Nest 140",
+    configuration: "Fassadenputz Weiß",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
@@ -67,6 +69,8 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus8,
     h1: "Dein Design im Freistil",
     h3: "So individuell wie du",
+    modelName: "Nest 120",
+    configuration: "Fassadenputz Weiß",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
@@ -77,6 +81,8 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus3,
     h1: "Ein Zuhause für Ideen",
     h3: "Visionen brauchen Räume",
+    modelName: "Nest 160",
+    configuration: "Holzlattung Fichte Anthrazit",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
@@ -87,6 +93,8 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus4,
     h1: "Wohnen neu gedacht",
     h3: "Individualität. Design. Flexibilität.",
+    modelName: "Nest 120",
+    configuration: "Fassadenputz Grau",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
@@ -97,6 +105,8 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus5,
     h1: "Mehr als nur vier Wände",
     h3: "Mit Nest bleibt kein Ort unerreichbar",
+    modelName: "Nest 80",
+    configuration: "Holzlattung Lärche Natur",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
@@ -107,6 +117,8 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus6,
     h1: "Gestaltung für Visionen",
     h3: "Neue Wege. Neue Räume.",
+    modelName: "Nest 160",
+    configuration: "Fassadenputz Weiß",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
@@ -117,6 +129,8 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus7,
     h1: "Raum für deine Ideen",
     h3: "Dein Stil. Dein Zuhause.",
+    modelName: "Nest 120",
+    configuration: "Holzlattung Fichte Natur",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
@@ -127,11 +141,26 @@ const sectionsContent = [
     imagePath: IMAGES.hero.nestHaus2,
     h1: "Wohnen ohne Grenzen",
     h3: "Wo Effizienz auf Architektur trifft.",
+    modelName: "Nest 80",
+    configuration: "Fassadenputz Anthrazit",
     button1: "Entdecken",
     button2: "Jetzt bauen",
     secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
+
+// ImageCaption Component - Bottom-left overlay for image descriptions
+interface ImageCaptionProps {
+  modelName: string; // e.g., "Nest 80"
+  configuration: string; // e.g., "Holzlattung Lärche Natur"
+}
+
+const ImageCaption = ({ modelName, configuration }: ImageCaptionProps) => (
+  <div className="pointer-events-none select-none">
+    <p className="p-primary text-white drop-shadow-lg mb-0">{modelName}</p>
+    <p className="p-primary-small text-white drop-shadow-lg">{configuration}</p>
+  </div>
+);
 
 export default function LandingPageClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("section1");
@@ -266,7 +295,7 @@ export default function LandingPageClient() {
           <React.Fragment key={section.id}>
             <section
               id={section.sectionId}
-              className="relative w-full overflow-hidden"
+              className="relative w-full"
               style={{
                 marginBottom:
                   section.id !== sectionsContent.length ? "1vh" : "0",
@@ -310,6 +339,16 @@ export default function LandingPageClient() {
                   draggable={false}
                   onContextMenu={(e) => e.preventDefault()}
                 />
+
+                {/* Image Caption - Bottom Left with Padding */}
+                {section.modelName && section.configuration && (
+                  <div className="hidden md:block absolute bottom-0 left-0 z-30 p-4 md:p-8">
+                    <ImageCaption
+                      modelName={section.modelName}
+                      configuration={section.configuration}
+                    />
+                  </div>
+                )}
 
                 {/* Content Overlay - responsive for both mobile and desktop */}
                 <div
