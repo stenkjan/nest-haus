@@ -89,7 +89,7 @@ function PaymentForm({
   customerName: _customerName,
   amount,
   currency,
-  selectedPaymentMethod: _selectedPaymentMethod,
+  selectedPaymentMethod,
   onSuccess,
   onError,
   onLoading,
@@ -163,6 +163,9 @@ function PaymentForm({
     }
   };
 
+  // Get payment element options with the selected payment method
+  const paymentElementOptions = getPaymentElementOptions(selectedPaymentMethod);
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
@@ -170,9 +173,7 @@ function PaymentForm({
           Zahlungsmethode wählen
         </label>
         <div className="border border-gray-300 rounded-2xl p-4 bg-[#F4F4F4]">
-          <PaymentElement
-            options={getPaymentElementOptions(selectedPaymentMethod)}
-          />
+          <PaymentElement options={paymentElementOptions} />
         </div>
       </div>
 
