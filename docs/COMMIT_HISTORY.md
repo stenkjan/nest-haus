@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c7179be802abe4d39015d63627cfdd255ae1afe3] - Tue Nov 11 12:52:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Remove debug logging, fix pricing display, and resolve build errors  - Remove all console.log debug statements from pricing system - Delete PriceCacheDebugger component - Fix SummaryPanel to show correct prices (Nest 188,619€, Fichte 23,020€) - Fix orphaned setActiveInfoModal call in ConfiguratorShell - Add missing baseInnenverkleidung variable - Fix all ESLint unused variable errors - Fix isMobile variable scope in connectionDetection - Remove innenverkleidung check from gebaeudehuelle/fussboden block  All linting passes, build should succeed on Vercel.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
 ## [06b68c48ad54c36afa58fe8ef8fbc19c966b4abb] - Tue Nov 11 12:48:49 2025 +0100
 
 **Author**: stenkjan
