@@ -161,7 +161,7 @@ export default function TwoByTwoImageGrid({
                   } text-center`}
                 >
                   <h2
-                    className={`h2-title mb-1 ${
+                    className={`mb-1 font-bold text-3xl sm:text-3xl md:font-medium md:text-xl lg:text-5xl md:lg:text-3xl xl:text-6xl md:xl:text-4xl md:2xl:text-5xl ${
                       (item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
@@ -170,7 +170,7 @@ export default function TwoByTwoImageGrid({
                     {item.title}
                   </h2>
                   <h3
-                    className={`h3-secondary ${item.primaryAction || item.secondaryAction ? "mb-4" : ""} ${
+                    className={`font-medium text-lg sm:text-base md:text-sm lg:text-lg md:lg:text-xl xl:text-2xl md:xl:text-2xl ${item.primaryAction || item.secondaryAction ? "mb-4" : ""} ${
                       (item.textColor || textColor) === "white"
                         ? "!text-white"
                         : "!text-black"
@@ -191,6 +191,7 @@ export default function TwoByTwoImageGrid({
                                 item.primaryButtonVariant || "landing-primary"
                               }
                               size={isUltraWide ? "sm" : "xs"}
+                              className="w-full"
                             >
                               {item.primaryAction}
                             </Button>
@@ -201,6 +202,7 @@ export default function TwoByTwoImageGrid({
                               item.primaryButtonVariant || "landing-primary"
                             }
                             size={isUltraWide ? "sm" : "xs"}
+                            className="w-full"
                           >
                             {item.primaryAction}
                           </Button>
@@ -216,6 +218,7 @@ export default function TwoByTwoImageGrid({
                                 "landing-secondary"
                               }
                               size={isUltraWide ? "sm" : "xs"}
+                              className="w-full"
                             >
                               {item.secondaryAction}
                             </Button>
@@ -226,6 +229,7 @@ export default function TwoByTwoImageGrid({
                               item.secondaryButtonVariant || "landing-secondary"
                             }
                             size={isUltraWide ? "sm" : "xs"}
+                            className="w-full"
                           >
                             {item.secondaryAction}
                           </Button>
