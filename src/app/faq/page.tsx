@@ -1,36 +1,10 @@
-import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import FAQClient from "./FAQClient";
+import { generatePageMetadata, SEO_CONFIG } from "@/lib/seo/generateMetadata";
 
-// Enhanced SEO metadata for the FAQ page
-export const metadata: Metadata = {
-  title: "Frequently Asked Questions | NEST-Haus",
-  description:
-    "Antworten auf häufig gestellte Fragen zu NEST-Haus. Informationen zu Bauablauf, Kosten, Konfiguration und mehr.",
-  keywords:
-    "nest haus faq, häufig gestellte fragen, bauablauf, kosten, konfiguration, modulhaus fragen",
-  alternates: {
-    canonical: "https://nest-haus.at/faq",
-  },
-  openGraph: {
-    title: "NEST-Haus FAQ | Häufig gestellte Fragen",
-    description:
-      "Antworten auf häufig gestellte Fragen zu NEST-Haus. Informationen zu Bauablauf, Kosten, Konfiguration und mehr.",
-    url: "https://nest-haus.at/faq",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-};
+// Use centralized SEO metadata configuration
+export const metadata = generatePageMetadata("faq");
 
 // Structured Data for FAQ Page
 const faqSchema = {
@@ -38,7 +12,7 @@ const faqSchema = {
   "@type": "FAQPage",
   name: "NEST-Haus Häufig gestellte Fragen",
   description: "Antworten auf häufig gestellte Fragen zu NEST-Haus",
-  url: "https://nest-haus.at/faq",
+  url: `${SEO_CONFIG.baseUrl}/faq`,
 };
 
 // Server Component
