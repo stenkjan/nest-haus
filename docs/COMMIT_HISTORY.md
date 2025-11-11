@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f2974dc7d4d787101316248e45b458eeafb6de38] - Tue Nov 11 13:20:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Improve 'Ohne Nest fortfahren' button with subtext and better sizing  - Added italic subtext: *Nur den Vorentwurf bestellen - Stretched button to w-full with max-w-[280px] for better fit - Changed container to flex-col with items-center for vertical layout - Added gap-2 between button and subtext - Subtext uses correct brand color #3D6CE1 - Responsive text sizing for subtext: clamp(0.75rem,1vw,0.875rem)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+
+
+---
+
 ## [ac9e4a3b6cfd7ab0f39e55568f50020ce0eec1ff] - Tue Nov 11 13:19:30 2025 +0100
 
 **Author**: stenkjan
