@@ -1705,7 +1705,9 @@ export default function CheckoutStepper({
                                     (item as ConfigurationCartItem).nest
                                   ) {
                                     const configItem = item as ConfigurationCartItem;
-                                    return getItemPrice("nest", configItem.nest, configItem);
+                                    if (configItem.nest) {
+                                      return getItemPrice("nest", configItem.nest, configItem);
+                                    }
                                   }
                                   // For other items, use totalPrice
                                   return "totalPrice" in item
@@ -2428,7 +2430,9 @@ export default function CheckoutStepper({
                                   (item as ConfigurationCartItem).nest
                                 ) {
                                   const configItem = item as ConfigurationCartItem;
-                                  return getItemPrice("nest", configItem.nest, configItem);
+                                  if (configItem.nest) {
+                                    return getItemPrice("nest", configItem.nest, configItem);
+                                  }
                                 }
                                 // For other items, use totalPrice
                                 return "totalPrice" in item
