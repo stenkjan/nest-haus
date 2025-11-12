@@ -2,16 +2,12 @@ import React from "react";
 
 interface ContactMapProps {
   id?: string;
-  title?: string;
-  subtitle?: string;
   backgroundColor?: "white" | "gray";
   maxWidth?: boolean;
 }
 
 export const ContactMap: React.FC<ContactMapProps> = ({
   id,
-  title = "Wo du uns findest",
-  subtitle = "Komm vorbei um deinen Traum mit uns zu besprechen.",
   backgroundColor = "gray",
   maxWidth = true,
 }) => {
@@ -23,12 +19,6 @@ export const ContactMap: React.FC<ContactMapProps> = ({
   return (
     <section id={id} className={`w-full py-16 ${bgClass}`}>
       <div className={containerClass}>
-        <div className="mb-12">
-          <h1 className="h1-secondary text-gray-900 text-center">{title}</h1>
-          <h3 className="h3-secondary text-gray-600 mb-8 max-w-3xl mx-auto text-center">
-            {subtitle}
-          </h3>
-        </div>
         <div
           className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
           style={{ border: "15px solid #F4F4F4" }}

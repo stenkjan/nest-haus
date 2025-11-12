@@ -11,6 +11,7 @@ import {
   GrundstueckCheckForm,
   GetInContactBanner,
   LandingImagesCarousel as _LandingImagesCarousel,
+  SectionHeader,
 } from "@/components/sections";
 import Footer from "@/components/Footer";
 
@@ -42,7 +43,33 @@ export default function KontaktClient() {
         />
 
         {/* Wo du uns findest - Section 2 */}
-        <ContactMap id="address" backgroundColor="gray" maxWidth={false} />
+        <div className="w-full py-16 bg-gray-50">
+          <SectionHeader
+            title="Wo du uns findest"
+            subtitle="Komm vorbei um deinen Traum mit uns zu besprechen."
+            titleClassName="text-black"
+            subtitleClassName="text-black"
+            wrapperMargin="mb-12"
+          />
+          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+              id="address"
+              className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
+              style={{ border: "15px solid #F4F4F4" }}
+            >
+              <iframe
+                title="Google Maps Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2717.0612860304307!2d15.416334776632444!3d47.08126897114428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476e3352d2429edf%3A0x3a9430b9a0f0fd25!2sKarmeliterplatz%208%2C%208010%20Graz%2C%20Austria!5e0!3m2!1sen!2sus!4v1712087456318!5m2!1sen!2sus"
+                width="600"
+                height="450"
+                style={{ width: "100%", height: "100%", border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+        </div>
 
         {/* Dein Grundstück - Unser Check - Section 3 */}
         <GrundstueckCheckForm
