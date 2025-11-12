@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [aed4d9d664e26c2e1c0e2ac5316a2566b01563da] - Wed Nov 12 09:58:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add subtitle to Bodenbelag Standard option and center content  - Changed Standard subtitle from empty to 'Verlege deinen Boden selbst' - Updated SelectionOption to always center Standard option vertically - Subtitle now shows in both selection box and Dein Nest Überblick - Removed empty description check, always apply centering to ohne_belag  In Überblick, now displays: Standard Verlege deinen Boden selbst inkludiert  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
 ## [4e374c74a5c813925fe7e3bcecf70dbaf1656957] - Wed Nov 12 09:29:47 2025 +0100
 
 **Author**: stenkjan
