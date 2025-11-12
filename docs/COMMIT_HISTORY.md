@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [67f02ba6b6a64a435ec9ded19a69f86cffd57266] - Wed Nov 12 11:55:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Show 3,000€ in Teilzahlung section (not 1,500€)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [2952ce6bcdf56a198d4bc0e73d80a870de5f25ea] - Wed Nov 12 11:52:59 2025 +0100
 
 **Author**: stenkjan
