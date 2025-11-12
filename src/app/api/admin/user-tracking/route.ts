@@ -147,7 +147,7 @@ class UserTrackingService {
                     const obj = field as { value?: unknown };
                     return typeof obj.value === 'string' ? obj.value : undefined;
                 }
-                
+
                 // Old format: direct string value
                 if (typeof field === 'string') {
                     return field;
@@ -210,6 +210,15 @@ class UserTrackingService {
         // Count ALL sessions (including ACTIVE and ABANDONED)
         const totalSessions = await prisma.userSession.count();
 
+        // Sessions with configuration data (user created a config)
+        const configCreated = await prisma.userSession.count({
+            where: {
+                configurationData: {
+                    not: Prisma.JsonNull
+                }
+            }
+        });
+
         const reachedCart = await prisma.userSession.count({
             where: {
                 status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] }
@@ -230,12 +239,13 @@ class UserTrackingService {
 
         return {
             totalSessions,
+            configCreated,
             reachedCart,
             completedInquiry,
             converted,
             cartRate: totalSessions > 0 ? (reachedCart / totalSessions) * 100 : 0,
-            inquiryRate: reachedCart > 0 ? (completedInquiry / reachedCart) * 100 : 0,
-            conversionRate: completedInquiry > 0 ? (converted / completedInquiry) * 100 : 0,
+            inquiryRate: totalSessions > 0 ? (completedInquiry / totalSessions) * 100 : 0,
+            conversionRate: totalSessions > 0 ? (converted / totalSessions) * 100 : 0,
         };
     }
 
@@ -481,10 +491,10 @@ class UserTrackingService {
             .map(([path, count]) => {
                 // Try to extract title from path
                 const pathParts = path.split('/').filter(p => p);
-                const title = pathParts.length > 0 
+                const title = pathParts.length > 0
                     ? pathParts[pathParts.length - 1].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
                     : path;
-                
+
                 return {
                     path,
                     title,
@@ -611,16 +621,16 @@ class UserTrackingService {
         // Process each session
         sessions.forEach(session => {
             const config = session.configurationData as Record<string, unknown>;
-            
+
             categories.forEach(category => {
-                const field = category === 'nest' ? (config.nestType || config.nest) : config[category];
-                
+                const field = category === 'nest' ? (config.nest || config.nestType) : config[category];
+
                 if (!field) return;
 
                 // Extract value and quantity
                 let value: string | undefined;
                 let quantity: number | undefined;
-                
+
                 if (typeof field === 'string') {
                     value = field;
                 } else if (field && typeof field === 'object' && 'value' in field) {
@@ -641,10 +651,10 @@ class UserTrackingService {
 
                 // Update counts
                 categoryTotals.set(category, categoryTotals.get(category)! + 1);
-                
+
                 const selectionsMap = categorySelections.get(category)!;
                 const existing = selectionsMap.get(value);
-                
+
                 if (existing) {
                     existing.count++;
                     if (quantity) {
@@ -664,11 +674,11 @@ class UserTrackingService {
 
         // Build result object
         const result: UserTrackingData['configurationAnalytics'] = {};
-        
+
         categories.forEach(category => {
             const selectionsMap = categorySelections.get(category);
             const categoryTotal = categoryTotals.get(category) || 0;
-            
+
             if (selectionsMap) {
                 result[category] = Array.from(selectionsMap.entries())
                     .map(([value, data]) => ({
@@ -725,7 +735,7 @@ class UserTrackingService {
 
         sessions.forEach(session => {
             const config = session.configurationData as Record<string, unknown>;
-            
+
             // Process geschossdecke
             if (config.geschossdecke) {
                 geschossdeckeData.totalWithOption++;
@@ -752,8 +762,8 @@ class UserTrackingService {
         return {
             geschossdecke: {
                 totalWithOption: geschossdeckeData.totalWithOption,
-                averageQuantity: geschossdeckeData.totalWithOption > 0 
-                    ? geschossdeckeData.totalQuantity / geschossdeckeData.totalWithOption 
+                averageQuantity: geschossdeckeData.totalWithOption > 0
+                    ? geschossdeckeData.totalQuantity / geschossdeckeData.totalWithOption
                     : 0,
                 quantityDistribution: Array.from(geschossdeckeData.quantityMap.entries())
                     .map(([quantity, count]) => ({ quantity, count }))
@@ -761,8 +771,8 @@ class UserTrackingService {
             },
             pvanlage: {
                 totalWithOption: pvanlageData.totalWithOption,
-                averageQuantity: pvanlageData.totalWithOption > 0 
-                    ? pvanlageData.totalQuantity / pvanlageData.totalWithOption 
+                averageQuantity: pvanlageData.totalWithOption > 0
+                    ? pvanlageData.totalQuantity / pvanlageData.totalWithOption
                     : 0,
                 quantityDistribution: Array.from(pvanlageData.quantityMap.entries())
                     .map(([quantity, count]) => ({ quantity, count }))
@@ -863,9 +873,9 @@ export async function GET() {
         const selectionStats = getResult(3, { nestTypes: [], gebaeudehuelle: [], innenverkleidung: [] });
         const clickAnalytics = getResult(4, { pageClicks: [], mouseClicks: [] });
         const configurationAnalytics = getResult(5, {});
-        const quantityAnalytics = getResult(6, { 
-            geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }, 
-            pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] } 
+        const quantityAnalytics = getResult(6, {
+            geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] },
+            pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }
         });
         const timeMetrics = getResult(7, { avgTimeToCart: 0, avgTimeToInquiry: 0, avgSessionDuration: 0 });
 

@@ -22,6 +22,7 @@ import TrackingActions from "./components/TrackingActions";
 interface UserTrackingData {
   funnel: {
     totalSessions: number;
+    configCreated: number; // Sessions with configuration data
     reachedCart: number;
     completedInquiry: number;
     converted: number;
@@ -167,6 +168,24 @@ function FunnelMetrics({ funnel }: { funnel: UserTrackingData["funnel"] }) {
           </div>
         </div>
 
+        {/* Stage 1.5: Config Created */}
+        <div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-gray-700">
+              Configuration Created
+            </span>
+            <span className="text-lg font-bold text-gray-900">
+              {funnel.configCreated}
+            </span>
+          </div>
+          <div
+            className="bg-teal-500 h-10 rounded flex items-center justify-center text-white font-medium"
+            style={{ width: `${(funnel.configCreated / funnel.totalSessions) * 100}%` }}
+          >
+            {((funnel.configCreated / funnel.totalSessions) * 100).toFixed(1)}%
+          </div>
+        </div>
+
         {/* Stage 2: Reached Cart */}
         <div>
           <div className="flex justify-between items-center mb-2">
@@ -179,9 +198,9 @@ function FunnelMetrics({ funnel }: { funnel: UserTrackingData["funnel"] }) {
           </div>
           <div
             className="bg-green-500 h-10 rounded flex items-center justify-center text-white font-medium"
-            style={{ width: `${funnel.cartRate}%` }}
+            style={{ width: `${(funnel.reachedCart / funnel.totalSessions) * 100}%` }}
           >
-            {funnel.cartRate.toFixed(1)}%
+            {((funnel.reachedCart / funnel.totalSessions) * 100).toFixed(1)}%
           </div>
         </div>
 
@@ -197,9 +216,9 @@ function FunnelMetrics({ funnel }: { funnel: UserTrackingData["funnel"] }) {
           </div>
           <div
             className="bg-yellow-500 h-10 rounded flex items-center justify-center text-white font-medium"
-            style={{ width: `${funnel.inquiryRate}%` }}
+            style={{ width: `${(funnel.completedInquiry / funnel.totalSessions) * 100}%` }}
           >
-            {funnel.inquiryRate.toFixed(1)}%
+            {((funnel.completedInquiry / funnel.totalSessions) * 100).toFixed(1)}%
           </div>
         </div>
 
@@ -215,30 +234,36 @@ function FunnelMetrics({ funnel }: { funnel: UserTrackingData["funnel"] }) {
           </div>
           <div
             className="bg-purple-500 h-10 rounded flex items-center justify-center text-white font-medium"
-            style={{ width: `${funnel.conversionRate}%` }}
+            style={{ width: `${(funnel.converted / funnel.totalSessions) * 100}%` }}
           >
-            {funnel.conversionRate.toFixed(1)}%
+            {((funnel.converted / funnel.totalSessions) * 100).toFixed(1)}%
           </div>
         </div>
       </div>
 
       {/* Summary Stats */}
-      <div className="mt-6 pt-6 border-t border-gray-200 grid grid-cols-3 gap-4">
+      <div className="mt-6 pt-6 border-t border-gray-200 grid grid-cols-4 gap-4">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-teal-600">
+            {((funnel.configCreated / funnel.totalSessions) * 100).toFixed(0)}%
+          </div>
+          <div className="text-xs text-gray-600">Config Rate</div>
+        </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-blue-600">
-            {funnel.cartRate.toFixed(0)}%
+            {((funnel.reachedCart / funnel.totalSessions) * 100).toFixed(0)}%
           </div>
           <div className="text-xs text-gray-600">Cart Rate</div>
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-green-600">
-            {funnel.inquiryRate.toFixed(0)}%
+            {((funnel.completedInquiry / funnel.totalSessions) * 100).toFixed(0)}%
           </div>
           <div className="text-xs text-gray-600">Inquiry Rate</div>
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-purple-600">
-            {funnel.conversionRate.toFixed(0)}%
+            {((funnel.converted / funnel.totalSessions) * 100).toFixed(0)}%
           </div>
           <div className="text-xs text-gray-600">Conversion Rate</div>
         </div>
@@ -410,7 +435,7 @@ async function UserTrackingDashboard() {
       </div>
 
       {/* Top Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
             <div className="text-3xl">📊</div>
@@ -426,11 +451,28 @@ async function UserTrackingDashboard() {
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
+            <div className="text-3xl">⚙️</div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Config Created</p>
+              <p className="text-2xl font-bold text-green-600">
+                {data.funnel.configCreated}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {((data.funnel.configCreated / data.funnel.totalSessions) * 100).toFixed(1)}% of sessions
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
             <div className="text-3xl">🛒</div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Reached Cart</p>
               <p className="text-2xl font-bold text-blue-600">
                 {data.funnel.reachedCart}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {((data.funnel.reachedCart / data.funnel.totalSessions) * 100).toFixed(1)}% of sessions
               </p>
             </div>
           </div>
@@ -443,6 +485,9 @@ async function UserTrackingDashboard() {
               <p className="text-2xl font-bold text-green-600">
                 {data.funnel.completedInquiry}
               </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {((data.funnel.completedInquiry / data.funnel.totalSessions) * 100).toFixed(1)}% of sessions
+              </p>
             </div>
           </div>
         </div>
@@ -453,6 +498,9 @@ async function UserTrackingDashboard() {
               <p className="text-sm font-medium text-gray-600">Conversions</p>
               <p className="text-2xl font-bold text-purple-600">
                 {data.funnel.converted}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {((data.funnel.converted / data.funnel.totalSessions) * 100).toFixed(1)}% of sessions
               </p>
             </div>
           </div>

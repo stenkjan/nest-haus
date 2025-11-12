@@ -20,6 +20,7 @@ export interface RateLimitInfo {
     resetTime: number;
     percentage: number;
     window: string; // e.g., "15 minutes"
+    isRealData?: boolean; // True if actual data, false if estimated
 }
 
 export interface DatabaseInfo {
@@ -62,6 +63,12 @@ export interface StorageInfo {
     used: number; // GB
     limit: number; // GB
     percentage: number;
+    blobCount?: number; // Number of blobs
+    operations?: {
+        simple: number; // head() calls, cache misses
+        advanced: number; // put(), copy(), list() calls
+    };
+    isRealData?: boolean; // True if actual data, false if estimated
 }
 
 export interface ServiceLimits {
@@ -103,6 +110,8 @@ export class UsageMonitor {
         },
         storage: {
             total: 100, // GB (Hobby plan)
+            simpleOps: 10000, // Free: 10K simple ops (cache misses, head())
+            advancedOps: 2000, // Free: 2K advanced ops (put, copy, list)
         },
         rateLimit: {
             ipBased: 300, // Per 15 min
@@ -112,27 +121,37 @@ export class UsageMonitor {
     };
 
     /**
-     * Get current rate limit usage
-     * Note: This reads from SecurityMiddleware's in-memory store
+     * Get current rate limit usage - REAL DATA
+     * Reads actual request counts from SecurityMiddleware
      */
     static async getRateLimitUsage(): Promise<RateLimitInfo> {
-        // For now, return estimated usage since rateLimitStore is in-memory
-        // In production, this should read from Redis or shared state
+        try {
+            // Import SecurityMiddleware dynamically to avoid circular deps
+            const { SecurityMiddleware } = await import('@/lib/security/SecurityMiddleware');
+            const stats = SecurityMiddleware.getRateLimitStats();
 
-        const now = Date.now();
-        const resetTime = now + (15 * 60 * 1000); // 15 minutes from now
-
-        // Estimate current usage based on active sessions
-        const activeSessions = await this.getActiveSessionCount();
-        const estimated = Math.min(activeSessions * 5, this.LIMITS.rateLimit.ipBased); // ~5 requests per session
-
-        return {
-            current: estimated,
-            limit: this.LIMITS.rateLimit.ipBased,
-            resetTime,
-            percentage: (estimated / this.LIMITS.rateLimit.ipBased) * 100,
-            window: "15 minutes",
-        };
+            // Use actual IP limit count
+            return {
+                current: stats.ipLimits.active,
+                limit: this.LIMITS.rateLimit.ipBased,
+                resetTime: stats.oldestResetTime,
+                percentage: (stats.ipLimits.active / this.LIMITS.rateLimit.ipBased) * 100,
+                window: "15 minutes",
+                isRealData: true, // Indicator for UI
+            };
+        } catch (error) {
+            console.error('Failed to get real rate limit data:', error);
+            // Fallback to minimal estimate
+            const now = Date.now();
+            return {
+                current: 0,
+                limit: this.LIMITS.rateLimit.ipBased,
+                resetTime: now + (15 * 60 * 1000),
+                percentage: 0,
+                window: "15 minutes",
+                isRealData: false,
+            };
+        }
     }
 
     /**
@@ -249,20 +268,65 @@ export class UsageMonitor {
     }
 
     /**
-     * Get blob storage usage
-     * Note: Vercel provides usage stats via dashboard
-     * This provides estimated tracking
+     * Get blob storage usage - REAL DATA from Vercel Blob API
+     * Note: Operation counts are estimated since Vercel doesn't expose them via SDK
+     * Actual operation counts are only visible in Vercel Dashboard > Observability
      */
     static async getStorageUsage(): Promise<StorageInfo> {
-        // Current images: ~50MB
-        // For beta, minimal growth expected
-        const estimatedGB = 0.05; // 50MB = 0.05GB
+        try {
+            // Import Vercel Blob dynamically
+            const { list } = await import('@vercel/blob');
+            
+            // List all blobs to calculate total size
+            // NOTE: This list() call itself counts as 1 Advanced Operation!
+            const { blobs } = await list();
+            
+            // Sum up all blob sizes
+            const totalBytes = blobs.reduce((sum, blob) => sum + blob.size, 0);
+            const totalGB = totalBytes / (1024 * 1024 * 1024);
 
-        return {
-            used: estimatedGB,
-            limit: this.LIMITS.storage.total,
-            percentage: (estimatedGB / this.LIMITS.storage.total) * 100,
-        };
+            // Estimate operations based on blob count and usage patterns
+            // According to Vercel docs:
+            // - Simple Operations: Cache misses when accessing blob by URL, head() calls
+            // - Advanced Operations: put(), copy(), list() calls + dashboard interactions
+            const estimatedAdvancedOps = Math.min(
+                blobs.length * 1.2, // Assume ~1.2 operations per blob (upload + occasional list)
+                this.LIMITS.storage.advancedOps
+            );
+
+            // Simple operations harder to estimate (depends on cache hit rate)
+            // Conservative estimate: 30% cache miss rate on downloads
+            const estimatedSimpleOps = Math.min(
+                blobs.length * 3, // Assume ~3 accesses per blob with 30% miss rate
+                this.LIMITS.storage.simpleOps
+            );
+
+            return {
+                used: Number(totalGB.toFixed(3)),
+                limit: this.LIMITS.storage.total,
+                percentage: (totalGB / this.LIMITS.storage.total) * 100,
+                blobCount: blobs.length,
+                operations: {
+                    simple: Math.round(estimatedSimpleOps),
+                    advanced: Math.round(estimatedAdvancedOps),
+                },
+                isRealData: true, // Storage size is real, operations are estimated
+            };
+        } catch (error) {
+            console.error('Failed to get blob storage usage:', error);
+            // Fallback to conservative estimate
+            return {
+                used: 1.0, // 1GB conservative estimate
+                limit: this.LIMITS.storage.total,
+                percentage: 1.0,
+                blobCount: 0,
+                operations: {
+                    simple: 0,
+                    advanced: 0,
+                },
+                isRealData: false,
+            };
+        }
     }
 
     /**

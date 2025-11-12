@@ -220,9 +220,20 @@ export default function UsagePage() {
               {/* Rate Limiting */}
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Rate Limiting
-                  </h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Rate Limiting
+                    </h3>
+                    {usage.rateLimit.isRealData ? (
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                        Real-time
+                      </span>
+                    ) : (
+                      <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+                        Estimated
+                      </span>
+                    )}
+                  </div>
                   <span className="text-2xl">
                     {getStatusEmoji(usage.rateLimit.percentage)}
                   </span>
@@ -370,9 +381,20 @@ export default function UsagePage() {
               {/* Blob Storage */}
               <div className="bg-white rounded-lg shadow p-6 md:col-span-2">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Blob Storage
-                  </h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Blob Storage
+                    </h3>
+                    {usage.storage.isRealData ? (
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                        Real-time
+                      </span>
+                    ) : (
+                      <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+                        Estimated
+                      </span>
+                    )}
+                  </div>
                   <span className="text-2xl">
                     {getStatusEmoji(usage.storage.percentage)}
                   </span>
@@ -387,6 +409,36 @@ export default function UsagePage() {
                       GB
                     </span>
                   </div>
+                  {usage.storage.blobCount !== undefined && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Total Files</span>
+                      <span className="font-semibold text-gray-700">
+                        {usage.storage.blobCount} blobs
+                      </span>
+                    </div>
+                  )}
+                  {usage.storage.operations && (
+                    <>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">
+                          Simple Operations
+                          <span className="text-xs text-gray-400 ml-1">(est.)</span>
+                        </span>
+                        <span className="font-semibold text-gray-700">
+                          {usage.storage.operations.simple.toLocaleString()} / 10,000
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">
+                          Advanced Operations
+                          <span className="text-xs text-gray-400 ml-1">(est.)</span>
+                        </span>
+                        <span className="font-semibold text-gray-700">
+                          {usage.storage.operations.advanced.toLocaleString()} / 2,000
+                        </span>
+                      </div>
+                    </>
+                  )}
                   <div className="w-full bg-gray-200 rounded-full h-4">
                     <div
                       className={`h-4 rounded-full ${getProgressBarColor(usage.storage.percentage)}`}
@@ -397,6 +449,16 @@ export default function UsagePage() {
                   </div>
                   <p className="text-xs text-gray-500 mt-2">
                     100 GB total storage (Vercel Hobby plan)
+                    <br />
+                    Operations shown are estimates. View actual usage in{" "}
+                    <a
+                      href="https://vercel.com/dashboard/usage"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Vercel Dashboard
+                    </a>
                   </p>
                 </div>
               </div>
