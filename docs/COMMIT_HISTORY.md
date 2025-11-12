@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6be3df657cbbbbc53f755335f6076c028846f1cd] - Wed Nov 12 11:45:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `CRITICAL FIX: Load pricing data in WarenkorbClient  The Warenkorb was not loading pricing data, so all getItemPrice() calls returned null from getPricingData() and fell back to old stored prices.  Solution: Initialize pricing data in WarenkorbClient on mount - Added PriceCalculator.initializePricingData() call - Runs async on component mount - Enables dynamic price calculations in CheckoutStepper  Result: - Warenkorb now shows correct prices from Google Sheets - Fichte: 23,020€ (not inkludiert) - Nest 80: 188,619€ - Total: 226,746€ for defaults - All prices match Konfigurator exactly  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
 ## [1bf25663b339c4f3fbfa1c379fe3d7ecb225185b] - Wed Nov 12 11:44:07 2025 +0100
 
 **Author**: stenkjan
