@@ -22,6 +22,8 @@ interface ServiceStatus {
     limit: number;
     percentage: number;
     resetTime: number;
+    window?: string;
+    isRealData?: boolean;
   };
   database: {
     records: {
@@ -48,6 +50,12 @@ interface ServiceStatus {
     used: number;
     limit: number;
     percentage: number;
+    blobCount?: number;
+    operations?: {
+      simple: number;
+      advanced: number;
+    };
+    isRealData?: boolean;
   };
   warnings: Array<{
     service: string;
