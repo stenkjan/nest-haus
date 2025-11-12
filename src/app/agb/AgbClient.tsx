@@ -456,7 +456,7 @@ export default function AgbClient() {
                       <strong>Eco Chalets GmbH</strong>
                     </p>
                     <p>[Adresse]</p>
-                    <p>E-Mail: markus@sustain-nest.com</p>
+                    <p>E-Mail: mail@nest-haus.at</p>
                   </div>
                 </div>
               </div>
