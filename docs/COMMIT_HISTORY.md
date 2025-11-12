@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bec9e4e8fce3ec18cbe753dbbf1bc1ded5d85690] - Wed Nov 12 10:00:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update Überblick to show 'Bodenbelag - Standard' instead of just 'Standard'  - Added special handling for fussboden category in SummaryPanel - Now displays: Bodenbelag - Standard (or other floor options) - Subtitle remains: Verlege deinen Boden selbst  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
 ## [aed4d9d664e26c2e1c0e2ac5316a2566b01563da] - Wed Nov 12 09:58:55 2025 +0100
 
 **Author**: stenkjan
