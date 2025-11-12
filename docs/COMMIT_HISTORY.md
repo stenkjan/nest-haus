@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c953485d0ec7ce7077e2c7d6d31cb650f57a7807] - Wed Nov 12 11:25:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Calculate dynamic total in Warenkorb using new pricing system  CRITICAL FIX: 'Dein Nest Haus' box was showing 0€ because it used stored totalPrice which was from the old pricing system.  Solution: - renderIntro(): Calculate total dynamically from individual item prices - Uses getItemPrice() for each configuration item - Sums: nest + gebaeudehuelle + innenverkleidung + fussboden + all options - Falls back to getCartTotal() if no configuration present - Removed useMemo (can't use hooks in regular function)  Result: - 'Dein Nest Haus' box now shows correct total (e.g., 226,746€ for Nest 80 defaults) - Price updates when configuration changes - Uses same pricing as Konfigurator (from Google Sheets)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [7418fef09ca79cf2246f1f6ee2bd4907c1628ace] - Wed Nov 12 11:23:05 2025 +0100
 
 **Author**: stenkjan
