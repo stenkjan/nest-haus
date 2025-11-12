@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c1242be8ff836487785fd99700101f816c49f76f] - Wed Nov 12 11:58:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Correct Teilzahlung calculations and add Konfiguration bearbeiten link  FIXES: 1. Changed 4th payment label from '3. Teilzahlung' to '4. Teilzahlung' 2. Recalculated all payments based on dynamic total (Dein Nest Haus + Planungspaket) 3. Added onClick to 'Konfiguration bearbeiten' button to open /konfigurator  Calculation changes: - Base total: Dynamic sum from getItemPrice() (not stored totalPrice) - Includes Planungspaket if not basis (Plus: 9,600€, Pro: 12,700€) - 1. Teilzahlung: 3,000€ (Grundstückscheck full price) - 2. Teilzahlung: (Total × 30%) - 1,500€ credit - 3. Teilzahlung: Total × 50% - 4. Teilzahlung: Total × 20%  Example with Nest 80 defaults (226,746€) + Basis (0€) = 226,746€: - 1. Teilzahlung: 3,000€ - 2. Teilzahlung: 66,524€ (68,024 - 1,500) - 3. Teilzahlung: 113,373€ - 4. Teilzahlung: 45,349€  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [67f02ba6b6a64a435ec9ded19a69f86cffd57266] - Wed Nov 12 11:55:04 2025 +0100
 
 **Author**: stenkjan
