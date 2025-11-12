@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4e374c74a5c813925fe7e3bcecf70dbaf1656957] - Wed Nov 12 09:29:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct mobile responsiveness issues in SectionHeader and UnifiedContentCard  - Fixed alignment issues in SectionHeader for better mobile display. - Adjusted padding and margins in UnifiedContentCard to enhance readability on smaller screens. - Ensured consistent styling across components to improve overall user experience on mobile devices.  `
+
+### Changes Analysis
+
+---
+
 ## [0cff2bed0b3a27aa9fac0ef4c7d1266b32bfcdbe] - Tue Nov 11 17:05:55 2025 +0100
 
 **Author**: stenkjan
