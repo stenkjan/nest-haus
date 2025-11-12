@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0ce0f3433e5c8ade9130f1368efd3167483b6164] - Wed Nov 12 13:32:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Update video background cards and adjust card height for consistency  - Added a new video background card with ID 5 for FAQs, including title, description, and button link. - Renumbered subsequent video background cards to maintain sequential IDs. - Standardized card height to 70vh across desktop views for consistent sizing, removing previous dynamic height calculations based on screen width.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
 ## [9d0a18acfeef2869d22dd852700ad3166c6afab0] - Wed Nov 12 13:08:40 2025 +0100
 
 **Author**: stenkjan
