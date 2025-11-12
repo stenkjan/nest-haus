@@ -6,7 +6,7 @@ import { useDeviceDetect } from "@/hooks";
 
 // import { ImageGallery } from "@/components/grids";
 import {
-  ContactMap,
+  ContactMap as _ContactMap,
   AppointmentBookingSection,
   GrundstueckCheckForm,
   GetInContactBanner,
