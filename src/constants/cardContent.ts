@@ -499,7 +499,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "1. Check + Entwurf",
         subtitle: "Diese Kosten deckst du heute",
         description:
-            "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
+            "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. \n\n Anschließend erstellen wir einen Vorentwurf, der deine Idee greifbar macht. Gemeinsam entwerfen wir ein Zuhause, das dich widerspiegelt",
         backgroundColor: "#f4f4f4",
         iconNumber: 1,
     },
@@ -578,11 +578,11 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 01",
         subtitle: "Basis",
         description:
-            "Inkl.\n\nEinreichplanung des Gesamtprojekts,\n\nFachberatung und Baubegleitung,\n\nBürokratische Unterstützung",
+            "Inkl.\nEinreichplanung des Gesamtprojekts,\nFachberatung und Baubegleitung,\nBürokratische Unterstützung",
         mobileTitle: "Planungspaket 01",
         mobileSubtitle: "Basis",
         mobileDescription:
-            "Inkl.\n\nEinreichplanung des Gesamtprojekts,\n\nFachberatung und Baubegleitung,\n\nBürokratische Unterstützung",
+            "Inkl.\nEinreichplanung des Gesamtprojekts,\nFachberatung und Baubegleitung,\nBürokratische Unterstützung",
         image: IMAGES.hero.nestHaus8,
         price: "inkludiert",
         backgroundColor: "#F4F4F4",
@@ -597,11 +597,11 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 02",
         subtitle: "Plus",
         description:
-            "Inkl.\n\nPlanungspaket Basis,\n\nHaustechnikplanung\n\nDetailplanungen,\n\nAusführungsplanung Innenausbau",
+            "Inkl.\nPlanungspaket Basis,\nHaustechnikplanung\nDetailplanungen,\nAusführungsplanung Innenausbau",
         mobileTitle: "Planungspaket 02",
         mobileSubtitle: "Plus",
         mobileDescription:
-            "Inkl.\n\nPlanungspaket Basis,\n\nHaustechnikplanung\n\nDetailplanungen,\n\nAusführungsplanung Innenausbau",
+            "Inkl.\nPlanungspaket Basis,\nHaustechnikplanung\nDetailplanungen,\nAusführungsplanung Innenausbau",
         image: IMAGES.hero.nestHaus1,
         price: "€9.600,00", // Updated Nov 2025
         backgroundColor: "#F4F4F4",
@@ -616,11 +616,11 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 03",
         subtitle: "Pro",
         description:
-            "Inkl.\n\nPlanungspaket Plus,\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
+            "Inkl.\nPlanungspaket Plus,\nBeleuchtungskonzept, Möblierungsplanung,\nFarb- und Materialkonzept",
         mobileTitle: "Planungspaket 03",
         mobileSubtitle: "Pro",
         mobileDescription:
-            "Inkl.\n\nPlanungspaket Plus,\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
+            "Inkl.\nPlanungspaket Plus,\nBeleuchtungskonzept, Möblierungsplanung,\nFarb- und Materialkonzept",
         image: IMAGES.hero.nestHaus4,
         price: "€12.700,00", // Updated Nov 2025
         backgroundColor: "#F4F4F4",

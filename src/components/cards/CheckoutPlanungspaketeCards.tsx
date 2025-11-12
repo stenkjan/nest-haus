@@ -66,8 +66,17 @@ export default function CheckoutPlanungspaketeCards({
             >
               {/* Header Section - Title and Price */}
               <div className="px-6 pt-6">
+                {/* Text above title - Different for each package */}
+                <p className="p-primary text-nest-gray">
+                  {pkg.value === "basis"
+                    ? "Inkludiert im Preis"
+                    : pkg.value === "plus"
+                      ? "Für Aufpreis erhältlich"
+                      : "Für Aufpreis erhältlich"}
+                </p>
+
                 {/* Main Title */}
-                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-500 mb-4">
+                <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-nest-gray mb-4">
                   <span className="text-black">
                     Planungspaket{" "}
                     {pkg.value === "basis"
@@ -76,7 +85,7 @@ export default function CheckoutPlanungspaketeCards({
                         ? "02"
                         : "03"}
                   </span>
-                  <span className="text-gray-300">
+                  <span className="text-nest-gray">
                     {" "}
                     {pkg.value === "basis"
                       ? "Basis"
@@ -85,19 +94,12 @@ export default function CheckoutPlanungspaketeCards({
                         : "Pro"}
                   </span>
                 </h2>
-
-                {/* Price Section - Mobile: After title, Desktop: At bottom */}
-                <div className="md:hidden mb-6">
-                  <div className="text-lg font-regular text-gray-900">
-                    {displayPrice}
-                  </div>
-                </div>
               </div>
 
               {/* Content Section - Description - Shortened design with no line spacing */}
               <div className="px-6 py-4 flex-grow flex flex-col">
                 {/* Only show the shortened description - p-primary small, no line spacing */}
-                <div className="text-sm text-gray-900 leading-tight">
+                <div className="p-primary whitespace-pre-line">
                   {cardData?.description || pkg.description}
                 </div>
               </div>
@@ -109,6 +111,13 @@ export default function CheckoutPlanungspaketeCards({
                     <div className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-regular text-gray-900">
                       {displayPrice}
                     </div>
+                    <p className="p-primary-small text-nest-gray mt-2">
+                      {pkg.value === "basis"
+                        ? "Wert von € 10.900,00"
+                        : pkg.value === "plus"
+                          ? "Kosten nur bei Inanspruchnahme"
+                          : "Kosten nur bei Inanspruchnahme"}
+                    </p>
                   </div>
                   {/* Click instruction - right side, positioned lower */}
                   <div className="text-right mt-6">
