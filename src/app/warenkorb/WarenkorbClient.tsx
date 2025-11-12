@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useCartStore } from "../../store/cartStore";
 import { useConfiguratorStore } from "../../store/configuratorStore";
+import { PriceCalculator } from "../konfigurator/core/PriceCalculator";
 import { PriceUtils } from "../konfigurator/core/PriceUtils";
 import { GRUNDSTUECKSCHECK_PRICE, PLANNING_PACKAGES } from "@/constants/configurator";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
@@ -34,6 +35,17 @@ export default function WarenkorbClient() {
     phone: "",
     notes: "",
   });
+
+  // Load pricing data on mount for price calculations
+  useEffect(() => {
+    PriceCalculator.initializePricingData()
+      .then(() => {
+        console.log("✅ Warenkorb: Pricing data loaded successfully");
+      })
+      .catch((error) => {
+        console.error("❌ Warenkorb: Failed to load pricing data:", error);
+      });
+  }, []);
 
   // URL hash mapping for checkout steps - wrapped in useMemo to prevent re-creation
   const stepToHash = useMemo(

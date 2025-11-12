@@ -512,39 +512,69 @@ export default function CheckoutStepper({
       }
     }
 
-    // For gebäudehülle, innenverkleidung, and fussboden, calculate dynamic price based on nest size
+    // For nest, get RAW nest base price from pricing data
+    if (key === "nest" && cartItemConfig?.nest) {
+      try {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData) {
+          const nestSize = cartItemConfig.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          const nestBasePrice = pricingData.nest[nestSize]?.price || 0;
+          return nestBasePrice; // Return RAW construction price only
+        }
+      } catch {
+        // Fall back to stored price
+      }
+      return selection.price || 0;
+    }
+
+    // For innenverkleidung, get ABSOLUTE price from pricing data
+    if (key === "innenverkleidung" && cartItemConfig?.nest && selection.value) {
+      try {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData) {
+          const nestSize = cartItemConfig.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          const innenverkleidungOption = selection.value as
+            | "fichte"
+            | "laerche"
+            | "eiche";
+          const absolutePrice =
+            pricingData.innenverkleidung[innenverkleidungOption]?.[nestSize] ||
+            0;
+          return absolutePrice; // Return ABSOLUTE price (never 0 / "inkludiert")
+        }
+      } catch {
+        // Fall back to stored price
+      }
+      return selection.price || 0;
+    }
+
+    // For gebäudehülle and fussboden, calculate based on actual user selections
     if (
-      (key === "gebaeudehuelle" ||
-        key === "innenverkleidung" ||
-        key === "fussboden") &&
+      (key === "gebaeudehuelle" || key === "fussboden") &&
       cartItemConfig?.nest
     ) {
       try {
-        // Calculate the price difference for this specific option
         const currentNestValue = cartItemConfig.nest.value;
 
-        // Use defaults for base calculation
-        const baseGebaeudehuelle = "trapezblech";
-        const baseInnenverkleidung = "laerche";
-        const baseFussboden = "parkett";
+        // Use actual user selections for all material categories
+        const testGebaeudehuelle =
+          cartItemConfig.gebaeudehuelle?.value || "trapezblech";
+        const testInnenverkleidung =
+          cartItemConfig.innenverkleidung?.value || "fichte";
+        const testFussboden =
+          cartItemConfig.fussboden?.value || "ohne_belag";
 
-        // Calculate base combination price (all defaults)
-        const basePrice = PriceCalculator.calculateCombinationPrice(
-          currentNestValue,
-          baseGebaeudehuelle,
-          baseInnenverkleidung,
-          baseFussboden
-        );
-
-        // Calculate combination price with this specific option
-        let testGebaeudehuelle = baseGebaeudehuelle;
-        let testInnenverkleidung = baseInnenverkleidung;
-        let testFussboden = baseFussboden;
-
-        if (key === "gebaeudehuelle") testGebaeudehuelle = selection.value;
-        if (key === "innenverkleidung") testInnenverkleidung = selection.value;
-        if (key === "fussboden") testFussboden = selection.value;
-
+        // Calculate combination price with current selections
         const combinationPrice = PriceCalculator.calculateCombinationPrice(
           currentNestValue,
           testGebaeudehuelle,
@@ -552,9 +582,17 @@ export default function CheckoutStepper({
           testFussboden
         );
 
-        // Return the price difference (this option's contribution)
-        const optionPrice = combinationPrice - basePrice;
-        return Math.max(0, optionPrice); // Don't show negative prices in summary
+        // Calculate base price (trapezblech + fichte + ohne_belag)
+        const basePrice = PriceCalculator.calculateCombinationPrice(
+          currentNestValue,
+          "trapezblech",
+          "fichte",
+          "ohne_belag"
+        );
+
+        // Return the relative price (difference from base)
+        const relativePrice = combinationPrice - basePrice;
+        return Math.max(0, relativePrice);
       } catch (error) {
         console.error(`Error calculating ${key} price in summary:`, error);
         return selection.price || 0;
@@ -570,6 +608,11 @@ export default function CheckoutStepper({
     selection: ConfigurationItem,
     cartItemConfig: ConfigurationCartItem
   ): boolean => {
+    // NEVER show innenverkleidung as "inkludiert" - all options have prices
+    if (key === "innenverkleidung") {
+      return false;
+    }
+
     // Use the calculated price to determine if item is included
     const calculatedPrice = getItemPrice(key, selection, cartItemConfig);
     return calculatedPrice === 0;
@@ -1000,7 +1043,42 @@ export default function CheckoutStepper({
 
   const renderIntro = () => {
     const c = copyByStep[stepIndex];
-    const total = getCartTotal();
+    
+    // Calculate dynamic total from configuration using new pricing system
+    let dynamicTotal = 0;
+    if (configItem && configItem.nest) {
+      // Calculate total from individual item prices using new pricing system
+      // Add nest price
+      dynamicTotal += getItemPrice("nest", configItem.nest, configItem);
+
+      // Add all other items
+      const itemsToSum = [
+        "gebaeudehuelle",
+        "innenverkleidung",
+        "fussboden",
+        "bodenaufbau",
+        "geschossdecke",
+        "fundament",
+        "pvanlage",
+        "belichtungspaket",
+        "stirnseite",
+        "planungspaket",
+        "kamindurchzug",
+      ] as const;
+
+      itemsToSum.forEach((key) => {
+        const selection = configItem[key];
+        if (selection) {
+          const itemPrice = getItemPrice(key, selection, configItem);
+          dynamicTotal += itemPrice;
+        }
+      });
+    } else {
+      // Fall back to cart total if no configuration
+      dynamicTotal = getCartTotal();
+    }
+
+    const total = dynamicTotal;
     const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
     const _dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
@@ -1201,17 +1279,8 @@ export default function CheckoutStepper({
                       )}`}
                     >
                       <span className="inline-flex items-center gap-2">
-                        {/* Show discounted price: 3.000€ crossed out → 1.500€ action price */}
-                        {isOhneNestMode ? (
-                          <span className="flex items-center gap-2">
-                            <span className="text-gray-400 line-through">
-                              3.000 €
-                            </span>
-                            <span className="text-gray-900">1.500 €</span>
-                          </span>
-                        ) : (
-                          PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)
-                        )}
+                        {/* Always show 3.000€ in overview box (full price, not discounted) */}
+                        {PriceUtils.formatPrice(3000)}
                         {grundstueckscheckDone && (
                           <span aria-hidden className="text-[#3D6CE1]">
                             ✓

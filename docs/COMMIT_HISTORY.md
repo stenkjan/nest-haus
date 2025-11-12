@@ -4,6 +4,85 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6be3df657cbbbbc53f755335f6076c028846f1cd] - Wed Nov 12 11:45:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `CRITICAL FIX: Load pricing data in WarenkorbClient  The Warenkorb was not loading pricing data, so all getItemPrice() calls returned null from getPricingData() and fell back to old stored prices.  Solution: Initialize pricing data in WarenkorbClient on mount - Added PriceCalculator.initializePricingData() call - Runs async on component mount - Enables dynamic price calculations in CheckoutStepper  Result: - Warenkorb now shows correct prices from Google Sheets - Fichte: 23,020€ (not inkludiert) - Nest 80: 188,619€ - Total: 226,746€ for defaults - All prices match Konfigurator exactly  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/WarenkorbClient.tsx
+
+
+---
+
+## [1bf25663b339c4f3fbfa1c379fe3d7ecb225185b] - Wed Nov 12 11:44:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `CRITICAL FIX: Load pricing data BEFORE initializing session  Root cause: initializeSession() was called before pricing data was loaded, causing calculatePrice() to use null data and return 0€.  Solution: Move pricing data initialization to KonfiguratorClient 1. KonfiguratorClient loads pricing data FIRST 2. THEN calls initializeSession() 3. initializeSession() can now safely call calculatePrice() 4. Prices are correct from the start  Timeline now: ├─ PriceCalculator.initializePricingData() (async) ├─ Wait for data to load... ├─ initializeSession() ├─ setDefaultSelections() └─ calculatePrice() ✅ Data is available!  Result: Konfigurator shows 226,746€ on initial load (not 0€)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+
+
+---
+
+## [f28c98e2196ce91d7bd2f491f133bd95369cf7b0] - Wed Nov 12 11:36:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add documentation for pricing initialization fix  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/PRICING_INITIALIZATION_FIX_NOV11.md
+
+
+---
+
+## [58194971f3195f5b66712e63e43ae5dcf6657428] - Wed Nov 12 11:27:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add comprehensive documentation for Warenkorb pricing sync fixes  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/WARENKORB_PRICING_SYNC_FIX_NOV11.md
+
+
+---
+
+## [c953485d0ec7ce7077e2c7d6d31cb650f57a7807] - Wed Nov 12 11:25:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Calculate dynamic total in Warenkorb using new pricing system  CRITICAL FIX: 'Dein Nest Haus' box was showing 0€ because it used stored totalPrice which was from the old pricing system.  Solution: - renderIntro(): Calculate total dynamically from individual item prices - Uses getItemPrice() for each configuration item - Sums: nest + gebaeudehuelle + innenverkleidung + fussboden + all options - Falls back to getCartTotal() if no configuration present - Removed useMemo (can't use hooks in regular function)  Result: - 'Dein Nest Haus' box now shows correct total (e.g., 226,746€ for Nest 80 defaults) - Price updates when configuration changes - Uses same pricing as Konfigurator (from Google Sheets)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [7418fef09ca79cf2246f1f6ee2bd4907c1628ace] - Wed Nov 12 11:23:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Sync pricing from Konfigurator to Warenkorb with new pricing system  CRITICAL FIXES: 1. Nest price: Now uses RAW nest base price from PriceCalculator.getPricingData() 2. Innenverkleidung: Now uses ABSOLUTE prices (never shows as 'inkludiert')    - Fichte: 23,020€ for Nest 80 (was showing as 'inkludiert') 3. Gebäudehülle & Fussboden: Now uses actual user selections for calculation 4. Check & Vorentwurf: Changed from variable price to fixed 3,000€ in Dein Preis Überblick  Technical changes: - getItemPrice(): Added separate handlers for nest, innenverkleidung, gebaeudehülle, fussboden - Uses PriceCalculator.getPricingData() for dynamic pricing from Google Sheets - isItemIncluded(): Never shows innenverkleidung as 'inkludiert' - Fixed base defaults: fichte (not laerche), ohne_belag (not parkett) - Removed discount logic from overview box for Check & Vorentwurf  Result: Warenkorb now shows same prices as Konfigurator using new pricing system  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [bcf68e5f5ea3e26a045928f757d56d9f4d3aadf0] - Wed Nov 12 11:15:57 2025 +0100
 
 **Author**: stenkjan

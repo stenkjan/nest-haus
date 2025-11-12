@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useConfiguratorStore } from "@/store/configuratorStore";
+import { PriceCalculator } from "../core/PriceCalculator";
 import ConfiguratorShell from "./ConfiguratorShell";
 import { ConfiguratorPanelProvider } from "@/contexts/ConfiguratorPanelContext";
 
@@ -9,11 +10,24 @@ import { ConfiguratorPanelProvider } from "@/contexts/ConfiguratorPanelContext";
 export default function KonfiguratorClient() {
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const { initializeSession } = useConfiguratorStore();
+  const [_isPricingDataLoaded, setIsPricingDataLoaded] = useState(false);
 
-  // Initialize session once on mount - no dependencies to prevent infinite loop
+  // Load pricing data FIRST, then initialize session
   useEffect(() => {
-    initializeSession();
-  }, [initializeSession]); // Include initializeSession dependency
+    PriceCalculator.initializePricingData()
+      .then(() => {
+        console.log("✅ Pricing data loaded successfully");
+        setIsPricingDataLoaded(true);
+        // NOW initialize session with pricing data available
+        initializeSession();
+      })
+      .catch((error) => {
+        console.error("❌ Failed to load pricing data:", error);
+        // Still initialize session even if pricing fails (graceful degradation)
+        setIsPricingDataLoaded(true);
+        initializeSession();
+      });
+  }, [initializeSession]);
 
   // Development performance monitoring - runs once on mount
   useEffect(() => {

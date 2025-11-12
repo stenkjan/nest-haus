@@ -163,8 +163,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           get().setDefaultSelections()
         }
 
-        // Calculate price immediately
-        get().calculatePrice()
+        // DON'T calculate price here - let ConfiguratorShell do it after pricing data is loaded
+        // get().calculatePrice()
       },
 
       // Update selection with intelligent view switching and price calculation
@@ -700,8 +700,8 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           hasPart3BeenActive: false // Don't enable part 3 yet
         });
 
-        // Calculate price with all defaults
-        get().calculatePrice();
+        // DON'T calculate price here - let ConfiguratorShell do it after pricing data is loaded
+        // get().calculatePrice();
       },
 
 
