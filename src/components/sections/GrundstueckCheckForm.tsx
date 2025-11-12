@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
 import { SectionContainer } from "./SectionContainer";
+import { SectionHeader } from "./SectionHeader";
 
 interface GrundstueckCheckFormProps {
   id?: string;
@@ -247,15 +248,13 @@ export function GrundstueckCheckForm({
       maxWidth={maxWidth}
       className={className}
     >
-      <div className="text-center mb-16">
-        <h1 className="h1-secondary text-gray-900">
-          Dein Nest-Haus Vorentwurf
-        </h1>
-        <h3 className="h3-secondary text-gray-600 mb-8 max-w-3xl mx-auto">
-          Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner
-          Wahl passt
-        </h3>
-      </div>
+      <SectionHeader
+        title="Dein Nest-Haus Vorentwurf"
+        subtitle="Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt"
+        titleClassName="text-black"
+        subtitleClassName="text-black"
+        wrapperMargin="mb-16"
+      />
 
       <div className="w-full">
         {/* Desktop Layout: Side by side matching CheckoutStepper layout */}
@@ -264,28 +263,60 @@ export function GrundstueckCheckForm({
             {/* Info Section - Left side matching description area */}
             <div className="w-full md:w-1/2 text-left px-12 md:px-16 lg:px-24">
               <div>
-                <p className="p-primary text-gray-700 leading-loose mb-8 mt-16">
-                  Bevor dein <strong>Traum vom Nest-Haus</strong> Realität wird,
-                  prüfen wir, ob dein <strong>Grundstück</strong> alle
-                  rechtlichen und <strong>baulichen Anforderungen</strong>{" "}
-                  erfüllt. Für <strong>€ 3.000</strong> übernehmen wir diese
-                  Überprüfung und entwickeln gemeinsam mit dir ein individuelles{" "}
-                  <strong>Vorentwurfskonzept</strong> deines Nest-Hauses.
+                <p className="p-primary leading-loose mb-8 mt-16">
+                  <span className="text-nest-gray">Bevor dein </span>
+                  <span className="text-black font-medium">
+                    Traum vom Nest-Haus
+                  </span>
+                  <span className="text-nest-gray">
+                    {" "}
+                    Realität wird, prüfen wir, ob dein{" "}
+                  </span>
+                  <span className="text-black font-medium">Grundstück</span>
+                  <span className="text-nest-gray"> alle rechtlichen und </span>
+                  <span className="text-black font-medium">
+                    baulichen Anforderungen
+                  </span>
+                  <span className="text-nest-gray"> erfüllt. Für </span>
+                  <span className="text-black font-medium">€ 3.000</span>
+                  <span className="text-nest-gray">
+                    {" "}
+                    übernehmen wir diese Überprüfung und entwickeln gemeinsam
+                    mit dir ein individuelles{" "}
+                  </span>
+                  <span className="text-black font-medium">
+                    Vorentwurfskonzept
+                  </span>
+                  <span className="text-nest-gray"> deines Nest-Hauses.</span>
                 </p>
                 {/* Spacer to align with Name/Nachname form fields */}
                 <div className="h-3"></div>
-                <p className="p-primary text-gray-700 leading-loose mb-24">
-                  Dabei verbinden wir deine <strong>Wünsche</strong> mit den
-                  gegebenen <strong>Rahmenbedingungen</strong> und schaffen so
-                  die ideale Grundlage für dein{" "}
-                  <strong>zukünftiges Zuhause</strong>.
+                <p className="p-primary leading-loose mb-24">
+                  <span className="text-nest-gray">
+                    Dabei verbinden wir deine{" "}
+                  </span>
+                  <span className="text-black font-medium">Wünsche</span>
+                  <span className="text-nest-gray"> mit den gegebenen </span>
+                  <span className="text-black font-medium">
+                    Rahmenbedingungen
+                  </span>
+                  <span className="text-nest-gray">
+                    {" "}
+                    und schaffen so die ideale Grundlage für dein{" "}
+                  </span>
+                  <span className="text-black font-medium">
+                    zukünftiges Zuhause
+                  </span>
+                  <span className="text-nest-gray">.</span>
                 </p>
               </div>
 
               <div className="mt-12 space-y-8">
                 <div>
-                  <h4 className="p-primary font-medium mb-1">Was wir prüfen</h4>
-                  <p className="p-primary-small" style={{ color: "#99a1af" }}>
+                  <h4 className="p-primary text-black font-medium mb-1">
+                    Was wir prüfen
+                  </h4>
+                  <p className="p-primary-small text-nest-gray">
                     Rechtliche Rahmenbedingungen: Wir prüfen, ob dein Grundstück
                     den Vorgaben des jeweiligen Landes-Baugesetzes, des
                     Raumordnungsgesetzes und ortsgebundener Vorschriften
@@ -294,8 +325,10 @@ export function GrundstueckCheckForm({
                 </div>
 
                 <div>
-                  <h4 className="p-primary font-medium mb-1">Baugesetze</h4>
-                  <p className="p-primary-small" style={{ color: "#99a1af" }}>
+                  <h4 className="p-primary text-black font-medium mb-1">
+                    Baugesetze
+                  </h4>
+                  <p className="p-primary-small text-nest-gray">
                     Alle relevanten Bauvorschriften werden detailliert
                     überprüft, um sicherzustellen, dass dein Bauvorhaben
                     genehmigungsfähig ist. Geeignetheit des Grundstücks: Wir
@@ -463,18 +496,43 @@ export function GrundstueckCheckForm({
         <div className="md:hidden space-y-8">
           {/* 1. Main text until "Planung deines Nest-Hauses starten kann" */}
           <div>
-            <p className="p-primary text-gray-700 leading-relaxed mb-4">
-              Bevor dein <strong>Traum vom Nest-Haus</strong> Realität wird,
-              prüfen wir, ob dein <strong>Grundstück</strong> alle rechtlichen
-              und <strong>baulichen Anforderungen</strong> erfüllt. Für{" "}
-              <strong>€ 3.000</strong> übernehmen wir diese Überprüfung und
-              entwickeln gemeinsam mit dir ein individuelles{" "}
-              <strong>Vorentwurfskonzept</strong> deines Nest-Hauses.
+            <p className="p-primary leading-relaxed mb-4">
+              <span className="text-nest-gray">Bevor dein </span>
+              <span className="text-black font-medium">
+                Traum vom Nest-Haus
+              </span>
+              <span className="text-nest-gray">
+                {" "}
+                Realität wird, prüfen wir, ob dein{" "}
+              </span>
+              <span className="text-black font-medium">Grundstück</span>
+              <span className="text-nest-gray"> alle rechtlichen und </span>
+              <span className="text-black font-medium">
+                baulichen Anforderungen
+              </span>
+              <span className="text-nest-gray"> erfüllt. Für </span>
+              <span className="text-black font-medium">€ 3.000</span>
+              <span className="text-nest-gray">
+                {" "}
+                übernehmen wir diese Überprüfung und entwickeln gemeinsam mit
+                dir ein individuelles{" "}
+              </span>
+              <span className="text-black font-medium">Vorentwurfskonzept</span>
+              <span className="text-nest-gray"> deines Nest-Hauses.</span>
             </p>
-            <p className="p-primary text-gray-700 leading-relaxed mb-6">
-              Dabei verbinden wir deine <strong>Wünsche</strong> mit den
-              gegebenen <strong>Rahmenbedingungen</strong> und schaffen so die
-              ideale Grundlage für dein <strong>zukünftiges Zuhause</strong>.
+            <p className="p-primary leading-relaxed mb-6">
+              <span className="text-nest-gray">Dabei verbinden wir deine </span>
+              <span className="text-black font-medium">Wünsche</span>
+              <span className="text-nest-gray"> mit den gegebenen </span>
+              <span className="text-black font-medium">Rahmenbedingungen</span>
+              <span className="text-nest-gray">
+                {" "}
+                und schaffen so die ideale Grundlage für dein{" "}
+              </span>
+              <span className="text-black font-medium">
+                zukünftiges Zuhause
+              </span>
+              <span className="text-nest-gray">.</span>
             </p>
           </div>
 
@@ -620,8 +678,10 @@ export function GrundstueckCheckForm({
           <div>
             <div className="space-y-3">
               <div>
-                <h4 className="p-primary font-medium mb-1">Was wir prüfen</h4>
-                <p className="p-primary-small" style={{ color: "#99a1af" }}>
+                <h4 className="p-primary text-black font-medium mb-1">
+                  Was wir prüfen
+                </h4>
+                <p className="p-primary-small text-nest-gray">
                   Rechtliche Rahmenbedingungen: Wir prüfen, ob dein Grundstück
                   den Vorgaben des jeweiligen Landes-Baugesetzes, des
                   Raumordnungsgesetzes und ortsgebundener Vorschriften
@@ -630,8 +690,10 @@ export function GrundstueckCheckForm({
               </div>
 
               <div>
-                <h4 className="p-primary font-medium mb-1">Baugesetze</h4>
-                <p className="p-primary-small" style={{ color: "#99a1af" }}>
+                <h4 className="p-primary text-black font-medium mb-1">
+                  Baugesetze
+                </h4>
+                <p className="p-primary-small text-nest-gray">
                   Alle relevanten Bauvorschriften werden detailliert überprüft,
                   um sicherzustellen, dass dein Bauvorhaben genehmigungsfähig
                   ist. Geeignetheit des Grundstücks: Wir stellen fest, ob dein
