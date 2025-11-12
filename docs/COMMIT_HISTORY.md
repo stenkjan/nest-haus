@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1bf25663b339c4f3fbfa1c379fe3d7ecb225185b] - Wed Nov 12 11:44:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `CRITICAL FIX: Load pricing data BEFORE initializing session  Root cause: initializeSession() was called before pricing data was loaded, causing calculatePrice() to use null data and return 0€.  Solution: Move pricing data initialization to KonfiguratorClient 1. KonfiguratorClient loads pricing data FIRST 2. THEN calls initializeSession() 3. initializeSession() can now safely call calculatePrice() 4. Prices are correct from the start  Timeline now: ├─ PriceCalculator.initializePricingData() (async) ├─ Wait for data to load... ├─ initializeSession() ├─ setDefaultSelections() └─ calculatePrice() ✅ Data is available!  Result: Konfigurator shows 226,746€ on initial load (not 0€)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+
+
+---
+
 ## [f28c98e2196ce91d7bd2f491f133bd95369cf7b0] - Wed Nov 12 11:36:59 2025 +0100
 
 **Author**: stenkjan
