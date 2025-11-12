@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5d5554ce85660878dc18341552485ccb88f1a9ed] - Wed Nov 12 12:00:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Add null check for configItem.nest before calling getItemPrice  TypeScript error: configItem.nest could be null/undefined when calling getItemPrice. Added null check to ensure nest exists before passing to getItemPrice.  Applied to both occurrences: - Line 1708-1710 (step 0-3 display) - Line 2430-2432 (step 4 display)  Build should now succeed.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [c1242be8ff836487785fd99700101f816c49f76f] - Wed Nov 12 11:58:54 2025 +0100
 
 **Author**: stenkjan
