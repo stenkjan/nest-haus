@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [35acc5ae25ddbf3b617bbb50a6c8f4889435c038] - Wed Nov 12 13:34:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 938d8432a4b832a23210adf14346f58c921d1ff5 into 67945a66d6418ed2b0146a0a14061f39fbae7088  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/BelichtungspaketOverlay.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+#### 📚 Documentation Changes
+- SAFARI_SVG_PIXELATION_FIX.md
+
+
+---
+
 ## [0ce0f3433e5c8ade9130f1368efd3167483b6164] - Wed Nov 12 13:32:13 2025 +0100
 
 **Author**: stenkjan
