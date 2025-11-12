@@ -4,6 +4,74 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [30eaa9538f106e0427331087e5285688bdfe3b0c] - Wed Nov 12 10:16:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add migration to update fussboden Standard description in existing sessions  - Incremented store version from 1 to 2 - Added migration logic to add 'Verlege deinen Boden selbst' description - Fixes issue where existing sessions had empty description for Standard - Changed version check from === to < for better future compatibility - Now subtitle will appear in Dein Nest Überblick for all users  `
+
+### Changes Analysis
+
+---
+
+## [01c03239de4977b2ef42c0daa28db8541b5409bd] - Wed Nov 12 10:11:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Add 'Verlege deinen Boden selbst' description to default fussboden selection  The description was missing in the configuratorStore default selections. Updated line 639 from empty string to 'Verlege deinen Boden selbst'. Now the subtitle will show in Dein Nest Überblick for new sessions.  `
+
+### Changes Analysis
+
+---
+
+## [22a66db146ffcb4370612ec08a3ebb118a42b127] - Wed Nov 12 10:02:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Center 'Ohne Heizung' option vertically in Bodenaufbau section  - Added vertical centering for ohne_heizung option (same as ohne_belag) - Both title and subtitle now centered in selection box - Applies flex-col justify-center to container - Shows description on single line below title  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
+## [bec9e4e8fce3ec18cbe753dbbf1bc1ded5d85690] - Wed Nov 12 10:00:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update Überblick to show 'Bodenbelag - Standard' instead of just 'Standard'  - Added special handling for fussboden category in SummaryPanel - Now displays: Bodenbelag - Standard (or other floor options) - Subtitle remains: Verlege deinen Boden selbst  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
+## [aed4d9d664e26c2e1c0e2ac5316a2566b01563da] - Wed Nov 12 09:58:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add subtitle to Bodenbelag Standard option and center content  - Changed Standard subtitle from empty to 'Verlege deinen Boden selbst' - Updated SelectionOption to always center Standard option vertically - Subtitle now shows in both selection box and Dein Nest Überblick - Removed empty description check, always apply centering to ohne_belag  In Überblick, now displays: Standard Verlege deinen Boden selbst inkludiert  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+---
+
+## [4e374c74a5c813925fe7e3bcecf70dbaf1656957] - Wed Nov 12 09:29:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Correct mobile responsiveness issues in SectionHeader and UnifiedContentCard  - Fixed alignment issues in SectionHeader for better mobile display. - Adjusted padding and margins in UnifiedContentCard to enhance readability on smaller screens. - Ensured consistent styling across components to improve overall user experience on mobile devices.  `
+
+### Changes Analysis
+
+---
+
 ## [0cff2bed0b3a27aa9fac0ef4c7d1266b32bfcdbe] - Tue Nov 11 17:05:55 2025 +0100
 
 **Author**: stenkjan

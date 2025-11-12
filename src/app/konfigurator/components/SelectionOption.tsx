@@ -536,8 +536,8 @@ export default function SelectionOption({
         </button>
       )}
 
-      <div className={`box_selection_name flex-1 min-w-0 pr-[clamp(0.625rem,1.75vw,1.125rem)] ${categoryId === "fussboden" && id === "ohne_belag" && !description.trim() ? "flex flex-col justify-center" : ""}`}>
-        <p className={`font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight text-black ${categoryId === "fussboden" && id === "ohne_belag" && !description.trim() ? "" : ""}`}>
+      <div className={`box_selection_name flex-1 min-w-0 pr-[clamp(0.625rem,1.75vw,1.125rem)] ${(categoryId === "fussboden" && id === "ohne_belag") || (categoryId === "bodenaufbau" && id === "ohne_heizung") ? "flex flex-col justify-center" : ""}`}>
+        <p className={`font-medium text-[clamp(0.875rem,1.6vw,1.125rem)] tracking-wide leading-tight text-black`}>
           {name}
         </p>
         {(() => {
@@ -546,9 +546,22 @@ export default function SelectionOption({
             .split("\n")
             .filter((line) => line.trim());
 
-          // Special handling for "Standard" (ohne_belag) - center vertically by hiding description
-          if (categoryId === "fussboden" && id === "ohne_belag" && !description.trim()) {
-            return null; // Don't render description, name will be centered via flex
+          // Special handling for "Standard" (ohne_belag) - always show description centered
+          if (categoryId === "fussboden" && id === "ohne_belag") {
+            return (
+              <p className="text-[clamp(0.5rem,1vw,0.875rem)] tracking-wide leading-relaxed text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
+                {description}
+              </p>
+            );
+          }
+
+          // Special handling for "Ohne Heizung" (ohne_heizung) - always show description centered
+          if (categoryId === "bodenaufbau" && id === "ohne_heizung") {
+            return (
+              <p className="text-[clamp(0.5rem,1vw,0.875rem)] tracking-wide leading-relaxed text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
+                {description}
+              </p>
+            );
           }
 
           // For nest modules, the description already contains the proper format with newlines

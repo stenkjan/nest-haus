@@ -636,7 +636,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             value: 'ohne_belag',
             name: 'Standard',
             price: 0,
-            description: ''
+            description: 'Verlege deinen Boden selbst'
           },
           // Light Belichtungspaket
           {
@@ -799,7 +799,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
     }),
     {
       name: 'nest-configurator',
-      version: 1, // Added version for planungspaket price migration
+      version: 2, // Incremented for fussboden description update
       // Skip persistence in test only to prevent state conflicts
       skipHydration: process.env.NODE_ENV === 'test',
       migrate: (persistedState: unknown, version: number) => {
@@ -808,7 +808,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
 
         // Migration for planungspaket price update (v0 → v1)
         // Basis planungspaket is now inkludiert (0€) instead of 10900€
-        if (version === 0 && state?.configuration?.planungspaket) {
+        if (version < 1 && state?.configuration?.planungspaket) {
           const planungspaket = state.configuration.planungspaket;
           // Update basis planungspaket price from 10900 to 0 (inkludiert)
           if (planungspaket.value === 'basis' && planungspaket.price === 10900) {
@@ -823,6 +823,17 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             }
           }
         }
+
+        // Migration for fussboden description update (v1 → v2)
+        // Add "Verlege deinen Boden selbst" description to Standard option
+        if (version < 2 && state?.configuration?.fussboden) {
+          const fussboden = state.configuration.fussboden;
+          // Update Standard (ohne_belag) to include description
+          if (fussboden.value === 'ohne_belag' && !fussboden.description) {
+            fussboden.description = 'Verlege deinen Boden selbst';
+          }
+        }
+
         return state;
       },
       partialize: (state) => ({
