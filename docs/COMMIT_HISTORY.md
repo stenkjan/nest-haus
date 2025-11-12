@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [eb78b21dd6ac451ae1ba92afe3b9cd5046efe6e7] - Wed Nov 12 14:29:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance usage monitoring and user tracking features  - Added real-time and estimated indicators for rate limiting and blob storage usage in the UsagePage component. - Introduced configuration created metric in user tracking data, displaying its percentage of total sessions. - Updated calculations for various funnel metrics to ensure accurate representation of user interactions. - Improved error handling and fallback mechanisms for fetching real data from APIs, enhancing reliability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/usage/Client.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/user-tracking/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/ADMIN_FINAL_FIXES_NOV12.md
+- docs/ADMIN_IMPROVEMENTS_NOV12.md
+- docs/ADMIN_USAGE_MONITORING_FIX.md
+
+
+---
+
 ## [5033a258e3046d38ebb2b04e949ffd09f44c9f4e] - Wed Nov 12 14:08:19 2025 +0100
 
 **Author**: stenkjan
