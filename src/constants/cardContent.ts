@@ -725,6 +725,23 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 5,
+        title: "Häufig gestellte Fragen",
+        subtitle: "",
+        description: "Wir haben die Antworten",
+        video: IMAGES.videos.videoCard04, // Placeholder - will be replaced with actual video
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Portrait format
+        buttons: [
+            {
+                text: "Zu den FAQs",
+                variant: "secondary-narrow-white",
+                size: "xs",
+                link: "/faq",
+            },
+        ],
+    },
+    {
+        id: 6,
         title: "Natürliche Materialien erleben",
         subtitle: "",
         description: "Holz schafft warme Atmosphäre",
@@ -733,7 +750,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         aspectRatio: "2x1", // Tall portrait format
     },
     {
-        id: 6,
+        id: 7,
         title: "Intelligente Raumkonzepte entdecken",
         subtitle: "",
         description: "Jeder Quadratmeter zählt hier",
@@ -742,7 +759,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         aspectRatio: "1x1", // Square format
     },
     {
-        id: 7,
+        id: 8,
         title: "Effizienz im modernen Wohnbau",
         subtitle: "",
         description: "Schnell gebaut trotz Qualität",
@@ -750,7 +767,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 8,
+        id: 9,
         title: "Energieautark in die Zukunft",
         subtitle: "",
         description: "Photovoltaik macht dich unabhängig",
@@ -758,7 +775,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 9,
+        id: 10,
         title: "Minimalistisch und funktional leben",
         subtitle: "",
         description: "Weniger ist oft deutlich mehr",
@@ -766,7 +783,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 10,
+        id: 11,
         title: "Natur als ständiger Begleiter",
         subtitle: "",
         description: "Draußen und drinnen verschmelzen",
@@ -774,7 +791,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 11,
+        id: 12,
         title: "Modulares Bauen neu gedacht",
         subtitle: "",
         description: "Flexibel wie dein Lebensstil",
@@ -782,7 +799,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 12,
+        id: 13,
         title: "Präzision durch seriellen Bau",
         subtitle: "",
         description: "Qualität kommt aus Perfektion",
@@ -790,7 +807,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 13,
+        id: 14,
         title: "Wohnraum für jede Lebenslage",
         subtitle: "",
         description: "Anpassbar wie du es brauchst",
@@ -798,7 +815,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 14,
+        id: 15,
         title: "Hochwertige Details im Fokus",
         subtitle: "",
         description: "Verarbeitung auf höchstem Niveau",
@@ -806,7 +823,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 15,
+        id: 16,
         title: "Zeitlose Eleganz vereint Komfort",
         subtitle: "",
         description: "Stil bleibt über Jahrzehnte",
@@ -814,7 +831,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 16,
+        id: 17,
         title: "Zukunftssicher und wertbeständig",
         subtitle: "",
         description: "Investition in kommende Generationen",

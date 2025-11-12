@@ -131,7 +131,8 @@ interface SessionWithConfig {
 class UserTrackingService {
 
     /**
-     * Parse configuration data safely
+     * Parse configuration data safely - BACKWARD COMPATIBLE
+     * Handles both old format (string values) and new format (objects with value/name/price)
      */
     private static parseConfigurationData(data: unknown): ConfigurationData | null {
         try {
@@ -139,49 +140,61 @@ class UserTrackingService {
 
             const config = data as Record<string, unknown>;
 
-            // Helper to extract value or quantity if it's an object
-            const extractValueOrQuantity = (field: unknown): { value?: string; quantity?: number } => {
-                if (typeof field === 'string') return { value: field };
+            // Helper to extract value from both old and new formats
+            const extractValue = (field: unknown, fallbackKey?: string): string | undefined => {
+                // New format: { category: 'nest', value: 'nest80', name: 'Nest 80', price: 95000 }
                 if (field && typeof field === 'object' && 'value' in field) {
-                    const valueField = field as { value?: unknown; quantity?: unknown };
-                    return {
-                        value: typeof valueField.value === 'string' ? valueField.value : undefined,
-                        quantity: typeof valueField.quantity === 'number' ? valueField.quantity : undefined
-                    };
+                    const obj = field as { value?: unknown };
+                    return typeof obj.value === 'string' ? obj.value : undefined;
                 }
-                return {};
+
+                // Old format: direct string value
+                if (typeof field === 'string') {
+                    return field;
+                }
+
+                // Fallback: check alternative key for old data
+                if (fallbackKey && config[fallbackKey]) {
+                    const fallbackField = config[fallbackKey];
+                    if (typeof fallbackField === 'string') {
+                        return fallbackField;
+                    }
+                }
+
+                return undefined;
             };
 
-            const nestData = extractValueOrQuantity(config.nestType || config.nest);
-            const gebaeudehuelleData = extractValueOrQuantity(config.gebaeudehuelle);
-            const innenverkleidungData = extractValueOrQuantity(config.innenverkleidung);
-            const fussbodenData = extractValueOrQuantity(config.fussboden);
-            const pvanlageData = extractValueOrQuantity(config.pvanlage);
-            const fensterData = extractValueOrQuantity(config.fenster);
-            const planungspaketData = extractValueOrQuantity(config.planungspaket);
-            const geschossdeckeData = extractValueOrQuantity(config.geschossdecke);
-            const belichtungspaketData = extractValueOrQuantity(config.belichtungspaket);
-            const stirnseiteData = extractValueOrQuantity(config.stirnseite);
-            const kamindurchzugData = extractValueOrQuantity(config.kamindurchzug);
-            const fussbodenheizungData = extractValueOrQuantity(config.fussbodenheizung);
-            const bodenaufbauData = extractValueOrQuantity(config.bodenaufbau);
-            const fundamentData = extractValueOrQuantity(config.fundament);
+            // Parse all categories with backward compatibility
+            const nestData = extractValue(config.nest || config.nestType, 'nestType');
+            const gebaeudehuelleData = extractValue(config.gebaeudehuelle);
+            const innenverkleidungData = extractValue(config.innenverkleidung);
+            const fussbodenData = extractValue(config.fussboden);
+            const pvanlageData = extractValue(config.pvanlage);
+            const fensterData = extractValue(config.fenster);
+            const planungspaketData = extractValue(config.planungspaket);
+            const geschossdeckeData = extractValue(config.geschossdecke);
+            const belichtungspaketData = extractValue(config.belichtungspaket);
+            const stirnseiteData = extractValue(config.stirnseite);
+            const kamindurchzugData = extractValue(config.kamindurchzug);
+            const fussbodenheizungData = extractValue(config.fussbodenheizung);
+            const bodenaufbauData = extractValue(config.bodenaufbau);
+            const fundamentData = extractValue(config.fundament);
 
             return {
-                nestType: nestData.value,
-                gebaeudehuelle: gebaeudehuelleData.value,
-                innenverkleidung: innenverkleidungData.value,
-                fussboden: fussbodenData.value,
-                pvanlage: pvanlageData.value,
-                fenster: fensterData.value,
-                planungspaket: planungspaketData.value,
-                geschossdecke: geschossdeckeData.value,
-                belichtungspaket: belichtungspaketData.value,
-                stirnseite: stirnseiteData.value,
-                kamindurchzug: kamindurchzugData.value,
-                fussbodenheizung: fussbodenheizungData.value,
-                bodenaufbau: bodenaufbauData.value,
-                fundament: fundamentData.value,
+                nestType: nestData,
+                gebaeudehuelle: gebaeudehuelleData,
+                innenverkleidung: innenverkleidungData,
+                fussboden: fussbodenData,
+                pvanlage: pvanlageData,
+                fenster: fensterData,
+                planungspaket: planungspaketData,
+                geschossdecke: geschossdeckeData,
+                belichtungspaket: belichtungspaketData,
+                stirnseite: stirnseiteData,
+                kamindurchzug: kamindurchzugData,
+                fussbodenheizung: fussbodenheizungData,
+                bodenaufbau: bodenaufbauData,
+                fundament: fundamentData,
             };
         } catch (error) {
             console.error('Failed to parse configuration data:', error);
@@ -191,11 +204,18 @@ class UserTrackingService {
 
     /**
      * Calculate funnel metrics
+     * Shows all sessions, then how many reached cart/inquiry/conversion
      */
     static async getFunnelMetrics() {
-        const totalSessions = await prisma.userSession.count({
+        // Count ALL sessions (including ACTIVE and ABANDONED)
+        const totalSessions = await prisma.userSession.count();
+
+        // Sessions with configuration data (user created a config)
+        const configCreated = await prisma.userSession.count({
             where: {
-                status: { in: ['ACTIVE', 'IN_CART', 'COMPLETED', 'CONVERTED', 'ABANDONED'] }
+                configurationData: {
+                    not: Prisma.JsonNull
+                }
             }
         });
 
@@ -219,12 +239,13 @@ class UserTrackingService {
 
         return {
             totalSessions,
+            configCreated,
             reachedCart,
             completedInquiry,
             converted,
             cartRate: totalSessions > 0 ? (reachedCart / totalSessions) * 100 : 0,
-            inquiryRate: reachedCart > 0 ? (completedInquiry / reachedCart) * 100 : 0,
-            conversionRate: completedInquiry > 0 ? (converted / completedInquiry) * 100 : 0,
+            inquiryRate: totalSessions > 0 ? (completedInquiry / totalSessions) * 100 : 0,
+            conversionRate: totalSessions > 0 ? (converted / totalSessions) * 100 : 0,
         };
     }
 
@@ -470,10 +491,10 @@ class UserTrackingService {
             .map(([path, count]) => {
                 // Try to extract title from path
                 const pathParts = path.split('/').filter(p => p);
-                const title = pathParts.length > 0 
+                const title = pathParts.length > 0
                     ? pathParts[pathParts.length - 1].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
                     : path;
-                
+
                 return {
                     path,
                     title,
@@ -600,16 +621,16 @@ class UserTrackingService {
         // Process each session
         sessions.forEach(session => {
             const config = session.configurationData as Record<string, unknown>;
-            
+
             categories.forEach(category => {
-                const field = category === 'nest' ? (config.nestType || config.nest) : config[category];
-                
+                const field = category === 'nest' ? (config.nest || config.nestType) : config[category];
+
                 if (!field) return;
 
                 // Extract value and quantity
                 let value: string | undefined;
                 let quantity: number | undefined;
-                
+
                 if (typeof field === 'string') {
                     value = field;
                 } else if (field && typeof field === 'object' && 'value' in field) {
@@ -630,10 +651,10 @@ class UserTrackingService {
 
                 // Update counts
                 categoryTotals.set(category, categoryTotals.get(category)! + 1);
-                
+
                 const selectionsMap = categorySelections.get(category)!;
                 const existing = selectionsMap.get(value);
-                
+
                 if (existing) {
                     existing.count++;
                     if (quantity) {
@@ -653,11 +674,11 @@ class UserTrackingService {
 
         // Build result object
         const result: UserTrackingData['configurationAnalytics'] = {};
-        
+
         categories.forEach(category => {
             const selectionsMap = categorySelections.get(category);
             const categoryTotal = categoryTotals.get(category) || 0;
-            
+
             if (selectionsMap) {
                 result[category] = Array.from(selectionsMap.entries())
                     .map(([value, data]) => ({
@@ -714,7 +735,7 @@ class UserTrackingService {
 
         sessions.forEach(session => {
             const config = session.configurationData as Record<string, unknown>;
-            
+
             // Process geschossdecke
             if (config.geschossdecke) {
                 geschossdeckeData.totalWithOption++;
@@ -741,8 +762,8 @@ class UserTrackingService {
         return {
             geschossdecke: {
                 totalWithOption: geschossdeckeData.totalWithOption,
-                averageQuantity: geschossdeckeData.totalWithOption > 0 
-                    ? geschossdeckeData.totalQuantity / geschossdeckeData.totalWithOption 
+                averageQuantity: geschossdeckeData.totalWithOption > 0
+                    ? geschossdeckeData.totalQuantity / geschossdeckeData.totalWithOption
                     : 0,
                 quantityDistribution: Array.from(geschossdeckeData.quantityMap.entries())
                     .map(([quantity, count]) => ({ quantity, count }))
@@ -750,8 +771,8 @@ class UserTrackingService {
             },
             pvanlage: {
                 totalWithOption: pvanlageData.totalWithOption,
-                averageQuantity: pvanlageData.totalWithOption > 0 
-                    ? pvanlageData.totalQuantity / pvanlageData.totalWithOption 
+                averageQuantity: pvanlageData.totalWithOption > 0
+                    ? pvanlageData.totalQuantity / pvanlageData.totalWithOption
                     : 0,
                 quantityDistribution: Array.from(pvanlageData.quantityMap.entries())
                     .map(([quantity, count]) => ({ quantity, count }))
@@ -852,9 +873,9 @@ export async function GET() {
         const selectionStats = getResult(3, { nestTypes: [], gebaeudehuelle: [], innenverkleidung: [] });
         const clickAnalytics = getResult(4, { pageClicks: [], mouseClicks: [] });
         const configurationAnalytics = getResult(5, {});
-        const quantityAnalytics = getResult(6, { 
-            geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }, 
-            pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] } 
+        const quantityAnalytics = getResult(6, {
+            geschossdecke: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] },
+            pvanlage: { totalWithOption: 0, averageQuantity: 0, quantityDistribution: [] }
         });
         const timeMetrics = getResult(7, { avgTimeToCart: 0, avgTimeToInquiry: 0, avgSessionDuration: 0 });
 

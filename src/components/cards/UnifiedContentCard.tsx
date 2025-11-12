@@ -427,9 +427,8 @@ export default function UnifiedContentCard({
 
         if (width >= 1024) {
           // DESKTOP: Calculate card width based on available viewport and aspect ratio
-          // Height: Scale up on ultra-wide screens to ensure 4th card overlaps right edge
-          const baseHeightVh = width >= 2000 ? 0.85 : 0.7; // 85vh for ultra-wide, 70vh for normal
-          const cardHeight = viewportHeight * baseHeightVh * heightMultiplier;
+          // Height: 70vh for consistent sizing across all desktop screens
+          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
 
           // Width depends on aspect ratio
           const cardWidthCalc =
@@ -468,9 +467,8 @@ export default function UnifiedContentCard({
 
         if (width >= 1024) {
           // DESKTOP: Full-width carousel with 2x1 portrait aspect ratio
-          // Height: Scale up on ultra-wide screens to ensure 4th card overlaps right edge
-          const baseHeightVh = width >= 2000 ? 0.85 : 0.7; // 85vh for ultra-wide, 70vh for normal
-          const cardHeight = viewportHeight * baseHeightVh * heightMultiplier;
+          // Height: 70vh for consistent sizing
+          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
           const cardWidthCalc = cardHeight * 0.6; // 2x1 portrait ratio
 
           const availableWidth = width - 96; // 48px padding each side
@@ -501,9 +499,8 @@ export default function UnifiedContentCard({
 
         if (width >= 1024) {
           // DESKTOP: Full-width carousel with 9:10 aspect ratio
-          // Height: Scale up on ultra-wide screens to ensure proper card overlap
-          const baseHeightVh = width >= 2000 ? 0.85 : 0.7; // 85vh for ultra-wide, 70vh for normal
-          const cardHeight = viewportHeight * baseHeightVh * heightMultiplier;
+          // Height: 70vh for consistent sizing
+          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
           const cardWidthCalc = cardHeight * 0.9; // 1.8:2 ratio (9:10)
 
           const availableWidth = width - 96; // 48px padding each side
@@ -1273,7 +1270,16 @@ export default function UnifiedContentCard({
               delay: index * 0.1 + 0.2,
               duration: 0.8,
             }}
-            className="relative rounded-3xl overflow-hidden w-full"
+            className={`relative rounded-3xl overflow-hidden w-full ${
+              // Add vertical margin to prevent video from touching card borders
+              // Only apply to cards without noPadding at the transition breakpoint
+              isClient &&
+              screenWidth >= 1024 &&
+              screenWidth < 1280 &&
+              !_noPadding
+                ? "my-2" // Vertical margin at transition breakpoint (1024-1280px)
+                : ""
+            }`}
             style={{
               // 1:1 at 1024px for better height visibility with 50/50 split
               // 16:9 at 1280px+ for standard widescreen with 1/3-2/3 split
@@ -1283,7 +1289,7 @@ export default function UnifiedContentCard({
                 : {
                     aspectRatio:
                       isClient && screenWidth >= 1024 && screenWidth < 1280
-                        ? "1/1"
+                        ? "16/10" // Less tall aspect ratio at transition point
                         : "16/9",
                     maxWidth: "100%",
                   }),
@@ -2171,12 +2177,10 @@ export default function UnifiedContentCard({
                 } ${
                   isLightboxMode
                     ? "" // No padding in lightbox mode - use full width
-                    : layout === "video"
-                      ? isClient && screenWidth >= 1024
-                        ? "px-12" // Desktop: 48px padding (12 × 4 = 48px)
-                        : "px-4" // Mobile/Tablet
+                    : layout === "video" || layout === "overlay-text"
+                      ? "" // No padding - JavaScript handles offset via centerOffset
                       : isClient && screenWidth >= 1024
-                        ? "px-12" // Desktop: 48px padding
+                        ? "px-12" // Desktop: 48px padding for non-video/overlay-text layouts
                         : maxWidth
                           ? "px-8" // Tablet
                           : "px-4" // Mobile
@@ -2219,10 +2223,9 @@ export default function UnifiedContentCard({
                             : 0;
 
                       if (isClient && screenWidth >= 1024) {
-                        // DESKTOP: Use dynamic height based on screen width
-                        // Scale up on ultra-wide screens to ensure 4th card overlaps right edge
-                        const baseHeightVh = screenWidth >= 2000 ? 0.85 : 0.7; // 85vh for ultra-wide, 70vh for normal
-                        const cardHeight = viewportHeight * baseHeightVh * heightMultiplier;
+                        // DESKTOP: Use 70vh height for consistent sizing
+                        const cardHeight =
+                          viewportHeight * 0.7 * heightMultiplier;
                         cardSpecificWidth =
                           effectiveAspectRatio === "2x1"
                             ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
@@ -2288,7 +2291,7 @@ export default function UnifiedContentCard({
                                 : layout === "overlay-text" ||
                                     layout === "glass-quote" ||
                                     layout === "team-card"
-                                  ? // DESKTOP REDESIGN (≥1024px): Use viewport-based height with ultra-wide scaling
+                                  ? // DESKTOP REDESIGN (≥1024px): Use viewport-based height
                                     isClient && screenWidth >= 1024
                                     ? (() => {
                                         const viewportHeight =
@@ -2297,9 +2300,11 @@ export default function UnifiedContentCard({
                                             : typeof window !== "undefined"
                                               ? window.innerHeight
                                               : 0;
-                                        // Scale up on ultra-wide screens to ensure 4th card overlaps right edge
-                                        const baseHeightVh = screenWidth >= 2000 ? 0.85 : 0.7;
-                                        return viewportHeight * baseHeightVh * heightMultiplier;
+                                        return (
+                                          viewportHeight *
+                                          0.7 *
+                                          heightMultiplier
+                                        );
                                       })()
                                     : // Mobile/Tablet - NO CHANGES
                                       (() => {

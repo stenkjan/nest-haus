@@ -2265,6 +2265,14 @@ export default function CheckoutStepper({
                 </div>
               </div>
 
+              {/* ContactMap */}
+              <div className="mt-16">
+                <ContactMap
+                  backgroundColor="white"
+                  maxWidth={true}
+                />
+              </div>
+
               {/* Move the buttons here, directly below the Grundstückscheck section */}
               <div className="flex justify-center mt-16 md:mt-20">
                 <Button

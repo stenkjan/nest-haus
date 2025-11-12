@@ -383,7 +383,7 @@ export class EmailService {
     
       <div class="contact-info">
         <p class="p-primary">Bei Fragen können Sie uns jederzeit kontaktieren:</p>
-        <p><strong>📧 E-Mail:</strong> markus@sustain-nest.com<br>
+        <p><strong>📧 E-Mail:</strong> mail@nest-haus.at<br>
         <strong>📞 Telefon:</strong> +43 664 2531869</p>
       </div>
       
@@ -430,7 +430,7 @@ Nächste Schritte:
 - Planungsservice und Baubegleitung
 
 Kontakt:
-E-Mail: hello@nest-haus.at
+E-Mail: mail@nest-haus.at
 Telefon: +43 384 775 090
 
 Besuchen Sie uns: https://nest-haus.at

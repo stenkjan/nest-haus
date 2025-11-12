@@ -324,8 +324,8 @@ export default function DeinNestClient() {
         </section>
         {/* Section 6 - Video Background Cards */}
         <section className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full mb-12 pl-4 md:pl-12">
-            <div className="text-left">
+          <div className="w-full mb-12">
+            <div className="pl-4 md:pl-12 text-left">
               <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
                 Warum Nest Sinn macht?
               </h2>
@@ -343,7 +343,7 @@ export default function DeinNestClient() {
             showInstructions={false}
             alignment="left"
             customData={VIDEO_BACKGROUND_CARDS_PRESET.cards.filter(
-              (card) => card.id >= 1 && card.id <= 4
+              (card) => card.id >= 1 && card.id <= 5
             )}
           />
         </section>

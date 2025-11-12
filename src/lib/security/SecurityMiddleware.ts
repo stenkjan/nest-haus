@@ -63,6 +63,51 @@ export class SecurityMiddleware {
     private static config: SecurityConfig = defaultConfig;
 
     /**
+     * Get current rate limit statistics for usage monitoring
+     * Returns actual request counts from in-memory stores
+     */
+    static getRateLimitStats(): {
+        ipLimits: { active: number; total: number };
+        sessionLimits: { active: number; total: number };
+        oldestResetTime: number;
+    } {
+        let ipCount = 0;
+        let ipTotal = 0;
+        let sessionCount = 0;
+        let sessionTotal = 0;
+        let oldestReset = Date.now() + (15 * 60 * 1000);
+        const now = Date.now();
+
+        // Count active IP limits
+        for (const [_key, value] of rateLimitStore.entries()) {
+            if (now <= value.resetTime) {
+                ipCount += value.count;
+                ipTotal++;
+                if (value.resetTime < oldestReset) {
+                    oldestReset = value.resetTime;
+                }
+            }
+        }
+
+        // Count active session limits
+        for (const [_key, value] of sessionLimitStore.entries()) {
+            if (now <= value.resetTime) {
+                sessionCount += value.count;
+                sessionTotal++;
+                if (value.resetTime < oldestReset) {
+                    oldestReset = value.resetTime;
+                }
+            }
+        }
+
+        return {
+            ipLimits: { active: ipCount, total: ipTotal },
+            sessionLimits: { active: sessionCount, total: sessionTotal },
+            oldestResetTime: oldestReset,
+        };
+    }
+
+    /**
      * Main security middleware wrapper
      */
     static withSecurity(

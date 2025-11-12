@@ -4,6 +4,177 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cacd2b3c465dcee537075e62912a43fbb202d112] - Wed Nov 12 16:38:53 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [52a516675d29f68ab3323434a84b5f7120d40232] - Wed Nov 12 15:41:21 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update email configuration and references across the project  - Added email configuration for Resend service in  and . - Updated email addresses in , , and  components to reflect the new contact email: mail@nest-haus.at.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/agb/AgbClient.tsx
+- src/app/impressum/ImpressumClient.tsx
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+#### 📚 Documentation Changes
+- docs/EMAIL_SETUP_GUIDE.md
+
+
+---
+
+## [0bac0104e1aabcd3df8549738f145db920392704] - Wed Nov 12 14:34:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance ServiceStatus interface in Client component  - Added optional properties  and  to the ServiceStatus interface for improved data handling. - Introduced  and  properties to track advanced metrics, enhancing the monitoring capabilities of the component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/usage/Client.tsx
+
+
+---
+
+## [eb78b21dd6ac451ae1ba92afe3b9cd5046efe6e7] - Wed Nov 12 14:29:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance usage monitoring and user tracking features  - Added real-time and estimated indicators for rate limiting and blob storage usage in the UsagePage component. - Introduced configuration created metric in user tracking data, displaying its percentage of total sessions. - Updated calculations for various funnel metrics to ensure accurate representation of user interactions. - Improved error handling and fallback mechanisms for fetching real data from APIs, enhancing reliability.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/usage/Client.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/user-tracking/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/ADMIN_FINAL_FIXES_NOV12.md
+- docs/ADMIN_IMPROVEMENTS_NOV12.md
+- docs/ADMIN_USAGE_MONITORING_FIX.md
+
+
+---
+
+## [5033a258e3046d38ebb2b04e949ffd09f44c9f4e] - Wed Nov 12 14:08:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [49ed87bbdc99f91a4609525c163225e364b230b7] - Wed Nov 12 13:53:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Refactor: Adjust padding in DeinNestClient component  - Modified padding classes for improved layout consistency in the video background section. - Ensured proper alignment of text elements by adjusting the class order.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+
+
+---
+
+## [35acc5ae25ddbf3b617bbb50a6c8f4889435c038] - Wed Nov 12 13:34:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 938d8432a4b832a23210adf14346f58c921d1ff5 into 67945a66d6418ed2b0146a0a14061f39fbae7088  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/BelichtungspaketOverlay.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+#### 📚 Documentation Changes
+- SAFARI_SVG_PIXELATION_FIX.md
+
+
+---
+
+## [0ce0f3433e5c8ade9130f1368efd3167483b6164] - Wed Nov 12 13:32:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Update video background cards and adjust card height for consistency  - Added a new video background card with ID 5 for FAQs, including title, description, and button link. - Renumbered subsequent video background cards to maintain sequential IDs. - Standardized card height to 70vh across desktop views for consistent sizing, removing previous dynamic height calculations based on screen width.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
+## [9d0a18acfeef2869d22dd852700ad3166c6afab0] - Wed Nov 12 13:08:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Remove invalid title and subtitle props from ContactMap  Vercel build error - ContactMap component only accepts: - id?: string - backgroundColor?: 'white' | 'gray' - maxWidth?: boolean  Removed invalid title and subtitle props that were causing type error. ContactMap is a simple map display component without text content.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [0ffbf82bdbbafd9a3f6abe367fdc904a569baeba] - Wed Nov 12 13:00:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Prefix unused ContactMap import with underscore  Vercel build error - ContactMap is imported but never used in KontaktClient. The component uses an iframe for Google Maps instead of the ContactMap component. Prefixed with underscore to indicate intentional non-use.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+
+
+---
+
+## [55819961d78239110c56a8685f45a8a96bce3dfb] - Wed Nov 12 12:05:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [5d5554ce85660878dc18341552485ccb88f1a9ed] - Wed Nov 12 12:00:34 2025 +0100
 
 **Author**: stenkjan
