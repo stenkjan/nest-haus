@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0ffbf82bdbbafd9a3f6abe367fdc904a569baeba] - Wed Nov 12 13:00:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Prefix unused ContactMap import with underscore  Vercel build error - ContactMap is imported but never used in KontaktClient. The component uses an iframe for Google Maps instead of the ContactMap component. Prefixed with underscore to indicate intentional non-use.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+
+
+---
+
 ## [55819961d78239110c56a8685f45a8a96bce3dfb] - Wed Nov 12 12:05:26 2025 +0100
 
 **Author**: stenkjan
