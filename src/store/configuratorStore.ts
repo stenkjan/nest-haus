@@ -636,7 +636,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             value: 'ohne_belag',
             name: 'Standard',
             price: 0,
-            description: ''
+            description: 'Verlege deinen Boden selbst'
           },
           // Light Belichtungspaket
           {
