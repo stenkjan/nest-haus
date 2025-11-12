@@ -4,6 +4,46 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3fcc0d12bf5a32b3900645dc42c5ef377313bb23] - Wed Nov 12 17:01:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/usage/Client.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/agb/AgbClient.tsx
+- src/app/api/admin/user-tracking/route.ts
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/impressum/ImpressumClient.tsx
+- src/app/konfigurator/components/BelichtungspaketOverlay.tsx
+- src/app/kontakt/KontaktClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+#### 📚 Documentation Changes
+- SAFARI_SVG_PIXELATION_FIX.md
+- docs/ADMIN_FINAL_FIXES_NOV12.md
+- docs/ADMIN_IMPROVEMENTS_NOV12.md
+- docs/ADMIN_TRACKING_FIX_NOV12.md
+- docs/ADMIN_TRACKING_FIX_SUMMARY.md
+- docs/ADMIN_USAGE_MONITORING_FIX.md
+- docs/COMMIT_HISTORY.md
+- docs/EMAIL_CONFIGURATION_SUMMARY.md
+- docs/EMAIL_SETUP_GUIDE.md
+
+
+---
+
 ## [cacd2b3c465dcee537075e62912a43fbb202d112] - Wed Nov 12 16:38:53 2025 +0100
 
 **Author**: stenkjan
