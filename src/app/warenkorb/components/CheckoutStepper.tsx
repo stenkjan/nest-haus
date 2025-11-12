@@ -1043,7 +1043,42 @@ export default function CheckoutStepper({
 
   const renderIntro = () => {
     const c = copyByStep[stepIndex];
-    const total = getCartTotal();
+    
+    // Calculate dynamic total from configuration using new pricing system
+    let dynamicTotal = 0;
+    if (configItem && configItem.nest) {
+      // Calculate total from individual item prices using new pricing system
+      // Add nest price
+      dynamicTotal += getItemPrice("nest", configItem.nest, configItem);
+
+      // Add all other items
+      const itemsToSum = [
+        "gebaeudehuelle",
+        "innenverkleidung",
+        "fussboden",
+        "bodenaufbau",
+        "geschossdecke",
+        "fundament",
+        "pvanlage",
+        "belichtungspaket",
+        "stirnseite",
+        "planungspaket",
+        "kamindurchzug",
+      ] as const;
+
+      itemsToSum.forEach((key) => {
+        const selection = configItem[key];
+        if (selection) {
+          const itemPrice = getItemPrice(key, selection, configItem);
+          dynamicTotal += itemPrice;
+        }
+      });
+    } else {
+      // Fall back to cart total if no configuration
+      dynamicTotal = getCartTotal();
+    }
+
+    const total = dynamicTotal;
     const grundstueckscheckDone = Boolean(configItem?.grundstueckscheck);
     const _dueNow = GRUNDSTUECKSCHECK_PRICE; // Grundstückscheck is always due today as part of the process
     const _planungspaketDone = Boolean(configItem?.planungspaket?.value);
