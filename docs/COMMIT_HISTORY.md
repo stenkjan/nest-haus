@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bcf68e5f5ea3e26a045928f757d56d9f4d3aadf0] - Wed Nov 12 11:15:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Add explicit mode=configuration parameter for Zum Warenkorb button  Issue: 'Zum Warenkorb' button was not explicitly setting configuration mode, causing ambiguity about whether to use ohne-nest or configuration mode.  Solution: - CartFooter: Changed /warenkorb to /warenkorb?mode=configuration - WarenkorbClient: Added handler for mode=configuration parameter - Explicitly sets ohneNestMode to FALSE when mode=configuration - Updates session to mark as configuration mode (not ohne-nest)  Now: - 'Ohne Nest fortfahren' → /warenkorb?mode=vorentwurf → ohne-nest TRUE - 'Zum Warenkorb' → /warenkorb?mode=configuration → ohne-nest FALSE - Direct /warenkorb → auto-detects based on configuration presence  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/VIDEO-BACKGROUND-CARDS-FIX-SUMMARY.md
+
+
+---
+
 ## [6b0d401d7d06c05f19b3e851923fc8a601dd9b91] - Wed Nov 12 10:45:05 2025 +0100
 
 **Author**: stenkjan
