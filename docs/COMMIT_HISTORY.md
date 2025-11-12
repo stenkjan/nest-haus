@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9d0a18acfeef2869d22dd852700ad3166c6afab0] - Wed Nov 12 13:08:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Remove invalid title and subtitle props from ContactMap  Vercel build error - ContactMap component only accepts: - id?: string - backgroundColor?: 'white' | 'gray' - maxWidth?: boolean  Removed invalid title and subtitle props that were causing type error. ContactMap is a simple map display component without text content.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [0ffbf82bdbbafd9a3f6abe367fdc904a569baeba] - Wed Nov 12 13:00:51 2025 +0100
 
 **Author**: stenkjan
