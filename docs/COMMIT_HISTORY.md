@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [58194971f3195f5b66712e63e43ae5dcf6657428] - Wed Nov 12 11:27:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add comprehensive documentation for Warenkorb pricing sync fixes  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/WARENKORB_PRICING_SYNC_FIX_NOV11.md
+
+
+---
+
 ## [c953485d0ec7ce7077e2c7d6d31cb650f57a7807] - Wed Nov 12 11:25:30 2025 +0100
 
 **Author**: stenkjan
