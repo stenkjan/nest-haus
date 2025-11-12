@@ -26,8 +26,8 @@ export const AppointmentBookingSection: React.FC<
   return (
     <section id={id} className={`w-full pt-12 pb-4 ${bgClass}`}>
       <div className={containerClass}>
-        <h1 className="h1-secondary text-gray-900 text-center">{title}</h1>
-        <h3 className="h3-secondary text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+        <h1 className="h1-secondary text-black text-center">{title}</h1>
+        <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
           {subtitle}
         </h3>
         <Suspense

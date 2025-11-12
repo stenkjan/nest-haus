@@ -25,48 +25,67 @@ export const TerminVereinbarenContent: React.FC<
     return (
       <div className={`flex flex-col gap-4 ${className}`}>
         <div>
-          <p className="text-xs sm:text-sm text-gray-700 mb-3 leading-snug">
-            Der Kauf deines Hauses ist ein großer Schritt –{" "}
-            <span className="font-bold">
+          <p className="text-xs sm:text-sm mb-3 leading-snug">
+            <span className="text-nest-gray">
+              Der Kauf deines Hauses ist ein großer Schritt –{" "}
+            </span>
+            <span className="text-black font-medium">
               und wir sind da, um dir dabei zu helfen.
-            </span>{" "}
-            Für mehr Sicherheit und Klarheit{" "}
-            <span className="font-bold">
+            </span>
+            <span className="text-nest-gray">
+              {" "}
+              Für mehr Sicherheit und Klarheit{" "}
+            </span>
+            <span className="text-black font-medium">
               stehen wir dir jederzeit persönlich zur Seite.
-            </span>{" "}
-            Ruf uns an, um dein{" "}
-            <span className="font-bold">Beratungsgespräch</span> zu vereinbaren,
-            oder buche deinen{" "}
-            <span className="font-bold">Termin ganz einfach online.</span> Dein
-            Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+            </span>
+            <span className="text-nest-gray"> Ruf uns an, um dein </span>
+            <span className="text-black font-medium">Beratungsgespräch</span>
+            <span className="text-nest-gray">
+              {" "}
+              zu vereinbaren, oder buche deinen{" "}
+            </span>
+            <span className="text-black font-medium">
+              Termin ganz einfach online.
+            </span>
+            <span className="text-nest-gray">
+              {" "}
+              Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+            </span>
           </p>
         </div>
         <div className="space-y-2">
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+            <h4 className="font-bold mb-1 text-black text-sm md:text-base">
               Kontakt
             </h4>
-            <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm text-gray-700">
-              <span>Telefon:</span>
-              <span>+43 (0) 664 5403399</span>
-              <span>Mobil:</span>
-              <span>+43 (0) 664 2531869</span>
-              <span>Email:</span>
-              <span>nest@haus.at</span>
+            <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm">
+              <span className="text-nest-gray">Telefon:</span>
+              <span className="text-black font-medium">
+                +43 (0) 664 5403399
+              </span>
+              <span className="text-nest-gray">Mobil:</span>
+              <span className="text-black font-medium">
+                +43 (0) 664 2531869
+              </span>
+              <span className="text-nest-gray">Email:</span>
+              <span className="text-black font-medium">nest@haus.at</span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+            <h4 className="font-bold mb-1 text-black text-sm md:text-base">
               Adresse
             </h4>
-            <div className="text-xs md:text-sm text-gray-700">
-              Karmeliterplatz 8
-              <br />
-              8010, Graz
-              <br />
-              Steiermark
-              <br />
-              Österreich
+            <div className="text-xs md:text-sm">
+              <span className="text-black font-medium">
+                Karmeliterplatz 8
+                <br />
+                8010, Graz
+                <br />
+                Steiermark
+                <br />
+                Österreich
+              </span>
             </div>
           </div>
         </div>
@@ -80,14 +99,29 @@ export const TerminVereinbarenContent: React.FC<
       <div className={`space-y-6 ${className}`}>
         {/* Descriptive Text for Mobile - NO BOX */}
         <div className="text-center px-4">
-          <p className="p-primary text-gray-700 leading-relaxed">
-            Der Kauf deines Hauses ist ein großer Schritt – und{" "}
-            <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
-            Sicherheit und Klarheit{" "}
-            <strong>stehen wir dir jederzeit persönlich zur Seite</strong>. Ruf
-            uns an, um dein Beratungsgespräch zu vereinbaren, oder buche deinen{" "}
-            <strong>Termin ganz einfach online</strong>. Dein Weg zu deinem
-            Traumhaus beginnt mit einem Gespräch.
+          <p className="p-primary leading-relaxed">
+            <span className="text-nest-gray">
+              Der Kauf deines Hauses ist ein großer Schritt – und{" "}
+            </span>
+            <span className="text-black font-medium">
+              wir sind da, um dir dabei zu helfen
+            </span>
+            <span className="text-nest-gray">
+              . Für mehr Sicherheit und Klarheit{" "}
+            </span>
+            <span className="text-black font-medium">
+              stehen wir dir jederzeit persönlich zur Seite
+            </span>
+            <span className="text-nest-gray">
+              . Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
+              deinen{" "}
+            </span>
+            <span className="text-black font-medium">
+              Termin ganz einfach online
+            </span>
+            <span className="text-nest-gray">
+              . Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+            </span>
           </p>
         </div>
 
@@ -95,18 +129,23 @@ export const TerminVereinbarenContent: React.FC<
         <div className="grid grid-cols-1 gap-4">
           <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
             <div className="p-6">
-              <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
-                Kontakt <span className="text-gray-400">Melde dich!</span>
+              <h2 className="h2-title text-black mb-3 text-center">
+                Kontakt <span className="text-nest-gray">Melde dich!</span>
               </h2>
               <div className="text-center">
-                <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  <span className="font-medium">Telefon:</span> +43 (0) 664
-                  5403399
+                <p className="p-primary-small leading-relaxed">
+                  <span className="text-nest-gray">Telefon:</span>{" "}
+                  <span className="text-black font-medium">
+                    +43 (0) 664 5403399
+                  </span>
                   <br />
-                  <span className="font-medium">Mobil:</span> +43 (0) 664
-                  2531869
+                  <span className="text-nest-gray">Mobil:</span>{" "}
+                  <span className="text-black font-medium">
+                    +43 (0) 664 2531869
+                  </span>
                   <br />
-                  <span className="font-medium">Email:</span> nest@haus.at
+                  <span className="text-nest-gray">Email:</span>{" "}
+                  <span className="text-black font-medium">nest@haus.at</span>
                 </p>
               </div>
             </div>
@@ -114,18 +153,20 @@ export const TerminVereinbarenContent: React.FC<
 
           <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
             <div className="p-6">
-              <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
-                Adresse <span className="text-gray-400">Komm vorbei!</span>
+              <h2 className="h2-title text-black mb-3 text-center">
+                Adresse <span className="text-nest-gray">Komm vorbei!</span>
               </h2>
               <div className="text-center">
-                <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                  Karmeliterplatz 8
-                  <br />
-                  8010, Graz
-                  <br />
-                  Steiermark
-                  <br />
-                  Österreich
+                <p className="p-primary-small leading-relaxed">
+                  <span className="text-black font-medium">
+                    Karmeliterplatz 8
+                    <br />
+                    8010, Graz
+                    <br />
+                    Steiermark
+                    <br />
+                    Österreich
+                  </span>
                 </p>
               </div>
             </div>
@@ -146,14 +187,29 @@ export const TerminVereinbarenContent: React.FC<
 
         {/* Descriptive Text - INCREASED LINE SPACING */}
         <div>
-          <p className="p-primary text-gray-700 leading-relaxed">
-            Der Kauf deines Hauses ist ein großer Schritt – und{" "}
-            <strong>wir sind da, um dir dabei zu helfen</strong>. Für mehr
-            Sicherheit und Klarheit{" "}
-            <strong>stehen wir dir jederzeit persönlich zur Seite</strong>. Ruf
-            uns an, um dein Beratungsgespräch zu vereinbaren, oder buche deinen{" "}
-            <strong>Termin ganz einfach online</strong>. Dein Weg zu deinem
-            Traumhaus beginnt mit einem Gespräch.
+          <p className="p-primary leading-relaxed">
+            <span className="text-nest-gray">
+              Der Kauf deines Hauses ist ein großer Schritt – und{" "}
+            </span>
+            <span className="text-black font-medium">
+              wir sind da, um dir dabei zu helfen
+            </span>
+            <span className="text-nest-gray">
+              . Für mehr Sicherheit und Klarheit{" "}
+            </span>
+            <span className="text-black font-medium">
+              stehen wir dir jederzeit persönlich zur Seite
+            </span>
+            <span className="text-nest-gray">
+              . Ruf uns an, um dein Beratungsgespräch zu vereinbaren, oder buche
+              deinen{" "}
+            </span>
+            <span className="text-black font-medium">
+              Termin ganz einfach online
+            </span>
+            <span className="text-nest-gray">
+              . Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+            </span>
           </p>
         </div>
 
@@ -163,17 +219,23 @@ export const TerminVereinbarenContent: React.FC<
         {/* Contact Box */}
         <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
           <div className="p-6">
-            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
-              Kontakt <span className="text-gray-400">Melde dich!</span>
+            <h2 className="h2-title text-black mb-3">
+              Kontakt <span className="text-nest-gray">Melde dich!</span>
             </h2>
             <div>
-              <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                <span className="font-medium">Telefon:</span> +43 (0) 664
-                5403399
+              <p className="p-primary-small leading-relaxed">
+                <span className="text-nest-gray">Telefon:</span>{" "}
+                <span className="text-black font-medium">
+                  +43 (0) 664 5403399
+                </span>
                 <br />
-                <span className="font-medium">Mobil:</span> +43 (0) 664 2531869
+                <span className="text-nest-gray">Mobil:</span>{" "}
+                <span className="text-black font-medium">
+                  +43 (0) 664 2531869
+                </span>
                 <br />
-                <span className="font-medium">Email:</span> nest@haus.at
+                <span className="text-nest-gray">Email:</span>{" "}
+                <span className="text-black font-medium">nest@haus.at</span>
               </p>
             </div>
           </div>
@@ -182,18 +244,20 @@ export const TerminVereinbarenContent: React.FC<
         {/* Address Box */}
         <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
           <div className="p-6">
-            <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3">
-              Adresse <span className="text-gray-400">Komm vorbei!</span>
+            <h2 className="h2-title text-black mb-3">
+              Adresse <span className="text-nest-gray">Komm vorbei!</span>
             </h2>
             <div>
-              <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                Karmeliterplatz 8
-                <br />
-                8010, Graz
-                <br />
-                Steiermark
-                <br />
-                Österreich
+              <p className="p-primary-small leading-relaxed">
+                <span className="text-black font-medium">
+                  Karmeliterplatz 8
+                  <br />
+                  8010, Graz
+                  <br />
+                  Steiermark
+                  <br />
+                  Österreich
+                </span>
               </p>
             </div>
           </div>
@@ -207,48 +271,65 @@ export const TerminVereinbarenContent: React.FC<
     return (
       <div className={`flex flex-col gap-4 ${className}`}>
         <div>
-          <p className="text-xs sm:text-sm text-gray-700 mb-3 leading-snug">
-            Der Kauf deines Hauses ist ein großer Schritt –{" "}
-            <span className="font-bold">
+          <p className="text-xs sm:text-sm mb-3 leading-snug">
+            <span className="text-nest-gray">
+              Der Kauf deines Hauses ist ein großer Schritt –{" "}
+            </span>
+            <span className="text-black font-medium">
               und wir sind da, um dir dabei zu helfen.
-            </span>{" "}
-            Für mehr Sicherheit und Klarheit{" "}
-            <span className="font-bold">
+            </span>
+            <span className="text-nest-gray">
+              {" "}
+              Für mehr Sicherheit und Klarheit{" "}
+            </span>
+            <span className="text-black font-medium">
               stehen wir dir jederzeit persönlich zur Seite.
-            </span>{" "}
-            Ruf uns an, um dein{" "}
-            <span className="font-bold">Beratungsgespräch</span> zu vereinbaren,
-            oder buche deinen{" "}
-            <span className="font-bold">Termin ganz einfach online.</span> Dein
-            Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+            </span>
+            <span className="text-nest-gray"> Ruf uns an, um dein </span>
+            <span className="text-black font-medium">Beratungsgespräch</span>
+            <span className="text-nest-gray">
+              {" "}
+              zu vereinbaren, oder buche deinen{" "}
+            </span>
+            <span className="text-black font-medium">
+              Termin ganz einfach online.
+            </span>
+            <span className="text-nest-gray">
+              {" "}
+              Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+            </span>
           </p>
         </div>
         <div className="space-y-2">
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+            <h4 className="font-bold mb-1 text-black text-sm md:text-base">
               Kontakt
             </h4>
-            <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm text-gray-700">
-              <span>Telefon:</span>
-              <span>+43 (0) 3847 75090</span>
-              <span>Mobil:</span>
-              <span>+43 (0) 664 3949604</span>
-              <span>Email:</span>
-              <span>nest@haus.at</span>
+            <div className="grid grid-cols-[max-content_1fr] gap-x-2 md:gap-x-4 text-xs md:text-sm">
+              <span className="text-nest-gray">Telefon:</span>
+              <span className="text-black font-medium">+43 (0) 3847 75090</span>
+              <span className="text-nest-gray">Mobil:</span>
+              <span className="text-black font-medium">
+                +43 (0) 664 3949604
+              </span>
+              <span className="text-nest-gray">Email:</span>
+              <span className="text-black font-medium">nest@haus.at</span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
-            <h4 className="font-bold mb-1 text-gray-800 text-sm md:text-base">
+            <h4 className="font-bold mb-1 text-black text-sm md:text-base">
               Adresse
             </h4>
-            <div className="text-xs md:text-sm text-gray-700">
-              Karmeliterplatz 8
-              <br />
-              8010, Graz
-              <br />
-              Steiermark
-              <br />
-              Österreich
+            <div className="text-xs md:text-sm">
+              <span className="text-black font-medium">
+                Karmeliterplatz 8
+                <br />
+                8010, Graz
+                <br />
+                Steiermark
+                <br />
+                Österreich
+              </span>
             </div>
           </div>
         </div>

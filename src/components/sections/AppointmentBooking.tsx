@@ -639,18 +639,25 @@ const AppointmentBooking = ({
             <div className="grid grid-cols-1 gap-4">
               <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
                 <div className="p-6">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
-                    Kontakt <span className="text-gray-400">Melde dich!</span>
+                  <h2 className="h2-title text-black mb-3 text-center">
+                    Kontakt <span className="text-nest-gray">Melde dich!</span>
                   </h2>
                   <div className="text-center">
-                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                      <span className="font-medium">Telefon:</span> +43 (0) 3847
-                      75090
+                    <p className="p-primary-small leading-relaxed">
+                      <span className="text-nest-gray">Telefon:</span>{" "}
+                      <span className="text-black font-medium">
+                        +43 (0) 3847 75090
+                      </span>
                       <br />
-                      <span className="font-medium">Mobil:</span> +43 (0) 664
-                      3949604
+                      <span className="text-nest-gray">Mobil:</span>{" "}
+                      <span className="text-black font-medium">
+                        +43 (0) 664 3949604
+                      </span>
                       <br />
-                      <span className="font-medium">Email:</span> nest@haus.at
+                      <span className="text-nest-gray">Email:</span>{" "}
+                      <span className="text-black font-medium">
+                        nest@haus.at
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -658,18 +665,20 @@ const AppointmentBooking = ({
 
               <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
                 <div className="p-6">
-                  <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-gray-900 mb-3 text-center">
-                    Adresse <span className="text-gray-400">Komm vorbei!</span>
+                  <h2 className="h2-title text-black mb-3 text-center">
+                    Adresse <span className="text-nest-gray">Komm vorbei!</span>
                   </h2>
                   <div className="text-center">
-                    <p className="text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-700 leading-relaxed">
-                      <span className="font-medium">Telefon:</span> +43 (0) 3847
-                      75090
-                      <br />
-                      <span className="font-medium">Mobil:</span> +43 (0) 664
-                      3949604
-                      <br />
-                      <span className="font-medium">Email:</span> nest@haus.at
+                    <p className="p-primary-small leading-relaxed">
+                      <span className="text-black font-medium">
+                        Karmeliterplatz 8
+                        <br />
+                        8010, Graz
+                        <br />
+                        Steiermark
+                        <br />
+                        Österreich
+                      </span>
                     </p>
                   </div>
                 </div>
