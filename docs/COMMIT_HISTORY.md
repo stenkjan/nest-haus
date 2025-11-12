@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f28c98e2196ce91d7bd2f491f133bd95369cf7b0] - Wed Nov 12 11:36:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add documentation for pricing initialization fix  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/PRICING_INITIALIZATION_FIX_NOV11.md
+
+
+---
+
 ## [58194971f3195f5b66712e63e43ae5dcf6657428] - Wed Nov 12 11:27:02 2025 +0100
 
 **Author**: stenkjan
