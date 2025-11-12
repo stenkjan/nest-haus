@@ -4,6 +4,29 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [52a516675d29f68ab3323434a84b5f7120d40232] - Wed Nov 12 15:41:21 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update email configuration and references across the project  - Added email configuration for Resend service in  and . - Updated email addresses in , , and  components to reflect the new contact email: mail@nest-haus.at.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/agb/AgbClient.tsx
+- src/app/impressum/ImpressumClient.tsx
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+#### 📚 Documentation Changes
+- docs/EMAIL_SETUP_GUIDE.md
+
+
+---
+
 ## [0bac0104e1aabcd3df8549738f145db920392704] - Wed Nov 12 14:34:23 2025 +0100
 
 **Author**: stenkjan
