@@ -131,7 +131,8 @@ interface SessionWithConfig {
 class UserTrackingService {
 
     /**
-     * Parse configuration data safely
+     * Parse configuration data safely - BACKWARD COMPATIBLE
+     * Handles both old format (string values) and new format (objects with value/name/price)
      */
     private static parseConfigurationData(data: unknown): ConfigurationData | null {
         try {
@@ -139,49 +140,61 @@ class UserTrackingService {
 
             const config = data as Record<string, unknown>;
 
-            // Helper to extract value or quantity if it's an object
-            const extractValueOrQuantity = (field: unknown): { value?: string; quantity?: number } => {
-                if (typeof field === 'string') return { value: field };
+            // Helper to extract value from both old and new formats
+            const extractValue = (field: unknown, fallbackKey?: string): string | undefined => {
+                // New format: { category: 'nest', value: 'nest80', name: 'Nest 80', price: 95000 }
                 if (field && typeof field === 'object' && 'value' in field) {
-                    const valueField = field as { value?: unknown; quantity?: unknown };
-                    return {
-                        value: typeof valueField.value === 'string' ? valueField.value : undefined,
-                        quantity: typeof valueField.quantity === 'number' ? valueField.quantity : undefined
-                    };
+                    const obj = field as { value?: unknown };
+                    return typeof obj.value === 'string' ? obj.value : undefined;
                 }
-                return {};
+                
+                // Old format: direct string value
+                if (typeof field === 'string') {
+                    return field;
+                }
+
+                // Fallback: check alternative key for old data
+                if (fallbackKey && config[fallbackKey]) {
+                    const fallbackField = config[fallbackKey];
+                    if (typeof fallbackField === 'string') {
+                        return fallbackField;
+                    }
+                }
+
+                return undefined;
             };
 
-            const nestData = extractValueOrQuantity(config.nestType || config.nest);
-            const gebaeudehuelleData = extractValueOrQuantity(config.gebaeudehuelle);
-            const innenverkleidungData = extractValueOrQuantity(config.innenverkleidung);
-            const fussbodenData = extractValueOrQuantity(config.fussboden);
-            const pvanlageData = extractValueOrQuantity(config.pvanlage);
-            const fensterData = extractValueOrQuantity(config.fenster);
-            const planungspaketData = extractValueOrQuantity(config.planungspaket);
-            const geschossdeckeData = extractValueOrQuantity(config.geschossdecke);
-            const belichtungspaketData = extractValueOrQuantity(config.belichtungspaket);
-            const stirnseiteData = extractValueOrQuantity(config.stirnseite);
-            const kamindurchzugData = extractValueOrQuantity(config.kamindurchzug);
-            const fussbodenheizungData = extractValueOrQuantity(config.fussbodenheizung);
-            const bodenaufbauData = extractValueOrQuantity(config.bodenaufbau);
-            const fundamentData = extractValueOrQuantity(config.fundament);
+            // Parse all categories with backward compatibility
+            const nestData = extractValue(config.nest || config.nestType, 'nestType');
+            const gebaeudehuelleData = extractValue(config.gebaeudehuelle);
+            const innenverkleidungData = extractValue(config.innenverkleidung);
+            const fussbodenData = extractValue(config.fussboden);
+            const pvanlageData = extractValue(config.pvanlage);
+            const fensterData = extractValue(config.fenster);
+            const planungspaketData = extractValue(config.planungspaket);
+            const geschossdeckeData = extractValue(config.geschossdecke);
+            const belichtungspaketData = extractValue(config.belichtungspaket);
+            const stirnseiteData = extractValue(config.stirnseite);
+            const kamindurchzugData = extractValue(config.kamindurchzug);
+            const fussbodenheizungData = extractValue(config.fussbodenheizung);
+            const bodenaufbauData = extractValue(config.bodenaufbau);
+            const fundamentData = extractValue(config.fundament);
 
             return {
-                nestType: nestData.value,
-                gebaeudehuelle: gebaeudehuelleData.value,
-                innenverkleidung: innenverkleidungData.value,
-                fussboden: fussbodenData.value,
-                pvanlage: pvanlageData.value,
-                fenster: fensterData.value,
-                planungspaket: planungspaketData.value,
-                geschossdecke: geschossdeckeData.value,
-                belichtungspaket: belichtungspaketData.value,
-                stirnseite: stirnseiteData.value,
-                kamindurchzug: kamindurchzugData.value,
-                fussbodenheizung: fussbodenheizungData.value,
-                bodenaufbau: bodenaufbauData.value,
-                fundament: fundamentData.value,
+                nestType: nestData,
+                gebaeudehuelle: gebaeudehuelleData,
+                innenverkleidung: innenverkleidungData,
+                fussboden: fussbodenData,
+                pvanlage: pvanlageData,
+                fenster: fensterData,
+                planungspaket: planungspaketData,
+                geschossdecke: geschossdeckeData,
+                belichtungspaket: belichtungspaketData,
+                stirnseite: stirnseiteData,
+                kamindurchzug: kamindurchzugData,
+                fussbodenheizung: fussbodenheizungData,
+                bodenaufbau: bodenaufbauData,
+                fundament: fundamentData,
             };
         } catch (error) {
             console.error('Failed to parse configuration data:', error);
@@ -191,13 +204,11 @@ class UserTrackingService {
 
     /**
      * Calculate funnel metrics
+     * Shows all sessions, then how many reached cart/inquiry/conversion
      */
     static async getFunnelMetrics() {
-        const totalSessions = await prisma.userSession.count({
-            where: {
-                status: { in: ['ACTIVE', 'IN_CART', 'COMPLETED', 'CONVERTED', 'ABANDONED'] }
-            }
-        });
+        // Count ALL sessions (including ACTIVE and ABANDONED)
+        const totalSessions = await prisma.userSession.count();
 
         const reachedCart = await prisma.userSession.count({
             where: {

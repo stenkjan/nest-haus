@@ -106,11 +106,14 @@ async function fetchUserTrackingData(): Promise<UserTrackingData | null> {
   try {
     console.log("🔍 Fetching user tracking data...");
 
-    // Build correct URL for both local and production
-    const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+    // ✅ FIXED: Proper URL resolution priority
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL 
+      ? (process.env.NEXT_PUBLIC_SITE_URL.startsWith('http') 
+          ? process.env.NEXT_PUBLIC_SITE_URL 
+          : `https://${process.env.NEXT_PUBLIC_SITE_URL}`)
+      : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
     const url = `${baseUrl}/api/admin/user-tracking`;
     console.log("📡 Fetching from:", url);
