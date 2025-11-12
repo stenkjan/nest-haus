@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2952ce6bcdf56a198d4bc0e73d80a870de5f25ea] - Wed Nov 12 11:52:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Prefix unused variables with underscore  Fixed ESLint errors for currentPrice and currentConfiguration which are no longer used after switching to dynamic price calculations.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [3dc10a7c907a8e87dbd0ce6094aa25948a7ec4f2] - Wed Nov 12 11:46:45 2025 +0100
 
 **Author**: stenkjan
