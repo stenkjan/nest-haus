@@ -164,6 +164,31 @@ export default function WarenkorbClient() {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete("mode");
         window.history.replaceState({}, "", newUrl.toString());
+      } else if (mode === "configuration") {
+        // Explicitly using configuration mode (from "Zum Warenkorb" button)
+        console.log("🏠 URL has configuration mode, setting ohne-nest to FALSE");
+        setOhneNestMode(false);
+
+        // Update the session to mark it as normal mode
+        const sessionId = configuration?.sessionId;
+        if (sessionId) {
+          console.log("📝 Updating session to configuration mode:", sessionId);
+          fetch("/api/sessions/update-ohne-nest-mode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sessionId,
+              isOhneNestMode: false,
+            }),
+          }).catch((error) => {
+            console.warn("⚠️ Failed to update configuration mode:", error);
+          });
+        }
+
+        // Remove the mode parameter from URL to clean it up
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete("mode");
+        window.history.replaceState({}, "", newUrl.toString());
       } else {
         // Check if this is a new session with no configuration selected
         // If no nest has been selected and configurator hasn't been opened, treat as ohne-nest mode

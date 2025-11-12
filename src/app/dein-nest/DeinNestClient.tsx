@@ -324,7 +324,7 @@ export default function DeinNestClient() {
         </section>
         {/* Section 6 - Video Background Cards */}
         <section className="w-full py-8 md:py-16 bg-white">
-          <div className="w-full mb-12 px-4 lg:pl-16 xl:pl-20 2xl:pl-24">
+          <div className="w-full mb-12 pl-4 md:pl-12">
             <div className="text-left">
               <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
                 Warum Nest Sinn macht?
