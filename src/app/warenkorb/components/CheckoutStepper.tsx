@@ -2829,22 +2829,47 @@ export default function CheckoutStepper({
               {/* Left/Right Layout: Teilzahlungen (left) + Heute zu bezahlen (right) */}
               {!isOhneNestMode &&
                 (() => {
-                  const totalPrice = Math.max(0, getCartTotal());
-                  const firstPayment = GRUNDSTUECKSCHECK_PRICE;
-                  const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
+                  // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
+                  let deinNestHausTotal = 0;
+                  if (configItem && configItem.nest) {
+                    // Calculate nest house total from individual item prices
+                    deinNestHausTotal += getItemPrice("nest", configItem.nest, configItem);
+                    
+                    const itemsToSum = [
+                      "gebaeudehuelle", "innenverkleidung", "fussboden",
+                      "bodenaufbau", "geschossdecke", "fundament",
+                      "pvanlage", "belichtungspaket", "stirnseite",
+                      "kamindurchzug",
+                    ] as const;
+                    
+                    itemsToSum.forEach((key) => {
+                      const selection = configItem[key];
+                      if (selection) {
+                        deinNestHausTotal += getItemPrice(key, selection, configItem);
+                      }
+                    });
+                  }
+                  
+                  // Add planungspaket if not basis (basis is inkludiert)
+                  const planungspaketPrice = (() => {
+                    const planValue = configItem?.planungspaket?.value || localSelectedPlan || "basis";
+                    if (planValue === "basis") return 0;
+                    const planPkg = PLANNING_PACKAGES.find(p => p.value === planValue);
+                    return planPkg?.price || 0;
+                  })();
+                  
+                  // Total price for payment calculations (Nest Haus + Planungspaket)
+                  const totalPrice = deinNestHausTotal + planungspaketPrice;
+                  
+                  const _firstPayment = 3000; // Grundstückscheck full price (shown in display above)
+                  const grundstueckscheckCredit = 1500; // Actual payment (discount applied)
                   const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
                   const secondPayment = Math.max(
                     0,
                     secondPaymentOriginal - grundstueckscheckCredit
                   );
                   const thirdPayment = Math.max(0, totalPrice * 0.5);
-                  const fourthPayment = Math.max(
-                    0,
-                    totalPrice -
-                      firstPayment -
-                      secondPaymentOriginal -
-                      thirdPayment
-                  );
+                  const fourthPayment = Math.max(0, totalPrice * 0.2);
 
                   return (
                     <div className="max-w-6xl mx-auto mb-12">
@@ -2933,12 +2958,12 @@ export default function CheckoutStepper({
                               </div>
                             </div>
 
-                            {/* 4. Teilzahlung (labeled as 3. in display) */}
+                            {/* 4. Teilzahlung */}
                             <div>
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
                                   <div className="font-medium text-gray-900">
-                                    3. Teilzahlung
+                                    4. Teilzahlung
                                   </div>
                                   <div className="text-sm text-gray-600 mt-1">
                                     Fällig nach Fertigstellung am Grundstück
@@ -2956,7 +2981,12 @@ export default function CheckoutStepper({
                             </div>
 
                             <div className="pt-4 mt-4 border-t border-gray-200">
-                              <button className="text-blue-600 text-sm hover:underline">
+                              <button
+                                onClick={() => {
+                                  window.location.href = "/konfigurator";
+                                }}
+                                className="text-blue-600 text-sm hover:underline cursor-pointer"
+                              >
                                 Konfiguration bearbeiten
                               </button>
                             </div>
