@@ -176,7 +176,7 @@ export const configuratorData: CategoryData[] = [
       {
         id: 'ohne_belag',
         name: 'Standard',
-        description: '',
+        description: 'Verlege deinen Boden selbst',
         price: { type: 'included', amount: 0 }
       },
       {
