@@ -75,8 +75,8 @@ export default function CheckoutStepper({
     appointmentDetails,
   } = useCartStore();
   const {
-    currentPrice,
-    configuration: currentConfiguration,
+    currentPrice: _currentPrice,
+    configuration: _currentConfiguration,
     sessionId,
   } = useConfiguratorStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
