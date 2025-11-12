@@ -4,6 +4,48 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c841500208fdfc8d9aba36680880589931cb51c5] - Wed Nov 12 10:35:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4864c3a3c6d4e4e39a23735321879e32be26b331] - Wed Nov 12 10:29:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/data/configuratorData.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [30eaa9538f106e0427331087e5285688bdfe3b0c] - Wed Nov 12 10:16:32 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Add migration to update fussboden Standard description in existing sessions  - Incremented store version from 1 to 2 - Added migration logic to add 'Verlege deinen Boden selbst' description - Fixes issue where existing sessions had empty description for Standard - Changed version check from === to < for better future compatibility - Now subtitle will appear in Dein Nest Überblick for all users  `
+
+### Changes Analysis
+
+---
+
 ## [01c03239de4977b2ef42c0daa28db8541b5409bd] - Wed Nov 12 10:11:20 2025 +0100
 
 **Author**: stenkjan

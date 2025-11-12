@@ -77,9 +77,9 @@ export function GetInContactBanner({
       className={`w-full ${className}`}
       style={{ backgroundColor }}
     >
-      <div className="w-full max-w-screen-3xl mx-auto pb-4 py-4 sm:px-12 lg:px-8">
+      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 py-4">
         <div className="flex justify-center">
-          <div className="rounded-3xl shadow-lg overflow-hidden bg-gray-50 w-[90%]">
+          <div className="rounded-3xl shadow-lg overflow-hidden bg-gray-50 w-full">
             <div className="p-12 text-center">
               {/* Icon */}
               <div className="flex justify-center">
