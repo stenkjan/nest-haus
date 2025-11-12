@@ -754,7 +754,8 @@ export default function CheckoutStepper({
         // Show planungspaket in cart details
         if (key === "planungspaket" || key === "grundstueckscheck") {
           const displayName = selection.name;
-          const displayPrice = selection.price || 0;
+          // For grundstueckscheck, always show 3,000€ (full price, not discounted 1,500€)
+          const displayPrice = key === "grundstueckscheck" ? 3000 : (selection.price || 0);
           // Only "basis" planungspaket is included (0€), others show actual price
           const isIncluded = displayPrice === 0 && key === "planungspaket";
 
