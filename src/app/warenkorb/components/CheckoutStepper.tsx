@@ -2878,7 +2878,7 @@ export default function CheckoutStepper({
                                     Fixpreis
                                   </div>
                                   <div className="font-semibold text-gray-900">
-                                    {PriceUtils.formatPrice(firstPayment)}
+                                    {PriceUtils.formatPrice(3000)}
                                   </div>
                                 </div>
                               </div>
