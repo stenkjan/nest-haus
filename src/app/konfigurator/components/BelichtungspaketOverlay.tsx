@@ -52,6 +52,16 @@ export default function BelichtungspaketOverlay({
         alt={`Belichtungspaket ${belichtungspaket} Overlay`}
         fill
         className="transition-opacity duration-300 object-contain z-20"
+        style={{
+          // Safari SVG rendering fix - prevents pixelation in WebKit
+          imageRendering: 'crisp-edges',
+          WebkitTransform: 'translateZ(0)',
+          transform: 'translateZ(0)',
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
+          WebkitPerspective: 1000,
+          perspective: 1000,
+        } as React.CSSProperties}
         strategy="client"
         isInteractive={true}
         enableCache={true}

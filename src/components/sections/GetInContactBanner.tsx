@@ -89,6 +89,16 @@ export function GetInContactBanner({
                   width={240}
                   height={240}
                   className="h-10 w-20 sm:h-12 sm:w-24 md:h-16 md:w-32 lg:h-20 lg:w-40 xl:h-26 xl:w-52 2xl:h-32 2xl:w-64 mb-4 md:mb-8"
+                  style={{
+                    // Safari SVG rendering fix - prevents pixelation in WebKit
+                    imageRendering: 'crisp-edges',
+                    WebkitTransform: 'translateZ(0)',
+                    transform: 'translateZ(0)',
+                    WebkitBackfaceVisibility: 'hidden',
+                    backfaceVisibility: 'hidden',
+                    WebkitPerspective: 1000,
+                    perspective: 1000,
+                  } as React.CSSProperties}
                   enableCache={true}
                   enableMobileDetection={false}
                   showLoadingSpinner={false}
