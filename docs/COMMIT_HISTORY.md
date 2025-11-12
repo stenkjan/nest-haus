@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [22a66db146ffcb4370612ec08a3ebb118a42b127] - Wed Nov 12 10:02:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Center 'Ohne Heizung' option vertically in Bodenaufbau section  - Added vertical centering for ohne_heizung option (same as ohne_belag) - Both title and subtitle now centered in selection box - Applies flex-col justify-center to container - Shows description on single line below title  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SelectionOption.tsx
+
+
+---
+
 ## [bec9e4e8fce3ec18cbe753dbbf1bc1ded5d85690] - Wed Nov 12 10:00:42 2025 +0100
 
 **Author**: stenkjan
