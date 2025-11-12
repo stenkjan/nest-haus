@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7418fef09ca79cf2246f1f6ee2bd4907c1628ace] - Wed Nov 12 11:23:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Sync pricing from Konfigurator to Warenkorb with new pricing system  CRITICAL FIXES: 1. Nest price: Now uses RAW nest base price from PriceCalculator.getPricingData() 2. Innenverkleidung: Now uses ABSOLUTE prices (never shows as 'inkludiert')    - Fichte: 23,020€ for Nest 80 (was showing as 'inkludiert') 3. Gebäudehülle & Fussboden: Now uses actual user selections for calculation 4. Check & Vorentwurf: Changed from variable price to fixed 3,000€ in Dein Preis Überblick  Technical changes: - getItemPrice(): Added separate handlers for nest, innenverkleidung, gebaeudehülle, fussboden - Uses PriceCalculator.getPricingData() for dynamic pricing from Google Sheets - isItemIncluded(): Never shows innenverkleidung as 'inkludiert' - Fixed base defaults: fichte (not laerche), ohne_belag (not parkett) - Removed discount logic from overview box for Check & Vorentwurf  Result: Warenkorb now shows same prices as Konfigurator using new pricing system  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [bcf68e5f5ea3e26a045928f757d56d9f4d3aadf0] - Wed Nov 12 11:15:57 2025 +0100
 
 **Author**: stenkjan
