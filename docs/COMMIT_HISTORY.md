@@ -4,6 +4,80 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5d5554ce85660878dc18341552485ccb88f1a9ed] - Wed Nov 12 12:00:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Add null check for configItem.nest before calling getItemPrice  TypeScript error: configItem.nest could be null/undefined when calling getItemPrice. Added null check to ensure nest exists before passing to getItemPrice.  Applied to both occurrences: - Line 1708-1710 (step 0-3 display) - Line 2430-2432 (step 4 display)  Build should now succeed.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [c1242be8ff836487785fd99700101f816c49f76f] - Wed Nov 12 11:58:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Correct Teilzahlung calculations and add Konfiguration bearbeiten link  FIXES: 1. Changed 4th payment label from '3. Teilzahlung' to '4. Teilzahlung' 2. Recalculated all payments based on dynamic total (Dein Nest Haus + Planungspaket) 3. Added onClick to 'Konfiguration bearbeiten' button to open /konfigurator  Calculation changes: - Base total: Dynamic sum from getItemPrice() (not stored totalPrice) - Includes Planungspaket if not basis (Plus: 9,600€, Pro: 12,700€) - 1. Teilzahlung: 3,000€ (Grundstückscheck full price) - 2. Teilzahlung: (Total × 30%) - 1,500€ credit - 3. Teilzahlung: Total × 50% - 4. Teilzahlung: Total × 20%  Example with Nest 80 defaults (226,746€) + Basis (0€) = 226,746€: - 1. Teilzahlung: 3,000€ - 2. Teilzahlung: 66,524€ (68,024 - 1,500) - 3. Teilzahlung: 113,373€ - 4. Teilzahlung: 45,349€  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [67f02ba6b6a64a435ec9ded19a69f86cffd57266] - Wed Nov 12 11:55:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Show 3,000€ in Teilzahlung section (not 1,500€)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [2952ce6bcdf56a198d4bc0e73d80a870de5f25ea] - Wed Nov 12 11:52:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Prefix unused variables with underscore  Fixed ESLint errors for currentPrice and currentConfiguration which are no longer used after switching to dynamic price calculations.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [3dc10a7c907a8e87dbd0ce6094aa25948a7ec4f2] - Wed Nov 12 11:46:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/PRICING_INITIALIZATION_FIX_NOV11.md
+- docs/WARENKORB_PRICING_SYNC_FIX_NOV11.md
+
+
+---
+
 ## [6be3df657cbbbbc53f755335f6076c028846f1cd] - Wed Nov 12 11:45:08 2025 +0100
 
 **Author**: stenkjan

@@ -75,8 +75,8 @@ export default function CheckoutStepper({
     appointmentDetails,
   } = useCartStore();
   const {
-    currentPrice,
-    configuration: currentConfiguration,
+    currentPrice: _currentPrice,
+    configuration: _currentConfiguration,
     sessionId,
   } = useConfiguratorStore();
   const [internalStepIndex, setInternalStepIndex] = useState<number>(0);
@@ -754,7 +754,8 @@ export default function CheckoutStepper({
         // Show planungspaket in cart details
         if (key === "planungspaket" || key === "grundstueckscheck") {
           const displayName = selection.name;
-          const displayPrice = selection.price || 0;
+          // For grundstueckscheck, always show 3,000€ (full price, not discounted 1,500€)
+          const displayPrice = key === "grundstueckscheck" ? 3000 : (selection.price || 0);
           // Only "basis" planungspaket is included (0€), others show actual price
           const isIncluded = displayPrice === 0 && key === "planungspaket";
 
@@ -1649,36 +1650,34 @@ export default function CheckoutStepper({
                                       item as ConfigurationCartItem;
                                     const nestModel =
                                       configItem.nest?.value || "";
-                                    // Use current price from configurator store for consistency
-                                    const priceValue = currentPrice;
-                                    // Get current geschossdecke quantity from configurator store
-                                    const geschossdeckeQuantity =
-                                      currentConfiguration.geschossdecke
-                                        ?.quantity || 0;
-                                    console.log(
-                                      "🛒 CART FOOTER m² calculation (1st):",
-                                      {
-                                        price: priceValue,
-                                        nestModel,
-                                        geschossdeckeQuantity,
-                                        baseArea:
-                                          PriceUtils.getAdjustedNutzflaeche(
-                                            nestModel,
-                                            0
-                                          ),
-                                        adjustedArea:
-                                          PriceUtils.getAdjustedNutzflaeche(
-                                            nestModel,
-                                            geschossdeckeQuantity
-                                          ),
-                                        result:
-                                          PriceUtils.calculatePricePerSquareMeter(
-                                            priceValue,
-                                            nestModel,
-                                            geschossdeckeQuantity
-                                          ),
+                                    
+                                    // Calculate dynamic total for m² calculation
+                                    let dynamicTotal = 0;
+                                    
+                                    // Add nest price (dynamic from pricing data)
+                                    if (configItem.nest) {
+                                      dynamicTotal += getItemPrice("nest", configItem.nest, configItem);
+                                    }
+                                    
+                                    // Add all other items
+                                    const itemsToSum = [
+                                      "gebaeudehuelle", "innenverkleidung", "fussboden",
+                                      "bodenaufbau", "geschossdecke", "fundament",
+                                      "pvanlage", "belichtungspaket", "stirnseite",
+                                      "planungspaket", "kamindurchzug",
+                                    ] as const;
+                                    
+                                    itemsToSum.forEach((key) => {
+                                      const selection = configItem[key];
+                                      if (selection) {
+                                        dynamicTotal += getItemPrice(key, selection, configItem);
                                       }
-                                    );
+                                    });
+                                    
+                                    const priceValue = dynamicTotal;
+                                    const geschossdeckeQuantity =
+                                      configItem.geschossdecke?.quantity || 0;
+                                    
                                     return PriceUtils.calculatePricePerSquareMeter(
                                       priceValue,
                                       nestModel,
@@ -1699,13 +1698,22 @@ export default function CheckoutStepper({
                             </div>
                             <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                               {PriceUtils.formatPrice(
-                                "totalPrice" in item &&
-                                  (item as ConfigurationCartItem).nest
-                                  ? (item as ConfigurationCartItem).nest
-                                      ?.price || 0
-                                  : "totalPrice" in item
+                                (() => {
+                                  // For nest, use dynamic price from pricing data
+                                  if (
+                                    "totalPrice" in item &&
+                                    (item as ConfigurationCartItem).nest
+                                  ) {
+                                    const configItem = item as ConfigurationCartItem;
+                                    if (configItem.nest) {
+                                      return getItemPrice("nest", configItem.nest, configItem);
+                                    }
+                                  }
+                                  // For other items, use totalPrice
+                                  return "totalPrice" in item
                                     ? (item as ConfigurationCartItem).totalPrice
-                                    : (item as CartItem).price
+                                    : (item as CartItem).price;
+                                })()
                               )}
                             </div>
                           </div>
@@ -2368,36 +2376,34 @@ export default function CheckoutStepper({
                                     item as ConfigurationCartItem;
                                   const nestModel =
                                     configItem.nest?.value || "";
-                                  // Use current price from configurator store for consistency
-                                  const priceValue = currentPrice;
-                                  // Get current geschossdecke quantity from configurator store
-                                  const geschossdeckeQuantity =
-                                    currentConfiguration.geschossdecke
-                                      ?.quantity || 0;
-                                  console.log(
-                                    "🛒 CART FOOTER m² calculation (2nd):",
-                                    {
-                                      price: priceValue,
-                                      nestModel,
-                                      geschossdeckeQuantity,
-                                      baseArea:
-                                        PriceUtils.getAdjustedNutzflaeche(
-                                          nestModel,
-                                          0
-                                        ),
-                                      adjustedArea:
-                                        PriceUtils.getAdjustedNutzflaeche(
-                                          nestModel,
-                                          geschossdeckeQuantity
-                                        ),
-                                      result:
-                                        PriceUtils.calculatePricePerSquareMeter(
-                                          priceValue,
-                                          nestModel,
-                                          geschossdeckeQuantity
-                                        ),
+                                  
+                                  // Calculate dynamic total for m² calculation
+                                  let dynamicTotal = 0;
+                                  
+                                  // Add nest price (dynamic from pricing data)
+                                  if (configItem.nest) {
+                                    dynamicTotal += getItemPrice("nest", configItem.nest, configItem);
+                                  }
+                                  
+                                  // Add all other items
+                                  const itemsToSum = [
+                                    "gebaeudehuelle", "innenverkleidung", "fussboden",
+                                    "bodenaufbau", "geschossdecke", "fundament",
+                                    "pvanlage", "belichtungspaket", "stirnseite",
+                                    "planungspaket", "kamindurchzug",
+                                  ] as const;
+                                  
+                                  itemsToSum.forEach((key) => {
+                                    const selection = configItem[key];
+                                    if (selection) {
+                                      dynamicTotal += getItemPrice(key, selection, configItem);
                                     }
-                                  );
+                                  });
+                                  
+                                  const priceValue = dynamicTotal;
+                                  const geschossdeckeQuantity =
+                                    configItem.geschossdecke?.quantity || 0;
+                                  
                                   return PriceUtils.calculatePricePerSquareMeter(
                                     priceValue,
                                     nestModel,
@@ -2417,13 +2423,22 @@ export default function CheckoutStepper({
                           </div>
                           <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                             {PriceUtils.formatPrice(
-                              "totalPrice" in item &&
-                                (item as ConfigurationCartItem).nest
-                                ? (item as ConfigurationCartItem).nest?.price ||
-                                    0
-                                : "totalPrice" in item
+                              (() => {
+                                // For nest, use dynamic price from pricing data
+                                if (
+                                  "totalPrice" in item &&
+                                  (item as ConfigurationCartItem).nest
+                                ) {
+                                  const configItem = item as ConfigurationCartItem;
+                                  if (configItem.nest) {
+                                    return getItemPrice("nest", configItem.nest, configItem);
+                                  }
+                                }
+                                // For other items, use totalPrice
+                                return "totalPrice" in item
                                   ? (item as ConfigurationCartItem).totalPrice
-                                  : (item as CartItem).price
+                                  : (item as CartItem).price;
+                              })()
                             )}
                           </div>
                         </div>
@@ -2818,22 +2833,47 @@ export default function CheckoutStepper({
               {/* Left/Right Layout: Teilzahlungen (left) + Heute zu bezahlen (right) */}
               {!isOhneNestMode &&
                 (() => {
-                  const totalPrice = Math.max(0, getCartTotal());
-                  const firstPayment = GRUNDSTUECKSCHECK_PRICE;
-                  const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
+                  // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
+                  let deinNestHausTotal = 0;
+                  if (configItem && configItem.nest) {
+                    // Calculate nest house total from individual item prices
+                    deinNestHausTotal += getItemPrice("nest", configItem.nest, configItem);
+                    
+                    const itemsToSum = [
+                      "gebaeudehuelle", "innenverkleidung", "fussboden",
+                      "bodenaufbau", "geschossdecke", "fundament",
+                      "pvanlage", "belichtungspaket", "stirnseite",
+                      "kamindurchzug",
+                    ] as const;
+                    
+                    itemsToSum.forEach((key) => {
+                      const selection = configItem[key];
+                      if (selection) {
+                        deinNestHausTotal += getItemPrice(key, selection, configItem);
+                      }
+                    });
+                  }
+                  
+                  // Add planungspaket if not basis (basis is inkludiert)
+                  const planungspaketPrice = (() => {
+                    const planValue = configItem?.planungspaket?.value || localSelectedPlan || "basis";
+                    if (planValue === "basis") return 0;
+                    const planPkg = PLANNING_PACKAGES.find(p => p.value === planValue);
+                    return planPkg?.price || 0;
+                  })();
+                  
+                  // Total price for payment calculations (Nest Haus + Planungspaket)
+                  const totalPrice = deinNestHausTotal + planungspaketPrice;
+                  
+                  const _firstPayment = 3000; // Grundstückscheck full price (shown in display above)
+                  const grundstueckscheckCredit = 1500; // Actual payment (discount applied)
                   const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
                   const secondPayment = Math.max(
                     0,
                     secondPaymentOriginal - grundstueckscheckCredit
                   );
                   const thirdPayment = Math.max(0, totalPrice * 0.5);
-                  const fourthPayment = Math.max(
-                    0,
-                    totalPrice -
-                      firstPayment -
-                      secondPaymentOriginal -
-                      thirdPayment
-                  );
+                  const fourthPayment = Math.max(0, totalPrice * 0.2);
 
                   return (
                     <div className="max-w-6xl mx-auto mb-12">
@@ -2867,7 +2907,7 @@ export default function CheckoutStepper({
                                     Fixpreis
                                   </div>
                                   <div className="font-semibold text-gray-900">
-                                    {PriceUtils.formatPrice(firstPayment)}
+                                    {PriceUtils.formatPrice(3000)}
                                   </div>
                                 </div>
                               </div>
@@ -2922,12 +2962,12 @@ export default function CheckoutStepper({
                               </div>
                             </div>
 
-                            {/* 4. Teilzahlung (labeled as 3. in display) */}
+                            {/* 4. Teilzahlung */}
                             <div>
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
                                   <div className="font-medium text-gray-900">
-                                    3. Teilzahlung
+                                    4. Teilzahlung
                                   </div>
                                   <div className="text-sm text-gray-600 mt-1">
                                     Fällig nach Fertigstellung am Grundstück
@@ -2945,7 +2985,12 @@ export default function CheckoutStepper({
                             </div>
 
                             <div className="pt-4 mt-4 border-t border-gray-200">
-                              <button className="text-blue-600 text-sm hover:underline">
+                              <button
+                                onClick={() => {
+                                  window.location.href = "/konfigurator";
+                                }}
+                                className="text-blue-600 text-sm hover:underline cursor-pointer"
+                              >
                                 Konfiguration bearbeiten
                               </button>
                             </div>
