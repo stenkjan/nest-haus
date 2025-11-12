@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3dc10a7c907a8e87dbd0ce6094aa25948a7ec4f2] - Wed Nov 12 11:46:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/PRICING_INITIALIZATION_FIX_NOV11.md
+- docs/WARENKORB_PRICING_SYNC_FIX_NOV11.md
+
+
+---
+
 ## [6be3df657cbbbbc53f755335f6076c028846f1cd] - Wed Nov 12 11:45:08 2025 +0100
 
 **Author**: stenkjan
