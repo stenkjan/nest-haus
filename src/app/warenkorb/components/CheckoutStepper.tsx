@@ -2237,8 +2237,6 @@ export default function CheckoutStepper({
               {/* ContactMap */}
               <div className="mt-16">
                 <ContactMap
-                  title="So findest du uns"
-                  subtitle="Persönlich oder telefonisch? Du entscheidest."
                   backgroundColor="white"
                   maxWidth={true}
                 />
