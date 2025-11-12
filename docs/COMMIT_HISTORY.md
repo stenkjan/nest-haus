@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [01c03239de4977b2ef42c0daa28db8541b5409bd] - Wed Nov 12 10:11:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Fix: Add 'Verlege deinen Boden selbst' description to default fussboden selection  The description was missing in the configuratorStore default selections. Updated line 639 from empty string to 'Verlege deinen Boden selbst'. Now the subtitle will show in Dein Nest Überblick for new sessions.  `
+
+### Changes Analysis
+
+---
+
 ## [22a66db146ffcb4370612ec08a3ebb118a42b127] - Wed Nov 12 10:02:18 2025 +0100
 
 **Author**: stenkjan
