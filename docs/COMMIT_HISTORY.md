@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0bac0104e1aabcd3df8549738f145db920392704] - Wed Nov 12 14:34:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Enhance ServiceStatus interface in Client component  - Added optional properties  and  to the ServiceStatus interface for improved data handling. - Introduced  and  properties to track advanced metrics, enhancing the monitoring capabilities of the component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/usage/Client.tsx
+
+
+---
+
 ## [eb78b21dd6ac451ae1ba92afe3b9cd5046efe6e7] - Wed Nov 12 14:29:55 2025 +0100
 
 **Author**: stenkjan
