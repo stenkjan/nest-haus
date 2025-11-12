@@ -1649,36 +1649,34 @@ export default function CheckoutStepper({
                                       item as ConfigurationCartItem;
                                     const nestModel =
                                       configItem.nest?.value || "";
-                                    // Use current price from configurator store for consistency
-                                    const priceValue = currentPrice;
-                                    // Get current geschossdecke quantity from configurator store
-                                    const geschossdeckeQuantity =
-                                      currentConfiguration.geschossdecke
-                                        ?.quantity || 0;
-                                    console.log(
-                                      "🛒 CART FOOTER m² calculation (1st):",
-                                      {
-                                        price: priceValue,
-                                        nestModel,
-                                        geschossdeckeQuantity,
-                                        baseArea:
-                                          PriceUtils.getAdjustedNutzflaeche(
-                                            nestModel,
-                                            0
-                                          ),
-                                        adjustedArea:
-                                          PriceUtils.getAdjustedNutzflaeche(
-                                            nestModel,
-                                            geschossdeckeQuantity
-                                          ),
-                                        result:
-                                          PriceUtils.calculatePricePerSquareMeter(
-                                            priceValue,
-                                            nestModel,
-                                            geschossdeckeQuantity
-                                          ),
+                                    
+                                    // Calculate dynamic total for m² calculation
+                                    let dynamicTotal = 0;
+                                    
+                                    // Add nest price (dynamic from pricing data)
+                                    if (configItem.nest) {
+                                      dynamicTotal += getItemPrice("nest", configItem.nest, configItem);
+                                    }
+                                    
+                                    // Add all other items
+                                    const itemsToSum = [
+                                      "gebaeudehuelle", "innenverkleidung", "fussboden",
+                                      "bodenaufbau", "geschossdecke", "fundament",
+                                      "pvanlage", "belichtungspaket", "stirnseite",
+                                      "planungspaket", "kamindurchzug",
+                                    ] as const;
+                                    
+                                    itemsToSum.forEach((key) => {
+                                      const selection = configItem[key];
+                                      if (selection) {
+                                        dynamicTotal += getItemPrice(key, selection, configItem);
                                       }
-                                    );
+                                    });
+                                    
+                                    const priceValue = dynamicTotal;
+                                    const geschossdeckeQuantity =
+                                      configItem.geschossdecke?.quantity || 0;
+                                    
                                     return PriceUtils.calculatePricePerSquareMeter(
                                       priceValue,
                                       nestModel,
@@ -1699,13 +1697,20 @@ export default function CheckoutStepper({
                             </div>
                             <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                               {PriceUtils.formatPrice(
-                                "totalPrice" in item &&
-                                  (item as ConfigurationCartItem).nest
-                                  ? (item as ConfigurationCartItem).nest
-                                      ?.price || 0
-                                  : "totalPrice" in item
+                                (() => {
+                                  // For nest, use dynamic price from pricing data
+                                  if (
+                                    "totalPrice" in item &&
+                                    (item as ConfigurationCartItem).nest
+                                  ) {
+                                    const configItem = item as ConfigurationCartItem;
+                                    return getItemPrice("nest", configItem.nest, configItem);
+                                  }
+                                  // For other items, use totalPrice
+                                  return "totalPrice" in item
                                     ? (item as ConfigurationCartItem).totalPrice
-                                    : (item as CartItem).price
+                                    : (item as CartItem).price;
+                                })()
                               )}
                             </div>
                           </div>
@@ -2368,36 +2373,34 @@ export default function CheckoutStepper({
                                     item as ConfigurationCartItem;
                                   const nestModel =
                                     configItem.nest?.value || "";
-                                  // Use current price from configurator store for consistency
-                                  const priceValue = currentPrice;
-                                  // Get current geschossdecke quantity from configurator store
-                                  const geschossdeckeQuantity =
-                                    currentConfiguration.geschossdecke
-                                      ?.quantity || 0;
-                                  console.log(
-                                    "🛒 CART FOOTER m² calculation (2nd):",
-                                    {
-                                      price: priceValue,
-                                      nestModel,
-                                      geschossdeckeQuantity,
-                                      baseArea:
-                                        PriceUtils.getAdjustedNutzflaeche(
-                                          nestModel,
-                                          0
-                                        ),
-                                      adjustedArea:
-                                        PriceUtils.getAdjustedNutzflaeche(
-                                          nestModel,
-                                          geschossdeckeQuantity
-                                        ),
-                                      result:
-                                        PriceUtils.calculatePricePerSquareMeter(
-                                          priceValue,
-                                          nestModel,
-                                          geschossdeckeQuantity
-                                        ),
+                                  
+                                  // Calculate dynamic total for m² calculation
+                                  let dynamicTotal = 0;
+                                  
+                                  // Add nest price (dynamic from pricing data)
+                                  if (configItem.nest) {
+                                    dynamicTotal += getItemPrice("nest", configItem.nest, configItem);
+                                  }
+                                  
+                                  // Add all other items
+                                  const itemsToSum = [
+                                    "gebaeudehuelle", "innenverkleidung", "fussboden",
+                                    "bodenaufbau", "geschossdecke", "fundament",
+                                    "pvanlage", "belichtungspaket", "stirnseite",
+                                    "planungspaket", "kamindurchzug",
+                                  ] as const;
+                                  
+                                  itemsToSum.forEach((key) => {
+                                    const selection = configItem[key];
+                                    if (selection) {
+                                      dynamicTotal += getItemPrice(key, selection, configItem);
                                     }
-                                  );
+                                  });
+                                  
+                                  const priceValue = dynamicTotal;
+                                  const geschossdeckeQuantity =
+                                    configItem.geschossdecke?.quantity || 0;
+                                  
                                   return PriceUtils.calculatePricePerSquareMeter(
                                     priceValue,
                                     nestModel,
@@ -2417,13 +2420,20 @@ export default function CheckoutStepper({
                           </div>
                           <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
                             {PriceUtils.formatPrice(
-                              "totalPrice" in item &&
-                                (item as ConfigurationCartItem).nest
-                                ? (item as ConfigurationCartItem).nest?.price ||
-                                    0
-                                : "totalPrice" in item
+                              (() => {
+                                // For nest, use dynamic price from pricing data
+                                if (
+                                  "totalPrice" in item &&
+                                  (item as ConfigurationCartItem).nest
+                                ) {
+                                  const configItem = item as ConfigurationCartItem;
+                                  return getItemPrice("nest", configItem.nest, configItem);
+                                }
+                                // For other items, use totalPrice
+                                return "totalPrice" in item
                                   ? (item as ConfigurationCartItem).totalPrice
-                                  : (item as CartItem).price
+                                  : (item as CartItem).price;
+                              })()
                             )}
                           </div>
                         </div>
