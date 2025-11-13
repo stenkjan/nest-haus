@@ -2130,15 +2130,15 @@ export default function UnifiedContentCard({
                   isLightboxMode
                     ? "" // No padding in lightbox mode - use full width
                     : layout === "video"
-                      ? "px-12"
+                      ? "px-4 md:px-12"
                       : layout === "overlay-text"
-                        ? "px-12"
+                        ? "px-4 md:px-12"
                         : layout === "glass-quote"
-                          ? "px-12"
+                          ? "px-4 md:px-12"
                           : layout === "team-card"
-                            ? "px-12"
+                            ? "px-4 md:px-12"
                             : maxWidth
-                              ? "px-8"
+                              ? "px-4 md:px-8"
                               : "px-4"
                 } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
                 style={{ overflow: "visible" }}
