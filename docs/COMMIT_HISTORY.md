@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [027ca0c9bf1668d661f2cb028fd9f1686af9ab04] - Thu Nov 13 10:11:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/nest-system/NestSystemClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/VIDEO_HOSTING_EVALUATION.md
+
+
+---
+
 ## [08569e2bde0ce95c4ad1d5b5ea8a1e7469beccc0] - Thu Nov 13 09:32:01 2025 +0100
 
 **Author**: stenkjan
