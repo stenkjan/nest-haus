@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { iCloudCalendarService } from '@/lib/iCloudCalendarService';
+import { GoogleCalendarService } from '@/lib/GoogleCalendarService';
 import { z } from 'zod';
 
 // Validation schema for availability request
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Get available time slots
-        const timeSlots = await iCloudCalendarService.getAvailableTimeSlots({
+        const timeSlots = await GoogleCalendarService.getAvailableTimeSlots({
             date,
             timeZone,
         });
@@ -104,7 +104,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Get available time slots
-        const timeSlots = await iCloudCalendarService.getAvailableTimeSlots({
+        const timeSlots = await GoogleCalendarService.getAvailableTimeSlots({
             date,
             timeZone: timeZone || undefined,
         });

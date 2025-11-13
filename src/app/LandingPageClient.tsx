@@ -16,9 +16,9 @@ import { GetInContactBanner } from "@/components/sections/GetInContactBanner";
 const sections = [
   { id: "dein-nest-haus", title: "Dein Nest Haus", slug: "dein-nest-haus" },
   {
-    id: "wohnen-ohne-grenzen",
-    title: "Wohnen ohne Grenzen",
-    slug: "wohnen-ohne-grenzen",
+    id: "design-im-freistil",
+    title: "Design im Freistil",
+    slug: "design-im-freistil",
   },
   {
     id: "zuhause-fuer-ideen",
@@ -30,21 +30,16 @@ const sections = [
     title: "Wohnen neu gedacht",
     slug: "wohnen-neu-gedacht",
   },
-  {
-    id: "mehr-als-vier-waende",
-    title: "Mehr als vier Wände",
-    slug: "mehr-als-vier-waende",
-  },
+  { id: "raum-fuer-ideen", title: "Raum für Ideen", slug: "raum-fuer-ideen" },
   {
     id: "gestaltung-fuer-visionen",
     title: "Gestaltung für Visionen",
     slug: "gestaltung-fuer-visionen",
   },
-  { id: "raum-fuer-ideen", title: "Raum für Ideen", slug: "raum-fuer-ideen" },
   {
-    id: "design-im-freistil",
-    title: "Design im Freistil",
-    slug: "design-im-freistil",
+    id: "mehr-als-vier-waende",
+    title: "Mehr als vier Wände",
+    slug: "mehr-als-vier-waende",
   },
   {
     id: "nest-entdecken",
@@ -64,13 +59,12 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
     [IMAGES.hero.nestHaus5]: IMAGES.hero.mobile.nestHaus5,
     [IMAGES.hero.nestHaus6]: IMAGES.hero.mobile.nestHaus6,
     [IMAGES.hero.nestHaus7]: IMAGES.hero.mobile.nestHaus7,
-    [IMAGES.hero.nestHaus8]: IMAGES.hero.mobile.nestHaus8,
   };
 
   return mobileMapping[section.imagePath] || section.imagePath;
 };
 
-// Sample content for the 8 sections - using IMAGES constants
+// Sample content for the 7 sections - using IMAGES constants
 const sectionsContent = [
   {
     id: 1,
@@ -80,32 +74,32 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     modelName: "Nest 140",
     configuration: "Fassadenplatten Weiß",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
+    button1: "Zum Entwurf",
+    button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
   {
     id: 2,
     sectionId: "design-im-freistil",
-    imagePath: IMAGES.hero.nestHaus8,
+    imagePath: IMAGES.hero.nestHaus2,
     h1: "Dein Design im Freistil",
     h3: "So individuell wie du",
-    modelName: "Nest 140",
+    modelName: "Nest 100",
     configuration: "Holzlattung Lärche Natur",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
+    button1: "Zum Entwurf",
+    button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 3,
     sectionId: "zuhause-fuer-ideen",
     imagePath: IMAGES.hero.nestHaus3,
-    h1: "Ein Zuhause für Ideen",
+    h1: "Dein Zuhause für Ideen",
     h3: "Visionen brauchen Räume",
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
+    button1: "Zum Entwurf",
+    button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
@@ -116,56 +110,44 @@ const sectionsContent = [
     h3: "Individualität. Design. Flexibilität.",
     modelName: "Nest 100, Nest 120, Nest 140",
     configuration: "Holzlattung Lärche Natur",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
+    button1: "Zum Entwurf",
+    button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 5,
-    sectionId: "mehr-als-vier-waende",
-    imagePath: IMAGES.hero.nestHaus5,
-    h1: "Mehr als nur vier Wände",
-    h3: "Mit Nest bleibt kein Ort unerreichbar",
-    modelName: "Nest 80",
-    configuration: "Trapezblech",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
+    sectionId: "raum-fuer-ideen",
+    imagePath: IMAGES.hero.nestHaus7,
+    h1: "Wohnen ohne Grenzen",
+    h3: "Wo Effizienz auf Architektur trifft",
+    modelName: "Nest 140",
+    configuration: "Fassadenplatten Schwarz",
+    button1: "Zum Entwurf",
+    button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 6,
     sectionId: "gestaltung-fuer-visionen",
     imagePath: IMAGES.hero.nestHaus6,
-    h1: "Gestaltung für Visionen",
-    h3: "Neue Wege. Neue Räume.",
+    h1: "Wohnen neu gedacht",
+    h3: "Individualität. Design. Flexibilität.",
     modelName: "Belichtungspaket Medium",
     configuration: "Innenverkleidung Fichte, Parkett Eiche",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
+    button1: "Zum Entwurf",
+    button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
   {
     id: 7,
-    sectionId: "raum-fuer-ideen",
-    imagePath: IMAGES.hero.nestHaus7,
-    h1: "Raum für deine Ideen",
-    h3: "Dein Stil. Dein Zuhause.",
-    modelName: "Nest 140",
-    configuration: "Fassadenplatten Schwarz",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
-    secondaryButtonVariant: "landing-secondary" as const,
-  },
-  {
-    id: 8,
-    sectionId: "wohnen-ohne-grenzen",
-    imagePath: IMAGES.hero.nestHaus2,
-    h1: "Wohnen ohne Grenzen",
-    h3: "Wo Effizienz auf Architektur trifft.",
-    modelName: "Nest 100",
-    configuration: "Holzlattung Lärche Natur",
-    button1: "Entdecken",
-    button2: "Jetzt bauen",
+    sectionId: "mehr-als-vier-waende",
+    imagePath: IMAGES.hero.nestHaus5,
+    h1: "Keine Lebensentscheidung",
+    h3: "Mit Nest bleibt kein Ort unerreichbar",
+    modelName: "Nest 80",
+    configuration: "Trapezblech",
+    button1: "Zum Entwurf",
+    button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
 ];
@@ -270,13 +252,10 @@ export default function LandingPageClient() {
     objectFit: "contain" as const,
   };
 
-  // Get responsive button variant for sections 1, 2, 3, 6, and 8 (mobile blue for 8)
+  // Get responsive button variant for sections 1, 3, and 6
   const getSecondaryButtonVariant = (sectionId: number) => {
     if (sectionId === 1) {
       return "landing-secondary-blue"; // Always blue for section 1
-    }
-    if (sectionId === 2) {
-      return "landing-secondary-blue"; // Always blue for section 2
     }
     if (sectionId === 3) {
       return isMobile ? "landing-secondary" : "landing-secondary";
@@ -287,21 +266,15 @@ export default function LandingPageClient() {
     if (sectionId === 7) {
       return "landing-secondary"; // Always white for section 7
     }
-    if (sectionId === 8) {
-      return "landing-secondary"; // Always white for section 8
-    }
     return sectionsContent[sectionId - 1].secondaryButtonVariant;
   };
 
-  // Utility: For section 8, always use text-[#605047] for h1/h3, else original logic
+  // Utility: Text color logic for sections
   const getSectionTextColor = (sectionId: number, _isMobile: boolean) => {
     if (sectionId === 1) {
       return "text-[#605047]";
     }
-    if (sectionId === 2) {
-      return "text-[#605047]";
-    }
-    if (sectionId === 7) {
+    if (sectionId === 5) {
       return "text-white md:text-white";
     }
     return "text-white";
@@ -376,18 +349,18 @@ export default function LandingPageClient() {
                 <div
                   className={`absolute inset-0 z-20 flex flex-col items-center ${
                     // Desktop: section 4 has buttons at bottom, others at top
-                    // Mobile: sections 3, 4, 6, 7 have buttons at bottom
+                    // Mobile: sections 3, 4, 5, 6 have buttons at bottom
                     section.id === 4
                       ? "justify-between pt-[5vh] pb-[5vh]" // Section 4: always bottom on both mobile and desktop
-                      : section.id === 3 || section.id === 6 || section.id === 7
-                        ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,6,7: bottom on mobile only
+                      : section.id === 3 || section.id === 5 || section.id === 6
+                        ? "justify-start pt-[5vh] md:justify-start md:pt-[5vh] max-md:justify-between max-md:pt-[5vh] max-md:pb-[5vh]" // Sections 3,5,6: bottom on mobile only
                         : "justify-start pt-[5vh]" // Other sections: always top
                   } ${section.id === 2 ? "px-0" : "px-8"}`}
                 >
                   <div className="text-center">
                     <h1
                       className={`h1-primary ${getSectionTextColor(section.id, isMobile)} ${
-                        section.id === 3 || section.id === 6 || section.id === 7
+                        section.id === 3 || section.id === 5 || section.id === 6
                           ? "drop-shadow-lg"
                           : ""
                       }`}
@@ -396,7 +369,7 @@ export default function LandingPageClient() {
                     </h1>
                     <h3
                       className={`h3-primary ${getSectionTextColor(section.id, isMobile)} ${
-                        section.id === 3 || section.id === 6 || section.id === 7
+                        section.id === 3 || section.id === 5 || section.id === 6
                           ? "drop-shadow-lg"
                           : ""
                       }`}
@@ -455,8 +428,8 @@ export default function LandingPageClient() {
                     },
                     {
                       id: 2,
-                      title: "Der Auftakt",
-                      subtitle: "Sichere noch heute deinen Entwurf",
+                      title: "Konzept-Check",
+                      subtitle: "Deine optimale Entscheidungsgrundlage",
                       description: "",
                       image:
                         IMAGES.function

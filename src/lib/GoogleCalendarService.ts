@@ -1,6 +1,7 @@
-import ical from 'node-ical';
+import { google } from 'googleapis';
+import { JWT } from 'google-auth-library';
 
-export interface iCloudEvent {
+export interface CalendarEvent {
     id: string;
     summary: string;
     start: Date;
@@ -20,9 +21,9 @@ export interface AvailabilityRequest {
     timeZone?: string;
 }
 
-export class iCloudCalendarService {
-    private static readonly ICAL_URL = process.env.ICLOUD_CALENDAR_URL || 'https://caldav.icloud.com/published/2/NDYwNTcxMTc4NDYwNTcxMTAjdgQKqgaw1FkYs83tvGOWWDJQ3U7DBxsbtAhlhGD19NbQ84s14Pj9OAvbWpz6jbnnMgCmKJoic2qptGU5Pn0';
-    private static readonly TIME_ZONE = 'Europe/Vienna';
+export class GoogleCalendarService {
+    private static readonly CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || 'c_0143623b3c51294d60b53cb259d8c76b8b8ecf51a84a2913afb053dc6540261b@group.calendar.google.com';
+    private static readonly TIME_ZONE = process.env.CALENDAR_TIMEZONE || 'Europe/Vienna';
 
     // Business hours configuration: 8-12 and 13-19 (lunch break 12-13)
     private static readonly BUSINESS_HOURS = {
@@ -36,41 +37,78 @@ export class iCloudCalendarService {
     private static readonly BUSINESS_DAYS = [1, 2, 3, 4, 5]; // Monday to Friday
 
     /**
-     * Fetch and parse iCloud calendar events
+     * Get authenticated Google Calendar client
      */
-    private static async fetchCalendarEvents(): Promise<iCloudEvent[]> {
+    private static async getCalendarClient() {
         try {
-            console.log('📅 Fetching iCloud calendar events...');
+            // Load service account credentials from file
+            const serviceAccountKeyFile = process.env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE || 'service-account-key.json';
+            
+            // Create JWT auth client
+            const auth = new JWT({
+                keyFile: serviceAccountKeyFile,
+                scopes: ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/calendar.events'],
+            });
 
-            // Fetch the iCal data
-            const response = await fetch(this.ICAL_URL);
-            const icalData = await response.text();
+            // Create calendar client
+            const calendar = google.calendar({ version: 'v3', auth });
 
-            // Parse the iCal data
-            const events = ical.parseICS(icalData);
-            const parsedEvents: iCloudEvent[] = [];
+            return calendar;
+        } catch (error) {
+            console.error('❌ Failed to create Google Calendar client:', error);
+            throw new Error('Failed to authenticate with Google Calendar API');
+        }
+    }
 
-            for (const key in events) {
-                const event = events[key];
+    /**
+     * Fetch calendar events for a specific date range
+     */
+    private static async fetchCalendarEvents(startDate: Date, endDate: Date): Promise<CalendarEvent[]> {
+        try {
+            console.log('📅 Fetching Google Calendar events...');
 
-                // Only process VEVENT types (actual calendar events)
-                if (event.type === 'VEVENT' && event.start && event.end) {
-                    parsedEvents.push({
-                        id: event.uid || key,
-                        summary: event.summary || 'Busy',
-                        start: new Date(event.start),
-                        end: new Date(event.end),
-                        description: event.description || undefined,
-                        location: event.location || undefined,
-                    });
+            const calendar = await this.getCalendarClient();
+
+            // Fetch events from Google Calendar
+            const response = await calendar.events.list({
+                calendarId: this.CALENDAR_ID,
+                timeMin: startDate.toISOString(),
+                timeMax: endDate.toISOString(),
+                singleEvents: true,
+                orderBy: 'startTime',
+            });
+
+            const events: CalendarEvent[] = [];
+
+            if (response.data.items) {
+                for (const event of response.data.items) {
+                    if (event.start && event.end) {
+                        // Parse start and end times
+                        const start = event.start.dateTime 
+                            ? new Date(event.start.dateTime)
+                            : new Date(event.start.date || '');
+                        
+                        const end = event.end.dateTime 
+                            ? new Date(event.end.dateTime)
+                            : new Date(event.end.date || '');
+
+                        events.push({
+                            id: event.id || '',
+                            summary: event.summary || 'Busy',
+                            start,
+                            end,
+                            description: event.description || undefined,
+                            location: event.location || undefined,
+                        });
+                    }
                 }
             }
 
-            console.log(`✅ Parsed ${parsedEvents.length} events from iCloud calendar`);
-            return parsedEvents;
+            console.log(`✅ Parsed ${events.length} events from Google Calendar`);
+            return events;
 
         } catch (error) {
-            console.error('❌ Failed to fetch iCloud calendar events:', error);
+            console.error('❌ Failed to fetch Google Calendar events:', error);
             return [];
         }
     }
@@ -147,17 +185,17 @@ export class iCloudCalendarService {
                 }).join(', ')
             );
 
-            // Fetch existing events from iCloud
-            const existingEvents = await this.fetchCalendarEvents();
+            // Fetch existing events from Google Calendar
+            const dayStart = new Date(requestDate);
+            dayStart.setHours(0, 0, 0, 0);
 
-            // Filter events for the requested date
-            const dayEvents = existingEvents.filter(event => {
-                const eventDate = new Date(event.start);
-                return eventDate.toDateString() === requestDate.toDateString();
-            });
+            const dayEnd = new Date(requestDate);
+            dayEnd.setHours(23, 59, 59, 999);
+
+            const existingEvents = await this.fetchCalendarEvents(dayStart, dayEnd);
 
             // Mark conflicting time slots as unavailable
-            for (const event of dayEvents) {
+            for (const event of existingEvents) {
                 const eventStart = new Date(event.start);
                 const eventEnd = new Date(event.end);
 
@@ -210,16 +248,12 @@ export class iCloudCalendarService {
     /**
      * Get calendar events for a date range
      */
-    static async getEventsForDateRange(startDate: string, endDate: string): Promise<iCloudEvent[]> {
+    static async getEventsForDateRange(startDate: string, endDate: string): Promise<CalendarEvent[]> {
         try {
-            const events = await this.fetchCalendarEvents();
             const start = new Date(startDate);
             const end = new Date(endDate);
 
-            return events.filter(event => {
-                const eventStart = new Date(event.start);
-                return eventStart >= start && eventStart <= end;
-            });
+            return await this.fetchCalendarEvents(start, end);
 
         } catch (error) {
             console.error('❌ Failed to get events for date range:', error);
@@ -243,10 +277,7 @@ export class iCloudCalendarService {
             const dayEnd = new Date(requestedStart);
             dayEnd.setHours(23, 59, 59, 999);
 
-            const events = await this.getEventsForDateRange(
-                dayStart.toISOString(),
-                dayEnd.toISOString()
-            );
+            const events = await this.fetchCalendarEvents(dayStart, dayEnd);
 
             // Check for conflicts
             for (const event of events) {
@@ -268,6 +299,71 @@ export class iCloudCalendarService {
         } catch (error) {
             console.error('❌ Failed to check time slot availability:', error);
             return false; // Assume not available on error
+        }
+    }
+
+    /**
+     * Create a calendar event for a confirmed appointment
+     */
+    static async createEvent(appointmentData: {
+        summary: string;
+        description?: string;
+        location?: string;
+        startDateTime: string;
+        endDateTime: string;
+        attendeeEmail?: string;
+        attendeeName?: string;
+    }): Promise<{ success: boolean; eventId?: string; error?: string }> {
+        try {
+            console.log('📅 Creating Google Calendar event...');
+
+            const calendar = await this.getCalendarClient();
+
+            const event = {
+                summary: appointmentData.summary,
+                description: appointmentData.description || '',
+                location: appointmentData.location || '',
+                start: {
+                    dateTime: appointmentData.startDateTime,
+                    timeZone: this.TIME_ZONE,
+                },
+                end: {
+                    dateTime: appointmentData.endDateTime,
+                    timeZone: this.TIME_ZONE,
+                },
+                attendees: appointmentData.attendeeEmail ? [{
+                    email: appointmentData.attendeeEmail,
+                    displayName: appointmentData.attendeeName || '',
+                    responseStatus: 'needsAction',
+                }] : [],
+                reminders: {
+                    useDefault: false,
+                    overrides: [
+                        { method: 'email', minutes: 24 * 60 }, // 1 day before
+                        { method: 'popup', minutes: 60 }, // 1 hour before
+                    ],
+                },
+            };
+
+            const response = await calendar.events.insert({
+                calendarId: this.CALENDAR_ID,
+                requestBody: event,
+                sendUpdates: 'all', // Send email notifications to attendees
+            });
+
+            console.log('✅ Google Calendar event created:', response.data.id);
+
+            return {
+                success: true,
+                eventId: response.data.id || undefined,
+            };
+
+        } catch (error) {
+            console.error('❌ Failed to create Google Calendar event:', error);
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : 'Unknown error',
+            };
         }
     }
 
@@ -332,10 +428,10 @@ export class iCloudCalendarService {
     <div class="actions">
       <h3>📋 Nächste Schritte:</h3>
       <ol>
-        <li><strong>Verfügbarkeit prüfen</strong> in deinem iCloud Kalender</li>
+        <li><strong>Verfügbarkeit prüfen</strong> in deinem Google Calendar</li>
         <li><strong>Termin bestätigen</strong> per E-Mail an den Kunden</li>
-        <li><strong>Termin hinzufügen</strong> zu deinem iCloud Kalender</li>
-        <li><strong>Kalendereinladung senden</strong> an ${inquiry.email}</li>
+        <li><strong>Termin wird automatisch hinzugefügt</strong> zu Google Calendar</li>
+        <li><strong>Kalendereinladung wird gesendet</strong> an ${inquiry.email}</li>
       </ol>
     </div>
     
@@ -360,10 +456,10 @@ Kundendaten:
 ${inquiry.phone ? `- Telefon: ${inquiry.phone}\n` : ''}- Bevorzugter Kontakt: ${inquiry.preferredContact}
 ${inquiry.message ? `- Nachricht: ${inquiry.message}\n` : ''}
 Nächste Schritte:
-1. Verfügbarkeit prüfen in deinem iCloud Kalender
+1. Verfügbarkeit prüfen in deinem Google Calendar
 2. Termin bestätigen per E-Mail an den Kunden
-3. Termin hinzufügen zu deinem iCloud Kalender
-4. Kalendereinladung senden an ${inquiry.email}
+3. Termin wird automatisch hinzugefügt zu Google Calendar
+4. Kalendereinladung wird gesendet an ${inquiry.email}
 
 Anfrage-ID: ${inquiry.id}
 Admin-Panel: https://nest-haus.at/admin/customer-inquiries/${inquiry.id}
@@ -372,3 +468,4 @@ Admin-Panel: https://nest-haus.at/admin/customer-inquiries/${inquiry.id}
         return { subject, html, text };
     }
 }
+

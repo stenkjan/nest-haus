@@ -63,17 +63,22 @@ export default function WarumWirClient() {
         <section id="video" className="w-full bg-black pb-8 md:pb-16">
           <div className="w-full">
             {/* Responsive YouTube Embed Container - Privacy-Enhanced Mode */}
-            <div className="w-full">
-              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                <iframe
-                  className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube-nocookie.com/embed/Z05jRVentdc?si=MbTvwTABV-JtlsRy"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
+            <div className="w-full px-[10vw]">
+              <div className="max-w-[2000px] mx-auto">
+                <div
+                  className="relative w-full overflow-hidden rounded-2xl"
+                  style={{ paddingBottom: "56.25%" }}
+                >
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube-nocookie.com/embed/Z05jRVentdc?si=MbTvwTABV-JtlsRy&amp;loop=1&amp;playlist=Z05jRVentdc&amp;modestbranding=1&amp;rel=0&amp;cc_load_policy=0&amp;showinfo=0"
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
               </div>
             </div>
 

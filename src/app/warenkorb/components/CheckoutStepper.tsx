@@ -2966,11 +2966,7 @@ export default function CheckoutStepper({
                                   2. Teilzahlung
                                 </div>
                                 <div className="text-sm text-gray-600 mt-1">
-                                  Abzüglich Grundstückscheck:{" "}
-                                  {PriceUtils.formatPrice(
-                                    grundstueckscheckCredit
-                                  )}
-                                  <br />
+                                
                                   Liefergarantie 6 Monate ab Teilzahlung
                                 </div>
                               </div>
@@ -3063,7 +3059,7 @@ export default function CheckoutStepper({
                             </div>
                             {!isPaymentCompleted ? (
                               <div className="text-right">
-                                <div className="flex items-center gap-2 justify-end">
+                                <div className="flex items-center gap-2 justify-end mt-2">
                                   <span className="text-gray-400 line-through text-xl">
                                     3.000 €
                                   </span>

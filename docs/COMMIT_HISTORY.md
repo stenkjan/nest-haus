@@ -4,6 +4,80 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b659e9b4a9f56eb0a3911c26efe43a09e77c690a] - Thu Nov 13 16:58:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update sections and content in LandingPageClient for improved clarity and consistency  - Replaced section titles and IDs to better reflect the content structure. - Adjusted button labels for a more user-friendly experience. - Removed redundant sections and updated image paths for accuracy. - Enhanced comments for better understanding of the code logic.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+---
+
+## [321ba5c784847666d7d283dcee43d4e12f992673] - Thu Nov 13 14:17:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [dd65f2dcdbabb13b43afaa0fa17ed766533374f3] - Thu Nov 13 11:44:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Enhance YouTube video embed responsiveness in WarumWirClient  - Updated the container for the YouTube embed to include padding and a maximum width for better layout. - Ensured the video maintains its aspect ratio with overflow hidden and rounded corners for improved aesthetics.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
+## [f1da8efa710c102d776b92d1dec05982e45f270d] - Thu Nov 13 11:35:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4f6f5c37ee2ac0f4df9a93dd60946485f0052d64] - Thu Nov 13 11:14:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/YOUTUBE_PRIVACY_SETTINGS.md
+
+
+---
+
 ## [200556ebbf5621c088ee0068038e737fa1f3686f] - Thu Nov 13 11:10:03 2025 +0100
 
 **Author**: stenkjan

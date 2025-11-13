@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { EmailService } from '@/lib/EmailService';
-import { iCloudCalendarService } from '@/lib/iCloudCalendarService';
+import { GoogleCalendarService } from '@/lib/GoogleCalendarService';
 
 // Validation schema for contact form data
 const contactFormSchema = z.object({
@@ -194,10 +194,10 @@ export async function POST(request: NextRequest) {
     let isTimeSlotAvailable = false;
     if (data.requestType === 'appointment' && data.appointmentDateTime) {
       try {
-        console.log('📅 Checking iCloud calendar availability...');
+        console.log('📅 Checking Google Calendar availability...');
 
         // Check if the requested time slot is available
-        isTimeSlotAvailable = await iCloudCalendarService.isTimeSlotAvailable(
+        isTimeSlotAvailable = await GoogleCalendarService.isTimeSlotAvailable(
           data.appointmentDateTime,
           60 // 60 minutes duration
         );
