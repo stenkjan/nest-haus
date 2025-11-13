@@ -256,7 +256,7 @@ export default function CheckoutStepper({
     () =>
       ({
         0: "übersicht",
-        1: "check-und-entwurf",
+        1: "entwurf",
         2: "terminvereinbarung",
         3: "planungspakete",
         4: "abschluss",
@@ -268,7 +268,7 @@ export default function CheckoutStepper({
     () =>
       ({
         übersicht: 0,
-        "check-und-entwurf": 1,
+        entwurf: 1,
         terminvereinbarung: 2,
         planungspakete: 3,
         abschluss: 4,
@@ -1273,7 +1273,7 @@ export default function CheckoutStepper({
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Check & Entwurf
+                        Entwurf
                       </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(1)}
@@ -1972,11 +1972,11 @@ export default function CheckoutStepper({
         {stepIndex === 1 && (
           <div className="space-y-4 pt-16 md:pt-32">
             {/* Dein Grundstück - Unser Check Section - FIRST */}
-            <div className="mb-16">
+            <div id="entwurf-formular" className="mb-16">
               <div className="text-center mb-12 md:mb-16">
-                <h2 className="h2-title text-black mb-2 md:mb-3">
+                <h1 className="h1-secondary text-black mb-2 md:mb-3">
                   Dein Nest-Haus Entwurf
-                </h2>
+                </h1>
                 <h3 className="h3-secondary text-black mb-2">
                   Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
                   deiner Wahl passt
@@ -2048,9 +2048,9 @@ export default function CheckoutStepper({
 
             {/* Process Steps - Step by Step nach Hause - SECOND */}
             <div className="text-center mb-12 md:mb-16">
-              <h2 className="h2-title textblack mb-2 md:mb-3">
+              <h1 className="h1-primary text-black mb-2 md:mb-3">
                 Step by Step nach Hause
-              </h2>
+              </h1>
               <h3 className="h3-secondary text-black mb-8">
                 Deine Vorstellungen formen jeden Schritt am Weg zum neuen
                 Zuhause
@@ -2823,7 +2823,14 @@ export default function CheckoutStepper({
                   <div className="pt-3">
                     <button
                       onClick={() => {
-                        window.location.hash = "check-und-entwurf";
+                        window.location.hash = "entwurf";
+                        // Scroll to the GrundstueckCheckForm after hash change
+                        setTimeout(() => {
+                          const entwurfElement = document.getElementById("entwurf-formular");
+                          if (entwurfElement) {
+                            entwurfElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                          }
+                        }, 100);
                       }}
                       className="text-blue-600 text-sm hover:underline"
                     >

@@ -905,7 +905,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description:
             "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Vorentwurf, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Vorentwurf.",
-        image: IMAGES.function.nestHausEntwurfVorentwurf,
+        image: IMAGES.function.nestHausEntwurf,
         backgroundColor: "#F4F4F4",
         buttons: [
             {
@@ -928,7 +928,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description:
             "Mit dem Grundstückscheck, der Teil deiner ersten Anzahlung ist, erhältst du sofort rechtliche Sicherheit. Wir prüfen alle relevanten Grundlagen, damit dein Bauvorhaben auf festen Boden gestellt ist. \n\n Dabei analysieren wir, ob dein Grundstück den Vorgaben des Landesbaugesetzes, des Raumordnungsgesetzes und den örtlichen Bestimmungen entspricht.Zusätzlich prüfen wir, ob alle Voraussetzungen für den Aufbau deines Nest Hauses erfüllt sind.So kannst du von Anfang an mit Sicherheit planen.",
-        image: IMAGES.function.nestHausEntwurfVorentwurf,
+        image: IMAGES.function.nestHausEntwurf,
         backgroundColor: "#F4F4F4",
         buttons: [
             {
@@ -951,7 +951,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         subtitle: "",
         description:
             "Dies ist ein Beispiel für eine Tall Card mit Standard-Padding (15px Abstand um das Bild). Der Inhalt bleibt identisch, nur die Bilddarstellung unterscheidet sich durch den Rahmen. Perfekt für Konsistenz mit anderen Card-Komponenten.\n\nDu kannst beide Varianten verwenden – wähle einfach TALL_CARD_PROPS oder TALL_CARD_PROPS_WITH_PADDING beim Import.",
-        image: IMAGES.function.nestHausEntwurfVorentwurf,
+        image: IMAGES.function.nestHausEntwurf,
         backgroundColor: "#F4F4F4",
         buttons: [
             {

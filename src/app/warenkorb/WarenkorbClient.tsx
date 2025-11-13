@@ -52,7 +52,7 @@ export default function WarenkorbClient() {
     () =>
       ({
         0: "übersicht",
-        1: "check-und-entwurf",
+        1: "entwurf",
         2: "terminvereinbarung",
         3: "planungspakete",
         4: "abschluss",
@@ -64,7 +64,7 @@ export default function WarenkorbClient() {
     () =>
       ({
         übersicht: 0,
-        "check-und-entwurf": 1,
+        entwurf: 1,
         terminvereinbarung: 2,
         planungspakete: 3,
         abschluss: 4,

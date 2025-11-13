@@ -54,7 +54,7 @@ export default function CartFooter({ onReset }: CartFooterProps) {
         {/* Reset button */}
         <button
           className="bg-transparent border-none p-0 m-0 text-[#3D6CE1] font-normal focus:outline-none cursor-pointer text-[clamp(0.7rem,1.1vw,0.9rem)] hover:text-[#2855d6] transition-colors touch-manipulation"
-          style={{ minWidth: 0, backgroundColor: "#F4F4F4" }}
+          style={{ minWidth: 0}}
           onClick={handleReset}
           type="button"
         >
