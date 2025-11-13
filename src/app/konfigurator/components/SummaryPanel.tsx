@@ -556,37 +556,18 @@ export default function SummaryPanel({
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-6">
+        <div className="mt-6 flex justify-center">
           {isClient && (
-            <div className="flex flex-col gap-3">
-              {/* Buttons positioned horizontally next to each other */}
-              <div className="flex justify-center gap-3">
-                <Button
-                  variant="secondary"
-                  size="xs"
-                  onClick={() => {
-                    // Navigate to warenkorb with ohne-nest flag
-                    window.location.href = "/warenkorb?mode=entwurf";
-                  }}
-                  className="h-[44px] min-h-[44px] px-4 xl:px-6 flex items-center justify-center whitespace-nowrap text-[clamp(0.75rem,1.2vw,0.875rem)]"
-                >
-                  Zum Entwurf
-                </Button>
-
-                <Button
-                  variant="tertiary"
-                  size="xs"
-                  onClick={() => {
-                    resetConfiguration();
-                    if (onReset) {
-                      onReset();
-                    }
-                  }}
-                  className="h-[44px] min-h-[44px] px-4 xl:px-6 flex items-center justify-center whitespace-nowrap text-[clamp(0.75rem,1.2vw,0.875rem)]"
-                >
-                  Neu konfigurieren
-                </Button>
-              </div>
+            <div className="flex flex-col gap-3 w-full items-center">
+              <Button
+                onClick={() => {
+                  // Navigate to warenkorb with ohne-nest flag
+                  window.location.href = "/warenkorb?mode=entwurf";
+                }}
+                className="bg-white text-[#3D6CE1] border-2 border-[#3D6CE1] rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#3D6CE1] hover:text-white min-h-[44px] flex items-center justify-center touch-manipulation cursor-pointer whitespace-nowrap"
+              >
+                Zum Entwurf
+              </Button>
             </div>
           )}
         </div>
