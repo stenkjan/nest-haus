@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2d91d99ed00e227bf70142b535dff11a21e91d8d] - Thu Nov 13 10:53:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/app/warum-wir/page.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/YOUTUBE_EMBED_IMPLEMENTATION.md
+
+
+---
+
 ## [cda4ae0d01985bf164350905372c6af3ff0a853f] - Thu Nov 13 10:52:02 2025 +0100
 
 **Author**: stenkjan
