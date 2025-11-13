@@ -52,7 +52,7 @@ interface PersistedConfiguratorState {
   hasPart3BeenActive?: boolean
   shouldSwitchToView?: string | null
   lastSelectionCategory?: string | null
-  isVorentwurfMode?: boolean
+  isEntwurfMode?: boolean
 }
 
 interface ConfiguratorState {
@@ -72,8 +72,8 @@ interface ConfiguratorState {
   shouldSwitchToView: string | null
   lastSelectionCategory: string | null
 
-  // Vorentwurf mode state (simplified konfigurator)
-  isVorentwurfMode: boolean
+  // Entwurf mode state (simplified konfigurator)
+  isEntwurfMode: boolean
 
   // Actions
   initializeSession: () => void
@@ -96,9 +96,9 @@ interface ConfiguratorState {
   switchToView: (view: string) => void
   determineOptimalView: () => string
 
-  // Vorentwurf mode
-  setVorentwurfMode: (mode: boolean) => void
-  getVorentwurfMode: () => boolean
+  // Entwurf mode
+  setEntwurfMode: (mode: boolean) => void
+  getEntwurfMode: () => boolean
 
   // Getters
   getConfiguration: () => Configuration | null
@@ -139,7 +139,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
       hasPart3BeenActive: false,
       shouldSwitchToView: null,
       lastSelectionCategory: null,
-      isVorentwurfMode: false,
+      isEntwurfMode: false,
 
       // Initialize session CLIENT-SIDE ONLY (no API dependency)
       initializeSession: () => {
@@ -766,14 +766,14 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         get().initializeSession()
       },
 
-      // Vorentwurf mode actions
-      setVorentwurfMode: (mode: boolean) => {
-        console.log("🏗️ ConfiguratorStore: Setting vorentwurf mode:", mode)
-        set({ isVorentwurfMode: mode })
+      // Entwurf mode actions
+      setEntwurfMode: (mode: boolean) => {
+        console.log("🏗️ ConfiguratorStore: Setting entwurf mode:", mode)
+        set({ isEntwurfMode: mode })
       },
 
-      getVorentwurfMode: () => {
-        return get().isVorentwurfMode
+      getEntwurfMode: () => {
+        return get().isEntwurfMode
       },
 
       // Get configuration (for test compatibility)

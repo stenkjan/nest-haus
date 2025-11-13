@@ -71,12 +71,15 @@ export default function WarumWirClient() {
                 >
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube-nocookie.com/embed/Z05jRVentdc?si=MbTvwTABV-JtlsRy&amp;loop=1&amp;playlist=Z05jRVentdc&amp;modestbranding=1&amp;rel=0&amp;cc_load_policy=0&amp;showinfo=0"
+                    src="https://www.youtube-nocookie.com/embed/Z05jRVentdc?si=MbTvwTABV-JtlsRy&amp;loop=1&amp;playlist=Z05jRVentdc&amp;modestbranding=1&amp;rel=0&amp;showinfo=0"
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
+                    aria-label="YouTube video player"
+                    aria-live="off"
+                    data-captions="false"
                   />
                 </div>
               </div>

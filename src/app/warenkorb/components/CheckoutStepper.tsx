@@ -11,10 +11,7 @@ import {
   GRUNDSTUECKSCHECK_PRICE,
   calculateSizeDependentPrice,
 } from "@/constants/configurator";
-import {
-  GrundstueckCheckForm,
-  SectionHeader,
-} from "@/components/sections";
+import { GrundstueckCheckForm, SectionHeader } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";
 import {
   planungspaketeCardData,
@@ -259,7 +256,7 @@ export default function CheckoutStepper({
     () =>
       ({
         0: "übersicht",
-        1: "check-und-vorentwurf",
+        1: "check-und-entwurf",
         2: "terminvereinbarung",
         3: "planungspakete",
         4: "abschluss",
@@ -271,7 +268,7 @@ export default function CheckoutStepper({
     () =>
       ({
         übersicht: 0,
-        "check-und-vorentwurf": 1,
+        "check-und-entwurf": 1,
         terminvereinbarung: 2,
         planungspakete: 3,
         abschluss: 4,
@@ -1003,13 +1000,13 @@ export default function CheckoutStepper({
       title: "Der Ablauf",
       subtitle: "Schritt für Schritt",
       description:
-        "Damit aus deinem Vorentwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
+        "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
     },
     {
-      title: "Wir freuen uns schon auf dich",
+      title: "Wir freuen uEntwurfuf dich",
       subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
       description:
-        "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Vorentwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Vorentwurf, der genau zu deinen Bedürfnissen passt.**",
+        "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der genau zu deinen Bedürfnissen passt.**",
     },
     {
       title: "Unterstützung gefällig?",
@@ -1021,13 +1018,13 @@ export default function CheckoutStepper({
       title: "Bereit für Vorfreude?",
       subtitle: "Dein Garantierter Liefertermin steht fest",
       description:
-        "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Vorentwurfs sowie der Überprüfung deines Grundstücks.",
+        "Hier findest du **alle Details deiner Auswahl** inklusive transparenter Preise. Nutze diesen Moment, um **alle Angaben** in Ruhe zu **überprüfen**. Nach dem Absenden erhältst du eine **schriftliche Bestätigung,** und wir beginnen mit der Ausarbeitung deines Entwurfowie der Überprüfung deines Grundstücks.",
     },
     {
       title: "Dein Nest Haus",
       subtitle: "Weil nur du weißt, wie du wohnen willst",
       description:
-        "**Die Bestellung deines Nest-Hauses. Alles beginnt mit dem Vorentwurf und dem Grundstückscheck. Sobald du dein Nest-Haus bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
+        "**Die Bestellung deines Nest-Hauses. Alles beginnt mit dem Entwurf und dem Grundstückscheck. Sobald du dein Nest-Haus bestellst und die erste Teilzahlung leistest, erhältst du von uns deinen verbindlich garantierten Liefertermin. Transparent, planbar und verlässlich.**",
     },
   ];
 
@@ -1177,7 +1174,7 @@ export default function CheckoutStepper({
                     deckst du die Kosten für
                   </span>{" "}
                   <span className="text-black font-medium">
-                    Grundstückscheck und Vorentwurf.
+                    Grundstückscheck und Entwurf.
                   </span>{" "}
                   <span className="text-nest-gray">
                     Fahre fort und mache den ersten Schritt in Richtung
@@ -1226,7 +1223,7 @@ export default function CheckoutStepper({
                     Solltest du deine Meinung nach Erstellen des Erstentwurfs
                     ändern, kannst du vom Kauf, ohne weitere Teilzahlungen,
                     zurücktreten. In diesem Fall zahlst du lediglich die Kosten
-                    für den Vorentwurf.
+                    für den Entwurf.
                   </span>
                 </p>
               </div>
@@ -1276,7 +1273,7 @@ export default function CheckoutStepper({
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Check & Vorentwurf
+                        Check & Entwurf
                       </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(1)}
@@ -1978,7 +1975,7 @@ export default function CheckoutStepper({
             <div className="mb-16">
               <div className="text-center mb-12 md:mb-16">
                 <h2 className="h2-title text-black mb-2 md:mb-3">
-                  Dein Nest-Haus Vorentwurf
+                  Dein Nest-Haus Entwurf
                 </h2>
                 <h3 className="h3-secondary text-black mb-2">
                   Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
@@ -2012,7 +2009,7 @@ export default function CheckoutStepper({
                       mit dir ein individuelles{" "}
                     </span>
                     <span className="text-black font-medium">
-                      Vorentwurfskonzept
+                      Entwurfskonzept
                     </span>
                     <span className="text-nest-gray"> deines Nest-Hauses.</span>
                   </p>
@@ -2195,7 +2192,7 @@ export default function CheckoutStepper({
                 <div className="border-2 border-gray-300 rounded-xl px-6 py-4 max-w-2xl bg-white">
                   <p className="text-black font-normal text-base text-center">
                     Bitte buchen Sie einen Beratungstermin, um die Zahlung Ihres
-                    Vorentwurfs abzuschließen.
+                    Entwurfs abzuschließen.
                   </p>
                 </div>
               </div>
@@ -2826,7 +2823,7 @@ export default function CheckoutStepper({
                   <div className="pt-3">
                     <button
                       onClick={() => {
-                        window.location.hash = "check-und-vorentwurf";
+                        window.location.hash = "check-und-entwurf";
                       }}
                       className="text-blue-600 text-sm hover:underline"
                     >
@@ -2944,7 +2941,7 @@ export default function CheckoutStepper({
                                 <div className="text-sm text-gray-600 mt-1">
                                   Heute zu begleichen
                                   <br />
-                                  Grundstückscheck und Vorentwurf
+                                  Grundstückscheck und Entwurf
                                 </div>
                               </div>
                               <div className="text-right">
@@ -2966,7 +2963,6 @@ export default function CheckoutStepper({
                                   2. Teilzahlung
                                 </div>
                                 <div className="text-sm text-gray-600 mt-1">
-                                
                                   Liefergarantie 6 Monate ab Teilzahlung
                                 </div>
                               </div>
@@ -3150,10 +3146,10 @@ export default function CheckoutStepper({
 
                         {/* Disclaimer text - centered below box with margin */}
                         <div className="text-sm text-gray-600 leading-relaxed text-center pt-2 mb-6 mx-5">
-                          Solltest du mit dem Vorentwurf nicht zufrieden sein,
+                          Solltest du mit dem Entwurf nicht zufrieden sein,
                           kannst du vom Kauf deines Nest-Hauses zurücktreten. In
                           diesem Fall zahlst du lediglich die Kosten für den
-                          Vorentwurf und Grundstückscheck.
+                          Entwurf und Grundstückscheck.
                         </div>
 
                         {/* Jetzt bezahlen button - centered below text */}
@@ -3285,9 +3281,9 @@ export default function CheckoutStepper({
 
                 {/* Disclaimer text - centered below box */}
                 <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
-                  Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du
+                  Solltest du mit dem Entwurf nicht zufrieden sein, kannst du
                   vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
-                  zahlst du lediglich die Kosten für den Vorentwurf und
+                  zahlst du lediglich die Kosten für den Entwurf und
                   Grundstückscheck.
                 </div>
 
@@ -3376,7 +3372,7 @@ export default function CheckoutStepper({
                         )}
                         <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
                           <div>
-                            {/* Grundstückscheck row - removed "Vorentwurf" since it's shown below */}
+                            {/* Grundstückscheck row - removed "Entwurf" since it's shown below */}
                             {/* Planungspaket row - show if exists in cart OR if locally selected */}
                             {(configItem?.planungspaket ||
                               localSelectedPlan) && (
@@ -3526,7 +3522,7 @@ export default function CheckoutStepper({
                     <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
                       <div className="flex-1 min-w-0">
                         <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          Vorentwurf & Grundstückscheck
+                          Entwurf & Grundstückscheck
                         </div>
                         <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                           Der erste Schritt zu deinem Nest-Haus auf deinem
@@ -3854,8 +3850,8 @@ export default function CheckoutStepper({
             <div className="border border-gray-300 rounded-[19px] px-6 py-3 bg-white mt-12">
               <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
                 {isOhneNestMode
-                  ? "Du zahlst lediglich den Vorentwurf und Grundstückscheck"
-                  : "Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck."}
+                  ? "Du zahlst lediglich den Entwurf und Grundstückscheck"
+                  : "Solltest du mit dem Entwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Entwurf und Grundstückscheck."}
               </div>
             </div>
 
@@ -3911,7 +3907,7 @@ export default function CheckoutStepper({
 
   // Helper functions for payment
   function getPaymentAmount(): number {
-    // Vorentwurf deposit: €1,500 (150000 cents) - Action price (50% discount from €3,000)
+    // Entwurf deposit: €1,500 (150000 cents) - Action price (50% discount from €3,000)
     // This matches the "Heute zu bezahlen" amount displayed in the checkout
     return 150000; // 1,500 EUR in cents
   }

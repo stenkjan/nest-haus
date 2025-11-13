@@ -337,14 +337,12 @@ export default function UnifiedContentCard({
         // Carousel cards: Left-aligned with 48px padding
         centerOffset = 48;
       }
-    } else if (alignment === "left" && containerWidth >= 768) {
-      // Tablet with left alignment: Use consistent 48px padding (no extra offset)
-      centerOffset = 48;
-    } else if (alignment === "left" && containerWidth < 768) {
-      // Mobile with left alignment: Use smaller padding for mobile
-      centerOffset = 16;
+    } else if (alignment === "left" && containerWidth >= 1024) {
+      // Legacy left alignment: start from left edge with padding (desktop only)
+      centerOffset =
+        containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
     } else {
-      // Default center alignment for other cases
+      // Mobile/Tablet: Center alignment - NO CHANGES
       if (containerWidth < 768) {
         const containerPadding = 32;
         centerOffset = (containerWidth - firstCardWidth - containerPadding) / 2;
@@ -366,7 +364,6 @@ export default function UnifiedContentCard({
     alignment,
     isLightboxMode,
     stableViewportHeight,
-    isStatic,
   ]);
 
   // Calculate responsive card dimensions
@@ -428,8 +425,9 @@ export default function UnifiedContentCard({
 
         if (width >= 1024) {
           // DESKTOP: Calculate card width based on available viewport and aspect ratio
-          // Height: 70vh for consistent sizing across all desktop screens
-          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
+          // Height: 70vh (clamped to reasonable max)
+          const cardHeight =
+            Math.min(viewportHeight * 0.7, 800) * heightMultiplier;
 
           // Width depends on aspect ratio
           const cardWidthCalc =
@@ -468,8 +466,8 @@ export default function UnifiedContentCard({
 
         if (width >= 1024) {
           // DESKTOP: Full-width carousel with 2x1 portrait aspect ratio
-          // Height: 70vh for consistent sizing
-          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
+          const cardHeight =
+            Math.min(viewportHeight * 0.7, 800) * heightMultiplier;
           const cardWidthCalc = cardHeight * 0.6; // 2x1 portrait ratio
 
           const availableWidth = width - 96; // 48px padding each side
@@ -500,8 +498,8 @@ export default function UnifiedContentCard({
 
         if (width >= 1024) {
           // DESKTOP: Full-width carousel with 9:10 aspect ratio
-          // Height: 70vh for consistent sizing
-          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
+          const cardHeight =
+            Math.min(viewportHeight * 0.7, 800) * heightMultiplier;
           const cardWidthCalc = cardHeight * 0.9; // 1.8:2 ratio (9:10)
 
           const availableWidth = width - 96; // 48px padding each side
@@ -587,14 +585,12 @@ export default function UnifiedContentCard({
             // Carousel cards: Left-aligned with 48px padding
             centerOffset = 48;
           }
-        } else if (alignment === "left" && width >= 768) {
-          // Tablet with left alignment: Use consistent 48px padding (no extra offset)
-          centerOffset = 48;
-        } else if (alignment === "left" && width < 768) {
-          // Mobile with left alignment: Use smaller padding for mobile
-          centerOffset = 16;
+        } else if (alignment === "left" && containerWidth >= 1024) {
+          // Legacy left alignment (this branch won't trigger with new >= 1024 check above)
+          centerOffset =
+            containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
         } else {
-          // Default center alignment for other cases
+          // Mobile/Tablet: Center alignment - NO CHANGES
           if (containerWidth < 768) {
             const containerPadding = 32;
             centerOffset =
@@ -694,14 +690,12 @@ export default function UnifiedContentCard({
           // Carousel cards: Left-aligned with 48px padding
           centerOffset = 48;
         }
-      } else if (alignment === "left" && containerWidth >= 768) {
-        // Tablet with left alignment: Use consistent 48px padding (no extra offset)
-        centerOffset = 48;
-      } else if (alignment === "left" && containerWidth < 768) {
-        // Mobile with left alignment: Use smaller padding for mobile
-        centerOffset = 16;
+      } else if (alignment === "left" && containerWidth >= 1024) {
+        // Legacy left alignment
+        centerOffset =
+          containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
       } else {
-        // Default center alignment for other cases
+        // Mobile/Tablet: Center alignment - NO CHANGES
         if (containerWidth < 768) {
           const containerPadding = 32;
           centerOffset =
@@ -737,7 +731,6 @@ export default function UnifiedContentCard({
       getCumulativePosition,
       x,
       alignment,
-      isStatic,
     ]
   );
 
@@ -1272,16 +1265,7 @@ export default function UnifiedContentCard({
               delay: index * 0.1 + 0.2,
               duration: 0.8,
             }}
-            className={`relative rounded-3xl overflow-hidden w-full ${
-              // Add vertical margin to prevent video from touching card borders
-              // Only apply to cards without noPadding at the transition breakpoint
-              isClient &&
-              screenWidth >= 1024 &&
-              screenWidth < 1280 &&
-              !_noPadding
-                ? "my-2" // Vertical margin at transition breakpoint (1024-1280px)
-                : ""
-            }`}
+            className="relative rounded-3xl overflow-hidden w-full"
             style={{
               // 1:1 at 1024px for better height visibility with 50/50 split
               // 16:9 at 1280px+ for standard widescreen with 1/3-2/3 split
@@ -1291,7 +1275,7 @@ export default function UnifiedContentCard({
                 : {
                     aspectRatio:
                       isClient && screenWidth >= 1024 && screenWidth < 1280
-                        ? "16/10" // Less tall aspect ratio at transition point
+                        ? "1/1"
                         : "16/9",
                     maxWidth: "100%",
                   }),
@@ -2062,7 +2046,7 @@ export default function UnifiedContentCard({
 
         {/* Process Detail Layout - Static, Full Width */}
         {layout === "process-detail" ? (
-          <div>{renderProcessDetailLayout()}</div>
+          <div className="py-8">{renderProcessDetailLayout()}</div>
         ) : (
           /* Cards Container - Carousel Layouts */
           <div className="relative">
@@ -2179,10 +2163,12 @@ export default function UnifiedContentCard({
                 } ${
                   isLightboxMode
                     ? "" // No padding in lightbox mode - use full width
-                    : layout === "video" || layout === "overlay-text"
-                      ? "" // No padding - JavaScript handles offset via centerOffset
+                    : layout === "video"
+                      ? isClient && screenWidth >= 1024
+                        ? "px-12" // Desktop: 48px padding (12 × 4 = 48px)
+                        : "px-4" // Mobile/Tablet
                       : isClient && screenWidth >= 1024
-                        ? "px-12" // Desktop: 48px padding for non-video/overlay-text layouts
+                        ? "px-12" // Desktop: 48px padding
                         : maxWidth
                           ? "px-8" // Tablet
                           : "px-4" // Mobile
@@ -2224,10 +2210,29 @@ export default function UnifiedContentCard({
                             ? window.innerHeight
                             : 0;
 
-                      if (isClient && screenWidth >= 1024) {
-                        // DESKTOP: Use 70vh height for consistent sizing
-                        const cardHeight =
-                          viewportHeight * 0.7 * heightMultiplier;
+                      if (isClient && screenWidth >= 1600) {
+                        const cardHeight = Math.min(
+                          830 * heightMultiplier,
+                          viewportHeight * 0.75 * heightMultiplier
+                        );
+                        cardSpecificWidth =
+                          effectiveAspectRatio === "2x1"
+                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
+                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
+                      } else if (isClient && screenWidth >= 1280) {
+                        const cardHeight = Math.min(
+                          692 * heightMultiplier,
+                          viewportHeight * 0.7 * heightMultiplier
+                        );
+                        cardSpecificWidth =
+                          effectiveAspectRatio === "2x1"
+                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
+                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
+                      } else if (isClient && screenWidth >= 1024) {
+                        const cardHeight = Math.min(
+                          577 * heightMultiplier,
+                          viewportHeight * 0.7 * heightMultiplier
+                        );
                         cardSpecificWidth =
                           effectiveAspectRatio === "2x1"
                             ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
@@ -2303,8 +2308,7 @@ export default function UnifiedContentCard({
                                               ? window.innerHeight
                                               : 0;
                                         return (
-                                          viewportHeight *
-                                          0.7 *
+                                          Math.min(viewportHeight * 0.7, 800) *
                                           heightMultiplier
                                         );
                                       })()

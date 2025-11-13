@@ -15,7 +15,7 @@ const faqItems: FAQItem[] = [
     id: 1,
     question: "Wie lange dauert der Entwurfsprozess?",
     answer:
-      "Der Entwurfsprozess dauert in der Regel 2-4 Wochen, abhängig von der Komplexität deines Projekts und der Anzahl der Anpassungswünsche. Sobald wir deine erste Anzahlung erhalten haben, beginnen wir mit der rechtlichen Prüfung und der Erstellung deines individuellen Vorentwurfs.",
+      "Der Entwurfsprozess dauert in der Regel 2-4 Wochen, abhängig von der Komplexität deines Projekts und der Anzahl der Anpassungswünsche. Sobald wir deine erste Anzahlung erhalten haben, beginnen wir mit der rechtlichen Prüfung und der Erstellung deines individuellen Entwurfs.",
   },
   {
     id: 2,
@@ -27,13 +27,13 @@ const faqItems: FAQItem[] = [
     id: 3,
     question: "Kann ich den Entwurf später noch ändern?",
     answer:
-      "Ja, selbstverständlich! Der Vorentwurf ist der erste Schritt, um deine Idee greifbar zu machen. Nach der Präsentation des Vorentwurfs kannst du Änderungswünsche äußern, die wir gemeinsam besprechen und umsetzen. Kleinere Anpassungen sind im Paket enthalten, größere Änderungen werden transparent kalkuliert.",
+      "Ja, selbstverständlich! Der Entwurf ist der erste Schritt, um deine Idee greifbar zu machen. Nach der Präsentation des Entwurfs kannst du Änderungswünsche äußern, die wir gemeinsam besprechen und umsetzen. Kleinere Anpassungen sind im Paket enthalten, größere Änderungen werden transparent kalkuliert.",
   },
   {
     id: 4,
     question: "Muss ich vor dem Entwurf konfigurieren?",
     answer:
-      "Nein, das ist nicht notwendig. Du entscheidest selbst, ob du dein Zuhause bereits im Konfigurator gestalten möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Vorentwurf.",
+      "Nein, das ist nicht notwendig. Du entscheidest selbst, ob du dein Zuhause bereits im Konfigurator gestalten möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Entwurf.",
   },
   {
     id: 5,
