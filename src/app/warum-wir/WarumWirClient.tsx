@@ -64,10 +64,13 @@ export default function WarumWirClient() {
           <div className="w-full">
             {/* Responsive YouTube Embed Container - Privacy-Enhanced Mode */}
             <div className="w-full">
-              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+              <div
+                className="relative w-full"
+                style={{ paddingBottom: "56.25%" }}
+              >
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube-nocookie.com/embed/Z05jRVentdc?si=MbTvwTABV-JtlsRy"
+                  src="https://www.youtube-nocookie.com/embed/Z05jRVentdc?si=MbTvwTABV-JtlsRy&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=Z05jRVentdc&amp;modestbranding=1&amp;rel=0&amp;cc_load_policy=0&amp;showinfo=0"
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
