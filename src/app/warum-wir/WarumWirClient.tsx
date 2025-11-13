@@ -4,15 +4,14 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
-import { ModernVideoPlayer } from "@/components/video";
 import { UnifiedContentCard } from "@/components/cards";
+import { IMAGES } from "@/constants/images";
 import {
   GetInContactBanner,
   SectionHeader,
   PartnersSection,
   FAQSection,
 } from "@/components/sections";
-import { IMAGES } from "@/constants/images";
 import { TALL_CARD_PROPS_WITH_PADDING } from "@/constants/cardContent";
 import Footer from "@/components/Footer";
 
@@ -59,14 +58,26 @@ export default function WarumWirClient() {
           </div>
         </section>
 
-        {/* Section 2 - Video with Modern Player */}
+        {/* Section 2 - Video with YouTube Embed */}
         <section id="video" className="w-full bg-black pb-8 md:pb-16">
           <div className="w-full">
-            <ModernVideoPlayer
-              videoPath={`/api/images?path=${IMAGES.videos.videoCard16}`}
-              aspectRatio="16/9"
-              autoPlay={true}
-            />
+            {/* YouTube Video Embed */}
+            <div className="max-w-[1024px] 2xl:max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-8">
+              <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+                <iframe
+                  src="https://www.youtube.com/embed/Z05jRVentdc?si=qGjw2glOumXnECch&autoplay=0&mute=0"
+                  title="Die Nest Vision - YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                  style={{
+                    border: 0,
+                    borderRadius: "0",
+                  }}
+                />
+              </div>
+            </div>
 
             {/* Text Content Below Video */}
             <div className="max-w-[1024px] 2xl:max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-8 mt-8 md:mt-12">

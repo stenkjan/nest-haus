@@ -26,6 +26,15 @@ export const metadata: Metadata = {
         alt: "NEST-Haus Team - Warum wir modulare Häuser bauen",
       },
     ],
+    videos: [
+      {
+        url: "https://www.youtube.com/watch?v=Z05jRVentdc",
+        secureUrl: "https://www.youtube.com/watch?v=Z05jRVentdc",
+        type: "text/html",
+        width: 1280,
+        height: 720,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -86,6 +95,31 @@ const missionSchema = {
   },
 };
 
+// Video Schema for YouTube embed
+const videoSchema = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: "Die Nest Vision",
+  description:
+    "Eine Welt, in der Effizienz auf Architektur trifft. Erfahren Sie mehr über unsere Vision für modulares, nachhaltiges Wohnen.",
+  thumbnailUrl: [
+    "https://img.youtube.com/vi/Z05jRVentdc/maxresdefault.jpg",
+    "https://img.youtube.com/vi/Z05jRVentdc/hqdefault.jpg",
+  ],
+  uploadDate: "2025-11-13T00:00:00+01:00",
+  duration: "PT8M",
+  embedUrl: "https://www.youtube.com/embed/Z05jRVentdc",
+  contentUrl: "https://www.youtube.com/watch?v=Z05jRVentdc",
+  publisher: {
+    "@type": "Organization",
+    name: "NEST-Haus",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://nest-haus.at/logo.png",
+    },
+  },
+};
+
 // Server Component - Can handle SEO, metadata, and structured data
 export default async function WarumWirPage() {
   // Server-side authentication check
@@ -112,6 +146,12 @@ export default async function WarumWirPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(missionSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(videoSchema),
         }}
       />
       <WarumWirClient />
