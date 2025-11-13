@@ -182,7 +182,7 @@ export const IMAGES = {
         nestHausEntwurfEntwurf: '305-nest-haus-entwurf-vorentwurf-planung-erstentwurf-hausbau', // CONFIRMED: Path works WITHOUT .png extension
         nestHausInteriorKueche: '306-nest-haus-interior-entwurf-modern-design-innenarchitektur-kueche-mit-ausblick',
         nestHausEntdeckenDeinNestErklaerungProdukt: '307-nest-haus-entdecken-dein-nest-erklaerung-produkt',
-        nestHausEntwurfEntwurfCheckGrundstueckscheck: '308-nest-haus-entwurf-vorentwurf-check-grundstueckscheck',
+        nestHausEntwurfCheckGrundstueckscheck: '308-nest-haus-entwurf-vorentwurf-check-grundstueckscheck',
         nestHausNachhaltigkeitUnserePhilosophieMission: '309-nest-haus-nachhaltigkeit-unsere-philosophie-mission',
         nestHausTerminVereinbarungBuchenGespraechAnrufenEmail: '310-nest-haus-termin-vereinbarung-buchen-gespraech-anrufen-email',
         nestHausInteriorSteinplatten: '301-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
