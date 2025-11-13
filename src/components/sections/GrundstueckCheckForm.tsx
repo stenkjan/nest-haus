@@ -84,6 +84,7 @@ export function GrundstueckCheckForm({
       const fullName =
         `${formData.name.trim()} ${formData.lastName.trim()}`.trim();
       const contactData = {
+        sessionId: sessionId || undefined,
         name: fullName || formData.name.trim(),
         email: formData.email,
         phone: formData.phone || undefined,
