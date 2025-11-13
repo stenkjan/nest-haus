@@ -759,7 +759,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           hasPart3BeenActive: false,
           shouldSwitchToView: null,
           lastSelectionCategory: null,
-          isVorentwurfMode: false
+          isEntwurfMode: false
         })
 
         // Initialize fresh session with defaults
