@@ -433,7 +433,7 @@ export default function LandingPageClient() {
                       description: "",
                       image:
                         IMAGES.function
-                          .nestHausEntwurfEntwurfCheckGrundstueckscheck,
+                          .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Der erste Schritt",
                       primaryLink: "/entdecken",
