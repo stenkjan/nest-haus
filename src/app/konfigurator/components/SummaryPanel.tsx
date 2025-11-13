@@ -26,11 +26,14 @@ interface SummaryPanelProps {
 
 export default function SummaryPanel({
   onInfoClick,
-  onReset,
+  onReset: _onReset,
   className = "",
 }: SummaryPanelProps) {
-  const { configuration, currentPrice, resetConfiguration } =
-    useConfiguratorStore();
+  const {
+    configuration,
+    currentPrice,
+    resetConfiguration: _resetConfiguration,
+  } = useConfiguratorStore();
 
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
@@ -367,7 +370,9 @@ export default function SummaryPanel({
                     >
                       <div className="flex-1 min-w-0 max-w-[50%]">
                         <div className="font-medium text-[clamp(14px,3vw,16px)] tracking-[0.02em] leading-[1.25] text-black break-words">
-                          {key === "fussboden" ? `Bodenbelag - ${selection.name}` : selection.name}
+                          {key === "fussboden"
+                            ? `Bodenbelag - ${selection.name}`
+                            : selection.name}
                         </div>
                         {selection.description && (
                           <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1 break-words">
