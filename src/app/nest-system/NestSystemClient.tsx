@@ -19,6 +19,7 @@ import {
   LandingImagesCarousel as _LandingImagesCarousel,
   MaterialShowcase,
   SectionHeader,
+  FAQSection,
 } from "@/components/sections";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { UnifiedContentCard } from "@/components/cards";
@@ -536,55 +537,14 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             />
           </section>
 
-          {/* Planungspakete Section - Unterstützung gefällig? */}
-          <section
-            id="planungspakete"
-            className="w-full py-8 md:py-16 bg-white"
-          >
-            <div className="w-full max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12 md:mb-6">
-                <h1 className="h1-secondary text-gray-900 mb-2 md:mb-3">
-                  Unterstützung gefällig?
-                </h1>
-                <h3 className="h3-secondary text-gray-600 mb-8">
-                  Entdecke unsere Planungs-Pakete, um das Beste für dich und
-                  dein Nest rauszuholen.
-                </h3>
-              </div>
-
-              <div className="mt-4 md:mt-0">
-                <PlanungspaketeCards
-                  title=""
-                  subtitle=""
-                  maxWidth={false}
-                  showInstructions={false}
-                />
-              </div>
-
-              {/* Button Combo After Component */}
-              <div className="flex gap-4 justify-center w-full mt-6 md:mt-8">
-                {!isMobile && (
-                  <Button
-                    variant="primary"
-                    size="xs"
-                    onClick={openPlanungspakete}
-                  >
-                    Die Pakete
-                  </Button>
-                )}
-                <Link href="/konfigurator">
-                  <Button variant="landing-secondary-blue" size="xs">
-                    Jetzt bauen
-                  </Button>
-                </Link>
-              </div>
-            </div>
+          {/* FAQ Section */}
+          <section id="faq" className="w-full pb-8 md:pb-16 bg-white">
+            <FAQSection />
           </section>
         </SectionRouter>
 
         {/* Contact Banner - Kein Plan? Kein Problem! */}
         <GetInContactBanner />
-
 
         <Footer />
 

@@ -72,7 +72,7 @@ const boxesData = [
     hasBorder: true,
     items: [
       { type: "check", text: "Kompakt und Mobil" },
-      { type: "check", text: "Individuelle Grundrissgestalung" },
+      { type: "check", text: "Individuelle Grundrissgestaltung" },
       { type: "check", text: "Transparente Bau-und Lieferzeit" },
       { type: "check", text: "Transparenter Fixpreis" },
       { type: "check", text: "Komfortables Wohnen" },
