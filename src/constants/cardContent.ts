@@ -499,7 +499,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "1. Check + Entwurf",
         subtitle: "Diese Kosten deckst du heute",
         description:
-            "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. \n\n Anschließend erstellen wir einen Vorentwurf, der deine Idee greifbar macht. Gemeinsam entwerfen wir ein Zuhause, das dich widerspiegelt",
+            "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
         backgroundColor: "#f4f4f4",
         iconNumber: 1,
     },
@@ -578,11 +578,11 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 01",
         subtitle: "Basis",
         description:
-            "Inkl.\nEinreichplanung des Gesamtprojekts,\nFachberatung und Baubegleitung,\nBürokratische Unterstützung",
+            "Inkl.\n\nEinreichplanung des Gesamtprojekts,\n\nFachberatung und Baubegleitung,\n\nBürokratische Unterstützung",
         mobileTitle: "Planungspaket 01",
         mobileSubtitle: "Basis",
         mobileDescription:
-            "Inkl.\nEinreichplanung des Gesamtprojekts,\nFachberatung und Baubegleitung,\nBürokratische Unterstützung",
+            "Inkl.\n\nEinreichplanung des Gesamtprojekts,\n\nFachberatung und Baubegleitung,\n\nBürokratische Unterstützung",
         image: IMAGES.hero.nestHaus8,
         price: "inkludiert",
         backgroundColor: "#F4F4F4",
@@ -597,11 +597,11 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 02",
         subtitle: "Plus",
         description:
-            "Inkl.\nPlanungspaket Basis,\nHaustechnikplanung\nDetailplanungen,\nAusführungsplanung Innenausbau",
+            "Inkl.\n\nPlanungspaket Basis,\n\nHaustechnikplanung\n\nDetailplanungen,\n\nAusführungsplanung Innenausbau",
         mobileTitle: "Planungspaket 02",
         mobileSubtitle: "Plus",
         mobileDescription:
-            "Inkl.\nPlanungspaket Basis,\nHaustechnikplanung\nDetailplanungen,\nAusführungsplanung Innenausbau",
+            "Inkl.\n\nPlanungspaket Basis,\n\nHaustechnikplanung\n\nDetailplanungen,\n\nAusführungsplanung Innenausbau",
         image: IMAGES.hero.nestHaus1,
         price: "€9.600,00", // Updated Nov 2025
         backgroundColor: "#F4F4F4",
@@ -616,11 +616,11 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         title: "Planungspaket 03",
         subtitle: "Pro",
         description:
-            "Inkl.\nPlanungspaket Plus,\nBeleuchtungskonzept, Möblierungsplanung,\nFarb- und Materialkonzept",
+            "Inkl.\n\nPlanungspaket Plus,\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
         mobileTitle: "Planungspaket 03",
         mobileSubtitle: "Pro",
         mobileDescription:
-            "Inkl.\nPlanungspaket Plus,\nBeleuchtungskonzept, Möblierungsplanung,\nFarb- und Materialkonzept",
+            "Inkl.\n\nPlanungspaket Plus,\n\nBeleuchtungskonzept, Möblierungsplanung,\n\nFarb- und Materialkonzept",
         image: IMAGES.hero.nestHaus4,
         price: "€12.700,00", // Updated Nov 2025
         backgroundColor: "#F4F4F4",
@@ -725,23 +725,6 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 5,
-        title: "Häufig gestellte Fragen",
-        subtitle: "",
-        description: "Wir haben die Antworten",
-        video: IMAGES.videos.videoCard04, // Placeholder - will be replaced with actual video
-        backgroundColor: "#F4F4F4",
-        aspectRatio: "2x1", // Portrait format
-        buttons: [
-            {
-                text: "Zu den FAQs",
-                variant: "secondary-narrow-white",
-                size: "xs",
-                link: "/faq",
-            },
-        ],
-    },
-    {
-        id: 6,
         title: "Natürliche Materialien erleben",
         subtitle: "",
         description: "Holz schafft warme Atmosphäre",
@@ -750,7 +733,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         aspectRatio: "2x1", // Tall portrait format
     },
     {
-        id: 7,
+        id: 6,
         title: "Intelligente Raumkonzepte entdecken",
         subtitle: "",
         description: "Jeder Quadratmeter zählt hier",
@@ -759,7 +742,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         aspectRatio: "1x1", // Square format
     },
     {
-        id: 8,
+        id: 7,
         title: "Effizienz im modernen Wohnbau",
         subtitle: "",
         description: "Schnell gebaut trotz Qualität",
@@ -767,7 +750,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 9,
+        id: 8,
         title: "Energieautark in die Zukunft",
         subtitle: "",
         description: "Photovoltaik macht dich unabhängig",
@@ -775,7 +758,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 10,
+        id: 9,
         title: "Minimalistisch und funktional leben",
         subtitle: "",
         description: "Weniger ist oft deutlich mehr",
@@ -783,7 +766,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 11,
+        id: 10,
         title: "Natur als ständiger Begleiter",
         subtitle: "",
         description: "Draußen und drinnen verschmelzen",
@@ -791,7 +774,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 12,
+        id: 11,
         title: "Modulares Bauen neu gedacht",
         subtitle: "",
         description: "Flexibel wie dein Lebensstil",
@@ -799,7 +782,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 13,
+        id: 12,
         title: "Präzision durch seriellen Bau",
         subtitle: "",
         description: "Qualität kommt aus Perfektion",
@@ -807,7 +790,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 14,
+        id: 13,
         title: "Wohnraum für jede Lebenslage",
         subtitle: "",
         description: "Anpassbar wie du es brauchst",
@@ -815,7 +798,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 15,
+        id: 14,
         title: "Hochwertige Details im Fokus",
         subtitle: "",
         description: "Verarbeitung auf höchstem Niveau",
@@ -823,7 +806,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 16,
+        id: 15,
         title: "Zeitlose Eleganz vereint Komfort",
         subtitle: "",
         description: "Stil bleibt über Jahrzehnte",
@@ -831,7 +814,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
     },
     {
-        id: 17,
+        id: 16,
         title: "Zukunftssicher und wertbeständig",
         subtitle: "",
         description: "Investition in kommende Generationen",

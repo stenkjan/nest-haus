@@ -53,8 +53,8 @@ export default function CartFooter({ onReset }: CartFooterProps) {
       <div className="max-w-[1600px] mx-auto px-4 flex justify-between items-center">
         {/* Reset button */}
         <button
-          className="bg-transparent border-none p-0 m-0 text-[#222] font-normal focus:outline-none cursor-pointer text-[clamp(0.7rem,1.1vw,0.9rem)] hover:text-[#3D6CE1] transition-colors touch-manipulation"
-          style={{ minWidth: 0 }}
+          className="bg-transparent border-none p-0 m-0 text-[#3D6CE1] font-normal focus:outline-none cursor-pointer text-[clamp(0.7rem,1.1vw,0.9rem)] hover:text-[#2855d6] transition-colors touch-manipulation"
+          style={{ minWidth: 0}}
           onClick={handleReset}
           type="button"
         >
@@ -104,22 +104,6 @@ export default function CartFooter({ onReset }: CartFooterProps) {
                 : ""}
             </p>
           </div>
-
-          {/* Zum Vorentwurf button */}
-          <button
-            onClick={() => {
-              // Set ohne nest mode and go to warenkorb for Vorentwurf only
-              console.log(
-                "📝 CartFooter: Activating ohne nest mode for Vorentwurf"
-              );
-              // Use window.location.href for full page reload to ensure proper state initialization
-              window.location.href = "/warenkorb?mode=vorentwurf";
-            }}
-            className="bg-white text-[#3D6CE1] border-2 border-[#3D6CE1] rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#3D6CE1] hover:text-white min-h-[44px] flex items-center justify-center touch-manipulation cursor-pointer"
-          >
-            Zum Vorentwurf
-          </button>
-
           {/* Zum Warenkorb button */}
           <button
             onClick={() => {

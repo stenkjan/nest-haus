@@ -4,6 +4,140 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f2974a3b2a14d8eca22ee1bd4e2ae9eced4106a0] - Thu Nov 13 20:45:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [015463a8afc0155806f6182eb6ba05fe9c1737ab] - Thu Nov 13 20:43:41 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Clean up route.ts by removing unnecessary whitespace  - Removed an extra blank line in the  file to maintain code cleanliness and adhere to formatting standards.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+
+
+---
+
+## [c05b46037a8d00c7fa64e65dd2d0224b28bd8f77] - Thu Nov 13 20:31:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [5ca871c0eb1311c82bd0e914f99f50cf8d13c292] - Thu Nov 13 20:27:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [ca0f6bd14849bc8fa178e634ec0b5b1ba31ce69c] - Thu Nov 13 20:18:37 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [3550e9bb41a9bfae1a0e4e54cc94536dbbe2249d] - Thu Nov 13 20:14:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [4ac5540a23e70e14c0ebfea1be88611aea2243bd] - Thu Nov 13 19:59:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge f379bc1c20eb87e430e195f220d9c79f8ac44a7e into 21e79555b1c8ae4ee7b1e2eecfe30ef2bc3e0864  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+
+
+---
+
+## [51126bd434ac0123c9364ce294e03703456bbff1] - Thu Nov 13 19:41:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [79df304dcf321059bd0783e438486164db28d956] - Thu Nov 13 19:36:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [300589fa3f079c0434996fe7c1b5c9bf9da1707a] - Thu Nov 13 19:19:34 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Remove unnecessary whitespace in database test route file  - Cleaned up the  file by removing an extra blank line to maintain code cleanliness and consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+
+
+---
+
 ## [52fc07da207a5f2a0908efe8d02a2b1653754d05] - Thu Nov 13 18:44:24 2025 +0100
 
 **Author**: stenkjan

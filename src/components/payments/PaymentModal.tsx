@@ -90,10 +90,10 @@ function PaymentSuccess({
         <h4 className="font-semibold text-gray-900 mb-4">Nächste Schritte:</h4>
         <div className="space-y-4 text-sm text-gray-700">
           <p>
-            <strong>Vorentwurf bestätigt</strong> - Sie erhalten eine Bestätigung per Mail sobald die Zahlung bei uns eingeht
+            <strong>Entwurf bestätigt</strong> - Sie erhalten eine Bestätigung per Mail sobald die Zahlung bei uns eingeht
           </p>
           <p>
-            <strong>Konfiguration in Bearbeitung</strong> - Ihr Vorentwurf wird vorbereitet
+            <strong>Konfiguration in Bearbeitung</strong> - Ihr Entwurf wird vorbereitet
           </p>
           <p>
             <strong>Wir melden uns Zeitnah</strong> - Unser Team kontaktiert Sie zum vereinbarten Termin

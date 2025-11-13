@@ -166,7 +166,7 @@ export default function CardsShowcasePage() {
                 title: "1. Check + Entwurf",
                 subtitle: "Fenster, Türen, Innenwände",
                 description:
-                  "Bevor wir starten, prüfen wir gemeinsam die Machbarkeit deines Projekts auf deinem Grundstück. \n\n Im Vorentwurfsplan legen wir Fenster, Türen und Innenwände nach deinen Wünschen fest und stimmen diese Planung mit der zuständigen Gemeinde ab.",
+                  "Bevor wir starten, prüfen wir gemeinsam die Machbarkeit deines Projekts auf deinem Grundstück. \n\n Im Entwurfsplan legen wir Fenster, Türen und Innenwände nach deinen Wünschen fest und stimmen diese Planung mit der zuständigen Gemeinde ab.",
                 backgroundColor: "#F9FAFB",
                 iconNumber: 1,
               },
@@ -175,7 +175,7 @@ export default function CardsShowcasePage() {
                 title: "2. Einreichplanung",
                 subtitle: "Zwei Wege zum Ziel",
                 description:
-                  "Nach dem Vorentwurf erstellen wir die komplette Einreichplanung und reichen diese bei der zuständigen Gemeinde ein. Ab hier hast du die Wahl, wie du mit der Bestellung deines Nest Hauses fortfährst.",
+                  "Nach dem Entwurf erstellen wir die komplette Einreichplanung und reichen diese bei der zuständigen Gemeinde ein. Ab hier hast du die Wahl, wie du mit der Bestellung deines Nest Hauses fortfährst.",
                 backgroundColor: "#F9FAFB",
                 iconNumber: 2,
               },

@@ -52,7 +52,7 @@ export default function WarenkorbClient() {
     () =>
       ({
         0: "übersicht",
-        1: "check-und-vorentwurf",
+        1: "entwurf",
         2: "terminvereinbarung",
         3: "planungspakete",
         4: "abschluss",
@@ -64,7 +64,7 @@ export default function WarenkorbClient() {
     () =>
       ({
         übersicht: 0,
-        "check-und-vorentwurf": 1,
+        entwurf: 1,
         terminvereinbarung: 2,
         planungspakete: 3,
         abschluss: 4,
@@ -152,8 +152,8 @@ export default function WarenkorbClient() {
           });
       }
 
-      if (mode === "ohne-nest" || mode === "vorentwurf") {
-        console.log("🏠 URL has ohne-nest/vorentwurf mode, setting to TRUE");
+      if (mode === "ohne-nest" || mode === "entwurf") {
+        console.log("🏠 URL has ohne-nest/entwurf mode, setting to TRUE");
         setOhneNestMode(true);
 
         // Update the session to mark it as ohne-nest mode
@@ -213,7 +213,7 @@ export default function WarenkorbClient() {
 
         if (!hasAnyConfiguration) {
           console.log(
-            "🏠 No configuration found, automatically enabling ohne-nest mode (vorentwurf)"
+            "🏠 No configuration found, automatically enabling ohne-nest mode (entwurf)"
           );
           setOhneNestMode(true);
 
