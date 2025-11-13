@@ -1,4 +1,6 @@
 import { Resend } from 'resend';
+import { generateCustomerConfirmationEmail } from './emailTemplates/CustomerConfirmationTemplate';
+import { generateAdminNotificationEmail } from './emailTemplates/AdminNotificationTemplate';
 
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -38,9 +40,10 @@ export interface AdminPaymentNotificationData extends PaymentConfirmationData {
 }
 
 export class EmailService {
-  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nest-haus.at';
-  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'sales@nest-haus.at';
+  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
+  private static readonly REPLY_TO_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
+  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.at';
+  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@nest-haus.at';
 
   // From name for better email presentation
   private static readonly FROM_NAME = 'NEST-Haus Team';
@@ -52,19 +55,23 @@ export class EmailService {
     try {
       console.log(`📧 Sending customer confirmation email to ${data.email}`);
 
-      const subject = data.requestType === 'appointment'
-        ? 'Terminanfrage bei NEST-Haus erhalten'
-        : 'Ihre Anfrage bei NEST-Haus';
-
-      const htmlContent = this.generateCustomerEmailHTML(data);
-      const textContent = this.generateCustomerEmailText(data);
+      // Generate email using branded template
+      const { subject, html, text } = generateCustomerConfirmationEmail({
+        name: data.name,
+        email: data.email,
+        requestType: data.requestType,
+        appointmentDateTime: data.appointmentDateTime,
+        message: data.message,
+        inquiryId: data.inquiryId,
+      });
 
       const result = await resend.emails.send({
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        replyTo: this.REPLY_TO_EMAIL,
         to: data.email,
         subject,
-        html: htmlContent,
-        text: textContent,
+        html,
+        text,
       });
 
       console.log('✅ Customer email sent successfully:', result.data?.id);
@@ -83,12 +90,8 @@ export class EmailService {
     try {
       console.log(`📧 Sending admin notification for inquiry ${data.inquiryId}`);
 
-      const subject = data.requestType === 'appointment'
-        ? `🗓️ Neue Terminanfrage von ${data.name}`
-        : `📧 Neue Kontaktanfrage von ${data.name}`;
-
-      const htmlContent = this.generateAdminEmailHTML(data);
-      const textContent = this.generateAdminEmailText(data);
+      // Generate email using branded template
+      const { subject, html, text } = generateAdminNotificationEmail(data);
 
       // Send to both admin and sales email
       const recipients = [this.ADMIN_EMAIL];
@@ -98,10 +101,11 @@ export class EmailService {
 
       const result = await resend.emails.send({
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        replyTo: this.REPLY_TO_EMAIL,
         to: recipients,
         subject,
-        html: htmlContent,
-        text: textContent,
+        html,
+        text,
       });
 
       console.log('✅ Admin email sent successfully:', result.data?.id);
