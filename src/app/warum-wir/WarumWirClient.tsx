@@ -7,7 +7,6 @@ import { Button } from "@/components/ui";
 // Removed ModernVideoPlayer - using YouTube embed instead
 import { UnifiedContentCard } from "@/components/cards";
 import {
-  GetInContactBanner,
   SectionHeader,
   PartnersSection,
   FAQSection,
@@ -19,35 +18,49 @@ import Footer from "@/components/Footer";
 // Define sections
 const sections = [
   {
-    id: "hero",
-    title: "Design für dich gemacht",
-    slug: "hero",
+    id: "wir-sind-nest",
+    title: "Die Nest Vision",
+    slug: "wir-sind-nest",
   },
   {
-    id: "video",
-    title: "Video Segment",
-    slug: "video",
+    id: "echo",
+    title: "Verlässlichkeit, auf die du bauen kannst",
+    slug: "echo",
   },
   {
-    id: "testimonials",
-    title: "Expertenstimmen",
-    slug: "testimonials",
+    id: "unser-team",
+    title: "Kreativität und Erfahrung vereint",
+    slug: "unser-team",
   },
   {
-    id: "features",
-    title: "Unsere Features",
-    slug: "features",
+    id: "unser-partner",
+    title: "Unsere Partner",
+    slug: "unser-partner",
+  },
+  {
+    id: "innovation",
+    title: "Innovation für unsere Zukunft",
+    slug: "innovation",
+  },
+  {
+    id: "faq",
+    title: "FAQ",
+    slug: "faq",
   },
 ];
 
 export default function WarumWirClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [_currentSectionId, setCurrentSectionId] =
+    useState<string>("wir-sind-nest");
 
   return (
     <div className="min-h-screen pt-12 bg-white">
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
-        {/* Section 1 - Hero */}
-        <section id="hero" className="w-full bg-black pt-12 flex items-center">
+        {/* Section 1 - Wir sind Nest (includes video) */}
+        <section
+          id="wir-sind-nest"
+          className="w-full bg-black pt-12 flex items-center"
+        >
           <div className="w-full">
             <SectionHeader
               title="Die ®Nest Vision"
@@ -59,8 +72,8 @@ export default function WarumWirClient() {
           </div>
         </section>
 
-        {/* Section 2 - YouTube Video Embed */}
-        <section id="video" className="w-full bg-black pb-8 md:pb-16">
+        {/* Section 1 continued - YouTube Video Embed */}
+        <section className="w-full bg-black pb-8 md:pb-16">
           <div className="w-full">
             {/* Responsive YouTube Embed Container - Privacy-Enhanced Mode */}
             <div className="w-full px-[10vw]">
@@ -109,8 +122,8 @@ export default function WarumWirClient() {
           </div>
         </section>
 
-        {/* Section 3 - Testimonials / Glass Quote Cards */}
-        <section id="testimonials" className="w-full bg-black py-8 md:py-16">
+        {/* Section 2 - Echo - Testimonials / Glass Quote Cards */}
+        <section id="echo" className="w-full bg-black py-8 md:py-16">
           <div className="w-full">
             <SectionHeader
               title="Verlässlichkeit, auf die du bauen kannst"
@@ -133,8 +146,8 @@ export default function WarumWirClient() {
           </div>
         </section>
 
-        {/* Section 4 - Team Values Cards */}
-        <section className="w-full bg-white py-8 md:py-16">
+        {/* Section 3 - Unser Team - Team Values Cards */}
+        <section id="unser-team" className="w-full bg-white py-8 md:py-16">
           <div className="w-full mb-12 px-4 lg:pl-16 xl:pl-20 2xl:pl-24">
             <div className="text-left">
               <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
@@ -159,11 +172,13 @@ export default function WarumWirClient() {
           </div>
         </section>
 
-        {/* Partners Section */}
-        <PartnersSection />
+        {/* Section 4 - Unser Partner */}
+        <section id="unser-partner">
+          <PartnersSection />
+        </section>
 
-        {/* Section 5 - Tall Video Cards Features */}
-        <section id="features" className="w-full bg-white py-8 md:py-16">
+        {/* Section 5 - Innovation - Tall Video Cards Features */}
+        <section id="innovation" className="w-full bg-white py-8 md:py-16">
           <div className="w-full">
             <SectionHeader
               title="Innovation für unsere Zukunft"
@@ -238,12 +253,11 @@ export default function WarumWirClient() {
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <FAQSection />
+        {/* Section 6 - FAQ */}
+        <section id="faq" className="w-full">
+          <FAQSection />
+        </section>
       </SectionRouter>
-
-      {/* Contact Banner - Kein Plan? Kein Problem! */}
-      <GetInContactBanner />
 
       {/* Footer */}
       <Footer />

@@ -14,9 +14,8 @@ import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsL
 import { usePlanungspaketePopup } from "@/hooks/usePlanungspaketePopup";
 import { TwoByTwoImageGrid as _TwoByTwoImageGrid } from "@/components/grids";
 import {
-  GetInContactBanner,
-  PartnersSection,
   SectionHeader,
+  PartnersSection,
   ModulhausVergleichSection,
 } from "@/components/sections";
 import { IMAGES } from "@/constants/images";
@@ -143,7 +142,7 @@ export default function DeinNestClient() {
                   className="hidden lg:block absolute left-0 right-0"
                   style={{ bottom: "15%" }}
                 >
-                  <div className="flex justify-between items-center w-full px-16 xl:px-24 2xl:px-32">
+                  <div className="flex justify-between items-center w-full px-12">
                     {/* Left Text Block */}
                     <div className="text-center">
                       <h2 className="h2-title font-bold text-white drop-shadow-lg">
@@ -242,7 +241,7 @@ export default function DeinNestClient() {
               </div>
             ) : (
               /* Desktop: Video card with padding */
-              <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="w-full max-w-[1536px] mx-auto px-12 sm:px-12 lg:px-12">
                 <div className="bg-[#F4F4F4] rounded-3xl p-[15px]">
                   <div className="relative w-full overflow-hidden rounded-2xl">
                     <ClientBlobVideo
@@ -264,12 +263,12 @@ export default function DeinNestClient() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/entwurf">
                   <Button variant="primary" size="xs">
-                    Vorentwurf verstehen
+                    Zum Entwurf
                   </Button>
                 </Link>
                 <Link href="/konfigurator">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Unsere Technik
+                    Warum mit Nest
                   </Button>
                 </Link>
               </div>
@@ -315,7 +314,7 @@ export default function DeinNestClient() {
                 playbackRate: 0.5,
                 buttons: [
                   {
-                    text: "Erster Schritt",
+                    text: "Zum Entwurf",
                     variant: "primary",
                     size: "xs",
                     link: "/entwurf",
@@ -358,7 +357,7 @@ export default function DeinNestClient() {
         </section>
         {/* Section 7 - Transportabilitaet Video */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Transportabilitaet" */}
-        <section id="transport" className="w-full py-8 md:py-16 bg-white">
+        <section id="transport" className="w-full py-12 md:py-16 bg-white">
           <SectionHeader
             title="Dein Zuhause zieht um"
             subtitle="Früher war Wohnen Stillstand. heute ist es Nest."
@@ -406,9 +405,6 @@ export default function DeinNestClient() {
           </div>
         </section>
       </SectionRouter>
-
-      {/* Contact Banner - Testing Typography Standards */}
-      <GetInContactBanner />
 
       <Footer />
 

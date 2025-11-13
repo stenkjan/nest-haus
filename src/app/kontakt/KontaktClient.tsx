@@ -9,7 +9,6 @@ import {
   ContactMap as _ContactMap,
   AppointmentBookingSection,
   GrundstueckCheckForm,
-  GetInContactBanner,
   LandingImagesCarousel as _LandingImagesCarousel,
   SectionHeader,
 } from "@/components/sections";
@@ -17,16 +16,26 @@ import Footer from "@/components/Footer";
 
 // Define sections for kontakt page
 const sections = [
-  { id: "calendar", title: "Terminvereinbarung", slug: "termin" },
-  { id: "address", title: "Wo du uns findest", slug: "standort" },
-  { id: "contact", title: "Grundstück Check", slug: "grundstueck-check" },
-  { id: "impressum", title: "Impressum", slug: "impressum" },
-  { id: "call-to-action", title: "Kein Plan? Kein Problem!", slug: "beratung" },
-  { id: "gallery", title: "Bildergalerie", slug: "galerie" },
+  {
+    id: "terminvereinbarung",
+    title: "Terminvereinbarung",
+    slug: "terminvereinbarung",
+  },
+  {
+    id: "grundstueckscheck",
+    title: "Grundstück Check",
+    slug: "grundstueckscheck",
+  },
+  {
+    id: "kontakt-karte",
+    title: "Wo du uns findest",
+    slug: "kontakt-karte",
+  },
 ];
 
 export default function KontaktClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("calendar");
+  const [_currentSectionId, setCurrentSectionId] =
+    useState<string>("terminvereinbarung");
   const { isMobile: _isMobile } = useDeviceDetect();
 
   return (
@@ -37,13 +46,20 @@ export default function KontaktClient() {
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
         <AppointmentBookingSection
-          id="calendar"
+          id="terminvereinbarung"
           backgroundColor="white"
           maxWidth={false}
         />
 
-        {/* Wo du uns findest - Section 2 */}
-        <div className="w-full py-16 bg-gray-50">
+        {/* Section 2 - Dein Grundstück - Unser Check */}
+        <GrundstueckCheckForm
+          id="grundstueckscheck"
+          backgroundColor="white"
+          maxWidth="max-w-[1440px]"
+        />
+
+        {/* Section 3 - Wo du uns findest */}
+        <div className="w-full py-16">
           <SectionHeader
             title="Wo du uns findest"
             subtitle="Komm vorbei um deinen Traum mit uns zu besprechen."
@@ -53,7 +69,7 @@ export default function KontaktClient() {
           />
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <div
-              id="address"
+              id="kontakt-karte"
               className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
               style={{ border: "15px solid #F4F4F4" }}
             >
@@ -70,29 +86,6 @@ export default function KontaktClient() {
             </div>
           </div>
         </div>
-
-        {/* Dein Grundstück - Unser Check - Section 3 */}
-        <GrundstueckCheckForm
-          id="contact"
-          backgroundColor="white"
-          maxWidth="max-w-[1440px]"
-        />
-
-        {/* Get In Contact Banner Section */}
-        <GetInContactBanner
-          id="call-to-action"
-          title="Kein Plan? Kein Problem!"
-          subtitle="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch"
-          buttonText="Jetzt Termin sichern"
-          backgroundColor="white"
-          onButtonClick={() => {
-            // Scroll to calendar section for appointment booking
-            const calendarSection = document.getElementById("calendar");
-            if (calendarSection) {
-              calendarSection.scrollIntoView({ behavior: "smooth" });
-            }
-          }}
-        />
       </SectionRouter>
 
       <Footer />

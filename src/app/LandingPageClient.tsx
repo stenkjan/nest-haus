@@ -10,7 +10,6 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import TwoByTwoImageGrid from "@/components/grids/TwoByTwoImageGrid";
 import Footer from "@/components/Footer";
-import { GetInContactBanner } from "@/components/sections/GetInContactBanner";
 
 // Define sections for landing page
 const sections = [
@@ -471,7 +470,6 @@ export default function LandingPageClient() {
         ))}
       </SectionRouter>
       <div className="pb-16" />
-      <GetInContactBanner />
       <Footer />
     </div>
   );

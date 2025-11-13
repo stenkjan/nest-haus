@@ -12,11 +12,8 @@ import {
   ImageWithFourTextGrid,
   ThreeByOneGrid,
   ThreeByOneAdaptiveHeight,
-  FullWidthImageGrid,
 } from "@/components/grids";
 import {
-  GetInContactBanner,
-  LandingImagesCarousel as _LandingImagesCarousel,
   MaterialShowcase,
   SectionHeader,
   FAQSection,
@@ -30,18 +27,17 @@ import { IMAGES } from "@/constants/images";
 import { getContentById } from "@/constants/cardContent";
 import Footer from "@/components/Footer";
 
-// Define sections with proper structure for dein-part page (now includes unser-part content)
+// Define sections for nest-system page
 const sections: SectionDefinition[] = [
-  // Moved from unser-part
   {
-    id: "dein-nest-system",
+    id: "unsere-technik",
     title: "Dein Nest System",
-    slug: "nest-system",
+    slug: "unsere-technik",
   },
   {
-    id: "groesse",
+    id: "dimensionen-module",
     title: "Manchmal kommt es auf die Größe an",
-    slug: "groesse",
+    slug: "dimensionen-module",
   },
   {
     id: "materialien",
@@ -54,70 +50,19 @@ const sections: SectionDefinition[] = [
     slug: "fenster-tueren",
   },
   {
-    id: "unser-part-individualisierung",
-    title: "Raum zum Träumen",
-    slug: "unser-part-individualisierung",
-  },
-  // Original dein-part content
-  {
-    id: "freiraum",
-    title: "Dein kreativer Freiraum",
-    slug: "freiraum",
-  },
-  {
-    id: "moeglichkeiten",
-    title: "Wir liefern Möglichkeiten",
-    slug: "moeglichkeiten",
-  },
-  {
     id: "individualisierung",
-    title: "Du individualisierst dein NEST Haus",
+    title: "Dein Raum zum Träumen",
     slug: "individualisierung",
   },
   {
-    id: "freiheit",
-    title: "Hier beginnt Freiheit",
-    slug: "freiheit",
+    id: "haustechnik",
+    title: "Konzipiert für deine Ideen",
+    slug: "haustechnik",
   },
   {
-    id: "installationsebene",
-    title: "Die Installationsebene",
-    slug: "installationsebene",
-  },
-  {
-    id: "wohnflaeche-erweitern",
+    id: "modulerweiterung",
     title: "Wohnfläche erweitern?",
-    slug: "wohnflaeche-erweitern",
-  },
-  {
-    id: "flexibilitaet",
-    title: "Ob Decke einziehen, oder Haus erweitern.",
-    slug: "flexibilitaet",
-  },
-  {
-    id: "step-by-step",
-    title: "Step by Step nach Hause",
-    slug: "step-by-step",
-  },
-  {
-    id: "video-gallery",
-    title: "Deine Gestaltungsmöglichkeiten",
-    slug: "gestaltungsmoeglichkeiten",
-  },
-  {
-    id: "planungspakete",
-    title: "Unterstützung gefällig?",
-    slug: "planungspakete",
-  },
-  {
-    id: "video-section",
-    title: "Die Vielfalt unserer Module",
-    slug: "modul-vielfalt",
-  },
-  {
-    id: "call-to-action",
-    title: "Bereit für dein NEST Haus?",
-    slug: "bereit",
+    slug: "modulerweiterung",
   },
 ];
 
@@ -132,7 +77,7 @@ const getMobileVideoPath = (desktopPath: string): string => {
 
 export default function NestSystemClient() {
   const [currentSectionId, setCurrentSectionId] =
-    useState<string>("dein-nest-system");
+    useState<string>("unsere-technik");
   const [isMobile, setIsMobile] = useState(false);
   const { isOpen, openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
@@ -185,11 +130,8 @@ export default function NestSystemClient() {
           sections={sections}
           onSectionChange={setCurrentSectionId}
         >
-          {/* Moved from unser-part: Video Section - Dein Nest System */}
-          <section
-            id="dein-nest-system"
-            className="bg-black pt-12 pb-8 md:pb-16"
-          >
+          {/* Section 1 - Dein Nest System */}
+          <section id="unsere-technik" className="bg-black pt-12 pb-8 md:pb-16">
             <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
               <SectionHeader
                 title="Dein ®Nest System"
@@ -235,8 +177,8 @@ export default function NestSystemClient() {
             </div>
           </section>
 
-          {/* Moved from unser-part: Combined ThreeByOneGrid Section - Größe */}
-          <section id="groesse" className="py-8 md:py-16">
+          {/* Section 2 - Manchmal kommt es auf die Größe an */}
+          <section id="dimensionen-module" className="py-8 md:py-16">
             <SectionHeader
               title="Manchmal kommt es auf die Größe an."
               subtitle="6 Meter Hoch, 8 Meter Breit, unendlich lang."
@@ -271,7 +213,7 @@ export default function NestSystemClient() {
             </div>
           </section>
 
-          {/* Moved from unser-part: Materialien Section */}
+          {/* Section 3 - Gut für Dich, besser für die Zukunft */}
           <section id="materialien" className="pt-8 md:pt-16 pb-8 md:pb-16">
             <SectionHeader
               title="Gut für Dich, besser für die Zukunft"
@@ -291,7 +233,7 @@ export default function NestSystemClient() {
             />
           </section>
 
-          {/* Moved from unser-part: ThreeByOneAdaptiveHeight Grid - Fenster & Türen */}
+          {/* Section 4 - Fenster & Türen */}
           <section id="fenster-tueren" className="pt-8 md:pt-16 pb-8 md:pb-16">
             <SectionHeader
               title="Fenster & Türen"
@@ -338,42 +280,8 @@ export default function NestSystemClient() {
             </div>
           </section>
 
-          {/* Moved from unser-part: FullWidthImageGrid - Raum zum Träumen */}
-          <section id="unser-part-individualisierung" className="py-8 md:py-16">
-            <SectionHeader
-              title="Raum zum Träumen"
-              subtitle="Eine Bauweise die, das Beste aus allen Welten, kombiniert."
-              titleClassName="text-white"
-              subtitleClassName="text-white"
-              wrapperMargin="mb-12"
-            />
-            <FullWidthImageGrid
-              backgroundColor="black"
-              textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Warum solltest du dich zwischen Flexibilität, Qualität und Nachhaltigkeit entscheiden, wenn du</span> <span class='text-white font-medium'>mit dem Nest System alles haben</span> <span class='text-nest-gray'>kannst? Unsere Architekten und Ingenieure haben ein Haus entwickelt, das</span> <span class='text-white font-medium'>maximale Freiheit ohne Kompromisse</span> <span class='text-nest-gray'>bietet. Durch</span> <span class='text-white font-medium'>intelligente Standardisierung</span> <span class='text-nest-gray'>garantieren wir</span> <span class='text-white font-medium'>höchste</span></p>"
-              textBox2="<p class='p-secondary text-white'>Qualität, Langlebigkeit <span class='text-nest-gray'>und</span> Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für Stabilität, Energieeffizienz und ein unvergleichliches Wohngefühl.</span> Dein Zuhause, dein Stil, deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden, denn du bekommst alles.</span> <span class='text-white font-medium'>Heute bauen, morgen wohnen - Nest.</span></p>"
-              maxWidth={false}
-              showButtons={true}
-              primaryButton={{
-                text: "Dein Part",
-                href: "/dein-part",
-                variant: "primary",
-                size: "xs",
-              }}
-              secondaryButton={{
-                text: "Jetzt bauen",
-                href: "/konfigurator",
-                variant: "landing-secondary",
-                size: "xs",
-              }}
-            />
-          </section>
-
-          {/* Original dein-part content starts here */}
-          {/* Section 3 - Du individualisierst dein NEST Haus */}
-          <section
-            id="individualisierung"
-            className="w-full pt-16 pb-8 md:pb-16 bg-black"
-          >
+          {/* Section 5 - Dein Raum zum Träumen (includes merged Hier beginnt Freiheit content) */}
+          <section id="individualisierung" className="w-full pt-16 bg-black">
             <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               <SectionHeader
                 title="Dein Raum zum Träumen"
@@ -405,11 +313,9 @@ export default function NestSystemClient() {
                 </div>
               </div>
             </div>
-          </section>
 
-          {/* Section 4 - Hier beginnt Freiheit */}
-          <section id="freiheit" className="w-full bg-black py-8 md:py-16">
-            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Merged Section - Hier beginnt Freiheit */}
+            <div className="w-full max-w-[1536px] py-8 md:py-16 mx-auto px-4 sm:px-6 lg:px-8">
               <SectionHeader
                 title="Hier beginnt Freiheit"
                 subtitle="Individuell dort, wo es zählt."
@@ -461,11 +367,8 @@ export default function NestSystemClient() {
             </div>
           </section>
 
-          {/* Section 5 - Die Installationsebene */}
-          <section
-            id="installationsebene"
-            className="w-full py-8 md:py-16 bg-black"
-          >
+          {/* Section 6 - Konzipiert für deine Ideen */}
+          <section id="haustechnik" className="w-full py-8 md:py-16 bg-black">
             <SectionHeader
               title="Konzipiert für deine Ideen"
               subtitle="Leitungen verlegen muss nicht immer kompliziert sein."
@@ -490,9 +393,9 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             />
           </section>
 
-          {/* Wohnfläche erweitern Section */}
+          {/* Section 7 - Wohnfläche erweitern (includes merged Flexibilität content) */}
           <section
-            id="wohnflaeche-erweitern"
+            id="modulerweiterung"
             className="w-full py-8 md:py-16 bg-black"
           >
             <SectionHeader
@@ -512,28 +415,28 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
               backgroundColor="black"
               maxWidth={false}
             />
-          </section>
 
-          {/* Flexibilität Section */}
-          <section id="flexibilitaet" className="w-full py-8 md:py-16 bg-black">
-            <SectionHeader
-              title="Ob Decke einziehen, oder Haus erweitern."
-              subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
-              titleClassName="text-white"
-              subtitleClassName="text-nest-gray"
-              wrapperMargin="mb-12 2xl:mb-24"
-            />
-            <ThreeByOneGrid
-              text="<p class='p-secondary text-white'><span class='text-nest-gray'>Durch intelligente</span> Standardisierung <span class='text-nest-gray'>garantieren wir</span> höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für</span> <span class='text-nest-gray'>Stabilität, Energieeffizienz</span> <span class='text-nest-gray'>und ein unvergleichliches Wohngefühl.</span> Dein Zuhause. Dein Stil. Deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden,</span> <span class='text-nest-gray'>denn</span> du bekommst alles.</p>"
-              image1={IMAGES.function.nestHausFundamentPunktfundament}
-              image2={IMAGES.function.nestHausFlexibilitaetErweiterung}
-              image1Description="NEST-Haus Erweiterung Modulbau vergrößern Leichtbau Modul flexibel"
-              image2Description="NEST-Haus Flexibilität Erweiterung Modulbau"
-              textPosition="right"
-              backgroundColor="black"
-              maxWidth={false}
-              textWrapperClassName="mt-12"
-            />
+            {/* Merged Section - Flexibilität */}
+            <div className="w-full pt-16 md:pt-32">
+              <SectionHeader
+                title="Ob Decke einziehen, oder Haus erweitern."
+                subtitle="Dein Nest bleibt flexibel und lässt sich an deine Lebensumstände anpassen"
+                titleClassName="text-white"
+                subtitleClassName="text-nest-gray"
+                wrapperMargin="mb-12 2xl:mb-24"
+              />
+              <ThreeByOneGrid
+                text="<p class='p-secondary text-white'><span class='text-nest-gray'>Durch intelligente</span> Standardisierung <span class='text-nest-gray'>garantieren wir</span> höchste Qualität, Langlebigkeit und Nachhaltigkeit zum bestmöglichen Preis. <span class='text-nest-gray'>Präzisionsgefertigte Module sorgen für</span> <span class='text-nest-gray'>Stabilität, Energieeffizienz</span> <span class='text-nest-gray'>und ein unvergleichliches Wohngefühl.</span> Dein Zuhause. Dein Stil. Deine Freiheit. <span class='text-nest-gray'>Mit Nest. musst du dich nicht entscheiden,</span> <span class='text-nest-gray'>denn</span> du bekommst alles.</p>"
+                image1={IMAGES.function.nestHausFundamentPunktfundament}
+                image2={IMAGES.function.nestHausFlexibilitaetErweiterung}
+                image1Description="NEST-Haus Erweiterung Modulbau vergrößern Leichtbau Modul flexibel"
+                image2Description="NEST-Haus Flexibilität Erweiterung Modulbau"
+                textPosition="right"
+                backgroundColor="black"
+                maxWidth={false}
+                textWrapperClassName="mt-12"
+              />
+            </div>
           </section>
 
           {/* FAQ Section */}
@@ -541,9 +444,6 @@ Nach Abschluss dieser Arbeiten können die Interior-Platten wieder montiert werd
             <FAQSection />
           </section>
         </SectionRouter>
-
-        {/* Contact Banner - Kein Plan? Kein Problem! */}
-        <GetInContactBanner />
 
         <Footer />
 

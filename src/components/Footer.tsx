@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import LandingImagesCarousel from "./sections/LandingImagesCarousel";
+import { GetInContactBanner } from "./sections/GetInContactBanner";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -59,6 +60,9 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#F4F4F4] text-gray-700 mt-auto" role="contentinfo">
+      {/* Get In Contact Banner - Above Footer */}
+      <GetInContactBanner />
+
       {/* Image Carousel Section - Hidden on mobile */}
       <div className="hidden md:block bg-white">
         <h3 className="h3-secondary text-center text-black pt-4">

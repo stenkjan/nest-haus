@@ -321,9 +321,8 @@ export default function UnifiedContentCard({
 
     let centerOffset;
     if (alignment === "left" && containerWidth >= 1024) {
-      // Left alignment: start from left edge with padding (desktop only)
-      centerOffset =
-        containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
+      // Left alignment: start from left edge (padding handled by container px class)
+      centerOffset = 0;
     } else {
       // Center alignment (default behavior for all, and mobile/tablet for left alignment)
       if (containerWidth < 768) {
@@ -572,9 +571,8 @@ export default function UnifiedContentCard({
 
         let centerOffset;
         if (alignment === "left" && containerWidth >= 1024) {
-          // Left alignment: start from left edge with padding (desktop only)
-          centerOffset =
-            containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
+          // Left alignment: start from left edge (padding handled by container px class)
+          centerOffset = 0;
         } else {
           // Center alignment (default behavior for all, and mobile/tablet for left alignment)
           if (containerWidth < 768) {
@@ -660,9 +658,8 @@ export default function UnifiedContentCard({
 
       let centerOffset;
       if (alignment === "left" && containerWidth >= 1024) {
-        // Left alignment: start from left edge with padding (desktop only)
-        centerOffset =
-          containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
+        // Left alignment: start from left edge (padding handled by container px class)
+        centerOffset = 0;
       } else {
         // Center alignment (default behavior for all, and mobile/tablet for left alignment)
         if (containerWidth < 768) {
@@ -2133,10 +2130,16 @@ export default function UnifiedContentCard({
                   isLightboxMode
                     ? "" // No padding in lightbox mode - use full width
                     : layout === "video"
-                      ? "px-4"
-                      : maxWidth
-                        ? "px-8"
-                        : "px-4"
+                      ? "px-12"
+                      : layout === "overlay-text"
+                        ? "px-12"
+                        : layout === "glass-quote"
+                          ? "px-12"
+                          : layout === "team-card"
+                            ? "px-12"
+                            : maxWidth
+                              ? "px-8"
+                              : "px-4"
                 } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
                 style={{ overflow: "visible" }}
               >
