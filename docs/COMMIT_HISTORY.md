@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [200556ebbf5621c088ee0068038e737fa1f3686f] - Thu Nov 13 11:10:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Simplify YouTube video embed in WarumWirClient  - Removed fixed maximum width for the YouTube embed container to enhance responsiveness. - Updated the video source URL for improved privacy compliance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
 ## [8a0d3c143783b25fee1e69d689fa093e86f0e088] - Thu Nov 13 11:02:25 2025 +0100
 
 **Author**: stenkjan
