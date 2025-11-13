@@ -14,22 +14,43 @@ import { GetInContactBanner } from "@/components/sections/GetInContactBanner";
 
 // Define sections for landing page
 const sections = [
-  { id: "section1", title: "Dein Nest Haus", slug: "dein-nest-haus" },
-  { id: "section2", title: "Wohnen ohne Grenzen", slug: "wohnen-ohne-grenzen" },
-  { id: "section3", title: "Zuhause für Ideen", slug: "zuhause-fuer-ideen" },
-  { id: "section4", title: "Wohnen neu gedacht", slug: "wohnen-neu-gedacht" },
+  { id: "dein-nest-haus", title: "Dein Nest Haus", slug: "dein-nest-haus" },
   {
-    id: "section5",
+    id: "wohnen-ohne-grenzen",
+    title: "Wohnen ohne Grenzen",
+    slug: "wohnen-ohne-grenzen",
+  },
+  {
+    id: "zuhause-fuer-ideen",
+    title: "Zuhause für Ideen",
+    slug: "zuhause-fuer-ideen",
+  },
+  {
+    id: "wohnen-neu-gedacht",
+    title: "Wohnen neu gedacht",
+    slug: "wohnen-neu-gedacht",
+  },
+  {
+    id: "mehr-als-vier-waende",
     title: "Mehr als vier Wände",
     slug: "mehr-als-vier-waende",
   },
   {
-    id: "section6",
+    id: "gestaltung-fuer-visionen",
     title: "Gestaltung für Visionen",
     slug: "gestaltung-fuer-visionen",
   },
-  { id: "section7", title: "Raum für Ideen", slug: "raum-fuer-ideen" },
-  { id: "section8", title: "Design im Freistil", slug: "design-im-freistil" },
+  { id: "raum-fuer-ideen", title: "Raum für Ideen", slug: "raum-fuer-ideen" },
+  {
+    id: "design-im-freistil",
+    title: "Design im Freistil",
+    slug: "design-im-freistil",
+  },
+  {
+    id: "nest-entdecken",
+    title: "Nest Entdecken",
+    slug: "nest-entdecken",
+  },
 ];
 
 // Helper function to get mobile image path
@@ -53,7 +74,7 @@ const getMobileImagePath = (section: { imagePath: string }): string => {
 const sectionsContent = [
   {
     id: 1,
-    sectionId: "section1",
+    sectionId: "dein-nest-haus",
     imagePath: IMAGES.hero.nestHaus1,
     h1: "Dein ®Nest Haus",
     h3: "Dein Stil. Dein Zuhause.",
@@ -65,7 +86,7 @@ const sectionsContent = [
   },
   {
     id: 2,
-    sectionId: "section8",
+    sectionId: "design-im-freistil",
     imagePath: IMAGES.hero.nestHaus8,
     h1: "Dein Design im Freistil",
     h3: "So individuell wie du",
@@ -77,7 +98,7 @@ const sectionsContent = [
   },
   {
     id: 3,
-    sectionId: "section3",
+    sectionId: "zuhause-fuer-ideen",
     imagePath: IMAGES.hero.nestHaus3,
     h1: "Ein Zuhause für Ideen",
     h3: "Visionen brauchen Räume",
@@ -89,7 +110,7 @@ const sectionsContent = [
   },
   {
     id: 4,
-    sectionId: "section4",
+    sectionId: "wohnen-neu-gedacht",
     imagePath: IMAGES.hero.nestHaus4,
     h1: "Wohnen neu gedacht",
     h3: "Individualität. Design. Flexibilität.",
@@ -101,7 +122,7 @@ const sectionsContent = [
   },
   {
     id: 5,
-    sectionId: "section5",
+    sectionId: "mehr-als-vier-waende",
     imagePath: IMAGES.hero.nestHaus5,
     h1: "Mehr als nur vier Wände",
     h3: "Mit Nest bleibt kein Ort unerreichbar",
@@ -113,7 +134,7 @@ const sectionsContent = [
   },
   {
     id: 6,
-    sectionId: "section6",
+    sectionId: "gestaltung-fuer-visionen",
     imagePath: IMAGES.hero.nestHaus6,
     h1: "Gestaltung für Visionen",
     h3: "Neue Wege. Neue Räume.",
@@ -125,7 +146,7 @@ const sectionsContent = [
   },
   {
     id: 7,
-    sectionId: "section7",
+    sectionId: "raum-fuer-ideen",
     imagePath: IMAGES.hero.nestHaus7,
     h1: "Raum für deine Ideen",
     h3: "Dein Stil. Dein Zuhause.",
@@ -137,7 +158,7 @@ const sectionsContent = [
   },
   {
     id: 8,
-    sectionId: "section2",
+    sectionId: "wohnen-ohne-grenzen",
     imagePath: IMAGES.hero.nestHaus2,
     h1: "Wohnen ohne Grenzen",
     h3: "Wo Effizienz auf Architektur trifft.",
@@ -163,7 +184,8 @@ const ImageCaption = ({ modelName, configuration }: ImageCaptionProps) => (
 );
 
 export default function LandingPageClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("section1");
+  const [_currentSectionId, setCurrentSectionId] =
+    useState<string>("dein-nest-haus");
   const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { isMobile } = useDeviceDetect();
@@ -407,9 +429,10 @@ export default function LandingPageClient() {
               </div>
             </section>
 
-            {/* TwoByTwoImageGrid Section - After section 5 (id=5), before section 6 */}
+            {/* TwoByTwoImageGrid Section - After section 4 (wohnen-neu-gedacht) */}
             {section.id === 4 && (
               <section
+                id="nest-entdecken"
                 className="relative w-full bg-white"
                 style={{
                   marginBottom: "1vh",
