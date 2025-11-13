@@ -18,8 +18,8 @@ import Footer from "@/components/Footer";
 // Define sections for kontakt page
 const sections = [
   { id: "calendar", title: "Terminvereinbarung", slug: "termin" },
-  { id: "address", title: "Wo du uns findest", slug: "standort" },
   { id: "contact", title: "Grundstück Check", slug: "grundstueck-check" },
+  { id: "address", title: "Wo du uns findest", slug: "standort" },
   { id: "impressum", title: "Impressum", slug: "impressum" },
   { id: "call-to-action", title: "Kein Plan? Kein Problem!", slug: "beratung" },
   { id: "gallery", title: "Bildergalerie", slug: "galerie" },
@@ -42,7 +42,14 @@ export default function KontaktClient() {
           maxWidth={false}
         />
 
-        {/* Wo du uns findest - Section 2 */}
+        {/* Dein Grundstück - Unser Check - Section 2 */}
+        <GrundstueckCheckForm
+          id="contact"
+          backgroundColor="white"
+          maxWidth="max-w-[1440px]"
+        />
+
+        {/* Wo du uns findest - Section 3 */}
         <div className="w-full py-16 bg-gray-50">
           <SectionHeader
             title="Wo du uns findest"
@@ -70,13 +77,6 @@ export default function KontaktClient() {
             </div>
           </div>
         </div>
-
-        {/* Dein Grundstück - Unser Check - Section 3 */}
-        <GrundstueckCheckForm
-          id="contact"
-          backgroundColor="white"
-          maxWidth="max-w-[1440px]"
-        />
 
         {/* Get In Contact Banner Section */}
         <GetInContactBanner
