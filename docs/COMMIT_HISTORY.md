@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [061fcd4641a061ad8b5b019a3d2bfcc3c05439d7] - Thu Nov 13 22:01:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/dein-nest/DeinNestClient.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [0611cc7e110073e83468a3d949a2748f5f8256d3] - Thu Nov 13 21:43:52 2025 +0100
 
 **Author**: stenkjan

@@ -182,7 +182,10 @@ export default function DeinNestClient() {
             </div>
 
             {/* Desktop Buttons - Positioned at bottom */}
-            <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
+            <div
+              className="absolute left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex"
+              style={{ bottom: "5%" }}
+            >
               <Link href="/nest-system">
                 <Button variant="primary" size="xs">
                   Erster Schritte
@@ -199,7 +202,7 @@ export default function DeinNestClient() {
         {/* Section 2 - Text Content Below Hero */}
         <section id="intro-nest" className="w-full relative bg-white">
           {/* Text Content Below Video */}
-          <div className="max-w-[1440px] 2xl:max-w-[1440px] px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-32 mx-auto md:mt-12 pt-8">
+          <div className="max-w-[1440px] 2xl:max-w-[1440px] px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-32 mx-auto pt-8 md:pt-16">
             <h2
               className="h2-title text-center"
               dangerouslySetInnerHTML={{

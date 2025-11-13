@@ -73,7 +73,7 @@ export default function Footer() {
       </div>
 
       {/* Main footer content */}
-      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-12 lg:px-12 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {footerColumns.map((column, index) => (
             <div key={index} className="space-y-4">
