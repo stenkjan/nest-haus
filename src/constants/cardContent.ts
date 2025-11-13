@@ -725,6 +725,23 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 5,
+        title: "Häufige Fragen beantwortet",
+        subtitle: "",
+        description: "Alle Antworten im Überblick",
+        video: IMAGES.videos.videoCard04,
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Square format
+        buttons: [
+            {
+                text: "Zum FAQ",
+                variant: "secondary-narrow-white",
+                size: "xs",
+                link: "/faq",
+            },
+        ],
+    },
+    {
+        id: 6,
         title: "Natürliche Materialien erleben",
         subtitle: "",
         description: "Holz schafft warme Atmosphäre",
@@ -885,6 +902,23 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         buttons: [
             {
                 text: "Termin vereinbaren",
+                variant: "primary",
+                size: "xs",
+                link: "/konfigurator",
+            },
+        ],
+    },
+    {
+        id: 5,
+        title: "Deine Vision wird Realität",
+        subtitle: "",
+        description: "Gemeinsam gestalten wir dein Zuhause",
+        video: IMAGES.videos.videoCard08,
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Portrait format
+        buttons: [
+            {
+                text: "Projekt starten",
                 variant: "primary",
                 size: "xs",
                 link: "/konfigurator",
@@ -1093,6 +1127,15 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#121212",
         image: IMAGES.partners.wko, // TU-IAM logo
         externalLink: "https://www.wko.at", // Optional: link to WKO website
+    },
+    {
+        id: 4,
+        title: "Innovation Austria",
+        subtitle: "Pioniere der Modulbauweise",
+        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Nest setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||Innovation Partner|||Zukunftsorientiert",
+        backgroundColor: "#121212",
+        image: IMAGES.partners.wko, // Reusing WKO logo for now
+        externalLink: "https://www.wko.at", // Optional: link
     },
 ];
 

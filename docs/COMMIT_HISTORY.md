@@ -4,6 +4,32 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [927bf87776e275234227852ce99fbe3ffec16925] - Thu Nov 13 21:40:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 2d588bd4a405281bdd6812da346669345b473e69 into 2d20eba3c0d42d851824b6c3dd60f6bf497c39c8  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+
+
+---
+
+## [6dd2c71f92ad1b84b3e14b6b337dc72472aff6b8] - Thu Nov 13 21:36:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [03017d53ff688429b3b5b83244713f742fc24937] - Thu Nov 13 20:51:53 2025 +0100
 
 **Author**: stenkjan
