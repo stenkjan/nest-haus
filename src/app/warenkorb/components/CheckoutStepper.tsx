@@ -1605,802 +1605,17 @@ export default function CheckoutStepper({
     <section className="w-full pt-12 pb-4">
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-12">
         {renderIntro()}
-        <div className="mt-6 pt-6">
-          {stepIndex === 0 && (
-            <div className="space-y-6 pt-8">
-              {/* Overview grid: cart on left, summary/upgrade on right */}
-              <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
-                {/* Show house configuration section only if not in ohne nest mode */}
-                {!isOhneNestMode && (
-                  <div className="contents">
-                    <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
-                      <h2 className="h3-secondary text-gray-500">
-                        <span className="text-black">Dein Nest</span>
-                        <span className="text-gray-300"> Deine Auswahl</span>
-                      </h2>
-                      {items.map((item) => (
-                        <div
-                          key={item.id}
-                          className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
-                          style={{
-                            minHeight: "clamp(400px, 40vw, 520px)",
-                          }}
-                        >
-                          {/* Header Section */}
-                          <div className="flex items-center justify-between gap-4 mb-4">
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
-                                {getConfigurationTitle(item)}
-                              </div>
-                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                {(() => {
-                                  // For configuration items with nest, show price per m²
-                                  if (
-                                    "totalPrice" in item &&
-                                    (item as ConfigurationCartItem).nest
-                                  ) {
-                                    const configItem =
-                                      item as ConfigurationCartItem;
-                                    const nestModel =
-                                      configItem.nest?.value || "";
-
-                                    // Calculate dynamic total for m² calculation
-                                    let dynamicTotal = 0;
-
-                                    // Add nest price (dynamic from pricing data)
-                                    if (configItem.nest) {
-                                      dynamicTotal += getItemPrice(
-                                        "nest",
-                                        configItem.nest,
-                                        configItem
-                                      );
-                                    }
-
-                                    // Add all other items
-                                    const itemsToSum = [
-                                      "gebaeudehuelle",
-                                      "innenverkleidung",
-                                      "fussboden",
-                                      "bodenaufbau",
-                                      "geschossdecke",
-                                      "fundament",
-                                      "pvanlage",
-                                      "belichtungspaket",
-                                      "stirnseite",
-                                      "planungspaket",
-                                      "kamindurchzug",
-                                    ] as const;
-
-                                    itemsToSum.forEach((key) => {
-                                      const selection = configItem[key];
-                                      if (selection) {
-                                        dynamicTotal += getItemPrice(
-                                          key,
-                                          selection,
-                                          configItem
-                                        );
-                                      }
-                                    });
-
-                                    const priceValue = dynamicTotal;
-                                    const geschossdeckeQuantity =
-                                      configItem.geschossdecke?.quantity || 0;
-
-                                    return PriceUtils.calculatePricePerSquareMeter(
-                                      priceValue,
-                                      nestModel,
-                                      geschossdeckeQuantity
-                                    );
-                                  }
-                                  // For other items, keep monthly payment
-                                  const priceValue =
-                                    "totalPrice" in item
-                                      ? (item as ConfigurationCartItem)
-                                          .totalPrice
-                                      : (item as CartItem).price;
-                                  return `oder ${calculateMonthlyPayment(
-                                    priceValue
-                                  )} für 240 Monate`;
-                                })()}
-                              </div>
-                            </div>
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
-                              {PriceUtils.formatPrice(
-                                (() => {
-                                  // For nest, use dynamic price from pricing data
-                                  if (
-                                    "totalPrice" in item &&
-                                    (item as ConfigurationCartItem).nest
-                                  ) {
-                                    const configItem =
-                                      item as ConfigurationCartItem;
-                                    if (configItem.nest) {
-                                      return getItemPrice(
-                                        "nest",
-                                        configItem.nest,
-                                        configItem
-                                      );
-                                    }
-                                  }
-                                  // For other items, use totalPrice
-                                  return "totalPrice" in item
-                                    ? (item as ConfigurationCartItem).totalPrice
-                                    : (item as CartItem).price;
-                                })()
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Details Section - Now takes remaining space and distributes items evenly */}
-                          <div className="flex-1 flex flex-col justify-evenly min-h-0">
-                            {(() => {
-                              const details = renderConfigurationDetails(item);
-                              const topAndMiddleItems = details.filter(
-                                (d) => !d.isBottomItem
-                              );
-                              const bottomItems = details.filter(
-                                (d) => d.isBottomItem
-                              );
-
-                              const renderDetailItem = (
-                                detail: {
-                                  label: string;
-                                  value: string;
-                                  price: number;
-                                  isIncluded: boolean;
-                                  category: string;
-                                  isBottomItem?: boolean;
-                                },
-                                idx: number
-                              ) => {
-                                if (!detail.value || detail.value === "—")
-                                  return null;
-                                return (
-                                  <div
-                                    key={detail.category + "-" + idx}
-                                    className="flex items-center justify-between gap-4 py-1"
-                                  >
-                                    <div className="flex-1 min-w-0">
-                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
-                                        {detail.value}
-                                      </div>
-                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1 break-words">
-                                        {detail.label}
-                                      </div>
-                                    </div>
-                                    <div className="text-right min-w-0">
-                                      {detail.isIncluded ||
-                                      (detail.price && detail.price === 0) ? (
-                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
-                                          inkludiert
-                                        </div>
-                                      ) : (
-                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                          {PriceUtils.formatPrice(
-                                            detail.price || 0
-                                          )}
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                );
-                              };
-
-                              // Combine all items into a single array for even distribution
-                              const allItems = [
-                                ...topAndMiddleItems,
-                                ...bottomItems,
-                              ];
-
-                              return <>{allItems.map(renderDetailItem)}</>;
-                            })()}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
-                      <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
-                        <span className="text-black">Dein Nest</span>
-                        <span className="text-gray-300">
-                          {" "}
-                          Ein Blick in die Zukunft
-                        </span>
-                      </h2>
-                      {/* Configuration Image Gallery */}
-                      <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-1 lg:flex lg:flex-col">
-                        <div
-                          className="relative w-full lg:flex-1"
-                          style={{ aspectRatio: "16/10" }}
-                        >
-                          {currentImagePath && (
-                            <HybridBlobImage
-                              key={`${currentView}:${currentImagePath}`}
-                              path={currentImagePath}
-                              alt={`Konfiguration Vorschau – ${currentView}`}
-                              fill
-                              className="object-contain"
-                              strategy="client"
-                              isInteractive={true}
-                              sizes="(max-width: 1023px) 100vw, 70vw"
-                              quality={85}
-                              priority={true}
-                            />
-                          )}
-
-                          {/* PV Module Overlay - only show on exterior view when PV is selected */}
-                          {currentView === "exterior" &&
-                            sourceConfig?.pvanlage &&
-                            sourceConfig?.pvanlage?.quantity &&
-                            sourceConfig?.pvanlage?.quantity > 0 &&
-                            sourceConfig?.nest && (
-                              <PvModuleOverlay
-                                nestSize={
-                                  sourceConfig.nest.value as
-                                    | "nest80"
-                                    | "nest100"
-                                    | "nest120"
-                                    | "nest140"
-                                    | "nest160"
-                                }
-                                moduleCount={sourceConfig.pvanlage.quantity}
-                                isVisible={true}
-                                className=""
-                              />
-                            )}
-
-                          {galleryViews.length > 1 && (
-                            <>
-                              <button
-                                type="button"
-                                aria-label="Vorheriges Bild"
-                                onClick={goPrevImage}
-                                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
-                              >
-                                ‹
-                              </button>
-                              <button
-                                type="button"
-                                aria-label="Nächstes Bild"
-                                onClick={goNextImage}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
-                              >
-                                ›
-                              </button>
-                            </>
-                          )}
-                        </div>
-                        {galleryViews.length > 1 && (
-                          <div className="flex items-center justify-center gap-2 py-2 lg:flex-shrink-0">
-                            {galleryViews.map((v, i) => (
-                              <button
-                                key={v + i}
-                                type="button"
-                                aria-label={`Wechsel zu Ansicht ${v}`}
-                                onClick={() => setGalleryIndex(i)}
-                                className={
-                                  "w-2.5 h-2.5 rounded-full " +
-                                  (i === galleryIndex
-                                    ? "bg-[#3D6CE1]"
-                                    : "bg-gray-300")
-                                }
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Show "Planen heißt Preise kennen" section for ohne-nest mode */}
-                {isOhneNestMode && (
-                  <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
-                        {/* Text content on left - directly on gray background */}
-                        <div className="w-full md:w-1/2">
-                          <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
-                            Planen heißt Preise kennen
-                          </h2>
-                          <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
-                            Wenn du dein Nest schon jetzt konfigurierst,
-                            erhältst du volle Klarheit über Preis, Umfang und
-                            Möglichkeiten. Deine Auswahl bleibt dabei flexibel
-                            und kann jederzeit angepasst werden, falls sich
-                            deine Wünsche im Laufe der Planung verändern.
-                          </p>
-                          <div>
-                            <Button
-                              variant="primary"
-                              size="md"
-                              onClick={() => {
-                                window.location.href = "/konfigurator";
-                              }}
-                            >
-                              Jetzt konfigurieren
-                            </Button>
-                          </div>
-                        </div>
-
-                        {/* Image on right - inside white box */}
-                        <div className="w-full md:w-1/2">
-                          <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
-                            <div className="relative w-full aspect-square">
-                              <HybridBlobImage
-                                path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                                alt="NEST-Haus Konfiguration"
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex justify-center mt-16 md:mt-20">
-                <Button
-                  variant="landing-secondary-blue"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={() => {
-                    // Clear cart and reset configurator completely for fresh start
-                    items.forEach((item) => {
-                      removeFromCart(item.id);
-                    });
-
-                    const { resetConfiguration } =
-                      useConfiguratorStore.getState();
-                    resetConfiguration();
-
-                    window.location.href = "/konfigurator";
-                  }}
-                >
-                  Neu konfigurieren
-                </Button>
-                <span className="inline-block w-3" />
-                <Button
-                  variant="primary"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goNext}
-                >
-                  Nächster Schritt
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {stepIndex === 1 && (
-            <div className="space-y-4 pt-8">
-              {/* Dein Grundstück - Unser Check Section - FIRST */}
-              <div className="mb-16">
-                <div className="text-center mb-8 pt-8">
-                  <h2 className="h2-title text-black mb-2 md:mb-3">
-                    Dein Nest-Haus Vorentwurf
-                  </h2>
-                  <h3 className="h3-secondary text-black mb-8 pb-4 max-w-3xl mx-auto">
-                    Wir überprüfen für dich wie dein Nest-Haus auf ein
-                    Grundstück deiner Wahl passt
-                  </h3>
-                </div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
-                  <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
-                    <p className="p-secondary mb-4 mt-12">
-                      <span className="text-nest-gray">Bevor dein </span>
-                      <span className="text-black font-medium">
-                        Traum vom Nest-Haus
-                      </span>
-                      <span className="text-nest-gray">
-                        {" "}
-                        Realität wird, prüfen wir, ob dein{" "}
-                      </span>
-                      <span className="text-black font-medium">Grundstück</span>
-                      <span className="text-nest-gray">
-                        {" "}
-                        alle rechtlichen und{" "}
-                      </span>
-                      <span className="text-black font-medium">
-                        baulichen Anforderungen
-                      </span>
-                      <span className="text-nest-gray"> erfüllt. Für </span>
-                      <span className="text-black font-medium">€ 3.000</span>
-                      <span className="text-nest-gray">
-                        {" "}
-                        übernehmen wir diese Überprüfung und entwickeln
-                        gemeinsam mit dir ein individuelles{" "}
-                      </span>
-                      <span className="text-black font-medium">
-                        Vorentwurfskonzept
-                      </span>
-                      <span className="text-nest-gray">
-                        {" "}
-                        deines Nest-Hauses.
-                      </span>
-                    </p>
-                    <div className="h-3"></div>
-                    <p className="p-secondary mb-6">
-                      <span className="text-nest-gray">
-                        Dabei verbinden wir deine{" "}
-                      </span>
-                      <span className="text-black font-medium">Wünsche</span>
-                      <span className="text-nest-gray">
-                        {" "}
-                        mit den gegebenen{" "}
-                      </span>
-                      <span className="text-black font-medium">
-                        Rahmenbedingungen
-                      </span>
-                      <span className="text-nest-gray">
-                        {" "}
-                        und schaffen so die ideale Grundlage für dein{" "}
-                      </span>
-                      <span className="text-black font-medium">
-                        zukünftiges Zuhause
-                      </span>
-                      <span className="text-nest-gray">.</span>
-                    </p>
-                  </div>
-
-                  <div className="w-full md:w-1/2">
-                    <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
-                      <GrundstueckCheckForm
-                        backgroundColor="white"
-                        maxWidth={false}
-                        padding="sm"
-                        excludePersonalData={true}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Process Steps - Step by Step nach Hause - SECOND */}
-              <div className="mt-16">
-                <div className="text-center mb-16">
-                  <h2 className="h2-title textblack mb-2 md:mb-3">
-                    Step by Step nach Hause
-                  </h2>
-                  <h3 className="h3-secondary text-black mb-8">
-                    Deine Vorstellungen formen jeden Schritt am Weg zum neuen
-                    Zuhause
-                  </h3>
-                </div>
-
-                <UnifiedContentCard
-                  category="ablaufSteps"
-                  layout="process-detail"
-                  style="standard"
-                  variant="responsive"
-                  maxWidth={true}
-                  showInstructions={false}
-                  backgroundColor="white"
-                />
-              </div>
-
-              <div className="flex justify-center mt-16 md:mt-20">
-                <Button
-                  variant="landing-secondary-blue"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goPrev}
-                  disabled={stepIndex <= 0}
-                >
-                  Vorheriger Schritt
-                </Button>
-                <span className="inline-block w-3" />
-                <Button
-                  variant="primary"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={() => {
-                    ensureGrundstueckscheckIncluded();
-                    goNext();
-                    // Ensure scroll happens on mobile with a small delay
-                    setTimeout(() => {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }, 100);
-                  }}
-                >
-                  Nächster Schritt
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-nest mode */}
-          {stepIndex === 3 && (!isOhneNestMode || configItem) && (
-            <div className="space-y-4 pt-8">
-              {(() => {
-                console.log(
-                  "📋 CheckoutStepper: Rendering CheckoutPlanungspaketeCards with:",
-                  {
-                    selectedPlan: localSelectedPlan,
-                    stepIndex,
-                    configuratorPlan: configuration?.planungspaket?.value,
-                    cartPlan: configItem?.planungspaket?.value,
-                  }
-                );
-                return null;
-              })()}
-              <CheckoutPlanungspaketeCards
-                selectedPlan={localSelectedPlan}
-                onPlanSelect={(selectedValue) => {
-                  console.log(
-                    "📦 CheckoutStepper: User selected planungspaket:",
-                    selectedValue
-                  );
-                  setLocalSelectedPlan(selectedValue);
-                  // Immediately update the configuration when user selects
-                  setPlanningPackage(selectedValue);
-                }}
-                basisDisplayPrice={basisDisplayPrice}
-              />
-
-              {/* Welches Planungspaket passt zu dir - Konfigurator popup style */}
-              <div className="mt-12 max-w-4xl mx-auto">
-                <button
-                  onClick={() =>
-                    setShowPlanungspaketeDetails(!showPlanungspaketeDetails)
-                  }
-                  className="w-full rounded-3xl p-6 bg-[#F4F4F4] flex items-center justify-between"
-                >
-                  <div className="text-left">
-                    <h3 className="p-primary text-black mb-1">
-                      Welches Planungspaket passt zu dir?
-                    </h3>
-                    <p className="p-primary-small text-black">
-                      Siehe dir die Pakete im Detail an und entdecke welches am
-                      besten zu dir passt.
-                    </p>
-                  </div>
-                  <div className="min-w-[1.5rem] min-h-[1.5rem] rounded-full border border-gray-400 flex items-center justify-center flex-shrink-0">
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Navigation buttons for step 3 - Always show when on step 3 */}
-          {stepIndex === 3 && (
-            <div className="flex justify-center mt-16 md:mt-20">
-              <Button
-                variant="landing-secondary-blue"
-                size="xs"
-                className="whitespace-nowrap"
-                onClick={goPrev}
-                disabled={stepIndex <= 0}
-              >
-                Vorheriger Schritt
-              </Button>
-              <span className="inline-block w-3" />
-              <Button
-                variant="primary"
-                size="xs"
-                className="whitespace-nowrap"
-                onClick={goNext}
-              >
-                Nächster Schritt
-              </Button>
-            </div>
-          )}
-
-          {stepIndex === 2 && (
-            <div className="space-y-4 pt-8">
-              {/* Show notification if redirected without booking appointment */}
-              {contactWarning && (
-                <div className="flex justify-center mb-6">
-                  <div className="border-2 border-gray-300 rounded-xl px-6 py-4 max-w-2xl bg-white">
-                    <p className="text-black font-normal text-base text-center">
-                      Bitte buchen Sie einen Beratungstermin, um die Zahlung
-                      Ihres Vorentwurfs abzuschließen.
-                    </p>
-                  </div>
-                </div>
-              )}
-              {/* Terminvereinbarung with centered title */}
-              <div className="text-center mb-16">
-                <h2 className="h2-title text-black mb-2 md:mb-3">
-                  Vereinbare jetzt deinen Termin
-                </h2>
-                <h3 className="h3-secondary text-black mb-2">
-                  Wir helfen gerne
-                </h3>
-              </div>
-
-              {/* Left text + right calendar layout */}
-              <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
-                <div className="w-full md:w-1/2 text-center md:text-left md:px-8 lg:px-16 pt-12">
-                  <p className="p-secondary mb-6 pt-6">
-                    <span className="text-nest-gray">
-                      Der Kauf deines Hauses ist ein großer Schritt – und{" "}
-                    </span>
-                    <span className="text-black font-medium">
-                      wir sind da, um dir dabei zu helfen.
-                    </span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      Für mehr Sicherheit und Klarheit{" "}
-                    </span>
-                    <span className="text-black font-medium">
-                      stehen wir dir jederzeit persönlich zur Seite.
-                    </span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      Ruf uns an, um dein{" "}
-                    </span>
-                    <span className="text-black font-medium">
-                      Beratungsgespräch
-                    </span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      zu vereinbaren, oder buche deinen{" "}
-                    </span>
-                    <span className="text-black font-medium">
-                      Termin ganz einfach online.
-                    </span>
-                    <span className="text-nest-gray">
-                      {" "}
-                      Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
-                    </span>
-                  </p>
-                </div>
-
-                <div className="w-full md:w-1/2">
-                  <AppointmentBooking showLeftSide={false} />
-                </div>
-              </div>
-
-              {/* ContactMap */}
-              <div className="mt-16">
-                <ContactMap
-                  backgroundColor="white"
-                  maxWidth={true}
-                />
-              </div>
-
-              {/* Move the buttons here, directly below the Grundstückscheck section */}
-              <div className="flex justify-center mt-16 md:mt-20">
-                <Button
-                  variant="landing-secondary-blue"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goPrev}
-                  disabled={stepIndex <= 0}
-                >
-                  Vorheriger Schritt
-                </Button>
-                <span className="inline-block w-3" />
-                <Button
-                  variant="primary"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={() => {
-                    goNext();
-                    // Ensure scroll happens on mobile with a small delay
-                    setTimeout(() => {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }, 100);
-                  }}
-                >
-                  Nächster Schritt
-                </Button>
-              </div>
-
-              {/* ContactMap */}
-              <div className="mt-16">
-                <div className="text-center mb-16">
-                  <h2 className="h2-title text-black mb-2 md:mb-3">
-                    So findest du uns
-                  </h2>
-                  <h3 className="h3-secondary text-black mb-2">
-                    Persönlich oder telefonisch? Du entscheidest.
-                  </h3>
-                </div>
-                <div className="w-full max-w-[1600px] mx-auto">
-                  <div
-                    className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
-                    style={{ border: "15px solid #F4F4F4" }}
-                  >
-                    <iframe
-                      title="Google Maps Location"
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2717.0612860304307!2d15.416334776632444!3d47.08126897114428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476e3352d2429edf%3A0x3a9430b9a0f0fd25!2sKarmeliterplatz%208%2C%208010%20Graz%2C%20Austria!5e0!3m2!1sen!2sus!4v1712087456318!5m2!1sen!2sus"
-                      width="600"
-                      height="450"
-                      style={{ width: "100%", height: "100%", border: 0 }}
-                      allowFullScreen={true}
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {stepIndex === 4 && (
-            <div className="space-y-6 pt-8">
-              {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
-              {isOhneNestMode && (
-                <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-12">
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
-                      {/* Text content on left - directly on gray background */}
-                      <div className="w-full md:w-1/2">
-                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
-                          Planen heißt Preise kennen
-                        </h2>
-                        <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
-                          Wenn du dein Nest schon jetzt konfigurierst, erhältst
-                          du volle Klarheit über Preis, Umfang und
-                          Möglichkeiten. Deine Auswahl bleibt dabei flexibel und
-                          kann jederzeit angepasst werden, falls sich deine
-                          Wünsche im Laufe der Planung verändern.
-                        </p>
-                        <div>
-                          <Button
-                            variant="primary"
-                            size="md"
-                            onClick={() => {
-                              window.location.href = "/konfigurator";
-                            }}
-                          >
-                            Jetzt konfigurieren
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Image on right - inside white box */}
-                      <div className="w-full md:w-1/2">
-                        <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
-                          <div className="relative w-full aspect-square">
-                            <HybridBlobImage
-                              path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
-                              alt="NEST-Haus Konfiguration"
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Title before Dein Nest sections */}
+        {stepIndex === 0 && (
+          <div className="space-y-6 pt-8">
+            {/* Overview grid: cart on left, summary/upgrade on right */}
+            <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
+              {/* Show house configuration section only if not in ohne nest mode */}
               {!isOhneNestMode && (
-                <div className="text-center mb-12">
-                  <h2 className="h2-title text-black mb-2">
-                    Du hast es gleich Geschafft
-                  </h2>
-                  <h3 className="h3-secondary text-black">
-                    Überprüfe deine Daten und Angaben
-                  </h3>
-                </div>
-              )}
-
-              {/* Overview grid: cart on left, summary/upgrade on right */}
-              {!isOhneNestMode && (
-                <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
+                <div className="contents">
                   <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
-                    <h2 className="h3-secondary text-black">
+                    <h2 className="h3-secondary text-gray-500">
                       <span className="text-black">Dein Nest</span>
-                      <span className="text-nest-gray"> Deine Auswahl</span>
+                      <span className="text-gray-300"> Deine Auswahl</span>
                     </h2>
                     {items.map((item) => (
                       <div
@@ -2585,7 +1800,7 @@ export default function CheckoutStepper({
                   <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
                     <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
                       <span className="text-black">Dein Nest</span>
-                      <span className="text-nest-gray">
+                      <span className="text-gray-300">
                         {" "}
                         Ein Blick in die Zukunft
                       </span>
@@ -2676,172 +1891,808 @@ export default function CheckoutStepper({
                 </div>
               )}
 
-              {/* Bewerber Data Section - 4 boxes in 2x2 grid with column headers */}
-              <div className="max-w-6xl mx-auto mt-16 mb-12">
-                {/* Section Headers */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <h3 className="h3-secondary text-black">
-                      <span className="text-black">Bewerber</span>
-                      <span className="text-nest-gray"> Deine Daten</span>
-                    </h3>
-                  </div>
-                  <div>
-                    <h3 className="h3-secondary text-black">
-                      <span className="text-black">Deine Termine</span>
-                      <span className="text-nest-gray"> Im Überblick</span>
-                    </h3>
+              {/* Show "Planen heißt Preise kennen" section for ohne-nest mode */}
+              {isOhneNestMode && (
+                <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                      {/* Text content on left - directly on gray background */}
+                      <div className="w-full md:w-1/2 text-center md:text-left">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
+                          Planen heißt Preise kennen
+                        </h2>
+                        <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
+                          Wenn du dein Nest schon jetzt konfigurierst, erhältst
+                          du volle Klarheit über Preis, Umfang und
+                          Möglichkeiten. Deine Auswahl bleibt dabei flexibel und
+                          kann jederzeit angepasst werden, falls sich deine
+                          Wünsche im Laufe der Planung verändern.
+                        </p>
+                        <div className="flex justify-center md:justify-start">
+                          <Button
+                            variant="primary"
+                            size="md"
+                            onClick={() => {
+                              window.location.href = "/konfigurator";
+                            }}
+                          >
+                            Jetzt konfigurieren
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Image on right - inside white box */}
+                      <div className="w-full md:w-1/2">
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
+                          <div className="relative w-full aspect-square">
+                            <HybridBlobImage
+                              path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                              alt="NEST-Haus Konfiguration"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              )}
+            </div>
 
-                {/* Content Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Box 1: Bewerber Data (no title) */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                    <div className="space-y-2">
-                      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                        <div>
-                          <div className="text-gray-600">
-                            Vollständiger Name
-                          </div>
-                          <div className="text-gray-900 font-medium">
-                            {getUserData.name && getUserData.lastName
-                              ? `${getUserData.name} ${getUserData.lastName}`
-                              : "—"}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-gray-600">Email</div>
-                          <div className="text-gray-900 font-medium">
-                            {getUserData.email || "—"}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-gray-600">Telefon</div>
-                          <div className="text-gray-900 font-medium">
-                            {getUserData.phone || "—"}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-gray-600">Land</div>
-                          <div className="text-gray-900 font-medium">
-                            {getUserData.country || "—"}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pt-2">
-                        <button
+            <div className="flex justify-center mt-16 md:mt-20">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={() => {
+                  // Clear cart and reset configurator completely for fresh start
+                  items.forEach((item) => {
+                    removeFromCart(item.id);
+                  });
+
+                  const { resetConfiguration } =
+                    useConfiguratorStore.getState();
+                  resetConfiguration();
+
+                  window.location.href = "/konfigurator";
+                }}
+              >
+                Neu konfigurieren
+              </Button>
+              <span className="inline-block w-3" />
+              <Button
+                variant="primary"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goNext}
+              >
+                Nächster Schritt
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {stepIndex === 1 && (
+          <div className="space-y-4 pt-16 md:pt-32">
+            {/* Dein Grundstück - Unser Check Section - FIRST */}
+            <div className="mb-16">
+              <div className="text-center mb-12 md:mb-16">
+                <h2 className="h2-title text-black mb-2 md:mb-3">
+                  Dein Nest-Haus Vorentwurf
+                </h2>
+                <h3 className="h3-secondary text-black mb-2">
+                  Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
+                  deiner Wahl passt
+                </h3>
+              </div>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-start gap-6">
+                <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24">
+                  <p className="p-secondary mb-4 md:mt-12">
+                    <span className="text-nest-gray">Bevor dein </span>
+                    <span className="text-black font-medium">
+                      Traum vom Nest-Haus
+                    </span>
+                    <span className="text-nest-gray">
+                      {" "}
+                      Realität wird, prüfen wir, ob dein{" "}
+                    </span>
+                    <span className="text-black font-medium">Grundstück</span>
+                    <span className="text-nest-gray">
+                      {" "}
+                      alle rechtlichen und{" "}
+                    </span>
+                    <span className="text-black font-medium">
+                      baulichen Anforderungen
+                    </span>
+                    <span className="text-nest-gray"> erfüllt. Für </span>
+                    <span className="text-black font-medium">€ 3.000</span>
+                    <span className="text-nest-gray">
+                      {" "}
+                      übernehmen wir diese Überprüfung und entwickeln gemeinsam
+                      mit dir ein individuelles{" "}
+                    </span>
+                    <span className="text-black font-medium">
+                      Vorentwurfskonzept
+                    </span>
+                    <span className="text-nest-gray"> deines Nest-Hauses.</span>
+                  </p>
+                  <p className="p-secondary mb-6">
+                    <span className="text-nest-gray">
+                      Dabei verbinden wir deine{" "}
+                    </span>
+                    <span className="text-black font-medium">Wünsche</span>
+                    <span className="text-nest-gray"> mit den gegebenen </span>
+                    <span className="text-black font-medium">
+                      Rahmenbedingungen
+                    </span>
+                    <span className="text-nest-gray">
+                      {" "}
+                      und schaffen so die ideale Grundlage für dein{" "}
+                    </span>
+                    <span className="text-black font-medium">
+                      zukünftiges Zuhause
+                    </span>
+                    <span className="text-nest-gray">.</span>
+                  </p>
+                </div>
+
+                <div className="w-full md:w-1/2">
+                  <div className="w-full max-w-[520px] ml-auto mt-1 md:mt-2">
+                    <GrundstueckCheckForm
+                      backgroundColor="white"
+                      maxWidth={false}
+                      padding="sm"
+                      excludePersonalData={true}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Process Steps - Step by Step nach Hause - SECOND */}
+            <div className="text-center mb-4 md:mb-16">
+              <h2 className="h2-title textblack mb-2 md:mb-3">
+                Step by Step nach Hause
+              </h2>
+              <h3 className="h3-secondary text-black mb-8">
+                Deine Vorstellungen formen jeden Schritt am Weg zum neuen
+                Zuhause
+              </h3>
+            </div>
+
+            <UnifiedContentCard
+              category="ablaufSteps"
+              layout="process-detail"
+              style="standard"
+              variant="responsive"
+              maxWidth={true}
+              showInstructions={false}
+              backgroundColor="white"
+            />
+
+            <div className="flex justify-center mt-16 md:mt-20">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Vorheriger Schritt
+              </Button>
+              <span className="inline-block w-3" />
+              <Button
+                variant="primary"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={() => {
+                  ensureGrundstueckscheckIncluded();
+                  goNext();
+                  // Ensure scroll happens on mobile with a small delay
+                  setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }, 100);
+                }}
+              >
+                Nächster Schritt
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-nest mode */}
+        {stepIndex === 3 && (!isOhneNestMode || configItem) && (
+          <div className="space-y-4 pt-16">
+            {(() => {
+              console.log(
+                "📋 CheckoutStepper: Rendering CheckoutPlanungspaketeCards with:",
+                {
+                  selectedPlan: localSelectedPlan,
+                  stepIndex,
+                  configuratorPlan: configuration?.planungspaket?.value,
+                  cartPlan: configItem?.planungspaket?.value,
+                }
+              );
+              return null;
+            })()}
+            <CheckoutPlanungspaketeCards
+              selectedPlan={localSelectedPlan}
+              onPlanSelect={(selectedValue) => {
+                console.log(
+                  "📦 CheckoutStepper: User selected planungspaket:",
+                  selectedValue
+                );
+                setLocalSelectedPlan(selectedValue);
+                // Immediately update the configuration when user selects
+                setPlanningPackage(selectedValue);
+              }}
+              basisDisplayPrice={basisDisplayPrice}
+            />
+
+            {/* Welches Planungspaket passt zu dir - Konfigurator popup style */}
+            <div className="mt-12 max-w-4xl mx-auto">
+              <button
+                onClick={() =>
+                  setShowPlanungspaketeDetails(!showPlanungspaketeDetails)
+                }
+                className="w-full rounded-3xl p-6 bg-[#F4F4F4] flex items-center justify-between"
+              >
+                <div className="text-left">
+                  <h3 className="p-primary text-black mb-1">
+                    Welches Planungspaket passt zu dir?
+                  </h3>
+                  <p className="p-primary-small text-black">
+                    Siehe dir die Pakete im Detail an und entdecke welches am
+                    besten zu dir passt.
+                  </p>
+                </div>
+                <div className="min-w-[1.5rem] min-h-[1.5rem] rounded-full border border-gray-400 flex items-center justify-center flex-shrink-0">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Navigation buttons for step 3 - Always show when on step 3 */}
+        {stepIndex === 3 && (
+          <div className="flex justify-center mt-16 md:mt-20">
+            <Button
+              variant="landing-secondary-blue"
+              size="xs"
+              className="whitespace-nowrap"
+              onClick={goPrev}
+              disabled={stepIndex <= 0}
+            >
+              Vorheriger Schritt
+            </Button>
+            <span className="inline-block w-3" />
+            <Button
+              variant="primary"
+              size="xs"
+              className="whitespace-nowrap"
+              onClick={goNext}
+            >
+              Nächster Schritt
+            </Button>
+          </div>
+        )}
+
+        {stepIndex === 2 && (
+          <div className="space-y-4 pt-16 md:pt-16">
+            {/* Show notification if redirected without booking appointment */}
+            {contactWarning && (
+              <div className="flex justify-center mb-6">
+                <div className="border-2 border-gray-300 rounded-xl px-6 py-4 max-w-2xl bg-white">
+                  <p className="text-black font-normal text-base text-center">
+                    Bitte buchen Sie einen Beratungstermin, um die Zahlung Ihres
+                    Vorentwurfs abzuschließen.
+                  </p>
+                </div>
+              </div>
+            )}
+            {/* Terminvereinbarung with centered title */}
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="h2-title text-black mb-2 md:mb-3">
+                Vereinbare jetzt deinen Termin
+              </h2>
+              <h3 className="h3-secondary text-black mb-2">Wir helfen gerne</h3>
+            </div>
+
+            {/* Left text + right calendar layout */}
+            <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
+              <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24 md:pt-12 md:mt-12">
+                <p className="p-secondary mb-4 md:mb-6 md:pt-6">
+                  <span className="text-nest-gray">
+                    Der Kauf deines Hauses ist ein großer Schritt – und{" "}
+                  </span>
+                  <span className="text-black font-medium">
+                    wir sind da, um dir dabei zu helfen.
+                  </span>
+                  <span className="text-nest-gray">
+                    {" "}
+                    Für mehr Sicherheit und Klarheit{" "}
+                  </span>
+                  <span className="text-black font-medium">
+                    stehen wir dir jederzeit persönlich zur Seite.
+                  </span>
+                  <span className="text-nest-gray"> Ruf uns an, um dein </span>
+                  <span className="text-black font-medium">
+                    Beratungsgespräch
+                  </span>
+                  <span className="text-nest-gray">
+                    {" "}
+                    zu vereinbaren, oder buche deinen{" "}
+                  </span>
+                  <span className="text-black font-medium">
+                    Termin ganz einfach online.
+                  </span>
+                  <span className="text-nest-gray">
+                    {" "}
+                    Dein Weg zu deinem Traumhaus beginnt mit einem Gespräch.
+                  </span>
+                </p>
+              </div>
+
+              <div className="w-full md:w-1/2">
+                <AppointmentBooking showLeftSide={false} />
+              </div>
+            </div>
+
+            {/* Move the buttons here, directly below the Grundstückscheck section */}
+            <div className="flex justify-center mt-16 md:mt-20">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Vorheriger Schritt
+              </Button>
+              <span className="inline-block w-3" />
+              <Button
+                variant="primary"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={() => {
+                  goNext();
+                  // Ensure scroll happens on mobile with a small delay
+                  setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }, 100);
+                }}
+              >
+                Nächster Schritt
+              </Button>
+            </div>
+
+            {/* ContactMap */}
+            <div className="mt-16 md:mt-24">
+              <div className="text-center mb-12 md:mb-16">
+                <h2 className="h2-title text-black mb-2 md:mb-3">
+                  So findest du uns
+                </h2>
+                <h3 className="h3-secondary text-black mb-2">
+                  Persönlich oder telefonisch? Du entscheidest.
+                </h3>
+              </div>
+              <div className="w-full max-w-[1600px] mx-auto">
+                <div
+                  className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
+                  style={{ border: "15px solid #F4F4F4" }}
+                >
+                  <iframe
+                    title="Google Maps Location"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2717.0612860304307!2d15.416334776632444!3d47.08126897114428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476e3352d2429edf%3A0x3a9430b9a0f0fd25!2sKarmeliterplatz%208%2C%208010%20Graz%2C%20Austria!5e0!3m2!1sen!2sus!4v1712087456318!5m2!1sen!2sus"
+                    width="600"
+                    height="450"
+                    style={{ width: "100%", height: "100%", border: 0 }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {stepIndex === 4 && (
+          <div className="space-y-6 pt-16 md:pt-16">
+            {/* Ohne-Nest Mode: Show "Konfiguration hinzufügen" section */}
+            {isOhneNestMode && (
+              <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#F4F4F4] py-12 md:py-16 mb-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                    {/* Text content on left - directly on gray background */}
+                    <div className="w-full md:w-1/2">
+                      <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-6">
+                        Planen heißt Preise kennen
+                      </h2>
+                      <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
+                        Wenn du dein Nest schon jetzt konfigurierst, erhältst du
+                        volle Klarheit über Preis, Umfang und Möglichkeiten.
+                        Deine Auswahl bleibt dabei flexibel und kann jederzeit
+                        angepasst werden, falls sich deine Wünsche im Laufe der
+                        Planung verändern.
+                      </p>
+                      <div>
+                        <Button
+                          variant="primary"
+                          size="md"
                           onClick={() => {
-                            window.location.hash = "terminvereinbarung";
+                            window.location.href = "/konfigurator";
                           }}
-                          className="text-blue-600 text-sm hover:underline"
                         >
-                          Daten bearbeiten
-                        </button>
+                          Jetzt konfigurieren
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Image on right - inside white box */}
+                    <div className="w-full md:w-1/2">
+                      <div className="bg-white rounded-3xl overflow-hidden shadow-sm">
+                        <div className="relative w-full aspect-square">
+                          <HybridBlobImage
+                            path="173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche"
+                            alt="NEST-Haus Konfiguration"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
 
-                  {/* Box 2: Entwurfsgespräch (no title) */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                    <div className="space-y-4">
-                      <div>
-                        <div className="text-gray-600 text-sm">
-                          {appointmentDetails?.appointmentType === "personal"
-                            ? "Persönliches Gespräch"
-                            : appointmentDetails?.appointmentType === "phone"
-                              ? "Telefonische Beratung"
-                              : "Termin"}
+            {/* Title before Dein Nest sections */}
+            {!isOhneNestMode && (
+              <div className="text-center mb-12 md:mb-16">
+                <h2 className="h2-title text-black mb-2">
+                  Du hast es gleich Geschafft
+                </h2>
+                <h3 className="h3-secondary text-black">
+                  Überprüfe deine Daten und Angaben
+                </h3>
+              </div>
+            )}
+
+            {/* Overview grid: cart on left, summary/upgrade on right */}
+            {!isOhneNestMode && (
+              <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
+                <div className="space-y-6 w-full max-w-[520px] lg:flex-none lg:flex lg:flex-col">
+                  <h2 className="h3-secondary text-black">
+                    <span className="text-black">Dein Nest</span>
+                    <span className="text-nest-gray"> Deine Auswahl</span>
+                  </h2>
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
+                      style={{
+                        minHeight: "clamp(400px, 40vw, 520px)",
+                      }}
+                    >
+                      {/* Header Section */}
+                      <div className="flex items-center justify-between gap-4 mb-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
+                            {getConfigurationTitle(item)}
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                            {(() => {
+                              // For configuration items with nest, show price per m²
+                              if (
+                                "totalPrice" in item &&
+                                (item as ConfigurationCartItem).nest
+                              ) {
+                                const configItem =
+                                  item as ConfigurationCartItem;
+                                const nestModel = configItem.nest?.value || "";
+
+                                // Calculate dynamic total for m² calculation
+                                let dynamicTotal = 0;
+
+                                // Add nest price (dynamic from pricing data)
+                                if (configItem.nest) {
+                                  dynamicTotal += getItemPrice(
+                                    "nest",
+                                    configItem.nest,
+                                    configItem
+                                  );
+                                }
+
+                                // Add all other items
+                                const itemsToSum = [
+                                  "gebaeudehuelle",
+                                  "innenverkleidung",
+                                  "fussboden",
+                                  "bodenaufbau",
+                                  "geschossdecke",
+                                  "fundament",
+                                  "pvanlage",
+                                  "belichtungspaket",
+                                  "stirnseite",
+                                  "planungspaket",
+                                  "kamindurchzug",
+                                ] as const;
+
+                                itemsToSum.forEach((key) => {
+                                  const selection = configItem[key];
+                                  if (selection) {
+                                    dynamicTotal += getItemPrice(
+                                      key,
+                                      selection,
+                                      configItem
+                                    );
+                                  }
+                                });
+
+                                const priceValue = dynamicTotal;
+                                const geschossdeckeQuantity =
+                                  configItem.geschossdecke?.quantity || 0;
+
+                                return PriceUtils.calculatePricePerSquareMeter(
+                                  priceValue,
+                                  nestModel,
+                                  geschossdeckeQuantity
+                                );
+                              }
+                              // For other items, keep monthly payment
+                              const priceValue =
+                                "totalPrice" in item
+                                  ? (item as ConfigurationCartItem).totalPrice
+                                  : (item as CartItem).price;
+                              return `oder ${calculateMonthlyPayment(
+                                priceValue
+                              )} für 240 Monate`;
+                            })()}
+                          </div>
                         </div>
-                        {isAppointmentInPast ? (
-                          <>
-                            <div className="text-xl font-bold text-gray-900">
-                              Neuen Termin vereinbaren
-                            </div>
-                            <button
-                              onClick={() => {
-                                window.location.hash = "terminvereinbarung";
-                              }}
-                              className="text-blue-600 text-sm hover:underline mt-2"
-                            >
-                              Zur Terminvereinbarung
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <div className="text-xl font-bold text-gray-900">
-                              {appointmentDetails?.date
-                                ? new Date(
-                                    appointmentDetails.date
-                                  ).toLocaleDateString("de-DE", {
-                                    day: "2-digit",
-                                    month: "2-digit",
-                                    year: "numeric",
-                                  })
-                                : "—"}
-                            </div>
-                            {appointmentDetails?.time && (
-                              <div className="text-sm text-gray-600 mt-1">
-                                {appointmentDetails.time} Uhr
+                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
+                          {PriceUtils.formatPrice(
+                            (() => {
+                              // For nest, use dynamic price from pricing data
+                              if (
+                                "totalPrice" in item &&
+                                (item as ConfigurationCartItem).nest
+                              ) {
+                                const configItem =
+                                  item as ConfigurationCartItem;
+                                if (configItem.nest) {
+                                  return getItemPrice(
+                                    "nest",
+                                    configItem.nest,
+                                    configItem
+                                  );
+                                }
+                              }
+                              // For other items, use totalPrice
+                              return "totalPrice" in item
+                                ? (item as ConfigurationCartItem).totalPrice
+                                : (item as CartItem).price;
+                            })()
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Details Section - Now takes remaining space and distributes items evenly */}
+                      <div className="flex-1 flex flex-col justify-evenly min-h-0">
+                        {(() => {
+                          const details = renderConfigurationDetails(item);
+                          const topAndMiddleItems = details.filter(
+                            (d) => !d.isBottomItem
+                          );
+                          const bottomItems = details.filter(
+                            (d) => d.isBottomItem
+                          );
+
+                          const renderDetailItem = (
+                            detail: {
+                              label: string;
+                              value: string;
+                              price: number;
+                              isIncluded: boolean;
+                              category: string;
+                              isBottomItem?: boolean;
+                            },
+                            idx: number
+                          ) => {
+                            if (!detail.value || detail.value === "—")
+                              return null;
+                            return (
+                              <div
+                                key={detail.category + "-" + idx}
+                                className="flex items-center justify-between gap-4 py-1"
+                              >
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 break-words">
+                                    {detail.value}
+                                  </div>
+                                  <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1 break-words">
+                                    {detail.label}
+                                  </div>
+                                </div>
+                                <div className="text-right min-w-0">
+                                  {detail.isIncluded ||
+                                  (detail.price && detail.price === 0) ? (
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
+                                      inkludiert
+                                    </div>
+                                  ) : (
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                      {PriceUtils.formatPrice(
+                                        detail.price || 0
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                            )}
-                            <button
-                              onClick={() => {
-                                window.location.hash = "terminvereinbarung";
-                              }}
-                              className="text-blue-600 text-sm hover:underline mt-2"
-                            >
-                              Termin personalisieren
-                            </button>
-                          </>
-                        )}
+                            );
+                          };
+
+                          // Combine all items into a single array for even distribution
+                          const allItems = [
+                            ...topAndMiddleItems,
+                            ...bottomItems,
+                          ];
+
+                          return <>{allItems.map(renderDetailItem)}</>;
+                        })()}
                       </div>
                     </div>
-                  </div>
+                  ))}
+                </div>
 
-                  {/* Box 3: Grundstücksinformationen (no title) */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 text-sm">
+                <div className="space-y-6 w-full lg:flex-1 min-w-0 lg:flex lg:flex-col">
+                  <h2 className="h3-secondary text-gray-500 lg:flex-shrink-0">
+                    <span className="text-black">Dein Nest</span>
+                    <span className="text-nest-gray">
+                      {" "}
+                      Ein Blick in die Zukunft
+                    </span>
+                  </h2>
+                  {/* Configuration Image Gallery */}
+                  <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-1 lg:flex lg:flex-col">
+                    <div
+                      className="relative w-full lg:flex-1"
+                      style={{ aspectRatio: "16/10" }}
+                    >
+                      {currentImagePath && (
+                        <HybridBlobImage
+                          key={`${currentView}:${currentImagePath}`}
+                          path={currentImagePath}
+                          alt={`Konfiguration Vorschau – ${currentView}`}
+                          fill
+                          className="object-contain"
+                          strategy="client"
+                          isInteractive={true}
+                          sizes="(max-width: 1023px) 100vw, 70vw"
+                          quality={85}
+                          priority={true}
+                        />
+                      )}
+
+                      {/* PV Module Overlay - only show on exterior view when PV is selected */}
+                      {currentView === "exterior" &&
+                        sourceConfig?.pvanlage &&
+                        sourceConfig?.pvanlage?.quantity &&
+                        sourceConfig?.pvanlage?.quantity > 0 &&
+                        sourceConfig?.nest && (
+                          <PvModuleOverlay
+                            nestSize={
+                              sourceConfig.nest.value as
+                                | "nest80"
+                                | "nest100"
+                                | "nest120"
+                                | "nest140"
+                                | "nest160"
+                            }
+                            moduleCount={sourceConfig.pvanlage.quantity}
+                            isVisible={true}
+                            className=""
+                          />
+                        )}
+
+                      {galleryViews.length > 1 && (
+                        <>
+                          <button
+                            type="button"
+                            aria-label="Vorheriges Bild"
+                            onClick={goPrevImage}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                          >
+                            ‹
+                          </button>
+                          <button
+                            type="button"
+                            aria-label="Nächstes Bild"
+                            onClick={goNextImage}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-9 h-9 flex items-center justify-center border border-gray-300 shadow"
+                          >
+                            ›
+                          </button>
+                        </>
+                      )}
+                    </div>
+                    {galleryViews.length > 1 && (
+                      <div className="flex items-center justify-center gap-2 py-2 lg:flex-shrink-0">
+                        {galleryViews.map((v, i) => (
+                          <button
+                            key={v + i}
+                            type="button"
+                            aria-label={`Wechsel zu Ansicht ${v}`}
+                            onClick={() => setGalleryIndex(i)}
+                            className={
+                              "w-2.5 h-2.5 rounded-full " +
+                              (i === galleryIndex
+                                ? "bg-[#3D6CE1]"
+                                : "bg-gray-300")
+                            }
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Bewerber Data Section - 4 boxes in 2x2 grid with column headers */}
+            <div className="max-w-6xl mx-auto mt-16 mb-12">
+              {/* Section Headers */}
+              <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <h3 className="h3-secondary text-black">
+                    <span className="text-black">Bewerber</span>
+                    <span className="text-nest-gray"> Deine Daten</span>
+                  </h3>
+                </div>
+                <div>
+                  <h3 className="h3-secondary text-black">
+                    <span className="text-black">Deine Termine</span>
+                    <span className="text-nest-gray"> Im Überblick</span>
+                  </h3>
+                </div>
+              </div>
+
+              {/* Content Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Box 1: Bewerber Data (no title) */}
+                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
                       <div>
-                        <div className="text-gray-600">Straße und Nummer</div>
+                        <div className="text-gray-600">Vollständiger Name</div>
                         <div className="text-gray-900 font-medium">
-                          {getUserData.address || "—"}
+                          {getUserData.name && getUserData.lastName
+                            ? `${getUserData.name} ${getUserData.lastName}`
+                            : "—"}
                         </div>
                       </div>
                       <div>
-                        <div className="text-gray-600">Stadt</div>
+                        <div className="text-gray-600">Email</div>
                         <div className="text-gray-900 font-medium">
-                          {getUserData.city || "—"}
+                          {getUserData.email || "—"}
                         </div>
                       </div>
                       <div>
-                        <div className="text-gray-600">Zusatz</div>
+                        <div className="text-gray-600">Telefon</div>
                         <div className="text-gray-900 font-medium">
-                          {getUserData.addressLine2 || "—"}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-gray-600">Postleitzahl</div>
-                        <div className="text-gray-900 font-medium">
-                          {getUserData.postalCode || "—"}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-gray-600">Grundstücknummer</div>
-                        <div className="text-gray-900 font-medium">
-                          {getUserData.propertyNumber || "—"}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-gray-600">Bundesland</div>
-                        <div className="text-gray-900 font-medium">
-                          {getUserData.state || "—"}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-gray-600">Katastralgemeinde</div>
-                        <div className="text-gray-900 font-medium">
-                          {getUserData.cadastralCommunity || "—"}
+                          {getUserData.phone || "—"}
                         </div>
                       </div>
                       <div>
@@ -2851,10 +2702,10 @@ export default function CheckoutStepper({
                         </div>
                       </div>
                     </div>
-                    <div className="pt-3">
+                    <div className="pt-2">
                       <button
                         onClick={() => {
-                          window.location.hash = "check-und-vorentwurf";
+                          window.location.hash = "terminvereinbarung";
                         }}
                         className="text-blue-600 text-sm hover:underline"
                       >
@@ -2862,1062 +2713,1171 @@ export default function CheckoutStepper({
                       </button>
                     </div>
                   </div>
+                </div>
 
-                  {/* Box 4: Lieferungsdatum (no title) */}
-                  <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
-                    <div className="space-y-2">
+                {/* Box 2: Entwurfsgespräch (no title) */}
+                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                  <div className="space-y-4">
+                    <div>
                       <div className="text-gray-600 text-sm">
-                        Garantierter Liefertermin
+                        {appointmentDetails?.appointmentType === "personal"
+                          ? "Persönliches Gespräch"
+                          : appointmentDetails?.appointmentType === "phone"
+                            ? "Telefonische Beratung"
+                            : "Termin"}
                       </div>
-                      <div className="text-2xl font-bold text-gray-900">
-                        {calculateDeliveryDate}
-                      </div>
-                      <div className="text-sm text-gray-600 mt-2">
-                        6 Monate Liefergarantie
-                      </div>
+                      {isAppointmentInPast ? (
+                        <>
+                          <div className="text-xl font-bold text-gray-900">
+                            Neuen Termin vereinbaren
+                          </div>
+                          <button
+                            onClick={() => {
+                              window.location.hash = "terminvereinbarung";
+                            }}
+                            className="text-blue-600 text-sm hover:underline mt-2"
+                          >
+                            Zur Terminvereinbarung
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <div className="text-xl font-bold text-gray-900">
+                            {appointmentDetails?.date
+                              ? new Date(
+                                  appointmentDetails.date
+                                ).toLocaleDateString("de-DE", {
+                                  day: "2-digit",
+                                  month: "2-digit",
+                                  year: "numeric",
+                                })
+                              : "—"}
+                          </div>
+                          {appointmentDetails?.time && (
+                            <div className="text-sm text-gray-600 mt-1">
+                              {appointmentDetails.time} Uhr
+                            </div>
+                          )}
+                          <button
+                            onClick={() => {
+                              window.location.hash = "terminvereinbarung";
+                            }}
+                            className="text-blue-600 text-sm hover:underline mt-2"
+                          >
+                            Termin personalisieren
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* So gehts danach weiter Section */}
-              <div className="text-center mb-8">
-                <h2 className="h2-title text-black mb-2">
-                  {isPaymentCompleted
-                    ? "Vielen Dank"
-                    : "So geht's danach weiter"}
-                </h2>
-                <p className="p-secondary text-black">
-                  {isPaymentCompleted
-                    ? "Deine Zahlung wurde bearbeitet"
-                    : "Dein Preis im Überblick"}
-                </p>
-              </div>
-
-              {/* Left/Right Layout: Teilzahlungen (left) + Heute zu bezahlen (right) */}
-              {!isOhneNestMode &&
-                (() => {
-                  // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
-                  let deinNestHausTotal = 0;
-                  if (configItem && configItem.nest) {
-                    // Calculate nest house total from individual item prices
-                    deinNestHausTotal += getItemPrice(
-                      "nest",
-                      configItem.nest,
-                      configItem
-                    );
-
-                    const itemsToSum = [
-                      "gebaeudehuelle",
-                      "innenverkleidung",
-                      "fussboden",
-                      "bodenaufbau",
-                      "geschossdecke",
-                      "fundament",
-                      "pvanlage",
-                      "belichtungspaket",
-                      "stirnseite",
-                      "kamindurchzug",
-                    ] as const;
-
-                    itemsToSum.forEach((key) => {
-                      const selection = configItem[key];
-                      if (selection) {
-                        deinNestHausTotal += getItemPrice(
-                          key,
-                          selection,
-                          configItem
-                        );
-                      }
-                    });
-                  }
-
-                  // Add planungspaket if not basis (basis is inkludiert)
-                  const planungspaketPrice = (() => {
-                    const planValue =
-                      configItem?.planungspaket?.value ||
-                      localSelectedPlan ||
-                      "basis";
-                    if (planValue === "basis") return 0;
-                    const planPkg = PLANNING_PACKAGES.find(
-                      (p) => p.value === planValue
-                    );
-                    return planPkg?.price || 0;
-                  })();
-
-                  // Total price for payment calculations (Nest Haus + Planungspaket)
-                  const totalPrice = deinNestHausTotal + planungspaketPrice;
-
-                  const _firstPayment = 3000; // Grundstückscheck full price (shown in display above)
-                  const grundstueckscheckCredit = 1500; // Actual payment (discount applied)
-                  const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
-                  const secondPayment = Math.max(
-                    0,
-                    secondPaymentOriginal - grundstueckscheckCredit
-                  );
-                  const thirdPayment = Math.max(0, totalPrice * 0.5);
-                  const fourthPayment = Math.max(0, totalPrice * 0.2);
-
-                  return (
-                    <div className="max-w-6xl mx-auto mb-12">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                        {/* Left: Dein Nest - Deine Konfiguration with Teilzahlungen */}
-                        <div className="border border-gray-300 rounded-2xl p-6 bg-white">
-                          <div className="space-y-4">
-                            {/* 1. Teilzahlung */}
-                            <div className="pb-4 border-b border-gray-200">
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                  <div className="font-medium text-gray-900">
-                                    1. Teilzahlung
-                                  </div>
-                                  <div className="text-sm text-gray-600 mt-1">
-                                    Heute zu begleichen
-                                    <br />
-                                    Grundstückscheck und Vorentwurf
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <div className="text-sm text-gray-500">
-                                    Fixpreis
-                                  </div>
-                                  <div className="font-semibold text-gray-900">
-                                    {PriceUtils.formatPrice(3000)}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* 2. Teilzahlung */}
-                            <div className="pb-4 border-b border-gray-200">
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                  <div className="font-medium text-gray-900">
-                                    2. Teilzahlung
-                                  </div>
-                                  <div className="text-sm text-gray-600 mt-1">
-                                    Abzüglich Grundstückscheck:{" "}
-                                    {PriceUtils.formatPrice(
-                                      grundstueckscheckCredit
-                                    )}
-                                    <br />
-                                    Liefergarantie 6 Monate ab Teilzahlung
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <div className="text-sm text-gray-500">
-                                    30% des Gesamtpreises
-                                  </div>
-                                  <div className="font-semibold text-gray-900">
-                                    {PriceUtils.formatPrice(secondPayment)}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* 3. Teilzahlung */}
-                            <div className="pb-4 border-b border-gray-200">
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                  <div className="font-medium text-gray-900">
-                                    3. Teilzahlung
-                                  </div>
-                                  <div className="text-sm text-gray-600 mt-1">
-                                    Fällig nach Fertigstellung in Produktion
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <div className="text-sm text-gray-500">
-                                    50% des Gesamtpreises nach Fertigstellung
-                                  </div>
-                                  <div className="font-semibold text-gray-900">
-                                    {PriceUtils.formatPrice(thirdPayment)}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* 4. Teilzahlung */}
-                            <div>
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                  <div className="font-medium text-gray-900">
-                                    4. Teilzahlung
-                                  </div>
-                                  <div className="text-sm text-gray-600 mt-1">
-                                    Fällig nach Fertigstellung am Grundstück
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <div className="text-sm text-gray-500">
-                                    20% des Gesamtpreises nach Fertigstellung
-                                  </div>
-                                  <div className="font-semibold text-gray-900">
-                                    {PriceUtils.formatPrice(fourthPayment)}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="pt-4 mt-4 border-t border-gray-200">
-                              <button
-                                onClick={() => {
-                                  window.location.href = "/konfigurator";
-                                }}
-                                className="text-blue-600 text-sm hover:underline cursor-pointer"
-                              >
-                                Konfiguration bearbeiten
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Right: Heute zu bezahlen box - compact design per image */}
-                        <div className="lg:sticky lg:top-4">
-                          {/* Compact box with title/subtitle left, price right */}
-                          <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="text-left">
-                                <h3
-                                  className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
-                                >
-                                  {isPaymentCompleted
-                                    ? "Bezahlt"
-                                    : "Heute zu bezahlen"}
-                                </h3>
-                                <div className="text-sm text-gray-600">
-                                  {isPaymentCompleted
-                                    ? "Zahlung erfolgreich abgeschlossen"
-                                    : "Starte dein Bauvorhaben"}
-                                </div>
-                              </div>
-                              {!isPaymentCompleted ? (
-                                <div className="text-right">
-                                  <div className="flex items-center gap-2 justify-end">
-                                    <span className="text-gray-400 line-through text-xl">
-                                      3.000 €
-                                    </span>
-                                    <div className="text-3xl font-bold text-gray-900">
-                                      1.500 €
-                                    </div>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="text-right flex items-center justify-end gap-2">
-                                  <svg
-                                    className="w-8 h-8 text-green-600 mt-2"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  <div className="text-2xl font-bold text-green-600 mt-2">
-                                    Bezahlt
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Green transaction details box - only show after payment */}
-                          {isPaymentCompleted && (
-                            <div className="mb-6">
-                              <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
-                                <div className="space-y-3">
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                      Deine Nest ID:
-                                    </span>
-                                    <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                                      {configItem?.sessionId ||
-                                        configuration?.sessionId ||
-                                        "nest-haus-" + Date.now().toString(36)}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                      Transaktion ID:
-                                    </span>
-                                    <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                                      {successfulPaymentIntentId ||
-                                        "pi_xxxxxxxxxxxxx"}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                      Betrag:
-                                    </span>
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
-                                      1.500 €
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                      Status:
-                                    </span>
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
-                                      Bezahlt
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                                      Datum:
-                                    </span>
-                                    <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
-                                      {(() => {
-                                        const paymentDate =
-                                          paymentCompletedDate || new Date();
-                                        const date = `${paymentDate.getDate().toString().padStart(2, "0")}.${(paymentDate.getMonth() + 1).toString().padStart(2, "0")}.${paymentDate.getFullYear()}`;
-                                        const time = `${paymentDate.getHours().toString().padStart(2, "0")}:${paymentDate.getMinutes().toString().padStart(2, "0")}`;
-                                        return `${date} | ${time}`;
-                                      })()}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Disclaimer text - centered below box with margin */}
-                          <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
-                            Solltest du mit dem Vorentwurf nicht zufrieden sein,
-                            kannst du vom Kauf deines Nest-Hauses zurücktreten.
-                            In diesem Fall zahlst du lediglich die Kosten für
-                            den Vorentwurf und Grundstückscheck.
-                          </div>
-
-                          {/* Jetzt bezahlen button - centered below text */}
-                          {!isPaymentCompleted && (
-                            <div className="flex justify-center">
-                              <Button
-                                variant="primary"
-                                size="md"
-                                onClick={() => setIsPaymentModalOpen(true)}
-                              >
-                                Jetzt bezahlen
-                              </Button>
-                            </div>
-                          )}
-                        </div>
+                {/* Box 3: Grundstücksinformationen (no title) */}
+                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 text-sm">
+                    <div>
+                      <div className="text-gray-600">Straße und Nummer</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.address || "—"}
                       </div>
                     </div>
-                  );
-                })()}
-
-              {/* Ohne-Nest Mode: Show simplified centered payment box */}
-              {isOhneNestMode && (
-                <div className="max-w-2xl mx-auto mb-12">
-                  {/* Centered "Heute zu bezahlen" box */}
-                  <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="text-left flex-1">
-                        <h3
-                          className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
-                        >
-                          {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
-                        </h3>
-                        <div className="text-sm text-gray-600">
-                          {isPaymentCompleted
-                            ? "Zahlung erfolgreich abgeschlossen"
-                            : "Starte dein Bauvorhaben"}
-                        </div>
+                    <div>
+                      <div className="text-gray-600">Stadt</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.city || "—"}
                       </div>
-                      <div className="text-right">
-                        {!isPaymentCompleted && (
-                          <div className="flex items-center gap-2 justify-end mt-2">
-                            <span className="text-gray-400 line-through text-2xl">
-                              3.000 €
-                            </span>
-                            <div className="text-3xl font-bold text-gray-900">
-                              1.500 €
-                            </div>
-                          </div>
-                        )}
-                        {isPaymentCompleted && (
-                          <div className="flex items-center justify-end gap-2">
-                            <svg
-                              className="w-8 h-8 text-green-600"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <div className="text-2xl font-bold text-green-600">
-                              Bezahlt
-                            </div>
-                          </div>
-                        )}
+                    </div>
+                    <div>
+                      <div className="text-gray-600">Zusatz</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.addressLine2 || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-gray-600">Postleitzahl</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.postalCode || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-gray-600">Grundstücknummer</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.propertyNumber || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-gray-600">Bundesland</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.state || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-gray-600">Katastralgemeinde</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.cadastralCommunity || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-gray-600">Land</div>
+                      <div className="text-gray-900 font-medium">
+                        {getUserData.country || "—"}
                       </div>
                     </div>
                   </div>
-
-                  {/* Green transaction details box - only show after payment */}
-                  {isPaymentCompleted && (
-                    <div className="mb-6">
-                      <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                              Deine Nest ID:
-                            </span>
-                            <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                              {configItem?.sessionId ||
-                                configuration?.sessionId ||
-                                "nest-haus-" + Date.now().toString(36)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                              Transaktion ID:
-                            </span>
-                            <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                              {successfulPaymentIntentId || "pi_xxxxxxxxxxxxx"}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                              Betrag:
-                            </span>
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
-                              1.500 €
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                              Status:
-                            </span>
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
-                              Bezahlt
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                              Datum:
-                            </span>
-                            <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
-                              {(() => {
-                                const paymentDate =
-                                  paymentCompletedDate || new Date();
-                                const date = `${paymentDate.getDate().toString().padStart(2, "0")}.${(paymentDate.getMonth() + 1).toString().padStart(2, "0")}.${paymentDate.getFullYear()}`;
-                                const time = `${paymentDate.getHours().toString().padStart(2, "0")}:${paymentDate.getMinutes().toString().padStart(2, "0")}`;
-                                return `${date} | ${time}`;
-                              })()}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Disclaimer text - centered below box */}
-                  <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
-                    Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst
-                    du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
-                    zahlst du lediglich die Kosten für den Vorentwurf und
-                    Grundstückscheck.
+                  <div className="pt-3">
+                    <button
+                      onClick={() => {
+                        window.location.hash = "check-und-vorentwurf";
+                      }}
+                      className="text-blue-600 text-sm hover:underline"
+                    >
+                      Daten bearbeiten
+                    </button>
                   </div>
-
-                  {/* Note: "Jetzt bezahlen" button is hidden for ohne nest mode by not rendering it here */}
                 </div>
-              )}
 
-              <div className="flex justify-center mt-16 md:mt-20">
-                <Button
-                  variant="landing-secondary-blue"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goPrev}
-                  disabled={stepIndex <= 0}
-                >
-                  Vorheriger Schritt
-                </Button>
-                <span className="inline-block w-3" />
-                <Button
-                  variant="primary"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={() => setIsPaymentModalOpen(true)}
-                  disabled={isPaymentCompleted}
-                >
-                  {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
-                </Button>
+                {/* Box 4: Lieferungsdatum (no title) */}
+                <div className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col justify-center">
+                  <div className="space-y-2">
+                    <div className="text-gray-600 text-sm">
+                      Garantierter Liefertermin
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900">
+                      {calculateDeliveryDate}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-2">
+                      6 Monate Liefergarantie
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Removed step 5 - we only have 5 steps (0-4) now */}
-          {false && stepIndex === 5 && (
-            <div className="space-y-4 pt-8">
-              <div className="pt-2"></div>
-              {/* Title row replaced above - keep spacing consistent */}
-              {/* Deine Auswahl Title */}
-              <div className="pt-2"></div>
-              <h2 className="h2-title text-black mb-3">Deine Auswahl</h2>
+            {/* So gehts danach weiter Section */}
+            <div className="text-center mb-12 pt-4 md:mb-8">
+              <h2 className="h2-title text-black mb-2">
+                {isPaymentCompleted ? "Vielen Dank" : "So geht's danach weiter"}
+              </h2>
+              <p className="p-secondary text-black">
+                {isPaymentCompleted
+                  ? "Deine Zahlung wurde bearbeitet"
+                  : "Dein Preis im Überblick"}
+              </p>
+            </div>
 
-              <div className="space-y-4 mb-8">
-                {configItem && !isOhneNestMode ? (
-                  <>
-                    {(() => {
-                      const item = configItem as ConfigurationCartItem;
-                      const details = renderConfigurationDetails(item);
-                      const topAndMiddleItems = details.filter(
-                        (d) => !d.isBottomItem
+            {/* Left/Right Layout: Teilzahlungen (left) + Heute zu bezahlen (right) */}
+            {!isOhneNestMode &&
+              (() => {
+                // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
+                let deinNestHausTotal = 0;
+                if (configItem && configItem.nest) {
+                  // Calculate nest house total from individual item prices
+                  deinNestHausTotal += getItemPrice(
+                    "nest",
+                    configItem.nest,
+                    configItem
+                  );
+
+                  const itemsToSum = [
+                    "gebaeudehuelle",
+                    "innenverkleidung",
+                    "fussboden",
+                    "bodenaufbau",
+                    "geschossdecke",
+                    "fundament",
+                    "pvanlage",
+                    "belichtungspaket",
+                    "stirnseite",
+                    "kamindurchzug",
+                  ] as const;
+
+                  itemsToSum.forEach((key) => {
+                    const selection = configItem[key];
+                    if (selection) {
+                      deinNestHausTotal += getItemPrice(
+                        key,
+                        selection,
+                        configItem
                       );
-                      const _bottomItems = details.filter(
-                        (d) => d.isBottomItem
-                      );
+                    }
+                  });
+                }
 
-                      return (
-                        <>
-                          {topAndMiddleItems.length > 0 && (
-                            <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
-                              <div>
-                                {topAndMiddleItems.map((detail, idx) => {
-                                  if (!detail.value || detail.value === "—")
-                                    return null;
-                                  return (
-                                    <div
-                                      key={detail.category + "-" + idx}
-                                      className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7"
-                                    >
-                                      <div className="flex-1 min-w-0">
-                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                          {detail.value}
-                                        </div>
-                                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                          {detail.label}
-                                        </div>
-                                      </div>
-                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                        {detail.isIncluded ||
-                                        (detail.price && detail.price === 0)
-                                          ? "inkludiert"
-                                          : PriceUtils.formatPrice(
-                                              detail.price || 0
-                                            )}
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          )}
-                          <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
-                            <div>
-                              {/* Grundstückscheck row - removed "Vorentwurf" since it's shown below */}
-                              {/* Planungspaket row - show if exists in cart OR if locally selected */}
-                              {(configItem?.planungspaket ||
-                                localSelectedPlan) && (
-                                <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                      {(() => {
-                                        // Get name from cart item first, but use new naming
-                                        if (configItem?.planungspaket?.name) {
-                                          const name =
-                                            configItem?.planungspaket?.name?.toLowerCase() ||
-                                            "";
-                                          if (name.includes("basis"))
-                                            return "Planungspaket 01 Basis";
-                                          if (name.includes("plus"))
-                                            return "Planungspaket 02 Plus";
-                                          if (name.includes("pro"))
-                                            return "Planungspaket 03 Pro";
-                                          return (
-                                            configItem?.planungspaket?.name ||
-                                            "—"
-                                          );
-                                        }
-                                        // Otherwise get from localSelectedPlan
-                                        if (localSelectedPlan) {
-                                          if (localSelectedPlan === "basis")
-                                            return "Planungspaket 01 Basis";
-                                          if (localSelectedPlan === "plus")
-                                            return "Planungspaket 02 Plus";
-                                          if (localSelectedPlan === "pro")
-                                            return "Planungspaket 03 Pro";
-                                          return localSelectedPlan;
-                                        }
-                                        return "—";
-                                      })()}
-                                    </div>
-                                    <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                      Planungspaket
-                                    </div>
-                                  </div>
-                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                    {(() => {
-                                      // Determine which package we're dealing with
-                                      let packageType = "basis";
+                // Add planungspaket if not basis (basis is inkludiert)
+                const planungspaketPrice = (() => {
+                  const planValue =
+                    configItem?.planungspaket?.value ||
+                    localSelectedPlan ||
+                    "basis";
+                  if (planValue === "basis") return 0;
+                  const planPkg = PLANNING_PACKAGES.find(
+                    (p) => p.value === planValue
+                  );
+                  return planPkg?.price || 0;
+                })();
 
-                                      if (configItem?.planungspaket?.name) {
-                                        const name =
-                                          configItem?.planungspaket?.name?.toLowerCase() ||
-                                          "";
-                                        if (name.includes("plus"))
-                                          packageType = "plus";
-                                        else if (name.includes("pro"))
-                                          packageType = "pro";
-                                      } else if (localSelectedPlan) {
-                                        packageType = localSelectedPlan || "";
-                                      }
+                // Total price for payment calculations (Nest Haus + Planungspaket)
+                const totalPrice = deinNestHausTotal + planungspaketPrice;
 
-                                      // Return price display with "inkludiert" for basis
-                                      return packageType === "basis"
-                                        ? "inkludiert"
-                                        : packageType === "plus"
-                                          ? "16.900,00€"
-                                          : "21.900,00€";
-                                    })()}
-                                  </div>
-                                </div>
-                              )}
-                              {/* Termin mit dem Nest Team row */}
-                              <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                                <div className="flex-1 min-w-0">
-                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                    {getAppointmentSummary(sessionId)
-                                      ? "Terminvereinbarung"
-                                      : "—"}
-                                  </div>
-                                  <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                    Termin mit dem Nest Team
-                                  </div>
-                                </div>
-                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                  {(() => {
-                                    const appointmentSummary =
-                                      getAppointmentSummaryShort(sessionId);
-                                    const hasAppointmentFromOtherSession =
-                                      appointmentDetails &&
-                                      !isAppointmentFromCurrentSession(
-                                        sessionId
-                                      );
-
-                                    if (appointmentSummary) {
-                                      return (
-                                        <div className="flex items-start justify-end">
-                                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
-                                            {appointmentSummary}
-                                          </span>
-                                        </div>
-                                      );
-                                    } else if (hasAppointmentFromOtherSession) {
-                                      return (
-                                        <div className="flex items-start justify-end">
-                                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
-                                            bereits vereinbart
-                                          </span>
-                                        </div>
-                                      );
-                                    } else {
-                                      return "—";
-                                    }
-                                  })()}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })()}
-                  </>
-                ) : (
-                  <div className="text-sm text-gray-600">
-                    {isOhneNestMode
-                      ? "Dein Nest-Haus wird gemeinsam mit uns konfiguriert."
-                      : "Keine Konfiguration im Warenkorb."}
-                  </div>
-                )}
-              </div>
-
-              {/* Teilzahlungen Title - only show when NOT in ohne nest mode */}
-              {!isOhneNestMode && (
-                <h2 className="h2-title text-black mb-3">Teilzahlungen</h2>
-              )}
-
-              {/* Instalment Breakdown */}
-              {(() => {
-                const totalPrice = Math.max(0, getCartTotal());
-                const firstPayment = GRUNDSTUECKSCHECK_PRICE;
-                const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
+                const _firstPayment = 3000; // Grundstückscheck full price (shown in display above)
+                const grundstueckscheckCredit = 1500; // Actual payment (discount applied)
                 const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
                 const secondPayment = Math.max(
                   0,
                   secondPaymentOriginal - grundstueckscheckCredit
                 );
                 const thirdPayment = Math.max(0, totalPrice * 0.5);
-                const fourthPayment = Math.max(
-                  0,
-                  totalPrice -
-                    firstPayment -
-                    secondPaymentOriginal -
-                    thirdPayment
-                );
+                const fourthPayment = Math.max(0, totalPrice * 0.2);
+
                 return (
-                  <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
-                    <div>
-                      <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            Vorentwurf & Grundstückscheck
+                  <div className="max-w-6xl mx-auto mb-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                      {/* Left: Dein Nest - Deine Konfiguration with Teilzahlungen */}
+                      <div className="border border-gray-300 rounded-2xl p-6 bg-white">
+                        <div className="space-y-4">
+                          {/* 1. Teilzahlung */}
+                          <div className="pb-4 border-b border-gray-200">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <div className="font-medium text-gray-900">
+                                  1. Teilzahlung
+                                </div>
+                                <div className="text-sm text-gray-600 mt-1">
+                                  Heute zu begleichen
+                                  <br />
+                                  Grundstückscheck und Vorentwurf
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm text-gray-500">
+                                  Fixpreis
+                                </div>
+                                <div className="font-semibold text-gray-900">
+                                  {PriceUtils.formatPrice(3000)}
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                            Der erste Schritt zu deinem Nest-Haus auf deinem
-                            Grundstück.
+
+                          {/* 2. Teilzahlung */}
+                          <div className="pb-4 border-b border-gray-200">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <div className="font-medium text-gray-900">
+                                  2. Teilzahlung
+                                </div>
+                                <div className="text-sm text-gray-600 mt-1">
+                                  Abzüglich Grundstückscheck:{" "}
+                                  {PriceUtils.formatPrice(
+                                    grundstueckscheckCredit
+                                  )}
+                                  <br />
+                                  Liefergarantie 6 Monate ab Teilzahlung
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm text-gray-500">
+                                  30% des Gesamtpreises
+                                </div>
+                                <div className="font-semibold text-gray-900">
+                                  {PriceUtils.formatPrice(secondPayment)}
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                          {PriceUtils.formatPrice(firstPayment)}
+
+                          {/* 3. Teilzahlung */}
+                          <div className="pb-4 border-b border-gray-200">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <div className="font-medium text-gray-900">
+                                  3. Teilzahlung
+                                </div>
+                                <div className="text-sm text-gray-600 mt-1">
+                                  Fällig nach Fertigstellung in Produktion
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm text-gray-500">
+                                  50% des Gesamtpreises nach Fertigstellung
+                                </div>
+                                <div className="font-semibold text-gray-900">
+                                  {PriceUtils.formatPrice(thirdPayment)}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* 4. Teilzahlung */}
+                          <div>
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <div className="font-medium text-gray-900">
+                                  4. Teilzahlung
+                                </div>
+                                <div className="text-sm text-gray-600 mt-1">
+                                  Fällig nach Fertigstellung am Grundstück
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm text-gray-500">
+                                  20% des Gesamtpreises nach Fertigstellung
+                                </div>
+                                <div className="font-semibold text-gray-900">
+                                  {PriceUtils.formatPrice(fourthPayment)}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="pt-4 mt-4 border-t border-gray-200">
+                            <button
+                              onClick={() => {
+                                window.location.href = "/konfigurator";
+                              }}
+                              className="text-blue-600 text-sm hover:underline cursor-pointer"
+                            >
+                              Konfiguration bearbeiten
+                            </button>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Planungspaket row */}
-                      {(configItem?.planungspaket || localSelectedPlan) && (
-                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7 border-t border-gray-200">
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              Planungspaket
+                      {/* Right: Heute zu bezahlen box - compact design per image */}
+                      <div className="lg:sticky lg:top-4">
+                        {/* Compact box with title/subtitle left, price right */}
+                        <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="text-left">
+                              <h3
+                                className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
+                              >
+                                {isPaymentCompleted
+                                  ? "Bezahlt"
+                                  : "Heute zu bezahlen"}
+                              </h3>
+                              <div className="text-sm text-gray-600">
+                                {isPaymentCompleted
+                                  ? "Zahlung erfolgreich abgeschlossen"
+                                  : "Starte dein Bauvorhaben"}
+                              </div>
                             </div>
-                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                              {(() => {
-                                // Get name from cart item first, but use new naming
-                                if (configItem?.planungspaket?.name) {
-                                  const name =
-                                    configItem?.planungspaket?.name?.toLowerCase() ||
-                                    "";
-                                  if (name.includes("basis"))
-                                    return "Planungspaket 01 Basis";
-                                  if (name.includes("plus"))
-                                    return "Planungspaket 02 Plus";
-                                  if (name.includes("pro"))
-                                    return "Planungspaket 03 Pro";
-                                  return configItem?.planungspaket?.name || "—";
-                                }
-                                // Otherwise get from localSelectedPlan
-                                if (localSelectedPlan) {
-                                  if (localSelectedPlan === "basis")
-                                    return "Planungspaket 01 Basis";
-                                  if (localSelectedPlan === "plus")
-                                    return "Planungspaket 02 Plus";
-                                  if (localSelectedPlan === "pro")
-                                    return "Planungspaket 03 Pro";
-                                }
-                                return "—";
-                              })()}
-                            </div>
-                          </div>
-                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                            {(() => {
-                              const planPrice =
-                                configItem?.planungspaket?.price ||
-                                (localSelectedPlan
-                                  ? PLANNING_PACKAGES.find(
-                                      (p) => p.value === localSelectedPlan
-                                    )?.price || 0
-                                  : 0);
-
-                              // Check if it's basis planungspaket (should show as inkludiert)
-                              const planValue =
-                                configItem?.planungspaket?.value ||
-                                localSelectedPlan;
-                              if (planValue === "basis") {
-                                return "inkludiert";
-                              } else {
-                                return PriceUtils.formatPrice(planPrice);
-                              }
-                            })()}
+                            {!isPaymentCompleted ? (
+                              <div className="text-right">
+                                <div className="flex items-center gap-2 justify-end">
+                                  <span className="text-gray-400 line-through text-xl">
+                                    3.000 €
+                                  </span>
+                                  <div className="text-3xl font-bold text-gray-900">
+                                    1.500 €
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="text-right flex items-center justify-end gap-2">
+                                <svg
+                                  className="w-8 h-8 text-green-600 mt-2"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                <div className="text-2xl font-bold text-green-600 mt-2">
+                                  Bezahlt
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      )}
-                      {!isOhneNestMode && (
-                        <>
-                          <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                1. Teilzahlung
+
+                        {/* Green transaction details box - only show after payment */}
+                        {isPaymentCompleted && (
+                          <div className="mb-6">
+                            <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
+                              <div className="space-y-3">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                    Deine Nest ID:
+                                  </span>
+                                  <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                                    {configItem?.sessionId ||
+                                      configuration?.sessionId ||
+                                      "nest-haus-" + Date.now().toString(36)}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                    Transaktion ID:
+                                  </span>
+                                  <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                                    {successfulPaymentIntentId ||
+                                      "pi_xxxxxxxxxxxxx"}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                    Betrag:
+                                  </span>
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
+                                    1.500 €
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                    Status:
+                                  </span>
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
+                                    Bezahlt
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                                    Datum:
+                                  </span>
+                                  <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
+                                    {(() => {
+                                      const paymentDate =
+                                        paymentCompletedDate || new Date();
+                                      const date = `${paymentDate.getDate().toString().padStart(2, "0")}.${(paymentDate.getMonth() + 1).toString().padStart(2, "0")}.${paymentDate.getFullYear()}`;
+                                      const time = `${paymentDate.getHours().toString().padStart(2, "0")}:${paymentDate.getMinutes().toString().padStart(2, "0")}`;
+                                      return `${date} | ${time}`;
+                                    })()}
+                                  </span>
+                                </div>
                               </div>
-                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                30% vom Gesamtpreis
-                                <br />
-                                Abzüglch Grundstückscheck: (
-                                {PriceUtils.formatPrice(
-                                  grundstueckscheckCredit
-                                )}
-                                ) -
-                                <br />
-                                Liefergarantie 6 Monate ab Teilzahlung.
-                              </div>
-                            </div>
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              {PriceUtils.formatPrice(secondPayment)}
                             </div>
                           </div>
-                          <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                2. Teilzahlung
-                              </div>
-                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                50% vom Gesamtpreis <br />
-                                Fällig nach Fertigstellung in der Produktion
-                              </div>
-                            </div>
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              {PriceUtils.formatPrice(thirdPayment)}
-                            </div>
+                        )}
+
+                        {/* Disclaimer text - centered below box with margin */}
+                        <div className="text-sm text-gray-600 leading-relaxed text-center pt-2 mb-6 mx-5">
+                          Solltest du mit dem Vorentwurf nicht zufrieden sein,
+                          kannst du vom Kauf deines Nest-Hauses zurücktreten. In
+                          diesem Fall zahlst du lediglich die Kosten für den
+                          Vorentwurf und Grundstückscheck.
+                        </div>
+
+                        {/* Jetzt bezahlen button - centered below text */}
+                        {!isPaymentCompleted && (
+                          <div className="flex justify-center">
+                            <Button
+                              variant="landing-primary"
+                              size="xs"
+                              onClick={() => setIsPaymentModalOpen(true)}
+                            >
+                              Jetzt bezahlen
+                            </Button>
                           </div>
-                          <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                                3. Teilzahlung
-                              </div>
-                              <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                20% vom Gesamtpreis <br />
-                                Fällig nach Errichtung am Grundstück
-                              </div>
-                            </div>
-                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
-                              {PriceUtils.formatPrice(fourthPayment)}
-                            </div>
-                          </div>
-                        </>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
               })()}
 
-              <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
-                <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                      Gesamtpreis
+            {/* Ohne-Nest Mode: Show simplified centered payment box */}
+            {isOhneNestMode && (
+              <div className="max-w-2xl mx-auto mb-12">
+                {/* Centered "Heute zu bezahlen" box */}
+                <div className="border border-gray-300 rounded-2xl p-6 bg-white mb-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="text-left flex-1">
+                      <h3
+                        className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
+                      >
+                        {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
+                      </h3>
+                      <div className="text-sm text-gray-600">
+                        {isPaymentCompleted
+                          ? "Zahlung erfolgreich abgeschlossen"
+                          : "Starte dein Bauvorhaben"}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      {!isPaymentCompleted && (
+                        <div className="flex items-center gap-2 justify-end mt-2">
+                          <span className="text-gray-400 line-through text-2xl">
+                            3.000 €
+                          </span>
+                          <div className="text-3xl font-bold text-gray-900">
+                            1.500 €
+                          </div>
+                        </div>
+                      )}
+                      {isPaymentCompleted && (
+                        <div className="flex items-center justify-end gap-2">
+                          <svg
+                            className="w-8 h-8 text-green-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <div className="text-2xl font-bold text-green-600">
+                            Bezahlt
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                    {isOhneNestMode
-                      ? PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)
-                      : PriceUtils.formatPrice(getCartTotal())}
-                  </div>
                 </div>
-              </div>
 
-              {/* Moved: Heute zu bezahlen section at the end */}
-              <div className="flex items-start justify-between gap-4 py-3">
-                <div className="text-left">
-                  <h2
-                    className={`h2-title mb-3 ${isPaymentCompleted ? "text-green-600" : "text-black"}`}
-                  >
-                    {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
-                  </h2>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug">
-                    {isPaymentCompleted && (
-                      <span className="text-green-600 font-medium">
-                        Zahlung erfolgreich abgeschlossen
-                      </span>
+                {/* Green transaction details box - only show after payment */}
+                {isPaymentCompleted && (
+                  <div className="mb-6">
+                    <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                            Deine Nest ID:
+                          </span>
+                          <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                            {configItem?.sessionId ||
+                              configuration?.sessionId ||
+                              "nest-haus-" + Date.now().toString(36)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                            Transaktion ID:
+                          </span>
+                          <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                            {successfulPaymentIntentId || "pi_xxxxxxxxxxxxx"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                            Betrag:
+                          </span>
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
+                            1.500 €
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                            Status:
+                          </span>
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
+                            Bezahlt
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                            Datum:
+                          </span>
+                          <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
+                            {(() => {
+                              const paymentDate =
+                                paymentCompletedDate || new Date();
+                              const date = `${paymentDate.getDate().toString().padStart(2, "0")}.${(paymentDate.getMonth() + 1).toString().padStart(2, "0")}.${paymentDate.getFullYear()}`;
+                              const time = `${paymentDate.getHours().toString().padStart(2, "0")}:${paymentDate.getMinutes().toString().padStart(2, "0")}`;
+                              return `${date} | ${time}`;
+                            })()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Disclaimer text - centered below box */}
+                <div className="text-sm text-gray-600 leading-relaxed text-center mb-6 mx-5">
+                  Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du
+                  vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall
+                  zahlst du lediglich die Kosten für den Vorentwurf und
+                  Grundstückscheck.
+                </div>
+
+                {/* Note: "Jetzt bezahlen" button is hidden for ohne nest mode by not rendering it here */}
+              </div>
+            )}
+
+            <div className="flex justify-center mt-16 md:mt-20">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Vorheriger Schritt
+              </Button>
+              <span className="inline-block w-3" />
+              <Button
+                variant="primary"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={() => setIsPaymentModalOpen(true)}
+                disabled={isPaymentCompleted}
+              >
+                {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Removed step 5 - we only have 5 steps (0-4) now */}
+        {false && stepIndex === 5 && (
+          <div className="space-y-4 pt-8">
+            <div className="pt-2"></div>
+            {/* Title row replaced above - keep spacing consistent */}
+            {/* Deine Auswahl Title */}
+            <div className="pt-2"></div>
+            <h2 className="h2-title text-black mb-3">Deine Auswahl</h2>
+
+            <div className="space-y-4 mb-8">
+              {configItem && !isOhneNestMode ? (
+                <>
+                  {(() => {
+                    const item = configItem as ConfigurationCartItem;
+                    const details = renderConfigurationDetails(item);
+                    const topAndMiddleItems = details.filter(
+                      (d) => !d.isBottomItem
+                    );
+                    const _bottomItems = details.filter((d) => d.isBottomItem);
+
+                    return (
+                      <>
+                        {topAndMiddleItems.length > 0 && (
+                          <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+                            <div>
+                              {topAndMiddleItems.map((detail, idx) => {
+                                if (!detail.value || detail.value === "—")
+                                  return null;
+                                return (
+                                  <div
+                                    key={detail.category + "-" + idx}
+                                    className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7"
+                                  >
+                                    <div className="flex-1 min-w-0">
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                        {detail.value}
+                                      </div>
+                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                        {detail.label}
+                                      </div>
+                                    </div>
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                      {detail.isIncluded ||
+                                      (detail.price && detail.price === 0)
+                                        ? "inkludiert"
+                                        : PriceUtils.formatPrice(
+                                            detail.price || 0
+                                          )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                        <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+                          <div>
+                            {/* Grundstückscheck row - removed "Vorentwurf" since it's shown below */}
+                            {/* Planungspaket row - show if exists in cart OR if locally selected */}
+                            {(configItem?.planungspaket ||
+                              localSelectedPlan) && (
+                              <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                    {(() => {
+                                      // Get name from cart item first, but use new naming
+                                      if (configItem?.planungspaket?.name) {
+                                        const name =
+                                          configItem?.planungspaket?.name?.toLowerCase() ||
+                                          "";
+                                        if (name.includes("basis"))
+                                          return "Planungspaket 01 Basis";
+                                        if (name.includes("plus"))
+                                          return "Planungspaket 02 Plus";
+                                        if (name.includes("pro"))
+                                          return "Planungspaket 03 Pro";
+                                        return (
+                                          configItem?.planungspaket?.name || "—"
+                                        );
+                                      }
+                                      // Otherwise get from localSelectedPlan
+                                      if (localSelectedPlan) {
+                                        if (localSelectedPlan === "basis")
+                                          return "Planungspaket 01 Basis";
+                                        if (localSelectedPlan === "plus")
+                                          return "Planungspaket 02 Plus";
+                                        if (localSelectedPlan === "pro")
+                                          return "Planungspaket 03 Pro";
+                                        return localSelectedPlan;
+                                      }
+                                      return "—";
+                                    })()}
+                                  </div>
+                                  <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                    Planungspaket
+                                  </div>
+                                </div>
+                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                  {(() => {
+                                    // Determine which package we're dealing with
+                                    let packageType = "basis";
+
+                                    if (configItem?.planungspaket?.name) {
+                                      const name =
+                                        configItem?.planungspaket?.name?.toLowerCase() ||
+                                        "";
+                                      if (name.includes("plus"))
+                                        packageType = "plus";
+                                      else if (name.includes("pro"))
+                                        packageType = "pro";
+                                    } else if (localSelectedPlan) {
+                                      packageType = localSelectedPlan || "";
+                                    }
+
+                                    // Return price display with "inkludiert" for basis
+                                    return packageType === "basis"
+                                      ? "inkludiert"
+                                      : packageType === "plus"
+                                        ? "16.900,00€"
+                                        : "21.900,00€";
+                                  })()}
+                                </div>
+                              </div>
+                            )}
+                            {/* Termin mit dem Nest Team row */}
+                            <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                  {getAppointmentSummary(sessionId)
+                                    ? "Terminvereinbarung"
+                                    : "—"}
+                                </div>
+                                <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                  Termin mit dem Nest Team
+                                </div>
+                              </div>
+                              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                                {(() => {
+                                  const appointmentSummary =
+                                    getAppointmentSummaryShort(sessionId);
+                                  const hasAppointmentFromOtherSession =
+                                    appointmentDetails &&
+                                    !isAppointmentFromCurrentSession(sessionId);
+
+                                  if (appointmentSummary) {
+                                    return (
+                                      <div className="flex items-start justify-end">
+                                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
+                                          {appointmentSummary}
+                                        </span>
+                                      </div>
+                                    );
+                                  } else if (hasAppointmentFromOtherSession) {
+                                    return (
+                                      <div className="flex items-start justify-end">
+                                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900 text-right max-w-[120px] md:max-w-none">
+                                          bereits vereinbart
+                                        </span>
+                                      </div>
+                                    );
+                                  } else {
+                                    return "—";
+                                  }
+                                })()}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </>
+              ) : (
+                <div className="text-sm text-gray-600">
+                  {isOhneNestMode
+                    ? "Dein Nest-Haus wird gemeinsam mit uns konfiguriert."
+                    : "Keine Konfiguration im Warenkorb."}
+                </div>
+              )}
+            </div>
+
+            {/* Teilzahlungen Title - only show when NOT in ohne nest mode */}
+            {!isOhneNestMode && (
+              <h2 className="h2-title text-black mb-3">Teilzahlungen</h2>
+            )}
+
+            {/* Instalment Breakdown */}
+            {(() => {
+              const totalPrice = Math.max(0, getCartTotal());
+              const firstPayment = GRUNDSTUECKSCHECK_PRICE;
+              const grundstueckscheckCredit = GRUNDSTUECKSCHECK_PRICE;
+              const secondPaymentOriginal = Math.max(0, totalPrice * 0.3);
+              const secondPayment = Math.max(
+                0,
+                secondPaymentOriginal - grundstueckscheckCredit
+              );
+              const thirdPayment = Math.max(0, totalPrice * 0.5);
+              const fourthPayment = Math.max(
+                0,
+                totalPrice - firstPayment - secondPaymentOriginal - thirdPayment
+              );
+              return (
+                <div className="border border-gray-300 rounded-2xl md:min-w-[260px] w-full overflow-hidden">
+                  <div>
+                    <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                          Vorentwurf & Grundstückscheck
+                        </div>
+                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                          Der erste Schritt zu deinem Nest-Haus auf deinem
+                          Grundstück.
+                        </div>
+                      </div>
+                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                        {PriceUtils.formatPrice(firstPayment)}
+                      </div>
+                    </div>
+
+                    {/* Planungspaket row */}
+                    {(configItem?.planungspaket || localSelectedPlan) && (
+                      <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7 border-t border-gray-200">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                            Planungspaket
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                            {(() => {
+                              // Get name from cart item first, but use new naming
+                              if (configItem?.planungspaket?.name) {
+                                const name =
+                                  configItem?.planungspaket?.name?.toLowerCase() ||
+                                  "";
+                                if (name.includes("basis"))
+                                  return "Planungspaket 01 Basis";
+                                if (name.includes("plus"))
+                                  return "Planungspaket 02 Plus";
+                                if (name.includes("pro"))
+                                  return "Planungspaket 03 Pro";
+                                return configItem?.planungspaket?.name || "—";
+                              }
+                              // Otherwise get from localSelectedPlan
+                              if (localSelectedPlan) {
+                                if (localSelectedPlan === "basis")
+                                  return "Planungspaket 01 Basis";
+                                if (localSelectedPlan === "plus")
+                                  return "Planungspaket 02 Plus";
+                                if (localSelectedPlan === "pro")
+                                  return "Planungspaket 03 Pro";
+                              }
+                              return "—";
+                            })()}
+                          </div>
+                        </div>
+                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                          {(() => {
+                            const planPrice =
+                              configItem?.planungspaket?.price ||
+                              (localSelectedPlan
+                                ? PLANNING_PACKAGES.find(
+                                    (p) => p.value === localSelectedPlan
+                                  )?.price || 0
+                                : 0);
+
+                            // Check if it's basis planungspaket (should show as inkludiert)
+                            const planValue =
+                              configItem?.planungspaket?.value ||
+                              localSelectedPlan;
+                            if (planValue === "basis") {
+                              return "inkludiert";
+                            } else {
+                              return PriceUtils.formatPrice(planPrice);
+                            }
+                          })()}
+                        </div>
+                      </div>
+                    )}
+                    {!isOhneNestMode && (
+                      <>
+                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              1. Teilzahlung
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                              30% vom Gesamtpreis
+                              <br />
+                              Abzüglch Grundstückscheck: (
+                              {PriceUtils.formatPrice(grundstueckscheckCredit)}
+                              ) -
+                              <br />
+                              Liefergarantie 6 Monate ab Teilzahlung.
+                            </div>
+                          </div>
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                            {PriceUtils.formatPrice(secondPayment)}
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              2. Teilzahlung
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                              50% vom Gesamtpreis <br />
+                              Fällig nach Fertigstellung in der Produktion
+                            </div>
+                          </div>
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                            {PriceUtils.formatPrice(thirdPayment)}
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                              3. Teilzahlung
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                              20% vom Gesamtpreis <br />
+                              Fällig nach Errichtung am Grundstück
+                            </div>
+                          </div>
+                          <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal leading-relaxed text-gray-900">
+                            {PriceUtils.formatPrice(fourthPayment)}
+                          </div>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
-                <div className="text-right">
-                  {!isPaymentCompleted && (
-                    <div className="flex items-center gap-3 justify-end mb-1">
-                      <span className="h2-title text-gray-400 line-through">
-                        3.000 €
-                      </span>
-                      <span className="h2-title text-black">1.500 €</span>
-                    </div>
-                  )}
-                  {isPaymentCompleted && (
-                    <div className="text-right flex items-center justify-end gap-2">
-                      <svg
-                        className="w-8 h-8 text-green-600"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <div className="h2-title text-green-600">Bezahlt</div>
-                    </div>
-                  )}
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
-                </div>
-              </div>
+              );
+            })()}
 
-              {/* Green transaction details box - only show after payment */}
-              {isPaymentCompleted && (
-                <div className="mt-6">
-                  <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                          Deine Nest ID:
-                        </span>
-                        <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                          {configItem?.sessionId ||
-                            configuration?.sessionId ||
-                            "nest-haus-" + Date.now().toString(36)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                          Transaktion ID:
-                        </span>
-                        <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
-                          {/* Will be populated from payment success */}
-                          pi_xxxxxxxxxxxxx
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                          Betrag:
-                        </span>
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
-                          1.500 €
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                          Status:
-                        </span>
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
-                          Bezahlt
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
-                          Datum:
-                        </span>
-                        <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
-                          {(() => {
-                            const now = new Date();
-                            const date = `${now.getDate().toString().padStart(2, "0")}.${(now.getMonth() + 1).toString().padStart(2, "0")}.${now.getFullYear()}`;
-                            const time = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-                            return `${date} | ${time}`;
-                          })()}
-                        </span>
-                      </div>
-                    </div>
+            <div className="border border-gray-300 rounded-2xl w-full overflow-hidden mt-3 md:mt-4">
+              <div className="flex items-center justify-between gap-4 py-3 md:py-4 px-6 md:px-7">
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                    Gesamtpreis
                   </div>
                 </div>
-              )}
-
-              {/* Contact form warning */}
-              {contactWarning && (
-                <div className="flex justify-center mt-4">
-                  <div className="bg-yellow-50 border-2 border-yellow-400 rounded-xl px-6 py-4 max-w-2xl">
-                    <div className="flex items-start">
-                      <svg
-                        className="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-0.5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <p className="text-yellow-800 font-medium text-base">
-                        {contactWarning}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="flex justify-center mt-6">
-                <button
-                  type="button"
-                  disabled={isPaymentCompleted}
-                  onClick={() => {
-                    // Check if contact form has been submitted
-                    const contactSubmitted = localStorage.getItem(
-                      "nest-haus-contact-submitted"
-                    );
-
-                    // Check if this is an alpha test
-                    const isAlphaTest =
-                      new URLSearchParams(window.location.search).get(
-                        "alpha-test"
-                      ) === "true" ||
-                      localStorage.getItem("nest-haus-test-session-id");
-
-                    if (isAlphaTest) {
-                      // Trigger alpha test Step 3 (feedback phase)
-                      localStorage.setItem(
-                        "nest-haus-test-purchase-completed",
-                        "true"
-                      );
-                      window.dispatchEvent(
-                        new CustomEvent("alpha-test-purchase-completed")
-                      );
-
-                      // Call the original scroll to contact function for alpha test
-                      if (onScrollToContact) {
-                        onScrollToContact();
-                      }
-                    } else if (!contactSubmitted) {
-                      // Production flow: Check if contact form was filled
-                      setContactWarning(
-                        "Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir dich kontaktieren können."
-                      );
-                      // Scroll to contact section (step 3: Terminvereinbarung)
-                      setStepIndex(3); // Navigate to Terminvereinbarung section (index 3)
-                      // Clear warning after 8 seconds
-                      setTimeout(() => setContactWarning(null), 8000);
-                    } else {
-                      // Production flow: Open Stripe payment modal
-                      setContactWarning(null);
-                      setIsPaymentModalOpen(true);
-                      setPaymentError(null);
-                    }
-                  }}
-                  className={`${
-                    isPaymentCompleted
-                      ? "bg-green-600 cursor-not-allowed opacity-75"
-                      : "bg-[#3D6CE1] hover:bg-blue-700"
-                  } text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium transition-colors`}
-                >
-                  {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
-                </button>
-              </div>
-
-              <div className="border border-gray-300 rounded-[19px] px-6 py-3 bg-white mt-12">
-                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
                   {isOhneNestMode
-                    ? "Du zahlst lediglich den Vorentwurf und Grundstückscheck"
-                    : "Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck."}
+                    ? PriceUtils.formatPrice(GRUNDSTUECKSCHECK_PRICE)
+                    : PriceUtils.formatPrice(getCartTotal())}
                 </div>
-              </div>
-
-              {/* Back Button */}
-              <div className="flex justify-center mt-16 md:mt-20">
-                <Button
-                  variant="landing-secondary-blue"
-                  size="xs"
-                  className="whitespace-nowrap"
-                  onClick={goPrev}
-                  disabled={stepIndex <= 0}
-                >
-                  Vorheriger Schritt
-                </Button>
               </div>
             </div>
-          )}
-        </div>
+
+            {/* Moved: Heute zu bezahlen section at the end */}
+            <div className="flex items-start justify-between gap-4 py-3">
+              <div className="text-left">
+                <h2
+                  className={`h2-title mb-3 ${isPaymentCompleted ? "text-green-600" : "text-black"}`}
+                >
+                  {isPaymentCompleted ? "Bezahlt" : "Heute zu bezahlen"}
+                </h2>
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug">
+                  {isPaymentCompleted && (
+                    <span className="text-green-600 font-medium">
+                      Zahlung erfolgreich abgeschlossen
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="text-right">
+                {!isPaymentCompleted && (
+                  <div className="flex items-center gap-3 justify-end mb-1">
+                    <span className="h2-title text-gray-400 line-through">
+                      3.000 €
+                    </span>
+                    <span className="h2-title text-black">1.500 €</span>
+                  </div>
+                )}
+                {isPaymentCompleted && (
+                  <div className="text-right flex items-center justify-end gap-2">
+                    <svg
+                      className="w-8 h-8 text-green-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <div className="h2-title text-green-600">Bezahlt</div>
+                  </div>
+                )}
+                <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-snug"></div>
+              </div>
+            </div>
+
+            {/* Green transaction details box - only show after payment */}
+            {isPaymentCompleted && (
+              <div className="mt-6">
+                <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                        Deine Nest ID:
+                      </span>
+                      <span className="font-mono text-sm md:text-base bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                        {configItem?.sessionId ||
+                          configuration?.sessionId ||
+                          "nest-haus-" + Date.now().toString(36)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                        Transaktion ID:
+                      </span>
+                      <span className="font-mono text-xs md:text-sm bg-white px-3 py-1.5 rounded-lg border border-green-300">
+                        {/* Will be populated from payment success */}
+                        pi_xxxxxxxxxxxxx
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                        Betrag:
+                      </span>
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-700 font-bold">
+                        1.500 €
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                        Status:
+                      </span>
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-green-600 font-bold">
+                        Bezahlt
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 font-medium">
+                        Datum:
+                      </span>
+                      <span className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700">
+                        {(() => {
+                          const now = new Date();
+                          const date = `${now.getDate().toString().padStart(2, "0")}.${(now.getMonth() + 1).toString().padStart(2, "0")}.${now.getFullYear()}`;
+                          const time = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+                          return `${date} | ${time}`;
+                        })()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Contact form warning */}
+            {contactWarning && (
+              <div className="flex justify-center mt-4">
+                <div className="bg-yellow-50 border-2 border-yellow-400 rounded-xl px-6 py-4 max-w-2xl">
+                  <div className="flex items-start">
+                    <svg
+                      className="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-0.5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <p className="text-yellow-800 font-medium text-base">
+                      {contactWarning}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                disabled={isPaymentCompleted}
+                onClick={() => {
+                  // Check if contact form has been submitted
+                  const contactSubmitted = localStorage.getItem(
+                    "nest-haus-contact-submitted"
+                  );
+
+                  // Check if this is an alpha test
+                  const isAlphaTest =
+                    new URLSearchParams(window.location.search).get(
+                      "alpha-test"
+                    ) === "true" ||
+                    localStorage.getItem("nest-haus-test-session-id");
+
+                  if (isAlphaTest) {
+                    // Trigger alpha test Step 3 (feedback phase)
+                    localStorage.setItem(
+                      "nest-haus-test-purchase-completed",
+                      "true"
+                    );
+                    window.dispatchEvent(
+                      new CustomEvent("alpha-test-purchase-completed")
+                    );
+
+                    // Call the original scroll to contact function for alpha test
+                    if (onScrollToContact) {
+                      onScrollToContact();
+                    }
+                  } else if (!contactSubmitted) {
+                    // Production flow: Check if contact form was filled
+                    setContactWarning(
+                      "Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir dich kontaktieren können."
+                    );
+                    // Scroll to contact section (step 3: Terminvereinbarung)
+                    setStepIndex(3); // Navigate to Terminvereinbarung section (index 3)
+                    // Clear warning after 8 seconds
+                    setTimeout(() => setContactWarning(null), 8000);
+                  } else {
+                    // Production flow: Open Stripe payment modal
+                    setContactWarning(null);
+                    setIsPaymentModalOpen(true);
+                    setPaymentError(null);
+                  }
+                }}
+                className={`${
+                  isPaymentCompleted
+                    ? "bg-green-600 cursor-not-allowed opacity-75"
+                    : "bg-[#3D6CE1] hover:bg-blue-700"
+                } text-white py-4 px-12 rounded-full text-[clamp(16px,4vw,20px)] font-medium transition-colors`}
+              >
+                {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
+              </button>
+            </div>
+
+            <div className="border border-gray-300 rounded-[19px] px-6 py-3 bg-white mt-12">
+              <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-700 leading-relaxed">
+                {isOhneNestMode
+                  ? "Du zahlst lediglich den Vorentwurf und Grundstückscheck"
+                  : "Solltest du mit dem Vorentwurf nicht zufrieden sein, kannst du vom Kauf deines Nest-Hauses zurücktreten. In diesem Fall zahlst du lediglich die Kosten für den Vorentwurf und Grundstückscheck."}
+              </div>
+            </div>
+
+            {/* Back Button */}
+            <div className="flex justify-center mt-16 md:mt-20">
+              <Button
+                variant="landing-secondary-blue"
+                size="xs"
+                className="whitespace-nowrap"
+                onClick={goPrev}
+                disabled={stepIndex <= 0}
+              >
+                Vorheriger Schritt
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Payment Modal */}

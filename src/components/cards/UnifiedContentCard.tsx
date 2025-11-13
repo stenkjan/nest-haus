@@ -2060,7 +2060,7 @@ export default function UnifiedContentCard({
 
         {/* Process Detail Layout - Static, Full Width */}
         {layout === "process-detail" ? (
-          <div className="py-8">{renderProcessDetailLayout()}</div>
+          <div>{renderProcessDetailLayout()}</div>
         ) : (
           /* Cards Container - Carousel Layouts */
           <div className="relative">
