@@ -4,6 +4,60 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [edc2236f7538ab89577dc1f4ce82195375d59f0a] - Thu Nov 13 10:17:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Clean up imports and enhance CheckoutStepper structure  - Removed unused import of PlanungspaketeCards in NestSystemClient. - Added an ID to the planning packages section in CheckoutStepper for better accessibility and targeting. - Introduced a new prop 'isStatic' in UnifiedContentCard for improved responsiveness.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/nest-system/NestSystemClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/BUILD_FIXES_NOV13.md
+
+
+---
+
+## [027ca0c9bf1668d661f2cb028fd9f1686af9ab04] - Thu Nov 13 10:11:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/nest-system/NestSystemClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/CheckoutPlanungspaketeCards.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/VIDEO_HOSTING_EVALUATION.md
+
+
+---
+
+## [08569e2bde0ce95c4ad1d5b5ea8a1e7469beccc0] - Thu Nov 13 09:32:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge dd0eb8785460fd172b3dc1817905cd22a22e789d into f33cd0e441ff3159ce1bf469015d92c0beb867b2  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/VIDEO_HOSTING_EVALUATION.md
+
+
+---
+
 ## [3fcc0d12bf5a32b3900645dc42c5ef377313bb23] - Wed Nov 12 17:01:15 2025 +0100
 
 **Author**: stenkjan

@@ -23,7 +23,6 @@ import {
 } from "@/components/sections";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
 import { UnifiedContentCard } from "@/components/cards";
-import { PlanungspaketeCards } from "@/components/cards";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
 
