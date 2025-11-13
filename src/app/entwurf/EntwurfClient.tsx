@@ -236,6 +236,7 @@ export default function EntwurfClient() {
         <section id="faq" className="w-full">
           <FAQSection />
         </section>
+        <div className="h-16"></div>
       </SectionRouter>
 
       <Footer />

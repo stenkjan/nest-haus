@@ -182,10 +182,7 @@ export default function DeinNestClient() {
             </div>
 
             {/* Desktop Buttons - Positioned at bottom */}
-            <div
-              className="absolute left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex"
-              style={{ bottom: "5%" }}
-            >
+            <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
               <Link href="/nest-system">
                 <Button variant="primary" size="xs">
                   Erster Schritte
@@ -338,7 +335,7 @@ export default function DeinNestClient() {
             showInstructions={false}
             alignment="left"
             customData={VIDEO_BACKGROUND_CARDS_PRESET.cards.filter(
-              (card) => card.id >= 1 && card.id <= 5
+              (card) => card.id >= 1 && card.id <= 4
             )}
           />
         </section>
