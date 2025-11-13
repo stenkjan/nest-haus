@@ -36,7 +36,7 @@ export default function EntwurfClient() {
       style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
     >
       {/* Hero Section - Simple image with SectionHeader on top */}
-      <section className="w-full">
+      <section id="hero" className="w-full">
         <div className="relative w-full h-[50vh] md:h-[60vh]">
           {/* Background Image */}
           <HybridBlobImage
@@ -87,7 +87,7 @@ export default function EntwurfClient() {
       </section>
 
       {/* Grundrissplan Card - No Padding (TALL CARD) */}
-      <section className="w-full py-8 md:py-16 bg-white">
+      <section id="vorentwurf" className="w-full py-8 md:py-16 bg-white">
         <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
           <SectionHeader
             title="Aller Anfang ist schwer?"
@@ -127,22 +127,24 @@ export default function EntwurfClient() {
             },
           ]}
         />
-        <div className="pt-16">
-          <UnifiedContentCard
-            layout="overlay-text"
-            style="standard"
-            variant="responsive"
-            maxWidth={false}
-            showInstructions={false}
-            noPadding={true}
-            alignment="left"
-            customData={entwurfVideoCards}
-          />
-        </div>
+      </section>
+
+      {/* Video Examples Section */}
+      <section id="beispiele" className="w-full bg-white">
+        <UnifiedContentCard
+          layout="overlay-text"
+          style="standard"
+          variant="responsive"
+          maxWidth={false}
+          showInstructions={false}
+          noPadding={true}
+          alignment="left"
+          customData={entwurfVideoCards}
+        />
       </section>
 
       {/* Grundstück Card - With Padding (TALL CARD) */}
-      <section className="w-full py-8 md:py-16 bg-white">
+      <section id="grundstueckscheck" className="w-full py-8 md:py-16 bg-white">
         <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
           <SectionHeader
             title="Dein Grundstücks-Check"
@@ -177,7 +179,7 @@ export default function EntwurfClient() {
         />
       </section>
 
-      <section id="ablauf" className="w-full py-8 md:py-16 bg-white">
+      <section id="anleitung" className="w-full py-8 md:py-16 bg-white">
         <SectionHeader
           title="Step by Step nach Hause"
           subtitle="So gehts nach dem ersten schritt weiter"
@@ -199,7 +201,9 @@ export default function EntwurfClient() {
       </section>
 
       {/* FAQ Section */}
-      <FAQSection />
+      <section id="faq" className="w-full">
+        <FAQSection />
+      </section>
 
       <GetInContactBanner />
 

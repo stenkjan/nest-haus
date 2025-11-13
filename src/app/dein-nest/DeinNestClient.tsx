@@ -29,24 +29,24 @@ import Footer from "@/components/Footer";
 // Define sections with proper structure for entdecken page
 const sections = [
   {
-    id: "hero",
+    id: "dein-nest-preise",
     title: "Design für dich gemacht",
-    slug: "hero",
+    slug: "dein-nest-preise",
   },
   {
-    id: "video",
+    id: "intro-nest",
     title: "Video Segment",
-    slug: "video",
+    slug: "intro-nest",
   },
   {
-    id: "transportabilitaet",
+    id: "transport",
     title: "Transportabilitaet",
-    slug: "transportabilitaet",
+    slug: "transport",
   },
   {
-    id: "moeglichkeiten",
+    id: "position-am-markt",
     title: "Möglichkeiten Entdecken",
-    slug: "moeglichkeiten",
+    slug: "position-am-markt",
   },
   {
     id: "ablauf",
@@ -54,9 +54,14 @@ const sections = [
     slug: "ablauf",
   },
   {
-    id: "konfigurieren",
+    id: "haus-konfiguration",
     title: "Dein Grundstück - Unser Check",
-    slug: "konfigurieren",
+    slug: "haus-konfiguration",
+  },
+  {
+    id: "vorteile-nest",
+    title: "Warum Nest Sinn macht?",
+    slug: "vorteile-nest",
   },
   {
     id: "planungspakete",
@@ -64,14 +69,15 @@ const sections = [
     slug: "planungspakete",
   },
   {
-    id: "partners",
+    id: "unsere-partner",
     title: "Gemeinsam mit starken Partnern",
-    slug: "partners",
+    slug: "unsere-partner",
   },
 ];
 
 export default function DeinNestClient() {
-  const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
+  const [_currentSectionId, setCurrentSectionId] =
+    useState<string>("dein-nest-preise");
   const [isMobile, setIsMobile] = useState(false);
   const {
     isOpen,
@@ -101,7 +107,7 @@ export default function DeinNestClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero with Image and Overlay Text */}
-        <section id="hero" className="w-full">
+        <section id="dein-nest-preise" className="w-full">
           <div className="relative w-full">
             {/* Background Image */}
             <HybridBlobImage
@@ -208,7 +214,7 @@ export default function DeinNestClient() {
           </div>
         </section>
         {/* Section 2 - Text Content Below Hero */}
-        <section id="video" className="w-full relative bg-white">
+        <section id="intro-nest" className="w-full relative bg-white">
           {/* Text Content Below Video */}
           <div className="max-w-[1440px] 2xl:max-w-[1440px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-32 mt-8 md:mt-12 pt-8">
             <h2
@@ -270,16 +276,19 @@ export default function DeinNestClient() {
             </div>
           </div>
         </section>
-        {/* Three Boxes Section - Modulhaus Vergleich */}^
+        {/* Three Boxes Section - Modulhaus Vergleich */}
         <section
-          id="ModulhausVergleich"
+          id="position-am-markt"
           className="w-full py-8 md:py-16 bg-[#f4f4f4]"
         >
           <ModulhausVergleichSection />
         </section>
         {/* Section 5 - Konfigurationen */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Konfigurationen" */}
-        <section id="konfigurieren" className="w-full py-8 md:py-16 bg-white">
+        <section
+          id="haus-konfiguration"
+          className="w-full py-8 md:py-16 bg-white"
+        >
           <SectionHeader
             title="Konfiguriere dein ®Nest Haus"
             subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
@@ -323,7 +332,7 @@ export default function DeinNestClient() {
           />
         </section>
         {/* Section 6 - Video Background Cards */}
-        <section className="w-full py-8 md:py-16 bg-white">
+        <section id="vorteile-nest" className="w-full py-8 md:py-16 bg-white">
           <div className="w-full mb-12">
             <div className="pl-4 md:pl-12 text-left">
               <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
@@ -349,10 +358,7 @@ export default function DeinNestClient() {
         </section>
         {/* Section 7 - Transportabilitaet Video */}
         {/* 📚 Catalog: @sections/catalog/CATALOG.md → "Transportabilitaet" */}
-        <section
-          id="transportabilitaet"
-          className="w-full py-8 md:py-16 bg-white"
-        >
+        <section id="transport" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
             title="Dein Zuhause zieht um"
             subtitle="Früher war Wohnen Stillstand. heute ist es Nest."
@@ -394,7 +400,7 @@ export default function DeinNestClient() {
           />
         </section>
         {/* Section 8 - Partners */}
-        <section id="partners" className="w-full pb-8 md:py-16 bg-white">
+        <section id="unsere-partner" className="w-full pb-8 md:py-16 bg-white">
           <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <PartnersSection />
           </div>
