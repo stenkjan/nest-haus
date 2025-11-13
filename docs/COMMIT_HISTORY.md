@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [edc2236f7538ab89577dc1f4ce82195375d59f0a] - Thu Nov 13 10:17:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Clean up imports and enhance CheckoutStepper structure  - Removed unused import of PlanungspaketeCards in NestSystemClient. - Added an ID to the planning packages section in CheckoutStepper for better accessibility and targeting. - Introduced a new prop 'isStatic' in UnifiedContentCard for improved responsiveness.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/nest-system/NestSystemClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/BUILD_FIXES_NOV13.md
+
+
+---
+
 ## [027ca0c9bf1668d661f2cb028fd9f1686af9ab04] - Thu Nov 13 10:11:20 2025 +0100
 
 **Author**: stenkjan
