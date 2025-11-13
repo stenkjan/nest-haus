@@ -4,6 +4,32 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4ac5540a23e70e14c0ebfea1be88611aea2243bd] - Thu Nov 13 19:59:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge f379bc1c20eb87e430e195f220d9c79f8ac44a7e into 21e79555b1c8ae4ee7b1e2eecfe30ef2bc3e0864  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+
+
+---
+
+## [51126bd434ac0123c9364ce294e03703456bbff1] - Thu Nov 13 19:41:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [79df304dcf321059bd0783e438486164db28d956] - Thu Nov 13 19:36:54 2025 +0100
 
 **Author**: stenkjan
