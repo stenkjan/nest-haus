@@ -320,31 +320,12 @@ export default function UnifiedContentCard({
         : cardWidth;
 
     let centerOffset;
-
-    // DESKTOP REDESIGN (≥1024px): Different alignment for static vs carousel
-    if (containerWidth >= 1024) {
-      if (isStatic) {
-        // Static cards: Centered with max-width constraint
-        const maxCardWidth = Math.min(containerWidth - 96, 1600 - 96);
-        if (containerWidth > 1600) {
-          // On ultra-wide screens, center the 1600px card
-          centerOffset = (containerWidth - maxCardWidth) / 2;
-        } else {
-          // Within 1600px, use 48px padding
-          centerOffset = 48;
-        }
-      } else {
-        // Carousel cards: Left-aligned with 48px padding
-        centerOffset = 48;
-      }
-    } else if (alignment === "left" && containerWidth >= 768) {
-      // Tablet with left alignment: Use consistent 48px padding (no extra offset)
-      centerOffset = 48;
-    } else if (alignment === "left" && containerWidth < 768) {
-      // Mobile with left alignment: Use smaller padding for mobile
-      centerOffset = 16;
+    if (alignment === "left" && containerWidth >= 1024) {
+      // Left alignment: start from left edge with padding (desktop only)
+      centerOffset =
+        containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
     } else {
-      // Default center alignment for other cases
+      // Center alignment (default behavior for all, and mobile/tablet for left alignment)
       if (containerWidth < 768) {
         const containerPadding = 32;
         centerOffset = (containerWidth - firstCardWidth - containerPadding) / 2;
@@ -366,7 +347,6 @@ export default function UnifiedContentCard({
     alignment,
     isLightboxMode,
     stableViewportHeight,
-    isStatic,
   ]);
 
   // Calculate responsive card dimensions
@@ -375,33 +355,51 @@ export default function UnifiedContentCard({
       const width = window.innerWidth;
       setScreenWidth(width);
 
-      // DESKTOP REDESIGN (≥1024px): Full-width cards with 48px padding
-      // Static cards: max-width 1600px (centered on >1600px)
-      // Carousel cards: no max-width, left-aligned
-
       // Special sizing for video layout (16:9 aspect ratio on desktop, 16:10 on mobile)
       if (layout === "video") {
-        if (width >= 1024) {
-          // DESKTOP: Full-width card (48px global padding)
+        // Match VideoCard16by9 dimensions exactly
+        if (width >= 1600) {
           setCardsPerView(1);
-          // Full viewport width minus padding (48px each side)
-          const availableWidth = Math.min(width - 96, 1600 - 96); // max 1600px for static cards
-          setCardWidth(availableWidth);
+          setCardWidth(1600);
+        } else if (width >= 1400) {
+          setCardsPerView(1);
+          setCardWidth(1380);
+        } else if (width >= 1280) {
+          setCardsPerView(1);
+          setCardWidth(1280);
+        } else if (width >= 1024) {
+          setCardsPerView(1);
+          setCardWidth(992); // Fit within 1024px viewport with padding
         } else {
-          // Mobile/Tablet: Match PlanungspaketeCards width (350px) - NO CHANGES
+          // Mobile/Tablet: Match PlanungspaketeCards width (350px)
           setCardsPerView(1);
           setCardWidth(350);
         }
       } else if (layout === "text-icon") {
-        // DESKTOP REDESIGN (≥1024px): Full-width cards with aspect-ratio-based sizing
-        if (width >= 1024) {
-          // Desktop: Square cards, height based on available width (1/3 of container width)
-          const availableWidth = Math.min(width - 96, 1600 - 96);
-          const cardSize = availableWidth / 3; // Roughly 3 cards visible
-          setCardsPerView(3);
-          setCardWidth(cardSize);
+        // On desktop/tablet: width = height (based on viewport height for consistency with other cards)
+        // On mobile: fixed width with taller height for content
+        if (width >= 1600) {
+          const calculatedHeight = Math.min(
+            830,
+            typeof window !== "undefined" ? window.innerHeight * 0.75 : 830
+          );
+          setCardsPerView(2.5);
+          setCardWidth(calculatedHeight); // Square: width = height
+        } else if (width >= 1280) {
+          const calculatedHeight = Math.min(
+            692,
+            typeof window !== "undefined" ? window.innerHeight * 0.7 : 692
+          );
+          setCardsPerView(2.2);
+          setCardWidth(calculatedHeight); // Square: width = height
+        } else if (width >= 1024) {
+          const calculatedHeight = Math.min(
+            577,
+            typeof window !== "undefined" ? window.innerHeight * 0.7 : 577
+          );
+          setCardsPerView(2);
+          setCardWidth(calculatedHeight); // Square: width = height
         } else if (width >= 768) {
-          // Tablet - NO CHANGES
           const calculatedHeight = Math.min(
             720,
             typeof window !== "undefined" ? window.innerHeight * 0.75 : 720
@@ -409,13 +407,15 @@ export default function UnifiedContentCard({
           setCardsPerView(1.5);
           setCardWidth(calculatedHeight); // Square: width = height
         } else {
-          // Mobile: fixed width, taller height - NO CHANGES
+          // Mobile: fixed width, taller height
           setCardsPerView(1.1);
           setCardWidth(312);
         }
       } else if (layout === "overlay-text") {
-        // DESKTOP REDESIGN (≥1024px): Full-width cards for carousel
-        // Mobile (<1024px): NO CHANGES
+        // Overlay-text layout: same HEIGHT as other cards, width varies by aspect ratio
+        // Height is consistent across all cards, aspect ratio controls WIDTH
+        // "2x1" = 1.2:2 ratio (portrait - 1.2cm width × 2cm height), "1x1" = 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
+        // MOBILE OVERRIDE: Force 2x1 aspect ratio on mobile (<768px) for better UX
         const effectiveAspectRatio = width < 768 ? "2x1" : aspectRatio;
 
         // Use stable viewport height to prevent iOS Safari scaling issues
@@ -426,39 +426,42 @@ export default function UnifiedContentCard({
               ? window.innerHeight
               : 0;
 
-        if (width >= 1024) {
-          // DESKTOP: Calculate card width based on available viewport and aspect ratio
-          // Height: 70vh for consistent sizing across all desktop screens
-          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
-
-          // Width depends on aspect ratio
-          const cardWidthCalc =
-            effectiveAspectRatio === "2x1"
-              ? cardHeight * 0.6 // Portrait (1.2:2 ratio)
-              : cardHeight * 1.2; // Wider (2.4:2 ratio)
-
-          // Calculate how many cards fit in viewport
-          const availableWidth = width - 96; // 48px padding each side
-          const cardsVisible = availableWidth / (cardWidthCalc + gap);
-
-          setCardsPerView(cardsVisible);
-          setCardWidth(cardWidthCalc);
+        if (width >= 1600) {
+          // Height: 830px (or 75% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(830, viewportHeight * 0.75);
+          setCardsPerView(effectiveAspectRatio === "2x1" ? 3.8 : 1.9);
+          setCardWidth(
+            effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
+          );
+        } else if (width >= 1280) {
+          // Height: 692px (or 70% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(692, viewportHeight * 0.7);
+          setCardsPerView(effectiveAspectRatio === "2x1" ? 3.2 : 1.7);
+          setCardWidth(
+            effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
+          );
+        } else if (width >= 1024) {
+          // Height: 577px (or 70% viewport), Width varies by aspect ratio
+          const cardHeight = Math.min(577, viewportHeight * 0.7);
+          setCardsPerView(effectiveAspectRatio === "2x1" ? 2.6 : 1.5);
+          setCardWidth(
+            effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
+          );
         } else if (width >= 768) {
-          // Tablet - NO CHANGES
+          // Height: 720px (or 75% viewport), Width varies by aspect ratio
           const cardHeight = Math.min(720, viewportHeight * 0.75);
           setCardsPerView(effectiveAspectRatio === "2x1" ? 2.6 : 1.5);
           setCardWidth(
             effectiveAspectRatio === "2x1" ? cardHeight * 0.6 : cardHeight * 1.2
           );
         } else {
-          // Mobile - NO CHANGES
+          // Mobile: Height: 600px (or 75% viewport), Width forced to 2x1 (portrait)
           const cardHeight = Math.min(600, viewportHeight * 0.75);
-          setCardsPerView(2);
-          setCardWidth(cardHeight * 0.6);
+          setCardsPerView(2); // Always 2 cards per view on mobile (portrait)
+          setCardWidth(cardHeight * 0.6); // Always use 2x1 ratio on mobile
         }
       } else if (layout === "glass-quote") {
-        // DESKTOP REDESIGN (≥1024px): Full-width carousel cards
-        // Mobile (<1024px): NO CHANGES
+        // Glass-quote layout: Use 2x1 aspect ratio (portrait/tall like video background cards)
         const viewportHeight =
           stableViewportHeight > 0
             ? stableViewportHeight
@@ -466,31 +469,30 @@ export default function UnifiedContentCard({
               ? window.innerHeight
               : 0;
 
-        if (width >= 1024) {
-          // DESKTOP: Full-width carousel with 2x1 portrait aspect ratio
-          // Height: 70vh for consistent sizing
-          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
-          const cardWidthCalc = cardHeight * 0.6; // 2x1 portrait ratio
-
-          const availableWidth = width - 96; // 48px padding each side
-          const cardsVisible = availableWidth / (cardWidthCalc + gap);
-
-          setCardsPerView(cardsVisible);
-          setCardWidth(cardWidthCalc);
+        if (width >= 1600) {
+          const cardHeight = Math.min(830, viewportHeight * 0.75);
+          setCardsPerView(3.8);
+          setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
+        } else if (width >= 1280) {
+          const cardHeight = Math.min(692, viewportHeight * 0.7);
+          setCardsPerView(3.2);
+          setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
+        } else if (width >= 1024) {
+          const cardHeight = Math.min(577, viewportHeight * 0.7);
+          setCardsPerView(2.6);
+          setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
         } else if (width >= 768) {
-          // Tablet - NO CHANGES
           const cardHeight = Math.min(720, viewportHeight * 0.75);
           setCardsPerView(2.6);
           setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
         } else {
-          // Mobile - NO CHANGES
+          // Mobile: 2x1 portrait ratio
           const cardHeight = Math.min(600, viewportHeight * 0.75);
           setCardsPerView(2);
           setCardWidth(cardHeight * 0.6);
         }
       } else if (layout === "team-card") {
-        // DESKTOP REDESIGN (≥1024px): Full-width carousel cards
-        // Mobile (<1024px): NO CHANGES
+        // Team-card layout: Use 1.8:2 aspect ratio (9:10 - nearly square but slightly taller)
         const viewportHeight =
           stableViewportHeight > 0
             ? stableViewportHeight
@@ -498,68 +500,67 @@ export default function UnifiedContentCard({
               ? window.innerHeight
               : 0;
 
-        if (width >= 1024) {
-          // DESKTOP: Full-width carousel with 9:10 aspect ratio
-          // Height: 70vh for consistent sizing
-          const cardHeight = viewportHeight * 0.7 * heightMultiplier;
-          const cardWidthCalc = cardHeight * 0.9; // 1.8:2 ratio (9:10)
-
-          const availableWidth = width - 96; // 48px padding each side
-          const cardsVisible = availableWidth / (cardWidthCalc + gap);
-
-          setCardsPerView(cardsVisible);
-          setCardWidth(cardWidthCalc);
+        if (width >= 1600) {
+          const cardHeight = Math.min(830, viewportHeight * 0.75);
+          setCardsPerView(2.5);
+          setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
+        } else if (width >= 1280) {
+          const cardHeight = Math.min(692, viewportHeight * 0.7);
+          setCardsPerView(2.2);
+          setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
+        } else if (width >= 1024) {
+          const cardHeight = Math.min(577, viewportHeight * 0.7);
+          setCardsPerView(1.8);
+          setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
         } else if (width >= 768) {
-          // Tablet - NO CHANGES
           const cardHeight = Math.min(720, viewportHeight * 0.75);
           setCardsPerView(1.5);
           setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
         } else {
-          // Mobile - NO CHANGES (1.3:2 ratio narrower for mobile)
+          // Mobile: 1.3:2 ratio (narrower for better mobile fit)
           const cardHeight = Math.min(600, viewportHeight * 0.75);
           setCardsPerView(1.5);
           setCardWidth(cardHeight * 0.65);
         }
       } else if (isStatic) {
-        // DESKTOP REDESIGN (≥1024px): Full-width static cards with 1600px max-width
-        // Mobile (<1024px): NO CHANGES
-        if (width >= 1024) {
-          // DESKTOP: Full-width with 48px padding, max 1600px
+        // Static variant: single responsive card
+        if (width >= 1600) {
           setCardsPerView(1);
-          const availableWidth = Math.min(width - 96, 1600 - 96);
-          setCardWidth(availableWidth);
+          setCardWidth(1380);
+        } else if (width >= 1280) {
+          setCardsPerView(1);
+          setCardWidth(1152);
+        } else if (width >= 1024) {
+          setCardsPerView(1);
+          setCardWidth(960);
         } else if (width >= 768) {
-          // Tablet - NO CHANGES
           setCardsPerView(1);
           setCardWidth(336);
         } else {
-          // Mobile - NO CHANGES
           setCardsPerView(1);
           setCardWidth(312);
         }
       } else if (isResponsive) {
-        // DESKTOP REDESIGN (≥1024px): Full-width carousel cards (no max-width for responsive variant)
-        // Mobile (<1024px): NO CHANGES
-        if (width >= 1024) {
-          // DESKTOP: Full-width carousel with 48px padding, left-aligned
-          // Card should be ~85% of available width for nice carousel effect
-          const availableWidth = width - 96; // 48px padding each side
-          const singleCardWidth = availableWidth * 0.85; // 85% for peek effect
-
-          setCardsPerView(1.15); // Show partial next card
-          setCardWidth(singleCardWidth);
+        // Responsive variant: multiple cards
+        if (width >= 1600) {
+          setCardsPerView(1.4);
+          setCardWidth(1380);
+        } else if (width >= 1280) {
+          setCardsPerView(1.3);
+          setCardWidth(1152);
+        } else if (width >= 1024) {
+          setCardsPerView(1.1);
+          setCardWidth(960);
         } else if (width >= 768) {
-          // Tablet - NO CHANGES
           setCardsPerView(2);
           setCardWidth(336);
         } else {
-          // Mobile - NO CHANGES
           setCardsPerView(1.2);
           setCardWidth(312);
         }
       }
 
-      // Recenter/align the current card after dimension changes
+      // Recenter the current card after dimension changes
       if (isClient) {
         const containerWidth = width;
 
@@ -570,31 +571,12 @@ export default function UnifiedContentCard({
             : cardWidth;
 
         let centerOffset;
-
-        // DESKTOP REDESIGN (≥1024px): Different alignment for static vs carousel
-        if (width >= 1024) {
-          if (isStatic) {
-            // Static cards: Centered with max-width constraint
-            const maxCardWidth = Math.min(width - 96, 1600 - 96);
-            if (width > 1600) {
-              // On ultra-wide screens, center the 1600px card
-              centerOffset = (width - maxCardWidth) / 2;
-            } else {
-              // Within 1600px, use 48px padding
-              centerOffset = 48;
-            }
-          } else {
-            // Carousel cards: Left-aligned with 48px padding
-            centerOffset = 48;
-          }
-        } else if (alignment === "left" && width >= 768) {
-          // Tablet with left alignment: Use consistent 48px padding (no extra offset)
-          centerOffset = 48;
-        } else if (alignment === "left" && width < 768) {
-          // Mobile with left alignment: Use smaller padding for mobile
-          centerOffset = 16;
+        if (alignment === "left" && containerWidth >= 1024) {
+          // Left alignment: start from left edge with padding (desktop only)
+          centerOffset =
+            containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
         } else {
-          // Default center alignment for other cases
+          // Center alignment (default behavior for all, and mobile/tablet for left alignment)
           if (containerWidth < 768) {
             const containerPadding = 32;
             centerOffset =
@@ -677,31 +659,12 @@ export default function UnifiedContentCard({
       const targetCardWidth = getCardWidth(displayCards[newIndex]);
 
       let centerOffset;
-
-      // DESKTOP REDESIGN (≥1024px): Different alignment for static vs carousel
-      if (containerWidth >= 1024) {
-        if (isStatic) {
-          // Static cards: Centered with max-width constraint
-          const maxCardWidth = Math.min(containerWidth - 96, 1600 - 96);
-          if (containerWidth > 1600) {
-            // On ultra-wide screens, center the 1600px card
-            centerOffset = (containerWidth - maxCardWidth) / 2;
-          } else {
-            // Within 1600px, use 48px padding
-            centerOffset = 48;
-          }
-        } else {
-          // Carousel cards: Left-aligned with 48px padding
-          centerOffset = 48;
-        }
-      } else if (alignment === "left" && containerWidth >= 768) {
-        // Tablet with left alignment: Use consistent 48px padding (no extra offset)
-        centerOffset = 48;
-      } else if (alignment === "left" && containerWidth < 768) {
-        // Mobile with left alignment: Use smaller padding for mobile
-        centerOffset = 16;
+      if (alignment === "left" && containerWidth >= 1024) {
+        // Left alignment: start from left edge with padding (desktop only)
+        centerOffset =
+          containerWidth >= 1600 ? 80 : containerWidth >= 1280 ? 64 : 48;
       } else {
-        // Default center alignment for other cases
+        // Center alignment (default behavior for all, and mobile/tablet for left alignment)
         if (containerWidth < 768) {
           const containerPadding = 32;
           centerOffset =
@@ -737,7 +700,6 @@ export default function UnifiedContentCard({
       getCumulativePosition,
       x,
       alignment,
-      isStatic,
     ]
   );
 
@@ -1272,16 +1234,7 @@ export default function UnifiedContentCard({
               delay: index * 0.1 + 0.2,
               duration: 0.8,
             }}
-            className={`relative rounded-3xl overflow-hidden w-full ${
-              // Add vertical margin to prevent video from touching card borders
-              // Only apply to cards without noPadding at the transition breakpoint
-              isClient &&
-              screenWidth >= 1024 &&
-              screenWidth < 1280 &&
-              !_noPadding
-                ? "my-2" // Vertical margin at transition breakpoint (1024-1280px)
-                : ""
-            }`}
+            className="relative rounded-3xl overflow-hidden w-full"
             style={{
               // 1:1 at 1024px for better height visibility with 50/50 split
               // 16:9 at 1280px+ for standard widescreen with 1/3-2/3 split
@@ -1291,7 +1244,7 @@ export default function UnifiedContentCard({
                 : {
                     aspectRatio:
                       isClient && screenWidth >= 1024 && screenWidth < 1280
-                        ? "16/10" // Less tall aspect ratio at transition point
+                        ? "1/1"
                         : "16/9",
                     maxWidth: "100%",
                   }),
@@ -2062,7 +2015,7 @@ export default function UnifiedContentCard({
 
         {/* Process Detail Layout - Static, Full Width */}
         {layout === "process-detail" ? (
-          <div>{renderProcessDetailLayout()}</div>
+          <div className="py-8">{renderProcessDetailLayout()}</div>
         ) : (
           /* Cards Container - Carousel Layouts */
           <div className="relative">
@@ -2179,13 +2132,11 @@ export default function UnifiedContentCard({
                 } ${
                   isLightboxMode
                     ? "" // No padding in lightbox mode - use full width
-                    : layout === "video" || layout === "overlay-text"
-                      ? "" // No padding - JavaScript handles offset via centerOffset
-                      : isClient && screenWidth >= 1024
-                        ? "px-12" // Desktop: 48px padding for non-video/overlay-text layouts
-                        : maxWidth
-                          ? "px-8" // Tablet
-                          : "px-4" // Mobile
+                    : layout === "video"
+                      ? "px-4"
+                      : maxWidth
+                        ? "px-8"
+                        : "px-4"
                 } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
                 style={{ overflow: "visible" }}
               >
@@ -2224,10 +2175,29 @@ export default function UnifiedContentCard({
                             ? window.innerHeight
                             : 0;
 
-                      if (isClient && screenWidth >= 1024) {
-                        // DESKTOP: Use 70vh height for consistent sizing
-                        const cardHeight =
-                          viewportHeight * 0.7 * heightMultiplier;
+                      if (isClient && screenWidth >= 1600) {
+                        const cardHeight = Math.min(
+                          830 * heightMultiplier,
+                          viewportHeight * 0.75 * heightMultiplier
+                        );
+                        cardSpecificWidth =
+                          effectiveAspectRatio === "2x1"
+                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
+                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
+                      } else if (isClient && screenWidth >= 1280) {
+                        const cardHeight = Math.min(
+                          692 * heightMultiplier,
+                          viewportHeight * 0.7 * heightMultiplier
+                        );
+                        cardSpecificWidth =
+                          effectiveAspectRatio === "2x1"
+                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
+                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
+                      } else if (isClient && screenWidth >= 1024) {
+                        const cardHeight = Math.min(
+                          577 * heightMultiplier,
+                          viewportHeight * 0.7 * heightMultiplier
+                        );
                         cardSpecificWidth =
                           effectiveAspectRatio === "2x1"
                             ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
@@ -2275,40 +2245,71 @@ export default function UnifiedContentCard({
                           height:
                             layout === "video"
                               ? isClient && screenWidth >= 1024
-                                ? // DESKTOP: Use aspect ratio for height calculation
-                                  // 2/3 of card is video with 16:9 aspect, plus padding
-                                  (() => {
-                                    const videoWidth =
-                                      cardSpecificWidth * (2 / 3);
-                                    const videoHeight = (videoWidth / 16) * 9;
-                                    return videoHeight + 30; // 15px top + 15px bottom padding
-                                  })()
+                                ? // Desktop: Calculate height based on video area with aspect ratio + padding
+                                  // Use cardWidth to ensure height scales properly with viewport
+                                  cardWidth >= 1600
+                                  ? (((1600 * 2) / 3 / 16) * 9 + 30) *
+                                    heightMultiplier // 630px standard, 787.5px tall (2/3 split)
+                                  : cardWidth >= 1380
+                                    ? (((1380 * 2) / 3 / 16) * 9 + 30) *
+                                      heightMultiplier // 548px standard, 685px tall (2/3 split)
+                                    : cardWidth >= 1280
+                                      ? (((1280 * 2) / 3 / 16) * 9 + 30) *
+                                        heightMultiplier // 510px standard, 637.5px tall (2/3 split)
+                                      : ((992 * 1) / 2 + 30) * heightMultiplier // 526px standard, 657.5px tall at 1024px (1/2 split, 1:1 aspect ratio)
                                 : undefined // Mobile: auto height
                               : layout === "text-icon"
-                                ? isClient && screenWidth >= 1024
-                                  ? cardSpecificWidth // Square on desktop: height = width
-                                  : isClient && screenWidth >= 768
-                                    ? cardWidth // Square on tablet
-                                    : 480 * heightMultiplier // Mobile: taller to fit content
-                                : layout === "overlay-text" ||
-                                    layout === "glass-quote" ||
-                                    layout === "team-card"
-                                  ? // DESKTOP REDESIGN (≥1024px): Use viewport-based height
-                                    isClient && screenWidth >= 1024
-                                    ? (() => {
-                                        const viewportHeight =
-                                          stableViewportHeight > 0
-                                            ? stableViewportHeight
-                                            : typeof window !== "undefined"
-                                              ? window.innerHeight
-                                              : 0;
-                                        return (
-                                          viewportHeight *
-                                          0.7 *
-                                          heightMultiplier
-                                        );
-                                      })()
-                                    : // Mobile/Tablet - NO CHANGES
+                                ? isClient && screenWidth >= 768
+                                  ? cardWidth // Square on tablet/desktop: height = width (already calculated from viewport)
+                                  : 480 * heightMultiplier // 480px standard, 600px tall on mobile to fit content nicely
+                                : layout === "overlay-text"
+                                  ? // Overlay-text: Use SAME standard heights as other cards
+                                    // Use stable viewport height to prevent iOS Safari scaling issues
+                                    (() => {
+                                      const viewportHeight =
+                                        stableViewportHeight > 0
+                                          ? stableViewportHeight
+                                          : typeof window !== "undefined"
+                                            ? window.innerHeight
+                                            : 0;
+                                      return isClient && screenWidth >= 1600
+                                        ? Math.min(
+                                            830 * heightMultiplier,
+                                            viewportHeight *
+                                              0.75 *
+                                              heightMultiplier
+                                          )
+                                        : isClient && screenWidth >= 1280
+                                          ? Math.min(
+                                              692 * heightMultiplier,
+                                              viewportHeight *
+                                                0.7 *
+                                                heightMultiplier
+                                            )
+                                          : isClient && screenWidth >= 1024
+                                            ? Math.min(
+                                                577 * heightMultiplier,
+                                                viewportHeight *
+                                                  0.7 *
+                                                  heightMultiplier
+                                              )
+                                            : isClient && screenWidth >= 768
+                                              ? Math.min(
+                                                  720 * heightMultiplier,
+                                                  viewportHeight *
+                                                    0.75 *
+                                                    heightMultiplier
+                                                )
+                                              : Math.min(
+                                                  600 * heightMultiplier,
+                                                  viewportHeight *
+                                                    0.75 *
+                                                    heightMultiplier
+                                                );
+                                    })()
+                                  : layout === "glass-quote" ||
+                                      layout === "team-card"
+                                    ? // Glass-quote and team-card: Same height calculation as overlay-text
                                       (() => {
                                         const viewportHeight =
                                           stableViewportHeight > 0
@@ -2316,61 +2317,85 @@ export default function UnifiedContentCard({
                                             : typeof window !== "undefined"
                                               ? window.innerHeight
                                               : 0;
-                                        return isClient && screenWidth >= 768
+                                        return isClient && screenWidth >= 1600
                                           ? Math.min(
-                                              720 * heightMultiplier,
+                                              830 * heightMultiplier,
                                               viewportHeight *
                                                 0.75 *
                                                 heightMultiplier
                                             )
-                                          : Math.min(
-                                              600 * heightMultiplier,
-                                              viewportHeight *
+                                          : isClient && screenWidth >= 1280
+                                            ? Math.min(
+                                                692 * heightMultiplier,
+                                                viewportHeight *
+                                                  0.7 *
+                                                  heightMultiplier
+                                              )
+                                            : isClient && screenWidth >= 1024
+                                              ? Math.min(
+                                                  577 * heightMultiplier,
+                                                  viewportHeight *
+                                                    0.7 *
+                                                    heightMultiplier
+                                                )
+                                              : isClient && screenWidth >= 768
+                                                ? Math.min(
+                                                    720 * heightMultiplier,
+                                                    viewportHeight *
+                                                      0.75 *
+                                                      heightMultiplier
+                                                  )
+                                                : Math.min(
+                                                    600 * heightMultiplier,
+                                                    viewportHeight *
+                                                      0.75 *
+                                                      heightMultiplier
+                                                  );
+                                      })()
+                                    : isStatic || isResponsive
+                                      ? isClient && screenWidth >= 1600
+                                        ? Math.min(
+                                            830 * heightMultiplier, // 830px standard, 1037.5px tall
+                                            typeof window !== "undefined"
+                                              ? window.innerHeight *
+                                                  0.75 *
+                                                  heightMultiplier
+                                              : 830 * heightMultiplier
+                                          )
+                                        : isClient && screenWidth >= 1280
+                                          ? Math.min(
+                                              692 * heightMultiplier, // 692px standard, 865px tall
+                                              typeof window !== "undefined"
+                                                ? window.innerHeight *
+                                                    0.7 *
+                                                    heightMultiplier
+                                                : 692 * heightMultiplier
+                                            )
+                                          : isClient && screenWidth >= 1024
+                                            ? Math.min(
+                                                577 * heightMultiplier, // 577px standard, 721.25px tall
+                                                typeof window !== "undefined"
+                                                  ? window.innerHeight *
+                                                      0.7 *
+                                                      heightMultiplier
+                                                  : 577 * heightMultiplier
+                                              )
+                                            : Math.min(
+                                                720 * heightMultiplier, // 720px standard, 900px tall
+                                                typeof window !== "undefined"
+                                                  ? window.innerHeight *
+                                                      0.75 *
+                                                      heightMultiplier
+                                                  : 720 * heightMultiplier
+                                              )
+                                      : Math.min(
+                                          600 * heightMultiplier, // 600px standard, 750px tall
+                                          typeof window !== "undefined"
+                                            ? window.innerHeight *
                                                 0.75 *
                                                 heightMultiplier
-                                            );
-                                      })()
-                                  : isStatic || isResponsive
-                                    ? // DESKTOP REDESIGN (≥1024px): Calculate height from aspect ratio
-                                      isClient && screenWidth >= 1024
-                                      ? (() => {
-                                          const viewportHeight =
-                                            typeof window !== "undefined"
-                                              ? window.innerHeight
-                                              : 0;
-                                          return (
-                                            Math.min(
-                                              viewportHeight * 0.7,
-                                              800
-                                            ) * heightMultiplier
-                                          );
-                                        })()
-                                      : // Mobile/Tablet - NO CHANGES
-                                        isClient && screenWidth >= 768
-                                        ? Math.min(
-                                            720 * heightMultiplier,
-                                            typeof window !== "undefined"
-                                              ? window.innerHeight *
-                                                  0.75 *
-                                                  heightMultiplier
-                                              : 720 * heightMultiplier
-                                          )
-                                        : Math.min(
-                                            600 * heightMultiplier,
-                                            typeof window !== "undefined"
-                                              ? window.innerHeight *
-                                                  0.75 *
-                                                  heightMultiplier
-                                              : 600 * heightMultiplier
-                                          )
-                                    : Math.min(
-                                        600 * heightMultiplier,
-                                        typeof window !== "undefined"
-                                          ? window.innerHeight *
-                                              0.75 *
-                                              heightMultiplier
-                                          : 600 * heightMultiplier
-                                      ),
+                                            : 600 * heightMultiplier
+                                        ),
                           backgroundColor: isGlass
                             ? "#121212"
                             : card.backgroundColor,
