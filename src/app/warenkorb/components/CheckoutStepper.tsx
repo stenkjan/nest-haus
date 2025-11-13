@@ -13,7 +13,6 @@ import {
 } from "@/constants/configurator";
 import {
   GrundstueckCheckForm,
-  ContactMap,
   SectionHeader,
 } from "@/components/sections";
 import { AppointmentBooking } from "@/components/sections";

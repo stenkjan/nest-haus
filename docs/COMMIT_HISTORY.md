@@ -4,6 +4,38 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cda4ae0d01985bf164350905372c6af3ff0a853f] - Thu Nov 13 10:52:02 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [32ffd60048748007b3bc6c0e0dffcde7605d72f1] - Thu Nov 13 10:47:23 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update video handling in WarumWir page and client  - Removed the ModernVideoPlayer component in favor of a responsive YouTube embed for better performance and user experience. - Added structured data for the YouTube video in the page metadata to enhance SEO. - Cleaned up imports in the CheckoutStepper component by removing unused references, improving code clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/app/warum-wir/page.tsx
+
+
+#### 📚 Documentation Changes
+- docs/YOUTUBE_EMBED_IMPLEMENTATION.md
+
+
+---
+
 ## [ef2947e7ea2a015162acd76edf4931c725519c99] - Thu Nov 13 10:35:48 2025 +0100
 
 **Author**: stenkjan

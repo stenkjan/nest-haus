@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
-import { ModernVideoPlayer } from "@/components/video";
+// Removed ModernVideoPlayer - using YouTube embed instead
 import { UnifiedContentCard } from "@/components/cards";
 import {
   GetInContactBanner,
@@ -59,14 +59,23 @@ export default function WarumWirClient() {
           </div>
         </section>
 
-        {/* Section 2 - Video with Modern Player */}
+        {/* Section 2 - YouTube Video Embed */}
         <section id="video" className="w-full bg-black pb-8 md:pb-16">
           <div className="w-full">
-            <ModernVideoPlayer
-              videoPath={`/api/images?path=${IMAGES.videos.videoCard16}`}
-              aspectRatio="16/9"
-              autoPlay={true}
-            />
+            {/* Responsive YouTube Embed Container */}
+            <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full rounded-lg"
+                  src="https://www.youtube.com/embed/Z05jRVentdc?si=qGjw2glOumXnECch"
+                  title="Nest Haus Vision - Die ®Nest Vision"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              </div>
+            </div>
 
             {/* Text Content Below Video */}
             <div className="max-w-[1024px] 2xl:max-w-[1400px] mx-auto px-8 sm:px-16 lg:px-24 xl:px-32 2xl:px-8 mt-8 md:mt-12">
