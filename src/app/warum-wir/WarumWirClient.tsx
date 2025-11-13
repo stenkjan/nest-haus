@@ -62,13 +62,13 @@ export default function WarumWirClient() {
         {/* Section 2 - YouTube Video Embed */}
         <section id="video" className="w-full bg-black pb-8 md:pb-16">
           <div className="w-full">
-            {/* Responsive YouTube Embed Container */}
-            <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Responsive YouTube Embed Container - Privacy-Enhanced Mode */}
+            <div className="w-full">
               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                 <iframe
-                  className="absolute top-0 left-0 w-full h-full rounded-lg"
-                  src="https://www.youtube.com/embed/Z05jRVentdc?si=qGjw2glOumXnECch"
-                  title="Nest Haus Vision - Die ®Nest Vision"
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube-nocookie.com/embed/Z05jRVentdc?si=MbTvwTABV-JtlsRy"
+                  title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
