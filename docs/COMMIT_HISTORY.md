@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0611cc7e110073e83468a3d949a2748f5f8256d3] - Thu Nov 13 21:43:52 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [927bf87776e275234227852ce99fbe3ffec16925] - Thu Nov 13 21:40:55 2025 +0100
 
 **Author**: stenkjan
