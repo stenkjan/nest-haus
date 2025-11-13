@@ -398,7 +398,7 @@ const AppointmentBooking = ({
             Terminanfrage erfolgreich gesendet!
           </h3>
           <p
-            className="p-primary mb-4 lg:mb-20"
+            className="p-primary mb-8"
             style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
           >
             Vielen Dank für deine Terminanfrage. Wir haben deine Verfügbarkeit
