@@ -357,7 +357,13 @@ const AppointmentBooking = ({
       const date = new Date(year, month, day);
       const isToday = new Date().toDateString() === date.toDateString();
       const isSelected = selectedDate?.toDateString() === date.toDateString();
-      const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
+
+      // Block today and past dates - only allow booking from tomorrow onwards
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      const isPast = date < tomorrow;
+
       const isWeekend = date.getDay() === 0 || date.getDay() === 6;
       const isAvailable = !isPast && !isWeekend;
 
@@ -386,34 +392,41 @@ const AppointmentBooking = ({
 
   if (submitSuccess) {
     return (
-      <div className="max-w-5xl mx-auto bg-white text-black px-8 py-10 rounded-[35px] text-center shadow-lg">
-        <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-black">
-          Terminanfrage erfolgreich gesendet!
-        </h3>
-        <p className="p-primary mb-6">
-          Vielen Dank für deine Terminanfrage. Wir haben deine Verfügbarkeit
-          geprüft und melden uns innerhalb der nächsten 24 Stunden per E-Mail
-          bei dir, um den Termin zu bestätigen.
-        </p>
-        <Button
-          variant="landing-secondary-blue"
-          size="xs"
-          onClick={() => {
-            // Show toast: "aktuell nicht möglich"
-            const windowWithToast = window as Window & {
-              toast?: (message: string) => void;
-            };
-            if (typeof window !== "undefined" && windowWithToast.toast) {
-              windowWithToast.toast("Aktuell nicht möglich");
-            } else if (typeof window !== "undefined") {
-              // fallback: alert if no toast system
-              alert("Aktuell nicht möglich");
-            }
-          }}
-          disabled
-        >
-          Weiteren Termin buchen
-        </Button>
+      <div className="max-w-l mx-auto bg-white text-black px-8 md:px-12 lg:px-16 xl:px-18 2xl:px-20 py-10 md:py-14 xl:py-18 2xl:py-20 rounded-[35px] text-left shadow-lg flex items-center justify-center min-h-[330px] md:min-h-[400px] mt-18">
+        <div className="w-full">
+          <h3 className="text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4 text-black">
+            Terminanfrage erfolgreich gesendet!
+          </h3>
+          <p
+            className="p-primary mb-4 lg:mb-20"
+            style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
+          >
+            Vielen Dank für deine Terminanfrage. Wir haben deine Verfügbarkeit
+            geprüft und melden uns innerhalb der nächsten 24 Stunden per E-Mail
+            bei dir, um den Termin zu bestätigen.
+          </p>
+          <div className="flex justify-start">
+            <Button
+              variant="landing-secondary-blue"
+              size="xs"
+              onClick={() => {
+                // Show toast: "aktuell nicht möglich"
+                const windowWithToast = window as Window & {
+                  toast?: (message: string) => void;
+                };
+                if (typeof window !== "undefined" && windowWithToast.toast) {
+                  windowWithToast.toast("Aktuell nicht möglich");
+                } else if (typeof window !== "undefined") {
+                  // fallback: alert if no toast system
+                  alert("Aktuell nicht möglich");
+                }
+              }}
+              disabled
+            >
+              Weiteren Termin buchen
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }

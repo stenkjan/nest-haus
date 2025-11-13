@@ -1,5 +1,6 @@
 import { google } from 'googleapis';
 import { JWT } from 'google-auth-library';
+import { prisma } from './prisma';
 
 export interface CalendarEvent {
     id: string;
@@ -57,6 +58,49 @@ export class GoogleCalendarService {
         } catch (error) {
             console.error('❌ Failed to create Google Calendar client:', error);
             throw new Error('Failed to authenticate with Google Calendar API');
+        }
+    }
+
+    /**
+     * Fetch PENDING appointments from database that are blocking time slots
+     */
+    private static async fetchPendingAppointments(startDate: Date, endDate: Date): Promise<CalendarEvent[]> {
+        try {
+            console.log('📅 Fetching PENDING appointments from database...');
+
+            // Get all PENDING appointments that haven't expired yet
+            const appointments = await prisma.customerInquiry.findMany({
+                where: {
+                    appointmentStatus: 'PENDING',
+                    appointmentDateTime: {
+                        gte: startDate,
+                        lte: endDate,
+                    },
+                    appointmentExpiresAt: {
+                        gte: new Date(), // Not yet expired
+                    },
+                },
+                select: {
+                    id: true,
+                    appointmentDateTime: true,
+                    name: true,
+                },
+            });
+
+            const events: CalendarEvent[] = appointments.map(apt => ({
+                id: apt.id,
+                summary: `PENDING: ${apt.name || 'Unbestätigt'}`,
+                start: apt.appointmentDateTime!,
+                end: new Date(apt.appointmentDateTime!.getTime() + 60 * 60 * 1000), // 1 hour duration
+                description: 'Pending appointment - awaiting admin confirmation',
+            }));
+
+            console.log(`✅ Found ${events.length} PENDING appointments blocking time slots`);
+            return events;
+
+        } catch (error) {
+            console.error('❌ Failed to fetch pending appointments:', error);
+            return [];
         }
     }
 
@@ -194,7 +238,10 @@ export class GoogleCalendarService {
 
             const existingEvents = await this.fetchCalendarEvents(dayStart, dayEnd);
 
-            // Mark conflicting time slots as unavailable
+            // Also check for PENDING appointments in database that are blocking time slots
+            const pendingAppointments = await this.fetchPendingAppointments(dayStart, dayEnd);
+
+            // Mark conflicting time slots as unavailable based on calendar events
             for (const event of existingEvents) {
                 const eventStart = new Date(event.start);
                 const eventEnd = new Date(event.end);
@@ -208,6 +255,26 @@ export class GoogleCalendarService {
                         (slotStart >= eventStart && slotStart < eventEnd) ||
                         (slotEnd > eventStart && slotEnd <= eventEnd) ||
                         (slotStart <= eventStart && slotEnd >= eventEnd)
+                    ) {
+                        slot.available = false;
+                    }
+                });
+            }
+
+            // Mark slots blocked by PENDING appointments (24h reservation)
+            for (const appointment of pendingAppointments) {
+                const appointmentStart = new Date(appointment.start);
+                const appointmentEnd = new Date(appointment.end);
+
+                timeSlots.forEach(slot => {
+                    const slotStart = new Date(slot.start);
+                    const slotEnd = new Date(slot.end);
+
+                    // Check for overlap
+                    if (
+                        (slotStart >= appointmentStart && slotStart < appointmentEnd) ||
+                        (slotEnd > appointmentStart && slotEnd <= appointmentEnd) ||
+                        (slotStart <= appointmentStart && slotEnd >= appointmentEnd)
                     ) {
                         slot.available = false;
                     }

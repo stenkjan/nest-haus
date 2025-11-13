@@ -131,6 +131,14 @@ model CustomerInquiry {
   followUpDate      DateTime?
   assignedTo        String?
   
+  // Appointment-related fields
+  requestType       String?       // 'contact' or 'appointment'
+  appointmentDateTime DateTime?   // Requested appointment date/time
+  appointmentStatus AppointmentStatus @default(PENDING)
+  appointmentConfirmedAt DateTime? // When admin confirmed the appointment
+  appointmentExpiresAt DateTime?   // 24h timeout for unconfirmed appointments
+  calendarEventId   String?       // Google Calendar event ID if created
+  
   // Payment-related fields
   paymentIntentId   String?       // Stripe Payment Intent ID
   paymentStatus     PaymentStatus @default(PENDING)
@@ -195,6 +203,13 @@ enum InquiryStatus {
   QUOTED
   CONVERTED
   CLOSED
+}
+
+enum AppointmentStatus {
+  PENDING       // Awaiting admin confirmation (24h hold)
+  CONFIRMED     // Admin confirmed via RSVP
+  CANCELLED     // Admin or customer cancelled
+  EXPIRED       // 24h timeout passed without confirmation
 }
 
 enum ContactMethod {

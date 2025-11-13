@@ -15,7 +15,7 @@ const contactFormSchema = z.object({
   bestTimeToCall: z.string().optional(),
   configurationData: z.any().optional(),
   requestType: z.enum(['contact', 'appointment']).default('contact'),
-  appointmentDateTime: z.string().datetime().optional().nullable(),
+  appointmentDateTime: z.string().optional().nullable(),
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -100,8 +100,17 @@ export async function POST(request: NextRequest) {
       status: 'NEW' as const,
       preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
       bestTimeToCall: data.bestTimeToCall || null,
+      
+      // Appointment-specific fields
+      requestType: data.requestType,
+      appointmentDateTime: data.appointmentDateTime ? new Date(data.appointmentDateTime) : null,
+      appointmentStatus: data.requestType === 'appointment' ? ('PENDING' as const) : null,
+      appointmentExpiresAt: data.requestType === 'appointment' && data.appointmentDateTime
+        ? new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
+        : null,
+      
       adminNotes: data.requestType === 'appointment'
-        ? `Terminwunsch: ${data.appointmentDateTime ? new Date(data.appointmentDateTime).toLocaleString('de-DE') : 'Nicht angegeben'}`
+        ? `Terminwunsch: ${data.appointmentDateTime ? new Date(data.appointmentDateTime).toLocaleString('de-DE') : 'Nicht angegeben'} - Status: PENDING (24h Bestätigung erforderlich)`
         : null,
       followUpDate: data.requestType === 'appointment' && data.appointmentDateTime
         ? new Date(data.appointmentDateTime)
