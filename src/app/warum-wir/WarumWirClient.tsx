@@ -63,7 +63,7 @@ export default function WarumWirClient() {
         <section id="video" className="w-full bg-black pb-8 md:pb-16">
           <div className="w-full">
             {/* Responsive YouTube Embed Container - Privacy-Enhanced Mode */}
-            <div className="w-full px-[15vw]">
+            <div className="w-full px-[10vw]">
               <div className="max-w-[2000px] mx-auto">
                 <div
                   className="relative w-full overflow-hidden rounded-2xl"
