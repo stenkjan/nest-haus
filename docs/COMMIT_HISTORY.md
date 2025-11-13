@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b9bd17dc89622d1616a753746e0ac4286b76e128] - Thu Nov 13 22:33:16 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update layout and styling in multiple components  - Adjusted button positioning in DeinNestClient for improved visibility. - Added spacing in EntwurfClient for better layout. - Simplified padding in UnifiedContentCard for consistency. - Modified padding and margin in GetInContactBanner for enhanced design.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/entwurf/EntwurfClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
 ## [061fcd4641a061ad8b5b019a3d2bfcc3c05439d7] - Thu Nov 13 22:01:28 2025 +0100
 
 **Author**: stenkjan
