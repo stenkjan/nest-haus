@@ -2114,7 +2114,7 @@ export default function CheckoutStepper({
 
           {/* Step 3: Planungspakete - Show when there's a configuration OR not in ohne-nest mode */}
           {stepIndex === 3 && (!isOhneNestMode || configItem) && (
-            <div className="space-y-4 pt-8">
+            <div className="space-y-4 pt-8" id="planungspakete-section">
               {(() => {
                 console.log(
                   "📋 CheckoutStepper: Rendering CheckoutPlanungspaketeCards with:",
