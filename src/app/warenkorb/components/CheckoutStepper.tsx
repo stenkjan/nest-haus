@@ -1601,7 +1601,7 @@ export default function CheckoutStepper({
   // No extra memoization for summary; rely on lightweight renderer
 
   return (
-    <section className="w-full pt-12 pb-4">
+    <section className="w-full pt-12 pb-8">
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-12">
         {renderIntro()}
         {stepIndex === 0 && (
@@ -2050,7 +2050,7 @@ export default function CheckoutStepper({
             </div>
 
             {/* Process Steps - Step by Step nach Hause - SECOND */}
-            <div className="text-center mb-4 md:mb-16">
+            <div className="text-center mb-12 md:mb-16">
               <h2 className="h2-title textblack mb-2 md:mb-3">
                 Step by Step nach Hause
               </h2>

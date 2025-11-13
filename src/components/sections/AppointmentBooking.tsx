@@ -426,7 +426,7 @@ const AppointmentBooking = ({
         {showLeftSide && <TerminVereinbarenContent variant="mobile" />}
 
         {/* Calendar Section for Mobile */}
-        <div className="px-4 space-y-4">
+        <div className="space-y-4">
           {/* Month Navigation - ABOVE calendar - WITH CIRCLES */}
           <div className="flex justify-between items-center">
             <button
@@ -545,7 +545,7 @@ const AppointmentBooking = ({
         </div>
 
         {/* Form Section for Mobile */}
-        <form onSubmit={handleSubmit} className="space-y-6 px-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Contact Information - WIDER FORM FIELDS */}
           <div>
             <h3 className="p-primary font-medium mb-6">Deine Daten</h3>
