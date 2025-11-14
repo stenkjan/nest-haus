@@ -152,10 +152,12 @@ export class PriceUtils {
       return `${this.formatPrice(pricePerSqm)} /m²`;
     }
 
-    // For geschossdecke: calculate price per m² based on geschossdecke's own area (6.5m²), not total Nest area
+    // For geschossdecke: calculate price per m² based on TOTAL area (nest size + geschossdecke area)
+    // When geschossdecke is selected, its m² calculation should include the total adjusted area
     if (categoryId === 'geschossdecke') {
-      const geschossdeckeArea = 6.5; // Each geschossdecke unit adds 6.5m²
-      const pricePerSqm = Math.round(price / geschossdeckeArea);
+      const adjustedNutzflaeche = this.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
+      if (adjustedNutzflaeche === 0) return '';
+      const pricePerSqm = Math.round(price / adjustedNutzflaeche);
       return `${this.formatPrice(pricePerSqm)} /m²`;
     }
 

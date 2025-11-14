@@ -620,7 +620,16 @@ export class PriceCalculator {
       const pricingData = this.getPricingData();
       if (pricingData) {
         const nestSize = nest.value as NestSize;
-        const bodenaufbauPrice = pricingData.bodenaufbau[bodenaufbau.value]?.[nestSize];
+        
+        // Handle key variations (database may have 'wassergef. fbh' instead of 'wassergefuehrte_fussbodenheizung')
+        let bodenaufbauKey = bodenaufbau.value;
+        
+        // Map key if needed (backwards compatibility with old database data)
+        if (bodenaufbauKey === 'wassergefuehrte_fussbodenheizung' && !pricingData.bodenaufbau[bodenaufbauKey]) {
+          bodenaufbauKey = 'wassergef. fbh'; // Try abbreviated version
+        }
+        
+        const bodenaufbauPrice = pricingData.bodenaufbau[bodenaufbauKey]?.[nestSize];
         if (bodenaufbauPrice !== undefined) {
           // Get relative price (ohne_heizung is base = 0)
           const ohneHeizungPrice = pricingData.bodenaufbau.ohne_heizung?.[nestSize] || 0;

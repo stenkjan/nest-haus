@@ -598,16 +598,24 @@ export default function ConfiguratorShell({
           return pricingData.pvanlage.pricesByQuantity[nestSize]?.[configuration.pvanlage.quantity] || 0;
         }
 
-        // For bodenaufbau, calculate dynamic price
+        // For bodenaufbau, calculate dynamic price using Google Sheets data
         if (categoryId === "bodenaufbau" && configuration?.nest) {
           if (optionId === "ohne_heizung") {
             return 0;
           }
-          return calculateSizeDependentPrice(
-            configuration.nest.value,
-            optionId as
-              | "elektrische_fussbodenheizung"
-              | "wassergefuehrte_fussbodenheizung"
+          return PriceCalculator.calculateBodenaufbauPrice(
+            {
+              category: categoryId,
+              value: optionId,
+              name: option?.name || "",
+              price: option?.price?.amount || 0,
+            },
+            {
+              category: "nest",
+              value: configuration.nest.value,
+              name: configuration.nest.name,
+              price: configuration.nest.price || 0,
+            }
           );
         }
 
@@ -629,16 +637,24 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For bodenaufbau, calculate dynamic price
+        // For bodenaufbau, calculate dynamic price using Google Sheets data
         if (categoryId === "bodenaufbau" && configuration?.nest) {
           if (optionId === "ohne_heizung") {
             return 0;
           }
-          return calculateSizeDependentPrice(
-            configuration.nest.value,
-            optionId as
-              | "elektrische_fussbodenheizung"
-              | "wassergefuehrte_fussbodenheizung"
+          return PriceCalculator.calculateBodenaufbauPrice(
+            {
+              category: categoryId,
+              value: optionId,
+              name: option?.name || "",
+              price: option?.price?.amount || 0,
+            },
+            {
+              category: "nest",
+              value: configuration.nest.value,
+              name: configuration.nest.name,
+              price: configuration.nest.price || 0,
+            }
           );
         }
 
@@ -960,7 +976,7 @@ export default function ConfiguratorShell({
           }
         }
 
-        // Special handling for bodenaufbau - calculate relative pricing like planungspaket
+        // Special handling for bodenaufbau - calculate relative pricing using Google Sheets data
         if (categoryId === "bodenaufbau") {
           if (currentSelection) {
             if (currentSelection.value === optionId) {
@@ -968,11 +984,20 @@ export default function ConfiguratorShell({
               if (optionId === "ohne_heizung") {
                 return { type: "selected" as const };
               }
-              const actualPrice = calculateSizeDependentPrice(
-                configuration.nest?.value || "nest80",
-                optionId as
-                  | "elektrische_fussbodenheizung"
-                  | "wassergefuehrte_fussbodenheizung"
+              // Use PriceCalculator for consistent pricing with summary
+              const actualPrice = PriceCalculator.calculateBodenaufbauPrice(
+                {
+                  category: categoryId,
+                  value: optionId,
+                  name: option.name,
+                  price: option.price.amount || 0,
+                },
+                {
+                  category: "nest",
+                  value: configuration.nest?.value || "nest80",
+                  name: configuration.nest?.name || "Nest 80",
+                  price: configuration.nest?.price || 0,
+                }
               );
               return {
                 type: "standard" as const,
@@ -984,20 +1009,36 @@ export default function ConfiguratorShell({
               const currentPrice =
                 currentSelection.value === "ohne_heizung"
                   ? 0
-                  : calculateSizeDependentPrice(
-                      configuration.nest?.value || "nest80",
-                      currentSelection.value as
-                        | "elektrische_fussbodenheizung"
-                        | "wassergefuehrte_fussbodenheizung"
+                  : PriceCalculator.calculateBodenaufbauPrice(
+                      {
+                        category: categoryId,
+                        value: currentSelection.value,
+                        name: currentSelection.name,
+                        price: currentSelection.price || 0,
+                      },
+                      {
+                        category: "nest",
+                        value: configuration.nest?.value || "nest80",
+                        name: configuration.nest?.name || "Nest 80",
+                        price: configuration.nest?.price || 0,
+                      }
                     );
               const optionPrice =
                 optionId === "ohne_heizung"
                   ? 0
-                  : calculateSizeDependentPrice(
-                      configuration.nest?.value || "nest80",
-                      optionId as
-                        | "elektrische_fussbodenheizung"
-                        | "wassergefuehrte_fussbodenheizung"
+                  : PriceCalculator.calculateBodenaufbauPrice(
+                      {
+                        category: categoryId,
+                        value: optionId,
+                        name: option.name,
+                        price: option.price.amount || 0,
+                      },
+                      {
+                        category: "nest",
+                        value: configuration.nest?.value || "nest80",
+                        name: configuration.nest?.name || "Nest 80",
+                        price: configuration.nest?.price || 0,
+                      }
                     );
               const priceDifference = optionPrice - currentPrice;
 
@@ -1022,11 +1063,19 @@ export default function ConfiguratorShell({
             if (optionId === "ohne_heizung") {
               return { type: "included" as const };
             }
-            const actualPrice = calculateSizeDependentPrice(
-              configuration.nest?.value || "nest80",
-              optionId as
-                | "elektrische_fussbodenheizung"
-                | "wassergefuehrte_fussbodenheizung"
+            const actualPrice = PriceCalculator.calculateBodenaufbauPrice(
+              {
+                category: categoryId,
+                value: optionId,
+                name: option.name,
+                price: option.price.amount || 0,
+              },
+              {
+                category: "nest",
+                value: configuration.nest?.value || "nest80",
+                name: configuration.nest?.name || "Nest 80",
+                price: configuration.nest?.price || 0,
+              }
             );
             return {
               type: "upgrade" as const,

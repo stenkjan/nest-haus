@@ -478,12 +478,10 @@ export default function SelectionOption({
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : categoryId === "geschossdecke" && price.amount && nestModel
                 ? (() => {
-                    // Calculate price per m² for geschossdecke: basePrice / nestSize / 6.5
-                    const nestSizeMap: Record<string, number> = {
-                      nest80: 80, nest100: 100, nest120: 120, nest140: 140, nest160: 160
-                    };
-                    const nestArea = nestSizeMap[nestModel] || 80;
-                    const pricePerSqm = Math.round(price.amount / nestArea / 6.5);
+                    // Calculate price per m² for geschossdecke: total price / (nest size + geschossdecke * 6.5)
+                    const adjustedNutzflaeche = PriceUtils.getAdjustedNutzflaeche(nestModel, geschossdeckeQuantity);
+                    if (adjustedNutzflaeche === 0) return '';
+                    const pricePerSqm = Math.round(price.amount / adjustedNutzflaeche);
                     return `${PriceUtils.formatPrice(pricePerSqm)} /m²`;
                   })()
               : shouldShowPricePerSqm && nestModel && price.amount
