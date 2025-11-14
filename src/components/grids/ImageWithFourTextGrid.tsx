@@ -94,8 +94,8 @@ export default function ImageWithFourTextGrid({
 
   return (
     <div className={`${backgroundClasses}`}>
-      {/* Main Container */}
-      <div>
+      {/* Main Container with Padding */}
+      <div className="px-4 md:px-12">
         {/* Image at Top - Standard Max Width */}
         <motion.div
           className="relative overflow-hidden w-full h-auto mb-8"
@@ -103,7 +103,7 @@ export default function ImageWithFourTextGrid({
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <div className={`${containerClasses} px-4 md:px-8`}>
+          <div className={`${containerClasses}`}>
             <HybridBlobImage
               path={currentImage}
               alt={imageDescription}
@@ -123,7 +123,7 @@ export default function ImageWithFourTextGrid({
 
         {/* Horizontal Line - Hidden on Mobile */}
         {!isMobile && (
-          <div className={`${containerClasses} px-4 md:px-8`}>
+          <div className={`${containerClasses}`}>
             <div
               className={`h-px w-full ${
                 backgroundColor === "black" ? "bg-gray-700" : "bg-gray-300"
@@ -134,7 +134,7 @@ export default function ImageWithFourTextGrid({
 
         {isMobile ? (
           /* Mobile Layout: "Mehr Informationen" pattern - No text visible initially */
-          <div className="px-4 md:px-8">
+          <div>
             {/* Mobile: More Information Toggle */}
             <motion.div
               className="text-center mt-8"
@@ -282,7 +282,7 @@ export default function ImageWithFourTextGrid({
           </div>
         ) : (
           /* Desktop Layout: 4 columns with text */
-          <div className={`${containerClasses} px-4 md:px-8`}>
+          <div className={`${containerClasses}`}>
             <div className="grid grid-cols-4 gap-6">
               {/* Text Cell 1 */}
               <motion.div

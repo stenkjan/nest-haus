@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export type ButtonVariant =
   | "primary"
@@ -26,6 +27,7 @@ export interface ButtonProps
   variant?: ButtonVariant;
   size?: ButtonSize;
   children: React.ReactNode;
+  href?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -33,6 +35,7 @@ const Button: React.FC<ButtonProps> = ({
   size = "md",
   className = "",
   children,
+  href,
   ...props
 }) => {
   // Allow content-based sizing with appropriate padding for text fitting
@@ -90,6 +93,16 @@ const Button: React.FC<ButtonProps> = ({
 
   const buttonClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
 
+  // If href is provided, render as a Link
+  if (href) {
+    return (
+      <Link href={href} className={buttonClasses}>
+        {children}
+      </Link>
+    );
+  }
+
+  // Otherwise render as a button
   return (
     <button className={buttonClasses} {...props}>
       {children}

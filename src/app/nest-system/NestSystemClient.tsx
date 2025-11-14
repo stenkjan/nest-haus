@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { SectionRouter } from "@/components/SectionRouter";
 import { Button } from "@/components/ui";
 import PlanungspaketeCardsLightbox from "@/components/cards/PlanungspaketeCardsLightbox";
@@ -81,7 +80,6 @@ export default function NestSystemClient() {
   const [isMobile, setIsMobile] = useState(false);
   const { isOpen, openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
-  const router = useRouter();
 
   // Simple width-based mobile detection (same as entdecken page)
   useEffect(() => {
@@ -105,15 +103,6 @@ export default function NestSystemClient() {
     currentSectionId,
     enabled: true,
   });
-
-  // Button click handlers
-  const handleDiePaketeClick = () => {
-    openPlanungspakete();
-  };
-
-  const handleJetztBauenClick = () => {
-    router.push("/konfigurator");
-  };
 
   return (
     <div
@@ -140,7 +129,7 @@ export default function NestSystemClient() {
               wrapperMargin="mb-12"
             />
 
-            <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
+            <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-12">
               <div className="flex justify-center">
                 <div className="w-full md:w-4/5 max-w-5xl rounded-none md:rounded-lg overflow-hidden bg-gray-900">
                   <ClientBlobVideo
@@ -234,7 +223,7 @@ export default function NestSystemClient() {
           </section>
 
           {/* Section 4 - Fenster & Türen */}
-          <section id="fenster-tueren" className="pt-8 md:pt-16 pb-8 md:pb-16">
+          <section id="fenster-tueren" className="pt-8 md:pt-16 md:pb-16">
             <SectionHeader
               title="Fenster & Türen"
               subtitle="Deine Fenster- und Türöffnungen werden dort platziert, wo du es möchtest."
@@ -261,7 +250,7 @@ export default function NestSystemClient() {
             />
 
             {/* ThreeByOneGrid - Right Position (Bottom Section) */}
-            <div className="pt-16 md:pt-16">
+            <div className="md:pt-16">
               <ThreeByOneGrid
                 backgroundColor="black"
                 text="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit unseren</span> <span class='text-white font-medium'>Beleuchtungspaketen</span> <span class='text-nest-gray'>legst du die</span> <span class='text-white font-medium'>Gesamtfläche</span> <span class='text-nest-gray'>deiner</span> <span class='text-white font-medium'>Fenster und Türen</span> <span class='text-nest-gray'>fest, angepasst an deine individuellen Bedürfnisse. Der</span> <span class='text-white font-medium'>Preis bleibt</span> <span class='text-nest-gray'>dabei jederzeit</span> <span class='text-white font-medium'>transparent.</span></p>"
@@ -272,57 +261,51 @@ export default function NestSystemClient() {
                 image1Description="Modul Seitenansicht Holz Schema Konzept"
                 image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
                 showButtons={true}
-                primaryButtonText="Die Pakete"
-                secondaryButtonText="Jetzt bauen"
-                primaryButtonOnClick={handleDiePaketeClick}
-                secondaryButtonOnClick={handleJetztBauenClick}
+                primaryButtonText="Zum Entwurf"
+                secondaryButtonText="Konfigurieren"
+                primaryButtonHref="/planungspakete"
+                secondaryButtonHref="/konfigurator"
               />
             </div>
           </section>
 
           {/* Section 5 - Dein Raum zum Träumen (includes merged Hier beginnt Freiheit content) */}
-          <section id="individualisierung" className="w-full pt-16 bg-black">
+          <section
+            id="individualisierung"
+            className="w-full pt-8 md:pt-16 bg-black"
+          >
             <SectionHeader
-              title="Dein Raum zum Träumen"
+              title="Hier beginnt Freiheit"
               subtitle="Weil nur du weißt, wie du richtig wohnst."
               titleClassName="text-white"
               subtitleClassName="text-white"
-              wrapperMargin="mb-12"
+              wrapperMargin="mb-8 md:mb-16"
             />
 
-            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-[1536px] mx-auto px-4 md:px-12">
               {/* Image container with same sizing as unser-part page */}
-              <div className="w-full max-w-screen-2xl mx-auto md:px-8">
-                <div className="flex justify-center">
-                  <div className="w-full max-w-6xl overflow-hidden">
-                    <HybridBlobImage
-                      path={IMAGES.function.nestHausGrundrissSchema}
-                      alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
-                      width={1536}
-                      height={809}
-                      className="w-full md:w-4/5 h-auto object-contain md:mx-auto"
-                      sizes="(max-width: 768px) calc(80vw - 32px), (max-width: 1024px) calc(80vw - 64px), 922px"
-                      quality={85}
-                      strategy="client"
-                      enableCache={true}
-                      isInteractive={true}
-                      isAboveFold={false}
-                      isCritical={false}
-                    />
-                  </div>
+              <div className="flex justify-center">
+                <div className="w-full max-w-6xl overflow-hidden">
+                  <HybridBlobImage
+                    path={IMAGES.function.nestHausGrundrissSchema}
+                    alt="NEST-Haus Grundriss Schema - Individualisierung und Planung"
+                    width={1536}
+                    height={809}
+                    className="w-full md:w-4/5 h-auto object-contain md:mx-auto"
+                    sizes="(max-width: 768px) calc(80vw - 32px), (max-width: 1024px) calc(80vw - 64px), 922px"
+                    quality={85}
+                    strategy="client"
+                    enableCache={true}
+                    isInteractive={true}
+                    isAboveFold={false}
+                    isCritical={false}
+                  />
                 </div>
               </div>
             </div>
 
             {/* Merged Section - Hier beginnt Freiheit */}
             <div className="py-8 md:py-16">
-              <SectionHeader
-                title="Hier beginnt Freiheit"
-                subtitle="Individuell dort, wo es zählt."
-                titleClassName="text-white"
-                subtitleClassName="text-white"
-                wrapperMargin="mb-12"
-              />
               <FullWidthTextGrid
                 backgroundColor="black"
                 textBox1="<p class='p-secondary text-white'><span class='text-nest-gray'>Mit Nest hast du die</span> <span class='text-white font-medium'>Freiheit, deinen Grundriss so zu gestalten,</span> <span class='text-nest-gray'>wie es zu deinem Leben passt. Kein Schema, kein Standard. Nur Räume, die sich anfühlen wie du selbst.</span> <span class='text-white font-medium'>Denn richtig wohnen bedeutet mehr als Fläche und Funktion.</span> <span class='text-nest-gray'>Es ist Persönlichkeit, Ausdruck und Alltag der von dir in Einklang gebracht wird.</span></p>"
@@ -330,37 +313,42 @@ export default function NestSystemClient() {
                 maxWidth={false}
               />
 
-              {/* UnifiedContentCard with image-only layout */}
-              <UnifiedContentCard
-                layout="image-only"
-                style="glass"
-                variant="static"
-                backgroundColor="black"
-                maxWidth={false}
-                showInstructions={false}
-                category="fullImageCards"
-                customData={
-                  getContentById("fullImageCards", 1)
-                    ? [getContentById("fullImageCards", 1)!]
-                    : []
-                }
-                enableLightbox={false}
-              />
+              {/* Glass Card with Hand Drawing Image */}
+              {!isMobile && (
+                <div className="w-full max-w-[1536px] mx-auto px-4 md:px-12">
+                  <div
+                    className="relative w-full overflow-hidden rounded-3xl"
+                    style={{
+                      backgroundColor: "#121212",
+                      boxShadow:
+                        "inset 0 0 20px rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.3)",
+                    }}
+                  >
+                    <HybridBlobImage
+                      path={IMAGES.function.nestHausHandDrawing}
+                      alt="Hand Drawing - Planning Sketch"
+                      width={1536}
+                      height={1024}
+                      className="w-full h-auto object-cover"
+                      strategy="client"
+                      isInteractive={true}
+                      enableCache={true}
+                      sizes="(max-width: 1536px) 100vw, 1536px"
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Additional Button Combination */}
               <div className="flex gap-4 justify-center w-full pt-12">
-                {!isMobile && (
-                  <Button
-                    variant="primary"
-                    size="xs"
-                    onClick={openPlanungspakete}
-                  >
-                    Die Pakete
+                <Link href="/konfigurator">
+                  <Button variant="primary" size="xs">
+                    Zum Entwurf
                   </Button>
-                )}
+                </Link>
                 <Link href="/konfigurator">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Jetzt bauen
+                    Konfigurieren
                   </Button>
                 </Link>
               </div>

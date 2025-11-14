@@ -77,9 +77,9 @@ export default function FullWidthTextGrid({
   }
 
   return (
-    <div className={`${backgroundClasses} pb-8`}>
+    <div className={`${backgroundClasses} `}>
       {/* Two Text Columns */}
-      <div className="px-4 md:px-8">
+      <div className="px-4 md:px-12 pb-8 md:pb-16">
         <div
           className={`grid ${
             isMobile ? "grid-cols-1" : "grid-cols-2"

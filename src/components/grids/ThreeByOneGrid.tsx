@@ -23,6 +23,8 @@ interface ThreeByOneGridProps {
   secondaryButtonText?: string;
   primaryButtonOnClick?: () => void;
   secondaryButtonOnClick?: () => void;
+  primaryButtonHref?: string;
+  secondaryButtonHref?: string;
   textClassName?: string;
   textWrapperClassName?: string;
   image1ClassName?: string;
@@ -45,6 +47,8 @@ export default function ThreeByOneGrid({
   secondaryButtonText = "Secondary Action",
   primaryButtonOnClick,
   secondaryButtonOnClick,
+  primaryButtonHref,
+  secondaryButtonHref,
   textClassName = "",
   textWrapperClassName = "",
   image1ClassName = "",
@@ -95,8 +99,9 @@ export default function ThreeByOneGrid({
       <div className={`${containerClasses} ${backgroundClasses}`}>
         <div className="flex justify-center items-center py-8">
           <div
-            className={`animate-pulse ${backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
-              } rounded-3xl`}
+            className={`animate-pulse ${
+              backgroundColor === "black" ? "bg-gray-700" : "bg-gray-200"
+            } rounded-3xl`}
             style={{ width: "100%", height: 400 }}
           />
         </div>
@@ -108,16 +113,22 @@ export default function ThreeByOneGrid({
     <div className={`${backgroundClasses}`}>
       {/* Title and Subtitle Section */}
       {(title || subtitle) && (
-        <div className="text-center py-8 px-4 md:px-8">
+        <div className="text-center py-8 px-4 md:px-12">
           {title && (
-            <h2 className={`h2-secondary mb-4 ${backgroundColor === "black" ? "text-white" : "text-gray-900"
-              }`}>
+            <h2
+              className={`h2-secondary mb-4 ${
+                backgroundColor === "black" ? "text-white" : "text-gray-900"
+              }`}
+            >
               {title}
             </h2>
           )}
           {subtitle && (
-            <p className={`text-lg ${backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
-              }`}>
+            <p
+              className={`text-lg ${
+                backgroundColor === "black" ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
               {subtitle}
             </p>
           )}
@@ -131,7 +142,7 @@ export default function ThreeByOneGrid({
           <div className="space-y-6">
             {/* First Image (Second Image on Mobile) */}
             <motion.div
-              className={`relative overflow-hidden px-4 md:px-8 ${image1ClassName}`}
+              className={`relative overflow-hidden px-4 md:px-12 ${image1ClassName}`}
               style={{ aspectRatio: "4/3" }}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -153,7 +164,7 @@ export default function ThreeByOneGrid({
             </motion.div>
 
             {/* Text Section - Always in the middle */}
-            <div className={`px-4 md:px-8 mb-12 ${textWrapperClassName}`}>
+            <div className={`px-4 md:px-12 mb-12 ${textWrapperClassName}`}>
               <motion.div
                 className={`p-secondary ${textColorClasses} text-center lg:text-left ${textClassName}`}
                 dangerouslySetInnerHTML={{ __html: displayText }}
@@ -166,7 +177,7 @@ export default function ThreeByOneGrid({
 
             {/* Second Image (First Image on Mobile) */}
             <motion.div
-              className="relative overflow-hidden px-4 md:px-8"
+              className="relative overflow-hidden px-4 md:px-12"
               style={{ aspectRatio: "4/3" }}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -188,7 +199,7 @@ export default function ThreeByOneGrid({
             </motion.div>
 
             {/* Mobile: More Information Toggle - Hidden on Mobile */}
-            <div className="hidden px-4 md:px-8">
+            <div className="hidden px-4 md:px-12">
               <motion.div
                 className="text-center mt-4"
                 initial={{ y: 20, opacity: 0 }}
@@ -197,10 +208,11 @@ export default function ThreeByOneGrid({
               >
                 <button
                   onClick={() => setShowMoreInfo(!showMoreInfo)}
-                  className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${backgroundColor === "black"
+                  className={`text-sm ${textColorClasses} opacity-80 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                    backgroundColor === "black"
                       ? "focus:ring-white"
                       : "focus:ring-gray-500"
-                    } rounded-lg px-4 py-2`}
+                  } rounded-lg px-4 py-2`}
                 >
                   Mehr Informationen
                   <motion.span
@@ -234,10 +246,11 @@ export default function ThreeByOneGrid({
                 >
                   {/* Horizontal divider */}
                   <div
-                    className={`h-px w-full ${backgroundColor === "black"
+                    className={`h-px w-full ${
+                      backgroundColor === "black"
                         ? "bg-gray-700"
                         : "bg-gray-300"
-                      } mb-6`}
+                    } mb-6`}
                   ></div>
 
                   {/* Technical specifications for mobile */}
@@ -328,7 +341,7 @@ export default function ThreeByOneGrid({
           </div>
         ) : (
           /* Desktop Layout: 3 columns with 2 rows (main text only in first row) */
-          <div className={`px-4 md:px-8 ${textWrapperClassName}`}>
+          <div className={`px-4 md:px-12 ${textWrapperClassName}`}>
             <div className="grid grid-rows-[auto_auto] grid-cols-3 gap-6">
               {/* First row: main text, image1, image2 */}
               {textPosition === "left" ? (
@@ -341,17 +354,21 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-left ${screenWidth > 1700 ? "px-8" : ""
-                        } ${textClassName}`}
+                      className={`p-secondary ${textColorClasses} text-left ${
+                        screenWidth > 1700 ? "px-8" : ""
+                      } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
                       <div className="flex flex-row gap-2 items-start justify-center w-full mt-8">
                         <Button
-                          variant="primary-narrow"
+                          variant="primary"
                           size="xs"
                           className="flex-shrink-0"
-                          onClick={primaryButtonOnClick}
+                          onClick={
+                            primaryButtonHref ? undefined : primaryButtonOnClick
+                          }
+                          href={primaryButtonHref}
                         >
                           {primaryButtonText}
                         </Button>
@@ -359,7 +376,12 @@ export default function ThreeByOneGrid({
                           variant="secondary-narrow-white"
                           size="xs"
                           className="flex-shrink-0"
-                          onClick={secondaryButtonOnClick}
+                          onClick={
+                            secondaryButtonHref
+                              ? undefined
+                              : secondaryButtonOnClick
+                          }
+                          href={secondaryButtonHref}
                         >
                           {secondaryButtonText}
                         </Button>
@@ -420,10 +442,11 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div
-                    className={`col-span-3 h-px w-full ${backgroundColor === "black"
+                    className={`col-span-3 h-px w-full ${
+                      backgroundColor === "black"
                         ? "bg-gray-700"
                         : "bg-gray-300"
-                      } my-2`}
+                    } my-2`}
                   ></div>
                   {/* Second row: empty cell under text, description1, description2 */}
                   <div></div>
@@ -586,8 +609,9 @@ export default function ThreeByOneGrid({
                     transition={{ duration: 0.6 }}
                   >
                     <div
-                      className={`p-secondary ${textColorClasses} text-left ${screenWidth > 1700 ? "px-8" : ""
-                        } ${textClassName}`}
+                      className={`p-secondary ${textColorClasses} text-left ${
+                        screenWidth > 1700 ? "px-8" : ""
+                      } ${textClassName}`}
                       dangerouslySetInnerHTML={{ __html: displayText }}
                     />
                     {showButtons && (
@@ -596,7 +620,10 @@ export default function ThreeByOneGrid({
                           variant="primary-narrow"
                           size="xs"
                           className="flex-shrink-0"
-                          onClick={primaryButtonOnClick}
+                          onClick={
+                            primaryButtonHref ? undefined : primaryButtonOnClick
+                          }
+                          href={primaryButtonHref}
                         >
                           {primaryButtonText}
                         </Button>
@@ -604,7 +631,12 @@ export default function ThreeByOneGrid({
                           variant="secondary-narrow-white"
                           size="xs"
                           className="flex-shrink-0"
-                          onClick={secondaryButtonOnClick}
+                          onClick={
+                            secondaryButtonHref
+                              ? undefined
+                              : secondaryButtonOnClick
+                          }
+                          href={secondaryButtonHref}
                         >
                           {secondaryButtonText}
                         </Button>
@@ -613,10 +645,11 @@ export default function ThreeByOneGrid({
                   </motion.div>
                   {/* Horizontal line spanning all 3 columns */}
                   <div
-                    className={`col-span-3 h-px w-full ${backgroundColor === "black"
+                    className={`col-span-3 h-px w-full ${
+                      backgroundColor === "black"
                         ? "bg-gray-700"
                         : "bg-gray-300"
-                      } my-2`}
+                    } my-2`}
                   ></div>
                   {/* Second row: description1, description2, empty cell under text */}
                   <motion.div
