@@ -66,7 +66,7 @@ export default function EntwurfClient() {
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Hero Section - Simple image with SectionHeader on top */}
         <section id="hero" className="w-full">
-          <div className="relative w-full h-[50vh] md:h-[60vh]">
+          <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
             {/* Background Image */}
             <HybridBlobImage
               path={IMAGES.function.nestHausLinienplanDreier}
