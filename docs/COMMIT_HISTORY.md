@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3b134e4db368af79ac6f4fe30799c55bd04b15ee] - Fri Nov 14 18:01:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update pricing display logic in CartFooter and CheckoutStepper components  - Enhanced price rendering to handle cases where prices are on request, displaying a dash and "Auf Anfrage" message accordingly. - Simplified conditional checks for included items and zero-priced items, improving readability and maintainability of the code.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [b44d255487d03bcd89b92d9fbe7a13a9568deb3b] - Fri Nov 14 17:48:00 2025 +0100
 
 **Author**: stenkjan
