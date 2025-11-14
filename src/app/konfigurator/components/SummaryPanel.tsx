@@ -561,15 +561,16 @@ export default function SummaryPanel({
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-6 mb-6 flex justify-center">
+        <div className="mt-6 flex justify-center">
           {isClient && (
             <div className="flex flex-col gap-3 w-full items-center">
               <Button
+                variant="tertiary"
                 onClick={() => {
                   // Navigate to warenkorb with ohne-nest flag
                   window.location.href = "/warenkorb?mode=entwurf";
                 }}
-                className="bg-white text-[#3D6CE1] border-2 border-[#3D6CE1] rounded-full font-medium text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] transition-all hover:bg-[#3D6CE1] hover:text-white min-h-[44px] flex items-center justify-center touch-manipulation cursor-pointer whitespace-nowrap"
+                className="bg-white text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] min-h-[44px] touch-manipulation whitespace-nowrap"
               >
                 Zum Entwurf
               </Button>
