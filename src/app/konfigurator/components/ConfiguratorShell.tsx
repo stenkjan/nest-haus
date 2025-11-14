@@ -605,6 +605,13 @@ export default function ConfiguratorShell({
           if (optionId === "ohne_heizung") {
             return 0;
           }
+          
+          // Find the option to get its name and price
+          const category = configuratorData.find(
+            (cat) => cat.id === categoryId
+          );
+          const option = category?.options.find((opt) => opt.id === optionId);
+          
           return PriceCalculator.calculateBodenaufbauPrice(
             {
               category: categoryId,
