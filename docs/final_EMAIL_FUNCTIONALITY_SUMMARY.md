@@ -1,4 +1,5 @@
 # FINAL Email Functionality Summary
+
 ## Complete Guide to Email System, Calendar Integration & Configuration
 
 **Project**: Nest-Haus Configurator  
@@ -116,16 +117,28 @@ All outgoing emails use:
 
 ```typescript
 export class EmailService {
-  private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
-  private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@nest-haus.com';
-  private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.com';
-  private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@nest-haus.com';
-  private static readonly FROM_NAME = 'NEST-Haus Team';
+  private static readonly FROM_EMAIL =
+    process.env.RESEND_FROM_EMAIL || "mail@nest-haus.at";
+  private static readonly REPLY_TO_EMAIL =
+    process.env.REPLY_TO_EMAIL || "mail@nest-haus.com";
+  private static readonly ADMIN_EMAIL =
+    process.env.ADMIN_EMAIL || "mail@nest-haus.com";
+  private static readonly SALES_EMAIL =
+    process.env.SALES_EMAIL || "mail@nest-haus.com";
+  private static readonly FROM_NAME = "NEST-Haus Team";
 
-  static async sendCustomerConfirmation(data: CustomerInquiryData): Promise<boolean>
-  static async sendAdminNotification(data: AdminNotificationData): Promise<boolean>
-  static async sendPaymentConfirmation(data: PaymentConfirmationData): Promise<boolean>
-  static async sendAdminPaymentNotification(data: AdminPaymentNotificationData): Promise<boolean>
+  static async sendCustomerConfirmation(
+    data: CustomerInquiryData
+  ): Promise<boolean>;
+  static async sendAdminNotification(
+    data: AdminNotificationData
+  ): Promise<boolean>;
+  static async sendPaymentConfirmation(
+    data: PaymentConfirmationData
+  ): Promise<boolean>;
+  static async sendAdminPaymentNotification(
+    data: AdminPaymentNotificationData
+  ): Promise<boolean>;
 }
 ```
 
@@ -159,6 +172,7 @@ When you add `nest-haus.com` as a domain alias in Google Workspace:
 5. **Wait for verification** (5-10 minutes)
 
 Once verified:
+
 - ✅ `mail@nest-haus.com` = same inbox as `mail@nest-haus.at`
 - ✅ Replies go to correct inbox automatically
 - ✅ No email forwarding rules needed
@@ -172,6 +186,7 @@ Once verified:
 **File**: `src/lib/GoogleCalendarService.ts`
 
 **Features**:
+
 - ✅ Fetch available time slots
 - ✅ Check specific time slot availability
 - ✅ Create calendar events for confirmed appointments
@@ -183,11 +198,11 @@ Once verified:
 
 ```typescript
 const BUSINESS_HOURS = {
-  morningStart: 8,      // 8 AM
-  morningEnd: 12,       // 12 PM (noon)
-  afternoonStart: 13,   // 1 PM
-  afternoonEnd: 19,     // 7 PM (last slot 18:00-19:00)
-  duration: 60,         // 60 minutes per appointment
+  morningStart: 8, // 8 AM
+  morningEnd: 12, // 12 PM (noon)
+  afternoonStart: 13, // 1 PM
+  afternoonEnd: 19, // 7 PM (last slot 18:00-19:00)
+  duration: 60, // 60 minutes per appointment
 };
 
 const BUSINESS_DAYS = [1, 2, 3, 4, 5]; // Monday to Friday
@@ -214,11 +229,13 @@ private static async fetchPendingAppointments(startDate: Date, endDate: Date): P
 **Database Field**: `appointmentExpiresAt` (DateTime)
 
 **Cron Job**: `/api/cron/expire-appointments`
+
 - **Runs**: Every hour (configured in Vercel)
 - **Action**: Updates appointments from `PENDING` → `EXPIRED` if past expiration time
 - **Releases**: Calendar time slots for rebooking
 
 **Environment Variable**:
+
 ```env
 CRON_SECRET=your-secure-cron-secret-here
 ```
@@ -340,12 +357,14 @@ TTL: Auto
 ```
 
 **Why both?**
+
 - `include:_spf.google.com` → Authorizes Google Workspace to send
 - `include:amazonses.com` → Authorizes Resend (via Amazon SES) to send
 
 #### 4. Resend Subdomain Records (Sending)
 
 **DKIM Record (Domain Verification)**
+
 ```
 Type: TXT
 Name: resend._domainkey.send
@@ -354,6 +373,7 @@ TTL: Auto
 ```
 
 **MX Record (Bounce Handling)**
+
 ```
 Type: MX
 Name: send
@@ -363,6 +383,7 @@ TTL: Auto
 ```
 
 **SPF Record (Send Subdomain)**
+
 ```
 Type: TXT
 Name: send
@@ -428,17 +449,17 @@ CRON_SECRET=your-secure-cron-secret-here
 
 ### Environment Variable Usage Map
 
-| Variable | Used By | Purpose |
-|----------|---------|---------|
-| `RESEND_API_KEY` | EmailService.ts | Authenticate with Resend API |
-| `RESEND_FROM_EMAIL` | EmailService.ts | Sender address for all emails |
-| `REPLY_TO_EMAIL` | EmailService.ts | Reply-to address for all emails |
-| `ADMIN_EMAIL` | EmailService.ts, contact API | Admin notification recipient |
-| `SALES_EMAIL` | EmailService.ts | Sales notification recipient |
-| `GOOGLE_CALENDAR_ID` | GoogleCalendarService.ts | Target calendar for appointments |
-| `CALENDAR_TIMEZONE` | GoogleCalendarService.ts | Time zone for appointments |
-| `GOOGLE_SERVICE_ACCOUNT_KEY_FILE` | GoogleCalendarService.ts | Auth credentials file path |
-| `CRON_SECRET` | /api/cron/* | Secure cron job endpoints |
+| Variable                          | Used By                      | Purpose                          |
+| --------------------------------- | ---------------------------- | -------------------------------- |
+| `RESEND_API_KEY`                  | EmailService.ts              | Authenticate with Resend API     |
+| `RESEND_FROM_EMAIL`               | EmailService.ts              | Sender address for all emails    |
+| `REPLY_TO_EMAIL`                  | EmailService.ts              | Reply-to address for all emails  |
+| `ADMIN_EMAIL`                     | EmailService.ts, contact API | Admin notification recipient     |
+| `SALES_EMAIL`                     | EmailService.ts              | Sales notification recipient     |
+| `GOOGLE_CALENDAR_ID`              | GoogleCalendarService.ts     | Target calendar for appointments |
+| `CALENDAR_TIMEZONE`               | GoogleCalendarService.ts     | Time zone for appointments       |
+| `GOOGLE_SERVICE_ACCOUNT_KEY_FILE` | GoogleCalendarService.ts     | Auth credentials file path       |
+| `CRON_SECRET`                     | /api/cron/\*                 | Secure cron job endpoints        |
 
 ---
 
@@ -449,10 +470,12 @@ CRON_SECRET=your-secure-cron-secret-here
 **File**: `src/lib/emailTemplates/CustomerConfirmationTemplate.ts`
 
 **Sent When**:
+
 - Contact form submission
 - Appointment request submission
 
 **Content**:
+
 - ✅ Personalized greeting
 - ✅ Confirmation of request type (contact vs appointment)
 - ✅ Appointment date/time (if applicable)
@@ -464,6 +487,7 @@ CRON_SECRET=your-secure-cron-secret-here
 - ✅ CTA button: "Konfiguration fortsetzen"
 
 **Design**:
+
 - Google Geist font (loaded from CDN)
 - Glass morphism cards with rounded corners
 - Blue accent color (#3B82F6)
@@ -476,9 +500,11 @@ CRON_SECRET=your-secure-cron-secret-here
 **File**: `src/lib/emailTemplates/AdminNotificationTemplate.ts`
 
 **Sent When**:
+
 - Any customer inquiry submitted
 
 **Content**:
+
 - ✅ Priority indicator (appointment = HIGH, contact = NORMAL)
 - ✅ Customer contact details (clickable email, phone)
 - ✅ Preferred contact method
@@ -490,6 +516,7 @@ CRON_SECRET=your-secure-cron-secret-here
 - ✅ CTA buttons: "Anfrage bearbeiten", "E-Mail antworten", "Anrufen"
 
 **Design**:
+
 - Clean, data-focused layout
 - Red header for urgency (#DC2626)
 - Yellow alert box for appointments
@@ -502,9 +529,11 @@ CRON_SECRET=your-secure-cron-secret-here
 **File**: `src/lib/EmailService.ts` (inline template)
 
 **Sent When**:
+
 - Stripe payment successful
 
 **Content**:
+
 - ✅ Payment amount and method
 - ✅ Inquiry ID reference
 - ✅ Payment date/time
@@ -517,9 +546,11 @@ CRON_SECRET=your-secure-cron-secret-here
 **File**: `src/lib/EmailService.ts` (inline template)
 
 **Sent When**:
+
 - Stripe payment successful
 
 **Content**:
+
 - ✅ Customer details
 - ✅ Payment amount and method
 - ✅ Stripe Payment Intent ID
@@ -577,6 +608,7 @@ CRON_SECRET=your-secure-cron-secret-here
 **When**: Admin confirms appointment (status → CONFIRMED)
 
 **Process**:
+
 1. Call `GoogleCalendarService.createEvent()`
 2. Creates event in Google Calendar
 3. Sends calendar invitation to customer email
@@ -603,6 +635,7 @@ CRON_SECRET=your-secure-cron-secret-here
 ```
 
 **When customer clicks "Reply"**:
+
 1. Email client reads `Reply-To` header
 2. Auto-fills `TO: mail@nest-haus.com`
 3. Customer sends reply
@@ -621,15 +654,18 @@ CRON_SECRET=your-secure-cron-secret-here
 ### Where Emails are Saved
 
 **Sent Emails**:
+
 - ✅ Resend Dashboard: Logs all sent emails (7 days retention on free tier)
 - ✅ Google Workspace Sent folder: If admin manually sends via Gmail
 
 **Received Emails (Replies)**:
+
 - ✅ Google Workspace Inbox: `mail@nest-haus.at`
 - ✅ Organized by conversation threads
 - ✅ Can be labeled/filtered in Gmail
 
 **Database Records**:
+
 - ✅ `CustomerInquiry` table stores original inquiry
 - ✅ Admin can add notes in `adminNotes` field
 - ✅ Email content NOT stored in database (only metadata)
@@ -693,6 +729,7 @@ model CustomerInquiry {
 **Admin Panel**: `/admin/customer-inquiries`
 
 **Features**:
+
 - ✅ View all inquiries (filterable by status, type, date)
 - ✅ Search by name, email, inquiry ID
 - ✅ View full configuration details
@@ -732,6 +769,7 @@ curl -X POST http://localhost:3000/api/contact \
 ```
 
 **Expected**:
+
 - ✅ Customer receives email at `test@example.com`
 - ✅ FROM: `NEST-Haus Team <mail@send.nest-haus.com>`
 - ✅ REPLY-TO: `mail@nest-haus.com`
@@ -746,6 +784,7 @@ curl -X POST http://localhost:3000/api/contact \
 4. Fill form and submit
 
 **Expected**:
+
 - ✅ Appointment saved with `PENDING` status
 - ✅ `appointmentExpiresAt` set to +24 hours
 - ✅ Customer receives confirmation with appointment details
@@ -761,6 +800,7 @@ curl -X POST http://localhost:3000/api/contact \
 5. Check Google Workspace inbox at `mail@nest-haus.at`
 
 **Expected**:
+
 - ✅ Reply arrives in Google Workspace
 - ✅ Thread preserved (reply grouped with original)
 - ✅ No emails lost
@@ -773,6 +813,7 @@ curl -X POST http://localhost:3000/api/contact \
 2. Check spam score (should be 9/10 or 10/10)
 
 **Verify**:
+
 - ✅ SPF: PASS
 - ✅ DKIM: PASS
 - ✅ DMARC: PASS
@@ -796,6 +837,7 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ```
 
 **Expected**:
+
 - ✅ Returns array of time slots
 - ✅ Slots within business hours (8-12, 13-19)
 - ✅ Past times filtered out
@@ -808,6 +850,7 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 3. Run cron job: `curl http://localhost:3000/api/cron/expire-appointments -H "Authorization: Bearer [CRON_SECRET]"`
 
 **Expected**:
+
 - ✅ Status changes PENDING → EXPIRED
 - ✅ Time slot released for rebooking
 
@@ -818,6 +861,7 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ### Issue: Emails Not Sending
 
 **Symptoms**:
+
 - Contact form submits successfully
 - No emails received
 - Console shows "✅ Email sent successfully" but nothing arrives
@@ -838,6 +882,7 @@ echo $RESEND_API_KEY
 ```
 
 **Solutions**:
+
 - ✅ Verify `RESEND_API_KEY` is correct in `.env.local`
 - ✅ Restart server after changing environment variables
 - ✅ Check Resend dashboard for domain verification status
@@ -847,6 +892,7 @@ echo $RESEND_API_KEY
 ### Issue: Emails Going to Spam
 
 **Symptoms**:
+
 - Emails sending successfully
 - Arriving in spam/junk folder
 
@@ -867,6 +913,7 @@ nslookup -type=TXT _dmarc.nest-haus.com
 ```
 
 **Solutions**:
+
 - ✅ Wait 24-48 hours for DNS propagation
 - ✅ Use mail-tester.com to check spam score
 - ✅ Ensure all DNS records added correctly (no typos)
@@ -877,6 +924,7 @@ nslookup -type=TXT _dmarc.nest-haus.com
 ### Issue: Replies Going to Wrong Address
 
 **Symptoms**:
+
 - Customer replies to email
 - Reply doesn't arrive in Google Workspace inbox
 
@@ -893,6 +941,7 @@ nslookup -type=MX nest-haus.com
 ```
 
 **Solutions**:
+
 - ✅ Verify `REPLY_TO_EMAIL=mail@nest-haus.com` in `.env.local`
 - ✅ Restart server after changing environment variables
 - ✅ Check MX records point to Google (ASPMX.L.GOOGLE.COM)
@@ -902,6 +951,7 @@ nslookup -type=MX nest-haus.com
 ### Issue: Calendar Availability Not Showing
 
 **Symptoms**:
+
 - Appointment form shows "No available slots"
 - Even on weekdays during business hours
 
@@ -916,6 +966,7 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ```
 
 **Solutions**:
+
 - ✅ Verify `GOOGLE_CALENDAR_ID` is correct in `.env.local`
 - ✅ Check `service-account-key.json` exists in project root
 - ✅ Verify service account has "Make changes to events" permission on calendar
@@ -926,6 +977,7 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ### Issue: Domain Alias Not Working
 
 **Symptoms**:
+
 - Emails to `mail@nest-haus.com` bounce
 - "Address not found" errors
 
@@ -936,6 +988,7 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 3. Verify `nest-haus.com` shows as "Active" domain alias
 
 **Solutions**:
+
 - ✅ Wait 24-48 hours after adding domain alias
 - ✅ Verify Google site verification TXT record in Vercel DNS
 - ✅ Check MX records added in Vercel DNS (Google's MX servers)
@@ -949,17 +1002,20 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ### Timeline of Email Configuration Changes
 
 #### November 12, 2025: Initial Setup
+
 - ✅ Configured `mail@nest-haus.at` as primary email
 - ✅ Set up Resend account with intent to send from `mail@nest-haus.at`
 - ❌ DNS verification pending with Austria WebHosting
 
 #### November 13, 2025: Plan B Fallback (Temporary)
+
 - ✅ DNS issues with Austria WebHosting (slow response, verification failing)
 - ✅ Switched to `RESEND_FROM_EMAIL=onboarding@resend.dev` (Resend default)
 - ✅ Kept `REPLY_TO_EMAIL=mail@nest-haus.at`
 - ✅ All emails sending successfully via Plan B
 
 #### November 14, 2025: Migration to nest-haus.com (Current)
+
 - ✅ Purchased/configured `nest-haus.com` in Vercel
 - ✅ Added Google site verification to Vercel DNS
 - ✅ Set up Resend with subdomain approach (`send.nest-haus.com`)
@@ -970,16 +1026,19 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ### Why Each Migration Happened
 
 **nest-haus.at (Original)**:
+
 - Primary domain for branding
 - Google Workspace already configured
 - **Problem**: DNS managed by Austria WebHosting (slow, unreliable)
 
 **onboarding@resend.dev (Plan B)**:
+
 - Emergency fallback when DNS verification stalled
 - Emails sending immediately without DNS config
 - **Problem**: Unprofessional sender address
 
 **nest-haus.com (Current)**:
+
 - Full DNS control via Vercel (instant updates)
 - Professional sender address
 - Same inbox via domain alias (no workflow changes)
@@ -988,11 +1047,13 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ### Future Considerations
 
 **Option A: Migrate fully to nest-haus.com**
+
 - Update all branding from `.at` to `.com`
 - Move calendar to `mail@nest-haus.com`
 - Sunset `.at` domain
 
 **Option B: Keep dual setup**
+
 - `.com` for sending (Resend)
 - `.at` for receiving (Google Workspace primary)
 - Domain alias provides seamless integration
@@ -1066,22 +1127,26 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 ## Support Resources
 
 ### Google Workspace
+
 - **Admin Console**: https://admin.google.com
 - **Support**: https://support.google.com/a
 - **Status**: https://workspace.google.com/status
 
 ### Resend
+
 - **Dashboard**: https://resend.com/emails
 - **Documentation**: https://resend.com/docs
 - **Support**: support@resend.com
 - **Status**: https://status.resend.com
 
 ### Vercel DNS
+
 - **Dashboard**: https://vercel.com/[your-account]/nest-haus.com/settings/domains
 - **Documentation**: https://vercel.com/docs/concepts/projects/domains
 - **Support**: https://vercel.com/support
 
 ### Google Calendar API
+
 - **Cloud Console**: https://console.cloud.google.com
 - **Documentation**: https://developers.google.com/calendar
 - **Quotas**: Check in Cloud Console → APIs & Services
@@ -1108,4 +1173,3 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 **✉️ Email Templates**: Branded, responsive, professionally designed
 
 **All systems operational and ready for production deployment.**
-
