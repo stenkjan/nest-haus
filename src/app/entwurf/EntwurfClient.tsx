@@ -82,6 +82,7 @@ export default function EntwurfClient() {
                 subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
                 titleClassName="text-white"
                 subtitleClassName="text-white"
+                mobileTitle="Entwurf & <br/>Grundstücks-Check"
               />
             </div>
 
@@ -120,9 +121,8 @@ export default function EntwurfClient() {
           <SectionHeader
             title="Aller Anfang ist schwer?"
             subtitle="Nicht mit Nest! Entdecke wie du noch heute in dein Bauvorhaben startest"
-            titleClassName="text-black"
-            subtitleClassName="text-black"
-            wrapperMargin="mb-12"
+            mobileTitle="Dein Bauvorhaben starten"
+            wrapperMargin="mb-8 md:mb-12"
           />
 
           <UnifiedContentCard
@@ -178,9 +178,8 @@ export default function EntwurfClient() {
           <SectionHeader
             title="Dein Grundstücks-Check"
             subtitle="Der erste Schritt für jedes Bauvorhaben"
-            titleClassName="text-black"
-            subtitleClassName="text-black"
-            wrapperMargin="mb-12"
+            mobileTitle="Grundstücks-Check"
+            wrapperMargin="mb-8 md:mb-12"
           />
           <UnifiedContentCard
             {...TALL_CARD_PROPS_WITH_PADDING}
@@ -216,7 +215,8 @@ export default function EntwurfClient() {
           <SectionHeader
             title="Step by Step nach Hause"
             subtitle="So gehts nach dem ersten schritt weiter"
-            wrapperMargin="mb-12"
+            mobileTitle="Step by Step <br/>nach Hause"
+            wrapperMargin="mb-8 md:mb-12"
           />
 
           {/* UnifiedContentCard with text-icon layout and integrated progress bar */}
@@ -237,7 +237,7 @@ export default function EntwurfClient() {
         <section id="faq" className="w-full">
           <FAQSection />
         </section>
-        <div className="h-16"></div>
+        <div className="h-8 md:h-16"></div>
       </SectionRouter>
 
       <Footer />
