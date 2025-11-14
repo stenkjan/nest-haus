@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [46492a24f8540dc860d40e07998164e488ae7552] - Fri Nov 14 21:03:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Update email DNS setup documentation and minor code adjustments  - Added clarity and formatting improvements in the EMAIL_DNS_SETUP_PLANS.md for better readability. - Updated email service configuration in src/lib/EmailService.ts to use consistent quotation marks. - Corrected partner link in PartnersSection.tsx for accurate navigation. - Adjusted video card references in constants to reflect updated content. - Minor whitespace adjustments across various files for consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/EMAIL_DNS_SETUP_PLANS.md
+- docs/KONFIGURATOR_PRICING_QUICK_REFERENCE.md
+
+
+---
+
 ## [b59868d91f2e3b5da8451bdb205451c6511c416f] - Fri Nov 14 20:35:48 2025 +0100
 
 **Author**: stenkjan
