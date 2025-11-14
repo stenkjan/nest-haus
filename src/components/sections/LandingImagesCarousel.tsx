@@ -295,7 +295,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
     <section className={`w-full ${bgClass}`}>
       <div className={containerClass}>
         <div
-          className="relative w-full overflow-x-hidden pb-4 pt-4"
+          className="relative w-full overflow-x-hidden pb-4"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
