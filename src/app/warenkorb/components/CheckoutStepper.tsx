@@ -1192,37 +1192,29 @@ export default function CheckoutStepper({
   const renderIntro = () => {
     const c = copyByStep[stepIndex];
 
-    // Calculate dynamic total from configuration using new pricing system
+    // Calculate dynamic total from configuration using PriceCalculator (same as konfigurator)
     // IMPORTANT: Separate "Dein Nest Haus" (physical house) from "Planungspaket" (service)
     let nestHausTotal = 0; // Physical house price (without planungspaket)
 
     if (configItem && configItem.nest) {
-      // Calculate nest house total from individual item prices using new pricing system
-      // Add nest price
-      nestHausTotal += getItemPrice("nest", configItem.nest, configItem);
+      // Convert ConfigurationCartItem to Selections type for PriceCalculator
+      // Filter out null values to match Selections interface (undefined only)
+      const selections = {
+        nest: configItem.nest || undefined,
+        gebaeudehuelle: configItem.gebaeudehuelle || undefined,
+        innenverkleidung: configItem.innenverkleidung || undefined,
+        fussboden: configItem.fussboden || undefined,
+        belichtungspaket: configItem.belichtungspaket || undefined,
+        pvanlage: configItem.pvanlage || undefined,
+        fenster: configItem.fenster || undefined,
+        stirnseite: configItem.stirnseite || undefined,
+        planungspaket: configItem.planungspaket || undefined,
+        grundstueckscheck: configItem.grundstueckscheck || undefined,
+      };
 
-      // Add all PHYSICAL house items (excluding planungspaket)
-      const houseItemsToSum = [
-        "gebaeudehuelle",
-        "innenverkleidung",
-        "fussboden",
-        "bodenaufbau",
-        "geschossdecke",
-        "fundament",
-        "pvanlage",
-        "belichtungspaket",
-        "stirnseite",
-        "kamindurchzug",
-      ] as const;
-
-      houseItemsToSum.forEach((key) => {
-        const selection = configItem[key];
-        if (selection) {
-          const itemPrice = getItemPrice(key, selection, configItem);
-          nestHausTotal += itemPrice;
-        }
-      });
-
+      // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
+      // This ensures exact same price calculation logic and avoids rounding differences
+      nestHausTotal = PriceCalculator.calculateTotalPrice(selections);
       // Note: Planungspaket is calculated separately and shown in "Dein Preis Überblick" box
     } else {
       // Fall back to cart total if no configuration
@@ -1655,6 +1647,66 @@ export default function CheckoutStepper({
     });
   }, []);
 
+  // State for userData loaded from database
+  const [userDataFromDb, setUserDataFromDb] = useState<Record<
+    string,
+    string
+  > | null>(null);
+
+  // Load userData from database as fallback when sessionStorage is empty
+  useEffect(() => {
+    if (!sessionId) return;
+
+    // Check if we already have data in sessionStorage
+    if (typeof window !== "undefined") {
+      const storedData = sessionStorage.getItem("grundstueckCheckData");
+      if (storedData) {
+        return; // Data already available in sessionStorage
+      }
+    }
+
+    // No data in sessionStorage, try to load from database
+    const loadUserDataFromDb = async () => {
+      try {
+        const response = await fetch(
+          `/api/sessions/get-session?sessionId=${sessionId}`
+        );
+        const result = await response.json();
+
+        if (
+          response.ok &&
+          result.success &&
+          result.session?.configurationData
+        ) {
+          const configData = result.session.configurationData as Record<
+            string,
+            unknown
+          >;
+          const userData = configData.userData as
+            | Record<string, string>
+            | undefined;
+
+          if (userData) {
+            console.log("✅ Loaded userData from database:", userData);
+            setUserDataFromDb(userData);
+
+            // Also store in sessionStorage for faster future access
+            if (typeof window !== "undefined") {
+              sessionStorage.setItem(
+                "grundstueckCheckData",
+                JSON.stringify(userData)
+              );
+            }
+          }
+        }
+      } catch (error) {
+        console.warn("⚠️ Failed to load userData from database:", error);
+      }
+    };
+
+    loadUserDataFromDb();
+  }, [sessionId]);
+
   // Get user data from appointment and grundstueck forms
   const getUserData = useMemo(() => {
     // Try to get data from appointmentDetails (stored in cart store)
@@ -1673,7 +1725,12 @@ export default function CheckoutStepper({
       }
     }
 
-    // Merge data with priority: appointment data > grundstueck data
+    // Fallback to database-loaded data if sessionStorage is empty
+    if (!grundstueckData && userDataFromDb) {
+      grundstueckData = userDataFromDb;
+    }
+
+    // Merge data with priority: appointment data > grundstueck data > database data
     return {
       name: appointmentData?.name || grundstueckData?.name || "",
       lastName: appointmentData?.lastName || grundstueckData?.lastName || "",
@@ -1688,7 +1745,7 @@ export default function CheckoutStepper({
       postalCode: grundstueckData?.postalCode || "",
       country: grundstueckData?.country || "Österreich",
     };
-  }, [appointmentDetails]);
+  }, [appointmentDetails, userDataFromDb]);
 
   // Helper function to check if appointment is in the past
   const isAppointmentInPast = useMemo(() => {
@@ -2544,44 +2601,11 @@ export default function CheckoutStepper({
                                   item as ConfigurationCartItem;
                                 const nestModel = configItem.nest?.value || "";
 
-                                // Calculate dynamic total for m² calculation (EXCLUDE planungspaket - it's a service, not part of the house)
-                                let nestHausTotal = 0;
-
-                                // Add nest price (dynamic from pricing data)
-                                if (configItem.nest) {
-                                  nestHausTotal += getItemPrice(
-                                    "nest",
-                                    configItem.nest,
+                                // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
+                                const priceValue =
+                                  PriceCalculator.calculateTotalPrice(
                                     configItem
                                   );
-                                }
-
-                                // Add all PHYSICAL house items (EXCLUDING planungspaket)
-                                const houseItemsToSum = [
-                                  "gebaeudehuelle",
-                                  "innenverkleidung",
-                                  "fussboden",
-                                  "bodenaufbau",
-                                  "geschossdecke",
-                                  "fundament",
-                                  "pvanlage",
-                                  "belichtungspaket",
-                                  "stirnseite",
-                                  "kamindurchzug",
-                                ] as const;
-
-                                houseItemsToSum.forEach((key) => {
-                                  const selection = configItem[key];
-                                  if (selection) {
-                                    nestHausTotal += getItemPrice(
-                                      key,
-                                      selection,
-                                      configItem
-                                    );
-                                  }
-                                });
-
-                                const priceValue = nestHausTotal;
                                 const geschossdeckeQuantity =
                                   configItem.geschossdecke?.quantity || 0;
 
@@ -3029,39 +3053,11 @@ export default function CheckoutStepper({
             {!isOhneNestMode &&
               (() => {
                 // Calculate dynamic total (Dein Nest Haus price from Dein Preis Überblick)
-                // IMPORTANT: Calculate using new pricing system with getItemPrice
+                // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
                 let deinNestHausTotal = 0;
                 if (configItem && configItem.nest) {
-                  // Calculate nest house total from individual item prices using new pricing
-                  deinNestHausTotal += getItemPrice(
-                    "nest",
-                    configItem.nest,
-                    configItem
-                  );
-
-                  const itemsToSum = [
-                    "gebaeudehuelle",
-                    "innenverkleidung",
-                    "fussboden",
-                    "bodenaufbau",
-                    "geschossdecke",
-                    "fundament",
-                    "pvanlage",
-                    "belichtungspaket",
-                    "stirnseite",
-                    "kamindurchzug",
-                  ] as const;
-
-                  itemsToSum.forEach((key) => {
-                    const selection = configItem[key];
-                    if (selection) {
-                      deinNestHausTotal += getItemPrice(
-                        key,
-                        selection,
-                        configItem
-                      );
-                    }
-                  });
+                  deinNestHausTotal =
+                    PriceCalculator.calculateTotalPrice(configItem);
                 }
 
                 // Calculate planungspaket price using new pricing system (nest-size dependent)
