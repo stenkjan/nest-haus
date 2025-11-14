@@ -1579,10 +1579,10 @@ export default function CheckoutStepper({
                 <div className={rowWrapperClass}>
                   <div className="flex-1 min-w-0">
                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                      Heute zu bezahlen
+                      Konzeptcheck
                     </div>
                     <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                      Starte dein Bauvorhaben
+                      Heute zu bezahlen
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed flex items-center gap-2">
@@ -3192,14 +3192,12 @@ export default function CheckoutStepper({
                               <h3
                                 className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
                               >
-                                {isPaymentCompleted
-                                  ? "Bezahlt"
-                                  : "Heute zu bezahlen"}
+                                {isPaymentCompleted ? "Bezahlt" : "Konzeptcheck"}
                               </h3>
                               <div className="text-sm text-gray-600">
                                 {isPaymentCompleted
                                   ? "Zahlung erfolgreich abgeschlossen"
-                                  : "Starte dein Bauvorhaben"}
+                                  : "Heute zu bezahlen"}
                               </div>
                             </div>
                             {!isPaymentCompleted ? (
