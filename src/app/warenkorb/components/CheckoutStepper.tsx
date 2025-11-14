@@ -790,13 +790,14 @@ export default function CheckoutStepper({
           );
 
           let displayName = selection.name;
+          let labelName = getCategoryDisplayName(key);
 
           // Special display name handling
           if (key === "belichtungspaket") {
             displayName = getBelichtungspaketDisplayName(
               selection,
               (item as ConfigurationCartItem).fenster ?? null,
-              true // Include m² in "Dein Nest Deine Auswahl"
+              true // Include m² for fenster area
             );
           } else if (
             key === "pvanlage" &&
@@ -806,7 +807,7 @@ export default function CheckoutStepper({
             displayName = `${selection.name} (${selection.quantity}x)`;
           }
 
-          // Add m² price for applicable items (gebäudehülle, innenverkleidung, fussboden, bodenaufbau, belichtungspaket, fundament)
+          // Add m² price to LABEL (description) for applicable items
           if (
             ["gebaeudehuelle", "innenverkleidung", "fussboden", "bodenaufbau", "belichtungspaket", "fundament"].includes(key) &&
             !isIncluded &&
@@ -815,11 +816,11 @@ export default function CheckoutStepper({
             const configItem = item as ConfigurationCartItem;
             const nestModel = configItem.nest?.value || "";
             const geschossdeckeQty = configItem.geschossdecke?.quantity || 0;
-            displayName += calculateItemPricePerSqm(calculatedPrice, nestModel, geschossdeckeQty);
+            labelName += calculateItemPricePerSqm(calculatedPrice, nestModel, geschossdeckeQty);
           }
 
           details.push({
-            label: getCategoryDisplayName(key),
+            label: labelName,
             value: displayName,
             price: isIncluded ? 0 : calculatedPrice,
             isIncluded,
