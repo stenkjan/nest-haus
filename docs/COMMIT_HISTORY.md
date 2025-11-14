@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4ee3c62516e2c8f248a695deb800e19e1fd9c4e0] - Fri Nov 14 22:42:11 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update CheckoutStepper and GrundstueckCheckForm for improved data handling and pricing calculations  - Replaced individual item price calculations in CheckoutStepper with PriceCalculator for consistent pricing logic. - Added user data loading from the database in CheckoutStepper as a fallback when sessionStorage is empty. - Implemented saving of user tracking session data in GrundstueckCheckForm to enhance user data management. - Improved comments for clarity on pricing and data handling processes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/sessions/get-session/route.ts
+- src/app/api/sessions/update-user-data/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+#### 📚 Documentation Changes
+- docs/GRUNDSTUECKSCHECK_DATA_PERSISTENCE_FIX.md
+
+
+---
+
 ## [f11ddefb3ecb0fec2a42f14a03d9823ca493173f] - Fri Nov 14 22:26:40 2025 +0100
 
 **Author**: stenkjan
