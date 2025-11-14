@@ -378,7 +378,7 @@ export default function LandingPageClient() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <Link href="/entdecken">
+                    <Link href="/entwurf">
                       <Button
                         variant="landing-primary"
                         size="xs"
@@ -387,7 +387,7 @@ export default function LandingPageClient() {
                         {section.button1}
                       </Button>
                     </Link>
-                    <Link href="/konfigurator">
+                    <Link href="/dein-nest">
                       <Button
                         variant={getSecondaryButtonVariant(section.id)}
                         size="xs"
@@ -423,7 +423,7 @@ export default function LandingPageClient() {
                           .nestHausEntdeckenDeinNestErklaerungProdukt,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Entdecke Nest",
-                      primaryLink: "/entdecken",
+                      primaryLink: "/dein-nest",
                     },
                     {
                       id: 2,
@@ -434,8 +434,8 @@ export default function LandingPageClient() {
                         IMAGES.function
                           .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                       backgroundColor: "#F4F4F4",
-                      primaryAction: "Der erste Schritt",
-                      primaryLink: "/entdecken",
+                      primaryAction: "Zum Entwurf",
+                      primaryLink: "/entwurf",
                     },
                     {
                       id: 3,
@@ -447,7 +447,7 @@ export default function LandingPageClient() {
                           .nestHausNachhaltigkeitUnserePhilosophieMission,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Unsere Mission",
-                      primaryLink: "/entdecken",
+                      primaryLink: "/warum-wir",
                     },
                     {
                       id: 4,
@@ -459,7 +459,7 @@ export default function LandingPageClient() {
                           .nestHausTerminVereinbarungBuchenGespraechAnrufenEmail,
                       backgroundColor: "#F4F4F4",
                       primaryAction: "Termin sichern",
-                      primaryLink: "/entdecken",
+                      primaryLink: "/kontakt",
                     },
                   ]}
                   textColor="black"

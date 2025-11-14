@@ -118,9 +118,9 @@ export default function EntwurfClient() {
         {/* Grundrissplan Card - No Padding (TALL CARD) */}
         <section id="vorentwurf" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Aller Anfang ist schwer?"
-            subtitle="Nicht mit Nest! Entdecke wie du noch heute in dein Bauvorhaben startest"
-            mobileTitle="Dein Bauvorhaben starten"
+            title="Der Entwurf"
+            subtitle="Dein Nest Haus. Persönlich geplant, individuell gestaltet."
+            mobileTitle="Der Entwurf"
             wrapperMargin="mb-8 md:mb-12"
           />
 
