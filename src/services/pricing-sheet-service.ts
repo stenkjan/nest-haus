@@ -389,6 +389,7 @@ class PricingSheetService {
       'ohne heizung': 'ohne_heizung',
       'elektrische fbh': 'elektrische_fussbodenheizung',
       'wassergeführte fbh': 'wassergefuehrte_fussbodenheizung',
+      'wassergef. fbh': 'wassergefuehrte_fussbodenheizung', // Handle abbreviated version from sheet
     };
 
     let startRow = -1;

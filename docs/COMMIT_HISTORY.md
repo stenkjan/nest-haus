@@ -4,6 +4,38 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [94a8eb60e233fff26beb90080478fc9297c00a9b] - Fri Nov 14 10:37:22 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [76b1d15e2960afbbebabac4d0d7a24c606e03c82] - Fri Nov 14 10:02:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Improve layout and styling in DeinNestClient and GetInContactBanner components  - Updated layout structure in DeinNestClient for better content organization and spacing. - Adjusted padding and margin in GetInContactBanner for enhanced visual consistency. - Improved button visibility and responsiveness across different screen sizes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+---
+
 ## [7aeca2dbd546e809ff5c5e20460ed27a972f4d9a] - Thu Nov 13 22:47:31 2025 +0100
 
 **Author**: stenkjan
