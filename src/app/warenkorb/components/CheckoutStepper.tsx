@@ -1209,7 +1209,7 @@ export default function CheckoutStepper({
         fenster: configItem.fenster || undefined,
         stirnseite: configItem.stirnseite || undefined,
         planungspaket: configItem.planungspaket || undefined,
-        grundstueckscheck: configItem.grundstueckscheck || undefined,
+        grundstueckscheck: Boolean(configItem.grundstueckscheck),
       };
 
       // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
