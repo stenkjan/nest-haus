@@ -78,11 +78,10 @@ export default function EntwurfClient() {
             {/* Text Overlay */}
             <div className="absolute inset-0 flex items-start justify-center pt-12">
               <SectionHeader
-                title="Entwurf & Grundstücks-Check"
+                title="Dein Konzept-Check"
                 subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
                 titleClassName="text-white"
                 subtitleClassName="text-white"
-                mobileTitle="Entwurf & <br/>Grundstücks-Check"
               />
             </div>
 
