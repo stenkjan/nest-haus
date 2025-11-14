@@ -2178,7 +2178,7 @@ export default function CheckoutStepper({
             <div id="entwurf-formular" className="mb-16">
               <div className="text-center mb-12 md:mb-16">
                 <h1 className="h1-secondary text-black mb-2 md:mb-3">
-                  Dein Nest-Haus Konzept-Check
+                  Konzept-Check
                 </h1>
                 <h3 className="h3-secondary text-black mb-2">
                   Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
