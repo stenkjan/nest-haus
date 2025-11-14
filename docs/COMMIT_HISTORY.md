@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [32417a104c4e0676a019b963ba85c7ab4b0fd970] - Fri Nov 14 15:25:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Enhance CheckoutStepper with pricing data initialization and m² price calculations  - Added useEffect to load pricing data on component mount for up-to-date pricing. - Introduced calculateItemPricePerSqm helper function to compute m² prices for individual items. - Updated display logic to show m² prices for applicable items in the cart. - Refined price calculations to focus on NEST MODULE pricing per m², improving clarity in pricing display.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [9d65923bd53cd49cbacdfe49c0ca02c71bbed602] - Fri Nov 14 14:53:15 2025 +0100
 
 **Author**: stenkjan
