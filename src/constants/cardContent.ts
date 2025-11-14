@@ -1021,7 +1021,7 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
         textColor: "text-white",
         aspectRatio: "2x1", // Will be custom styled for 9:10 ratio
         bottomLabel: "<span class='text-gray-400'>Auszeichnungen</span>",
-        bottomText: "GAD Award Nominee  \n WKO Top 30 unter 30 \n Tongji Construction Festival 1st Price \n „Verbund“ Top 100 Jungunternehmer",
+        bottomText: "GAD Award Nominee  \n WKO Top 30 unter 30 \n Tongji Const. Festival 1st Price \n „Verbund“ Top 100 Jungunternehmer",
     },
     {
         id: 2,
