@@ -107,7 +107,7 @@ export default function DeinNestClient() {
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Section 1 - Hero with Image and Overlay Text */}
         <section id="dein-nest-preise" className="w-full">
-          <div className="relative w-full h-[50vh] md:h-[60vh]">
+          <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px]">
             {/* Background Image */}
             <HybridBlobImage
               path={IMAGES.hero.nestHaus3}
