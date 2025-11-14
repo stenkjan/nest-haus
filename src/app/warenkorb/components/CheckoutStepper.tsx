@@ -1884,14 +1884,9 @@ export default function CheckoutStepper({
                                     {PriceUtils.isPriceOnRequest(
                                       detail.price || 0
                                     ) ? (
-                                      <>
-                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                          -
-                                        </div>
-                                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                          Auf Anfrage
-                                        </div>
-                                      </>
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                        -
+                                      </div>
                                     ) : detail.isIncluded ||
                                       (detail.price && detail.price === 0) ? (
                                       <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
@@ -2657,14 +2652,9 @@ export default function CheckoutStepper({
                                   {PriceUtils.isPriceOnRequest(
                                     detail.price || 0
                                   ) ? (
-                                    <>
-                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                        -
-                                      </div>
-                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                        Auf Anfrage
-                                      </div>
-                                    </>
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                      -
+                                    </div>
                                   ) : detail.isIncluded ||
                                     (detail.price && detail.price === 0) ? (
                                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
@@ -3527,13 +3517,6 @@ export default function CheckoutStepper({
                                               detail.price || 0
                                             )}
                                     </div>
-                                    {PriceUtils.isPriceOnRequest(
-                                      detail.price || 0
-                                    ) && (
-                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                        Auf Anfrage
-                                      </div>
-                                    )}
                                   </div>
                                 );
                               })}
