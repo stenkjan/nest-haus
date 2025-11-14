@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [24d38c5a3609eb520fc4057f965297114e234e9a] - Fri Nov 14 18:12:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Simplify price calculation logic in PriceCalculator  - Removed unnecessary variable for tracking price requests, streamlining the price calculation process. - Updated conditional checks to only add prices that are not marked as "on request" (-1), ensuring clarity in the final price output. - Enhanced comments for better understanding of price handling, particularly regarding normalization of prices.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+---
+
 ## [3b134e4db368af79ac6f4fe30799c55bd04b15ee] - Fri Nov 14 18:01:27 2025 +0100
 
 **Author**: stenkjan
