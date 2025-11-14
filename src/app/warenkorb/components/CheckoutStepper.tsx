@@ -429,6 +429,19 @@ export default function CheckoutStepper({
   ): number => {
     // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
+      // Check pricing data for dash prices
+      try {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData && cartItemConfig?.nest && selection.quantity) {
+          const nestSize = cartItemConfig.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
+          const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[selection.quantity];
+          if (price === -1) return -1; // Return -1 for dash prices
+          if (price !== undefined) return price;
+        }
+      } catch (error) {
+        console.error("Error getting PV price from pricing data:", error);
+      }
+      // Fallback to stored price
       return (selection.quantity || 1) * (selection.price || 0);
     }
     if (key === "geschossdecke") {

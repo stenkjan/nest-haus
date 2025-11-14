@@ -246,6 +246,21 @@ export default function SummaryPanel({
       return calculateSizeDependentPrice(configuration.nest.value, "fundament");
     }
 
+    // For pvanlage, check pricing data for dash prices
+    if (key === "pvanlage" && configuration?.nest) {
+      try {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData && selection.quantity) {
+          const nestSize = configuration.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
+          const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[selection.quantity];
+          if (price === -1) return -1; // Return -1 for dash prices
+          if (price !== undefined) return price;
+        }
+      } catch (error) {
+        console.error("Error getting PV price from pricing data:", error);
+      }
+    }
+
     // For all other items, use the base price
     return selection.price || 0;
   };
