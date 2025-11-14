@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [099c3eba3610cd7c879d34cd85a565729094e0f0] - Fri Nov 14 17:28:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 85b032c053a04c12a979310c8eecfae892d18005 into 35d5890785a851054a89efa60c84bffc32e312b5  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/layout/Navbar.tsx
+
+
+---
+
 ## [e9f8c3412ffcb51ea8524d6c905bb0a8b2fabc0b] - Fri Nov 14 17:16:09 2025 +0100
 
 **Author**: stenkjan
