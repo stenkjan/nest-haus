@@ -126,7 +126,7 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
                     </p>
                   )}
                   {partner.description && (
-                    <p className="p-primary-small2 text-gray-700 text-center">
+                    <p className="p-primary-small2 text-nest-gray text-center">
                       {partner.description}
                     </p>
                   )}
@@ -135,15 +135,10 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
             </div>
 
             {/* Buttons at the bottom */}
-            <div className="flex flex-row gap-4 justify-center">
-              <Link href="/warum-wir">
+            <div className="flex flex-col gap-4 items-center">
+              <Link href="/kontakt">
                 <Button variant="primary" size="xs">
-                  Warum NEST?
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary-blue" size="xs">
-                  Jetzt bauen
+                  Melde dich!
                 </Button>
               </Link>
             </div>
@@ -165,7 +160,7 @@ export function PartnersSection({ className = "" }: PartnersSectionProps) {
 
               {/* Buttons at bottom */}
               <div className="mt-8 flex flex-col gap-4">
-                <Link href="/warum-wir">
+                <Link href="/kontakt">
                   <Button variant="primary" size="xs">
                     Melde dich!
                   </Button>

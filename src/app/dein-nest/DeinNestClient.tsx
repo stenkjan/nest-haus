@@ -171,15 +171,15 @@ export default function DeinNestClient() {
 
               {/* Buttons at Bottom */}
               <div className="flex gap-4 justify-center">
-                <Link href="/nest-system">
+                <Link href="/entwurf">
                   <Button variant="primary" size="xs">
-                    <span className="md:hidden">Nest System</span>
-                    <span className="hidden md:inline">Erster Schritte</span>
+                    <span className="md:hidden">Zum Entwurf</span>
+                    <span className="hidden md:inline">Zum Entwurf</span>
                   </Button>
                 </Link>
-                <Link href="/konfigurator">
+                <Link href="/kontakt">
                   <Button variant="landing-secondary" size="xs">
-                    <span className="md:hidden">Jetzt bauen</span>
+                    <span className="md:hidden">Termin vereinbaren</span>
                     <span className="hidden md:inline">Termin vereinbaren</span>
                   </Button>
                 </Link>
@@ -243,7 +243,7 @@ export default function DeinNestClient() {
                 </Link>
                 <Link href="/konfigurator">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Warum mit Nest
+                    Warum mit Nest?
                   </Button>
                 </Link>
               </div>
@@ -326,7 +326,7 @@ export default function DeinNestClient() {
             showInstructions={false}
             alignment="left"
             customData={VIDEO_BACKGROUND_CARDS_PRESET.cards.filter(
-              (card) => card.id >= 1 && card.id <= 4
+              (card) => card.id >= 1 && card.id <= 5
             )}
           />
         </section>
@@ -358,7 +358,7 @@ export default function DeinNestClient() {
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
-                    text: "Unser Philosophie",
+                    text: "Unsere Philosophie",
                     variant: "primary",
                     size: "xs",
                     link: "/entwurf",

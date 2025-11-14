@@ -2132,7 +2132,7 @@ export default function UnifiedContentCard({
                     : layout === "video"
                       ? "px-12"
                       : layout === "overlay-text"
-                        ? "px-12"
+                        ? "px-4 md:px-12"
                         : layout === "glass-quote"
                           ? "px-12"
                           : layout === "team-card"

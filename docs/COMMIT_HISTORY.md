@@ -4,6 +4,72 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [089401de68be6915c49542a58f7382f393b6fff5] - Fri Nov 14 11:32:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [315716fb17490766857f1bb21a38e6a072de7e3d] - Fri Nov 14 11:05:25 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [5c5690152ddcc1b85abfe2beaf0d5573b638ce73] - Fri Nov 14 10:54:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/KONFIGURATOR_PRICING_FIXES_SUMMARY.md
+
+
+---
+
+## [94a8eb60e233fff26beb90080478fc9297c00a9b] - Fri Nov 14 10:37:22 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/sections/GetInContactBanner.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [76b1d15e2960afbbebabac4d0d7a24c606e03c82] - Fri Nov 14 10:02:59 2025 +0100
 
 **Author**: stenkjan
