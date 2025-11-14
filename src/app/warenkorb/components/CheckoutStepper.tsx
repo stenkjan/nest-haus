@@ -1096,7 +1096,6 @@ export default function CheckoutStepper({
     // Calculate dynamic total from configuration using new pricing system
     // IMPORTANT: Separate "Dein Nest Haus" (physical house) from "Planungspaket" (service)
     let nestHausTotal = 0; // Physical house price (without planungspaket)
-    let planungspaketTotal = 0; // Planungspaket price separately
     
     if (configItem && configItem.nest) {
       // Calculate nest house total from individual item prices using new pricing system
@@ -1125,10 +1124,7 @@ export default function CheckoutStepper({
         }
       });
       
-      // Calculate planungspaket separately
-      if (configItem.planungspaket) {
-        planungspaketTotal = getItemPrice("planungspaket", configItem.planungspaket, configItem);
-      }
+      // Note: Planungspaket is calculated separately and shown in "Dein Preis Überblick" box
     } else {
       // Fall back to cart total if no configuration
       nestHausTotal = getCartTotal();

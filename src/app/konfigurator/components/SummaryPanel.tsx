@@ -561,7 +561,7 @@ export default function SummaryPanel({
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 mb-6 flex justify-center">
           {isClient && (
             <div className="flex flex-col gap-3 w-full items-center">
               <Button
