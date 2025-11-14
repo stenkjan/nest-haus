@@ -108,6 +108,7 @@ export class ImageManager {
   /**
    * Create a unique cache key for configuration + view combination
    * IMPROVED: Better validation and encoding handling
+   * FIXED: Fenster is excluded from cache key since it doesn't affect exterior/interior/stirnseite images
    */
   private static createCacheKey(configuration: Configuration, view: ViewType): string {
     const keys = [
@@ -116,8 +117,10 @@ export class ImageManager {
       this.sanitizeConfigValue(configuration.gebaeudehuelle?.value) || 'trapezblech',
       this.sanitizeConfigValue(configuration.innenverkleidung?.value) || 'laerche',
       this.sanitizeConfigValue(configuration.fussboden?.value) || 'parkett',
-      this.sanitizeConfigValue(configuration.pvanlage?.value) || 'none',
-      this.sanitizeConfigValue(configuration.fenster?.value) || 'none'
+      this.sanitizeConfigValue(configuration.pvanlage?.value) || 'none'
+      // NOTE: fenster is intentionally excluded - it doesn't affect which combination picture is shown
+      // Only nest size and gebäudehülle determine exterior view
+      // Only gebäudehülle, innenverkleidung, and fussboden determine interior view
     ];
 
     return keys.join('|');

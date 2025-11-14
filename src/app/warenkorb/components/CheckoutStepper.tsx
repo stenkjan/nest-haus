@@ -631,7 +631,7 @@ export default function CheckoutStepper({
         const testGebaeudehuelle =
           cartItemConfig.gebaeudehuelle?.value || "trapezblech";
         const testInnenverkleidung =
-          cartItemConfig.innenverkleidung?.value || "fichte";
+          cartItemConfig.innenverkleidung?.value || "ohne_innenverkleidung";
         const testFussboden = cartItemConfig.fussboden?.value || "ohne_belag";
 
         // Calculate combination price with current selections
@@ -642,11 +642,11 @@ export default function CheckoutStepper({
           testFussboden
         );
 
-        // Calculate base price (trapezblech + fichte + ohne_belag)
+        // Calculate base price (trapezblech + ohne_innenverkleidung + ohne_belag)
         const basePrice = PriceCalculator.calculateCombinationPrice(
           currentNestValue,
           "trapezblech",
-          "fichte",
+          "ohne_innenverkleidung",
           "ohne_belag"
         );
 
