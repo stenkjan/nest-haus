@@ -622,13 +622,13 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             price: -9600,
             description: 'RAL 9005 - 3000 x 1142 mm'
           },
-          // Fichte (standard default)
+          // Standard (ohne_innenverkleidung) - new default baseline
           {
             category: 'innenverkleidung',
-            value: 'fichte',
-            name: 'Fichte',
-            price: 1400,
-            description: 'PEFC-Zertifiziert\nSicht 1,9 cm'
+            value: 'ohne_innenverkleidung',
+            name: 'Standard',
+            price: 0,
+            description: 'Keine Innenverkleidung\nRohbau'
           },
           // Standard (ohne_belag) - default flooring
           {

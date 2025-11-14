@@ -146,22 +146,28 @@ export const configuratorData: CategoryData[] = [
     subtitle: 'Der Charakter',
     options: [
       {
+        id: 'ohne_innenverkleidung',
+        name: 'Standard',
+        description: 'Keine Innenverkleidung\nRohbau',
+        price: { type: 'included', amount: 0 } // New baseline (0€)
+      },
+      {
         id: 'fichte',
         name: 'Fichte',
         description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
-        price: { type: 'standard', amount: 1400, monthly: 7 } // Standard item with background price
+        price: { type: 'upgrade', amount: 23020, monthly: 96 } // Now shows as upgrade from baseline
       },
       {
         id: 'laerche',
         name: 'Lärche',
         description: 'PEFC-Zertifiziert\nSicht 1,5 cm',
-        price: { type: 'discount', amount: -1400, monthly: -7 } // Cheaper option vs standard
+        price: { type: 'upgrade', amount: 31921, monthly: 133 } // Upgrade from baseline
       },
       {
         id: 'steirische_eiche',
         name: 'Steirische Eiche',
         description: 'PEFC-Zertifiziert\nSicht 1,9 cm',
-        price: { type: 'upgrade', amount: 8800, monthly: 47 } // 10200 - 1400 = 8800 vs standard
+        price: { type: 'upgrade', amount: 38148, monthly: 159 } // Upgrade from baseline
       }
     ],
     infoBox: {

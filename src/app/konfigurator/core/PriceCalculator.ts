@@ -306,13 +306,13 @@ export class PriceCalculator {
   /**
    * Calculate the EXACT modular price using Google Sheets data
    * 
-   * PRICING MODEL (ALL PRICES ARE SEPARATE LINE ITEMS):
+   * PRICING MODEL (ALL PRICES ARE RELATIVE TO BASELINES):
    * - Nest base price: Raw construction only (e.g., 188,619€ for Nest 80)
-   * - Gebäudehülle: Exterior material (Trapezblech = 0€ base, others are upgrades)
-   * - Innenverkleidung: Interior material (ALL have prices, even Fichte = 23,020€!)
-   * - Bodenbelag: Flooring (Bauherr = 0€ base, others are upgrades)
+   * - Gebäudehülle: Exterior material (Trapezblech = 0€ baseline, others are upgrades)
+   * - Innenverkleidung: Interior cladding (ohne_innenverkleidung = 0€ baseline, Fichte/Lärche/Eiche are upgrades)
+   * - Bodenbelag: Flooring (ohne_belag = 0€ baseline, others are upgrades)
    * 
-   * TOTAL = Nest base + Gebäudehülle + Innenverkleidung + Bodenbelag + other options
+   * TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative + other options
    * 
    * CLIENT-SIDE calculation for efficiency with memoization
    */
@@ -337,17 +337,18 @@ export class PriceCalculator {
         const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
         const gebaeudehuelleRelative = gebaeudehuellePrice - trapezblechPrice;
         
-        // Get innenverkleidung ABSOLUTE price
-        // ALL innenverkleidung options have prices (Fichte = 23,020€, Lärche = 31,921€, etc.)
+        // Get innenverkleidung RELATIVE price (baseline: ohne_innenverkleidung = 0€)
         const innenverkleidungPrice = pricingData.innenverkleidung[innenverkleidung]?.[nestSize] || 0;
+        const ohneInnenverkleidungPrice = pricingData.innenverkleidung.ohne_innenverkleidung?.[nestSize] || 0;
+        const innenverkleidungRelative = innenverkleidungPrice - ohneInnenverkleidungPrice;
         
         // Get bodenbelag price (relative to ohne_belag/bauherr = 0)
         const bodenbelagPrice = pricingData.bodenbelag[fussboden]?.[nestSize] || 0;
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
         
-        // TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung ABSOLUTE + Bodenbelag relative
-        return nestPrice + gebaeudehuelleRelative + innenverkleidungPrice + bodenbelagRelative;
+        // TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative
+        return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
       } catch (error) {
         console.error('Error calculating combination price from database:', error);
         // Return 0 instead of throwing to prevent crashes during initial load
@@ -374,7 +375,7 @@ export class PriceCalculator {
     // Default selections for base comparison
     const defaultSelections = {
       gebaeudehuelle: 'trapezblech',
-      innenverkleidung: 'fichte', // fichte is standard default
+      innenverkleidung: 'ohne_innenverkleidung', // Standard baseline (no interior cladding)
       fussboden: 'ohne_belag'
     };
 
@@ -456,7 +457,7 @@ export class PriceCalculator {
           // ALWAYS use combination pricing with defaults for missing core selections
           // This ensures consistent pricing regardless of selection order
           const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-          const innenverkleidung = selections.innenverkleidung?.value || 'fichte';
+          const innenverkleidung = selections.innenverkleidung?.value || 'ohne_innenverkleidung';
           const fussboden = selections.fussboden?.value || 'ohne_belag';
 
           // Calculate combination price using modular pricing system
@@ -711,12 +712,12 @@ export class PriceCalculator {
    * Get base price for a nest option (calculated with default selections)
    */
   static getBasePrice(nestType: string): number {
-    // Default selections (Trapezblech + Fichte + Standard/Ohne Belag)
+    // Default selections (Trapezblech + Standard/Ohne Innenverkleidung + Standard/Ohne Belag)
     return this.calculateCombinationPrice(
       nestType,
-      'trapezblech',  // default
-      'fichte',       // default (standard)
-      'ohne_belag'    // default - 0€ flooring
+      'trapezblech',              // default
+      'ohne_innenverkleidung',    // default (new baseline - no interior cladding)
+      'ohne_belag'                // default - 0€ flooring
     )
   }
 
@@ -803,7 +804,7 @@ export class PriceCalculator {
 
         // Determine combination for breakdown
         const gebaeudehuelle = selections.gebaeudehuelle?.value || 'trapezblech';
-        const innenverkleidung = selections.innenverkleidung?.value || 'laerche';
+        const innenverkleidung = selections.innenverkleidung?.value || 'ohne_innenverkleidung';
         const fussboden = selections.fussboden?.value || 'ohne_belag';
 
         breakdown.combinationKey = `${gebaeudehuelle}-${innenverkleidung}-${fussboden}`;
