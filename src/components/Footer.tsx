@@ -65,7 +65,7 @@ export default function Footer() {
 
       {/* Image Carousel Section */}
       <div className="bg-white">
-        <h3 className="h3-secondary text-center text-black p-4">
+        <h3 className="h3-secondary text-center text-black px-4 mb-0">
           Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen
           Konfigurationen
         </h3>
