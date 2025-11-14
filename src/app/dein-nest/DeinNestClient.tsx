@@ -119,80 +119,71 @@ export default function DeinNestClient() {
               isCritical={true}
             />
 
-            {/* Text Overlay - Header at Top */}
-            <div className="absolute inset-0 flex items-start justify-center pt-12">
-              <SectionHeader
-                title="Design oder Bestpreis?"
-                subtitle="Nest verbindet beides in einem System"
-                titleClassName="text-white"
-                subtitleClassName="text-white"
-              />
-            </div>
+            {/* Content Overlay - Using Flexbox */}
+            <div className="relative h-full flex flex-col justify-between py-12 px-4 sm:px-6 lg:px-8">
+              {/* Header at Top */}
+              <div className="flex justify-center">
+                <SectionHeader
+                  title="Design oder Bestpreis?"
+                  subtitle="Nest verbindet beides in einem System"
+                  titleClassName="text-white"
+                  subtitleClassName="text-white"
+                />
+              </div>
 
-            {/* SECTION 2: Text Blocks (Desktop Only) - Distance from BOTTOM */}
-            <div
-              className="hidden lg:block absolute left-0 right-0 max-w-[1536px] mx-auto px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40"
-              style={{ bottom: "15%" }}
-            >
-              <div className="flex justify-between items-center w-full px-12">
-                {/* Left Text Block */}
-                <div className="text-center">
-                  <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                    Nest 80
-                  </h2>
-                  <h3 className="p-primary text-white drop-shadow-lg">
-                    75m² ab € 177.000.-
-                  </h3>
-                </div>
+              {/* Spacer for middle content */}
+              <div className="flex-1 flex items-end justify-center pb-8">
+                {/* Text Blocks (Desktop Only) */}
+                <div className="hidden lg:flex justify-between items-center w-full max-w-[1536px] px-8 sm:px-12 lg:px-16 xl:px-24 2xl:px-40">
+                  <div className="flex justify-between items-center w-full px-12">
+                    {/* Left Text Block */}
+                    <div className="text-center">
+                      <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                        Nest 80
+                      </h2>
+                      <h3 className="p-primary text-white drop-shadow-lg">
+                        75m² ab € 177.000.-
+                      </h3>
+                    </div>
 
-                {/* Center Text Block */}
-                <div className="text-center">
-                  <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                    Nest 120
-                  </h2>
-                  <h3 className="p-primary text-white drop-shadow-lg">
-                    115m² ab € 245.000.-
-                  </h3>
-                </div>
+                    {/* Center Text Block */}
+                    <div className="text-center">
+                      <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                        Nest 120
+                      </h2>
+                      <h3 className="p-primary text-white drop-shadow-lg">
+                        115m² ab € 245.000.-
+                      </h3>
+                    </div>
 
-                {/* Right Text Block */}
-                <div className="text-center">
-                  <h2 className="h2-title font-bold text-white drop-shadow-lg">
-                    Nest 160
-                  </h2>
-                  <h3 className="p-primary text-white drop-shadow-lg">
-                    155m² ab € 313.000.-
-                  </h3>
+                    {/* Right Text Block */}
+                    <div className="text-center">
+                      <h2 className="h2-title font-bold text-white drop-shadow-lg">
+                        Nest 160
+                      </h2>
+                      <h3 className="p-primary text-white drop-shadow-lg">
+                        155m² ab € 313.000.-
+                      </h3>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Mobile Buttons - Positioned at bottom */}
-            <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
-              <Link href="/nest-system">
-                <Button variant="primary" size="xs">
-                  Nest System
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary" size="xs">
-                  Jetzt bauen
-                </Button>
-              </Link>
-            </div>
-
-            {/* Desktop Buttons - Positioned at bottom */}
-            <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
-              <Link href="/nest-system">
-                <Button variant="primary" size="xs">
-                  Erster Schritte
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary" size="xs">
-                  Termin vereinbaren
-                </Button>
-              </Link>
+              {/* Buttons at Bottom */}
+              <div className="flex gap-4 justify-center">
+                <Link href="/nest-system">
+                  <Button variant="primary" size="xs">
+                    <span className="md:hidden">Nest System</span>
+                    <span className="hidden md:inline">Erster Schritte</span>
+                  </Button>
+                </Link>
+                <Link href="/konfigurator">
+                  <Button variant="landing-secondary" size="xs">
+                    <span className="md:hidden">Jetzt bauen</span>
+                    <span className="hidden md:inline">Termin vereinbaren</span>
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -276,7 +267,7 @@ export default function DeinNestClient() {
             title="Konfiguriere dein ®Nest Haus"
             subtitle="Durch serielle Fertigung zu transparenten Bestpreisen"
             mobileTitle="Konfiguriere dein<br/>®Nest Haus"
-            wrapperMargin="mb-8 mt-8 lg:mb-12"
+            wrapperMargin="mb-8 md:mb-12"
           />
 
           <UnifiedContentCard
@@ -345,7 +336,8 @@ export default function DeinNestClient() {
           <SectionHeader
             title="Dein Zuhause zieht um"
             subtitle="Früher war Wohnen Stillstand. heute ist es Nest."
-            wrapperMargin="mb-12"
+            mobileTitle="Dein Zuhause zieht um"
+            wrapperMargin="mb-8 md:mb-12"
           />
 
           <UnifiedContentCard
