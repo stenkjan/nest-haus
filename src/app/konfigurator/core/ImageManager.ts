@@ -222,13 +222,18 @@ export class ImageManager {
       const innenverkleidungMapping = {
         'laerche': 'holznatur',
         'fichte': 'holzweiss',
-        'steirische_eiche': 'eiche'
+        'steirische_eiche': 'eiche',
+        'ohne_innenverkleidung': 'ohne_innenverkleidung'
       };
 
       const fussbodenMapping = {
         'parkett': 'parkett',
-        'kalkstein_kanafar': 'kalkstein',
-        'schiefer_massiv': 'schiefer' // All gebäudehülle types now use schiefer paths
+        'parkett_eiche': 'parkett',
+        'kalkstein_kanafar': 'steinplatten_hell',
+        'steinplatten_hell': 'steinplatten_hell',
+        'schiefer_massiv': 'steinplatten_dunkel',
+        'steinplatten_dunkel': 'steinplatten_dunkel',
+        'ohne_belag': 'ohne_belag'
       };
 
       const gebaeude = gebaeudePrefixMapping[gebaeudehuelle as keyof typeof gebaeudePrefixMapping];
