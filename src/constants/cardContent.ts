@@ -657,7 +657,7 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "Mit Nest schon heute den Überblick haben",
+        title: "Dein Konzept-Check",
         subtitle: "",
         description: "Vorentwurf und Grundstückscheck",
         video: IMAGES.videos.videoCard01,
@@ -665,10 +665,10 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         aspectRatio: "2x1", // Tall portrait format
         buttons: [
             {
-                text: "Ersten Schritt machen",
+                text: "Zum Entwurf",
                 variant: "primary",
                 size: "xs",
-                link: "/kontakt",
+                link: "/entwurf",
             },
         ],
     },

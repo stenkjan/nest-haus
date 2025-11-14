@@ -80,7 +80,7 @@ export function GetInContactBanner({
       <div className="w-full max-w-[1536px] mx-auto pb-8 px-4 md:pb-8 md:px-12">
         <div className="flex justify-center">
           <div className="rounded-3xl shadow-lg overflow-hidden bg-[#F4F4F4] w-full">
-            <div className="p-4 md:p-12 text-center">
+            <div className="p-8 md:p-12 text-center">
               {/* Icon */}
               <div className="flex justify-center">
                 <ClientBlobImage

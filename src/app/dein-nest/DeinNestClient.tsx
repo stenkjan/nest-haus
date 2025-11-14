@@ -243,7 +243,7 @@ export default function DeinNestClient() {
                 </Link>
                 <Link href="/konfigurator">
                   <Button variant="landing-secondary-blue" size="xs">
-                    Warum mit Nest
+                    Warum mit Nest?
                   </Button>
                 </Link>
               </div>
