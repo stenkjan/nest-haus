@@ -7,6 +7,8 @@
 
 "use client";
 
+import { PriceUtils } from "../core/PriceUtils";
+
 interface QuantitySelectorProps {
   label: string;
   value: number;
@@ -30,6 +32,10 @@ export default function QuantitySelector({
   cumulativePrice,
 }: QuantitySelectorProps) {
   const formatPrice = (price: number) => {
+    // Check if price is -1 (price on request)
+    if (PriceUtils.isPriceOnRequest(price)) {
+      return "-";
+    }
     return new Intl.NumberFormat("de-DE", {
       style: "currency",
       currency: "EUR",

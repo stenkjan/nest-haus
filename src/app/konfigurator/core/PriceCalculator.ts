@@ -355,27 +355,29 @@ export class PriceCalculator {
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
         
-        // Check if any price is -1 (price on request)
-        if (nestPrice === -1 || gebaeudehuellePrice === -1 || innenverkleidungPrice === -1 || bodenbelagPrice === -1) {
-          return -1; // Return -1 if any component has price on request
-        }
-        
         // TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative
-        // Normalize prices for calculation (convert -1 to 0 for math operations)
+        // Treat -1 (price on request) as 0 for calculation, so we still show sum of known prices
         return this.normalizePriceForCalculation(nestPrice) + 
                this.normalizePriceForCalculation(gebaeudehuelleRelative) + 
                this.normalizePriceForCalculation(innenverkleidungRelative) + 
                this.normalizePriceForCalculation(bodenbelagRelative);
       } catch (error) {
         console.error('Error calculating combination price from database:', error);
-        // Return 0 instead of throwing to prevent crashes during initial load
-        return 0;
+        // Fall through to fallback prices below
       }
     }
     
-    // If no pricing data available yet (still loading), return 0
-    // This prevents crashes during initial page load before pricing data is fetched
-    return 0;
+    // Fallback prices when pricing data is not available yet (still loading)
+    // These are the base nest prices from Google Sheets
+    const nestFallbackPrices: Record<string, number> = {
+      nest80: 188619,
+      nest100: 226108,
+      nest120: 263597,
+      nest140: 301086,
+      nest160: 338575,
+    };
+    
+    return nestFallbackPrices[nestType] || 0;
   }
 
   /**
