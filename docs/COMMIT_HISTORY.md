@@ -4,6 +4,81 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [87f6508fc30825034ba38daffe7533445e5b93d8] - Fri Nov 14 19:13:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [c4890d3d533ee3fd8f0c21cd064581b72234cb24] - Fri Nov 14 19:04:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [27bf9e2ebf67b486b0fc955d8a47f2cb0ee5b7ed] - Fri Nov 14 18:58:16 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [67e0a63955ae4aae0019c5213bc6342a79b0652c] - Fri Nov 14 18:52:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/entwurf/EntwurfClient.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [2e3ec773130efea311e39c5a60129b3d32cbc419] - Fri Nov 14 18:46:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/QuantitySelector.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [235fc8ce4f76f74d7568abd8b5299c2a15d9ab7c] - Fri Nov 14 18:44:57 2025 +0100
 
 **Author**: stenkjan

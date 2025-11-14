@@ -745,13 +745,24 @@ export default function ConfiguratorShell({
         | "nest140"
         | "nest160";
 
-      // For PV anlage, convert upgrade types to standard for initial display
-      if (categoryId === "pvanlage") {
+      // For PV anlage, check pricing data for dash prices
+      if (categoryId === "pvanlage" && pricingData && configuration?.nest) {
+        // Get the starting price (1 module) from pricing data
+        const nestSize = currentNestValue;
+        const priceForOneModule =
+          pricingData.pvanlage.pricesByQuantity[nestSize]?.[1];
+
+        // If price is -1 (dash), return dash type
+        if (priceForOneModule === -1) {
+          return { type: "dash" as const };
+        }
+
+        // Otherwise return standard type with the starting price
         const originalPrice = option.price;
         if (originalPrice.type === "upgrade") {
           return {
             type: "standard" as const,
-            amount: originalPrice.amount,
+            amount: priceForOneModule || originalPrice.amount,
             monthly: originalPrice.monthly,
           };
         }

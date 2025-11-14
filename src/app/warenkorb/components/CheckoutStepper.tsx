@@ -581,6 +581,29 @@ export default function CheckoutStepper({
       cartItemConfig?.nest
     ) {
       try {
+        // First check if this option has a dash price in raw pricing data
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData) {
+          const nestSize = cartItemConfig.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+
+          if (key === "gebaeudehuelle") {
+            const rawPrice =
+              pricingData.gebaeudehuelle[selection.value]?.[nestSize];
+            if (rawPrice === -1) return -1; // Return -1 for dash prices
+          }
+
+          if (key === "fussboden") {
+            const rawPrice =
+              pricingData.bodenbelag[selection.value]?.[nestSize];
+            if (rawPrice === -1) return -1; // Return -1 for dash prices
+          }
+        }
+
         const currentNestValue = cartItemConfig.nest.value;
 
         // Use actual user selections for all material categories
@@ -626,17 +649,17 @@ export default function CheckoutStepper({
             | "nest120"
             | "nest140"
             | "nest160";
-          
+
           // Basis is always 0 (included)
           if (selection.value === "basis") {
             return 0;
           }
-          
+
           // Plus and Pro are nest-size dependent
           if (selection.value === "plus") {
             return pricingData.planungspaket.plus[nestSize] || 0;
           }
-          
+
           if (selection.value === "pro") {
             return pricingData.planungspaket.pro[nestSize] || 0;
           }
@@ -680,11 +703,12 @@ export default function CheckoutStepper({
       levelNames[belichtungspaket.value as keyof typeof levelNames] ||
       belichtungspaket.name;
     const fensterName = fenster?.name ? ` - ${fenster.name}` : " - PVC Fenster";
-    
+
     // Add m² information if requested and available
-    const squareMetersText = includeSquareMeters && fenster?.squareMeters 
-      ? ` (${fenster.squareMeters}m²)` 
-      : "";
+    const squareMetersText =
+      includeSquareMeters && fenster?.squareMeters
+        ? ` (${fenster.squareMeters}m²)`
+        : "";
 
     return `Belichtungspaket ${levelName}${fensterName}${squareMetersText}`;
   };
@@ -810,14 +834,25 @@ export default function CheckoutStepper({
 
           // Add m² price to LABEL (description) for applicable items
           if (
-            ["gebaeudehuelle", "innenverkleidung", "fussboden", "bodenaufbau", "belichtungspaket", "fundament"].includes(key) &&
+            [
+              "gebaeudehuelle",
+              "innenverkleidung",
+              "fussboden",
+              "bodenaufbau",
+              "belichtungspaket",
+              "fundament",
+            ].includes(key) &&
             !isIncluded &&
             calculatedPrice > 0
           ) {
             const configItem = item as ConfigurationCartItem;
             const nestModel = configItem.nest?.value || "";
             const geschossdeckeQty = configItem.geschossdecke?.quantity || 0;
-            labelName += calculateItemPricePerSqm(calculatedPrice, nestModel, geschossdeckeQty);
+            labelName += calculateItemPricePerSqm(
+              calculatedPrice,
+              nestModel,
+              geschossdeckeQty
+            );
           }
 
           details.push({
@@ -834,7 +869,10 @@ export default function CheckoutStepper({
       bottomItems.forEach(([key, selection]) => {
         // Show planungspaket in cart details
         // Exclude grundstueckscheck if specified (e.g., in step 4 where it's already shown in "Dein Preis Überblick")
-        if (key === "planungspaket" || (key === "grundstueckscheck" && !excludeGrundstueckscheck)) {
+        if (
+          key === "planungspaket" ||
+          (key === "grundstueckscheck" && !excludeGrundstueckscheck)
+        ) {
           const displayName = selection.name;
           // For grundstueckscheck, always show 3,000€ (full price, not discounted 1,500€)
           // For planungspaket, calculate dynamic price using new pricing system
@@ -1136,7 +1174,7 @@ export default function CheckoutStepper({
     // Calculate dynamic total from configuration using new pricing system
     // IMPORTANT: Separate "Dein Nest Haus" (physical house) from "Planungspaket" (service)
     let nestHausTotal = 0; // Physical house price (without planungspaket)
-    
+
     if (configItem && configItem.nest) {
       // Calculate nest house total from individual item prices using new pricing system
       // Add nest price
@@ -1163,7 +1201,7 @@ export default function CheckoutStepper({
           nestHausTotal += itemPrice;
         }
       });
-      
+
       // Note: Planungspaket is calculated separately and shown in "Dein Preis Überblick" box
     } else {
       // Fall back to cart total if no configuration
@@ -1201,7 +1239,7 @@ export default function CheckoutStepper({
         case 0:
           return "Ein erster Einblick";
         case 1:
-          return "Wir prüfen deinen Baugrund";
+          return "Entwurf- und Grundstückscheck";
         case 2:
           return "Wähle aus 3 Paketen";
         case 3:
@@ -1336,26 +1374,27 @@ export default function CheckoutStepper({
                           Dein Nest Haus
                         </div>
                         <div className={rowSubtitleClass}>
-                          {PriceUtils.isPriceOnRequest(total) ? (
-                            "Genauer Preis auf Anfrage"
-                          ) : configItem?.nest ? (
-                            (() => {
-                              // Show m² price for "Dein Nest Haus" (total house price / area)
-                              const nestModel = configItem.nest.value || "";
-                              const geschossdeckeQty = configItem.geschossdecke?.quantity || 0;
-                              return PriceUtils.calculatePricePerSquareMeter(
-                                total,
-                                nestModel,
-                                geschossdeckeQty
-                              );
-                            })()
-                          ) : (
-                            getRowSubtitle(0)
-                          )}
+                          {PriceUtils.isPriceOnRequest(total)
+                            ? "Genauer Preis auf Anfrage"
+                            : configItem?.nest
+                              ? (() => {
+                                  // Show m² price for "Dein Nest Haus" (total house price / area)
+                                  const nestModel = configItem.nest.value || "";
+                                  const geschossdeckeQty =
+                                    configItem.geschossdecke?.quantity || 0;
+                                  return PriceUtils.calculatePricePerSquareMeter(
+                                    total,
+                                    nestModel,
+                                    geschossdeckeQty
+                                  );
+                                })()
+                              : getRowSubtitle(0)}
                         </div>
                       </div>
                       <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                        {PriceUtils.isPriceOnRequest(total) ? "-" : PriceUtils.formatPrice(total)}
+                        {PriceUtils.isPriceOnRequest(total)
+                          ? "-"
+                          : PriceUtils.formatPrice(total)}
                       </div>
                     </div>
                   )}
@@ -1379,7 +1418,7 @@ export default function CheckoutStepper({
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Entwurf
+                        Konzeptcheck
                       </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(1)}
@@ -1747,7 +1786,11 @@ export default function CheckoutStepper({
 
                                   // Show only NEST MODULE price per m² (relative price)
                                   const nestPrice = configItem.nest
-                                    ? getItemPrice("nest", configItem.nest, configItem)
+                                    ? getItemPrice(
+                                        "nest",
+                                        configItem.nest,
+                                        configItem
+                                      )
                                     : 0;
 
                                   const geschossdeckeQuantity =
@@ -1793,7 +1836,9 @@ export default function CheckoutStepper({
                                   ? (item as ConfigurationCartItem).totalPrice
                                   : (item as CartItem).price;
                               })();
-                              return PriceUtils.isPriceOnRequest(price) ? "-" : PriceUtils.formatPrice(price);
+                              return PriceUtils.isPriceOnRequest(price)
+                                ? "-"
+                                : PriceUtils.formatPrice(price);
                             })()}
                           </div>
                         </div>
@@ -1836,15 +1881,12 @@ export default function CheckoutStepper({
                                     </div>
                                   </div>
                                   <div className="text-right min-w-0">
-                                    {PriceUtils.isPriceOnRequest(detail.price || 0) ? (
-                                      <>
-                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                          -
-                                        </div>
-                                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                          Auf Anfrage
-                                        </div>
-                                      </>
+                                    {PriceUtils.isPriceOnRequest(
+                                      detail.price || 0
+                                    ) ? (
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                        -
+                                      </div>
                                     ) : detail.isIncluded ||
                                       (detail.price && detail.price === 0) ? (
                                       <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
@@ -1852,7 +1894,9 @@ export default function CheckoutStepper({
                                       </div>
                                     ) : (
                                       <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                        {PriceUtils.formatPrice(detail.price || 0)}
+                                        {PriceUtils.formatPrice(
+                                          detail.price || 0
+                                        )}
                                       </div>
                                     )}
                                   </div>
@@ -2055,7 +2099,7 @@ export default function CheckoutStepper({
             <div id="entwurf-formular" className="mb-16">
               <div className="text-center mb-12 md:mb-16">
                 <h1 className="h1-secondary text-black mb-2 md:mb-3">
-                  Dein Nest-Haus Entwurf
+                  Dein Nest-Haus Konzeptcheck
                 </h1>
                 <h3 className="h3-secondary text-black mb-2">
                   Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
@@ -2567,7 +2611,10 @@ export default function CheckoutStepper({
                       {/* Details Section - Now takes remaining space and distributes items evenly */}
                       <div className="flex-1 flex flex-col justify-evenly min-h-0">
                         {(() => {
-                          const details = renderConfigurationDetails(item, true); // Exclude grundstueckscheck in step 4 (shown in "Dein Preis Überblick")
+                          const details = renderConfigurationDetails(
+                            item,
+                            true
+                          ); // Exclude grundstueckscheck in step 4 (shown in "Dein Preis Überblick")
                           const topAndMiddleItems = details.filter(
                             (d) => !d.isBottomItem
                           );
@@ -2602,15 +2649,12 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                                 <div className="text-right min-w-0">
-                                  {PriceUtils.isPriceOnRequest(detail.price || 0) ? (
-                                    <>
-                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                        -
-                                      </div>
-                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                        Auf Anfrage
-                                      </div>
-                                    </>
+                                  {PriceUtils.isPriceOnRequest(
+                                    detail.price || 0
+                                  ) ? (
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                      -
+                                    </div>
                                   ) : detail.isIncluded ||
                                     (detail.price && detail.price === 0) ? (
                                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
@@ -2618,7 +2662,9 @@ export default function CheckoutStepper({
                                     </div>
                                   ) : (
                                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                      {PriceUtils.formatPrice(detail.price || 0)}
+                                      {PriceUtils.formatPrice(
+                                        detail.price || 0
+                                      )}
                                     </div>
                                   )}
                                 </div>
@@ -2912,9 +2958,13 @@ export default function CheckoutStepper({
                         window.location.hash = "entwurf";
                         // Scroll to the GrundstueckCheckForm after hash change
                         setTimeout(() => {
-                          const entwurfElement = document.getElementById("entwurf-formular");
+                          const entwurfElement =
+                            document.getElementById("entwurf-formular");
                           if (entwurfElement) {
-                            entwurfElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                            entwurfElement.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
                           }
                         }, 100);
                       }}
@@ -2996,7 +3046,11 @@ export default function CheckoutStepper({
                 // Calculate planungspaket price using new pricing system (nest-size dependent)
                 const planungspaketPrice = (() => {
                   if (configItem?.planungspaket) {
-                    return getItemPrice("planungspaket", configItem.planungspaket, configItem);
+                    return getItemPrice(
+                      "planungspaket",
+                      configItem.planungspaket,
+                      configItem
+                    );
                   }
                   // Fallback to PLANNING_PACKAGES if no stored planungspaket
                   const planValue = localSelectedPlan || "basis";
@@ -3455,15 +3509,14 @@ export default function CheckoutStepper({
                                       {detail.isIncluded ||
                                       (detail.price && detail.price === 0)
                                         ? "inkludiert"
-                                        : PriceUtils.isPriceOnRequest(detail.price || 0)
+                                        : PriceUtils.isPriceOnRequest(
+                                              detail.price || 0
+                                            )
                                           ? "-"
-                                          : PriceUtils.formatPrice(detail.price || 0)}
+                                          : PriceUtils.formatPrice(
+                                              detail.price || 0
+                                            )}
                                     </div>
-                                    {PriceUtils.isPriceOnRequest(detail.price || 0) && (
-                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                        Auf Anfrage
-                                      </div>
-                                    )}
                                   </div>
                                 );
                               })}

@@ -156,6 +156,22 @@ export default function SummaryPanel({
       configuration?.nest
     ) {
       try {
+        // First check if this option has a dash price in raw pricing data
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData) {
+          const nestSize = configuration.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
+          
+          if (key === "gebaeudehuelle") {
+            const rawPrice = pricingData.gebaeudehuelle[selection.value]?.[nestSize];
+            if (rawPrice === -1) return -1; // Return -1 for dash prices
+          }
+          
+          if (key === "fussboden") {
+            const rawPrice = pricingData.bodenbelag[selection.value]?.[nestSize];
+            if (rawPrice === -1) return -1; // Return -1 for dash prices
+          }
+        }
+        
         // Calculate the price difference for this specific option
         const currentNestValue = configuration.nest.value;
 
@@ -345,20 +361,13 @@ export default function SummaryPanel({
                       </div>
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {PriceUtils.isPriceOnRequest(itemPrice) ? (
-                          <>
-                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              -
-                            </div>
-                            <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
-                              Auf Anfrage
-                            </div>
-                          </>
+                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                            -
+                          </div>
                         ) : itemPrice > 0 ? (
-                          <>
-                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              {PriceUtils.formatPrice(itemPrice)}
-                            </div>
-                          </>
+                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                            {PriceUtils.formatPrice(itemPrice)}
+                          </div>
                         ) : (
                           <div className="text-gray-500 text-[clamp(12px,2.5vw,14px)]">
                             inkludiert
@@ -402,14 +411,9 @@ export default function SummaryPanel({
                               Startpreis
                             </div>
                             {PriceUtils.isPriceOnRequest(itemPrice) ? (
-                              <>
-                                <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                                  -
-                                </div>
-                                <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
-                                  Auf Anfrage
-                                </div>
-                              </>
+                              <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                                -
+                              </div>
                             ) : (
                               <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                                 {PriceUtils.formatPrice(itemPrice)}
@@ -417,14 +421,9 @@ export default function SummaryPanel({
                             )}
                           </>
                         ) : PriceUtils.isPriceOnRequest(itemPrice) ? (
-                          <>
-                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              -
-                            </div>
-                            <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
-                              Auf Anfrage
-                            </div>
-                          </>
+                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                            -
+                          </div>
                         ) : !isIncluded && itemPrice > 0 ? (
                           <>
                             {![
@@ -482,14 +481,9 @@ export default function SummaryPanel({
                       </div>
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
                         {PriceUtils.isPriceOnRequest(itemPrice) ? (
-                          <>
-                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              -
-                            </div>
-                            <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
-                              Auf Anfrage
-                            </div>
-                          </>
+                          <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                            -
+                          </div>
                         ) : itemPrice > 0 ? (
                           <>
                             {![

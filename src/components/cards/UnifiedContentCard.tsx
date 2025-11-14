@@ -472,7 +472,7 @@ export default function UnifiedContentCard({
           );
         } else {
           // Mobile: Height: 600px (or 75% viewport), Width forced to 2x1 (portrait)
-          const cardHeight = Math.min(600, viewportHeight * 0.75);
+          const _cardHeight = Math.min(600, viewportHeight * 0.75);
           setCardsPerView(2); // Always 2 cards per view on mobile (portrait)
           setCardWidth(350); // Match video layout width for consistency
         }
