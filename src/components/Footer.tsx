@@ -63,9 +63,9 @@ export default function Footer() {
       {/* Get In Contact Banner - Above Footer */}
       <GetInContactBanner />
 
-      {/* Image Carousel Section - Hidden on mobile */}
-      <div className="hidden md:block bg-white">
-        <h3 className="h3-secondary text-center text-black pt-4">
+      {/* Image Carousel Section */}
+      <div className="bg-white">
+        <h3 className="h3-secondary text-center text-black p-4">
           Lass dich inspirieren und entdecke die Vielfalt unserer zahlreichen
           Konfigurationen
         </h3>

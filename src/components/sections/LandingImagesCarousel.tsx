@@ -30,10 +30,23 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   intervalMs = 5000,
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const images = useMemo(
     () => [
       {
         path: IMAGES.hero.nestHaus1,
+        mobilePath: IMAGES.hero.mobile.nestHaus1,
         alt: "NEST-Haus Bild 1",
         description: {
           title: "Nest 140",
@@ -43,6 +56,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       },
       {
         path: IMAGES.hero.nestHaus2,
+        mobilePath: IMAGES.hero.mobile.nestHaus2,
         alt: "NEST-Haus Bild 2",
         description: {
           title: "Nest 100",
@@ -52,6 +66,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       },
       {
         path: IMAGES.hero.nestHaus3,
+        mobilePath: IMAGES.hero.mobile.nestHaus3,
         alt: "NEST-Haus Bild 3",
         description: {
           title: "Nest Interior",
@@ -61,6 +76,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       },
       {
         path: IMAGES.hero.nestHaus4,
+        mobilePath: IMAGES.hero.mobile.nestHaus4,
         alt: "NEST-Haus Bild 4",
         description: {
           title: "Nest 140",
@@ -70,6 +86,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       },
       {
         path: IMAGES.hero.nestHaus5,
+        mobilePath: IMAGES.hero.mobile.nestHaus5,
         alt: "NEST-Haus Bild 5",
         description: {
           title: "Nest 100",
@@ -79,6 +96,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       },
       {
         path: IMAGES.hero.nestHaus6,
+        mobilePath: IMAGES.hero.mobile.nestHaus6,
         alt: "NEST-Haus Bild 6",
         description: {
           title: "Nest Interior",
@@ -88,6 +106,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       },
       {
         path: IMAGES.hero.nestHaus7,
+        mobilePath: IMAGES.hero.mobile.nestHaus7,
         alt: "NEST-Haus Bild 7",
         description: {
           title: "Nest 120",
@@ -97,6 +116,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
       },
       {
         path: IMAGES.hero.nestHaus8,
+        mobilePath: IMAGES.hero.mobile.nestHaus8,
         alt: "NEST-Haus Bild 8",
         description: {
           title: "Nest 160",
@@ -160,7 +180,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         dynamicImageWidth = 460;
       } else {
         // sm screens: smaller
-        dynamicImageWidth = 420;
+        dynamicImageWidth = 250;
       }
 
       setImageWidth(dynamicImageWidth);
@@ -272,7 +292,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
   };
 
   return (
-    <section className={`w-full ${bgClass} hidden md:block`}>
+    <section className={`w-full ${bgClass}`}>
       <div className={containerClass}>
         <div
           className="relative w-full overflow-x-hidden pb-4 pt-4"
@@ -288,21 +308,40 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
                   style={{ width: `${imageWidth}px` }}
                 >
                   <div className="relative w-full transition-transform duration-300 hover:scale-[1.02] hover:z-10">
-                    <HybridBlobImage
-                      path={img.path}
-                      alt={img.alt}
-                      strategy="client"
-                      isInteractive={true}
-                      enableCache={true}
-                      width={imageWidth}
-                      height={Math.round(imageWidth * 0.5625)} // Maintain 16:9 aspect ratio
-                      className="object-cover"
-                      sizes={`${imageWidth}px`}
-                      priority={idx === 0}
-                    />
+                    {/* Mobile: Clickable image linking to landing page section */}
+                    {isMobile ? (
+                      <Link href={`/#${img.description.sectionSlug}`}>
+                        <HybridBlobImage
+                          path={img.mobilePath}
+                          alt={img.alt}
+                          strategy="client"
+                          isInteractive={true}
+                          enableCache={true}
+                          width={imageWidth}
+                          height={Math.round(imageWidth * 1.333)} // 3:4 on mobile (4/3)
+                          className="object-cover"
+                          sizes={`${imageWidth}px`}
+                          priority={idx === 0}
+                        />
+                      </Link>
+                    ) : (
+                      /* Desktop: Image without link wrapper (text overlay has link) */
+                      <HybridBlobImage
+                        path={img.path}
+                        alt={img.alt}
+                        strategy="client"
+                        isInteractive={true}
+                        enableCache={true}
+                        width={imageWidth}
+                        height={Math.round(imageWidth * 0.5625)} // 16:9 on desktop (9/16)
+                        className="object-cover"
+                        sizes={`${imageWidth}px`}
+                        priority={idx === 0}
+                      />
+                    )}
 
-                    {/* Description Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
+                    {/* Description Overlay - Hidden on mobile */}
+                    <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 lg:p-6">
                       {/* Flex container for positioning */}
                       <div className="flex justify-between items-end">
                         {/* Left side - Title and Subtitle */}
