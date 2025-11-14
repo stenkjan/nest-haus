@@ -4,6 +4,27 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [cc069215f513c89af0b1c02716f62fb1b9cb6e1e] - Fri Nov 14 12:01:39 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfigurationModeSelection.tsx
+
+
+#### 🔧 Configuration Changes
+- tailwind.config.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [3025dbeab8ef19376216f6f3ccd3fffe4fcc0f08] - Fri Nov 14 11:55:48 2025 +0100
 
 **Author**: stenkjan
