@@ -1215,7 +1215,9 @@ export default function CheckoutStepper({
     if (configItem && configItem.nest) {
       // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
       // This ensures exact same price calculation logic and avoids rounding differences
-      nestHausTotal = PriceCalculator.calculateTotalPrice(convertToSelections(configItem));
+      nestHausTotal = PriceCalculator.calculateTotalPrice(
+        convertToSelections(configItem)
+      );
       // Note: Planungspaket is calculated separately and shown in "Dein Preis Überblick" box
     } else {
       // Fall back to cart total if no configuration
@@ -2605,20 +2607,29 @@ export default function CheckoutStepper({
                                 // Convert to Selections type for PriceCalculator
                                 const selections = {
                                   nest: configItem.nest || undefined,
-                                  gebaeudehuelle: configItem.gebaeudehuelle || undefined,
-                                  innenverkleidung: configItem.innenverkleidung || undefined,
+                                  gebaeudehuelle:
+                                    configItem.gebaeudehuelle || undefined,
+                                  innenverkleidung:
+                                    configItem.innenverkleidung || undefined,
                                   fussboden: configItem.fussboden || undefined,
-                                  belichtungspaket: configItem.belichtungspaket || undefined,
+                                  belichtungspaket:
+                                    configItem.belichtungspaket || undefined,
                                   pvanlage: configItem.pvanlage || undefined,
                                   fenster: configItem.fenster || undefined,
-                                  stirnseite: configItem.stirnseite || undefined,
-                                  planungspaket: configItem.planungspaket || undefined,
-                                  grundstueckscheck: Boolean(configItem.grundstueckscheck),
+                                  stirnseite:
+                                    configItem.stirnseite || undefined,
+                                  planungspaket:
+                                    configItem.planungspaket || undefined,
+                                  grundstueckscheck: Boolean(
+                                    configItem.grundstueckscheck
+                                  ),
                                 };
 
                                 // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
                                 const priceValue =
-                                  PriceCalculator.calculateTotalPrice(selections);
+                                  PriceCalculator.calculateTotalPrice(
+                                    selections
+                                  );
                                 const geschossdeckeQuantity =
                                   configItem.geschossdecke?.quantity || 0;
 
@@ -2891,7 +2902,18 @@ export default function CheckoutStepper({
                     <div className="pt-2">
                       <button
                         onClick={() => {
-                          window.location.hash = "terminvereinbarung";
+                          window.location.hash = "entwurf";
+                          // Scroll to the GrundstueckCheckForm after hash change
+                          setTimeout(() => {
+                            const entwurfElement =
+                              document.getElementById("entwurf-formular");
+                            if (entwurfElement) {
+                              entwurfElement.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                              });
+                            }
+                          }, 100);
                         }}
                         className="text-blue-600 text-sm hover:underline"
                       >
@@ -3082,8 +3104,9 @@ export default function CheckoutStepper({
                     planungspaket: configItem.planungspaket || undefined,
                     grundstueckscheck: Boolean(configItem.grundstueckscheck),
                   };
-                  
-                  deinNestHausTotal = PriceCalculator.calculateTotalPrice(selections);
+
+                  deinNestHausTotal =
+                    PriceCalculator.calculateTotalPrice(selections);
                 }
 
                 // Calculate planungspaket price using new pricing system (nest-size dependent)

@@ -225,143 +225,145 @@ export function GrundstueckCheckForm({
   // When used in CheckoutStepper, render only the form without container
   if (maxWidth === false && padding === "sm") {
     return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Conditionally render Daten Bewerber section */}
-        {!excludePersonalData && (
-          <>
-            <h3 className="h3-secondary mb-4">Daten Bewerber</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div id="entwurf-formular">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Conditionally render Daten Bewerber section */}
+          {!excludePersonalData && (
+            <>
+              <h3 className="h3-secondary mb-4">Daten Bewerber</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-xl p-3"
+                  placeholder="Name"
+                  required
+                />
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-xl p-3"
+                  placeholder="Nachname"
+                  required
+                />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-xl p-3"
+                  placeholder="Telefon"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-xl p-3"
+                  placeholder="Email"
+                  required
+                />
+              </div>
+            </>
+          )}
+
+          <h3 className="h3-secondary mb-4">Informationen zum Grundstück</h3>
+          <div className="space-y-4 mb-6">
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-xl p-3"
+              placeholder="Straße und Hausnummer"
+              required
+            />
+            <input
+              type="text"
+              name="addressLine2"
+              value={formData.addressLine2}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-xl p-3"
+              placeholder="Straße - Zeile 2 - optional"
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="propertyNumber"
+                value={formData.propertyNumber}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-xl p-3"
-                placeholder="Name"
+                placeholder="Grundstücknummer"
+              />
+              <input
+                type="text"
+                name="cadastralCommunity"
+                value={formData.cadastralCommunity}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Katastralgemeinde"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Stadt"
                 required
               />
               <input
                 type="text"
-                name="lastName"
-                value={formData.lastName}
+                name="state"
+                value={formData.state}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-xl p-3"
-                placeholder="Nachname"
-                required
-              />
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-xl p-3"
-                placeholder="Telefon"
-              />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-xl p-3"
-                placeholder="Email"
+                placeholder="Bundesland"
                 required
               />
             </div>
-          </>
-        )}
 
-        <h3 className="h3-secondary mb-4">Informationen zum Grundstück</h3>
-        <div className="space-y-4 mb-6">
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="postalCode"
+                value={formData.postalCode}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Postleitzahl"
+                required
+              />
+              <input
+                type="text"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-xl p-3"
+                placeholder="Land"
+                required
+              />
+            </div>
+          </div>
+
+          <h3 className="h3-secondary mb-4">Anmerkungen</h3>
+          <textarea
+            name="notes"
+            value={formData.notes}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-xl p-3"
-            placeholder="Straße und Hausnummer"
-            required
+            rows={4}
+            className="w-full border border-gray-300 rounded-xl p-3 mb-6"
+            placeholder="Zusatzinformationen - optional"
           />
-          <input
-            type="text"
-            name="addressLine2"
-            value={formData.addressLine2}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-xl p-3"
-            placeholder="Straße - Zeile 2 - optional"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="propertyNumber"
-              value={formData.propertyNumber}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-xl p-3"
-              placeholder="Grundstücknummer"
-            />
-            <input
-              type="text"
-              name="cadastralCommunity"
-              value={formData.cadastralCommunity}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-xl p-3"
-              placeholder="Katastralgemeinde"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-xl p-3"
-              placeholder="Stadt"
-              required
-            />
-            <input
-              type="text"
-              name="state"
-              value={formData.state}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-xl p-3"
-              placeholder="Bundesland"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="postalCode"
-              value={formData.postalCode}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-xl p-3"
-              placeholder="Postleitzahl"
-              required
-            />
-            <input
-              type="text"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-xl p-3"
-              placeholder="Land"
-              required
-            />
-          </div>
-        </div>
-
-        <h3 className="h3-secondary mb-4">Anmerkungen</h3>
-        <textarea
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-          rows={4}
-          className="w-full border border-gray-300 rounded-xl p-3 mb-6"
-          placeholder="Zusatzinformationen - optional"
-        />
-      </form>
+        </form>
+      </div>
     );
   }
 
@@ -664,7 +666,7 @@ export function GrundstueckCheckForm({
           </div>
 
           {/* 2. Form fields */}
-          <div>
+          <div id="entwurf-formular">
             <form onSubmit={handleSubmit} className="space-y-4">
               <h3 className="h3-secondary mb-4">Daten Bewerber</h3>
               <div className="grid grid-cols-1 gap-4 mb-6">
