@@ -729,7 +729,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         title: "Klarheit an erster Stelle",
         subtitle: "",
         description: "Zu den häufig gestellten Fragen",
-        video: IMAGES.videos.videoCard04,
+        video: IMAGES.videos.videoCard05,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Square format
         buttons: [

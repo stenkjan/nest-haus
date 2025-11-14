@@ -99,7 +99,7 @@ const partners: Partner[] = [
     name: "BP Elektrotechnik GmbH",
     path: IMAGES.partners.bpElektrotechnik,
     description: "Elektrotechnik",
-    link: "https://bp-elektrotechnik.com/",
+    link: "https://www.bp-elektrotechnik.at",
   },
   {
     id: "gemeinsam-staerker",

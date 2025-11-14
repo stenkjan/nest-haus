@@ -49,11 +49,11 @@ export const IMAGES = {
         nestHausKonfigurator: '104-NEST-Haus-Konfigurator-75-Holzfassade-Ansicht',
 
         // Video background cards (16 videos)
-        videoCard01: '350-nest-haus-video-cards-01',
-        videoCard02: '351-nest-haus-video-cards-02',
-        videoCard03: '352-nest-haus-video-cards-03',
-        videoCard04: '353-nest-haus-video-cards-04',
-        videoCard05: '354-nest-haus-video-cards-05',
+        videoCard01: '350-nest-haus-cards-vorentwurf-check',
+        videoCard02: '351-nest-haus-cards-philosophie-warum-wir',
+        videoCard03: '352-nest-haus-cards-nachhaltigkeit-technik-system',
+        videoCard04: '353-nest-haus-cards-team-termin-vereinbaren',
+        videoCard05: '354-nest-haus-cards-faq-fragen',
         videoCard06: '355-nest-haus-video-cards-06',
         videoCard07: '356-nest-haus-video-cards-07',
         videoCard08: '357-nest-haus-video-cards-08',

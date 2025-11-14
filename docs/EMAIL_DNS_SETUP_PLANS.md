@@ -18,6 +18,7 @@ This document provides two approaches for sending emails via Resend:
 ## Current Setup Context
 
 ### Google Workspace
+
 - **Primary Domain**: `sustain-nest.com`
 - **Alias Domain**: `nest-haus.at` (verified)
 - **Shared Email**: `mail@nest-haus.at` (Google Group)
@@ -25,12 +26,14 @@ This document provides two approaches for sending emails via Resend:
 - **Purpose**: Receiving all incoming emails (contact forms, appointment requests, booking confirmations)
 
 ### Resend
+
 - **Domain**: `nest-haus.at`
 - **Region**: `eu-west-1`
 - **Subdomain**: `bounce` (for bounce handling)
 - **Purpose**: Sending all outgoing transactional emails
 
 ### DNS Provider
+
 - **Provider**: Austria WebHosting
 - **TXT Record Requirement**: Must include full subdomain format (e.g., `bounce.nest-haus.at`, not just `bounce`)
 
@@ -41,6 +44,7 @@ This document provides two approaches for sending emails via Resend:
 ### Required DNS Records
 
 #### 1. Domain Verification (DKIM)
+
 ```
 Type: TXT
 Name: resend._domainkey
@@ -49,6 +53,7 @@ TTL: 3600
 ```
 
 #### 2. SPF Record (Updated to include both Google and Amazon SES)
+
 ```
 Type: TXT
 Name: @
@@ -57,6 +62,7 @@ TTL: 3600
 ```
 
 #### 3. DMARC Record
+
 ```
 Type: TXT
 Name: _dmarc
@@ -65,6 +71,7 @@ TTL: 3600
 ```
 
 #### 4. Bounce Subdomain - MX Record
+
 ```
 Type: MX
 Name: bounce
@@ -74,6 +81,7 @@ Priority: 10
 ```
 
 #### 5. Bounce Subdomain - TXT Record (SPF)
+
 ```
 Type: TXT
 Name: bounce.nest-haus.at
@@ -82,6 +90,7 @@ TTL: 3600
 ```
 
 #### 6. Receiving MX Record (Google Workspace - already configured)
+
 ```
 Type: MX
 Name: @
@@ -115,10 +124,10 @@ CRON_SECRET=your-secret-here
 ### Email Service Configuration (src/lib/EmailService.ts)
 
 ```typescript
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.at';
-const SALES_EMAIL = process.env.SALES_EMAIL || 'mail@nest-haus.at';
-const REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@nest-haus.at';
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "mail@nest-haus.at";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "mail@nest-haus.at";
+const SALES_EMAIL = process.env.SALES_EMAIL || "mail@nest-haus.at";
+const REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || "mail@nest-haus.at";
 
 // All outgoing emails use FROM_EMAIL
 // All replies go to REPLY_TO_EMAIL
@@ -127,6 +136,7 @@ const REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@nest-haus.at';
 ### Verification Steps
 
 1. **Wait for DNS Propagation** (24-72 hours, typically 1-4 hours)
+
    ```bash
    # Check DNS propagation
    nslookup -type=TXT resend._domainkey.nest-haus.at
@@ -141,6 +151,7 @@ const REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@nest-haus.at';
    - All should show "Verified" or "Active"
 
 3. **Test Email Sending**
+
    ```bash
    # Test contact form
    curl -X POST http://localhost:3000/api/contact \
@@ -193,18 +204,18 @@ REPLY_TO_EMAIL=mail@nest-haus.at
 
 ```typescript
 // src/lib/EmailService.ts
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
-const REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@nest-haus.at';
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "mail@nest-haus.at";
+const REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || "mail@nest-haus.at";
 
 export async function sendCustomerConfirmationEmail(
   customerEmail: string,
   data: EmailData
 ): Promise<void> {
   await resend.emails.send({
-    from: FROM_EMAIL,  // Will be onboarding@resend.dev in Plan B
+    from: FROM_EMAIL, // Will be onboarding@resend.dev in Plan B
     to: customerEmail,
-    replyTo: REPLY_TO_EMAIL,  // Still mail@nest-haus.at
-    subject: 'Ihre Anfrage bei Nest-Haus',
+    replyTo: REPLY_TO_EMAIL, // Still mail@nest-haus.at
+    subject: "Ihre Anfrage bei Nest-Haus",
     html: generateCustomerConfirmationEmail(data),
   });
 }
@@ -233,6 +244,7 @@ To make it clearer to users that replies go to your domain, you can emphasize th
 ### Trade-offs of Plan B
 
 **Advantages:**
+
 - ✅ Works immediately (no DNS wait)
 - ✅ No DNS configuration complexity
 - ✅ Replies still go to `mail@nest-haus.at`
@@ -240,6 +252,7 @@ To make it clearer to users that replies go to your domain, you can emphasize th
 - ✅ All functionality preserved
 
 **Disadvantages:**
+
 - ❌ Sender shows `onboarding@resend.dev` instead of `mail@nest-haus.at`
 - ❌ Less professional appearance
 - ❌ Potential confusion for recipients
@@ -249,6 +262,7 @@ To make it clearer to users that replies go to your domain, you can emphasize th
 ### Implementation Steps for Plan B
 
 1. **Update Environment Variables**
+
    ```bash
    # In .env.local
    RESEND_FROM_EMAIL=onboarding@resend.dev
@@ -256,6 +270,7 @@ To make it clearer to users that replies go to your domain, you can emphasize th
    ```
 
 2. **Clear Next.js Cache and Restart**
+
    ```bash
    rm -rf .next
    npm run dev
@@ -282,6 +297,7 @@ To make it clearer to users that replies go to your domain, you can emphasize th
 ## Email Flow Diagrams
 
 ### Plan A Flow (Preferred)
+
 ```
 User fills form → Next.js API → Resend API
                                     ↓
@@ -298,6 +314,7 @@ User fills form → Next.js API → Resend API
 ```
 
 ### Plan B Flow (Fallback)
+
 ```
 User fills form → Next.js API → Resend API
                                     ↓
@@ -354,32 +371,38 @@ User fills form → Next.js API → Resend API
 ### Plan A Issues
 
 **Issue**: DNS records not verifying after 24 hours
+
 - **Solution**: Contact DNS provider to verify records were added correctly
 - **Check**: Use `nslookup` to verify DNS propagation
 - **Fallback**: Switch to Plan B temporarily
 
 **Issue**: SPF "soft fail" in email headers
+
 - **Solution**: Verify SPF record includes `include:amazonses.com`
 - **Check**: Ensure no other SPF records conflict
 - **Wait**: DNS propagation can take up to 72 hours
 
 **Issue**: DKIM "neutral" or "fail"
+
 - **Solution**: Verify DKIM record added exactly as provided by Resend
 - **Check**: No extra spaces or line breaks in TXT value
 - **Contact**: Resend support if issue persists
 
 **Issue**: Bounce subdomain MX record fails
+
 - **Solution**: Verify MX record value is `feedback-smtp.eu-west-1.amazonses.com` (not amazonaws.com)
 - **Check**: Ensure bounce TXT record name is `bounce.nest-haus.at`
 
 ### Plan B Issues
 
 **Issue**: High spam rates
+
 - **Solution**: Add clear "Reply to this email" instructions in templates
 - **Monitor**: Check Resend dashboard for bounce/spam rates
 - **Escalate**: If >5% spam rate, contact Resend support
 
 **Issue**: Customers confused about sender
+
 - **Solution**: Add prominent "This email is from Nest-Haus" branding
 - **Update**: Email templates to emphasize company branding
 - **Consider**: Migrate to Plan A ASAP
@@ -395,12 +418,14 @@ When DNS is finally verified and you want to switch from Plan B to Plan A:
    - Domain status is "Verified"
 
 2. **Update Environment Variables**
+
    ```bash
    # Change in .env.local
    RESEND_FROM_EMAIL=mail@nest-haus.at
    ```
 
 3. **Restart Server**
+
    ```bash
    rm -rf .next
    npm run dev
@@ -431,17 +456,20 @@ When DNS is finally verified and you want to switch from Plan B to Plan A:
 **Date**: November 14, 2025
 
 **DNS Records Sent to Provider**:
-- ✅ DKIM (resend._domainkey)
+
+- ✅ DKIM (resend.\_domainkey)
 - ✅ SPF (@ - updated to include both Google and Amazon SES)
-- ✅ DMARC (_dmarc)
+- ✅ DMARC (\_dmarc)
 - ✅ Bounce MX (bounce → feedback-smtp.eu-west-1.amazonses.com) - **CORRECTED by provider**
 - 🔄 Bounce TXT (bounce.nest-haus.at → v=spf1 include:amazonses.com ~all) - **WAITING for provider to add**
 
 **Resend Dashboard Status**:
+
 - 🔄 Waiting for DNS propagation after provider updates bounce TXT record
 - User initiated manual refresh before DNS update completed
 
 **Next Steps**:
+
 1. **Wait 1-4 hours** for DNS propagation after provider adds bounce TXT record
 2. **Check Resend dashboard** for verification status
 3. **If verification fails after 24 hours**: Activate Plan B
@@ -452,6 +480,7 @@ When DNS is finally verified and you want to switch from Plan B to Plan A:
 ## Quick Reference: Environment Variables
 
 ### Plan A (Preferred)
+
 ```bash
 RESEND_FROM_EMAIL=mail@nest-haus.at
 ADMIN_EMAIL=mail@nest-haus.at
@@ -460,6 +489,7 @@ REPLY_TO_EMAIL=mail@nest-haus.at
 ```
 
 ### Plan B (Fallback)
+
 ```bash
 RESEND_FROM_EMAIL=onboarding@resend.dev
 ADMIN_EMAIL=mail@nest-haus.at
@@ -474,7 +504,7 @@ REPLY_TO_EMAIL=mail@nest-haus.at
 **Google Workspace**: `mail@nest-haus.at`  
 **Resend Account**: Connected to `nest-haus.at` domain  
 **DNS Provider**: Austria WebHosting (service@austriawebhosting.com)  
-**Next.js App**: Hosted on Vercel  
+**Next.js App**: Hosted on Vercel
 
 ---
 
