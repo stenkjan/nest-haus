@@ -106,6 +106,8 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
                     paymentAmount: updatedInquiry.paymentAmount || paymentIntent.amount,
                     paymentCurrency: updatedInquiry.paymentCurrency || paymentIntent.currency,
                     paymentMethod: updatedInquiry.paymentMethod || 'card',
+                    paymentIntentId: paymentIntent.id,
+                    paidAt: updatedInquiry.paidAt || new Date(),
                     configurationData: updatedInquiry.configurationData,
                 };
 
@@ -117,6 +119,9 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
                     ...customerData,
                     paymentIntentId: paymentIntent.id,
                     stripeCustomerId: paymentIntent.customer as string,
+                    sessionId: updatedInquiry.sessionId || undefined,
+                    clientIP: undefined, // Not available in this context
+                    userAgent: undefined, // Not available in this context
                 });
 
                 console.log('✅ Payment confirmation emails sent via webhook');
