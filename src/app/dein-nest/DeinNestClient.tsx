@@ -326,7 +326,7 @@ export default function DeinNestClient() {
             showInstructions={false}
             alignment="left"
             customData={VIDEO_BACKGROUND_CARDS_PRESET.cards.filter(
-              (card) => card.id >= 1 && card.id <= 4
+              (card) => card.id >= 1 && card.id <= 5
             )}
           />
         </section>
@@ -358,7 +358,7 @@ export default function DeinNestClient() {
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
-                    text: "Unser Philosophie",
+                    text: "Unsere Philosophie",
                     variant: "primary",
                     size: "xs",
                     link: "/entwurf",

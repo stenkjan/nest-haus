@@ -685,7 +685,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
                 text: "Unsere Philosophie",
                 variant: "secondary-narrow-white",
                 size: "xs",
-                link: "/kontakt",
+                link: "/warum-wir",
             },
         ],
     },
@@ -725,15 +725,15 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 5,
-        title: "Häufige Fragen beantwortet",
+        title: "Klarheit an erster Stelle",
         subtitle: "",
-        description: "Alle Antworten im Überblick",
+        description: "Zu den häufig gestellten Fragen",
         video: IMAGES.videos.videoCard04,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Square format
         buttons: [
             {
-                text: "Zum FAQ",
+                text: "Häufige Fragen",
                 variant: "secondary-narrow-white",
                 size: "xs",
                 link: "/faq",
