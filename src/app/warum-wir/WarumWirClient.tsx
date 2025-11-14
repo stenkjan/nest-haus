@@ -193,6 +193,8 @@ export default function WarumWirClient() {
               {...TALL_CARD_PROPS_WITH_PADDING}
               variant="responsive"
               noPadding={true}
+              alignment="left"
+              maxWidth={false}
               customData={[
                 {
                   id: 1,

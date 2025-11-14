@@ -326,7 +326,7 @@ export default function UnifiedContentCard({
     } else {
       // Center alignment (default behavior for all, and mobile/tablet for left alignment)
       if (containerWidth < 768) {
-        const containerPadding = 32;
+        const containerPadding = 16; // px-4 = 1rem = 16px on mobile for video layout
         centerOffset = (containerWidth - firstCardWidth - containerPadding) / 2;
       } else {
         const effectiveWidth =
@@ -570,7 +570,7 @@ export default function UnifiedContentCard({
         } else {
           // Center alignment (default behavior for all, and mobile/tablet for left alignment)
           if (containerWidth < 768) {
-            const containerPadding = 32;
+            const containerPadding = 16; // px-4 = 1rem = 16px on mobile for video layout
             centerOffset =
               (containerWidth - currentCardWidth - containerPadding) / 2;
           } else {
@@ -657,7 +657,7 @@ export default function UnifiedContentCard({
       } else {
         // Center alignment (default behavior for all, and mobile/tablet for left alignment)
         if (containerWidth < 768) {
-          const containerPadding = 32;
+          const containerPadding = 16; // px-4 = 1rem = 16px on mobile for video layout
           centerOffset =
             (containerWidth - targetCardWidth - containerPadding) / 2;
         } else {
@@ -1555,8 +1555,8 @@ export default function UnifiedContentCard({
 
   // Render team-card layout (full image background with custom team/value card layout)
   const renderTeamCardLayout = (card: ContentCardData, index: number) => {
-    // Determine image fit behavior
-    const imageFitClass = "object-cover object-center";
+    // Determine image fit behavior - right-aligned for team photos
+    const imageFitClass = "object-cover object-right";
 
     // Determine text color (default to white)
     const textColor = card.textColor || "text-white";
@@ -1588,8 +1588,7 @@ export default function UnifiedContentCard({
               enableCache={true}
             />
           ) : null}
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/40" />
+          {/* Optional dark overlay for better text readability - removed for team photos */}
         </div>
 
         {/* Text Content Overlay - Left Aligned with top and bottom sections */}
@@ -2129,13 +2128,13 @@ export default function UnifiedContentCard({
                   isLightboxMode
                     ? "" // No padding in lightbox mode - use full width
                     : layout === "video"
-                      ? "px-12"
+                      ? "px-4 md:px-12"
                       : layout === "overlay-text"
                         ? "px-4 md:px-12"
                         : layout === "glass-quote"
-                          ? "px-12"
+                          ? "px-4 md:px-12"
                           : layout === "team-card"
-                            ? "px-12"
+                            ? "px-4 md:px-12"
                             : maxWidth
                               ? "px-8"
                               : "px-4"

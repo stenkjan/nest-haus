@@ -417,7 +417,17 @@ export const IMAGES = {
         rockenbauer: '341-nest-haus-partner-kooperation-rockenbauer-dachdecker-und-spengler',
         markusKrampl: '342-nest-haus-partner-kooperation-markus-krampl-creative-videography-fotograf',
         zarnhofer: '343-nest-haus-partner-kooperation-zarnhofer-holzbau-meister-betrieb',
-        bpElektrotechnik: '344-nest-haus-partner-kooperation-bp-elektrotechnik-gmbh-haustechnik'
+        bpElektrotechnik: '344-nest-haus-partner-kooperation-bp-elektrotechnik-gmbh-haustechnik',
+        kollaborationPartner: '289-nest-haus-icon-kollaboration-partner'
+    },
+
+    // Team member images
+    team: {
+        markusSchmoltner: '335-nest-haus-team-markus-schmoltner',
+        bernhardGrentner: '336-nest-haus-team-bernhard-grentner',
+        inesSagadin: '337-nest-haus-team-ines-sagadin',
+        janSchmoltner: '338-nest-haus-team-jan-schmoltner',
+        janStenk: '339-nest-haus-team-jan-stenk'
     },
 
     // Step icons for process cards
