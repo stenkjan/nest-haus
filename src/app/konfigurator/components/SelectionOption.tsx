@@ -213,6 +213,23 @@ export default function SelectionOption({
       // Remove "Ab" from planungspakete, keep it for nest modules and pvanlage
       const showAbPrefix = categoryId === "nest" || categoryId === "pvanlage";
 
+      // Special handling for dash prices: center "-" without any subtitles
+      if (formattedPrice === "-") {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              -
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
       // Special handling for fenster & belichtungspaket: center price without "entspricht"
       if (categoryId === "fenster" || categoryId === "belichtungspaket") {
         return (
@@ -327,6 +344,23 @@ export default function SelectionOption({
         PriceUtils.shouldShowPricePerSquareMeter(categoryId) &&
         categoryId !== "fenster";
 
+      // Special handling for dash prices: center "-" without any subtitles
+      if (formattedPrice === "-") {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              -
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
+            </p>
+          </div>
+        );
+      }
+
       return (
         <div className="text-right">
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
@@ -378,6 +412,23 @@ export default function SelectionOption({
           <div className="text-right">
             <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
               +/-
+            </p>
+          </div>
+        );
+      }
+
+      // Special handling for dash prices: center "-" without any subtitles
+      if (formattedPrice === "-") {
+        return (
+          <div className="text-right">
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              &nbsp;
+            </p>
+            <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+              -
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
             </p>
           </div>
         );
@@ -464,6 +515,23 @@ export default function SelectionOption({
           <div className="text-right">
             <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
               +/-
+            </p>
+          </div>
+        );
+      }
+
+      // Special handling for dash prices: center "-" without any subtitles
+      if (formattedPrice === "-") {
+        return (
+          <div className="text-right">
+            <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
+              &nbsp;
+            </p>
+            <p className={`text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2] ${textColor}`}>
+              -
+            </p>
+            <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+              &nbsp;
             </p>
           </div>
         );
