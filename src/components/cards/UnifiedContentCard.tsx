@@ -379,31 +379,25 @@ export default function UnifiedContentCard({
         // On mobile: fixed width with taller height for content
         if (width >= 1600) {
           const calculatedHeight = Math.min(
-            830,
-            typeof window !== "undefined" ? window.innerHeight * 0.75 : 830
+            650,
+            typeof window !== "undefined" ? window.innerHeight * 0.6 : 650
           );
           setCardsPerView(2.5);
           setCardWidth(calculatedHeight); // Square: width = height
         } else if (width >= 1280) {
           const calculatedHeight = Math.min(
-            692,
-            typeof window !== "undefined" ? window.innerHeight * 0.7 : 692
+            550,
+            typeof window !== "undefined" ? window.innerHeight * 0.6 : 550
           );
           setCardsPerView(2.2);
           setCardWidth(calculatedHeight); // Square: width = height
-        } else if (width >= 1024) {
+        } else if (width >= 768) {
+          // Smaller size from 768-1279px
           const calculatedHeight = Math.min(
-            577,
-            typeof window !== "undefined" ? window.innerHeight * 0.7 : 577
+            520,
+            typeof window !== "undefined" ? window.innerHeight * 0.6 : 520
           );
           setCardsPerView(2);
-          setCardWidth(calculatedHeight); // Square: width = height
-        } else if (width >= 768) {
-          const calculatedHeight = Math.min(
-            720,
-            typeof window !== "undefined" ? window.innerHeight * 0.75 : 720
-          );
-          setCardsPerView(1.5);
           setCardWidth(calculatedHeight); // Square: width = height
         } else {
           // Mobile: fixed width, taller height
@@ -1118,24 +1112,25 @@ export default function UnifiedContentCard({
       </div>
     ) : (
       // Desktop: Wide layout
-      // - 1024px: For tall cards use 1/3-2/3 split, standard cards use 50/50
-      // - 1280px+: 1/3-2/3 split (Text 1/3, Video 2/3) for standard layout
+      // - 1024px-1279px: 50/50 split for both tall and standard cards to fit text content
+      // - 1280px-1399px: 40/60 split for slightly more text space
+      // - 1400px+: 1/3-2/3 split (Text 1/3, Video 2/3) for standard layout
       <div className="flex items-stretch h-full">
         {/* Text Content - Responsive width based on screen size */}
         <div
-          className={`${
+          className={`flex flex-col justify-center items-start text-left ${
             isClient && screenWidth >= 1024 && screenWidth < 1280
-              ? heightMode === "tall"
-                ? "w-1/3" // 1/3 for tall cards at 1024px to fit 1:1 image
-                : "w-1/2" // 50% for standard cards at 1024px
-              : "w-1/3" // 33% at 1280px+ for all cards
-          } flex flex-col justify-center items-start text-left ${
-            isClient && screenWidth >= 1024 && screenWidth < 1280
-              ? heightMode === "tall"
-                ? "px-16" // Standard padding for tall cards
-                : "px-16" // Less padding for standard cards at 1024px
+              ? "px-16" // Standard padding at 1024-1279px
               : "px-16" // Standard padding at 1280px+
           } py-6`}
+          style={{
+            width:
+              isClient && screenWidth >= 1024 && screenWidth < 1280
+                ? "50%" // 50% for all cards at 1024-1279px to fit text content
+                : isClient && screenWidth >= 1280 && screenWidth < 1400
+                  ? "40%" // 40% at 1280-1399px for slightly more text space
+                  : "33.333333%", // 33% at 1400px+ for all cards
+          }}
         >
           <motion.div
             initial={{ x: -20, opacity: 0 }}
@@ -1205,24 +1200,26 @@ export default function UnifiedContentCard({
           </motion.div>
         </div>
 
-        {/* Video Content - Right side (1:1 at 1024px, 16:9 at 1280px+) */}
+        {/* Video Content - Right side (50% at 1024-1279px, 60% at 1280-1399px, 67% at 1400px+) */}
         <div
-          className={`${
-            isClient && screenWidth >= 1024 && screenWidth < 1280
-              ? heightMode === "tall"
-                ? "w-2/3" // 2/3 for tall cards at 1024px to fit 1:1 image
-                : "w-1/2" // 50% for standard cards at 1024px
-              : "w-2/3" // 67% at 1280px+ for all cards
-          } relative overflow-hidden ${
+          className={`relative flex ${
+            heightMode === "tall" ? "items-stretch" : "items-center"
+          } justify-end ${
             // Padding logic - SAME for all cards regardless of heightMode:
             // - imagePadding="standard": py-[15px] pr-[15px]
             // - imagePadding="none": no padding (only for tall cards)
             heightMode === "tall" && imagePadding === "none"
               ? ""
               : "py-[15px] pr-[15px]"
-          } flex ${
-            heightMode === "tall" ? "items-stretch" : "items-center"
-          } justify-end`}
+          }`}
+          style={{
+            width:
+              isClient && screenWidth >= 1024 && screenWidth < 1280
+                ? "50%" // 50% for all cards at 1024-1279px to match text
+                : isClient && screenWidth >= 1280 && screenWidth < 1400
+                  ? "60%" // 60% at 1280-1399px to match text
+                  : "66.666667%", // 67% at 1400px+ for all cards
+          }}
         >
           <motion.div
             initial={{ x: 20, opacity: 0 }}
@@ -1233,10 +1230,9 @@ export default function UnifiedContentCard({
             }}
             className="relative rounded-3xl overflow-hidden w-full"
             style={{
-              // 1:1 at 1024px for better height visibility with 50/50 split
-              // 16:9 at 1280px+ for standard widescreen with 1/3-2/3 split
-              // For tall cards at 1280px+, remove aspect ratio and fill available space
-              ...(heightMode === "tall" && isClient && screenWidth >= 1280
+              // For tall cards at desktop (1024px+), remove aspect ratio and fill available space
+              // For standard cards: 1:1 at 1024-1279px, 16:9 at 1280px+
+              ...(heightMode === "tall" && isClient && screenWidth >= 1024
                 ? { height: "100%" }
                 : {
                     aspectRatio:
@@ -1265,9 +1261,12 @@ export default function UnifiedContentCard({
                 alt={getCardText(card, "title")}
                 fill
                 className={`object-cover ${
-                  heightMode === "tall"
-                    ? "object-left" // Left-aligned (image starts from left edge)
-                    : "object-center"
+                  // Use custom imagePosition if provided, otherwise use defaults
+                  card.imagePosition
+                    ? `object-${card.imagePosition}`
+                    : heightMode === "tall"
+                      ? "object-left" // Left-aligned for tall cards (default)
+                      : "object-center" // Center for standard cards
                 }`}
                 strategy="client"
                 isInteractive={true}
@@ -2120,7 +2119,7 @@ export default function UnifiedContentCard({
             <div className="overflow-x-clip">
               <div
                 ref={containerRef}
-                className={`overflow-x-hidden cards-scroll-container ${
+                className={`relative overflow-x-hidden cards-scroll-container ${
                   isStatic
                     ? ""
                     : isClient && screenWidth < 1024
@@ -2165,7 +2164,7 @@ export default function UnifiedContentCard({
                     const cardAspectRatio = card.aspectRatio || aspectRatio;
                     // MOBILE OVERRIDE: Force all cards to 2x1 (portrait) on mobile for better UX
                     const effectiveAspectRatio =
-                      isClient && screenWidth < 768 ? "2x1" : cardAspectRatio;
+                      isClient && screenWidth < 1024 ? "2x1" : cardAspectRatio;
 
                     // Calculate width for overlay-text cards based on individual aspect ratio
                     let cardSpecificWidth = cardWidth;
@@ -2439,67 +2438,67 @@ export default function UnifiedContentCard({
                     );
                   })}
                 </motion.div>
+
+                {/* Navigation Arrows - Positioned relative to cards */}
+                {!isStatic && (
+                  <>
+                    {currentIndex > 0 && (
+                      <button
+                        onClick={() => navigateCard(-1)}
+                        disabled={isAnimating}
+                        className={`absolute top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                          screenWidth < 1024 ? "p-3" : "p-4"
+                        }`}
+                        style={{
+                          left: screenWidth < 1024 ? "16px" : "24px",
+                        }}
+                      >
+                        <svg
+                          className="w-6 h-6 text-black"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
+                          />
+                        </svg>
+                      </button>
+                    )}
+
+                    {currentIndex < displayCards.length - 1 && (
+                      <button
+                        onClick={() => navigateCard(1)}
+                        disabled={isAnimating}
+                        className={`absolute top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
+                          screenWidth < 1024 ? "p-3" : "p-4"
+                        }`}
+                        style={{
+                          right: screenWidth < 1024 ? "16px" : "24px",
+                        }}
+                      >
+                        <svg
+                          className="w-6 h-6 text-black"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </>
+                )}
               </div>
             </div>
-
-            {/* Navigation Arrows - Fixed at page edges for all card sizes */}
-            {!isStatic && (
-              <>
-                {currentIndex > 0 && (
-                  <button
-                    onClick={() => navigateCard(-1)}
-                    disabled={isAnimating}
-                    className={`absolute top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
-                      screenWidth < 1024 ? "p-3" : "p-4"
-                    }`}
-                    style={{
-                      left: screenWidth < 1024 ? "16px" : "24px",
-                    }}
-                  >
-                    <svg
-                      className="w-6 h-6 text-black"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                )}
-
-                {currentIndex < displayCards.length - 1 && (
-                  <button
-                    onClick={() => navigateCard(1)}
-                    disabled={isAnimating}
-                    className={`absolute top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full shadow-xl transition-all duration-200 hover:scale-110 z-20 ${
-                      screenWidth < 1024 ? "p-3" : "p-4"
-                    }`}
-                    style={{
-                      right: screenWidth < 1024 ? "16px" : "24px",
-                    }}
-                  >
-                    <svg
-                      className="w-6 h-6 text-black"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                )}
-              </>
-            )}
           </div>
         )}
 

@@ -158,9 +158,7 @@ export default function FAQSection({
               {title}
             </h2>
             {description && (
-              <p className="p-primary-small text-gray-700 hidden">
-                {description}
-              </p>
+              <p className="p-primary text-black hidden">{description}</p>
             )}
           </div>
 
@@ -189,7 +187,7 @@ export default function FAQSection({
                 {title}
               </h2>
               {description && (
-                <p className="p-primary-small text-gray-700">{description}</p>
+                <p className="p-primary text-black">{description}</p>
               )}
             </div>
 

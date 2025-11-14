@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui";
 import { HybridBlobImage } from "@/components/images";
+import { IMAGES } from "@/constants/images";
 
 /**
  * PartnersSection Component
@@ -27,38 +28,68 @@ const partners: Partner[] = [
   {
     id: "tu-graz",
     name: "Technische Universität Graz",
-    path: "60-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz",
+    path: IMAGES.partners.partner1,
     description: "Förderung und Entwicklung",
-  },
-  {
-    id: "engelsmann-peters",
-    name: "Engelsmann und Peters",
-    path: "61-NEST-Haus-Partner-Kooperation-Engelsmann-Peters-Professor-TU-Graz-Stefan-Peters",
-    description: "Statische Entwicklung",
   },
   {
     id: "tu-iam",
     name: "Institut für Digitalisierung",
-    path: "62-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-IAM-Institut",
+    path: IMAGES.partners.partner3,
     description: "Forschung und Entwicklung",
   },
   {
     id: "tu-bauphysik",
     name: "Labor für Bauphysik",
-    path: "63-NEST-Haus-Partner-Kooperation-Technische-Universitaet-Graz-TU-Graz-Labor-Bauphysik",
+    path: IMAGES.partners.partner4,
     description: "LFB TU Graz Forschung",
+  },
+  {
+    id: "lki-tu-graz",
+    name: "LKI TU Graz",
+    path: IMAGES.partners.lkiTuGraz,
+    description: "Labor für konstruktiven Ingenieurbau",
+  },
+  {
+    id: "engelsmann-peters",
+    name: "Engelsmann und Peters",
+    path: IMAGES.partners.partner2,
+    description: "Statische Entwicklung",
   },
   {
     id: "schwarz",
     name: "Schwarz & Peter",
-    path: "64-NEST-Haus-Partner-Kooperation-Schwarz-Partner-Patentanwaelte",
+    path: IMAGES.partners.partner5,
     description: "Patentanwälte",
   },
   {
     id: "sobitsch",
     name: "Sobitsch Bau GmbH",
-    path: "65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau",
+    path: IMAGES.partners.partner6,
     description: "Zimmermann",
+  },
+  {
+    id: "rockenbauer",
+    name: "Rockenbauer",
+    path: IMAGES.partners.rockenbauer,
+    description: "Dachdecker und Spengler",
+  },
+  {
+    id: "markus-krampl",
+    name: "Markus Krampl Creative",
+    path: IMAGES.partners.markusKrampl,
+    description: "Video Production & Photography",
+  },
+  {
+    id: "zarnhofer",
+    name: "Zarnhofer Holzbau",
+    path: IMAGES.partners.zarnhofer,
+    description: "Holzbaumeister",
+  },
+  {
+    id: "bp-elektrotechnik",
+    name: "BP Elektrotechnik GmbH",
+    path: IMAGES.partners.bpElektrotechnik,
+    description: "Elektrotechnik",
   },
   {
     id: "gemeinsam-staerker",

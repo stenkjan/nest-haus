@@ -61,6 +61,7 @@ export interface ContentCardData {
     externalLink?: string; // Optional: external URL to link the entire card to
     bottomLabel?: string; // Optional: bottom metadata label (p-primary-small) - for team-card layout (can contain HTML)
     bottomText?: string; // Optional: bottom metadata text (p-tertiary) - for team-card layout
+    imagePosition?: "left" | "center" | "right"; // Optional: override image position (object-left, object-center, object-right)
 }
 
 /**
@@ -499,7 +500,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "Entwurf",
         subtitle: "Diese Kosten deckst du heute",
         description:
-            "Beim Vorentwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.\n\nBist du mit dem Vorentwurf nicht zufrieden, kannst du vom Kauf zurücktreten.",
+            "Beim Entwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.",
         backgroundColor: "#f4f4f4",
         iconNumber: 1,
     },
@@ -860,16 +861,16 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         headingLevel: "h2", // Use h2 instead of default h3
         buttons: [
             {
-                text: "Jetzt Vorentwurf sichern",
+                text: "Vorentwurf bestellen",
                 variant: "primary",
                 size: "xs",
-                link: "/kontakt",
+                link: "/entwurf",
             },
             {
-                text: "Warum mit Nest",
+                text: "Warum mit Nest?",
                 variant: "secondary-narrow-blue",
                 size: "xs",
-                link: "/kontakt",
+                link: "/warum-wir",
             },
         ],
     },
@@ -893,6 +894,15 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 4,
+        title: "Atmosphäre die man spürt",
+        subtitle: "",
+        description: "Fühlen statt sehen",
+        image: IMAGES.hero.mobile.nestHaus3,
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Portrait format
+    },
+    {
+        id: 5,
         title: "Erzähle uns von deiner Idee",
         subtitle: "",
         description: "Wir machen's möglich",
@@ -904,24 +914,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
                 text: "Termin vereinbaren",
                 variant: "primary",
                 size: "xs",
-                link: "/konfigurator",
-            },
-        ],
-    },
-    {
-        id: 5,
-        title: "Deine Vision wird Realität",
-        subtitle: "",
-        description: "Gemeinsam gestalten wir dein Zuhause",
-        video: IMAGES.videos.videoCard08,
-        backgroundColor: "#F4F4F4",
-        aspectRatio: "2x1", // Portrait format
-        buttons: [
-            {
-                text: "Projekt starten",
-                variant: "primary",
-                size: "xs",
-                link: "/konfigurator",
+                link: "/kontakt",
             },
         ],
     },

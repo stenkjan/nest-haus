@@ -125,10 +125,10 @@ export const ABLAUF_STEPS_BUTTONS = [
         fileMode: "open" as const, // Open in new tab
     },
     {
-        text: "Jetzt bauen",
+        text: "Beratungsgespräch",
         variant: "landing-secondary-blue" as const,
         size: "xs" as const,
-        link: "/konfigurator",
+        link: "/kontakt",
     },
 ];
 
