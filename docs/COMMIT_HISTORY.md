@@ -4,6 +4,155 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [80de72cb35d7f3b99582e2965b536b66d17efae8] - Fri Nov 14 15:30:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [32417a104c4e0676a019b963ba85c7ab4b0fd970] - Fri Nov 14 15:25:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Enhance CheckoutStepper with pricing data initialization and m² price calculations  - Added useEffect to load pricing data on component mount for up-to-date pricing. - Introduced calculateItemPricePerSqm helper function to compute m² prices for individual items. - Updated display logic to show m² prices for applicable items in the cart. - Refined price calculations to focus on NEST MODULE pricing per m², improving clarity in pricing display.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [9d65923bd53cd49cbacdfe49c0ca02c71bbed602] - Fri Nov 14 14:53:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [d7e732d5aa611fa95f6e9a880995666e290995b5] - Fri Nov 14 14:45:41 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [5858618dc6f86c153a5c506134f88c96931b692c] - Fri Nov 14 14:41:40 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [cfa839a5d20052210ccf39ec45df1719f9b8a4a0] - Fri Nov 14 14:03:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [a08093521d39ee1424ff43326175eecef1bb0c6f] - Fri Nov 14 13:31:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [66734be24fc4cf266ffd69e51d28defe8aa14d42] - Fri Nov 14 13:26:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [492f49e0951182a4bf21c543d105303d84e80dd5] - Fri Nov 14 13:24:11 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branches 'main' and 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [ae3a354cd10d1660ff2d306feca26a86de7c7f9f] - Fri Nov 14 13:06:47 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/components/Footer.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [1e56ede98a2de93e261f3f993c20e4bf049b2655] - Fri Nov 14 12:54:55 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [cc069215f513c89af0b1c02716f62fb1b9cb6e1e] - Fri Nov 14 12:01:39 2025 +0100
 
 **Author**: stenkjan

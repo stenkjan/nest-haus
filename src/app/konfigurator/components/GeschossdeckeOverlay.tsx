@@ -28,8 +28,8 @@ export default function GeschossdeckeOverlay({
     fussboden?: string
   ): string => {
     // Map innenverkleidung values to overlay image names
-    // ohne_innenverkleidung → fichte (fallback visual), laerche → laerche, fichte → fichte, steirische_eiche → eiche
-    let wallMaterial = "fichte"; // Default/fallback visual for ohne_innenverkleidung
+    // ohne_innenverkleidung → ohne_innenverkleidung (new images available), laerche → laerche, fichte → fichte, steirische_eiche → eiche
+    let wallMaterial = "ohne_innenverkleidung"; // Default: use ohne_innenverkleidung images
     
     if (innenverkleidung) {
       const innenLower = innenverkleidung.toLowerCase();
@@ -40,7 +40,7 @@ export default function GeschossdeckeOverlay({
       } else if (innenLower.includes("eiche")) {
         wallMaterial = "eiche";
       } else if (innenLower.includes("ohne")) {
-        wallMaterial = "fichte"; // Use fichte as visual fallback for "ohne"
+        wallMaterial = "ohne_innenverkleidung"; // Use dedicated ohne_innenverkleidung images
       }
     }
     
@@ -68,8 +68,17 @@ export default function GeschossdeckeOverlay({
       return imagePath;
     }
     
-    // Fallback to fichte ohne_belag if no match found
-    return IMAGES.pvModule.geschossdecke_fichte_ohne_belag;
+    // Fallback hierarchy: try ohne_innenverkleidung ohne_belag, then fichte ohne_belag
+    if (wallMaterial !== 'ohne_innenverkleidung') {
+      const fallbackKey = `geschossdecke_ohne_innenverkleidung_${floorType}` as keyof typeof IMAGES.pvModule;
+      const fallbackPath = IMAGES.pvModule[fallbackKey];
+      if (fallbackPath && typeof fallbackPath === 'string') {
+        return fallbackPath;
+      }
+    }
+    
+    // Final fallback to ohne_innenverkleidung ohne_belag
+    return IMAGES.pvModule.geschossdecke_ohne_innenverkleidung_ohne_belag || IMAGES.pvModule.geschossdecke_fichte_ohne_belag;
   };
 
   const overlayImagePath = getOverlayImage(innenverkleidung, fussboden);

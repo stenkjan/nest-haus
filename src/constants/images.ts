@@ -146,6 +146,12 @@ export const IMAGES = {
         geschossdecke_laerche_parkett: '326-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-kiefer',
         geschossdecke_laerche_steinplatten_hell: '329-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-kiefer',
         geschossdecke_laerche_steinplatten_dunkel: '332-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-kiefer',
+
+        // Ohne Innenverkleidung (No interior cladding) variations
+        geschossdecke_ohne_innenverkleidung_ohne_belag: '355-nest-haus-zwischendecke-geschossdecke-stockwerk-ohne-belag-ohne-innenverkleidung',
+        geschossdecke_ohne_innenverkleidung_parkett: '356-nest-haus-zwischendecke-geschossdecke-stockwerk-parkett-eiche-ohne-innenverkleidung',
+        geschossdecke_ohne_innenverkleidung_steinplatten_hell: '358-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-hell-ohne-innenverkleidung',
+        geschossdecke_ohne_innenverkleidung_steinplatten_dunkel: '357-nest-haus-zwischendecke-geschossdecke-stockwerk-steinplatten-dunkel-ohne-innenverkleidung',
     },
 
 
@@ -308,6 +314,30 @@ export const IMAGES = {
         holzlattung_holznatur_ohne_belag: '320-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Natur-ohne-Belag',
         holzlattung_holzweiss_ohne_belag: '321-NEST-Haus-Konfigurator-Modul-Holzfassade-Holz-Weiss-gekalkt-ohne-Belag',
         holzlattung_eiche_ohne_belag: '322-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-ohne-Belag',
+
+        // ohne_innenverkleidung combinations - Trapezblech
+        trapezblech_ohne_innenverkleidung_ohne_belag: '371-nest-haus-konfigurator-modul-trapezblech-ohne-innenverkleidung-ohne-belag',
+        trapezblech_ohne_innenverkleidung_parkett: '372-nest-haus-konfigurator-modul-trapezblech-ohne-innenverkleidung-parkett-eiche',
+        trapezblech_ohne_innenverkleidung_steinplatten_hell: '374-nest-haus-konfigurator-modul-trapezblech-ohne-innenverkleidung-steinplatten-hell',
+        trapezblech_ohne_innenverkleidung_steinplatten_dunkel: '373-nest-haus-konfigurator-modul-trapezblech-ohne-innenverkleidung-steinplatten-dunkel',
+
+        // ohne_innenverkleidung combinations - Fassadenplatten Schwarz
+        plattenschwarz_ohne_innenverkleidung_ohne_belag: '363-nest-haus-konfigurator-modul-fassadenplatten-schwarz-ohne-innenverkleidung-ohne-belag',
+        plattenschwarz_ohne_innenverkleidung_parkett: '364-nest-haus-konfigurator-modul-fassadenplatten-schwarz-ohne-innenverkleidung-parkett-eiche',
+        plattenschwarz_ohne_innenverkleidung_steinplatten_hell: '366-nest-haus-konfigurator-modul-fassadenplatten-schwarz-ohne-innenverkleidung-seinplatten-hell',
+        plattenschwarz_ohne_innenverkleidung_steinplatten_dunkel: '365-nest-haus-konfigurator-modul-fassadenplatten-schwarz-ohne-innenverkleidung-steinplatten-dunkel',
+
+        // ohne_innenverkleidung combinations - Fassadenplatten Weiss
+        plattenweiss_ohne_innenverkleidung_ohne_belag: '367-nest-haus-konfigurator-modul-fassadenplatten-weiss-ohne-innenverkleidung-ohne-belag',
+        plattenweiss_ohne_innenverkleidung_parkett: '368-nest-haus-konfigurator-modul-fassadenplatten-weiss-ohne-innenverkleidung-parkett-eiche',
+        plattenweiss_ohne_innenverkleidung_steinplatten_hell: '370-nest-haus-konfigurator-modul-fassadenplatten-weiss-ohne-innenverkleidung-steinplatten-hell',
+        plattenweiss_ohne_innenverkleidung_steinplatten_dunkel: '369-nest-haus-konfigurator-modul-fassadenplatten-weiss-ohne-innenverkleidung-steinplatten-dunkel',
+
+        // ohne_innenverkleidung combinations - Holzlattung (Holzfassade)
+        holzlattung_ohne_innenverkleidung_ohne_belag: '359-nest-haus-konfigurator-modul-holzfassade-ohne-innenverkleidung-ohne-belag',
+        holzlattung_ohne_innenverkleidung_parkett: '360-nest-haus-konfigurator-modul-holzfassade-ohne-innenverkleidung-parkett-eiche',
+        holzlattung_ohne_innenverkleidung_steinplatten_hell: '362-nest-haus-konfigurator-modul-holzfassade-ohne-innenverkleidung-steinplatten-hell',
+        holzlattung_ohne_innenverkleidung_steinplatten_dunkel: '361-nest-haus-konfigurator-modul-holzfassade-ohne-innenverkleidung-steinplatten-dunkel',
 
         // Fenster/Windows
         fenster_holz_eiche: '174-NEST-Haus-Fenster-Holz-Eiche',
