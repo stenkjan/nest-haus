@@ -497,7 +497,7 @@ export const KONTAKTFORMULAR_CONTENT: ContentCardData[] = [
 export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "1. Konzeptcheck",
+        title: "1. Konzept-Check",
         subtitle: "Diese Kosten deckst du heute",
         description:
             "Beim Entwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.",

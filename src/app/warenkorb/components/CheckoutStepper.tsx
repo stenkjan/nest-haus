@@ -1439,7 +1439,7 @@ export default function CheckoutStepper({
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Konzeptcheck
+                        Konzept-Check
                       </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(1)}
@@ -1600,7 +1600,7 @@ export default function CheckoutStepper({
                 <div className={rowWrapperClass}>
                   <div className="flex-1 min-w-0">
                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                      Konzeptcheck
+                      Konzept-Check
                     </div>
                     <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                       Heute zu bezahlen
@@ -2120,7 +2120,7 @@ export default function CheckoutStepper({
             <div id="entwurf-formular" className="mb-16">
               <div className="text-center mb-12 md:mb-16">
                 <h1 className="h1-secondary text-black mb-2 md:mb-3">
-                  Dein Nest-Haus Konzeptcheck
+                  Dein Nest-Haus Konzept-Check
                 </h1>
                 <h3 className="h3-secondary text-black mb-2">
                   Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
@@ -3215,7 +3215,7 @@ export default function CheckoutStepper({
                               >
                                 {isPaymentCompleted
                                   ? "Bezahlt"
-                                  : "Konzeptcheck"}
+                                  : "Konzept-Check"}
                               </h3>
                               <div className="text-sm text-gray-600">
                                 {isPaymentCompleted
