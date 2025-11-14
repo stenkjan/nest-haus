@@ -382,7 +382,12 @@ export const IMAGES = {
         partner6: '65-NEST-Haus-Partner-Kooperation-Sobitsch-Zimmerer-Zimmerermeisterbetrieb-Holzbaumeister-Innenausbau',
         sobitschHolzbau: '301-nest-haus-partner-sobitsch-holzbau', // White logo
         tuGraz: '302-nest-haus-partner-tu-graz', // White logo
-        wko: '303-nest-haus-partner-wko' // White logo
+        wko: '303-nest-haus-partner-wko', // White logo
+        lkiTuGraz: '340-nest-haus-partner-kooperation-lki-tu-graz-institut-fuer-konstruktiven-ingenieurbau',
+        rockenbauer: '341-nest-haus-partner-kooperation-rockenbauer-dachdecker-und-spengler',
+        markusKrampl: '342-nest-haus-partner-kooperation-markus-krampl-creative-videography-fotograf',
+        zarnhofer: '343-nest-haus-partner-kooperation-zarnhofer-holzbau-meister-betrieb',
+        bpElektrotechnik: '344-nest-haus-partner-kooperation-bp-elektrotechnik-gmbh-haustechnik'
     },
 
     // Step icons for process cards

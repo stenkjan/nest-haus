@@ -148,57 +148,49 @@ export function SectionHeader({
   const hasMobileVariant = mobileTitle !== undefined;
 
   return (
-    <div className={`w-full ${containerMaxWidth} mx-auto px-4 sm:px-6 lg:px-8`}>
-      <div
-        className={`${centered ? "text-center" : ""} ${wrapperMargin} ${className}`}
-      >
-        {/* Desktop Version (≥1024px) */}
-        {hasMobileVariant ? (
-          <>
-            <TitleTag
-              className={`h1-secondary mb-2 md:mb-3 ${titleClassName} hidden lg:block`}
-            >
-              {title}
-            </TitleTag>
-            {subtitle && (
-              <h3
-                className={`h3-secondary ${subtitleClassName} ${maxWidth} ${centered ? "mx-auto text-center" : ""} hidden lg:block`}
-              >
-                {subtitle}
-              </h3>
-            )}
-          </>
-        ) : (
-          <>
-            <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName}`}>
-              {title}
-            </TitleTag>
-            {subtitle && (
-              <h3
-                className={`h3-secondary ${subtitleClassName} ${maxWidth} ${centered ? "mx-auto text-center" : ""}`}
-              >
-                {subtitle}
-              </h3>
-            )}
-          </>
-        )}
+    <div
+      className={`w-full px-4 md:px-12 ${centered ? "text-center" : ""} ${wrapperMargin} ${className}`}
+    >
+      {/* Desktop Version (≥1024px) */}
+      {hasMobileVariant ? (
+        <>
+          <TitleTag
+            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} hidden lg:block`}
+          >
+            {title}
+          </TitleTag>
+          {subtitle && (
+            <h3 className={`h3-secondary ${subtitleClassName} hidden lg:block`}>
+              {subtitle}
+            </h3>
+          )}
+        </>
+      ) : (
+        <>
+          <TitleTag className={`h1-secondary mb-2 md:mb-3 ${titleClassName}`}>
+            {title}
+          </TitleTag>
+          {subtitle && (
+            <h3 className={`h3-secondary ${subtitleClassName}`}>{subtitle}</h3>
+          )}
+        </>
+      )}
 
-        {/* Mobile Version (<1024px) - Only shown if mobile variants exist */}
-        {hasMobileVariant && (
-          <>
-            <TitleTag
-              className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
-              dangerouslySetInnerHTML={{ __html: mobileTitle }}
+      {/* Mobile Version (<1024px) - Only shown if mobile variants exist */}
+      {hasMobileVariant && (
+        <>
+          <TitleTag
+            className={`h1-secondary mb-2 md:mb-3 ${titleClassName} lg:hidden`}
+            dangerouslySetInnerHTML={{ __html: mobileTitle }}
+          />
+          {mobileSubtitle && (
+            <h3
+              className={`h3-secondary ${subtitleClassName} lg:hidden`}
+              dangerouslySetInnerHTML={{ __html: mobileSubtitle }}
             />
-            {mobileSubtitle && (
-              <h3
-                className={`h3-secondary ${subtitleClassName} ${maxWidth} ${centered ? "mx-auto text-center" : ""} lg:hidden`}
-                dangerouslySetInnerHTML={{ __html: mobileSubtitle }}
-              />
-            )}
-          </>
-        )}
-      </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

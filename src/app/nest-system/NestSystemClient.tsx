@@ -132,15 +132,15 @@ export default function NestSystemClient() {
         >
           {/* Section 1 - Dein Nest System */}
           <section id="unsere-technik" className="bg-black pt-12 pb-8 md:pb-16">
-            <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
-              <SectionHeader
-                title="Dein ®Nest System"
-                subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
-                titleClassName="text-white"
-                subtitleClassName="text-white"
-                wrapperMargin="mb-12"
-              />
+            <SectionHeader
+              title="Dein ®Nest System"
+              subtitle="Individualisiert, wo es Freiheit braucht. Standardisiert, wo es Effizienz schafft."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+              wrapperMargin="mb-12"
+            />
 
+            <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8">
               <div className="flex justify-center">
                 <div className="w-full md:w-4/5 max-w-5xl rounded-none md:rounded-lg overflow-hidden bg-gray-900">
                   <ClientBlobVideo
@@ -282,15 +282,15 @@ export default function NestSystemClient() {
 
           {/* Section 5 - Dein Raum zum Träumen (includes merged Hier beginnt Freiheit content) */}
           <section id="individualisierung" className="w-full pt-16 bg-black">
-            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-              <SectionHeader
-                title="Dein Raum zum Träumen"
-                subtitle="Weil nur du weißt, wie du richtig wohnst."
-                titleClassName="text-white"
-                subtitleClassName="text-white"
-                wrapperMargin="mb-12"
-              />
+            <SectionHeader
+              title="Dein Raum zum Träumen"
+              subtitle="Weil nur du weißt, wie du richtig wohnst."
+              titleClassName="text-white"
+              subtitleClassName="text-white"
+              wrapperMargin="mb-12"
+            />
 
+            <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
               {/* Image container with same sizing as unser-part page */}
               <div className="w-full max-w-screen-2xl mx-auto md:px-8">
                 <div className="flex justify-center">
@@ -315,7 +315,7 @@ export default function NestSystemClient() {
             </div>
 
             {/* Merged Section - Hier beginnt Freiheit */}
-            <div className="w-full max-w-[1536px] py-8 md:py-16 mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="py-8 md:py-16">
               <SectionHeader
                 title="Hier beginnt Freiheit"
                 subtitle="Individuell dort, wo es zählt."
