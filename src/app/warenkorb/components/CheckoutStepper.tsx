@@ -1782,7 +1782,7 @@ export default function CheckoutStepper({
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
+                        className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col [aspect-ratio:unset]"
                         style={{
                           minHeight: "clamp(400px, 40vw, 520px)",
                         }}
@@ -1947,7 +1947,7 @@ export default function CheckoutStepper({
                       </span>
                     </h2>
                     {/* Configuration Image Gallery */}
-                    <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-1 lg:flex lg:flex-col">
+                    <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-[1.15] lg:flex lg:flex-col">
                       <div
                         className="relative w-full lg:flex-1"
                         style={{ aspectRatio: "16/10" }}

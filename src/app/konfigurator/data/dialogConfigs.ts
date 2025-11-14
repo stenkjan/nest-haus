@@ -181,16 +181,6 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
           desktop: "Aluminium-Fenster überzeugen durch ihre moderne, puristische Optik und außergewöhnliche Stabilität. Das robuste Material ist korrosionsbeständig, wartungsarm und ermöglicht die Realisierung großer Glasflächen bei schlanken Profilen. Aluminium-Fenster sind langlebig, recyclebar und fügen sich perfekt in zeitgenössische Architekturkonzepte ein."
         },
         imagePath: IMAGES.windows.aluminium
-      },
-      {
-        id: 4,
-        title: "Holz Eiche",
-        subtitle: "Fenster & Türen",
-        description: {
-          mobile: "Eichen-Holzfenster stehen für höchste Qualität und zeitlose Eleganz. Das robuste Hartholz überzeugt durch seine charaktervolle Maserung und außergewöhnliche Langlebigkeit.",
-          desktop: "Eichen-Holzfenster stehen für höchste Qualität, zeitlose Eleganz und außergewöhnliche Langlebigkeit. Das robuste Hartholz überzeugt durch seine charaktervolle Maserung und warme Farbgebung, die jedem Raum eine edle, behagliche Atmosphäre verleiht. Eiche ist extrem widerstandsfähig und entwickelt über die Jahre eine wunderschöne Patina, die den natürlichen Charakter des Holzes unterstreicht."
-        },
-        imagePath: IMAGES.windows.eiche
       }
     ]
   },

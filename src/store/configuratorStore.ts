@@ -425,9 +425,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
           // Add the option
           const optionData = {
             kamindurchzug: {
-              name: 'Kamindurchzug',
-              price: 2000,
-              description: 'Vorbereitung für Kaminanschluss'
+              name: 'Kaminschachtvorbereitung',
+              price: 887,
+              description: 'Durchzug für den Kamin'
             },
             fussbodenheizung: {
               name: 'Fußbodenheizung',
