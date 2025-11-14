@@ -1076,9 +1076,9 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
 export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 0,
-        title: "Erfahre, was unsere Partner an Nest schätzen",
+        title: "Wir sind \n registrierter \n Baumeister in \n Österreich",
         subtitle: "",
-        description: "Stimmen die zählen",
+        description: "Mitglieder Bundesinnung Bau",
         backgroundColor: "#121212",
         aspectRatio: "2x1", // Portrait format (tall)
         textColor: "text-white",
@@ -1087,10 +1087,10 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
         headingLevel: "h2", // Use h2-title for bigger title
         buttons: [
             {
-                text: "Überzeuge dich selbst",
+                text: "Terminvereinbarung",
                 variant: "primary",
                 size: "xs",
-                link: "/warum-wir",
+                link: "/kontakt",
             },
         ],
     },

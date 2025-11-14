@@ -226,7 +226,7 @@ h2 {
 
   /* H2 Title styling - Based on Adobe XD specs (Inter 18pt, Medium weight, bigger at breakpoints) */
   .h2-title {
-    @apply font-medium text-xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl;
+    @apply font-medium text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl;
   }
 
   /* H2 Section heading - For content sections with proper spacing */

@@ -193,7 +193,7 @@ export default function WarumWirClient() {
               {...TALL_CARD_PROPS_WITH_PADDING}
               variant="responsive"
               noPadding={true}
-              alignment="left"
+              alignment="center"
               maxWidth={false}
               customData={[
                 {
@@ -201,15 +201,15 @@ export default function WarumWirClient() {
                   title: "Wohnen im Kreislauf ",
                   subtitle: "",
                   description:
-                    "Wohnen bedeutet Verantwortung. Deshalb bildet Nest jedes Modul als Teil eines Kreislaufes aus . Wir denken Gebäude so, dass sie sich verändern, zerlegen und wiederverwenden lassen. So entsteht ein Zuhause, das nicht nur gebaut, sondern bewusst geschaffen wird. Stets im Einklang mit Mensch und Umwelt.",
+                    "<span class='text-nest-gray'>Wohnen bedeutet Verantwortung. Deshalb bildet </span><span class='text-black font-medium'>Nest</span><span class='text-nest-gray'> jedes Modul als </span><span class='text-black font-medium'>Teil eines Kreislaufes</span><span class='text-nest-gray'> aus. Wir denken Gebäude so, dass sie sich verändern, zerlegen und </span><span class='text-black font-medium'>wiederverwenden</span><span class='text-nest-gray'> lassen. So entsteht ein Zuhause, das nicht nur gebaut, sondern bewusst geschaffen wird. Stets </span><span class='text-black font-medium'>im Einklang mit Mensch und Umwelt.</span>",
                   video: IMAGES.videos.nestHausTransport,
                   backgroundColor: "#F4F4F4",
                   buttons: [
                     {
-                      text: "Unsere Technik verstehen",
+                      text: "Das Nest System",
                       variant: "primary",
                       size: "xs",
-                      link: "/kontakt",
+                      link: "/nest-system",
                     },
                   ],
                 },
@@ -218,7 +218,7 @@ export default function WarumWirClient() {
                   title: "Wohnen, dass mit dir wächst",
                   subtitle: "",
                   description:
-                    "Das Leben verändert sich, dein Zuhause sollte das auch können. Mit dem modularen Aufbau von Nest wächst oder schrumpft dein Raum, zieht mit dir um oder bleibt dort, wo du Wurzeln schlägst. So wird Wohnen flexibel, frei und zukunftsfähig. Wir glauben an ein Zuhause ohne Kompromisse.",
+                    "<span class='text-nest-gray'>Das Leben verändert sich, dein Zuhause sollte das auch können. Mit dem </span><span class='text-black font-medium'>modularen Aufbau</span><span class='text-nest-gray'> von Nest wächst oder schrumpft dein Raum, zieht mit dir um oder bleibt dort, wo du Wurzeln schlägst. So wird </span><span class='text-black font-medium'>Wohnen flexibel</span><span class='text-nest-gray'>, frei und zukunftsfähig. Wir glauben an ein </span><span class='text-black font-medium'>Zuhause ohne Kompromisse.</span>",
                   video: IMAGES.variantvideo.ten,
                   backgroundColor: "#F4F4F4",
                   buttons: [
@@ -226,13 +226,13 @@ export default function WarumWirClient() {
                       text: "Zum Entwurf",
                       variant: "primary",
                       size: "xs",
-                      link: "/kontakt",
+                      link: "/entwurf",
                     },
                     {
                       text: "Jetzt konfigurieren",
                       variant: "secondary-narrow-blue",
                       size: "xs",
-                      link: "/kontakt",
+                      link: "/konfigurator",
                     },
                   ],
                 },
@@ -241,15 +241,15 @@ export default function WarumWirClient() {
                   title: "Wohnen im Kreislauf",
                   subtitle: "",
                   description:
-                    "Holz ist mehr als ein Baustoff, es ist ein Versprechen an die Zukunft. Als nachwachsender Rohstoff speichert es CO₂, reguliert das Raumklima und schafft eine Atmosphäre, die natürlich wirkt und sich echt anfühlt.  Mit moderner Fertigungstechnik macht Nest aus einem natürlichen Material eine zukunftsfähige Bauweise.",
+                    "<span class='text-nest-gray'>Holz ist </span><span class='text-black font-medium'>mehr als ein Baustoff</span><span class='text-nest-gray'>, es ist ein Versprechen an die </span><span class='text-black font-medium'>Zukunft.</span><span class='text-nest-gray'> Als nachwachsender Rohstoff </span><span class='text-black font-medium'>speichert</span><span class='text-nest-gray'> es CO₂, </span><span class='text-black font-medium'>reguliert</span><span class='text-nest-gray'> das Raumklima und schafft eine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, die natürlich wirkt und sich echt anfühlt. Mit moderner Fertigungstechnik macht Nest aus einem natürlichen Material eine </span><span class='text-black font-medium'>zukunftsfähige Bauweise.</span>",
                   image: IMAGES.function.nestHausMaterialienSchema,
                   backgroundColor: "#F4F4F4",
                   buttons: [
                     {
-                      text: "Mehr zu den Materialien",
+                      text: "Das Nest System",
                       variant: "primary",
                       size: "xs",
-                      link: "/kontakt",
+                      link: "/nest-system",
                     },
                   ],
                 },
