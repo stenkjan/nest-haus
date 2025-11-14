@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b59868d91f2e3b5da8451bdb205451c6511c416f] - Fri Nov 14 20:35:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update text labels in CheckoutStepper and add optional links in PartnersSection  - Changed "Konzeptcheck" to "Konzept-Check" in multiple instances within the CheckoutStepper component for consistency. - Added optional external links for partners in the PartnersSection component to enhance navigation and accessibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
 ## [c257d82330c27221e337f1b4df9bef753a373240] - Fri Nov 14 19:57:06 2025 +0100
 
 **Author**: stenkjan
