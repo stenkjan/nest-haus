@@ -351,6 +351,19 @@ export default function Navbar() {
       {mobileMenuOpen && isMobile && (
         <div className="absolute top-full left-0 right-0 bg-[#F4F4F4] border-b border-gray-200/50 shadow-lg">
           <div className="px-4 py-4 flex flex-col items-end space-y-4">
+            {/* Startseite Link */}
+            <Link
+              href="/"
+              className={`text-sm font-medium transition-all duration-200 py-2 ${
+                pathname === "/"
+                  ? "text-gray-500"
+                  : "text-black hover:text-gray-500"
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Startseite
+            </Link>
+
             {navItems.map((item) => {
               const isActive = pathname === item.path;
               return (
