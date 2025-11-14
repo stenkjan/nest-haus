@@ -64,7 +64,7 @@ export default function WarumWirClient() {
           <div className="w-full">
             <SectionHeader
               title="Die ®Nest Vision"
-              subtitle="Eine Welt, in der Effizienz auf Architektur trifft."
+              subtitle="Eine Welt, in der Effizienz auf Architektur trifft"
               titleClassName="text-white"
               subtitleClassName="text-white"
               wrapperMargin="mb-8"
@@ -76,10 +76,10 @@ export default function WarumWirClient() {
         <section className="w-full bg-black pb-8 md:pb-16">
           <div className="w-full">
             {/* Responsive YouTube Embed Container - Privacy-Enhanced Mode */}
-            <div className="w-full px-[10vw]">
+            <div className="w-full">
               <div className="max-w-[2000px] mx-auto">
                 <div
-                  className="relative w-full overflow-hidden rounded-2xl"
+                  className="relative w-full overflow-hidden"
                   style={{ paddingBottom: "56.25%" }}
                 >
                   <iframe
@@ -110,14 +110,14 @@ export default function WarumWirClient() {
 
               {/* Buttons Below Text */}
               <div className="flex gap-4 justify-center w-full mt-8">
-                <Link href="/nest-system">
+                <Link href="/kontakt">
                   <Button variant="primary" size="xs">
                     Termin vereinbaren
                   </Button>
                 </Link>
-                <Link href="/entwurf">
+                <Link href="/konfigurator">
                   <Button variant="secondary-narrow-blue" size="xs">
-                    Projekt starten
+                    Konfigurieren
                   </Button>
                 </Link>
               </div>
