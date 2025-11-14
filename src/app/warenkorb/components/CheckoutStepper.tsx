@@ -433,8 +433,16 @@ export default function CheckoutStepper({
       try {
         const pricingData = PriceCalculator.getPricingData();
         if (pricingData && cartItemConfig?.nest && selection.quantity) {
-          const nestSize = cartItemConfig.nest.value as "nest80" | "nest100" | "nest120" | "nest140" | "nest160";
-          const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[selection.quantity];
+          const nestSize = cartItemConfig.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          const price =
+            pricingData.pvanlage.pricesByQuantity[nestSize]?.[
+              selection.quantity
+            ];
           if (price === -1) return -1; // Return -1 for dash prices
           if (price !== undefined) return price;
         }
@@ -3205,7 +3213,9 @@ export default function CheckoutStepper({
                               <h3
                                 className={`text-lg font-medium mb-1 ${isPaymentCompleted ? "text-green-600" : "text-gray-900"}`}
                               >
-                                {isPaymentCompleted ? "Bezahlt" : "Konzeptcheck"}
+                                {isPaymentCompleted
+                                  ? "Bezahlt"
+                                  : "Konzeptcheck"}
                               </h3>
                               <div className="text-sm text-gray-600">
                                 {isPaymentCompleted
