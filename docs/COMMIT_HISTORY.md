@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c257d82330c27221e337f1b4df9bef753a373240] - Fri Nov 14 19:57:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update dialog configurations and pricing details  - Removed the "Holz Eiche" dialog configuration from dialogConfigs.ts for a cleaner setup. - Updated the option name and price for the "Kamindurchzug" in configuratorStore.ts to "Kaminschachtvorbereitung" with a new price of 887, enhancing clarity and accuracy in the pricing structure. - Adjusted class properties in CheckoutStepper.tsx for improved layout consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [f3bd912a2cc9bfb888c794069cf013b6700c33ee] - Fri Nov 14 19:27:36 2025 +0100
 
 **Author**: stenkjan
