@@ -497,7 +497,7 @@ export const KONTAKTFORMULAR_CONTENT: ContentCardData[] = [
 export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "1. Konzeptcheck",
+        title: "1. Konzept-Check",
         subtitle: "Diese Kosten deckst du heute",
         description:
             "Beim Entwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.",
@@ -729,7 +729,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         title: "Klarheit an erster Stelle",
         subtitle: "",
         description: "Zu den häufig gestellten Fragen",
-        video: IMAGES.videos.videoCard04,
+        video: IMAGES.videos.videoCard05,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Square format
         buttons: [
@@ -746,7 +746,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         title: "Natürliche Materialien erleben",
         subtitle: "",
         description: "Holz schafft warme Atmosphäre",
-        video: IMAGES.videos.videoCard05,
+        video: IMAGES.videos.videoCard06,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Tall portrait format
     },

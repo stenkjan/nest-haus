@@ -4,6 +4,107 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [46492a24f8540dc860d40e07998164e488ae7552] - Fri Nov 14 21:03:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: Update email DNS setup documentation and minor code adjustments  - Added clarity and formatting improvements in the EMAIL_DNS_SETUP_PLANS.md for better readability. - Updated email service configuration in src/lib/EmailService.ts to use consistent quotation marks. - Corrected partner link in PartnersSection.tsx for accurate navigation. - Adjusted video card references in constants to reflect updated content. - Minor whitespace adjustments across various files for consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/components/sections/PartnersSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/EMAIL_DNS_SETUP_PLANS.md
+- docs/KONFIGURATOR_PRICING_QUICK_REFERENCE.md
+
+
+---
+
+## [b59868d91f2e3b5da8451bdb205451c6511c416f] - Fri Nov 14 20:35:48 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update text labels in CheckoutStepper and add optional links in PartnersSection  - Changed "Konzeptcheck" to "Konzept-Check" in multiple instances within the CheckoutStepper component for consistency. - Added optional external links for partners in the PartnersSection component to enhance navigation and accessibility.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
+## [c257d82330c27221e337f1b4df9bef753a373240] - Fri Nov 14 19:57:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update dialog configurations and pricing details  - Removed the "Holz Eiche" dialog configuration from dialogConfigs.ts for a cleaner setup. - Updated the option name and price for the "Kamindurchzug" in configuratorStore.ts to "Kaminschachtvorbereitung" with a new price of 887, enhancing clarity and accuracy in the pricing structure. - Adjusted class properties in CheckoutStepper.tsx for improved layout consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/data/dialogConfigs.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
+## [f3bd912a2cc9bfb888c794069cf013b6700c33ee] - Fri Nov 14 19:27:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [f0da2b78c2f90d60bacd6ea7237a3439efa139a8] - Fri Nov 14 19:20:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/entwurf/EntwurfClient.tsx
+- src/components/grids/TwoByTwoImageGrid.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [bc4a1431bc9267a6e0d2af731b5e47ba2f9738a7] - Fri Nov 14 19:16:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [87f6508fc30825034ba38daffe7533445e5b93d8] - Fri Nov 14 19:13:12 2025 +0100
 
 **Author**: stenkjan

@@ -429,6 +429,27 @@ export default function CheckoutStepper({
   ): number => {
     // For quantity-based items, calculate based on quantity/squareMeters
     if (key === "pvanlage") {
+      // Check pricing data for dash prices
+      try {
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData && cartItemConfig?.nest && selection.quantity) {
+          const nestSize = cartItemConfig.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          const price =
+            pricingData.pvanlage.pricesByQuantity[nestSize]?.[
+              selection.quantity
+            ];
+          if (price === -1) return -1; // Return -1 for dash prices
+          if (price !== undefined) return price;
+        }
+      } catch (error) {
+        console.error("Error getting PV price from pricing data:", error);
+      }
+      // Fallback to stored price
       return (selection.quantity || 1) * (selection.price || 0);
     }
     if (key === "geschossdecke") {
@@ -1418,7 +1439,7 @@ export default function CheckoutStepper({
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Konzeptcheck
+                        Konzept-Check
                       </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(1)}
@@ -1579,10 +1600,10 @@ export default function CheckoutStepper({
                 <div className={rowWrapperClass}>
                   <div className="flex-1 min-w-0">
                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
-                      Heute zu bezahlen
+                      Konzept-Check
                     </div>
                     <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                      Starte dein Bauvorhaben
+                      Heute zu bezahlen
                     </div>
                   </div>
                   <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed flex items-center gap-2">
@@ -1761,7 +1782,7 @@ export default function CheckoutStepper({
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
+                        className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col [aspect-ratio:unset]"
                         style={{
                           minHeight: "clamp(400px, 40vw, 520px)",
                         }}
@@ -1926,7 +1947,7 @@ export default function CheckoutStepper({
                       </span>
                     </h2>
                     {/* Configuration Image Gallery */}
-                    <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-1 lg:flex lg:flex-col">
+                    <div className="border border-gray-300 rounded-[19px] overflow-hidden bg-transparent lg:flex-[1.15] lg:flex lg:flex-col">
                       <div
                         className="relative w-full lg:flex-1"
                         style={{ aspectRatio: "16/10" }}
@@ -2099,7 +2120,7 @@ export default function CheckoutStepper({
             <div id="entwurf-formular" className="mb-16">
               <div className="text-center mb-12 md:mb-16">
                 <h1 className="h1-secondary text-black mb-2 md:mb-3">
-                  Dein Nest-Haus Konzeptcheck
+                  Dein Nest-Haus Konzept-Check
                 </h1>
                 <h3 className="h3-secondary text-black mb-2">
                   Wir überprüfen für dich wie dein Nest-Haus auf ein Grundstück
@@ -3194,12 +3215,12 @@ export default function CheckoutStepper({
                               >
                                 {isPaymentCompleted
                                   ? "Bezahlt"
-                                  : "Heute zu bezahlen"}
+                                  : "Konzept-Check"}
                               </h3>
                               <div className="text-sm text-gray-600">
                                 {isPaymentCompleted
                                   ? "Zahlung erfolgreich abgeschlossen"
-                                  : "Starte dein Bauvorhaben"}
+                                  : "Heute zu bezahlen"}
                               </div>
                             </div>
                             {!isPaymentCompleted ? (
