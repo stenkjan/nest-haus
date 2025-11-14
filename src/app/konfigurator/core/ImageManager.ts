@@ -226,7 +226,15 @@ export class ImageManager {
         'ohne_innenverkleidung': 'ohne_innenverkleidung'
       };
 
-      const fussbodenMapping = {
+      const gebaeude = gebaeudePrefixMapping[gebaeudehuelle as keyof typeof gebaeudePrefixMapping];
+      const innen = innenverkleidungMapping[innenverkleidung as keyof typeof innenverkleidungMapping];
+
+      // CRITICAL: Fussboden mapping differs based on innenverkleidung
+      // - ohne_innenverkleidung uses: steinplatten_hell, steinplatten_dunkel
+      // - fichte/laerche/eiche use: kalkstein, schiefer
+      const isOhneInnenverkleidung = innenverkleidung === 'ohne_innenverkleidung';
+
+      const fussbodenMapping = isOhneInnenverkleidung ? {
         'parkett': 'parkett',
         'parkett_eiche': 'parkett',
         'kalkstein_kanafar': 'steinplatten_hell',
@@ -234,10 +242,13 @@ export class ImageManager {
         'schiefer_massiv': 'steinplatten_dunkel',
         'steinplatten_dunkel': 'steinplatten_dunkel',
         'ohne_belag': 'ohne_belag'
+      } : {
+        'parkett': 'parkett',
+        'parkett_eiche': 'parkett',
+        'kalkstein_kanafar': 'kalkstein',
+        'schiefer_massiv': 'schiefer',
+        'ohne_belag': 'ohne_belag'
       };
-
-      const gebaeude = gebaeudePrefixMapping[gebaeudehuelle as keyof typeof gebaeudePrefixMapping];
-      const innen = innenverkleidungMapping[innenverkleidung as keyof typeof innenverkleidungMapping];
 
       // All gebäudehülle types now use the same fussboden mapping
       const fussBoden = fussbodenMapping[fussboden as keyof typeof fussbodenMapping];
