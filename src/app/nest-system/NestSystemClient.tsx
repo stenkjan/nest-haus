@@ -18,12 +18,10 @@ import {
   FAQSection,
 } from "@/components/sections";
 import { HybridBlobImage, ClientBlobVideo } from "@/components/images";
-import { UnifiedContentCard } from "@/components/cards";
 import { useContentAnalytics } from "@/hooks";
 import type { SectionDefinition } from "@/types";
 
 import { IMAGES } from "@/constants/images";
-import { getContentById } from "@/constants/cardContent";
 import Footer from "@/components/Footer";
 
 // Define sections for nest-system page
@@ -78,7 +76,7 @@ export default function NestSystemClient() {
   const [currentSectionId, setCurrentSectionId] =
     useState<string>("unsere-technik");
   const [isMobile, setIsMobile] = useState(false);
-  const { isOpen, openPlanungspakete, closePlanungspakete } =
+  const { isOpen, openPlanungspakete: _openPlanungspakete, closePlanungspakete } =
     usePlanungspaketePopup();
 
   // Simple width-based mobile detection (same as entdecken page)

@@ -4,6 +4,32 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [eb3373f5e23af21e0daa2950c63e727c702122e0] - Fri Nov 14 21:40:21 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Rename variable for clarity in NestSystemClient component  - Renamed  to  to indicate intentional non-use of the variable, improving code readability and adherence to TypeScript safety rules.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/nest-system/NestSystemClient.tsx
+
+
+---
+
+## [0a45c5572deee5dc7ad788edd5fbea6d8785fa3d] - Fri Nov 14 21:36:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update subtitles and navigation links in WarumWirClient component  - Removed the trailing period from the subtitle in SectionHeader for consistency. - Adjusted the responsive YouTube embed container by removing fixed padding for better adaptability. - Updated navigation links to direct users to the 'kontakt' and 'konfigurator' pages, enhancing user flow.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+
+
+---
+
 ## [25dddd79bfbcad0f847dda6e64eb63484477ae33] - Fri Nov 14 21:28:26 2025 +0100
 
 **Author**: stenkjan
