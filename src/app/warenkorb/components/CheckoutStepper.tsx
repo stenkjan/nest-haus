@@ -581,6 +581,29 @@ export default function CheckoutStepper({
       cartItemConfig?.nest
     ) {
       try {
+        // First check if this option has a dash price in raw pricing data
+        const pricingData = PriceCalculator.getPricingData();
+        if (pricingData) {
+          const nestSize = cartItemConfig.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+
+          if (key === "gebaeudehuelle") {
+            const rawPrice =
+              pricingData.gebaeudehuelle[selection.value]?.[nestSize];
+            if (rawPrice === -1) return -1; // Return -1 for dash prices
+          }
+
+          if (key === "fussboden") {
+            const rawPrice =
+              pricingData.bodenbelag[selection.value]?.[nestSize];
+            if (rawPrice === -1) return -1; // Return -1 for dash prices
+          }
+        }
+
         const currentNestValue = cartItemConfig.nest.value;
 
         // Use actual user selections for all material categories
