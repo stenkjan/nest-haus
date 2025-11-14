@@ -403,7 +403,7 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
  *   - Card height: 685px
  *   - Text padding: 48px (px-12)
  * 
- * Desktop XL (1600px+):
+ * Desktop XL (1536px+):
  *   - Horizontal split: text 1/3, image 2/3
  *   - Image fills full height
  *   - Image aligned LEFT
@@ -451,12 +451,12 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
  * COMPARISON TO STANDARD VIDEO CARD:
  * -----------------------------------
  * Standard video card (like on /dein-nest):
- *   - Heights: 510px (1280px), 548px (1380px), 630px (1600px)
+ *   - Heights: 510px (1280px), 548px (1380px), 630px (1536px)
  *   - Buttons: Shown on desktop, hidden on mobile
  *   - Image: Centered (object-center)
  * 
  * Tall video card:
- *   - Heights: 637.5px (1280px), 685px (1380px), 787.5px (1600px)
+ *   - Heights: 637.5px (1280px), 685px (1380px), 787.5px (1536px)
  *   - Buttons: Shown on desktop, hidden on mobile
  *   - Image: Left-aligned (object-left) to ensure important content visible
  * 
@@ -504,11 +504,11 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
  * ------------------
  * Standard video cards (VIDEO_BACKGROUND_CARDS_PRESET):
  *   - Desktop (1280px): ~692px width, ~692px height
- *   - Desktop (1600px+): ~830px width, ~830px height
+ *   - Desktop (1536px+): ~830px width, ~830px height
  * 
  * Tall video cards (TALL_VIDEO_CARDS_PRESET):
  *   - Desktop (1280px): ~865px width, ~865px height (25% taller)
- *   - Desktop (1600px+): ~1037px width, ~1037px height (25% taller)
+ *   - Desktop (1536px+): ~1037px width, ~1037px height (25% taller)
  * 
  * KEY DIFFERENCES FROM STANDARD VIDEO CARDS:
  * ------------------------------------------

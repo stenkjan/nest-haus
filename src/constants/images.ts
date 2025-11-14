@@ -194,7 +194,7 @@ export const IMAGES = {
         nestHausInteriorSteinplatten: '301-NEST-Haus-Innenperspektive-Schwarze-Steinplatten',
         // Desktop versions of images 13-16
         nestHausSystemModulbau: '13-NEST-Haus-System-Hausbau-Modulbau-Serienproduktion-Modulbau-flexibel-Holzbau-mobile',
-        nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz-mobile',
+        nestHausMaterialienSchema: '14-NEST-Haus-Materialien-Schema-Konzept-Holz',
         nestHausSystemDeinPart: '15-NEST-Haus-System-Hausbau-Modulbau-dein-part-Innenausbau-moeblierung-personlisierung-mobile',
         nestHausInnenausbauFenster: '16-NEST-Haus-Innenausbau-Fenster-Tueren-Schema-Konzept-mobile',
         // Mobile versions for function images

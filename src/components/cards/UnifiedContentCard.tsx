@@ -262,7 +262,7 @@ export default function UnifiedContentCard({
           currentScreenWidth < 768 ? "2x1" : cardAspectRatio;
 
         const width =
-          currentScreenWidth >= 1600
+          currentScreenWidth >= 1536
             ? 830 * heightMultiplier
             : currentScreenWidth >= 1280
               ? 692 * heightMultiplier
@@ -380,9 +380,9 @@ export default function UnifiedContentCard({
       // Special sizing for video layout (16:9 aspect ratio on desktop, 16:10 on mobile)
       if (layout === "video") {
         // Match VideoCard16by9 dimensions exactly
-        if (width >= 1600) {
+        if (width >= 1536) {
           setCardsPerView(1);
-          setCardWidth(1600);
+          setCardWidth(1536);
         } else if (width >= 1400) {
           setCardsPerView(1);
           setCardWidth(1380);
@@ -400,7 +400,7 @@ export default function UnifiedContentCard({
       } else if (layout === "text-icon") {
         // On desktop/tablet: width = height (based on viewport height for consistency with other cards)
         // On mobile: fixed width with taller height for content
-        if (width >= 1600) {
+        if (width >= 1536) {
           const calculatedHeight = Math.min(
             650,
             typeof window !== "undefined" ? window.innerHeight * 0.6 : 650
@@ -442,7 +442,7 @@ export default function UnifiedContentCard({
               ? window.innerHeight
               : 0;
 
-        if (width >= 1600) {
+        if (width >= 1536) {
           // Height: 830px (or 75% viewport), Width varies by aspect ratio
           const cardHeight = Math.min(830, viewportHeight * 0.75);
           setCardsPerView(effectiveAspectRatio === "2x1" ? 3.8 : 1.9);
@@ -485,7 +485,7 @@ export default function UnifiedContentCard({
               ? window.innerHeight
               : 0;
 
-        if (width >= 1600) {
+        if (width >= 1536) {
           const cardHeight = Math.min(830, viewportHeight * 0.75);
           setCardsPerView(3.8);
           setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
@@ -516,7 +516,7 @@ export default function UnifiedContentCard({
               ? window.innerHeight
               : 0;
 
-        if (width >= 1600) {
+        if (width >= 1536) {
           const cardHeight = Math.min(830, viewportHeight * 0.75);
           setCardsPerView(2.5);
           setCardWidth(cardHeight * 0.9); // 1.8:2 ratio (9:10)
@@ -540,7 +540,7 @@ export default function UnifiedContentCard({
         }
       } else if (isStatic) {
         // Static variant: single responsive card
-        if (width >= 1600) {
+        if (width >= 1536) {
           setCardsPerView(1);
           setCardWidth(1380);
         } else if (width >= 1280) {
@@ -558,7 +558,7 @@ export default function UnifiedContentCard({
         }
       } else if (isResponsive) {
         // Responsive variant: multiple cards
-        if (width >= 1600) {
+        if (width >= 1536) {
           setCardsPerView(1.4);
           setCardWidth(1380);
         } else if (width >= 1280) {
@@ -955,7 +955,7 @@ export default function UnifiedContentCard({
                 strategy="client"
                 isInteractive={true}
                 enableCache={true}
-                sizes={`(max-width: 768px) 50vw, (max-width: 1024px) 30vw, (max-width: 1600px) 25vw, 20vw`}
+                sizes={`(max-width: 768px) 50vw, (max-width: 1024px) 30vw, (max-width: 1536px) 25vw, 20vw`}
               />
             ) : null}
             {/* Overlay image if provided */}
@@ -1509,7 +1509,7 @@ export default function UnifiedContentCard({
             </span>
             {/* Quote Text */}
             <p
-              className="p-tertiary text-white leading-relaxed"
+              className="p-primary text-white leading-relaxed"
               dangerouslySetInnerHTML={{ __html: quoteText }}
             />
           </div>
@@ -1957,8 +1957,8 @@ export default function UnifiedContentCard({
             style={{
               width: "100%",
               height: "100%",
-              maxWidth: isClient && screenWidth >= 1600 ? "800px" : "662px",
-              maxHeight: isClient && screenWidth >= 1600 ? "800px" : "662px",
+              maxWidth: isClient && screenWidth >= 1536 ? "800px" : "662px",
+              maxHeight: isClient && screenWidth >= 1536 ? "800px" : "662px",
               aspectRatio: "1/1",
             }}
           >
@@ -2187,7 +2187,7 @@ export default function UnifiedContentCard({
                             ? window.innerHeight
                             : 0;
 
-                      if (isClient && screenWidth >= 1600) {
+                      if (isClient && screenWidth >= 1536) {
                         const cardHeight = Math.min(
                           830 * heightMultiplier,
                           viewportHeight * 0.75 * heightMultiplier
@@ -2255,8 +2255,8 @@ export default function UnifiedContentCard({
                               ? isClient && screenWidth >= 1024
                                 ? // Desktop: Calculate height based on video area with aspect ratio + padding
                                   // Use cardWidth to ensure height scales properly with viewport
-                                  cardWidth >= 1600
-                                  ? (((1600 * 2) / 3 / 16) * 9 + 30) *
+                                  cardWidth >= 1536
+                                  ? (((1536 * 2) / 3 / 16) * 9 + 30) *
                                     heightMultiplier // 630px standard, 787.5px tall (2/3 split)
                                   : cardWidth >= 1380
                                     ? (((1380 * 2) / 3 / 16) * 9 + 30) *
@@ -2280,7 +2280,7 @@ export default function UnifiedContentCard({
                                           : typeof window !== "undefined"
                                             ? window.innerHeight
                                             : 0;
-                                      return isClient && screenWidth >= 1600
+                                      return isClient && screenWidth >= 1536
                                         ? Math.min(
                                             830 * heightMultiplier,
                                             viewportHeight *
@@ -2325,7 +2325,7 @@ export default function UnifiedContentCard({
                                             : typeof window !== "undefined"
                                               ? window.innerHeight
                                               : 0;
-                                        return isClient && screenWidth >= 1600
+                                        return isClient && screenWidth >= 1536
                                           ? Math.min(
                                               830 * heightMultiplier,
                                               viewportHeight *
@@ -2361,7 +2361,7 @@ export default function UnifiedContentCard({
                                                   );
                                       })()
                                     : isStatic || isResponsive
-                                      ? isClient && screenWidth >= 1600
+                                      ? isClient && screenWidth >= 1536
                                         ? Math.min(
                                             830 * heightMultiplier, // 830px standard, 1037.5px tall
                                             typeof window !== "undefined"

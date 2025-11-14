@@ -4,6 +4,26 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [9d9bd539e428a4a545019f004a995e7c343cafeb] - Fri Nov 14 22:24:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+#### 📚 Documentation Changes
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+- docs/final_KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+- docs/final_______________________________final_marker.md
+
+
+---
+
 ## [eb3373f5e23af21e0daa2950c63e727c702122e0] - Fri Nov 14 21:40:21 2025 +0100
 
 **Author**: stenkjan

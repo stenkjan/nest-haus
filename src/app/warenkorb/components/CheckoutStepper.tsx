@@ -2428,7 +2428,7 @@ export default function CheckoutStepper({
                   Persönlich oder telefonisch? Du entscheidest.
                 </h3>
               </div>
-              <div className="w-full max-w-[1600px] mx-auto">
+              <div className="w-full max-w-[1536px] mx-auto">
                 <div
                   className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
                   style={{ border: "15px solid #F4F4F4" }}

@@ -90,7 +90,7 @@ export default function TwoByTwoImageGrid({
   const containerClasses = "w-full";
 
   // Calculate responsive sizing for ultra-wide screens
-  const isUltraWide = isClient && screenWidth >= 1600;
+  const isUltraWide = isClient && screenWidth >= 1536;
   const gridMinHeight = isUltraWide ? "500px" : "400px";
 
   // Prevent hydration mismatch by showing loading state until client is ready
