@@ -69,8 +69,8 @@ export default function ConfiguratorShell({
         store.calculatePrice();
       })
       .catch((error) => {
-        console.error('❌ Failed to initialize pricing data:', error);
-        setPricingDataError(error.message || 'Failed to load pricing data');
+        console.error("❌ Failed to initialize pricing data:", error);
+        setPricingDataError(error.message || "Failed to load pricing data");
       });
   }, []);
 
@@ -89,8 +89,10 @@ export default function ConfiguratorShell({
   const [isPvOverlayVisible, setIsPvOverlayVisible] = useState<boolean>(true);
   const [isGeschossdeckeOverlayVisible, setIsGeschossdeckeOverlayVisible] =
     useState<boolean>(false);
-  const [isBelichtungspaketOverlayVisible, setIsBelichtungspaketOverlayVisible] =
-    useState<boolean>(false);
+  const [
+    isBelichtungspaketOverlayVisible,
+    setIsBelichtungspaketOverlayVisible,
+  ] = useState<boolean>(false);
   // Hidden by default, only show when actively selecting fenster
 
   // Dialog state
@@ -276,7 +278,7 @@ export default function ConfiguratorShell({
         if (categoryId === "belichtungspaket") {
           // PRESERVE PV overlay - allow both to be visible simultaneously on exterior view
           // DO NOT hide PV overlay - they can coexist on exterior view
-          
+
           // Show belichtungspaket overlay when selecting belichtungspaket
           setIsBelichtungspaketOverlayVisible(true);
 
@@ -311,7 +313,7 @@ export default function ConfiguratorShell({
             // New selection - set quantity to 1 and show overlay
             setGeschossdeckeQuantity(1);
             setIsGeschossdeckeOverlayVisible(true);
-            
+
             // Hide belichtungspaket overlay when geschossdecke is selected
             setIsBelichtungspaketOverlayVisible(false);
 
@@ -324,7 +326,10 @@ export default function ConfiguratorShell({
         } else if (categoryId === "nest" || categoryId === "gebaeudehuelle") {
           // Hide belichtungspaket overlay when changing core building selections
           setIsBelichtungspaketOverlayVisible(false);
-        } else if (categoryId === "innenverkleidung" || categoryId === "fussboden") {
+        } else if (
+          categoryId === "innenverkleidung" ||
+          categoryId === "fussboden"
+        ) {
           // Hide belichtungspaket overlay when changing interior materials
           setIsBelichtungspaketOverlayVisible(false);
         }
@@ -509,13 +514,23 @@ export default function ConfiguratorShell({
       if (!configuration?.nest) return null;
 
       try {
+        // Get option definition early to avoid scope issues
+        const category = configuratorData.find((cat) => cat.id === categoryId);
+        const option = category?.options.find((opt) => opt.id === optionId);
+
         const pricingData = PriceCalculator.getPricingData();
         const currentNestValue = configuration.nest.value;
-        const nestSize = currentNestValue as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+        const nestSize = currentNestValue as
+          | "nest80"
+          | "nest100"
+          | "nest120"
+          | "nest140"
+          | "nest160";
 
         // For NEST: Return ONLY the base price (raw construction, no materials)
         if (categoryId === "nest" && pricingData) {
-          const nestBasePrice = pricingData.nest[optionId as typeof nestSize]?.price || 0;
+          const nestBasePrice =
+            pricingData.nest[optionId as typeof nestSize]?.price || 0;
           return nestBasePrice; // ONLY base price, no materials!
         }
 
@@ -534,24 +549,25 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For INNENVERKLEIDUNG: Return RELATIVE price (baseline: ohne_innenverkleidung = 0€)
+        // For INNENVERKLEIDUNG: Return ABSOLUTE price (ALL options have prices!)
         if (categoryId === "innenverkleidung" && pricingData) {
-          const optionPrice = pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
-          const baselinePrice = pricingData.innenverkleidung.ohne_innenverkleidung?.[nestSize] || 0;
-          return optionPrice - baselinePrice; // Relative to ohne_innenverkleidung
+          return pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
         }
 
         // For GEBÄUDEHÜLLE: Return ABSOLUTE price, then calculate relative in display
         if (categoryId === "gebaeudehuelle" && pricingData) {
-          const optionPrice = pricingData.gebaeudehuelle[optionId]?.[nestSize] || 0;
-          const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
+          const optionPrice =
+            pricingData.gebaeudehuelle[optionId]?.[nestSize] || 0;
+          const trapezblechPrice =
+            pricingData.gebaeudehuelle.trapezblech?.[nestSize] || 0;
           return optionPrice - trapezblechPrice; // Relative to trapezblech = 0
         }
 
         // For BODENBELAG: Return ABSOLUTE price, then calculate relative in display
         if (categoryId === "fussboden" && pricingData) {
           const optionPrice = pricingData.bodenbelag[optionId]?.[nestSize] || 0;
-          const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
+          const ohneBelagPrice =
+            pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
           return optionPrice - ohneBelagPrice; // Relative to ohne_belag = 0
         }
 
@@ -593,11 +609,24 @@ export default function ConfiguratorShell({
         }
 
         // For PV, use cumulative price from pricing data table
-        if (categoryId === "pvanlage" && configuration.pvanlage?.quantity && configuration.nest) {
+        if (
+          categoryId === "pvanlage" &&
+          configuration.pvanlage?.quantity &&
+          configuration.nest
+        ) {
           const pricingData = PriceCalculator.getPricingData();
           if (!pricingData) return 0;
-          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-          return pricingData.pvanlage.pricesByQuantity[nestSize]?.[configuration.pvanlage.quantity] || 0;
+          const nestSize = configuration.nest.value as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
+          return (
+            pricingData.pvanlage.pricesByQuantity[nestSize]?.[
+              configuration.pvanlage.quantity
+            ] || 0
+          );
         }
 
         // For bodenaufbau, calculate dynamic price using Google Sheets data
@@ -605,13 +634,6 @@ export default function ConfiguratorShell({
           if (optionId === "ohne_heizung") {
             return 0;
           }
-          
-          // Find the option to get its name and price
-          const category = configuratorData.find(
-            (cat) => cat.id === categoryId
-          );
-          const option = category?.options.find((opt) => opt.id === optionId);
-          
           return PriceCalculator.calculateBodenaufbauPrice(
             {
               category: categoryId,
@@ -686,8 +708,6 @@ export default function ConfiguratorShell({
         }
 
         // For other categories, use original price
-        const category = configuratorData.find((cat) => cat.id === categoryId);
-        const option = category?.options.find((opt) => opt.id === optionId);
         return option?.price?.amount || 0;
       } catch (error) {
         console.error(
@@ -711,7 +731,12 @@ export default function ConfiguratorShell({
 
       // DYNAMIC PRICING: Override static configuratorData prices with Google Sheets data
       const pricingData = PriceCalculator.getPricingData();
-      const currentNestValue = (configuration?.nest?.value || 'nest80') as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+      const currentNestValue = (configuration?.nest?.value || "nest80") as
+        | "nest80"
+        | "nest100"
+        | "nest120"
+        | "nest140"
+        | "nest160";
 
       // For PV anlage, convert upgrade types to standard for initial display
       if (categoryId === "pvanlage") {
@@ -741,13 +766,19 @@ export default function ConfiguratorShell({
         // DO NOT add innenverkleidung or any other materials!
         // Nest base price = raw construction only (e.g., 188,619€ for Nest 80)
         if (pricingData) {
-          const nestSize = optionId as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+          const nestSize = optionId as
+            | "nest80"
+            | "nest100"
+            | "nest120"
+            | "nest140"
+            | "nest160";
           const nestBasePrice = pricingData.nest[nestSize]?.price;
           if (nestBasePrice) {
             return {
               type: "base" as const,
               amount: nestBasePrice, // ONLY base price, no materials!
-              monthly: PriceCalculator.calculateMonthlyPaymentAmount(nestBasePrice),
+              monthly:
+                PriceCalculator.calculateMonthlyPaymentAmount(nestBasePrice),
             };
           }
         }
@@ -767,47 +798,52 @@ export default function ConfiguratorShell({
       // DYNAMIC PRICING OVERRIDES FOR ALL CATEGORIES
       // Override static configuratorData prices with Google Sheets pricing
       if (pricingData && categoryId === "innenverkleidung") {
-        // Innenverkleidung: Show ABSOLUTE prices from sheet (fichte is NOT 0€!)
-        const absolutePrice = pricingData.innenverkleidung[optionId]?.[currentNestValue];
+        // Innenverkleidung: Show RELATIVE prices from sheet (baseline: ohne_innenverkleidung = 0€)
+        const absolutePrice =
+          pricingData.innenverkleidung[optionId]?.[currentNestValue];
         if (absolutePrice !== undefined) {
           const currentSelection = configuration?.innenverkleidung;
-          
+
           if (currentSelection && currentSelection.value === optionId) {
             // Selected option - show in gray with actual price
             return { type: "selected" as const };
           }
-          
-          // Get the price of Fichte (standard/base option for relative comparison)
-          const fichtePrice = pricingData.innenverkleidung.fichte?.[currentNestValue] || 0;
-          
+
+          // Get the baseline price (Standard/ohne_innenverkleidung = 0€)
+          const baselinePrice =
+            pricingData.innenverkleidung.ohne_innenverkleidung?.[
+              currentNestValue
+            ] || 0;
+          const relativePrice = absolutePrice - baselinePrice;
+
           if (!currentSelection) {
-            // No selection yet - show relative to Fichte (the standard preselected option)
-            if (optionId === 'fichte') {
-              // Fichte itself - show actual price
-              return {
-                type: "base" as const,
-                amount: absolutePrice,
-              };
+            // No selection yet - show relative to baseline (ohne_innenverkleidung)
+            if (relativePrice === 0) {
+              // Standard (ohne_innenverkleidung) - show as included
+              return { type: "included" as const };
             } else {
-              // Other options - show difference from Fichte
-              const priceDiff = absolutePrice - fichtePrice;
+              // Other options - show upgrade price from baseline
               return {
-                type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
-                amount: Math.abs(priceDiff),
+                type: "upgrade" as const,
+                amount: relativePrice,
               };
             }
           }
-          
+
           // Other options - show relative to selected option
-          const selectedPrice = pricingData.innenverkleidung[currentSelection.value]?.[currentNestValue] || 0;
-          const priceDiff = absolutePrice - selectedPrice;
-          
+          const selectedPrice =
+            pricingData.innenverkleidung[currentSelection.value]?.[
+              currentNestValue
+            ] || 0;
+          const selectedRelative = selectedPrice - baselinePrice;
+          const priceDiff = relativePrice - selectedRelative;
+
           if (priceDiff === 0) {
             return { type: "upgrade" as const, amount: 0 };
           }
-          
+
           return {
-            type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+            type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
             amount: Math.abs(priceDiff),
           };
         }
@@ -815,76 +851,85 @@ export default function ConfiguratorShell({
 
       if (pricingData && categoryId === "gebaeudehuelle") {
         // Gebäudehülle: Relative to trapezblech (base = 0)
-        const optionPrice = pricingData.gebaeudehuelle[optionId]?.[currentNestValue] || 0;
-        const trapezblechPrice = pricingData.gebaeudehuelle.trapezblech?.[currentNestValue] || 0;
+        const optionPrice =
+          pricingData.gebaeudehuelle[optionId]?.[currentNestValue] || 0;
+        const trapezblechPrice =
+          pricingData.gebaeudehuelle.trapezblech?.[currentNestValue] || 0;
         const relativePrice = optionPrice - trapezblechPrice;
-        
+
         const currentSelection = configuration?.gebaeudehuelle;
-        
+
         if (currentSelection && currentSelection.value === optionId) {
           return { type: "selected" as const };
         }
-        
+
         if (relativePrice === 0) {
           return { type: "included" as const }; // trapezblech
         }
-        
+
         if (!currentSelection) {
           return {
             type: "upgrade" as const,
             amount: relativePrice,
           };
         }
-        
+
         // Show relative to currently selected option
-        const selectedPrice = pricingData.gebaeudehuelle[currentSelection.value]?.[currentNestValue] || 0;
+        const selectedPrice =
+          pricingData.gebaeudehuelle[currentSelection.value]?.[
+            currentNestValue
+          ] || 0;
         const selectedRelative = selectedPrice - trapezblechPrice;
         const priceDiff = relativePrice - selectedRelative;
-        
+
         if (priceDiff === 0) {
           return { type: "upgrade" as const, amount: 0 };
         }
-        
+
         return {
-          type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+          type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
           amount: Math.abs(priceDiff),
         };
       }
 
       if (pricingData && categoryId === "fussboden") {
         // Bodenbelag: Relative to ohne_belag (base = 0)
-        const optionPrice = pricingData.bodenbelag[optionId]?.[currentNestValue] || 0;
-        const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[currentNestValue] || 0;
+        const optionPrice =
+          pricingData.bodenbelag[optionId]?.[currentNestValue] || 0;
+        const ohneBelagPrice =
+          pricingData.bodenbelag.ohne_belag?.[currentNestValue] || 0;
         const relativePrice = optionPrice - ohneBelagPrice;
-        
+
         const currentSelection = configuration?.fussboden;
-        
+
         if (currentSelection && currentSelection.value === optionId) {
           return { type: "selected" as const };
         }
-        
+
         if (relativePrice === 0) {
           return { type: "included" as const }; // ohne_belag / standard
         }
-        
+
         if (!currentSelection) {
           return {
             type: "upgrade" as const,
             amount: relativePrice,
           };
         }
-        
+
         // Show relative to currently selected option
-        const selectedPrice = pricingData.bodenbelag[currentSelection.value]?.[currentNestValue] || 0;
+        const selectedPrice =
+          pricingData.bodenbelag[currentSelection.value]?.[currentNestValue] ||
+          0;
         const selectedRelative = selectedPrice - ohneBelagPrice;
         const priceDiff = relativePrice - selectedRelative;
-        
+
         if (priceDiff === 0) {
           return { type: "upgrade" as const, amount: 0 };
         }
-        
+
         return {
-          type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+          type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
           amount: Math.abs(priceDiff),
         };
       }
@@ -892,29 +937,29 @@ export default function ConfiguratorShell({
       if (pricingData && categoryId === "planungspaket") {
         // Planungspakete: Fixed prices (basis=0, plus=9600, pro=12700)
         const currentSelection = configuration?.planungspaket;
-        
+
         if (currentSelection && currentSelection.value === optionId) {
           return { type: "selected" as const };
         }
-        
+
         let dynamicPrice = 0;
         if (optionId === "plus") {
           dynamicPrice = pricingData.planungspaket.plus[currentNestValue];
         } else if (optionId === "pro") {
           dynamicPrice = pricingData.planungspaket.pro[currentNestValue];
         }
-        
+
         if (dynamicPrice === 0) {
           return { type: "included" as const }; // basis
         }
-        
+
         if (!currentSelection) {
           return {
             type: "base" as const,
             amount: dynamicPrice,
           };
         }
-        
+
         // Show relative to currently selected
         let selectedPrice = 0;
         if (currentSelection.value === "plus") {
@@ -922,15 +967,15 @@ export default function ConfiguratorShell({
         } else if (currentSelection.value === "pro") {
           selectedPrice = pricingData.planungspaket.pro[currentNestValue];
         }
-        
+
         const priceDiff = dynamicPrice - selectedPrice;
-        
+
         if (priceDiff === 0) {
           return { type: "upgrade" as const, amount: 0 };
         }
-        
+
         return {
-          type: priceDiff > 0 ? "upgrade" as const : "discount" as const,
+          type: priceDiff > 0 ? ("upgrade" as const) : ("discount" as const),
           amount: Math.abs(priceDiff),
         };
       }
@@ -1098,7 +1143,7 @@ export default function ConfiguratorShell({
         if (categoryId === "geschossdecke") {
           const pricingData = PriceCalculator.getPricingData();
           const unitPrice = pricingData?.geschossdecke?.basePrice || 4115;
-          
+
           if (currentSelection && currentSelection.value === optionId) {
             // Show fixed unit price for selected geschossdecke in gray
             return {
@@ -1121,7 +1166,8 @@ export default function ConfiguratorShell({
           if (categoryId === "fenster") {
             // Show per m² price for selected fenster option (depends on belichtungspaket and nest size)
             if (configuration?.nest && configuration?.belichtungspaket) {
-              const geschossdeckeQty = configuration.geschossdecke?.quantity || 0;
+              const geschossdeckeQty =
+                configuration.geschossdecke?.quantity || 0;
               const pricePerSqm = PriceCalculator.getFensterPricePerSqm(
                 optionId,
                 configuration.nest.value,
@@ -1147,13 +1193,13 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "fichte",
+              "ohne_innenverkleidung",
               "ohne_belag"
             );
             const parkettPrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "fichte",
+              "ohne_innenverkleidung",
               "parkett"
             );
             const actualPrice = parkettPrice - basePrice;
@@ -1206,8 +1252,8 @@ export default function ConfiguratorShell({
 
             // Always use defaults for base calculation - prices should only depend on nest size, not other selections
             let testGebaeudehuelle = "trapezblech"; // Always use default
-            let testInnenverkleidung = "fichte"; // fichte is standard default // Always use default
-            let testFussboden = "ohne_belag"; // Always use default (changed from parkett)
+            let testInnenverkleidung = "ohne_innenverkleidung"; // Standard baseline (no interior cladding)
+            let testFussboden = "ohne_belag"; // Always use default
 
             if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
             if (categoryId === "innenverkleidung")
@@ -1226,7 +1272,7 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               currentNestValue,
               "trapezblech",
-              "fichte",
+              "ohne_innenverkleidung",
               "ohne_belag"
             );
 
@@ -1257,8 +1303,8 @@ export default function ConfiguratorShell({
           ) {
             // Use nest80 as base reference for pricing when nothing is selected
             let testGebaeudehuelle = "trapezblech";
-            let testInnenverkleidung = "fichte"; // fichte is standard default
-            let testFussboden = "parkett";
+            let testInnenverkleidung = "ohne_innenverkleidung"; // Standard baseline
+            let testFussboden = "ohne_belag";
 
             if (categoryId === "gebaeudehuelle") testGebaeudehuelle = optionId;
             if (categoryId === "innenverkleidung")
@@ -1277,8 +1323,8 @@ export default function ConfiguratorShell({
             const basePrice = PriceCalculator.calculateCombinationPrice(
               "nest80",
               "trapezblech",
-              "fichte",
-              "parkett"
+              "ohne_innenverkleidung",
+              "ohne_belag"
             );
 
             // Get the individual option price (difference from base)
@@ -1469,7 +1515,12 @@ export default function ConfiguratorShell({
         }
 
         // For fenster with current selection, calculate relative price/m² based on belichtungspaket and nest size
-        if (currentSelection && categoryId === "fenster" && configuration?.nest && configuration?.belichtungspaket) {
+        if (
+          currentSelection &&
+          categoryId === "fenster" &&
+          configuration?.nest &&
+          configuration?.belichtungspaket
+        ) {
           const geschossdeckeQty = configuration.geschossdecke?.quantity || 0;
           const currentPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             currentSelection.value,
@@ -1477,16 +1528,16 @@ export default function ConfiguratorShell({
             configuration.belichtungspaket.value,
             geschossdeckeQty
           );
-          
+
           const optionPricePerSqm = PriceCalculator.getFensterPricePerSqm(
             optionId,
             configuration.nest.value,
             configuration.belichtungspaket.value,
             geschossdeckeQty
           );
-          
+
           const priceDifference = optionPricePerSqm - currentPricePerSqm;
-          
+
           if (priceDifference === 0) {
             return { type: "selected" as const };
           } else if (priceDifference > 0) {
@@ -1680,7 +1731,12 @@ export default function ConfiguratorShell({
         });
       }
     }
-  }, [getMaxGeschossdecken, geschossdeckeQuantity, configuration?.geschossdecke, updateSelection]);
+  }, [
+    getMaxGeschossdecken,
+    geschossdeckeQuantity,
+    configuration?.geschossdecke,
+    updateSelection,
+  ]);
 
   // Sync local PV quantity with store on mount/configuration change
   useEffect(() => {
@@ -1776,8 +1832,15 @@ export default function ConfiguratorShell({
                     if (configuration?.nest?.value) {
                       const pricingData = PriceCalculator.getPricingData();
                       if (pricingData) {
-                        const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-                        return pricingData.optionen.fundament[nestSize] || 15480;
+                        const nestSize = configuration.nest.value as
+                          | "nest80"
+                          | "nest100"
+                          | "nest120"
+                          | "nest140"
+                          | "nest160";
+                        return (
+                          pricingData.optionen.fundament[nestSize] || 15480
+                        );
                       }
                     }
                     return 15480; // nest80 default
@@ -1787,9 +1850,18 @@ export default function ConfiguratorShell({
                       ? (() => {
                           const pricingData = PriceCalculator.getPricingData();
                           if (pricingData) {
-                            const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-                            const fundamentPrice = pricingData.optionen.fundament[nestSize] || 15480;
-                            const nestSquareMeters = parseInt(configuration.nest.value.replace("nest", "")) || 80;
+                            const nestSize = configuration.nest.value as
+                              | "nest80"
+                              | "nest100"
+                              | "nest120"
+                              | "nest140"
+                              | "nest160";
+                            const fundamentPrice =
+                              pricingData.optionen.fundament[nestSize] || 15480;
+                            const nestSquareMeters =
+                              parseInt(
+                                configuration.nest.value.replace("nest", "")
+                              ) || 80;
                             return fundamentPrice / nestSquareMeters;
                           }
                           return 193.5; // 15480 / 80
@@ -1799,10 +1871,13 @@ export default function ConfiguratorShell({
                   isChecked={!!configuration?.fundament}
                   onChange={handleFundamentChange}
                 />
-                
+
                 {/* Fundament description text */}
                 <p className="text-sm text-gray-600 leading-relaxed mt-4 px-1">
-                  Das Fundament bildet die stabile Basis für dein Nest-Haus. Es wird individuell auf dein Grundstück und die Bodenbeschaffenheit angepasst und sorgt für einen sicheren Stand über viele Jahre.
+                  Das Fundament bildet die stabile Basis für dein Nest-Haus. Es
+                  wird individuell auf dein Grundstück und die
+                  Bodenbeschaffenheit angepasst und sorgt für einen sicheren
+                  Stand über viele Jahre.
                 </p>
 
                 {/* Lightbox button for Optionen */}
@@ -1846,7 +1921,8 @@ export default function ConfiguratorShell({
                         const pricingData = PriceCalculator.getPricingData();
                         if (pricingData) {
                           const unitPrice = pricingData.geschossdecke.basePrice;
-                          const formattedPrice = PriceUtils.formatPrice(unitPrice);
+                          const formattedPrice =
+                            PriceUtils.formatPrice(unitPrice);
                           dynamicDescription = `Zusätzliche Geschossdecke\n${formattedPrice} pro Einheit`;
                         }
                       }
@@ -1862,7 +1938,9 @@ export default function ConfiguratorShell({
                           categoryId={category.id}
                           nestModel={configuration?.nest?.value}
                           contributionPrice={contributionPrice}
-                          geschossdeckeQuantity={configuration?.geschossdecke?.quantity || 0}
+                          geschossdeckeQuantity={
+                            configuration?.geschossdecke?.quantity || 0
+                          }
                           onClick={(optionId) => {
                             // Always allow selections with defaults in place
                             handleSelection(category.id, optionId);
@@ -1883,8 +1961,17 @@ export default function ConfiguratorShell({
                         cumulativePrice={(() => {
                           const pricingData = PriceCalculator.getPricingData();
                           if (!pricingData || !configuration.nest) return 0;
-                          const nestSize = configuration.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
-                          return pricingData.pvanlage.pricesByQuantity[nestSize]?.[pvQuantity] || 0;
+                          const nestSize = configuration.nest.value as
+                            | "nest80"
+                            | "nest100"
+                            | "nest120"
+                            | "nest140"
+                            | "nest160";
+                          return (
+                            pricingData.pvanlage.pricesByQuantity[nestSize]?.[
+                              pvQuantity
+                            ] || 0
+                          );
                         })()}
                         onChange={handlePvQuantityChange}
                       />
@@ -1893,15 +1980,19 @@ export default function ConfiguratorShell({
 
                   {/* Geschossdecke Quantity Selector */}
                   {category.id === "geschossdecke" &&
-                    (configuration?.geschossdecke || geschossdeckeQuantity > 0) && (
+                    (configuration?.geschossdecke ||
+                      geschossdeckeQuantity > 0) && (
                       <>
                         <QuantitySelector
                           label="Anzahl der Geschossdecken"
                           value={geschossdeckeQuantity}
                           max={getMaxGeschossdecken()}
                           unitPrice={(() => {
-                            const pricingData = PriceCalculator.getPricingData();
-                            return pricingData?.geschossdecke?.basePrice || 4115;
+                            const pricingData =
+                              PriceCalculator.getPricingData();
+                            return (
+                              pricingData?.geschossdecke?.basePrice || 4115
+                            );
                           })()}
                           onChange={handleGeschossdeckeQuantityChange}
                         />
@@ -2007,7 +2098,9 @@ export default function ConfiguratorShell({
       <div className="configurator-shell w-full h-screen flex items-center justify-center bg-white">
         <div className="text-center max-w-md mx-auto px-4">
           <div className="text-red-600 text-5xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold mb-2">Fehler beim Laden der Preisdaten</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            Fehler beim Laden der Preisdaten
+          </h2>
           <p className="text-gray-600 mb-4">{pricingDataError}</p>
           <button
             onClick={() => window.location.reload()}
