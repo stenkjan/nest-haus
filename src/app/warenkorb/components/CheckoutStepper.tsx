@@ -1192,29 +1192,30 @@ export default function CheckoutStepper({
   const renderIntro = () => {
     const c = copyByStep[stepIndex];
 
+    // Helper function: Convert ConfigurationCartItem to Selections type for PriceCalculator
+    // Filters out null values to match Selections interface (undefined only)
+    const convertToSelections = (item: ConfigurationCartItem) => ({
+      nest: item.nest || undefined,
+      gebaeudehuelle: item.gebaeudehuelle || undefined,
+      innenverkleidung: item.innenverkleidung || undefined,
+      fussboden: item.fussboden || undefined,
+      belichtungspaket: item.belichtungspaket || undefined,
+      pvanlage: item.pvanlage || undefined,
+      fenster: item.fenster || undefined,
+      stirnseite: item.stirnseite || undefined,
+      planungspaket: item.planungspaket || undefined,
+      // grundstueckscheck is boolean in PriceCalculator.Selections interface
+      grundstueckscheck: Boolean(item.grundstueckscheck),
+    });
+
     // Calculate dynamic total from configuration using PriceCalculator (same as konfigurator)
     // IMPORTANT: Separate "Dein Nest Haus" (physical house) from "Planungspaket" (service)
     let nestHausTotal = 0; // Physical house price (without planungspaket)
 
     if (configItem && configItem.nest) {
-      // Convert ConfigurationCartItem to Selections type for PriceCalculator
-      // Filter out null values to match Selections interface (undefined only)
-      const selections = {
-        nest: configItem.nest || undefined,
-        gebaeudehuelle: configItem.gebaeudehuelle || undefined,
-        innenverkleidung: configItem.innenverkleidung || undefined,
-        fussboden: configItem.fussboden || undefined,
-        belichtungspaket: configItem.belichtungspaket || undefined,
-        pvanlage: configItem.pvanlage || undefined,
-        fenster: configItem.fenster || undefined,
-        stirnseite: configItem.stirnseite || undefined,
-        planungspaket: configItem.planungspaket || undefined,
-        grundstueckscheck: configItem.grundstueckscheck || undefined,
-      };
-
       // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
       // This ensures exact same price calculation logic and avoids rounding differences
-      nestHausTotal = PriceCalculator.calculateTotalPrice(selections);
+      nestHausTotal = PriceCalculator.calculateTotalPrice(convertToSelections(configItem));
       // Note: Planungspaket is calculated separately and shown in "Dein Preis Überblick" box
     } else {
       // Fall back to cart total if no configuration
@@ -2601,11 +2602,23 @@ export default function CheckoutStepper({
                                   item as ConfigurationCartItem;
                                 const nestModel = configItem.nest?.value || "";
 
+                                // Convert to Selections type for PriceCalculator
+                                const selections = {
+                                  nest: configItem.nest || undefined,
+                                  gebaeudehuelle: configItem.gebaeudehuelle || undefined,
+                                  innenverkleidung: configItem.innenverkleidung || undefined,
+                                  fussboden: configItem.fussboden || undefined,
+                                  belichtungspaket: configItem.belichtungspaket || undefined,
+                                  pvanlage: configItem.pvanlage || undefined,
+                                  fenster: configItem.fenster || undefined,
+                                  stirnseite: configItem.stirnseite || undefined,
+                                  planungspaket: configItem.planungspaket || undefined,
+                                  grundstueckscheck: Boolean(configItem.grundstueckscheck),
+                                };
+
                                 // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
                                 const priceValue =
-                                  PriceCalculator.calculateTotalPrice(
-                                    configItem
-                                  );
+                                  PriceCalculator.calculateTotalPrice(selections);
                                 const geschossdeckeQuantity =
                                   configItem.geschossdecke?.quantity || 0;
 
@@ -3056,8 +3069,21 @@ export default function CheckoutStepper({
                 // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
                 let deinNestHausTotal = 0;
                 if (configItem && configItem.nest) {
-                  deinNestHausTotal =
-                    PriceCalculator.calculateTotalPrice(configItem);
+                  // Convert to Selections type for PriceCalculator
+                  const selections = {
+                    nest: configItem.nest || undefined,
+                    gebaeudehuelle: configItem.gebaeudehuelle || undefined,
+                    innenverkleidung: configItem.innenverkleidung || undefined,
+                    fussboden: configItem.fussboden || undefined,
+                    belichtungspaket: configItem.belichtungspaket || undefined,
+                    pvanlage: configItem.pvanlage || undefined,
+                    fenster: configItem.fenster || undefined,
+                    stirnseite: configItem.stirnseite || undefined,
+                    planungspaket: configItem.planungspaket || undefined,
+                    grundstueckscheck: Boolean(configItem.grundstueckscheck),
+                  };
+                  
+                  deinNestHausTotal = PriceCalculator.calculateTotalPrice(selections);
                 }
 
                 // Calculate planungspaket price using new pricing system (nest-size dependent)
