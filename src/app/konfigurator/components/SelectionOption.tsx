@@ -145,7 +145,7 @@ export default function SelectionOption({
                 <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
                   {categoryId === "fenster"
                     ? "Belichtungspaket"
-                    : categoryId === "pvanlage" && contributionPrice > 0
+                    : categoryId === "pvanlage" && contributionPrice > 0 && !PriceUtils.isPriceOnRequest(contributionPrice)
                       ? `${PriceUtils.formatPrice(Math.round(contributionPrice / 4))} / Panel`
                       : shouldShowPricePerSqm &&
                           nestModel &&
@@ -200,9 +200,12 @@ export default function SelectionOption({
     }
 
     if (price.type === "base") {
-      const formattedPrice = price.amount
-        ? PriceUtils.formatPrice(price.amount)
-        : "0 €";
+      // Check if price is -1 (price on request) and format accordingly
+      const formattedPrice = price.amount && PriceUtils.isPriceOnRequest(price.amount)
+        ? "-"
+        : price.amount
+          ? PriceUtils.formatPrice(price.amount)
+          : "0 €";
 
       const shouldShowPricePerSqm =
         categoryId && PriceUtils.shouldShowPricePerSquareMeter(categoryId);
@@ -237,7 +240,7 @@ export default function SelectionOption({
             entspricht
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "pvanlage" && price.amount
+            {categoryId === "pvanlage" && price.amount && !PriceUtils.isPriceOnRequest(price.amount)
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
@@ -312,9 +315,12 @@ export default function SelectionOption({
         );
       }
 
-      const formattedPrice = price.amount
-        ? PriceUtils.formatPrice(price.amount)
-        : "0 €";
+      // Check if price is -1 (price on request) and format accordingly
+      const formattedPrice = price.amount && PriceUtils.isPriceOnRequest(price.amount)
+        ? "-"
+        : price.amount
+          ? PriceUtils.formatPrice(price.amount)
+          : "0 €";
 
       const shouldShowPricePerSqm =
         categoryId &&
@@ -334,7 +340,7 @@ export default function SelectionOption({
             entspricht
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "pvanlage" && price.amount
+            {categoryId === "pvanlage" && price.amount && !PriceUtils.isPriceOnRequest(price.amount)
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : shouldShowPricePerSqm &&
                   nestModel &&
@@ -354,9 +360,12 @@ export default function SelectionOption({
     }
 
     if (price.type === "discount") {
-      const formattedPrice = price.amount
-        ? PriceUtils.formatPrice(price.amount)
-        : "0 €";
+      // Check if price is -1 (price on request) and format accordingly
+      const formattedPrice = price.amount && PriceUtils.isPriceOnRequest(price.amount)
+        ? "-"
+        : price.amount
+          ? PriceUtils.formatPrice(price.amount)
+          : "0 €";
 
       const shouldShowPricePerSqm =
         categoryId &&
@@ -417,7 +426,7 @@ export default function SelectionOption({
             entspricht
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "pvanlage" && price.amount
+            {categoryId === "pvanlage" && price.amount && !PriceUtils.isPriceOnRequest(price.amount)
               ? `${PriceUtils.formatPrice(Math.round(Math.abs(price.amount) / 4))} / Panel`
               : shouldShowPricePerSqm && nestModel && price.amount
                 ? PriceUtils.calculateOptionPricePerSquareMeter(
@@ -434,9 +443,12 @@ export default function SelectionOption({
     }
 
     if (price.type === "standard") {
-      const formattedPrice = price.amount
-        ? PriceUtils.formatPrice(price.amount)
-        : "0 €";
+      // Check if price is -1 (price on request) and format accordingly
+      const formattedPrice = price.amount && PriceUtils.isPriceOnRequest(price.amount)
+        ? "-"
+        : price.amount
+          ? PriceUtils.formatPrice(price.amount)
+          : "0 €";
 
       const shouldShowPricePerSqm =
         categoryId &&
@@ -504,7 +516,7 @@ export default function SelectionOption({
             entspricht
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500 mt-1">
-            {categoryId === "pvanlage" && price.amount
+            {categoryId === "pvanlage" && price.amount && !PriceUtils.isPriceOnRequest(price.amount)
               ? `${PriceUtils.formatPrice(Math.round(price.amount / 4))} / Panel`
               : categoryId === "geschossdecke" && price.amount && nestModel
                 ? (() => {
@@ -514,15 +526,15 @@ export default function SelectionOption({
                     const pricePerSqm = Math.round(price.amount / adjustedNutzflaeche);
                     return `${PriceUtils.formatPrice(pricePerSqm)} /m²`;
                   })()
-              : shouldShowPricePerSqm && nestModel && price.amount
-                ? PriceUtils.calculateOptionPricePerSquareMeter(
-                    price.amount,
-                    nestModel,
-                    categoryId,
-                    id,
-                    geschossdeckeQuantity
-                  )
-                : ""}
+                : shouldShowPricePerSqm && nestModel && price.amount
+                  ? PriceUtils.calculateOptionPricePerSquareMeter(
+                      price.amount,
+                      nestModel,
+                      categoryId,
+                      id,
+                      geschossdeckeQuantity
+                    )
+                  : ""}
           </p>
         </div>
       );
