@@ -5,12 +5,24 @@ import { useConfiguratorStore } from "@/store/configuratorStore";
 import { PriceCalculator } from "../core/PriceCalculator";
 import ConfiguratorShell from "./ConfiguratorShell";
 import { ConfiguratorPanelProvider } from "@/contexts/ConfiguratorPanelContext";
+import ConfigurationModeSelection from "./ConfigurationModeSelection";
 
 // Client Component - Handles all interactive functionality
 export default function KonfiguratorClient() {
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const { initializeSession } = useConfiguratorStore();
   const [_isPricingDataLoaded, setIsPricingDataLoaded] = useState(false);
+  const [showModeSelection, setShowModeSelection] = useState(false);
+
+  // Check if user has already made a mode selection
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hasSelectedMode = localStorage.getItem("nest-mode-selected");
+      if (!hasSelectedMode) {
+        setShowModeSelection(true);
+      }
+    }
+  }, []);
 
   // Load pricing data FIRST, then initialize session
   useEffect(() => {
@@ -74,6 +86,16 @@ export default function KonfiguratorClient() {
 
   return (
     <div className="bg-white">
+      {/* Configuration mode selection overlay */}
+      {showModeSelection && (
+        <ConfigurationModeSelection
+          onClose={() => {
+            setShowModeSelection(false);
+            localStorage.setItem("nest-mode-selected", "true");
+          }}
+        />
+      )}
+
       <ConfiguratorPanelProvider value={rightPanelRef}>
         <ConfiguratorShell rightPanelRef={rightPanelRef} />
       </ConfiguratorPanelProvider>

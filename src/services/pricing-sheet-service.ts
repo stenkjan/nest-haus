@@ -264,17 +264,22 @@ class PricingSheetService {
   }
 
   private parseInnenverkleidung(rows: unknown[][]): PricingData['innenverkleidung'] {
-    // Rows 24-26 (0-indexed: 23-25), Column E has option names
+    // Rows 23-26 (0-indexed: 22-25), Column E has option names
+    // Row 23: ohne innenverkleidung (new baseline, 0€ for all sizes)
+    // Row 24: fichte
+    // Row 25: lärche  
+    // Row 26: eiche
     const innenverkleidungData: PricingData['innenverkleidung'] = {};
 
     const optionMapping: Record<string, string> = {
+      'ohne innenverkleidung': 'ohne_innenverkleidung',
       'eiche': 'steirische_eiche',
       'fichte': 'fichte',
       'laerche': 'laerche',  // ASCII version
       'lärche': 'laerche',   // UTF-8 version from Google Sheets (ä = umlaut)
     };
 
-    for (let rowIndex = 23; rowIndex <= 25; rowIndex++) {
+    for (let rowIndex = 22; rowIndex <= 25; rowIndex++) {
       const row = rows[rowIndex] || [];
       const optionName = String(row[4] || '').toLowerCase().trim();
       

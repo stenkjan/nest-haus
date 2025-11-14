@@ -62,7 +62,7 @@ export default function SummaryPanel({
       return selection.price || 0;
     }
 
-    // For innenverkleidung, return ABSOLUTE price from PriceCalculator
+    // For innenverkleidung, return RELATIVE price from PriceCalculator (baseline: ohne_innenverkleidung)
     if (key === "innenverkleidung" && configuration?.nest) {
       try {
         const pricingData = PriceCalculator.getPricingData();
@@ -74,13 +74,19 @@ export default function SummaryPanel({
             | "nest140"
             | "nest160";
           const innenverkleidungOption = selection.value as
+            | "ohne_innenverkleidung"
             | "fichte"
             | "laerche"
-            | "eiche";
+            | "steirische_eiche";
+
           const absolutePrice =
             pricingData.innenverkleidung[innenverkleidungOption]?.[nestSize] ||
             0;
-          return absolutePrice; // Return ABSOLUTE price (never 0 / "inkludiert")
+          const baselinePrice =
+            pricingData.innenverkleidung.ohne_innenverkleidung?.[nestSize] || 0;
+
+          // Return relative price (ohne_innenverkleidung = 0 baseline)
+          return absolutePrice - baselinePrice;
         }
       } catch {
         // Fallback to stored price if pricing data not loaded yet
@@ -155,7 +161,7 @@ export default function SummaryPanel({
 
         // Use defaults for base calculation
         const baseGebaeudehuelle = "trapezblech";
-        const baseInnenverkleidung = "fichte";
+        const baseInnenverkleidung = "ohne_innenverkleidung";
         const baseFussboden = "ohne_belag";
 
         // Calculate base combination price (all defaults)
@@ -386,12 +392,6 @@ export default function SummaryPanel({
                             <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
                               Startpreis
                             </div>
-                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              {PriceUtils.formatPrice(itemPrice)}
-                            </div>
-                          </>
-                        ) : key === "innenverkleidung" ? (
-                          <>
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
                             </div>

@@ -5,7 +5,7 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 
 interface GeschossdeckeOverlayProps {
-  innenverkleidung?: string; // "eiche" | "fichte" | "laerche" | etc.
+  innenverkleidung?: string; // "ohne_innenverkleidung" | "fichte" | "laerche" | "steirische_eiche" | etc.
   fussboden?: string; // "schiefer" | "kalkstein" | "parkett" | etc.
   isVisible?: boolean;
   className?: string;
@@ -28,8 +28,8 @@ export default function GeschossdeckeOverlay({
     fussboden?: string
   ): string => {
     // Map innenverkleidung values to overlay image names
-    // laerche → laerche, fichte → fichte, steirische_eiche → eiche
-    let wallMaterial = "fichte"; // Default
+    // ohne_innenverkleidung → fichte (fallback visual), laerche → laerche, fichte → fichte, steirische_eiche → eiche
+    let wallMaterial = "fichte"; // Default/fallback visual for ohne_innenverkleidung
     
     if (innenverkleidung) {
       const innenLower = innenverkleidung.toLowerCase();
@@ -39,6 +39,8 @@ export default function GeschossdeckeOverlay({
         wallMaterial = "fichte";
       } else if (innenLower.includes("eiche")) {
         wallMaterial = "eiche";
+      } else if (innenLower.includes("ohne")) {
+        wallMaterial = "fichte"; // Use fichte as visual fallback for "ohne"
       }
     }
     

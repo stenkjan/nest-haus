@@ -534,9 +534,11 @@ export default function ConfiguratorShell({
           );
         }
 
-        // For INNENVERKLEIDUNG: Return ABSOLUTE price (ALL options have prices!)
+        // For INNENVERKLEIDUNG: Return RELATIVE price (baseline: ohne_innenverkleidung = 0€)
         if (categoryId === "innenverkleidung" && pricingData) {
-          return pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
+          const optionPrice = pricingData.innenverkleidung[optionId]?.[nestSize] || 0;
+          const baselinePrice = pricingData.innenverkleidung.ohne_innenverkleidung?.[nestSize] || 0;
+          return optionPrice - baselinePrice; // Relative to ohne_innenverkleidung
         }
 
         // For GEBÄUDEHÜLLE: Return ABSOLUTE price, then calculate relative in display
@@ -1321,8 +1323,8 @@ export default function ConfiguratorShell({
 
           // Use defaults for base calculation, only change the current category for relative pricing
           const baseGebaeudehuelle = "trapezblech";
-          const baseInnenverkleidung = "fichte"; // fichte is standard default
-          const baseFussboden = "parkett";
+          const baseInnenverkleidung = "ohne_innenverkleidung"; // Standard baseline (no interior cladding)
+          const baseFussboden = "ohne_belag";
 
           // Get the current selection for THIS category only
           const currentCategorySelection = configuration?.[
