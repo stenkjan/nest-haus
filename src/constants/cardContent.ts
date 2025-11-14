@@ -746,7 +746,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
         title: "Natürliche Materialien erleben",
         subtitle: "",
         description: "Holz schafft warme Atmosphäre",
-        video: IMAGES.videos.videoCard05,
+        video: IMAGES.videos.videoCard06,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Tall portrait format
     },
