@@ -8,6 +8,9 @@
 
 import { google } from 'googleapis';
 
+// Special value indicating "Preis auf Anfrage" (price on request)
+const PRICE_ON_REQUEST = -1;
+
 // Column mapping: F=5, G=6, H=7, I=8, J=9, K=10, L=11, M=12, N=13
 const NEST_COLUMNS = {
   nest80: 5,  // F
@@ -154,19 +157,24 @@ class PricingSheetService {
   }
 
   private parseNumber(value: unknown, isPrice: boolean = false): number {
-    if (typeof value === 'number') {
-      // CRITICAL: Numbers >= 1000 are NEVER in thousands format!
-      // Only multiply by 1000 if value < 1000 AND value looks like decimal thousands (e.g., 188.619)
-      // Numbers like 887 should stay as 887 (not multiplied)
-      return (isPrice && value < 1000 && value > 0 && value < 500) ? value * 1000 : value;
-    }
+    // Check for "-" string to indicate "Preis auf Anfrage"
     if (typeof value === 'string') {
-      const cleaned = value.replace(/[€$,\s]/g, '');
+      const trimmed = value.trim();
+      if (trimmed === '-') {
+        return PRICE_ON_REQUEST; // Return -1 for dash prices
+      }
+      const cleaned = trimmed.replace(/[€$,\s]/g, '');
       const parsed = parseFloat(cleaned);
       if (isNaN(parsed)) return 0;
       // CRITICAL: Numbers >= 1000 are NEVER in thousands format!
       // Only multiply by 1000 if value < 1000 AND value looks like decimal thousands (e.g., 188.619)
       return (isPrice && parsed < 1000 && parsed > 0 && parsed < 500) ? parsed * 1000 : parsed;
+    }
+    if (typeof value === 'number') {
+      // CRITICAL: Numbers >= 1000 are NEVER in thousands format!
+      // Only multiply by 1000 if value < 1000 AND value looks like decimal thousands (e.g., 188.619)
+      // Numbers like 887 should stay as 887 (not multiplied)
+      return (isPrice && value < 1000 && value > 0 && value < 500) ? value * 1000 : value;
     }
     return 0;
   }

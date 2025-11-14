@@ -344,7 +344,16 @@ export default function SummaryPanel({
                         </div>
                       </div>
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
-                        {itemPrice > 0 ? (
+                        {PriceUtils.isPriceOnRequest(itemPrice) ? (
+                          <>
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              -
+                            </div>
+                            <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
+                              Auf Anfrage
+                            </div>
+                          </>
+                        ) : itemPrice > 0 ? (
                           <>
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
                               {PriceUtils.formatPrice(itemPrice)}
@@ -392,8 +401,28 @@ export default function SummaryPanel({
                             <div className="mb-1 text-black text-[clamp(12px,2.5vw,14px)]">
                               Startpreis
                             </div>
+                            {PriceUtils.isPriceOnRequest(itemPrice) ? (
+                              <>
+                                <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                                  -
+                                </div>
+                                <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
+                                  Auf Anfrage
+                                </div>
+                              </>
+                            ) : (
+                              <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                                {PriceUtils.formatPrice(itemPrice)}
+                              </div>
+                            )}
+                          </>
+                        ) : PriceUtils.isPriceOnRequest(itemPrice) ? (
+                          <>
                             <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
-                              {PriceUtils.formatPrice(itemPrice)}
+                              -
+                            </div>
+                            <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
+                              Auf Anfrage
                             </div>
                           </>
                         ) : !isIncluded && itemPrice > 0 ? (
@@ -452,7 +481,16 @@ export default function SummaryPanel({
                         )}
                       </div>
                       <div className="flex-1 text-right max-w-[50%] min-w-0">
-                        {itemPrice > 0 ? (
+                        {PriceUtils.isPriceOnRequest(itemPrice) ? (
+                          <>
+                            <div className="text-black text-[clamp(13px,3vw,15px)] font-medium">
+                              -
+                            </div>
+                            <div className="font-normal text-[clamp(10px,2.5vw,12px)] tracking-[0.03em] leading-[1.17] text-gray-600 mt-1">
+                              Auf Anfrage
+                            </div>
+                          </>
+                        ) : itemPrice > 0 ? (
                           <>
                             {![
                               "fenster",
@@ -515,38 +553,45 @@ export default function SummaryPanel({
               <span className="text-black">Gesamtpreis:</span>
               <span className="font-medium">
                 {" "}
-                {PriceUtils.formatPrice(currentPrice)}
+                {PriceUtils.isPriceOnRequest(currentPrice)
+                  ? "-"
+                  : PriceUtils.formatPrice(currentPrice)}
               </span>
             </h3>
             <p className="text-[clamp(12px,2.5vw,12px)] text-gray-600 mt-2 leading-[1.3]">
-              {configuration?.nest
-                ? (() => {
-                    const price = currentPrice;
-                    const nestModel = configuration.nest.value;
-                    const geschossdeckeQty =
-                      configuration.geschossdecke?.quantity || 0;
-                    console.log("🏠 CONFIGURATOR PANEL m² calculation:", {
-                      price,
-                      nestModel,
-                      geschossdeckeQty,
-                      baseArea: PriceUtils.getAdjustedNutzflaeche(nestModel, 0),
-                      adjustedArea: PriceUtils.getAdjustedNutzflaeche(
+              {PriceUtils.isPriceOnRequest(currentPrice)
+                ? "Genauer Preis auf Anfrage"
+                : configuration?.nest
+                  ? (() => {
+                      const price = currentPrice;
+                      const nestModel = configuration.nest.value;
+                      const geschossdeckeQty =
+                        configuration.geschossdecke?.quantity || 0;
+                      console.log("🏠 CONFIGURATOR PANEL m² calculation:", {
+                        price,
                         nestModel,
-                        geschossdeckeQty
-                      ),
-                      result: PriceUtils.calculatePricePerSquareMeter(
+                        geschossdeckeQty,
+                        baseArea: PriceUtils.getAdjustedNutzflaeche(
+                          nestModel,
+                          0
+                        ),
+                        adjustedArea: PriceUtils.getAdjustedNutzflaeche(
+                          nestModel,
+                          geschossdeckeQty
+                        ),
+                        result: PriceUtils.calculatePricePerSquareMeter(
+                          price,
+                          nestModel,
+                          geschossdeckeQty
+                        ),
+                      });
+                      return PriceUtils.calculatePricePerSquareMeter(
                         price,
                         nestModel,
                         geschossdeckeQty
-                      ),
-                    });
-                    return PriceUtils.calculatePricePerSquareMeter(
-                      price,
-                      nestModel,
-                      geschossdeckeQty
-                    );
-                  })()
-                : ""}
+                      );
+                    })()
+                  : ""}
             </p>
           </div>
         </div>

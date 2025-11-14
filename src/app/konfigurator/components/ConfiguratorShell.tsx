@@ -821,12 +821,16 @@ export default function ConfiguratorShell({
             pricingData.innenverkleidung.ohne_innenverkleidung?.[
               currentNestValue
             ] || 0;
-          const relativePrice = absolutePrice - baselinePrice;
+
+          // Normalize prices: treat -1 as 0 for relative calculations
+          const normalizedAbsolute = absolutePrice === -1 ? 0 : absolutePrice;
+          const normalizedBaseline = baselinePrice === -1 ? 0 : baselinePrice;
+          const relativePrice = normalizedAbsolute - normalizedBaseline;
 
           if (!currentSelection) {
             // No selection yet - show relative to baseline (ohne_innenverkleidung)
-            if (relativePrice === 0) {
-              // Standard (ohne_innenverkleidung) - show as included
+            if (relativePrice === 0 || absolutePrice === -1) {
+              // Standard (ohne_innenverkleidung) OR price on request - show as included
               return { type: "included" as const };
             } else {
               // Other options - show upgrade price from baseline
@@ -842,7 +846,8 @@ export default function ConfiguratorShell({
             pricingData.innenverkleidung[currentSelection.value]?.[
               currentNestValue
             ] || 0;
-          const selectedRelative = selectedPrice - baselinePrice;
+          const normalizedSelected = selectedPrice === -1 ? 0 : selectedPrice;
+          const selectedRelative = normalizedSelected - normalizedBaseline;
           const priceDiff = relativePrice - selectedRelative;
 
           if (priceDiff === 0) {
@@ -862,7 +867,11 @@ export default function ConfiguratorShell({
           pricingData.gebaeudehuelle[optionId]?.[currentNestValue] || 0;
         const trapezblechPrice =
           pricingData.gebaeudehuelle.trapezblech?.[currentNestValue] || 0;
-        const relativePrice = optionPrice - trapezblechPrice;
+
+        // Normalize prices: treat -1 as 0 for relative calculations
+        const normalizedOption = optionPrice === -1 ? 0 : optionPrice;
+        const normalizedTrapez = trapezblechPrice === -1 ? 0 : trapezblechPrice;
+        const relativePrice = normalizedOption - normalizedTrapez;
 
         const currentSelection = configuration?.gebaeudehuelle;
 
@@ -870,8 +879,8 @@ export default function ConfiguratorShell({
           return { type: "selected" as const };
         }
 
-        if (relativePrice === 0) {
-          return { type: "included" as const }; // trapezblech
+        if (relativePrice === 0 || optionPrice === -1) {
+          return { type: "included" as const }; // trapezblech OR price on request
         }
 
         if (!currentSelection) {
@@ -886,7 +895,8 @@ export default function ConfiguratorShell({
           pricingData.gebaeudehuelle[currentSelection.value]?.[
             currentNestValue
           ] || 0;
-        const selectedRelative = selectedPrice - trapezblechPrice;
+        const normalizedSelected = selectedPrice === -1 ? 0 : selectedPrice;
+        const selectedRelative = normalizedSelected - normalizedTrapez;
         const priceDiff = relativePrice - selectedRelative;
 
         if (priceDiff === 0) {
@@ -905,14 +915,28 @@ export default function ConfiguratorShell({
           pricingData.bodenbelag[optionId]?.[currentNestValue] || 0;
         const ohneBelagPrice =
           pricingData.bodenbelag.ohne_belag?.[currentNestValue] || 0;
-        const relativePrice = optionPrice - ohneBelagPrice;
 
         const currentSelection = configuration?.fussboden;
 
         if (currentSelection && currentSelection.value === optionId) {
+          // Selected option: if it's a dash price, show dash, otherwise selected
+          if (optionPrice === -1) {
+            return { type: "dash" as const };
+          }
           return { type: "selected" as const };
         }
 
+        // Check if this option has dash price (-1) - ALWAYS show dash
+        if (optionPrice === -1) {
+          return { type: "dash" as const };
+        }
+
+        // Normalize prices: treat -1 as 0 for relative calculations
+        const normalizedOption = optionPrice === -1 ? 0 : optionPrice;
+        const normalizedOhne = ohneBelagPrice === -1 ? 0 : ohneBelagPrice;
+        const relativePrice = normalizedOption - normalizedOhne;
+
+        // If relative price is 0 and not a dash, it's the baseline (inklusive)
         if (relativePrice === 0) {
           return { type: "included" as const }; // ohne_belag / standard
         }
@@ -928,7 +952,8 @@ export default function ConfiguratorShell({
         const selectedPrice =
           pricingData.bodenbelag[currentSelection.value]?.[currentNestValue] ||
           0;
-        const selectedRelative = selectedPrice - ohneBelagPrice;
+        const normalizedSelected = selectedPrice === -1 ? 0 : selectedPrice;
+        const selectedRelative = normalizedSelected - normalizedOhne;
         const priceDiff = relativePrice - selectedRelative;
 
         if (priceDiff === 0) {
@@ -956,11 +981,17 @@ export default function ConfiguratorShell({
           dynamicPrice = pricingData.planungspaket.pro[currentNestValue];
         }
 
-        if (dynamicPrice === 0) {
-          return { type: "included" as const }; // basis
+        // Only show "included" for Basis when it's the selected option (handled above)
+        // When Basis is NOT selected, show it relative to selected option
+        if (dynamicPrice === 0 && currentSelection?.value === "basis") {
+          return { type: "included" as const }; // basis selected
         }
 
         if (!currentSelection) {
+          // No selection yet - show base prices
+          if (dynamicPrice === 0) {
+            return { type: "included" as const }; // basis with no selection
+          }
           return {
             type: "base" as const,
             amount: dynamicPrice,
@@ -1038,7 +1069,37 @@ export default function ConfiguratorShell({
         }
 
         // Special handling for bodenaufbau - calculate relative pricing using Google Sheets data
-        if (categoryId === "bodenaufbau") {
+        if (categoryId === "bodenaufbau" && pricingData) {
+          // First check if this option has a dash price in raw data
+          const nestSize = configuration.nest?.value || "nest80";
+          let bodenaufbauKey = optionId;
+
+          // Handle key variations for backwards compatibility
+          if (
+            bodenaufbauKey === "wassergefuehrte_fussbodenheizung" &&
+            pricingData.bodenaufbau &&
+            !pricingData.bodenaufbau[bodenaufbauKey]
+          ) {
+            bodenaufbauKey = "wassergef. fbh";
+          }
+          if (
+            bodenaufbauKey === "elektrische_fussbodenheizung" &&
+            pricingData.bodenaufbau &&
+            !pricingData.bodenaufbau[bodenaufbauKey]
+          ) {
+            bodenaufbauKey = "elekt. fbh";
+          }
+
+          const rawPrice =
+            pricingData.bodenaufbau?.[bodenaufbauKey]?.[
+              nestSize as keyof (typeof pricingData.bodenaufbau)[typeof bodenaufbauKey]
+            ];
+
+          // If raw price is -1 (dash), ALWAYS show dash
+          if (rawPrice === -1) {
+            return { type: "dash" as const };
+          }
+
           if (currentSelection) {
             if (currentSelection.value === optionId) {
               // Show actual price for selected option in gray
