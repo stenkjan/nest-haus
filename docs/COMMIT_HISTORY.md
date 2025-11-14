@@ -4,6 +4,45 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [099c3eba3610cd7c879d34cd85a565729094e0f0] - Fri Nov 14 17:28:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 85b032c053a04c12a979310c8eecfae892d18005 into 35d5890785a851054a89efa60c84bffc32e312b5  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/layout/Navbar.tsx
+
+
+---
+
+## [e9f8c3412ffcb51ea8524d6c905bb0a8b2fabc0b] - Fri Nov 14 17:16:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/core/PriceUtils.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/SectionHeader.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+- docs/KONFIGURATOR_PRICING_QUICK_REFERENCE.md
+
+
+---
+
 ## [24fd086903b76fa331878b76ff39e287234552bf] - Fri Nov 14 17:04:55 2025 +0100
 
 **Author**: stenkjan
