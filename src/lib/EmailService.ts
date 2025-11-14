@@ -41,7 +41,7 @@ export interface AdminPaymentNotificationData extends PaymentConfirmationData {
 
 export class EmailService {
   private static readonly FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
-  private static readonly REPLY_TO_EMAIL = process.env.RESEND_FROM_EMAIL || 'mail@nest-haus.at';
+  private static readonly REPLY_TO_EMAIL = process.env.REPLY_TO_EMAIL || 'mail@nest-haus.at';
   private static readonly ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mail@nest-haus.at';
   private static readonly SALES_EMAIL = process.env.SALES_EMAIL || 'mail@nest-haus.at';
 
