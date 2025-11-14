@@ -469,7 +469,6 @@ export class PriceCalculator {
     return this.getCachedResult(cacheKey, () => {
       try {
         let totalPrice = 0;
-        let hasPriceOnRequest = false;
 
         // Calculate nest module combination price if selected
         if (selections.nest) {
@@ -487,10 +486,7 @@ export class PriceCalculator {
             fussboden
           );
           
-          // Check if combination has price on request
-          if (totalPrice === -1) {
-            hasPriceOnRequest = true;
-          }
+          // If combination price is -1 (price on request), it will be normalized to 0 at the end
         }
 
         // Add additional components (these work regardless of nest selection)
@@ -503,9 +499,8 @@ export class PriceCalculator {
             const nestSize = selections.nest.value as NestSize;
             const quantity = selections.pvanlage.quantity;
             const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
-            if (price === -1) {
-              hasPriceOnRequest = true;
-            } else {
+            // Only add if not -1 (price on request)
+            if (price !== -1) {
               additionalPrice += price;
             }
           }
@@ -519,9 +514,8 @@ export class PriceCalculator {
             selections.nest,
             selections.fenster
           );
-          if (belichtungspaketPrice === -1) {
-            hasPriceOnRequest = true;
-          } else {
+          // Only add if not -1 (price on request)
+          if (belichtungspaketPrice !== -1) {
             additionalPrice += belichtungspaketPrice;
           }
         }
@@ -532,9 +526,8 @@ export class PriceCalculator {
             selections.bodenaufbau,
             selections.nest
           );
-          if (bodenaufbauPrice === -1) {
-            hasPriceOnRequest = true;
-          } else {
+          // Only add if not -1 (price on request)
+          if (bodenaufbauPrice !== -1) {
             additionalPrice += bodenaufbauPrice;
           }
         }
@@ -545,9 +538,8 @@ export class PriceCalculator {
             selections.geschossdecke,
             selections.nest
           );
-          if (geschossdeckePrice === -1) {
-            hasPriceOnRequest = true;
-          } else {
+          // Only add if not -1 (price on request)
+          if (geschossdeckePrice !== -1) {
             additionalPrice += geschossdeckePrice;
           }
         }
@@ -558,9 +550,8 @@ export class PriceCalculator {
             selections.stirnseite,
             selections.fenster
           );
-          if (stirnseitePrice === -1) {
-            hasPriceOnRequest = true;
-          } else {
+          // Only add if not -1 (price on request)
+          if (stirnseitePrice !== -1) {
             additionalPrice += stirnseitePrice;
           }
         }
@@ -574,16 +565,14 @@ export class PriceCalculator {
             const nestSize = selections.nest.value as NestSize;
             if (selections.planungspaket.value === 'plus') {
               const planungPrice = pricingData.planungspaket.plus[nestSize] || 0;
-              if (planungPrice === -1) {
-                hasPriceOnRequest = true;
-              } else {
+              // Only add if not -1 (price on request)
+              if (planungPrice !== -1) {
                 additionalPrice += planungPrice;
               }
             } else if (selections.planungspaket.value === 'pro') {
               const planungPrice = pricingData.planungspaket.pro[nestSize] || 0;
-              if (planungPrice === -1) {
-                hasPriceOnRequest = true;
-              } else {
+              // Only add if not -1 (price on request)
+              if (planungPrice !== -1) {
                 additionalPrice += planungPrice;
               }
             }
@@ -596,9 +585,8 @@ export class PriceCalculator {
           const pricingData = this.getPricingData();
           if (pricingData) {
             const kaminPrice = pricingData.optionen.kaminschacht || 0;
-            if (kaminPrice === -1) {
-              hasPriceOnRequest = true;
-            } else {
+            // Only add if not -1 (price on request)
+            if (kaminPrice !== -1) {
               additionalPrice += kaminPrice;
             }
           }
@@ -607,9 +595,8 @@ export class PriceCalculator {
 
         if (selections.fussbodenheizung) {
           const fussbodenPrice = selections.fussbodenheizung.price || 0;
-          if (fussbodenPrice === -1) {
-            hasPriceOnRequest = true;
-          } else {
+          // Only add if not -1 (price on request)
+          if (fussbodenPrice !== -1) {
             additionalPrice += fussbodenPrice;
           }
         }
@@ -619,9 +606,8 @@ export class PriceCalculator {
           if (pricingData) {
             const nestSize = selections.nest.value as NestSize;
             const fundamentPrice = pricingData.optionen.fundament[nestSize] || 0;
-            if (fundamentPrice === -1) {
-              hasPriceOnRequest = true;
-            } else {
+            // Only add if not -1 (price on request)
+            if (fundamentPrice !== -1) {
               additionalPrice += fundamentPrice;
             }
           }
@@ -630,12 +616,8 @@ export class PriceCalculator {
 
         // Planning package and Grundstückscheck removed - handled in separate cart logic
 
-        // If any component has price on request, return -1
-        if (hasPriceOnRequest) {
-          return -1;
-        }
-
-        // Otherwise, return normalized total (convert any -1 to 0 in addition)
+        // Always return the sum of known prices, treating -1 (price on request) as 0
+        // This ensures we show "Nest + Belichtungspaket + other known prices" even if some items are "auf Anfrage"
         return this.normalizePriceForCalculation(totalPrice) + this.normalizePriceForCalculation(additionalPrice);
       } catch (error) {
         console.error('💰 PriceCalculator: Error calculating price:', error);

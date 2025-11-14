@@ -65,7 +65,9 @@ export default function CartFooter({ onReset }: CartFooterProps) {
           {/* Price and price per sqm */}
           <div className="text-right pr-[clamp(0.5rem,1vw,0.75rem)]">
             <p className="font-semibold leading-tight text-[clamp(0.875rem,1.8vw,1.25rem)] text-black">
-              {PriceUtils.formatPrice(currentPrice)}
+              {PriceUtils.isPriceOnRequest(currentPrice)
+                ? "-"
+                : PriceUtils.formatPrice(currentPrice)}
             </p>
             <p className="text-[clamp(0.625rem,1vw,0.75rem)] text-gray-500 leading-tight">
               {configuration?.nest

@@ -911,24 +911,22 @@ export default function ConfiguratorShell({
 
       if (pricingData && categoryId === "fussboden") {
         // Bodenbelag: Relative to ohne_belag (base = 0)
-        const optionPrice =
-          pricingData.bodenbelag[optionId]?.[currentNestValue] || 0;
+        // First get raw price WITHOUT fallback to check for -1
+        const rawOptionPrice =
+          pricingData.bodenbelag[optionId]?.[currentNestValue];
+        const optionPrice = rawOptionPrice ?? 0;
         const ohneBelagPrice =
           pricingData.bodenbelag.ohne_belag?.[currentNestValue] || 0;
 
         const currentSelection = configuration?.fussboden;
 
-        if (currentSelection && currentSelection.value === optionId) {
-          // Selected option: if it's a dash price, show dash, otherwise selected
-          if (optionPrice === -1) {
-            return { type: "dash" as const };
-          }
-          return { type: "selected" as const };
+        // Check if this option has dash price (-1) - ALWAYS show dash (before any other checks)
+        if (rawOptionPrice === -1) {
+          return { type: "dash" as const };
         }
 
-        // Check if this option has dash price (-1) - ALWAYS show dash
-        if (optionPrice === -1) {
-          return { type: "dash" as const };
+        if (currentSelection && currentSelection.value === optionId) {
+          return { type: "selected" as const };
         }
 
         // Normalize prices: treat -1 as 0 for relative calculations
@@ -949,9 +947,23 @@ export default function ConfiguratorShell({
         }
 
         // Show relative to currently selected option
-        const selectedPrice =
-          pricingData.bodenbelag[currentSelection.value]?.[currentNestValue] ||
-          0;
+        const rawSelectedPrice =
+          pricingData.bodenbelag[currentSelection.value]?.[currentNestValue];
+        const selectedPrice = rawSelectedPrice ?? 0;
+
+        // If selected item has dash price, don't try to calculate relative (both should show as is)
+        if (rawSelectedPrice === -1) {
+          // Selected item is dash, so other items show their absolute price relative to baseline
+          if (relativePrice === 0) {
+            return { type: "included" as const };
+          }
+          return {
+            type:
+              relativePrice > 0 ? ("upgrade" as const) : ("discount" as const),
+            amount: Math.abs(relativePrice),
+          };
+        }
+
         const normalizedSelected = selectedPrice === -1 ? 0 : selectedPrice;
         const selectedRelative = normalizedSelected - normalizedOhne;
         const priceDiff = relativePrice - selectedRelative;
@@ -1075,19 +1087,20 @@ export default function ConfiguratorShell({
           let bodenaufbauKey = optionId;
 
           // Handle key variations for backwards compatibility
-          if (
-            bodenaufbauKey === "wassergefuehrte_fussbodenheizung" &&
-            pricingData.bodenaufbau &&
-            !pricingData.bodenaufbau[bodenaufbauKey]
-          ) {
-            bodenaufbauKey = "wassergef. fbh";
+          // The pricing data might have either the full name or abbreviated name
+          if (bodenaufbauKey === "wassergefuehrte_fussbodenheizung") {
+            if (pricingData.bodenaufbau["wassergefuehrte_fussbodenheizung"]) {
+              bodenaufbauKey = "wassergefuehrte_fussbodenheizung";
+            } else if (pricingData.bodenaufbau["wassergef. fbh"]) {
+              bodenaufbauKey = "wassergef. fbh";
+            }
           }
-          if (
-            bodenaufbauKey === "elektrische_fussbodenheizung" &&
-            pricingData.bodenaufbau &&
-            !pricingData.bodenaufbau[bodenaufbauKey]
-          ) {
-            bodenaufbauKey = "elekt. fbh";
+          if (bodenaufbauKey === "elektrische_fussbodenheizung") {
+            if (pricingData.bodenaufbau["elektrische_fussbodenheizung"]) {
+              bodenaufbauKey = "elektrische_fussbodenheizung";
+            } else if (pricingData.bodenaufbau["elekt. fbh"]) {
+              bodenaufbauKey = "elekt. fbh";
+            }
           }
 
           const rawPrice =
@@ -1128,6 +1141,65 @@ export default function ConfiguratorShell({
               };
             } else {
               // Show relative price for other options
+              // First check if selected option has dash price
+              let selectedBodenaufbauKey = currentSelection.value;
+              if (
+                selectedBodenaufbauKey === "wassergefuehrte_fussbodenheizung"
+              ) {
+                if (
+                  pricingData.bodenaufbau["wassergefuehrte_fussbodenheizung"]
+                ) {
+                  selectedBodenaufbauKey = "wassergefuehrte_fussbodenheizung";
+                } else if (pricingData.bodenaufbau["wassergef. fbh"]) {
+                  selectedBodenaufbauKey = "wassergef. fbh";
+                }
+              }
+              if (selectedBodenaufbauKey === "elektrische_fussbodenheizung") {
+                if (pricingData.bodenaufbau["elektrische_fussbodenheizung"]) {
+                  selectedBodenaufbauKey = "elektrische_fussbodenheizung";
+                } else if (pricingData.bodenaufbau["elekt. fbh"]) {
+                  selectedBodenaufbauKey = "elekt. fbh";
+                }
+              }
+              const rawSelectedPrice =
+                pricingData.bodenaufbau?.[selectedBodenaufbauKey]?.[
+                  nestSize as keyof (typeof pricingData.bodenaufbau)[typeof selectedBodenaufbauKey]
+                ];
+
+              // If selected item has dash price, show absolute prices relative to baseline (ohne_heizung)
+              if (rawSelectedPrice === -1) {
+                const optionPrice =
+                  optionId === "ohne_heizung"
+                    ? 0
+                    : PriceCalculator.calculateBodenaufbauPrice(
+                        {
+                          category: categoryId,
+                          value: optionId,
+                          name: option.name,
+                          price: option.price.amount || 0,
+                        },
+                        {
+                          category: "nest",
+                          value: configuration.nest?.value || "nest80",
+                          name: configuration.nest?.name || "Nest 80",
+                          price: configuration.nest?.price || 0,
+                        }
+                      );
+
+                if (optionId === "ohne_heizung") {
+                  return { type: "included" as const };
+                }
+                if (optionPrice === -1) {
+                  return { type: "dash" as const };
+                }
+                return {
+                  type: "upgrade" as const,
+                  amount: optionPrice,
+                  monthly: option.price.monthly,
+                };
+              }
+
+              // Normal relative pricing logic
               const currentPrice =
                 currentSelection.value === "ohne_heizung"
                   ? 0

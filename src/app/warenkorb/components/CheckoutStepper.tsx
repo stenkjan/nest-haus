@@ -1836,24 +1836,24 @@ export default function CheckoutStepper({
                                     </div>
                                   </div>
                                   <div className="text-right min-w-0">
-                                    {detail.isIncluded ||
-                                    (detail.price && detail.price === 0) ? (
+                                    {PriceUtils.isPriceOnRequest(detail.price || 0) ? (
+                                      <>
+                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                          -
+                                        </div>
+                                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                          Auf Anfrage
+                                        </div>
+                                      </>
+                                    ) : detail.isIncluded ||
+                                      (detail.price && detail.price === 0) ? (
                                       <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
                                         inkludiert
                                       </div>
                                     ) : (
-                                      <>
-                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                          {PriceUtils.isPriceOnRequest(detail.price || 0) 
-                                            ? "-" 
-                                            : PriceUtils.formatPrice(detail.price || 0)}
-                                        </div>
-                                        {PriceUtils.isPriceOnRequest(detail.price || 0) && (
-                                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                            Auf Anfrage
-                                          </div>
-                                        )}
-                                      </>
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                        {PriceUtils.formatPrice(detail.price || 0)}
+                                      </div>
                                     )}
                                   </div>
                                 </div>
@@ -2602,24 +2602,24 @@ export default function CheckoutStepper({
                                   </div>
                                 </div>
                                 <div className="text-right min-w-0">
-                                  {detail.isIncluded ||
-                                  (detail.price && detail.price === 0) ? (
+                                  {PriceUtils.isPriceOnRequest(detail.price || 0) ? (
+                                    <>
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                        -
+                                      </div>
+                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                        Auf Anfrage
+                                      </div>
+                                    </>
+                                  ) : detail.isIncluded ||
+                                    (detail.price && detail.price === 0) ? (
                                     <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-500 leading-relaxed">
                                       inkludiert
                                     </div>
                                   ) : (
-                                    <>
-                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                        {PriceUtils.isPriceOnRequest(detail.price || 0) 
-                                          ? "-" 
-                                          : PriceUtils.formatPrice(detail.price || 0)}
-                                      </div>
-                                      {PriceUtils.isPriceOnRequest(detail.price || 0) && (
-                                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
-                                          Auf Anfrage
-                                        </div>
-                                      )}
-                                    </>
+                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                      {PriceUtils.formatPrice(detail.price || 0)}
+                                    </div>
                                   )}
                                 </div>
                               </div>
