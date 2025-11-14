@@ -147,6 +147,41 @@ export function GrundstueckCheckForm({
           JSON.stringify(grundstueckData)
         );
 
+        // Also save to user tracking session in database
+        try {
+          const sessionResponse = await fetch(
+            "/api/sessions/update-user-data",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                sessionId: sessionId || "",
+                userData: grundstueckData,
+              }),
+            }
+          );
+
+          const sessionResult = await sessionResponse.json();
+
+          if (sessionResponse.ok && sessionResult.success) {
+            console.log(
+              "✅ Grundstückscheck data saved to user tracking session"
+            );
+          } else {
+            console.warn(
+              "⚠️ Failed to save to user session (non-blocking):",
+              sessionResult.error
+            );
+          }
+        } catch (sessionError) {
+          console.warn(
+            "⚠️ Error saving to user session (non-blocking):",
+            sessionError
+          );
+        }
+
         alert(
           "Formular wurde erfolgreich übermittelt! Wir melden uns bald bei Ihnen."
         );
