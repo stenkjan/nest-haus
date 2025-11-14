@@ -4,6 +4,32 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [aa1ba860744cd24ff9266acab6405ea2536bd5ca] - Fri Nov 14 11:48:51 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfigurationModeSelection.tsx
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/GeschossdeckeOverlay.tsx
+- src/app/konfigurator/components/KonfiguratorClient.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+- src/app/konfigurator/data/configuratorData.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/INNENVERKLEIDUNG_STANDARD_OVERHAUL.md
+- docs/KONFIGURATOR_PRICING_OVERHAUL_SUMMARY.md
+
+
+---
+
 ## [ac50ff944f70c95ca79827a5bf43df93c73905d2] - Fri Nov 14 11:44:53 2025 +0100
 
 **Author**: stenkjan
