@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       // Appointment-specific fields
       requestType: data.requestType,
       appointmentDateTime: data.appointmentDateTime ? new Date(data.appointmentDateTime) : null,
-      appointmentStatus: data.requestType === 'appointment' ? ('PENDING' as const) : null,
+      appointmentStatus: data.requestType === 'appointment' ? ('PENDING' as const) : undefined,
       appointmentExpiresAt: data.requestType === 'appointment' && data.appointmentDateTime
         ? new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
         : null,
