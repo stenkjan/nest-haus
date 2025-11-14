@@ -1197,9 +1197,24 @@ export default function CheckoutStepper({
     let nestHausTotal = 0; // Physical house price (without planungspaket)
 
     if (configItem && configItem.nest) {
+      // Convert ConfigurationCartItem to Selections type for PriceCalculator
+      // Filter out null values to match Selections interface (undefined only)
+      const selections = {
+        nest: configItem.nest || undefined,
+        gebaeudehuelle: configItem.gebaeudehuelle || undefined,
+        innenverkleidung: configItem.innenverkleidung || undefined,
+        fussboden: configItem.fussboden || undefined,
+        belichtungspaket: configItem.belichtungspaket || undefined,
+        pvanlage: configItem.pvanlage || undefined,
+        fenster: configItem.fenster || undefined,
+        stirnseite: configItem.stirnseite || undefined,
+        planungspaket: configItem.planungspaket || undefined,
+        grundstueckscheck: configItem.grundstueckscheck || undefined,
+      };
+
       // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
       // This ensures exact same price calculation logic and avoids rounding differences
-      nestHausTotal = PriceCalculator.calculateTotalPrice(configItem);
+      nestHausTotal = PriceCalculator.calculateTotalPrice(selections);
       // Note: Planungspaket is calculated separately and shown in "Dein Preis Überblick" box
     } else {
       // Fall back to cart total if no configuration
@@ -1633,7 +1648,10 @@ export default function CheckoutStepper({
   }, []);
 
   // State for userData loaded from database
-  const [userDataFromDb, setUserDataFromDb] = useState<Record<string, string> | null>(null);
+  const [userDataFromDb, setUserDataFromDb] = useState<Record<
+    string,
+    string
+  > | null>(null);
 
   // Load userData from database as fallback when sessionStorage is empty
   useEffect(() => {
@@ -1650,20 +1668,34 @@ export default function CheckoutStepper({
     // No data in sessionStorage, try to load from database
     const loadUserDataFromDb = async () => {
       try {
-        const response = await fetch(`/api/sessions/get-session?sessionId=${sessionId}`);
+        const response = await fetch(
+          `/api/sessions/get-session?sessionId=${sessionId}`
+        );
         const result = await response.json();
 
-        if (response.ok && result.success && result.session?.configurationData) {
-          const configData = result.session.configurationData as Record<string, unknown>;
-          const userData = configData.userData as Record<string, string> | undefined;
-          
+        if (
+          response.ok &&
+          result.success &&
+          result.session?.configurationData
+        ) {
+          const configData = result.session.configurationData as Record<
+            string,
+            unknown
+          >;
+          const userData = configData.userData as
+            | Record<string, string>
+            | undefined;
+
           if (userData) {
             console.log("✅ Loaded userData from database:", userData);
             setUserDataFromDb(userData);
-            
+
             // Also store in sessionStorage for faster future access
             if (typeof window !== "undefined") {
-              sessionStorage.setItem("grundstueckCheckData", JSON.stringify(userData));
+              sessionStorage.setItem(
+                "grundstueckCheckData",
+                JSON.stringify(userData)
+              );
             }
           }
         }
@@ -2570,7 +2602,10 @@ export default function CheckoutStepper({
                                 const nestModel = configItem.nest?.value || "";
 
                                 // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
-                                const priceValue = PriceCalculator.calculateTotalPrice(configItem);
+                                const priceValue =
+                                  PriceCalculator.calculateTotalPrice(
+                                    configItem
+                                  );
                                 const geschossdeckeQuantity =
                                   configItem.geschossdecke?.quantity || 0;
 
@@ -3021,7 +3056,8 @@ export default function CheckoutStepper({
                 // Use PriceCalculator.calculateTotalPrice() for consistency with konfigurator
                 let deinNestHausTotal = 0;
                 if (configItem && configItem.nest) {
-                  deinNestHausTotal = PriceCalculator.calculateTotalPrice(configItem);
+                  deinNestHausTotal =
+                    PriceCalculator.calculateTotalPrice(configItem);
                 }
 
                 // Calculate planungspaket price using new pricing system (nest-size dependent)

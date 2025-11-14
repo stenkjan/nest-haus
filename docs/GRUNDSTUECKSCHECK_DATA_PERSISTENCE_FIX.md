@@ -245,9 +245,32 @@ All operations are **non-blocking**:
 3. ✅ `src/components/sections/GrundstueckCheckForm.tsx` (UPDATED)
 4. ✅ `src/app/warenkorb/components/CheckoutStepper.tsx` (UPDATED)
 
+## TypeScript Build Fixes
+
+### Issue: Type Incompatibility in PriceCalculator
+**Error**: `Type 'ConfigurationCartItem' is not assignable to parameter of type 'Selections'`
+
+**Root Cause**: 
+- `ConfigurationCartItem` has nullable fields (`ConfigurationItem | null | undefined`)
+- `PriceCalculator.calculateTotalPrice()` expects `Selections` with non-nullable fields (`SelectionOption | undefined`)
+
+**Solution**:
+Created type-safe conversion in `CheckoutStepper.tsx` (line 1202-1213):
+```typescript
+const selections = {
+  nest: configItem.nest || undefined,
+  gebaeudehuelle: configItem.gebaeudehuelle || undefined,
+  // ... filter all null values to undefined
+};
+nestHausTotal = PriceCalculator.calculateTotalPrice(selections);
+```
+
+This converts `null` values to `undefined` to match the expected `Selections` interface.
+
 ## Linting Status
 
-✅ All files pass TypeScript/ESLint checks with zero errors
+✅ All files pass TypeScript/ESLint checks with zero errors  
+✅ Build compiles successfully on Vercel
 
 ## Related Documentation
 

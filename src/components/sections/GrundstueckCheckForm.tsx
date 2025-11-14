@@ -610,7 +610,7 @@ export function GrundstueckCheckForm({
                       className="w-auto"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Wird gesendet..." : "Zahlen und Prüfen"}
+                      {isSubmitting ? "Wird gespeichert..." : "Speichern"}
                     </Button>
                   </div>
                 </form>
@@ -797,7 +797,7 @@ export function GrundstueckCheckForm({
                 className="w-full"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Wird gesendet..." : "Zahlen und Prüfen"}
+                {isSubmitting ? "Wird gespeichert..." : "Speichern"}
               </Button>
             </form>
           </div>
