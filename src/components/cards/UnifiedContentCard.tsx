@@ -207,6 +207,34 @@ export default function UnifiedContentCard({
     return typeof window !== "undefined" ? window.innerHeight : 0;
   }, [stableViewportHeight]);
 
+  // Helper function to get container padding based on layout and screen width
+  const getContainerPadding = useCallback(
+    (screenWidth: number) => {
+      // Check if this is a layout with px-4 md:px-12 pattern
+      const hasResponsivePadding =
+        layout === "video" ||
+        layout === "overlay-text" ||
+        layout === "glass-quote" ||
+        layout === "team-card";
+
+      if (isLightboxMode) {
+        return 0; // No padding in lightbox mode
+      }
+
+      if (hasResponsivePadding) {
+        // px-4 on mobile (<768px), px-12 on desktop (≥768px)
+        return screenWidth < 768 ? 16 : 48; // One side only
+      } else if (maxWidth) {
+        // px-8 for maxWidth layouts
+        return 32; // One side only
+      } else {
+        // px-4 default
+        return 16; // One side only
+      }
+    },
+    [layout, maxWidth, isLightboxMode]
+  );
+
   // Determine text colors based on style: glass = white text, standard = black text
   const textColors = {
     title: isGlass ? "text-white" : "text-black",
@@ -325,16 +353,10 @@ export default function UnifiedContentCard({
       centerOffset = 0;
     } else {
       // Center alignment (default behavior for all, and mobile/tablet for left alignment)
-      if (containerWidth < 768) {
-        const containerPadding = 16; // px-4 = 1rem = 16px on mobile for video layout
-        centerOffset = (containerWidth - firstCardWidth - containerPadding) / 2;
-      } else {
-        const effectiveWidth =
-          containerWidth < 1024 ? containerWidth - 32 : containerWidth;
-        centerOffset =
-          (effectiveWidth - firstCardWidth) / 2 +
-          (containerWidth < 1024 ? 16 : 0);
-      }
+      const padding = getContainerPadding(containerWidth);
+      const totalPadding = padding * 2; // Left + right padding
+      const availableWidth = containerWidth - totalPadding;
+      centerOffset = (availableWidth - firstCardWidth) / 2;
     }
 
     x.set(centerOffset);
@@ -346,6 +368,7 @@ export default function UnifiedContentCard({
     alignment,
     isLightboxMode,
     stableViewportHeight,
+    getContainerPadding,
   ]);
 
   // Calculate responsive card dimensions
@@ -402,7 +425,7 @@ export default function UnifiedContentCard({
         } else {
           // Mobile: fixed width, taller height
           setCardsPerView(1.1);
-          setCardWidth(312);
+          setCardWidth(350);
         }
       } else if (layout === "overlay-text") {
         // Overlay-text layout: same HEIGHT as other cards, width varies by aspect ratio
@@ -451,7 +474,7 @@ export default function UnifiedContentCard({
           // Mobile: Height: 600px (or 75% viewport), Width forced to 2x1 (portrait)
           const cardHeight = Math.min(600, viewportHeight * 0.75);
           setCardsPerView(2); // Always 2 cards per view on mobile (portrait)
-          setCardWidth(cardHeight * 0.6); // Always use 2x1 ratio on mobile
+          setCardWidth(350); // Match video layout width for consistency
         }
       } else if (layout === "glass-quote") {
         // Glass-quote layout: Use 2x1 aspect ratio (portrait/tall like video background cards)
@@ -569,17 +592,10 @@ export default function UnifiedContentCard({
           centerOffset = 0;
         } else {
           // Center alignment (default behavior for all, and mobile/tablet for left alignment)
-          if (containerWidth < 768) {
-            const containerPadding = 16; // px-4 = 1rem = 16px on mobile for video layout
-            centerOffset =
-              (containerWidth - currentCardWidth - containerPadding) / 2;
-          } else {
-            const effectiveWidth =
-              containerWidth < 1024 ? containerWidth - 32 : containerWidth;
-            centerOffset =
-              (effectiveWidth - currentCardWidth) / 2 +
-              (containerWidth < 1024 ? 16 : 0);
-          }
+          const padding = getContainerPadding(containerWidth);
+          const totalPadding = padding * 2; // Left + right padding
+          const availableWidth = containerWidth - totalPadding;
+          centerOffset = (availableWidth - currentCardWidth) / 2;
         }
 
         // Calculate cumulative position for variable-width cards
@@ -612,6 +628,7 @@ export default function UnifiedContentCard({
     getCardWidthForIndex,
     stableViewportHeight,
     alignment,
+    getContainerPadding,
   ]);
 
   // Helper function to calculate individual card width based on aspect ratio
@@ -656,17 +673,10 @@ export default function UnifiedContentCard({
         centerOffset = 0;
       } else {
         // Center alignment (default behavior for all, and mobile/tablet for left alignment)
-        if (containerWidth < 768) {
-          const containerPadding = 16; // px-4 = 1rem = 16px on mobile for video layout
-          centerOffset =
-            (containerWidth - targetCardWidth - containerPadding) / 2;
-        } else {
-          const effectiveWidth =
-            containerWidth < 1024 ? containerWidth - 32 : containerWidth;
-          centerOffset =
-            (effectiveWidth - targetCardWidth) / 2 +
-            (containerWidth < 1024 ? 16 : 0);
-        }
+        const padding = getContainerPadding(containerWidth);
+        const totalPadding = padding * 2; // Left + right padding
+        const availableWidth = containerWidth - totalPadding;
+        centerOffset = (availableWidth - targetCardWidth) / 2;
       }
 
       // Calculate cumulative position for variable-width cards
@@ -691,6 +701,7 @@ export default function UnifiedContentCard({
       getCumulativePosition,
       x,
       alignment,
+      getContainerPadding,
     ]
   );
 
@@ -2214,11 +2225,7 @@ export default function UnifiedContentCard({
                             : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
                       } else {
                         // Mobile: Force all cards to 2x1 (portrait) for better UX
-                        const cardHeight = Math.min(
-                          600 * heightMultiplier,
-                          viewportHeight * 0.75 * heightMultiplier
-                        );
-                        cardSpecificWidth = cardHeight * 0.6; // Always 2x1 ratio on mobile
+                        cardSpecificWidth = 350; // Match video layout width for consistency
                       }
                     }
 
