@@ -4,6 +4,42 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2e3ec773130efea311e39c5a60129b3d32cbc419] - Fri Nov 14 18:46:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/QuantitySelector.tsx
+- src/app/konfigurator/components/SelectionOption.tsx
+- src/app/konfigurator/core/PriceCalculator.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [235fc8ce4f76f74d7568abd8b5299c2a15d9ab7c] - Fri Nov 14 18:44:57 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [0021991078f3edc77819f8d14f0653a9d936944a] - Fri Nov 14 18:34:17 2025 +0100
 
 **Author**: stenkjan
