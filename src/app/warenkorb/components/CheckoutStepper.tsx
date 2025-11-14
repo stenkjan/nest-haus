@@ -154,6 +154,17 @@ export default function CheckoutStepper({
   const [showPlanungspaketeDetails, setShowPlanungspaketeDetails] =
     useState(false);
 
+  // Load pricing data on mount to ensure fresh prices from Google Sheets
+  useEffect(() => {
+    PriceCalculator.initializePricingData()
+      .then(() => {
+        console.log("✅ Warenkorb: Pricing data loaded successfully");
+      })
+      .catch((error) => {
+        console.error("❌ Warenkorb: Failed to load pricing data:", error);
+      });
+  }, []);
+
   // Handle payment redirect returns
   useEffect(() => {
     if (paymentRedirectStatus?.show && paymentRedirectStatus?.success) {
@@ -708,6 +719,19 @@ export default function CheckoutStepper({
     return "Artikel";
   };
 
+  // Helper to calculate m² price for individual items
+  const calculateItemPricePerSqm = (
+    itemPrice: number,
+    nestModel: string,
+    geschossdeckeQty: number = 0
+  ): string => {
+    if (itemPrice === 0) return "";
+    const area = PriceUtils.getAdjustedNutzflaeche(nestModel, geschossdeckeQty);
+    if (area === 0) return "";
+    const pricePerSqm = itemPrice / area;
+    return ` (${PriceUtils.formatPrice(pricePerSqm)}/m²)`;
+  };
+
   const renderConfigurationDetails = (
     item: CartItem | ConfigurationCartItem,
     excludeGrundstueckscheck: boolean = false
@@ -748,6 +772,8 @@ export default function CheckoutStepper({
             "stirnseite",
             "bodenaufbau",
             "geschossdecke",
+            "fundament",
+            "kamindurchzug",
           ].includes(key)
         ) {
           // Exclude fenster from cart display since its price is incorporated into belichtungspaket and stirnseite
@@ -778,6 +804,18 @@ export default function CheckoutStepper({
             selection.quantity > 1
           ) {
             displayName = `${selection.name} (${selection.quantity}x)`;
+          }
+
+          // Add m² price for applicable items (gebäudehülle, innenverkleidung, fussboden, bodenaufbau, belichtungspaket, fundament)
+          if (
+            ["gebaeudehuelle", "innenverkleidung", "fussboden", "bodenaufbau", "belichtungspaket", "fundament"].includes(key) &&
+            !isIncluded &&
+            calculatedPrice > 0
+          ) {
+            const configItem = item as ConfigurationCartItem;
+            const nestModel = configItem.nest?.value || "";
+            const geschossdeckeQty = configItem.geschossdecke?.quantity || 0;
+            displayName += calculateItemPricePerSqm(calculatedPrice, nestModel, geschossdeckeQty);
           }
 
           details.push({
@@ -1296,7 +1334,19 @@ export default function CheckoutStepper({
                           Dein Nest Haus
                         </div>
                         <div className={rowSubtitleClass}>
-                          {getRowSubtitle(0)}
+                          {(() => {
+                            // Show m² price for "Dein Nest Haus" (total house price / area)
+                            if (configItem?.nest) {
+                              const nestModel = configItem.nest.value || "";
+                              const geschossdeckeQty = configItem.geschossdecke?.quantity || 0;
+                              return PriceUtils.calculatePricePerSquareMeter(
+                                total,
+                                nestModel,
+                                geschossdeckeQty
+                              );
+                            }
+                            return getRowSubtitle(0);
+                          })()}
                         </div>
                       </div>
                       <div className={`leading-relaxed ${rowTextClass(0)}`}>
@@ -1406,7 +1456,7 @@ export default function CheckoutStepper({
                         if (appointmentSummary) {
                           return (
                             <div className="flex items-start gap-2 justify-end">
-                              <span className="text-xs md:text-sm text-gray-600 whitespace-pre-line text-right max-w-[120px] md:max-w-none">
+                              <span className="p-primary text-gray-600 whitespace-pre-line text-right">
                                 {appointmentSummary}
                               </span>
                               <span
@@ -1426,7 +1476,7 @@ export default function CheckoutStepper({
                               onClick={() => {
                                 window.location.hash = "terminvereinbarung";
                               }}
-                              className="text-blue-600 text-sm hover:underline"
+                              className="text-blue-600 p-primary hover:underline"
                             >
                               Neu vereinbaren
                             </button>
@@ -1434,7 +1484,7 @@ export default function CheckoutStepper({
                         } else if (hasAppointmentFromOtherSession) {
                           return (
                             <div className="flex items-start gap-2 justify-end">
-                              <span className="text-xs md:text-sm text-gray-600 text-right max-w-[120px] md:max-w-none">
+                              <span className="p-primary text-gray-600 text-right">
                                 bereits vereinbart
                               </span>
                             </div>
@@ -1680,7 +1730,7 @@ export default function CheckoutStepper({
                             </div>
                             <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
                               {(() => {
-                                // For configuration items with nest, show price per m²
+                                // For configuration items with nest, show NEST MODULE price per m² (not total)
                                 if (
                                   "totalPrice" in item &&
                                   (item as ConfigurationCartItem).nest
@@ -1690,49 +1740,16 @@ export default function CheckoutStepper({
                                   const nestModel =
                                     configItem.nest?.value || "";
 
-                                  // Calculate dynamic total for m² calculation (EXCLUDE planungspaket - it's a service, not part of the house)
-                                  let nestHausTotal = 0;
+                                  // Show only NEST MODULE price per m² (relative price)
+                                  const nestPrice = configItem.nest
+                                    ? getItemPrice("nest", configItem.nest, configItem)
+                                    : 0;
 
-                                  // Add nest price (dynamic from pricing data)
-                                  if (configItem.nest) {
-                                    nestHausTotal += getItemPrice(
-                                      "nest",
-                                      configItem.nest,
-                                      configItem
-                                    );
-                                  }
-
-                                  // Add all PHYSICAL house items (EXCLUDING planungspaket)
-                                  const houseItemsToSum = [
-                                    "gebaeudehuelle",
-                                    "innenverkleidung",
-                                    "fussboden",
-                                    "bodenaufbau",
-                                    "geschossdecke",
-                                    "fundament",
-                                    "pvanlage",
-                                    "belichtungspaket",
-                                    "stirnseite",
-                                    "kamindurchzug",
-                                  ] as const;
-
-                                  houseItemsToSum.forEach((key) => {
-                                    const selection = configItem[key];
-                                    if (selection) {
-                                      nestHausTotal += getItemPrice(
-                                        key,
-                                        selection,
-                                        configItem
-                                      );
-                                    }
-                                  });
-
-                                  const priceValue = nestHausTotal;
                                   const geschossdeckeQuantity =
                                     configItem.geschossdecke?.quantity || 0;
 
                                   return PriceUtils.calculatePricePerSquareMeter(
-                                    priceValue,
+                                    nestPrice,
                                     nestModel,
                                     geschossdeckeQuantity
                                   );
