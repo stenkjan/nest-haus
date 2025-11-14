@@ -9,6 +9,22 @@ import { NEST_OPTIONS } from '@/constants/configurator';
 
 export class PriceUtils {
   /**
+   * Check if price is "Auf Anfrage" (price on request)
+   */
+  static isPriceOnRequest(price: number): boolean {
+    return price === -1;
+  }
+
+  /**
+   * Format price or return "-" for Auf Anfrage
+   */
+  static formatPriceOrDash(price: number): string {
+    if (price === -1) return '-';
+    if (price === 0) return '';
+    return this.formatPrice(price);
+  }
+
+  /**
    * Format price for display
    */
   static formatPrice(price: number): string {

@@ -726,6 +726,7 @@ export default function CheckoutStepper({
     geschossdeckeQty: number = 0
   ): string => {
     if (itemPrice === 0) return "";
+    if (PriceUtils.isPriceOnRequest(itemPrice)) return " (-)";
     const area = PriceUtils.getAdjustedNutzflaeche(nestModel, geschossdeckeQty);
     if (area === 0) return "";
     const pricePerSqm = itemPrice / area;
@@ -1335,9 +1336,11 @@ export default function CheckoutStepper({
                           Dein Nest Haus
                         </div>
                         <div className={rowSubtitleClass}>
-                          {(() => {
-                            // Show m² price for "Dein Nest Haus" (total house price / area)
-                            if (configItem?.nest) {
+                          {PriceUtils.isPriceOnRequest(total) ? (
+                            "Genauer Preis auf Anfrage"
+                          ) : configItem?.nest ? (
+                            (() => {
+                              // Show m² price for "Dein Nest Haus" (total house price / area)
                               const nestModel = configItem.nest.value || "";
                               const geschossdeckeQty = configItem.geschossdecke?.quantity || 0;
                               return PriceUtils.calculatePricePerSquareMeter(
@@ -1345,13 +1348,14 @@ export default function CheckoutStepper({
                                 nestModel,
                                 geschossdeckeQty
                               );
-                            }
-                            return getRowSubtitle(0);
-                          })()}
+                            })()
+                          ) : (
+                            getRowSubtitle(0)
+                          )}
                         </div>
                       </div>
                       <div className={`leading-relaxed ${rowTextClass(0)}`}>
-                        {PriceUtils.formatPrice(total)}
+                        {PriceUtils.isPriceOnRequest(total) ? "-" : PriceUtils.formatPrice(total)}
                       </div>
                     </div>
                   )}
@@ -1767,8 +1771,8 @@ export default function CheckoutStepper({
                             </div>
                           </div>
                           <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed min-w-0">
-                            {PriceUtils.formatPrice(
-                              (() => {
+                            {(() => {
+                              const price = (() => {
                                 // For nest configuration, show ONLY the nest base price (not total house price)
                                 if (
                                   "totalPrice" in item &&
@@ -1788,8 +1792,9 @@ export default function CheckoutStepper({
                                 return "totalPrice" in item
                                   ? (item as ConfigurationCartItem).totalPrice
                                   : (item as CartItem).price;
-                              })()
-                            )}
+                              })();
+                              return PriceUtils.isPriceOnRequest(price) ? "-" : PriceUtils.formatPrice(price);
+                            })()}
                           </div>
                         </div>
 
@@ -1837,11 +1842,18 @@ export default function CheckoutStepper({
                                         inkludiert
                                       </div>
                                     ) : (
-                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                        {PriceUtils.formatPrice(
-                                          detail.price || 0
+                                      <>
+                                        <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                          {PriceUtils.isPriceOnRequest(detail.price || 0) 
+                                            ? "-" 
+                                            : PriceUtils.formatPrice(detail.price || 0)}
+                                        </div>
+                                        {PriceUtils.isPriceOnRequest(detail.price || 0) && (
+                                          <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                            Auf Anfrage
+                                          </div>
                                         )}
-                                      </div>
+                                      </>
                                     )}
                                   </div>
                                 </div>
@@ -2596,11 +2608,18 @@ export default function CheckoutStepper({
                                       inkludiert
                                     </div>
                                   ) : (
-                                    <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
-                                      {PriceUtils.formatPrice(
-                                        detail.price || 0
+                                    <>
+                                      <div className="text-sm md:text-base lg:text-lg 2xl:text-xl text-gray-900 leading-relaxed">
+                                        {PriceUtils.isPriceOnRequest(detail.price || 0) 
+                                          ? "-" 
+                                          : PriceUtils.formatPrice(detail.price || 0)}
+                                      </div>
+                                      {PriceUtils.isPriceOnRequest(detail.price || 0) && (
+                                        <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                          Auf Anfrage
+                                        </div>
                                       )}
-                                    </div>
+                                    </>
                                   )}
                                 </div>
                               </div>
@@ -3436,10 +3455,15 @@ export default function CheckoutStepper({
                                       {detail.isIncluded ||
                                       (detail.price && detail.price === 0)
                                         ? "inkludiert"
-                                        : PriceUtils.formatPrice(
-                                            detail.price || 0
-                                          )}
+                                        : PriceUtils.isPriceOnRequest(detail.price || 0)
+                                          ? "-"
+                                          : PriceUtils.formatPrice(detail.price || 0)}
                                     </div>
+                                    {PriceUtils.isPriceOnRequest(detail.price || 0) && (
+                                      <div className="text-xs md:text-sm text-gray-500 leading-snug mt-1">
+                                        Auf Anfrage
+                                      </div>
+                                    )}
                                   </div>
                                 );
                               })}

@@ -13,7 +13,8 @@ interface SelectionOptionProps {
       | "included"
       | "standard"
       | "discount"
-      | "selected";
+      | "selected"
+      | "dash";
     amount?: number;
     monthly?: number;
   };
@@ -102,6 +103,19 @@ export default function SelectionOption({
                   &nbsp;
                 </p>
               </>
+            ) : PriceUtils.isPriceOnRequest(contributionPrice) ? (
+              // For price on request (-1), show dash
+              <>
+                <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
+                  &nbsp;
+                </p>
+                <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] text-gray-500 tracking-wide leading-[1.2]">
+                  -
+                </p>
+                <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+                  &nbsp;
+                </p>
+              </>
             ) : categoryId === "belichtungspaket" ? (
               // For belichtungspaket, center the price without entspricht
               <>
@@ -161,6 +175,22 @@ export default function SelectionOption({
           </p>
           <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
             inklusive
+          </p>
+          <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
+            &nbsp;
+          </p>
+        </div>
+      );
+    }
+
+    if (price.type === "dash") {
+      return (
+        <div className="text-right">
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            &nbsp;
+          </p>
+          <p className="text-[clamp(0.625rem,1.1vw,0.875rem)] tracking-wide leading-[1.2]">
+            -
           </p>
           <p className="text-[clamp(0.475rem,0.95vw,0.725rem)] tracking-wide leading-[1.2] text-gray-500">
             &nbsp;

@@ -59,6 +59,13 @@ export class PriceCalculator {
   private static totalCalculations = 0;
   private static totalDuration = 0;
 
+  /**
+   * Normalize price for calculation (convert -1 to 0 for math)
+   */
+  private static normalizePriceForCalculation(price: number): number {
+    return price === -1 ? 0 : price;
+  }
+
   // Pricing data from Google Sheets
   private static pricingData: PricingData | null = null;
   private static pricingDataPromise: Promise<PricingData> | null = null;
@@ -315,6 +322,7 @@ export class PriceCalculator {
    * TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative + other options
    * 
    * CLIENT-SIDE calculation for efficiency with memoization
+   * HANDLES -1 (PRICE ON REQUEST): If any component is -1, returns -1
    */
   static calculateCombinationPrice(
     nestType: string,
@@ -347,8 +355,17 @@ export class PriceCalculator {
         const ohneBelagPrice = pricingData.bodenbelag.ohne_belag?.[nestSize] || 0;
         const bodenbelagRelative = bodenbelagPrice - ohneBelagPrice;
         
+        // Check if any price is -1 (price on request)
+        if (nestPrice === -1 || gebaeudehuellePrice === -1 || innenverkleidungPrice === -1 || bodenbelagPrice === -1) {
+          return -1; // Return -1 if any component has price on request
+        }
+        
         // TOTAL = Nest base + Gebäudehülle relative + Innenverkleidung relative + Bodenbelag relative
-        return nestPrice + gebaeudehuelleRelative + innenverkleidungRelative + bodenbelagRelative;
+        // Normalize prices for calculation (convert -1 to 0 for math operations)
+        return this.normalizePriceForCalculation(nestPrice) + 
+               this.normalizePriceForCalculation(gebaeudehuelleRelative) + 
+               this.normalizePriceForCalculation(innenverkleidungRelative) + 
+               this.normalizePriceForCalculation(bodenbelagRelative);
       } catch (error) {
         console.error('Error calculating combination price from database:', error);
         // Return 0 instead of throwing to prevent crashes during initial load
@@ -443,6 +460,7 @@ export class PriceCalculator {
    * Calculate total price - PROGRESSIVE pricing with immediate feedback
    * Uses MODULAR PRICING for accurate scaling with nest size
    * CLIENT-SIDE calculation to avoid unnecessary API calls with memoization
+   * HANDLES -1 (PRICE ON REQUEST): If ANY component is -1, total returns -1
    */
   static calculateTotalPrice(selections: Selections): number {
     // Create cache key from selections
@@ -451,6 +469,7 @@ export class PriceCalculator {
     return this.getCachedResult(cacheKey, () => {
       try {
         let totalPrice = 0;
+        let hasPriceOnRequest = false;
 
         // Calculate nest module combination price if selected
         if (selections.nest) {
@@ -467,6 +486,11 @@ export class PriceCalculator {
             innenverkleidung,
             fussboden
           );
+          
+          // Check if combination has price on request
+          if (totalPrice === -1) {
+            hasPriceOnRequest = true;
+          }
         }
 
         // Add additional components (these work regardless of nest selection)
@@ -479,7 +503,11 @@ export class PriceCalculator {
             const nestSize = selections.nest.value as NestSize;
             const quantity = selections.pvanlage.quantity;
             const price = pricingData.pvanlage.pricesByQuantity[nestSize]?.[quantity] || 0;
-            additionalPrice += price;
+            if (price === -1) {
+              hasPriceOnRequest = true;
+            } else {
+              additionalPrice += price;
+            }
           }
           // If data not loaded, price will be 0 until loaded
         }
@@ -491,7 +519,11 @@ export class PriceCalculator {
             selections.nest,
             selections.fenster
           );
-          additionalPrice += belichtungspaketPrice;
+          if (belichtungspaketPrice === -1) {
+            hasPriceOnRequest = true;
+          } else {
+            additionalPrice += belichtungspaketPrice;
+          }
         }
 
         // Add bodenaufbau price (calculated based on nest size)
@@ -500,7 +532,11 @@ export class PriceCalculator {
             selections.bodenaufbau,
             selections.nest
           );
-          additionalPrice += bodenaufbauPrice;
+          if (bodenaufbauPrice === -1) {
+            hasPriceOnRequest = true;
+          } else {
+            additionalPrice += bodenaufbauPrice;
+          }
         }
 
         // Add geschossdecke price (calculated based on nest size and quantity)
@@ -509,7 +545,11 @@ export class PriceCalculator {
             selections.geschossdecke,
             selections.nest
           );
-          additionalPrice += geschossdeckePrice;
+          if (geschossdeckePrice === -1) {
+            hasPriceOnRequest = true;
+          } else {
+            additionalPrice += geschossdeckePrice;
+          }
         }
 
         // Add stirnseite verglasung price (calculated based on fenster material)
@@ -518,7 +558,11 @@ export class PriceCalculator {
             selections.stirnseite,
             selections.fenster
           );
-          additionalPrice += stirnseitePrice;
+          if (stirnseitePrice === -1) {
+            hasPriceOnRequest = true;
+          } else {
+            additionalPrice += stirnseitePrice;
+          }
         }
 
         // Fenster price is already included in belichtungspaket calculation, so don't add it separately
@@ -529,9 +573,19 @@ export class PriceCalculator {
           if (pricingData && selections.planungspaket.value !== 'basis') {
             const nestSize = selections.nest.value as NestSize;
             if (selections.planungspaket.value === 'plus') {
-              additionalPrice += pricingData.planungspaket.plus[nestSize] || 0;
+              const planungPrice = pricingData.planungspaket.plus[nestSize] || 0;
+              if (planungPrice === -1) {
+                hasPriceOnRequest = true;
+              } else {
+                additionalPrice += planungPrice;
+              }
             } else if (selections.planungspaket.value === 'pro') {
-              additionalPrice += pricingData.planungspaket.pro[nestSize] || 0;
+              const planungPrice = pricingData.planungspaket.pro[nestSize] || 0;
+              if (planungPrice === -1) {
+                hasPriceOnRequest = true;
+              } else {
+                additionalPrice += planungPrice;
+              }
             }
           }
           // Basis is always 0 (included)
@@ -541,27 +595,48 @@ export class PriceCalculator {
         if (selections.kamindurchzug) {
           const pricingData = this.getPricingData();
           if (pricingData) {
-            additionalPrice += pricingData.optionen.kaminschacht || 0;
+            const kaminPrice = pricingData.optionen.kaminschacht || 0;
+            if (kaminPrice === -1) {
+              hasPriceOnRequest = true;
+            } else {
+              additionalPrice += kaminPrice;
+            }
           }
           // If data not loaded, price will be 0 until loaded
         }
 
         if (selections.fussbodenheizung) {
-          additionalPrice += selections.fussbodenheizung.price || 0;
+          const fussbodenPrice = selections.fussbodenheizung.price || 0;
+          if (fussbodenPrice === -1) {
+            hasPriceOnRequest = true;
+          } else {
+            additionalPrice += fussbodenPrice;
+          }
         }
 
         if (selections.fundament && selections.nest) {
           const pricingData = this.getPricingData();
           if (pricingData) {
             const nestSize = selections.nest.value as NestSize;
-            additionalPrice += pricingData.optionen.fundament[nestSize] || 0;
+            const fundamentPrice = pricingData.optionen.fundament[nestSize] || 0;
+            if (fundamentPrice === -1) {
+              hasPriceOnRequest = true;
+            } else {
+              additionalPrice += fundamentPrice;
+            }
           }
           // If data not loaded, price will be 0 until loaded
         }
 
         // Planning package and Grundstückscheck removed - handled in separate cart logic
 
-        return totalPrice + additionalPrice;
+        // If any component has price on request, return -1
+        if (hasPriceOnRequest) {
+          return -1;
+        }
+
+        // Otherwise, return normalized total (convert any -1 to 0 in addition)
+        return this.normalizePriceForCalculation(totalPrice) + this.normalizePriceForCalculation(additionalPrice);
       } catch (error) {
         console.error('💰 PriceCalculator: Error calculating price:', error);
         return 0;
@@ -573,6 +648,7 @@ export class PriceCalculator {
    * Calculate belichtungspaket price based on nest size, belichtungspaket option, and fenster material
    * Uses combination prices from Google Sheets (F70-N78)
    * Formula: combination_price = price_per_sqm × nest_size (from sheet)
+   * HANDLES -1 (PRICE ON REQUEST): Returns -1 if the combination is marked as price on request
    */
   static calculateBelichtungspaketPrice(
     belichtungspaket: SelectionOption,
@@ -592,7 +668,7 @@ export class PriceCalculator {
         if (fensterPricing && fensterPricing[nestSize]) {
           const totalPrice = fensterPricing[nestSize][belichtungKey];
           if (totalPrice !== undefined) {
-            return totalPrice; // Return total price directly
+            return totalPrice; // Return total price directly (may be -1 for price on request)
           }
         }
       }
@@ -608,6 +684,7 @@ export class PriceCalculator {
   /**
    * Calculate bodenaufbau price based on nest size
    * Uses Google Sheets pricing data
+   * HANDLES -1 (PRICE ON REQUEST): Returns -1 if the option is marked as price on request
    */
   static calculateBodenaufbauPrice(
     bodenaufbau: SelectionOption,
@@ -632,6 +709,11 @@ export class PriceCalculator {
         
         const bodenaufbauPrice = pricingData.bodenaufbau[bodenaufbauKey]?.[nestSize];
         if (bodenaufbauPrice !== undefined) {
+          // Check if price is -1 (price on request)
+          if (bodenaufbauPrice === -1) {
+            return -1;
+          }
+          
           // Get relative price (ohne_heizung is base = 0)
           const ohneHeizungPrice = pricingData.bodenaufbau.ohne_heizung?.[nestSize] || 0;
           return bodenaufbauPrice - ohneHeizungPrice;
@@ -649,6 +731,7 @@ export class PriceCalculator {
   /**
    * Calculate geschossdecke price based on nest size and quantity
    * Uses Google Sheets base price (D7) × quantity
+   * HANDLES -1 (PRICE ON REQUEST): Returns -1 if basePrice is -1, but area calculation still works
    */
   static calculateGeschossdeckePrice(
     geschossdecke: SelectionOption,
@@ -660,6 +743,12 @@ export class PriceCalculator {
       const pricingData = this.getPricingData();
       if (pricingData) {
         const basePrice = pricingData.geschossdecke.basePrice;
+        
+        // If price is -1 (price on request), return -1 regardless of quantity
+        if (basePrice === -1) {
+          return -1;
+        }
+        
         return basePrice * quantity;
       }
 

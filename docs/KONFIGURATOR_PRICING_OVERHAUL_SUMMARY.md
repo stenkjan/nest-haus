@@ -442,7 +442,7 @@ POST /api/admin/sync-pricing?password=YOUR_PASSWORD
 
 4. **Initial Sync:**
    ```bash
-   curl -X POST "https://nest-haus.vercel.app/api/admin/sync-pricing?password=YOUR_PASSWORD"
+   curl -X POST "https://nest-haus.vercel.app/api/admin/sync-pricing?password=2508DNH-d-w-i-d-z"
    ```
 
 ### Ongoing Maintenance:
@@ -2121,3 +2121,119 @@ All options recalculate m² as: price / 88m²
 - Geschossdecke is NOT special-cased for its own m² calculation
 - It uses the SAME adjusted area formula as all other categories
 - This ensures consistency and reflects the total usable space
+
+---
+
+## 🔧 Dash Price ("-") Feature (November 14, 2025)
+
+### **Overview**
+
+Implemented support for "-" as a special price value in Google Sheets that hides specific prices while maintaining all functionality.
+
+### **How It Works**
+
+**Google Sheets**: Simply type "-" in any price cell  
+**System**: Detects "-" → stores as -1 → displays as "-" with "Auf Anfrage"
+
+### **Key Features**
+
+✅ **Price Hiding**: Any Google Sheet cell with "-" displays as "-" in UI  
+✅ **Functionality Preserved**: Geschossdecke still adds 6.5m² per unit even with "-" price  
+✅ **Total Propagation**: If ANY item has "-", total becomes "-"  
+✅ **Relative Pricing**: "-" treated as 0€ for relative price calculations  
+✅ **Display Consistency**: "Auf Anfrage" subtitle appears in summaries
+
+### **Implementation Details**
+
+**Parser** (`pricing-sheet-service.ts`):
+
+- Detects "-" string and returns -1 as sentinel value
+- Preserves existing thousands format logic for normal prices
+
+**Price Calculations** (`PriceCalculator.ts`):
+
+- Added `normalizePriceForCalculation()` helper (converts -1 to 0 for math)
+- All calculation methods track if any component is -1
+- If ANY item has -1, total returns -1
+
+**Display Utilities** (`PriceUtils.ts`):
+
+- `isPriceOnRequest(price)` - Checks if price is -1
+- `formatPriceOrDash(price)` - Returns "-" for -1, formatted price otherwise
+
+### **Relative Pricing with "-" Items**
+
+When a "-" priced option is selected, other options show prices relative to treating "-" as 0€:
+
+**Example - Innenverkleidung with Fichte = "-":**
+
+```
+Selection Box Display:
+┌─────────────────────────────────┐
+│ ✓ Fichte              -         │  ← Shows "-" (not "inklusive")
+│   Lärche         +8,901€        │  ← Upgrade from treating Fichte as 0€
+│   Eiche         +14,215€        │  ← Upgrade from treating Fichte as 0€
+│   Standard     inklusive        │  ← Baseline (0€)
+└─────────────────────────────────┘
+
+Summary Panel:
+Fichte                              -
+  Innenverkleidung           Auf Anfrage
+
+Gesamtpreis: -
+Genauer Preis auf Anfrage
+```
+
+**Implementation** (ConfiguratorShell, lines 807-957):
+
+```typescript
+// Normalize prices: treat -1 as 0 for relative calculations
+const normalizedAbsolute = absolutePrice === -1 ? 0 : absolutePrice;
+const normalizedSelected = selectedPrice === -1 ? 0 : selectedPrice;
+const priceDiff = normalizedAbsolute - normalizedSelected;
+
+// Return "included" type for -1 prices to trigger "-" display
+if (absolutePrice === -1) {
+  return { type: "included" as const };
+}
+```
+
+### **Geschossdecke Special Behavior**
+
+Even when geschossdecke price is "-":
+
+- ✅ Price shows as "-" in UI with "Auf Anfrage" subtitle
+- ✅ Area calculation STILL WORKS: Each unit adds 6.5m² to total area
+- ✅ Other items' m² prices calculate correctly using adjusted area
+- ✅ Total shows "-" with "Genauer Preis auf Anfrage"
+
+This works because `PriceUtils.getAdjustedNutzflaeche()` only depends on nest model and quantity, not price.
+
+### **Files Modified**
+
+1. ✅ `src/services/pricing-sheet-service.ts` - Parser detects "-" and returns -1
+2. ✅ `src/app/konfigurator/core/PriceUtils.ts` - Added `isPriceOnRequest()` and `formatPriceOrDash()`
+3. ✅ `src/app/konfigurator/core/PriceCalculator.ts` - All calculation methods handle -1
+4. ✅ `src/app/konfigurator/components/ConfiguratorShell.tsx` - Relative pricing normalizes -1 to 0
+5. ✅ `src/app/konfigurator/components/SelectionOption.tsx` - Displays "-" for -1 prices
+6. ✅ `src/app/konfigurator/components/SummaryPanel.tsx` - Shows "-" with "Auf Anfrage"
+7. ✅ `src/app/warenkorb/components/CheckoutStepper.tsx` - Cart displays "-" correctly
+
+### **Usage Guide**
+
+**To Mark Price as "Auf Anfrage":**
+
+1. Open Google Sheet "Preistabelle_Verkauf"
+2. Change any price cell to "-"
+3. Run sync: `POST /api/admin/sync-pricing?password=PASSWORD`
+4. Konfigurator and Warenkorb will display "-" with "Auf Anfrage"
+
+**Verification:**
+
+```bash
+# Check if "-" parsed correctly as -1
+curl "http://localhost:3000/api/pricing/data" | jq '.data.geschossdecke.basePrice'
+# Should return: -1
+```
+
+**Status**: ✅ Production ready, all tests pass
