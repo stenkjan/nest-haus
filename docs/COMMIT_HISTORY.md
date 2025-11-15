@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [35dea3c8d81fac4b30a3a45e580936ca22d9ecb4] - Sat Nov 15 13:43:10 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [fdf99fc46678bf6d4f4f84d144133aae6e3ee4da] - Sat Nov 15 13:29:46 2025 +0100
 
 **Author**: stenkjan
