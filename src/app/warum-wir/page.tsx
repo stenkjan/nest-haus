@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import WarumWirClient from "./WarumWirClient";
 
 // Enhanced SEO metadata for the warum-wir page
@@ -117,19 +115,7 @@ const videoSchema = {
 };
 
 // Server Component - Can handle SEO, metadata, and structured data
-export default async function WarumWirPage() {
-  // Server-side authentication check
-  const correctPassword = process.env.SITE_PASSWORD;
-
-  if (correctPassword) {
-    const cookieStore = await cookies();
-    const authCookie = cookieStore.get("nest-haus-auth");
-
-    if (!authCookie || authCookie.value !== correctPassword) {
-      redirect("/auth?redirect=" + encodeURIComponent("/warum-wir"));
-    }
-  }
-
+export default function WarumWirPage() {
   return (
     <>
       <script

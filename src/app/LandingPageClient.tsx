@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
 import { ResponsiveHybridImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
@@ -168,67 +167,8 @@ const ImageCaption = ({ modelName, configuration }: ImageCaptionProps) => (
 export default function LandingPageClient() {
   const [_currentSectionId, setCurrentSectionId] =
     useState<string>("dein-nest-haus");
-  const [isAuthChecking, setIsAuthChecking] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showFireworks, setShowFireworks] = useState(false);
   const { isMobile } = useDeviceDetect();
-  const router = useRouter();
-
-  // Restore authentication check for password protection
-  useLayoutEffect(() => {
-    const checkAuth = async () => {
-      try {
-        console.log("[CLIENT] Starting auth check...");
-
-        // Check if we have auth cookie
-        const authCookie = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("nest-haus-auth="));
-
-        if (authCookie) {
-          console.log("[CLIENT] Auth cookie found, user authenticated");
-          setIsAuthenticated(true);
-          setIsAuthChecking(false);
-          return;
-        }
-
-        console.log(
-          "[CLIENT] No auth cookie, checking if protection is enabled"
-        );
-
-        // Check if password protection is enabled
-        const response = await fetch("/api/test/env");
-        if (response.ok) {
-          const data = await response.json();
-          console.log("[CLIENT] Protection status:", data.hasSitePassword);
-
-          if (data.hasSitePassword) {
-            console.log("[CLIENT] Redirecting to auth page");
-            // Redirect to auth page
-            router.push(
-              "/auth?redirect=" +
-                encodeURIComponent(
-                  window.location.pathname + window.location.hash
-                )
-            );
-            return;
-          }
-        }
-
-        // No protection enabled or check failed
-        console.log("[CLIENT] No protection or check failed, allowing access");
-        setIsAuthenticated(true);
-        setIsAuthChecking(false);
-      } catch (error) {
-        console.error("[CLIENT] Auth check failed:", error);
-        // On error, allow access to prevent blocking
-        setIsAuthenticated(true);
-        setIsAuthChecking(false);
-      }
-    };
-
-    checkAuth();
-  }, [router]);
 
   // Check for #launch hash to trigger fireworks easter egg
   useEffect(() => {
@@ -238,23 +178,6 @@ export default function LandingPageClient() {
       window.history.replaceState(null, '', window.location.pathname);
     }
   }, []);
-
-  // Show loading state while checking authentication
-  if (isAuthChecking) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Checking authentication...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Only render content if authenticated
-  if (!isAuthenticated) {
-    return null;
-  }
 
   // Landing page specific image styling - applies to all 8 images
   const landingImageStyle = {
