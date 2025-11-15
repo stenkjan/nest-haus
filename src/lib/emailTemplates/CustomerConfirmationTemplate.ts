@@ -153,6 +153,15 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       border-radius: 12px;
       font-size: 15px;
     }
+    .info-label {
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .info-value {
+      color: #1a1a1a;
+      font-weight: 500;
+    }
     .footer {
       background: #f9f9f9;
       padding: 30px;
@@ -344,7 +353,7 @@ Straße: Karmeliterplatz 8
 Stadt: 8010, Graz, Steiermark
 Land: Österreich
 
-${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}\n\n` : ''}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}\n\n` : '\n'}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PLANEN HEIẞT PREISE KENNEN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.
