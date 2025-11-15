@@ -505,14 +505,16 @@ export default function UnifiedContentCard({
           setCardsPerView(2.6);
           setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
         } else if (width >= 768) {
-          const cardHeight = Math.min(720, viewportHeight * 0.75);
+          // Keep same height as 1024px to avoid weird scaling
+          const cardHeight = Math.min(577, viewportHeight * 0.7);
           setCardsPerView(2.6);
           setCardWidth(cardHeight * 0.6); // 2x1 portrait ratio
         } else {
-          // Mobile: Less tall cards (1/4 shorter) - adjusted aspect ratio
-          const cardHeight = Math.min(450, viewportHeight * 0.56);
+          // Mobile: Taller cards while maintaining width
+          // We want height=500 but width to stay close to 768px width (577*0.6=346)
+          const cardHeight = Math.min(500, viewportHeight * 0.65);
           setCardsPerView(2);
-          setCardWidth(cardHeight * 0.8); // Wider ratio to maintain width but reduce height
+          setCardWidth(cardHeight * 0.7); // Adjusted ratio to maintain similar width
         }
       } else if (layout === "team-card") {
         // Team-card layout: Use 1.8:2 aspect ratio (9:10 - nearly square but slightly taller)
@@ -1519,14 +1521,14 @@ export default function UnifiedContentCard({
           transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
           className="flex items-center md:items-start flex-1 min-h-[200px] md:min-h-[240px] mt-0 mb-4 md:mb-0 lg:mt-8"
         >
-          <div className="w-full px-12 md:px-0">
+          <div className="w-full px-8 md:px-0">
             {/* Large Quote Mark - block element with fixed height */}
             <span className="block text-4xl md:text-4xl lg:text-5xl text-white/90 leading-none h-8 md:h-8 lg:h-10">
               &ldquo;
             </span>
             {/* Quote Text */}
             <p
-              className="p-primary text-white leading-relaxed"
+              className="p-secondary text-white leading-relaxed"
               dangerouslySetInnerHTML={{ __html: quoteText }}
             />
           </div>
@@ -1659,7 +1661,7 @@ export default function UnifiedContentCard({
               {/* Bottom Text - p-tertiary */}
               {card.bottomText && (
                 <p
-                  className={`p-tertiary ${textColor} opacity-90 whitespace-pre-line`}
+                  className={`p-secondary ${textColor} opacity-90 whitespace-pre-line`}
                 >
                   {card.bottomText}
                 </p>
@@ -2322,7 +2324,7 @@ export default function UnifiedContentCard({
                                                 );
                                     })()
                                   : layout === "glass-quote"
-                                    ? // Glass-quote: Reduced height on mobile
+                                    ? // Glass-quote: Fixed heights to avoid weird scaling
                                       (() => {
                                         const viewportHeight =
                                           stableViewportHeight > 0
@@ -2353,15 +2355,15 @@ export default function UnifiedContentCard({
                                                 )
                                               : isClient && screenWidth >= 768
                                                 ? Math.min(
-                                                    720 * heightMultiplier,
+                                                    577 * heightMultiplier,
                                                     viewportHeight *
-                                                      0.75 *
+                                                      0.7 *
                                                       heightMultiplier
                                                   )
                                                 : Math.min(
-                                                    450 * heightMultiplier,
+                                                    500 * heightMultiplier,
                                                     viewportHeight *
-                                                      0.56 *
+                                                      0.65 *
                                                       heightMultiplier
                                                   );
                                       })()
