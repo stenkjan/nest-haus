@@ -57,7 +57,7 @@ export interface AdminAppointmentNotificationData {
   appointmentDateTime: string;
   appointmentExpiresAt: string;
   message?: string;
-  configurationData?: Record<string, unknown>;
+  configurationData?: unknown;
   sessionId?: string;
   clientIP?: string;
   userAgent?: string;
