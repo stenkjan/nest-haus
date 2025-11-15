@@ -1,0 +1,6 @@
+
+> nest-haus@0.1.0 build:analyze
+> ANALYZE=true npm run build
+
+Der Befehl "ANALYZE" ist entweder falsch geschrieben oder
+konnte nicht gefunden werden.
