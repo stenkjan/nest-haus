@@ -408,23 +408,25 @@ export default function UnifiedContentCard({
         }
       } else if (layout === "text-icon") {
         // On desktop/tablet: width = height (based on viewport height for consistency with other cards)
-        // On mobile: fixed width with taller height for content
+        // Mobile height (480px) until 768px, then increases at each tier
         if (width >= 1536) {
+          // 1536px+: 750px (480 * 1.25 * 1.25)
           const calculatedHeight = Math.min(
-            650,
-            typeof window !== "undefined" ? window.innerHeight * 0.6 : 650
+            750,
+            typeof window !== "undefined" ? window.innerHeight * 0.7 : 750
           );
           setCardsPerView(2.5);
           setCardWidth(calculatedHeight); // Square: width = height
-        } else if (width >= 1280) {
+        } else if (width >= 1024) {
+          // 1024-1535px: 600px (480 * 1.25)
           const calculatedHeight = Math.min(
-            550,
-            typeof window !== "undefined" ? window.innerHeight * 0.6 : 550
+            600,
+            typeof window !== "undefined" ? window.innerHeight * 0.65 : 600
           );
           setCardsPerView(2.2);
           setCardWidth(calculatedHeight); // Square: width = height
         } else if (width >= 768) {
-          // Smaller size from 768-1279px
+          // 768-1023px: 520px (original tablet size)
           const calculatedHeight = Math.min(
             520,
             typeof window !== "undefined" ? window.innerHeight * 0.6 : 520
@@ -432,7 +434,7 @@ export default function UnifiedContentCard({
           setCardsPerView(2);
           setCardWidth(calculatedHeight); // Square: width = height
         } else {
-          // Mobile: fixed width, taller height
+          // Mobile (<768px): 480px base height, fixed width
           setCardsPerView(1.1);
           setCardWidth(350);
         }
@@ -816,13 +818,13 @@ export default function UnifiedContentCard({
   const renderTextIconLayout = (card: ContentCardData, index: number) => {
     // Determine which icon to use: custom icon > iconNumber > null
     const iconToRender = card.icon ? (
-      <div className="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+      <div className="w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 flex items-center justify-center">
         {card.icon}
       </div>
     ) : card.iconNumber ? (
       <StepIcon
         stepNumber={card.iconNumber}
-        className="w-12 h-12 md:w-14 md:h-14"
+        className="w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14"
       />
     ) : null;
 
@@ -1356,7 +1358,7 @@ export default function UnifiedContentCard({
         </div>
 
         {/* Text Content Overlay - Left Aligned */}
-        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-8 lg:p-10">
+        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-6">
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -2278,8 +2280,8 @@ export default function UnifiedContentCard({
                                 : undefined // Mobile: auto height
                               : layout === "text-icon"
                                 ? isClient && screenWidth >= 768
-                                  ? cardWidth // Square on tablet/desktop: height = width (already calculated from viewport)
-                                  : 480 * heightMultiplier // 480px standard, 600px tall on mobile to fit content nicely
+                                  ? cardWidth // Square on tablet/desktop (≥768px): height = width (already calculated from viewport)
+                                  : 480 * heightMultiplier // Mobile (<768px): 480px standard, 600px tall to fit content nicely
                                 : layout === "overlay-text"
                                   ? // Overlay-text: Use SAME standard heights as other cards
                                     // Use stable viewport height to prevent iOS Safari scaling issues
