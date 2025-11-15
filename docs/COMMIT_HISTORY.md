@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [af62f32cabaacab925c28d38b7babfb129500736] - Sat Nov 15 17:19:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge 21fffb481d220c888c29c3c963aa12cfe3486c6e into ae2a2ea9da988b20790381ee7f436b91417cff10  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/payments/PaymentModal.tsx
+- src/components/payments/StripeCheckoutForm.tsx
+
+
+---
+
 ## [eaf7976cf6fd3f810743673f5c77d2f531b9c7d7] - Sat Nov 15 17:09:04 2025 +0100
 
 **Author**: stenkjan
