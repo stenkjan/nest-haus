@@ -69,6 +69,15 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       border: 1px solid rgba(61, 108, 225, 0.1);
       box-shadow: 0 4px 20px rgba(61, 108, 225, 0.08);
     }
+    .glass-card--plain {
+      background: #f4f4f4;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+    }
+    .glass-card--plain .info-item {
+      border-radius: 0 !important;
+    }
     .cta-section {
       background: #f4f4f4;
       padding: 40px 30px;
@@ -94,18 +103,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       color: #666;
       line-height: 1.6;
       margin-bottom: 0;
-    }
-    .cta-image-box {
-      background: #ffffff;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      margin-bottom: 20px;
-    }
-    .cta-image {
-      width: 100%;
-      height: auto;
-      display: block;
     }
     h1 {
       font-size: 28px;
@@ -242,68 +239,61 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
     }</p>
       </div>
       
-      ${data.inquiryId ? `
-      <p style="font-size: 13px; color: #999; margin-top: 20px;">
-        Anfrage-ID: ${data.inquiryId}
-      </p>
-      ` : ''}
-      
       <!-- Contact Info Cards -->
-      <div class="glass-card">
+      <div class="glass-card glass-card--plain">
         <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
         <div class="info-grid">
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Telefon</div>
             <div class="info-value">+43 (0) 664 1001947</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Mobil</div>
             <div class="info-value">+43 (0) 664 2531869</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Email</div>
             <div class="info-value">nest@nest-haus.at</div>
           </div>
         </div>
       </div>
       
-      <div class="glass-card">
+      <div class="glass-card glass-card--plain">
         <h2>📍 Adresse <span style="color: #737373; font-weight: 400;">Komm vorbei!</span></h2>
         <div class="info-grid">
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Straße</div>
             <div class="info-value">Karmeliterplatz 8</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Stadt</div>
             <div class="info-value">8010, Graz, Steiermark</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Land</div>
             <div class="info-value">Österreich</div>
           </div>
         </div>
       </div>
+      
+      ${data.inquiryId ? `
+      <p style="font-size: 13px; color: #999; margin-top: 20px;">
+        Anfrage-ID: ${data.inquiryId}
+      </p>
+      ` : ''}
     </div>
     
-    <!-- CTA Section with Image -->
+    <!-- CTA Section -->
     <div class="cta-section">
       <div class="cta-content">
         <div class="cta-text">
           <h2>Planen heißt Preise kennen</h2>
           <p>Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.</p>
-        </div>
-        <div class="cta-image-box">
-          <img 
-            src="https://nest-haus.at/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche-mobile.png" 
-            alt="NEST-Haus am Meer"
-            class="cta-image"
-          />
-        </div>
-        <div style="text-align: center; margin-top: 20px;">
-          <a href="https://nest-haus.at/konfigurator" class="btn-primary">
-            Jetzt konfigurieren
-          </a>
+          <div style="text-align: center; margin-top: 24px;">
+            <a href="https://nest-haus.at/konfigurator" class="btn-primary">
+              Jetzt konfigurieren
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -328,22 +318,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
   const text = `
 NEST-Haus - ${isAppointment ? 'Terminanfrage bestätigt' : 'Kontaktanfrage bestätigt'}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-KONTAKT - Melde dich!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Telefon: +43 (0) 664 1001947
-Mobil: +43 (0) 664 2531869
-Email: nest@nest-haus.at
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ADRESSE - Komm vorbei!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Straße: Karmeliterplatz 8
-Stadt: 8010, Graz, Steiermark
-Land: Österreich
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 Hallo ${data.name},
 
 ${isAppointment
@@ -366,13 +340,25 @@ ${isAppointment
     }
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KONTAKT - Melde dich!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Telefon: +43 (0) 664 1001947
+Mobil: +43 (0) 664 2531869
+Email: nest@nest-haus.at
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADRESSE - Komm vorbei!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Straße: Karmeliterplatz 8
+Stadt: 8010, Graz, Steiermark
+Land: Österreich
+
+${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}\n\n` : '\n'}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PLANEN HEIẞT PREISE KENNEN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.
 
 Jetzt konfigurieren: https://nest-haus.at/konfigurator
-
-${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}` : ''}
 
 --
 NEST-Haus
