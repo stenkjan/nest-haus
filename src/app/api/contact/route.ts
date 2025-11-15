@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
       status: 'NEW' as const,
       preferredContact: data.preferredContact.toUpperCase() as 'EMAIL' | 'PHONE' | 'WHATSAPP',
       bestTimeToCall: data.bestTimeToCall || null,
-      
+
       // Appointment-specific fields
       requestType: data.requestType,
       appointmentDateTime: data.appointmentDateTime ? new Date(data.appointmentDateTime) : null,
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       appointmentExpiresAt: data.requestType === 'appointment' && data.appointmentDateTime
         ? new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
         : null,
-      
+
       adminNotes: data.requestType === 'appointment'
         ? `Terminwunsch: ${data.appointmentDateTime ? new Date(data.appointmentDateTime).toLocaleString('de-DE') : 'Nicht angegeben'} - Status: PENDING (24h Bestätigung erforderlich)`
         : null,
@@ -179,18 +179,18 @@ export async function POST(request: NextRequest) {
       // For appointments, send specialized admin notification with calendar invite
       const adminEmailPromise = data.requestType === 'appointment' && data.appointmentDateTime
         ? EmailService.sendAdminAppointmentNotification({
-            inquiryId: inquiry.id,
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            appointmentDateTime: data.appointmentDateTime,
-            appointmentExpiresAt: inquiry.appointmentExpiresAt!.toISOString(),
-            message: data.message,
-            configurationData: data.configurationData as Record<string, unknown> | undefined,
-            sessionId,
-            clientIP,
-            userAgent,
-          })
+          inquiryId: inquiry.id,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          appointmentDateTime: data.appointmentDateTime,
+          appointmentExpiresAt: inquiry.appointmentExpiresAt!.toISOString(),
+          message: data.message,
+          configurationData: data.configurationData as Record<string, unknown> | undefined,
+          sessionId,
+          clientIP,
+          userAgent,
+        })
         : EmailService.sendAdminNotification(adminEmailData);
 
       // Send emails in parallel
