@@ -1115,21 +1115,12 @@ export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 3,
-        title: "Wirtschaftskammer Österreich",
+        title: "Wirtschaftskammer Steiermark",
         subtitle: "Auszeichnung Top 30 unter 30",
-        description: "Fillertext <span class='text-nest-gray'>hat</span> Qualität <span class='text-nest-gray'>in perfekter</span> Harmonie. <span class='text-nest-gray'>Das ist</span> modernes Wohnen, <span class='text-nest-gray'>wie es sein sollte.</span>|||WKO Steiermark|||Von Jury gekürt",
+        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Nest setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||WKO Steiermark|||Von Jury gekürt",
         backgroundColor: "#121212",
         image: IMAGES.partners.wko, // TU-IAM logo
         externalLink: "https://www.wko.at", // Optional: link to WKO website
-    },
-    {
-        id: 4,
-        title: "Innovation Austria",
-        subtitle: "Pioniere der Modulbauweise",
-        description: "Wegweisend <span class='text-nest-gray'>in</span> Technologie <span class='text-nest-gray'>und</span> nachhaltigem Bauen. <span class='text-nest-gray'>Nest setzt</span> neue Maßstäbe <span class='text-nest-gray'>für die</span> Zukunft.|||Innovation Partner|||Zukunftsorientiert",
-        backgroundColor: "#121212",
-        image: IMAGES.partners.wko, // Reusing WKO logo for now
-        externalLink: "https://www.wko.at", // Optional: link
     },
 ];
 

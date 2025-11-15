@@ -31,11 +31,13 @@ interface AppointmentFormData {
 interface AppointmentBookingProps {
   showLeftSide?: boolean;
   showSubmitButton?: boolean;
+  addPadding?: boolean;
 }
 
 const AppointmentBooking = ({
   showLeftSide = true,
   showSubmitButton = true,
+  addPadding = false,
 }: AppointmentBookingProps) => {
   const { setAppointmentDetails } = useCartStore();
   const { sessionId } = useConfiguratorStore();
@@ -703,7 +705,7 @@ const AppointmentBooking = ({
             showLeftSide
               ? "lg:grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
               : "flex justify-center"
-          } items-start max-w-[1536px] w-full`}
+          } items-start max-w-[1536px] w-full${addPadding ? " px-4 md:px-12" : ""}`}
         >
           {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
           {showLeftSide && <TerminVereinbarenContent variant="desktop" />}
