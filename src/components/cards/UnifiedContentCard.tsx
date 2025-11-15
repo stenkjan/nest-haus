@@ -282,8 +282,6 @@ export default function UnifiedContentCard({
       // For all other layouts, use the standard cardWidth
       return cardWidth;
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // screenWidth is intentionally included for responsive layout calculations
     [layout, aspectRatio, heightMultiplier, cardWidth, screenWidth]
   );
 
@@ -448,7 +446,7 @@ export default function UnifiedContentCard({
           );
         } else {
           // Mobile: Height: 600px fixed, Width forced to 2x1 (portrait)
-          const cardHeight = 600;
+          const _cardHeight = 600;
           setCardsPerView(2); // Always 2 cards per view on mobile (portrait)
           setCardWidth(350); // Match video layout width for consistency
         }

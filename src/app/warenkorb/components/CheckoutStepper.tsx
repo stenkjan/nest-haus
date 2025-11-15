@@ -1770,8 +1770,6 @@ export default function CheckoutStepper({
       postalCode: grundstueckData?.postalCode || "",
       country: grundstueckData?.country || "Österreich",
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // sessionStorageTrigger is intentionally included to force re-read on step navigation
   }, [appointmentDetails, userDataFromDb, sessionStorageTrigger]);
 
   // Helper function to check if appointment is in the past
