@@ -69,6 +69,15 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       border: 1px solid rgba(61, 108, 225, 0.1);
       box-shadow: 0 4px 20px rgba(61, 108, 225, 0.08);
     }
+    .glass-card--plain {
+      background: #f4f4f4;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+    }
+    .glass-card--plain .info-item {
+      border-radius: 0 !important;
+    }
     .cta-section {
       background: #f4f4f4;
       padding: 40px 30px;
@@ -143,15 +152,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       background: #f9f9f9;
       border-radius: 12px;
       font-size: 15px;
-    }
-    .info-label {
-      color: #666;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-    .info-value {
-      color: #1a1a1a;
-      font-weight: 500;
     }
     .footer {
       background: #f9f9f9;
@@ -231,36 +231,36 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       </div>
       
       <!-- Contact Info Cards -->
-      <div class="glass-card">
+      <div class="glass-card glass-card--plain">
         <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
         <div class="info-grid">
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Telefon</div>
             <div class="info-value">+43 (0) 664 1001947</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Mobil</div>
             <div class="info-value">+43 (0) 664 2531869</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Email</div>
             <div class="info-value">nest@nest-haus.at</div>
           </div>
         </div>
       </div>
       
-      <div class="glass-card">
+      <div class="glass-card glass-card--plain">
         <h2>📍 Adresse <span style="color: #737373; font-weight: 400;">Komm vorbei!</span></h2>
         <div class="info-grid">
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Straße</div>
             <div class="info-value">Karmeliterplatz 8</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Stadt</div>
             <div class="info-value">8010, Graz, Steiermark</div>
           </div>
-          <div class="info-item">
+          <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Land</div>
             <div class="info-value">Österreich</div>
           </div>
