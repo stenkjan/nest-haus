@@ -4,6 +4,56 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [331e8fb769127de7ecb5387e60170ee69c9bde94] - Sat Nov 15 16:29:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/kontakt/KontaktClient.tsx
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/AppointmentBookingSection.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+#### 📚 Documentation Changes
+- STRIPE_MIGRATION_CHECKLIST.md
+- STRIPE_MIGRATION_QUICK_START.md
+- STRIPE_PRODUCTION_MIGRATION_GUIDE.md
+- STRIPE_TECHNICAL_ASSESSMENT.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [02f29e0867ed6fe41b1a2d9ad3f7148229d3c9d3] - Sat Nov 15 16:27:15 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/appointments/confirm/route.ts
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/konfigurator/data/configuratorData.ts
+- src/app/konfigurator/data/dialogConfigs.ts
+
+
+#### 📚 Documentation Changes
+- STRIPE_MIGRATION_CHECKLIST.md
+- STRIPE_MIGRATION_QUICK_START.md
+- STRIPE_PRODUCTION_MIGRATION_GUIDE.md
+- STRIPE_TECHNICAL_ASSESSMENT.md
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [bd37214f5fa76d501adbb4f5000c9c20ec3fb539] - Sat Nov 15 15:25:09 2025 +0000
 
 **Author**: Cursor Agent
