@@ -885,7 +885,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 3,
-        title: "Wohnen wie du willst, Nur mit Nest",
+        title: "Wohnen wie du willst, nur mit Nest",
         subtitle: "",
         description: "So funktioniert die Zukunft",
         image: IMAGES.function.nestHausInteriorSteinplatten,
@@ -906,7 +906,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         title: "Erzähle uns von deiner Idee",
         subtitle: "",
         description: "Wir machen's möglich",
-        video: IMAGES.videos.videoCard07,
+        video: IMAGES.videos.videoCard04,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Portrait format
         buttons: [

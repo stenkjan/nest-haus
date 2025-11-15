@@ -656,16 +656,18 @@ const AppointmentBooking = ({
                     Kontakt <span className="text-nest-gray">Melde dich!</span>
                   </h2>
                   <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
-                    <span className="text-nest-gray">Telefon:</span>
-                    <span className="text-black font-medium">
-                      +43 (0) 664 1001947
-                    </span>
-                    <span className="text-nest-gray">Mobil:</span>
+                    <span className="text-nest-gray">Telefon1:</span>
                     <span className="text-black font-medium">
                       +43 (0) 664 2531869
                     </span>
+                    <span className="text-nest-gray">Telefon2:</span>
+                    <span className="text-black font-medium">
+                      +43 (0) 664 1001947
+                    </span>
                     <span className="text-nest-gray">Email:</span>
-                    <span className="text-black font-medium">mail@nest-haus.at</span>
+                    <span className="text-black font-medium">
+                      mail@nest-haus.at
+                    </span>
                   </div>
                 </div>
               </div>
