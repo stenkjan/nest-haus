@@ -114,16 +114,6 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
           sectionSlug: "raum-fuer-ideen",
         },
       },
-      {
-        path: IMAGES.hero.nestHaus8,
-        mobilePath: IMAGES.hero.mobile.nestHaus8,
-        alt: "NEST-Haus Bild 8",
-        description: {
-          title: "Nest 160",
-          subtitle: "Berg Vision Holzlattung",
-          sectionSlug: "design-im-freistil",
-        },
-      },
     ],
     []
   );
