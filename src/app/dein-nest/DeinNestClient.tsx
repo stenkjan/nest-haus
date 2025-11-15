@@ -142,7 +142,7 @@ export default function DeinNestClient() {
                         Nest 80
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
-                        75m² ab € 177.000.-
+                        75m² ab € 188.600.-
                       </h3>
                     </div>
 
@@ -152,7 +152,7 @@ export default function DeinNestClient() {
                         Nest 120
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
-                        115m² ab € 245.000.-
+                        115m² ab € 263.600.-
                       </h3>
                     </div>
 
@@ -162,7 +162,7 @@ export default function DeinNestClient() {
                         Nest 160
                       </h2>
                       <h3 className="p-primary text-white drop-shadow-lg">
-                        155m² ab € 313.000.-
+                        155m² ab € 338.600.-
                       </h3>
                     </div>
                   </div>
@@ -324,7 +324,7 @@ export default function DeinNestClient() {
             variant="responsive"
             maxWidth={false}
             showInstructions={false}
-            alignment="center"
+            alignment="left"
             customData={VIDEO_BACKGROUND_CARDS_PRESET.cards.filter(
               (card) => card.id >= 1 && card.id <= 5
             )}

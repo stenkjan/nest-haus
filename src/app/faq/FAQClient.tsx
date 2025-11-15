@@ -3,6 +3,8 @@
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui";
 import Link from "next/link";
+import Footer from "@/components/Footer";
+import { SectionHeader } from "@/components/sections";
 
 interface FAQItem {
   id: number;
@@ -15,7 +17,7 @@ const faqItems: FAQItem[] = [
     id: 1,
     question: "Wie lange dauert der Entwurfsprozess?",
     answer:
-      "Der Entwurfsprozess dauert in der Regel 2-4 Wochen, abhängig von der Komplexität deines Projekts und der Anzahl der Anpassungswünsche. Sobald wir deine erste Anzahlung erhalten haben, beginnen wir mit der rechtlichen Prüfung und der Erstellung deines individuellen Entwurfs.",
+      "Der Entwurfsprozess dauert in der Regel 4-6 Wochen, abhängig von der Komplexität deines Projekts und der Anzahl der Anpassungswünsche. Sobald wir deine erste Anzahlung erhalten haben, beginnen wir mit der rechtlichen Prüfung und der Erstellung deines individuellen Entwurfs.",
   },
   {
     id: 2,
@@ -134,28 +136,25 @@ export default function FAQClient() {
   };
 
   return (
-    <div className="w-full">
-      {/* Header Section with White Background */}
-      <section className="w-full py-12 md:py-16 bg-white">
-        <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="h1-title text-black mb-4">
-            Frequently Asked Questions
-          </h1>
-          <h3 className="h3-secondary text-gray-700 mb-8">
-            Häufig gestellte Fragen
-          </h3>
-        </div>
-      </section>
-
+    <div
+      className="w-full"
+      style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
+    >
       {/* FAQ Items Section with Gray Background */}
-      <section className="w-full py-12 md:py-16 bg-[#f4f4f4]">
-        <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="w-full pt-12 pb-8 md:pb-16">
+        <SectionHeader
+          title="Frequently Asked Questions"
+          subtitle="Häufig gestellte Fragen"
+          wrapperMargin="mb-8 md:mb-12"
+          mobileTitle="Häufig gestellte Fragen"
+        />
+        <div className="w-full max-w-[1536px] bg-[#f4f4f4] mx-auto px-4 md:px-12 pt-8 md:pt-12">
           <div className="max-w-4xl mx-auto space-y-3">
             {faqItems.map(renderFAQItem)}
           </div>
 
           {/* CTA Button */}
-          <div className="mt-12 flex justify-center">
+          <div className="py-8 md:py-12 flex justify-center">
             <Link href="/kontakt">
               <Button variant="primary" size="xs">
                 Melde dich jetzt
@@ -164,7 +163,8 @@ export default function FAQClient() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
-

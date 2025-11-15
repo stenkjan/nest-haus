@@ -47,7 +47,7 @@ export default function KontaktClient() {
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
         <section
           id="terminvereinbarung"
-          className="w-full py-8 md:py-16 bg-white"
+          className="w-full pt-12 pb-8 md:pb-16 bg-white"
         >
           <SectionHeader
             title="Vereinbare jetzt deinen Termin"
