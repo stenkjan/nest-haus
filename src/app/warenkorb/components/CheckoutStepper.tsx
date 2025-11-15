@@ -630,7 +630,7 @@ export default function CheckoutStepper({
         // Calculate individual item price by ONLY changing that specific item
         // Keep all other materials at baseline to isolate the price contribution
         let testGebaeudehuelle = "trapezblech"; // baseline
-        let testInnenverkleidung = "ohne_innenverkleidung"; // baseline
+        const testInnenverkleidung = "ohne_innenverkleidung"; // baseline
         let testFussboden = "ohne_belag"; // baseline
 
         // Only change the specific material being priced
@@ -1765,6 +1765,8 @@ export default function CheckoutStepper({
       postalCode: grundstueckData?.postalCode || "",
       country: grundstueckData?.country || "Österreich",
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // sessionStorageTrigger is intentionally included to force re-read on step navigation
   }, [appointmentDetails, userDataFromDb, sessionStorageTrigger]);
 
   // Helper function to check if appointment is in the past

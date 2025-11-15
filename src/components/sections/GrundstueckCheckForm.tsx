@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
 import { SectionContainer } from "./SectionContainer";
 import { SectionHeader } from "./SectionHeader";
@@ -48,7 +47,6 @@ export function GrundstueckCheckForm({
   showHeader = true,
   useWrapper = true,
 }: GrundstueckCheckFormProps) {
-  const router = useRouter();
   const { sessionId } = useConfiguratorStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);

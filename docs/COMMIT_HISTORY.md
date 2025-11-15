@@ -4,6 +4,43 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [99c6ca60cbb8e63de7bf842c279a77b888ccad34] - Sat Nov 15 11:34:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update variable declarations and improve dependency management in components  - Changed  to  for  in CheckoutStepper for better immutability. - Added comments to clarify the intentional inclusion of dependencies in useEffect hooks for responsive layout calculations in UnifiedContentCard and CheckoutStepper. - Removed unused  import in GrundstueckCheckForm to clean up the code.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
+## [00c78ef87205247216a4b6615eca8cf38af9d7cc] - Sat Nov 15 11:29:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/appointment/route.ts
+- src/app/api/test/email/route.ts
+- src/app/api/test/payment-email/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/EMAIL_TESTING_GUIDE.md
+- docs/EMAIL_TEST_RESULTS.md
+- docs/STRIPE_CLI_SETUP.md
+
+
+---
+
 ## [d0ca379ec16e3d33fe8a7cb5732033ba474e2381] - Sat Nov 15 11:26:51 2025 +0100
 
 **Author**: stenkjan
