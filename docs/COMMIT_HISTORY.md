@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [400595d56d49cc2e5a73df98e4dd23c2000cd0fd] - Sat Nov 15 16:11:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge ca3af735654efb66905db59d7b4b387e50fb4d29 into 2ebd02225235530a39f99e762ea964c5684bd835  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
 ## [04183e25caa73f44e40a58f2b5cf09e9cd752ba8] - Sat Nov 15 15:59:38 2025 +0100
 
 **Author**: stenkjan
