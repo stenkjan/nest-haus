@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [50362aebb7320d70d5bb4f7a38f767a12f01542d] - Sat Nov 15 18:32:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `debug: add comprehensive logging to payment email configuration parser  - Log configuration keys being parsed - Log each extracted item with name and price - Log warnings when items can't be extracted - Log final total price - This will help identify why wrong prices are displayed - Test payment to see actual configurationData structure in logs  `
+
+### Changes Analysis
+
+---
+
 ## [39f1d52ef09a73045ed6256eee53a89ad61cda96] - Sat Nov 15 18:18:24 2025 +0100
 
 **Author**: stenkjan
