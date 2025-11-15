@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [99c6ca60cbb8e63de7bf842c279a77b888ccad34] - Sat Nov 15 11:34:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update variable declarations and improve dependency management in components  - Changed  to  for  in CheckoutStepper for better immutability. - Added comments to clarify the intentional inclusion of dependencies in useEffect hooks for responsive layout calculations in UnifiedContentCard and CheckoutStepper. - Removed unused  import in GrundstueckCheckForm to clean up the code.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
 ## [00c78ef87205247216a4b6615eca8cf38af9d7cc] - Sat Nov 15 11:29:44 2025 +0100
 
 **Author**: stenkjan
