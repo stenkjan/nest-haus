@@ -703,7 +703,7 @@ export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
                 text: "Das System verstehen",
                 variant: "secondary-narrow-white",
                 size: "xs",
-                link: "/kontakt",
+                link: "/nest-system",
             },
         ],
     },
