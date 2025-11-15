@@ -1358,7 +1358,7 @@ export default function UnifiedContentCard({
         </div>
 
         {/* Text Content Overlay - Left Aligned */}
-        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-8 lg:p-10">
+        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-6">
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
