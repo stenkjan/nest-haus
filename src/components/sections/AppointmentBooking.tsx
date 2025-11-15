@@ -703,7 +703,7 @@ const AppointmentBooking = ({
             showLeftSide
               ? "lg:grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
               : "flex justify-center"
-          } items-start max-w-[1536px] w-full px-4 md:px-12`}
+          } items-start max-w-[1536px] w-full`}
         >
           {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
           {showLeftSide && <TerminVereinbarenContent variant="desktop" />}
