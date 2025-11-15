@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [358373596b35c9c97acc5be9ce68016ebc858515] - Sat Nov 15 16:31:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/appointments/confirm/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [331e8fb769127de7ecb5387e60170ee69c9bde94] - Sat Nov 15 16:29:06 2025 +0100
 
 **Author**: stenkjan
