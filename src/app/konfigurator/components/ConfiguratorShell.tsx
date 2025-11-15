@@ -31,7 +31,6 @@ import type { ConfiguratorProps } from "../types/configurator.types";
 import { InfoBox, CartFooter } from "./index";
 import ConfiguratorContentCardsLightbox from "./ConfiguratorContentCardsLightbox";
 import ConfiguratorCheckbox from "./ConfiguratorCheckbox";
-import { CalendarDialog } from "@/components/dialogs";
 
 // Simple debounce implementation to avoid lodash dependency
 function _debounce(
@@ -94,9 +93,6 @@ export default function ConfiguratorShell({
     setIsBelichtungspaketOverlayVisible,
   ] = useState<boolean>(false);
   // Hidden by default, only show when actively selecting fenster
-
-  // Dialog state
-  const [isCalendarDialogOpen, setIsCalendarDialogOpen] = useState(false);
 
   // Auto-scroll utility function for both mobile and desktop - Currently unused
   const _scrollToSection = useCallback(
@@ -406,18 +402,6 @@ export default function ConfiguratorShell({
   );
 
   // Grundstückscheck logic removed from configurator; now handled in Warenkorb
-
-  const handleInfoClick = useCallback((infoKey: string) => {
-    switch (infoKey) {
-      case "beratung":
-      case "nest": // "Noch Fragen offen?" box after module selection
-        setIsCalendarDialogOpen(true);
-        break;
-      default:
-        // Other info clicks are handled by individual ConfiguratorContentCardsLightbox components
-        break;
-    }
-  }, []);
 
   // Checkbox handlers
   const handleKamindurchzugChange = useCallback(
@@ -2185,14 +2169,7 @@ export default function ConfiguratorShell({
                           }
                           triggerText={category.infoBox.title}
                         />
-                      ) : (
-                        /* Use regular InfoBox for other categories */
-                        <InfoBox
-                          title={category.infoBox.title}
-                          description={category.infoBox.description}
-                          onClick={() => handleInfoClick(category.id)}
-                        />
-                      )}
+                      ) : null}
                     </>
                   )}
 
@@ -2222,7 +2199,7 @@ export default function ConfiguratorShell({
       {/* Grundstückscheck now handled in Warenkorb */}
 
       {/* Summary Panel */}
-      <SummaryPanel onInfoClick={handleInfoClick} onReset={resetLocalState} />
+      <SummaryPanel onReset={resetLocalState} />
     </div>
   );
 
@@ -2328,12 +2305,6 @@ export default function ConfiguratorShell({
       <div className="lg:relative lg:static">
         <CartFooter onReset={resetLocalState} />
       </div>
-
-      {/* Dialog Components */}
-      <CalendarDialog
-        isOpen={isCalendarDialogOpen}
-        onClose={() => setIsCalendarDialogOpen(false)}
-      />
     </div>
   );
 }

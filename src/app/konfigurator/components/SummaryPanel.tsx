@@ -19,13 +19,11 @@ import InfoBox from "./InfoBox";
 import Button from "@/components/ui/Button";
 
 interface SummaryPanelProps {
-  onInfoClick?: (infoKey: string) => void;
   onReset?: () => void;
   className?: string;
 }
 
 export default function SummaryPanel({
-  onInfoClick,
   onReset: _onReset,
   className = "",
 }: SummaryPanelProps) {
