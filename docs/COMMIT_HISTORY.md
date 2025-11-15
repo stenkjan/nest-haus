@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a7ec56baae23319388ab374298b0148c9c9e1172] - Sat Nov 15 11:05:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Enhance session storage handling and validation in CheckoutStepper and GrundstueckCheckForm components  - Added a sessionStorageTrigger state in CheckoutStepper to force re-reading sessionStorage when navigating to the final step. - Updated validation logic in GrundstueckCheckForm to ensure all required fields are filled, with improved alert messages for user guidance. - Enhanced error handling and logging for API responses in GrundstueckCheckForm to provide clearer feedback on submission status.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+#### 📚 Documentation Changes
+- docs/GRUNDSTUECK_FORM_ERROR_HANDLING_FIX.md
+
+
+---
+
 ## [9ec4ad9fae2c30c5fce69474759a155e9f52890e] - Sat Nov 15 10:39:24 2025 +0100
 
 **Author**: stenkjan
