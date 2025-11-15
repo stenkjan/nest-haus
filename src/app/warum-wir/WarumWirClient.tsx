@@ -243,7 +243,7 @@ export default function WarumWirClient() {
                   subtitle: "",
                   description:
                     "<span class='text-nest-gray'>Holz ist </span><span class='text-black font-medium'>mehr als ein Baustoff</span><span class='text-nest-gray'>, es ist ein Versprechen an die </span><span class='text-black font-medium'>Zukunft.</span><span class='text-nest-gray'> Als nachwachsender Rohstoff </span><span class='text-black font-medium'>speichert</span><span class='text-nest-gray'> es CO₂, </span><span class='text-black font-medium'>reguliert</span><span class='text-nest-gray'> das Raumklima und schafft eine </span><span class='text-black font-medium'>Atmosphäre</span><span class='text-nest-gray'>, die natürlich wirkt und sich echt anfühlt. Mit moderner Fertigungstechnik macht Nest aus einem natürlichen Material eine </span><span class='text-black font-medium'>zukunftsfähige Bauweise.</span>",
-                  image: IMAGES.function.nestHausMaterialienSchema,
+                  image: IMAGES.flooring.eicheParkett,
                   backgroundColor: "#F4F4F4",
                   buttons: [
                     {

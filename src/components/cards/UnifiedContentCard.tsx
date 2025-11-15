@@ -1740,7 +1740,7 @@ export default function UnifiedContentCard({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: index * 0.1 + 0.2, duration: 0.6 }}
-              className="rounded-3xl shadow-lg overflow-hidden flex flex-col justify-center items-center text-center p-6 hover:shadow-xl transition-shadow duration-300"
+              className="rounded-3xl shadow-lg overflow-hidden flex flex-col justify-center items-center text-center p-6"
               style={{
                 backgroundColor: "#F4F4F4",
                 aspectRatio: "1 / 1",
@@ -2173,7 +2173,7 @@ export default function UnifiedContentCard({
                     return (
                       <motion.div
                         key={card.id}
-                        className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${
+                        className={`flex-shrink-0 rounded-3xl shadow-lg overflow-hidden ${
                           layout === "square" ||
                           layout === "image-only" ||
                           layout === "text-icon"
