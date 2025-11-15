@@ -71,7 +71,7 @@ export function GrundstueckCheckForm({
 
     // Validate required fields
     if (!formData.name.trim() || !formData.email.trim()) {
-      alert("Bitte fülle Name und E-Mail aus.");
+      alert("Bitte fülle die Inforamtionen zum Grundstück aus.");
       return;
     }
 
@@ -362,6 +362,16 @@ export function GrundstueckCheckForm({
             className="w-full border border-gray-300 rounded-xl p-3 mb-6"
             placeholder="Zusatzinformationen - optional"
           />
+
+          <div className="flex justify-center">
+            <button
+              onClick={handleZahlenUndPruefen}
+              disabled={isSubmitting}
+              className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border px-6 py-1.5 text-sm xl:text-base 2xl:text-lg w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Wird gespeichert..." : "Speichern"}
+            </button>
+          </div>
         </form>
       </div>
     );
