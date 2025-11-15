@@ -294,7 +294,14 @@ export default function UnifiedContentCard({
       // For all other layouts, use the standard cardWidth
       return cardWidth;
     },
-    [layout, aspectRatio, heightMultiplier, cardWidth, stableViewportHeight]
+    [
+      layout,
+      aspectRatio,
+      heightMultiplier,
+      cardWidth,
+      stableViewportHeight,
+      screenWidth,
+    ]
   );
 
   // Initialize client-side state
