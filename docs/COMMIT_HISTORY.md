@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [204b2c4cff6d8045d5770e30a594e3c071db72e4] - Sat Nov 15 12:50:39 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Update navigation links in DeinNestClient and adjust LandingImagesCarousel  - Changed navigation links in DeinNestClient for improved user flow: updated link from "/entwurf" to "/warum-wir" and from "/konfigurator" to "/nest-system". - Removed unused image entry in LandingImagesCarousel to streamline the component and enhance performance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [527fecd1b8606b58864d7f2692d0d711bd94983c] - Sat Nov 15 12:48:17 2025 +0100
 
 **Author**: stenkjan
