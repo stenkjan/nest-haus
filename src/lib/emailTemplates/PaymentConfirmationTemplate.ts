@@ -643,38 +643,30 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       </div>
       
       <!-- Contact Info Cards -->
-      <div class="glass-card">
-        <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="info-label">Telefon</div>
-            <div class="info-value">+43 (0) 664 1001947</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Mobil</div>
-            <div class="info-value">+43 (0) 664 2531869</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Email</div>
-            <div class="info-value">nest@nest-haus.at</div>
+      <div class="contact-boxes">
+        <!-- Kontakt Box -->
+        <div class="contact-box">
+          <h2>Kontakt <span class="gray-text">Melde dich!</span></h2>
+          <div class="contact-grid">
+            <span class="contact-label">Telefon:</span>
+            <span class="contact-value">+43 (0) 664 1001947</span>
+            <span class="contact-label">Mobil:</span>
+            <span class="contact-value">+43 (0) 664 2531869</span>
+            <span class="contact-label">Email:</span>
+            <span class="contact-value">nest@nest-haus.at</span>
           </div>
         </div>
-      </div>
-      
-      <div class="glass-card">
-        <h2>📍 Adresse <span style="color: #737373; font-weight: 400;">Komm vorbei!</span></h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="info-label">Straße</div>
-            <div class="info-value">Karmeliterplatz 8</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Stadt</div>
-            <div class="info-value">8010, Graz, Steiermark</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Land</div>
-            <div class="info-value">Österreich</div>
+        
+        <!-- Adresse Box -->
+        <div class="contact-box">
+          <h2>Adresse <span class="gray-text">Komm vorbei!</span></h2>
+          <div class="contact-grid">
+            <span class="contact-label">Straße:</span>
+            <span class="contact-value">Karmeliterplatz 8</span>
+            <span class="contact-label">Stadt:</span>
+            <span class="contact-value">8010, Graz, Steiermark</span>
+            <span class="contact-label">Land:</span>
+            <span class="contact-value">Österreich</span>
           </div>
         </div>
       </div>
