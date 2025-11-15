@@ -70,10 +70,23 @@ export async function POST(request: NextRequest) {
                             paymentAmount: true,
                             paymentCurrency: true,
                             paymentMethod: true,
+                            emailsSent: true, // Bug fix: Include for idempotency check
+                            emailsSentAt: true,
                         },
                     });
 
-                    if (inquiry?.sessionId) {
+                    if (!inquiry) {
+                        console.warn('[Stripe Webhook] ⚠️ No inquiry found after update');
+                        break;
+                    }
+
+                    // Bug fix: Check if emails already sent (idempotency)
+                    if (inquiry.emailsSent) {
+                        console.log('[Stripe Webhook] ✅ Emails already sent for this payment, skipping email send');
+                        break;
+                    }
+
+                    if (inquiry.sessionId) {
                         // Update session status
                         await prisma.userSession.updateMany({
                             where: { sessionId: inquiry.sessionId },
@@ -83,9 +96,12 @@ export async function POST(request: NextRequest) {
                     }
 
                     // Send payment confirmation emails
-                    if (inquiry && inquiry.email) {
+                    if (inquiry.email) {
+                        let customerEmailSent = false;
+                        let adminEmailSent = false;
+
+                        // Send customer confirmation email
                         try {
-                            // Send customer confirmation email
                             await EmailService.sendPaymentConfirmation({
                                 inquiryId: inquiry.id,
                                 name: inquiry.name || 'Kunde',
@@ -97,9 +113,14 @@ export async function POST(request: NextRequest) {
                                 paidAt: new Date(),
                                 configurationData: inquiry.configurationData,
                             });
+                            customerEmailSent = true;
                             console.log(`[Stripe Webhook] ✅ Sent payment confirmation to ${inquiry.email}`);
+                        } catch (customerEmailError) {
+                            console.error(`[Stripe Webhook] ❌ Failed to send customer email:`, customerEmailError);
+                        }
 
-                            // Send admin notification email
+                        // Send admin notification email
+                        try {
                             await EmailService.sendAdminPaymentNotification({
                                 inquiryId: inquiry.id,
                                 name: inquiry.name || 'Kunde',
@@ -113,20 +134,28 @@ export async function POST(request: NextRequest) {
                                 configurationData: inquiry.configurationData,
                                 sessionId: inquiry.sessionId || undefined,
                             });
+                            adminEmailSent = true;
                             console.log(`[Stripe Webhook] ✅ Sent admin payment notification`);
-                            
-                            // Mark emails as sent
-                            await prisma.customerInquiry.update({
-                                where: { id: inquiry.id },
-                                data: {
-                                    emailsSent: true,
-                                    emailsSentAt: new Date(),
-                                },
-                            });
-                            console.log(`[Stripe Webhook] ✅ Marked emails as sent`);
-                        } catch (emailError) {
-                            console.error(`[Stripe Webhook] ❌ Failed to send emails:`, emailError);
-                            // Don't fail the webhook - payment was successful
+                        } catch (adminEmailError) {
+                            console.error(`[Stripe Webhook] ❌ Failed to send admin email:`, adminEmailError);
+                        }
+                        
+                        // Bug fix: Only mark emails as sent if at least one email succeeded
+                        if (customerEmailSent || adminEmailSent) {
+                            try {
+                                await prisma.customerInquiry.update({
+                                    where: { id: inquiry.id },
+                                    data: {
+                                        emailsSent: true,
+                                        emailsSentAt: new Date(),
+                                    },
+                                });
+                                console.log(`[Stripe Webhook] ✅ Marked emails as sent`);
+                            } catch (updateError) {
+                                console.error(`[Stripe Webhook] ❌ Failed to mark emails as sent:`, updateError);
+                            }
+                        } else {
+                            console.error('[Stripe Webhook] ❌ Both customer and admin emails failed - NOT marking as sent to allow retry');
                         }
                     }
                 }

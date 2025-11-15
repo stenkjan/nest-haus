@@ -118,13 +118,16 @@ export async function POST(request: NextRequest) {
             configurationData: inquiry.configurationData || configurationData,
         };
 
+        let customerEmailSent = false;
+        let adminEmailSent = false;
+
         // Send customer payment confirmation
         try {
             await EmailService.sendPaymentConfirmation(emailData);
+            customerEmailSent = true;
             console.log('✅ Payment confirmation email sent to customer');
         } catch (customerEmailError) {
             console.error('❌ Failed to send customer email:', customerEmailError);
-            // Continue to try admin email even if customer email fails
         }
 
         // Send admin notification
@@ -137,9 +140,22 @@ export async function POST(request: NextRequest) {
                 clientIP: undefined, // Not available in this context
                 userAgent: undefined, // Not available in this context
             });
+            adminEmailSent = true;
             console.log('✅ Admin payment notification sent');
         } catch (adminEmailError) {
             console.error('❌ Failed to send admin email:', adminEmailError);
+        }
+
+        // Bug fix: Only mark emails as sent if at least one email succeeded
+        if (!customerEmailSent && !adminEmailSent) {
+            console.error('❌ Both customer and admin emails failed');
+            return NextResponse.json(
+                {
+                    error: 'Email delivery failed',
+                    message: 'Failed to send both customer and admin emails',
+                },
+                { status: 500 }
+            );
         }
 
         // Mark emails as sent
@@ -161,6 +177,8 @@ export async function POST(request: NextRequest) {
             success: true,
             inquiryId: inquiry.id,
             message: 'Payment confirmation emails sent successfully',
+            customerEmailSent,
+            adminEmailSent,
         });
 
     } catch (error) {

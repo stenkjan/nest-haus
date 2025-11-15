@@ -73,13 +73,32 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     try {
         console.log('✅ Payment succeeded webhook:', paymentIntent.id);
 
-        // Find inquiry by payment intent ID
+        // Find inquiry by payment intent ID - include emailsSent for idempotency check
         const inquiry = await prisma.customerInquiry.findFirst({
             where: { paymentIntentId: paymentIntent.id },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                sessionId: true,
+                paymentAmount: true,
+                paymentCurrency: true,
+                paymentMethod: true,
+                paidAt: true,
+                configurationData: true,
+                emailsSent: true, // Bug fix: Include for idempotency check
+                emailsSentAt: true,
+            },
         });
 
         if (!inquiry) {
             console.warn('⚠️ No inquiry found for payment intent:', paymentIntent.id);
+            return;
+        }
+
+        // Bug fix: Check if emails already sent (idempotency)
+        if (inquiry.emailsSent) {
+            console.log('✅ Emails already sent for this payment, skipping email send');
             return;
         }
 
@@ -96,47 +115,65 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 
         console.log('✅ Updated inquiry payment status:', updatedInquiry.id);
 
-        // Send confirmation emails if not already sent
-        if (updatedInquiry.email && updatedInquiry.name) {
+        // Send confirmation emails if email and name exist
+        if (inquiry.email && inquiry.name) {
+            let customerEmailSent = false;
+            let adminEmailSent = false;
+
+            const customerData = {
+                inquiryId: inquiry.id,
+                name: inquiry.name,
+                email: inquiry.email,
+                paymentAmount: inquiry.paymentAmount || paymentIntent.amount,
+                paymentCurrency: inquiry.paymentCurrency || paymentIntent.currency,
+                paymentMethod: inquiry.paymentMethod || paymentIntent.payment_method_types[0] || 'card',
+                paymentIntentId: paymentIntent.id,
+                paidAt: inquiry.paidAt || new Date(),
+                configurationData: inquiry.configurationData,
+            };
+
+            // Send customer payment confirmation
             try {
-                const customerData = {
-                    inquiryId: updatedInquiry.id,
-                    name: updatedInquiry.name,
-                    email: updatedInquiry.email,
-                    paymentAmount: updatedInquiry.paymentAmount || paymentIntent.amount,
-                    paymentCurrency: updatedInquiry.paymentCurrency || paymentIntent.currency,
-                    paymentMethod: updatedInquiry.paymentMethod || 'card',
-                    paymentIntentId: paymentIntent.id,
-                    paidAt: updatedInquiry.paidAt || new Date(),
-                    configurationData: updatedInquiry.configurationData,
-                };
-
-                // Send customer payment confirmation
                 await EmailService.sendPaymentConfirmation(customerData);
+                customerEmailSent = true;
+                console.log('✅ Payment confirmation email sent to customer');
+            } catch (customerEmailError) {
+                console.error('❌ Failed to send customer email:', customerEmailError);
+            }
 
-                // Send admin notification
+            // Send admin notification
+            try {
                 await EmailService.sendAdminPaymentNotification({
                     ...customerData,
                     paymentIntentId: paymentIntent.id,
                     stripeCustomerId: paymentIntent.customer as string,
-                    sessionId: updatedInquiry.sessionId || undefined,
+                    sessionId: inquiry.sessionId || undefined,
                     clientIP: undefined, // Not available in this context
                     userAgent: undefined, // Not available in this context
                 });
+                adminEmailSent = true;
+                console.log('✅ Admin payment notification sent');
+            } catch (adminEmailError) {
+                console.error('❌ Failed to send admin email:', adminEmailError);
+            }
 
-                console.log('✅ Payment confirmation emails sent via webhook');
-                
-                // Mark emails as sent
-                await prisma.customerInquiry.update({
-                    where: { id: updatedInquiry.id },
-                    data: {
-                        emailsSent: true,
-                        emailsSentAt: new Date(),
-                    },
-                });
-                console.log('✅ Marked emails as sent');
-            } catch (emailError) {
-                console.warn('⚠️ Failed to send emails via webhook:', emailError);
+            // Bug fix: Only mark emails as sent if at least one email succeeded
+            if (customerEmailSent || adminEmailSent) {
+                try {
+                    await prisma.customerInquiry.update({
+                        where: { id: inquiry.id },
+                        data: {
+                            emailsSent: true,
+                            emailsSentAt: new Date(),
+                        },
+                    });
+                    console.log('✅ Marked emails as sent');
+                } catch (updateError) {
+                    console.error('❌ Failed to mark emails as sent:', updateError);
+                }
+            } else {
+                console.error('❌ Both customer and admin emails failed - NOT marking as sent to allow retry');
+                throw new Error('Email delivery failed for both customer and admin');
             }
         }
 
