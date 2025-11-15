@@ -122,7 +122,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
 
   const config = parseConfigurationForEmail(data.configurationData);
 
-  const subject = `✅ Zahlungsbestätigung - ${formattedAmount} erhalten`;
+  const subject = `Zahlungsbestätigung - ${formattedAmount} erhalten`;
 
   const html = `
 <!DOCTYPE html>
@@ -231,11 +231,6 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       margin-bottom: 16px;
       line-height: 1.6;
     }
-    .success-icon {
-      font-size: 48px;
-      text-align: center;
-      margin-bottom: 16px;
-    }
     .payment-details {
       display: grid;
       gap: 12px;
@@ -262,6 +257,26 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       color: #3d6ce1;
       font-weight: 600;
       font-size: 18px;
+    }
+    .info-grid {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .info-item {
+      padding: 12px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+    .info-label {
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .info-value {
+      color: #1a1a1a;
+      font-weight: 500;
     }
     .config-items {
       display: grid;
@@ -432,12 +447,11 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     
     <!-- Main Content -->
     <div class="content">
-      <h1>Zahlung erfolgreich! 🎉</h1>
+      <h1>Zahlung erfolgreich</h1>
       <p>Vielen Dank, ${data.name}! Ihre Zahlung wurde erfolgreich verarbeitet.</p>
       
       <!-- Payment Success Card -->
       <div class="glass-card success-card">
-        <div class="success-icon">✅</div>
         <h2 style="text-align: center; color: #3d6ce1; margin-top: 0;">Zahlung bestätigt</h2>
         <div class="payment-details">
           <div class="payment-item">
@@ -619,14 +633,41 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         </div>
       </div>
       
-      <!-- Contact Info -->
-      <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 16px;">
-        <h2 style="margin-top: 0;">📧 Kontakt</h2>
-        <p style="margin: 0;">
-          <strong>E-Mail:</strong> <a href="mailto:mail@nest-haus.com" style="color: #3D6CE1; text-decoration: none;">mail@nest-haus.com</a><br>
-          <strong>Telefon:</strong> <span class="highlight">+43 664 2531869</span><br>
-          <strong>Website:</strong> <a href="https://nest-haus.at" style="color: #3D6CE1; text-decoration: none;">nest-haus.at</a>
-        </p>
+      <!-- Contact Info Cards -->
+      <div class="glass-card">
+        <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Telefon</div>
+            <div class="info-value">+43 (0) 664 1001947</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Mobil</div>
+            <div class="info-value">+43 (0) 664 2531869</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value">nest@nest-haus.at</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="glass-card">
+        <h2>📍 Adresse <span style="color: #737373; font-weight: 400;">Komm vorbei!</span></h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Straße</div>
+            <div class="info-value">Karmeliterplatz 8</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Stadt</div>
+            <div class="info-value">8010, Graz, Steiermark</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Land</div>
+            <div class="info-value">Österreich</div>
+          </div>
+        </div>
       </div>
       
       <p style="font-size: 13px; color: #999; margin-top: 20px;">

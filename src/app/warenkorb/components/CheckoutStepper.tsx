@@ -1597,6 +1597,8 @@ export default function CheckoutStepper({
                         ) : (
                           "—"
                         )}
+                        Dein Nest Haus 4.706,97 € Planungspaket - Plus 96,00 €
+                        Gesamtsumme 4.706,97 €
                       </div>
                     </div>
                   )}
