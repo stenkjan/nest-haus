@@ -62,6 +62,7 @@ export interface ContentCardData {
     bottomLabel?: string; // Optional: bottom metadata label (p-primary-small) - for team-card layout (can contain HTML)
     bottomText?: string; // Optional: bottom metadata text (p-tertiary) - for team-card layout
     imagePosition?: "left" | "center" | "right"; // Optional: override image position (object-left, object-center, object-right)
+    customPadding?: string; // Optional: custom padding classes for glass-quote layout (e.g., "p-8 md:p-10 lg:p-12")
 }
 
 /**
@@ -1076,7 +1077,7 @@ export const WARUM_WIR_TEAM_CARDS_CONTENT: ContentCardData[] = [
 export const GLASS_QUOTE_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 0,
-        title: "Wir sind \n registrierter \n Baumeister in \n Österreich",
+        title: "Wir sind \n registrierter \n Baumeisterbetrieb \n in Österreich",
         subtitle: "",
         description: "Mitglieder Bundesinnung Bau",
         backgroundColor: "#121212",
