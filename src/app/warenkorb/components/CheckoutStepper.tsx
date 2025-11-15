@@ -3557,7 +3557,9 @@ export default function CheckoutStepper({
                 onClick={() => {
                   // Validate email exists before opening payment
                   if (!getUserData.email) {
-                    setContactWarning("Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir deine E-Mail-Adresse haben.");
+                    setContactWarning(
+                      "Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir deine E-Mail-Adresse haben."
+                    );
                     setStepIndex(3); // Navigate to Terminvereinbarung
                     setTimeout(() => setContactWarning(null), 8000);
                     return;
@@ -4180,9 +4182,10 @@ export default function CheckoutStepper({
 
   function getCustomerName(): string {
     // Get name from user data (appointment or grundstueck form)
-    const fullName = getUserData.name && getUserData.lastName
-      ? `${getUserData.name} ${getUserData.lastName}`
-      : getUserData.name || "";
+    const fullName =
+      getUserData.name && getUserData.lastName
+        ? `${getUserData.name} ${getUserData.lastName}`
+        : getUserData.name || "";
     return fullName || "NEST-Haus Kunde";
   }
 

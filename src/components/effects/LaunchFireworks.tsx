@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 interface LaunchFireworksProps {
   onComplete?: () => void;
@@ -37,7 +37,7 @@ export default function LaunchFireworks({ onComplete }: LaunchFireworksProps) {
   }, [showFireworks, onComplete]);
 
   // Generate more firework positions for spectacular effect
-  const fireworks = [
+  const fireworks = useMemo(() => [
     { x: 20, y: 30, delay: 0, color: '#FFD700' }, // Gold
     { x: 80, y: 25, delay: 0.2, color: '#00FFFF' }, // Cyan
     { x: 50, y: 40, delay: 0.4, color: '#FF00FF' }, // Magenta
@@ -50,17 +50,19 @@ export default function LaunchFireworks({ onComplete }: LaunchFireworksProps) {
     { x: 40, y: 45, delay: 1.8, color: '#00FF00' }, // Lime
     { x: 70, y: 30, delay: 2.0, color: '#FF6B00' }, // Orange
     { x: 30, y: 35, delay: 2.2, color: '#FF1493' }, // Hot Pink
-  ];
+  ], []);
 
-  // Generate confetti pieces
-  const confettiPieces = Array.from({ length: 80 }, (_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    delay: Math.random() * 2,
-    duration: 3 + Math.random() * 2,
-    rotation: Math.random() * 360,
-    color: ['#FFD700', '#00FFFF', '#FF00FF', '#00FF00', '#FF6B00', '#FF1493', '#FF0000', '#0000FF'][Math.floor(Math.random() * 8)],
-  }));
+  // Generate confetti pieces - memoized to prevent animation glitches on re-render
+  const confettiPieces = useMemo(() => 
+    Array.from({ length: 80 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 3 + Math.random() * 2,
+      rotation: Math.random() * 360,
+      color: ['#FFD700', '#00FFFF', '#FF00FF', '#00FF00', '#FF6B00', '#FF1493', '#FF0000', '#0000FF'][Math.floor(Math.random() * 8)],
+    })),
+  []);
 
   return (
     <>
