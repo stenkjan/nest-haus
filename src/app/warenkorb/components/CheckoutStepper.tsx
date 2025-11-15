@@ -2606,7 +2606,7 @@ export default function CheckoutStepper({
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col lg:h-full [aspect-ratio:unset] lg:[aspect-ratio:1/1.25]"
+                      className="border border-gray-300 rounded-[19px] px-6 py-6 flex flex-col [aspect-ratio:unset]"
                       style={{
                         minHeight: "clamp(400px, 40vw, 520px)",
                       }}
@@ -2636,8 +2636,10 @@ export default function CheckoutStepper({
                                   innenverkleidung:
                                     configItem.innenverkleidung || undefined,
                                   fussboden: configItem.fussboden || undefined,
-                                  bodenaufbau: configItem.bodenaufbau || undefined,
-                                  geschossdecke: configItem.geschossdecke || undefined,
+                                  bodenaufbau:
+                                    configItem.bodenaufbau || undefined,
+                                  geschossdecke:
+                                    configItem.geschossdecke || undefined,
                                   belichtungspaket:
                                     configItem.belichtungspaket || undefined,
                                   pvanlage: configItem.pvanlage || undefined,
@@ -2647,7 +2649,8 @@ export default function CheckoutStepper({
                                   planungspaket:
                                     configItem.planungspaket || undefined,
                                   fundament: configItem.fundament || undefined,
-                                  kamindurchzug: configItem.kamindurchzug || undefined,
+                                  kamindurchzug:
+                                    configItem.kamindurchzug || undefined,
                                   grundstueckscheck: Boolean(
                                     configItem.grundstueckscheck
                                   ),
