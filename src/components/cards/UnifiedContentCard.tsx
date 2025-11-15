@@ -283,16 +283,6 @@ export default function UnifiedContentCard({
       return cardWidth;
     },
     [layout, aspectRatio, heightMultiplier, cardWidth]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // screenWidth is intentionally included for responsive layout calculations
-    [
-      layout,
-      aspectRatio,
-      heightMultiplier,
-      cardWidth,
-      stableViewportHeight,
-      screenWidth,
-    ]
   );
 
   // Initialize client-side state
