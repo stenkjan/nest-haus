@@ -2155,7 +2155,7 @@ export default function ConfiguratorShell({
                     <InfoBox
                       title="Noch Fragen offen?"
                       description="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch."
-                      onClick={() => setIsCalendarDialogOpen(true)}
+                      onClick={() => window.location.href = "/kontakt"}
                     />
                   )}
 
