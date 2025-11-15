@@ -754,6 +754,7 @@ export default function CheckoutStepper({
       fenster: "Fenster",
       planungspaket: "Planungspaket",
       grundstueckscheck: "Grundstückscheck",
+      kamindurchzug: "Durchbruch für deinen Kamin",
     };
     return categoryNames[category] || category;
   };
@@ -1205,11 +1206,15 @@ export default function CheckoutStepper({
       gebaeudehuelle: item.gebaeudehuelle || undefined,
       innenverkleidung: item.innenverkleidung || undefined,
       fussboden: item.fussboden || undefined,
+      bodenaufbau: item.bodenaufbau || undefined,
+      geschossdecke: item.geschossdecke || undefined,
       belichtungspaket: item.belichtungspaket || undefined,
       pvanlage: item.pvanlage || undefined,
       fenster: item.fenster || undefined,
       stirnseite: item.stirnseite || undefined,
       planungspaket: item.planungspaket || undefined,
+      fundament: item.fundament || undefined,
+      kamindurchzug: item.kamindurchzug || undefined,
       // grundstueckscheck is boolean in PriceCalculator.Selections interface
       grundstueckscheck: Boolean(item.grundstueckscheck),
     });
@@ -2631,6 +2636,8 @@ export default function CheckoutStepper({
                                   innenverkleidung:
                                     configItem.innenverkleidung || undefined,
                                   fussboden: configItem.fussboden || undefined,
+                                  bodenaufbau: configItem.bodenaufbau || undefined,
+                                  geschossdecke: configItem.geschossdecke || undefined,
                                   belichtungspaket:
                                     configItem.belichtungspaket || undefined,
                                   pvanlage: configItem.pvanlage || undefined,
@@ -2639,6 +2646,8 @@ export default function CheckoutStepper({
                                     configItem.stirnseite || undefined,
                                   planungspaket:
                                     configItem.planungspaket || undefined,
+                                  fundament: configItem.fundament || undefined,
+                                  kamindurchzug: configItem.kamindurchzug || undefined,
                                   grundstueckscheck: Boolean(
                                     configItem.grundstueckscheck
                                   ),
@@ -3116,11 +3125,15 @@ export default function CheckoutStepper({
                     gebaeudehuelle: configItem.gebaeudehuelle || undefined,
                     innenverkleidung: configItem.innenverkleidung || undefined,
                     fussboden: configItem.fussboden || undefined,
+                    bodenaufbau: configItem.bodenaufbau || undefined,
+                    geschossdecke: configItem.geschossdecke || undefined,
                     belichtungspaket: configItem.belichtungspaket || undefined,
                     pvanlage: configItem.pvanlage || undefined,
                     fenster: configItem.fenster || undefined,
                     stirnseite: configItem.stirnseite || undefined,
                     planungspaket: configItem.planungspaket || undefined,
+                    fundament: configItem.fundament || undefined,
+                    kamindurchzug: configItem.kamindurchzug || undefined,
                     grundstueckscheck: Boolean(configItem.grundstueckscheck),
                   };
 

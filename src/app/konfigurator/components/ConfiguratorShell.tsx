@@ -890,11 +890,11 @@ export default function ConfiguratorShell({
           return { type: "selected" as const };
         }
 
-        if (relativePrice === 0 || optionPrice === -1) {
-          return { type: "included" as const }; // trapezblech OR price on request
-        }
-
+        // If no selection yet - show relative to baseline (trapezblech)
         if (!currentSelection) {
+          if (relativePrice === 0 || optionPrice === -1) {
+            return { type: "included" as const }; // trapezblech OR price on request
+          }
           return {
             type: "upgrade" as const,
             amount: relativePrice,
