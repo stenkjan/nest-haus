@@ -164,8 +164,8 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       },
       {
         id: 2,
-        title: "Holz Fichte",
-        subtitle: "Fenster & Türen",
+        title: "Holz",
+        subtitle: "Fichte",
         description: {
           mobile: "Fichte-Holzfenster stehen für natürliche Schönheit und nachhaltiges Bauen. Das helle, warme Holz schafft eine gemütliche Atmosphäre und reguliert das Raumklima.",
           desktop: "Fichte-Holzfenster stehen für natürliche Schönheit, nachhaltiges Bauen und zeitlose Eleganz. Das helle, warme Holz mit seiner charakteristischen Maserung schafft eine gemütliche Atmosphäre und reguliert auf natürliche Weise das Raumklima. Holzfenster aus Fichte sind umweltfreundlich, renewable und verleihen jedem Zuhause eine authentische, warme Ausstrahlung."
