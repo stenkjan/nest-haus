@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bd10457ceef45d567b1255f6f2d84067266bf67f] - Sat Nov 15 10:38:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Improve validation alert in GrundstueckCheckForm component  - Enhanced the validation logic to ensure that address, city, and postal code fields are filled out before form submission. - Reformatted the alert message for better readability and user guidance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
 ## [e379702ffed20c75e30ca105aa7e3c4c346bd96c] - Sat Nov 15 10:26:41 2025 +0100
 
 **Author**: stenkjan
