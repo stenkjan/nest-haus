@@ -636,7 +636,7 @@ const AppointmentBooking = ({
           </div>
 
           {showSubmitButton && (
-            <div className="flex justify-center">
+            <div className="flex justify-center mb-12">
               <button
                 type="submit"
                 disabled={isSubmitting || !selectedDate}

@@ -130,7 +130,7 @@ export default function EntwurfClient() {
             customData={[
               {
                 id: 1,
-                title: "Teil 1",
+                title: "Teil Eins",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Dein Nest entsteht schnell, doch </span><span class='text-black font-medium'>Individualität</span><span class='text-nest-gray'> steht immer </span><span class='text-black font-medium'>an erster Stelle.</span><span class='text-nest-gray'> Mit deiner </span><span class='text-black font-medium'>ersten Anzahlung</span><span class='text-nest-gray'> erhältst du </span><span class='text-black font-medium'>rechtliche Sicherheit</span><span class='text-nest-gray'> und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen </span><span class='text-black font-medium'>Entwurf,</span><span class='text-nest-gray'> der deine Idee greifbar macht.</span>\n\n<span class='text-nest-gray'>Du entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die </span><span class='text-black font-medium'>rechtliche Prüfung und den Entwurf.</span>",
@@ -186,7 +186,7 @@ export default function EntwurfClient() {
             customData={[
               {
                 id: 2,
-                title: "Teil 2",
+                title: "Teil Zwei",
                 subtitle: "",
                 description:
                   "<span class='text-nest-gray'>Mit dem Grundstückscheck, der </span><span class='text-black font-medium'>Teil deiner ersten Anzahlung</span><span class='text-nest-gray'> ist, erhältst du sofort </span><span class='text-black font-medium'>rechtliche Sicherheit.</span><span class='text-nest-gray'> Wir prüfen, ob dein Grundstück die </span><span class='text-black font-medium'>gesetzlichen Anforderungen</span><span class='text-nest-gray'> erfüllt. Dazu gehören das jeweilige </span><span class='text-black font-medium'>Landesbaugesetz,</span><span class='text-nest-gray'> das </span><span class='text-black font-medium'>Raumordnungsgesetz</span><span class='text-nest-gray'> und die </span><span class='text-black font-medium'>örtlichen Vorschriften</span><span class='text-nest-gray'>, damit dein Bauvorhaben von Beginn an </span><span class='text-black font-medium'>auf sicheren Grundlagen</span><span class='text-nest-gray'> steht.</span>\n\n<span class='text-nest-gray'>Diese </span><span class='text-black font-medium'>Leistungen bleiben dir erhalten,</span><span class='text-nest-gray'> auch wenn du dich gegen den Bau deines Hauses mit Nest entscheiden solltest.*</span>",
