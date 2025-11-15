@@ -4,6 +4,54 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [1297a6afb33179e3ff0e5a64bc02d70e4ff3fe33] - Sat Nov 15 16:41:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `style: clean up whitespace in contact API route  - Removed unnecessary blank lines in the POST function of the contact API route - Enhances code readability and maintains consistent formatting  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/contact/route.ts
+
+
+---
+
+## [92ea803365eb7877e7e6bc1580d9c557c2c9efd3] - Sat Nov 15 16:34:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [358373596b35c9c97acc5be9ce68016ebc858515] - Sat Nov 15 16:31:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/appointments/confirm/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [331e8fb769127de7ecb5387e60170ee69c9bde94] - Sat Nov 15 16:29:06 2025 +0100
 
 **Author**: stenkjan
