@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [76c7d5c329eba5cd59621d928410ce4bcd045ee9] - Sat Nov 15 18:45:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance payment confirmation email template layout  - Updated the contact section to use a more structured layout with contact boxes. - Replaced the previous glass card design with a cleaner contact grid format. - Improved accessibility by using semantic HTML elements for better readability. - Ensured consistency in styling with the existing email template design.  `
+
+### Changes Analysis
+
+---
+
 ## [b4c28fc03fb910cba057f6c2467cfca120cff915] - Sat Nov 15 18:36:49 2025 +0100
 
 **Author**: stenkjan
