@@ -20,6 +20,7 @@ export default function LaunchFireworks({ onComplete }: LaunchFireworksProps) {
     } else {
       // Countdown finished, show fireworks
       setShowFireworks(true);
+      return undefined;
     }
   }, [countdown]);
 
