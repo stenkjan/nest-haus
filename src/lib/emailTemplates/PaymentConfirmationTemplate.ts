@@ -1,5 +1,3 @@
-import { IMAGES } from '@/constants/images';
-
 export interface PaymentConfirmationEmailData {
   inquiryId: string;
   name: string;
@@ -153,6 +151,45 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    .hero-section {
+      padding: 30px;
+      background: #f4f4f4;
+    }
+    .contact-boxes {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 0;
+    }
+    .contact-box {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .contact-box h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 16px 0;
+    }
+    .contact-box h2 .gray-text {
+      color: #737373;
+      font-weight: 400;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 16px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .contact-label {
+      color: #737373;
+    }
+    .contact-value {
+      color: #1a1a1a;
+      font-weight: 500;
     }
     .hero-image {
       width: 100%;
@@ -330,6 +367,12 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       text-decoration: none;
     }
     @media only screen and (max-width: 600px) {
+      .hero-section {
+        padding: 20px;
+      }
+      .contact-box {
+        padding: 20px;
+      }
       .content {
         padding: 30px 20px;
       }
@@ -356,12 +399,36 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
 </head>
 <body>
   <div class="email-container">
-    <!-- Hero Image -->
-    <img 
-      src="https://nest-haus.at/api/images/${IMAGES.hero.nestHaus3}" 
-      alt="NEST-Haus Interior"
-      class="hero-image"
-    />
+    <!-- Contact Info Boxes -->
+    <div class="hero-section">
+      <div class="contact-boxes">
+        <!-- Kontakt Box -->
+        <div class="contact-box">
+          <h2>Kontakt <span class="gray-text">Melde dich!</span></h2>
+          <div class="contact-grid">
+            <span class="contact-label">Telefon:</span>
+            <span class="contact-value">+43 (0) 664 1001947</span>
+            <span class="contact-label">Mobil:</span>
+            <span class="contact-value">+43 (0) 664 2531869</span>
+            <span class="contact-label">Email:</span>
+            <span class="contact-value">nest@nest-haus.at</span>
+          </div>
+        </div>
+        
+        <!-- Adresse Box -->
+        <div class="contact-box">
+          <h2>Adresse <span class="gray-text">Komm vorbei!</span></h2>
+          <div class="contact-grid">
+            <span class="contact-label">Straße:</span>
+            <span class="contact-value">Karmeliterplatz 8</span>
+            <span class="contact-label">Stadt:</span>
+            <span class="contact-value">8010, Graz, Steiermark</span>
+            <span class="contact-label">Land:</span>
+            <span class="contact-value">Österreich</span>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <!-- Main Content -->
     <div class="content">
@@ -586,6 +653,22 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
 
   const text = `
 NEST-Haus - Zahlungsbestätigung
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KONTAKT - Melde dich!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Telefon: +43 (0) 664 1001947
+Mobil: +43 (0) 664 2531869
+Email: nest@nest-haus.at
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADRESSE - Komm vorbei!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Straße: Karmeliterplatz 8
+Stadt: 8010, Graz, Steiermark
+Land: Österreich
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Zahlung erfolgreich! 🎉
 

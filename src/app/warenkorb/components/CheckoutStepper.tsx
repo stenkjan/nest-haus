@@ -1668,7 +1668,7 @@ export default function CheckoutStepper({
   > | null>(null);
 
   // Trigger to force re-reading sessionStorage when navigating between steps
-  const [sessionStorageTrigger, setSessionStorageTrigger] = useState(0);
+  const [_sessionStorageTrigger, setSessionStorageTrigger] = useState(0);
 
   // Re-check sessionStorage when step changes to abschluss
   useEffect(() => {
@@ -1770,7 +1770,7 @@ export default function CheckoutStepper({
       postalCode: grundstueckData?.postalCode || "",
       country: grundstueckData?.country || "Österreich",
     };
-  }, [appointmentDetails, userDataFromDb, sessionStorageTrigger]);
+  }, [appointmentDetails, userDataFromDb]);
 
   // Helper function to check if appointment is in the past
   const isAppointmentInPast = useMemo(() => {

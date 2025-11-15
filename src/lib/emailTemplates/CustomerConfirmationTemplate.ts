@@ -1,5 +1,3 @@
-import { IMAGES } from '@/constants/images';
-
 interface CustomerConfirmationData {
   name: string;
   email: string;
@@ -15,16 +13,16 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
   text: string;
 } {
   const isAppointment = data.requestType === 'appointment';
-  const formattedDate = data.appointmentDateTime 
+  const formattedDate = data.appointmentDateTime
     ? new Date(data.appointmentDateTime).toLocaleString('de-DE', {
-        timeZone: 'Europe/Vienna',
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+      timeZone: 'Europe/Vienna',
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
     : '';
 
   const subject = isAppointment
@@ -283,10 +281,10 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
     <!-- Main Content -->
     <div class="content">
       <h1>Vielen Dank, ${data.name}!</h1>
-      <p>${isAppointment 
-        ? 'Wir haben Ihre Terminanfrage erhalten und freuen uns auf unser Gespräch.'
-        : 'Wir haben Ihre Kontaktanfrage erhalten und melden uns in Kürze bei Ihnen.'
-      }</p>
+      <p>${isAppointment
+      ? 'Wir haben Ihre Terminanfrage erhalten und freuen uns auf unser Gespräch.'
+      : 'Wir haben Ihre Kontaktanfrage erhalten und melden uns in Kürze bei Ihnen.'
+    }</p>
       
       ${isAppointment ? `
       <!-- Appointment Details Card -->
@@ -311,10 +309,10 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       <!-- Next Steps Card -->
       <div class="glass-card">
         <h2>⏭️ Die nächsten Schritte</h2>
-        <p>${isAppointment 
-          ? '1. <strong>Terminbestätigung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr Nest-Haus-Projekt im Detail'
-          : '1. <strong>Rückmeldung:</strong> Wir melden uns innerhalb von 2 Werktagen bei Ihnen<br>2. <strong>Beratung:</strong> Gemeinsam besprechen wir Ihre individuellen Anforderungen<br>3. <strong>Planung:</strong> Wir entwickeln eine maßgeschneiderte Lösung für Sie'
-        }</p>
+        <p>${isAppointment
+      ? '1. <strong>Terminbestätigung:</strong> Sie erhalten eine Kalendereinladung per E-Mail<br>2. <strong>Vorbereitung:</strong> Notieren Sie sich Ihre Fragen und Wünsche<br>3. <strong>Gespräch:</strong> Wir besprechen Ihr Nest-Haus-Projekt im Detail'
+      : '1. <strong>Rückmeldung:</strong> Wir melden uns innerhalb von 2 Werktagen bei Ihnen<br>2. <strong>Beratung:</strong> Gemeinsam besprechen wir Ihre individuellen Anforderungen<br>3. <strong>Planung:</strong> Wir entwickeln eine maßgeschneiderte Lösung für Sie'
+    }</p>
       </div>
       
       ${data.inquiryId ? `
@@ -364,31 +362,49 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
   const text = `
 NEST-Haus - ${isAppointment ? 'Terminanfrage bestätigt' : 'Kontaktanfrage bestätigt'}
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KONTAKT - Melde dich!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Telefon: +43 (0) 664 1001947
+Mobil: +43 (0) 664 2531869
+Email: nest@nest-haus.at
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADRESSE - Komm vorbei!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Straße: Karmeliterplatz 8
+Stadt: 8010, Graz, Steiermark
+Land: Österreich
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 Hallo ${data.name},
 
-${isAppointment 
-  ? `Vielen Dank für Ihre Terminanfrage. Wir haben Ihre Anfrage erhalten und freuen uns auf unser Gespräch.
+${isAppointment
+      ? `Vielen Dank für Ihre Terminanfrage. Wir haben Ihre Anfrage erhalten und freuen uns auf unser Gespräch.
 
 Ihr gewünschter Termin:
 ${formattedDate}
 Zeitzone: Europe/Vienna (CET/CEST)
 
 Wir überprüfen die Verfügbarkeit und bestätigen Ihren Termin innerhalb von 24 Stunden per E-Mail.`
-  : `Vielen Dank für Ihre Kontaktanfrage. Wir haben Ihre Nachricht erhalten und melden uns in Kürze bei Ihnen.`
-}
+      : `Vielen Dank für Ihre Kontaktanfrage. Wir haben Ihre Nachricht erhalten und melden uns in Kürze bei Ihnen.`
+    }
 
-Die nächsten Schritte:
-${isAppointment 
-  ? '1. Terminbestätigung: Sie erhalten eine Kalendereinladung per E-Mail\n2. Vorbereitung: Notieren Sie sich Ihre Fragen und Wünsche\n3. Gespräch: Wir besprechen Ihr Nest-Haus-Projekt im Detail'
-  : '1. Rückmeldung: Wir melden uns innerhalb von 2 Werktagen bei Ihnen\n2. Beratung: Gemeinsam besprechen wir Ihre individuellen Anforderungen\n3. Planung: Wir entwickeln eine maßgeschneiderte Lösung für Sie'
-}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DIE NÄCHSTEN SCHRITTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${isAppointment
+      ? '1. Terminbestätigung: Sie erhalten eine Kalendereinladung per E-Mail\n2. Vorbereitung: Notieren Sie sich Ihre Fragen und Wünsche\n3. Gespräch: Wir besprechen Ihr Nest-Haus-Projekt im Detail'
+      : '1. Rückmeldung: Wir melden uns innerhalb von 2 Werktagen bei Ihnen\n2. Beratung: Gemeinsam besprechen wir Ihre individuellen Anforderungen\n3. Planung: Wir entwickeln eine maßgeschneiderte Lösung für Sie'
+    }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PLANEN HEIẞT PREISE KENNEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.
 
 Jetzt konfigurieren: https://nest-haus.at/konfigurator
-
-Kontakt:
-E-Mail: mail@nest-haus.at
-Telefon: +43 XXX XXXXXXX
-Website: nest-haus.at
 
 ${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}` : ''}
 

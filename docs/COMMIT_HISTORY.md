@@ -4,6 +4,48 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6773df8654c98e8258014dfedc942b7d7fc27a27] - Sat Nov 15 14:45:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: Clean up dependencies in UnifiedContentCard component  - Removed unnecessary dependencies from the useMemo hook in UnifiedContentCard for improved performance and clarity. - This change enhances the responsiveness of the layout calculations without affecting functionality.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+---
+
+## [dc00ed3d3a081c5ddd527450a078d63577858190] - Sat Nov 15 14:25:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/cards/UnifiedContentCard.tsx
+- src/components/payments/PaymentModal.tsx
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+#### 🔧 Configuration Changes
+- .env
+- .env.local
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/EMAIL_ISSUE_RESOLUTION_NOV15.md
+- docs/EMAIL_RESEND_TROUBLESHOOTING.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+
+
+---
+
 ## [726a27085906bf8cb082b9d598189cec5c243305] - Sat Nov 15 14:06:49 2025 +0100
 
 **Author**: stenkjan
