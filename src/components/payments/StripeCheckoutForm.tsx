@@ -31,6 +31,7 @@ interface PaymentFormProps {
   amount: number;
   currency: string;
   selectedPaymentMethod?: string;
+  inquiryId?: string;
   onSuccess: (paymentIntentId: string) => void;
   onError: (error: string) => void;
   onLoading: (loading: boolean) => void;
@@ -82,6 +83,7 @@ function PaymentForm({
   amount,
   currency,
   selectedPaymentMethod,
+  inquiryId,
   onSuccess,
   onError,
   onLoading,
@@ -121,7 +123,7 @@ function PaymentForm({
         setErrorMessage(errorMsg);
         onError(errorMsg);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
-        // Confirm payment on our backend
+        // Confirm payment on our backend and send email notifications
         try {
           const response = await fetch("/api/payments/confirm-payment", {
             method: "POST",
@@ -130,12 +132,14 @@ function PaymentForm({
             },
             body: JSON.stringify({
               paymentIntentId: paymentIntent.id,
+              inquiryId: inquiryId,
             }),
           });
 
           const result = await response.json();
 
           if (response.ok && result.success) {
+            console.log('✅ Payment confirmed and emails sent');
             onSuccess(paymentIntent.id);
           } else {
             onError(
@@ -480,6 +484,7 @@ export default function StripeCheckoutForm({
           amount={amount}
           currency={currency}
           selectedPaymentMethod={selectedPaymentMethod}
+          inquiryId={inquiryId}
           onSuccess={onSuccess}
           onError={onError}
           onLoading={setPaymentLoading}

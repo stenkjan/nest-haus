@@ -138,6 +138,7 @@ model CustomerInquiry {
   appointmentConfirmedAt DateTime? // When admin confirmed the appointment
   appointmentExpiresAt DateTime?   // 24h timeout for unconfirmed appointments
   calendarEventId   String?       // Google Calendar event ID if created
+  confirmationToken String?       // Secure token for email confirmation links
   
   // Payment-related fields
   paymentIntentId   String?       // Stripe Payment Intent ID

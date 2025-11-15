@@ -3,6 +3,9 @@ import { generateCustomerConfirmationEmail } from './emailTemplates/CustomerConf
 import { generateAdminNotificationEmail } from './emailTemplates/AdminNotificationTemplate';
 import { generatePaymentConfirmationEmail } from './emailTemplates/PaymentConfirmationTemplate';
 import { generateAdminPaymentNotificationEmail } from './emailTemplates/AdminPaymentNotificationTemplate';
+import { generateAdminAppointmentNotification } from './emailTemplates/AdminAppointmentNotificationTemplate';
+import { generateSecureToken } from './utils/tokenGenerator';
+import { prisma } from './prisma';
 
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -41,6 +44,20 @@ export interface PaymentConfirmationData {
 export interface AdminPaymentNotificationData extends PaymentConfirmationData {
   paymentIntentId: string;
   stripeCustomerId: string;
+  sessionId?: string;
+  clientIP?: string;
+  userAgent?: string;
+}
+
+export interface AdminAppointmentNotificationData {
+  inquiryId: string;
+  name: string;
+  email: string;
+  phone?: string;
+  appointmentDateTime: string;
+  appointmentExpiresAt: string;
+  message?: string;
+  configurationData?: unknown;
   sessionId?: string;
   clientIP?: string;
   userAgent?: string;
@@ -1198,6 +1215,62 @@ Automatische Benachrichtigung vom NEST-Haus System`;
       case 'PHONE': return 'Telefon';
       case 'WHATSAPP': return 'WhatsApp';
       default: return method;
+    }
+  }
+
+  /**
+   * Send appointment notification to admin with calendar attachment
+   */
+  static async sendAdminAppointmentNotification(
+    data: AdminAppointmentNotificationData
+  ): Promise<boolean> {
+    try {
+      console.log('📅 Sending admin appointment notification with calendar invite...');
+
+      // Generate secure confirmation token
+      const confirmToken = generateSecureToken();
+
+      // Generate email with ICS attachment
+      const emailContent = generateAdminAppointmentNotification({
+        ...data,
+        confirmToken,
+      });
+
+      // Send email via Resend with attachment
+      const result = await resend.emails.send({
+        from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        to: [this.ADMIN_EMAIL],
+        replyTo: this.REPLY_TO_EMAIL,
+        subject: emailContent.subject,
+        html: emailContent.html,
+        text: emailContent.text,
+        attachments: [
+          {
+            filename: emailContent.icsAttachment.filename,
+            content: emailContent.icsAttachment.content,
+          },
+        ],
+      });
+
+      if (result.error) {
+        console.error('❌ Failed to send admin appointment email:', result.error);
+        return false;
+      }
+
+      console.log('✅ Admin appointment notification sent:', result.data?.id);
+
+      // Store confirmToken in database for verification
+      await prisma.customerInquiry.update({
+        where: { id: data.inquiryId },
+        data: { confirmationToken: confirmToken },
+      });
+
+      console.log('✅ Confirmation token stored in database');
+
+      return true;
+    } catch (error) {
+      console.error('❌ Error sending admin appointment notification:', error);
+      return false;
     }
   }
 }

@@ -57,45 +57,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     }
-    .hero-section {
-      padding: 30px;
-      background: #f4f4f4;
-    }
-    .contact-boxes {
-      display: grid;
-      gap: 16px;
-      margin-bottom: 0;
-    }
-    .contact-box {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-    .contact-box h2 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin: 0 0 16px 0;
-    }
-    .contact-box h2 .gray-text {
-      color: #737373;
-      font-weight: 400;
-    }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 4px 16px;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-    .contact-label {
-      color: #737373;
-    }
-    .contact-value {
-      color: #1a1a1a;
-      font-weight: 500;
-    }
     .content {
       padding: 40px 30px;
     }
@@ -115,8 +76,12 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       border-radius: 0;
     }
     .cta-content {
-      display: grid;
-      gap: 24px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .cta-text {
+      text-align: center;
+      margin-bottom: 24px;
     }
     .cta-text h2 {
       font-size: 24px;
@@ -128,20 +93,19 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       font-size: 15px;
       color: #666;
       line-height: 1.6;
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
     .cta-image-box {
       background: #ffffff;
       border-radius: 24px;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
     }
     .cta-image {
       width: 100%;
       height: auto;
       display: block;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
     }
     h1 {
       font-size: 28px;
@@ -213,12 +177,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       text-decoration: none;
     }
     @media only screen and (max-width: 600px) {
-      .hero-section {
-        padding: 20px;
-      }
-      .contact-box {
-        padding: 20px;
-      }
       .content {
         padding: 30px 20px;
       }
@@ -247,37 +205,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
 </head>
 <body>
   <div class="email-container">
-    <!-- Contact Info Boxes -->
-    <div class="hero-section">
-      <div class="contact-boxes">
-        <!-- Kontakt Box -->
-        <div class="contact-box">
-          <h2>Kontakt <span class="gray-text">Melde dich!</span></h2>
-          <div class="contact-grid">
-            <span class="contact-label">Telefon:</span>
-            <span class="contact-value">+43 (0) 664 1001947</span>
-            <span class="contact-label">Mobil:</span>
-            <span class="contact-value">+43 (0) 664 2531869</span>
-            <span class="contact-label">Email:</span>
-            <span class="contact-value">nest@nest-haus.at</span>
-          </div>
-        </div>
-        
-        <!-- Adresse Box -->
-        <div class="contact-box">
-          <h2>Adresse <span class="gray-text">Komm vorbei!</span></h2>
-          <div class="contact-grid">
-            <span class="contact-label">Straße:</span>
-            <span class="contact-value">Karmeliterplatz 8</span>
-            <span class="contact-label">Stadt:</span>
-            <span class="contact-value">8010, Graz, Steiermark</span>
-            <span class="contact-label">Land:</span>
-            <span class="contact-value">Österreich</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
     <!-- Main Content -->
     <div class="content">
       <h1>Vielen Dank, ${data.name}!</h1>
@@ -320,6 +247,43 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
         Anfrage-ID: ${data.inquiryId}
       </p>
       ` : ''}
+      
+      <!-- Contact Info Cards -->
+      <div class="glass-card">
+        <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Telefon</div>
+            <div class="info-value">+43 (0) 664 1001947</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Mobil</div>
+            <div class="info-value">+43 (0) 664 2531869</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value">nest@nest-haus.at</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="glass-card">
+        <h2>📍 Adresse <span style="color: #737373; font-weight: 400;">Komm vorbei!</span></h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Straße</div>
+            <div class="info-value">Karmeliterplatz 8</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Stadt</div>
+            <div class="info-value">8010, Graz, Steiermark</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Land</div>
+            <div class="info-value">Österreich</div>
+          </div>
+        </div>
+      </div>
     </div>
     
     <!-- CTA Section with Image -->
@@ -328,16 +292,18 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
         <div class="cta-text">
           <h2>Planen heißt Preise kennen</h2>
           <p>Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.</p>
-          <a href="https://nest-haus.at/konfigurator" class="btn-primary">
-            Jetzt konfigurieren
-          </a>
         </div>
         <div class="cta-image-box">
           <img 
-            src="https://nest-haus.at/api/images/173-NEST-Haus-Konfigurator-Modul-Holzfassade-Steirische-Eiche-Parkett-Eiche" 
-            alt="NEST-Haus Konfiguration"
+            src="https://nest-haus.at/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche-mobile.png" 
+            alt="NEST-Haus am Meer"
             class="cta-image"
           />
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <a href="https://nest-haus.at/konfigurator" class="btn-primary">
+            Jetzt konfigurieren
+          </a>
         </div>
       </div>
     </div>
