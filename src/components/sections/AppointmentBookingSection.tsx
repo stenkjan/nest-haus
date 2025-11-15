@@ -7,6 +7,7 @@ interface AppointmentBookingSectionProps {
   subtitle?: string;
   backgroundColor?: "white" | "gray";
   maxWidth?: boolean;
+  padding?: boolean;
 }
 
 export const AppointmentBookingSection: React.FC<
@@ -17,6 +18,7 @@ export const AppointmentBookingSection: React.FC<
   subtitle = "Wir helfen gerne.",
   backgroundColor = "white",
   maxWidth = true,
+  padding = false,
 }) => {
   const bgClass = backgroundColor === "gray" ? "bg-gray-50" : "bg-white";
   const containerClass = maxWidth ? "w-full max-w-[1536px]" : "w-full";
@@ -37,7 +39,7 @@ export const AppointmentBookingSection: React.FC<
             <div className="animate-pulse bg-gray-200 h-96 rounded max-w-5xl mx-auto"></div>
           }
         >
-          <AppointmentBooking />
+          <AppointmentBooking addPadding={padding} />
         </Suspense>
       </div>
     </section>

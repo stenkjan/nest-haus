@@ -130,7 +130,7 @@ export default function WarumWirClient() {
           <div className="w-full">
             <SectionHeader
               title="Verlässlichkeit, auf die du bauen kannst"
-              subtitle="Innovationen entstehen dort, wo junge Ideen auf Erfahrung treffen."
+              subtitle="Innovationen entstehen dort, wo junge Ideen auf Erfahrung treffen"
               titleClassName="text-white"
               subtitleClassName="text-white"
               wrapperMargin="mb-8 md:mb-12"
@@ -151,7 +151,7 @@ export default function WarumWirClient() {
 
         {/* Section 3 - Unser Team - Team Values Cards */}
         <section id="unser-team" className="w-full bg-white py-8 md:py-16">
-          <div className="w-full mb-8 md:mb-12 px-4 lg:pl-16 xl:pl-20 2xl:pl-24">
+          <div className="w-full mb-8 md:mb-12 px-4 md:px-12">
             <div className="text-left">
               <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
                 Kreativität und Erfahrung vereint

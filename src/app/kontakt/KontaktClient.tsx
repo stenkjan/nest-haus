@@ -60,6 +60,7 @@ export default function KontaktClient() {
           <AppointmentBookingSection
             backgroundColor="white"
             maxWidth={false}
+            padding={true}
             title=""
             subtitle=""
           />
