@@ -125,6 +125,16 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
                 });
 
                 console.log('✅ Payment confirmation emails sent via webhook');
+                
+                // Mark emails as sent
+                await prisma.customerInquiry.update({
+                    where: { id: updatedInquiry.id },
+                    data: {
+                        emailsSent: true,
+                        emailsSentAt: new Date(),
+                    },
+                });
+                console.log('✅ Marked emails as sent');
             } catch (emailError) {
                 console.warn('⚠️ Failed to send emails via webhook:', emailError);
             }

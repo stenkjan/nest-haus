@@ -4187,6 +4187,9 @@ export default function CheckoutStepper({
     // The PaymentModal will show the success screen
     // User can close it manually by clicking the close button
 
+    // Send payment confirmation emails (backup to webhook)
+    sendPaymentConfirmationEmails(paymentIntentId);
+
     // Track conversion (non-blocking)
     const sessionId = configItem?.sessionId || configuration?.sessionId;
     if (sessionId) {
@@ -4207,6 +4210,43 @@ export default function CheckoutStepper({
     window.dispatchEvent(new CustomEvent("alpha-test-purchase-completed"));
 
     // Note: onScrollToContact will be triggered when user closes the success modal
+  }
+
+  async function sendPaymentConfirmationEmails(paymentIntentId: string) {
+    try {
+      console.log("📧 Sending payment confirmation emails...");
+
+      const response = await fetch("/api/payments/send-confirmation-emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentIntentId,
+          customerEmail: getCustomerEmail(),
+          customerName: getCustomerName(),
+          configurationData: configItem || configuration,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.alreadySent) {
+          console.log(
+            "✅ Payment confirmation emails already sent (idempotent)"
+          );
+        } else {
+          console.log("✅ Payment confirmation emails sent successfully");
+        }
+      } else {
+        console.warn(
+          "⚠️ Failed to send confirmation emails (webhook will handle)"
+        );
+      }
+    } catch (error) {
+      console.warn(
+        "⚠️ Error sending confirmation emails (webhook will handle):",
+        error
+      );
+    }
   }
 
   function handlePaymentError(error: string) {

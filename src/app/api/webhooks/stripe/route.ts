@@ -114,6 +114,16 @@ export async function POST(request: NextRequest) {
                                 sessionId: inquiry.sessionId || undefined,
                             });
                             console.log(`[Stripe Webhook] ✅ Sent admin payment notification`);
+                            
+                            // Mark emails as sent
+                            await prisma.customerInquiry.update({
+                                where: { id: inquiry.id },
+                                data: {
+                                    emailsSent: true,
+                                    emailsSentAt: new Date(),
+                                },
+                            });
+                            console.log(`[Stripe Webhook] ✅ Marked emails as sent`);
                         } catch (emailError) {
                             console.error(`[Stripe Webhook] ❌ Failed to send emails:`, emailError);
                             // Don't fail the webhook - payment was successful

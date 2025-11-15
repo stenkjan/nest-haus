@@ -149,6 +149,10 @@ model CustomerInquiry {
   paymentCurrency   String?       @default("eur")
   paidAt            DateTime?     // When payment was completed
   
+  // Email tracking fields
+  emailsSent        Boolean       @default(false) // Track if confirmation emails sent
+  emailsSentAt      DateTime?     // When emails were sent
+  
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
 

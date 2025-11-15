@@ -93,6 +93,7 @@ export class EmailService {
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
         replyTo: this.REPLY_TO_EMAIL,
         to: data.email,
+        cc: this.ADMIN_EMAIL, // Admin gets CC of all customer emails
         subject,
         html,
         text,
@@ -875,6 +876,7 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
         replyTo: this.REPLY_TO_EMAIL,
         to: data.email,
+        cc: this.ADMIN_EMAIL, // Admin gets CC of all customer emails
         subject,
         html,
         text,

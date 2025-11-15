@@ -118,6 +118,18 @@ export default function WarenkorbClient() {
           .then((data) => {
             if (data.success && data.status === "succeeded") {
               console.log("✅ Payment redirect verified as successful");
+              
+              // Trigger email sending for redirect-based payments
+              fetch('/api/payments/send-confirmation-emails', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  paymentIntentId: data.paymentIntentId,
+                }),
+              }).catch((err) => {
+                console.warn('⚠️ Email sending failed (webhook will handle):', err);
+              });
+              
               setPaymentRedirectStatus({
                 show: true,
                 success: true,
