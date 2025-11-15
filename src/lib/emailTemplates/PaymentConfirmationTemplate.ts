@@ -73,7 +73,7 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
     fenster: extractItem(config.fenster),
     planungspaket: extractItem(config.planungspaket),
     konzeptCheck: config.grundstueckscheck
-      ? { completed: true, price: 15000 } // €150 in cents
+      ? { completed: true, price: 150000 } // €1,500 in cents (Entwurf deposit)
       : null,
     terminvereinbarung: config.appointmentDateTime
       ? {
