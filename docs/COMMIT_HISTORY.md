@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [726a27085906bf8cb082b9d598189cec5c243305] - Sat Nov 15 14:06:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update email address in AppointmentBooking and TerminVereinbarenContent components  - Changed the email address from  to  in both components for consistency. - Enhanced the CustomerConfirmationTemplate with new contact information layout and styling for improved user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+---
+
 ## [ce2b4c74fb73ef6262cb31d33773b2b7f1732f0f] - Sat Nov 15 13:47:26 2025 +0100
 
 **Author**: stenkjan
