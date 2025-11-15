@@ -69,9 +69,16 @@ export function GrundstueckCheckForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate required fields
-    if (!formData.name.trim() || !formData.email.trim()) {
-      alert("Bitte fülle die Inforamtionen zum Grundstück aus.");
+    // Validate minimum required fields: address, city, postalCode
+    if (!formData.address.trim() || !formData.city.trim() || !formData.postalCode.trim()) {
+      alert("Bitte fülle die Informationen zum Grundstück aus (Adresse, Stadt und Postleitzahl sind erforderlich).");
+      return;
+    }
+
+    // Flexible address validation: allows letters, numbers, spaces, common punctuation
+    const addressRegex = /^[a-zA-ZäöüÄÖÜß0-9\s,.\-/]+$/;
+    if (!addressRegex.test(formData.address)) {
+      alert("Bitte gib eine gültige Adresse ein.");
       return;
     }
 
@@ -327,7 +334,6 @@ export function GrundstueckCheckForm({
                 onChange={handleChange}
                 className="border border-gray-300 rounded-xl p-3"
                 placeholder="Bundesland"
-                required
               />
             </div>
 
@@ -578,7 +584,6 @@ export function GrundstueckCheckForm({
                         onChange={handleChange}
                         className="border border-gray-300 rounded-xl p-3"
                         placeholder="Bundesland"
-                        required
                       />
                     </div>
 
@@ -770,7 +775,6 @@ export function GrundstueckCheckForm({
                   onChange={handleChange}
                   className="w-full border border-gray-300 rounded-xl p-3"
                   placeholder="Bundesland"
-                  required
                 />
                 <input
                   type="text"

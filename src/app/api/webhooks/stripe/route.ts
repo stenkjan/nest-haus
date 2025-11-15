@@ -1,13 +1,7 @@
-/**
- * Stripe Webhook Handler
- * 
- * Handles Stripe payment events to automatically update customer inquiry payment status.
- * This ensures payment status is always in sync with Stripe's actual payment state.
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
+import { EmailService } from '@/lib/EmailService';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2025-09-30.clover',
@@ -63,19 +57,67 @@ export async function POST(request: NextRequest) {
 
                 console.log(`[Stripe Webhook] Updated ${updated.count} inquiries for payment ${paymentIntent.id}`);
 
-                // If we updated any inquiries, also update associated sessions
+                // If we updated any inquiries, also update associated sessions and send emails
                 if (updated.count > 0) {
                     const inquiry = await prisma.customerInquiry.findFirst({
                         where: { paymentIntentId: paymentIntent.id },
-                        select: { sessionId: true },
+                        select: {
+                            id: true,
+                            sessionId: true,
+                            name: true,
+                            email: true,
+                            configurationData: true,
+                            paymentAmount: true,
+                            paymentCurrency: true,
+                            paymentMethod: true,
+                        },
                     });
 
                     if (inquiry?.sessionId) {
+                        // Update session status
                         await prisma.userSession.updateMany({
                             where: { sessionId: inquiry.sessionId },
                             data: { status: 'COMPLETED' },
                         });
                         console.log(`[Stripe Webhook] Marked session ${inquiry.sessionId} as COMPLETED`);
+                    }
+
+                    // Send payment confirmation emails
+                    if (inquiry && inquiry.email) {
+                        try {
+                            // Send customer confirmation email
+                            await EmailService.sendPaymentConfirmation({
+                                inquiryId: inquiry.id,
+                                name: inquiry.name || 'Kunde',
+                                email: inquiry.email,
+                                paymentAmount: inquiry.paymentAmount || paymentIntent.amount,
+                                paymentCurrency: inquiry.paymentCurrency || paymentIntent.currency,
+                                paymentMethod: inquiry.paymentMethod || paymentIntent.payment_method_types[0] || 'card',
+                                paymentIntentId: paymentIntent.id,
+                                paidAt: new Date(),
+                                configurationData: inquiry.configurationData,
+                            });
+                            console.log(`[Stripe Webhook] ✅ Sent payment confirmation to ${inquiry.email}`);
+
+                            // Send admin notification email
+                            await EmailService.sendAdminPaymentNotification({
+                                inquiryId: inquiry.id,
+                                name: inquiry.name || 'Kunde',
+                                email: inquiry.email,
+                                paymentAmount: inquiry.paymentAmount || paymentIntent.amount,
+                                paymentCurrency: inquiry.paymentCurrency || paymentIntent.currency,
+                                paymentMethod: inquiry.paymentMethod || paymentIntent.payment_method_types[0] || 'card',
+                                paymentIntentId: paymentIntent.id,
+                                stripeCustomerId: paymentIntent.customer as string || '',
+                                paidAt: new Date(),
+                                configurationData: inquiry.configurationData,
+                                sessionId: inquiry.sessionId || undefined,
+                            });
+                            console.log(`[Stripe Webhook] ✅ Sent admin payment notification`);
+                        } catch (emailError) {
+                            console.error(`[Stripe Webhook] ❌ Failed to send emails:`, emailError);
+                            // Don't fail the webhook - payment was successful
+                        }
                     }
                 }
 
