@@ -225,31 +225,58 @@ export default function LaunchFireworks({ onComplete }: LaunchFireworksProps) {
           .join('\n')}
       `}</style>
 
-      <div className="fireworks-overlay">
-        {fireworks.map((fw, i) => (
-          <div
-            key={i}
-            className={`firework firework-${i}`}
-            style={{
-              left: `${fw.x}%`,
-              top: `${fw.y}%`,
-              animationDelay: `${fw.delay}s`,
-            }}
-          >
-            {/* Create 12 particles per firework */}
-            {[...Array(12)].map((_, p) => (
-              <div
-                key={p}
-                className="particle"
-                style={{
-                  backgroundColor: fw.color,
-                  boxShadow: `0 0 20px ${fw.color}, 0 0 40px ${fw.color}, 0 0 60px ${fw.color}`,
-                }}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      {/* Countdown Display */}
+      {countdown > 0 && (
+        <div className="countdown-overlay">
+          <div className="countdown-number">{countdown}</div>
+        </div>
+      )}
+
+      {/* Fireworks and Confetti */}
+      {showFireworks && (
+        <div className="fireworks-overlay">
+          {/* Fireworks */}
+          {fireworks.map((fw, i) => (
+            <div
+              key={i}
+              className={`firework firework-${i}`}
+              style={{
+                left: `${fw.x}%`,
+                top: `${fw.y}%`,
+                animationDelay: `${fw.delay}s`,
+              }}
+            >
+              {/* Create 16 particles per firework for more spectacular effect */}
+              {[...Array(16)].map((_, p) => (
+                <div
+                  key={p}
+                  className="particle"
+                  style={{
+                    backgroundColor: fw.color,
+                    boxShadow: `0 0 30px ${fw.color}, 0 0 60px ${fw.color}, 0 0 90px ${fw.color}`,
+                  }}
+                />
+              ))}
+            </div>
+          ))}
+
+          {/* Confetti */}
+          {confettiPieces.map((confetti) => (
+            <div
+              key={confetti.id}
+              className="confetti"
+              style={{
+                left: `${confetti.left}%`,
+                backgroundColor: confetti.color,
+                animationDuration: `${confetti.duration}s`,
+                animationDelay: `${confetti.delay}s`,
+                transform: `rotate(${confetti.rotation}deg)`,
+                boxShadow: `0 0 10px ${confetti.color}`,
+              }}
+            />
+          ))}
+        </div>
+      )}
     </>
   );
 }
