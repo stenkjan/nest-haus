@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bf498e6743437f23a0ec5887187fc0673a5df572] - Sat Nov 15 18:03:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: enhance LaunchFireworks component with additional particles and confetti display  - Increased the number of particles per firework from 12 to 16 for a more spectacular effect. - Added confetti generation to enhance the visual experience during the fireworks display. - Included a countdown overlay to display the countdown before the fireworks start.  ✅ All linting passed ✅ Ready for testing  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/effects/LaunchFireworks.tsx
+
+
+---
+
 ## [0cc011b73b34ae28ffb9217d28cdd6d20ac5e11c] - Sat Nov 15 17:50:59 2025 +0100
 
 **Author**: stenkjan
