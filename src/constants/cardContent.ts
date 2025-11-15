@@ -89,7 +89,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Eichenholz - Parkett",
         subtitle: "",
         description:
-            "Der Parkettboden aus Eiche steht für zeitlose Eleganz, natürliche Wärme und außergewöhnliche Langlebigkeit. Die charakteristische Maserung und die warme Farbgebung der Eiche verleihen jedem Raum eine edle und zugleich gemütliche Atmosphäre. Dank der hohen Härte und Widerstandsfähigkeit des Holzes ist Eichenparkett besonders strapazierfähig und eignet sich sowohl für Wohnräume als auch für stark frequentierte Bereiche.",
+            "Der Parkettboden aus Eiche steht für zeitlose Eleganz, natürliche Wärme und außergewöhnliche Langlebigkeit. Die charakteristische Maserung und warme Farbgebung verleihen jedem Raum eine edle, gemütliche Atmosphäre. Dank hoher Härte ist Eichenparkett besonders strapazierfähig und eignet sich für Wohnräume sowie stark frequentierte Bereiche.",
         mobileTitle: "Eichenholz - Parkett",
         mobileSubtitle: "",
         mobileDescription:
@@ -102,7 +102,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Feinsteinzeug - Schiefer",
         subtitle: "",
         description:
-            "Schiefer steht für natürliche Eleganz, hohe Strapazierfähigkeit und zeitlose Ästhetik. Als Bodenbelag überzeugt er durch robuste, trittfeste Oberfläche und Beständigkeit gegen Temperatur- und Feuchtigkeitseinflüsse. Feine, geschichtete Struktur und Anthrazit- bis Tiefgrautöne verleihen Räumen eine edle, warme Ausstrahlung – langlebig in modernen wie klassischen Wohnkonzepten.",
+            "Schiefer steht für natürliche Eleganz, hohe Strapazierfähigkeit und zeitlose Ästhetik. Als Bodenbelag überzeugt er durch robuste, trittfeste Oberfläche und Beständigkeit gegen Temperatur- und Feuchtigkeitseinflüsse. Die geschichtete Struktur und Anthrazit- bis Tiefgrautöne verleihen Räumen eine edle Ausstrahlung – langlebig in modernen wie klassischen Wohnkonzepten.",
         mobileTitle: "Feinsteinzeug - Schiefer",
         mobileSubtitle: "",
         mobileDescription:
@@ -128,7 +128,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Verbundplatten - Schwarz",
         subtitle: "",
         description:
-            "Die Fundermax HPL-Platten sind eine erstklassige Lösung für moderne und langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie eine außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Ihre widerstandsfähige Oberfläche ist kratzfest, pflegeleicht und trotzt selbst extremen klimatischen Bedingungen.",
+            "Die Fundermax HPL-Platten sind eine erstklassige Lösung für moderne, langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Die kratzfeste, pflegeleichte Oberfläche trotzt selbst extremen klimatischen Bedingungen.",
         mobileTitle: "Verbundplatten - Schwarz",
         mobileSubtitle: "",
         mobileDescription:
@@ -141,7 +141,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Verbundplatten - Weiß",
         subtitle: "",
         description:
-            "Die Fundermax HPL-Platten sind eine erstklassige Lösung für moderne und langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie eine außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Ihre widerstandsfähige Oberfläche ist kratzfest, pflegeleicht und trotzt selbst extremen klimatischen Bedingungen. ",
+            "Die Fundermax HPL-Platten sind eine erstklassige Lösung für moderne, langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Die kratzfeste, pflegeleichte Oberfläche trotzt selbst extremen klimatischen Bedingungen.",
         mobileTitle: "Verbundplatten - Weiß",
         mobileSubtitle: "",
         mobileDescription:
@@ -180,7 +180,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Lärche - Innenverkleidung",
         subtitle: "",
         description:
-            "Die Innenverkleidung aus Lärchenholz bringt natürliche Wärme und lebendige Optik in den Innenraum. Die markante Maserung und die warmen, goldgelben Töne schaffen eine gemütliche, einladende Atmosphäre. Gleichzeitig ist das Holz leicht, gut zu verarbeiten und wirkt feuchtigkeitsregulierend – ideal für ein angenehmes, gesundes Raumklima. Mit seiner zeitlosen Ausstrahlung passt es sowohl in moderne als auch in traditionelle Wohnkonzepte.",
+            "Die Innenverkleidung aus Lärchenholz bringt natürliche Wärme und lebendige Optik in den Innenraum. Die markante Maserung und warmen, goldgelben Töne schaffen eine gemütliche Atmosphäre. Das Holz ist leicht, gut zu verarbeiten und wirkt feuchtigkeitsregulierend – ideal für ein angenehmes Raumklima. Zeitlos in modernen wie traditionellen Wohnkonzepten.",
         mobileTitle: "Lärche - Innenverkleidung",
         mobileSubtitle: "",
         mobileDescription:
@@ -193,7 +193,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Fichte - Innenverkleidung",
         subtitle: "",
         description:
-            "Die Innenverkleidung aus Fichte überzeugt durch ihre helle, freundliche Ausstrahlung und verleiht jedem Raum ein Gefühl von Weite und Geborgenheit. Die sanfte Maserung und der warme Farbton der Fichte bringen die natürliche Schönheit des Holzes zur Geltung und schaffen eine wohltuende, harmonische Atmosphäre. Fichte ist leicht, vielseitig einsetzbar und sorgt dank ihrer feuchtigkeitsregulierenden Eigenschaften für ein angenehmes Raumklima.",
+            "Die Innenverkleidung aus Fichte überzeugt durch ihre helle, freundliche Ausstrahlung und verleiht jedem Raum Weite und Geborgenheit. Die sanfte Maserung und warme Farbgebung schaffen eine wohltuende Atmosphäre. Fichte ist leicht, vielseitig einsetzbar und sorgt dank feuchtigkeitsregulierender Eigenschaften für ein angenehmes Raumklima.",
         mobileTitle: "Fichte - Innenverkleidung",
         mobileSubtitle: "",
         mobileDescription:
@@ -206,7 +206,7 @@ export const MATERIALIEN_CONTENT: ContentCardData[] = [
         title: "Fichte - Konstruktion",
         subtitle: "",
         description:
-            "Brettschichtholz (BSH) ist ein hochwertiger Holzwerkstoff aus verleimten, faserparallel angeordneten Lamellen: formstabil, tragfähig und rissarm – ideal für langlebige Konstruktionen. Zertifizierte Forstwirtschaft, effiziente Fertigung und Wiederverwendbarkeit fördern Nachhaltigkeit und Kreislaufwirtschaft.",
+            "Brettschichtholz (BSH) ist ein hochwertiger Holzwerkstoff aus verleimten, faserparallel angeordneten Lamellen: formstabil, tragfähig und rissarm – ideal für langlebige Konstruktionen. Zertifizierte Forstwirtschaft und effiziente Fertigung fördern Nachhaltigkeit. Wiederverwendbar und recyclingfähig für eine echte Kreislaufwirtschaft.",
         mobileTitle: "Fichte - Konstruktion",
         mobileSubtitle: "",
         mobileDescription:
@@ -253,7 +253,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         title: "Photovoltaik - Varianten",
         subtitle: "Holzfassade",
         description:
-            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie.",
+            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken dauerhaft Ihre Energiekosten. Die hochwertigen Systeme sind langlebig, wartungsarm und fügen sich harmonisch in Ihre Architektur ein. Sie leisten einen Beitrag zum Klimaschutz und steigern den Immobilienwert.",
         mobileTitle: "Photovoltaik - Varianten",
         mobileSubtitle: "Holzfassade",
         mobileDescription:
@@ -266,7 +266,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         title: "Photovoltaik - Varianten",
         subtitle: "Trapezblech",
         description:
-            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie.",
+            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken dauerhaft Ihre Energiekosten. Die hochwertigen Systeme sind langlebig, wartungsarm und fügen sich harmonisch in Ihre Architektur ein. Sie leisten einen Beitrag zum Klimaschutz und steigern den Immobilienwert.",
         mobileTitle: "Photovoltaik - Varianten",
         mobileSubtitle: "Trapezblech",
         mobileDescription:
@@ -279,7 +279,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         title: "Photovoltaik - Varianten",
         subtitle: "Fassadenplatten Schwarz",
         description:
-            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie.",
+            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken dauerhaft Ihre Energiekosten. Die hochwertigen Systeme sind langlebig, wartungsarm und fügen sich harmonisch in Ihre Architektur ein. Sie leisten einen Beitrag zum Klimaschutz und steigern den Immobilienwert.",
         mobileTitle: "Photovoltaik - Varianten",
         mobileSubtitle: "Fassadenplatten Schwarz",
         mobileDescription:
@@ -292,7 +292,7 @@ export const PHOTOVOLTAIK_CONTENT: ContentCardData[] = [
         title: "Photovoltaik - Varianten",
         subtitle: "Fassadenplatten Weiß",
         description:
-            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten – Tag für Tag, Jahr für Jahr. Unsere hochwertigen Photovoltaik-Systeme sind langlebig, wartungsarm und fügen sich harmonisch in die Architektur Ihres Hauses ein. Sie leisten nicht nur einen aktiven Beitrag zum Klimaschutz, sondern steigern auch langfristig den Wert Ihrer Immobilie.",
+            "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken dauerhaft Ihre Energiekosten. Die hochwertigen Systeme sind langlebig, wartungsarm und fügen sich harmonisch in Ihre Architektur ein. Sie leisten einen Beitrag zum Klimaschutz und steigern den Immobilienwert.",
         mobileTitle: "Photovoltaik - Varianten",
         mobileSubtitle: "Fassadenplatten Weiß",
         mobileDescription:
@@ -399,7 +399,7 @@ export const FENSTER_TUEREN_CONTENT: ContentCardData[] = [
         title: "Fenster & Türen - Unsere Materialien",
         subtitle: "Holz Eiche",
         description:
-            "Eichen-Holzfenster stehen für höchste Qualität, zeitlose Eleganz und außergewöhnliche Langlebigkeit. Das robuste Hartholz überzeugt durch seine charaktervolle Maserung und warme Farbgebung, die jedem Raum eine edle, behagliche Atmosphäre verleiht. Eiche ist extrem widerstandsfähig und entwickelt über die Jahre eine wunderschöne Patina, die den natürlichen Charakter des Holzes unterstreicht.",
+            "Eichen-Holzfenster stehen für höchste Qualität, zeitlose Eleganz und außergewöhnliche Langlebigkeit. Das robuste Hartholz überzeugt durch charaktervolle Maserung und warme Farbgebung, die jedem Raum eine edle, behagliche Atmosphäre verleiht. Eiche ist extrem widerstandsfähig und entwickelt über Jahre eine wunderschöne Patina, die den natürlichen Charakter unterstreicht.",
         mobileTitle: "Fenster & Türen - Unsere Materialien",
         mobileSubtitle: "Holz Eiche",
         mobileDescription:
