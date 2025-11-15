@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [251f3a2f242286fb8a708450c700f0488c0ea970] - Sat Nov 15 18:10:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: improve code readability and performance in CheckoutStepper and LaunchFireworks components  ✨ CheckoutStepper Enhancements - Reformatted warning message for better readability. - Adjusted getCustomerName() function for clearer structure and improved readability.  ✨ LaunchFireworks Improvements - Introduced useMemo for fireworks and confetti pieces to optimize performance and prevent unnecessary re-renders. - Enhanced confetti generation logic for smoother animations.  ✅ All linting passed ✅ Ready for testing  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/effects/LaunchFireworks.tsx
+
+
+---
+
 ## [bf498e6743437f23a0ec5887187fc0673a5df572] - Sat Nov 15 18:03:07 2025 +0100
 
 **Author**: stenkjan
