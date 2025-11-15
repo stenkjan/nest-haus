@@ -25,15 +25,15 @@ export default function LaunchFireworks({ onComplete }: LaunchFireworksProps) {
 
   // Auto-cleanup after fireworks complete
   useEffect(() => {
-    if (showFireworks) {
-      const timeout = setTimeout(() => {
-        if (onComplete) {
-          onComplete();
-        }
-      }, 6000); // 6 seconds for fireworks + confetti
+    if (!showFireworks) return;
+    
+    const timeout = setTimeout(() => {
+      if (onComplete) {
+        onComplete();
+      }
+    }, 6000); // 6 seconds for fireworks + confetti
 
-      return () => clearTimeout(timeout);
-    }
+    return () => clearTimeout(timeout);
   }, [showFireworks, onComplete]);
 
   // Generate more firework positions for spectacular effect
