@@ -75,42 +75,31 @@ export default function EntwurfClient() {
               className="absolute inset-0 w-full h-full object-cover"
             />
 
-            {/* Text Overlay */}
-            <div className="absolute inset-0 flex items-start justify-center pt-12">
-              <SectionHeader
-                title="Dein Konzept-Check"
-                subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
-                titleClassName="text-white"
-                subtitleClassName="text-white"
-              />
-            </div>
+            {/* Content Overlay - Using Flexbox */}
+            <div className="relative h-full flex flex-col justify-between py-12 px-4 sm:px-6 lg:px-8">
+              {/* Header at Top */}
+              <div className="flex justify-center">
+                <SectionHeader
+                  title="Dein Konzept-Check"
+                  subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
+                  titleClassName="text-white"
+                  subtitleClassName="text-white"
+                />
+              </div>
 
-            {/* Mobile Buttons - Positioned at bottom */}
-            <div className="absolute bottom-16 left-0 right-0 flex gap-4 justify-center px-4 sm:px-6 md:hidden">
-              <Link href="/konfigurator">
-                <Button variant="primary" size="xs">
-                  Entwurf bestellen
-                </Button>
-              </Link>
-              <Link href="/kontakt">
-                <Button variant="landing-secondary" size="xs">
-                  Termin vereinbaren
-                </Button>
-              </Link>
-            </div>
-
-            {/* Desktop Buttons - Positioned at bottom */}
-            <div className="absolute bottom-16 lg:bottom-16 xl:bottom-16 2xl:bottom-16 left-0 right-0 gap-4 justify-center px-4 sm:px-6 lg:px-8 hidden md:flex">
-              <Link href="/">
-                <Button variant="primary" size="xs">
-                  Entwurf bestellen
-                </Button>
-              </Link>
-              <Link href="/konfigurator">
-                <Button variant="landing-secondary" size="xs">
-                  Termin vereinbaren
-                </Button>
-              </Link>
+              {/* Buttons at Bottom */}
+              <div className="flex gap-4 justify-center">
+                <Link href="/konfigurator">
+                  <Button variant="primary" size="xs">
+                    Entwurf bestellen
+                  </Button>
+                </Link>
+                <Link href="/kontakt">
+                  <Button variant="landing-secondary" size="xs">
+                    Termin vereinbaren
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -141,7 +130,7 @@ export default function EntwurfClient() {
                     text: "Entwurf bestellen",
                     variant: "primary",
                     size: "xs",
-                    link: "/entwurf",
+                    link: "/konfigurator",
                   },
                   {
                     text: "Beratungsgespräch",
@@ -164,7 +153,7 @@ export default function EntwurfClient() {
             maxWidth={false}
             showInstructions={false}
             noPadding={true}
-            alignment="left"
+            alignment="center"
             customData={entwurfVideoCards}
           />
         </section>
