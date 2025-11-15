@@ -186,7 +186,7 @@ export async function POST(request: NextRequest) {
             appointmentDateTime: data.appointmentDateTime,
             appointmentExpiresAt: inquiry.appointmentExpiresAt!.toISOString(),
             message: data.message,
-            configurationData: data.configurationData,
+            configurationData: data.configurationData as Record<string, unknown> | undefined,
             sessionId,
             clientIP,
             userAgent,
