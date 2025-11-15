@@ -864,7 +864,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
                 text: "Vorentwurf bestellen",
                 variant: "primary",
                 size: "xs",
-                link: "/entwurf",
+                link: "/konfigurator",
             },
             {
                 text: "Warum mit Nest?",

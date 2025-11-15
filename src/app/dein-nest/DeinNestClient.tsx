@@ -324,7 +324,7 @@ export default function DeinNestClient() {
             variant="responsive"
             maxWidth={false}
             showInstructions={false}
-            alignment="left"
+            alignment="center"
             customData={VIDEO_BACKGROUND_CARDS_PRESET.cards.filter(
               (card) => card.id >= 1 && card.id <= 5
             )}

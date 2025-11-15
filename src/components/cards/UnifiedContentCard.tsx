@@ -259,7 +259,7 @@ export default function UnifiedContentCard({
         const cardAspectRatio = card.aspectRatio || aspectRatio;
         // MOBILE OVERRIDE: Force all cards to 2x1 (portrait) on mobile for better UX
         const effectiveAspectRatio =
-          currentScreenWidth < 768 ? "2x1" : cardAspectRatio;
+          currentScreenWidth < 1024 ? "2x1" : cardAspectRatio;
 
         const width =
           currentScreenWidth >= 1536
@@ -283,6 +283,16 @@ export default function UnifiedContentCard({
       return cardWidth;
     },
     [layout, aspectRatio, heightMultiplier, cardWidth]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // screenWidth is intentionally included for responsive layout calculations
+    [
+      layout,
+      aspectRatio,
+      heightMultiplier,
+      cardWidth,
+      stableViewportHeight,
+      screenWidth,
+    ]
   );
 
   // Initialize client-side state
@@ -413,8 +423,8 @@ export default function UnifiedContentCard({
         // Overlay-text layout: same HEIGHT as other cards, width varies by aspect ratio
         // Height is consistent across all cards, aspect ratio controls WIDTH
         // "2x1" = 1.2:2 ratio (portrait - 1.2cm width × 2cm height), "1x1" = 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
-        // MOBILE OVERRIDE: Force 2x1 aspect ratio on mobile (<768px) for better UX
-        const effectiveAspectRatio = width < 768 ? "2x1" : aspectRatio;
+        // MOBILE OVERRIDE: Force 2x1 aspect ratio on mobile (<1024px) for better UX
+        const effectiveAspectRatio = width < 1024 ? "2x1" : aspectRatio;
 
         if (width >= 1536) {
           // Height: 830px fixed, Width varies by aspect ratio
@@ -2150,44 +2160,14 @@ export default function UnifiedContentCard({
                   }}
                 >
                   {displayCards.map((card, index) => {
-                    // Use card-specific aspect ratio if available, otherwise fall back to component-level aspectRatio
-                    const cardAspectRatio = card.aspectRatio || aspectRatio;
-                    // MOBILE OVERRIDE: Force all cards to 2x1 (portrait) on mobile for better UX
-                    const effectiveAspectRatio =
-                      isClient && screenWidth < 1024 ? "2x1" : cardAspectRatio;
-
                     // Calculate width for overlay-text cards based on individual aspect ratio
                     let cardSpecificWidth = cardWidth;
-                    if (layout === "overlay-text" && effectiveAspectRatio) {
-                      // Use fixed heights at each breakpoint (no viewport height dependency)
-                      if (isClient && screenWidth >= 1536) {
-                        const cardHeight = 830 * heightMultiplier;
-                        cardSpecificWidth =
-                          effectiveAspectRatio === "2x1"
-                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
-                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
-                      } else if (isClient && screenWidth >= 1280) {
-                        const cardHeight = 692 * heightMultiplier;
-                        cardSpecificWidth =
-                          effectiveAspectRatio === "2x1"
-                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
-                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
-                      } else if (isClient && screenWidth >= 1024) {
-                        const cardHeight = 577 * heightMultiplier;
-                        cardSpecificWidth =
-                          effectiveAspectRatio === "2x1"
-                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
-                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
-                      } else if (isClient && screenWidth >= 768) {
-                        const cardHeight = 720 * heightMultiplier;
-                        cardSpecificWidth =
-                          effectiveAspectRatio === "2x1"
-                            ? cardHeight * 0.6 // 1.2:2 ratio (portrait - 1.2cm width × 2cm height)
-                            : cardHeight * 1.2; // 2.4:2 ratio (WIDER - 2.4cm width × 2cm height)
-                      } else {
-                        // Mobile: Force all cards to 2x1 (portrait) for better UX
-                        cardSpecificWidth = 350; // Match video layout width for consistency
-                      }
+                    if (layout === "overlay-text") {
+                      // Use getCardWidthForIndex to ensure consistency with carousel width calculation
+                      cardSpecificWidth = getCardWidthForIndex(
+                        card,
+                        screenWidth
+                      );
                     }
 
                     return (
