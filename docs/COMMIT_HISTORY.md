@@ -4,6 +4,25 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [428e98455e0dcd78dbfe1076a4a930040d79c88f] - Sat Nov 15 15:57:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/impressum/ImpressumClient.tsx
+- src/components/Footer.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [5b09f310a2920c31d66ce01221e79ed51f46f32e] - Sat Nov 15 15:52:01 2025 +0100
 
 **Author**: stenkjan
