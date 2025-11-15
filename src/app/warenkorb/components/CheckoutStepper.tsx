@@ -1157,7 +1157,7 @@ export default function CheckoutStepper({
         "Damit aus deinem Entwurf **ein Zuhause wird,** begleiten wir dich durch den gesamten Bauprozess. **Schritt für Schritt** gehen wir mit dir alle Phasen durch: von der **Einreichplanung und dem Baubescheid** über die Vorbereitung deines Grundstücks und den Bau des **Fundaments** bis hin zur **Lieferung und Montage** deines Nest-Haus.\n\nNach der **Lieferung** deines Nest-Hauses kannst du die **Haustechnik** und den **Innenausbau** entweder selbst übernehmen oder auf das Know-how unserer erfahrenen **Partnerbetriebe** zurückgreifen. Dabei stehen wir dir jederzeit **beratend zur Seite,** damit dein Zuhause genau so wird, wie du es dir wünschst.",
     },
     {
-      title: "Wir freuen uEntwurfuf dich",
+      title: "Wir freuen uns auf dich",
       subtitle: "Vereinbare dein Entwurfsgespräch mit dem Nest Team",
       description:
         "Buche deinen **Termin** für ein persönliches **Startgespräch**, in dem wir deine **individuellen Wünsche** aufnehmen und die Grundlage für deinen **Entwurf** erarbeiten. \n\n  Durch die Angaben zu deinem **Grundstück** können wir uns bestmöglich vorbereiten und dir bereits **erste Ideen** und konkrete Ansätze vorstellen. So entsteht **Schritt für Schritt** ein Entwurf, der genau zu deinen Bedürfnissen passt.**",
@@ -2435,7 +2435,7 @@ export default function CheckoutStepper({
             {/* Left text + right calendar layout */}
             <div className="flex flex-col md:flex-row md:items-start md:justify-start gap-8">
               <div className="w-full md:w-1/2 text-center md:text-left md:px-16 lg:px-24 md:pt-12 md:mt-12">
-                <p className="p-secondary mb-4 md:mb-6 md:pt-6">
+                <p className="p-secondary mb-4 md:mb-6 md:pt-6 hidden md:block">
                   <span className="text-nest-gray">
                     Der Kauf deines Hauses ist ein großer Schritt – und{" "}
                   </span>
