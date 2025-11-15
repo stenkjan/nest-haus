@@ -34,9 +34,9 @@ export function SectionContainer({
   return (
     <section
       id={id}
-      className={`w-full ${paddingClass} ${bgClass} ${className}`}
+      className={`w-full ${paddingClass} ${bgClass} ${className} flex justify-center`}
     >
-      <div className={`${contentMaxWidth} mx-auto px-4 sm:px-6 lg:px-8`}>
+      <div className={`${contentMaxWidth} w-full px-4 md:px-12`}>
         {children}
       </div>
     </section>

@@ -19,17 +19,19 @@ export const AppointmentBookingSection: React.FC<
   maxWidth = true,
 }) => {
   const bgClass = backgroundColor === "gray" ? "bg-gray-50" : "bg-white";
-  const containerClass = maxWidth
-    ? "w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8"
-    : "w-full px-[7.5%]";
+  const containerClass = maxWidth ? "w-full max-w-[1536px]" : "w-full";
 
   return (
-    <section id={id} className={`w-full pt-12 pb-4 ${bgClass}`}>
+    <section id={id} className={`w-full ${bgClass}`}>
       <div className={containerClass}>
-        <h1 className="h1-secondary text-black text-center">{title}</h1>
-        <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
-          {subtitle}
-        </h3>
+        {title && (
+          <h1 className="h1-secondary text-black text-center">{title}</h1>
+        )}
+        {subtitle && (
+          <h3 className="h3-secondary text-black mb-8 max-w-3xl mx-auto text-center">
+            {subtitle}
+          </h3>
+        )}
         <Suspense
           fallback={
             <div className="animate-pulse bg-gray-200 h-96 rounded max-w-5xl mx-auto"></div>

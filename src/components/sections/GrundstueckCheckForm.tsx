@@ -14,6 +14,10 @@ interface GrundstueckCheckFormProps {
   padding?: "sm" | "md" | "lg";
   className?: string;
   excludePersonalData?: boolean; // Flag to exclude "Daten Bewerber" section
+  title?: string;
+  subtitle?: string;
+  showHeader?: boolean; // Flag to show/hide the SectionHeader
+  useWrapper?: boolean; // Flag to use SectionContainer wrapper or render content directly
 }
 
 interface FormData {
@@ -39,6 +43,10 @@ export function GrundstueckCheckForm({
   padding = "lg",
   className = "",
   excludePersonalData = false,
+  title = "Dein Nest-Haus Entwurf",
+  subtitle = "Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt",
+  showHeader = true,
+  useWrapper = true,
 }: GrundstueckCheckFormProps) {
   const router = useRouter();
   const { sessionId } = useConfiguratorStore();
@@ -368,21 +376,17 @@ export function GrundstueckCheckForm({
   }
 
   // Default full-page layout for standalone use
-  return (
-    <SectionContainer
-      id={id || "grundstueck-check-form"}
-      backgroundColor={backgroundColor}
-      padding={padding}
-      maxWidth={maxWidth}
-      className={className}
-    >
-      <SectionHeader
-        title="Dein Nest-Haus Entwurf"
-        subtitle="Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt"
-        titleClassName="text-black"
-        subtitleClassName="text-black"
-        wrapperMargin="mb-16"
-      />
+  const formContent = (
+    <>
+      {showHeader && (
+        <SectionHeader
+          title={title}
+          subtitle={subtitle}
+          titleClassName="text-black"
+          subtitleClassName="text-black"
+          wrapperMargin="mb-16"
+        />
+      )}
 
       <div className="w-full">
         {/* Desktop Layout: Side by side matching CheckoutStepper layout */}
@@ -835,6 +839,28 @@ export function GrundstueckCheckForm({
           </div>
         </div>
       </div>
-    </SectionContainer>
+    </>
+  );
+
+  // Return with or without SectionContainer wrapper
+  if (useWrapper) {
+    return (
+      <SectionContainer
+        id={id || "grundstueck-check-form"}
+        backgroundColor={backgroundColor}
+        padding={padding}
+        maxWidth={maxWidth}
+        className={className}
+      >
+        {formContent}
+      </SectionContainer>
+    );
+  }
+
+  // Return content directly when used within a custom section wrapper
+  return (
+    <div className="w-full max-w-[1536px] mx-auto px-4 md:px-12">
+      {formContent}
+    </div>
   );
 }
