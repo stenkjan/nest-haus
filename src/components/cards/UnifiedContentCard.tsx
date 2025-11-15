@@ -2134,7 +2134,7 @@ export default function UnifiedContentCard({
                             : maxWidth
                               ? "px-8"
                               : "px-4"
-                } ${isStatic ? "" : "cursor-grab active:cursor-grabbing"}`}
+                }`}
                 style={{ overflow: "visible", overflowX: "clip" }}
               >
                 <motion.div
@@ -2375,7 +2375,7 @@ export default function UnifiedContentCard({
                             ? "inset 0 0 20px rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.3)"
                             : undefined,
                         }}
-                        whileHover={{ scale: 1.02 }}
+                        // whileHover={{ scale: 1.02 }} // DISABLED: Hover effect removed
                         transition={{ duration: 0.2 }}
                         onClick={() => {
                           if (!isStatic && enableLightbox && !isLightboxMode) {

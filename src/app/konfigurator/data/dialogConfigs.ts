@@ -242,7 +242,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
     cards: [
       {
         id: 1,
-        title: "Varianten Holzfassade",
+        title: "Holzfassade",
         subtitle: "Photovoltaik",
         description: {
           mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
@@ -252,7 +252,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       },
       {
         id: 2,
-        title: "Varianten Trapezblech",
+        title: "Trapezblech",
         subtitle: "Photovoltaik",
         description: {
           mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
@@ -262,7 +262,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       },
       {
         id: 3,
-        title: "Varianten Fassadenplatten Schwarz",
+        title: "Fassadenplatten Schwarz",
         subtitle: "Photovoltaik",
         description: {
           mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
@@ -272,7 +272,7 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       },
       {
         id: 4,
-        title: "Varianten Fassadenplatten Weiß",
+        title: "Fassadenplatten Weiß",
         subtitle: "Photovoltaik",
         description: {
           mobile: "Mit unserer Photovoltaik-Lösung machen Sie Ihr Zuhause unabhängiger, nachhaltiger und zukunftssicher. Moderne Solarmodule wandeln Sonnenlicht effizient in Strom um und senken damit dauerhaft Ihre Energiekosten.",
