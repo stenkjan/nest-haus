@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bd37214f5fa76d501adbb4f5000c9c20ec3fb539] - Sat Nov 15 15:25:09 2025 +0000
+
+**Author**: Cursor Agent
+**Message**: `Merge branch 'cursor/assess-stripe-migration-effort-63ee'  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- STRIPE_MIGRATION_CHECKLIST.md
+- STRIPE_MIGRATION_QUICK_START.md
+- STRIPE_PRODUCTION_MIGRATION_GUIDE.md
+- STRIPE_TECHNICAL_ASSESSMENT.md
+
+
+---
+
 ## [687abfd51e6794bf771000aaeb453fcdf37ec148] - Sat Nov 15 16:19:01 2025 +0100
 
 **Author**: stenkjan
