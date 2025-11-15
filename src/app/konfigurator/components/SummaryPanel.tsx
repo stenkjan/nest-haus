@@ -610,7 +610,7 @@ export default function SummaryPanel({
           <InfoBox
             title="Noch Fragen offen?"
             description="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch."
-            onClick={() => window.location.href = "/kontakt"}
+            onClick={() => window.open("/kontakt", "_blank")}
           />
         </div>
 
