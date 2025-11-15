@@ -57,10 +57,6 @@ export function generateICSFile(data: ICSEventData): string {
   // Current timestamp for DTSTAMP
   const now = new Date();
   
-  // Alarm times
-  const alarm24h = new Date(startDate.getTime() - 24 * 60 * 60 * 1000);
-  const alarm1h = new Date(startDate.getTime() - 60 * 60 * 1000);
-  
   const icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
