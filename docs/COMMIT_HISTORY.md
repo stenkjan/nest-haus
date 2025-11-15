@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0cc011b73b34ae28ffb9217d28cdd6d20ac5e11c] - Sat Nov 15 17:50:59 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: change payment email colors to brand blue & add launch fireworks easter egg  � Payment Email Template Updates - Change all green colors (#10b981) to NEST-Haus blue (#3d6ce1) - Update PaymentConfirmationTemplate success card, header, amounts - Update AdminPaymentNotificationTemplate gradient and highlights - Consistent brand colors across all payment emails  � Launch Fireworks Easter Egg - Create LaunchFireworks component with bright, illuminating colors - 8 firework bursts with glowing particles - Colors: Gold, Cyan, Magenta, Lime, Orange, Hot Pink - Auto-remove after 5.5 seconds - Trigger via /#launch hash on landing page - Pointer-events: none (doesn't block functionality) - One-time per session (hash cleared after trigger)  ✅ All linting passed ✅ Ready for testing  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/components/effects/LaunchFireworks.tsx
+
+
+---
+
 ## [83f4089ef9785407bd5dfeb5e75c736dff9de4e2] - Sat Nov 15 17:33:20 2025 +0100
 
 **Author**: stenkjan
