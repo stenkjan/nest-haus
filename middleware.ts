@@ -56,44 +56,8 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // Skip password check for non-admin API routes, static files, and auth page
-    if (
-        pathname.startsWith('/api') ||
-        pathname.startsWith('/_next') ||
-        pathname.startsWith('/favicon') ||
-        pathname === '/auth'
-    ) {
-        console.log('[MIDDLEWARE] Skipping protection for:', pathname);
-        return NextResponse.next();
-    }
-
-    // Get environment variables with fallbacks
-    const correctPassword = process.env.SITE_PASSWORD || process.env.NEXT_PUBLIC_SITE_PASSWORD;
-
-    // If no password is set, allow access
-    if (!correctPassword) {
-        console.log('[MIDDLEWARE] No password configured, allowing access');
-        return NextResponse.next();
-    }
-
-    console.log('[MIDDLEWARE] Password protection enabled');
-
-    // Check if user has already authenticated
-    const authCookie = request.cookies.get('nest-haus-auth');
-    console.log('[MIDDLEWARE] Auth cookie exists:', !!authCookie);
-
-    // If authenticated, allow access
-    if (authCookie?.value === correctPassword) {
-        console.log('[MIDDLEWARE] User authenticated, allowing access');
-        return NextResponse.next();
-    }
-
-    // Redirect to password page
-    console.log('[MIDDLEWARE] Redirecting to auth page');
-    const url = request.nextUrl.clone();
-    url.pathname = '/auth';
-    url.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(url);
+    // Allow all other routes (non-admin) to pass through
+    return NextResponse.next();
 }
 
 export const config = {
