@@ -4,6 +4,94 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a7ec56baae23319388ab374298b0148c9c9e1172] - Sat Nov 15 11:05:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Enhance session storage handling and validation in CheckoutStepper and GrundstueckCheckForm components  - Added a sessionStorageTrigger state in CheckoutStepper to force re-reading sessionStorage when navigating to the final step. - Updated validation logic in GrundstueckCheckForm to ensure all required fields are filled, with improved alert messages for user guidance. - Enhanced error handling and logging for API responses in GrundstueckCheckForm to provide clearer feedback on submission status.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+#### 📚 Documentation Changes
+- docs/GRUNDSTUECK_FORM_ERROR_HANDLING_FIX.md
+
+
+---
+
+## [9ec4ad9fae2c30c5fce69474759a155e9f52890e] - Sat Nov 15 10:39:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [bd10457ceef45d567b1255f6f2d84067266bf67f] - Sat Nov 15 10:38:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Improve validation alert in GrundstueckCheckForm component  - Enhanced the validation logic to ensure that address, city, and postal code fields are filled out before form submission. - Reformatted the alert message for better readability and user guidance.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
+## [e379702ffed20c75e30ca105aa7e3c4c346bd96c] - Sat Nov 15 10:26:41 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [7bdd6ff2d584b3c797f5ffd6dc97c99bb7f96278] - Sat Nov 15 10:15:20 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [9e75b049288a346b439b236522ab79264e7fb5a5] - Sat Nov 15 10:05:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [23df7035b9c4a292d293e373ef44b9c74a6e0329] - Sat Nov 15 09:12:13 2025 +0100
 
 **Author**: stenkjan

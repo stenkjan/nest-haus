@@ -627,14 +627,20 @@ export default function CheckoutStepper({
 
         const currentNestValue = cartItemConfig.nest.value;
 
-        // Use actual user selections for all material categories
-        const testGebaeudehuelle =
-          cartItemConfig.gebaeudehuelle?.value || "trapezblech";
-        const testInnenverkleidung =
-          cartItemConfig.innenverkleidung?.value || "ohne_innenverkleidung";
-        const testFussboden = cartItemConfig.fussboden?.value || "ohne_belag";
+        // Calculate individual item price by ONLY changing that specific item
+        // Keep all other materials at baseline to isolate the price contribution
+        let testGebaeudehuelle = "trapezblech"; // baseline
+        let testInnenverkleidung = "ohne_innenverkleidung"; // baseline
+        let testFussboden = "ohne_belag"; // baseline
 
-        // Calculate combination price with current selections
+        // Only change the specific material being priced
+        if (key === "gebaeudehuelle") {
+          testGebaeudehuelle = selection.value;
+        } else if (key === "fussboden") {
+          testFussboden = selection.value;
+        }
+
+        // Calculate combination price with ONLY this item changed
         const combinationPrice = PriceCalculator.calculateCombinationPrice(
           currentNestValue,
           testGebaeudehuelle,
@@ -642,7 +648,7 @@ export default function CheckoutStepper({
           testFussboden
         );
 
-        // Calculate base price (trapezblech + ohne_innenverkleidung + ohne_belag)
+        // Calculate base price (all baselines)
         const basePrice = PriceCalculator.calculateCombinationPrice(
           currentNestValue,
           "trapezblech",
@@ -1656,6 +1662,17 @@ export default function CheckoutStepper({
     string
   > | null>(null);
 
+  // Trigger to force re-reading sessionStorage when navigating between steps
+  const [sessionStorageTrigger, setSessionStorageTrigger] = useState(0);
+
+  // Re-check sessionStorage when step changes to abschluss
+  useEffect(() => {
+    if (stepIndex === steps.length - 1) {
+      // Force re-read of sessionStorage by incrementing trigger
+      setSessionStorageTrigger((prev) => prev + 1);
+    }
+  }, [stepIndex, steps.length]);
+
   // Load userData from database as fallback when sessionStorage is empty
   useEffect(() => {
     if (!sessionId) return;
@@ -1748,7 +1765,7 @@ export default function CheckoutStepper({
       postalCode: grundstueckData?.postalCode || "",
       country: grundstueckData?.country || "Österreich",
     };
-  }, [appointmentDetails, userDataFromDb]);
+  }, [appointmentDetails, userDataFromDb, sessionStorageTrigger]);
 
   // Helper function to check if appointment is in the past
   const isAppointmentInPast = useMemo(() => {

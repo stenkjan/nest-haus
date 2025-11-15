@@ -51,6 +51,7 @@ export function GrundstueckCheckForm({
   const router = useRouter();
   const { sessionId } = useConfiguratorStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     lastName: "",
@@ -77,13 +78,44 @@ export function GrundstueckCheckForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate required fields
-    if (!formData.name.trim() || !formData.email.trim()) {
-      alert("Bitte fülle Name und E-Mail aus.");
+    // Validate minimum required fields: address, city, postalCode
+    if (
+      !formData.address.trim() ||
+      !formData.city.trim() ||
+      !formData.postalCode.trim()
+    ) {
+      alert(
+        "❌ Bitte fülle die Pflichtfelder aus:\n\n• Straße und Hausnummer\n• Stadt\n• Postleitzahl"
+      );
       return;
     }
 
+    // Flexible address validation: allows letters, numbers, spaces, common punctuation
+    const addressRegex = /^[a-zA-ZäöüÄÖÜß0-9\s,.\-/]+$/;
+    if (!addressRegex.test(formData.address)) {
+      alert(
+        "❌ Ungültige Adresse. Bitte verwende nur Buchstaben, Zahlen und gängige Satzzeichen (,.-/)"
+      );
+      return;
+    }
+
+    // If personal data is shown (not excluded), validate name and email
+    if (!excludePersonalData) {
+      if (!formData.name.trim() || !formData.email.trim()) {
+        alert("❌ Bitte fülle die Pflichtfelder aus:\n\n• Name\n• Email");
+        return;
+      }
+
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        alert("❌ Bitte gib eine gültige E-Mail-Adresse ein.");
+        return;
+      }
+    }
+
     setIsSubmitting(true);
+    setIsSaved(false);
 
     try {
       console.log("🔧 Grundstückscheck submission:", formData);
@@ -93,11 +125,11 @@ export function GrundstueckCheckForm({
         `${formData.name.trim()} ${formData.lastName.trim()}`.trim();
       const contactData = {
         sessionId: sessionId || undefined,
-        name: fullName || formData.name.trim(),
-        email: formData.email,
+        name: fullName || formData.name.trim() || "Unbekannt",
+        email: formData.email.trim() || "keine-email@nest-haus.com",
         phone: formData.phone || undefined,
-        message: `Grundstückscheck Anfrage\n\nAdresse: ${formData.address}${formData.addressLine2 ? `\n${formData.addressLine2}` : ""}\nStadt: ${formData.city}\nBundesland: ${formData.state}\nPLZ: ${formData.postalCode}\nLand: ${formData.country}\nGrundstücknummer: ${formData.propertyNumber || "—"}\nKatastralgemeinde: ${formData.cadastralCommunity || "—"}\n\nAnmerkungen: ${formData.notes || "—"}`,
-        requestType: "grundstueck" as const,
+        message: `Grundstückscheck Anfrage\n\nAdresse: ${formData.address}${formData.addressLine2 ? `\n${formData.addressLine2}` : ""}\nStadt: ${formData.city}\nBundesland: ${formData.state || "—"}\nPLZ: ${formData.postalCode}\nLand: ${formData.country}\nGrundstücknummer: ${formData.propertyNumber || "—"}\nKatastralgemeinde: ${formData.cadastralCommunity || "—"}\n\nAnmerkungen: ${formData.notes || "—"}`,
+        requestType: "contact" as const,
         preferredContact: "email" as const,
         configurationData: {
           address: formData.address,
@@ -125,8 +157,28 @@ export function GrundstueckCheckForm({
 
       console.log("📬 Grundstückscheck API response:", {
         ok: response.ok,
+        status: response.status,
         result,
       });
+
+      // Log detailed error information if request failed
+      if (!response.ok) {
+        console.error("❌ API returned error:", {
+          status: response.status,
+          error: result.error,
+          details: result.details,
+          message: result.message,
+          fullResult: result,
+        });
+
+        // Log each validation error detail
+        if (result.details && Array.isArray(result.details)) {
+          console.error("🔍 Validation errors:", result.details);
+          result.details.forEach((detail: unknown, index: number) => {
+            console.error(`  Error ${index + 1}:`, detail);
+          });
+        }
+      }
 
       if (response.ok && result.success) {
         console.log("✅ Grundstückscheck data saved to customer inquiries");
@@ -190,43 +242,215 @@ export function GrundstueckCheckForm({
           );
         }
 
-        alert(
-          "Formular wurde erfolgreich übermittelt! Wir melden uns bald bei Ihnen."
-        );
+        // Mark as saved
+        setIsSaved(true);
+
+        // Show success alert
+        alert("✅ Deine Daten wurden erfolgreich gespeichert!");
       } else {
-        throw new Error(result.error || "Failed to submit form");
+        const errorMessage =
+          result.error || result.message || "Unbekannter Fehler";
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("❌ Error submitting Grundstückscheck form:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Unbekannter Fehler";
       alert(
-        "Es gab einen Fehler beim Senden des Formulars. Bitte versuche es später erneut."
+        `❌ Fehler beim Speichern:\n\n${errorMessage}\n\nBitte versuche es erneut oder kontaktiere uns unter mail@nest-haus.com`
       );
+      setIsSaved(false);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleZahlenUndPruefen = async () => {
-    // First, submit the form to save to customer inquiries
-    const submitEvent = new Event("submit", {
-      bubbles: true,
-      cancelable: true,
-    });
-    const formElement = document.querySelector("form");
+    // Validate minimum required fields: address, city, postalCode
+    if (
+      !formData.address.trim() ||
+      !formData.city.trim() ||
+      !formData.postalCode.trim()
+    ) {
+      alert(
+        "❌ Bitte fülle die Pflichtfelder aus:\n\n• Straße und Hausnummer\n• Stadt\n• Postleitzahl"
+      );
+      return;
+    }
 
-    if (formElement) {
-      // Trigger form submission which includes validation
-      formElement.dispatchEvent(submitEvent);
+    // Flexible address validation
+    const addressRegex = /^[a-zA-ZäöüÄÖÜß0-9\s,.\-/]+$/;
+    if (!addressRegex.test(formData.address)) {
+      alert(
+        "❌ Ungültige Adresse. Bitte verwende nur Buchstaben, Zahlen und gängige Satzzeichen (,.-/)"
+      );
+      return;
+    }
 
-      // Wait a bit for submission to complete
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Check if we have data in sessionStorage (indicating successful submission)
-      const storedData = sessionStorage.getItem("grundstueckCheckData");
-      if (storedData) {
-        // Navigate to warenkorb terminvereinbarung step
-        router.push("/warenkorb#terminvereinbarung");
+    // If personal data is shown (not excluded), validate name and email
+    if (!excludePersonalData) {
+      if (!formData.name.trim() || !formData.email.trim()) {
+        alert("❌ Bitte fülle die Pflichtfelder aus:\n\n• Name\n• Email");
+        return;
       }
+
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        alert("❌ Bitte gib eine gültige E-Mail-Adresse ein.");
+        return;
+      }
+    }
+
+    setIsSubmitting(true);
+    setIsSaved(false);
+
+    try {
+      console.log("🔧 Grundstückscheck Save button clicked:", formData);
+
+      // Prepare data for API
+      const fullName =
+        `${formData.name.trim()} ${formData.lastName.trim()}`.trim();
+      const contactData = {
+        sessionId: sessionId || undefined,
+        name: fullName || formData.name.trim() || "Unbekannt",
+        email: formData.email.trim() || "keine-email@nest-haus.com",
+        phone: formData.phone || undefined,
+        message: `Grundstückscheck Anfrage\n\nAdresse: ${formData.address}${formData.addressLine2 ? `\n${formData.addressLine2}` : ""}\nStadt: ${formData.city}\nBundesland: ${formData.state || "—"}\nPLZ: ${formData.postalCode}\nLand: ${formData.country}\nGrundstücknummer: ${formData.propertyNumber || "—"}\nKatastralgemeinde: ${formData.cadastralCommunity || "—"}\n\nAnmerkungen: ${formData.notes || "—"}`,
+        requestType: "contact" as const,
+        preferredContact: "email" as const,
+        configurationData: {
+          address: formData.address,
+          addressLine2: formData.addressLine2,
+          propertyNumber: formData.propertyNumber,
+          cadastralCommunity: formData.cadastralCommunity,
+          city: formData.city,
+          state: formData.state,
+          postalCode: formData.postalCode,
+          country: formData.country,
+          notes: formData.notes,
+        },
+      };
+
+      console.log("📤 Sending data to API:", contactData);
+
+      // Send to contact API to save in customer inquiries
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactData),
+      });
+
+      const result = await response.json();
+
+      console.log("📬 Grundstückscheck Save API response:", {
+        ok: response.ok,
+        status: response.status,
+        result,
+      });
+
+      // Log detailed error information if request failed
+      if (!response.ok) {
+        console.error("❌ API returned error:", {
+          status: response.status,
+          error: result.error,
+          details: result.details,
+          message: result.message,
+          fullResult: result,
+        });
+
+        // Log each validation error detail
+        if (result.details && Array.isArray(result.details)) {
+          console.error("🔍 Validation errors:", result.details);
+          result.details.forEach((detail: unknown, index: number) => {
+            console.error(`  Error ${index + 1}:`, detail);
+          });
+        }
+      }
+
+      if (response.ok && result.success) {
+        console.log("✅ Grundstückscheck data saved via Save button");
+
+        // Store form data in sessionStorage for CheckoutStepper to read
+        const grundstueckData = {
+          name: formData.name,
+          lastName: formData.lastName,
+          phone: formData.phone,
+          email: formData.email,
+          address: formData.address,
+          addressLine2: formData.addressLine2,
+          propertyNumber: formData.propertyNumber,
+          cadastralCommunity: formData.cadastralCommunity,
+          city: formData.city,
+          state: formData.state,
+          postalCode: formData.postalCode,
+          country: formData.country,
+          notes: formData.notes,
+          service: "grundstueck-check",
+          inquiryId: result.inquiryId,
+        };
+
+        sessionStorage.setItem(
+          "grundstueckCheckData",
+          JSON.stringify(grundstueckData)
+        );
+
+        // Also save to user tracking session in database
+        try {
+          const sessionResponse = await fetch(
+            "/api/sessions/update-user-data",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                sessionId: sessionId || "",
+                userData: grundstueckData,
+              }),
+            }
+          );
+
+          const sessionResult = await sessionResponse.json();
+
+          if (sessionResponse.ok && sessionResult.success) {
+            console.log(
+              "✅ Grundstückscheck data saved to user tracking session via Save button"
+            );
+          } else {
+            console.warn(
+              "⚠️ Failed to save to user session (non-blocking):",
+              sessionResult.error
+            );
+          }
+        } catch (sessionError) {
+          console.warn(
+            "⚠️ Error saving to user session (non-blocking):",
+            sessionError
+          );
+        }
+
+        // Mark as saved - button will show "Gespeichert"
+        setIsSaved(true);
+
+        // No alert popup as per user request - button state change is enough feedback
+      } else {
+        const errorMessage =
+          result.error || result.message || "Unbekannter Fehler";
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      console.error("❌ Error saving Grundstückscheck form:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Unbekannter Fehler";
+      alert(
+        `❌ Fehler beim Speichern:\n\n${errorMessage}\n\nBitte versuche es erneut oder kontaktiere uns unter mail@nest-haus.com`
+      );
+      setIsSaved(false);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -335,7 +559,6 @@ export function GrundstueckCheckForm({
                 onChange={handleChange}
                 className="border border-gray-300 rounded-xl p-3"
                 placeholder="Bundesland"
-                required
               />
             </div>
 
@@ -370,6 +593,20 @@ export function GrundstueckCheckForm({
             className="w-full border border-gray-300 rounded-xl p-3 mb-6"
             placeholder="Zusatzinformationen - optional"
           />
+
+          <div className="flex justify-center">
+            <button
+              onClick={handleZahlenUndPruefen}
+              disabled={isSubmitting || isSaved}
+              className="rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center font-normal whitespace-nowrap bg-[#3D6CE1] border border-[#3D6CE1] text-white hover:bg-[#3D6CE1] focus:ring-[#3D6CE1] shadow-sm box-border px-6 py-1.5 text-sm xl:text-base 2xl:text-lg w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting
+                ? "Wird gespeichert..."
+                : isSaved
+                  ? "✓ Gespeichert"
+                  : "Speichern"}
+            </button>
+          </div>
         </form>
       </div>
     );
@@ -572,7 +809,6 @@ export function GrundstueckCheckForm({
                         onChange={handleChange}
                         className="border border-gray-300 rounded-xl p-3"
                         placeholder="Bundesland"
-                        required
                       />
                     </div>
 
@@ -614,9 +850,13 @@ export function GrundstueckCheckForm({
                       variant="landing-primary"
                       size="xs"
                       className="w-auto"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || isSaved}
                     >
-                      {isSubmitting ? "Wird gespeichert..." : "Speichern"}
+                      {isSubmitting
+                        ? "Wird gespeichert..."
+                        : isSaved
+                          ? "✓ Gespeichert"
+                          : "Speichern"}
                     </Button>
                   </div>
                 </form>
@@ -764,7 +1004,6 @@ export function GrundstueckCheckForm({
                   onChange={handleChange}
                   className="w-full border border-gray-300 rounded-xl p-3"
                   placeholder="Bundesland"
-                  required
                 />
                 <input
                   type="text"
@@ -801,9 +1040,13 @@ export function GrundstueckCheckForm({
                 variant="primary"
                 size="xs"
                 className="w-full"
-                disabled={isSubmitting}
+                disabled={isSubmitting || isSaved}
               >
-                {isSubmitting ? "Wird gespeichert..." : "Speichern"}
+                {isSubmitting
+                  ? "Wird gespeichert..."
+                  : isSaved
+                    ? "✓ Gespeichert"
+                    : "Speichern"}
               </Button>
             </form>
           </div>
