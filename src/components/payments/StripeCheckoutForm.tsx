@@ -54,7 +54,7 @@ interface StripeCheckoutFormProps {
 const getPaymentElementOptions = (_selectedMethod?: string) => {
   // In Step 2, we always show all three available methods (card, EPS, SOFORT)
   // regardless of what was selected in Step 1. Users can change their mind.
-  // Klarna, Apple Pay, and Google Pay skip Step 2 entirely (redirect-based).
+  // Klarna skips Step 2 entirely (redirect-based).
 
   return {
     layout: {

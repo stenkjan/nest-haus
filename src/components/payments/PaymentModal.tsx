@@ -132,20 +132,6 @@ function PaymentMethodSelection({
       ],
     },
     {
-      id: "apple_pay" as PaymentMethod,
-      name: "Apple Pay",
-      icons: [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg", alt: "Apple Pay" },
-      ],
-    },
-    {
-      id: "google_pay" as PaymentMethod,
-      name: "Google Pay",
-      icons: [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg", alt: "Google Pay" },
-      ],
-    },
-    {
       id: "klarna" as PaymentMethod,
       name: "Klarna",
       icons: [
@@ -290,7 +276,7 @@ function PaymentError({ error, onRetry, onClose }: PaymentErrorProps) {
 }
 
 // Main payment modal component
-type PaymentMethod = "card" | "apple_pay" | "google_pay" | "klarna" | "eps" | "sofort";
+type PaymentMethod = "card" | "klarna" | "eps" | "sofort";
 type PaymentStep = "method-selection" | "payment-details" | "success" | "error";
 
 export default function PaymentModal({
@@ -556,12 +542,12 @@ export default function PaymentModal({
               </button>
               <button
                 onClick={() => {
-                  // Skip payment-details for Klarna, Apple Pay, and Google Pay
-                  if (selectedMethod === "klarna" || selectedMethod === "apple_pay" || selectedMethod === "google_pay") {
-                    // TODO: Implement direct payment flow for these methods
+                  // Skip payment-details for Klarna
+                  if (selectedMethod === "klarna") {
+                    // TODO: Implement direct payment flow for Klarna
                     console.log(`Direct payment for ${selectedMethod} not yet implemented`);
                     // For now, show an alert
-                    alert(`${selectedMethod === "klarna" ? "Klarna" : selectedMethod === "apple_pay" ? "Apple Pay" : "Google Pay"} Integration wird in Kürze verfügbar sein.`);
+                    alert(`Klarna Integration wird in Kürze verfügbar sein.`);
                   } else {
                     setPaymentStep("payment-details");
                   }
