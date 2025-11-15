@@ -3554,7 +3554,16 @@ export default function CheckoutStepper({
                 variant="primary"
                 size="xs"
                 className="whitespace-nowrap"
-                onClick={() => setIsPaymentModalOpen(true)}
+                onClick={() => {
+                  // Validate email exists before opening payment
+                  if (!getUserData.email) {
+                    setContactWarning("Bitte fülle zuerst das Terminvereinbarungsformular aus, damit wir deine E-Mail-Adresse haben.");
+                    setStepIndex(3); // Navigate to Terminvereinbarung
+                    setTimeout(() => setContactWarning(null), 8000);
+                    return;
+                  }
+                  setIsPaymentModalOpen(true);
+                }}
                 disabled={isPaymentCompleted}
               >
                 {isPaymentCompleted ? "✓ Bezahlt" : "Zur Kassa"}
@@ -4165,15 +4174,16 @@ export default function CheckoutStepper({
   }
 
   function getCustomerEmail(): string {
-    // Try to get email from existing inquiry or use placeholder
-    const configItem = items.find((it) => "nest" in it && it.nest) as
-      | ConfigurationCartItem
-      | undefined;
-    return configItem?.sessionId ? "kunde@nest-haus.at" : "kunde@nest-haus.at"; // TODO: Get from form
+    // Get email from user data (appointment or grundstueck form)
+    return getUserData.email || "";
   }
 
   function getCustomerName(): string {
-    return "NEST-Haus Kunde"; // TODO: Get from form
+    // Get name from user data (appointment or grundstueck form)
+    const fullName = getUserData.name && getUserData.lastName
+      ? `${getUserData.name} ${getUserData.lastName}`
+      : getUserData.name || "";
+    return fullName || "NEST-Haus Kunde";
   }
 
   function handlePaymentSuccess(paymentIntentId: string) {
