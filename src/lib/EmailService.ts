@@ -1,6 +1,8 @@
 import { Resend } from 'resend';
 import { generateCustomerConfirmationEmail } from './emailTemplates/CustomerConfirmationTemplate';
 import { generateAdminNotificationEmail } from './emailTemplates/AdminNotificationTemplate';
+import { generatePaymentConfirmationEmail } from './emailTemplates/PaymentConfirmationTemplate';
+import { generateAdminPaymentNotificationEmail } from './emailTemplates/AdminPaymentNotificationTemplate';
 
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -31,12 +33,17 @@ export interface PaymentConfirmationData {
   paymentAmount: number;
   paymentCurrency: string;
   paymentMethod: string;
+  paymentIntentId?: string;
+  paidAt?: Date;
   configurationData?: unknown;
 }
 
 export interface AdminPaymentNotificationData extends PaymentConfirmationData {
   paymentIntentId: string;
   stripeCustomerId: string;
+  sessionId?: string;
+  clientIP?: string;
+  userAgent?: string;
 }
 
 export class EmailService {
@@ -834,16 +841,26 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
     try {
       console.log(`💳 Sending payment confirmation email to ${data.email}`);
 
-      const subject = 'Zahlungsbestätigung - NEST-Haus Konfiguration';
-      const htmlContent = this.generatePaymentConfirmationHTML(data);
-      const textContent = this.generatePaymentConfirmationText(data);
+      // Generate email using branded template
+      const { subject, html, text } = generatePaymentConfirmationEmail({
+        inquiryId: data.inquiryId,
+        name: data.name,
+        email: data.email,
+        paymentAmount: data.paymentAmount,
+        paymentCurrency: data.paymentCurrency,
+        paymentMethod: data.paymentMethod,
+        paymentIntentId: data.paymentIntentId,
+        paidAt: data.paidAt,
+        configurationData: data.configurationData,
+      });
 
       const result = await resend.emails.send({
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
+        replyTo: this.REPLY_TO_EMAIL,
         to: data.email,
         subject,
-        html: htmlContent,
-        text: textContent,
+        html,
+        text,
       });
 
       if (result.error) {
@@ -867,16 +884,36 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
     try {
       console.log(`💳 Sending admin payment notification for inquiry ${data.inquiryId}`);
 
-      const subject = `💰 Zahlung erhalten - NEST-Haus Anfrage ${data.inquiryId}`;
-      const htmlContent = this.generateAdminPaymentNotificationHTML(data);
-      const textContent = this.generateAdminPaymentNotificationText(data);
+      // Generate email using branded template
+      const { subject, html, text } = generateAdminPaymentNotificationEmail({
+        inquiryId: data.inquiryId,
+        name: data.name,
+        email: data.email,
+        paymentAmount: data.paymentAmount,
+        paymentCurrency: data.paymentCurrency,
+        paymentMethod: data.paymentMethod,
+        paymentIntentId: data.paymentIntentId,
+        stripeCustomerId: data.stripeCustomerId,
+        paidAt: data.paidAt,
+        configurationData: data.configurationData,
+        sessionId: data.sessionId,
+        clientIP: data.clientIP,
+        userAgent: data.userAgent,
+      });
+
+      // Send to both admin and sales email
+      const recipients = [this.ADMIN_EMAIL];
+      if (this.SALES_EMAIL !== this.ADMIN_EMAIL) {
+        recipients.push(this.SALES_EMAIL);
+      }
 
       const result = await resend.emails.send({
         from: `${this.FROM_NAME} <${this.FROM_EMAIL}>`,
-        to: [this.ADMIN_EMAIL, this.SALES_EMAIL],
+        replyTo: this.REPLY_TO_EMAIL,
+        to: recipients,
         subject,
-        html: htmlContent,
-        text: textContent,
+        html,
+        text,
       });
 
       if (result.error) {
@@ -895,6 +932,7 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
 
   /**
    * Generate payment confirmation HTML for customer
+   * @deprecated Use generatePaymentConfirmationEmail from PaymentConfirmationTemplate instead
    */
   private static generatePaymentConfirmationHTML(data: PaymentConfirmationData): string {
     const formattedAmount = this.formatPrice(data.paymentAmount);
@@ -972,6 +1010,7 @@ E-Mail antworten: mailto:${data.email}?subject=Re: Ihre Anfrage bei NEST-Haus
 
   /**
    * Generate payment confirmation text for customer
+   * @deprecated Use generatePaymentConfirmationEmail from PaymentConfirmationTemplate instead
    */
   private static generatePaymentConfirmationText(data: PaymentConfirmationData): string {
     const formattedAmount = this.formatPrice(data.paymentAmount);
@@ -1003,6 +1042,7 @@ Diese E-Mail wurde automatisch generiert.`;
 
   /**
    * Generate admin payment notification HTML
+   * @deprecated Use generateAdminPaymentNotificationEmail from AdminPaymentNotificationTemplate instead
    */
   private static generateAdminPaymentNotificationHTML(data: AdminPaymentNotificationData): string {
     const formattedAmount = this.formatPrice(data.paymentAmount);
@@ -1094,6 +1134,7 @@ Diese E-Mail wurde automatisch generiert.`;
 
   /**
    * Generate admin payment notification text
+   * @deprecated Use generateAdminPaymentNotificationEmail from AdminPaymentNotificationTemplate instead
    */
   private static generateAdminPaymentNotificationText(data: AdminPaymentNotificationData): string {
     const formattedAmount = this.formatPrice(data.paymentAmount);

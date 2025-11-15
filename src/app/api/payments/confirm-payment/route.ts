@@ -108,6 +108,8 @@ export async function POST(request: NextRequest) {
                     paymentAmount: inquiry.paymentAmount || paymentIntent.amount,
                     paymentCurrency: inquiry.paymentCurrency || paymentIntent.currency,
                     paymentMethod: inquiry.paymentMethod || 'Karte',
+                    paymentIntentId,
+                    paidAt: inquiry.paidAt || new Date(),
                     configurationData: inquiry.configurationData,
                 };
 
@@ -120,6 +122,9 @@ export async function POST(request: NextRequest) {
                     ...customerData,
                     paymentIntentId,
                     stripeCustomerId: paymentIntent.customer as string,
+                    sessionId: inquiry.sessionId || undefined,
+                    clientIP: undefined, // Not available in this context
+                    userAgent: undefined, // Not available in this context
                 });
                 console.log('✅ Payment notification email sent to admin');
 

@@ -526,37 +526,76 @@ CRON_SECRET=your-secure-cron-secret-here
 
 ### 3. Payment Confirmation Email
 
-**File**: `src/lib/EmailService.ts` (inline template)
+**File**: `src/lib/emailTemplates/PaymentConfirmationTemplate.ts`
 
 **Sent When**:
 
-- Stripe payment successful
+- Stripe payment successful (via webhook or direct confirmation)
 
 **Content**:
 
-- ✅ Payment amount and method
-- ✅ Inquiry ID reference
-- ✅ Payment date/time
-- ✅ Configuration summary
-- ✅ Next steps (24-hour contact promise)
-- ✅ Contact information
+- ✅ Hero image (branded NEST-Haus interior)
+- ✅ Payment success message with green checkmark icon
+- ✅ Payment details (amount, method, date, transaction ID)
+- ✅ **Dein Nest - Deine Auswahl** section showing:
+  - Each configuration item (Nest model, Gebäudehülle, Innenverkleidung, Fußboden, PV-Anlage, Fenster)
+  - Item names and individual prices
+- ✅ **Dein Nest - Überblick** section showing:
+  - Total house price (Dein Nest Haus)
+  - Planungspaket (if selected) with price
+  - Konzept-Check (if completed) with price
+  - Terminvereinbarung status (if booked)
+  - **Gesamtsumme** (total of all above)
+- ✅ Next steps (4-step process after payment)
+- ✅ Contact information (email, phone, website)
+- ✅ Branded footer with links
+
+**Design**:
+
+- Google Geist font (loaded from CDN)
+- Glass morphism cards with rounded corners
+- Success green (#10B981) for payment indicators
+- Blue accent color (#3D6CE1) for prices and CTAs
+- Hero image from IMAGES.hero.nestHaus3
+- Responsive mobile design
+- Inline CSS (email-safe)
 
 ### 4. Admin Payment Notification Email
 
-**File**: `src/lib/EmailService.ts` (inline template)
+**File**: `src/lib/emailTemplates/AdminPaymentNotificationTemplate.ts`
 
 **Sent When**:
 
-- Stripe payment successful
+- Stripe payment successful (via webhook or direct confirmation)
 
 **Content**:
 
-- ✅ Customer details
-- ✅ Payment amount and method
-- ✅ Stripe Payment Intent ID
-- ✅ Stripe Customer ID
-- ✅ Configuration summary
-- ✅ Action required notice (24-hour follow-up)
+- ✅ Green gradient header (payment received)
+- ✅ Urgent action section (24-hour contact required)
+- ✅ Payment details section:
+  - Amount (highlighted in green)
+  - Payment method
+  - Date and time
+  - Stripe Payment Intent ID
+  - Stripe Customer ID
+- ✅ Customer details section:
+  - Name, email (clickable), inquiry ID, session ID
+- ✅ **Dein Nest - Deine Auswahl** configuration breakdown
+- ✅ **Dein Nest - Überblick** price summary
+- ✅ Technical information (IP address, browser/user agent)
+- ✅ Action buttons:
+  - "Anfrage öffnen" (opens admin panel)
+  - "Kunde kontaktieren" (opens email client)
+  - "Stripe öffnen" (opens Stripe dashboard)
+
+**Design**:
+
+- Google Geist font
+- Green gradient header (#10b981 to #059669)
+- Yellow urgent action box (#fef3c7 with gold border)
+- Structured sections with clean layout
+- Monospace font for technical IDs
+- Green action buttons for quick access
 
 ---
 
@@ -1153,12 +1192,46 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 
 ---
 
+## Email Template Files Reference
+
+### Customer-Facing Templates
+
+1. **CustomerConfirmationTemplate.ts** - Contact/Appointment confirmations
+2. **PaymentConfirmationTemplate.ts** - Payment success confirmations (NEW)
+
+### Admin-Facing Templates
+
+1. **AdminNotificationTemplate.ts** - Contact/Appointment notifications
+2. **AdminPaymentNotificationTemplate.ts** - Payment success notifications (NEW)
+
+### Template Features
+
+All templates include:
+- ✅ Google Geist font from CDN
+- ✅ Responsive mobile design (breakpoint: 600px)
+- ✅ Glass morphism card design
+- ✅ Inline CSS for email client compatibility
+- ✅ Plain text fallback versions
+- ✅ Branded NEST-Haus styling
+
+### Configuration Parser
+
+Both payment templates use `parseConfigurationForEmail()` helper function to extract:
+- Individual configuration items (nest, gebaeudehuelle, innenverkleidung, etc.)
+- Prices for each item
+- Planungspaket details
+- Konzept-Check status
+- Terminvereinbarung status
+- Total house price and overall total
+
+---
+
 ## Document Maintenance
 
-**Last Updated**: November 14, 2025  
+**Last Updated**: November 14, 2025 (Updated: Payment email templates added)  
 **Next Review**: When DNS verification completes or email issues arise  
 **Owner**: Development Team  
-**Version**: 1.0 (Final)
+**Version**: 1.1 (Final + Payment Templates)
 
 ---
 
@@ -1170,6 +1243,6 @@ curl "http://localhost:3000/api/calendar/availability?date=2025-11-15"
 **🔄 Reply Tracking**: Automated via Reply-To headers  
 **💾 Database Storage**: All inquiries saved to CustomerInquiry table  
 **⏰ Appointment System**: 24-hour time slot reservation with auto-expiration  
-**✉️ Email Templates**: Branded, responsive, professionally designed
+**✉️ Email Templates**: 4 branded templates (Contact, Appointment, Payment Customer, Payment Admin)
 
 **All systems operational and ready for production deployment.**
