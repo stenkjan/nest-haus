@@ -98,7 +98,7 @@ export const TerminVereinbarenContent: React.FC<
     return (
       <div className={`space-y-6 ${className}`}>
         {/* Descriptive Text for Mobile - NO BOX */}
-        <div className="text-center px-4">
+        <div className="text-center">
           <p className="p-primary leading-relaxed">
             <span className="text-nest-gray">
               Der Kauf deines Hauses ist ein großer Schritt – und{" "}
@@ -124,54 +124,6 @@ export const TerminVereinbarenContent: React.FC<
             </span>
           </p>
         </div>
-
-        {/* Contact Info Boxes for Mobile */}
-        <div className="grid grid-cols-1 gap-4">
-          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-            <div className="p-6">
-              <h2 className="h2-title text-black mb-3 text-center">
-                Kontakt <span className="text-nest-gray">Melde dich!</span>
-              </h2>
-              <div className="text-center">
-                <p className="p-primary-small leading-relaxed">
-                  <span className="text-nest-gray">Telefon:</span>{" "}
-                  <span className="text-black font-medium">
-                    +43 (0) 664 5403399
-                  </span>
-                  <br />
-                  <span className="text-nest-gray">Mobil:</span>{" "}
-                  <span className="text-black font-medium">
-                    +43 (0) 664 2531869
-                  </span>
-                  <br />
-                  <span className="text-nest-gray">Email:</span>{" "}
-                  <span className="text-black font-medium">nest@haus.at</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
-            <div className="p-6">
-              <h2 className="h2-title text-black mb-3 text-center">
-                Adresse <span className="text-nest-gray">Komm vorbei!</span>
-              </h2>
-              <div className="text-center">
-                <p className="p-primary-small leading-relaxed">
-                  <span className="text-black font-medium">
-                    Karmeliterplatz 8
-                    <br />
-                    8010, Graz
-                    <br />
-                    Steiermark
-                    <br />
-                    Österreich
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     );
   }
@@ -180,7 +132,7 @@ export const TerminVereinbarenContent: React.FC<
   if (isDesktop) {
     return (
       <div
-        className={`space-y-8 max-w-[500px] justify-self-start ${className}`}
+        className={`space-y-8 max-w-[500px] justify-self-center ${className}`}
       >
         {/* Spacer to align text with calendar border start */}
         <div className="h-16"></div>
@@ -217,48 +169,41 @@ export const TerminVereinbarenContent: React.FC<
         <div className="h-3"></div>
 
         {/* Contact Box */}
-        <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+        <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
           <div className="p-6">
             <h2 className="h2-title text-black mb-3">
-              Kontakt <span className="text-nest-gray">Melde dich!</span>
+              Kontakt <span className="text-nest-gray ">Melde dich!</span>
             </h2>
-            <div>
-              <p className="p-primary-small leading-relaxed">
-                <span className="text-nest-gray">Telefon:</span>{" "}
-                <span className="text-black font-medium">
-                  +43 (0) 664 5403399
-                </span>
-                <br />
-                <span className="text-nest-gray">Mobil:</span>{" "}
-                <span className="text-black font-medium">
-                  +43 (0) 664 2531869
-                </span>
-                <br />
-                <span className="text-nest-gray">Email:</span>{" "}
-                <span className="text-black font-medium">nest@haus.at</span>
-              </p>
+            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
+              <span className="text-nest-gray">Telefon:</span>
+              <span className="text-black font-medium">
+                +43 (0) 664 1001947
+              </span>
+              <span className="text-nest-gray">Mobil:</span>
+              <span className="text-black font-medium">
+                +43 (0) 664 2531869
+              </span>
+              <span className="text-nest-gray">Email:</span>
+              <span className="text-black font-medium">nest@haus.at</span>
             </div>
           </div>
         </div>
 
         {/* Address Box */}
-        <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+        <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
           <div className="p-6">
             <h2 className="h2-title text-black mb-3">
               Adresse <span className="text-nest-gray">Komm vorbei!</span>
             </h2>
-            <div>
-              <p className="p-primary-small leading-relaxed">
-                <span className="text-black font-medium">
-                  Karmeliterplatz 8
-                  <br />
-                  8010, Graz
-                  <br />
-                  Steiermark
-                  <br />
-                  Österreich
-                </span>
-              </p>
+            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
+              <span className="text-nest-gray">Straße:</span>
+              <span className="text-black font-medium">Karmeliterplatz 8</span>
+              <span className="text-nest-gray">Stadt:</span>
+              <span className="text-black font-medium">
+                8010, Graz, Steiermark
+              </span>
+              <span className="text-nest-gray">Land:</span>
+              <span className="text-black font-medium">Österreich</span>
             </div>
           </div>
         </div>

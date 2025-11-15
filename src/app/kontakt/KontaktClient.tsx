@@ -45,31 +45,60 @@ export default function KontaktClient() {
     >
       <SectionRouter sections={sections} onSectionChange={setCurrentSectionId}>
         {/* Vereinbare jetzt deinen Termin - Section 1 */}
-        <AppointmentBookingSection
+        <section
           id="terminvereinbarung"
-          backgroundColor="white"
-          maxWidth={false}
-        />
+          className="w-full py-8 md:py-16 bg-white"
+        >
+          <SectionHeader
+            title="Vereinbare jetzt deinen Termin"
+            subtitle="Wir helfen gerne."
+            titleClassName="text-black"
+            subtitleClassName="text-black"
+            mobileTitle="Vereinbare jetzt deinen Termin"
+            wrapperMargin="mb-8 md:mb-12"
+          />
+          <AppointmentBookingSection
+            backgroundColor="white"
+            maxWidth={false}
+            title=""
+            subtitle=""
+          />
+        </section>
 
         {/* Section 2 - Dein Grundstück - Unser Check */}
-        <GrundstueckCheckForm
+        <section
           id="grundstueckscheck"
-          backgroundColor="white"
-          maxWidth="max-w-[1440px]"
-        />
+          className="w-full py-8 md:py-16 bg-white"
+        >
+          <SectionHeader
+            title="Dein Nest-Haus Entwurf"
+            subtitle="Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt"
+            titleClassName="text-black"
+            subtitleClassName="text-black"
+            mobileTitle="Dein Nest-Haus Entwurf"
+            wrapperMargin="mb-8 md:mb-12"
+          />
+          <GrundstueckCheckForm
+            backgroundColor="white"
+            maxWidth="max-w-[1536px]"
+            showHeader={false}
+            excludePersonalData={false}
+            useWrapper={false}
+          />
+        </section>
 
         {/* Section 3 - Wo du uns findest */}
-        <div className="w-full py-16">
+        <section id="kontakt-karte" className="w-full py-8 md:py-16">
           <SectionHeader
             title="Wo du uns findest"
             subtitle="Komm vorbei um deinen Traum mit uns zu besprechen."
             titleClassName="text-black"
             subtitleClassName="text-black"
-            wrapperMargin="mb-12"
+            mobileTitle="Wo du uns findest"
+            wrapperMargin="mb-8 md:mb-12"
           />
-          <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-[1536px] mx-auto px-4 md:px-12">
             <div
-              id="kontakt-karte"
               className="relative h-[600px] w-full bg-white rounded-[60px] overflow-hidden shadow-xl"
               style={{ border: "15px solid #F4F4F4" }}
             >
@@ -85,7 +114,7 @@ export default function KontaktClient() {
               />
             </div>
           </div>
-        </div>
+        </section>
       </SectionRouter>
 
       <Footer />

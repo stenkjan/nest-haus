@@ -4,6 +4,47 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c4b42a2ca290e6bc114bbbac555c4a8d0bdcd9c6] - Sat Nov 15 11:22:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/db/route.ts
+- src/app/api/webhooks/stripe/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/GRUNDSTUECK_FORM_ERROR_HANDLING_FIX.md
+- docs/GRUNDSTUECK_VALIDATION_EMAIL_IMPLEMENTATION.md
+- docs/KONFIGURATOR_PRICING_QUICK_REFERENCE.md
+
+
+---
+
+## [a7ec56baae23319388ab374298b0148c9c9e1172] - Sat Nov 15 11:05:12 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Enhance session storage handling and validation in CheckoutStepper and GrundstueckCheckForm components  - Added a sessionStorageTrigger state in CheckoutStepper to force re-reading sessionStorage when navigating to the final step. - Updated validation logic in GrundstueckCheckForm to ensure all required fields are filled, with improved alert messages for user guidance. - Enhanced error handling and logging for API responses in GrundstueckCheckForm to provide clearer feedback on submission status.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+#### 📚 Documentation Changes
+- docs/GRUNDSTUECK_FORM_ERROR_HANDLING_FIX.md
+
+
+---
+
 ## [9ec4ad9fae2c30c5fce69474759a155e9f52890e] - Sat Nov 15 10:39:24 2025 +0100
 
 **Author**: stenkjan

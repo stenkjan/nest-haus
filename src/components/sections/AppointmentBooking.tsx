@@ -434,7 +434,7 @@ const AppointmentBooking = ({
   return (
     <div className="w-full">
       {/* Mobile Layout: Text first, then calendar and form below */}
-      <div className="lg:hidden space-y-8">
+      <div className="lg:hidden space-y-8 px-4 md:px-12">
         {/* Descriptive Text for Mobile - NO BOX */}
         {showLeftSide && <TerminVereinbarenContent variant="mobile" />}
 
@@ -650,49 +650,42 @@ const AppointmentBooking = ({
           {/* Contact Info Boxes for Mobile - UPDATED CONTENT */}
           {showLeftSide && (
             <div className="grid grid-cols-1 gap-4">
-              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+              <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
                 <div className="p-6">
-                  <h2 className="h2-title text-black mb-3 text-center">
+                  <h2 className="h2-title text-black mb-4 text-left">
                     Kontakt <span className="text-nest-gray">Melde dich!</span>
                   </h2>
-                  <div className="text-center">
-                    <p className="p-primary-small leading-relaxed">
-                      <span className="text-nest-gray">Telefon:</span>{" "}
-                      <span className="text-black font-medium">
-                        +43 (0) 3847 75090
-                      </span>
-                      <br />
-                      <span className="text-nest-gray">Mobil:</span>{" "}
-                      <span className="text-black font-medium">
-                        +43 (0) 664 3949604
-                      </span>
-                      <br />
-                      <span className="text-nest-gray">Email:</span>{" "}
-                      <span className="text-black font-medium">
-                        nest@haus.at
-                      </span>
-                    </p>
+                  <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
+                    <span className="text-nest-gray">Telefon:</span>
+                    <span className="text-black font-medium">
+                      +43 (0) 664 1001947
+                    </span>
+                    <span className="text-nest-gray">Mobil:</span>
+                    <span className="text-black font-medium">
+                      +43 (0) 664 2531869
+                    </span>
+                    <span className="text-nest-gray">Email:</span>
+                    <span className="text-black font-medium">nest@haus.at</span>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gray-50 hover:scale-[1.02] transition-transform">
+              <div className="rounded-3xl shadow-lg overflow-hidden bg-[#f4f4f4]">
                 <div className="p-6">
-                  <h2 className="h2-title text-black mb-3 text-center">
+                  <h2 className="h2-title text-black mb-4 text-left">
                     Adresse <span className="text-nest-gray">Komm vorbei!</span>
                   </h2>
-                  <div className="text-center">
-                    <p className="p-primary-small leading-relaxed">
-                      <span className="text-black font-medium">
-                        Karmeliterplatz 8
-                        <br />
-                        8010, Graz
-                        <br />
-                        Steiermark
-                        <br />
-                        Österreich
-                      </span>
-                    </p>
+                  <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 p-primary-small leading-relaxed">
+                    <span className="text-nest-gray">Straße:</span>
+                    <span className="text-black font-medium">
+                      Karmeliterplatz 8
+                    </span>
+                    <span className="text-nest-gray">Stadt:</span>
+                    <span className="text-black font-medium">
+                      8010, Graz, Steiermark
+                    </span>
+                    <span className="text-nest-gray">Land:</span>
+                    <span className="text-black font-medium">Österreich</span>
                   </div>
                 </div>
               </div>
@@ -702,227 +695,229 @@ const AppointmentBooking = ({
       </div>
 
       {/* Desktop Layout: Side by side or centered form */}
-      <div
-        className={`hidden ${
-          showLeftSide
-            ? "lg:grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
-            : "lg:flex lg:justify-center"
-        } items-start max-w-[1536px] mx-auto`}
-      >
-        {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
-        {showLeftSide && <TerminVereinbarenContent variant="desktop" />}
-
-        {/* Right side - Calendar and Form - POSITIONED AT RIGHT EDGE */}
+      <div className="hidden lg:flex lg:justify-center w-full">
         <div
-          className={`space-y-6 ${
+          className={`${
             showLeftSide
-              ? "max-w-[500px] justify-self-end"
-              : "w-full max-w-none"
-          }`}
+              ? "lg:grid lg:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16"
+              : "flex justify-center"
+          } items-start max-w-[1536px] w-full px-4 md:px-12`}
         >
-          <form onSubmit={handleSubmit}>
-            {/* Month Navigation - ABOVE calendar - WITH CIRCLES */}
-            <div className="flex justify-between items-center mb-4">
-              <button
-                type="button"
-                className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
-                onClick={prevMonth}
-              >
-                &#10094;
-              </button>
-              <span className="p-primary font-medium">
-                {currentMonth.toLocaleDateString("de-DE", {
-                  month: "long",
-                  year: "numeric",
-                })}
-              </span>
-              <button
-                type="button"
-                className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
-                onClick={nextMonth}
-              >
-                &#10095;
-              </button>
-            </div>
+          {/* Left side - Info and Contact boxes - POSITIONED AT LEFT EDGE */}
+          {showLeftSide && <TerminVereinbarenContent variant="desktop" />}
 
-            {/* Calendar with Border - Updated to grey border and 35px radius */}
-            <div className="border border-gray-300 rounded-[35px] p-6 mb-4">
-              <div className="grid grid-cols-7 gap-2 mb-4 text-center font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-500">
-                <div>Mo</div>
-                <div>Di</div>
-                <div>Mi</div>
-                <div>Do</div>
-                <div>Fr</div>
-                <div>Sa</div>
-                <div>So</div>
-              </div>
-
-              <div className="grid grid-cols-7 gap-2">{renderCalendar()}</div>
-            </div>
-
-            {/* Time Slot Selector - Single box with arrows WITH CIRCLES */}
-            <div className="border border-gray-300 rounded-full px-6 py-3 flex items-center justify-between mb-4">
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm disabled:opacity-30 disabled:hover:border disabled:hover:border-black transition-all"
-                onClick={prevTime}
-                disabled={selectedTimeIndex === 0}
-              >
-                &#10094;
-              </button>
-              <span className="p-primary font-medium">
-                {isLoadingSlots
-                  ? "Laden..."
-                  : (() => {
-                      const currentTimeSlots = getCurrentTimeSlots();
-                      const slot = currentTimeSlots[selectedTimeIndex];
-
-                      if (availableTimeSlots.length > 0 && slot?.start) {
-                        return (
-                          new Date(slot.start).toLocaleTimeString("de-DE", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }) +
-                          " - " +
-                          new Date(slot.end).toLocaleTimeString("de-DE", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        );
-                      } else {
-                        const currentTimeSlots = getCurrentTimeSlots();
-                        if (currentTimeSlots.length === 0) {
-                          return "nicht verfügbar";
-                        }
-                        return (
-                          fallbackTimeSlots[selectedTimeIndex] ||
-                          "nicht verfügbar"
-                        );
-                      }
-                    })()}
-              </span>
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm disabled:opacity-30 disabled:hover:border disabled:hover:border-black transition-all"
-                onClick={nextTime}
-                disabled={(() => {
-                  const currentTimeSlots = getCurrentTimeSlots();
-                  return selectedTimeIndex >= currentTimeSlots.length - 1;
-                })()}
-              >
-                &#10095;
-              </button>
-            </div>
-
-            {/* Availability and Opening Hours Text */}
-            <div className="flex justify-between text-sm md:text-sm lg:text-base 2xl:text-lg mb-6">
-              <div>
-                <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  verfügbar
-                </div>
-                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  nicht verfügbar
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  Öffnungszeiten
-                </div>
-                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  Mo-Fr: 08:00-12:00
-                </div>
-                <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
-                  13:00-19:00
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Information - WIDER FORM FIELDS */}
-            <div className="mb-8">
-              <h3 className="p-primary font-medium mb-6">Deine Daten</h3>
-              <div className="space-y-3 mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                    placeholder="Name"
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                    placeholder="Nachname"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                    placeholder="Telefon"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                    placeholder="Email"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Appointment Type - HORIZONTAL LAYOUT */}
-              <div className="flex gap-6 mb-8 justify-center">
-                <label className="flex items-center cursor-pointer">
-                  <input
-                    type="radio"
-                    name="appointmentType"
-                    value="personal"
-                    checked={formData.appointmentType === "personal"}
-                    onChange={handleInputChange}
-                    className="mr-3 w-4 h-4"
-                    style={{ accentColor: "#3D6CE1" }}
-                  />
-                  <span className="p-primary">Persönliches Gespräch</span>
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input
-                    type="radio"
-                    name="appointmentType"
-                    value="phone"
-                    checked={formData.appointmentType === "phone"}
-                    onChange={handleInputChange}
-                    className="mr-3 w-4 h-4"
-                    style={{ accentColor: "#3D6CE1" }}
-                  />
-                  <span className="p-primary">Telefonische Beratung</span>
-                </label>
-              </div>
-            </div>
-
-            {showSubmitButton && (
-              <div className="flex justify-center">
+          {/* Right side - Calendar and Form - POSITIONED AT RIGHT EDGE */}
+          <div
+            className={`space-y-6 ${
+              showLeftSide
+                ? "max-w-[500px] justify-self-end"
+                : "w-full max-w-none"
+            }`}
+          >
+            <form onSubmit={handleSubmit}>
+              {/* Month Navigation - ABOVE calendar - WITH CIRCLES */}
+              <div className="flex justify-between items-center mb-4">
                 <button
-                  type="submit"
-                  disabled={isSubmitting || !selectedDate}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  type="button"
+                  className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
+                  onClick={prevMonth}
                 >
-                  {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+                  &#10094;
+                </button>
+                <span className="p-primary font-medium">
+                  {currentMonth.toLocaleDateString("de-DE", {
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </span>
+                <button
+                  type="button"
+                  className="w-10 h-10 rounded-full border border-black hover:border-2 flex items-center justify-center text-lg transition-all"
+                  onClick={nextMonth}
+                >
+                  &#10095;
                 </button>
               </div>
-            )}
-          </form>
+
+              {/* Calendar with Border - Updated to grey border and 35px radius */}
+              <div className="border border-gray-300 rounded-[35px] p-6 mb-4">
+                <div className="grid grid-cols-7 gap-2 mb-4 text-center font-medium text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base text-gray-500">
+                  <div>Mo</div>
+                  <div>Di</div>
+                  <div>Mi</div>
+                  <div>Do</div>
+                  <div>Fr</div>
+                  <div>Sa</div>
+                  <div>So</div>
+                </div>
+
+                <div className="grid grid-cols-7 gap-2">{renderCalendar()}</div>
+              </div>
+
+              {/* Time Slot Selector - Single box with arrows WITH CIRCLES */}
+              <div className="border border-gray-300 rounded-full px-6 py-3 flex items-center justify-between mb-4">
+                <button
+                  type="button"
+                  className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm disabled:opacity-30 disabled:hover:border disabled:hover:border-black transition-all"
+                  onClick={prevTime}
+                  disabled={selectedTimeIndex === 0}
+                >
+                  &#10094;
+                </button>
+                <span className="p-primary font-medium">
+                  {isLoadingSlots
+                    ? "Laden..."
+                    : (() => {
+                        const currentTimeSlots = getCurrentTimeSlots();
+                        const slot = currentTimeSlots[selectedTimeIndex];
+
+                        if (availableTimeSlots.length > 0 && slot?.start) {
+                          return (
+                            new Date(slot.start).toLocaleTimeString("de-DE", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }) +
+                            " - " +
+                            new Date(slot.end).toLocaleTimeString("de-DE", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          );
+                        } else {
+                          const currentTimeSlots = getCurrentTimeSlots();
+                          if (currentTimeSlots.length === 0) {
+                            return "nicht verfügbar";
+                          }
+                          return (
+                            fallbackTimeSlots[selectedTimeIndex] ||
+                            "nicht verfügbar"
+                          );
+                        }
+                      })()}
+                </span>
+                <button
+                  type="button"
+                  className="w-8 h-8 rounded-full border border-black hover:border-2 flex items-center justify-center text-sm disabled:opacity-30 disabled:hover:border disabled:hover:border-black transition-all"
+                  onClick={nextTime}
+                  disabled={(() => {
+                    const currentTimeSlots = getCurrentTimeSlots();
+                    return selectedTimeIndex >= currentTimeSlots.length - 1;
+                  })()}
+                >
+                  &#10095;
+                </button>
+              </div>
+
+              {/* Availability and Opening Hours Text */}
+              <div className="flex justify-between text-sm md:text-sm lg:text-base 2xl:text-lg mb-6">
+                <div>
+                  <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                    verfügbar
+                  </div>
+                  <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                    nicht verfügbar
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-gray-700 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                    Öffnungszeiten
+                  </div>
+                  <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                    Mo-Fr: 08:00-12:00
+                  </div>
+                  <div className="text-gray-400 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+                    13:00-19:00
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Information - WIDER FORM FIELDS */}
+              <div className="mb-8">
+                <h3 className="p-primary font-medium mb-6">Deine Daten</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                      placeholder="Name"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                      placeholder="Nachname"
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                      placeholder="Telefon"
+                    />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="border border-gray-200 rounded-[20px] p-4 text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                      placeholder="Email"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Appointment Type - HORIZONTAL LAYOUT */}
+                <div className="flex gap-6 mb-8 justify-center">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="appointmentType"
+                      value="personal"
+                      checked={formData.appointmentType === "personal"}
+                      onChange={handleInputChange}
+                      className="mr-3 w-4 h-4"
+                      style={{ accentColor: "#3D6CE1" }}
+                    />
+                    <span className="p-primary">Persönliches Gespräch</span>
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="appointmentType"
+                      value="phone"
+                      checked={formData.appointmentType === "phone"}
+                      onChange={handleInputChange}
+                      className="mr-3 w-4 h-4"
+                      style={{ accentColor: "#3D6CE1" }}
+                    />
+                    <span className="p-primary">Telefonische Beratung</span>
+                  </label>
+                </div>
+              </div>
+
+              {showSubmitButton && (
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !selectedDate}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-normal rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 inline-flex items-center justify-center shadow-sm w-36 sm:w-40 lg:w-44 xl:w-48 px-2 py-1.5 text-sm xl:text-base 2xl:text-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? "Wird gesendet..." : "Jetzt Anfragen"}
+                  </button>
+                </div>
+              )}
+            </form>
+          </div>
         </div>
       </div>
     </div>
