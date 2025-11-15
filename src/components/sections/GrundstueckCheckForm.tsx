@@ -70,8 +70,14 @@ export function GrundstueckCheckForm({
     e.preventDefault();
 
     // Validate minimum required fields: address, city, postalCode
-    if (!formData.address.trim() || !formData.city.trim() || !formData.postalCode.trim()) {
-      alert("Bitte fülle die Informationen zum Grundstück aus (Adresse, Stadt und Postleitzahl sind erforderlich).");
+    if (
+      !formData.address.trim() ||
+      !formData.city.trim() ||
+      !formData.postalCode.trim()
+    ) {
+      alert(
+        "Bitte fülle die Informationen zum Grundstück aus (Adresse, Stadt und Postleitzahl sind erforderlich)."
+      );
       return;
     }
 
