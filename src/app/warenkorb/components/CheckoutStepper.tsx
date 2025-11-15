@@ -1662,6 +1662,17 @@ export default function CheckoutStepper({
     string
   > | null>(null);
 
+  // Trigger to force re-reading sessionStorage when navigating between steps
+  const [sessionStorageTrigger, setSessionStorageTrigger] = useState(0);
+
+  // Re-check sessionStorage when step changes to abschluss
+  useEffect(() => {
+    if (stepIndex === steps.length - 1) {
+      // Force re-read of sessionStorage by incrementing trigger
+      setSessionStorageTrigger((prev) => prev + 1);
+    }
+  }, [stepIndex, steps.length]);
+
   // Load userData from database as fallback when sessionStorage is empty
   useEffect(() => {
     if (!sessionId) return;
@@ -1754,7 +1765,7 @@ export default function CheckoutStepper({
       postalCode: grundstueckData?.postalCode || "",
       country: grundstueckData?.country || "Österreich",
     };
-  }, [appointmentDetails, userDataFromDb]);
+  }, [appointmentDetails, userDataFromDb, sessionStorageTrigger]);
 
   // Helper function to check if appointment is in the past
   const isAppointmentInPast = useMemo(() => {
