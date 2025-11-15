@@ -25,7 +25,7 @@ interface SummaryPanelProps {
 }
 
 export default function SummaryPanel({
-  onInfoClick,
+  onInfoClick: _onInfoClick,
   onReset: _onReset,
   className = "",
 }: SummaryPanelProps) {
