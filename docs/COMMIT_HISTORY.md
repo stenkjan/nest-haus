@@ -4,6 +4,82 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [bd37214f5fa76d501adbb4f5000c9c20ec3fb539] - Sat Nov 15 15:25:09 2025 +0000
+
+**Author**: Cursor Agent
+**Message**: `Merge branch 'cursor/assess-stripe-migration-effort-63ee'  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- STRIPE_MIGRATION_CHECKLIST.md
+- STRIPE_MIGRATION_QUICK_START.md
+- STRIPE_PRODUCTION_MIGRATION_GUIDE.md
+- STRIPE_TECHNICAL_ASSESSMENT.md
+
+
+---
+
+## [687abfd51e6794bf771000aaeb453fcdf37ec148] - Sat Nov 15 16:19:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [aff13507204458bd99045c8efdd20873abf373ca] - Sat Nov 15 16:17:03 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/components/sections/AppointmentBooking.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [400595d56d49cc2e5a73df98e4dd23c2000cd0fd] - Sat Nov 15 16:11:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge ca3af735654efb66905db59d7b4b387e50fb4d29 into 2ebd02225235530a39f99e762ea964c5684bd835  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+
+
+---
+
+## [04183e25caa73f44e40a58f2b5cf09e9cd752ba8] - Sat Nov 15 15:59:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [428e98455e0dcd78dbfe1076a4a930040d79c88f] - Sat Nov 15 15:57:30 2025 +0100
 
 **Author**: stenkjan

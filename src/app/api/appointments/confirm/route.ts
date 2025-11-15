@@ -80,16 +80,12 @@ export async function GET(request: NextRequest) {
       const eventResult = await GoogleCalendarService.createEvent({
         summary: `NEST-Haus Beratung - ${updatedInquiry.name}`,
         description: `Beratungstermin für NEST-Haus Konfiguration\n\nKunde: ${updatedInquiry.name}\nE-Mail: ${updatedInquiry.email}\nTelefon: ${updatedInquiry.phone || 'N/A'}\nAnfrage-ID: ${updatedInquiry.id}`,
-        start: updatedInquiry.appointmentDateTime.toISOString(),
-        end: new Date(
+        startDateTime: updatedInquiry.appointmentDateTime.toISOString(),
+        endDateTime: new Date(
           updatedInquiry.appointmentDateTime.getTime() + 60 * 60 * 1000
         ).toISOString(), // 60 minutes duration
-        attendees: [
-          {
-            email: updatedInquiry.email,
-            displayName: updatedInquiry.name,
-          },
-        ],
+        attendeeEmail: updatedInquiry.email,
+        attendeeName: updatedInquiry.name || undefined,
         location: 'NEST-Haus Office, Karmeliterplatz 8, 8010 Graz',
       });
 

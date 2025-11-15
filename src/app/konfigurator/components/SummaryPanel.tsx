@@ -25,7 +25,7 @@ interface SummaryPanelProps {
 }
 
 export default function SummaryPanel({
-  onInfoClick,
+  onInfoClick: _onInfoClick,
   onReset: _onReset,
   className = "",
 }: SummaryPanelProps) {
@@ -610,7 +610,7 @@ export default function SummaryPanel({
           <InfoBox
             title="Noch Fragen offen?"
             description="Vereinbare jetzt Dein Beratungsgespräch - vor Ort oder ganz bequem telefonisch."
-            onClick={() => onInfoClick?.("beratung")}
+            onClick={() => window.location.href = "/kontakt"}
           />
         </div>
 

@@ -275,8 +275,8 @@ export const configuratorData: CategoryData[] = [
       },
       {
         id: 'holz',
-        name: 'Fichte',
-        description: 'Farbtöne können variieren\nHolz',
+        name: 'Holz',
+        description: 'Farbtöne können variieren\nFichte',
         price: { type: 'upgrade', amount: 400, monthly: 3 }
       },
       {
