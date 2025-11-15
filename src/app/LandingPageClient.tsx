@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
@@ -10,6 +10,7 @@ import { SectionRouter } from "@/components/SectionRouter";
 import { useDeviceDetect } from "@/hooks";
 import TwoByTwoImageGrid from "@/components/grids/TwoByTwoImageGrid";
 import Footer from "@/components/Footer";
+import LaunchFireworks from "@/components/effects/LaunchFireworks";
 
 // Define sections for landing page
 const sections = [
@@ -169,6 +170,7 @@ export default function LandingPageClient() {
     useState<string>("dein-nest-haus");
   const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showFireworks, setShowFireworks] = useState(false);
   const { isMobile } = useDeviceDetect();
   const router = useRouter();
 
@@ -228,6 +230,15 @@ export default function LandingPageClient() {
     checkAuth();
   }, [router]);
 
+  // Check for #launch hash to trigger fireworks easter egg
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#launch') {
+      setShowFireworks(true);
+      // Clear hash to avoid re-trigger on reload
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
   // Show loading state while checking authentication
   if (isAuthChecking) {
     return (
@@ -280,7 +291,11 @@ export default function LandingPageClient() {
   };
 
   return (
-    <div
+    <>
+      {/* Launch Fireworks Easter Egg */}
+      {showFireworks && <LaunchFireworks onComplete={() => setShowFireworks(false)} />}
+      
+      <div
       className="w-full bg-white"
       style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
     >
@@ -472,5 +487,6 @@ export default function LandingPageClient() {
       <div className="pb-16" />
       <Footer />
     </div>
+    </>
   );
 }

@@ -209,8 +209,8 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       box-shadow: 0 4px 20px rgba(61, 108, 225, 0.08);
     }
     .success-card {
-      background: rgba(16, 185, 129, 0.05);
-      border: 1px solid rgba(16, 185, 129, 0.2);
+      background: rgba(61, 108, 225, 0.05);
+      border: 1px solid rgba(61, 108, 225, 0.2);
     }
     h1 {
       font-size: 28px;
@@ -259,7 +259,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       font-size: 15px;
     }
     .payment-amount {
-      color: #10B981;
+      color: #3d6ce1;
       font-weight: 600;
       font-size: 18px;
     }
@@ -438,7 +438,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       <!-- Payment Success Card -->
       <div class="glass-card success-card">
         <div class="success-icon">✅</div>
-        <h2 style="text-align: center; color: #10B981; margin-top: 0;">Zahlung bestätigt</h2>
+        <h2 style="text-align: center; color: #3d6ce1; margin-top: 0;">Zahlung bestätigt</h2>
         <div class="payment-details">
           <div class="payment-item">
             <span class="payment-label">Betrag</span>
@@ -586,7 +586,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
               ? `
           <div class="summary-item">
             <span>Terminvereinbarung ✓</span>
-            <span style="color: #10B981; font-weight: 500;">Gebucht</span>
+            <span style="color: #3d6ce1; font-weight: 500;">Gebucht</span>
           </div>
           `
               : ''

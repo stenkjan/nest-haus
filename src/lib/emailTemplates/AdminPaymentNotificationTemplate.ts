@@ -163,7 +163,7 @@ export function generateAdminPaymentNotificationEmail(
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     }
     .header {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(135deg, #3d6ce1 0%, #2d5ad0 100%);
       color: white;
       padding: 30px;
       text-align: center;
@@ -217,7 +217,7 @@ export function generateAdminPaymentNotificationEmail(
       word-break: break-word;
     }
     .info-value-highlight {
-      color: #10b981;
+      color: #3d6ce1;
       font-weight: 600;
       font-size: 18px;
     }
@@ -266,7 +266,7 @@ export function generateAdminPaymentNotificationEmail(
     }
     .btn-primary {
       display: inline-block;
-      background: #10b981;
+      background: #3d6ce1;
       color: white !important;
       padding: 12px 24px;
       border-radius: 8px;
@@ -491,7 +491,7 @@ export function generateAdminPaymentNotificationEmail(
               ? `
           <div class="summary-item">
             <span>Terminvereinbarung ✓</span>
-            <span style="color: #10B981; font-weight: 500;">Gebucht</span>
+            <span style="color: #3d6ce1; font-weight: 500;">Gebucht</span>
           </div>
           `
               : ''
