@@ -67,7 +67,7 @@ export default function WarumWirClient() {
               subtitle="Eine Welt, in der Effizienz auf Architektur trifft"
               titleClassName="text-white"
               subtitleClassName="text-white"
-              wrapperMargin="mb-8"
+              wrapperMargin="mb-8 md:mb-12"
             />
           </div>
         </section>
@@ -133,7 +133,7 @@ export default function WarumWirClient() {
               subtitle="Innovationen entstehen dort, wo junge Ideen auf Erfahrung treffen."
               titleClassName="text-white"
               subtitleClassName="text-white"
-              wrapperMargin="mb-12"
+              wrapperMargin="mb-8 md:mb-12"
             />
 
             <UnifiedContentCard
@@ -151,7 +151,7 @@ export default function WarumWirClient() {
 
         {/* Section 3 - Unser Team - Team Values Cards */}
         <section id="unser-team" className="w-full bg-white py-8 md:py-16">
-          <div className="w-full mb-12 px-4 lg:pl-16 xl:pl-20 2xl:pl-24">
+          <div className="w-full mb-8 md:mb-12 px-4 lg:pl-16 xl:pl-20 2xl:pl-24">
             <div className="text-left">
               <h2 className="h2-title font-normal text-black mb-3 md:mb-4">
                 Kreativität und Erfahrung vereint
@@ -186,7 +186,8 @@ export default function WarumWirClient() {
             <SectionHeader
               title="Innovation für unsere Zukunft"
               subtitle="Weil Nachhaltigkeit schon mit deinem Zuhause beginnt"
-              wrapperMargin="mb-12"
+              mobileTitle="Innovation für unsere Zukunft"
+              wrapperMargin="mb-8 md:mb-16"
             />
 
             <UnifiedContentCard
