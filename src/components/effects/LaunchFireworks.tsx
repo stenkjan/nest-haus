@@ -17,11 +17,10 @@ export default function LaunchFireworks({ onComplete }: LaunchFireworksProps) {
         setCountdown(countdown - 1);
       }, 1000);
       return () => clearTimeout(timer);
-    } else {
-      // Countdown finished, show fireworks
-      setShowFireworks(true);
-      return undefined;
     }
+    
+    // Countdown finished, show fireworks
+    setShowFireworks(true);
   }, [countdown]);
 
   // Auto-cleanup after fireworks complete
