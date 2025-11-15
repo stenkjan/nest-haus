@@ -4,6 +4,45 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5b09f310a2920c31d66ce01221e79ed51f46f32e] - Sat Nov 15 15:52:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [0151a95e170b82ec11bf82cb857ff2bf76475531] - Sat Nov 15 15:50:05 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/appointments/confirm/route.ts
+- src/app/api/appointments/reject/route.ts
+- src/app/api/contact/route.ts
+- src/components/payments/StripeCheckoutForm.tsx
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/PAYMENT_AND_APPOINTMENT_EMAIL_IMPLEMENTATION.md
+- docs/final_EMAIL_FUNCTIONALITY_SUMMARY.md
+
+
+---
+
 ## [37b3b1e23a0ce97f7d367f398a99b07e321cea98] - Sat Nov 15 15:12:08 2025 +0100
 
 **Author**: stenkjan
