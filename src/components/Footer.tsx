@@ -17,6 +17,7 @@ export default function Footer() {
         { text: "Dein Nest entdecken", href: "/dein-nest" },
         { text: "Entwurf", href: "/entwurf" },
         { text: "Terminvereinbarung", href: "/kontakt" },
+        { text: "Warum Wir?", href: "/warum-wir" },
       ],
     },
     {
@@ -26,7 +27,6 @@ export default function Footer() {
         { text: "Intro Nest", href: "/dein-nest" },
         { text: "Position am Markt", href: "/dein-nest" },
         { text: "Haus Konfigurator", href: "/konfigurator" },
-        { text: "Vorteile Nest", href: "/dein-nest" },
       ],
     },
     {
@@ -54,6 +54,7 @@ export default function Footer() {
       title: "Kontakt",
       items: [
         { text: "Terminvereinbarung", href: "/kontakt" },
+        { text: "Warum Wir?", href: "/warum-wir" },
         { text: "Wo du uns findest", href: "/kontakt" },
         { text: "FAQ", href: "/faq" },
         { text: "Anschrift", href: "/kontakt" },
