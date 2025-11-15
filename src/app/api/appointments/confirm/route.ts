@@ -77,12 +77,15 @@ export async function GET(request: NextRequest) {
 
     // Create Google Calendar event
     try {
+      // TypeScript safety: We already verified appointmentDateTime exists above
+      const appointmentDateTime = updatedInquiry.appointmentDateTime!;
+      
       const eventResult = await GoogleCalendarService.createEvent({
         summary: `NEST-Haus Beratung - ${updatedInquiry.name}`,
         description: `Beratungstermin für NEST-Haus Konfiguration\n\nKunde: ${updatedInquiry.name}\nE-Mail: ${updatedInquiry.email}\nTelefon: ${updatedInquiry.phone || 'N/A'}\nAnfrage-ID: ${updatedInquiry.id}`,
-        startDateTime: updatedInquiry.appointmentDateTime.toISOString(),
+        startDateTime: appointmentDateTime.toISOString(),
         endDateTime: new Date(
-          updatedInquiry.appointmentDateTime.getTime() + 60 * 60 * 1000
+          appointmentDateTime.getTime() + 60 * 60 * 1000
         ).toISOString(), // 60 minutes duration
         attendeeEmail: updatedInquiry.email,
         attendeeName: updatedInquiry.name || undefined,
