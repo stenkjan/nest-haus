@@ -3,8 +3,8 @@
 ## Complete Guide to Email System, Calendar Integration & Configuration
 
 **Project**: Nest-Haus Configurator  
-**Last Updated**: November 14, 2025  
-**Status**: ✅ nest-haus.com Configuration Active (Plan B Evolved)
+**Last Updated**: November 15, 2025  
+**Status**: ✅ nest-haus.com Root Domain Configuration Active
 
 ---
 
@@ -31,7 +31,7 @@
 
 ### Overview
 
-**Sending Domain**: `mail@send.nest-haus.com` (via Resend)  
+**Sending Domain**: `mail@nest-haus.com` (via Resend)  
 **Receiving Domain**: `mail@nest-haus.com` (via Google Workspace domain alias)  
 **Reply-To Address**: `mail@nest-haus.com`  
 **Calendar**: `mail@nest-haus.at` (Google Calendar shared calendar)
@@ -41,7 +41,7 @@
 1. **nest-haus.com** is managed via Vercel DNS → **Easy, instant DNS control**
 2. **nest-haus.at** had DNS issues with Austria WebHosting → **Slow, unreliable**
 3. **Google Workspace Domain Alias** → `mail@nest-haus.com` emails go to same inbox as `mail@nest-haus.at`
-4. **Resend Subdomain Approach** → Required when MX records exist on root domain
+4. **Root Domain Approach** → Simpler DNS setup, single domain verification
 
 ### Email Flow Architecture
 
@@ -49,8 +49,8 @@
 ┌────────────────────────────────────────────────────────────┐
 │                  SENDING (Resend)                          │
 ├────────────────────────────────────────────────────────────┤
-│ Domain: send.nest-haus.com                                 │
-│ From: NEST-Haus Team <mail@send.nest-haus.com>            │
+│ Domain: nest-haus.com                                      │
+│ From: NEST-Haus Team <mail@nest-haus.com>                 │
 │ Reply-To: mail@nest-haus.com                               │
 │ DNS Provider: Vercel                                       │
 │ Authentication: SPF + DKIM                                 │
@@ -85,7 +85,7 @@
 
 ### Resend Account Details
 
-- **Domain**: `send.nest-haus.com` (subdomain approach)
+- **Domain**: `nest-haus.com` (root domain)
 - **Region**: `eu-west-1` (Ireland)
 - **API Key**: `re_WTuw2cJE_9P9KLKkoLnY25ri8Xi5TGh9U`
 - **Dashboard**: https://resend.com/domains
@@ -96,7 +96,7 @@ All outgoing emails use:
 
 ```typescript
 {
-  from: "NEST-Haus Team <mail@send.nest-haus.com>",
+  from: "NEST-Haus Team <mail@nest-haus.com>",
   replyTo: "mail@nest-haus.com",
   to: [recipientEmail],
   subject: [dynamically generated],
@@ -303,7 +303,7 @@ User selects appointment time → Calendar availability check
 ### Reply Tracking Flow
 
 ```
-Customer receives email from mail@send.nest-haus.com
+Customer receives email from mail@nest-haus.com
                     ↓
          Email has Reply-To: mail@nest-haus.com
                     ↓
@@ -361,18 +361,18 @@ TTL: Auto
 - `include:_spf.google.com` → Authorizes Google Workspace to send
 - `include:amazonses.com` → Authorizes Resend (via Amazon SES) to send
 
-#### 4. Resend Subdomain Records (Sending)
+#### 4. Resend Domain Records (Sending)
 
 **DKIM Record (Domain Verification)**
 
 ```
 Type: TXT
-Name: resend._domainkey.send
-Value: p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5cL70eBBydVjxRd4aaOVU6rzlrduy2ikqAqxkWFbgsK0fodAiBk6/ZNJh6JSPjRqpB87wrNWKiA8fhhAce7SdhGx6aqgkCIA2df5mO0nAneYM1+q+hRoQkeMY8yDkObAdPDt0635s7PPykL9IJ6veRhmOLC5uIIm2GkKp5pzp8QIDAQAB
+Name: resend._domainkey
+Value: p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6TFk2qJkzTkhBQRd/o9qhPa2F2KsW2d29ChpvpcLw0x3x29G06AdPaQkDubUOpVHYAJZiXYSWkabBZnqBTU3q4gCE3XpDLtuhZPRwFnGUlWSoCD7v7cEbDsXCr78HhAr3UlppsMJaWN62zJcP872ONMMrNwfOsUkjbQgoPwxH1wIDAQAB
 TTL: Auto
 ```
 
-**MX Record (Bounce Handling)**
+**MX Record (Bounce Handling on send subdomain)**
 
 ```
 Type: MX
@@ -409,8 +409,8 @@ nslookup -type=MX nest-haus.com
 # Check root domain SPF
 nslookup -type=TXT nest-haus.com
 
-# Check DKIM for send subdomain
-nslookup -type=TXT resend._domainkey.send.nest-haus.com
+# Check DKIM for root domain
+nslookup -type=TXT resend._domainkey.nest-haus.com
 
 # Check send subdomain SPF
 nslookup -type=TXT send.nest-haus.com
@@ -427,9 +427,9 @@ nslookup -type=TXT _dmarc.nest-haus.com
 
 ```bash
 # ===== EMAIL CONFIGURATION (RESEND) =====
-# Resend Configuration (SENDING via nest-haus.com)
+# Resend Configuration (SENDING via nest-haus.com root domain)
 RESEND_API_KEY=re_WTuw2cJE_9P9KLKkoLnY25ri8Xi5TGh9U
-RESEND_FROM_EMAIL=mail@send.nest-haus.com
+RESEND_FROM_EMAIL=mail@nest-haus.com
 REPLY_TO_EMAIL=mail@nest-haus.com
 
 # Email Addresses (RECEIVING at nest-haus.at inbox via domain alias)

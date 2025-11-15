@@ -103,7 +103,7 @@ function PaymentSuccess({
 
       {/* Contact info */}
       <div className="text-center text-sm text-gray-500">
-        <p>Noch Fragen? Mail: <a href="mailto:nest-haus@info.at" className="text-blue-600 hover:text-blue-800">nest-haus@info.at</a> | Tel: <a href="tel:+436643948906" className="text-blue-600 hover:text-blue-800">+43 664 3948906</a></p>
+        <p>Noch Fragen? Mail: <a href="mailto:mail@nest-haus.at" className="text-blue-600 hover:text-blue-800">nest-haus@info.at</a> | Tel: <a href="tel:+436643948906" className="text-blue-600 hover:text-blue-800">+43 664 3948906</a></p>
       </div>
     </div>
   );

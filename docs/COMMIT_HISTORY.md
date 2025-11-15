@@ -4,6 +4,68 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [726a27085906bf8cb082b9d598189cec5c243305] - Sat Nov 15 14:06:49 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: Update email address in AppointmentBooking and TerminVereinbarenContent components  - Changed the email address from  to  in both components for consistency. - Enhanced the CustomerConfirmationTemplate with new contact information layout and styling for improved user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/AppointmentBooking.tsx
+- src/components/sections/TerminVereinbarenContent.tsx
+
+
+---
+
+## [ce2b4c74fb73ef6262cb31d33773b2b7f1732f0f] - Sat Nov 15 13:47:26 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [35dea3c8d81fac4b30a3a45e580936ca22d9ecb4] - Sat Nov 15 13:43:10 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/cards/UnifiedContentCard.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
+## [fdf99fc46678bf6d4f4f84d144133aae6e3ee4da] - Sat Nov 15 13:29:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+
+
+---
+
 ## [3ecf63ddf22ab9a75496fd28459e4cbc801ae193] - Sat Nov 15 13:08:10 2025 +0100
 
 **Author**: stenkjan
