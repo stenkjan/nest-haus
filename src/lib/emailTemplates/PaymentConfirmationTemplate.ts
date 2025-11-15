@@ -29,6 +29,7 @@ interface ParsedConfiguration {
  */
 function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
   if (!configData || typeof configData !== 'object') {
+    console.warn('⚠️ No configuration data provided for email');
     return {
       nestModel: null,
       gebaeudehuelle: null,
@@ -45,6 +46,7 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
   }
 
   const config = configData as Record<string, unknown>;
+  console.log('📧 Parsing configuration for email:', Object.keys(config));
 
   // Helper to safely extract name and price from config item
   const extractItem = (item: unknown): { name: string; price: number } | null => {
@@ -52,13 +54,17 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
     const obj = item as Record<string, unknown>;
     const name = obj.name as string | undefined;
     const price = obj.price as number | undefined;
+    
     if (name && typeof price === 'number') {
+      console.log(`  ✅ Extracted: ${name} = ${price} cents`);
       return { name, price };
     }
+    
+    console.warn(`  ⚠️ Could not extract item:`, obj);
     return null;
   };
 
-  return {
+  const parsed = {
     nestModel: extractItem(config.nest),
     gebaeudehuelle: extractItem(config.gebaeudehuelle),
     innenverkleidung: extractItem(config.innenverkleidung),
@@ -78,6 +84,9 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
     totalHousePrice: (config.totalPrice as number) || 0,
     totalPrice: (config.totalPrice as number) || 0,
   };
+
+  console.log('📧 Parsed configuration - Total:', parsed.totalPrice, 'cents');
+  return parsed;
 }
 
 /**
