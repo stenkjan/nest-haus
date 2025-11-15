@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { EmailService } from '@/lib/EmailService';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -80,7 +81,7 @@ export async function POST(request: NextRequest) {
                         status: 'CONVERTED',
                         requestType: 'payment',
                         preferredContact: 'EMAIL',
-                        configurationData: configurationData || null,
+                        configurationData: configurationData ? (configurationData as Prisma.InputJsonValue) : Prisma.JsonNull,
                         emailsSent: false, // Will be set to true after sending
                     },
                 });
