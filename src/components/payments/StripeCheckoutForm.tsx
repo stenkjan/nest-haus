@@ -136,6 +136,26 @@ function PaymentForm({
           const result = await response.json();
 
           if (response.ok && result.success) {
+            // Call confirm-payment endpoint to send email notifications
+            try {
+              const confirmResponse = await fetch('/api/payments/confirm-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  paymentIntentId: paymentIntent.id,
+                  inquiryId: inquiryId,
+                }),
+              });
+              
+              if (!confirmResponse.ok) {
+                console.warn('⚠️ Payment confirmation API call failed');
+              } else {
+                console.log('✅ Payment confirmation emails sent');
+              }
+            } catch (err) {
+              console.warn('⚠️ Failed to send payment confirmation:', err);
+            }
+            
             onSuccess(paymentIntent.id);
           } else {
             onError(

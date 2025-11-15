@@ -176,10 +176,27 @@ export async function POST(request: NextRequest) {
         userAgent,
       };
 
+      // For appointments, send specialized admin notification with calendar invite
+      const adminEmailPromise = data.requestType === 'appointment' && data.appointmentDateTime
+        ? EmailService.sendAdminAppointmentNotification({
+            inquiryId: inquiry.id,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            appointmentDateTime: data.appointmentDateTime,
+            appointmentExpiresAt: inquiry.appointmentExpiresAt!.toISOString(),
+            message: data.message,
+            configurationData: data.configurationData,
+            sessionId,
+            clientIP,
+            userAgent,
+          })
+        : EmailService.sendAdminNotification(adminEmailData);
+
       // Send emails in parallel
       const [customerEmailSent, adminEmailSent] = await Promise.all([
         EmailService.sendCustomerConfirmation(emailData),
-        EmailService.sendAdminNotification(adminEmailData),
+        adminEmailPromise,
       ]);
 
       if (customerEmailSent) {

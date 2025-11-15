@@ -64,7 +64,7 @@
 │              RECEIVING (Google Workspace)                   │
 ├────────────────────────────────────────────────────────────┤
 │ To: mail@nest-haus.com                                     │
-│ Domain Alias: Routes to mail@nest-haus.at inbox           │
+│ Domain Alias: Routes to
 │ MX Records: Point to Google                                │
 │ DNS Provider: Vercel                                       │
 └────────────────────────────────────────────────────────────┘
