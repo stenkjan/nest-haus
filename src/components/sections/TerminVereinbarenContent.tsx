@@ -69,7 +69,7 @@ export const TerminVereinbarenContent: React.FC<
                 +43 (0) 664 2531869
               </span>
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">nest@haus.at</span>
+              <span className="text-black font-medium">mail@nest-haus.at</span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
@@ -184,7 +184,7 @@ export const TerminVereinbarenContent: React.FC<
                 +43 (0) 664 2531869
               </span>
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">nest@haus.at</span>
+              <span className="text-black font-medium">mail@nest-haus.at</span>
             </div>
           </div>
         </div>
@@ -258,7 +258,7 @@ export const TerminVereinbarenContent: React.FC<
                 +43 (0) 664 3949604
               </span>
               <span className="text-nest-gray">Email:</span>
-              <span className="text-black font-medium">nest@haus.at</span>
+              <span className="text-black font-medium">mail@nest-haus.at</span>
             </div>
           </div>
           <div className="bg-[#f4f4f4] border border-gray-200 rounded-lg p-2 md:p-4">
