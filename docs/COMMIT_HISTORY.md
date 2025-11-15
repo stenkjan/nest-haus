@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [ab5296b67f244a4cedbeda7d679000eead61be0b] - Sat Nov 15 19:06:21 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: streamline middleware for admin route protection  - Removed debug logging to enhance performance and reduce noise in the console. - Updated middleware to only protect admin routes and admin API routes, allowing all other routes to pass through freely. - Adjusted matcher configuration to focus solely on admin-related paths, improving clarity and maintainability.  `
+
+### Changes Analysis
+
+---
+
 ## [49ea70f0700dfdb3ce174e0ad421796886a23514] - Sat Nov 15 18:48:25 2025 +0100
 
 **Author**: stenkjan
