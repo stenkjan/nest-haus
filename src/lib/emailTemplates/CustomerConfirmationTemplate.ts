@@ -95,18 +95,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       line-height: 1.6;
       margin-bottom: 0;
     }
-    .cta-image-box {
-      background: #ffffff;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      margin-bottom: 20px;
-    }
-    .cta-image {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
     h1 {
       font-size: 28px;
       font-weight: 600;
@@ -242,12 +230,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
     }</p>
       </div>
       
-      ${data.inquiryId ? `
-      <p style="font-size: 13px; color: #999; margin-top: 20px;">
-        Anfrage-ID: ${data.inquiryId}
-      </p>
-      ` : ''}
-      
       <!-- Contact Info Cards -->
       <div class="glass-card">
         <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
@@ -284,26 +266,25 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
           </div>
         </div>
       </div>
+      
+      ${data.inquiryId ? `
+      <p style="font-size: 13px; color: #999; margin-top: 20px;">
+        Anfrage-ID: ${data.inquiryId}
+      </p>
+      ` : ''}
     </div>
     
-    <!-- CTA Section with Image -->
+    <!-- CTA Section -->
     <div class="cta-section">
       <div class="cta-content">
         <div class="cta-text">
           <h2>Planen heißt Preise kennen</h2>
           <p>Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.</p>
-        </div>
-        <div class="cta-image-box">
-          <img 
-            src="https://nest-haus.at/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche-mobile.png" 
-            alt="NEST-Haus am Meer"
-            class="cta-image"
-          />
-        </div>
-        <div style="text-align: center; margin-top: 20px;">
-          <a href="https://nest-haus.at/konfigurator" class="btn-primary">
-            Jetzt konfigurieren
-          </a>
+          <div style="text-align: center; margin-top: 24px;">
+            <a href="https://nest-haus.at/konfigurator" class="btn-primary">
+              Jetzt konfigurieren
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -328,22 +309,6 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
   const text = `
 NEST-Haus - ${isAppointment ? 'Terminanfrage bestätigt' : 'Kontaktanfrage bestätigt'}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-KONTAKT - Melde dich!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Telefon: +43 (0) 664 1001947
-Mobil: +43 (0) 664 2531869
-Email: nest@nest-haus.at
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ADRESSE - Komm vorbei!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Straße: Karmeliterplatz 8
-Stadt: 8010, Graz, Steiermark
-Land: Österreich
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 Hallo ${data.name},
 
 ${isAppointment
@@ -366,13 +331,25 @@ ${isAppointment
     }
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KONTAKT - Melde dich!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Telefon: +43 (0) 664 1001947
+Mobil: +43 (0) 664 2531869
+Email: nest@nest-haus.at
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADRESSE - Komm vorbei!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Straße: Karmeliterplatz 8
+Stadt: 8010, Graz, Steiermark
+Land: Österreich
+
+${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}\n\n` : ''}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PLANEN HEIẞT PREISE KENNEN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Wenn du dein Nest schon jetzt konfigurierst, erhältst du volle Klarheit über Preis, Umfang und Möglichkeiten. Deine Auswahl bleibt dabei flexibel und kann jederzeit angepasst werden, falls sich deine Wünsche im Laufe der Planung verändern.
 
 Jetzt konfigurieren: https://nest-haus.at/konfigurator
-
-${data.inquiryId ? `Anfrage-ID: ${data.inquiryId}` : ''}
 
 --
 NEST-Haus
