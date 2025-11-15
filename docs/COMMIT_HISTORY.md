@@ -4,6 +4,28 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [00c78ef87205247216a4b6615eca8cf38af9d7cc] - Sat Nov 15 11:29:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Merge branch 'main' of https://github.com/stenkjan/nest-haus  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/test/appointment/route.ts
+- src/app/api/test/email/route.ts
+- src/app/api/test/payment-email/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/COMMIT_HISTORY.md
+- docs/EMAIL_TESTING_GUIDE.md
+- docs/EMAIL_TEST_RESULTS.md
+- docs/STRIPE_CLI_SETUP.md
+
+
+---
+
 ## [d0ca379ec16e3d33fe8a7cb5732033ba474e2381] - Sat Nov 15 11:26:51 2025 +0100
 
 **Author**: stenkjan
