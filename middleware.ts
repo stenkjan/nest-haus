@@ -4,14 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
-    // Debug logging for troubleshooting
-    console.log('[MIDDLEWARE] Processing:', pathname);
-    console.log('[MIDDLEWARE] SITE_PASSWORD exists:', !!process.env.SITE_PASSWORD);
-    console.log('[MIDDLEWARE] ADMIN_PASSWORD exists:', !!process.env.ADMIN_PASSWORD);
-    console.log('[MIDDLEWARE] VERCEL_ENV:', process.env.VERCEL_ENV);
-    console.log('[MIDDLEWARE] NODE_ENV:', process.env.NODE_ENV);
-
-    // Check for admin routes first (both pages and API)
+    // Only protect admin routes - all other routes pass through freely
     if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
         // Skip auth check for admin auth page itself and API routes
         if (pathname === '/admin/auth' || pathname.startsWith('/api/admin/auth')) {
@@ -62,9 +55,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        // Match all paths including root
-        '/',
-        // Match all non-excluded paths
-        '/((?!_next|favicon).*)',
+        // Only match admin routes and admin API routes
+        '/admin/:path*',
+        '/api/admin/:path*',
     ],
 };
