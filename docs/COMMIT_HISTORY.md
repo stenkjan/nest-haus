@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [028a5cb82091245a09e2aafbb26db54c4ff92db3] - Mon Nov 17 14:41:35 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance PaymentConfirmationTemplate for improved price calculations and styling  - Updated price calculation logic in PaymentConfirmationTemplate to derive totalHousePrice from individual components, ensuring accurate total pricing. - Adjusted styling properties such as padding and margin for better visual consistency and user experience in the email template.  `
+
+### Changes Analysis
+
+---
+
 ## [01013b85f63dfd59ff06a744525c6467415c573c] - Mon Nov 17 14:13:52 2025 +0100
 
 **Author**: stenkjan
