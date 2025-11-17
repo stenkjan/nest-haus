@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [60d0df2a0849763096f1f3ea6df6aa26749744e9] - Mon Nov 17 13:01:30 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance payment processing and inquiry creation flow  - Updated payment amount handling in webhook routes to prioritize paymentIntent.amount, with a fallback to inquiry.paymentAmount or a default value of 150000. - Introduced inquiry creation logic in CheckoutStepper component to capture cart configuration data before initiating payment, improving the user experience and ensuring inquiries are properly linked to payments. - Refactored email template to format prices correctly and removed unnecessary contact information for a cleaner presentation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/inquiries/create-with-cart/route.ts
+- src/app/api/payments/webhook/route.ts
+- src/app/api/webhooks/stripe/route.ts
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [414e6a43ce08fb8defcc7f0fc2b903076bf8fb76] - Mon Nov 17 12:14:01 2025 +0100
 
 **Author**: stenkjan
