@@ -72,7 +72,7 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
     return null;
   };
 
-  const parsed = {
+  const parsedItems = {
     nestModel: extractItem(config.nest),
     gebaeudehuelle: extractItem(config.gebaeudehuelle),
     innenverkleidung: extractItem(config.innenverkleidung),
@@ -93,11 +93,29 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
       }
       : null,
     liefertermin: (config.liefertermin as string) || null,
-    totalHousePrice: (config.totalHousePrice as number) || 0,
-    totalPrice: (config.totalPrice as number) || 0,
   };
 
-  console.log('📧 Parsed configuration - Total:', parsed.totalPrice, '€');
+  // Calculate totalHousePrice from individual components (excluding planungspaket and konzeptCheck)
+  const totalHousePrice =
+    (parsedItems.nestModel?.price || 0) +
+    (parsedItems.gebaeudehuelle?.price || 0) +
+    (parsedItems.innenverkleidung?.price || 0) +
+    (parsedItems.fussboden?.price || 0) +
+    (parsedItems.geschossdecke?.price || 0) +
+    (parsedItems.pvanlage?.price || 0) +
+    (parsedItems.fenster?.price || 0) +
+    (parsedItems.fundament?.price || 0) +
+    (parsedItems.kamindurchzug?.price || 0);
+
+  const totalPrice = (config.totalPrice as number) || totalHousePrice;
+
+  const parsed = {
+    ...parsedItems,
+    totalHousePrice,
+    totalPrice,
+  };
+
+  console.log('📧 Parsed configuration - House:', totalHousePrice, '€, Total:', totalPrice, '€');
   return parsed;
 }
 
@@ -269,7 +287,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 0;
+      padding: 16px 0;
       border-bottom: 1px solid #e0e0e0;
     }
     .config-item:last-child {
@@ -282,7 +300,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       color: #666;
       font-size: 13px;
       font-weight: 400;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -296,7 +314,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       font-weight: 600;
       font-size: 18px;
       white-space: nowrap;
-      margin-left: 32px;
+      margin-left: 24px;
     }
     
     /* Summary Section */
@@ -320,7 +338,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 0;
+      padding: 16px 0;
       font-size: 16px;
     }
     .summary-item-label {
@@ -331,7 +349,6 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       color: #1a1a1a;
       font-weight: 600;
       font-size: 18px;
-      margin-left: 32px;
     }
     .summary-divider {
       height: 2px;
