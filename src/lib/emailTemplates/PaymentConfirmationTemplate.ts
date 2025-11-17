@@ -269,7 +269,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 0;
+      padding: 20px 0;
       border-bottom: 1px solid #e0e0e0;
     }
     .config-item:last-child {
@@ -282,7 +282,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       color: #666;
       font-size: 13px;
       font-weight: 400;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -296,7 +296,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       font-weight: 600;
       font-size: 18px;
       white-space: nowrap;
-      margin-left: 24px;
+      margin-left: 32px;
     }
     
     /* Summary Section */
@@ -320,7 +320,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 0;
+      padding: 20px 0;
       font-size: 16px;
     }
     .summary-item-label {
@@ -331,6 +331,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       color: #1a1a1a;
       font-weight: 600;
       font-size: 18px;
+      margin-left: 32px;
     }
     .summary-divider {
       height: 2px;
@@ -715,7 +716,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         
         <div class="button-center">
           <a href="https://nest-haus.at/konfigurator" class="btn-primary">
-            Konfiguration ansehen
+            Jetzt konfigurieren
           </a>
         </div>
       </div>

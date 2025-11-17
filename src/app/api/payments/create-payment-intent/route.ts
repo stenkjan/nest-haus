@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
         // Override amount with server-side configuration for testing
         const paymentMode = process.env.PAYMENT_MODE || "deposit";
-        const depositAmount = parseInt(process.env.DEPOSIT_AMOUNT || "100"); // 1 EUR in cents
+        const depositAmount = parseInt(process.env.DEPOSIT_AMOUNT || "150000"); // 1,500 EUR in cents (default)
 
 
         if (paymentMode === "deposit") {
