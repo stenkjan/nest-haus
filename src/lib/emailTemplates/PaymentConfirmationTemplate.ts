@@ -244,7 +244,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 0;
+      padding: 20px 0;
       border-bottom: 1px solid #f4f4f4;
     }
     .payment-item:last-child {
@@ -254,6 +254,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       color: #666;
       font-size: 15px;
       font-weight: 400;
+      padding-right: 24px;
     }
     .payment-value {
       color: #1a1a1a;
@@ -338,12 +339,13 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 0;
+      padding: 20px 0;
       font-size: 16px;
     }
     .summary-item-label {
       color: #1a1a1a;
       font-weight: 400;
+      padding-right: 24px;
     }
     .summary-item-value {
       color: #1a1a1a;
@@ -783,6 +785,11 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         <a href="https://nest-haus.at/impressum">Impressum</a> ·
         <a href="https://nest-haus.at/datenschutz">Datenschutz</a>
       </p>
+    </div>
+    
+    <!-- Anti-clipping whitespace for Gmail -->
+    <div style="display:none; white-space:nowrap; font:15px courier; line-height:0;">
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
     </div>
   </div>
 </body>
