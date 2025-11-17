@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [85d517df53261ddc4b2319b268a0138cb549ed84] - Mon Nov 17 13:44:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance CheckoutStepper and PaymentConfirmationTemplate for improved configuration handling  - Updated CheckoutStepper to capture appointment details and calculate delivery date, integrating these into the cart configuration data. - Modified PaymentConfirmationTemplate to include new configuration fields such as geschossdecke, fundament, and kamindurchzug, ensuring accurate representation of selected options in the email. - Improved styling and structure of the email template for better readability and user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/warenkorb/components/CheckoutStepper.tsx
+
+
+---
+
 ## [60d0df2a0849763096f1f3ea6df6aa26749744e9] - Mon Nov 17 13:01:30 2025 +0100
 
 **Author**: stenkjan
