@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [619b3c5dea5882010b24a6f8d7413dc7349681c3] - Mon Nov 17 21:16:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: correct alt text and subtitles in ImageGallery and LandingImagesCarousel components  - Updated alt text for NEST Haus 4 Module in ImageGallery for improved clarity. - Changed subtitles in LandingImagesCarousel from "Fundamentplatten Weiss" to "Fassadenplatten Weiss" and "Mediterane Ansicht" to "Mediterrane Ansicht" for accuracy. - Adjusted file path in contentCardPresets for better API integration.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/grids/ImageGallery.tsx
+- src/components/sections/LandingImagesCarousel.tsx
+
+
+---
+
 ## [f21d64ff9b081bff6a97f4cfce088ea95ecb0263] - Mon Nov 17 16:48:00 2025 +0100
 
 **Author**: stenkjan
