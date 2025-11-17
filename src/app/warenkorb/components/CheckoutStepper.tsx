@@ -142,6 +142,7 @@ export default function CheckoutStepper({
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [_paymentError, setPaymentError] = useState<string | null>(null);
   const [contactWarning, setContactWarning] = useState<string | null>(null);
+  const [inquiryId, setInquiryId] = useState<string | undefined>(undefined);
 
   // Payment completion state
   const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
@@ -4094,10 +4095,21 @@ export default function CheckoutStepper({
                     // Clear warning after 8 seconds
                     setTimeout(() => setContactWarning(null), 8000);
                   } else {
-                    // Production flow: Open Stripe payment modal
+                    // Production flow: Create inquiry with cart data, then open Stripe payment modal
                     setContactWarning(null);
-                    setIsPaymentModalOpen(true);
                     setPaymentError(null);
+
+                    // Create inquiry with cart configuration data
+                    createInquiryWithCart().then((createdInquiryId) => {
+                      if (createdInquiryId) {
+                        setInquiryId(createdInquiryId);
+                        setIsPaymentModalOpen(true);
+                      } else {
+                        setPaymentError(
+                          "Fehler beim Erstellen der Anfrage. Bitte versuche es erneut."
+                        );
+                      }
+                    });
                   }
                 }}
                 className={`${
@@ -4143,7 +4155,7 @@ export default function CheckoutStepper({
           currency={paymentRedirectStatus?.currency || "eur"}
           customerEmail={getCustomerEmail()}
           customerName={getCustomerName()}
-          inquiryId={undefined} // Will be created during payment process
+          inquiryId={inquiryId}
           onSuccess={handlePaymentSuccess}
           onError={handlePaymentError}
           initialPaymentIntentId={
@@ -4187,6 +4199,73 @@ export default function CheckoutStepper({
         ? `${getUserData.name} ${getUserData.lastName}`
         : getUserData.name || "";
     return fullName || "NEST-Haus Kunde";
+  }
+
+  // Capture configuration data from cart items
+  function getCartConfigurationData(): unknown {
+    const configItem = items.find(
+      (item): item is ConfigurationCartItem => "nest" in item
+    );
+
+    if (!configItem) {
+      return null;
+    }
+
+    // Build configuration data matching the format expected by email template
+    return {
+      nest: configItem.nest,
+      gebaeudehuelle: configItem.gebaeudehuelle,
+      innenverkleidung: configItem.innenverkleidung,
+      fussboden: configItem.fussboden,
+      pvanlage: configItem.pvanlage,
+      fenster: configItem.fenster,
+      planungspaket: configItem.planungspaket,
+      grundstueckscheck: configItem.grundstueckscheck,
+      totalPrice: configItem.totalPrice,
+      sessionId: configItem.sessionId,
+    };
+  }
+
+  // Create inquiry with cart configuration before payment
+  async function createInquiryWithCart(): Promise<string | null> {
+    try {
+      const email = getCustomerEmail();
+      const name = getCustomerName();
+      const phone = getUserData.phone;
+      const configurationData = getCartConfigurationData();
+
+      const configItem = items.find(
+        (item): item is ConfigurationCartItem => "nest" in item
+      );
+      const sessionId = configItem?.sessionId;
+
+      const response = await fetch("/api/inquiries/create-with-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          name,
+          phone,
+          sessionId,
+          configurationData,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.inquiryId) {
+        console.log("✅ Created inquiry with cart data:", result.inquiryId);
+        return result.inquiryId;
+      } else {
+        console.error("❌ Failed to create inquiry:", result.error);
+        return null;
+      }
+    } catch (error) {
+      console.error("❌ Error creating inquiry:", error);
+      return null;
+    }
   }
 
   function handlePaymentSuccess(paymentIntentId: string) {

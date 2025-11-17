@@ -54,12 +54,12 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
     const obj = item as Record<string, unknown>;
     const name = obj.name as string | undefined;
     const price = obj.price as number | undefined;
-    
+
     if (name && typeof price === 'number') {
-      console.log(`  ✅ Extracted: ${name} = ${price} cents`);
+      console.log(`  ✅ Extracted: ${name} = ${price}€`);
       return { name, price };
     }
-    
+
     console.warn(`  ⚠️ Could not extract item:`, obj);
     return null;
   };
@@ -73,26 +73,37 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
     fenster: extractItem(config.fenster),
     planungspaket: extractItem(config.planungspaket),
     konzeptCheck: config.grundstueckscheck
-      ? { completed: true, price: 150000 } // €1,500 in cents (Entwurf deposit)
+      ? { completed: true, price: 1500 } // €1,500 (Entwurf deposit)
       : null,
     terminvereinbarung: config.appointmentDateTime
       ? {
-          booked: true,
-          datetime: config.appointmentDateTime as string | undefined,
-        }
+        booked: true,
+        datetime: config.appointmentDateTime as string | undefined,
+      }
       : null,
     totalHousePrice: (config.totalPrice as number) || 0,
     totalPrice: (config.totalPrice as number) || 0,
   };
 
-  console.log('📧 Parsed configuration - Total:', parsed.totalPrice, 'cents');
+  console.log('📧 Parsed configuration - Total:', parsed.totalPrice, '€');
   return parsed;
 }
 
 /**
- * Format price in cents to EUR string
+ * Format configuration price (stored in euros as integers)
+ * Note: Configurator stores prices as integers in euros (e.g., 301086 = 301,086€)
  */
-function formatPrice(amountInCents: number): string {
+function formatPrice(amountInEuros: number): string {
+  return new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+  }).format(amountInEuros);
+}
+
+/**
+ * Format payment amount from Stripe (in cents)
+ */
+function formatPaymentAmount(amountInCents: number): string {
   return new Intl.NumberFormat('de-DE', {
     style: 'currency',
     currency: 'EUR',
@@ -120,7 +131,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
   html: string;
   text: string;
 } {
-  const formattedAmount = formatPrice(data.paymentAmount);
+  const formattedAmount = formatPaymentAmount(data.paymentAmount);
   const paymentMethodText = getPaymentMethodText(data.paymentMethod);
   const paymentDate = data.paidAt || new Date();
   const formattedDate = paymentDate.toLocaleDateString('de-DE', {
@@ -423,37 +434,6 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
 </head>
 <body>
   <div class="email-container">
-    <!-- Contact Info Boxes -->
-    <div class="hero-section">
-      <div class="contact-boxes">
-        <!-- Kontakt Box -->
-        <div class="contact-box">
-          <h2>Kontakt <span class="gray-text">Melde dich!</span></h2>
-          <div class="contact-grid">
-            <span class="contact-label">Telefon:</span>
-            <span class="contact-value">+43 (0) 664 1001947</span>
-            <span class="contact-label">Mobil:</span>
-            <span class="contact-value">+43 (0) 664 2531869</span>
-            <span class="contact-label">Email:</span>
-            <span class="contact-value">nest@nest-haus.at</span>
-          </div>
-        </div>
-        
-        <!-- Adresse Box -->
-        <div class="contact-box">
-          <h2>Adresse <span class="gray-text">Komm vorbei!</span></h2>
-          <div class="contact-grid">
-            <span class="contact-label">Straße:</span>
-            <span class="contact-value">Karmeliterplatz 8</span>
-            <span class="contact-label">Stadt:</span>
-            <span class="contact-value">8010, Graz, Steiermark</span>
-            <span class="contact-label">Land:</span>
-            <span class="contact-value">Österreich</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
     <!-- Main Content -->
     <div class="content">
       <h1>Zahlung erfolgreich</h1>
@@ -475,29 +455,26 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span class="payment-label">Datum</span>
             <span class="payment-value">${formattedDate}</span>
           </div>
-          ${
-            data.paymentIntentId
-              ? `
+          ${data.paymentIntentId
+      ? `
           <div class="payment-item">
             <span class="payment-label">Transaktions-ID</span>
             <span class="payment-value" style="font-family: monospace; font-size: 12px;">${data.paymentIntentId}</span>
           </div>
           `
-              : ''
-          }
+      : ''
+    }
         </div>
       </div>
 
-      ${
-        config.nestModel
-          ? `
+      ${config.nestModel
+      ? `
       <!-- Configuration Selection Card -->
       <div class="glass-card">
         <h2>🏠 Dein Nest - Deine Auswahl</h2>
         <div class="config-items">
-          ${
-            config.nestModel
-              ? `
+          ${config.nestModel
+        ? `
           <div class="config-item">
             <div class="config-info">
               <div class="config-label">Nest-Modell</div>
@@ -506,11 +483,10 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span class="config-price">${formatPrice(config.nestModel.price)}</span>
           </div>
           `
-              : ''
-          }
-          ${
-            config.gebaeudehuelle
-              ? `
+        : ''
+      }
+          ${config.gebaeudehuelle
+        ? `
           <div class="config-item">
             <div class="config-info">
               <div class="config-label">Gebäudehülle</div>
@@ -519,11 +495,10 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span class="config-price">${formatPrice(config.gebaeudehuelle.price)}</span>
           </div>
           `
-              : ''
-          }
-          ${
-            config.innenverkleidung
-              ? `
+        : ''
+      }
+          ${config.innenverkleidung
+        ? `
           <div class="config-item">
             <div class="config-info">
               <div class="config-label">Innenverkleidung</div>
@@ -532,11 +507,10 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span class="config-price">${formatPrice(config.innenverkleidung.price)}</span>
           </div>
           `
-              : ''
-          }
-          ${
-            config.fussboden
-              ? `
+        : ''
+      }
+          ${config.fussboden
+        ? `
           <div class="config-item">
             <div class="config-info">
               <div class="config-label">Fußboden</div>
@@ -545,11 +519,10 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span class="config-price">${formatPrice(config.fussboden.price)}</span>
           </div>
           `
-              : ''
-          }
-          ${
-            config.pvanlage
-              ? `
+        : ''
+      }
+          ${config.pvanlage
+        ? `
           <div class="config-item">
             <div class="config-info">
               <div class="config-label">PV-Anlage</div>
@@ -558,11 +531,10 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span class="config-price">${formatPrice(config.pvanlage.price)}</span>
           </div>
           `
-              : ''
-          }
-          ${
-            config.fenster
-              ? `
+        : ''
+      }
+          ${config.fenster
+        ? `
           <div class="config-item">
             <div class="config-info">
               <div class="config-label">Fenster</div>
@@ -571,8 +543,8 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span class="config-price">${formatPrice(config.fenster.price)}</span>
           </div>
           `
-              : ''
-          }
+        : ''
+      }
         </div>
       </div>
 
@@ -584,36 +556,33 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
             <span>Dein Nest Haus</span>
             <span class="price-highlight">${formatPrice(config.totalHousePrice)}</span>
           </div>
-          ${
-            config.planungspaket
-              ? `
+          ${config.planungspaket
+        ? `
           <div class="summary-item">
             <span>Planungspaket - ${config.planungspaket.name}</span>
             <span>${formatPrice(config.planungspaket.price)}</span>
           </div>
           `
-              : ''
-          }
-          ${
-            config.konzeptCheck
-              ? `
+        : ''
+      }
+          ${config.konzeptCheck
+        ? `
           <div class="summary-item">
             <span>Konzept-Check ✓</span>
             <span>${formatPrice(config.konzeptCheck.price)}</span>
           </div>
           `
-              : ''
-          }
-          ${
-            config.terminvereinbarung?.booked
-              ? `
+        : ''
+      }
+          ${config.terminvereinbarung?.booked
+        ? `
           <div class="summary-item">
             <span>Terminvereinbarung ✓</span>
             <span style="color: #3d6ce1; font-weight: 500;">Gebucht</span>
           </div>
           `
-              : ''
-          }
+        : ''
+      }
           <div class="summary-divider"></div>
           <div class="summary-item-total">
             <span>Gesamtsumme</span>
@@ -622,8 +591,8 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         </div>
       </div>
       `
-          : ''
-      }
+      : ''
+    }
       
       <!-- Next Steps Card -->
       <div class="glass-card">
@@ -648,12 +617,12 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         <div class="contact-box">
           <h2>Kontakt <span class="gray-text">Melde dich!</span></h2>
           <div class="contact-grid">
-            <span class="contact-label">Telefon:</span>
-            <span class="contact-value">+43 (0) 664 1001947</span>
-            <span class="contact-label">Mobil:</span>
+            <span class="contact-label">Telefon 1:</span>
             <span class="contact-value">+43 (0) 664 2531869</span>
+            <span class="contact-label">Telefon 2:</span>
+            <span class="contact-value">+43 (0) 664 1001947</span>
             <span class="contact-label">Email:</span>
-            <span class="contact-value">nest@nest-haus.at</span>
+            <span class="contact-value">mail@nest-haus.at</span>
           </div>
         </div>
         
@@ -696,22 +665,6 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
   const text = `
 NEST-Haus - Zahlungsbestätigung
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-KONTAKT - Melde dich!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Telefon: +43 (0) 664 1001947
-Mobil: +43 (0) 664 2531869
-Email: nest@nest-haus.at
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ADRESSE - Komm vorbei!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Straße: Karmeliterplatz 8
-Stadt: 8010, Graz, Steiermark
-Land: Österreich
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 Zahlung erfolgreich! 🎉
 
 Vielen Dank, ${data.name}! Ihre Zahlung wurde erfolgreich verarbeitet.
@@ -722,9 +675,8 @@ ZAHLUNGSDETAILS:
 - Datum: ${formattedDate}
 ${data.paymentIntentId ? `- Transaktions-ID: ${data.paymentIntentId}` : ''}
 
-${
-  config.nestModel
-    ? `
+${config.nestModel
+      ? `
 DEIN NEST - DEINE AUSWAHL:
 ${config.nestModel ? `- Nest-Modell: ${config.nestModel.name} - ${formatPrice(config.nestModel.price)}` : ''}
 ${config.gebaeudehuelle ? `- Gebäudehülle: ${config.gebaeudehuelle.name} - ${formatPrice(config.gebaeudehuelle.price)}` : ''}
@@ -741,8 +693,8 @@ ${config.terminvereinbarung?.booked ? '- Terminvereinbarung: Gebucht ✓' : ''}
 -----------------------------------------
 GESAMTSUMME: ${formatPrice(config.totalPrice)}
 `
-    : ''
-}
+      : ''
+    }
 
 DIE NÄCHSTEN SCHRITTE:
 1. Bestätigung: Sie erhalten diese E-Mail als Zahlungsnachweis
@@ -751,14 +703,15 @@ DIE NÄCHSTEN SCHRITTE:
 4. Umsetzung: Wir starten mit der professionellen Planung und Ausführung
 
 KONTAKT:
-E-Mail: mail@nest-haus.com
-Telefon: +43 664 2531869
+Telefon 1: +43 (0) 664 2531869
+Telefon 2: +43 (0) 664 1001947
+E-Mail: mail@nest-haus.at
 Website: nest-haus.at
 
 Anfrage-ID: ${data.inquiryId}
 
 --
-NEST-Haus
+Nest-Haus
 Modulares Wohnen. Nachhaltig. Österreichisch.
 
 Website: https://nest-haus.at

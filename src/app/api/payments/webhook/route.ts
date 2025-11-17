@@ -124,7 +124,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
                 inquiryId: inquiry.id,
                 name: inquiry.name,
                 email: inquiry.email,
-                paymentAmount: inquiry.paymentAmount || paymentIntent.amount,
+                paymentAmount: paymentIntent.amount || inquiry.paymentAmount || 150000,
                 paymentCurrency: inquiry.paymentCurrency || paymentIntent.currency,
                 paymentMethod: inquiry.paymentMethod || paymentIntent.payment_method_types[0] || 'card',
                 paymentIntentId: paymentIntent.id,
