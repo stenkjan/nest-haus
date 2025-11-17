@@ -41,10 +41,18 @@ export async function POST(request: NextRequest) {
         const paymentMode = process.env.PAYMENT_MODE || "deposit";
         const depositAmount = parseInt(process.env.DEPOSIT_AMOUNT || "150000"); // 1,500 EUR in cents (default)
 
+        console.log('💰 Payment Intent Creation:', {
+            clientAmount: validation.data.amount,
+            depositAmount,
+            paymentMode,
+            envValue: process.env.DEPOSIT_AMOUNT,
+        });
 
         if (paymentMode === "deposit") {
             amount = depositAmount;
         }
+
+        console.log('💰 Final amount to charge:', amount, 'cents =', amount / 100, 'EUR');
 
         // Create or retrieve customer in Stripe
         let customer: Stripe.Customer;
