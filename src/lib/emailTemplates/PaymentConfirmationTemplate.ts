@@ -367,6 +367,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     .summary-total-label {
       color: #1a1a1a;
       font-weight: 600;
+      padding: 20px 0 0 0;
     }
     .summary-total-value {
       color: #1a1a1a;
