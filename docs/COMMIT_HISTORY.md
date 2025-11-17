@@ -4,6 +4,24 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [5228caada10eb862f82591a4c36776954bb0ae40] - Mon Nov 17 16:00:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: add Entwurf/Konzeptcheck section and appointment handling in inquiries  - Introduced a new section for Entwurf/Konzeptcheck conversions, displaying total revenue, purchase counts, and top configurations. - Enhanced CustomerInquiry interface to include appointment-related fields and status. - Implemented AppointmentStatusBadge component for better visual representation of appointment statuses. - Updated InquiryCard to display appointment details and status. - Added functionality to remove records older than a specified number of days in user tracking actions.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/conversion/Client.tsx
+- src/app/admin/customer-inquiries/page.tsx
+- src/app/admin/user-tracking/components/TrackingActions.tsx
+- src/app/api/admin/conversions/route.ts
+- src/app/api/admin/user-tracking/actions/route.ts
+- src/app/api/contact/route.ts
+
+
+---
+
 ## [e891f1f1cdc383dcb4ac0838815886f3e54846a3] - Mon Nov 17 15:40:42 2025 +0100
 
 **Author**: stenkjan
