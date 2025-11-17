@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f21d64ff9b081bff6a97f4cfce088ea95ecb0263] - Mon Nov 17 16:48:00 2025 +0100
+
+**Author**: stenkjan
+**Message**: `Update Zarnhofer link from .at to .com `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/sections/PartnersSection.tsx
+
+
+---
+
 ## [8b8bcd71924de01688e00dd93ef81165967b4304] - Mon Nov 17 16:04:53 2025 +0100
 
 **Author**: stenkjan
