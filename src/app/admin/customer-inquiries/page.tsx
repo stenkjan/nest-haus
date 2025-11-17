@@ -318,7 +318,6 @@ function InquiriesSummary({ inquiries }: { inquiries: CustomerInquiry[] }) {
     .reduce((sum, i) => sum + (i.totalPrice || 0), 0);
 
   const appointmentCount = inquiries.filter((i) => i.requestType === "appointment").length;
-  const contactCount = inquiries.filter((i) => i.requestType !== "appointment").length;
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
