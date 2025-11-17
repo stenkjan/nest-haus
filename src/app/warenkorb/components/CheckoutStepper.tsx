@@ -4201,7 +4201,7 @@ export default function CheckoutStepper({
     return fullName || "NEST-Haus Kunde";
   }
 
-  // Capture configuration data from cart items
+  // Capture configuration data from cart items - use existing breakdown from cart
   function getCartConfigurationData(): unknown {
     const configItem = items.find(
       (item): item is ConfigurationCartItem => "nest" in item
@@ -4211,18 +4211,27 @@ export default function CheckoutStepper({
       return null;
     }
 
-    // Build configuration data matching the format expected by email template
+    // Get appointment details
+    const appointmentDetails = useCartStore.getState().appointmentDetails;
+    const appointmentDateTime = appointmentDetails?.date
+      ? `${appointmentDetails.date.toLocaleDateString("de-DE")} ${
+          appointmentDetails.time
+        }`
+      : undefined;
+
+    // Calculate delivery date (6 months from appointment)
+    let liefertermin = undefined;
+    if (appointmentDetails?.date) {
+      const deliveryDate = new Date(appointmentDetails.date);
+      deliveryDate.setMonth(deliveryDate.getMonth() + 6);
+      liefertermin = deliveryDate.toLocaleDateString("de-DE");
+    }
+
+    // Pass through the configuration data from cart - prices are already calculated
     return {
-      nest: configItem.nest,
-      gebaeudehuelle: configItem.gebaeudehuelle,
-      innenverkleidung: configItem.innenverkleidung,
-      fussboden: configItem.fussboden,
-      pvanlage: configItem.pvanlage,
-      fenster: configItem.fenster,
-      planungspaket: configItem.planungspaket,
-      grundstueckscheck: configItem.grundstueckscheck,
-      totalPrice: configItem.totalPrice,
-      sessionId: configItem.sessionId,
+      ...configItem,
+      appointmentDateTime,
+      liefertermin,
     };
   }
 

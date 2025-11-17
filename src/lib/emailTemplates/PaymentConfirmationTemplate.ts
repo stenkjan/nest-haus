@@ -15,11 +15,15 @@ interface ParsedConfiguration {
   gebaeudehuelle: { name: string; price: number } | null;
   innenverkleidung: { name: string; price: number } | null;
   fussboden: { name: string; price: number } | null;
+  geschossdecke: { name: string; price: number; quantity?: number } | null;
   pvanlage: { name: string; price: number } | null;
   fenster: { name: string; price: number } | null;
+  fundament: { name: string; price: number } | null;
+  kamindurchzug: { name: string; price: number } | null;
   planungspaket: { name: string; price: number } | null;
   konzeptCheck: { completed: boolean; price: number } | null;
   terminvereinbarung: { booked: boolean; datetime?: string } | null;
+  liefertermin: string | null;
   totalHousePrice: number;
   totalPrice: number;
 }
@@ -35,11 +39,15 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
       gebaeudehuelle: null,
       innenverkleidung: null,
       fussboden: null,
+      geschossdecke: null,
       pvanlage: null,
       fenster: null,
+      fundament: null,
+      kamindurchzug: null,
       planungspaket: null,
       konzeptCheck: null,
       terminvereinbarung: null,
+      liefertermin: null,
       totalHousePrice: 0,
       totalPrice: 0,
     };
@@ -69,8 +77,11 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
     gebaeudehuelle: extractItem(config.gebaeudehuelle),
     innenverkleidung: extractItem(config.innenverkleidung),
     fussboden: extractItem(config.fussboden),
+    geschossdecke: extractItem(config.geschossdecke),
     pvanlage: extractItem(config.pvanlage),
     fenster: extractItem(config.fenster),
+    fundament: extractItem(config.fundament),
+    kamindurchzug: extractItem(config.kamindurchzug),
     planungspaket: extractItem(config.planungspaket),
     konzeptCheck: config.grundstueckscheck
       ? { completed: true, price: 1500 } // €1,500 (Entwurf deposit)
@@ -81,7 +92,8 @@ function parseConfigurationForEmail(configData: unknown): ParsedConfiguration {
         datetime: config.appointmentDateTime as string | undefined,
       }
       : null,
-    totalHousePrice: (config.totalPrice as number) || 0,
+    liefertermin: (config.liefertermin as string) || null,
+    totalHousePrice: (config.totalHousePrice as number) || 0,
     totalPrice: (config.totalPrice as number) || 0,
   };
 
@@ -160,268 +172,317 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     body {
       font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
       line-height: 1.6;
-      color: #333;
-      background: #f4f4f4;
-      padding: 20px;
+      color: #1a1a1a;
+      background: #ffffff;
+      padding: 0;
     }
     .email-container {
-      max-width: 600px;
+      max-width: 680px;
       margin: 0 auto;
       background: #ffffff;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    }
-    .hero-section {
-      padding: 30px;
-      background: #f4f4f4;
-    }
-    .contact-boxes {
-      display: grid;
-      gap: 16px;
-      margin-bottom: 0;
-    }
-    .contact-box {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-    .contact-box h2 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin: 0 0 16px 0;
-    }
-    .contact-box h2 .gray-text {
-      color: #737373;
-      font-weight: 400;
-    }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 4px 16px;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-    .contact-label {
-      color: #737373;
-    }
-    .contact-value {
-      color: #1a1a1a;
-      font-weight: 500;
-    }
-    .hero-image {
-      width: 100%;
-      height: auto;
-      display: block;
     }
     .content {
-      padding: 40px 30px;
+      padding: 60px 40px;
     }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 30px;
-      margin: 20px 0;
-      border: 1px solid rgba(61, 108, 225, 0.1);
-      box-shadow: 0 4px 20px rgba(61, 108, 225, 0.08);
-    }
-    .success-card {
-      background: rgba(61, 108, 225, 0.05);
-      border: 1px solid rgba(61, 108, 225, 0.2);
+    
+    /* Header Section */
+    .header-section {
+      text-align: center;
+      margin-bottom: 48px;
     }
     h1 {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 600;
       color: #1a1a1a;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       line-height: 1.2;
     }
-    h2 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin: 20px 0 12px 0;
+    .subtitle {
+      font-size: 18px;
+      color: #666;
+      font-weight: 400;
     }
-    p {
-      font-size: 16px;
-      color: #4a4a4a;
-      margin-bottom: 16px;
-      line-height: 1.6;
+    
+    /* Payment Success Card */
+    .payment-card {
+      background: #ffffff;
+      border: 2px solid #3D6CE1;
+      border-radius: 16px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+    .payment-card h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #3D6CE1;
+      margin: 0 0 24px 0;
+      text-align: center;
     }
     .payment-details {
       display: grid;
-      gap: 12px;
-      margin: 20px 0;
+      gap: 16px;
     }
     .payment-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px;
-      background: #f9f9f9;
-      border-radius: 12px;
+      padding: 16px 0;
+      border-bottom: 1px solid #f4f4f4;
+    }
+    .payment-item:last-child {
+      border-bottom: none;
     }
     .payment-label {
       color: #666;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: 400;
     }
     .payment-value {
       color: #1a1a1a;
       font-weight: 500;
-      font-size: 15px;
+      font-size: 16px;
     }
     .payment-amount {
-      color: #3d6ce1;
-      font-weight: 600;
-      font-size: 18px;
-    }
-    .info-grid {
-      display: grid;
-      gap: 12px;
-      margin: 20px 0;
-    }
-    .info-item {
-      padding: 12px;
-      background: #f9f9f9;
-      border-radius: 12px;
-      font-size: 15px;
-    }
-    .info-label {
-      color: #666;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-    .info-value {
       color: #1a1a1a;
-      font-weight: 500;
+      font-weight: 700;
+      font-size: 24px;
+    }
+    
+    /* Configuration Cards */
+    .config-card {
+      background: #F4F4F4;
+      border-radius: 16px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+    .config-card h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 24px 0;
     }
     .config-items {
       display: grid;
-      gap: 16px;
-      margin: 20px 0;
+      gap: 12px;
     }
     .config-item {
-      padding: 16px;
-      background: #f9f9f9;
-      border-radius: 12px;
       display: flex;
       justify-content: space-between;
-      align-items: start;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #e0e0e0;
     }
-    .config-label {
-      color: #666;
-      font-size: 13px;
-      margin-bottom: 4px;
+    .config-item:last-child {
+      border-bottom: none;
     }
     .config-info {
       flex: 1;
     }
+    .config-label {
+      color: #666;
+      font-size: 13px;
+      font-weight: 400;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
     .config-name {
       color: #1a1a1a;
       font-weight: 500;
-      font-size: 15px;
-      display: block;
-      margin-bottom: 4px;
+      font-size: 16px;
     }
     .config-price {
-      color: #3D6CE1;
+      color: #1a1a1a;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 18px;
       white-space: nowrap;
-      margin-left: 16px;
+      margin-left: 24px;
+    }
+    
+    /* Summary Section */
+    .summary-card {
+      background: #F4F4F4;
+      border-radius: 16px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+    .summary-card h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 24px 0;
     }
     .summary-items {
       display: grid;
       gap: 12px;
-      margin: 20px 0;
     }
     .summary-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 16px;
-      background: #f9f9f9;
-      border-radius: 12px;
-      font-size: 15px;
+      padding: 16px 0;
+      font-size: 16px;
     }
-    .summary-divider {
-      height: 2px;
-      background: #e5e7eb;
-      margin: 8px 0;
+    .summary-item-label {
+      color: #1a1a1a;
+      font-weight: 400;
     }
-    .summary-item-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      background: linear-gradient(135deg, rgba(61, 108, 225, 0.1) 0%, rgba(61, 108, 225, 0.05) 100%);
-      border-radius: 12px;
+    .summary-item-value {
+      color: #1a1a1a;
       font-weight: 600;
       font-size: 18px;
     }
-    .price-highlight {
-      color: #3D6CE1;
+    .summary-divider {
+      height: 2px;
+      background: #e0e0e0;
+      margin: 16px 0;
+    }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0 0 0;
+      font-size: 18px;
+    }
+    .summary-total-label {
+      color: #1a1a1a;
       font-weight: 600;
     }
-    .total-price {
-      color: #3D6CE1;
-      font-weight: 600;
-      font-size: 20px;
+    .summary-total-value {
+      color: #1a1a1a;
+      font-weight: 700;
+      font-size: 28px;
     }
+    
+    /* Next Steps Card */
+    .steps-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+    .steps-card h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 20px 0;
+    }
+    .steps-card p {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+    
+    /* Button */
     .btn-primary {
       display: inline-block;
       background: #3D6CE1;
       color: white !important;
-      padding: 14px 32px;
-      border-radius: 9999px;
+      padding: 16px 40px;
+      border-radius: 50px;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       font-size: 16px;
-      margin: 10px 0;
+      margin: 24px 0;
       transition: background 0.3s;
     }
     .btn-primary:hover {
       background: #2d5ad0;
     }
-    .highlight {
-      color: #3D6CE1;
+    .button-center {
+      text-align: center;
+    }
+    
+    /* Contact Section */
+    .contact-section {
+      margin: 48px 0;
+      padding: 32px;
+      background: #F4F4F4;
+      border-radius: 16px;
+    }
+    .contact-boxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .contact-box h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 16px 0;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 16px;
+      font-size: 15px;
+    }
+    .contact-label {
+      color: #666;
+      font-weight: 400;
+    }
+    .contact-value {
+      color: #1a1a1a;
       font-weight: 500;
     }
+    
+    /* Footer */
     .footer {
-      background: #f9f9f9;
-      padding: 30px;
+      background: #F4F4F4;
+      padding: 40px;
       text-align: center;
       font-size: 14px;
+      color: #666;
+    }
+    .footer p {
+      margin: 8px 0;
       color: #666;
     }
     .footer a {
       color: #3D6CE1;
       text-decoration: none;
+      font-weight: 500;
     }
+    .footer strong {
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+    .inquiry-id {
+      font-size: 13px;
+      color: #999;
+      margin-top: 32px;
+      text-align: center;
+    }
+    
+    /* Mobile Responsive */
     @media only screen and (max-width: 600px) {
-      .hero-section {
-        padding: 20px;
-      }
-      .contact-box {
-        padding: 20px;
-      }
       .content {
-        padding: 30px 20px;
+        padding: 40px 24px;
       }
-      .glass-card {
-        padding: 20px;
+      .payment-card,
+      .config-card,
+      .summary-card,
+      .steps-card,
+      .contact-section {
+        padding: 24px;
       }
       h1 {
-        font-size: 24px;
+        font-size: 28px;
       }
-      .config-item {
+      .contact-boxes {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .config-item,
+      .summary-item {
         flex-direction: column;
+        align-items: flex-start;
         gap: 8px;
       }
-      .config-price {
+      .config-price,
+      .summary-item-value {
         margin-left: 0;
       }
       .btn-primary {
@@ -436,12 +497,15 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
   <div class="email-container">
     <!-- Main Content -->
     <div class="content">
-      <h1>Zahlung erfolgreich</h1>
-      <p>Vielen Dank, ${data.name}! Ihre Zahlung wurde erfolgreich verarbeitet.</p>
+      <!-- Header -->
+      <div class="header-section">
+        <h1>Zahlung erfolgreich</h1>
+        <p class="subtitle">Vielen Dank, ${data.name}! Ihre Zahlung wurde erfolgreich verarbeitet.</p>
+      </div>
       
       <!-- Payment Success Card -->
-      <div class="glass-card success-card">
-        <h2 style="text-align: center; color: #3d6ce1; margin-top: 0;">Zahlung bestätigt</h2>
+      <div class="payment-card">
+        <h2>Zahlung bestätigt</h2>
         <div class="payment-details">
           <div class="payment-item">
             <span class="payment-label">Betrag</span>
@@ -459,7 +523,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       ? `
           <div class="payment-item">
             <span class="payment-label">Transaktions-ID</span>
-            <span class="payment-value" style="font-family: monospace; font-size: 12px;">${data.paymentIntentId}</span>
+            <span class="payment-value" style="font-family: monospace; font-size: 14px;">${data.paymentIntentId}</span>
           </div>
           `
       : ''
@@ -470,8 +534,8 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       ${config.nestModel
       ? `
       <!-- Configuration Selection Card -->
-      <div class="glass-card">
-        <h2>🏠 Dein Nest - Deine Auswahl</h2>
+      <div class="config-card">
+        <h2>Dein Nest - Deine Auswahl</h2>
         <div class="config-items">
           ${config.nestModel
         ? `
@@ -537,10 +601,46 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         ? `
           <div class="config-item">
             <div class="config-info">
-              <div class="config-label">Fenster</div>
+              <div class="config-label">Belichtungspaket</div>
               <span class="config-name">${config.fenster.name}</span>
             </div>
             <span class="config-price">${formatPrice(config.fenster.price)}</span>
+          </div>
+          `
+        : ''
+      }
+          ${config.geschossdecke
+        ? `
+          <div class="config-item">
+            <div class="config-info">
+              <div class="config-label">Geschossdecke</div>
+              <span class="config-name">${config.geschossdecke.name}</span>
+            </div>
+            <span class="config-price">${formatPrice(config.geschossdecke.price)}</span>
+          </div>
+          `
+        : ''
+      }
+          ${config.fundament
+        ? `
+          <div class="config-item">
+            <div class="config-info">
+              <div class="config-label">Fundament</div>
+              <span class="config-name">${config.fundament.name}</span>
+            </div>
+            <span class="config-price">${formatPrice(config.fundament.price)}</span>
+          </div>
+          `
+        : ''
+      }
+          ${config.kamindurchzug
+        ? `
+          <div class="config-item">
+            <div class="config-info">
+              <div class="config-label">Kamin</div>
+              <span class="config-name">${config.kamindurchzug.name}</span>
+            </div>
+            <span class="config-price">${formatPrice(config.kamindurchzug.price)}</span>
           </div>
           `
         : ''
@@ -549,18 +649,18 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       </div>
 
       <!-- Overview Summary Card -->
-      <div class="glass-card">
-        <h2>📊 Dein Nest - Überblick</h2>
+      <div class="summary-card">
+        <h2>Dein Nest - Überblick</h2>
         <div class="summary-items">
           <div class="summary-item">
-            <span>Dein Nest Haus</span>
-            <span class="price-highlight">${formatPrice(config.totalHousePrice)}</span>
+            <span class="summary-item-label">Dein Nest Haus</span>
+            <span class="summary-item-value">${formatPrice(config.totalHousePrice)}</span>
           </div>
           ${config.planungspaket
         ? `
           <div class="summary-item">
-            <span>Planungspaket - ${config.planungspaket.name}</span>
-            <span>${formatPrice(config.planungspaket.price)}</span>
+            <span class="summary-item-label">Planungspaket - ${config.planungspaket.name}</span>
+            <span class="summary-item-value">${formatPrice(config.planungspaket.price)}</span>
           </div>
           `
         : ''
@@ -568,8 +668,8 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
           ${config.konzeptCheck
         ? `
           <div class="summary-item">
-            <span>Konzept-Check ✓</span>
-            <span>${formatPrice(config.konzeptCheck.price)}</span>
+            <span class="summary-item-label">Konzept-Check</span>
+            <span class="summary-item-value">${formatPrice(config.konzeptCheck.price)}</span>
           </div>
           `
         : ''
@@ -577,16 +677,25 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
           ${config.terminvereinbarung?.booked
         ? `
           <div class="summary-item">
-            <span>Terminvereinbarung ✓</span>
-            <span style="color: #3d6ce1; font-weight: 500;">Gebucht</span>
+            <span class="summary-item-label">Terminvereinbarung</span>
+            <span class="summary-item-value">${config.terminvereinbarung.datetime || 'Gebucht'}</span>
+          </div>
+          `
+        : ''
+      }
+          ${config.liefertermin
+        ? `
+          <div class="summary-item">
+            <span class="summary-item-label">Liefertermin</span>
+            <span class="summary-item-value">${config.liefertermin}</span>
           </div>
           `
         : ''
       }
           <div class="summary-divider"></div>
-          <div class="summary-item-total">
-            <span>Gesamtsumme</span>
-            <span class="total-price">${formatPrice(config.totalPrice)}</span>
+          <div class="summary-total">
+            <span class="summary-total-label">Gesamtsumme</span>
+            <span class="summary-total-value">${formatPrice(config.totalPrice)}</span>
           </div>
         </div>
       </div>
@@ -595,54 +704,54 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     }
       
       <!-- Next Steps Card -->
-      <div class="glass-card">
-        <h2>⏭️ Die nächsten Schritte</h2>
+      <div class="steps-card">
+        <h2>Die nächsten Schritte</h2>
         <p>
-          1. <strong>Bestätigung:</strong> Sie erhalten diese E-Mail als Zahlungsnachweis<br>
-          2. <strong>Kontaktaufnahme:</strong> Wir melden uns innerhalb von 24 Stunden bei Ihnen<br>
-          3. <strong>Planung:</strong> Gemeinsam besprechen wir die Details Ihres NEST-Haus Projekts<br>
-          4. <strong>Umsetzung:</strong> Wir starten mit der professionellen Planung und Ausführung
+          <strong>1. Bestätigung:</strong> Sie erhalten diese E-Mail als Zahlungsnachweis<br><br>
+          <strong>2. Kontaktaufnahme:</strong> Wir melden uns innerhalb von 24 Stunden bei Ihnen<br><br>
+          <strong>3. Planung:</strong> Gemeinsam besprechen wir die Details Ihres NEST-Haus Projekts<br><br>
+          <strong>4. Umsetzung:</strong> Wir starten mit der professionellen Planung und Ausführung
         </p>
         
-        <div style="text-align: center; margin-top: 20px;">
+        <div class="button-center">
           <a href="https://nest-haus.at/konfigurator" class="btn-primary">
             Konfiguration ansehen
           </a>
         </div>
       </div>
       
-      <!-- Contact Info Cards -->
-      <div class="contact-boxes">
-        <!-- Kontakt Box -->
-        <div class="contact-box">
-          <h2>Kontakt <span class="gray-text">Melde dich!</span></h2>
-          <div class="contact-grid">
-            <span class="contact-label">Telefon 1:</span>
-            <span class="contact-value">+43 (0) 664 2531869</span>
-            <span class="contact-label">Telefon 2:</span>
-            <span class="contact-value">+43 (0) 664 1001947</span>
-            <span class="contact-label">Email:</span>
-            <span class="contact-value">mail@nest-haus.at</span>
+      <!-- Contact Info -->
+      <div class="contact-section">
+        <div class="contact-boxes">
+          <!-- Kontakt Box -->
+          <div class="contact-box">
+            <h3>Kontakt</h3>
+            <div class="contact-grid">
+              <span class="contact-label">Telefon 1:</span>
+              <span class="contact-value">+43 (0) 664 2531869</span>
+              <span class="contact-label">Telefon 2:</span>
+              <span class="contact-value">+43 (0) 664 1001947</span>
+              <span class="contact-label">Email:</span>
+              <span class="contact-value">mail@nest-haus.at</span>
+            </div>
           </div>
-        </div>
-        
-        <!-- Adresse Box -->
-        <div class="contact-box">
-          <h2>Adresse <span class="gray-text">Komm vorbei!</span></h2>
-          <div class="contact-grid">
-            <span class="contact-label">Straße:</span>
-            <span class="contact-value">Karmeliterplatz 8</span>
-            <span class="contact-label">Stadt:</span>
-            <span class="contact-value">8010, Graz, Steiermark</span>
-            <span class="contact-label">Land:</span>
-            <span class="contact-value">Österreich</span>
+          
+          <!-- Adresse Box -->
+          <div class="contact-box">
+            <h3>Adresse</h3>
+            <div class="contact-grid">
+              <span class="contact-label">Straße:</span>
+              <span class="contact-value">Karmeliterplatz 8</span>
+              <span class="contact-label">Stadt:</span>
+              <span class="contact-value">8010, Graz, Steiermark</span>
+              <span class="contact-label">Land:</span>
+              <span class="contact-value">Österreich</span>
+            </div>
           </div>
         </div>
       </div>
       
-      <p style="font-size: 13px; color: #999; margin-top: 20px;">
-        Anfrage-ID: ${data.inquiryId}
-      </p>
+      <p class="inquiry-id">Anfrage-ID: ${data.inquiryId}</p>
     </div>
     
     <!-- Footer -->
