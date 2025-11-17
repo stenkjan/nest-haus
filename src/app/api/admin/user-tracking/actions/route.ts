@@ -59,6 +59,112 @@ export async function DELETE(request: NextRequest) {
             });
         }
 
+        if (action === 'remove-by-age') {
+            // Remove records older than specified days (default 7)
+            const daysParam = new URL(request.url).searchParams.get('days');
+            const days = daysParam ? parseInt(daysParam) : 7;
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - days);
+
+            console.log(`🗑️ Removing records older than ${days} days (before ${cutoffDate.toISOString()})...`);
+
+            // Delete UserSessions older than cutoff (cascades to InteractionEvent, SelectionEvent)
+            const sessionsDeleted = await prisma.userSession.deleteMany({
+                where: {
+                    createdAt: { lt: cutoffDate }
+                }
+            });
+
+            // Delete orphaned PerformanceMetrics (not tied to sessions)
+            const metricsDeleted = await prisma.performanceMetric.deleteMany({
+                where: {
+                    timestamp: { lt: cutoffDate }
+                }
+            });
+
+            // Delete old CustomerInquiries (but preserve PAID and appointments)
+            const inquiriesDeleted = await prisma.customerInquiry.deleteMany({
+                where: {
+                    createdAt: { lt: cutoffDate },
+                    AND: [
+                        { paymentStatus: { not: 'PAID' } },
+                        { 
+                            OR: [
+                                { requestType: { not: 'appointment' } },
+                                { requestType: null }
+                            ]
+                        }
+                    ]
+                }
+            });
+
+            console.log(`✅ Cleanup complete: ${sessionsDeleted.count} sessions, ${metricsDeleted.count} metrics, ${inquiriesDeleted.count} inquiries`);
+
+            return NextResponse.json({
+                success: true,
+                message: `Removed records older than ${days} days`,
+                deletedCounts: {
+                    sessions: sessionsDeleted.count,
+                    metrics: metricsDeleted.count,
+                    inquiries: inquiriesDeleted.count
+                },
+                cutoffDate: cutoffDate.toISOString()
+            });
+        }
+
+        if (action === 'remove-until-nov15') {
+            // One-time cleanup: Remove all records up to November 15, 2024
+            const cutoffDate = new Date('2024-11-15T23:59:59.999Z');
+
+            console.log(`🗑️ ONE-TIME CLEANUP: Removing records up to November 15, 2024...`);
+
+            // Delete UserSessions before Nov 15 (cascades to InteractionEvent, SelectionEvent)
+            const sessionsDeleted = await prisma.userSession.deleteMany({
+                where: {
+                    createdAt: { lte: cutoffDate }
+                }
+            });
+
+            // Delete PerformanceMetrics before Nov 15
+            const metricsDeleted = await prisma.performanceMetric.deleteMany({
+                where: {
+                    timestamp: { lte: cutoffDate }
+                }
+            });
+
+            // Delete CustomerInquiries before Nov 15 (preserve PAID and appointments)
+            const inquiriesDeleted = await prisma.customerInquiry.deleteMany({
+                where: {
+                    createdAt: { lte: cutoffDate },
+                    AND: [
+                        { paymentStatus: { not: 'PAID' } },
+                        { 
+                            OR: [
+                                { requestType: { not: 'appointment' } },
+                                { requestType: null }
+                            ]
+                        }
+                    ]
+                }
+            });
+
+            console.log(`✅ ONE-TIME CLEANUP COMPLETE:`);
+            console.log(`   - Sessions deleted: ${sessionsDeleted.count}`);
+            console.log(`   - Metrics deleted: ${metricsDeleted.count}`);
+            console.log(`   - Inquiries deleted: ${inquiriesDeleted.count}`);
+
+            return NextResponse.json({
+                success: true,
+                message: `One-time cleanup complete: Removed all records up to November 15, 2024`,
+                deletedCounts: {
+                    sessions: sessionsDeleted.count,
+                    metrics: metricsDeleted.count,
+                    inquiries: inquiriesDeleted.count
+                },
+                cutoffDate: cutoffDate.toISOString()
+            });
+        }
+
         if (action === 'reset') {
             // Reset all configurations (clear configurationData but keep sessions)
             const result = await prisma.userSession.updateMany({
@@ -84,7 +190,7 @@ export async function DELETE(request: NextRequest) {
 
         return NextResponse.json({
             success: false,
-            error: 'Invalid action. Use ?action=remove, ?action=reset, or ?action=remove-old'
+            error: 'Invalid action. Use ?action=remove, ?action=reset, ?action=remove-old, ?action=remove-by-age, or ?action=remove-until-nov15'
         }, { status: 400 });
 
     } catch (error) {

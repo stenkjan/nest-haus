@@ -8,7 +8,7 @@ export default function TrackingActions() {
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const handleAction = async (action: 'remove' | 'reset') => {
+  const handleAction = async (action: 'remove' | 'reset' | 'remove-by-age') => {
     if (!confirm(getConfirmationMessage(action))) {
       return;
     }
@@ -24,15 +24,21 @@ export default function TrackingActions() {
       const result = await response.json();
 
       if (response.ok && result.success) {
+        // Enhanced message for remove-by-age with details
+        let message = result.message || `${action} completed successfully`;
+        if (action === 'remove-by-age' && result.deletedCounts) {
+          message = `${result.message}\n- Sessions: ${result.deletedCounts.sessions}\n- Metrics: ${result.deletedCounts.metrics}\n- Inquiries: ${result.deletedCounts.inquiries}`;
+        }
+        
         setMessage({
           type: 'success',
-          text: result.message || `${action} completed successfully`
+          text: message
         });
         
         // Refresh the page after a short delay to show the message
         setTimeout(() => {
           router.refresh();
-        }, 1500);
+        }, 2000);
       } else {
         setMessage({
           type: 'error',
@@ -55,6 +61,8 @@ export default function TrackingActions() {
         return 'Are you sure you want to REMOVE ALL configurations? This will permanently delete all sessions with configurations. This action cannot be undone!';
       case 'reset':
         return 'Are you sure you want to RESET all configurations? This will clear all configuration data but keep the sessions. This action cannot be undone!';
+      case 'remove-by-age':
+        return 'Are you sure you want to REMOVE ALL records older than 7 days? This will permanently delete old sessions, metrics, and inquiries (except paid and appointments). This action cannot be undone!';
       default:
         return 'Are you sure?';
     }
@@ -73,6 +81,14 @@ export default function TrackingActions() {
       )}
 
       <div className="flex flex-wrap gap-3">
+        <button
+          onClick={() => handleAction('remove-by-age')}
+          disabled={isLoading !== null}
+          className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+        >
+          {isLoading === 'remove-by-age' ? 'Removing...' : 'Remove Old Records (>7 days)'}
+        </button>
+
         <button
           onClick={() => handleAction('remove')}
           disabled={isLoading !== null}

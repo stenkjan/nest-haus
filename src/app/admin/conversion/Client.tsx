@@ -32,6 +32,18 @@ interface ConversionsData {
       count: number;
     }>;
   };
+  entwurfKonzeptcheck: {
+    totalRevenue: number;
+    totalCount: number;
+    withConfiguration: number;
+    withoutConfiguration: number;
+    topConfigurations: Array<{
+      nestType: string;
+      gebaeudehuelle: string;
+      innenverkleidung: string;
+      count: number;
+    }>;
+  };
   trafficSources: Array<{
     source: string;
     visitors: number;
@@ -335,6 +347,104 @@ function ConversionTrends({ data }: { data: ConversionsData | null }) {
   );
 }
 
+function EntwurfKonzeptcheckSection({
+  data,
+}: {
+  data: ConversionsData | null;
+}) {
+  if (!data || !data.entwurfKonzeptcheck) {
+    return null;
+  }
+
+  const { totalRevenue, totalCount, withConfiguration, withoutConfiguration, topConfigurations } =
+    data.entwurfKonzeptcheck;
+
+  if (totalCount === 0) {
+    return null;
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow p-6 mb-8">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        📐 Entwurf/Konzeptcheck Conversions (€1,500)
+      </h3>
+
+      {/* Summary Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
+          <div className="text-2xl font-bold text-blue-700">
+            {totalCount}
+          </div>
+          <div className="text-sm text-blue-600">Total Purchases</div>
+        </div>
+
+        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
+          <div className="text-2xl font-bold text-green-700">
+            {formatCurrency(totalRevenue)}
+          </div>
+          <div className="text-sm text-green-600">Total Revenue</div>
+        </div>
+
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4">
+          <div className="text-2xl font-bold text-purple-700">
+            {withConfiguration}
+          </div>
+          <div className="text-sm text-purple-600">With Configuration</div>
+        </div>
+
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4">
+          <div className="text-2xl font-bold text-orange-700">
+            {withoutConfiguration}
+          </div>
+          <div className="text-sm text-orange-600">Without Configuration</div>
+        </div>
+      </div>
+
+      {/* Top Configurations */}
+      {topConfigurations.length > 0 && (
+        <div>
+          <h4 className="text-sm font-medium text-gray-900 mb-3">
+            Top Configurations Leading to Entwurf Purchase
+          </h4>
+          <div className="space-y-2">
+            {topConfigurations.map((config, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-gray-900">
+                    {config.nestType} • {config.gebaeudehuelle} • {config.innenverkleidung}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-semibold text-blue-600">
+                    {config.count}
+                  </div>
+                  <div className="text-xs text-gray-600">purchases</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Conversion Breakdown */}
+      <div className="mt-6 pt-6 border-t border-gray-200">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">Configuration Rate:</span>
+          <span className="font-semibold text-gray-900">
+            {totalCount > 0
+              ? ((withConfiguration / totalCount) * 100).toFixed(1)
+              : 0}
+            % ({withConfiguration}/{totalCount})
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ConversionPage() {
   const [data, setData] = useState<ConversionsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -483,6 +593,9 @@ export default function ConversionPage() {
                 </div>
               </div>
             </div>
+
+            {/* Entwurf/Konzeptcheck Section */}
+            <EntwurfKonzeptcheckSection data={data} />
 
             {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">

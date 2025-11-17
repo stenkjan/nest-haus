@@ -31,6 +31,18 @@ interface ConversionsData {
             count: number;
         }>;
     };
+    entwurfKonzeptcheck: {
+        totalRevenue: number;
+        totalCount: number;
+        withConfiguration: number;
+        withoutConfiguration: number;
+        topConfigurations: Array<{
+            nestType: string;
+            gebaeudehuelle: string;
+            innenverkleidung: string;
+            count: number;
+        }>;
+    };
     trafficSources: Array<{
         source: string;
         visitors: number;
@@ -219,6 +231,102 @@ class ConversionsService {
                 total: 0,
                 byPriceRange: [],
                 byConfiguration: []
+            };
+        }
+    }
+
+    /**
+     * Get Entwurf/Konzeptcheck specific tracking (€1500 payments)
+     */
+    static async getEntwurfKonzeptcheckData(): Promise<ConversionsData['entwurfKonzeptcheck']> {
+        try {
+            // €1500 = 150000 cents
+            const ENTWURF_PRICE = 150000;
+
+            // Get all Entwurf/Konzeptcheck purchases (€1500 payments)
+            const entwurfPurchases = await prisma.customerInquiry.findMany({
+                where: {
+                    paymentStatus: 'PAID',
+                    paymentAmount: ENTWURF_PRICE
+                },
+                select: {
+                    id: true,
+                    paymentAmount: true,
+                    configurationData: true
+                }
+            });
+
+            const totalCount = entwurfPurchases.length;
+            const totalRevenue = totalCount * ENTWURF_PRICE;
+
+            // Separate with/without configuration
+            const withConfiguration = entwurfPurchases.filter(p => p.configurationData && p.configurationData !== null).length;
+            const withoutConfiguration = totalCount - withConfiguration;
+
+            // Extract configuration details
+            interface ConfigCount {
+                nestType: string;
+                gebaeudehuelle: string;
+                innenverkleidung: string;
+                count: number;
+            }
+
+            const configMap = new Map<string, ConfigCount>();
+
+            entwurfPurchases.forEach(purchase => {
+                if (!purchase.configurationData || purchase.configurationData === null) return;
+
+                const config = purchase.configurationData as Record<string, unknown>;
+                
+                // Extract values from either old or new format
+                const extractValue = (field: unknown): string => {
+                    if (typeof field === 'string') return field;
+                    if (field && typeof field === 'object' && 'value' in field) {
+                        const obj = field as { value?: unknown };
+                        return typeof obj.value === 'string' ? obj.value : 'Unknown';
+                    }
+                    return 'Unknown';
+                };
+
+                const nestType = extractValue(config.nest || config.nestType) || 'Unknown';
+                const gebaeudehuelle = extractValue(config.gebaeudehuelle) || 'Unknown';
+                const innenverkleidung = extractValue(config.innenverkleidung) || 'Unknown';
+
+                const key = `${nestType}-${gebaeudehuelle}-${innenverkleidung}`;
+
+                if (configMap.has(key)) {
+                    const existing = configMap.get(key)!;
+                    existing.count++;
+                } else {
+                    configMap.set(key, {
+                        nestType,
+                        gebaeudehuelle,
+                        innenverkleidung,
+                        count: 1
+                    });
+                }
+            });
+
+            const topConfigurations = Array.from(configMap.values())
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 5);
+
+            return {
+                totalRevenue,
+                totalCount,
+                withConfiguration,
+                withoutConfiguration,
+                topConfigurations
+            };
+
+        } catch (error) {
+            console.error('Failed to get Entwurf/Konzeptcheck data:', error);
+            return {
+                totalRevenue: 0,
+                totalCount: 0,
+                withConfiguration: 0,
+                withoutConfiguration: 0,
+                topConfigurations: []
             };
         }
     }
@@ -426,9 +534,10 @@ class ConversionsService {
         console.log('🔍 Generating conversions data...');
 
         try {
-            const [funnelSteps, revenue, trafficSources, trends] = await Promise.all([
+            const [funnelSteps, revenue, entwurfKonzeptcheck, trafficSources, trends] = await Promise.all([
                 this.getConversionFunnel(),
                 this.getRevenueAnalysis(),
+                this.getEntwurfKonzeptcheckData(),
                 this.getTrafficSources(),
                 this.getTrends()
             ]);
@@ -445,6 +554,7 @@ class ConversionsService {
             return {
                 funnelSteps,
                 revenue,
+                entwurfKonzeptcheck,
                 trafficSources,
                 trends,
                 metadata: {

@@ -362,6 +362,12 @@ export async function GET(request: NextRequest) {
         followUpDate: true,
         adminNotes: true,
         assignedTo: true,
+        // Appointment-related fields
+        requestType: true,
+        appointmentDateTime: true,
+        appointmentStatus: true,
+        appointmentExpiresAt: true,
+        confirmationToken: true,
       },
     });
 

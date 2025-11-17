@@ -33,6 +33,12 @@ interface CustomerInquiry {
   followUpDate: string | null;
   adminNotes: string | null;
   assignedTo: string | null;
+  // Appointment fields
+  requestType: string | null;
+  appointmentDateTime: string | null;
+  appointmentStatus: "PENDING" | "CONFIRMED" | "CANCELLED" | "EXPIRED" | null;
+  appointmentExpiresAt: string | null;
+  confirmationToken: string | null;
 }
 
 interface InquiriesResponse {
@@ -141,14 +147,52 @@ function ContactMethodBadge({
   );
 }
 
+function AppointmentStatusBadge({
+  status,
+}: {
+  status: CustomerInquiry["appointmentStatus"];
+}) {
+  if (!status) return null;
+
+  const styles = {
+    PENDING: "bg-yellow-100 text-yellow-800",
+    CONFIRMED: "bg-green-100 text-green-800",
+    CANCELLED: "bg-red-100 text-red-800",
+    EXPIRED: "bg-gray-100 text-gray-800",
+  };
+
+  const icons = {
+    PENDING: "⏳",
+    CONFIRMED: "✅",
+    CANCELLED: "❌",
+    EXPIRED: "⌛",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status]}`}
+    >
+      <span className="mr-1">{icons[status]}</span>
+      {status}
+    </span>
+  );
+}
+
 function InquiryCard({ inquiry }: { inquiry: CustomerInquiry }) {
   const isUrgent =
     inquiry.status === "NEW" &&
     new Date(inquiry.createdAt) > new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const isAppointment = inquiry.requestType === "appointment";
 
   return (
     <div
-      className={`bg-white rounded-lg shadow p-6 ${isUrgent ? "border-l-4 border-red-500" : ""}`}
+      className={`bg-white rounded-lg shadow p-6 ${
+        isUrgent
+          ? "border-l-4 border-red-500"
+          : isAppointment
+            ? "border-l-4 border-blue-500"
+            : ""
+      }`}
     >
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
@@ -158,19 +202,51 @@ function InquiryCard({ inquiry }: { inquiry: CustomerInquiry }) {
             {isUrgent && (
               <span className="ml-2 text-red-500 text-sm">🚨 New</span>
             )}
+            {isAppointment && (
+              <span className="ml-2 text-blue-600 text-sm">📅 Appointment</span>
+            )}
           </h3>
           <p className="text-sm text-gray-600">{inquiry.email}</p>
           {inquiry.phone && (
             <p className="text-sm text-gray-600">{inquiry.phone}</p>
           )}
         </div>
-        <div className="text-right">
+        <div className="text-right space-y-1">
           <StatusBadge status={inquiry.status} />
+          {inquiry.appointmentStatus && (
+            <div>
+              <AppointmentStatusBadge status={inquiry.appointmentStatus} />
+            </div>
+          )}
           <p className="text-xs text-gray-500 mt-1">
             {new Date(inquiry.createdAt).toLocaleDateString()}
           </p>
         </div>
       </div>
+
+      {/* Appointment Details */}
+      {isAppointment && inquiry.appointmentDateTime && (
+        <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+          <h4 className="text-sm font-medium text-blue-900 mb-2">
+            📅 Appointment Request
+          </h4>
+          <div className="space-y-1 text-sm text-blue-800">
+            <p>
+              <strong>Requested Time:</strong>{" "}
+              {new Date(inquiry.appointmentDateTime).toLocaleString("de-DE", {
+                dateStyle: "full",
+                timeStyle: "short",
+              })}
+            </p>
+            {inquiry.appointmentExpiresAt && inquiry.appointmentStatus === "PENDING" && (
+              <p className="text-xs text-blue-600">
+                ⏰ Hold expires:{" "}
+                {new Date(inquiry.appointmentExpiresAt).toLocaleString("de-DE")}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Message */}
       {inquiry.message && (
@@ -241,8 +317,17 @@ function InquiriesSummary({ inquiries }: { inquiries: CustomerInquiry[] }) {
     .filter((i) => i.totalPrice)
     .reduce((sum, i) => sum + (i.totalPrice || 0), 0);
 
+  const appointmentCount = inquiries.filter((i) => i.requestType === "appointment").length;
+  const contactCount = inquiries.filter((i) => i.requestType !== "appointment").length;
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
+      <div className="bg-white rounded-lg shadow p-4">
+        <div className="text-2xl font-bold text-blue-600">
+          {appointmentCount}
+        </div>
+        <div className="text-sm text-gray-600">Appointments</div>
+      </div>
       <div className="bg-white rounded-lg shadow p-4">
         <div className="text-2xl font-bold text-blue-600">
           {summary.NEW || 0}
@@ -320,7 +405,7 @@ async function InquiriesDashboard() {
       {/* Filter Controls */}
       <div className="mb-6 bg-white rounded-lg shadow p-4">
         <div className="flex items-center justify-between">
-          <div className="flex space-x-4">
+          <div className="flex flex-wrap gap-3">
             <select className="border border-gray-300 rounded px-3 py-2 text-sm">
               <option value="ALL">All Status</option>
               <option value="NEW">New</option>
@@ -329,6 +414,12 @@ async function InquiriesDashboard() {
               <option value="QUOTED">Quoted</option>
               <option value="CONVERTED">Converted</option>
               <option value="CLOSED">Closed</option>
+            </select>
+
+            <select className="border border-gray-300 rounded px-3 py-2 text-sm">
+              <option value="ALL">All Types</option>
+              <option value="CONTACT">Contacts Only</option>
+              <option value="APPOINTMENT">Appointments Only</option>
             </select>
 
             <input
