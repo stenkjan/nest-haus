@@ -255,11 +255,14 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       font-size: 15px;
       font-weight: 400;
       padding-right: 24px;
+      flex: 1;
     }
     .payment-value {
       color: #1a1a1a;
       font-weight: 500;
       font-size: 16px;
+      text-align: right;
+      word-break: break-all;
     }
     .payment-amount {
       color: #1a1a1a;
@@ -315,7 +318,8 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       font-weight: 600;
       font-size: 18px;
       white-space: nowrap;
-      margin-left: 24px;
+      text-align: right;
+      min-width: 120px;
     }
     
     /* Summary Section */
@@ -346,11 +350,14 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       color: #1a1a1a;
       font-weight: 400;
       padding-right: 24px;
+      flex: 1;
     }
     .summary-item-value {
       color: #1a1a1a;
       font-weight: 600;
       font-size: 18px;
+      text-align: right;
+      min-width: 120px;
     }
     .summary-divider {
       height: 2px;
@@ -367,12 +374,16 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     .summary-total-label {
       color: #1a1a1a;
       font-weight: 600;
-      padding: 20px 0 0 0;
+      font-size: 18px;
+      padding-right: 24px;
+      flex: 1;
     }
     .summary-total-value {
       color: #1a1a1a;
       font-weight: 700;
-      font-size: 28px;
+      font-size: 18px;
+      text-align: right;
+      min-width: 120px;
     }
     
     /* Next Steps Card */
@@ -433,6 +444,9 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
       font-weight: 600;
       color: #1a1a1a;
       margin: 0 0 16px 0;
+    }
+    .contact-box:last-child h3 {
+      margin-top: 24px;
     }
     .contact-grid {
       display: grid;
@@ -520,8 +534,8 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     <div class="content">
       <!-- Header -->
       <div class="header-section">
-        <h1>Zahlung erfolgreich</h1>
-        <p class="subtitle">Vielen Dank, ${data.name}! Ihre Zahlung wurde erfolgreich verarbeitet.</p>
+        <h1>Konzeptcheck bestellt</h1>
+        <p class="subtitle">Vielen Dank, ${data.name}! Ihre Bestellung für den Grundstückscheck und Entwurf war erfolgreich.</p>
       </div>
       
       <!-- Payment Success Card -->
@@ -671,7 +685,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
 
       <!-- Overview Summary Card -->
       <div class="summary-card">
-        <h2>Dein Nest - Überblick</h2>
+        <h2>Dein Nest - Preisgefühl</h2>
         <div class="summary-items">
           <div class="summary-item">
             <span class="summary-item-label">Dein Nest Haus</span>
@@ -730,7 +744,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
         <p>
           <strong>1. Bestätigung:</strong> Sie erhalten diese E-Mail als Zahlungsnachweis<br><br>
           <strong>2. Kontaktaufnahme:</strong> Wir melden uns innerhalb von 24 Stunden bei Ihnen<br><br>
-          <strong>3. Planung:</strong> Gemeinsam besprechen wir die Details Ihres NEST-Haus Projekts<br><br>
+          <strong>3. Planung:</strong> Gemeinsam besprechen wir die Details Ihres Nest-Haus Projekts<br><br>
           <strong>4. Umsetzung:</strong> Wir starten mit der professionellen Planung und Ausführung
         </p>
         
@@ -778,7 +792,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     <!-- Footer -->
     <div class="footer">
       <p>
-        <strong>NEST-Haus</strong><br>
+        <strong>Nest-Haus Team</strong><br>
         Modulares Wohnen. Nachhaltig. Österreichisch.
       </p>
       <p style="margin-top: 16px;">
@@ -798,11 +812,11 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
   `;
 
   const text = `
-NEST-Haus - Zahlungsbestätigung
+Nest-Haus - Zahlungsbestätigung
 
-Zahlung erfolgreich! 🎉
+Konzeptcheck bestellt
 
-Vielen Dank, ${data.name}! Ihre Zahlung wurde erfolgreich verarbeitet.
+Vielen Dank, ${data.name}! Ihre Bestellung für den Grundstückscheck und Entwurf war erfolgreich.
 
 ZAHLUNGSDETAILS:
 - Betrag: ${formattedAmount}
@@ -820,7 +834,7 @@ ${config.fussboden ? `- Fußboden: ${config.fussboden.name} - ${formatPrice(conf
 ${config.pvanlage ? `- PV-Anlage: ${config.pvanlage.name} - ${formatPrice(config.pvanlage.price)}` : ''}
 ${config.fenster ? `- Fenster: ${config.fenster.name} - ${formatPrice(config.fenster.price)}` : ''}
 
-DEIN NEST - ÜBERBLICK:
+DEIN NEST - PREISGEFÜHL:
 - Dein Nest Haus: ${formatPrice(config.totalHousePrice)}
 ${config.planungspaket ? `- Planungspaket: ${formatPrice(config.planungspaket.price)}` : ''}
 ${config.konzeptCheck ? `- Konzept-Check: ${formatPrice(config.konzeptCheck.price)}` : ''}
@@ -834,7 +848,7 @@ GESAMTSUMME: ${formatPrice(config.totalPrice)}
 DIE NÄCHSTEN SCHRITTE:
 1. Bestätigung: Sie erhalten diese E-Mail als Zahlungsnachweis
 2. Kontaktaufnahme: Wir melden uns innerhalb von 24 Stunden bei Ihnen
-3. Planung: Gemeinsam besprechen wir die Details Ihres NEST-Haus Projekts
+3. Planung: Gemeinsam besprechen wir die Details Ihres Nest-Haus Projekts
 4. Umsetzung: Wir starten mit der professionellen Planung und Ausführung
 
 KONTAKT:
