@@ -92,7 +92,7 @@ const partners: Partner[] = [
     name: "Zarnhofer",
     path: IMAGES.partners.zarnhofer,
     description: "Holzbaumeisterbetrieb",
-    link: "https://www.zarnhofer.at",
+    link: "https://www.zarnhofer.com",
   },
   {
     id: "bp-elektrotechnik",
