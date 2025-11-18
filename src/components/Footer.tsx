@@ -13,7 +13,6 @@ export default function Footer() {
     {
       title: "Home",
       items: [
-        { text: "Galerie", href: "/" },
         { text: "Dein Nest entdecken", href: "/dein-nest" },
         { text: "Entwurf", href: "/entwurf" },
         { text: "Terminvereinbarung", href: "/kontakt" },
@@ -23,19 +22,19 @@ export default function Footer() {
     {
       title: "Dein Nest",
       items: [
-        { text: "Preise", href: "/dein-nest" },
+        { text: "Preise", href: "/konfigurator" },
         { text: "Intro Nest", href: "/dein-nest" },
         { text: "Position am Markt", href: "/dein-nest" },
         { text: "Haus Konfigurator", href: "/konfigurator" },
       ],
     },
     {
-      title: "Entwurf",
+      title: "Konzeptcheck",
       items: [
         { text: "Entwurf", href: "/entwurf" },
         { text: "Beispiele", href: "/entwurf" },
         { text: "Grundstücks-Check", href: "/entwurf" },
-        { text: "Anleitung", href: "/entwurf" },
+        { text: "Anleitung", href: "/nest-system" },
         { text: "FAQ", href: "/faq" },
       ],
     },
@@ -45,9 +44,7 @@ export default function Footer() {
         { text: "Unsere Technik", href: "/kontakt" },
         { text: "Materialien", href: "/nest-system" },
         { text: "Fenster & Türen", href: "/kontakt" },
-        { text: "Individualisierung", href: "/nest-system" },
         { text: "Haustechnik", href: "/nest-system" },
-        { text: "Modulweiterung", href: "/nest-system" },
       ],
     },
     {

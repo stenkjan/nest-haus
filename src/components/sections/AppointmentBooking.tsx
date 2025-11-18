@@ -360,14 +360,14 @@ const AppointmentBooking = ({
       const isToday = new Date().toDateString() === date.toDateString();
       const isSelected = selectedDate?.toDateString() === date.toDateString();
 
-      // Block today and past dates - only allow booking from tomorrow onwards
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
-      const isPast = date < tomorrow;
+      // Block dates before one week from now - only allow booking from one week onwards
+      const oneWeekFromNow = new Date();
+      oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
+      oneWeekFromNow.setHours(0, 0, 0, 0);
+      const isTooEarly = date < oneWeekFromNow;
 
       const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-      const isAvailable = !isPast && !isWeekend;
+      const isAvailable = !isTooEarly && !isWeekend;
 
       days.push(
         <div
