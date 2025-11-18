@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [29364a3941f18314f915dfe677aa1b3b5f40fb32] - Tue Nov 18 15:36:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: update dialog configurations for material options  - Changed titles and descriptions for material options in dialogConfigs, replacing "Schiefer" with "Trapezblech" and "Kalkstein" with "FUNDERMAX® HPL-Platten Schwarz". - Added new descriptions for "Trapezblech" and "FUNDERMAX® HPL-Platten Schwarz" to enhance clarity and detail. - Updated image paths to reflect the new material options. - Commented out unused material configurations for future reference.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/data/dialogConfigs.ts
+
+
+---
+
 ## [619b3c5dea5882010b24a6f8d7413dc7349681c3] - Mon Nov 17 21:16:04 2025 +0100
 
 **Author**: stenkjan
