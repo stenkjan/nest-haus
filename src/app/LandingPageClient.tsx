@@ -24,11 +24,6 @@ const sections = [
     title: "Zuhause für Ideen",
     slug: "zuhause-fuer-ideen",
   },
-  {
-    id: "wohnen-neu-gedacht",
-    title: "Wohnen neu gedacht",
-    slug: "wohnen-neu-gedacht",
-  },
   { id: "raum-fuer-ideen", title: "Raum für Ideen", slug: "raum-fuer-ideen" },
   {
     id: "gestaltung-fuer-visionen",
