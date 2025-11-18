@@ -34,15 +34,25 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
       href: "/materialien"
     },
     cards: [
+      // {
+      //   id: 1,
+      //   title: "Schiefer",
+      //   subtitle: "Die Außenhülle",
+      //   description: {
+      //     mobile: "Schiefer steht für natürliche Eleganz und hohe Strapazierfähigkeit. Robuste, trittfeste Oberfläche, beständig gegen Temperaturschwankungen. Charakteristische Farbpalette von Anthrazit bis Grau.",
+      //     desktop: "Schiefer steht für natürliche Eleganz, hohe Strapazierfähigkeit und zeitlose Ästhetik. Als Bodenbelag überzeugt er durch robuste, trittfeste Oberfläche und Beständigkeit gegen Temperatur- und Feuchtigkeitseinflüsse. Die geschichtete Struktur und Anthrazit- bis Tiefgrautöne verleihen Räumen eine edle Ausstrahlung – langlebig in modernen wie klassischen Wohnkonzepten."
+      //   },
+      //   imagePath: IMAGES.materials.schiefer
+      // },
       {
         id: 1,
-        title: "Schiefer",
+        title: "Trapezblech",
         subtitle: "Die Außenhülle",
         description: {
-          mobile: "Schiefer steht für natürliche Eleganz und hohe Strapazierfähigkeit. Robuste, trittfeste Oberfläche, beständig gegen Temperaturschwankungen. Charakteristische Farbpalette von Anthrazit bis Grau.",
-          desktop: "Schiefer steht für natürliche Eleganz, hohe Strapazierfähigkeit und zeitlose Ästhetik. Als Bodenbelag überzeugt er durch robuste, trittfeste Oberfläche und Beständigkeit gegen Temperatur- und Feuchtigkeitseinflüsse. Die geschichtete Struktur und Anthrazit- bis Tiefgrautöne verleihen Räumen eine edle Ausstrahlung – langlebig in modernen wie klassischen Wohnkonzepten."
+          mobile: "Trapezblech: langlebige Lösung für Dach und Fassade. Hohe Stabilität und Widerstandsfähigkeit für privaten und gewerblichen Bereich. Wetterfest mit geringem Eigengewicht.",
+          desktop: "Trapezblech ist langlebig und vielseitig für Dach- und Fassadenkonstruktionen. Hohe Stabilität und Wetterfestigkeit bieten zuverlässigen Schutz vor Wind, Regen und Schnee. Die profilierte Form ermöglicht hohe Tragfähigkeit bei geringem Eigengewicht – für effiziente, kostensparende Montage."
         },
-        imagePath: IMAGES.materials.schiefer
+        imagePath: IMAGES.materials.trapezblech
       },
       {
         id: 2,
@@ -54,46 +64,47 @@ export const dialogConfigs: Record<string, MaterialSliderDialogConfig> = {
         },
         imagePath: IMAGES.materials.laercheFassade
       },
+      // {
+      //   id: 3,
+      //   title: "Kalkstein",
+      //   subtitle: "Die Außenhülle",
+      //   description: {
+      //     mobile: "Massiver Kalkstein überzeugt durch natürliche Eleganz und hohe Widerstandsfähigkeit. Charakteristische Farbgebung von warmen Beigetönen bis sanften Graunuancen. Edle Ausstrahlung.",
+      //     desktop: "Der massive Kalkstein überzeugt durch seine natürliche Eleganz, zeitlose Ästhetik und hohe Widerstandsfähigkeit. Mit seiner charakteristischen Farbgebung, die von warmen Beigetönen bis hin zu sanften Graunuancen reicht, verleiht er Innen- und Außenbereichen eine edle, harmonische Ausstrahlung."
+      //   },
+      //   imagePath: IMAGES.materials.kalkstein
+      // },
       {
         id: 3,
-        title: "Kalkstein",
+        title: "FUNDERMAX® HPL-Platten Schwarz",
         subtitle: "Die Außenhülle",
         description: {
-          mobile: "Massiver Kalkstein überzeugt durch natürliche Eleganz und hohe Widerstandsfähigkeit. Charakteristische Farbgebung von warmen Beigetönen bis sanften Graunuancen. Edle Ausstrahlung.",
-          desktop: "Der massive Kalkstein überzeugt durch seine natürliche Eleganz, zeitlose Ästhetik und hohe Widerstandsfähigkeit. Mit seiner charakteristischen Farbgebung, die von warmen Beigetönen bis hin zu sanften Graunuancen reicht, verleiht er Innen- und Außenbereichen eine edle, harmonische Ausstrahlung."
+          mobile: "Schwarze Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Tiefschwarze, matte Oberfläche für moderne Architektur. Witterungsbeständig, UV-stabil und kratzfest.",
+          desktop: "Die schwarzen Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Die tiefschwarze, matte Oberfläche verleiht Fassaden eine kraftvolle, moderne Ausstrahlung und setzt markante architektonische Akzente. Hochverdichtetes Laminat garantiert außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit – die kratzfeste Oberfläche behält ihre intensive Farbtiefe über Jahre hinweg."
         },
-        imagePath: IMAGES.materials.kalkstein
+        imagePath: IMAGES.materials.fundermaxSchwarz
       },
       {
         id: 4,
-        title: "FUNDERMAX® HPL-Platten",
+        title: "FUNDERMAX® HPL-Platten Weiß",
         subtitle: "Die Außenhülle",
         description: {
-          mobile: "Fundermax HPL-Platten: moderne, langlebige Fassadenlösung. Hochverdichtete Laminatplatten bieten Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Kratzfest und pflegeleicht.",
-          desktop: "Die Fundermax HPL-Platten sind eine erstklassige Lösung für moderne, langlebige Fassadengestaltungen. Gefertigt aus hochverdichteten Laminatplatten, bieten sie außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit. Die kratzfeste, pflegeleichte Oberfläche trotzt selbst extremen klimatischen Bedingungen."
+          mobile: "Weiße Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Leuchtend weiße, glänzende Oberfläche für moderne Architektur. Witterungsbeständig, UV-stabil und kratzfest.",
+          desktop: "Die weißen Fundermax HPL-Platten vereinen zeitlose Eleganz mit technischer Perfektion. Die leuchtend weiße, glänzende Oberfläche verleiht Fassaden eine kraftvolle, moderne Ausstrahlung und setzt markante architektonische Akzente. Hochverdichtetes Laminat garantiert außergewöhnliche Witterungsbeständigkeit, UV-Stabilität und Schlagfestigkeit – die kratzfeste Oberfläche behält ihre intensive Farbtiefe über Jahre hinweg."
         },
         imagePath: IMAGES.materials.fundermaxWeiss
       },
-      {
-        id: 5,
-        title: "Eiche Parkett",
-        subtitle: "Die Außenhülle",
-        description: {
-          mobile: "Eichen-Parkett steht für zeitlose Eleganz und natürliche Wärme. Die charakteristische Maserung verleiht jedem Raum eine edle Atmosphäre. Dank hoher Härte besonders langlebig.",
-          desktop: "Der Parkettboden aus Eiche steht für zeitlose Eleganz, natürliche Wärme und außergewöhnliche Langlebigkeit. Die charakteristische Maserung und warme Farbgebung verleihen jedem Raum eine edle, gemütliche Atmosphäre. Dank hoher Härte ist Eichenparkett besonders strapazierfähig und eignet sich für Wohnräume sowie stark frequentierte Bereiche."
-        },
-        imagePath: IMAGES.materials.eicheParkett
-      },
-      {
-        id: 6,
-        title: "Trapezblech",
-        subtitle: "Die Außenhülle",
-        description: {
-          mobile: "Trapezblech: langlebige Lösung für Dach und Fassade. Hohe Stabilität und Widerstandsfähigkeit für privaten und gewerblichen Bereich. Wetterfest mit geringem Eigengewicht.",
-          desktop: "Trapezblech ist langlebig und vielseitig für Dach- und Fassadenkonstruktionen. Hohe Stabilität und Wetterfestigkeit bieten zuverlässigen Schutz vor Wind, Regen und Schnee. Die profilierte Form ermöglicht hohe Tragfähigkeit bei geringem Eigengewicht – für effiziente, kostensparende Montage."
-        },
-        imagePath: IMAGES.materials.trapezblech
-      }
+      // {
+      //   id: 5,
+      //   title: "Eiche Parkett",
+      //   subtitle: "Die Außenhülle",
+      //   description: {
+      //     mobile: "Eichen-Parkett steht für zeitlose Eleganz und natürliche Wärme. Die charakteristische Maserung verleiht jedem Raum eine edle Atmosphäre. Dank hoher Härte besonders langlebig.",
+      //     desktop: "Der Parkettboden aus Eiche steht für zeitlose Eleganz, natürliche Wärme und außergewöhnliche Langlebigkeit. Die charakteristische Maserung und warme Farbgebung verleihen jedem Raum eine edle, gemütliche Atmosphäre. Dank hoher Härte ist Eichenparkett besonders strapazierfähig und eignet sich für Wohnräume sowie stark frequentierte Bereiche."
+      //   },
+      //   imagePath: IMAGES.materials.eicheParkett
+      // },
+
     ]
   },
 
