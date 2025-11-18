@@ -62,8 +62,7 @@ export default function ConfigurationModeSelection({
               </h3>
               <p className="text-base md:text-lg 2xl:text-xl 3xl:text-3xl text-gray-700 text-center leading-relaxed">
                 <strong>Konfiguriere dein Nest</strong> nach deinem Geschmack
-                und behalte die <strong>Preise</strong> deines Hauses{" "}
-                <strong>transparent im Blick</strong>.
+                und bekomme einen <strong>Überblick über die Preise</strong>.
               </p>
             </div>
 
@@ -80,9 +79,9 @@ export default function ConfigurationModeSelection({
                 Ohne Konfiguration
               </h3>
               <p className="text-base md:text-lg 2xl:text-xl 3xl:text-3xl text-gray-700 text-center leading-relaxed">
-                Starte <strong>ohne Konfiguration</strong> und gehe{" "}
-                <strong>direkt</strong> weiter <strong>zum Warenkorb</strong>.
-                Dein Nest entwirfst du mit dem Team.
+                Starte <strong>ohne Konfiguration</strong> und gestalte dein{" "}
+                <strong>Nest Haus</strong> {" "}
+                 gemeinsam mit dem Team.
               </p>
             </div>
           </div>
