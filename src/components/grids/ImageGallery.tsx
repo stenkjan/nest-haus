@@ -53,7 +53,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     },
     {
       src: IMAGES.hero.nestHaus6,
-      alt: "NEST Haus 4 Module Ansicht Meer Mediteran Stirnseite Holzlattung Lärche",
+      alt: "NEST Haus 4 Module Ansicht Meer Mediterran Stirnseite Holzlattung Lärche",
     },
     {
       src: IMAGES.hero.nestHaus7,
@@ -65,7 +65,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     },
   ], []);
 
-  const images = useMemo(() => 
+  const images = useMemo(() =>
     customImages || (useHeroImages ? defaultGalleryImages : []),
     [customImages, useHeroImages, defaultGalleryImages]
   );

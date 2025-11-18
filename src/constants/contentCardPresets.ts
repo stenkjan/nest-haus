@@ -121,7 +121,7 @@ export const ABLAUF_STEPS_BUTTONS = [
         text: "Anleitung als PDF",
         variant: "primary" as const,
         size: "xs" as const,
-        file: "/files/anleitung.pdf", // Path to the PDF file
+        file: "20250708-Ikea-Layout-A5", // Clean path (API adds files/ prefix and resolves hash/extension)
         fileMode: "open" as const, // Open in new tab
     },
     {

@@ -50,7 +50,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         alt: "NEST-Haus Bild 1",
         description: {
           title: "Nest 140",
-          subtitle: "Fundamentplatten Weiss",
+          subtitle: "Fassadenplatten Weiss",
           sectionSlug: "dein-nest-haus", // Use slug instead of sectionId
         },
       },
@@ -60,7 +60,7 @@ const LandingImagesCarousel: React.FC<LandingImagesCarouselProps> = ({
         alt: "NEST-Haus Bild 2",
         description: {
           title: "Nest 100",
-          subtitle: "Mediterane Ansicht",
+          subtitle: "Mediterrane Ansicht",
           sectionSlug: "wohnen-ohne-grenzen",
         },
       },
