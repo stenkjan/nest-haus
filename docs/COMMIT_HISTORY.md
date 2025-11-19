@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a666348479e8e83d9ed1580cec5fa9caca547ed8] - Wed Nov 19 13:42:38 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: update tsconfig.json to exclude scripts directory  - Added "scripts/**" to the exclude list in tsconfig.json to prevent TypeScript from processing files in the scripts directory.  `
+
+### Changes Analysis
+
+---
+
 ## [a82bae8a11b1f9e0aa67efd86425409c0126bda7] - Wed Nov 19 13:32:46 2025 +0100
 
 **Author**: stenkjan
