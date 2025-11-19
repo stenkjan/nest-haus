@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a82bae8a11b1f9e0aa67efd86425409c0126bda7] - Wed Nov 19 13:32:46 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: remove audit tracking script  - Deleted the audit tracking script that scanned the codebase for UI elements lacking tracking attributes and generated an HTML report. - This script is no longer necessary for the current project requirements.  `
+
+### Changes Analysis
+
+#### ⚙️ Backend Changes
+- scripts/audit-tracking.ts
+
+
+---
+
 ## [e18d1ddf36d93d936f904648fe4388f3b06b9591] - Wed Nov 19 13:28:10 2025 +0100
 
 **Author**: stenkjan
