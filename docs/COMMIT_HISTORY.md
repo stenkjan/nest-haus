@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [3caf8620e51c7bb31c75c4af2b9d82f5da4d1f4b] - Wed Nov 19 13:07:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: update selection event handling in BI metrics API  - Changed the selection criteria in the GET request to use 'selection' instead of 'configValue' for fetching selection events. - Updated the data mapping to reflect the new structure, using 'category' and 'selection' for key generation in the configMap. - Improved clarity and maintainability of the code by aligning with the updated data model.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/bi-metrics/route.ts
+
+
+---
+
 ## [4f05a069cef6c5686a2135ecca291ed2e659040d] - Wed Nov 19 12:50:56 2025 +0100
 
 **Author**: stenkjan
