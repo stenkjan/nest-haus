@@ -50,28 +50,15 @@ export async function GET(_request: NextRequest) {
     }
 
     // 2. Top locations (top 3 countries)
+    // Note: country field may not be populated yet in all sessions
     const allSessions = await prisma.userSession.findMany({
-      where: {
-        country: {
-          not: null,
-        },
-      },
       select: {
-        country: true,
+        id: true,
       },
     });
 
-    const countryMap = new Map<string, number>();
-    allSessions.forEach((session) => {
-      if (session.country) {
-        countryMap.set(session.country, (countryMap.get(session.country) || 0) + 1);
-      }
-    });
-
-    const topLocations = Array.from(countryMap.entries())
-      .map(([country, count]) => ({ country, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 3);
+    // For now, return empty locations until geographic data is fully populated
+    const topLocations: Array<{ country: string; count: number }> = [];
 
     // 3. Most visited pages (top 3)
     const interactions = await prisma.interactionEvent.findMany({
@@ -95,15 +82,11 @@ export async function GET(_request: NextRequest) {
 
     // 4. Most selected configuration
     const selectionEvents = await prisma.selectionEvent.findMany({
-      where: {
-        selection: {
-          not: null,
-        },
-      },
       select: {
         category: true,
         selection: true,
       },
+      take: 1000, // Limit to recent 1000 selections for performance
     });
 
     const configMap = new Map<string, number>();
