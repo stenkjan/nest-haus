@@ -88,8 +88,8 @@ const sectionsContent = [
     id: 3,
     sectionId: "zuhause-fuer-ideen",
     imagePath: IMAGES.hero.nestHaus3,
-    h1: "Dein Zuhause für Ideen",
-    h3: "Visionen brauchen Räume",
+    h1: "Visionen brauchen Räume",
+    h3: "Dein Zuhause für Ideen",
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
     button1: "Konzeptcheck",
@@ -367,7 +367,7 @@ export default function LandingPageClient() {
                       {
                         id: 3,
                         title: "Dein Zuhause aus Holz",
-                        subtitle: "Unser Design trägt Verantwortung",
+                        subtitle: "®Nest mit Verantwortung",
                         description: "",
                         image:
                           IMAGES.function
