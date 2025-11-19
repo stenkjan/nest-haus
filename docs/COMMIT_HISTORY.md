@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c25777afc27ca3a8b31993c323ed294a84542944] - Wed Nov 19 14:35:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: add ordering to bi-metrics API response  - Implemented descending order by timestamp in the bi-metrics route to enhance data retrieval efficiency and ensure the most recent selections are prioritized.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/bi-metrics/route.ts
+
+
+---
+
 ## [e82041a7c234f7409a5a5b3dba17653358c7eade] - Wed Nov 19 14:12:56 2025 +0100
 
 **Author**: stenkjan
