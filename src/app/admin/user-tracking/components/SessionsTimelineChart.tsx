@@ -7,7 +7,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 interface TimelineData {
   dates: string[];
@@ -32,11 +32,7 @@ export default function SessionsTimelineChart() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [period, setPeriod] = useState<Period>('30d');
 
-  useEffect(() => {
-    fetchTimelineData();
-  }, [period]);
-
-  async function fetchTimelineData() {
+  const fetchTimelineData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/admin/analytics/sessions-timeline?period=${period}`);
@@ -50,7 +46,11 @@ export default function SessionsTimelineChart() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [period]);
+
+  useEffect(() => {
+    fetchTimelineData();
+  }, [fetchTimelineData]);
 
   if (loading) {
     return (

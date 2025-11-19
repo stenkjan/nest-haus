@@ -11,12 +11,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-interface TimelineDataPoint {
-  date: string;
-  sessions: number;
-  uniqueUsers: number;
-}
-
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
