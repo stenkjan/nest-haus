@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { SessionManager } from '@/lib/redis';
+import { getLocationFromIP, parseReferrer } from '@/services/geolocation-service';
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,15 +40,49 @@ export async function POST(request: NextRequest) {
 
     const startTime = Date.now();
 
+    // Get IP address and geolocation data
+    const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const referrer = request.headers.get('referer');
+    
+    // Fetch geolocation data (with caching)
+    const locationData = await getLocationFromIP(ipAddress);
+    const trafficData = parseReferrer(referrer);
+
     // 1. Ensure session exists using upsert pattern (prevents foreign key constraint violations)
     await prisma.userSession.upsert({
       where: { sessionId },
-      update: { lastActivity: new Date() },
+      update: { 
+        lastActivity: new Date(),
+        // Update location data if not already set
+        ...(locationData && {
+          country: locationData.country,
+          city: locationData.city,
+          latitude: locationData.latitude,
+          longitude: locationData.longitude,
+        }),
+        ...(trafficData && {
+          trafficSource: trafficData.source,
+          trafficMedium: trafficData.medium,
+          referralDomain: trafficData.referralDomain,
+        }),
+      },
       create: {
         sessionId,
-        ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+        ipAddress,
         userAgent: request.headers.get('user-agent') || 'unknown',
-        referrer: request.headers.get('referer'),
+        referrer,
+        // Add geolocation data on creation
+        ...(locationData && {
+          country: locationData.country,
+          city: locationData.city,
+          latitude: locationData.latitude,
+          longitude: locationData.longitude,
+        }),
+        ...(trafficData && {
+          trafficSource: trafficData.source,
+          trafficMedium: trafficData.medium,
+          referralDomain: trafficData.referralDomain,
+        }),
         status: 'ACTIVE'
       }
     });

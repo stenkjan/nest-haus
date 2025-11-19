@@ -111,30 +111,6 @@ export default async function AdminDashboard() {
           </Link>
 
           <Link
-            href="/admin/performance"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  Performance Metrics
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  Monitor system performance, API response times, database
-                  queries, and user experience metrics.
-                </p>
-                <div className="mt-4 text-sm text-gray-500">
-                  • API performance
-                  <br />
-                  • Database metrics
-                  <br />• Page load times
-                </div>
-              </div>
-              <div className="text-4xl">⚡</div>
-            </div>
-          </Link>
-
-          <Link
             href="/admin/usage-performance"
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
           >
@@ -154,30 +130,6 @@ export default async function AdminDashboard() {
                 </div>
               </div>
               <div className="text-4xl">📊</div>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/alpha-tests"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  Alpha Test Results
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  View usability test results, user feedback, and identify areas
-                  for improvement in the user experience.
-                </p>
-                <div className="mt-4 text-sm text-gray-500">
-                  • User feedback analysis
-                  <br />
-                  • Usability metrics
-                  <br />• Test completion rates
-                </div>
-              </div>
-              <div className="text-4xl">🧪</div>
             </div>
           </Link>
 
@@ -204,52 +156,39 @@ export default async function AdminDashboard() {
               <div className="text-4xl">📋</div>
             </div>
           </Link>
+
+          <Link
+            href="/admin/alpha-tests"
+            className="bg-gray-100 rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group opacity-60"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-500 group-hover:text-gray-700">
+                  Alpha Test Results <span className="text-xs">(Deprecated)</span>
+                </h3>
+                <p className="text-gray-500 mt-2">
+                  View usability test results, user feedback, and identify areas
+                  for improvement in the user experience.
+                </p>
+                <div className="mt-4 text-sm text-gray-400">
+                  • User feedback analysis
+                  <br />
+                  • Usability metrics
+                  <br />• Test completion rates
+                </div>
+              </div>
+              <div className="text-4xl opacity-50">🧪</div>
+            </div>
+          </Link>
         </div>
 
-        {/* System Management */}
-        <div className="space-y-6">
-          {/* Image Cache Manager */}
-          <ImageCacheManager />
-
-          {/* Developer Tools */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Developer Tools
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Link
-                href="/admin/debug/session"
-                className="flex items-center justify-between p-4 border border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
-              >
-                <div>
-                  <div className="font-medium text-gray-900">
-                    Session Debugger
-                  </div>
-                  <div className="text-sm text-gray-600 mt-1">
-                    Inspect session tracking data
-                  </div>
-                </div>
-                <div className="text-2xl">🔍</div>
-              </Link>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Quick Actions
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                Export Analytics Report
-              </button>
-              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
-                Sync Redis to PostgreSQL
-              </button>
-              <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">
-                Clear Cache
-              </button>
-            </div>
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Quick Actions
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ImageCacheManager />
           </div>
         </div>
       </div>

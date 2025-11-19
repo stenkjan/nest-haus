@@ -50,10 +50,40 @@ export async function GET(_request: NextRequest) {
     }
 
     // 2. Top locations (top 3 countries)
-    // Note: Geographic data not yet populated - will be enabled after schema migration
-    const topLocations: Array<{ country: string; count: number }> = [];
+    // Note: Geographic fields will populate once schema migration is applied (npx prisma db push)
+    let topLocations: Array<{ country: string; count: number }> = [];
 
-    // 3. Most visited pages (top 3)
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const allSessions = await (prisma.userSession.findMany as any)({
+        where: {
+          country: {
+            not: null,
+          },
+        },
+        select: {
+          country: true,
+        },
+      });
+
+      const countryMap = new Map<string, number>();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      allSessions.forEach((session: any) => {
+        if (session.country) {
+          countryMap.set(session.country, (countryMap.get(session.country) || 0) + 1);
+        }
+      });
+
+      topLocations = Array.from(countryMap.entries())
+        .map(([country, count]) => ({ country, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 3);
+    } catch {
+      // Gracefully handle case where geographic fields don't exist yet
+      topLocations = [];
+    }
+
+    // 3. Most visited pages (top 3 main routes only)
     const interactions = await prisma.interactionEvent.findMany({
       where: {
         eventType: "page_visit",
@@ -63,13 +93,32 @@ export async function GET(_request: NextRequest) {
       },
     });
 
+    // Filter for main navigation routes only
+    const mainRoutes = ['/', '/konfigurator', '/konzept-check', '/leistungen', '/kontakt', '/ueber-uns'];
+
     const pageMap = new Map<string, number>();
     interactions.forEach((interaction) => {
-      pageMap.set(interaction.category, (pageMap.get(interaction.category) || 0) + 1);
+      // Only count main routes
+      if (mainRoutes.includes(interaction.category)) {
+        pageMap.set(interaction.category, (pageMap.get(interaction.category) || 0) + 1);
+      }
     });
 
+    // Map route names to friendly labels
+    const routeLabels: Record<string, string> = {
+      '/': 'Landing Page',
+      '/konfigurator': 'Konfigurator',
+      '/konzept-check': 'Konzept-Check',
+      '/leistungen': 'Leistungen',
+      '/kontakt': 'Kontakt',
+      '/ueber-uns': 'Über Uns',
+    };
+
     const topPages = Array.from(pageMap.entries())
-      .map(([page, count]) => ({ page, count }))
+      .map(([page, count]) => ({
+        page: routeLabels[page] || page,
+        count
+      }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 3);
 
