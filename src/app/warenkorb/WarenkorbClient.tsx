@@ -164,8 +164,8 @@ export default function WarenkorbClient() {
           });
       }
 
-      if (mode === "ohne-nest" || mode === "konzeptcheck") {
-        console.log("🏠 URL has ohne-nest/konzeptcheck mode, setting to TRUE");
+      if (mode === "ohne-nest" || mode === "konzept-check") {
+        console.log("🏠 URL has ohne-nest/konzept-check mode, setting to TRUE");
         setOhneNestMode(true);
 
         // Update the session to mark it as ohne-nest mode

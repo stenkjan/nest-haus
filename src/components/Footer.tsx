@@ -14,7 +14,7 @@ export default function Footer() {
       title: "Home",
       items: [
         { text: "Dein Nest entdecken", href: "/dein-nest" },
-        { text: "Konzeptcheck", href: "/konzeptcheck" },
+        { text: "Konzept-Check", href: "/konzept-check" },
         { text: "Terminvereinbarung", href: "/kontakt" },
         { text: "Warum Wir?", href: "/warum-wir" },
       ],
@@ -29,11 +29,11 @@ export default function Footer() {
       ],
     },
     {
-      title: "Konzeptcheck",
+      title: "Konzept-Check",
       items: [
-        { text: "Konzeptcheck", href: "/konzeptcheck" },
-        { text: "Beispiele", href: "/konzeptcheck" },
-        { text: "Grundstücks-Check", href: "/konzeptcheck" },
+        { text: "Konzept-Check", href: "/konzept-check" },
+        { text: "Beispiele", href: "/konzept-check" },
+        { text: "Grundstücks-Check", href: "/konzept-check" },
         { text: "Anleitung", href: "/nest-system" },
         { text: "FAQ", href: "/faq" },
       ],

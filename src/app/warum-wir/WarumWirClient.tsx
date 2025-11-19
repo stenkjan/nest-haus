@@ -224,10 +224,10 @@ export default function WarumWirClient() {
                   backgroundColor: "#F4F4F4",
                   buttons: [
                     {
-                      text: "Konzeptcheck",
+                      text: "Konzept-Check",
                       variant: "primary",
                       size: "xs",
-                      link: "/konzeptcheck",
+                      link: "/konzept-check",
                     },
                     {
                       text: "Jetzt konfigurieren",

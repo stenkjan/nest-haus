@@ -510,7 +510,7 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
         title: "2. Einreichplan",
         subtitle: "Rechtliche Grundlagen",
         description:
-            "Sobald dein Konzeptcheck fertiggestellt ist, starten wir mit der rechtlich korrekten Planung für dein zuständiges Bauamt (Planungspaket Basis).\n\nDabei werden alle formellen Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Zufahrten sowie örtliche Bauvorschriften geprüft, abgestimmt und detailliert definiert, um eine reibungslose Genehmigung sicherzustellen.",
+            "Sobald dein Konzept-Check fertiggestellt ist, starten wir mit der rechtlich korrekten Planung für dein zuständiges Bauamt (Planungspaket Basis).\n\nDabei werden alle formellen Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Zufahrten sowie örtliche Bauvorschriften geprüft, abgestimmt und detailliert definiert, um eine reibungslose Genehmigung sicherzustellen.",
         backgroundColor: "#f4f4f4",
         iconNumber: 2,
     },
@@ -590,9 +590,9 @@ export const PLANUNGSPAKETE_CONTENT: PlanungspaketCardData[] = [
         backgroundColor: "#F4F4F4",
         grayWord: "Basis",
         extendedDescription:
-            "Nachdem dein Konzeptcheck abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
+            "Nachdem dein Konzept-Check abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
         mobileExtendedDescription:
-            "Nachdem dein Konzeptcheck abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
+            "Nachdem dein Konzept-Check abgeschlossen ist, erstellen wir die vollständige und rechtlich korrekte Planung für dein zuständiges Bauamt. Im Planungspaket Basis bereiten wir alle notwendigen Unterlagen auf, die für den offiziellen Einreichprozess erforderlich sind. Dazu gehören die präzise Darstellung des geplanten Gebäudes auf deinem Grundstück, die Prüfung der örtlichen Bauvorschriften sowie die Berücksichtigung aller relevanten Abstände, Höhen und Flächen. \n \n Darüber hinaus stimmen wir technische Aspekte wie Stromversorgung, Wasser- und Kanalanschlüsse, Heizungsanschlussmöglichkeiten und Zufahrtswege sorgfältig ab. Auch Anforderungen zur Erschließung, zu Brandschutz oder zu besonderen Auflagen der Behörde werden berücksichtigt und in die Planung integriert. \n \n Mit dem Planungspaket Basis erhältst du eine genehmigungsfähige Einreichplanung und die Sicherheit, dass wir dich während des gesamten Bauprozesses begleiten und unterstützen, von den ersten Behördenschritten bis hin zur finalen Umsetzung deines Nest Hauses.",
     },
     {
         id: 2,
@@ -659,18 +659,18 @@ export const FULL_IMAGE_CARDS_CONTENT: ContentCardData[] = [
 export const VIDEO_BACKGROUND_CARDS_CONTENT: ContentCardData[] = [
     {
         id: 1,
-        title: "Dein Konzeptcheck",
+        title: "Dein Konzept-Check",
         subtitle: "",
-        description: "Konzeptcheck und Grundstückscheck",
+        description: "Konzept-Check und Grundstückscheck",
         video: IMAGES.videos.videoCard01,
         backgroundColor: "#F4F4F4",
         aspectRatio: "2x1", // Tall portrait format
         buttons: [
             {
-                text: "Konzeptcheck",
+                text: "Konzept-Check",
                 variant: "primary",
                 size: "xs",
-                link: "/konzeptcheck",
+                link: "/konzept-check",
             },
         ],
     },
@@ -862,7 +862,7 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
         headingLevel: "h2", // Use h2 instead of default h3
         buttons: [
             {
-                text: "Konzeptcheck",
+                text: "Konzept-Check",
                 variant: "primary",
                 size: "xs",
                 link: "/konfigurator",
@@ -932,12 +932,12 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         title: "Der Auftakt",
         subtitle: "",
         description:
-            "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Konzeptcheck, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Konzeptcheck.",
+            "Dein Nest entsteht schnell, doch Individualität steht immer an erster Stelle. Mit deiner ersten Anzahlung erhältst du rechtliche Sicherheit und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen Konzept-Check, der deine Idee greifbar macht.\n\nDu entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Konzept-Check.",
         image: IMAGES.function.nestHausEntwurfVorentwurf,
         backgroundColor: "#F4F4F4",
         buttons: [
             {
-                text: "Konzeptcheck",
+                text: "Konzept-Check",
                 variant: "primary",
                 size: "xs",
                 link: "/kontakt",
@@ -983,7 +983,7 @@ export const PROCESS_CARDS_CONTENT: ContentCardData[] = [
         backgroundColor: "#F4F4F4",
         buttons: [
             {
-                text: "Konzeptcheck",
+                text: "Konzept-Check",
                 variant: "primary",
                 size: "xs",
                 link: "/kontakt",

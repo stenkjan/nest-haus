@@ -622,11 +622,11 @@ export default function SummaryPanel({
                 variant="tertiary"
                 onClick={() => {
                   // Navigate to warenkorb with ohne-nest flag
-                  window.location.href = "/warenkorb?mode=konzeptcheck";
+                  window.location.href = "/warenkorb?mode=konzept-check";
                 }}
                 className="bg-white text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] min-h-[44px] touch-manipulation whitespace-nowrap"
               >
-                Konzeptcheck
+                Konzept-Check
               </Button>
             </div>
           )}

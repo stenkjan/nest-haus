@@ -339,9 +339,9 @@ export default function NestSystemClient() {
 
               {/* Additional Button Combination */}
               <div className="flex gap-4 justify-center w-full pt-12">
-                <Link href="/konzeptcheck">
+                <Link href="/konzept-check">
                   <Button variant="primary" size="xs">
-                    Konzeptcheck
+                    Konzept-Check
                   </Button>
                 </Link>
                 <Link href="/konfigurator">

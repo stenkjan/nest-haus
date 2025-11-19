@@ -42,7 +42,7 @@ export function GrundstueckCheckForm({
   padding = "lg",
   className = "",
   excludePersonalData = false,
-  title = "Dein Konzeptcheck",
+  title = "Dein Konzept-Check",
   subtitle = "Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt",
   showHeader = true,
   useWrapper = true,
@@ -652,7 +652,7 @@ export function GrundstueckCheckForm({
                     mit dir ein individuelles{" "}
                   </span>
                   <span className="text-black font-medium">
-                    Konzeptcheck
+                    Konzept-Check
                   </span>
                   <span className="text-nest-gray"> deines Nest-Hauses.</span>
                 </p>

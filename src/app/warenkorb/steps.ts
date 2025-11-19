@@ -1,6 +1,6 @@
 export const CHECKOUT_STEPS = [
     "Übersicht",
-    "Konzeptcheck",
+    "Konzept-Check",
     "Terminvereinbarung",
     "Planungspakete",
     "Abschluss",

@@ -19,17 +19,17 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 
-// Define sections for konzeptcheck page
+// Define sections for konzept-check page
 const sections = [
   {
     id: "hero",
-    title: "Konzeptcheck & Grundstücks-Check",
+    title: "Konzept-Check & Grundstücks-Check",
     slug: "hero",
   },
   {
-    id: "konzeptcheck",
+    id: "konzept-check",
     title: "Aller Anfang ist schwer?",
-    slug: "konzeptcheck",
+    slug: "konzept-check",
   },
   {
     id: "beispiele",
@@ -55,7 +55,7 @@ const sections = [
 
 export default function KonzeptcheckClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
-  // Get konzeptcheck video cards using PRESET (recommended approach)
+  // Get konzept-check video cards using PRESET (recommended approach)
   const konzeptcheckVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
 
   return (
@@ -71,7 +71,7 @@ export default function KonzeptcheckClient() {
             <HybridBlobImage
               path={IMAGES.function.nestHausLinienplanDreier}
               mobilePath={IMAGES.function.nestHausLinienplanDreier}
-              alt="Dein Konzeptcheck"
+              alt="Dein Konzept-Check"
               className="absolute inset-0 w-full h-full object-cover"
             />
 
@@ -80,7 +80,7 @@ export default function KonzeptcheckClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Dein Konzeptcheck"
+                  title="Dein Konzept-Check"
                   subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
@@ -91,7 +91,7 @@ export default function KonzeptcheckClient() {
               <div className="flex gap-4 justify-center">
                 <Link href="/konfigurator">
                   <Button variant="primary" size="xs">
-                    Konzeptcheck
+                    Konzept-Check
                   </Button>
                 </Link>
                 <Link href="/kontakt">
@@ -105,7 +105,7 @@ export default function KonzeptcheckClient() {
         </section>
 
         {/* Grundrissplan Card - No Padding (TALL CARD) */}
-        <section id="konzeptcheck" className="w-full py-8 md:py-16 bg-white">
+        <section id="konzept-check" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
             title="Der erste Schritt"
             subtitle="Dein Nest Haus. Persönlich geplant, individuell gestaltet."
@@ -122,12 +122,12 @@ export default function KonzeptcheckClient() {
                 title: "Erster Teil",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Dein Nest entsteht schnell, doch </span><span class='text-black font-medium'>Individualität</span><span class='text-nest-gray'> steht immer </span><span class='text-black font-medium'>an erster Stelle.</span><span class='text-nest-gray'> Mit deiner </span><span class='text-black font-medium'>ersten Anzahlung</span><span class='text-nest-gray'> erhältst du </span><span class='text-black font-medium'>rechtliche Sicherheit</span><span class='text-nest-gray'> und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen </span><span class='text-black font-medium'>Konzeptcheck,</span><span class='text-nest-gray'> der deine Idee greifbar macht.</span>\n\n<span class='text-nest-gray'>Du entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die </span><span class='text-black font-medium'>rechtliche Prüfung und den Konzeptcheck.</span>",
+                  "<span class='text-nest-gray'>Dein Nest entsteht schnell, doch </span><span class='text-black font-medium'>Individualität</span><span class='text-nest-gray'> steht immer </span><span class='text-black font-medium'>an erster Stelle.</span><span class='text-nest-gray'> Mit deiner </span><span class='text-black font-medium'>ersten Anzahlung</span><span class='text-nest-gray'> erhältst du </span><span class='text-black font-medium'>rechtliche Sicherheit</span><span class='text-nest-gray'> und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen </span><span class='text-black font-medium'>Konzept-Check,</span><span class='text-nest-gray'> der deine Idee greifbar macht.</span>\n\n<span class='text-nest-gray'>Du entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die </span><span class='text-black font-medium'>rechtliche Prüfung und den Konzept-Check.</span>",
                 image: IMAGES.function.nestHausEntwurfVorentwurf,
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
-                    text: "Konzeptcheck",
+                    text: "Konzept-Check",
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",
@@ -184,7 +184,7 @@ export default function KonzeptcheckClient() {
                 imagePosition: "center" as const,
                 buttons: [
                   {
-                    text: "Konzeptcheck",
+                    text: "Konzept-Check",
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",

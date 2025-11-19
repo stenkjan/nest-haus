@@ -124,9 +124,9 @@ const Box: React.FC<BoxProps> = ({ data, layout }) => {
       </ul>
       {data.hasButton && (
         <div className="flex justify-center mt-0">
-          <Link href="/konzeptcheck">
+          <Link href="/konzept-check">
             <Button variant="primary" size="xs">
-              Konzeptcheck
+              Konzept-Check
             </Button>
           </Link>
         </div>

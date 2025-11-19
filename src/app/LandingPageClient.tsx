@@ -68,7 +68,7 @@ const sectionsContent = [
     h3: "Dein Stil. Dein Zuhause.",
     modelName: "Nest 140",
     configuration: "Fassadenplatten Weiß",
-    button1: "Konzeptcheck",
+    button1: "Konzept-Check",
     button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary-blue" as const, // Will be overridden by getSecondaryButtonVariant
   },
@@ -80,7 +80,7 @@ const sectionsContent = [
     h3: "So individuell wie du",
     modelName: "Nest 100",
     configuration: "Holzlattung Lärche Natur",
-    button1: "Konzeptcheck",
+    button1: "Konzept-Check",
     button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -92,7 +92,7 @@ const sectionsContent = [
     h3: "Dein Zuhause für Ideen",
     modelName: "Belichtungspaket Bright",
     configuration: "Innenverkleidung Fichte, Steinbelag hell",
-    button1: "Konzeptcheck",
+    button1: "Konzept-Check",
     button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -104,7 +104,7 @@ const sectionsContent = [
     h3: "Wo Effizienz auf Architektur trifft",
     modelName: "Nest 140",
     configuration: "Fassadenplatten Schwarz",
-    button1: "Konzeptcheck",
+    button1: "Konzept-Check",
     button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -116,7 +116,7 @@ const sectionsContent = [
     h3: "Individualität. Design. Flexibilität.",
     modelName: "Belichtungspaket Medium",
     configuration: "Innenverkleidung Fichte, Parkett Eiche",
-    button1: "Konzeptcheck",
+    button1: "Konzept-Check",
     button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -128,7 +128,7 @@ const sectionsContent = [
     h3: "Mit Nest bleibt kein Ort unerreichbar",
     modelName: "Nest 80",
     configuration: "Trapezblech",
-    button1: "Konzeptcheck",
+    button1: "Konzept-Check",
     button2: "Dein Nest",
     secondaryButtonVariant: "landing-secondary" as const,
   },
@@ -305,7 +305,7 @@ export default function LandingPageClient() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <Link href="/konzeptcheck">
+                      <Link href="/konzept-check">
                         <Button
                           variant="landing-primary"
                           size="xs"
@@ -354,15 +354,15 @@ export default function LandingPageClient() {
                       },
                       {
                         id: 2,
-                        title: "Konzeptcheck",
+                        title: "Konzept-Check",
                         subtitle: "Deine optimale Entscheidungsgrundlage",
                         description: "",
                         image:
                           IMAGES.function
                             .nestHausEntwurfVorentwurfCheckGrundstueckscheck,
                         backgroundColor: "#F4F4F4",
-                        primaryAction: "Konzeptcheck",
-                        primaryLink: "/konzeptcheck",
+                        primaryAction: "Konzept-Check",
+                        primaryLink: "/konzept-check",
                       },
                       {
                         id: 3,

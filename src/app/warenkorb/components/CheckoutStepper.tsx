@@ -1446,7 +1446,7 @@ export default function CheckoutStepper({
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Konzeptcheck
+                        Konzept-Check
                       </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(1)}

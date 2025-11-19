@@ -1,36 +1,36 @@
 import type { Metadata } from "next";
 import KonzeptcheckClient from "./KonzeptcheckClient";
 
-// Enhanced SEO metadata for the konzeptcheck page
+// Enhanced SEO metadata for the konzept-check page
 export const metadata: Metadata = {
-  title: "Konzeptcheck | NEST-Haus | Dein Konzeptcheck beginnt hier",
+  title: "Konzept-Check | NEST-Haus | Dein Konzept-Check beginnt hier",
   description:
-    "Dein NEST-Haus Konzeptcheck: Entdecke unsere Beratung, Planungsunterstützung und den Weg zu deinem individuellen modularen Hauskonzept.",
+    "Dein NEST-Haus Konzept-Check: Entdecke unsere Beratung, Planungsunterstützung und den Weg zu deinem individuellen modularen Hauskonzept.",
   keywords:
-    "konzeptcheck, nest haus konzeptcheck, modulhaus planung, hauskonzept, nest haus design, professioneller konzeptcheck, modulhaus konzept",
+    "konzept-check, nest haus konzept-check, modulhaus planung, hauskonzept, nest haus design, professioneller konzept-check, modulhaus konzept",
   alternates: {
-    canonical: "https://nest-haus.at/konzeptcheck",
+    canonical: "https://nest-haus.at/konzept-check",
   },
   openGraph: {
-    title: "Konzeptcheck | NEST-Haus | Dein Konzeptcheck beginnt hier",
+    title: "Konzept-Check | NEST-Haus | Dein Konzept-Check beginnt hier",
     description:
-      "Dein NEST-Haus Konzeptcheck: Entdecke unsere Beratung und Planungsunterstützung.",
-    url: "https://nest-haus.at/konzeptcheck",
+      "Dein NEST-Haus Konzept-Check: Entdecke unsere Beratung und Planungsunterstützung.",
+    url: "https://nest-haus.at/konzept-check",
     images: [
       {
-        url: "/images/konzeptcheck-hero.jpg",
+        url: "/images/konzept-check-hero.jpg",
         width: 1200,
         height: 630,
-        alt: "NEST-Haus Konzeptcheck - Beratung und Planungsunterstützung",
+        alt: "NEST-Haus Konzept-Check - Beratung und Planungsunterstützung",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Konzeptcheck | NEST-Haus | Dein Konzeptcheck beginnt hier",
+    title: "Konzept-Check | NEST-Haus | Dein Konzept-Check beginnt hier",
     description:
-      "Dein NEST-Haus Konzeptcheck: Entdecke unsere Beratung und Planungsunterstützung.",
-    images: ["/images/konzeptcheck-twitter.jpg"],
+      "Dein NEST-Haus Konzept-Check: Entdecke unsere Beratung und Planungsunterstützung.",
+    images: ["/images/konzept-check-twitter.jpg"],
   },
   robots: {
     index: true,
@@ -45,17 +45,17 @@ export const metadata: Metadata = {
   },
 };
 
-// Structured Data for the Konzeptcheck page
+// Structured Data for the Konzept-Check page
 const konzeptcheckSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Konzeptcheck - NEST-Haus",
+  name: "Konzept-Check - NEST-Haus",
   description:
-    "Dein NEST-Haus Konzeptcheck - Beratung, Planungsunterstützung und professionelle Begleitung für dein Hauskonzept",
-  url: "https://nest-haus.at/konzeptcheck",
+    "Dein NEST-Haus Konzept-Check - Beratung, Planungsunterstützung und professionelle Begleitung für dein Hauskonzept",
+  url: "https://nest-haus.at/konzept-check",
   mainEntity: {
     "@type": "Service",
-    name: "NEST-Haus Konzeptcheck und Beratung",
+    name: "NEST-Haus Konzept-Check und Beratung",
     description:
       "Professionelle Beratung und Unterstützung für dein individuelles Hauskonzept",
     provider: {
@@ -69,9 +69,9 @@ const konzeptcheckSchema = {
 const designServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: "NEST-Haus Konzeptcheck und Planungsberatung",
+  name: "NEST-Haus Konzept-Check und Planungsberatung",
   description:
-    "Professionelle Konzeptcheck- und Planungsberatung für modulare Häuser",
+    "Professionelle Konzept-Check- und Planungsberatung für modulare Häuser",
   provider: {
     "@type": "Organization",
     name: "NEST-Haus",
@@ -84,7 +84,7 @@ const designServiceSchema = {
 };
 
 // Server Component - Can handle SEO, metadata, and structured data
-export default function KonzeptcheckPage() {
+export default function KonzeptCheckPage() {
   return (
     <>
       <script
