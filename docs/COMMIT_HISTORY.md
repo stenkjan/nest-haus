@@ -4,6 +4,42 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [705fe6ccdae65eabbe45f8bb5c20146a04ee8898] - Wed Nov 19 10:04:58 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: update references from "Entwurf" to "Konzeptcheck"  - Replaced all instances of "Entwurf" with "Konzeptcheck" across various components and documentation to align with the new terminology. - Updated navigation links, button texts, and section titles to ensure consistency in user experience. - Removed the "Entwurf" page and its related components to streamline the application structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/LandingPageClient.tsx
+- src/app/api/test/db/route.ts
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/entwurf/page.tsx
+- src/app/konfigurator/components/CartFooter.tsx
+- src/app/konfigurator/components/SummaryPanel.tsx
+- src/app/kontakt/KontaktClient.tsx
+- src/app/konzeptcheck/KonzeptcheckClient.tsx
+- src/app/konzeptcheck/page.tsx
+- src/app/nest-system/NestSystemClient.tsx
+- src/app/warenkorb/WarenkorbClient.tsx
+- src/app/warenkorb/components/CheckoutStepper.tsx
+- src/app/warenkorb/steps.ts
+- src/app/warum-wir/WarumWirClient.tsx
+- src/components/Footer.tsx
+- src/components/layout/Navbar.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+- src/components/sections/ModulhausVergleichSection.tsx
+
+
+#### 📚 Documentation Changes
+- docs/KONFIGURATOR_PRICING_QUICK_REFERENCE.md
+- docs/TESTING_EXECUTION_SUMMARY.md
+- docs/TESTING_SUMMARY_2024-11-15.md
+
+
+---
+
 ## [8feeffa37b93f0ddc3722d4879963273608b1f8c] - Tue Nov 18 15:40:15 2025 +0100
 
 **Author**: stenkjan
