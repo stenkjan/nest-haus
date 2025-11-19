@@ -64,7 +64,6 @@ export async function GET(_request: NextRequest) {
     const previous = countBySource(previousSessions);
 
     const totalCurrent = currentSessions.length;
-    const totalPrevious = previousSessions.length;
 
     // Calculate metrics with change indicators
     const getMetrics = (source: string) => {

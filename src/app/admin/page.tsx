@@ -131,26 +131,25 @@ export default async function AdminDashboard() {
           </Link>
 
           <Link
-            href="/admin/conversion"
+            href="/admin/usage-performance"
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
           >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  Conversion Analysis
+                  Usage & Performance
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Track conversion rates, funnel performance, and identify
-                  opportunities to increase sales.
+                  Combined monitoring of service capacity limits AND system performance with real-time metrics.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
-                  • Funnel analysis
+                  • NeonDB, Redis, Resend tracking
                   <br />
-                  • Conversion rates
-                  <br />• Revenue tracking
+                  • API performance metrics
+                  <br />• Automatic alerts at 70%/90%
                 </div>
               </div>
-              <div className="text-4xl">📈</div>
+              <div className="text-4xl">📊</div>
             </div>
           </Link>
 
@@ -199,30 +198,6 @@ export default async function AdminDashboard() {
                 </div>
               </div>
               <div className="text-4xl">📋</div>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/usage"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  Usage Monitoring
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  Real-time monitoring of service capacity limits with visual
-                  gauges and automatic alerts for all infrastructure components.
-                </p>
-                <div className="mt-4 text-sm text-gray-500">
-                  • Service capacity gauges
-                  <br />
-                  • Automatic alerts at 70%/90%
-                  <br />• Real-time metrics
-                </div>
-              </div>
-              <div className="text-4xl">📊</div>
             </div>
           </Link>
 

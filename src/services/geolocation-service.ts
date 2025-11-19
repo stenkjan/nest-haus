@@ -177,7 +177,7 @@ export function parseReferrer(referrer: string | null): TrafficSource {
       medium: 'referral',
       domain
     };
-  } catch (error) {
+  } catch {
     // Invalid URL, treat as direct
     return { source: 'direct' };
   }

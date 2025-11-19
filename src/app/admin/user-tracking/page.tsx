@@ -22,6 +22,9 @@ import KeyStatsRow from "./components/KeyStatsRow";
 import SessionsTimelineChart from "./components/SessionsTimelineChart";
 import TrafficSourcesWidget from "./components/TrafficSourcesWidget";
 import GeoLocationMap from "./components/GeoLocationMap";
+// Conversion tracking components
+import ConversionFunnelWidget from "./components/ConversionFunnelWidget";
+import KonzeptcheckDashboard from "./components/KonzeptcheckDashboard";
 
 // Types matching the API response
 interface UserTrackingData {
@@ -445,6 +448,12 @@ async function UserTrackingDashboard() {
       {/* Geographic Location Map */}
       <div className="mb-8">
         <GeoLocationMap />
+      </div>
+
+      {/* Conversion Tracking */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <ConversionFunnelWidget />
+        <KonzeptcheckDashboard />
       </div>
 
       {/* ===== EXISTING DASHBOARD COMPONENTS ===== */}

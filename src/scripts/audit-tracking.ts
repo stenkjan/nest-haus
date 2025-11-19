@@ -7,9 +7,9 @@
  * Generates an HTML report with findings
  */
 
-const fs = require('fs');
-const path = require('path');
-const { glob } = require('glob');
+import fs from 'fs';
+import path from 'path';
+import { glob } from 'glob';
 
 interface Finding {
   file: string;
@@ -288,11 +288,13 @@ async function main() {
   console.log(`🌐 Open the report in your browser to view details.\n`);
 }
 
-// Run the script
-main().catch(error => {
-  console.error('❌ Audit failed:', error);
-  process.exit(1);
-});
+// Only run if executed directly (not imported)
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(error => {
+    console.error('❌ Audit failed:', error);
+    process.exit(1);
+  });
+}
 
 export {};
 
