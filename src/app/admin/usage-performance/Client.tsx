@@ -205,22 +205,10 @@ export default function UsagePerformancePage() {
     return () => clearInterval(interval);
   }, []);
 
-  const getStatusColor = (percentage: number): string => {
-    if (percentage >= 90) return "text-red-600";
-    if (percentage >= 70) return "text-yellow-600";
-    return "text-green-600";
-  };
-
   const getStatusEmoji = (percentage: number): string => {
     if (percentage >= 90) return "🔴";
     if (percentage >= 70) return "🟡";
     return "🟢";
-  };
-
-  const getProgressBarColor = (percentage: number): string => {
-    if (percentage >= 90) return "bg-red-500";
-    if (percentage >= 70) return "bg-yellow-500";
-    return "bg-green-500";
   };
 
   const getHealthStatus = () => {
