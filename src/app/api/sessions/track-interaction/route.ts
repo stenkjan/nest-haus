@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     // Get IP address and geolocation data
     const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     const referrer = request.headers.get('referer');
-    
+
     // Fetch geolocation data (with caching)
     const locationData = await getLocationFromIP(ipAddress);
     const trafficData = parseReferrer(referrer);
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     // 1. Ensure session exists using upsert pattern (prevents foreign key constraint violations)
     await prisma.userSession.upsert({
       where: { sessionId },
-      update: { 
+      update: {
         lastActivity: new Date(),
         // Update location data if not already set
         ...(locationData && {
