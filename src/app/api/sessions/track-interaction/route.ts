@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
         ...(trafficData && {
           trafficSource: trafficData.source,
           trafficMedium: trafficData.medium,
-          referralDomain: trafficData.referralDomain,
+          referralDomain: trafficData.domain,
         }),
       },
       create: {
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
         ...(trafficData && {
           trafficSource: trafficData.source,
           trafficMedium: trafficData.medium,
-          referralDomain: trafficData.referralDomain,
+          referralDomain: trafficData.domain,
         }),
         status: 'ACTIVE'
       }

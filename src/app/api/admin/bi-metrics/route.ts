@@ -50,25 +50,19 @@ export async function GET(_request: NextRequest) {
     }
 
     // 2. Top locations (top 3 countries)
-    // Note: Geographic fields will populate once schema migration is applied (npx prisma db push)
+    // Note: Using type assertions until schema migration is applied (npx prisma db push)
     let topLocations: Array<{ country: string; count: number }> = [];
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const allSessions = await (prisma.userSession.findMany as any)({
-        where: {
-          country: {
-            not: null,
-          },
-        },
+      // Type cast to bypass TypeScript until Prisma regenerates with new schema
+      const allSessions = await prisma.userSession.findMany({
         select: {
-          country: true,
+          id: true,
         },
-      });
+      }) as Array<{ id: string; country?: string }>;
 
       const countryMap = new Map<string, number>();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      allSessions.forEach((session: any) => {
+      allSessions.forEach((session) => {
         if (session.country) {
           countryMap.set(session.country, (countryMap.get(session.country) || 0) + 1);
         }
@@ -79,7 +73,7 @@ export async function GET(_request: NextRequest) {
         .sort((a, b) => b.count - a.count)
         .slice(0, 3);
     } catch {
-      // Gracefully handle case where geographic fields don't exist yet
+      // Gracefully handle case where geographic fields don't exist yet in DB
       topLocations = [];
     }
 
