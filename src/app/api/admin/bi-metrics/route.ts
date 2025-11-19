@@ -96,19 +96,19 @@ export async function GET(_request: NextRequest) {
     // 4. Most selected configuration
     const selectionEvents = await prisma.selectionEvent.findMany({
       where: {
-        configValue: {
+        selection: {
           not: null,
         },
       },
       select: {
-        configKey: true,
-        configValue: true,
+        category: true,
+        selection: true,
       },
     });
 
     const configMap = new Map<string, number>();
     selectionEvents.forEach((event) => {
-      const key = `${event.configKey}:${event.configValue}`;
+      const key = `${event.category}:${event.selection}`;
       configMap.set(key, (configMap.get(key) || 0) + 1);
     });
 
