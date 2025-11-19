@@ -122,6 +122,9 @@ export async function GET(_request: NextRequest) {
         category: true,
         selection: true,
       },
+      orderBy: {
+        timestamp: 'desc',
+      },
       take: 1000, // Limit to recent 1000 selections for performance
     });
 
