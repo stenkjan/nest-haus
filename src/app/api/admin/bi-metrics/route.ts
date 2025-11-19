@@ -50,14 +50,7 @@ export async function GET(_request: NextRequest) {
     }
 
     // 2. Top locations (top 3 countries)
-    // Note: country field may not be populated yet in all sessions
-    const allSessions = await prisma.userSession.findMany({
-      select: {
-        id: true,
-      },
-    });
-
-    // For now, return empty locations until geographic data is fully populated
+    // Note: Geographic data not yet populated - will be enabled after schema migration
     const topLocations: Array<{ country: string; count: number }> = [];
 
     // 3. Most visited pages (top 3)
