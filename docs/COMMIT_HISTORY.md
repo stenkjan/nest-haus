@@ -4,6 +4,40 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [da2ab8b516f5b6b1b629d4d3aa571fbe1344fac0] - Wed Nov 19 11:34:50 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: enhance user tracking and analytics capabilities  - Added new fields to the UserSession model for geographic and traffic source data to support analytics dashboard features. - Introduced new Wix-style dashboard components: KeyStatsRow, SessionsTimelineChart, TrafficSourcesWidget, and GeoLocationMap for improved data visualization. - Removed performance metric tracking from interaction tracking to reduce unnecessary database writes, focusing on critical operations only. - Implemented Redis-first analytics pattern for storing and retrieving hot analytics data, optimizing performance and reducing load on PostgreSQL. - Increased debounce delay for session sync to minimize database writes as part of optimization efforts.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/GeoLocationMap.tsx
+- src/app/admin/user-tracking/components/KeyStatsRow.tsx
+- src/app/admin/user-tracking/components/SessionsTimelineChart.tsx
+- src/app/admin/user-tracking/components/TrafficSourcesWidget.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/analytics/conversions/route.ts
+- src/app/api/admin/analytics/geo-locations/route.ts
+- src/app/api/admin/analytics/sessions-timeline/route.ts
+- src/app/api/admin/analytics/traffic-sources/route.ts
+- src/app/api/analytics/flush/route.ts
+- src/app/api/sessions/track-batch/route.ts
+- src/app/api/sessions/track-interaction/route.ts
+
+
+#### ⚙️ Backend Changes
+- prisma/schema.prisma
+
+
+#### 📚 Documentation Changes
+- docs/BUTTON_TRACKING_GUIDE.md
+- docs/IMPLEMENTATION_SUMMARY.md
+- docs/final_ADMIN_DASHBOARD_IMPLEMENTATION_COMPLETE.md
+
+
+---
+
 ## [6e2f0de1f0731f037e85be79791add76f3b447ff] - Wed Nov 19 10:33:31 2025 +0100
 
 **Author**: stenkjan
