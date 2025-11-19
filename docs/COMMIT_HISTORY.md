@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [b5a5c515fac36b91de7373645ee82d6e6d1817ea] - Wed Nov 19 13:56:08 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove performance metrics page and update admin dashboard  - Deleted the performance metrics page and its associated client component to streamline the admin interface. - Updated the admin dashboard to replace the performance metrics link with a project management link, reflecting new functionality. - Adjusted the layout and content of the project management section to better represent its purpose and features. - Deprecated the alpha test results section, indicating its transition to a new focus.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/page.tsx
+- src/app/admin/performance/Client.tsx
+- src/app/admin/performance/page.tsx
+- src/app/api/admin/bi-metrics/route.ts
+- src/app/api/sessions/track-interaction/route.ts
+
+
+---
+
 ## [a666348479e8e83d9ed1580cec5fa9caca547ed8] - Wed Nov 19 13:42:38 2025 +0100
 
 **Author**: stenkjan
