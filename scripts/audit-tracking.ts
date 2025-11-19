@@ -22,11 +22,13 @@ interface Finding {
 const findings: Finding[] = [];
 
 // Patterns to scan for
+// Note: Removed global flag 'g' to prevent lastIndex state issues with .test()
+// Since we test each line individually, we don't need global matching
 const patterns = {
-  buttonWithoutTracking: /<button(?![^>]*data-tracking-id)[^>]*>/gi,
-  linkWithoutTracking: /<Link(?![^>]*data-tracking-id)[^>]*href/gi,
-  onClickWithoutId: /onClick={[^}]*}(?![^>]*data-tracking-id)/gi,
-  formWithoutTracking: /<form(?![^>]*data-tracking-id)[^>]*>/gi
+  buttonWithoutTracking: /<button(?![^>]*data-tracking-id)[^>]*>/i,
+  linkWithoutTracking: /<Link(?![^>]*data-tracking-id)[^>]*href/i,
+  onClickWithoutId: /onClick={[^}]*}(?![^>]*data-tracking-id)/i,
+  formWithoutTracking: /<form(?![^>]*data-tracking-id)[^>]*>/i
 };
 
 /**
