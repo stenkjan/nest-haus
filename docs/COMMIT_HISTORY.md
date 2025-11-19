@@ -4,6 +4,34 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0391c0c930d1a451915189a26cb6fd85ba3722ad] - Wed Nov 19 12:41:36 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: reorganize admin dashboard and enhance security monitoring  - Merged security monitoring into the Usage & Performance page, removing the redundant security route. - Created a new BI Metrics Dashboard for quick insights on user sessions, top locations, and most visited pages. - Optimized navigation order for admin cards, placing User Tracking first for better accessibility. - Renamed AllConfigurations component to AllUsers, enhancing user-centric data presentation. - Implemented collapsible sections for analytics components to improve dashboard layout and usability. - Updated documentation to reflect the latest changes and improvements in the admin dashboard structure.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/components/BIDashboard.tsx
+- src/app/admin/page.tsx
+- src/app/admin/security/Client.tsx
+- src/app/admin/security/page.tsx
+- src/app/admin/usage-performance/Client.tsx
+- src/app/admin/user-tracking/components/AllUsers.tsx
+- src/app/admin/user-tracking/components/ClickAnalytics.tsx
+- src/app/admin/user-tracking/components/CollapsibleSection.tsx
+- src/app/admin/user-tracking/components/ConfigurationSelectionAnalytics.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/bi-metrics/route.ts
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/final_ADMIN_DASHBOARD_IMPLEMENTATION_COMPLETE.md
+
+
+---
+
 ## [004234a972e4a4dd69301efbe66620a4f2174410] - Wed Nov 19 11:53:43 2025 +0100
 
 **Author**: stenkjan
