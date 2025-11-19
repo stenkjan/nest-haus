@@ -23,7 +23,8 @@
     "test:session": "vitest run src/test/integration/session-tracking.test.ts",
     "test:payment": "vitest run src/test/integration/stripe-payment.test.ts",
     "typecheck": "tsc --noEmit",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "reset-analytics": "npx tsx scripts/reset-analytics-data.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

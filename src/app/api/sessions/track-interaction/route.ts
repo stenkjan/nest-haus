@@ -3,12 +3,33 @@
  * 
  * Week 1 Implementation: Real-time user interaction tracking
  * Captures detailed user behavior for analytics and optimization
+ * 
+ * Week 2: Added user deduplication by IP+UserAgent to track unique users
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { SessionManager } from '@/lib/redis';
 import { getLocationFromIP, parseReferrer } from '@/services/geolocation-service';
+import crypto from 'crypto';
+
+/**
+ * Generate userIdentifier hash from IP + UserAgent
+ * This allows us to track unique users across multiple sessions
+ */
+function generateUserIdentifier(ipAddress: string, userAgent: string): string {
+  const combined = `${ipAddress}|${userAgent}`;
+  return crypto.createHash('sha256').update(combined).digest('hex');
+}
+
+/**
+ * Check if two dates are on the same day
+ */
+function isSameDay(date1: Date, date2: Date): boolean {
+  return date1.getFullYear() === date2.getFullYear() &&
+         date1.getMonth() === date2.getMonth() &&
+         date1.getDate() === date2.getDate();
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,51 +64,98 @@ export async function POST(request: NextRequest) {
     // Get IP address and geolocation data
     const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     const referrer = request.headers.get('referer');
+    const userAgent = request.headers.get('user-agent') || 'unknown';
 
     // Fetch geolocation data (with caching)
     const locationData = await getLocationFromIP(ipAddress);
     const trafficData = parseReferrer(referrer);
+    
+    // Generate userIdentifier for deduplication
+    const userIdentifier = generateUserIdentifier(ipAddress, userAgent);
 
-    // 1. Ensure session exists using upsert pattern (prevents foreign key constraint violations)
-    await prisma.userSession.upsert({
-      where: { sessionId },
-      update: {
-        lastActivity: new Date(),
-        // Update location data if not already set
-        ...(locationData && {
-          country: locationData.country,
-          city: locationData.city,
-          latitude: locationData.latitude,
-          longitude: locationData.longitude,
-        }),
-        ...(trafficData && {
-          trafficSource: trafficData.source,
-          trafficMedium: trafficData.medium,
-          referralDomain: trafficData.domain,
-        }),
+    // 1. Check if we have an existing session for this user TODAY
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const existingSessionToday = await prisma.userSession.findFirst({
+      where: {
+        userIdentifier,
+        startTime: {
+          gte: today
+        }
       },
-      create: {
-        sessionId,
-        ipAddress,
-        userAgent: request.headers.get('user-agent') || 'unknown',
-        referrer,
-        // Add geolocation data on creation
-        ...(locationData && {
-          country: locationData.country,
-          city: locationData.city,
-          latitude: locationData.latitude,
-          longitude: locationData.longitude,
-        }),
-        ...(trafficData && {
-          trafficSource: trafficData.source,
-          trafficMedium: trafficData.medium,
-          referralDomain: trafficData.domain,
-        }),
-        status: 'ACTIVE'
+      orderBy: {
+        lastVisitDate: 'desc'
       }
     });
 
-    // 2. Store interaction in PostgreSQL (primary storage)
+    // 2. Ensure session exists using upsert pattern with deduplication logic
+    if (existingSessionToday && isSameDay(existingSessionToday.lastVisitDate, new Date())) {
+      // Same user, same day - increment visit count
+      await prisma.userSession.update({
+        where: { id: existingSessionToday.id },
+        data: {
+          lastActivity: new Date(),
+          lastVisitDate: new Date(),
+          visitCount: {
+            increment: 1
+          },
+          // Update location data if not already set
+          ...(locationData && !existingSessionToday.country && {
+            country: locationData.country,
+            city: locationData.city,
+            latitude: locationData.latitude,
+            longitude: locationData.longitude,
+          }),
+        }
+      });
+    } else {
+      // New session (either new user or same user on different day)
+      await prisma.userSession.upsert({
+        where: { sessionId },
+        update: {
+          lastActivity: new Date(),
+          lastVisitDate: new Date(),
+          userIdentifier,
+          // Update location data if not already set
+          ...(locationData && {
+            country: locationData.country,
+            city: locationData.city,
+            latitude: locationData.latitude,
+            longitude: locationData.longitude,
+          }),
+          ...(trafficData && {
+            trafficSource: trafficData.source,
+            trafficMedium: trafficData.medium,
+            referralDomain: trafficData.domain,
+          }),
+        },
+        create: {
+          sessionId,
+          ipAddress,
+          userAgent,
+          referrer,
+          userIdentifier,
+          visitCount: 1,
+          lastVisitDate: new Date(),
+          // Add geolocation data on creation
+          ...(locationData && {
+            country: locationData.country,
+            city: locationData.city,
+            latitude: locationData.latitude,
+            longitude: locationData.longitude,
+          }),
+          ...(trafficData && {
+            trafficSource: trafficData.source,
+            trafficMedium: trafficData.medium,
+            referralDomain: trafficData.domain,
+          }),
+          status: 'ACTIVE'
+        }
+      });
+    }
+
+    // 3. Store interaction in PostgreSQL (primary storage)
     const interactionEvent = await prisma.interactionEvent.create({
       data: {
         sessionId,
@@ -108,7 +176,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // 3. Update Redis session cache (real-time data)
+    // 4. Update Redis session cache (real-time data)
     const timeSpentNumber: number = timeSpent ? Number(timeSpent) : 0;
     await SessionManager.trackClick(sessionId, {
       timestamp: Date.now(),

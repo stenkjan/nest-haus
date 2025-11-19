@@ -31,11 +31,14 @@ interface ConfigurationWithDetails {
     userLocation: {
         country: string | null;
         city: string | null;
+        ipAddress: string | null;
     };
     userActivity: {
         timeSpent: number; // in seconds
         clickCount: number;
     };
+    visitCount: number;
+    userIdentifier: string | null;
 
     // Simple configuration strings
     configuration: {
@@ -609,11 +612,14 @@ export async function GET() {
                 userLocation: {
                     country: session.country,
                     city: session.city,
+                    ipAddress: session.ipAddress,
                 },
                 userActivity: {
                     timeSpent: duration,
                     clickCount: session.interactionEvents.filter(e => e.eventType === 'click').length,
                 },
+                visitCount: session.visitCount,
+                userIdentifier: session.userIdentifier,
 
                 configuration: simple,
                 detailedConfiguration: detailed,

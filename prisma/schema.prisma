@@ -45,6 +45,11 @@ model UserSession {
   hasAppointmentRequest Boolean        @default(false)
   appointmentRequestedAt DateTime?
   
+  // User deduplication & visit tracking
+  visitCount        Int               @default(1)      // How many times this user accessed the site
+  lastVisitDate     DateTime          @default(now())  // Last visit timestamp
+  userIdentifier    String?                            // Hash of IP+UserAgent for deduplication
+  
   selectionEvents   SelectionEvent[]
   interactionEvents InteractionEvent[]
 

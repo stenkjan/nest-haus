@@ -74,28 +74,27 @@ interface AdminAnalytics {
 class IsolatedAnalyticsService {
 
   /**
-   * Get current active sessions from Redis
+   * Get current active sessions from Redis (unique users today)
    */
   static async getActiveSessions(): Promise<number> {
     try {
-      // Try Redis first, fallback to database estimate
-      const redis = (await import('@/lib/redis')).default;
-      const activeCount = await redis.scard('active_sessions');
-
-      if (activeCount > 0) {
-        return activeCount;
-      }
-
-      // Fallback: estimate from recent sessions (last 30 minutes)
-      const recentSessionsCount = await prisma.userSession.count({
+      // Count unique users active today (by userIdentifier)
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const uniqueUsersToday = await prisma.userSession.groupBy({
+        by: ['userIdentifier'],
         where: {
           startTime: {
-            gte: new Date(Date.now() - 30 * 60 * 1000)
+            gte: today
+          },
+          userIdentifier: {
+            not: null
           }
         }
       });
 
-      return recentSessionsCount;
+      return uniqueUsersToday.length;
     } catch (error) {
       console.error('❌ Failed to get active sessions:', error);
       return 0;

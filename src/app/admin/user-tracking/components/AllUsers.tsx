@@ -23,11 +23,14 @@ interface ConfigurationWithDetails {
   userLocation: {
     country: string | null;
     city: string | null;
+    ipAddress: string | null;
   };
   userActivity: {
     timeSpent: number; // in seconds
     clickCount: number;
   };
+  visitCount: number;
+  userIdentifier: string | null;
 
   configuration: {
     nestType: string;
@@ -192,17 +195,27 @@ function UserCard({
             <span className="text-2xl">
               {getCountryFlag(config.userLocation.country)}
             </span>
-            <div>
+            <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-900">
                 {config.userLocation.city || "Unknown"}, {config.userLocation.country || "Unknown"}
               </h3>
+              <p className="text-xs text-gray-500 font-mono">
+                {config.userLocation.ipAddress || "Unknown IP"}
+              </p>
               <p className="text-xs text-gray-500">
                 {new Date(config.startTime).toLocaleDateString("de-DE")} •{" "}
                 {new Date(config.startTime).toLocaleTimeString("de-DE")}
               </p>
             </div>
           </div>
-          <StatusBadge status={config.status} />
+          <div className="flex flex-col items-end gap-1">
+            <StatusBadge status={config.status} />
+            {config.visitCount > 1 && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
+                {config.visitCount} visits
+              </span>
+            )}
+          </div>
         </div>
 
         {/* User Activity Stats */}

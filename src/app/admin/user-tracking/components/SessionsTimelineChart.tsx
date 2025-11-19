@@ -12,26 +12,34 @@ import { useEffect, useState } from 'react';
 interface TimelineData {
   dates: string[];
   sessions: number[];
+  uniqueUsers: number[];
   comparison: {
     previous: number[];
+    previousUniqueUsers: number[];
     percentChange: number;
     currentTotal: number;
     previousTotal: number;
+    currentUniqueUsersTotal: number;
+    previousUniqueUsersTotal: number;
   };
 }
+
+type Period = 'today' | '7d' | '30d' | 'all';
 
 export default function SessionsTimelineChart() {
   const [data, setData] = useState<TimelineData | null>(null);
   const [loading, setLoading] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [period, setPeriod] = useState<Period>('30d');
 
   useEffect(() => {
     fetchTimelineData();
-  }, []);
+  }, [period]);
 
   async function fetchTimelineData() {
     try {
-      const response = await fetch('/api/admin/analytics/sessions-timeline');
+      setLoading(true);
+      const response = await fetch(`/api/admin/analytics/sessions-timeline?period=${period}`);
       const result = await response.json();
 
       if (result.success) {
@@ -61,24 +69,33 @@ export default function SessionsTimelineChart() {
     );
   }
 
+  // Calculate max value with 10% padding for better visualization
   const maxValue = Math.max(...data.sessions, ...data.comparison.previous);
+  const maxValueWithPadding = Math.ceil(maxValue * 1.1);
+  
   const chartHeight = 250;
   const chartWidth = 800;
-  const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+  const padding = { top: 20, right: 20, bottom: 40, left: 60 };
   const graphWidth = chartWidth - padding.left - padding.right;
   const graphHeight = chartHeight - padding.top - padding.bottom;
 
   // Calculate points for current period
   const currentPoints = data.sessions.map((value, index) => {
-    const x = padding.left + (index / (data.sessions.length - 1)) * graphWidth;
-    const y = padding.top + graphHeight - (value / maxValue) * graphHeight;
-    return { x, y, value, date: data.dates[index] };
+    const x = padding.left + (index / Math.max(data.sessions.length - 1, 1)) * graphWidth;
+    const y = padding.top + graphHeight - (value / maxValueWithPadding) * graphHeight;
+    return { 
+      x, 
+      y, 
+      value, 
+      uniqueUsers: data.uniqueUsers[index],
+      date: data.dates[index] 
+    };
   });
 
   // Calculate points for previous period
   const previousPoints = data.comparison.previous.map((value, index) => {
-    const x = padding.left + (index / (data.comparison.previous.length - 1)) * graphWidth;
-    const y = padding.top + graphHeight - (value / maxValue) * graphHeight;
+    const x = padding.left + (index / Math.max(data.comparison.previous.length - 1, 1)) * graphWidth;
+    const y = padding.top + graphHeight - (value / maxValueWithPadding) * graphHeight;
     return { x, y, value };
   });
 
@@ -97,6 +114,10 @@ export default function SessionsTimelineChart() {
     : data.comparison.percentChange < 0 
     ? 'text-red-600' 
     : 'text-gray-600';
+  
+  // Generate Y-axis grid lines (10 steps for clean display)
+  const yAxisSteps = 10;
+  const yAxisValues = Array.from({ length: yAxisSteps + 1 }, (_, i) => i / yAxisSteps);
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
@@ -105,17 +126,37 @@ export default function SessionsTimelineChart() {
           <h3 className="text-lg font-semibold text-gray-900 mb-1">
             Sessions Over Time
           </h3>
-          <p className="text-sm text-gray-500">Last 30 days</p>
+          <p className="text-sm text-gray-500">
+            {period === 'today' ? 'Today' : period === '7d' ? 'Last 7 days' : period === '30d' ? 'Last 30 days' : 'All time'}
+          </p>
         </div>
         
-        <div className="text-right">
-          <p className="text-2xl font-bold text-gray-900">
-            {data.comparison.currentTotal.toLocaleString()}
-          </p>
-          <p className={`text-sm font-medium ${trendColor}`}>
-            {data.comparison.percentChange > 0 ? '↑' : data.comparison.percentChange < 0 ? '↓' : '→'}
-            {' '}{Math.abs(data.comparison.percentChange)}% vs previous period
-          </p>
+        <div className="flex items-center gap-4">
+          {/* Period Filter Dropdown */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-600">Period:</label>
+            <select
+              value={period}
+              onChange={(e) => setPeriod(e.target.value as Period)}
+              className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="today">Today</option>
+              <option value="7d">Last 7 Days</option>
+              <option value="30d">Last 30 Days</option>
+              <option value="all">All Time</option>
+            </select>
+          </div>
+          
+          {/* Stats Display */}
+          <div className="text-right">
+            <p className="text-2xl font-bold text-gray-900">
+              {data.comparison.currentTotal.toLocaleString()}
+            </p>
+            <p className={`text-sm font-medium ${trendColor}`}>
+              {data.comparison.percentChange > 0 ? '↑' : data.comparison.percentChange < 0 ? '↓' : '→'}
+              {' '}{Math.abs(data.comparison.percentChange)}% vs previous period
+            </p>
+          </div>
         </div>
       </div>
 
@@ -138,9 +179,10 @@ export default function SessionsTimelineChart() {
           height={chartHeight}
           className="mx-auto"
         >
-          {/* Grid lines */}
-          {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
+          {/* Y-axis grid lines and labels (10 steps) */}
+          {yAxisValues.map((ratio) => {
             const y = padding.top + graphHeight - ratio * graphHeight;
+            const value = Math.round(maxValueWithPadding * ratio);
             return (
               <g key={ratio}>
                 <line
@@ -158,11 +200,23 @@ export default function SessionsTimelineChart() {
                   fontSize="11"
                   fill="#6b7280"
                 >
-                  {Math.round(maxValue * ratio)}
+                  {value}
                 </text>
               </g>
             );
           })}
+
+          {/* Y-axis label */}
+          <text
+            x={padding.left - 45}
+            y={padding.top + graphHeight / 2}
+            textAnchor="middle"
+            fontSize="11"
+            fill="#6b7280"
+            transform={`rotate(-90, ${padding.left - 45}, ${padding.top + graphHeight / 2})`}
+          >
+            Sessions
+          </text>
 
           {/* Previous period line (dashed) */}
           <path
@@ -185,57 +239,23 @@ export default function SessionsTimelineChart() {
 
           {/* Interactive points */}
           {currentPoints.map((point, index) => (
-            <g key={index}>
-              <circle
-                cx={point.x}
-                cy={point.y}
-                r={hoveredIndex === index ? 6 : 4}
-                fill="#2563eb"
-                className="cursor-pointer transition-all"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              />
-              
-              {/* Tooltip on hover */}
-              {hoveredIndex === index && (
-                <g>
-                  <rect
-                    x={point.x - 40}
-                    y={point.y - 50}
-                    width="80"
-                    height="40"
-                    rx="4"
-                    fill="rgba(0, 0, 0, 0.8)"
-                  />
-                  <text
-                    x={point.x}
-                    y={point.y - 32}
-                    textAnchor="middle"
-                    fontSize="11"
-                    fill="white"
-                    fontWeight="bold"
-                  >
-                    {point.value} sessions
-                  </text>
-                  <text
-                    x={point.x}
-                    y={point.y - 18}
-                    textAnchor="middle"
-                    fontSize="10"
-                    fill="#d1d5db"
-                  >
-                    {new Date(point.date).toLocaleDateString('en-US', { 
-                      month: 'short', 
-                      day: 'numeric' 
-                    })}
-                  </text>
-                </g>
-              )}
-            </g>
+            <circle
+              key={index}
+              cx={point.x}
+              cy={point.y}
+              r={hoveredIndex === index ? 6 : 4}
+              fill="#2563eb"
+              className="cursor-pointer transition-all"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            />
           ))}
 
-          {/* X-axis date labels (show every 5 days) */}
-          {currentPoints.filter((_, i) => i % 5 === 0 || i === currentPoints.length - 1).map((point, index) => (
+          {/* X-axis date labels (show every N days depending on period length) */}
+          {currentPoints.filter((_, i) => {
+            const step = Math.max(1, Math.floor(currentPoints.length / 10));
+            return i % step === 0 || i === currentPoints.length - 1;
+          }).map((point, index) => (
             <text
               key={index}
               x={point.x}
@@ -251,6 +271,34 @@ export default function SessionsTimelineChart() {
             </text>
           ))}
         </svg>
+      </div>
+
+      {/* Interactive Info Panel Below Chart */}
+      <div className="bg-gray-50 rounded-lg p-4 mt-4 min-h-[80px]">
+        {hoveredIndex !== null ? (
+          <>
+            <div className="text-lg font-bold text-gray-900 mb-2">
+              {new Date(currentPoints[hoveredIndex].date).toLocaleDateString('en-US', { 
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="text-sm text-gray-600">Unique Users:</span>
+                <span className="ml-2 text-lg font-bold text-blue-600">{currentPoints[hoveredIndex].uniqueUsers}</span>
+              </div>
+              <div>
+                <span className="text-sm text-gray-600">Total Sessions:</span>
+                <span className="ml-2 text-lg font-bold text-green-600">{currentPoints[hoveredIndex].value}</span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="text-gray-500 text-center py-4">Hover over chart to see details</div>
+        )}
       </div>
     </div>
   );
