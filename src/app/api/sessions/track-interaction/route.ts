@@ -27,8 +27,8 @@ function generateUserIdentifier(ipAddress: string, userAgent: string): string {
  */
 function isSameDay(date1: Date, date2: Date): boolean {
   return date1.getFullYear() === date2.getFullYear() &&
-         date1.getMonth() === date2.getMonth() &&
-         date1.getDate() === date2.getDate();
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate();
 }
 
 export async function POST(request: NextRequest) {
@@ -69,14 +69,14 @@ export async function POST(request: NextRequest) {
     // Fetch geolocation data (with caching)
     const locationData = await getLocationFromIP(ipAddress);
     const trafficData = parseReferrer(referrer);
-    
+
     // Generate userIdentifier for deduplication
     const userIdentifier = generateUserIdentifier(ipAddress, userAgent);
 
     // 1. Check if we have an existing session for this user TODAY
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const existingSessionToday = await prisma.userSession.findFirst({
       where: {
         userIdentifier,
