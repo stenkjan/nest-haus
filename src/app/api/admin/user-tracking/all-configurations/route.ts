@@ -27,6 +27,16 @@ interface ConfigurationWithDetails {
     totalPrice: number;
     isOhneNestMode: boolean; // NEW: Track if user went direct to Vorentwurf
 
+    // User location & activity metadata
+    userLocation: {
+        country: string | null;
+        city: string | null;
+    };
+    userActivity: {
+        timeSpent: number; // in seconds
+        clickCount: number;
+    };
+
     // Simple configuration strings
     configuration: {
         nestType: string;
@@ -594,6 +604,16 @@ export async function GET() {
                 status: session.status,
                 totalPrice: session.totalPrice || 0,
                 isOhneNestMode: session.isOhneNestMode,
+
+                // User location & activity metadata
+                userLocation: {
+                    country: session.country,
+                    city: session.city,
+                },
+                userActivity: {
+                    timeSpent: duration,
+                    clickCount: session.interactionEvents.filter(e => e.eventType === 'click').length,
+                },
 
                 configuration: simple,
                 detailedConfiguration: detailed,

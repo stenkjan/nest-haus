@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import CollapsibleSection from './CollapsibleSection';
 
 interface SelectionData {
   value: string;
@@ -205,14 +206,11 @@ export default function ConfigurationSelectionAnalytics({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Configuration Selection Analytics
-      </h2>
+    <CollapsibleSection title="Configuration Selection Analytics" icon="⚙️" defaultExpanded={false}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {CATEGORY_ORDER.map(category => renderCategoryBox(category))}
       </div>
-    </div>
+    </CollapsibleSection>
   );
 }
 

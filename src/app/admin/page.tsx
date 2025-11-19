@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import ImageCacheManager from "@/components/images/ImageCacheManager";
 import ClientDashboardMetrics from "./components/ClientDashboardMetrics";
+import BIDashboard from "./components/BIDashboard";
 
 // DashboardMetrics moved to ClientDashboardMetrics to prevent build-time API calls
 
@@ -56,32 +57,11 @@ export default async function AdminDashboard() {
         {/* Client-side metrics to prevent build-time API calls */}
         <ClientDashboardMetrics />
 
+        {/* BI Metrics Dashboard - Quick Insights */}
+        <BIDashboard />
+
         {/* Navigation Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Link
-            href="/admin/customer-inquiries"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  Customer Inquiries
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  Manage customer contact form submissions, track inquiry
-                  status, and handle customer communications.
-                </p>
-                <div className="mt-4 text-sm text-gray-500">
-                  • Real customer data
-                  <br />
-                  • Status tracking
-                  <br />• Response management
-                </div>
-              </div>
-              <div className="text-4xl">📬</div>
-            </div>
-          </Link>
-
           <Link
             href="/admin/user-tracking"
             className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
@@ -103,6 +83,30 @@ export default async function AdminDashboard() {
                 </div>
               </div>
               <div className="text-4xl">📊</div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/customer-inquiries"
+            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                  Customer Inquiries
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  Manage customer contact form submissions, track inquiry
+                  status, and handle customer communications.
+                </p>
+                <div className="mt-4 text-sm text-gray-500">
+                  • Real customer data
+                  <br />
+                  • Status tracking
+                  <br />• Response management
+                </div>
+              </div>
+              <div className="text-4xl">📬</div>
             </div>
           </Link>
 
@@ -140,13 +144,13 @@ export default async function AdminDashboard() {
                   Usage & Performance
                 </h3>
                 <p className="text-gray-600 mt-2">
-                  Combined monitoring of service capacity limits AND system performance with real-time metrics.
+                  Combined monitoring of service capacity, system performance, and security with real-time metrics.
                 </p>
                 <div className="mt-4 text-sm text-gray-500">
                   • NeonDB, Redis, Resend tracking
                   <br />
-                  • API performance metrics
-                  <br />• Automatic alerts at 70%/90%
+                  • API performance & security
+                  <br />• Threat detection & alerts
                 </div>
               </div>
               <div className="text-4xl">📊</div>
@@ -198,30 +202,6 @@ export default async function AdminDashboard() {
                 </div>
               </div>
               <div className="text-4xl">📋</div>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/security"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer group"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  Security Monitoring
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  Real-time threat detection, security event tracking, bot
-                  detection, and behavioral analysis with live alerts.
-                </p>
-                <div className="mt-4 text-sm text-gray-500">
-                  • Threat level indicators
-                  <br />
-                  • Bot detection & blocking
-                  <br />• Security event logs
-                </div>
-              </div>
-              <div className="text-4xl">🔒</div>
             </div>
           </Link>
         </div>

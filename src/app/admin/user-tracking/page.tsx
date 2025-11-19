@@ -13,7 +13,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
-import AllConfigurations from "./components/AllConfigurations";
+import AllUsers from "./components/AllUsers";
 import ClickAnalytics from "./components/ClickAnalytics";
 import ConfigurationSelectionAnalytics from "./components/ConfigurationSelectionAnalytics";
 import TrackingActions from "./components/TrackingActions";
@@ -578,8 +578,8 @@ async function UserTrackingDashboard() {
         <SelectionStats data={data.selectionStats} />
       </div>
 
-      {/* All Configurations Section */}
-      <AllConfigurations />
+      {/* All Users Section */}
+      <AllUsers />
     </>
   );
 }

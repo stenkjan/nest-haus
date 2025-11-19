@@ -1,5 +1,7 @@
 'use client';
 
+import CollapsibleSection from './CollapsibleSection';
+
 interface ClickAnalyticsProps {
   pageClicks: Array<{ path: string; title: string; count: number; percentage: number }>;
   mouseClicks: Array<{ elementId: string; category: string; count: number; percentage: number }>;
@@ -7,7 +9,8 @@ interface ClickAnalyticsProps {
 
 export default function ClickAnalytics({ pageClicks, mouseClicks }: ClickAnalyticsProps) {
   return (
-    <div className="space-y-6">
+    <CollapsibleSection title="Click Analysis & Most Clicked Elements" icon="🖱️" defaultExpanded={false}>
+      <div className="space-y-6">
       {/* Page Clicks Section */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -78,6 +81,7 @@ export default function ClickAnalytics({ pageClicks, mouseClicks }: ClickAnalyti
         )}
       </div>
     </div>
+    </CollapsibleSection>
   );
 }
 
