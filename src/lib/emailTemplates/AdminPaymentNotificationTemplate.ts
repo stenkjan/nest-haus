@@ -480,7 +480,7 @@ export function generateAdminPaymentNotificationEmail(
             config.konzeptCheck
               ? `
           <div class="summary-item">
-            <span>Konzept-Check ✓</span>
+            <span>Konzeptcheck ✓</span>
             <span>${formatPrice(config.konzeptCheck.price)}</span>
           </div>
           `
@@ -596,7 +596,7 @@ ${config.fenster ? `- Fenster: ${config.fenster.name} - ${formatPrice(config.fen
 DEIN NEST - ÜBERBLICK:
 - Dein Nest Haus: ${formatPrice(config.totalHousePrice)}
 ${config.planungspaket ? `- Planungspaket: ${formatPrice(config.planungspaket.price)}` : ''}
-${config.konzeptCheck ? `- Konzept-Check: ${formatPrice(config.konzeptCheck.price)}` : ''}
+${config.konzeptCheck ? `- Konzeptcheck: ${formatPrice(config.konzeptCheck.price)}` : ''}
 ${config.terminvereinbarung?.booked ? '- Terminvereinbarung: Gebucht ✓' : ''}
 GESAMTSUMME: ${formatPrice(config.totalPrice)}
 `

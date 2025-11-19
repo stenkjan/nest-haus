@@ -97,11 +97,11 @@ export default function CartFooter({ onReset }: CartFooterProps) {
                         ),
                       }
                     );
-                    return PriceUtils.calculatePricePerSquareMeter(
+                    return `${PriceUtils.calculatePricePerSquareMeter(
                       price,
                       nestModel,
                       geschossdeckeQty
-                    );
+                    )} (Preise inkl. MwSt.)`;
                   })()
                 : ""}
             </p>

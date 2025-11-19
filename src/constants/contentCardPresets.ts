@@ -445,7 +445,7 @@ export const VIDEO_BACKGROUND_CARDS_PRESET = {
  * 
  * WHERE IS THIS USED:
  * -------------------
- * - /entwurf page: "Der Auftakt" card
+ * - /konzeptcheck page: "Der Auftakt" card
  * - Any page needing a tall, content-rich card with image and buttons
  * 
  * COMPARISON TO STANDARD VIDEO CARD:

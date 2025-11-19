@@ -171,10 +171,10 @@ export default function DeinNestClient() {
 
               {/* Buttons at Bottom */}
               <div className="flex gap-4 justify-center">
-                <Link href="/entwurf">
+                <Link href="/konzeptcheck">
                   <Button variant="primary" size="xs">
-                    <span className="md:hidden">Zum Entwurf</span>
-                    <span className="hidden md:inline">Zum Entwurf</span>
+                    <span className="md:hidden">Konzeptcheck</span>
+                    <span className="hidden md:inline">Konzeptcheck</span>
                   </Button>
                 </Link>
                 <Link href="/kontakt">
@@ -236,9 +236,9 @@ export default function DeinNestClient() {
             <div className="pt-8">
               {/* Button combination */}
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link href="/entwurf">
+                <Link href="/konzeptcheck">
                   <Button variant="primary" size="xs">
-                    Zum Entwurf
+                    Konzeptcheck
                   </Button>
                 </Link>
                 <Link href="/konfigurator">
@@ -289,10 +289,10 @@ export default function DeinNestClient() {
                 playbackRate: 0.5,
                 buttons: [
                   {
-                    text: "Zum Entwurf",
+                    text: "Konzeptcheck",
                     variant: "primary",
                     size: "xs",
-                    link: "/entwurf",
+                    link: "/konzeptcheck",
                   },
                   {
                     text: "Jetzt konfigurieren",

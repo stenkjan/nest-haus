@@ -42,7 +42,7 @@ export function GrundstueckCheckForm({
   padding = "lg",
   className = "",
   excludePersonalData = false,
-  title = "Dein Nest-Haus Entwurf",
+  title = "Dein Konzeptcheck",
   subtitle = "Wir überprüfen für dich wie dein neues Haus auf ein Grundstück deiner Wahl passt",
   showHeader = true,
   useWrapper = true,
@@ -652,7 +652,7 @@ export function GrundstueckCheckForm({
                     mit dir ein individuelles{" "}
                   </span>
                   <span className="text-black font-medium">
-                    Vorentwurfskonzept
+                    Konzeptcheck
                   </span>
                   <span className="text-nest-gray"> deines Nest-Hauses.</span>
                 </p>
@@ -888,7 +888,7 @@ export function GrundstueckCheckForm({
                 übernehmen wir diese Überprüfung und entwickeln gemeinsam mit
                 dir ein individuelles{" "}
               </span>
-              <span className="text-black font-medium">Vorentwurfskonzept</span>
+              <span className="text-black font-medium">Konzeptcheck</span>
               <span className="text-nest-gray"> deines Nest-Hauses.</span>
             </p>
             <p className="p-primary leading-relaxed mb-6">

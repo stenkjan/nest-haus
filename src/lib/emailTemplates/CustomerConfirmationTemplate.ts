@@ -243,13 +243,13 @@ export function generateCustomerConfirmationEmail(data: CustomerConfirmationData
       <div class="glass-card glass-card--plain">
         <h2>📞 Kontakt <span style="color: #737373; font-weight: 400;">Melde dich!</span></h2>
         <div class="info-grid">
+        <div class="info-item" style="border-radius:0 !important">
+          <div class="info-label">Mobil</div>
+          <div class="info-value">+43 (0) 664 2531869</div>
+        </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Telefon</div>
             <div class="info-value">+43 (0) 664 1001947</div>
-          </div>
-          <div class="info-item" style="border-radius:0 !important">
-            <div class="info-label">Mobil</div>
-            <div class="info-value">+43 (0) 664 2531869</div>
           </div>
           <div class="info-item" style="border-radius:0 !important">
             <div class="info-label">Email</div>

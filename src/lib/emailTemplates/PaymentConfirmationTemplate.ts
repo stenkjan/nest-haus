@@ -703,7 +703,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
           ${config.konzeptCheck
         ? `
           <div class="summary-item">
-            <span class="summary-item-label">Konzept-Check</span>
+            <span class="summary-item-label">Konzeptcheck</span>
             <span class="summary-item-value">${formatPrice(config.konzeptCheck.price)}</span>
           </div>
           `
@@ -837,7 +837,7 @@ ${config.fenster ? `- Fenster: ${config.fenster.name} - ${formatPrice(config.fen
 DEIN NEST - PREISGEFÜHL:
 - Dein Nest Haus: ${formatPrice(config.totalHousePrice)}
 ${config.planungspaket ? `- Planungspaket: ${formatPrice(config.planungspaket.price)}` : ''}
-${config.konzeptCheck ? `- Konzept-Check: ${formatPrice(config.konzeptCheck.price)}` : ''}
+${config.konzeptCheck ? `- Konzeptcheck: ${formatPrice(config.konzeptCheck.price)}` : ''}
 ${config.terminvereinbarung?.booked ? '- Terminvereinbarung: Gebucht ✓' : ''}
 -----------------------------------------
 GESAMTSUMME: ${formatPrice(config.totalPrice)}

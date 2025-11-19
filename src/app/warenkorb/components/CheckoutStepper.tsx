@@ -1410,11 +1410,11 @@ export default function CheckoutStepper({
                                   const nestModel = configItem.nest.value || "";
                                   const geschossdeckeQty =
                                     configItem.geschossdecke?.quantity || 0;
-                                  return PriceUtils.calculatePricePerSquareMeter(
+                                  return `${PriceUtils.calculatePricePerSquareMeter(
                                     total,
                                     nestModel,
                                     geschossdeckeQty
-                                  );
+                                  )} (Preise inkl. MwSt.)`;
                                 })()
                               : getRowSubtitle(0)}
                         </div>
@@ -1446,7 +1446,7 @@ export default function CheckoutStepper({
                   <div className={rowWrapperClass}>
                     <div className="flex-1 min-w-0">
                       <div className={`leading-relaxed ${rowTextClass(1)}`}>
-                        Konzept-Check
+                        Konzeptcheck
                       </div>
                       <div className={rowSubtitleClass}>
                         {getRowSubtitle(1)}
@@ -1613,9 +1613,14 @@ export default function CheckoutStepper({
                       Heute zu bezahlen
                     </div>
                   </div>
-                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed flex items-center gap-2">
-                    <span className="text-gray-400 line-through">3.000 €</span>
-                    <span>1.500 €</span>
+                  <div className="text-sm md:text-base lg:text-lg 2xl:text-xl font-normal text-gray-900 leading-relaxed">
+                    <div className="flex items-center gap-2 justify-end">
+                      <span className="text-gray-400 line-through">3.000 €</span>
+                      <span>1.500 €</span>
+                    </div>
+                    <div className="text-xs text-gray-500 text-right mt-1">
+                      Preise inkl. MwSt.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3312,6 +3317,9 @@ export default function CheckoutStepper({
                                     1.500 €
                                   </div>
                                 </div>
+                                <div className="text-xs text-gray-500 text-right mt-1">
+                                  Preise inkl. MwSt.
+                                </div>
                               </div>
                             ) : (
                               <div className="text-right flex items-center justify-end gap-2">
@@ -3439,12 +3447,17 @@ export default function CheckoutStepper({
                     </div>
                     <div className="text-right">
                       {!isPaymentCompleted && (
-                        <div className="flex items-center gap-2 justify-end mt-2">
-                          <span className="text-gray-400 line-through text-2xl">
-                            3.000 €
-                          </span>
-                          <div className="text-3xl font-bold text-gray-900">
-                            1.500 €
+                        <div>
+                          <div className="flex items-center gap-2 justify-end mt-2">
+                            <span className="text-gray-400 line-through text-2xl">
+                              3.000 €
+                            </span>
+                            <div className="text-3xl font-bold text-gray-900">
+                              1.500 €
+                            </div>
+                          </div>
+                          <div className="text-xs text-gray-500 text-right mt-1">
+                            Preise inkl. MwSt.
                           </div>
                         </div>
                       )}
@@ -3945,11 +3958,16 @@ export default function CheckoutStepper({
               </div>
               <div className="text-right">
                 {!isPaymentCompleted && (
-                  <div className="flex items-center gap-3 justify-end mb-1">
-                    <span className="h2-title text-gray-400 line-through">
-                      3.000 €
-                    </span>
-                    <span className="h2-title text-black">1.500 €</span>
+                  <div>
+                    <div className="flex items-center gap-3 justify-end mb-1">
+                      <span className="h2-title text-gray-400 line-through">
+                        3.000 €
+                      </span>
+                      <span className="h2-title text-black">1.500 €</span>
+                    </div>
+                    <div className="text-xs text-gray-500 text-right mt-1">
+                      Preise inkl. MwSt.
+                    </div>
                   </div>
                 )}
                 {isPaymentCompleted && (

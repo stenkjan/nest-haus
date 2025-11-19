@@ -19,17 +19,17 @@ import { HybridBlobImage } from "@/components/images";
 import { IMAGES } from "@/constants/images";
 import { SectionRouter } from "@/components/SectionRouter";
 
-// Define sections for entwurf page
+// Define sections for konzeptcheck page
 const sections = [
   {
     id: "hero",
-    title: "Entwurf & Grundstücks-Check",
+    title: "Konzeptcheck & Grundstücks-Check",
     slug: "hero",
   },
   {
-    id: "vorentwurf",
+    id: "konzeptcheck",
     title: "Aller Anfang ist schwer?",
-    slug: "vorentwurf",
+    slug: "konzeptcheck",
   },
   {
     id: "beispiele",
@@ -53,10 +53,10 @@ const sections = [
   },
 ];
 
-export default function EntwurfClient() {
+export default function KonzeptcheckClient() {
   const [_currentSectionId, setCurrentSectionId] = useState<string>("hero");
-  // Get entwurf video cards using PRESET (recommended approach)
-  const entwurfVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
+  // Get konzeptcheck video cards using PRESET (recommended approach)
+  const konzeptcheckVideoCards = ENTWURF_VIDEO_CARDS_PRESET.cards;
 
   return (
     <div
@@ -71,7 +71,7 @@ export default function EntwurfClient() {
             <HybridBlobImage
               path={IMAGES.function.nestHausLinienplanDreier}
               mobilePath={IMAGES.function.nestHausLinienplanDreier}
-              alt="Dein Entwurf"
+              alt="Dein Konzeptcheck"
               className="absolute inset-0 w-full h-full object-cover"
             />
 
@@ -80,7 +80,7 @@ export default function EntwurfClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Dein Konzept-Check"
+                  title="Dein Konzeptcheck"
                   subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
@@ -91,7 +91,7 @@ export default function EntwurfClient() {
               <div className="flex gap-4 justify-center">
                 <Link href="/konfigurator">
                   <Button variant="primary" size="xs">
-                    Entwurf bestellen
+                    Konzeptcheck
                   </Button>
                 </Link>
                 <Link href="/kontakt">
@@ -105,11 +105,11 @@ export default function EntwurfClient() {
         </section>
 
         {/* Grundrissplan Card - No Padding (TALL CARD) */}
-        <section id="vorentwurf" className="w-full py-8 md:py-16 bg-white">
+        <section id="konzeptcheck" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Der Entwurf"
+            title="Der erste Schritt"
             subtitle="Dein Nest Haus. Persönlich geplant, individuell gestaltet."
-            mobileTitle="Der Entwurf"
+            mobileTitle="Der erste Scrhitt"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -122,12 +122,12 @@ export default function EntwurfClient() {
                 title: "Erster Teil",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Dein Nest entsteht schnell, doch </span><span class='text-black font-medium'>Individualität</span><span class='text-nest-gray'> steht immer </span><span class='text-black font-medium'>an erster Stelle.</span><span class='text-nest-gray'> Mit deiner </span><span class='text-black font-medium'>ersten Anzahlung</span><span class='text-nest-gray'> erhältst du </span><span class='text-black font-medium'>rechtliche Sicherheit</span><span class='text-nest-gray'> und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen </span><span class='text-black font-medium'>Entwurf,</span><span class='text-nest-gray'> der deine Idee greifbar macht.</span>\n\n<span class='text-nest-gray'>Du entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die </span><span class='text-black font-medium'>rechtliche Prüfung und den Entwurf.</span>",
+                  "<span class='text-nest-gray'>Dein Nest entsteht schnell, doch </span><span class='text-black font-medium'>Individualität</span><span class='text-nest-gray'> steht immer </span><span class='text-black font-medium'>an erster Stelle.</span><span class='text-nest-gray'> Mit deiner </span><span class='text-black font-medium'>ersten Anzahlung</span><span class='text-nest-gray'> erhältst du </span><span class='text-black font-medium'>rechtliche Sicherheit</span><span class='text-nest-gray'> und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen </span><span class='text-black font-medium'>Konzeptcheck,</span><span class='text-nest-gray'> der deine Idee greifbar macht.</span>\n\n<span class='text-nest-gray'>Du entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die </span><span class='text-black font-medium'>rechtliche Prüfung und den Konzeptcheck.</span>",
                 image: IMAGES.function.nestHausEntwurfVorentwurf,
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
-                    text: "Entwurf bestellen",
+                    text: "Konzeptcheck",
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",
@@ -154,7 +154,7 @@ export default function EntwurfClient() {
             showInstructions={false}
             noPadding={true}
             alignment="left"
-            customData={entwurfVideoCards}
+            customData={konzeptcheckVideoCards}
           />
         </section>
 
@@ -184,7 +184,7 @@ export default function EntwurfClient() {
                 imagePosition: "center" as const,
                 buttons: [
                   {
-                    text: "Entwurf bestellen",
+                    text: "Konzeptcheck",
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",

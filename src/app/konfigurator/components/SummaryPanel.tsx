@@ -594,11 +594,11 @@ export default function SummaryPanel({
                           geschossdeckeQty
                         ),
                       });
-                      return PriceUtils.calculatePricePerSquareMeter(
+                      return `${PriceUtils.calculatePricePerSquareMeter(
                         price,
                         nestModel,
                         geschossdeckeQty
-                      );
+                      )} (Preise inkl. MwSt.)`;
                     })()
                   : ""}
             </p>
@@ -622,11 +622,11 @@ export default function SummaryPanel({
                 variant="tertiary"
                 onClick={() => {
                   // Navigate to warenkorb with ohne-nest flag
-                  window.location.href = "/warenkorb?mode=entwurf";
+                  window.location.href = "/warenkorb?mode=konzeptcheck";
                 }}
                 className="bg-white text-[clamp(0.75rem,1.2vw,1rem)] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.3rem,0.6vw,0.5rem)] min-h-[44px] touch-manipulation whitespace-nowrap"
               >
-                Zum Entwurf
+                Konzeptcheck
               </Button>
             </div>
           )}
