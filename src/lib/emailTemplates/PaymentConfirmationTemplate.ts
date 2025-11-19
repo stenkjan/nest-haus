@@ -534,7 +534,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
     <div class="content">
       <!-- Header -->
       <div class="header-section">
-        <h1>Konzeptcheck bestellt</h1>
+        <h1>Konzept-Check bestellt</h1>
         <p class="subtitle">Vielen Dank, ${data.name}! Ihre Bestellung für den Grundstückscheck und Entwurf war erfolgreich.</p>
       </div>
       
@@ -814,7 +814,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationEmailD
   const text = `
 Nest-Haus - Zahlungsbestätigung
 
-Konzeptcheck bestellt
+Konzept-Check bestellt
 
 Vielen Dank, ${data.name}! Ihre Bestellung für den Grundstückscheck und Entwurf war erfolgreich.
 
