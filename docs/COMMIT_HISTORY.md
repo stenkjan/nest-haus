@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6e2f0de1f0731f037e85be79791add76f3b447ff] - Wed Nov 19 10:33:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: correct header text in PaymentConfirmationTemplate  - Updated the header text from "Konzeptcheck bestellt" to "Konzept-Check bestellt" in the Payment Confirmation email template to maintain consistency with the standardized terminology across the application.  `
+
+### Changes Analysis
+
+---
+
 ## [b4c458c8c77e66d4d6e27ad4ad73331fa1f30ee9] - Wed Nov 19 10:23:30 2025 +0100
 
 **Author**: stenkjan
