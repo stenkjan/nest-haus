@@ -34,10 +34,11 @@ export class SessionManager {
 
     /**
      * Debounced session sync to prevent excessive API calls
+     * Increased from 2s to 5s to reduce DB writes (part of NeonDB optimization)
      */
     private static syncTimeout: NodeJS.Timeout | null = null;
 
-    static debouncedSync(sessionData: SessionData, delay: number = 2000): void {
+    static debouncedSync(sessionData: SessionData, delay: number = 5000): void {
         if (this.syncTimeout) {
             clearTimeout(this.syncTimeout);
         }

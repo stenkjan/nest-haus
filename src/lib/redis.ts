@@ -227,6 +227,154 @@ export class SessionManager {
   static async hmset(key: string, data: Record<string, string | number>): Promise<void> {
     await redis.hmset(key, data);
   }
+
+  /**
+   * ===== REDIS-FIRST ANALYTICS PATTERN =====
+   * Hot analytics data stored in Redis before PostgreSQL
+   */
+
+  /**
+   * Store analytics event in Redis (hot storage)
+   * Events are batched and flushed to PostgreSQL every 30 seconds
+   */
+  static async storeAnalyticsEvent(sessionId: string, event: {
+    eventType: string;
+    category: string;
+    elementId?: string;
+    value?: string;
+    timestamp?: number;
+  }): Promise<void> {
+    const key = `analytics:events:${sessionId}`;
+    const eventData = {
+      ...event,
+      timestamp: event.timestamp || Date.now()
+    };
+
+    // Add to Redis list (LPUSH for newest first)
+    await redis.lpush(key, JSON.stringify(eventData));
+    
+    // Keep only last 100 events
+    await redis.ltrim(key, 0, 99);
+    
+    // Set 24-hour expiration
+    await redis.expire(key, 86400);
+
+    // Add to pending flush queue
+    await redis.sadd('analytics:pending:sessions', sessionId);
+  }
+
+  /**
+   * Get hot analytics events from Redis
+   */
+  static async getAnalyticsEvents(sessionId: string, limit: number = 100): Promise<unknown[]> {
+    const key = `analytics:events:${sessionId}`;
+    const events = await redis.lrange(key, 0, limit - 1);
+    
+    return events.map(event => {
+      if (typeof event === 'string') {
+        return JSON.parse(event);
+      }
+      return event;
+    });
+  }
+
+  /**
+   * Get all sessions with pending analytics events
+   */
+  static async getPendingAnalyticsSessions(): Promise<string[]> {
+    const sessions = await redis.smembers('analytics:pending:sessions');
+    return sessions as string[];
+  }
+
+  /**
+   * Mark analytics events as flushed to PostgreSQL
+   */
+  static async clearAnalyticsEvents(sessionId: string): Promise<void> {
+    const key = `analytics:events:${sessionId}`;
+    await redis.del(key);
+    await redis.srem('analytics:pending:sessions', sessionId);
+  }
+
+  /**
+   * Increment real-time counter (for dashboard)
+   */
+  static async incrementCounter(metric: string, timeWindow: string = 'hour'): Promise<number> {
+    const now = new Date();
+    let key: string;
+
+    switch (timeWindow) {
+      case 'minute':
+        key = `counter:${metric}:${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}-${now.getUTCHours()}:${now.getUTCMinutes()}`;
+        await redis.expire(key, 3600); // 1 hour
+        break;
+      case 'hour':
+        key = `counter:${metric}:${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}-${now.getUTCHours()}`;
+        await redis.expire(key, 86400); // 24 hours
+        break;
+      case 'day':
+        key = `counter:${metric}:${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}`;
+        await redis.expire(key, 604800); // 7 days
+        break;
+      default:
+        key = `counter:${metric}:total`;
+    }
+
+    return await redis.incr(key);
+  }
+
+  /**
+   * Get real-time counter value
+   */
+  static async getCounter(metric: string, timeWindow: string = 'hour'): Promise<number> {
+    const now = new Date();
+    let key: string;
+
+    switch (timeWindow) {
+      case 'minute':
+        key = `counter:${metric}:${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}-${now.getUTCHours()}:${now.getUTCMinutes()}`;
+        break;
+      case 'hour':
+        key = `counter:${metric}:${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}-${now.getUTCHours()}`;
+        break;
+      case 'day':
+        key = `counter:${metric}:${now.getUTCFullYear()}-${now.getUTCMonth()}-${now.getUTCDate()}`;
+        break;
+      default:
+        key = `counter:${metric}:total`;
+    }
+
+    const value = await redis.get(key);
+    return typeof value === 'number' ? value : parseInt(String(value || '0'), 10);
+  }
+
+  /**
+   * Store hot traffic source data
+   */
+  static async trackTrafficSource(source: string): Promise<void> {
+    const today = new Date().toISOString().split('T')[0];
+    const key = `traffic:${today}`;
+    
+    await redis.hincrby(key, source, 1);
+    await redis.expire(key, 604800); // 7 days
+  }
+
+  /**
+   * Get traffic source stats for today
+   */
+  static async getTodayTrafficSources(): Promise<Record<string, number>> {
+    const today = new Date().toISOString().split('T')[0];
+    const key = `traffic:${today}`;
+    
+    const data = await redis.hgetall(key);
+    if (!data) return {};
+
+    // Convert string values to numbers
+    const result: Record<string, number> = {};
+    for (const [source, count] of Object.entries(data)) {
+      result[source] = parseInt(String(count), 10);
+    }
+    return result;
+  }
 }
 
 export default redis; 

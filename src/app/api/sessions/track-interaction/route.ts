@@ -84,23 +84,9 @@ export async function POST(request: NextRequest) {
       elementId
     });
 
-    // 3. Track performance metric
+    // Performance metric tracking removed - was creating unnecessary DB writes
+    // Only track performance for critical operations (price calc, image load, page load)
     const processingTime = Date.now() - startTime;
-    await prisma.performanceMetric.create({
-      data: {
-        sessionId,
-        metricName: 'interaction_tracking_time',
-        value: processingTime,
-        endpoint: '/api/sessions/track-interaction',
-        userAgent: request.headers.get('user-agent'),
-        additionalData: {
-          eventType,
-          category,
-          responseTime: processingTime
-        }
-      }
-    });
-
     console.log(`🎯 Interaction tracked: ${eventType} on ${category} (${processingTime}ms)`);
 
     return NextResponse.json({

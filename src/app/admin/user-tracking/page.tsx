@@ -17,6 +17,11 @@ import AllConfigurations from "./components/AllConfigurations";
 import ClickAnalytics from "./components/ClickAnalytics";
 import ConfigurationSelectionAnalytics from "./components/ConfigurationSelectionAnalytics";
 import TrackingActions from "./components/TrackingActions";
+// New Wix-style dashboard components
+import KeyStatsRow from "./components/KeyStatsRow";
+import SessionsTimelineChart from "./components/SessionsTimelineChart";
+import TrafficSourcesWidget from "./components/TrafficSourcesWidget";
+import GeoLocationMap from "./components/GeoLocationMap";
 
 // Types matching the API response
 interface UserTrackingData {
@@ -425,6 +430,24 @@ async function UserTrackingDashboard() {
           </div>
         </div>
       </div>
+
+      {/* ===== NEW WIX-STYLE DASHBOARD COMPONENTS ===== */}
+      
+      {/* Key Stats Row */}
+      <KeyStatsRow />
+
+      {/* Sessions Timeline & Traffic Sources */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <SessionsTimelineChart />
+        <TrafficSourcesWidget />
+      </div>
+
+      {/* Geographic Location Map */}
+      <div className="mb-8">
+        <GeoLocationMap />
+      </div>
+
+      {/* ===== EXISTING DASHBOARD COMPONENTS ===== */}
 
       {/* Tracking Actions */}
       <div className="mb-8 bg-white rounded-lg shadow p-6">

@@ -24,6 +24,27 @@ model UserSession {
   isOhneNestMode    Boolean            @default(false)
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+  
+  // Geographic data (for analytics dashboard)
+  country           String?            // ISO country code (e.g., "DE", "AT", "CH")
+  city              String?            // City name
+  latitude          Float?             // Geographic coordinates
+  longitude         Float?
+  
+  // Traffic source data (for analytics dashboard)
+  trafficSource     String?            // 'direct', 'google', 'referral', 'utm'
+  trafficMedium     String?            // For UTM tracking (e.g., 'organic', 'cpc', 'email')
+  referralDomain    String?            // Extracted from referrer URL (e.g., "google.com")
+  
+  // Configuration mode tracking
+  hasConfigurationMode Boolean         @default(true)  // User created a configuration
+  
+  // Payment & conversion tracking (for Konzeptcheck dashboard)
+  hasPaidKonzeptcheck  Boolean         @default(false)
+  konzeptcheckAmount   Int?            // Amount in cents
+  hasAppointmentRequest Boolean        @default(false)
+  appointmentRequestedAt DateTime?
+  
   selectionEvents   SelectionEvent[]
   interactionEvents InteractionEvent[]
 
