@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [830a7684be0f858f0ce0e9c2a6696b8c5f8c61cb] - Wed Nov 19 13:17:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: update BI metrics API to handle geographic data  - Removed filtering for sessions with non-null country fields to accommodate incomplete geographic data. - Initialized topLocations as an empty array to return until geographic data is fully populated. - Added a performance limit to the selection events query to optimize data retrieval. - Improved code clarity by simplifying the session data handling logic.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/bi-metrics/route.ts
+
+
+---
+
 ## [3caf8620e51c7bb31c75c4af2b9d82f5da4d1f4b] - Wed Nov 19 13:07:19 2025 +0100
 
 **Author**: stenkjan
