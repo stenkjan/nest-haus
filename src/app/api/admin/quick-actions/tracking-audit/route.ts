@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import fs from 'fs';
 import path from 'path';
-import { glob } from 'glob';
 
 interface Finding {
   file: string;
@@ -43,13 +42,9 @@ export async function POST() {
       formWithoutTracking: /<form(?![^>]*data-tracking-id)[^>]*>/gi,
     };
 
-    // Scan files
+    // Recursively scan for TSX/JSX files
     const srcDir = path.join(process.cwd(), 'src');
-    const files = await glob('**/*.{tsx,jsx}', {
-      cwd: srcDir,
-      absolute: true,
-      ignore: ['**/node_modules/**', '**/.next/**', '**/test/**', '**/__tests__/**'],
-    });
+    const files = getAllTsxJsxFiles(srcDir);
 
     for (const filePath of files) {
       const content = fs.readFileSync(filePath, 'utf-8');
@@ -120,6 +115,41 @@ export async function POST() {
       { status: 500 }
     );
   }
+}
+
+/**
+ * Recursively get all TSX/JSX files in a directory
+ */
+function getAllTsxJsxFiles(dir: string): string[] {
+  const files: string[] = [];
+  const excludeDirs = ['node_modules', '.next', 'test', '__tests__'];
+
+  function scanDir(currentDir: string) {
+    try {
+      const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+
+      for (const entry of entries) {
+        const fullPath = path.join(currentDir, entry.name);
+
+        if (entry.isDirectory()) {
+          // Skip excluded directories
+          if (!excludeDirs.includes(entry.name)) {
+            scanDir(fullPath);
+          }
+        } else if (entry.isFile()) {
+          // Include TSX and JSX files
+          if (entry.name.endsWith('.tsx') || entry.name.endsWith('.jsx')) {
+            files.push(fullPath);
+          }
+        }
+      }
+    } catch (error) {
+      console.error(`Error scanning directory ${currentDir}:`, error);
+    }
+  }
+
+  scanDir(dir);
+  return files;
 }
 
 function generateHtmlReport(findings: Finding[], stats: { filesScanned: number; totalIssues: number; highSeverity: number; mediumSeverity: number; lowSeverity: number }): string {
