@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e8e5af21135f1604663006b99912e3c278e291cc] - Thu Nov 20 15:04:13 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: add missing closing Z command to all SVG path elements in GeoLocationMap  Bug Fix: - All 14 continent/region SVG paths were missing the closing 'Z' command - This caused improper path rendering, filling, and stroke joins  Fixed Paths (added Z to close shapes): - North America (3 sub-paths) - Greenland - South America - Europe (2 sub-paths) - Africa - Asia (2 sub-paths) - Middle East / Arabian Peninsula - India - Southeast Asia - Australia - New Zealand (2 sub-paths) - Japan (2 sub-paths) - UK & Ireland (2 sub-paths) - Scandinavia - Madagascar  Technical Details: - SVG path 'Z' command properly closes shapes by drawing a straight line back to the starting point - Without Z, paths remain open which affects fill rules and stroke rendering - Total: 15 Z commands added (some paths have multiple sub-paths using M command)  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/GeoLocationMap.tsx
+
+
+---
+
 ## [15b809b331aeed5cce9b189a006c106c3f92ec1b] - Thu Nov 20 14:59:15 2025 +0100
 
 **Author**: stenkjan
