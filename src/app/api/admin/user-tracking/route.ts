@@ -450,10 +450,10 @@ class UserTrackingService {
      * Get click analytics (page clicks and mouse clicks)
      */
     static async getClickAnalytics() {
-        // Get all sessions that reached cart
+        // Get ALL sessions (not just cart sessions) to show all user click activity
         const sessionIds = await prisma.userSession.findMany({
             where: {
-                status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] }
+                // No status filter - show clicks from all sessions
             },
             select: {
                 sessionId: true

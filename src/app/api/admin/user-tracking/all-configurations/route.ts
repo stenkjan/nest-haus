@@ -504,13 +504,13 @@ function generateSessionName(startTime: Date, name: string | null, _sessionId: s
 
 export async function GET() {
     try {
-        console.log('📊 Fetching all configurations with details...');
+        console.log('📊 Fetching all user sessions with details...');
 
-        // Get all sessions with cart status or higher
+        // Get ALL sessions (not just cart sessions) to show all user activity
         const sessions = await prisma.userSession.findMany({
             where: {
-                status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
-                configurationData: { not: Prisma.JsonNull }
+                // No status filter - show ACTIVE, IN_CART, COMPLETED, CONVERTED
+                // No configurationData filter - show browsing users too
             },
             include: {
                 selectionEvents: {
