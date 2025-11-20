@@ -4,6 +4,40 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [185fd3ab4068803173ca8d2f5fa81e341918d01d] - Thu Nov 20 08:43:54 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: add backup analytics functionality and update admin dashboard  - Introduced a new script command for restoring analytics backups in package.json. - Scheduled a new cron job for backing up analytics data in vercel.json. - Replaced AnalyticsResetButton with AnalyticsBackupButton in the admin dashboard for improved functionality. - Removed unused TrackingActions component from user tracking dashboard. - Updated button text in NestSystemClient for clarity.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/components/AnalyticsBackupButton.tsx
+- src/app/admin/page.tsx
+- src/app/admin/user-tracking/page.tsx
+- src/app/api/admin/quick-actions/backup-analytics/route.ts
+- src/app/api/cron/backup-analytics/route.ts
+- src/app/api/test/db/route.ts
+- src/app/nest-system/NestSystemClient.tsx
+
+
+#### ⚙️ Backend Changes
+- scripts/restore-analytics-backup.ts
+
+
+#### 🔧 Configuration Changes
+- package.json
+
+
+#### 📚 Documentation Changes
+- backups/BACKUP_README.md
+- docs/KONFIGURATOR_PRICING_QUICK_REFERENCE.md
+- docs/TESTING_EXECUTION_SUMMARY.md
+- docs/TESTING_SUMMARY_2024-11-15.md
+
+
+---
+
 ## [52fb1318be9e6c88b4e38d08a5243143319e7bbe] - Wed Nov 19 16:00:14 2025 +0100
 
 **Author**: stenkjan
