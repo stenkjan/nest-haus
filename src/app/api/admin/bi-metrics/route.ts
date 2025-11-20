@@ -56,13 +56,14 @@ export async function GET(_request: NextRequest) {
     let topLocations: Array<{ country: string; count: number }> = [];
 
     try {
-      // Type cast to bypass TypeScript until Prisma regenerates with new schema
+      // Fetch sessions with country data for location tracking
       const allSessions = await prisma.userSession.findMany({
         where: getIPFilterClause(),
         select: {
           id: true,
+          country: true, // Required for country mapping
         },
-      }) as Array<{ id: string; country?: string }>;
+      }) as Array<{ id: string; country?: string | null }>;
 
       const countryMap = new Map<string, number>();
       allSessions.forEach((session) => {
