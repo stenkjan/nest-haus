@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [689384ad41c3bce263ca90874bd250a1e0617fb7] - Thu Nov 20 14:39:24 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: use transparent favicon for all browsers, opaque apple-icon for Safari only  - Removed white background from icon.svg (now transparent for Chrome, Firefox, etc.) - Created separate apple-icon.svg with white background specifically for Safari/iOS - Updated metadata to use apple-specific icon only for Apple devices - Regular browsers now get transparent icon, Safari gets opaque background icon - This properly handles Safari's black background issue without affecting other browsers  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+
+
+---
+
 ## [2a9ee033871ee8420eaae1e6e83c402ea9ffa325] - Thu Nov 20 14:33:14 2025 +0100
 
 **Author**: stenkjan
