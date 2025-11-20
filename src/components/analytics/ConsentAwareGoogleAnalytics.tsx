@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { useCookieConsent } from '@/contexts/CookieConsentContext'
-import Script from 'next/script'
 
 /**
  * Google Analytics 4 mit Consent Mode v2
@@ -76,54 +75,11 @@ export default function ConsentAwareGoogleAnalytics() {
   // Only load Google Analytics if user has consented to analytics
   if (!preferences.analytics) {
     console.log('📊 GA4: User has not consented to analytics, not loading script')
-    return (
-      <Script
-        id="gtag-consent-init"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('consent', 'default', {
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied',
-              'analytics_storage': 'denied',
-              'functionality_storage': 'granted',
-              'personalization_storage': 'denied',
-              'security_storage': 'granted',
-              'wait_for_update': 500
-            });
-          `,
-        }}
-      />
-    )
+    return null
   }
 
   return (
     <>
-      {/* Consent Mode v2 initialization script */}
-      <Script
-        id="gtag-consent-init"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('consent', 'default', {
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied',
-              'analytics_storage': 'denied',
-              'functionality_storage': 'granted',
-              'personalization_storage': 'denied',
-              'security_storage': 'granted',
-              'wait_for_update': 500
-            });
-          `,
-        }}
-      />
-      
       {/* Google Analytics component - loads script only if consent given */}
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
     </>
@@ -134,6 +90,6 @@ export default function ConsentAwareGoogleAnalytics() {
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
-    dataLayer?: unknown[];
+    // dataLayer is already defined by @next/third-parties as Object[]
   }
 }
