@@ -499,9 +499,9 @@ export const ABLAUF_STEPS_CONTENT: ContentCardData[] = [
     {
         id: 1,
         title: "1. Konzept-Check",
-        subtitle: "Diese Kosten deckst du heute",
+        subtitle: "Der erste Schritt",
         description:
-            "Beim Entwurf planen wir dein Nest-Haus direkt auf deinem Grundstück. Wir legen die optimale Ausrichtung, Raumaufteilung sowie die Position von Fenstern und Türen fest.\n\nZusätzlich überprüfen wir alle rechtlichen Rahmenbedingungen, damit dein Nest-Haus effizient und rechtssicher realisiert werden kann.",
+            "Mit dem Konzept-Check erhältst du deine Grundstücks-Analyse, deinen individuellen Entwurfsplan und eine konkrete Kostenplanung. \n\nSolltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücks-Analyse auch für andere Bauvorhaben verwenden.",
         backgroundColor: "#f4f4f4",
         iconNumber: 1,
     },

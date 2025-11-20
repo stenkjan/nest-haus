@@ -71,7 +71,7 @@ export default function KonzeptcheckClient() {
             <HybridBlobImage
               path={IMAGES.function.nestHausLinienplanDreier}
               mobilePath={IMAGES.function.nestHausLinienplanDreier}
-              alt="Dein Konzept-Check"
+              alt="Der Konzept-Check"
               className="absolute inset-0 w-full h-full object-cover"
             />
 
@@ -80,8 +80,8 @@ export default function KonzeptcheckClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Dein Konzept-Check"
-                  subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
+                  title="Der Konzept-Check"
+                  subtitle="Deine optimale Entscheidungsgrundlage."
                   titleClassName="text-white"
                   subtitleClassName="text-white"
                 />
@@ -91,7 +91,7 @@ export default function KonzeptcheckClient() {
               <div className="flex gap-4 justify-center">
                 <Link href="/konfigurator">
                   <Button variant="primary" size="xs">
-                    Konzept-Check
+                    Konfigurator
                   </Button>
                 </Link>
                 <Link href="/kontakt">
@@ -107,8 +107,8 @@ export default function KonzeptcheckClient() {
         {/* Grundrissplan Card - No Padding (TALL CARD) */}
         <section id="konzept-check" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Der Konzept-Check"
-            subtitle="Deine optimale Entscheidungsgrundlage."
+            title="Der Grundstücks-Check"
+            subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
             mobileTitle="Der Konzept-Check"
             wrapperMargin="mb-8 md:mb-12"
           />
@@ -119,15 +119,15 @@ export default function KonzeptcheckClient() {
             customData={[
               {
                 id: 1,
-                title: "Erster Teil",
+                title: "Teil 1/2",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Dein Nest entsteht schnell, doch </span><span class='text-black font-medium'>Individualität</span><span class='text-nest-gray'> steht immer </span><span class='text-black font-medium'>an erster Stelle.</span><span class='text-nest-gray'> Mit deiner </span><span class='text-black font-medium'>ersten Anzahlung</span><span class='text-nest-gray'> erhältst du </span><span class='text-black font-medium'>rechtliche Sicherheit</span><span class='text-nest-gray'> und Klarheit darüber, ob dein Grundstück geeignet ist. Anschließend erstellen wir einen </span><span class='text-black font-medium'>Konzept-Check,</span><span class='text-nest-gray'> der deine Idee greifbar macht.</span>\n\n<span class='text-nest-gray'>Du entscheidest, ob du dein Zuhause bereits konfigurieren möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die </span><span class='text-black font-medium'>rechtliche Prüfung und den Konzept-Check.</span>",
-                image: IMAGES.function.nestHausEntwurfVorentwurf,
+                  "<span class='text-nest-gray'>Mit dem </span><span class='text-black font-medium'>Konzept-Check</span><span class='text-nest-gray'> erhältst du eine </span><span class='text-black font-medium'>Analyse deines Grundstücks</span><span class='text-nest-gray'>, welche dir einen Überblick und eine </span><span class='text-black font-medium'>rechtssichere Auskunft</span><span class='text-nest-gray'> über alle vorherrschenden </span><span class='text-black font-medium'>Vorschriften, Gesetze und Bebauungsmöglichkeiten</span><span class='text-nest-gray'> gibt. Diese Analyse ist die Grundlage für jedes Bauvorhaben und gibt dir eine klar strukturierte Übersicht über dein Baugrundstück.</span>\n\n<span class='text-nest-gray'>Solltest du dich nach dem </span><span class='text-black font-medium'>Konzept-Check</span><span class='text-nest-gray'> gegen unser Nest Haus entscheiden, dient dir diese </span><span class='text-black font-medium'>Analyse</span><span class='text-nest-gray'> auch als </span><span class='text-black font-medium'>Grundlage</span><span class='text-nest-gray'> für </span><span class='text-black font-medium'>alle anderen Bauvorhaben</span><span class='text-nest-gray'>.</span>",
+                image: IMAGES.function.nestHausGrundstueckCheck,
                 backgroundColor: "#F4F4F4",
                 buttons: [
                   {
-                    text: "Konzept-Check",
+                    text: "Konfigurator",
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",
@@ -164,8 +164,8 @@ export default function KonzeptcheckClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Der Grundstücks-Check"
-            subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
+            title="Der Entwurfsplan"
+            subtitle="Persönlich geplant, individuell gestaltet."
             mobileTitle="Der Grundstücks-Check"
             wrapperMargin="mb-8 md:mb-12"
           />
@@ -175,16 +175,16 @@ export default function KonzeptcheckClient() {
             customData={[
               {
                 id: 2,
-                title: "Zweiter Teil",
+                title: "Teil 2/2",
                 subtitle: "",
                 description:
-                  "<span class='text-nest-gray'>Mit dem Grundstückscheck, der </span><span class='text-black font-medium'>Teil deiner ersten Anzahlung</span><span class='text-nest-gray'> ist, erhältst du sofort </span><span class='text-black font-medium'>rechtliche Sicherheit.</span><span class='text-nest-gray'> Wir prüfen, ob dein Grundstück die </span><span class='text-black font-medium'>gesetzlichen Anforderungen</span><span class='text-nest-gray'> erfüllt. Dazu gehören das jeweilige </span><span class='text-black font-medium'>Landesbaugesetz,</span><span class='text-nest-gray'> das </span><span class='text-black font-medium'>Raumordnungsgesetz</span><span class='text-nest-gray'> und die </span><span class='text-black font-medium'>örtlichen Vorschriften</span><span class='text-nest-gray'>, damit dein Bauvorhaben von Beginn an </span><span class='text-black font-medium'>auf sicheren Grundlagen</span><span class='text-nest-gray'> steht.</span>\n\n<span class='text-nest-gray'>Diese </span><span class='text-black font-medium'>Leistungen bleiben dir erhalten,</span><span class='text-nest-gray'> auch wenn du dich gegen den Bau deines Hauses mit Nest entscheiden solltest.*</span>",
-                image: IMAGES.function.nestHausGrundstueckCheck,
+                  "<span class='text-nest-gray'>Nach der Analyse deines Grundstücks erstellen wir einen </span><span class='text-black font-medium'>individuell</span><span class='text-nest-gray'> für dich </span><span class='text-black font-medium'>maßgeschneiderten Entwurfsplan</span><span class='text-nest-gray'>, der dir eine </span><span class='text-black font-medium'>konkrete Vorstellung</span><span class='text-nest-gray'> davon gibt, wie </span><span class='text-black font-medium'>dein Nest Haus</span><span class='text-nest-gray'> auf </span><span class='text-black font-medium'>deinem Grundstück</span><span class='text-nest-gray'> aussehen könnte.</span>\n\n<span class='text-nest-gray'>Unser </span><span class='text-black font-medium'>Konfigurator</span><span class='text-nest-gray'> dient dafür, dass du ein </span><span class='text-black font-medium'>Preisgefühl</span><span class='text-nest-gray'> für </span><span class='text-black font-medium'>dein Nest</span><span class='text-nest-gray'> bekommst und hilft uns dabei, Eine </span><span class='text-black font-medium'>Ausgangsbasis</span><span class='text-nest-gray'> für deinen </span><span class='text-black font-medium'>individuellen Entwurf</span><span class='text-nest-gray'> festzulegen.</span>",
+                image: IMAGES.function.nestHausEntwurfVorentwurf,
                 backgroundColor: "#F4F4F4",
                 imagePosition: "center" as const,
                 buttons: [
                   {
-                    text: "Konzept-Check",
+                    text: "Konfigurator",
                     variant: "primary",
                     size: "xs",
                     link: "/konfigurator",
@@ -194,8 +194,8 @@ export default function KonzeptcheckClient() {
             ]}
           />
           <p className="p-primary-small2 text-nest-gray mt-4 text-center max-w-[300px] md:max-w-[500px] mx-auto">
-            *Diese Leistungen bleiben dir erhalten, auch wenn du dich gegen den
-            Bau deines Hauses mit Nest entscheiden solltest.
+            *Mit dem Konzept-Check erhältst du deine Grundstücks-Analyse, deinen
+            individuellen Entwurfsplan und eine konkrete Kostenplanung.
           </p>
         </section>
 
