@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [7a4e3d59301e614a416c863c362f067b8d83fd5d] - Thu Nov 20 14:44:01 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: correct favicon and Apple Touch Icon metadata configuration  Bug Fixes: 1. Removed /favicon.ico reference from metadata (Next.js serves it automatically from src/app/) 2. Removed apple-icon.svg as SVG is not supported for Apple Touch Icons (iOS/Safari only support PNG/JPG) 3. Commented out apple icon metadata until proper PNG file is created  Technical Details: - Next.js 13+ automatically serves favicon.ico from src/app/favicon.ico - Apple Touch Icons require PNG or JPG format (180x180px recommended) - SVG format is not supported for apple-touch-icon on iOS devices - Transparent icon.svg remains for modern browsers (Chrome, Firefox, Edge)  TODO: Create apple-touch-icon.png (180x180px with opaque background) for Safari/iOS support  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/layout.tsx
+
+
+---
+
 ## [689384ad41c3bce263ca90874bd250a1e0617fb7] - Thu Nov 20 14:39:24 2025 +0100
 
 **Author**: stenkjan
