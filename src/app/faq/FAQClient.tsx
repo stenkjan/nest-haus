@@ -15,33 +15,87 @@ interface FAQItem {
 const faqItems: FAQItem[] = [
   {
     id: 1,
-    question: "Wie lange dauert der Entwurfsprozess?",
+    question: "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
     answer:
-      "Der Entwurfsprozess dauert in der Regel 4-6 Wochen, abhängig von der Komplexität deines Projekts und der Anzahl der Anpassungswünsche. Sobald wir deine erste Anzahlung erhalten haben, beginnen wir mit der rechtlichen Prüfung und der Erstellung deines individuellen Entwurfs.",
+      "Das Nest Haus versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
   },
   {
     id: 2,
-    question: "Was ist im Grundstückscheck enthalten?",
+    question: "Was ist der Konzept-Check?",
     answer:
-      "Der Grundstückscheck umfasst eine umfassende rechtliche Prüfung deines Grundstücks. Wir analysieren die Vereinbarkeit mit dem Landesbaugesetz, dem Raumordnungsgesetz und den örtlichen Bestimmungen. Zusätzlich prüfen wir alle technischen Voraussetzungen für den Aufbau deines Nest-Hauses.",
+      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
   },
   {
     id: 3,
-    question: "Kann ich den Entwurf später noch ändern?",
+    question: "Was kostet der Konzept-Check?",
     answer:
-      "Ja, selbstverständlich! Der Entwurf ist der erste Schritt, um deine Idee greifbar zu machen. Nach der Präsentation des Entwurfs kannst du Änderungswünsche äußern, die wir gemeinsam besprechen und umsetzen. Kleinere Anpassungen sind im Paket enthalten, größere Änderungen werden transparent kalkuliert.",
+      "Der Konzept-Check kostet regulär € 3.000,–.",
   },
   {
     id: 4,
-    question: "Muss ich vor dem Entwurf konfigurieren?",
+    question: "Wer erstellt den Einreichplan?",
     answer:
-      "Nein, das ist nicht notwendig. Du entscheidest selbst, ob du dein Zuhause bereits im Konfigurator gestalten möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Entwurf.",
+      "Alles in einer Hand. Wir sind ein staatlich zertifizierter und registrierter Baumeisterbetrieb in Österreich. Somit dürfen wir alle Pläne, die zu deinem Bauprojekt gehören, in allen Bundesländern stempeln, einreichen und auch die Bauausführung übernehmen.",
   },
   {
     id: 5,
-    question: "Was passiert, wenn mein Grundstück nicht geeignet ist?",
+    question: "Fenster und Türen – warum sind keine Fenster im Konfigurator zu sehen?",
     answer:
-      "Sollte sich bei der Prüfung herausstellen, dass dein Grundstück nicht für ein Nest-Haus geeignet ist, informieren wir dich umgehend und transparent über die Gründe. In diesem Fall erstatten wir dir einen Teil der Anzahlung zurück und bieten dir an, gemeinsam nach Lösungen oder Alternativen zu suchen.",
+      "Alle Fenster und Türen werden bei uns individuell mit dir gemeinsam und passend zu deinem Grundriss gestaltet. Wir positionieren diese perfekt nach den örtlichen Gegebenheiten, idealer Himmelsausrichtung, Belichtungssituation und deinen persönlichen Präferenzen.",
+  },
+  {
+    id: 6,
+    question: "Ist der Preis im Konfigurator fix?",
+    answer:
+      "Die Preise im Konfigurator dienen als Basis für die Gestaltung deines Hauses. Du bekommst damit ein erstes Preisgefühl, das uns in der gemeinsamen Planung deines individuellen Nest Hauses hilft. Einen konkreten Preis erhältst du nach Durchführung des Konzept-Checks.",
+  },
+  {
+    id: 7,
+    question: "Was kostet ein Nest Haus?",
+    answer:
+      "Der exakte Preis ist abhängig von deinem individuellen Nest-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für dein Nest Haus.",
+  },
+  {
+    id: 8,
+    question: "Wie lange dauert der Konzept-Check?",
+    answer:
+      "Wir stellen deinen Konzept-Check innerhalb von 4 bis 6 Wochen fertig.",
+  },
+  {
+    id: 9,
+    question: "Was passiert, wenn ich mich nach dem Konzept-Check gegen das Nest Haus entscheide?",
+    answer:
+      "Die Unterlagen des Konzept-Checks gehören dir. Das bedeutet, du kannst die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
+  },
+  {
+    id: 10,
+    question: "Wie aufwändig ist der Auf- und Abbau des Nest Hauses?",
+    answer:
+      "Mit unserer Technologie ermöglichen wir einen sehr unkomplizierten Auf- und Abbau deines Nest Hauses. Der Abbau erfolgt innerhalb von 1 bis 2 Werktagen. Der Aufbau erfolgt ebenso in 1 bis 2 Werktagen.",
+  },
+  {
+    id: 11,
+    question: "Wie groß ist das Nest Haus?",
+    answer:
+      "Das Nest Haus ermöglicht eine hochwertige architektonische Atmosphäre mit Raumhöhen von bis zu 5 Metern. Diese Höhe erlaubt es, eine Zwischendecke einzuziehen und ein zweites Geschoss zu schaffen. Die Raumbreite beträgt 7,5 Meter. Die Wohnfläche eines Moduls beträgt 20 Quadratmeter, und diese Module können beliebig kombiniert werden.",
+  },
+  {
+    id: 12,
+    question: "Muss ich die vorgeschlagenen Fassadensysteme verwenden?",
+    answer:
+      "Unser Nest-System ist bis zur letzten Schraube durchdacht und optimiert. Das trägt wesentlich dazu bei, hochwertige Architektur leistbar zu machen. Wir empfehlen daher nicht, das Fassadensystem zu ändern.",
+  },
+  {
+    id: 13,
+    question: "Muss ich die vorgeschlagenen Innenwand-Paneele verwenden?",
+    answer:
+      "Die Innenwandverkleidung basiert auf den von uns vorgeschlagenen Paneelen, kann jedoch problemlos durch andere Paneele ersetzt werden. Hier kannst du dich frei entfalten.",
+  },
+  {
+    id: 14,
+    question: "Muss ich den vorgeschlagenen Fußbodenbelag verwenden?",
+    answer:
+      "Die vorgeschlagenen Fußbodenbeläge können ebenfalls problemlos durch andere Materialien ersetzt werden. Auch hier kannst du dich gestalterisch frei entfalten.",
   },
 ];
 
