@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2bd014d92b1f227a6fc4055ce40ee9993bda023a] - Thu Nov 20 11:27:31 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: consolidate Google Analytics type definitions  - Removed redundant global declarations from GoogleAnalyticsProvider and GoogleAnalyticsEvents. - Introduced a new type definition file for Google Analytics to centralize type declarations for the gtag function and dataLayer. - This refactor improves maintainability and clarity of the analytics implementation.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/analytics/GoogleAnalyticsProvider.tsx
+
+
+---
+
 ## [aabb4035a3e421973abbce1cd84b75ff00b11e90] - Thu Nov 20 11:17:46 2025 +0100
 
 **Author**: stenkjan
