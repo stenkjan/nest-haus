@@ -886,24 +886,6 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
     },
     {
         id: 3,
-        title: "Wohnen wie du willst, nur mit Nest",
-        subtitle: "",
-        description: "So funktioniert die Zukunft",
-        image: IMAGES.function.nestHausInteriorSteinplatten,
-        backgroundColor: "#f4f4f4",
-        aspectRatio: "2x1", // Portrait format
-    },
-    {
-        id: 4,
-        title: "Atmosphäre die man spürt",
-        subtitle: "",
-        description: "Fühlen statt sehen",
-        image: IMAGES.hero.mobile.nestHaus3,
-        backgroundColor: "#F4F4F4",
-        aspectRatio: "2x1", // Portrait format
-    },
-    {
-        id: 5,
         title: "Erzähle uns von deiner Idee",
         subtitle: "",
         description: "Wir machen's möglich",
@@ -919,6 +901,25 @@ export const ENTWURF_VIDEO_CARDS_CONTENT: ContentCardData[] = [
             },
         ],
     },
+    {
+        id: 4,
+        title: "Atmosphäre die man spürt",
+        subtitle: "",
+        description: "Fühlen statt sehen",
+        image: IMAGES.hero.mobile.nestHaus3,
+        backgroundColor: "#F4F4F4",
+        aspectRatio: "2x1", // Portrait format
+    },
+    {
+        id: 5,
+        title: "Wohnen wie du willst, nur mit Nest",
+        subtitle: "",
+        description: "So funktioniert die Zukunft",
+        image: IMAGES.function.nestHausInteriorSteinplatten,
+        backgroundColor: "#f4f4f4",
+        aspectRatio: "2x1", // Portrait format
+    },
+
 ];
 
 /**
