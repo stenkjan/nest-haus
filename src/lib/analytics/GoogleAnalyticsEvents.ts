@@ -225,15 +225,3 @@ export const trackDownload = (fileName: string, fileType: string) => {
   }
 }
 
-// Extend window object for gtag
-declare global {
-  interface Window {
-    gtag: (
-      command: 'consent' | 'config' | 'event' | 'set',
-      targetOrAction: string,
-      params?: Record<string, unknown>
-    ) => void
-    dataLayer: unknown[]
-  }
-}
-

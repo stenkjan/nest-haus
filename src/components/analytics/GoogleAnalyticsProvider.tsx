@@ -76,15 +76,3 @@ export default function GoogleAnalyticsProvider({ gaId }: GoogleAnalyticsProvide
   return <GoogleAnalytics gaId={gaId} />
 }
 
-// Extend window object for gtag
-declare global {
-  interface Window {
-    gtag: (
-      command: 'consent' | 'config' | 'event' | 'set',
-      targetOrAction: string,
-      params?: Record<string, unknown>
-    ) => void
-    dataLayer: unknown[]
-  }
-}
-
