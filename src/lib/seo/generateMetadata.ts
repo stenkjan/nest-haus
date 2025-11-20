@@ -26,7 +26,7 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO_CONFIG = {
     home: {
-        title: "®Nest-Haus | Modulare Häuser & Nachhaltiges Bauen in Österreich",
+        title: "®Nest-Haus | Dein Stil. Dein Zuhause.",
         description: "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
         keywords: "modulhaus, fertighaus, nachhaltiges bauen, energieeffizient, Österreich, hausbau konfigurator, modulare häuser, nachhaltig wohnen",
         priority: 1.0,
