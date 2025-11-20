@@ -46,12 +46,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
+      // favicon.ico is automatically served from src/app/favicon.ico by Next.js
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    apple: [
-      { url: "/apple-icon.svg", sizes: "180x180", type: "image/svg+xml" },
-    ],
+    // Note: Apple Touch Icon should be PNG format
+    // TODO: Replace apple-icon.svg with apple-touch-icon.png (180x180px with opaque background)
+    // apple: [
+    //   { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    // ],
   },
   openGraph: {
     title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
