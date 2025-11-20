@@ -242,15 +242,61 @@ export default function GeoLocationMap() {
                 />
               ))}
               
-              {/* Simplified continent shapes */}
+              {/* World Continents - Simplified SVG Paths */}
+              
+              {/* North America */}
               <path
-                d="M 250 150 L 280 160 L 300 140 L 320 150 L 340 145 L 360 155 L 380 150 L 400 160 L 380 180 L 360 190 L 340 185 L 320 195 L 300 190 L 280 200 L 260 190 L 250 180 Z"
+                d="M 100 100 L 80 120 L 90 150 L 110 180 L 140 200 L 170 210 L 200 190 L 220 160 L 210 130 L 190 110 L 160 95 L 130 90 Z"
                 fill="#10b981"
-                opacity="0.6"
+                opacity="0.7"
                 stroke="#059669"
                 strokeWidth="1"
               />
-              <text x="310" y="175" fontSize="12" fill="#065f46" fontWeight="bold">Europe</text>
+              
+              {/* South America */}
+              <path
+                d="M 200 240 L 220 260 L 230 290 L 240 320 L 235 350 L 225 380 L 210 390 L 195 385 L 185 360 L 180 330 L 185 300 L 195 270 L 205 250 Z"
+                fill="#10b981"
+                opacity="0.7"
+                stroke="#059669"
+                strokeWidth="1"
+              />
+              
+              {/* Europe */}
+              <path
+                d="M 470 120 L 490 110 L 510 115 L 530 125 L 540 140 L 535 155 L 520 165 L 500 170 L 480 165 L 465 150 L 460 135 Z"
+                fill="#10b981"
+                opacity="0.7"
+                stroke="#059669"
+                strokeWidth="1"
+              />
+              
+              {/* Africa */}
+              <path
+                d="M 480 180 L 500 190 L 520 210 L 535 240 L 540 270 L 535 300 L 520 330 L 500 345 L 480 340 L 465 320 L 460 290 L 465 260 L 475 230 L 480 200 Z"
+                fill="#10b981"
+                opacity="0.7"
+                stroke="#059669"
+                strokeWidth="1"
+              />
+              
+              {/* Asia */}
+              <path
+                d="M 550 100 L 600 90 L 650 95 L 700 110 L 730 130 L 750 150 L 760 170 L 755 190 L 740 200 L 710 205 L 670 200 L 630 190 L 600 175 L 570 160 L 550 140 L 545 120 Z"
+                fill="#10b981"
+                opacity="0.7"
+                stroke="#059669"
+                strokeWidth="1"
+              />
+              
+              {/* Australia */}
+              <path
+                d="M 750 320 L 780 315 L 810 320 L 830 335 L 835 355 L 825 370 L 805 375 L 780 373 L 760 365 L 750 350 L 748 335 Z"
+                fill="#10b981"
+                opacity="0.7"
+                stroke="#059669"
+                strokeWidth="1"
+              />
               
               {/* Location markers */}
               {data.topCities.map((city, index) => {

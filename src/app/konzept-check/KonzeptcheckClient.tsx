@@ -107,9 +107,9 @@ export default function KonzeptcheckClient() {
         {/* Grundrissplan Card - No Padding (TALL CARD) */}
         <section id="konzept-check" className="w-full py-8 md:py-16 bg-white">
           <SectionHeader
-            title="Der erste Schritt"
-            subtitle="Dein Nest Haus. Persönlich geplant, individuell gestaltet."
-            mobileTitle="Der erste Scrhitt"
+            title="Der Konzept-Check"
+            subtitle="Deine optimale Entscheidungsgrundlage."
+            mobileTitle="Der Konzept-Check"
             wrapperMargin="mb-8 md:mb-12"
           />
 
@@ -164,9 +164,9 @@ export default function KonzeptcheckClient() {
           className="w-full py-8 md:py-16 bg-white"
         >
           <SectionHeader
-            title="Dein Grundstücks-Check"
-            subtitle="Der erste Schritt für jedes Bauvorhaben"
-            mobileTitle="Grundstücks-Check"
+            title="Der Grundstücks-Check"
+            subtitle="Starte dein Bauvorhaben mit Rechtssicherheit"
+            mobileTitle="Der Grundstücks-Check"
             wrapperMargin="mb-8 md:mb-12"
           />
           <UnifiedContentCard

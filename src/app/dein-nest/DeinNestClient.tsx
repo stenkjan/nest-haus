@@ -124,7 +124,7 @@ export default function DeinNestClient() {
               {/* Header at Top */}
               <div className="flex justify-center">
                 <SectionHeader
-                  title="Design oder Bestpreis?"
+                  title="Qualität oder Bestpreis?"
                   subtitle="Nest verbindet beides in einem System"
                   titleClassName="text-white"
                   subtitleClassName="text-white"
