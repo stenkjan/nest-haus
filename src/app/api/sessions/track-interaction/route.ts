@@ -93,53 +93,82 @@ export async function POST(request: NextRequest) {
     if (existingSessionToday && isSameDay(existingSessionToday.lastVisitDate, new Date())) {
       // Same user, same day - just update activity timestamp
       // DON'T increment visitCount on every interaction - only on new sessions
-      await prisma.userSession.update({
-        where: { id: existingSessionToday.id },
-        data: {
-          lastActivity: new Date(),
-          // Update location data if not already set
-          ...(locationData && !existingSessionToday.country && {
-            country: locationData.country,
-            city: locationData.city,
-            latitude: locationData.latitude,
-            longitude: locationData.longitude,
-          }),
-        }
-      });
       
-      // Also ensure the current sessionId is linked to the userIdentifier
-      await prisma.userSession.upsert({
-        where: { sessionId },
-        update: {
-          lastActivity: new Date(),
-          userIdentifier,
-        },
-        create: {
-          sessionId,
-          ipAddress,
-          userAgent,
-          referrer,
-          userIdentifier,
-          visitCount: 1,
-          lastVisitDate: new Date(),
-          ...(locationData && {
-            country: locationData.country,
-            city: locationData.city,
-            latitude: locationData.latitude,
-            longitude: locationData.longitude,
-          }),
-          ...(trafficData && {
-            trafficSource: trafficData.source,
-            trafficMedium: trafficData.medium,
-            referralDomain: trafficData.domain,
-          }),
-          status: 'ACTIVE'
-        }
-      });
+      // Check if current sessionId is different from the existing session
+      const isNewSessionId = existingSessionToday.sessionId !== sessionId;
+      
+      if (isNewSessionId) {
+        // This is a new browser session for the same user today (e.g., opened new tab)
+        // Update the existing session and also create/update the new sessionId
+        // Both should share the same userIdentifier and visitCount
+        
+        // First, update the canonical session with latest activity
+        await prisma.userSession.update({
+          where: { id: existingSessionToday.id },
+          data: {
+            lastActivity: new Date(),
+            // Update location data if not already set
+            ...(locationData && !existingSessionToday.country && {
+              country: locationData.country,
+              city: locationData.city,
+              latitude: locationData.latitude,
+              longitude: locationData.longitude,
+            }),
+          }
+        });
+        
+        // Then ensure the new sessionId exists and inherits the user's visitCount
+        await prisma.userSession.upsert({
+          where: { sessionId },
+          update: {
+            lastActivity: new Date(),
+            userIdentifier,
+          },
+          create: {
+            sessionId,
+            ipAddress,
+            userAgent,
+            referrer,
+            userIdentifier,
+            visitCount: existingSessionToday.visitCount, // Inherit visitCount from canonical session
+            lastVisitDate: new Date(),
+            ...(locationData && {
+              country: locationData.country,
+              city: locationData.city,
+              latitude: locationData.latitude,
+              longitude: locationData.longitude,
+            }),
+            ...(trafficData && {
+              trafficSource: trafficData.source,
+              trafficMedium: trafficData.medium,
+              referralDomain: trafficData.domain,
+            }),
+            status: 'ACTIVE'
+          }
+        });
+      } else {
+        // Same sessionId as existing - just update activity
+        await prisma.userSession.update({
+          where: { id: existingSessionToday.id },
+          data: {
+            lastActivity: new Date(),
+            // Update location data if not already set
+            ...(locationData && !existingSessionToday.country && {
+              country: locationData.country,
+              city: locationData.city,
+              latitude: locationData.latitude,
+              longitude: locationData.longitude,
+            }),
+          }
+        });
+      }
     } else {
       // New session (either new user or same user on different day)
-      // Increment visitCount ONLY when creating a truly new session
+      // Increment visitCount ONLY when it's a new day for existing user
       const isNewDay = existingSessionToday && !isSameDay(existingSessionToday.lastVisitDate, new Date());
+      
+      // Get the current visitCount for this user if they exist
+      const currentVisitCount = existingSessionToday?.visitCount || 0;
       
       await prisma.userSession.upsert({
         where: { sessionId },
@@ -172,7 +201,7 @@ export async function POST(request: NextRequest) {
           userAgent,
           referrer,
           userIdentifier,
-          visitCount: 1, // First visit for this user
+          visitCount: isNewDay ? currentVisitCount + 1 : 1, // Increment for returning user, 1 for new user
           lastVisitDate: new Date(),
           // Add geolocation data on creation
           ...(locationData && {

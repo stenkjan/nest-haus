@@ -313,21 +313,24 @@ export function useInteractionTracking({
 
     // Finalize on page unload
     const handleBeforeUnload = () => {
-      // Use sendBeacon as fallback for better reliability on page close
+      // Use sendBeacon with Blob to set correct Content-Type for JSON
       const data = JSON.stringify({ sessionId, config: null });
-      navigator.sendBeacon('/api/sessions/finalize', data);
+      const blob = new Blob([data], { type: 'application/json' });
+      navigator.sendBeacon('/api/sessions/finalize', blob);
     };
 
     // Use both methods for maximum reliability
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('pagehide', handleBeforeUnload);
 
-    // Cleanup
+    // Cleanup - finalize immediately, don't wait for async
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('pagehide', handleBeforeUnload);
-      // Finalize on component unmount (navigation)
-      finalizeSession();
+      
+      // Finalize synchronously on component unmount (navigation)
+      // Fire-and-forget pattern since we can't await in cleanup
+      void finalizeSession();
     };
   }, [sessionId]);
 
