@@ -10,6 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getIPFilterClause } from '@/lib/analytics-filter';
 
 export async function GET(request: NextRequest) {
   try {
@@ -37,6 +38,7 @@ export async function GET(request: NextRequest) {
       case 'all':
         // Fetch all sessions to determine earliest date
         const earliestSession = await prisma.userSession.findFirst({
+          where: getIPFilterClause(),
           orderBy: { createdAt: 'asc' },
           select: { createdAt: true }
         });
@@ -58,12 +60,13 @@ export async function GET(request: NextRequest) {
     const comparisonStartDate = new Date(startDate);
     comparisonStartDate.setDate(startDate.getDate() - daysToFetch);
 
-    // Get all sessions for current and comparison periods
+    // Get all sessions for current and comparison periods (excluding filtered IPs)
     const sessions = await prisma.userSession.findMany({
       where: {
         createdAt: {
           gte: comparisonStartDate
-        }
+        },
+        ...getIPFilterClause()
       },
       select: {
         createdAt: true,

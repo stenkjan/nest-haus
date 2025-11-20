@@ -6,6 +6,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getIPFilterClause } from '@/lib/analytics-filter';
 import { calculateModularPrice } from '@/constants/configurator';
 
 interface DetailedItem {
@@ -507,10 +508,7 @@ export async function GET() {
 
         // Get ALL sessions (not just cart sessions) to show all user activity
         const sessions = await prisma.userSession.findMany({
-            where: {
-                // No status filter - show ACTIVE, IN_CART, COMPLETED, CONVERTED
-                // No configurationData filter - show browsing users too
-            },
+            where: getIPFilterClause(), // Filter out excluded IPs
             include: {
                 selectionEvents: {
                     select: { id: true }

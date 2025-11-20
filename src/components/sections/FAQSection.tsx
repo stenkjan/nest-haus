@@ -21,33 +21,27 @@ interface FAQSectionProps {
 const defaultFAQItems: FAQItem[] = [
   {
     id: 1,
-    question: "Wie lange dauert der Entwurfsprozess?",
+    question: "Was genau ist ein Nest Haus und wie unterscheidet es sich von einem Fertigteilhaus, Tiny House oder Architektenhaus?",
     answer:
-      "Der Entwurfsprozess dauert in der Regel 2-4 Wochen, abhängig von der Komplexität deines Projekts und der Anzahl der Anpassungswünsche. Sobald wir deine erste Anzahlung erhalten haben, beginnen wir mit der rechtlichen Prüfung und der Erstellung deines individuellen Vorentwurfs.",
+      "Das Nest Haus versucht durch optimierte Produktionsbedingungen eine enorm hohe Qualität – vergleichbar mit Luxus-Architektenhäusern – leistbar zu machen. Darüber hinaus ermöglichen wir trotz Standardisierung weiterhin individuelle Gestaltungsmöglichkeiten bei der Raumaufteilung und Grundrissplanung. Die hochpräzise Produktion macht es uns möglich, die Module so passgenau zu fertigen, dass sie mehrmals zusammen- und wieder auseinandergebaut werden können. Dadurch entsteht eine Flexibilität ähnlich wie bei einem Tiny House: Du kannst flexibel bleiben und dein Haus mitnehmen, erweitern oder verkaufen. Das Grundstück bleibt dabei stets unabhängig vom Haus.",
   },
   {
     id: 2,
-    question: "Was ist im Grundstückscheck enthalten?",
+    question: "Was ist der Konzept-Check?",
     answer:
-      "Der Grundstückscheck umfasst eine umfassende rechtliche Prüfung deines Grundstücks. Wir analysieren die Vereinbarkeit mit dem Landesbaugesetz, dem Raumordnungsgesetz und den örtlichen Bestimmungen. Zusätzlich prüfen wir alle technischen Voraussetzungen für den Aufbau deines Nest-Hauses.",
+      "Mit dem Konzept-Check erhältst du deine Grundstücksanalyse, einen individuellen Entwurfsplan sowie eine konkrete Kosten- und Zeitplanung. Solltest du dich gegen den Bau deines Nest Hauses entscheiden, kannst du die Grundstücksanalyse auch für andere Bauvorhaben verwenden.",
   },
   {
     id: 3,
-    question: "Kann ich den Entwurf später noch ändern?",
+    question: "Fenster und Türen – warum sind keine Fenster im Konfigurator zu sehen?",
     answer:
-      "Ja, selbstverständlich! Der Vorentwurf ist der erste Schritt, um deine Idee greifbar zu machen. Nach der Präsentation des Vorentwurfs kannst du Änderungswünsche äußern, die wir gemeinsam besprechen und umsetzen. Kleinere Anpassungen sind im Paket enthalten, größere Änderungen werden transparent kalkuliert.",
+      "Alle Fenster und Türen werden bei uns individuell mit dir gemeinsam und passend zu deinem Grundriss gestaltet. Wir positionieren diese perfekt nach den örtlichen Gegebenheiten, idealer Himmelsausrichtung, Belichtungssituation und deinen persönlichen Präferenzen.",
   },
   {
     id: 4,
-    question: "Muss ich vor dem Entwurf konfigurieren?",
+    question: "Was kostet ein Nest Haus?",
     answer:
-      "Nein, das ist nicht notwendig. Du entscheidest selbst, ob du dein Zuhause bereits im Konfigurator gestalten möchtest, um ein Gefühl für die Kosten zu bekommen, oder ob du ohne Konfiguration fortfährst. In beiden Fällen zahlst du nur für die rechtliche Prüfung und den Vorentwurf.",
-  },
-  {
-    id: 5,
-    question: "Was passiert, wenn mein Grundstück nicht geeignet ist?",
-    answer:
-      "Sollte sich bei der Prüfung herausstellen, dass dein Grundstück nicht für ein Nest-Haus geeignet ist, informieren wir dich umgehend und transparent über die Gründe. In diesem Fall erstatten wir dir einen Teil der Anzahlung zurück und bieten dir an, gemeinsam nach Lösungen oder Alternativen zu suchen.",
+      "Der exakte Preis ist abhängig von deinem individuellen Nest-Entwurf. Diesen arbeiten wir gemeinsam im Konzept-Check aus. Danach erhältst du ein konkretes Angebot für dein Nest Haus.",
   },
 ];
 

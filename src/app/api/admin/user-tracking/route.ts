@@ -8,6 +8,7 @@
 import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
+import { getIPFilterClause } from '@/lib/analytics-filter';
 
 // Type definitions
 interface ConfigurationData {
@@ -208,32 +209,38 @@ class UserTrackingService {
      */
     static async getFunnelMetrics() {
         // Count ALL sessions (including ACTIVE and ABANDONED)
-        const totalSessions = await prisma.userSession.count();
+        const totalSessions = await prisma.userSession.count({
+            where: getIPFilterClause()
+        });
 
         // Sessions with configuration data (user created a config)
         const configCreated = await prisma.userSession.count({
             where: {
                 configurationData: {
                     not: Prisma.JsonNull
-                }
+                },
+                ...getIPFilterClause()
             }
         });
 
         const reachedCart = await prisma.userSession.count({
             where: {
-                status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] }
+                status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
+                ...getIPFilterClause()
             }
         });
 
         const completedInquiry = await prisma.userSession.count({
             where: {
-                status: { in: ['COMPLETED', 'CONVERTED'] }
+                status: { in: ['COMPLETED', 'CONVERTED'] },
+                ...getIPFilterClause()
             }
         });
 
         const converted = await prisma.userSession.count({
             where: {
-                status: 'CONVERTED'
+                status: 'CONVERTED',
+                ...getIPFilterClause()
             }
         });
 
@@ -365,7 +372,8 @@ class UserTrackingService {
         const sessions = await prisma.userSession.findMany({
             where: {
                 status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
-                totalPrice: { gt: 0 }
+                totalPrice: { gt: 0 },
+                ...getIPFilterClause()
             },
             select: {
                 totalPrice: true
@@ -452,9 +460,7 @@ class UserTrackingService {
     static async getClickAnalytics() {
         // Get ALL sessions (not just cart sessions) to show all user click activity
         const sessionIds = await prisma.userSession.findMany({
-            where: {
-                // No status filter - show clicks from all sessions
-            },
+            where: getIPFilterClause(), // Filter out excluded IPs
             select: {
                 sessionId: true
             }
@@ -788,7 +794,8 @@ class UserTrackingService {
         const sessions = await prisma.userSession.findMany({
             where: {
                 status: { in: ['IN_CART', 'COMPLETED', 'CONVERTED'] },
-                endTime: { not: null }
+                endTime: { not: null },
+                ...getIPFilterClause()
             },
             select: {
                 sessionId: true,

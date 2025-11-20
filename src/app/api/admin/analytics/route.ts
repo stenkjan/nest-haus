@@ -9,6 +9,7 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getIPFilterClause } from '@/lib/analytics-filter';
 
 /**
  * Admin Analytics API
@@ -90,7 +91,8 @@ class IsolatedAnalyticsService {
           },
           userIdentifier: {
             not: null
-          }
+          },
+          ...getIPFilterClause()
         }
       });
 
@@ -106,7 +108,9 @@ class IsolatedAnalyticsService {
    */
   static async getTotalSessions(): Promise<number> {
     try {
-      const count = await prisma.userSession.count();
+      const count = await prisma.userSession.count({
+        where: getIPFilterClause()
+      });
       return count;
     } catch (error) {
       console.error('❌ Failed to get total sessions:', error);
@@ -126,7 +130,8 @@ class IsolatedAnalyticsService {
         where: {
           startTime: {
             gte: today
-          }
+          },
+          ...getIPFilterClause()
         }
       });
 
@@ -147,7 +152,8 @@ class IsolatedAnalyticsService {
         where: {
           endTime: {
             not: null
-          }
+          },
+          ...getIPFilterClause()
         },
         select: {
           startTime: true,
@@ -194,7 +200,8 @@ class IsolatedAnalyticsService {
       // Get total sessions (all statuses)
       const totalSessions = await prisma.userSession.count({
         where: {
-          status: { in: ['ACTIVE', 'IN_CART', 'COMPLETED', 'CONVERTED', 'ABANDONED'] }
+          status: { in: ['ACTIVE', 'IN_CART', 'COMPLETED', 'CONVERTED', 'ABANDONED'] },
+          ...getIPFilterClause()
         }
       });
 
@@ -203,7 +210,8 @@ class IsolatedAnalyticsService {
       // Get converted sessions (paid/confirmed)
       const convertedSessions = await prisma.userSession.count({
         where: {
-          status: 'CONVERTED'
+          status: 'CONVERTED',
+          ...getIPFilterClause()
         }
       });
 
@@ -247,7 +255,8 @@ class IsolatedAnalyticsService {
         where: {
           startTime: {
             gte: weekAgo
-          }
+          },
+          ...getIPFilterClause()
         }
       });
 

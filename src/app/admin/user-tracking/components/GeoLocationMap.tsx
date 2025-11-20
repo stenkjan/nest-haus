@@ -205,8 +205,8 @@ export default function GeoLocationMap() {
         /* Map View - Using react-svg-worldmap with location dots */
         <div className="relative">
           {/* World Map Container - Centered with max width */}
-          <div className="bg-gradient-to-b from-sky-50 to-sky-100 rounded-lg p-8 flex items-center justify-center">
-            <div className="w-full max-w-5xl mx-auto relative">
+          <div className="bg-gradient-to-b from-sky-50 to-sky-100 rounded-lg p-8">
+            <div className="w-full mx-auto relative" style={{ maxWidth: '1200px' }}>
               {/* World Map SVG */}
               <div className="relative">
                 <WorldMap
@@ -234,23 +234,34 @@ export default function GeoLocationMap() {
                   }}
                 />
                 
-                {/* Location Dots Overlay */}
+                {/* Location Dots Overlay - Matches react-svg-worldmap viewBox */}
                 <svg 
                   className="absolute inset-0 w-full h-full pointer-events-none"
-                  viewBox="0 0 800 400"
+                  viewBox="0 0 1009 665"
                   preserveAspectRatio="xMidYMid meet"
+                  style={{ top: 0, left: 0 }}
                 >
                   {data.topCities.map((city, index) => {
-                    // Convert lat/lng to SVG coordinates (Equirectangular projection)
-                    // Longitude: -180 to 180 → 0 to 800
-                    // Latitude: 90 to -90 → 0 to 400
-                    const x = ((city.lng + 180) / 360) * 800;
-                    const y = ((90 - city.lat) / 180) * 400;
+                    // Convert lat/lng to SVG coordinates matching react-svg-worldmap
+                    // react-svg-worldmap uses Mercator projection with viewBox="0 0 1009 665"
+                    
+                    // Mercator projection formulas
+                    const toRadians = (deg: number) => (deg * Math.PI) / 180;
+                    
+                    // X: Longitude mapping (-180 to 180 → 0 to 1009)
+                    const x = ((city.lng + 180) / 360) * 1009;
+                    
+                    // Y: Latitude mapping with Mercator projection
+                    // Standard Mercator: y = ln(tan(π/4 + lat/2))
+                    const latRad = toRadians(city.lat);
+                    const mercatorY = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
+                    // Normalize to viewBox height (Mercator range is approximately -π to π)
+                    const y = (1 - (mercatorY / Math.PI + 1) / 2) * 665;
                     
                     // Scale dot size based on session count
                     const maxCount = Math.max(...data.topCities.map(c => c.count));
-                    const minRadius = 3;
-                    const maxRadius = 16;
+                    const minRadius = 4;
+                    const maxRadius = 18;
                     const radius = minRadius + (city.count / maxCount) * (maxRadius - minRadius);
                     
                     // Only show labels for top 3 cities
@@ -266,7 +277,7 @@ export default function GeoLocationMap() {
                         <circle
                           cx={x}
                           cy={y}
-                          r={radius + 3}
+                          r={radius + 4}
                           fill="#ef4444"
                           opacity="0.2"
                           className="animate-pulse"
@@ -297,8 +308,8 @@ export default function GeoLocationMap() {
                         {showLabel && (
                           <text
                             x={x}
-                            y={y - radius - 8}
-                            fontSize="11"
+                            y={y - radius - 10}
+                            fontSize="12"
                             fontWeight="600"
                             fill="#1f2937"
                             textAnchor="middle"
@@ -311,11 +322,11 @@ export default function GeoLocationMap() {
                           </text>
                         )}
                         {/* Session count badge for larger dots */}
-                        {radius > 8 && (
+                        {radius > 10 && (
                           <text
                             x={x}
                             y={y + 1}
-                            fontSize="9"
+                            fontSize="10"
                             fontWeight="700"
                             fill="#ffffff"
                             textAnchor="middle"

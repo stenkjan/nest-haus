@@ -7,6 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getIPFilterClause } from '@/lib/analytics-filter';
 
 export async function GET(_request: NextRequest) {
   try {
@@ -22,7 +23,8 @@ export async function GET(_request: NextRequest) {
         },
         country: {
           not: null
-        }
+        },
+        ...getIPFilterClause()
       },
       select: {
         country: true,

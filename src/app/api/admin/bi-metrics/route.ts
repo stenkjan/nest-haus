@@ -10,6 +10,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getIPFilterClause } from '@/lib/analytics-filter';
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -25,6 +26,7 @@ export async function GET(_request: NextRequest) {
         createdAt: {
           gte: sevenDaysAgo,
         },
+        ...getIPFilterClause()
       },
       select: {
         createdAt: true,
@@ -56,6 +58,7 @@ export async function GET(_request: NextRequest) {
     try {
       // Type cast to bypass TypeScript until Prisma regenerates with new schema
       const allSessions = await prisma.userSession.findMany({
+        where: getIPFilterClause(),
         select: {
           id: true,
         },
