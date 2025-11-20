@@ -49,6 +49,9 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
+    apple: [
+      { url: "/apple-icon.svg", sizes: "180x180", type: "image/svg+xml" },
+    ],
   },
   openGraph: {
     title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
