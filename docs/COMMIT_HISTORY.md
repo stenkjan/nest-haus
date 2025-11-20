@@ -4,6 +4,15 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [4a1558e8d753a082f289113f7ae91dd24b22d73e] - Thu Nov 20 11:47:09 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update home page SEO title for improved branding  - Changed the home page SEO title to "®Nest-Haus | Dein Stil. Dein Zuhause." for better alignment with brand messaging. - Maintained existing description and keywords to ensure consistency in SEO strategy.  `
+
+### Changes Analysis
+
+---
+
 ## [0d207525e6b20dd5062f0d02a4518a061bfaac15] - Thu Nov 20 11:29:19 2025 +0100
 
 **Author**: stenkjan
