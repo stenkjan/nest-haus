@@ -91,15 +91,12 @@ export async function POST(request: NextRequest) {
 
     // 2. Ensure session exists using upsert pattern with deduplication logic
     if (existingSessionToday && isSameDay(existingSessionToday.lastVisitDate, new Date())) {
-      // Same user, same day - increment visit count
+      // Same user, same day - just update activity timestamp
+      // DON'T increment visitCount on every interaction - only on new sessions
       await prisma.userSession.update({
         where: { id: existingSessionToday.id },
         data: {
           lastActivity: new Date(),
-          lastVisitDate: new Date(),
-          visitCount: {
-            increment: 1
-          },
           // Update location data if not already set
           ...(locationData && !existingSessionToday.country && {
             country: locationData.country,
@@ -109,14 +106,53 @@ export async function POST(request: NextRequest) {
           }),
         }
       });
+      
+      // Also ensure the current sessionId is linked to the userIdentifier
+      await prisma.userSession.upsert({
+        where: { sessionId },
+        update: {
+          lastActivity: new Date(),
+          userIdentifier,
+        },
+        create: {
+          sessionId,
+          ipAddress,
+          userAgent,
+          referrer,
+          userIdentifier,
+          visitCount: 1,
+          lastVisitDate: new Date(),
+          ...(locationData && {
+            country: locationData.country,
+            city: locationData.city,
+            latitude: locationData.latitude,
+            longitude: locationData.longitude,
+          }),
+          ...(trafficData && {
+            trafficSource: trafficData.source,
+            trafficMedium: trafficData.medium,
+            referralDomain: trafficData.domain,
+          }),
+          status: 'ACTIVE'
+        }
+      });
     } else {
       // New session (either new user or same user on different day)
+      // Increment visitCount ONLY when creating a truly new session
+      const isNewDay = existingSessionToday && !isSameDay(existingSessionToday.lastVisitDate, new Date());
+      
       await prisma.userSession.upsert({
         where: { sessionId },
         update: {
           lastActivity: new Date(),
           lastVisitDate: new Date(),
           userIdentifier,
+          // Only increment visitCount if it's a new day for this user
+          ...(isNewDay && {
+            visitCount: {
+              increment: 1
+            }
+          }),
           // Update location data if not already set
           ...(locationData && {
             country: locationData.country,
@@ -136,7 +172,7 @@ export async function POST(request: NextRequest) {
           userAgent,
           referrer,
           userIdentifier,
-          visitCount: 1,
+          visitCount: 1, // First visit for this user
           lastVisitDate: new Date(),
           // Add geolocation data on creation
           ...(locationData && {

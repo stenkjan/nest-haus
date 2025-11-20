@@ -280,6 +280,57 @@ export function useInteractionTracking({
     await Promise.allSettled(Array.from(pendingTracksRef.current));
   }, []);
 
+  /**
+   * Finalize session when user leaves the site
+   * Sets endTime in database to calculate session duration
+   */
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const finalizeSession = async () => {
+      try {
+        console.log('📊 Finalizing session:', sessionId.substring(0, 20) + '...');
+        
+        // Wait for any pending tracks to complete first
+        await Promise.allSettled(Array.from(pendingTracksRef.current));
+        
+        // Call finalize API to set endTime
+        await fetch('/api/sessions/finalize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId,
+            config: null, // No config data needed, just finalizing the session
+          }),
+          keepalive: true, // Ensure request completes even if page is closing
+        });
+        
+        console.log('✅ Session finalized');
+      } catch (error) {
+        console.error('❌ Failed to finalize session:', error);
+      }
+    };
+
+    // Finalize on page unload
+    const handleBeforeUnload = () => {
+      // Use sendBeacon as fallback for better reliability on page close
+      const data = JSON.stringify({ sessionId, config: null });
+      navigator.sendBeacon('/api/sessions/finalize', data);
+    };
+
+    // Use both methods for maximum reliability
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handleBeforeUnload);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('pagehide', handleBeforeUnload);
+      // Finalize on component unmount (navigation)
+      finalizeSession();
+    };
+  }, [sessionId]);
+
   return {
     trackClick,
     trackPageVisit,
