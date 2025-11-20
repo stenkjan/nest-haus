@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [12f283160b84e43b6ac8634c6f36042cf419d98a] - Thu Nov 20 13:51:14 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Update GeoLocationMap with detailed continent shapes and improve UI text  - Enhanced GeoLocationMap by adding simplified SVG paths for continents: North America, South America, Europe, Africa, Asia, and Australia. - Updated opacity for Australia path for better visibility. - Revised text in DeinNestClient and KonzeptcheckClient for improved clarity and branding consistency.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/GeoLocationMap.tsx
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/konzept-check/KonzeptcheckClient.tsx
+
+
+---
+
 ## [2c2557c620ca51846b958b750bffa85b5a4fa385] - Thu Nov 20 13:24:33 2025 +0100
 
 **Author**: stenkjan
