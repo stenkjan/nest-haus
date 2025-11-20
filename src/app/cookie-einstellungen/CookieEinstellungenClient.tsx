@@ -52,9 +52,27 @@ const cookieCategories: CookieCategory[] = [
     id: "analytics",
     title: "Analyse-Cookies",
     description:
-      "Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem sie Informationen anonym sammeln und melden.",
+      "Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem sie Informationen anonym sammeln und melden. Wir verwenden sowohl eigene Analytics als auch Google Analytics für demografische Einblicke.",
     required: false,
     cookies: [
+      {
+        name: "_ga",
+        purpose: "Google Analytics - Eindeutige Benutzeridentifikation (anonymisiert)",
+        duration: "2 Jahre",
+        provider: "Google Analytics",
+      },
+      {
+        name: "_ga_*",
+        purpose: "Google Analytics - Speichert den Session-Status",
+        duration: "2 Jahre",
+        provider: "Google Analytics",
+      },
+      {
+        name: "_gid",
+        purpose: "Google Analytics - Unterscheidet Benutzer",
+        duration: "24 Stunden",
+        provider: "Google Analytics",
+      },
       {
         name: "nest-analytics",
         purpose: "Erfasst anonyme Nutzungsstatistiken und Seitenaufrufe",
@@ -101,9 +119,15 @@ const cookieCategories: CookieCategory[] = [
     id: "marketing",
     title: "Marketing-Cookies",
     description:
-      "Diese Cookies werden verwendet, um Werbung zu personalisieren und die Effektivität von Werbekampagnen zu messen.",
+      "Diese Cookies werden verwendet, um Werbung zu personalisieren und die Effektivität von Werbekampagnen zu messen. Einschließlich Google-Dienste für Remarketing und Conversion-Tracking.",
     required: false,
     cookies: [
+      {
+        name: "_gcl_*",
+        purpose: "Google Ads - Conversion-Tracking und Remarketing",
+        duration: "90 Tage",
+        provider: "Google Ads",
+      },
       {
         name: "marketing-attribution",
         purpose:

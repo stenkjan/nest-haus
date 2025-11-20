@@ -13,14 +13,18 @@ import CookieBanner from "@/components/CookieBanner";
 import CookieSettingsHandler from "@/components/CookieSettingsHandler";
 // Security components - content protection and DevTools detection
 import SecurityProvider from "@/components/security/SecurityProvider";
-// Analytics components - Web Vitals tracking
+// Analytics components - Web Vitals tracking and Google Analytics
 // TEMPORARILY DISABLED - troubleshooting module resolution
 // import WebVitals from "@/components/analytics/WebVitals";
+import GoogleAnalyticsProvider from "@/components/analytics/GoogleAnalyticsProvider";
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
+
+// Get Google Analytics ID from environment
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 
 export const metadata: Metadata = {
   title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
@@ -40,6 +44,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.nest-haus.at",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
   openGraph: {
     title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
     description:
@@ -51,7 +61,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
-        secureUrl: "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+        secureUrl:
+          "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         width: 1200,
         height: 630,
         alt: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
@@ -64,7 +75,9 @@ export const metadata: Metadata = {
     title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
-    images: ["https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg"],
+    images: [
+      "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
+    ],
   },
   robots: {
     index: true,
@@ -85,8 +98,16 @@ import {
   generateProductSchema,
   generateFAQSchema,
 } from "@/lib/seo/generateMetadata";
+import {
+  generateEnhancedOrganizationSchema,
+  generateWebSiteSchema,
+} from "@/lib/seo/GoogleSEOEnhanced";
+import SEOVerification from "@/lib/seo/GoogleSEOEnhanced";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const organizationSchema = generateLocalBusinessSchema();
+const enhancedOrgSchema = generateEnhancedOrganizationSchema();
+const websiteSchema = generateWebSiteSchema();
 const productSchema = generateProductSchema();
 const faqSchema = generateFAQSchema();
 
@@ -98,11 +119,28 @@ export default function RootLayout({
   return (
     <html lang="de">
       <head>
-        {/* Organization Schema */}
+        {/* SEO Verification Tags */}
+        <SEOVerification />
+
+        {/* Organization Schema (Original) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        {/* Enhanced Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(enhancedOrgSchema),
+          }}
+        />
+        {/* WebSite Schema for Google Search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
           }}
         />
         {/* Product Schema */}
@@ -150,6 +188,10 @@ export default function RootLayout({
           <SessionInteractionTracker />
 
           {/* Analytics & Performance Monitoring */}
+          <SpeedInsights />
+          {GA_MEASUREMENT_ID && (
+            <GoogleAnalyticsProvider gaId={GA_MEASUREMENT_ID} />
+          )}
           {/* <WebVitals /> */}
         </CookieConsentProvider>
       </body>
