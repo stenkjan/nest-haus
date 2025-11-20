@@ -259,7 +259,7 @@ export default function NestSystemClient() {
                 image1Description="Modul Seitenansicht Holz Schema Konzept"
                 image2Description="Planung Innenausbau Fenster Türen Mittelmodul Liniengrafik"
                 showButtons={true}
-                primaryButtonText="Zum Entwurf"
+                primaryButtonText="Konzept-Check"
                 secondaryButtonText="Konfigurieren"
                 primaryButtonHref="/planungspakete"
                 secondaryButtonHref="/konfigurator"

@@ -16,7 +16,6 @@ import { Suspense } from "react";
 import AllUsers from "./components/AllUsers";
 import ClickAnalytics from "./components/ClickAnalytics";
 import ConfigurationSelectionAnalytics from "./components/ConfigurationSelectionAnalytics";
-import TrackingActions from "./components/TrackingActions";
 // New Wix-style dashboard components
 import KeyStatsRow from "./components/KeyStatsRow";
 import SessionsTimelineChart from "./components/SessionsTimelineChart";
@@ -457,14 +456,6 @@ async function UserTrackingDashboard() {
       </div>
 
       {/* ===== EXISTING DASHBOARD COMPONENTS ===== */}
-
-      {/* Tracking Actions */}
-      <div className="mb-8 bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
-          Configuration Management
-        </h2>
-        <TrackingActions />
-      </div>
 
       {/* Top Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">

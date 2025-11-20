@@ -10,7 +10,7 @@ import Link from "next/link";
 import ImageCacheManager from "@/components/images/ImageCacheManager";
 import ClientDashboardMetrics from "./components/ClientDashboardMetrics";
 import BIDashboard from "./components/BIDashboard";
-import AnalyticsResetButton from "./components/AnalyticsResetButton";
+import AnalyticsBackupButton from "./components/AnalyticsBackupButton";
 import TrackingAuditButton from "./components/TrackingAuditButton";
 
 // DashboardMetrics moved to ClientDashboardMetrics to prevent build-time API calls
@@ -191,7 +191,7 @@ export default async function AdminDashboard() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <ImageCacheManager />
-            <AnalyticsResetButton />
+            <AnalyticsBackupButton />
             <TrackingAuditButton />
           </div>
         </div>
