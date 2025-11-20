@@ -196,28 +196,157 @@ export default function GeoLocationMap() {
           )}
         </div>
       ) : (
-        /* Map View - Placeholder for now */
-        <div className="bg-gray-100 rounded-lg p-12 text-center">
-          <p className="text-gray-600 mb-4">
-            🗺️ Interactive Map View
-          </p>
-          <p className="text-sm text-gray-500 mb-6">
-            World map visualization coming soon
-          </p>
-          <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-            {data.byCountry.slice(0, 6).map((country) => (
+        /* Map View - Interactive SVG World Map */
+        <div className="relative">
+          {/* SVG World Map */}
+          <div className="bg-gradient-to-b from-blue-50 to-blue-100 rounded-lg p-4 overflow-hidden">
+            <svg 
+              viewBox="0 0 1000 500" 
+              className="w-full h-auto"
+              style={{ minHeight: '400px' }}
+            >
+              {/* Simple world map outline */}
+              <defs>
+                <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#e0f2fe" />
+                  <stop offset="100%" stopColor="#bae6fd" />
+                </linearGradient>
+              </defs>
+              
+              {/* Ocean background */}
+              <rect width="1000" height="500" fill="url(#oceanGradient)" />
+              
+              {/* Grid lines for reference */}
+              {[...Array(10)].map((_, i) => (
+                <line
+                  key={`v-${i}`}
+                  x1={i * 100}
+                  y1="0"
+                  x2={i * 100}
+                  y2="500"
+                  stroke="#cbd5e1"
+                  strokeWidth="0.5"
+                  opacity="0.3"
+                />
+              ))}
+              {[...Array(5)].map((_, i) => (
+                <line
+                  key={`h-${i}`}
+                  x1="0"
+                  y1={i * 100}
+                  x2="1000"
+                  y2={i * 100}
+                  stroke="#cbd5e1"
+                  strokeWidth="0.5"
+                  opacity="0.3"
+                />
+              ))}
+              
+              {/* Simplified continent shapes */}
+              <path
+                d="M 250 150 L 280 160 L 300 140 L 320 150 L 340 145 L 360 155 L 380 150 L 400 160 L 380 180 L 360 190 L 340 185 L 320 195 L 300 190 L 280 200 L 260 190 L 250 180 Z"
+                fill="#10b981"
+                opacity="0.6"
+                stroke="#059669"
+                strokeWidth="1"
+              />
+              <text x="310" y="175" fontSize="12" fill="#065f46" fontWeight="bold">Europe</text>
+              
+              {/* Location markers */}
+              {data.topCities.map((city, index) => {
+                // Convert lat/lng to SVG coordinates (rough approximation)
+                // Longitude: -180 to 180 → 0 to 1000
+                // Latitude: 90 to -90 → 0 to 500
+                const x = ((city.lng + 180) / 360) * 1000;
+                const y = ((90 - city.lat) / 180) * 500;
+                
+                // Scale marker size based on count
+                const maxCount = Math.max(...data.topCities.map(c => c.count));
+                const minRadius = 4;
+                const maxRadius = 20;
+                const radius = minRadius + (city.count / maxCount) * (maxRadius - minRadius);
+                
+                return (
+                  <g key={`${city.city}-${index}`}>
+                    {/* Glow effect */}
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r={radius + 4}
+                      fill="#ef4444"
+                      opacity="0.2"
+                    />
+                    {/* Main marker */}
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r={radius}
+                      fill="#dc2626"
+                      stroke="#fff"
+                      strokeWidth="2"
+                      opacity="0.8"
+                      className="cursor-pointer hover:opacity-100 transition-opacity"
+                    >
+                      <title>{city.city}, {city.country}: {city.count} sessions</title>
+                    </circle>
+                    {/* City label for larger markers */}
+                    {city.count > maxCount * 0.3 && (
+                      <text
+                        x={x}
+                        y={y - radius - 5}
+                        fontSize="10"
+                        fill="#1f2937"
+                        fontWeight="600"
+                        textAnchor="middle"
+                        className="pointer-events-none"
+                      >
+                        {city.city}
+                      </text>
+                    )}
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+          
+          {/* Legend */}
+          <div className="mt-4 flex items-center justify-center gap-6 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-red-600 rounded-full"></div>
+              <span className="text-gray-600">User Locations</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-red-600 rounded-full opacity-50"></div>
+              <span className="text-gray-500">Fewer Sessions</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 bg-red-600 rounded-full opacity-80"></div>
+              <span className="text-gray-500">More Sessions</span>
+            </div>
+          </div>
+          
+          {/* Interactive City List Below Map */}
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {data.topCities.slice(0, 12).map((city, index) => (
               <div 
-                key={country.code}
-                className="bg-white rounded p-3 text-center shadow-sm"
+                key={`${city.city}-${index}`}
+                className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow cursor-pointer"
               >
-                <div className="text-3xl mb-1">
-                  {getCountryFlag(country.code)}
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      {city.city}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {getCountryFlag(city.country)} {city.country}
+                    </p>
+                  </div>
+                  <span className="ml-2 px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded-full">
+                    {city.count}
+                  </span>
                 </div>
-                <p className="text-xs font-medium text-gray-700">
-                  {country.code}
-                </p>
-                <p className="text-sm font-bold text-gray-900">
-                  {country.count}
+                <p className="text-xs text-gray-400 mt-1">
+                  {city.lat.toFixed(2)}°, {city.lng.toFixed(2)}°
                 </p>
               </div>
             ))}
