@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [c10653d11c3e1dd660b73f7efb42eb9565c4331f] - Thu Nov 20 15:06:42 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: replace abstract blob shapes with recognizable world map continents  - Redesigned all continent paths to have realistic, recognizable shapes - North America now shows distinctive shape with Canada, USA, Mexico - South America has its characteristic triangular/tapered shape - Africa shows the distinctive bulge and southern taper - Europe includes Scandinavia and Mediterranean regions - Asia depicted as massive landmass from Urals to Pacific - Australia has its distinctive horizontal oval shape - All other continents (India, Southeast Asia, Japan, NZ, etc.) now recognizable - Changed opacity from 0.7 to 0.6 for better visual balance - Map now looks like an actual world map instead of random blobs  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/GeoLocationMap.tsx
+
+
+---
+
 ## [e8e5af21135f1604663006b99912e3c278e291cc] - Thu Nov 20 15:04:13 2025 +0100
 
 **Author**: stenkjan
