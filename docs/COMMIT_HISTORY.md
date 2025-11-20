@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0d207525e6b20dd5062f0d02a4518a061bfaac15] - Thu Nov 20 11:29:19 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: resolve Google Analytics race condition - ensure consent initializes before gtag loads  - Fixed critical race condition where window.gtag was called before script loaded - Implemented Google's recommended approach: push consent to dataLayer before gtag initialization - Added isGtagReady state to track script load status - Replaced @next/third-parties/google with manual Script components for better timing control - Consent now properly initialized: dataLayer → gtag loads → gtag configured → updates only after ready - Prevents silent failures of consent configuration on initial page load  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/analytics/GoogleAnalyticsProvider.tsx
+
+
+---
+
 ## [2bd014d92b1f227a6fc4055ce40ee9993bda023a] - Thu Nov 20 11:27:31 2025 +0100
 
 **Author**: stenkjan
