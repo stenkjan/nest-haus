@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [de627053f57fb9941caee05efc6a6dfca03f2b84] - Thu Nov 20 09:00:28 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: update user tracking analytics to include all sessions  - Modified getClickAnalytics to retrieve all user click activity instead of just cart sessions. - Updated GET function in all-configurations route to fetch all user sessions, enhancing visibility into user activity. - Adjusted comments for clarity on the changes made to session filtering.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/user-tracking/all-configurations/route.ts
+- src/app/api/admin/user-tracking/route.ts
+
+
+---
+
 ## [185fd3ab4068803173ca8d2f5fa81e341918d01d] - Thu Nov 20 08:43:54 2025 +0100
 
 **Author**: stenkjan
