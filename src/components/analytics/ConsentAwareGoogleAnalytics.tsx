@@ -1,15 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { GoogleAnalytics } from '@next/third-parties/google'
 import { useCookieConsent } from '@/contexts/CookieConsentContext'
 
 /**
- * Google Analytics 4 mit Consent Mode v2
+ * Google Analytics 4 - Consent State Manager
+ * 
+ * Diese Komponente managed nur den Consent-Status.
+ * Das eigentliche Google Tag ist direkt im <head> von layout.tsx eingebaut.
  * 
  * Implementiert DSGVO-konformes Tracking für EWR/Österreich:
- * - Lädt Analytics nur mit Nutzereinwilligung
- * - Consent Mode v2 für personalisierte Anzeigen
+ * - Lädt Analytics nur mit Nutzereinwilligung (Consent Mode v2)
+ * - Aktualisiert Consent-Status wenn User Cookie-Präferenzen ändert
  * - Conversion-Modellierung bei fehlender Einwilligung
  */
 export default function ConsentAwareGoogleAnalytics() {
@@ -18,31 +20,6 @@ export default function ConsentAwareGoogleAnalytics() {
 
   useEffect(() => {
     setMounted(true)
-  }, [])
-
-  // Initialize Consent Mode v2 with default (denied) state
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Set default consent state (before user interaction)
-      window.gtag = window.gtag || function(...args: unknown[]) {
-        window.dataLayer = window.dataLayer || []
-        window.dataLayer.push(args)
-      }
-      
-      // Default consent for EWR/Austria (denied until user accepts)
-      window.gtag('consent', 'default', {
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied',
-        'analytics_storage': 'denied',
-        'functionality_storage': 'granted', // For cookie banner itself
-        'personalization_storage': 'denied',
-        'security_storage': 'granted', // For security features
-        'wait_for_update': 500, // Wait 500ms for user consent
-      })
-      
-      console.log('📊 GA4 Consent Mode v2: Default state set (all denied)')
-    }
   }, [])
 
   // Update consent when user makes a choice
@@ -63,33 +40,14 @@ export default function ConsentAwareGoogleAnalytics() {
     }
   }, [mounted, preferences.analytics])
 
-  // Don't render on server
-  if (!mounted) return null
-
-  // Don't render if no measurement ID
-  if (!process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
-    console.warn('⚠️ GA4 Measurement ID not found in environment variables')
-    return null
-  }
-
-  // Only load Google Analytics if user has consented to analytics
-  if (!preferences.analytics) {
-    console.log('📊 GA4: User has not consented to analytics, not loading script')
-    return null
-  }
-
-  return (
-    <>
-      {/* Google Analytics component - loads script only if consent given */}
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-    </>
-  )
+  // This component doesn't render anything
+  // It only manages consent state updates
+  return null
 }
 
 // Type declarations for TypeScript
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
-    // dataLayer is already defined by @next/third-parties as Object[]
   }
 }

@@ -100,6 +100,41 @@ export default function RootLayout({
   return (
     <html lang="de">
       <head>
+        {/* Google Analytics 4 with Consent Mode v2 - DSGVO compliant */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <>
+            {/* Consent Mode v2 initialization - BEFORE Google Tag */}
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  
+                  // Set default consent (denied) for EWR/Austria
+                  gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied',
+                    'functionality_storage': 'granted',
+                    'personalization_storage': 'denied',
+                    'security_storage': 'granted',
+                    'wait_for_update': 500
+                  });
+                  
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+                `,
+              }}
+            />
+            {/* Google Tag script */}
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+            />
+          </>
+        )}
+        
         {/* Organization Schema */}
         <script
           type="application/ld+json"
