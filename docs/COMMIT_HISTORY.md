@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [2c2557c620ca51846b958b750bffa85b5a4fa385] - Thu Nov 20 13:24:33 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: Enhance GeoLocationMap with interactive SVG world map  - Replaced placeholder map view with an interactive SVG world map. - Added ocean gradient background and grid lines for reference. - Implemented simplified continent shapes and location markers based on user session data. - Included a legend to differentiate user locations by session count. - Improved city list display with additional information and styling for better user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/admin/user-tracking/components/GeoLocationMap.tsx
+
+
+---
+
 ## [4a1558e8d753a082f289113f7ae91dd24b22d73e] - Thu Nov 20 11:47:09 2025 +0100
 
 **Author**: stenkjan
