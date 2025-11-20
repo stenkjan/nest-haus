@@ -16,6 +16,8 @@ import SecurityProvider from "@/components/security/SecurityProvider";
 // Analytics components - Web Vitals tracking
 // TEMPORARILY DISABLED - troubleshooting module resolution
 // import WebVitals from "@/components/analytics/WebVitals";
+// Google Analytics 4 with Consent Mode v2
+import ConsentAwareGoogleAnalytics from "@/components/analytics/ConsentAwareGoogleAnalytics";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -151,6 +153,9 @@ export default function RootLayout({
 
           {/* Analytics & Performance Monitoring */}
           {/* <WebVitals /> */}
+          
+          {/* Google Analytics 4 with DSGVO Consent Mode v2 */}
+          <ConsentAwareGoogleAnalytics />
         </CookieConsentProvider>
       </body>
     </html>
