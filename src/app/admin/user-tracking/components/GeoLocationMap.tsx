@@ -237,8 +237,8 @@ export default function GeoLocationMap() {
                 
                 {/* Location Dots Overlay - Matches react-svg-worldmap coordinate system */}
                 {/* 
-                  ViewBox matches the library's rendered canvas dimensions.
-                  The transform below ensures dots align with the scaled/translated base map.
+                  Calculate coordinates directly in the final transformed space to match the base map.
+                  No transform needed - we account for scale and translate in the coordinate calculation.
                 */}
                 <svg 
                   className="absolute inset-0 w-full h-full pointer-events-none"
@@ -246,106 +246,96 @@ export default function GeoLocationMap() {
                   preserveAspectRatio="xMidYMid meet"
                   style={{ top: 0, left: 0, overflow: 'visible' }}
                 >
-                  {/* Apply the same transform as react-svg-worldmap applies to its <g> element */}
-                  <g transform="translate(0, 0) scale(0.7125) translate(0, 240)">
-                    {data.topCities.map((city, index) => {
-                      // Map coordinates using the original viewBox dimensions (before transform)
-                      // react-svg-worldmap uses 960x500 internally, then scales and translates it
-                      
-                      // X: Longitude mapping (-180° to +180° → 0 to 960)
-                      const x = ((city.lng + 180) / 360) * 960;
-                      
-                      // Y: Mercator projection for latitude
-                      const toRadians = (deg: number) => (deg * Math.PI) / 180;
-                      const latRad = toRadians(Math.max(-85, Math.min(85, city.lat)));
-                      
-                      // Mercator Y calculation
-                      const mercatorY = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
-                      
-                      // Map to 0-500 range (react-svg-worldmap's internal height)
-                      const y = (1 - (mercatorY / Math.PI + 1) / 2) * 500;
-                      
-                      // Scale dot size based on session count
-                      const maxCount = Math.max(...data.topCities.map(c => c.count));
-                      const minRadius = 4;
-                      const maxRadius = 18;
-                      const radius = minRadius + (city.count / maxCount) * (maxRadius - minRadius);
-                      
-                      // Only show labels for top 3 cities
-                      const showLabel = index < 3;
-                      
-                      return (
-                        <g 
-                          key={`${city.city}-${index}`}
-                          className="pointer-events-auto cursor-pointer hover:opacity-100 transition-opacity"
-                          onClick={() => setSelectedCountry(city.country)}
+                  {data.topCities.map((city, index) => {
+                    // EXPERIMENTAL: Simple linear coordinate mapping
+                    // If this works better, the library doesn't use Mercator projection
+                    
+                    // Simple linear mapping: lng -180→180 maps to x 0→1104
+                    const x = ((city.lng + 180) / 360) * 1104;
+                    
+                    // Simple linear mapping: lat 90→-90 maps to y 0→513
+                    const y = ((90 - city.lat) / 180) * 513;
+                    
+                    // Scale dot size based on session count
+                    const maxCount = Math.max(...data.topCities.map(c => c.count));
+                    const minRadius = 4;
+                    const maxRadius = 18;
+                    const radius = minRadius + (city.count / maxCount) * (maxRadius - minRadius);
+                    
+                    // Only show labels for top 3 cities
+                    const showLabel = index < 3;
+                    
+                    return (
+                      <g 
+                        key={`${city.city}-${index}`}
+                        className="pointer-events-auto cursor-pointer hover:opacity-100 transition-opacity"
+                        onClick={() => setSelectedCountry(city.country)}
+                      >
+                        {/* Glow effect */}
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={radius + 4}
+                          fill="#ef4444"
+                          opacity="0.2"
+                          className="animate-pulse"
+                        />
+                        {/* Outer ring */}
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={radius + 1}
+                          fill="none"
+                          stroke="#dc2626"
+                          strokeWidth="1.5"
+                          opacity="0.5"
+                        />
+                        {/* Main dot */}
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={radius}
+                          fill="#dc2626"
+                          stroke="#ffffff"
+                          strokeWidth="2"
+                          opacity="0.9"
                         >
-                          {/* Glow effect */}
-                          <circle
-                            cx={x}
-                            cy={y}
-                            r={radius + 4}
-                            fill="#ef4444"
-                            opacity="0.2"
-                            className="animate-pulse"
-                          />
-                          {/* Outer ring */}
-                          <circle
-                            cx={x}
-                            cy={y}
-                            r={radius + 1}
-                            fill="none"
-                            stroke="#dc2626"
-                            strokeWidth="1.5"
-                            opacity="0.5"
-                          />
-                          {/* Main dot */}
-                          <circle
-                            cx={x}
-                            cy={y}
-                            r={radius}
-                            fill="#dc2626"
-                            stroke="#ffffff"
-                            strokeWidth="2"
-                            opacity="0.9"
+                          <title>{city.city}, {city.country}: {city.count} sessions</title>
+                        </circle>
+                        {/* City label for top cities */}
+                        {showLabel && (
+                          <text
+                            x={x}
+                            y={y - radius - 10}
+                            fontSize="12"
+                            fontWeight="600"
+                            fill="#1f2937"
+                            textAnchor="middle"
+                            className="pointer-events-none select-none"
+                            style={{ 
+                              textShadow: '0 0 3px white, 0 0 3px white, 0 0 3px white'
+                            }}
                           >
-                            <title>{city.city}, {city.country}: {city.count} sessions</title>
-                          </circle>
-                          {/* City label for top cities */}
-                          {showLabel && (
-                            <text
-                              x={x}
-                              y={y - radius - 10}
-                              fontSize="12"
-                              fontWeight="600"
-                              fill="#1f2937"
-                              textAnchor="middle"
-                              className="pointer-events-none select-none"
-                              style={{ 
-                                textShadow: '0 0 3px white, 0 0 3px white, 0 0 3px white'
-                              }}
-                            >
-                              {city.city}
-                            </text>
-                          )}
-                          {/* Session count badge for larger dots */}
-                          {radius > 10 && (
-                            <text
-                              x={x}
-                              y={y + 1}
-                              fontSize="10"
-                              fontWeight="700"
-                              fill="#ffffff"
-                              textAnchor="middle"
-                              className="pointer-events-none select-none"
-                            >
-                              {city.count}
-                            </text>
-                          )}
-                        </g>
-                      );
-                    })}
-                  </g>
+                            {city.city}
+                          </text>
+                        )}
+                        {/* Session count badge for larger dots */}
+                        {radius > 10 && (
+                          <text
+                            x={x}
+                            y={y + 1}
+                            fontSize="10"
+                            fontWeight="700"
+                            fill="#ffffff"
+                            textAnchor="middle"
+                            className="pointer-events-none select-none"
+                          >
+                            {city.count}
+                          </text>
+                        )}
+                      </g>
+                    );
+                  })}
                 </svg>
               </div>
               
