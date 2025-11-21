@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [15ce80315498150561797eace59b193db77bb8a1] - Fri Nov 21 18:00:18 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: streamline payment tracking data update in webhook handler  Changes: - Refactored the update logic for configurationData in the handlePaymentSucceeded function to improve clarity and maintainability. - Introduced a new variable to hold the existing configuration data and updated it with purchase tracking information. - Ensured type safety by casting the updated configuration to Prisma.InputJsonValue.  These changes enhance the readability of the webhook handler and ensure proper handling of payment tracking data.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/payments/webhook/route.ts
+
+
+---
+
 ## [e73f3961b7b8ac1aa4400dafc6ef9cb9b0ef54d0] - Fri Nov 21 17:34:53 2025 +0100
 
 **Author**: stenkjan
