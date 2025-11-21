@@ -7,30 +7,62 @@
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 
 // Initialize the Google Analytics Data API client
-function getAnalyticsClient() {
-  // Check if running in Vercel with base64 credentials
-  if (process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64) {
-    const credentials = JSON.parse(
-      Buffer.from(process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64, 'base64').toString('utf-8')
-    );
-    
-    return new BetaAnalyticsDataClient({
-      credentials,
-    });
-  }
-  
-  // Check if credentials file path is provided
-  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    return new BetaAnalyticsDataClient({
-      keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-    });
-  }
-  
-  // Try default credentials (works in Google Cloud environments)
-  return new BetaAnalyticsDataClient();
-}
+// This is called lazily to avoid crashes at module load time
+let analyticsDataClient: BetaAnalyticsDataClient | null = null;
 
-const analyticsDataClient = getAnalyticsClient();
+function getAnalyticsClient(): BetaAnalyticsDataClient {
+  // Return cached client if already initialized
+  if (analyticsDataClient) {
+    return analyticsDataClient;
+  }
+
+  try {
+    // Check if running in Vercel with base64 credentials
+    if (process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64) {
+      try {
+        const credentialsJson = Buffer.from(
+          process.env.GOOGLE_ANALYTICS_CREDENTIALS_BASE64, 
+          'base64'
+        ).toString('utf-8');
+        
+        const credentials = JSON.parse(credentialsJson);
+        
+        analyticsDataClient = new BetaAnalyticsDataClient({
+          credentials,
+        });
+        
+        return analyticsDataClient;
+      } catch (error) {
+        throw new Error(
+          `Failed to parse GOOGLE_ANALYTICS_CREDENTIALS_BASE64: ${
+            error instanceof Error ? error.message : 'Invalid base64 or JSON format'
+          }`
+        );
+      }
+    }
+    
+    // Check if credentials file path is provided
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+      analyticsDataClient = new BetaAnalyticsDataClient({
+        keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+      });
+      
+      return analyticsDataClient;
+    }
+    
+    // No credentials configured - throw clear error
+    throw new Error(
+      'Google Analytics credentials not configured. Please set either ' +
+      'GOOGLE_ANALYTICS_CREDENTIALS_BASE64 or GOOGLE_APPLICATION_CREDENTIALS environment variable.'
+    );
+  } catch (error) {
+    // Re-throw with context
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Failed to initialize Google Analytics client');
+  }
+}
 
 /**
  * Get GA4 Property ID from environment
@@ -60,7 +92,9 @@ export function isGAConfigured(): boolean {
  * Get overview metrics (users, sessions, pageviews, etc.)
  */
 export async function getOverviewMetrics(dateRange: '7d' | '30d' | '90d' = '30d') {
-  const [response] = await analyticsDataClient.runReport({
+  const client = getAnalyticsClient();
+  
+  const [response] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [
       {
@@ -80,7 +114,15 @@ export async function getOverviewMetrics(dateRange: '7d' | '30d' | '90d' = '30d'
 
   const row = response.rows?.[0];
   if (!row) {
-    return null;
+    // Return zeros instead of null for consistent empty data handling
+    return {
+      activeUsers: 0,
+      sessions: 0,
+      pageViews: 0,
+      avgSessionDuration: 0,
+      bounceRate: 0,
+      sessionsPerUser: 0,
+    };
   }
 
   return {
@@ -97,8 +139,10 @@ export async function getOverviewMetrics(dateRange: '7d' | '30d' | '90d' = '30d'
  * Get geographic data (countries and cities)
  */
 export async function getGeographicData(dateRange: '7d' | '30d' | '90d' = '30d') {
+  const client = getAnalyticsClient();
+  
   // Get country data
-  const [countryResponse] = await analyticsDataClient.runReport({
+  const [countryResponse] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [
       {
@@ -126,7 +170,7 @@ export async function getGeographicData(dateRange: '7d' | '30d' | '90d' = '30d')
   });
 
   // Get city data
-  const [cityResponse] = await analyticsDataClient.runReport({
+  const [cityResponse] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [
       {
@@ -179,7 +223,9 @@ export async function getGeographicData(dateRange: '7d' | '30d' | '90d' = '30d')
  * Get real-time active users
  */
 export async function getRealtimeUsers() {
-  const [response] = await analyticsDataClient.runRealtimeReport({
+  const client = getAnalyticsClient();
+  
+  const [response] = await client.runRealtimeReport({
     property: getPropertyId(),
     metrics: [
       { name: 'activeUsers' },
@@ -194,7 +240,9 @@ export async function getRealtimeUsers() {
  * Get traffic sources
  */
 export async function getTrafficSources(dateRange: '7d' | '30d' | '90d' = '30d') {
-  const [response] = await analyticsDataClient.runReport({
+  const client = getAnalyticsClient();
+  
+  const [response] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [
       {
@@ -233,7 +281,9 @@ export async function getTrafficSources(dateRange: '7d' | '30d' | '90d' = '30d')
  * Get top pages
  */
 export async function getTopPages(dateRange: '7d' | '30d' | '90d' = '30d') {
-  const [response] = await analyticsDataClient.runReport({
+  const client = getAnalyticsClient();
+  
+  const [response] = await client.runReport({
     property: getPropertyId(),
     dateRanges: [
       {
@@ -269,6 +319,4 @@ export async function getTopPages(dateRange: '7d' | '30d' | '90d' = '30d') {
     avgDuration: parseFloat(row.metricValues?.[2]?.value || '0'),
   })) || [];
 }
-
-export { analyticsDataClient };
 

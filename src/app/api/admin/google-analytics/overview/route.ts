@@ -25,13 +25,8 @@ export async function GET(request: NextRequest) {
     // Fetch metrics from GA4
     const metrics = await getOverviewMetrics(dateRange);
 
-    if (!metrics) {
-      return NextResponse.json({
-        success: false,
-        error: 'No data available from Google Analytics',
-      }, { status: 404 });
-    }
-
+    // Return successful response even if metrics are zero
+    // This is consistent with other endpoints that return empty arrays
     return NextResponse.json({
       success: true,
       data: metrics,
