@@ -5,7 +5,10 @@ import { Button } from "@/components/ui";
 import { SectionContainer } from "./SectionContainer";
 import { SectionHeader } from "./SectionHeader";
 import { useConfiguratorStore } from "@/store/configuratorStore";
-import { trackContactFormSubmit, trackGrundstueckCheckSubmit } from "@/lib/ga4-tracking";
+import {
+  trackContactFormSubmit,
+  trackGrundstueckCheckSubmit,
+} from "@/lib/ga4-tracking";
 
 interface GrundstueckCheckFormProps {
   id?: string;
@@ -184,8 +187,8 @@ export function GrundstueckCheckForm({
 
         // Track form submission in Google Analytics 4
         trackContactFormSubmit({
-          requestType: 'grundstueck_check',
-          preferredContact: 'email',
+          requestType: "grundstueck_check",
+          preferredContact: "email",
         });
 
         // Store form data in sessionStorage for CheckoutStepper to read
@@ -439,7 +442,11 @@ export function GrundstueckCheckForm({
 
         // Track Grundstückscheck form submission in GA4
         trackGrundstueckCheckSubmit({
-          location: typeof window !== 'undefined' && window.location.pathname.includes('kontakt') ? 'kontakt' : 'checkout',
+          location:
+            typeof window !== "undefined" &&
+            window.location.pathname.includes("kontakt")
+              ? "kontakt"
+              : "checkout",
           hasPropertyNumber: !!formData.propertyNumber,
           hasCadastralCommunity: !!formData.cadastralCommunity,
         });
@@ -662,12 +669,10 @@ export function GrundstueckCheckForm({
                   <span className="text-black font-medium"> Wir</span>
                   <span className="text-nest-gray">
                     {" "}
-                    übernehmen diese Überprüfung und entwickeln gemeinsam
-                    mit dir ein individuelles{" "}
+                    übernehmen diese Überprüfung und entwickeln gemeinsam mit
+                    dir ein individuelles{" "}
                   </span>
-                  <span className="text-black font-medium">
-                    Konzept-Check
-                  </span>
+                  <span className="text-black font-medium">Konzept-Check</span>
                   <span className="text-nest-gray"> deines Nest-Hauses.</span>
                 </p>
                 {/* Spacer to align with Name/Nachname form fields */}
