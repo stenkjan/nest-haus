@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [0d6665524bdc11299765bcf7952fc9b0678c8b86] - Fri Nov 21 11:59:11 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: enhance Google Analytics 4 event tracking utility  Changes: - Updated the pushEvent function to support both gtag and dataLayer for improved compatibility with Google Tag Manager. - Modified event tracking functions to use a consistent parameter structure, enhancing clarity and maintainability. - Added console logging for both dataLayer and gtag events to aid in debugging and tracking verification.  This refactor improves the flexibility and robustness of the analytics tracking implementation.  `
+
+### Changes Analysis
+
+#### 📚 Documentation Changes
+- docs/GA4-EVENT-TRACKING-SETUP.md
+
+
+---
+
 ## [7b585a2ff5fd1300decbf4989af49acf378a1b2c] - Fri Nov 21 11:49:54 2025 +0100
 
 **Author**: stenkjan
