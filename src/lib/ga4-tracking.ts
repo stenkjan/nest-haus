@@ -5,18 +5,6 @@
  * Uses both gtag (direct GA4) and dataLayer (for GTM compatibility)
  */
 
-// Extend Window interface to include dataLayer and gtag
-declare global {
-  interface Window {
-    dataLayer: Array<Record<string, unknown>>;
-    gtag?: (
-      command: 'event' | 'config' | 'consent' | 'set' | 'get',
-      targetOrAction: string,
-      params?: Record<string, unknown>
-    ) => void;
-  }
-}
-
 /**
  * Initialize dataLayer if it doesn't exist
  */

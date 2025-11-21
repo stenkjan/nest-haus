@@ -5,17 +5,6 @@
  * Sends relevant events to GA4 for demographics and marketing insights
  */
 
-// Extend Window interface to include gtag
-declare global {
-  interface Window {
-    gtag?: (
-      command: 'event' | 'config' | 'consent' | 'set' | 'get',
-      targetOrAction: string,
-      params?: Record<string, unknown>
-    ) => void;
-  }
-}
-
 /**
  * Track page view in GA4
  */
