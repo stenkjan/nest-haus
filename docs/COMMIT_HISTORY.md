@@ -4,6 +4,23 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [fecba0673c92ec0c5f4235d06420e87a79b83aef] - Fri Nov 21 10:56:45 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: improve Google Analytics metrics handling for consistency  Changes: - Updated the GET method in the Google Analytics overview route to return a successful response even when no metrics are available, aligning with the behavior of other endpoints. - Modified the getOverviewMetrics function to return zero values instead of null for metrics, ensuring consistent handling of empty data.  This fix enhances the reliability of the Google Analytics integration by standardizing the response format across different metrics endpoints.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/admin/google-analytics/overview/route.ts
+
+
+#### 📚 Documentation Changes
+- docs/GOOGLE_ANALYTICS_BUG_FIXES.md
+
+
+---
+
 ## [0b2976d34fd47810e93724392cc265c7bb60a197] - Fri Nov 21 10:23:40 2025 +0100
 
 **Author**: stenkjan
