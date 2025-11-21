@@ -10,7 +10,7 @@ declare global {
   interface Window {
     dataLayer: Array<Record<string, unknown>>;
     gtag?: (
-      command: 'event' | 'config' | 'consent',
+      command: 'event' | 'config' | 'consent' | 'set' | 'get',
       targetOrAction: string,
       params?: Record<string, unknown>
     ) => void;
