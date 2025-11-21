@@ -298,7 +298,7 @@ const AppointmentBooking = ({
 
         // Track appointment booking in Google Analytics 4
         trackAppointmentBooking({
-          date: selectedDate,
+          date: selectedDate.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
           time: appointmentDetails.time,
           appointmentType: formData.appointmentType,
           timeSlotAvailable: result.timeSlotAvailable,
