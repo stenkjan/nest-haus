@@ -27,7 +27,7 @@ const inter = Inter({
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 
 export const metadata: Metadata = {
-  title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
+  title: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
   description:
     "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar. Jetzt kostenlos beraten lassen!",
   keywords:
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     // ],
   },
   openGraph: {
-    title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
+    title: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     url: "https://www.nest-haus.at",
@@ -70,14 +70,14 @@ export const metadata: Metadata = {
           "https://www.nest-haus.at/api/images/6-NEST-Haus-4-Module-Ansicht-Meer-Mediteran-Stirnseite-Holzlattung-Laerche.jpg",
         width: 1200,
         height: 630,
-        alt: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
+        alt: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nest-Haus | Weil nur du weißt, wie du richtig wohnst",
+    title: "Nest-Haus | Weil nur du weißt, wie du wohnen willst",
     description:
       "Entdecken Sie NEST-Haus modulare Bausysteme. Nachhaltig, energieeffizient und individuell konfigurierbar.",
     images: [

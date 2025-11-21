@@ -274,7 +274,7 @@ export default function NestSystemClient() {
           >
             <SectionHeader
               title="Hier beginnt Freiheit"
-              subtitle="Weil nur du weißt, wie du richtig wohnst."
+              subtitle="Weil nur du weißt, wie du wohnen willst."
               titleClassName="text-white"
               subtitleClassName="text-white"
               wrapperMargin="mb-8 md:mb-16"
