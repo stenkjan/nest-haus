@@ -236,11 +236,15 @@ export default function GeoLocationMap() {
                 />
                 
                 {/* Location Dots Overlay - Matches react-svg-worldmap coordinate system */}
+                {/* 
+                  ViewBox matches the library's rendered canvas dimensions.
+                  The transform below ensures dots align with the scaled/translated base map.
+                */}
                 <svg 
                   className="absolute inset-0 w-full h-full pointer-events-none"
                   viewBox="0 0 1104 513"
                   preserveAspectRatio="xMidYMid meet"
-                  style={{ top: 0, left: 0 }}
+                  style={{ top: 0, left: 0, overflow: 'visible' }}
                 >
                   {/* Apply the same transform as react-svg-worldmap applies to its <g> element */}
                   <g transform="translate(0, 0) scale(0.7125) translate(0, 240)">
