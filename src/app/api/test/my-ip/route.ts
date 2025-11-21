@@ -10,17 +10,15 @@ export async function GET(request: NextRequest) {
   // Get IP from various headers (Vercel provides these)
   const forwardedFor = request.headers.get('x-forwarded-for');
   const realIp = request.headers.get('x-real-ip');
-  const ip = request.ip;
 
   // Extract first IP from x-forwarded-for (user's real IP)
-  const userIp = forwardedFor?.split(',')[0]?.trim() || realIp || ip || 'unknown';
+  const userIp = forwardedFor?.split(',')[0]?.trim() || realIp || 'unknown';
 
   return NextResponse.json({
     ip: userIp,
     allHeaders: {
       'x-forwarded-for': forwardedFor,
       'x-real-ip': realIp,
-      'request.ip': ip,
     },
     message: 'Use this IP in Google Analytics Internal Traffic filter',
   });
