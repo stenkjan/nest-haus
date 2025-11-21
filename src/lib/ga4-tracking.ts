@@ -1,13 +1,19 @@
 /**
  * Google Analytics 4 Event Tracking
  * 
- * Client-side utility for pushing events to Google Analytics dataLayer
+ * Client-side utility for tracking events in Google Analytics 4
+ * Uses both gtag (direct GA4) and dataLayer (for GTM compatibility)
  */
 
-// Extend Window interface to include dataLayer
+// Extend Window interface to include dataLayer and gtag
 declare global {
   interface Window {
     dataLayer: Array<Record<string, unknown>>;
+    gtag?: (
+      command: 'event' | 'config' | 'consent',
+      targetOrAction: string,
+      params?: Record<string, unknown>
+    ) => void;
   }
 }
 
@@ -19,20 +25,33 @@ function initDataLayer() {
 }
 
 /**
- * Push an event to Google Analytics dataLayer
+ * Push an event to both gtag (GA4) and dataLayer (GTM)
  */
-function pushEvent(event: Record<string, unknown>) {
+function pushEvent(eventName: string, eventParams: Record<string, unknown>) {
   initDataLayer();
-  window.dataLayer.push(event);
-  console.log('📊 GA4 Event:', event);
+  
+  // Push to dataLayer for GTM compatibility
+  const dataLayerEvent = {
+    event: eventName,
+    ...eventParams,
+  };
+  window.dataLayer.push(dataLayerEvent);
+  console.log('📊 DataLayer Event:', dataLayerEvent);
+  
+  // Send directly to GA4 via gtag
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', eventName, eventParams);
+    console.log('📈 GA4 Event (gtag):', eventName, eventParams);
+  } else {
+    console.warn('⚠️ gtag not available - event only pushed to dataLayer');
+  }
 }
 
 /**
  * Track form submission (lead generation)
  */
 export function trackFormSubmit(formId: string, additionalData?: Record<string, unknown>) {
-  pushEvent({
-    event: 'generate_lead',
+  pushEvent('generate_lead', {
     form_id: formId,
     ...additionalData,
   });
@@ -47,8 +66,7 @@ export function trackAppointmentBooking(data: {
   appointmentType?: string;
   timeSlotAvailable?: boolean;
 }) {
-  pushEvent({
-    event: 'generate_lead',
+  pushEvent('generate_lead', {
     form_id: 'terminbuchung_formular',
     event_category: 'appointment',
     event_label: data.appointmentType || 'Beratungstermin',
@@ -65,8 +83,7 @@ export function trackContactFormSubmit(data?: {
   requestType?: string;
   preferredContact?: string;
 }) {
-  pushEvent({
-    event: 'generate_lead',
+  pushEvent('generate_lead', {
     form_id: 'kontaktformular_footer',
     event_category: 'contact',
     request_type: data?.requestType || 'contact',
@@ -82,8 +99,7 @@ export function trackConfigurationComplete(data: {
   planungspaket?: string;
   totalPrice?: number;
 }) {
-  pushEvent({
-    event: 'begin_checkout',
+  pushEvent('begin_checkout', {
     event_category: 'ecommerce',
     value: data.totalPrice,
     currency: 'EUR',
@@ -101,8 +117,7 @@ export function trackConfigurationComplete(data: {
  * Track page view (manual tracking for SPAs)
  */
 export function trackPageView(pagePath: string, pageTitle?: string) {
-  pushEvent({
-    event: 'page_view',
+  pushEvent('page_view', {
     page_path: pagePath,
     page_title: pageTitle || document.title,
   });
@@ -117,8 +132,7 @@ export function trackClick(data: {
   elementType?: string;
   destination?: string;
 }) {
-  pushEvent({
-    event: 'click',
+  pushEvent('click', {
     event_category: 'engagement',
     element_id: data.elementId,
     element_text: data.elementText,
@@ -131,9 +145,6 @@ export function trackClick(data: {
  * Track custom events
  */
 export function trackCustomEvent(eventName: string, data?: Record<string, unknown>) {
-  pushEvent({
-    event: eventName,
-    ...data,
-  });
+  pushEvent(eventName, data || {});
 }
 
