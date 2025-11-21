@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { trackPurchase } from '@/lib/ga4-tracking';
 
 /**
- * PaymentSuccessTracker
+ * PaymentSuccessTrackerInner
  * 
- * Tracks GA4 purchase event when payment is successful
- * Triggered by payment_intent query parameter from Stripe redirect
+ * Inner component that uses useSearchParams
+ * Must be wrapped in Suspense boundary
  */
-export default function PaymentSuccessTracker() {
+function PaymentSuccessTrackerInner() {
   const searchParams = useSearchParams();
   
   useEffect(() => {
@@ -76,6 +76,21 @@ export default function PaymentSuccessTracker() {
     fetchPaymentDetails();
   }, [searchParams]);
   
-  return null; // This component doesn't render anything
+  return null;
+}
+
+/**
+ * PaymentSuccessTracker
+ * 
+ * Tracks GA4 purchase event when payment is successful
+ * Triggered by payment_intent query parameter from Stripe redirect
+ * Wrapped in Suspense to prevent SSR issues
+ */
+export default function PaymentSuccessTracker() {
+  return (
+    <Suspense fallback={null}>
+      <PaymentSuccessTrackerInner />
+    </Suspense>
+  );
 }
 
