@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { generateShoppingCartSchema as _generateShoppingCartSchema } from "@/lib/seo/priceSchema";
 
 // Dynamically import WarenkorbClient with loading fallback
-// This ensures Suspense boundary works correctly for Client Components
+// This ensures proper code-splitting and loading states for Client Components
 const WarenkorbClient = dynamic(() => import("../warenkorb/WarenkorbClient"), {
   loading: () => (
     <div className="min-h-screen bg-white flex items-center justify-center" style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}>
@@ -17,7 +17,6 @@ const WarenkorbClient = dynamic(() => import("../warenkorb/WarenkorbClient"), {
       </div>
     </div>
   ),
-  ssr: false, // Disable SSR since component uses URL parameters client-side
 });
 
 // Enhanced SEO metadata for the shopping cart page
