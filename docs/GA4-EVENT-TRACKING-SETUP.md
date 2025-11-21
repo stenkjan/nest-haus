@@ -94,10 +94,11 @@ If you see `⚠️ gtag not available`, it means GA4 hasn't loaded yet (check co
 **Triggered When**: User clicks "Zum Warenkorb" (Add to Cart) button after configuring their Nest Haus
 
 **Parameters**:
+- `ecommerce.currency`: "EUR"
+- `ecommerce.value`: Total value being added to cart
 - `ecommerce.items[]`: Array of items added to cart
   - `item_id`: Configuration ID (format: `HOUSE-CONF-{sessionId}-{month}{year}`)
   - `item_name`: Descriptive name (e.g., "2-Module (Konfig. 11/2025)")
-  - `currency`: "EUR"
   - `price`: Total estimated price in EUR
   - `quantity`: Always 1 (single house configuration)
 
@@ -106,10 +107,11 @@ If you see `⚠️ gtag not available`, it means GA4 hasn't loaded yet (check co
 {
   event: 'add_to_cart',
   ecommerce: {
+    currency: 'EUR',
+    value: 150000.00,
     items: [{
       item_id: 'HOUSE-CONF-a3b2c1d4-112025',
       item_name: '2-Module (Konfig. 11/2025)',
-      currency: 'EUR',
       price: 150000.00,
       quantity: 1
     }]

@@ -108,10 +108,11 @@ export function trackAddToCart(data: {
 }) {
   pushEvent('add_to_cart', {
     ecommerce: {
+      currency: 'EUR',
+      value: data.price || 0,
       items: [{
         item_id: data.itemId || 'HOUSE-CONF-UNKNOWN',
         item_name: data.itemName || 'Nest Haus Configuration',
-        currency: 'EUR',
         price: data.price || 0,
         quantity: data.quantity || 1,
       }]
