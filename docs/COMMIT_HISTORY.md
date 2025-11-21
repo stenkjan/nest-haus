@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [e0c36dfbe0241154c4ec4bb17f0e23bee999aeed] - Fri Nov 21 11:19:11 2025 +0100
+
+**Author**: stenkjan
+**Message**: `chore: update excluded IPs in environment configuration  Changes: - Added a new IP address (89.144.193.121) to the EXCLUDED_IPS variable in .env.local for improved analytics tracking. - Ensured the list of excluded IPs remains comprehensive for accurate user interaction tracking.  This update enhances the analytics setup by refining the IP filtering process.  `
+
+### Changes Analysis
+
+#### 🔧 Configuration Changes
+- .env.local
+
+
+---
+
 ## [fecba0673c92ec0c5f4235d06420e87a79b83aef] - Fri Nov 21 10:56:45 2025 +0100
 
 **Author**: stenkjan
