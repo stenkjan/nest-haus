@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { EmailService } from '@/lib/EmailService';
 
@@ -173,20 +174,23 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
                     // This will be picked up by the frontend on next page load/refresh
                     if (inquiry.sessionId) {
                         try {
+                            const existingConfig = (inquiry.configurationData as Record<string, unknown>) || {};
+                            const updatedConfig = {
+                                ...existingConfig,
+                                purchaseTracked: true,
+                                purchaseData: {
+                                    transactionId: `T-${new Date().getFullYear()}-${paymentIntent.id.substring(paymentIntent.id.length - 8)}`,
+                                    amount: paymentIntent.amount,
+                                    currency: paymentIntent.currency,
+                                    paymentIntentId: paymentIntent.id,
+                                    timestamp: new Date().toISOString(),
+                                },
+                            };
+
                             await prisma.userSession.update({
                                 where: { sessionId: inquiry.sessionId },
                                 data: {
-                                    configurationData: {
-                                        ...(inquiry.configurationData as Record<string, unknown> || {}),
-                                        purchaseTracked: true,
-                                        purchaseData: {
-                                            transactionId: `T-${new Date().getFullYear()}-${paymentIntent.id.substring(paymentIntent.id.length - 8)}`,
-                                            amount: paymentIntent.amount,
-                                            currency: paymentIntent.currency,
-                                            paymentIntentId: paymentIntent.id,
-                                            timestamp: new Date().toISOString(),
-                                        },
-                                    } as unknown,
+                                    configurationData: updatedConfig as Prisma.InputJsonValue,
                                 },
                             });
                             console.log('✅ Purchase tracking data saved to session for client-side GA4 event');
