@@ -20,21 +20,23 @@ Our overlay SVG (containing the red location dots) was not accounting for this t
 
 ### 1. Match the ViewBox
 
-Updated the overlay SVG viewBox to match the transformed dimensions:
+Updated the overlay SVG viewBox to accommodate the transformed dimensions:
 
 ```tsx
 <svg 
   className="absolute inset-0 w-full h-full pointer-events-none"
-  viewBox="0 0 1104 513"  // Changed from "0 0 800 450"
+  viewBox="0 0 800 620"  // Sized to fit transformed content
   preserveAspectRatio="xMidYMid meet"
 >
 ```
 
 **Calculation:**
-- Original map internal size: 960 × ~500
-- After `scale(0.7125)`: 684 × ~356
-- After `translate(0, 240)`: shifted down 240 units
-- Final canvas: 1104 × 513 (to accommodate the scaled + translated content)
+- Original map internal size: 960 × 500
+- After `scale(0.7125)`: 684 × 355.6
+- After `translate(0, 240)`: Y-range becomes [240, 595.6]
+- Final viewBox: **800 × 620** (with padding for labels and visual margins)
+  - Width: 684 (scaled) + padding → 800
+  - Height: 595.6 (max Y after transform) + padding → 620
 
 ### 2. Apply the Same Transform
 

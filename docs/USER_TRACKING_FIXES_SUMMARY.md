@@ -35,18 +35,30 @@ const allSessions = await prisma.userSession.findMany({
 The interactive map in User Tracking was displaying location dots in incorrect positions:
 - Vienna appeared in Siberia
 - Indonesia appeared in the Pacific Ocean
+- Southern hemisphere locations were clipped or cut off
 - The map looked like a "globe" instead of a proper geographic map
 
 ### Root Cause
-The `react-svg-worldmap` library applies an SVG transform (`scale(0.7125) translate(0, 240)`) to its internal map, but our overlay SVG with location dots wasn't accounting for this transformation.
+The `react-svg-worldmap` library applies an SVG transform (`scale(0.7125) translate(0, 240)`) to its internal map, but our overlay SVG with location dots wasn't accounting for this transformation. Additionally, the viewBox was too small (513px height) to accommodate the transformed coordinates (which reached 595.6px).
 
 ### Fix
-1. **Matched the ViewBox**: Changed overlay SVG viewBox from `0 0 800 450` to `0 0 1104 513`
+1. **Matched the ViewBox**: Changed overlay SVG viewBox from `0 0 800 450` to `0 0 800 620`
+   - Width 800: Accommodates scaled map width (684px) + padding for labels
+   - Height 620: Accommodates max Y coordinate (595.6px) + padding to prevent clipping
 2. **Applied the Same Transform**: Wrapped overlay dots in a `<g>` element with `transform="translate(0, 0) scale(0.7125) translate(0, 240)"`
 3. **Used Internal Coordinates**: Adjusted calculations to use the original internal dimensions (960 × 500) before the transform
 
+#### ViewBox Calculation Detail
+
+```
+Internal dimensions: 960 × 500
+After scale(0.7125): 684 × 355.6
+After translate(0, 240): X=[0,684], Y=[240,595.6]
+ViewBox "0 0 800 620": Prevents clipping with safe margins
+```
+
 ```tsx
-<svg viewBox="0 0 1104 513" preserveAspectRatio="xMidYMid meet">
+<svg viewBox="0 0 800 620" preserveAspectRatio="xMidYMid meet">
   <g transform="translate(0, 0) scale(0.7125) translate(0, 240)">
     {/* Location dots with coordinates in 960×500 space */}
   </g>
@@ -54,10 +66,11 @@ The `react-svg-worldmap` library applies an SVG transform (`scale(0.7125) transl
 ```
 
 ### Files Modified
-- `src/app/admin/user-tracking/components/GeoLocationMap.tsx` (lines 238-265)
+- `src/app/admin/user-tracking/components/GeoLocationMap.tsx` (lines 238-250)
 
 ### Documentation
 - `docs/MAP_COORDINATE_SYSTEM_FIX.md` (detailed technical explanation)
+- `docs/VIEWBOX_CALCULATION_FIX.md` (viewBox sizing rationale)
 
 ---
 

@@ -31,7 +31,8 @@ Use these well-known cities to verify the map coordinate alignment:
 The `react-svg-worldmap` with transform `scale(0.7125) translate(0, 240)` maps coordinates as follows:
 
 - **X-axis**: Longitude -180° to +180° → 0 to 960 (before scale) → 0 to 684 (after scale)
-- **Y-axis**: Latitude +85° to -85° → 0 to 500 (before scale) → 240 to 596 (after scale + translate)
+- **Y-axis**: Latitude +85° to -85° → 0 to 500 (before scale) → 0 to 355.6 (after scale) → 240 to 595.6 (after translate)
+- **ViewBox**: `0 0 800 620` (provides margins for labels and visual padding)
 
 ## Expected Results
 
@@ -52,7 +53,7 @@ If coordinates still appear wrong:
 
 1. **Check browser console** for any errors in coordinate calculation
 2. **Inspect the SVG** using browser DevTools:
-   - The overlay SVG should have `viewBox="0 0 1104 513"`
+   - The overlay SVG should have `viewBox="0 0 800 620"`
    - The `<g>` element should have `transform="translate(0, 0) scale(0.7125) translate(0, 240)"`
 3. **Verify transform matches** the base map's `<g>` transform
 4. **Check coordinate values** in the browser console:
@@ -62,6 +63,7 @@ If coordinates still appear wrong:
      console.log(`City at cx=${c.getAttribute('cx')}, cy=${c.getAttribute('cy')}`);
    });
    ```
+5. **Verify no clipping**: Southern hemisphere locations (negative latitudes) should be fully visible without being cut off
 
 ## Production Verification
 
