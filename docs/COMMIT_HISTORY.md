@@ -4,6 +4,22 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [30a9c2408f17996a23e36f21530ea29226faeebf] - Fri Nov 21 16:49:06 2025 +0100
+
+**Author**: stenkjan
+**Message**: `feat: enhance GA4 tracking for payment success and Grundstückscheck form submissions  Changes: - Implemented tracking for purchase events from both URL parameters and session configuration data in the PaymentSuccessTracker component. - Added a new tracking function for Grundstückscheck form submissions, capturing relevant data such as location and property details. - Updated the PaymentSuccessTracker to periodically check for webhook-triggered purchase data and track it accordingly.  These enhancements improve the accuracy and comprehensiveness of analytics for user interactions and payment processes.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/api/payments/webhook/route.ts
+- src/app/warenkorb/page.tsx
+- src/components/analytics/PaymentSuccessTracker.tsx
+- src/components/sections/GrundstueckCheckForm.tsx
+
+
+---
+
 ## [72ad974d8b3b3dd4ad65978b40bf2db8b530abeb] - Fri Nov 21 16:32:06 2025 +0100
 
 **Author**: stenkjan
