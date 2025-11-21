@@ -4,6 +4,21 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [639cb156fc8178bf819e2ab487af249be204516b] - Fri Nov 21 11:46:44 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update metadata and text content for consistency in messaging  Changes: - Updated the title and alt text in layout.tsx to reflect a more user-centric approach: "Weil nur du weißt, wie du wohnen willst." - Modified the subtitle in DeinNestClient.tsx and NestSystemClient.tsx to maintain consistency with the updated messaging.  This update enhances the clarity and alignment of the messaging across the application, ensuring a cohesive user experience.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/dein-nest/DeinNestClient.tsx
+- src/app/layout.tsx
+- src/app/nest-system/NestSystemClient.tsx
+
+
+---
+
 ## [458a2af2b8de1328ff9690ce7ee56a579e3d92f5] - Fri Nov 21 11:30:06 2025 +0100
 
 **Author**: stenkjan
