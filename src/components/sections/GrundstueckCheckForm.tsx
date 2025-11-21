@@ -5,7 +5,7 @@ import { Button } from "@/components/ui";
 import { SectionContainer } from "./SectionContainer";
 import { SectionHeader } from "./SectionHeader";
 import { useConfiguratorStore } from "@/store/configuratorStore";
-import { trackContactFormSubmit } from "@/lib/ga4-tracking";
+import { trackContactFormSubmit, trackGrundstueckCheckSubmit } from "@/lib/ga4-tracking";
 
 interface GrundstueckCheckFormProps {
   id?: string;
@@ -436,6 +436,13 @@ export function GrundstueckCheckForm({
             sessionError
           );
         }
+
+        // Track Grundstückscheck form submission in GA4
+        trackGrundstueckCheckSubmit({
+          location: typeof window !== 'undefined' && window.location.pathname.includes('kontakt') ? 'kontakt' : 'checkout',
+          hasPropertyNumber: !!formData.propertyNumber,
+          hasCadastralCommunity: !!formData.cadastralCommunity,
+        });
 
         // Mark as saved - button will show "Gespeichert"
         setIsSaved(true);

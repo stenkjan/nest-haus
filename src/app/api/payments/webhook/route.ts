@@ -168,6 +168,32 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
                         },
                     });
                     console.log('✅ Marked emails as sent');
+
+                    // ✅ Track GA4 purchase event - trigger client-side tracking via database flag
+                    // This will be picked up by the frontend on next page load/refresh
+                    if (inquiry.sessionId) {
+                        try {
+                            await prisma.userSession.update({
+                                where: { sessionId: inquiry.sessionId },
+                                data: {
+                                    configurationData: {
+                                        ...(inquiry.configurationData as Record<string, unknown> || {}),
+                                        purchaseTracked: true,
+                                        purchaseData: {
+                                            transactionId: `T-${new Date().getFullYear()}-${paymentIntent.id.substring(paymentIntent.id.length - 8)}`,
+                                            amount: paymentIntent.amount,
+                                            currency: paymentIntent.currency,
+                                            paymentIntentId: paymentIntent.id,
+                                            timestamp: new Date().toISOString(),
+                                        },
+                                    } as unknown,
+                                },
+                            });
+                            console.log('✅ Purchase tracking data saved to session for client-side GA4 event');
+                        } catch (trackingError) {
+                            console.warn('⚠️ Failed to save purchase tracking data:', trackingError);
+                        }
+                    }
                 } catch (updateError) {
                     console.error('❌ Failed to mark emails as sent:', updateError);
                 }

@@ -1,7 +1,24 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import WarenkorbClient from "../warenkorb/WarenkorbClient";
+import dynamic from "next/dynamic";
 import { generateShoppingCartSchema as _generateShoppingCartSchema } from "@/lib/seo/priceSchema";
+
+// Dynamically import WarenkorbClient with loading fallback
+// This ensures Suspense boundary works correctly for Client Components
+const WarenkorbClient = dynamic(() => import("../warenkorb/WarenkorbClient"), {
+  loading: () => (
+    <div className="min-h-screen bg-white flex items-center justify-center" style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}>
+      <div className="text-center">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#3D6CE1] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            Laden...
+          </span>
+        </div>
+        <p className="mt-4 text-gray-600">Warenkorb wird geladen...</p>
+      </div>
+    </div>
+  ),
+  ssr: false, // Disable SSR since component uses URL parameters client-side
+});
 
 // Enhanced SEO metadata for the shopping cart page
 export const metadata: Metadata = {
@@ -86,20 +103,7 @@ export default function WarenkorbPage() {
           __html: JSON.stringify(productSchema),
         }}
       />
-      <Suspense fallback={
-        <div className="min-h-screen bg-white flex items-center justify-center" style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}>
-          <div className="text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#3D6CE1] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                Laden...
-              </span>
-            </div>
-            <p className="mt-4 text-gray-600">Warenkorb wird geladen...</p>
-          </div>
-        </div>
-      }>
-        <WarenkorbClient />
-      </Suspense>
+      <WarenkorbClient />
     </>
   );
 }

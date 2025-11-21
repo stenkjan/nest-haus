@@ -80,6 +80,24 @@ export function trackContactFormSubmit(data?: {
 }
 
 /**
+ * Track Grundstückscheck form submission
+ * Triggered when user clicks "Speichern" button to submit property check data
+ */
+export function trackGrundstueckCheckSubmit(data?: {
+  location?: string; // 'kontakt' or 'checkout'
+  hasPropertyNumber?: boolean;
+  hasCadastralCommunity?: boolean;
+}) {
+  pushEvent('grundstueck_check_submit', {
+    form_id: 'grundstueck_check_formular',
+    event_category: 'property_check',
+    event_label: data?.location || 'unknown',
+    property_number_provided: data?.hasPropertyNumber || false,
+    cadastral_community_provided: data?.hasCadastralCommunity || false,
+  });
+}
+
+/**
  * Track configuration completion (when user adds to cart)
  */
 export function trackConfigurationComplete(data: {
