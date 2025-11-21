@@ -5,6 +5,7 @@ import { Button } from "@/components/ui";
 import { TerminVereinbarenContent } from "./TerminVereinbarenContent";
 import { useCartStore } from "@/store/cartStore";
 import { useConfiguratorStore } from "@/store/configuratorStore";
+import { trackAppointmentBooking } from "@/lib/ga4-tracking";
 
 /**
  * Text Preset: Description Text Small
@@ -294,6 +295,14 @@ const AppointmentBooking = ({
         };
 
         setAppointmentDetails(appointmentDetails);
+
+        // Track appointment booking in Google Analytics 4
+        trackAppointmentBooking({
+          date: selectedDate,
+          time: appointmentDetails.time,
+          appointmentType: formData.appointmentType,
+          timeSlotAvailable: result.timeSlotAvailable,
+        });
 
         // IMPORTANT: Always show success message after successful submission
         console.log(

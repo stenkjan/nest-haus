@@ -5,6 +5,7 @@ import { Button } from "@/components/ui";
 import { SectionContainer } from "./SectionContainer";
 import { SectionHeader } from "./SectionHeader";
 import { useConfiguratorStore } from "@/store/configuratorStore";
+import { trackContactFormSubmit } from "@/lib/ga4-tracking";
 
 interface GrundstueckCheckFormProps {
   id?: string;
@@ -180,6 +181,12 @@ export function GrundstueckCheckForm({
 
       if (response.ok && result.success) {
         console.log("✅ Grundstückscheck data saved to customer inquiries");
+
+        // Track form submission in Google Analytics 4
+        trackContactFormSubmit({
+          requestType: 'grundstueck_check',
+          preferredContact: 'email',
+        });
 
         // Store form data in sessionStorage for CheckoutStepper to read
         const grundstueckData = {
