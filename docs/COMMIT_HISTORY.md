@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [f5f02ec19cc132c2943bd7bbe7b027397aef7277] - Fri Nov 21 15:47:27 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: restructure PaymentSuccessTracker component for improved SSR handling  Changes: - Renamed the inner component to  and wrapped it in a  boundary to prevent SSR issues. - Updated documentation to reflect the new structure and clarify the purpose of each component.  This refactor enhances the component's functionality and ensures better compatibility with server-side rendering.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/analytics/PaymentSuccessTracker.tsx
+
+
+---
+
 ## [9fa564e0e943b081e942e39d2b6599afcdee25e9] - Fri Nov 21 15:33:11 2025 +0100
 
 **Author**: stenkjan
