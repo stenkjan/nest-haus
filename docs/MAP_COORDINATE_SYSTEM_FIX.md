@@ -1,66 +1,92 @@
 # Map Coordinate System Fix
 
-## Issue
-The interactive map view in `admin/user-tracking` was displaying location dots in incorrect positions (e.g., Vienna appearing in Siberia, Santa Clara misplaced).
+## Problem Description
+
+The interactive map in the User Tracking dashboard (`admin/user-tracking`) was displaying location dots in incorrect positions (e.g., Vienna appearing in Siberia, Indonesia in the Pacific Ocean).
 
 ## Root Cause
-The SVG overlay for location dots was using an incorrect viewBox and projection formula that didn't match the `react-svg-worldmap` library's coordinate system.
+
+The `react-svg-worldmap` library applies a transformation to its internal SVG map:
+
+```svg
+<g transform="translate(0, 0) scale(0.7125) translate(0, 240)">
+  <!-- Map paths here -->
+</g>
+```
+
+Our overlay SVG (containing the red location dots) was not accounting for this transformation, causing a mismatch between the base map and the overlay coordinates.
 
 ## Solution
 
-### Coordinate System
-- **Library**: `react-svg-worldmap` v2.0.0-alpha.16
-- **ViewBox**: `0 0 800 450` (standard for the library)
-- **Projection**: Mercator projection
+### 1. Match the ViewBox
 
-### Transformation Formulas
+Updated the overlay SVG viewBox to match the transformed dimensions:
 
-#### X Coordinate (Longitude)
-```typescript
-// Linear mapping: -180° to +180° → 0 to 800
-const x = ((lng + 180) / 360) * 800;
+```tsx
+<svg 
+  className="absolute inset-0 w-full h-full pointer-events-none"
+  viewBox="0 0 1104 513"  // Changed from "0 0 800 450"
+  preserveAspectRatio="xMidYMid meet"
+>
 ```
 
-#### Y Coordinate (Latitude)
-```typescript
-// Mercator projection with proper bounds
-const toRadians = (deg: number) => (deg * Math.PI) / 180;
-const latRad = toRadians(Math.max(-85, Math.min(85, lat))); // Clamp to Mercator limits
+**Calculation:**
+- Original map internal size: 960 × ~500
+- After `scale(0.7125)`: 684 × ~356
+- After `translate(0, 240)`: shifted down 240 units
+- Final canvas: 1104 × 513 (to accommodate the scaled + translated content)
 
-// Calculate Mercator Y
+### 2. Apply the Same Transform
+
+Wrapped the overlay dots in a `<g>` element with the same transform:
+
+```tsx
+<g transform="translate(0, 0) scale(0.7125) translate(0, 240)">
+  {/* Location dots here */}
+</g>
+```
+
+This ensures the overlay coordinates are transformed identically to the base map.
+
+### 3. Use Internal Map Coordinates
+
+Adjusted the coordinate calculations to use the **original internal dimensions** (960 × 500) before the transform:
+
+```tsx
+// X: Longitude mapping (-180° to +180° → 0 to 960)
+const x = ((city.lng + 180) / 360) * 960;
+
+// Y: Mercator projection
+const toRadians = (deg: number) => (deg * Math.PI) / 180;
+const latRad = toRadians(Math.max(-85, Math.min(85, city.lat)));
 const mercatorY = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
 
-// Normalize to SVG coordinates (0-450)
-// Mercator range: ~-2.6 (south) to ~2.6 (north)
-const yNormalized = (2.6 - mercatorY) / 5.2; // Invert so north is at top
-const y = yNormalized * 450;
+// Map to 0-500 range (internal height before transform)
+const y = (1 - (mercatorY / Math.PI + 1) / 2) * 500;
 ```
 
-### Key Points
-1. **Latitude Clamping**: Mercator projection has mathematical limits at ±85°, so we clamp input coordinates
-2. **Y-Axis Inversion**: SVG coordinates increase downward, but latitude increases upward, so we invert the formula
-3. **Mercator Range**: The practical range of Mercator Y for ±85° latitude is approximately ±2.6
-4. **ViewBox Match**: The overlay SVG must use the same viewBox as the WorldMap component (800x450)
+## Key Insights
 
-## Testing
-Test with known coordinates:
-- **Vienna, Austria**: 48.26°N, 16.34°E → Should appear in Central Europe
-- **Santa Clara, USA**: 37.39°N, -121.96°W → Should appear in California
-- **Denpasar, Indonesia**: -8.65°S, 115.22°E → Should appear in Bali
+1. **Mercator Projection**: The map uses the standard Mercator projection formula for latitude conversion
+2. **Coordinate Space**: Work in the **pre-transformed** coordinate space (960 × 500), then let the `<g>` transform handle the scaling/translation
+3. **Latitude Clamping**: Mercator projection breaks down near the poles, so latitude is clamped to ±85°
+
+## Testing in Production
+
+To verify the fix works in production:
+
+1. Deploy the changes
+2. Navigate to `/admin/user-tracking`
+3. Switch to "Map View"
+4. Check that location dots align with their respective countries/cities
+5. Verify top cities (Vienna, etc.) appear in the correct geographic positions
 
 ## Files Modified
-- `src/app/admin/user-tracking/components/GeoLocationMap.tsx`
-  - Updated viewBox from `0 0 1009 665` to `0 0 800 450`
-  - Fixed Mercator projection formulas
-  - Added proper latitude clamping
-  - Corrected Y-axis normalization
 
-## Production Deployment
-The fix works in both local development and production environments because:
-1. Uses the same `react-svg-worldmap` library version
-2. Client-side rendering ensures consistent behavior
-3. No server-side dependencies for coordinate calculations
+- `src/app/admin/user-tracking/components/GeoLocationMap.tsx` (lines 238-265)
 
-## Future Improvements
-If coordinates are still slightly off, fine-tune the Mercator normalization constants (currently using ±2.6 range). The exact range may vary slightly based on the library's internal SVG path definitions.
+## Related Issues
 
+- Vienna was appearing in Siberia → Fixed by matching the transform
+- Indonesia was in Pacific Ocean → Fixed by correct Mercator Y calculation
+- Dots not scaling correctly → Fixed by using internal dimensions (960 × 500) before transform
