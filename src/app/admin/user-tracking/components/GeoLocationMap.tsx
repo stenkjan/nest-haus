@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import WorldMap from "react-svg-worldmap";
 
 interface GeoData {
@@ -33,6 +33,7 @@ export default function GeoLocationMap() {
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchGeoData();
@@ -208,7 +209,7 @@ export default function GeoLocationMap() {
           <div className="bg-gradient-to-b from-sky-50 to-sky-100 rounded-lg p-8">
             <div className="w-full mx-auto relative" style={{ maxWidth: '1200px' }}>
               {/* World Map SVG */}
-              <div className="relative">
+              <div className="relative" ref={mapContainerRef}>
                 <WorldMap
                   color="#10b981"
                   title=""
@@ -234,29 +235,33 @@ export default function GeoLocationMap() {
                   }}
                 />
                 
-                {/* Location Dots Overlay - Matches react-svg-worldmap viewBox */}
+                {/* Location Dots Overlay - Matches react-svg-worldmap coordinate system */}
                 <svg 
                   className="absolute inset-0 w-full h-full pointer-events-none"
-                  viewBox="0 0 1009 665"
+                  viewBox="0 0 800 450"
                   preserveAspectRatio="xMidYMid meet"
                   style={{ top: 0, left: 0 }}
                 >
                   {data.topCities.map((city, index) => {
-                    // Convert lat/lng to SVG coordinates matching react-svg-worldmap
-                    // react-svg-worldmap uses Mercator projection with viewBox="0 0 1009 665"
+                    // Coordinate transformation to match react-svg-worldmap
+                    // Testing different projection approaches
                     
-                    // Mercator projection formulas
+                    // X: Standard longitude mapping (-180° to +180° → 0 to 800)
+                    const x = ((city.lng + 180) / 360) * 800;
+                    
+                    // Y: Mercator projection for latitude
+                    // Mercator formula: y = ln(tan(π/4 + φ/2)) where φ is latitude in radians
                     const toRadians = (deg: number) => (deg * Math.PI) / 180;
+                    const latRad = toRadians(Math.max(-85, Math.min(85, city.lat))); // Clamp to Mercator limits
                     
-                    // X: Longitude mapping (-180 to 180 → 0 to 1009)
-                    const x = ((city.lng + 180) / 360) * 1009;
-                    
-                    // Y: Latitude mapping with Mercator projection
-                    // Standard Mercator: y = ln(tan(π/4 + lat/2))
-                    const latRad = toRadians(city.lat);
+                    // Calculate Mercator Y (ranges roughly from -PI to +PI for lat -85° to +85°)
                     const mercatorY = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
-                    // Normalize to viewBox height (Mercator range is approximately -π to π)
-                    const y = (1 - (mercatorY / Math.PI + 1) / 2) * 665;
+                    
+                    // Map Mercator Y to SVG coordinates (0 to 450)
+                    // Mercator range: ~-2.6 (south) to ~2.6 (north)
+                    // Normalize: add 2.6 to shift to 0-5.2 range, divide by 5.2, multiply by 450
+                    const yNormalized = (2.6 - mercatorY) / 5.2; // Invert so north is at top
+                    const y = yNormalized * 450;
                     
                     // Scale dot size based on session count
                     const maxCount = Math.max(...data.topCities.map(c => c.count));
