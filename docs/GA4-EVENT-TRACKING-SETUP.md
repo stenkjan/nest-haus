@@ -47,6 +47,98 @@ If you see `⚠️ gtag not available`, it means GA4 hasn't loaded yet (check co
 
 ## Event Details
 
+### purchase Event (Ecommerce - Payment Success)
+**Event Name**: `purchase`
+
+**Triggered When**: User completes payment for Konzept-Check (Stripe redirect success)
+
+**Parameters**:
+- `ecommerce.transaction_id`: Unique transaction ID (format: `T-{year}-{payment_intent_suffix}`)
+- `ecommerce.value`: Total purchase amount in EUR
+- `ecommerce.currency`: "EUR"
+- `ecommerce.items[]`: Array of purchased items
+  - `item_id`: "KONZEPT-CHECK-001" (Konzept-Check product ID)
+  - `item_name`: "Konzeptcheck (Kauf)"
+  - `price`: Purchase amount in EUR
+  - `quantity`: 1
+
+**Example**:
+```javascript
+{
+  event: 'purchase',
+  ecommerce: {
+    transaction_id: 'T-2025-a3b2c1d4',
+    value: 3000.00,
+    currency: 'EUR',
+    items: [{
+      item_id: 'KONZEPT-CHECK-001',
+      item_name: 'Konzeptcheck (Kauf)',
+      price: 3000.00,
+      quantity: 1
+    }]
+  }
+}
+```
+
+**How It Works**:
+1. User completes Stripe payment
+2. Stripe redirects back with `payment_intent` parameter
+3. `PaymentSuccessTracker` component detects redirect
+4. Fetches payment status from `/api/payments/verify-redirect`
+5. If successful, tracks `purchase` event
+6. Uses localStorage to prevent duplicate tracking
+
+### add_to_cart Event (Ecommerce)
+**Event Name**: `add_to_cart`
+
+**Triggered When**: User clicks "Zum Warenkorb" (Add to Cart) button after configuring their Nest Haus
+
+**Parameters**:
+- `ecommerce.items[]`: Array of items added to cart
+  - `item_id`: Configuration ID (format: `HOUSE-CONF-{sessionId}-{month}{year}`)
+  - `item_name`: Descriptive name (e.g., "2-Module (Konfig. 11/2025)")
+  - `currency`: "EUR"
+  - `price`: Total estimated price in EUR
+  - `quantity`: Always 1 (single house configuration)
+
+**Example**:
+```javascript
+{
+  event: 'add_to_cart',
+  ecommerce: {
+    items: [{
+      item_id: 'HOUSE-CONF-a3b2c1d4-112025',
+      item_name: '2-Module (Konfig. 11/2025)',
+      currency: 'EUR',
+      price: 150000.00,
+      quantity: 1
+    }]
+  }
+}
+```
+
+### config_complete Event (Configuration Complete)
+**Event Name**: `config_complete`
+
+**Triggered When**: User clicks "Zum Warenkorb" (Add to Cart) button after configuring their Nest Haus
+
+**Parameters**:
+- `house_model`: The selected Nest model (e.g., "1-Modul", "2-Module")
+- `price_estimated`: Total estimated price in EUR (converted from cents)
+- `customization_options`: Pipe-separated string of all selected options
+  - Format: `"Nest_2-Module|Fassade_Holzlattung_Lärche|Innen_Eiche_geölt|Boden_Parkett_Eiche|..."`
+  - Includes: Nest type, Façade, Interior, Flooring, Lighting, PV, Planning package, and checkboxes
+
+**Example**:
+```javascript
+{
+  event: 'config_complete',
+  house_model: '2-Module',
+  price_estimated: 150000.00,
+  customization_options: 'Nest_2-Module|Fassade_Holzlattung_Lärche|Innen_Eiche_geölt|Boden_Parkett_Eiche|Belichtung_Standard|Planung_Basis|Kamindurchzug_Ja'
+}
+```
+
 ### generate_lead Event (Appointment Booking)
 **Event Name**: `generate_lead`
 
@@ -126,12 +218,15 @@ This usually means:
 
 All custom events in the codebase:
 
-| Event Name | Purpose | Location |
-|------------|---------|----------|
-| `generate_lead` | Form submissions | AppointmentBooking, ContactForm |
-| `begin_checkout` | Configuration complete | Konfigurator |
-| `page_view` | Manual page views | (if needed for SPA) |
-| `click` | Button/link tracking | Various |
+| Event Name | Purpose | Location | Parameters |
+|------------|---------|----------|------------|
+| `purchase` | Payment completed successfully | PaymentSuccessTracker (Warenkorb) | ecommerce.transaction_id, ecommerce.value, ecommerce.items |
+| `add_to_cart` | User adds configuration to cart (ecommerce) | CartFooter (Konfigurator) | ecommerce.items (item_id, item_name, price, quantity) |
+| `config_complete` | User adds configuration to cart | CartFooter (Konfigurator) | house_model, price_estimated, customization_options |
+| `generate_lead` | Form submissions | AppointmentBooking, ContactForm | form_id, event_category, appointment_date, etc. |
+| `begin_checkout` | Configuration complete (legacy) | - | value, currency, items |
+| `page_view` | Manual page views | (if needed for SPA) | page_path, page_title |
+| `click` | Button/link tracking | Various | event_category, element_id, etc. |
 
 ## GA4 vs GTM
 

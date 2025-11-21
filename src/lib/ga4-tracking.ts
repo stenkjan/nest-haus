@@ -80,9 +80,76 @@ export function trackContactFormSubmit(data?: {
 }
 
 /**
- * Track configuration completion
+ * Track configuration completion (when user adds to cart)
  */
 export function trackConfigurationComplete(data: {
+  houseModel?: string;
+  priceEstimated?: number;
+  customizationOptions?: string[];
+}) {
+  // Convert customization options array to pipe-separated string
+  const customizationString = data.customizationOptions?.join('|') || '';
+  
+  pushEvent('config_complete', {
+    house_model: data.houseModel || 'Unknown',
+    price_estimated: data.priceEstimated || 0,
+    customization_options: customizationString,
+  });
+}
+
+/**
+ * Track add to cart (ecommerce event)
+ */
+export function trackAddToCart(data: {
+  itemId?: string;
+  itemName?: string;
+  price?: number;
+  quantity?: number;
+}) {
+  pushEvent('add_to_cart', {
+    ecommerce: {
+      items: [{
+        item_id: data.itemId || 'HOUSE-CONF-UNKNOWN',
+        item_name: data.itemName || 'Nest Haus Configuration',
+        currency: 'EUR',
+        price: data.price || 0,
+        quantity: data.quantity || 1,
+      }]
+    }
+  });
+}
+
+/**
+ * Track purchase (ecommerce event)
+ */
+export function trackPurchase(data: {
+  transactionId?: string;
+  value?: number;
+  itemId?: string;
+  itemName?: string;
+  price?: number;
+  quantity?: number;
+}) {
+  pushEvent('purchase', {
+    ecommerce: {
+      transaction_id: data.transactionId || `T-${new Date().getFullYear()}-${Math.random().toString(16).slice(2)}`,
+      value: data.value || 0,
+      currency: 'EUR',
+      items: [{
+        item_id: data.itemId || 'KONZEPT-CHECK-001',
+        item_name: data.itemName || 'Konzeptcheck (Kauf)',
+        price: data.price || 0,
+        quantity: data.quantity || 1,
+      }]
+    }
+  });
+}
+
+/**
+ * Track configuration completion (legacy - for backward compatibility)
+ * @deprecated Use trackConfigurationComplete instead
+ */
+export function trackConfigurationCompleteOld(data: {
   nestType?: string;
   planungspaket?: string;
   totalPrice?: number;

@@ -9,6 +9,7 @@ import { PriceUtils } from "../konfigurator/core/PriceUtils";
 import { GRUNDSTUECKSCHECK_PRICE, PLANNING_PACKAGES } from "@/constants/configurator";
 import type { CartItem, ConfigurationCartItem } from "../../store/cartStore";
 import CheckoutStepper from "./components/CheckoutStepper";
+import PaymentSuccessTracker from "@/components/analytics/PaymentSuccessTracker";
 
 import Footer from "@/components/Footer";
 
@@ -738,6 +739,9 @@ export default function WarenkorbClient() {
       className="min-h-screen bg-white"
       style={{ paddingTop: "var(--navbar-height, 3.5rem)" }}
     >
+      {/* Track payment success for GA4 purchase event */}
+      <PaymentSuccessTracker />
+      
       <div className="w-full">
         {items.length === 0 ? (
           /* Empty Cart */
