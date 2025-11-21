@@ -44,6 +44,7 @@ next-env.d.ts
 
 /public/images/
 service-account-key.json
+google-analytics-credentials.json
 preiskalkulation/~$Preiskalkulation_neu.xlsx
 preiskalkulation/Preiskalkulation_neu.xlsx
 .env.production
