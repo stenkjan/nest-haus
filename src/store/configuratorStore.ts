@@ -628,7 +628,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             value: 'ohne_innenverkleidung',
             name: 'Standard',
             price: 0,
-            description: 'Keine Innenverkleidung\nRohbau'
+            description: 'Keine Innenverkleidung\nVerbaue deine Innenwandpanele selbst'
           },
           // Standard (ohne_belag) - default flooring
           {
