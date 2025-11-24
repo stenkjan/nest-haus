@@ -4,6 +4,20 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [6a8d26780ab69d0d6c3d757f21192fea1cb2908d] - Mon Nov 24 12:59:07 2025 +0100
+
+**Author**: stenkjan
+**Message**: `fix: update links in ConfiguratorShell and KonzeptcheckClient for consistency  Changes: - Updated the link in ConfiguratorShell.tsx from "/warenkorb?mode=entwurf" to "/warenkorb?mode=konzept-check". - Changed the link in KonzeptcheckClient.tsx from "/warenkorb?mode=entwurf" to "/warenkorb?mode=konzept-check".  These updates ensure that the navigation reflects the correct mode for the Konzept-Check process.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/app/konfigurator/components/ConfiguratorShell.tsx
+- src/app/konzept-check/KonzeptcheckClient.tsx
+
+
+---
+
 ## [24744a17e414432e4a2a90c9c216de2e29e3671b] - Mon Nov 24 12:44:30 2025 +0100
 
 **Author**: stenkjan
