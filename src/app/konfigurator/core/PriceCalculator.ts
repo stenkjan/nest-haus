@@ -642,19 +642,37 @@ export class PriceCalculator {
     try {
       const pricingData = this.getPricingData();
       
+      console.log('🔍 calculateBelichtungspaketPrice called:', {
+        belichtungspaket: belichtungspaket?.value,
+        nest: nest?.value,
+        fenster: fenster?.value,
+        hasPricingData: !!pricingData
+      });
+      
       if (pricingData && fenster) {
         const nestSize = nest.value as NestSize;
         const fensterKey = fenster.value; // Use fenster value as-is (holz, pvc_fenster, aluminium_schwarz)
         const belichtungKey = belichtungspaket.value;
         
+        console.log('📊 Looking up price:', {
+          fensterKey,
+          nestSize,
+          belichtungKey,
+          availableFensterKeys: Object.keys(pricingData.fenster.totalPrices)
+        });
+        
         // Get total combination price from sheet (F70-N78 contains TOTAL prices)
         const fensterPricing = pricingData.fenster.totalPrices[fensterKey];
         if (fensterPricing && fensterPricing[nestSize]) {
           const totalPrice = fensterPricing[nestSize][belichtungKey];
+          console.log('💰 Found totalPrice:', totalPrice);
           if (totalPrice !== undefined) {
             return totalPrice; // Return total price directly (may be -1 for price on request)
           }
         }
+        console.warn('⚠️ No pricing found for combination');
+      } else {
+        console.warn('⚠️ Missing data:', { hasPricingData: !!pricingData, hasFenster: !!fenster });
       }
       
       // If pricing data not available yet (loading), return 0 to prevent crash
