@@ -3136,18 +3136,39 @@ export default function CheckoutStepper({
                     pvanlage: configItem.pvanlage || undefined,
                     fenster: configItem.fenster || undefined,
                     stirnseite: configItem.stirnseite || undefined,
-                    planungspaket: configItem.planungspaket || undefined,
+                    planungspaket: configItem.planungspaket || undefined, // INCLUDE for full calculation
                     fundament: configItem.fundament || undefined,
                     kamindurchzug: configItem.kamindurchzug || undefined,
                     grundstueckscheck: Boolean(configItem.grundstueckscheck),
                   };
 
-                  deinNestHausTotal =
-                    PriceCalculator.calculateTotalPrice(selections);
+                  // Calculate FULL total including planungspaket
+                  const fullTotal = PriceCalculator.calculateTotalPrice(selections);
+
+                  // Calculate planungspaket price separately to subtract it
+                  let planungspaketPrice = 0;
+                  if (configItem?.planungspaket?.value && configItem.planungspaket.value !== 'basis') {
+                    const pricingData = PriceCalculator.getPricingData();
+                    if (pricingData && configItem.nest) {
+                      const nestSize = configItem.nest.value as 'nest80' | 'nest100' | 'nest120' | 'nest140' | 'nest160';
+                      if (configItem.planungspaket.value === 'plus') {
+                        planungspaketPrice = pricingData.planungspaket.plus[nestSize] || 0;
+                      } else if (configItem.planungspaket.value === 'pro') {
+                        planungspaketPrice = pricingData.planungspaket.pro[nestSize] || 0;
+                      }
+                      // Normalize -1 (dash price) to 0 for calculation
+                      if (planungspaketPrice === -1) {
+                        planungspaketPrice = 0;
+                      }
+                    }
+                  }
+
+                  // Subtract planungspaket to get "Dein Nest Haus" price (physical house only)
+                  deinNestHausTotal = fullTotal - planungspaketPrice;
                 }
 
                 // Calculate planungspaket price using new pricing system (nest-size dependent)
-                const planungspaketPrice = (() => {
+                const planungspaketPriceForTotal = (() => {
                   if (configItem?.planungspaket) {
                     const price = getItemPrice(
                       "planungspaket",
@@ -3166,8 +3187,8 @@ export default function CheckoutStepper({
                   return planPkg?.price || 0;
                 })();
 
-                // Total price for payment calculations (Nest Haus + Planungspaket)
-                const totalPrice = deinNestHausTotal + planungspaketPrice;
+                // Total price for payment calculations (Nest Haus already excludes planungspaket, so just add it back)
+                const totalPrice = deinNestHausTotal + planungspaketPriceForTotal;
 
                 const _firstPayment = 3000; // Grundstückscheck full price (shown in display above)
                 const grundstueckscheckCredit = 1500; // Actual payment (discount applied)

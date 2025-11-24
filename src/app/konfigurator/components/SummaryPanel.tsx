@@ -256,6 +256,8 @@ export default function SummaryPanel({
       } catch (error) {
         console.error("Error getting PV price from pricing data:", error);
       }
+      // Fallback: multiply stored price by quantity if pricing data unavailable
+      return (selection.quantity || 1) * (selection.price || 0);
     }
 
     // For all other items, use the base price
