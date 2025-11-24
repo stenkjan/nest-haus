@@ -4,6 +4,19 @@ _Auto-generated documentation of project changes_
 
 ---
 
+## [a4cf6f71ac62edaf7c3f141df5e067e4234a16e3] - Mon Nov 24 15:19:04 2025 +0100
+
+**Author**: stenkjan
+**Message**: `refactor: remove unused mobile information toggle and technical details from ThreeByOneGrid component  Changes: - Eliminated the  state and associated mobile information toggle functionality. - Removed mobile-specific technical details sections to streamline the component and improve maintainability.  These changes enhance the clarity and efficiency of the ThreeByOneGrid component.  `
+
+### Changes Analysis
+
+#### 🎨 Frontend Changes
+- src/components/grids/ThreeByOneGrid.tsx
+
+
+---
+
 ## [196b1e865dc2486fa90cd82effce2095b0e5ad8b] - Mon Nov 24 14:50:56 2025 +0100
 
 **Author**: stenkjan
